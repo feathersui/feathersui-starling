@@ -1,0 +1,192 @@
+
+<h1 class="sectionedit1" id="horizontal_layout_in_feathers">Horizontal Layout in Feathers</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html"  rel="nofollow">HorizontalLayout</a></code> class may be used by components that support layout, such as <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> and <code><a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">ScrollContainer</a></code>, to display items from left to right in a single row. It supports a number of useful options for adjusting the spacing and alignment.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Horizontal Layout in Feathers" [1-406] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s create a horizontal layout and add it to a <a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">scroll container</a>:
+</p>
+<pre class="code as3"><span class="kw2">var</span> layout<span class="sy0">:</span>HorizontalLayout = <span class="kw1">new</span> HorizontalLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw2">var</span> container<span class="sy0">:</span>ScrollContainer = <span class="kw1">new</span> ScrollContainer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+container<span class="sy0">.</span>layout = layout<span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> container <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+There are a number of simple properties that may be used to affect the layout. The most common are padding and gap.
+</p>
+
+<p>
+The <em>padding</em> is the space around the content that the layout positions and sizes. You may set padding on each side of the container separately. Below, we make the top and bottom padding 10 pixels and the left and right padding 15 pixels:
+</p>
+<pre class="code as3">layout<span class="sy0">.</span>paddingTop = <span class="nu0">10</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>paddingRight = <span class="nu0">15</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>paddingBottom = <span class="nu0">10</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>paddingLeft = <span class="nu0">15</span><span class="sy0">;</span></pre>
+
+<p>
+The <em>gap</em> is the space between items. Let&#039;s set the gap to 5 pixels:
+</p>
+<pre class="code as3">layout<span class="sy0">.</span>gap = <span class="nu0">5</span><span class="sy0">;</span></pre>
+
+<p>
+We can <em>align</em> the items in the layout horizontally and vertically. Horizontal alignment may be used only when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout. Otherwise, the container will need to scroll. Let&#039;s adjust the alignments so that the content will be aligned to the horizontal center and vertical middle:
+</p>
+<pre class="code as3">layout<span class="sy0">.</span>horizontalAlign = HorizontalLayout<span class="sy0">.</span>HORIZONTAL_ALIGN_CENTER<span class="sy0">;</span>
+layout<span class="sy0">.</span>verticalAlign = HorizontalLayout<span class="sy0">.</span>VERTICAL_ALIGN_MIDDLE<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [407-1853] -->
+<h2 class="sectionedit3" id="percentage_dimensions">Percentage Dimensions</h2>
+<div class="level2">
+
+<p>
+You may pass in <code>HorizontalLayoutData</code> to specify the width or height using a percentage value. In the simplest, very common case, this is a percentage of the parent container&#039;s width or height.
+</p>
+
+<p>
+In the following example, we add two buttons to a container using <code>HorizontalLayout</code>. The first button takes up 25% of the container&#039;s width, and the second button takes up 75% of the container&#039;s width:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button1<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button1<span class="sy0">.</span>label = <span class="st0">&quot;1&quot;</span><span class="sy0">;</span>
+<span class="kw2">var</span> button1LayoutData<span class="sy0">:</span>HorizontalLayoutData = <span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button1LayoutData<span class="sy0">.</span>percentWidth = <span class="nu0">25</span><span class="sy0">;</span>
+button1<span class="sy0">.</span>layoutData = button1LayoutData<span class="sy0">;</span>
+container<span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>button1<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw2">var</span> button2<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button2<span class="sy0">.</span>label = <span class="st0">&quot;2&quot;</span><span class="sy0">;</span>
+<span class="kw2">var</span> button2LayoutData<span class="sy0">:</span>HorizontalLayoutData = <span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button2LayoutData<span class="sy0">.</span>percentWidth = <span class="nu0">75</span><span class="sy0">;</span>
+button2<span class="sy0">.</span>layoutData = button2LayoutData<span class="sy0">;</span>
+container<span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>button2<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+If there are other children in the container with fixed pixel widths, <code>percentWidth</code> will be based on the remaining space in the parent container after the fixed pixel width is subtracted from the container&#039;s height.
+</p>
+
+<p>
+In the following example, we have two buttons again, but this time, the first button is a fixed 300 pixels wide. Now, the percentages are based on the width of the container <em>minus 300 pixels</em>. We want the second button to simply fill the remaining horizontal space in the container, so we set <code>percentWidth</code> to <code>100</code>:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button1<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button1<span class="sy0">.</span>label = <span class="st0">&quot;1&quot;</span><span class="sy0">;</span>
+button1<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">300</span><span class="sy0">;</span>
+container<span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>button1<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw2">var</span> button2<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button2<span class="sy0">.</span>label = <span class="st0">&quot;2&quot;</span><span class="sy0">;</span>
+<span class="kw2">var</span> button2LayoutData<span class="sy0">:</span>HorizontalLayoutData = <span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button2LayoutData<span class="sy0">.</span>percentWidth = <span class="nu0">100</span><span class="sy0">;</span>
+button2<span class="sy0">.</span>layoutData = button2LayoutData<span class="sy0">;</span>
+container<span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>button2<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Because the first button&#039;s width is 300 pixels, and not a percentage, the second button&#039;s width won&#039;t be equal to the width of the container, even though <code>percentWidth</code> is equal to <code>100</code>. Percentages are always calculated after fixed values in pixels are accounted for.
+</p>
+
+<p>
+We can also set <code>percentHeight</code> to fill a percentage of the container&#039;s height. For <code>HorizontalLayout</code>, since the children are positioned one after the other from the left to the right, there are never fixed values to account for vertically.
+</p>
+
+<p>
+Let&#039;s use the same width values from the previous example, but we&#039;ll specify 100% height on the first button:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button1<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button1<span class="sy0">.</span>label = <span class="st0">&quot;1&quot;</span><span class="sy0">;</span>
+button1<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">300</span><span class="sy0">;</span>
+<span class="kw2">var</span> button1LayoutData<span class="sy0">:</span>HorizontalLayoutData = <span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button1LayoutData<span class="sy0">.</span>percentHeight = <span class="nu0">100</span><span class="sy0">;</span>
+button1<span class="sy0">.</span>layoutData = button1LayoutData<span class="sy0">;</span>
+container<span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>button1<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw2">var</span> button2<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button2<span class="sy0">.</span>label = <span class="st0">&quot;2&quot;</span><span class="sy0">;</span>
+<span class="kw2">var</span> button2LayoutData<span class="sy0">:</span>HorizontalLayoutData = <span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button2LayoutData<span class="sy0">.</span>percentWidth = <span class="nu0">100</span><span class="sy0">;</span>
+button2<span class="sy0">.</span>layoutData = button2LayoutData<span class="sy0">;</span>
+container<span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>button2<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Notice that you can mix and match fixed pixel values with percentage values on the same child. The width of the first button is still 300 pixels, but the height is 100%.
+</p>
+
+<p>
+As a shortcut, you may optionally specify both <code>percentWidth</code> and <code>percentHeight</code> in the <code>HorizontalLayoutData</code> constructor:
+</p>
+<pre class="code as3"><span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span> <span class="nu0">50</span><span class="sy0">,</span> <span class="nu0">100</span> <span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//width: 50%, height: 100%</span></pre>
+
+<p>
+The value <code>NaN</code> may be used to say that you do not want to use percentage dimensions. For instance, if we wanted a button that is 300 pixels wide and 100% high, like in the earlier example, we might do it like this:
+</p>
+<pre class="code as3">button1<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">300</span><span class="sy0">;</span>
+button1<span class="sy0">.</span>layoutData = <span class="kw1">new</span> HorizontalLayoutData<span class="br0">&#40;</span> <span class="kw8">NaN</span><span class="sy0">,</span> <span class="nu0">100</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+<p><div class="noteclassic">
+Percentage dimensions always take precedence, so if we were to pass a numeric value instead of <code>NaN</code> as the first parameter of the constructor, then the fixed width of 300 pixels would be ignored.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Percentage Dimensions" [1854-5760] -->
+<h2 class="sectionedit4" id="virtual_horizontal_layout">Virtual Horizontal Layout</h2>
+<div class="level2">
+
+<p>
+In a <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> or <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code>, the layout may be <em>virtualized</em>, meaning that some items in the layout will not actually exist if they are not visible. This helps to improve performance of a scrolling list because only a limited number of item renderers will be created at any given moment. If the list&#039;s data provider is very large, a virtual layout is essential, even on desktop computers that have incredible processing power compared to mobile devices.
+</p>
+
+<p>
+A virtualized layout will need as estimate about how big a “virtual” item renderer should be. You should set the <code>typicalItem</code> property of the list to have it determine the <em>typical</em> width and height of an item renderer to use as this estimated value. If you don&#039;t pass in a typical item, the first item in the data provider is used for this estimate.
+</p>
+
+<p>
+<p><div class="noteclassic">
+You should not manually set the <code>typicalItemWidth</code> and <code>typicalItemHeight</code> properties on a <code>HorizontalLayout</code>. If you do, the list will simply replace your values with its own values calculated from its <code>typicalItem</code>!
+
+</div></p>
+</p>
+
+<p>
+By default <code><a href="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html#useVirtualLayout" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html#useVirtualLayout"  rel="nofollow">useVirtualLayout</a></code> is <code>true</code>. You may disable virtual layouts by setting it to <code>false</code>. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, you should rarely disable <code>useVirtualLayout</code>.
+</p>
+<pre class="code as3">layout<span class="sy0">.</span>useVirtualLayout = <span class="kw1">false</span><span class="sy0">;</span></pre>
+
+<p>
+The <code><a href="/feathers/layout-group" class="wikilink1" title="feathers:layout-group">LayoutGroup</a></code> and <code><a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">ScrollContainer</a></code> components never use virtual layouts.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Virtual Horizontal Layout" [5761-7584] -->
+<h3 class="sectionedit5" id="variable_item_dimensions_in_a_virtual_horizontal_layout">Variable Item Dimensions in a Virtual Horizontal Layout</h3>
+<div class="level3">
+
+<p>
+By default, a virtualized horizontal layout will assume that all items will have the same width. This restriction helps improve performance, and most lists won&#039;t need items with variable widths. However, you can set the <code><a href="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html#hasVariableItemDimensions" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html#hasVariableItemDimensions"  rel="nofollow">hasVariableItemDimensions</a></code> property to <code>true</code>, if you need your list&#039;s item renderers to have different width values. When you do this, the typical item width is used as an estimated width for virtual item renderers, and the real width value for each item renderer is stored as it comes into view, improving the accuracy of the layout over time.
+</p>
+<pre class="code as3">layout<span class="sy0">.</span>hasVariableItemDimensions = <span class="kw1">false</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Variable Item Dimensions in a Virtual Horizontal Layout" [7585-8389] -->
+<h2 class="sectionedit6" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html"  rel="nofollow">HorizontalLayout API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Related Links" [8390-] -->

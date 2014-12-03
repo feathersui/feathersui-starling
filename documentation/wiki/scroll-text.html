@@ -1,0 +1,246 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_scrolltext_component">How to use the Feathers ScrollText Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollText.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollText.html"  rel="nofollow">ScrollText</a></code> is designed for displaying long passages of text. With longer text, <code>TextFieldTextRenderer</code> may run into the maximum texture size limits. <code>BitmapFontTextRenderer</code> may be a good alternative, but with enough characters, then it may begin to affect performance. <code>ScrollText</code> provides the workaround of displaying text on the runtime&#039;s classic software-rendered display list.
+</p>
+
+<p>
+A disadvantage of displaying text on the classic display list is that the text will <strong>always</strong> appear above Stage 3D content, including regular Starling display objects. There is no way to overlay Starling content above <code>ScrollText</code>.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers ScrollText Component" [1-769] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s create a <code>ScrollText</code> instance, give it some text, and add it to the display list.
+</p>
+<pre class="code as3"><span class="kw2">var</span> scrollText<span class="sy0">:</span>ScrollText = <span class="kw1">new</span> ScrollText<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+scrollText<span class="sy0">.</span><span class="kw7">text</span> = <span class="st0">&quot;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&quot;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> scrollText <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+As you can see, the <code>ScrollText</code> is added to the Starling display list. This is merely an abstraction. Behind the scenes, a <code>flash.text.TextField</code> is created and added to the classic display list. As you move and scale the <code>ScrollText</code> instance on the Starling display list, the <code>TextField</code> will be manipulated on the classic display list.
+</p>
+
+<p>
+If we set the <code>width</code> property, the <code>ScrollText</code> content will automatically word wrap, and the height will grow.
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">200</span><span class="sy0">;</span></pre>
+
+<p>
+If we set both the <code>width</code> and <code>height</code> properties, the <code>ScrollText</code> content will automatically allow scrolling if the content is taller than the height of the <code>ScrollText</code>.
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">200</span><span class="sy0">;</span>
+scrollText<span class="sy0">.</span><span class="kw7">height</span> = <span class="nu0">200</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [770-2211] -->
+<h2 class="sectionedit3" id="skinning_a_scroll_text">Skinning a Scroll Text</h2>
+<div class="level2">
+
+<p>
+For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/ScrollText.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollText.html"  rel="nofollow">ScrollText API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Skinning a Scroll Text" [2212-2482] -->
+<h3 class="sectionedit4" id="font_styles">Font Styles</h3>
+<div class="level3">
+
+<p>
+<code>ScrollText</code> may be styled with a <code>flash.text.TextFormat</code>. You may use fonts installed on the target device or you may embed a font.
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span>textFormat = <span class="kw1">new</span> <a href="http://www.google.com/search?q=textformat%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:textformat.html"><span class="kw5">TextFormat</span></a><span class="br0">&#40;</span> <span class="st0">&quot;SomeEmbeddedFont&quot;</span><span class="sy0">,</span> <span class="nu0">12</span><span class="sy0">,</span> <span class="kw1">true</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+scrollText<span class="sy0">.</span><span class="kw7">embedFonts</span> = <span class="kw1">true</span><span class="sy0">;</span></pre>
+
+<p>
+Use the <code>isHTML</code> property to display the text as <abbr title="HyperText Markup Language">HTML</abbr>, with the same capabilities as the <code>htmlText</code> property of <code>flash.text.TextField</code>.
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span>isHTML = <span class="kw1">true</span><span class="sy0">;</span>
+scrollText<span class="sy0">.</span><span class="kw7">text</span> = <span class="st0">&quot;&lt;font color=<span class="es0">\&quot;</span>#ff0000<span class="es0">\&quot;</span>&gt;Hello world&lt;/font&gt;&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+A number of other styling properties from <code>flash.text.TextField</code> are available to use with <code>ScrollText</code>, including <code>antiAliasType</code>, <code>backgroundColor</code>, <code>borderColor</code>, <code>gridFitType</code>, <code>styleSheet</code>, <code>sharpness</code>, <code>thickness</code>, and others. See the <a href="http://feathersui.com/documentation/feathers/controls/ScrollText.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollText.html"  rel="nofollow">ScrollText API documentation</a> for full details.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Font Styles" [2483-3399] -->
+<h3 class="sectionedit5" id="targeting_a_scrolltext_in_a_theme">Targeting a ScrollText in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollText <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setScrollTextStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific scroll text to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3"><span class="kw7">text</span><span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-scroll-text&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollText <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-scroll-text&quot;</span><span class="sy0">,</span> setCustomScrollTextStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the scroll text&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the scroll text was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the scroll text&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Targeting a ScrollText in a theme" [3400-4433] -->
+<h3 class="sectionedit6" id="skinning_the_scroll_bars">Skinning the Scroll Bars</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read <a href="/feathers/scroll-bar" class="wikilink1" title="feathers:scroll-bar">How to use the Feathers ScrollBar component</a> (or <a href="/feathers/simple-scroll-bar" class="wikilink1" title="feathers:simple-scroll-bar">SimpleScrollBar</a>) for full details about the skinning properties that are available on scroll bar components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR"  rel="nofollow">Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</a></code> style name for the horizontal scroll bar and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR"  rel="nofollow">Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR</a></code> style name for the vertical scroll bar.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Scroller<span class="sy0">.</span>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR<span class="sy0">,</span> setHorizontalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span>
+getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Scroller<span class="sy0">.</span>DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR<span class="sy0">,</span> setVerticalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style names to use different ones in your theme, if you prefer:
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span>customHorizontalScrollBarName = <span class="st0">&quot;custom-horizontal-scroll-bar&quot;</span><span class="sy0">;</span>
+scrollText<span class="sy0">.</span>customVerticalScrollBarName = <span class="st0">&quot;custom-vertical-scroll-bar&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#customHorizontalScrollBarName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#customHorizontalScrollBarName"  rel="nofollow">customHorizontalScrollBarName</a></code> and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#customVerticalScrollBarName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#customVerticalScrollBarName"  rel="nofollow">customVerticalScrollBarName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-horizontal-scroll-bar&quot;</span><span class="sy0">,</span> setCustomHorizontalScrollBarStyles<span class="sy0">,</span>  <span class="br0">&#41;</span><span class="sy0">;</span>
+getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-vertical-scroll-bar&quot;</span><span class="sy0">,</span> setCustomVerticalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory"  rel="nofollow">horizontalScrollBarFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory"  rel="nofollow">verticalScrollBarFactory</a></code> to provide skins for the scroll bars:
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span>horizontalScrollBarFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>ScrollBar
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> scrollBar<span class="sy0">:</span>ScrollBar = <span class="kw1">new</span> ScrollBar<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    scrollBar<span class="sy0">.</span>direction = ScrollBar<span class="sy0">.</span>DIRECTION_HORIZONTAL<span class="sy0">;</span>
+    <span class="co1">//skin the scroll bar here</span>
+    scrollBar<span class="sy0">.</span>trackLayoutMode = ScrollBar<span class="sy0">.</span>TRACK_LAYOUT_MODE_SINGLE<span class="sy0">;</span>
+    <span class="kw1">return</span> scrollBar<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>horizontalScrollBarFactory</code> and <code>verticalScrollBarFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarProperties"  rel="nofollow">horizontalScrollBarProperties</a></code> and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarProperties"  rel="nofollow">verticalScrollBarProperties</a></code> to pass skins to the scroll bars.
+</p>
+<pre class="code as3">scrollText<span class="sy0">.</span>horizontalScrollBarProperties<span class="sy0">.</span>trackLayoutMode = ScrollBar<span class="sy0">.</span>TRACK_LAYOUT_MODE_SINGLE<span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the scroll bars through <code>horizontalScrollBarProperties</code> and <code>verticalScrollBarProperties</code> if you need to change skins after the scroll bar is created. Using <code>horizontalScrollBarFactory</code> and <code>verticalScrollBarFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Skinning the Scroll Bars" [4434-8106] -->
+<h2 class="sectionedit7" id="customizing_scrolling_behavior">Customizing Scrolling Behavior</h2>
+<div class="level2">
+
+<p>
+A number of properties are available to customize scrolling behavior and the scroll bars.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Customizing Scrolling Behavior" [8107-8241] -->
+<h3 class="sectionedit8" id="interaction_modes">Interaction Modes</h3>
+<div class="level3">
+
+<p>
+<code>ScrollText</code> provides two main interaction modes, which can be changed using the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#interactionMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#interactionMode"  rel="nofollow">interactionMode</a></code> property.
+</p>
+
+<p>
+By default, you can scroll using touch, just like you would on many mobile devices including smartphones and tablets. This mode allows you to grab the <code>ScrollText</code> anywhere within its bounds and drag it around to scroll. This mode is defined by the constant, <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH"  rel="nofollow">INTERACTION_MODE_TOUCH</a></code>.
+</p>
+
+<p>
+Alternatively, you can set <code>interactionMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE"  rel="nofollow">INTERACTION_MODE_MOUSE</a></code>. This mode allows you to scroll using the horizontal or vertical scroll bar sub-components. You can also use the mouse wheel to scroll vertically.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Interaction Modes" [8242-9177] -->
+<h3 class="sectionedit9" id="scroll_bar_display_mode">Scroll Bar Display Mode</h3>
+<div class="level3">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#scrollBarDisplayMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#scrollBarDisplayMode"  rel="nofollow">scrollBarDisplayMode</a></code> property controls how and when scroll bars are displayed. This value may be overridden by the scroll policy, as explained below.
+</p>
+
+<p>
+The default value is <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_FLOAT</a></code>, which displays the scroll bars above the view port&#039;s content, rather than affecting the size of the view port. Since a <code>TextField</code> appears above the Starling stage, you should set appropriate padding values so that the text does not appear above the floating scroll bar. When the scroll bars are floating, they fade out when the <code>ScrollText</code> is not actively scrolling. This is a familiar behavior for scroll bars in the touch interaction mode. In the mouse interaction mode, the scroll bars will appear when the mouse hovers over them and then disappear when the hover ends.
+</p>
+
+<p>
+To completely hide the scroll bars, but still allow scrolling, you can set <code>scrollBarDisplayMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_NONE</a></code>.
+</p>
+
+<p>
+Finally, if you want the scroll bars to always be visible outside of the content in a fixed position, you can set <code>scrollBarDisplayMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_FIXED</a></code>. This is best for traditional desktop scrollable content.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Scroll Bar Display Mode" [9178-10778] -->
+<h3 class="sectionedit10" id="scroll_policies">Scroll Policies</h3>
+<div class="level3">
+
+<p>
+The two previous properties control how scrolling works. The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollPolicy" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollPolicy"  rel="nofollow">horizontalScrollPolicy</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollPolicy" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollPolicy"  rel="nofollow">verticalScrollPolicy</a></code> properties control whether scrolling is enabled or not.
+</p>
+
+<p>
+The default scroll policy for both directions is <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO"  rel="nofollow">SCROLL_POLICY_AUTO</a></code>. If the content&#039;s width is greater than the view port&#039;s width, the <code>ScrollText</code> may scroll horizontally (same for height and vertical scrolling). If not, then the <code>ScrollText</code> will not scroll in that direction. In addition to the <code>scrollBarDisplayMode</code>, this can affect whether the scroll bar is visible or not.
+</p>
+
+<p>
+You can completely disable scrolling in either direction, set the scroll policy to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_OFF" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_OFF"  rel="nofollow">SCROLL_POLICY_OFF</a></code>. The scroll bar will not be visible, and the <code>ScrollText</code> won&#039;t scroll, even if the content is larger than the view port.
+</p>
+
+<p>
+Finally, you can ensure that scrolling is always enabled by setting the scroll policy to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_ON" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_ON"  rel="nofollow">SCROLL_POLICY_ON</a></code>. If combined with <code>hasElasticEdges</code> in the touch interaction mode, it will create a playful edge that always bounces back, even when the content is smaller than the view port. If using the mouse interaction mode, the scroll bar may always be visible under the same circumstances, though it may be disabled if the content is smaller than the view port.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Scroll Policies" [10779-12523] -->
+<h2 class="sectionedit11" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/ScrollText.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollText.html"  rel="nofollow">ScrollText API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Related Links" [12524-] -->

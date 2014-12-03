@@ -1,0 +1,138 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_image_loader_component">How to use the Feathers Image Loader Component</h1>
+<div class="level1">
+
+<p>
+The <code><span class="curid"><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></span></code> class wraps <code>starling.display.Image</code> inside a Feathers component to add additional features. For instance, you can easily load an image from a <abbr title="Uniform Resource Locator">URL</abbr> and automatically convert it to a texture that is fully managed by the <code>ImageLoader</code>. The texture will be disposed when the <code>ImageLoader</code> is disposed. A number of other useful properties have been added to <code>ImageLoader</code>. See below for more details.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Image Loader Component" [1-492] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s create an <code>ImageLoader</code> and pass in a texture:
+</p>
+<pre class="code as3"><span class="kw2">var</span> <span class="kw7">loader</span><span class="sy0">:</span>ImageLoader = <span class="kw1">new</span> ImageLoader<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw7">loader</span><span class="sy0">.</span><span class="kw7">source</span> = texture<span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> <span class="kw7">loader</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Alternatively, you can pass a <abbr title="Uniform Resource Locator">URL</abbr> to the <code>source</code> property to load an external image:
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span><span class="kw7">source</span> = <span class="st0">&quot;http://www.example.com/image.png&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+The <abbr title="Uniform Resource Locator">URL</abbr> may point to any image file that may be loaded by <code>flash.display.Loader</code> and converted to a <code>starling.display.Texture</code>. At this time, ATF files cannot be loaded by <code>ImageLoader</code> using a <abbr title="Uniform Resource Locator">URL</abbr>.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [493-1053] -->
+<h3 class="sectionedit3" id="events">Events</h3>
+<div class="level3">
+
+<p>
+You can listen for an event to know when the image is fully loaded:
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">COMPLETE</span><span class="sy0">,</span> loader_completeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener might look like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> loader_completeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// image loaded and texture ready</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You can also listen for errors to know if the <code>ImageLoader</code> is unable to load the texture:
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> FeathersEventType<span class="sy0">.</span><span class="kw8">ERROR</span><span class="sy0">,</span> loader_errorHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener for <code>FeathersEventType.ERROR</code> might look like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> loader_errorHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">,</span> <span class="kw7">data</span><span class="sy0">:</span><a href="http://www.google.com/search?q=errorevent%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:errorevent.html"><span class="kw5">ErrorEvent</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// loader error</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code>data</code> argument is optional, as always. It is a <code>flash.events.ErrorEvent</code> that is dispatched by the internal <code>flash.display.Loader</code> used by the <code>ImageLoader</code>. It may be of type <code>IOErrorEvent.IO_ERROR</code> or of type <code>SecurityErrorEvent.SECURITY_ERROR</code>.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Events" [1054-2008] -->
+<h3 class="sectionedit4" id="other_properties">Other Properties</h3>
+<div class="level3">
+
+<p>
+You can snap the position of an <code>ImageLoader</code> to the nearest whole pixel:
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span>snapToPixels = <span class="kw1">true</span><span class="sy0">;</span></pre>
+
+<p>
+Pixel snapping is most useful for icons where crisp edges are especially important.
+</p>
+
+<p>
+When images are loaded in a scrolling container, such as a <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code>, it may be desirable to avoid creating a new texture on the GPU until the scrolling stops to improve performance.
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span>delayTextureCreation = <span class="kw1">true</span><span class="sy0">;</span></pre>
+
+<p>
+Set the <code><a href="http://feathersui.com/documentation/feathers/controls/ImageLoader.html#delayTextureCreation" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ImageLoader.html#delayTextureCreation"  rel="nofollow">delayTextureCreation</a></code> property to <code>true</code> when the container starts scrolling and set it back to <code>false</code> after scrolling finishes. While this property is <code>true</code>, the image may load, but the <code>BitmapData</code> will be kept in memory until the property is set back to <code>false</code>. Then, the Starling texture will be created.
+</p>
+
+<p>
+When you resize a regular <code>starling.display.Image</code>, it distorts. <code>ImageLoader</code> allows you control whether the image maintains its aspect ratio within the dimensions of the <code>ImageLoader</code>:
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span>maintainAspectRatio = <span class="kw1">true</span><span class="sy0">;</span></pre>
+
+<p>
+When aspect ratio is maintained, the image may be letter-boxed inside the <code>ImageLoader</code>, adding transparent edges on the top and bottom or on the left and right.
+</p>
+
+<p>
+You can use the <code>isLoaded</code> getter to know if a texture is fully loaded (in addition to listening to Event.COMPLETE, mentioned above):
+</p>
+<pre class="code as3"><span class="kw1">if</span><span class="br0">&#40;</span> <span class="kw7">loader</span><span class="sy0">.</span>isLoaded <span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// ready</span>
+<span class="br0">&#125;</span>
+<span class="kw1">else</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// not loaded</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You can scale the texture to match the <em>dpi scale</em> of the Feathers theme:
+</p>
+<pre class="code a3">loader.textureScale = 0.5;</pre>
+
+<p>
+This value is mainly used when the <code>ImageLoader</code> needs to resize after loading a new <code>source</code>. The original width and height of the loaded texture are multiplied by the <code>textureScale</code> and that&#039;s the width and height of the <code>ImageLoader</code>.
+</p>
+
+<p>
+Finally, just like <code>starling.display.Image</code>, <code>ImageLoader</code> allows you to customize the color and smoothing:
+</p>
+<pre class="code as3"><span class="kw7">loader</span><span class="sy0">.</span><span class="kw7">color</span> = 0xff0000<span class="sy0">;</span>
+<span class="kw7">loader</span><span class="sy0">.</span><span class="kw7">smoothing</span> = TextureSmoothing<span class="sy0">.</span><span class="kw8">NONE</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Other Properties" [2009-4130] -->
+<h2 class="sectionedit5" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/ImageLoader.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ImageLoader.html"  rel="nofollow">ImageLoader API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Related Links" [4131-] -->

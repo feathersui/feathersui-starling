@@ -1,0 +1,610 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_groupedlist_component">How to use the Feathers GroupedList Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html"  rel="nofollow">GroupedList</a></code> class renders groups of items from a hierarchical data source. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers, similar to the <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> component.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers GroupedList Component" [1-376] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by creating our <code>GroupedList</code> control:
+</p>
+<pre class="code as3"><span class="kw2">var</span> list<span class="sy0">:</span>GroupedList = <span class="kw1">new</span> GroupedList<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">250</span><span class="sy0">;</span>
+list<span class="sy0">.</span><span class="kw7">height</span> = <span class="nu0">300</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> list <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Next, we want the grouped list to display some items, so let&#039;s create a <code><a href="http://feathersui.com/documentation/feathers/data/HierarchicalCollection.html" class="urlextern" title="http://feathersui.com/documentation/feathers/data/HierarchicalCollection.html"  rel="nofollow">HierarchicalCollection</a></code> as its data provider. In the example below, a specially-formatted set of objects is passed to the <code>HierarchicalCollection</code>:
+</p>
+<pre class="code as3"><span class="kw2">var</span> groceryList<span class="sy0">:</span>HierarchicalCollection = <span class="kw1">new</span> HierarchicalCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+	<span class="br0">&#123;</span>
+		header<span class="sy0">:</span> <span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Dairy&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+		<span class="kw7">children</span><span class="sy0">:</span>
+		<span class="br0">&#91;</span>
+			<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Milk&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;milk&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+			<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Cheese&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;cheese&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span>
+	<span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span>
+		header<span class="sy0">:</span> <span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bakery&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+		<span class="kw7">children</span><span class="sy0">:</span>
+		<span class="br0">&#91;</span>
+			<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bread&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;bread&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span>
+	<span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span>
+		header<span class="sy0">:</span> <span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Produce&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+		<span class="kw7">children</span><span class="sy0">:</span>
+		<span class="br0">&#91;</span>
+			<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bananas&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;bananas&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+			<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Lettuce&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;lettuce&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+			<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Onion&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;onion&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+		<span class="br0">&#93;</span>
+	<span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>dataProvider = groceryList<span class="sy0">;</span></pre>
+
+<p>
+<code>HierarchicalCollection</code> wraps any type of data to provide a common <abbr title="Application Programming Interface">API</abbr> that the <code>GroupedList</code> component can understand. Out of the box, <code>HierarchicalCollection</code> automatically supports an <code>Array</code> of objects representing each group. Each group object has a <code>children</code> property (you can <a href="http://feathersui.com/documentation/feathers/data/ArrayChildrenHierarchicalCollectionDataDescriptor.html#childrenField" class="urlextern" title="http://feathersui.com/documentation/feathers/data/ArrayChildrenHierarchicalCollectionDataDescriptor.html#childrenField"  rel="nofollow">customize this property name</a>, if you prefer) that contains an  <code>Array</code> of objects in the group. Each group can contain extra data for the header and footer, as we&#039;ll see in more detail shortly. It&#039;s even possible to support custom types of data, if needed.
+</p>
+
+<p>
+Now, we need to tell the item renderer how to display the data. The grouped list simply passes each item from the data provider to an item renderer, and it is the item renderer&#039;s responsibility to interpret the properties of an item.
+</p>
+
+<p>
+By default, a list renders items from the data provider using the <code><a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">DefaultGroupedListItemRenderer</a></code> component. This default item renderer has many options for displaying strings, textures, and even adding display objects from the data provider as children. Let&#039;s look at a couple of these properties right now.
+</p>
+
+<p>
+Start by taking a moment to review one of the items from the data provider:
+</p>
+<pre class="code as3"><span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Milk&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;milk&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span></pre>
+
+<p>
+The item&#039;s <code>text</code> property contains a string, and the <code>thumbnail</code> property contains a texture. We can tell the default item renderer to use the values from these two properties to display two children: a label and an icon.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererProperties<span class="sy0">.</span>labelField = <span class="st0">&quot;text&quot;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>itemRendererProperties<span class="sy0">.</span>iconSourceField = <span class="st0">&quot;thumbnail&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+When using the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField"  rel="nofollow">labelField</a></code>, the default item renderer will automatically create a <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">text renderer</a> to display the string. Similarly, when you use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField"  rel="nofollow">iconSourceField</a></code>, the item renderer will automatically create an <code><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></code> to display the texture. You may also use <code>iconSourceField</code> to ask the <code>ImageLoader</code> to display an image loaded from a <abbr title="Uniform Resource Locator">URL</abbr> instead of a texture. The value is passed to the <code>ImageLoader</code>&#039;s <code><a href="http://feathersui.com/documentation/feathers/controls/ImageLoader.html#source" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ImageLoader.html#source"  rel="nofollow">source</a></code> property.
+</p>
+
+<p>
+<p><div class="noteclassic">
+The default item renderers can support up to three children, including a label, an icon, and a third one, called an <em>accessory</em>. In addition to <code>labelField</code> and <code>iconSourceField</code> properties, a default item renderer&#039;s children may be customized with several other similar properties. Please see <a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">How to use the Feathers Default Item Renderers</a> for complete details.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [377-4574] -->
+<h2 class="sectionedit3" id="headers_and_footers">Headers and Footers</h2>
+<div class="level2">
+
+<p>
+The main difference between lists and grouped lists is that items in the grouped lists are divided into groups. These groups typically have a header, and you may optionally add a footer as well. For instance, if you have items in the list grouped alphabetically, the headers might display the letters of the alphabet, like A, B, C, etc. For the footer, you might provide instructions, a description of the group, or other clarifying information.
+</p>
+
+<p>
+Just like items, headers and footers have renderers. In fact, they both use the same renderer by default, <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">DefaultGroupedListHeaderOrFooterRenderer</a></code>. This is a renderer that may display a label, an image, or any Starling display object, depending on which properties you set.
+</p>
+
+<p>
+<p><div class="noteclassic">
+That doesn&#039;t mean that header and footer renderers always need to be the same type. They can be different, if you prefer. Custom header and footer renderers simply need to implement the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">IGroupedListHeaderOrFooterRenderer</a></code> interface.
+
+</div></p>
+</p>
+
+<p>
+To customize what content is passed to the header from a group in the data provider, you can use the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerField"  rel="nofollow">headerField</a></code> or <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerFunction"  rel="nofollow">headerFunction</a></code> properties.
+</p>
+
+<p>
+Consider the following group from the data provider:
+</p>
+<pre class="code as3"><span class="br0">&#123;</span>
+	header<span class="sy0">:</span> <span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bakery&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="kw7">children</span><span class="sy0">:</span>
+	<span class="br0">&#91;</span>
+		<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bread&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;bread&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#93;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+For the list to display the text in the header, it needs to know about the group&#039;s <code>header</code> property:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>headerField = <span class="st0">&quot;header&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+Using the data provider in the example above, we tell the grouped list to pass the <code>header</code> property of the group to the header renderer.
+</p>
+
+<p>
+For footers, a grouped list provides <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerField"  rel="nofollow">footerField</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerFunction"  rel="nofollow">footerFunction</a></code> properties.
+</p>
+
+<p>
+Once the header or footer renderer has its data, it may need to drill down further into the properties, similar to an item renderer. The default header and footer renderer has a <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFactory"  rel="nofollow">contentLabelFactory</a></code> property that is similar to the item renderer&#039;s <code>labelField</code> property.
+</p>
+<pre class="code as3">renderer<span class="sy0">.</span>headerRendererProperties<span class="sy0">.</span>contentLabelField = <span class="st0">&quot;text&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+The default behavior of the default header or footer renderer is simply to call <code>toString()</code> on its data, so if you simply set the <code>header</code> property to a <code>String</code> instance, you don&#039;t need to specify a <code>contentLabelField</code> at all:
+</p>
+<pre class="code as3"><span class="br0">&#123;</span>
+	header<span class="sy0">:</span> <span class="st0">&quot;Bakery&quot;</span><span class="sy0">,</span>
+	<span class="kw7">children</span><span class="sy0">:</span>
+	<span class="br0">&#91;</span>
+		<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bread&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;bread&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#93;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Check the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">DefaultGroupedListHeaderOrFooterRenderer</a></code> <abbr title="Application Programming Interface">API</abbr> reference for full details about how to display other types of children (instead of a text renderer) in the default header or footer renderer.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Headers and Footers" [4575-8063] -->
+<h2 class="sectionedit4" id="selection">Selection</h2>
+<div class="level2">
+
+<p>
+The <code>GroupedList</code> component may have one selected item. You can access information about selection through a combination of the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#selectedGroupIndex" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#selectedGroupIndex"  rel="nofollow">selectedGroupIndex</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#selectedItemIndex" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#selectedItemIndex"  rel="nofollow">selectedItemIndex</a></code> properties. You can also access the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#selectedItem" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#selectedItem"  rel="nofollow">selectedItem</a></code> property. If there is no selection, the value of <code>selectedGroupIndex</code> and <code>selectedItemIndex</code> will be <code>-1</code> and the value of <code>selectedItem</code> will be <code>null</code>.
+</p>
+
+<p>
+To listen for when the selection changes, listen to the <code>Event.CHANGE</code> event:
+</p>
+<pre class="code as3">list<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="sy0">,</span> list_changeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener might look something like this:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> list_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> list<span class="sy0">:</span>GroupedList = GroupedList<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;selectedGroupIndex:&quot;</span><span class="sy0">,</span> list<span class="sy0">.</span>selectedGroupIndex<span class="sy0">,</span> <span class="st0">&quot;selectedItemIndex:&quot;</span><span class="sy0">,</span> list<span class="sy0">.</span>selectedItemIndex <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You can manually change the selection, if needed:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>setSelectedLocation<span class="br0">&#40;</span><span class="nu0">0</span><span class="sy0">,</span> <span class="nu0">4</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Selection indices start at <code>0</code>, so the above code would select the fifth item in the first group.
+</p>
+
+<p>
+If you prefer, you can change selection by passing in an item from the data provider:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>selectedItem = item<span class="sy0">;</span></pre>
+
+<p>
+If needed, you can clear selection manually:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>setSelectedLocation<span class="br0">&#40;</span><span class="sy0">-</span><span class="nu0">1</span><span class="sy0">,</span> <span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+To disable selection completely, use the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#isSelectable" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#isSelectable"  rel="nofollow">isSelectable</a></code> property:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>isSelectable = <span class="kw1">false</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Selection" [8064-9856] -->
+<h2 class="sectionedit5" id="skinning_a_grouped_list">Skinning a Grouped List</h2>
+<div class="level2">
+
+<p>
+A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html"  rel="nofollow">GroupedList API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+<p>
+We&#039;ll start the skinning process by giving our grouped list appropriate background skins.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> enabledTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>backgroundDisabledSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> disabledTextures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundSkin"  rel="nofollow">backgroundSkin</a></code> property provides the default background for when the grouped list is enabled. The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundDisabledSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundDisabledSkin"  rel="nofollow">backgroundDisabledSkin</a></code> is displayed when the grouped list is disabled. If the <code>backgroundDisabledSkin</code> isn&#039;t provided to a disabled grouped list, it will fall back to using the <code>backgroundSkin</code> in the disabled state.
+</p>
+
+<p>
+Padding may be added around the edges of the grouped list&#039;s content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the grouped list&#039;s content, but the grouped list&#039;s padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>paddingTop = <span class="nu0">15</span><span class="sy0">;</span>
+list<span class="sy0">.</span>paddingRight = <span class="nu0">20</span><span class="sy0">;</span>
+list<span class="sy0">.</span>paddingBottom = <span class="nu0">15</span><span class="sy0">;</span>
+list<span class="sy0">.</span>paddingLeft = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+If all four padding values should be the same, you may use the <code>padding</code> property to quickly set them all at once:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>padding = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Skinning a Grouped List" [9857-11671] -->
+<h3 class="sectionedit6" id="layouts">Layouts</h3>
+<div class="level3">
+
+<p>
+The default layout for a grouped list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely <a href="/feathers/custom-layouts" class="wikilink1" title="feathers:custom-layouts">custom layout algorithm</a>. Let&#039;s switch to a <code><a href="/feathers/horizontal-layout" class="wikilink1" title="feathers:horizontal-layout">HorizontalLayout</a></code> and customize it a bit:
+</p>
+<pre class="code as3"><span class="kw2">var</span> layout<span class="sy0">:</span>HorizontalLayout = <span class="kw1">new</span> HorizontalLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>verticalAlign = HorizontalLayout<span class="sy0">.</span>VERTICAL_ALIGN_JUSTIFY<span class="sy0">;</span>
+layout<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>paddingTop = layout<span class="sy0">.</span>paddingRight = layout<span class="sy0">.</span>paddingBottom =
+	layout<span class="sy0">.</span>paddingLeft = <span class="nu0">15</span><span class="sy0">;</span>
+list<span class="sy0">.</span>layout = layout<span class="sy0">;</span></pre>
+
+<p>
+When the grouped list automatically defaults to a <code><a href="/feathers/vertical-layout" class="wikilink1" title="feathers:vertical-layout">VerticalLayout</a></code>, it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view  port. If we&#039;re switching to a horizontal layout, the scroll policies won&#039;t be updated automatically, so we should also manually adjust the scroll policies:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollPolicy = GroupedList<span class="sy0">.</span>SCROLL_POLICY_AUTO<span class="sy0">;</span>
+list<span class="sy0">.</span>verticalScrollPolicy = GroupedList<span class="sy0">.</span>SCROLL_POLICY_OFF<span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="layout_virtualization">Layout Virtualization</h4>
+<div class="level4">
+
+<p>
+Generally, a grouped list will use something called <em><a href="/feathers/faq/layout-virtualization" class="wikilink1" title="feathers:faq:layout-virtualization">layout virtualization</a></em> by default because it offers significant performance improvements. When using a virtual layout, a grouped list will display a limited number of item renderers at a time (usually only those that are visible in the view port) to avoid using massive amounts of memory. This means that data providers can contain thousands, or even tens of thousands, of items without a large performance impact. Additionally, the grouped list will reuse that small number of item renderers to display different items as it scrolls. This keeps the runtime from creating many temporary objects that need to be garbage collected. To learn more, see <a href="/feathers/faq/layout-virtualization" class="wikilink1" title="feathers:faq:layout-virtualization">FAQ: What is layout virtualization?</a>
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Layouts" [11672-13663] -->
+<h3 class="sectionedit7" id="targeting_a_groupedlist_in_a_theme">Targeting a GroupedList in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> GroupedList <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setGroupedListStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific grouped list to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-grouped-list&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> GroupedList <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-grouped-list&quot;</span><span class="sy0">,</span> setCustomGroupedListStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the grouped list&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the grouped list was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the grouped list&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Targeting a GroupedList in a theme" [13664-14712] -->
+<h3 class="sectionedit8" id="skinning_the_scroll_bars">Skinning the Scroll Bars</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read <a href="/feathers/scroll-bar" class="wikilink1" title="feathers:scroll-bar">How to use the Feathers ScrollBar component</a> (or <a href="/feathers/simple-scroll-bar" class="wikilink1" title="feathers:simple-scroll-bar">SimpleScrollBar</a>) for full details about the skinning properties that are available on scroll bar components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR"  rel="nofollow">Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</a></code> style name for the horizontal scroll bar and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR"  rel="nofollow">Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR</a></code> style name for the vertical scroll bar.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Scroller<span class="sy0">.</span>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR<span class="sy0">,</span> setHorizontalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span>
+getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Scroller<span class="sy0">.</span>DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR<span class="sy0">,</span> setVerticalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style names to use different ones in your theme, if you prefer:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>customHorizontalScrollBarName = <span class="st0">&quot;custom-horizontal-scroll-bar&quot;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>customVerticalScrollBarName = <span class="st0">&quot;custom-vertical-scroll-bar&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#customHorizontalScrollBarName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#customHorizontalScrollBarName"  rel="nofollow">customHorizontalScrollBarName</a></code> and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#customVerticalScrollBarName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#customVerticalScrollBarName"  rel="nofollow">customVerticalScrollBarName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-horizontal-scroll-bar&quot;</span><span class="sy0">,</span> setCustomHorizontalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span>
+getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-vertical-scroll-bar&quot;</span><span class="sy0">,</span> setCustomVerticalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory"  rel="nofollow">horizontalScrollBarFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory"  rel="nofollow">verticalScrollBarFactory</a></code> to provide skins for the grouped list&#039;s scroll bars:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollBarFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>ScrollBar
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> scrollBar<span class="sy0">:</span>ScrollBar = <span class="kw1">new</span> ScrollBar<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    scrollBar<span class="sy0">.</span>direction = ScrollBar<span class="sy0">.</span>DIRECTION_HORIZONTAL<span class="sy0">;</span>
+    <span class="co1">//skin the scroll bar here</span>
+    scrollBar<span class="sy0">.</span>trackLayoutMode = ScrollBar<span class="sy0">.</span>TRACK_LAYOUT_MODE_SINGLE<span class="sy0">;</span>
+    <span class="kw1">return</span> scrollBar<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>horizontalScrollBarFactory</code> and <code>verticalScrollBarFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarProperties"  rel="nofollow">horizontalScrollBarProperties</a></code> and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarProperties"  rel="nofollow">verticalScrollBarProperties</a></code> to pass skins to the scroll bars.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollBarProperties<span class="sy0">.</span>trackLayoutMode = ScrollBar<span class="sy0">.</span>TRACK_LAYOUT_MODE_SINGLE<span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the grouped list&#039;s scroll bars through <code>horizontalScrollBarProperties</code> and <code>verticalScrollBarProperties</code> if you need to change skins after the scroll bar is created. Using <code>horizontalScrollBarFactory</code> and <code>verticalScrollBarFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Skinning the Scroll Bars" [14713-18390] -->
+<h3 class="sectionedit9" id="skinning_the_item_renderers">Skinning the Item Renderers</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the item renderer sub-components. Please read <a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">How to use the Feathers Default Item Renderers</a> for full details about the skinning properties that are available on the default item renderers.
+</p>
+
+<p>
+<a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Custom item renderers</a> may be accessed similarly, but they won&#039;t necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the <code>DefaultGroupedListItemRenderer</code> class in the code below with references to your custom item renderer class.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme1">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> DefaultGroupedListItemRenderer <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setItemRendererStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererName = <span class="st0">&quot;custom-item-renderer&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererName"  rel="nofollow">itemRendererName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> DefaultGroupedListItemRenderer <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-item-renderer&quot;</span><span class="sy0">,</span> setCustomItemRendererStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+To customize the appearance of the first, last, and a single item renderer in a group, use the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#firstItemRendererName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#firstItemRendererName"  rel="nofollow">firstItemRendererName</a></code>, <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#lastItemRendererName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#lastItemRendererName"  rel="nofollow">lastItemRendererName</a></code>, and <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#singleItemRendererName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#singleItemRendererName"  rel="nofollow">singleItemRendererName</a></code> properties. Changing the appearance of these item renderers to look different from the others is completely optional.
+</p>
+
+</div>
+
+<h4 id="without_a_theme1">Without a theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code> to provide skins for the grouped list&#039;s item renderers:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IGroupedListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>DefaultGroupedListItemRenderer = <span class="kw1">new</span> DefaultGroupedListItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>iconPosition = Button<span class="sy0">.</span>ICON_POSITION_TOP<span class="sy0">;</span>
+	renderer<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>itemRendererFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererProperties"  rel="nofollow">itemRendererProperties</a></code> to pass styles to the item renderers. However, you cannot pass in display objects (such as background skins) using <code>itemRendererProperties</code>. Remember that a grouped list usually contains multiple item renderers, and Starling display objects may not be added to more than one parent at the same time. With that in mind, more than one item renderer in a grouped list won&#039;t be able to share the same display object as a skin.
+</p>
+
+<p>
+In general, you should only pass styles to the grouped list&#039;s item renderers through <code>itemRendererProperties</code> if you need to change those styles after the item renderers have been created. Using <code>itemRendererFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Skinning the Item Renderers" [18391-21966] -->
+<h2 class="sectionedit10" id="custom_item_renderers">Custom Item Renderers</h2>
+<div class="level2">
+
+<p>
+If the default item renderer doesn&#039;t have the features that you need, the <code>GroupedList</code> component offers the ability to use <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">custom item renderers</a> instead. Custom item renderers must be Feathers components that implement the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html"  rel="nofollow">IGroupedListItemRenderer</a></code> interface.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For full details about implementing custom item renderers, see <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Introduction to custom item renderers</a>.
+
+</div></p>
+</p>
+
+<p>
+The easiest way to tell a grouped list to display its data using a custom item renderer is to set the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererType"  rel="nofollow">itemRendererType</a></code> property:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererType = ExampleCustomItemRenderer<span class="sy0">;</span></pre>
+
+<p>
+Sometimes, you might want to change some properties on each item renderer as it is created. You can use the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code> property instead of itemRendererType to call a function that returns a newly created item renderer:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IGroupedListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>ExampleCustomItemRenderer = <span class="kw1">new</span> ExampleCustomItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>exampleProperty = <span class="nu0">20</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT10 SECTION "Custom Item Renderers" [21967-23359] -->
+<h2 class="sectionedit11" id="first_last_and_single_item_renderers">First, Last, and Single Item Renderers</h2>
+<div class="level2">
+
+<p>
+With a grouped list, it&#039;s often desirable to give the first and last items renderers in the group a slightly different style. Groups with only one item may give the item renderer a different style as well. For instance, on iOS, it&#039;s common to see a similar component to grouped list on settings screens. Each group may add rounded corners on first and last in a group, and on item renderers in groups with only one item.
+</p>
+
+<p>
+The following properties will allow you to customize these special item renderers. Providing a different style for these item renderers is completely optional.
+</p>
+<ul>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#firstItemRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#firstItemRendererType"  rel="nofollow">firstItemRendererType</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#firstItemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#firstItemRendererFactory"  rel="nofollow">firstItemRendererFactory</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#lastItemRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#lastItemRendererType"  rel="nofollow">lastItemRendererType</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#lastItemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#lastItemRendererFactory"  rel="nofollow">lastItemRendererFactory</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#singleItemRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#singleItemRendererType"  rel="nofollow">singleItemRendererType</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#singleItemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#singleItemRendererFactory"  rel="nofollow">singleItemRendererFactory</a></code></div>
+</li>
+</ul>
+
+<p>
+Each of the type and factory properties work similarly to the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererType"  rel="nofollow">itemRendererType</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code> properties.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "First, Last, and Single Item Renderers" [23360-25086] -->
+<h2 class="sectionedit12" id="custom_header_and_footer_renderers">Custom Header and Footer Renderers</h2>
+<div class="level2">
+
+<p>
+To pass in a custom header renderer, use the <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerRendererType"  rel="nofollow">headerRendererType</a></code> property, similar to the <code>itemRendererType</code> property:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>headerRendererType = ExampleCustomHeaderRenderer<span class="sy0">;</span></pre>
+
+<p>
+You can also use a <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerRendererFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#headerRendererFunction"  rel="nofollow">headerRendererFunction</a></code>, similar to <code>itemRendererFunction</code>:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>headerRendererFunction = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IGroupedListHeaderOrFooterRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>ExampleCustomHeaderRenderer = <span class="kw1">new</span> ExampleCustomHeaderRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>exampleProperty = <span class="nu0">20</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+To customize the type or properties of footer renderers, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerRendererType"  rel="nofollow">footerRendererType</a></code> or <code><a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerRendererFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html#footerRendererFunction"  rel="nofollow">footerRendererFunction</a></code>.
+</p>
+
+</div>
+<!-- EDIT12 SECTION "Custom Header and Footer Renderers" [25087-26157] -->
+<h2 class="sectionedit13" id="customizing_scrolling_behavior">Customizing Scrolling Behavior</h2>
+<div class="level2">
+
+<p>
+A number of properties are available to customize scrolling behavior and the scroll bars.
+</p>
+
+</div>
+<!-- EDIT13 SECTION "Customizing Scrolling Behavior" [26158-26292] -->
+<h3 class="sectionedit14" id="interaction_modes">Interaction Modes</h3>
+<div class="level3">
+
+<p>
+Lists provide two main scrolling interaction modes, which can be changed using the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#interactionMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#interactionMode"  rel="nofollow">interactionMode</a></code> property.
+</p>
+
+<p>
+By default, you can scroll using touch, just like you would on many mobile devices including smartphones and tablets. This mode allows you to grab the list anywhere within its bounds and drag it around to scroll. This mode is defined by the constant, <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH"  rel="nofollow">INTERACTION_MODE_TOUCH</a></code>.
+</p>
+
+<p>
+Alternatively, you can set <code>interactionMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE"  rel="nofollow">INTERACTION_MODE_MOUSE</a></code>. This mode allows you to scroll using the horizontal or vertical scroll bar sub-components. You can also use the mouse wheel to scroll vertically.
+</p>
+
+</div>
+<!-- EDIT14 SECTION "Interaction Modes" [26293-27218] -->
+<h3 class="sectionedit15" id="scroll_bar_display_mode">Scroll Bar Display Mode</h3>
+<div class="level3">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#scrollBarDisplayMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#scrollBarDisplayMode"  rel="nofollow">scrollBarDisplayMode</a></code> property controls how and when scroll bars are displayed. This value may be overridden by the scroll policy, as explained below.
+</p>
+
+<p>
+The default value is <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_FLOAT</a></code>, which displays the scroll bars above the view port&#039;s content, rather than affecting the size of the view port. When the scroll bars are floating, they fade out when the list is not actively scrolling. This is a familiar behavior for scroll bars in the touch interaction mode. In the mouse interaction mode, the scroll bars will appear when the mouse hovers over them and then disappear when the hover ends.
+</p>
+
+<p>
+To completely hide the scroll bars, but still allow scrolling, you can set <code>scrollBarDisplayMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_NONE</a></code>.
+</p>
+
+<p>
+Finally, if you want the scroll bars to always be visible outside of the content in a fixed position, you can set <code>scrollBarDisplayMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_FIXED</a></code>. This is best for traditional desktop scrollable content.
+</p>
+
+</div>
+<!-- EDIT15 SECTION "Scroll Bar Display Mode" [27219-28647] -->
+<h3 class="sectionedit16" id="scroll_policies">Scroll Policies</h3>
+<div class="level3">
+
+<p>
+The two previous properties control how scrolling works. The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollPolicy" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollPolicy"  rel="nofollow">horizontalScrollPolicy</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollPolicy" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollPolicy"  rel="nofollow">verticalScrollPolicy</a></code> properties control whether scrolling is enabled or not.
+</p>
+
+<p>
+The default scroll policy for both directions is <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO"  rel="nofollow">SCROLL_POLICY_AUTO</a></code>. If the content&#039;s width is greater than the view port&#039;s width, the list may scroll horizontally (same for height and vertical scrolling). If not, then the list will not scroll in that direction. In addition to the <code>scrollBarDisplayMode</code>, this can affect whether the scroll bar is visible or not.
+</p>
+
+<p>
+You can completely disable scrolling in either direction, set the scroll policy to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_OFF" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_OFF"  rel="nofollow">SCROLL_POLICY_OFF</a></code>. The scroll bar will not be visible, and the list won&#039;t scroll, even if the content is larger than the view port.
+</p>
+
+<p>
+Finally, you can ensure that scrolling is always enabled by setting the scroll policy to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_ON" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_ON"  rel="nofollow">SCROLL_POLICY_ON</a></code>. If combined with <code>hasElasticEdges</code> in the touch interaction mode, it will create a playful edge that always bounces back, even when the content is smaller than the view port. If using the mouse interaction mode, the scroll bar may always be visible under the same circumstances, though it may be disabled if the content is smaller than the view port.
+</p>
+
+</div>
+<!-- EDIT16 SECTION "Scroll Policies" [28648-30362] -->
+<h3 class="sectionedit17" id="paging">Paging</h3>
+<div class="level3">
+
+<p>
+Set the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#snapToPages" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#snapToPages"  rel="nofollow">snapToPages</a></code> property to true to make the list snap to the nearest full page. A page is defined as a multiple of the view ports width or height. If the view port is 100 pixels wide, then the first horizontal page starts at 0 pixels, the second at 100, and the third at 200.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageWidth" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageWidth"  rel="nofollow">pageWidth</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageHeight" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageHeight"  rel="nofollow">pageHeight</a></code> properties may be used to customize the size of a page. Rather than using the full view port width or height, any pixel value may be specified for page snapping.
+</p>
+
+</div>
+<!-- EDIT17 SECTION "Paging" [30363-31114] -->
+<h2 class="sectionedit18" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/GroupedList.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/GroupedList.html"  rel="nofollow">GroupedList API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">How to use the Feathers Default Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Creating Custom Item Renderers</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT18 SECTION "Related Links" [31115-] -->

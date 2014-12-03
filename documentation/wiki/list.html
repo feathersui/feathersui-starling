@@ -1,0 +1,557 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_list_component">How to use the Feathers List component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/List.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html"  rel="nofollow">List</a></code> class renders a series of items from a flat data source such as an <code>Array</code> or <code>Vector</code>. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers List component" [1-340] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by creating our <code>List</code> control:
+</p>
+<pre class="code as3"><span class="kw2">var</span> list<span class="sy0">:</span>List = <span class="kw1">new</span> List<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">250</span><span class="sy0">;</span>
+list<span class="sy0">.</span><span class="kw7">height</span> = <span class="nu0">300</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> list <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Next, we want the list to display some items, so let&#039;s create a <code><a href="http://feathersui.com/documentation/feathers/data/ListCollection.html" class="urlextern" title="http://feathersui.com/documentation/feathers/data/ListCollection.html"  rel="nofollow">ListCollection</a></code> as its data provider. In the example below, an <code>Array</code> of objects is passed to the <code>ListCollection</code>.
+</p>
+<pre class="code as3"><span class="kw2">var</span> groceryList<span class="sy0">:</span>ListCollection = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+	<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Milk&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;milk&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Eggs&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;eggs&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Bread&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;bread&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Chicken&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;chicken&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>dataProvider = groceryList<span class="sy0">;</span></pre>
+
+<p>
+<code>ListCollection</code> wraps any type of data to provide a common <abbr title="Application Programming Interface">API</abbr> that the <code>List</code> component can understand. Out of the box, <code>ListCollection</code> automatically supports <code>Vector</code>, <code>Array</code>, and <code>XMLList</code>, but it&#039;s possible to support custom types of data, if needed.
+</p>
+
+<p>
+Now, we need to tell the item renderer how to display the data. The list simply passes each item from the data provider to an item renderer, and it is the item renderer&#039;s responsibility to interpret the properties of an item.
+</p>
+
+<p>
+By default, a list renders items from the data provider using the <code><a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">DefaultListItemRenderer</a></code> component. This default item renderer has many options for displaying strings, textures, and even adding display objects from the data provider as children. Let&#039;s look at a couple of these properties right now.
+</p>
+
+<p>
+Start by taking a moment to review one of the items from the data provider:
+</p>
+<pre class="code as3"><span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Milk&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> textureAtlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;milk&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span></pre>
+
+<p>
+The item&#039;s <code>text</code> property contains a string, and the <code>thumbnail</code> property contains a texture. We can tell the default item renderer to use the values from these two properties to display two children: a label and an icon.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererProperties<span class="sy0">.</span>labelField = <span class="st0">&quot;text&quot;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>itemRendererProperties<span class="sy0">.</span>iconSourceField = <span class="st0">&quot;thumbnail&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+When using the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField"  rel="nofollow">labelField</a></code>, the default item renderer will automatically create a <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">text renderer</a> to display the string. Similarly, when you use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField"  rel="nofollow">iconSourceField</a></code>, the item renderer will automatically create an <code><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></code> to display the texture. You may also use <code>iconSourceField</code> to ask the <code>ImageLoader</code> to display an image loaded from a <abbr title="Uniform Resource Locator">URL</abbr> instead of a texture. The value is passed to the <code>ImageLoader</code>&#039;s <code><a href="http://feathersui.com/documentation/feathers/controls/ImageLoader.html#source" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ImageLoader.html#source"  rel="nofollow">source</a></code> property.
+</p>
+
+<p>
+<p><div class="noteclassic">
+The default item renderers can support up to three children, including a label, an icon, and a third one, called an <em>accessory</em>. In addition to <code>labelField</code> and <code>iconSourceField</code> properties, a default item renderer&#039;s children may be customized with several other similar properties. Please see <a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">How to use the Feathers Default Item Renderers</a> for complete details.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [341-3708] -->
+<h2 class="sectionedit3" id="selection">Selection</h2>
+<div class="level2">
+
+<p>
+The <code>List</code> component may have one selected item. You can access information about selection through the <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#selectedIndex" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#selectedIndex"  rel="nofollow">selectedIndex</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#selectedItem" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#selectedItem"  rel="nofollow">selectedItem</a></code> properties. If there is no selection, the value of <code>selectedIndex</code> will be <code>-1</code> and the value of <code>selectedItem</code> will be <code>null</code>.
+</p>
+
+<p>
+To listen for when the selection changes, listen to the <code>Event.CHANGE</code> event:
+</p>
+<pre class="code as3">list<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="sy0">,</span> list_changeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener might look something like this:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> list_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> list<span class="sy0">:</span>List = List<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;selectedIndex:&quot;</span><span class="sy0">,</span> list<span class="sy0">.</span>selectedIndex <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You can manually change the selection, if needed:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>selectedIndex = <span class="nu0">4</span><span class="sy0">;</span></pre>
+
+<p>
+Selection indices start at <code>0</code>, so the above code would select the fifth item in the list.
+</p>
+
+<p>
+If you prefer, you can change selection by passing in an item from the data provider:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>selectedItem = item<span class="sy0">;</span></pre>
+
+<p>
+If needed, you can clear selection manually:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>selectedIndex = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span></pre>
+
+<p>
+To disable selection completely, use the <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#isSelectable" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#isSelectable"  rel="nofollow">isSelectable</a></code> property:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>isSelectable = <span class="kw1">false</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Selection" [3709-5171] -->
+<h2 class="sectionedit4" id="skinning_a_list">Skinning a List</h2>
+<div class="level2">
+
+<p>
+A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available on a <code>List</code>, see the <a href="http://feathersui.com/documentation/feathers/controls/List.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html"  rel="nofollow">List API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+<p>
+We&#039;ll start the skinning process by giving our list appropriate background skins.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> enabledTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>backgroundDisabledSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> disabledTextures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundSkin"  rel="nofollow">backgroundSkin</a></code> property provides the default background for when the list is enabled. The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundDisabledSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundDisabledSkin"  rel="nofollow">backgroundDisabledSkin</a></code> is displayed when the list is disabled. If the <code>backgroundDisabledSkin</code> isn&#039;t provided to a disabled list, it will fall back to using the <code>backgroundSkin</code> in the disabled state.
+</p>
+
+<p>
+Padding may be added around the edges of the list&#039;s content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the list&#039;s content, but the list&#039;s padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>paddingTop = <span class="nu0">15</span><span class="sy0">;</span>
+list<span class="sy0">.</span>paddingRight = <span class="nu0">20</span><span class="sy0">;</span>
+list<span class="sy0">.</span>paddingBottom = <span class="nu0">15</span><span class="sy0">;</span>
+list<span class="sy0">.</span>paddingLeft = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+If all four padding values should be the same, you may use the <code>padding</code> property to quickly set them all at once:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>padding = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Skinning a List" [5172-6913] -->
+<h3 class="sectionedit5" id="layouts">Layouts</h3>
+<div class="level3">
+
+<p>
+The default layout for a list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely <a href="/feathers/custom-layouts" class="wikilink1" title="feathers:custom-layouts">custom layout algorithm</a>. Let&#039;s switch to a <code><a href="/feathers/horizontal-layout" class="wikilink1" title="feathers:horizontal-layout">HorizontalLayout</a></code> and customize it a bit:
+</p>
+<pre class="code as3"><span class="kw2">var</span> layout<span class="sy0">:</span>HorizontalLayout = <span class="kw1">new</span> HorizontalLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>verticalAlign = HorizontalLayout<span class="sy0">.</span>VERTICAL_ALIGN_JUSTIFY<span class="sy0">;</span>
+layout<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+layout<span class="sy0">.</span>paddingTop = layout<span class="sy0">.</span>paddingRight = layout<span class="sy0">.</span>paddingBottom =
+	layout<span class="sy0">.</span>paddingLeft = <span class="nu0">15</span><span class="sy0">;</span>
+list<span class="sy0">.</span>layout = layout<span class="sy0">;</span></pre>
+
+<p>
+When the list automatically defaults to a <code><a href="/feathers/vertical-layout" class="wikilink1" title="feathers:vertical-layout">VerticalLayout</a></code>, it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view port. If we&#039;re switching to a horizontal layout, the scroll policies won&#039;t be updated automatically, so we should also manually adjust the scroll policies:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollPolicy = List<span class="sy0">.</span>SCROLL_POLICY_AUTO<span class="sy0">;</span>
+list<span class="sy0">.</span>verticalScrollPolicy = List<span class="sy0">.</span>SCROLL_POLICY_OFF<span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="layout_virtualization">Layout Virtualization</h4>
+<div class="level4">
+
+<p>
+Generally, a list will use something called <em><a href="/feathers/faq/layout-virtualization" class="wikilink1" title="feathers:faq:layout-virtualization">layout virtualization</a></em> by default because it offers significant performance improvements. When using a virtual layout, a list will display a limited number of item renderers at a time (usually only those that are visible in the view port) to avoid using massive amounts of memory. This means that data providers can contain thousands, or even tens of thousands, of items without a large performance impact. Additionally, the list will reuse that small number of item renderers to display different items as it scrolls. This keeps the runtime from creating many temporary objects that need to be garbage collected. To learn more, see <a href="/feathers/faq/layout-virtualization" class="wikilink1" title="feathers:faq:layout-virtualization">FAQ: What is layout virtualization?</a>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Layouts" [6914-8850] -->
+<h3 class="sectionedit6" id="targeting_a_list_in_a_theme">Targeting a List in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> List <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setListStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific list to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-list&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> List <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-list&quot;</span><span class="sy0">,</span> setCustomListStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the list&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the list was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the list&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Targeting a List in a theme" [8851-9812] -->
+<h3 class="sectionedit7" id="skinning_the_scroll_bars">Skinning the Scroll Bars</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read <a href="/feathers/scroll-bar" class="wikilink1" title="feathers:scroll-bar">How to use the Feathers ScrollBar component</a> (or <a href="/feathers/simple-scroll-bar" class="wikilink1" title="feathers:simple-scroll-bar">SimpleScrollBar</a>) for full details about the skinning properties that are available on scroll bar components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR"  rel="nofollow">Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</a></code> style name for the horizontal scroll bar and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR"  rel="nofollow">Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR</a></code> style name for the vertical scroll bar.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Scroller<span class="sy0">.</span>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR<span class="sy0">,</span> setHorizontalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span>
+getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Scroller<span class="sy0">.</span>DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR<span class="sy0">,</span> setVerticalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style names to use different ones in your theme, if you prefer:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>customHorizontalScrollBarName = <span class="st0">&quot;custom-horizontal-scroll-bar&quot;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>customVerticalScrollBarName = <span class="st0">&quot;custom-vertical-scroll-bar&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#customHorizontalScrollBarName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#customHorizontalScrollBarName"  rel="nofollow">customHorizontalScrollBarName</a></code> and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#customVerticalScrollBarName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#customVerticalScrollBarName"  rel="nofollow">customVerticalScrollBarName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-horizontal-scroll-bar&quot;</span><span class="sy0">,</span> setCustomHorizontalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span>
+getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-vertical-scroll-bar&quot;</span><span class="sy0">,</span> setCustomVerticalScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory"  rel="nofollow">horizontalScrollBarFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory"  rel="nofollow">verticalScrollBarFactory</a></code> to provide skins for the list&#039;s scroll bars:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollBarFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>ScrollBar
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> scrollBar<span class="sy0">:</span>ScrollBar = <span class="kw1">new</span> ScrollBar<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    scrollBar<span class="sy0">.</span>direction = ScrollBar<span class="sy0">.</span>DIRECTION_HORIZONTAL<span class="sy0">;</span>
+    <span class="co1">//skin the scroll bar here</span>
+    scrollBar<span class="sy0">.</span>trackLayoutMode = ScrollBar<span class="sy0">.</span>TRACK_LAYOUT_MODE_SINGLE<span class="sy0">;</span>
+    <span class="kw1">return</span> scrollBar<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>horizontalScrollBarFactory</code> and <code>verticalScrollBarFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarProperties"  rel="nofollow">horizontalScrollBarProperties</a></code> and the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarProperties"  rel="nofollow">verticalScrollBarProperties</a></code> to pass skins to the scroll bars.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollBarProperties<span class="sy0">.</span>trackLayoutMode = ScrollBar<span class="sy0">.</span>TRACK_LAYOUT_MODE_SINGLE<span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the list&#039;s scroll bars through <code>horizontalScrollBarProperties</code> and <code>verticalScrollBarProperties</code> if you need to change skins after the scroll bar is created. Using <code>horizontalScrollBarFactory</code> and <code>verticalScrollBarFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Skinning the Scroll Bars" [9813-13474] -->
+<h3 class="sectionedit8" id="skinning_the_item_renderers">Skinning the Item Renderers</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the item renderer sub-components. Please read <a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">How to use the Feathers Default Item Renderers</a> for full details about the skinning properties that are available on the default item renderers.
+</p>
+
+<p>
+<a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Custom item renderers</a> may be accessed similarly, but they won&#039;t necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the <code>DefaultListItemRenderer</code> class in the code below with references to your custom item renderer class.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme1">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> DefaultListItemRenderer <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setItemRendererStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererName = <span class="st0">&quot;custom-item-renderer&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererName"  rel="nofollow">itemRendererName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> DefaultListItemRenderer <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-item-renderer&quot;</span><span class="sy0">,</span> setCustomItemRendererStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme1">Without a theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code> to provide skins for the list&#039;s item renderers:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>DefaultListItemRenderer = <span class="kw1">new</span> DefaultListItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>iconPosition = Button<span class="sy0">.</span>ICON_POSITION_TOP<span class="sy0">;</span>
+	renderer<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>itemRendererFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererProperties"  rel="nofollow">itemRendererProperties</a></code> to pass styles to the item renderers. However, you cannot pass in display objects (such as background skins) using <code>itemRendererProperties</code>. Remember that a list usually contains multiple item renderers, and Starling display objects may not be added to more than one parent at the same time. With that in mind, more than one item renderer in a list won&#039;t be able to share the same display object as a skin.
+</p>
+
+<p>
+In general, you should only pass styles to the list&#039;s item renderers through <code>itemRendererProperties</code> if you need to change those styles after the item renderers have been created. Using <code>itemRendererFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Skinning the Item Renderers" [13475-16365] -->
+<h2 class="sectionedit9" id="using_custom_item_renderers">Using Custom Item Renderers</h2>
+<div class="level2">
+
+<p>
+If the default item renderer doesn&#039;t have the features that you need, the <code>List</code> component offers the ability to use <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">custom item renderers</a> instead. Custom item renderers must be Feathers components that implement the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html"  rel="nofollow">IListItemRenderer</a></code> interface.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For full details about implementing custom item renderers, see <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Introduction to custom item renderers</a>.
+
+</div></p>
+</p>
+
+<p>
+The easiest way to tell a list to display its data using a custom item renderer is to set the <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererType" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererType"  rel="nofollow">itemRendererType</a></code> property:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererType = ExampleCustomItemRenderer<span class="sy0">;</span></pre>
+
+<p>
+Sometimes, you might want to change some properties on each item renderer as it is created. You can use the <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code> property instead of <code>itemRendererType</code> to call a function that returns a newly created item renderer:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>ExampleCustomItemRenderer = <span class="kw1">new</span> ExampleCustomItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>exampleProperty = <span class="nu0">20</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT9 SECTION "Using Custom Item Renderers" [16366-17718] -->
+<h3 class="sectionedit10" id="listening_to_events_from_custom_item_renderers">Listening to Events from Custom Item Renderers</h3>
+<div class="level3">
+
+<p>
+Listening to events dispatched by a custom item renderer isn&#039;t too difficult. Simply dispatch the event normally from the item renderer. No need for bubbling. As an example, let&#039;s say that we want to dispatch <code>Event.TRIGGERED</code> from an item renderer:
+</p>
+<pre class="code as3"><span class="kw3">function</span> someEventHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+On our list, first we need to listen for <code><a href="http://feathersui.com/documentation/feathers/events/FeathersEventType.html#RENDERER_ADD" class="urlextern" title="http://feathersui.com/documentation/feathers/events/FeathersEventType.html#RENDERER_ADD"  rel="nofollow">FeathersEventType.RENDERER_ADD</a></code>:
+</p>
+<pre class="code as3">list<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> FeathersEventType<span class="sy0">.</span>RENDERER_ADD<span class="sy0">,</span> list_rendererAddHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Inside the listener for <code>FeathersEventType.RENDERER_ADD</code>, we add a listener for our event dispatched by the item renderer:
+</p>
+<pre class="code as3"><span class="kw3">function</span> list_rendererAddHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">,</span> itemRenderer<span class="sy0">:</span>IListItemRenderer <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    itemRenderer<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> itemRenderer_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw3">function</span> itemRenderer_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> itemRenderer<span class="sy0">:</span>IListItemRenderer = IListItemRenderer<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Finally, we want to be sure to remove the listeners from the item renderers, so we should also listen for <code><a href="http://feathersui.com/documentation/feathers/events/FeathersEventType.html#RENDERER_REMOVE" class="urlextern" title="http://feathersui.com/documentation/feathers/events/FeathersEventType.html#RENDERER_REMOVE"  rel="nofollow">FeathersEventType.RENDERER_REMOVE</a></code>:
+</p>
+<pre class="code as3">list<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> FeathersEventType<span class="sy0">.</span>RENDERER_REMOVE<span class="sy0">,</span> list_rendererRemoveHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener for <code>FeathersEventType.RENDERER_REMOVE</code> looks very similar to the listener for <code>FeathersEventType.RENDERER_ADD</code>:
+</p>
+<pre class="code as3"><span class="kw3">function</span> list_rendererRemoveHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">,</span> itemRenderer<span class="sy0">:</span>IListItemRenderer <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    itemRenderer<span class="sy0">.</span><span class="kw7">removeEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> itemRenderer_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT10 SECTION "Listening to Events from Custom Item Renderers" [17719-19562] -->
+<h2 class="sectionedit11" id="customizing_scrolling_behavior">Customizing Scrolling Behavior</h2>
+<div class="level2">
+
+<p>
+A number of properties are available to customize scrolling behavior and the scroll bars.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Customizing Scrolling Behavior" [19563-19697] -->
+<h3 class="sectionedit12" id="interaction_modes">Interaction Modes</h3>
+<div class="level3">
+
+<p>
+Lists provide two main scrolling interaction modes, which can be changed using the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#interactionMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#interactionMode"  rel="nofollow">interactionMode</a></code> property.
+</p>
+
+<p>
+By default, you can scroll using touch, just like you would on many mobile devices including smartphones and tablets. This mode allows you to grab the list anywhere within its bounds and drag it around to scroll. This mode is defined by the constant, <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH"  rel="nofollow">INTERACTION_MODE_TOUCH</a></code>.
+</p>
+
+<p>
+Alternatively, you can set <code>interactionMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE"  rel="nofollow">INTERACTION_MODE_MOUSE</a></code>. This mode allows you to scroll using the horizontal or vertical scroll bar sub-components. You can also use the mouse wheel to scroll vertically.
+</p>
+
+</div>
+<!-- EDIT12 SECTION "Interaction Modes" [19698-20623] -->
+<h3 class="sectionedit13" id="scroll_bar_display_mode">Scroll Bar Display Mode</h3>
+<div class="level3">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#scrollBarDisplayMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#scrollBarDisplayMode"  rel="nofollow">scrollBarDisplayMode</a></code> property controls how and when scroll bars are displayed. This value may be overridden by the scroll policy, as explained below.
+</p>
+
+<p>
+The default value is <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_FLOAT</a></code>, which displays the scroll bars above the view port&#039;s content, rather than affecting the size of the view port. When the scroll bars are floating, they fade out when the list is not actively scrolling. This is a familiar behavior for scroll bars in the touch interaction mode. In the mouse interaction mode, the scroll bars will appear when the mouse hovers over them and then disappear when the hover ends.
+</p>
+
+<p>
+To completely hide the scroll bars, but still allow scrolling, you can set <code>scrollBarDisplayMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_NONE</a></code>.
+</p>
+
+<p>
+Finally, if you want the scroll bars to always be visible outside of the content in a fixed position, you can set <code>scrollBarDisplayMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED"  rel="nofollow">SCROLL_BAR_DISPLAY_MODE_FIXED</a></code>. This is best for traditional desktop scrollable content.
+</p>
+
+</div>
+<!-- EDIT13 SECTION "Scroll Bar Display Mode" [20624-22052] -->
+<h3 class="sectionedit14" id="scroll_policies">Scroll Policies</h3>
+<div class="level3">
+
+<p>
+The two previous properties control how scrolling works. The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollPolicy" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollPolicy"  rel="nofollow">horizontalScrollPolicy</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollPolicy" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollPolicy"  rel="nofollow">verticalScrollPolicy</a></code> properties control whether scrolling is enabled or not.
+</p>
+
+<p>
+The default scroll policy for both directions is <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO"  rel="nofollow">SCROLL_POLICY_AUTO</a></code>. If the content&#039;s width is greater than the view port&#039;s width, the list may scroll horizontally (same for height and vertical scrolling). If not, then the list will not scroll in that direction. In addition to the <code>scrollBarDisplayMode</code>, this can affect whether the scroll bar is visible or not.
+</p>
+
+<p>
+You can completely disable scrolling in either direction, set the scroll policy to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_OFF" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_OFF"  rel="nofollow">SCROLL_POLICY_OFF</a></code>. The scroll bar will not be visible, and the list won&#039;t scroll, even if the content is larger than the view port.
+</p>
+
+<p>
+Finally, you can ensure that scrolling is always enabled by setting the scroll policy to <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_ON" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#SCROLL_POLICY_ON"  rel="nofollow">SCROLL_POLICY_ON</a></code>. If combined with <code>hasElasticEdges</code> in the touch interaction mode, it will create a playful edge that always bounces back, even when the content is smaller than the view port. If using the mouse interaction mode, the scroll bar may always be visible under the same circumstances, though it may be disabled if the content is smaller than the view port.
+</p>
+
+</div>
+<!-- EDIT14 SECTION "Scroll Policies" [22053-23767] -->
+<h3 class="sectionedit15" id="paging">Paging</h3>
+<div class="level3">
+
+<p>
+Set the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#snapToPages" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#snapToPages"  rel="nofollow">snapToPages</a></code> property to true to make the list snap to the nearest full page. A page is defined as a multiple of the view ports width or height. If the view port is 100 pixels wide, then the first horizontal page starts at 0 pixels, the second at 100, and the third at 200.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageWidth" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageWidth"  rel="nofollow">pageWidth</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageHeight" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#pageHeight"  rel="nofollow">pageHeight</a></code> properties may be used to customize the size of a page. Rather than using the full view port width or height, any pixel value may be specified for page snapping.
+</p>
+
+</div>
+<!-- EDIT15 SECTION "Paging" [23768-24519] -->
+<h2 class="sectionedit16" id="optimizing_lists">Optimizing Lists</h2>
+<div class="level2">
+
+<p>
+A number of properties are available for you to customize the list&#039;s behavior in ways that may improve performance. They may not help in all cases, and they may not be possible in some cases, depending on your design requirements.
+</p>
+
+</div>
+<!-- EDIT16 SECTION "Optimizing Lists" [24520-24782] -->
+<h3 class="sectionedit17" id="list_properties">List properties</h3>
+<div class="level3">
+
+<p>
+The following properties are available on the list:
+</p>
+<ul>
+<li class="level1"><div class="li"> Set the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#clipContent" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#clipContent"  rel="nofollow">clipContent</a></code> property to <code>false</code> to disable masking around the list. On mobile, it is often possible to disable clipping because many lists fill most of the screen, and other user interface controls can be placed at a higher depth on the display list to obscure any content that escapes the edges of the list.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT17 SECTION "List properties" [24783-25273] -->
+<h3 class="sectionedit18" id="item_renderer_properties">Item renderer properties</h3>
+<div class="level3">
+
+<p>
+The following properties are available on the default item renderer:
+</p>
+<ul>
+<li class="level1"><div class="li"> Set <code><a href="http://feathersui.com/documentation/feathers/core/FeathersControl.html#isQuickHitAreaEnabled" class="urlextern" title="http://feathersui.com/documentation/feathers/core/FeathersControl.html#isQuickHitAreaEnabled"  rel="nofollow">isQuickHitAreaEnabled</a></code> to <code>true</code> to optimize the hit test to quickly check against a rectangle instead of the item renderer and all of its children. If the list&#039;s item renderers don&#039;t have accessories or other children that should be interactive, and the only way to interact with an item renderer is to tap it to select it, then you don&#039;t need more complicated hit testing.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT18 SECTION "Item renderer properties" [25274-25864] -->
+<h3 class="sectionedit19" id="layout_properties">Layout properties</h3>
+<div class="level3">
+
+<p>
+The following properties are available on some layouts:
+</p>
+<ul>
+<li class="level1"><div class="li"> Set <code>useVirtualLayout</code> to <code>true</code> to enable layout virtualization. When a layout is virtualized, only the item renderers that are visible will be created, with possibly an extra item renderer or two to ensure that the number of item renderers remain stable during scrolling to avoid garbage collection. This results in a significantly reduced number of display objects for Starling to loop through when rendering every frame (becoming more and more effective as the length of the list&#039;s data provider increases). Typically, most layouts automatically enable this property, but its description is included here for reference.</div>
+</li>
+<li class="level1"><div class="li"> Set the <code>autoHideBackground</code> property to <code>true</code> to automatically set the <code>visible</code> property of the background skin to <code>false</code> when the list&#039;s item renderers will completely obscure it. This results in one less display object for Starling to render and may be able to reduce draw calls in some situations. Hiding the list&#039;s background is only possible when the item renderers are fully opaque (no transparency) and when they are sized to fully cover the background of the list. If the item renderers have any transparency or don&#039;t completely cover the background, then this property should not be enabled.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT19 SECTION "Layout properties" [25865-27200] -->
+<h2 class="sectionedit20" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/List.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html"  rel="nofollow">List API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/default-item-renderers" class="wikilink1" title="feathers:default-item-renderers">How to use the Feathers Default Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Creating Custom Item Renderers</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT20 SECTION "Related Links" [27201-] -->

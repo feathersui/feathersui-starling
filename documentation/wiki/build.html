@@ -1,0 +1,85 @@
+
+<h1 class="sectionedit1" id="building_the_feathers_swc_from_source_code">Building the Feathers SWC from Source Code</h1>
+<div class="level1">
+
+<p>
+Whether you&#039;re using the latest unstable version of Feathers or you&#039;ve made changes to the core Feathers library, you may want to build the Feathers SWC locally.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Building the Feathers SWC from Source Code" [1-221] -->
+<h2 class="sectionedit2" id="requirements">Requirements</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="https://github.com/joshtynjala/feathers" class="urlextern" title="https://github.com/joshtynjala/feathers"  rel="nofollow">Feathers source code from Github</a> (the main build target does <strong>not</strong> use the Flex SDK)</div>
+</li>
+<li class="level1"><div class="li"> <a href="https://github.com/Gamua/Starling-Framework" class="urlextern" title="https://github.com/Gamua/Starling-Framework"  rel="nofollow">Starling Framework source code from Github</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://ant.apache.org/" class="urlextern" title="http://ant.apache.org/"  rel="nofollow">Apache Ant</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://www.adobe.com/go/air_sdk" class="urlextern" title="http://www.adobe.com/go/air_sdk"  rel="nofollow">Adobe AIR SDK with Compiler</a></div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT2 SECTION "Requirements" [222-588] -->
+<h2 class="sectionedit3" id="build_instructions">Build Instructions</h2>
+<div class="level2">
+
+<p>
+The main build script is <code>build.xml</code>, located in the root of the source tree. This file is only available if you download the full project source code for  <a href="https://github.com/joshtynjala/feathers" class="urlextern" title="https://github.com/joshtynjala/feathers"  rel="nofollow">Feathers on Github</a>. The build script is <strong>not</strong> included in the ZIP file that is downloadable from the <a href="http://feathersui.com/" class="urlextern" title="http://feathersui.com/"  rel="nofollow">Feathers website</a>.
+</p>
+
+<p>
+Two other files in the same directory, <code>build.properties</code> and <code>sdk.properties</code>, set up the environment for the build script. If you need to override any properties from these files, you can create new files named <code>build.local.properties</code> and <code>sdk.local.properties</code>. The build script will automatically detect if these files are present and use their values instead of the defaults.
+</p>
+
+<p>
+1. Create a file named <code>sdk.local.properties</code> in the same directory as <code>build.xml</code>. Inside, override the <code>airsdk.root</code> property to point to the location of your local AIR SDK with ASC 2.0:
+</p>
+<pre class="code">airsdk.root = C:/Development/AIR_SDK</pre>
+
+<p>
+Use the path on your local computer rather than the one above. The path above is for a location on Windows, but paths on Macs are supported too. Make sure that you use forward slashes, regardless of which platform you&#039;re on.
+</p>
+
+<p>
+2. build.properties creates a property named <code>starling.root</code> that points to <code>third-party/starling</code>. From the Starling Framework, copy the contents of <code>starling/src</code> into this directory.
+</p>
+
+<p>
+Alternatively, you may create a <code>build.local.properties</code> file and override the value of <code>starling.root</code>.
+</p>
+
+<p>
+3. Open a command prompt in the directory where build.xml is located.
+</p>
+
+<p>
+4. Run the command <code>ant quick</code>.
+</p>
+
+<p>
+5. <code>feathers.swc</code> will be compiled and placed in an directory named <code>output</code>.
+</p>
+
+<p>
+Most likely, you will only need the <code>quick</code> target, which simply builds the SWC and does nothing else. There are several targets available that you may find useful.
+</p>
+<ul>
+<li class="level1"><div class="li"> <code>swc</code> compiles the Feathers SWC.</div>
+</li>
+<li class="level1"><div class="li"> <code>docs</code> generates the Feathers <abbr title="Application Programming Interface">API</abbr> documentation.</div>
+</li>
+<li class="level1"><div class="li"> <code>full</code> compiles the SWC, generates the <abbr title="Application Programming Interface">API</abbr> documentation, and copies all of the supporting files into the <code>output</code> directory to create a full release build of Feathers.</div>
+</li>
+<li class="level1"><div class="li"> <code>package</code> creates a full release build of Feathers, and then it packages everything into a ZIP file.</div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Build Instructions" [589-] -->

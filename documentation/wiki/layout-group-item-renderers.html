@@ -1,0 +1,358 @@
+
+<h1 class="sectionedit1" id="custom_item_renderers_with_feathers_layout_group">Custom Item Renderers with Feathers Layout Group</h1>
+<div class="level1">
+
+<p>
+The <code><a href="/feathers/layout-group" class="wikilink1" title="feathers:layout-group">LayoutGroup</a></code> container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any <a href="/feathers/start#custom_components" class="wikilink1" title="feathers:start">custom component</a>, but it&#039;s especially useful for custom item renderers in the <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> and <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code> components.
+</p>
+
+<p>
+Feathers includes three subclasses of <code><a href="/feathers/layout-group" class="wikilink1" title="feathers:layout-group">LayoutGroup</a></code> that are designed specifically to help you get started creating custom item renderers.
+</p>
+<ul>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupListItemRenderer.html"  rel="nofollow">LayoutGroupListItemRenderer</a></code> can be used as an item renderer in <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code>.</div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html"  rel="nofollow">LayoutGroupGroupedListItemRenderer</a></code> can be used as an item renderer in <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code>.</div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">LayoutGroupGroupedListHeaderOrFooterRenderer</a></code> can be used as either a header renderer or a footer renderer in <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code>.</div>
+</li>
+</ul>
+
+<p>
+All of these classes implement the required functions from their respective interfaces, to save you time on bootstrapping code, and they provide a couple of useful functions that you can override the update the layout and the parse the data without worrying about the lowest level parts of the Feathers component architecture.
+</p>
+
+<p>
+Below, we will look at how to create a simple custom item renderer by extending one of these classes. At the very end, the complete source code for a simple custom item renderer will be provided to offer a starting point for other custom item renderers.
+</p>
+
+<p>
+<p><div class="noteclassic">
+These base classes for item renderers based on <code>LayoutGroup</code> provide the easiest way to build custom item renderers in Feathers. However, they have the risk of lower performance. For a more advanced approach at a lower level in the Feathers architecture, please see <a href="/feathers/feathers-control-item-renderers" class="wikilink1" title="feathers:feathers-control-item-renderers">Custom Item Renderers with FeathersControl and IListItemRenderer</a> instead.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Custom Item Renderers with Feathers Layout Group" [1-2232] -->
+<h2 class="sectionedit2" id="the_simplest_item_renderer">The Simplest Item Renderer</h2>
+<div class="level2">
+
+<p>
+Let&#039;s implement a very simple item renderer. It will contain a <code><a href="/feathers/label" class="wikilink1" title="feathers:label">Label</a></code> component to display some text and it will be possible to customize some padding around the edges.
+</p>
+
+<p>
+When it&#039;s finished, we&#039;ll want to use it like this:
+</p>
+<pre class="code as3"><span class="kw2">var</span> list<span class="sy0">:</span>List = <span class="kw1">new</span> List<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>CustomLayoutGroupItemRenderer = <span class="kw1">new</span> CustomLayoutGroupItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>padding = <span class="nu0">10</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>dataProvider = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;One&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Two&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Three&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Four&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Five&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>list<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Notice that we set a <code>padding</code> property to adjust the layout. The item renderer will get the text for its <code>Label</code> sub-component from the <code>label</code> property of an item in the data provider.
+</p>
+
+<p>
+We could go crazy and add background skins, icons, the ability to customize the which field from the item that the label text comes from, and many more things. We&#039;re going to keep it simple for now to avoid making thing confusing with extra complexity.
+</p>
+
+<p>
+For this example, we&#039;re creating an item renderer for a <code>List</code> component, but it will be the exact same process to create an item renderer, header renderer, or footer renderer for a <code>GroupedList</code> component. You simply need to change the class that you extend.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Simplest Item Renderer" [2233-3621] -->
+<h2 class="sectionedit3" id="implementation_details">Implementation Details</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start out with the basic framework for our custom item renderer. We want to subclass <code>feathers.controls.renderers.LayoutGroupListItemRenderer</code>:
+</p>
+<pre class="code as3"><span class="kw4">package</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>renderers<span class="sy0">.</span>LayoutGroupListItemRenderer<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> CustomLayoutGroupItemRenderer <span class="kw1">extends</span> LayoutGroupListItemRenderer
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> CustomLayoutGroupItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+This base class implements <code>IListItemRenderer</code>, so the <code>data</code>, <code>index</code>, and <code>owner</code> properties that the <code>List</code> component sets on an item renderer are already there for us.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Implementation Details" [3622-4236] -->
+<h3 class="sectionedit4" id="adding_children">Adding Children</h3>
+<div class="level3">
+
+<p>
+We want to display a <code>Label</code> component, so let&#039;s add a member variable for it:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _label<span class="sy0">:</span>Label<span class="sy0">;</span></pre>
+
+<p>
+Next, we want to create a new instance and add it as a child. We need to override <code>initialize()</code> function:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label = <span class="kw1">new</span> Label<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code>initialize()</code> function is called once the very first time that the component is added to the stage. It&#039;s a good place to create sub-components and other children and possibly to do things like add event listeners that you don&#039;t intend to remove until the component is disposed. In general, it is better to use <code>initialize()</code> for this sort of thing instead of the constructor.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>initialize()</code> function and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Adding Children" [4237-5249] -->
+<h3 class="sectionedit5" id="parsing_the_data">Parsing the data</h3>
+<div class="level3">
+
+<p>
+Next, we want to access the <code>data</code> property and display something in our <code>Label</code> component. Override the convenient <code>commitData()</code> function to do this:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_data<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">this</span><span class="sy0">.</span>_data<span class="sy0">.</span>label<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">else</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">null</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+For this particular item renderer, we&#039;re requiring all items in the data provider to have a <code>label</code> property that holds the text to display in the <code>Label</code> component. If we were building a generic item renderer, ideally, we might like to make that field name customizable, like the <code>labelField</code> property in <code>DefaultListItemRenderer</code>. However, let&#039;s keep it simple.
+</p>
+
+<p>
+<p><div class="noteclassic">
+Don&#039;t forget to handle the case where the data property is <code>null</code>. You don&#039;t want any runtime errors causing you trouble.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Parsing the data" [5250-6119] -->
+<h3 class="sectionedit6" id="adjusting_the_layout">Adjusting the layout</h3>
+<div class="level3">
+
+<p>
+Let&#039;s handle how the <code>Label</code> sub-component will be positioned and sized within the item renderer. We generally want to use a fluid layout that can handle changes in the dimensions of the item renderer (which are ultimately controlled by the parent <code>List</code> component). <code><a href="/feathers/anchor-layout" class="wikilink1" title="feathers:anchor-layout">AnchorLayout</a></code> is ideal for this situation.
+</p>
+
+<p>
+At the beginning of the <code>initialize()</code> function, let&#039;s create our <code>AnchorLayout</code> instance:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>layout = <span class="kw1">new</span> AnchorLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Now, in order to have the <code>AnchorLayout</code> control the <code>Label</code> component&#039;s positioning and dimensions, we need to pass an <code>AnchorLayoutData</code> instance to the <code>Label</code> component. Let&#039;s do that next:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>layout = <span class="kw1">new</span> AnchorLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw2">var</span> labelLayoutData<span class="sy0">:</span>AnchorLayoutData = <span class="kw1">new</span> AnchorLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">top</span> = <span class="nu0">0</span><span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">right</span> = <span class="nu0">0</span><span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">bottom</span> = <span class="nu0">0</span><span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">left</span> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">this</span><span class="sy0">.</span>_label = <span class="kw1">new</span> Label<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span>layoutData = <span class="kw1">this</span><span class="sy0">.</span>_labelLayoutData<span class="sy0">;</span></pre>
+
+<p>
+We&#039;ve constrained the <code>Label</code> component to all four edges of the item renderer. If the item renderer&#039;s width grows or shrinks, the <code>Label</code> component will be resized appropriately.
+</p>
+
+<p>
+With that finished, we now have a fully working item renderer. However, we probably don&#039;t want the <code>Label</code> component to fill the item renderer right up to the edges. We probably want a little space around the edge to allow the labels to breathe when they appear next to each other in the list. Let&#039;s add a <code>padding</code> property to customize this spacing around the edges:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _padding<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> padding<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> padding<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_padding == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_padding = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_LAYOUT<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+When we change a property that requires the component to change something about its appearance, we need to call the <code>invalidate()</code> function. This will tell the component that it needs to update its appearance before the next time that Starling renders to the screen. We&#039;ll explain that constant, <code>INVALIDATION_FLAG_LAYOUT</code>, in a moment.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>invalidate()</code> function and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+<p>
+The base class offers a <code>preLayout()</code> function that you can override to update layout properties on children <em>before</em> the layout code is run. We&#039;re going to update the <code>Label</code> component&#039;s <code>AnchorLayoutData</code> in this function:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> preLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> labelLayoutData<span class="sy0">:</span>AnchorLayoutData = AnchorLayoutData<span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span>layoutData<span class="br0">&#41;</span><span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">top</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">right</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">bottom</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	labelLayoutData<span class="sy0">.</span><span class="kw7">left</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+If we had additional children in the item renderer, we&#039;d adjust their <code>layoutData</code> properties in this function too. With <code>AnchorLayoutData</code>, we&#039;re not limited to constraining children to the edges of their parent container. We can also position those children relative to the center of the container, both horizontally and vertical. We can even position children relative to each other too! For complete details, see <a href="/feathers/anchor-layout" class="wikilink1" title="feathers:anchor-layout">Anchor Layout in Feathers</a>.
+</p>
+
+<p>
+The base class also offers a <code>postLayout()</code> function that can be overridden to update anything <em>after</em> the layout code has run. We won&#039;t be using that one here, though.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Adjusting the layout" [6120-9845] -->
+<h2 class="sectionedit7" id="source_code">Source Code</h2>
+<div class="level2">
+
+<p>
+The complete source code for the <code>CustomLayoutGroupItemRenderer</code> class is included below:
+</p>
+<pre class="code as3"><span class="kw4">package</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>Label<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>renderers<span class="sy0">.</span>LayoutGroupListItemRenderer<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>layout<span class="sy0">.</span>AnchorLayout<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>layout<span class="sy0">.</span>AnchorLayoutData<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> CustomLayoutGroupItemRenderer <span class="kw1">extends</span> LayoutGroupListItemRenderer
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> CustomLayoutGroupItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _label<span class="sy0">:</span>Label<span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _padding<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> padding<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> padding<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_padding == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_padding = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_LAYOUT<span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>layout = <span class="kw1">new</span> AnchorLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+			<span class="kw2">var</span> labelLayoutData<span class="sy0">:</span>AnchorLayoutData = <span class="kw1">new</span> AnchorLayoutData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">top</span> = <span class="nu0">0</span><span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">right</span> = <span class="nu0">0</span><span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">bottom</span> = <span class="nu0">0</span><span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">left</span> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+			<span class="kw1">this</span><span class="sy0">.</span>_label = <span class="kw1">new</span> Label<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span>layoutData = labelLayoutData<span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_data <span class="sy0">&amp;&amp;</span> <span class="kw1">this</span><span class="sy0">.</span>_owner<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">this</span><span class="sy0">.</span>_data<span class="sy0">.</span>label<span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">else</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">null</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> preLayout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw2">var</span> labelLayoutData<span class="sy0">:</span>AnchorLayoutData = AnchorLayoutData<span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span>layoutData<span class="br0">&#41;</span><span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">top</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">right</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">bottom</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			labelLayoutData<span class="sy0">.</span><span class="kw7">left</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Source Code" [9846-11521] -->
+<h2 class="sectionedit8" id="next_steps">Next Steps</h2>
+<div class="level2">
+
+<p>
+Looking to do more with your custom item renderer? Check out the <a href="/feathers/cookbook/start" class="wikilink1" title="feathers:cookbook:start">Feathers Cookbook</a> for “recipes” that show you how to implement typical features in custom item renderers and in other Feathers UI components.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Next Steps" [11522-11781] -->
+<h2 class="sectionedit9" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Introduction to Custom Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/cookbook/start#custom_item_renderers" class="wikilink1" title="feathers:cookbook:start">Feathers Cookbook: Recipes for Custom Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupListItemRenderer.html"  rel="nofollow">LayoutGroupListItemRenderer API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html"  rel="nofollow">LayoutGroupGroupedListItemRenderer API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">LayoutGroupGroupedListHeaderOrFooterRenderer API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Related Links" [11782-] -->

@@ -1,0 +1,100 @@
+
+<h1 class="sectionedit1" id="focus_management_in_feathers">Focus Management in Feathers</h1>
+<div class="level1">
+
+<p>
+In desktop apps, users expect to be able to use the Tab key to navigate between UI controls, and they expect to be able to use the keyboard to do things like press buttons or adjust sliders. Feathers provides completely optional focus management support when your app needs these capabilities.
+</p>
+
+<p>
+<p><div class="noteclassic">
+In general, you should only enable focus management in desktop apps. Some mobile components are not optimized for focus management.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Focus Management in Feathers" [1-486] -->
+<h2 class="sectionedit2" id="enabling_the_focus_manager">Enabling the Focus Manager</h2>
+<div class="level2">
+
+<p>
+To enable focus management, only one line is required when your app first starts up:
+</p>
+<pre class="code as3">FocusManager<span class="sy0">.</span>setEnabledForStage<span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">.</span><span class="kw7">stage</span><span class="sy0">,</span> <span class="kw1">true</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+That&#039;s it! You will be able to use Tab and Shift+Tab to navigate between controls in your app.
+</p>
+
+<p>
+<p><div class="noteclassic">
+If you are building an AIR desktop app with multiple Starling instances in multiple windows, you will need to enable focus management for each stage separately.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Enabling the Focus Manager" [487-957] -->
+<h2 class="sectionedit3" id="changing_focus_programmatically">Changing Focus Programmatically</h2>
+<div class="level2">
+
+<p>
+You can manually change focus, if you desire:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>focusManager<span class="sy0">.</span><span class="kw7">focus</span> = button<span class="sy0">;</span></pre>
+
+<p>
+To clear focus, set it to <code>null</code>:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>focusManager<span class="sy0">.</span><span class="kw7">focus</span> = <span class="kw1">null</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Changing Focus Programmatically" [958-1196] -->
+<h2 class="sectionedit4" id="customizing_focus_behavior">Customizing Focus Behavior</h2>
+<div class="level2">
+
+<p>
+By default, when the user changes focus with the keyboard, Feathers will pass focus using display list ordering. Using <code><a href="http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#getChildIndex()" class="urlextern" title="http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#getChildIndex()"  rel="nofollow">getChildIndex()</a></code> and other standard display list APIs, the focus manager will search the display list in a relatively intuitive order to find the next (or previous) child that can receive focus.
+</p>
+
+<p>
+If things end up a bit out of the ordering that you expected, you can customize the focus order using the <code><a href="http://feathersui.com/documentation/feathers/core/IFocusDisplayObject.html#nextTabFocus" class="urlextern" title="http://feathersui.com/documentation/feathers/core/IFocusDisplayObject.html#nextTabFocus"  rel="nofollow">nextTabFocus</a></code> and <code><a href="http://feathersui.com/documentation/feathers/core/IFocusDisplayObject.html#previousTabFocus" class="urlextern" title="http://feathersui.com/documentation/feathers/core/IFocusDisplayObject.html#previousTabFocus"  rel="nofollow">previousTabFocus</a></code> properties:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button1<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button1 <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw2">var</span> button2<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button2 <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+button1<span class="sy0">.</span>nextTabFocus = button2<span class="sy0">;</span>
+button2<span class="sy0">.</span>previousTabFocus = button1<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Customizing Focus Behavior" [1197-2219] -->
+<h2 class="sectionedit5" id="focus_and_pop-ups">Focus and Pop-Ups</h2>
+<div class="level2">
+
+<p>
+The focus manager and the <a href="/feathers/pop-ups" class="wikilink1" title="feathers:pop-ups">pop-up manager</a> know how to communicate. If a pop-up is modal, a new focus manager will be created and it will gain exclusive control over keyboard focus. Until the modal pop-up is closed, nothing below the modal overlay will be able to receive focus. Multiple modal pop-ups will add additional focus managers to the stack that will ensure that each modal layer blocks keyboard focus to anything below.
+</p>
+
+<p>
+If a pop-up is not modal, then the same focus manager will remain active and everything will be able to receive focus, including the pop-up and everything below the pop-up.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Focus and Pop-Ups" [2220-2865] -->
+<h2 class="sectionedit6" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/core/FocusManager.html" class="urlextern" title="http://feathersui.com/documentation/feathers/core/FocusManager.html"  rel="nofollow">FocusManager API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Related Links" [2866-] -->

@@ -1,0 +1,134 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_pageindicator_component">How to use the Feathers PageIndicator Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html"  rel="nofollow">PageIndicator</a></code> component displays a series of symbols, with one being highlighted, to show the user which index among a limited set is selected. Typically, it is paired with a <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> or a similar component that supports paging. The user can tap the <code>PageIndicator</code> to either side of the selected symbol to navigate forward or backward.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers PageIndicator Component" [1-497] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+First, let&#039;s create a page indicator and give it a number of symbols.
+</p>
+<pre class="code as3"><span class="kw2">var</span> pages<span class="sy0">:</span>PageIndicator = <span class="kw1">new</span> PageIndicator<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+pages<span class="sy0">.</span>pageCount = <span class="nu0">5</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> pages <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#pageCount" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#pageCount"  rel="nofollow">pageCount</a></code> property. You&#039;ll see that the first symbol is automatically selected. If you tap the page indicator on the right side, it will advance to the next index.
+</p>
+
+<p>
+If we want to react to the selected index changing, we can add a listener for <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#event:change" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#event:change"  rel="nofollow">Event.CHANGE</a></code>:
+</p>
+<pre class="code as3">pages<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="sy0">,</span> pageIndicator_changeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener might look something like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> pageIndicator_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> pages<span class="sy0">:</span>PageIndicator = PageIndicator<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;selected index:&quot;</span><span class="sy0">,</span> pages<span class="sy0">.</span>selectedIndex <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [498-1488] -->
+<h2 class="sectionedit3" id="skinning_a_page_indicator">Skinning a Page Indicator</h2>
+<div class="level2">
+
+<p>
+You can customize the layout of a page indicator, and you can customize the appearance of a its “normal” and “selected” symbols. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html"  rel="nofollow">PageIndicator API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Skinning a Page Indicator" [1489-1896] -->
+<h3 class="sectionedit4" id="layout">Layout</h3>
+<div class="level3">
+
+<p>
+You may set the <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#direction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#direction"  rel="nofollow">direction</a></code> of a page indicator to <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#DIRECTION_HORIZONTAL" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#DIRECTION_HORIZONTAL"  rel="nofollow">DIRECTION_HORIZONTAL</a></code> or <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#DIRECTION_HORIZONTAL" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#DIRECTION_HORIZONTAL"  rel="nofollow">DIRECTION_VERTICAL</a></code>. The default layout direction is horizontal. Below, we change it to vertical:
+</p>
+<pre class="code as3">pages<span class="sy0">.</span>direction = PageIndicator<span class="sy0">.</span>DIRECTION_VERTICAL<span class="sy0">;</span></pre>
+
+<p>
+We can set other layout properies, such as the <a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#gap" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#gap"  rel="nofollow">gap between symbols</a>, the padding around the edges, and the alignment, both <a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#horizontalAlign" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#horizontalAlign"  rel="nofollow">horizontally</a> and <a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#verticalAlign" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#verticalAlign"  rel="nofollow">vertically</a>:
+</p>
+<pre class="code as3">pages<span class="sy0">.</span>gap = <span class="nu0">4</span><span class="sy0">;</span>
+pages<span class="sy0">.</span>paddingTop = <span class="nu0">4</span><span class="sy0">;</span>
+pages<span class="sy0">.</span>paddingRight = <span class="nu0">4</span><span class="sy0">;</span>
+pages<span class="sy0">.</span>paddingBottom = <span class="nu0">4</span><span class="sy0">;</span>
+pages<span class="sy0">.</span>paddingLeft = <span class="nu0">10</span><span class="sy0">;</span>
+pages<span class="sy0">.</span>horizontalAlign = PageIndicator<span class="sy0">.</span>HORIZONTAL_ALIGN_CENTER<span class="sy0">;</span>
+pages<span class="sy0">.</span>verticalAlign = PageIndicator<span class="sy0">.</span>VERTICAL_ALIGN_MIDDLE<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Layout" [1897-3121] -->
+<h3 class="sectionedit5" id="symbol_skins">Symbol Skins</h3>
+<div class="level3">
+
+<p>
+The symbols may be created using the <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#normalSymbolFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#normalSymbolFactory"  rel="nofollow">normalSymbolFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#selectedSymbolFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html#selectedSymbolFactory"  rel="nofollow">selectedSymbolFactory</a></code> for normal and selected symbols respectively. These functions are expected to return any Starling display objects. Below, we return Starling Images with different textures for normal and selected states:
+</p>
+<pre class="code as3">pages<span class="sy0">.</span>normalSymbolFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="kw1">new</span> Image<span class="br0">&#40;</span> normalSymbolTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+&nbsp;
+pages<span class="sy0">.</span>selectedSymbolFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="kw1">new</span> Image<span class="br0">&#40;</span> selectedSymbolTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+The page indicator will automatically reuse symbols if the page count or the selected index changes.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Symbol Skins" [3122-3970] -->
+<h3 class="sectionedit6" id="targeting_a_pageindicator_in_a_theme">Targeting a PageIndicator in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> PageIndicator <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setPageIndicatorStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize the style of a specific page indicator to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">pages<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-page-indicator&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can specify the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> PageIndicator <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-page-indicator&quot;</span><span class="sy0">,</span> setCustomPageIndicatorStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the page indicator&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the page indicator was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the page indicator&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Targeting a PageIndicator in a theme" [3971-5058] -->
+<h2 class="sectionedit7" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/PageIndicator.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/PageIndicator.html"  rel="nofollow">PageIndicator API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Related Links" [5059-] -->

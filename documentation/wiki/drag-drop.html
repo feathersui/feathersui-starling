@@ -1,0 +1,69 @@
+
+<h1 class="sectionedit1" id="feathers_drag_and_drop">Feathers Drag and Drop</h1>
+<div class="level1">
+
+<p>
+<p><div class="noteclassic">
+The following description of how to use the Feathers <code><a href="http://feathersui.com/documentation/feathers/dragDrop/DragDropManager.html" class="urlextern" title="http://feathersui.com/documentation/feathers/dragDrop/DragDropManager.html"  rel="nofollow">DragDropManager</a></code> is taken from <a href="http://forum.starling-framework.org/topic/would-you-please-give-us-an-examples-on-how-to-use-dragdropmanager" class="urlextern" title="http://forum.starling-framework.org/topic/would-you-please-give-us-an-examples-on-how-to-use-dragdropmanager"  rel="nofollow">this forum thread</a>. This text combines multiple posts into a single source, without much editing, so refer to the linked thread if some context is missing. More thorough documentation with a full example will be added in the future.
+
+</div></p>
+</p>
+
+<p>
+1) You need to implement the <code>IDragSource</code> and <code>IDropTarget</code> interfaces on the appropriate objects.
+</p>
+
+<p>
+2) Call <code>DragDropManager.startDrag()</code>, passing in the <code>IDragSource</code>, the <code>Touch</code> object that initiated the drag, and a <code>DragData</code> object which stores the data that is being dragged. You can specify data by “format” so that different targets can accept different types of data.
+</p>
+
+<p>
+3) When the <code>IDropTarget</code> dispatches <code>DragDropEvent.DRAG_ENTER</code> (the <code>DragDropManager</code> handles the event dispatching, you just need to listen), and the <code>DragData</code> object includes data of the correct format, it should call <code>DragDropManager.acceptDrag()</code>.
+</p>
+
+<p>
+4) The <code>IDropTarget</code> will dispatch <code>DragDropEvent.DRAG_DROP</code> if you drop the object (stop touching or release the mouse button) over the <code>IDropTarget</code>. If it does, you need to handle the drop in the event listener.
+</p>
+
+<p>
+5) The <code>IDragSource</code> will dispatch <code>DragDropEvent.DRAG_COMPLETE</code> whether the drop was accepted or not. The <code>isDropped</code> property of the event is a <code>Boolean</code> that indicates if the drag was successfully dropped on a target that accepted it, of if it was cancelled. If the data that was dragged needs to be removed from the source after being dropped on the target, this event listener is the place to do it. Just check the <code>isDropped</code> property to see if it was dropped or cancelled.
+</p>
+
+<p>
+You can pass the “ghosted drag image” as the “avatar” when you call <code>DragDropManager.startDrag()</code>. The avatar is what follows the mouse while you&#039;re dragging.
+</p>
+
+<p>
+The format is what actually gets passed between the drag source and the drop target. This may be the same as the avatar, or it may be something more data-centric, like the data for a list item.
+</p>
+
+<p>
+Usually, if you&#039;re simply dragging a display object around (that has no data associated with it like a list item would), you could add the display object itself as the drag data. Something like this is probably fine:
+</p>
+<pre class="code as3"><span class="kw2">var</span> dragData<span class="sy0">:</span>DragData = <span class="kw1">new</span> DragData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+dragData<span class="sy0">.</span>setDataForFormat<span class="br0">&#40;</span><span class="st0">&quot;display-object-drag-format&quot;</span><span class="sy0">,</span> theDisplayObject<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In this case, I randomly called the format <code>“display-object-drag-format”</code>, but call it whatever you want. It just needs to be a string that both sides (the drag source and the drop target) agree on.
+</p>
+
+<p>
+Then in your <code>DragDropEvent.DRAG_ENTER</code> listener, you can check for that format:
+</p>
+<pre class="code as3"><span class="kw3">function</span><span class="br0">&#40;</span>event<span class="sy0">:</span>DragDropEvent<span class="sy0">,</span> dragData<span class="sy0">:</span>DragData<span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">if</span><span class="br0">&#40;</span>dragData<span class="sy0">.</span>hasDataForFormat<span class="br0">&#40;</span><span class="st0">&quot;display-object-drag-format&quot;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        DragDropManager<span class="sy0">.</span>acceptDrag<span class="br0">&#40;</span><span class="kw1">this</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In the <code>DragDropEvent.DRAG_DROP</code> listener, you use <code>dragData.getDataForFormat()</code> with the same string to retrieve the display object or other data.
+</p>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>

@@ -1,0 +1,155 @@
+
+<h1 class="sectionedit1" id="getting_started_with_feathers">Getting Started with Feathers</h1>
+<div class="level1">
+
+<p>
+In the following beginner-level tutorial, we&#039;ll create our first <a href="/feathers/button" class="wikilink1" title="feathers:button">Feathers Button control</a>. This is a very simple demonstration that sets a label, adds an event listener, and creates a theme that will apply a skin.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Getting Started with Feathers" [1-269] -->
+<h2 class="sectionedit2" id="prerequisites">Prerequisites</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> You should understand how to set up a regular Starling project. Please start with the <a href="http://gamua.com/starling/help/" class="urlextern" title="http://gamua.com/starling/help/"  rel="nofollow">Starling guides and tutorials</a>, if you&#039;re new to Starling.</div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/download/" class="urlextern" title="http://feathersui.com/download/"  rel="nofollow">Download Feathers</a>.</div>
+</li>
+<li class="level1"><div class="li"> Check the <a href="/feathers/start#introduction" class="wikilink1" title="feathers:start">Introduction</a> section of the Feathers documentation for instructions on how to add Feathers to your favorite development environment.</div>
+</li>
+<li class="level1"><div class="li"> Look inside the <code>themes</code> directory of the Feathers ZIP file to find <code>MetalWorksMobileTheme.swc</code>. Add it to your project&#039;s build settings the same way that you added <code>feathers.swc</code>.</div>
+</li>
+<li class="level1"><div class="li"> The complete source code for the Hello World example is included with Feathers in the <em>examples</em> directory, so please feel free to follow along.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT2 SECTION "Prerequisites" [270-1051] -->
+<h2 class="sectionedit3" id="final_result">Final Result</h2>
+<div class="level2">
+
+<p>
+<a href="http://feathersui.com/examples/hello-world/" class="media" title="http://feathersui.com/examples/hello-world/"  rel="nofollow"><img src="/_media/feathers/feathers-hello-world.jpg" class="mediacenter" title="feathers-hello-world.jpg" alt="feathers-hello-world.jpg" /></a>
+</p>
+
+<p>
+See the <a href="http://feathersui.com/examples/hello-world/" class="urlextern" title="http://feathersui.com/examples/hello-world/"  rel="nofollow">Hello World example</a> running live in your browser. Requires <a href="http://get.adobe.com/flash" class="urlextern" title="http://get.adobe.com/flash"  rel="nofollow">Adobe Flash Player</a>.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Final Result" [1052-1340] -->
+<h2 class="sectionedit4" id="walkthrough">Walkthrough</h2>
+<div class="level2">
+
+<p>
+Below, you&#039;ll find the basic structure of the <code>Main</code> class that we&#039;ll use as the root Starling display object. This walkthrough assumes that you already know how to initialize Starling. You may look through the example&#039;s full source code to see how this is done.
+</p>
+<pre class="code as3"><span class="kw4">package</span> feathers<span class="sy0">.</span>examples<span class="sy0">.</span>helloWorld
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>Button<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>Callout<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>Label<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>themes<span class="sy0">.</span>MetalWorksMobileTheme<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">import</span> starling<span class="sy0">.</span>display<span class="sy0">.</span><a href="http://www.google.com/search?q=sprite%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:sprite.html"><span class="kw5">Sprite</span></a><span class="sy0">;</span>
+	<span class="kw1">import</span> starling<span class="sy0">.</span>event<span class="sy0">.</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> Main <span class="kw1">extends</span> <a href="http://www.google.com/search?q=sprite%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:sprite.html"><span class="kw5">Sprite</span></a>
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> Main<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">ADDED_TO_STAGE</span><span class="sy0">,</span> addedToStageHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> button<span class="sy0">:</span>Button<span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw3">function</span> addedToStageHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In our <code>Main</code> class, most of the code that we add later will go into the <code>addedToStageHandler()</code> function.
+</p>
+
+<p>
+Let&#039;s start by initializing a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>. By default, the Feathers components don&#039;t have skins. However, several example <em>themes</em> are included with Feathers to easily provide sample skins to all components. A theme can be instantiated in just one line of code.
+</p>
+<pre class="code as3"><span class="kw1">new</span> MetalWorksMobileTheme<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The theme listens for certain events on the display list to detect when a new Feathers component is added. When a new component is added, the theme will create appropriate skins, including backgrounds, icons, text formats, and skins for sub-components, and pass them in automatically.
+</p>
+
+<p>
+<p><div class="noteclassic">
+Most of the Feathers examples, including the Hello World example, use a class named <code>MetalWorksMobileTheme</code>. This is a sample <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a> that provides pre-made skins for Feathers components. You can find it in the <em>themes</em> directory of the the Feathers ZIP file. Add <code>MetalWorksMobileTheme.swc</code> to your project&#039;s build settings the same way that you added <code>feathers.swc</code>.
+
+</div></p>
+</p>
+
+<p>
+With the theme created, let&#039;s create the <code><a href="/feathers/button" class="wikilink1" title="feathers:button">Button</a></code> and set it&#039;s label:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span>label = <span class="st0">&quot;Click Me&quot;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+If we want to do something when the button is tapped or clicked, we should listen to the <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#event:triggered" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#event:triggered"  rel="nofollow">Event.TRIGGERED</a></code> event.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> button_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Our listener function should look something like this:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> button_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	const label<span class="sy0">:</span>Label = <span class="kw1">new</span> Label<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	label<span class="sy0">.</span><span class="kw7">text</span> = <span class="st0">&quot;Hi, I'm Feathers!<span class="es0">\n</span>Have a nice day.&quot;</span><span class="sy0">;</span>
+	Callout<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> label<span class="sy0">,</span> <span class="kw1">this</span><span class="sy0">.</span>button <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+This triggered listener displays a <code><a href="/feathers/label" class="wikilink1" title="feathers:label">Label</a></code>, a generic component for displaying text, in a <code><a href="/feathers/callout" class="wikilink1" title="feathers:callout">Callout</a></code> component. Like with our button, these two components are automatically skinned by the theme.
+</p>
+
+<p>
+Finally, let&#039;s position the button in the middle of the stage. First, though, let&#039;s take note of one thing about how Feathers controls work. Feathers uses a system of <em>invalidation</em> that delays redraws until just immediately before Starling renders to the screen. This keeps Feathers from using too much CPU by redrawing over and over again when you need to change multiple properties all at once.
+</p>
+
+<p>
+At this moment, our button still has <code>width</code> and <code>height</code> values of <code>0</code> because it hasn&#039;t drawn yet. Feathers controls automatically resize themselves to an ideal size when they redraw (unless you explicitly set your own width and height values). This is usually based on the original dimensions of the skins and other children.
+</p>
+
+<p>
+In this case, we want to position our button immediately, without waiting for validation. To make a Feathers control draw <strong>right now</strong>, call the <code><a href="http://feathersui.com/documentation/feathers/core/FeathersControl.html#validate()" class="urlextern" title="http://feathersui.com/documentation/feathers/core/FeathersControl.html#validate()"  rel="nofollow">validate()</a></code> function:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Now, we can properly center our button on the stage because it will correctly report appropriate dimensions based on the size of the button&#039;s skin and label:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span><span class="kw7">x</span> = <span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span><span class="kw7">stage</span><span class="sy0">.</span><span class="kw7">stageWidth</span> <span class="sy0">-</span> <span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span><span class="kw7">width</span><span class="br0">&#41;</span> <span class="sy0">/</span> <span class="nu0">2</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span><span class="kw7">y</span> = <span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span><span class="kw7">stage</span><span class="sy0">.</span><span class="kw7">stageHeight</span> <span class="sy0">-</span> <span class="kw1">this</span><span class="sy0">.</span>button<span class="sy0">.</span><span class="kw7">height</span><span class="br0">&#41;</span> <span class="sy0">/</span> <span class="nu0">2</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Walkthrough" [1341-5596] -->
+<h2 class="sectionedit5" id="conclusion">Conclusion</h2>
+<div class="level2">
+
+<p>
+That should get you started with the very basics of working with Feathers. For more information about the capabilities of the <code>Button</code> class, read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a>. For the <code>Callout</code> class, read <a href="/feathers/callout" class="wikilink1" title="feathers:callout">How to use the Feathers Callout component</a>.
+</p>
+
+<p>
+For more extensive sample code, check out the other Feathers examples included in the <em>examples</em> directory when you <a href="http://feathersui.com/download/" class="urlextern" title="http://feathersui.com/download/"  rel="nofollow">download Feathers</a>. For example themes (including <code>MetalWorksMobileTheme</code>), check out the <em>themes</em> directory.
+</p>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Conclusion" [5597-] -->

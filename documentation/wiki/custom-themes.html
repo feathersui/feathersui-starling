@@ -1,0 +1,175 @@
+
+<h1 class="sectionedit1" id="creating_custom_feathers_themes">Creating Custom Feathers Themes</h1>
+<div class="level1">
+
+<p>
+Let&#039;s learn a bit about how Feathers <a href="/feathers/themes" class="wikilink1" title="feathers:themes">themes</a> work behind the scenes. You may want to download one of the example themes that are available as part of the <a href="https://github.com/joshtynjala/feathers-examples" class="urlextern" title="https://github.com/joshtynjala/feathers-examples"  rel="nofollow">feathers-examples project on Github</a> to see how the code for a theme might look.
+</p>
+
+<p>
+If you simply want to use a theme rather than create a new one from scratch, please take a look at <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Introduction to Feathers Themes</a>. You&#039;ll probably also be interested in <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">Extending Feathers Themes</a> to learn how to use an existing theme and add some custom alternate component styles.
+<p><div class="notewarning">
+This tutorial covers the old theme architecture in Feathers 1.0. It has not yet been updated for Feathers 2.0. However, <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">Extending Feathers Themes</a> should provide enough information to create a custom theme.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Creating Custom Feathers Themes" [1-903] -->
+<h2 class="sectionedit2" id="the_basics_of_themes">The Basics of Themes</h2>
+<div class="level2">
+
+<p>
+A theme should extend the <code>DisplayListWatcher</code> class. <code>DisplayListWatcher</code> is a class provided by Feathers that can listen for display list events and take action based on them. <code>Event.ADDED</code>, in particular, is a useful bubbling event that the <code>DisplayListWatcher</code> can use to know when absolutely anything is added to the display list. When the <code>DisplayListWatcher</code> encounters a Feathers component datatype that it recognizes (such as <code>Button</code>, <code>Slider</code> or <code>ToggleSwitch</code>), it can apply an appropriate skin to the component.
+</p>
+
+<p>
+<code>DisplayListWatcher</code> provides a method named <code>setInitializerForClass()</code> that lets you call an <em>initializer</em> function when a display object of that type is added to the stage. This function is where you apply your skins to the component. Below, we register an initializer function for <code>Button</code> controls:
+</p>
+<pre class="code as3">setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> buttonInitializer <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Then here&#039;s the initializer function itself:
+</p>
+<pre class="code as3"><span class="kw3">function</span> buttonInitializer<span class="br0">&#40;</span> button<span class="sy0">:</span>Button <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="co1">// apply skins to the button here</span>
+	<span class="co1">// skins, icons, text formats, etc.</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Simply add a new initializer for every type of component that you need in your application.
+</p>
+
+<p>
+Next, let&#039;s look at how you can skin sub-components. Child components may have different skins than the more standard version of the same component. For instance, Button is used as a sub-component for many other components, including <code>ToggleSwitch</code>, <code>Slider</code>, and many others.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics of Themes" [904-2429] -->
+<h2 class="sectionedit3" id="component_names">Component Names</h2>
+<div class="level2">
+
+<p>
+Every component has a <em>name list</em> that provides extra metadata about the component. By default, most components don&#039;t have any names, but sub-components and components that need special skins that are different from the default are given names to help differentiate them for skinning (and, possibly, other add-on capabilities). A component can have many names, and many components can share the same name. This feature is strongly inspired by <abbr title="Cascading Style Sheets">CSS</abbr> classes.
+</p>
+
+<p>
+If Feathers themes had a <abbr title="Cascading Style Sheets">CSS</abbr>-like dialect, we might create a declaration like this to skin the thumb child component in a <code>ToggleSwitch</code>:
+</p>
+<pre class="code as3">Button<span class="sy0">.</span>feathers<span class="sy0">-</span>toggle<span class="sy0">-</span>switch<span class="sy0">-</span>thumb <span class="br0">&#123;</span><span class="br0">&#125;</span></pre>
+
+<p>
+In ActionScript, we can pass in a component <em>name</em> to <code>setInitializerForClass()</code> as the third argument to make the initializer target any component with the specified class <strong>and</strong> the specified name. We&#039;ll pass in the name <code>“feathers-toggle-switch-thumb”</code>, which is defined in the constant <code>ToggleSwitch.DEFAULT_CHILD_NAME_THUMB</code>:
+</p>
+<pre class="code as3">setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> buttonInitializer <span class="br0">&#41;</span><span class="sy0">;</span>
+setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> toggleSwitchThumbInitializer<span class="sy0">,</span> ToggleSwitch<span class="sy0">.</span>DEFAULT_CHILD_NAME_THUMB <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Here are our two initializer functions:
+</p>
+<pre class="code as3"><span class="kw3">function</span> buttonInitializer<span class="br0">&#40;</span> button<span class="sy0">:</span>Button <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="co1">// apply skins to a regular button here</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw3">function</span> toggleSwitchThumbInitializer<span class="br0">&#40;</span> button<span class="sy0">:</span>Button <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="co1">// apply skins to a toggle switch thumb here</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Separate initializer functions can be defined for different component names. The theme will pick the first name that is matched and no others. It&#039;s possible to use multiple names, as we&#039;ll see later, but a theme will pass a component to a single initializer only. As you can see in the code above, you can create an initializer that doesn&#039;t target any name. If a new component is added, and it doesn&#039;t have a name associated with another initializer, then it will default to using the initializer that targets no name.
+</p>
+
+<p>
+Usually, names are declared for sub-components (such as the <code>ToggleSwitch</code> or <code>Slider</code> thumbs), but a theme may offer some names as static constants to offer different styles of the same component. For instance, you might want to display some buttons with a realistic 3Dish style and others in a more simplified flat style. Or maybe you want back buttons to have an arrow-like shape to literally point backwards. If variations are available, you can simply add those names to any component in your application and the theme will take care of the rest.
+</p>
+
+<p>
+<p><div class="noteclassic">
+Names only work when added to a component <em>before</em> it is added to the stage for the first time. You <strong>cannot</strong> change names later to give a component a different skin.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Component Names" [2430-5164] -->
+<h3 class="sectionedit4" id="multiple_component_names">Multiple Component Names</h3>
+<div class="level3">
+
+<p>
+In most cases, a component will have only a single name. <code>setInitializerForClass()</code> accepts only one name, and the theme will only pass a component to a single initializer. However, that doesn&#039;t mean that it&#039;s impossible to have components with multiple names. Inside that single initializer, you can check for additional names by calling <code><a href="http://feathersui.com/documentation/feathers/core/TokenList.html#contains()" class="urlextern" title="http://feathersui.com/documentation/feathers/core/TokenList.html#contains()"  rel="nofollow">nameList.contains()</a></code>:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> buttonInitializer<span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// size </span>
+    <span class="kw1">if</span><span class="br0">&#40;</span> button<span class="sy0">.</span>nameList<span class="sy0">.</span><span class="kw7">contains</span><span class="br0">&#40;</span> <span class="st0">&quot;my-small-button&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+         <span class="co1">// set styles for a small button</span>
+    <span class="br0">&#125;</span>
+    <span class="kw1">else</span>
+    <span class="br0">&#123;</span>
+         <span class="co1">// set styles for a normally sized button</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co1">// style</span>
+    <span class="kw1">if</span><span class="br0">&#40;</span> button<span class="sy0">.</span>nameList<span class="sy0">.</span><span class="kw7">contains</span><span class="br0">&#40;</span> Button<span class="sy0">.</span>ALTERNATE_NAME_CALL_TO_ACTION_BUTTON <span class="br0">&#41;</span> <span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// set skins for a call to action button</span>
+    <span class="br0">&#125;</span>
+    <span class="kw1">else</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// set skins for a normally styled button</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Multiple Component Names" [5165-6147] -->
+<h2 class="sectionedit5" id="alternate_skins">Alternate Skins</h2>
+<div class="level2">
+
+<p>
+Some components may define more than one skin in the core framework. These are variations of the same component that are expected to exist across any Feathers theme. Theme authors should provide these alternate skins for maximum flexibility. An alternate skin is defined as a public static constant on a related class, and it is expected to be passed to a component&#039;s <code>nameList</code>, much like a name is added to a sub-component.
+</p>
+
+<p>
+To apply an alternate skin in your theme, simply create an initializer for that name:
+</p>
+<pre class="code as3">setInitializerForClass<span class="br0">&#40;</span> GroupedList<span class="sy0">,</span> buttonInitializer<span class="sy0">,</span> GroupedList<span class="sy0">.</span>ALTERNATE_NAME_INSET_GROUPED_LIST <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In the code above, an initializer is defined for an alternate “inset” skin supported by <a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a>. As you can see, it&#039;s exactly the same as if you were providing a skin for a sub-component like a slider thumb or something like that.
+</p>
+
+<p>
+If you choose not to provide an alternate skin, the regular skin will be applied to any component that would prefer to use the alternate skin. This will happen automatically, and you do not need any extra code to ensure that your theme falls back to the regular skin.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Alternate Skins" [6148-7339] -->
+<h2 class="sectionedit6" id="standard_icons">Standard Icons</h2>
+<div class="level2">
+
+<p>
+You should provide textures for the <code><a href="http://feathersui.com/documentation/feathers/skins/StandardIcons.html" class="urlextern" title="http://feathersui.com/documentation/feathers/skins/StandardIcons.html"  rel="nofollow">StandardIcons</a></code> class. This class may be used by Feathers developers for commonly-used UI icons. For example, <code><a href="http://feathersui.com/documentation/feathers/skins/StandardIcons.html#listDrillDownAccessoryTexture" class="urlextern" title="http://feathersui.com/documentation/feathers/skins/StandardIcons.html#listDrillDownAccessoryTexture"  rel="nofollow">StandardIcons.listDrillDownAccessoryTexture</a></code> typically provides an arrow pointing to the right to indicate that you can select a list item to drill down into more detailed data. This icon may be used with a list item&#039;s <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryTextureField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryTextureField"  rel="nofollow">accessoryTextureField</a></code> or <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryTextureFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryTextureFunction"  rel="nofollow">accessoryTextureFunction</a></code>.
+</p>
+<pre class="code as3">StandardIcons<span class="sy0">.</span>listDrillDownAccessoryTexture = atlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span><span class="st0">&quot;list-drill-down-accessory&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Standard Icons" [7340-8329] -->
+<h2 class="sectionedit7" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Introduction to Feathers Themes</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">Extending Feathers Themes</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Related Links" [8330-] -->

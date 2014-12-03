@@ -1,0 +1,109 @@
+
+<h1 class="sectionedit1" id="feathers_component_lifecycle">Feathers Component Lifecycle</h1>
+<div class="level1">
+
+<p>
+To develop custom components for Feathers, one should understand the basics of the Feathers component lifecycle. A component goes through a number of distinct stages between when it is created and when it is destroyed.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Feathers Component Lifecycle" [1-264] -->
+<h2 class="sectionedit2" id="instantiation">Instantiation</h2>
+<div class="level2">
+
+<p>
+The component instance is created with the <code>new</code> keyword. It has not yet been added to the display list. Properties may be changed, and the new values will be saved, but the component will not react to those changes until after it has been added to the display list. This ensures that the Feathers component doesn&#039;t run its drawing code too often.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Instantiation" [265-642] -->
+<h2 class="sectionedit3" id="initialization">Initialization</h2>
+<div class="level2">
+
+<p>
+The component is added to the display list and its <code>initialize()</code> function is called. It will then validate for the first time, doing a complete redraw as if every single property has been invalidated (see <em>Invalidation</em> below).
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Initialization" [643-904] -->
+<h2 class="sectionedit4" id="validation">Validation</h2>
+<div class="level2">
+
+<p>
+The component&#039;s <code>draw()</code> function is called. The component should handle any changes that have been made to its properties. Then, if the component&#039;s dimensions have not be specified, it should automatically calculate ideal width and height values. These should be passed to <code>setSizeInternal()</code> where other values such as minimum width and height will come into play. After the final dimensions are determined, the component should position and size its children.
+</p>
+
+<p>
+Read <a href="/feathers/component-properties-methods" class="wikilink1" title="feathers:component-properties-methods">Anatomy of a Feathers Component</a> for more detailed information about the various “width” and “height” properties and variables that are available on a Feathers component.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Validation" [905-1605] -->
+<h2 class="sectionedit5" id="render">Render</h2>
+<div class="level2">
+
+<p>
+The component automatically validates immediately before Starling renders its display list. Feathers components typically don&#039;t override Starling&#039;s <code>render()</code> function.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Render" [1606-1797] -->
+<h2 class="sectionedit6" id="invalidation">Invalidation</h2>
+<div class="level2">
+
+<p>
+Any time a property changes, the component should call <code>invalidate()</code> while passing in a flag (or multiple flags) to specify the type of invalidation. Examples of invalidation types include size, layout, and selection. Each component may have its own internal categorization of properties as invalidation flags, but a number of useful generic flags are defined on <code>FeathersControl</code> as <code>protected</code> constants. How these flags are used is not enforced in any way. Feel free call <code>invalidate()</code> without flags and use private <code>Boolean</code> variables to track state, if you prefer.
+</p>
+
+<p>
+After being invalidated, the component will wait to validate until immediately before the next time that Starling asks it to render.
+</p>
+
+<p>
+The process of 1) invalidation, 2) validation, 3) rendering will repeat indefinitely until the component is removed from the display list. It will start again if the component is removed and re-added.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Invalidation" [1798-2741] -->
+<h2 class="sectionedit7" id="removal">Removal</h2>
+<div class="level2">
+
+<p>
+The component is removed from the display list. Unless it is added to the display list again, it will not validate. Property changes will be saved, but they will not be handled while the component is not attached to the stage.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Removal" [2742-2990] -->
+<h2 class="sectionedit8" id="disposal">Disposal</h2>
+<div class="level2">
+
+<p>
+Like all Starling display objects, Feathers components have a <code>dispose()</code> function that may be used to do things like remove event listeners and dispose of children. In general, the core Feathers components are designed to ensure that disposal isn&#039;t strictly required, but disposal is recommended for safety in most cases.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Disposal" [2991-3337] -->
+<h2 class="sectionedit9" id="garbage_collection">Garbage Collection</h2>
+<div class="level2">
+
+<p>
+After all references to the component have been removed, it becomes eligible for garbage collection to be handled by the runtime. The component&#039;s short life has ended.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Garbage Collection" [3338-3538] -->
+<h2 class="sectionedit10" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/component-properties-methods" class="wikilink1" title="feathers:component-properties-methods">Anatomy of a Feathers Component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/component-validation" class="wikilink1" title="feathers:component-validation">Feathers Component Validation with draw()</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Related Links" [3539-] -->

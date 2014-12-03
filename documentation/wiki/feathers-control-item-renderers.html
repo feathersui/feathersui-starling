@@ -1,0 +1,645 @@
+
+<h1 class="sectionedit1" id="custom_item_renderers_with_featherscontrol_and_ilistitemrenderer">Custom Item Renderers with FeathersControl and IListItemRenderer</h1>
+<div class="level1">
+
+<p>
+The <code>FeathersControl</code> class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a <code>List</code> or <code>GroupedList</code>, you&#039;re actually going to create a <a href="/feathers/start#custom_components" class="wikilink1" title="feathers:start">custom Feathers component</a>. An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
+</p>
+
+<p>
+Feathers includes three interfaces that define the <abbr title="Application Programming Interface">API</abbr> used by the <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> or <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code> components to communicate with their item renderers.
+</p>
+<ul>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html"  rel="nofollow">IListItemRenderer</a></code> can be used to implement an item renderer in <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code>.</div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html"  rel="nofollow">IGroupedListItemRenderer</a></code> can be used to implement an item renderer in <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code>.</div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFoooterItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFoooterItemRenderer.html"  rel="nofollow">IGroupedListHeaderOrFoooterItemRenderer</a></code> can be used to implement either a header renderer or a footer renderer in <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code>.</div>
+</li>
+</ul>
+
+<p>
+Below, we will look at how to create a simple custom item renderer using one of these interfaces. We&#039;ll also be taking peek at many aspects of the core architecture used by the Feathers components. At the very end, the complete source code for a simple custom item renderer will be provided to offer a starting point for other custom item renderers.
+</p>
+
+<p>
+<p><div class="noteclassic">
+The <code>FeathersControl</code> class comes from the low-level foundation of the Feathers architecture, and it requires a stronger knowledge of Feathers internals to use property. You&#039;ll often get the best performance with it, but it&#039;s a bit trickier to manage for developers new to Feathers. If you&#039;re looking for the easiest way to built custom item renderers, please see <a href="/feathers/layout-group-item-renderers" class="wikilink1" title="feathers:layout-group-item-renderers">Custom Item Renderers with LayoutGroup</a> instead.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Custom Item Renderers with FeathersControl and IListItemRenderer" [1-2207] -->
+<h2 class="sectionedit2" id="the_simplest_item_renderer">The Simplest Item Renderer</h2>
+<div class="level2">
+
+<p>
+Let&#039;s implement a very simple item renderer. It will contain a <code><a href="/feathers/label" class="wikilink1" title="feathers:label">Label</a></code> component to display some text and it will be possible to customize some padding around the edges.
+</p>
+
+<p>
+When it&#039;s finished, we&#039;ll want to use it like this:
+</p>
+<pre class="code as3"><span class="kw2">var</span> list<span class="sy0">:</span>List = <span class="kw1">new</span> List<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>CustomFeathersControlItemRenderer = <span class="kw1">new</span> renderer<span class="sy0">:</span>CustomFeathersControlItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>padding = <span class="nu0">10</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>dataProvider = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;One&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Two&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Three&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Four&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Five&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>list<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Notice that we set a <code>padding</code> property to adjust the layout. The item renderer will get the text for its <code>Label</code> sub-component from the <code>label</code> property of an item in the data provider.
+</p>
+
+<p>
+We could go crazy and add background skins, icons, the ability to customize the which field from the item that the label text comes from, and many more things. We&#039;re going to keep it simple for now to avoid making thing confusing with extra complexity.
+</p>
+
+<p>
+For this example, we&#039;re creating an item renderer for a <code>List</code> component, but it will be the exact same process to create an item renderer, header renderer, or footer renderer for a <code>GroupedList</code> component. You simply need to change the interface that you implement. For example, instead of the <code>IListItemRenderer</code> interface, you might implement the <code>IGroupedListItemRenderer</code> interface.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Simplest Item Renderer" [2208-3745] -->
+<h2 class="sectionedit3" id="implementation_details">Implementation Details</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start out with the basic framework for our custom item renderer. We want to subclass <code>feathers.core.FeathersControl</code> and we want to implement the <code>feathers.controls.renderers.IListItemRenderer</code> interface:
+</p>
+<pre class="code as3"><span class="kw4">package</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>renderers<span class="sy0">.</span>IListItemRenderer<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>core<span class="sy0">.</span>FeathersControl<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> CustomLayoutGroupItemRenderer <span class="kw1">extends</span> Feathers implements IListItemRenderer
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> CustomLayoutGroupItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Next, we&#039;ll implement the properties required by the <code>IListItemRenderer</code> interface.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Implementation Details" [3746-4366] -->
+<h3 class="sectionedit4" id="implementing_ilistitemrenderer">Implementing IListItemRenderer</h3>
+<div class="level3">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html"  rel="nofollow">IListItemRenderer</a></code> interface defines several properties, including <code>owner</code>, <code>index</code>, <code>data</code>, and <code>isSelected</code>. Each of these properties can be implemented the same way in most cases, and the relevant code is included below.
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _index<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> <span class="kw7">index</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_index<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> <span class="kw7">index</span><span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_index == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_index = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html#index" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html#index"  rel="nofollow">index</a></code> refers to the item&#039;s location in the data provider. One use for this property might be to display it at the beginning of a label.
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _owner<span class="sy0">:</span>List<span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> owner<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>List
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_owner<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> owner<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span>List<span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_owner == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_owner = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html#owner" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html#owner"  rel="nofollow">owner</a></code> property to access the <code>List</code> component that uses this item renderer. You might use this to listen for events from the <code>List</code>, such as to know when it begins scrolling.
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _data<span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> <span class="kw7">data</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_data<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> <span class="kw7">data</span><span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_data == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_data = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html#data" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html#data"  rel="nofollow">data</a></code> property contains the item displayed by the item renderer. The properties of this item can be used to display something in the item renderer. There are no rules for how to interpret the item&#039;s properties, but we&#039;ll show a basic example later.
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _isSelected<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> isSelected<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_isSelected<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> isSelected<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_isSelected == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_isSelected = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_SELECTED<span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/core/IToggle.html#isSelected" class="urlextern" title="http://feathersui.com/documentation/feathers/core/IToggle.html#isSelected"  rel="nofollow">isSelected</a></code> property indicates if the item has been selected. It&#039;s common for an item to be selected when it is touched, but that&#039;s not required.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html"  rel="nofollow">IGroupedListItemRenderer</a></code> interface is very similar. Instead of an <code>index</code> property, this type of item renderer has <code>groupIndex</code> and <code>itemIndex</code> properties to specify where in the data provider the item is located. An additional <code>layoutIndex</code> property specifies the item&#039;s order in the layout, including headers and footers. The <code>owner</code> property should be typed as <code>GroupedList</code> instead of <code>List</code>, obviously.
+</p>
+
+<p>
+Header and footer renderers in a <code>GroupedList</code> are similar to item renderers in a <code>GroupedList</code>. See the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">IGroupedListHeaderOrFooterRenderer</a></code> interface. These renderers have a <code>groupIndex</code> and a <code>layoutIndex</code>, but no <code>itemIndex</code>.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Implementing IListItemRenderer" [4367-7859] -->
+<h3 class="sectionedit5" id="adding_children">Adding Children</h3>
+<div class="level3">
+
+<p>
+We want to display a <code>Label</code> component, so let&#039;s add a member variable for it:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _label<span class="sy0">:</span>Label<span class="sy0">;</span></pre>
+
+<p>
+Next, we want to create a new instance and add it as a child. We need to override <code>initialize()</code> function:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label = <span class="kw1">new</span> Label<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code>initialize()</code> function is called once the very first time that the component is added to the stage. It&#039;s a good place to create sub-components and other children and possibly to do things like add event listeners that you don&#039;t intend to remove until the component is disposed. In general, it is better to use <code>initialize()</code> for this sort of thing instead of the constructor.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>initialize()</code> function and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Adding Children" [7860-8872] -->
+<h3 class="sectionedit6" id="parsing_the_data">Parsing the data</h3>
+<div class="level3">
+
+<p>
+Next, we want to access the <code>data</code> property and display something in our <code>Label</code> component. Let&#039;s start by overriding the <code>draw()</code> function and checking if the appropriate invalidation flag is set to indicate that the data has changed.
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> <span class="kw7">draw</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> dataInvalid<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw1">this</span><span class="sy0">.</span>isInvalid<span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">if</span><span class="br0">&#40;</span>dataInvalid<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You may remember that we called the <code>invalidate()</code> function in the setter functions above. In the <code>data</code> setter, we passed in <code>INVALIDATION_FLAG_DATA</code>. Inside the <code>draw()</code> function, we call <code>isInvalid()</code> to see if that flag has been set.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>draw()</code> function and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+<p>
+Let&#039;s add a <code>commitData()</code> function to call when the data changes:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_data<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">this</span><span class="sy0">.</span>_data<span class="sy0">.</span>label<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">else</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">null</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+For this particular item renderer, we&#039;re requiring all items in the data provider to have a <code>label</code> property that holds the text to display in the <code>Label</code> component. If we were building a generic item renderer, ideally, we might like to make that field name customizable, like the <code>labelField</code> property in <code>DefaultListItemRenderer</code>. However, let&#039;s keep it simple.
+</p>
+
+<p>
+<p><div class="noteclassic">
+Don&#039;t forget to handle the case where the data property is <code>null</code>. You don&#039;t want any runtime errors causing you trouble.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Parsing the data" [8873-10539] -->
+<h3 class="sectionedit7" id="measuring_the_item_renderer">Measuring the Item Renderer</h3>
+<div class="level3">
+
+<p>
+Next, we want the item renderer to be able to measure itself if its width and height property haven&#039;t been set another way. Before we get to that, let&#039;s add that <code>padding</code> property that we used in the example code above to add some extra space around the edges of the <code>Label</code> component:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _padding<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> padding<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> padding<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_padding == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_padding = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_LAYOUT<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+With that in place, let&#039;s add an <code>autoSizeIfNeeded()</code> function. This isn&#039;t something that&#039;s built into Feathers, but most of the core Feathers components have a function like this because it&#039;s a nice consistent place for a component to measure itself. To keep things easy to digest, we&#039;ll break it up into a few parts:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> autoSizeIfNeeded<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> needsWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw7">isNaN</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>explicitWidth<span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw2">var</span> needsHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw7">isNaN</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>explicitHeight<span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>needsWidth <span class="sy0">&amp;&amp;</span> <span class="sy0">!</span>needsHeight<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span> <span class="kw1">false</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span></pre>
+
+<p>
+Let&#039;s start by checking whether the width and height properties have been set. We have internal variables named <code>explicitWidth</code> and <code>explicitHeight</code> that will either be a valid number of pixels or they will be <code>NaN</code> if they aren&#039;t set. If both the width and the height have been set already, we can simply return without any measuring.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>explicitWidth</code> and <code>explicitHeight</code> variables, and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+<p>
+Next, we update the width and height of the <code>Label</code> sub-component. If the item renderer&#039;s explicit dimensions are <code>NaN</code>, then the explicit dimensions of the <code>Label</code> will be set to <code>NaN</code> too, meaning that the <code>Label</code> should measure itself too, just like the item renderer is doing.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> = <span class="kw1">this</span><span class="sy0">.</span>explicitWidth <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> = <span class="kw1">this</span><span class="sy0">.</span>explicitHeight <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Next, we want to use the width and height values from the <code>Label</code> to calculate the item renderer&#039;s final width and height:
+</p>
+<pre class="code as3"><span class="kw2">var</span> newWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>explicitWidth<span class="sy0">;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span>needsWidth<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	newWidth = <span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> <span class="sy0">+</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+<span class="kw2">var</span> newHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>explicitHeight<span class="sy0">;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span>needsHeight<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	newHeight = <span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In more complex item renderers, we might add together the dimensions of multiple sub-components. For this simple item renderer, we&#039;ll simply ask the <code>Label</code> sub-component for its width and height, and then we add the padding to those values.
+</p>
+
+<p>
+Finally, we tell Feathers what the final dimensions will be using the <code>setSizeInternal()</code> function:
+</p>
+<pre class="code as3"><span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>setSizeInternal<span class="br0">&#40;</span>newWidth<span class="sy0">,</span> newHeight<span class="sy0">,</span> <span class="kw1">false</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The return value is true if the dimensions are different than the last time that the component validated. We return this same value from <code>autoSizeIfNeeded()</code> for use in the <code>draw()</code> function.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>setSizeInternal()</code> function and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+<p>
+Speaking of the <code>draw()</code> function, we want to add some code to call the <code>autoSizeIfNeeded()</code> from there:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> <span class="kw7">draw</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> dataInvalid<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw1">this</span><span class="sy0">.</span>isInvalid<span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">if</span><span class="br0">&#40;</span>dataInvalid<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="kw1">this</span><span class="sy0">.</span>autoSizeIfNeeded<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Notice that we don&#039;t actually use the returned <code>Boolean</code> value. This particular component doesn&#039;t need it, but more complex components may use that value, along with <code>INVALIDATION_FLAG_SIZE</code>, to selectively call other functions.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Measuring the Item Renderer" [10540-14547] -->
+<h3 class="sectionedit8" id="adjusting_the_layout">Adjusting the layout</h3>
+<div class="level3">
+
+<p>
+We now have the final dimensions of the item renderer, so let&#039;s position and size the <code>Label</code> sub-component. Let&#039;s do that in a new <code>layoutChildren()</code> function:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> layoutChildren<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">x</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">y</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> = <span class="kw1">this</span><span class="sy0">.</span>actualWidth <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> = <span class="kw1">this</span><span class="sy0">.</span>actualHeight <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code>actualWidth</code> and <code>actualHeight</code> variables hold the final width and height of the item renderer. These variables are derived using a combination of the explicit dimensions and the measured dimensions that we calculated before passing them to <code>setSizeInternal()</code>.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>actualWidth</code> and <code>actualHeight</code> variables, and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+<p>
+We call the <code>layoutChildren()</code> function at the end of the <code>draw()</code> function:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> <span class="kw7">draw</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> dataInvalid<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw1">this</span><span class="sy0">.</span>isInvalid<span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">if</span><span class="br0">&#40;</span>dataInvalid<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="kw1">this</span><span class="sy0">.</span>autoSizeIfNeeded<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>layoutChildren<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Adjusting the layout" [14548-15831] -->
+<h2 class="sectionedit9" id="source_code">Source Code</h2>
+<div class="level2">
+
+<p>
+The complete source code for the <code>CustomFeathersControlItemRenderer</code> class is included below:
+</p>
+<pre class="code as3"><span class="kw4">package</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>Label<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>List<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>renderers<span class="sy0">.</span>IListItemRenderer<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>core<span class="sy0">.</span>FeathersControl<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">import</span> starling<span class="sy0">.</span>events<span class="sy0">.</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> CustomFeathersControlItemRenderer <span class="kw1">extends</span> FeathersControl implements IListItemRenderer
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> CustomFeathersControlItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _label<span class="sy0">:</span>Label<span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _index<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> <span class="kw7">index</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_index<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> <span class="kw7">index</span><span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_index == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_index = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _owner<span class="sy0">:</span>List<span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> owner<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>List
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_owner<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> owner<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span>List<span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_owner == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_owner = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _data<span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> <span class="kw7">data</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_data<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> <span class="kw7">data</span><span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_data == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_data = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _isSelected<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> isSelected<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_isSelected<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> isSelected<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_isSelected == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_isSelected = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_SELECTED<span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _padding<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> padding<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> padding<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_padding == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_padding = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_LAYOUT<span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>_label = <span class="kw1">new</span> Label<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+				<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_label<span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> <span class="kw7">draw</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw2">var</span> dataInvalid<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw1">this</span><span class="sy0">.</span>isInvalid<span class="br0">&#40;</span>INVALIDATION_FLAG_DATA<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+			<span class="kw1">if</span><span class="br0">&#40;</span>dataInvalid<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="kw1">this</span><span class="sy0">.</span>autoSizeIfNeeded<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>layoutChildren<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw3">function</span> autoSizeIfNeeded<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw2">var</span> needsWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw7">isNaN</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>explicitWidth<span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw2">var</span> needsHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw7">isNaN</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>explicitHeight<span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>needsWidth <span class="sy0">&amp;&amp;</span> <span class="sy0">!</span>needsHeight<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span> <span class="kw1">false</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> = <span class="kw1">this</span><span class="sy0">.</span>explicitWidth <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> = <span class="kw1">this</span><span class="sy0">.</span>explicitHeight <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+			<span class="kw2">var</span> newWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>explicitWidth<span class="sy0">;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span>needsWidth<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				newWidth = <span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> <span class="sy0">+</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw2">var</span> newHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>explicitHeight<span class="sy0">;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span>needsHeight<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				newHeight = <span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>setSizeInternal<span class="br0">&#40;</span>newWidth<span class="sy0">,</span> newHeight<span class="sy0">,</span> <span class="kw1">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw3">function</span> commitData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_data<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">this</span><span class="sy0">.</span>_data<span class="sy0">.</span>label<span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">else</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">text</span> = <span class="kw1">null</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw3">function</span> layoutChildren<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">x</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">y</span> = <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> = <span class="kw1">this</span><span class="sy0">.</span>actualWidth <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> = <span class="kw1">this</span><span class="sy0">.</span>actualHeight <span class="sy0">-</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT9 SECTION "Source Code" [15832-19327] -->
+<h2 class="sectionedit10" id="next_steps">Next Steps</h2>
+<div class="level2">
+
+<p>
+Looking to do more with your custom item renderer? Check out the <a href="/feathers/cookbook/start" class="wikilink1" title="feathers:cookbook:start">Feathers Cookbook</a> for “recipes” that show you how to implement typical features in custom item renderers.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Next Steps" [19328-19551] -->
+<h2 class="sectionedit11" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Introduction to Custom Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/cookbook/start#custom_item_renderers" class="wikilink1" title="feathers:cookbook:start">Feathers Cookbook: Recipes for Custom Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html"  rel="nofollow">IListItemRenderer API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html"  rel="nofollow">IGroupedListItemRenderer API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html"  rel="nofollow">IGroupedListHeaderOrFooterRenderer API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Related Links" [19552-] -->

@@ -1,0 +1,117 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_screen_component">How to use the Feathers Screen Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="/feathers/screen-navigator" class="wikilink1" title="feathers:screen-navigator">ScreenNavigator</a></code> component can display any Feathers control as a screen. However, using the <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html"  rel="nofollow">Screen</a></code> class as your base class for a new screen is recommended because it provides a number of convenient properties.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Screen Component" [1-370] -->
+<h2 class="sectionedit2" id="accessing_the_screennavigator">Accessing the ScreenNavigator</h2>
+<div class="level2">
+
+<p>
+The <a href="http://feathersui.com/documentation/feathers/controls/Screen.html#owner" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#owner"  rel="nofollow">owner</a> property provides access to the <code>ScreenNavigator</code> that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#showScreen()" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#showScreen()"  rel="nofollow">showScreen()</a></code>. You might also use it to listen to events like <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#event:transitionStart" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#event:transitionStart"  rel="nofollow">FeathersEventType.TRANSITION_START</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#event:transitionComplete" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#event:transitionComplete"  rel="nofollow">FeathersEventType.TRANSITION_COMPLETE</a></code> to determine when the screen has fully transitioned in or out.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Accessing the ScreenNavigator" [371-1189] -->
+<h2 class="sectionedit3" id="screen_id">Screen ID</h2>
+<div class="level2">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#screenID" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#screenID"  rel="nofollow">screenID</a></code> property refers to the string that the <code>ScreenNavigator</code> uses to identify the current screen when calling functions like <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#showScreen()" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#showScreen()"  rel="nofollow">showScreen()</a></code>
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Screen ID" [1190-1540] -->
+<h2 class="sectionedit4" id="scaling">Scaling</h2>
+<div class="level2">
+
+<p>
+Many Feathers <a href="/feathers/themes" class="wikilink1" title="feathers:themes">themes</a> automatically scale skins to the current device&#039;s DPI. Screens have a similar <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#dpiScale" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#dpiScale"  rel="nofollow">dpiScale</a></code> property which may be used for adjusting pixel-based measurements for layout. It is calculated using the current DPI and an <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#originalDPI" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#originalDPI"  rel="nofollow">originalDPI</a></code>, which is generally set by the theme. If it is not provided, the current DPI will be used, and the <code>dpiScale</code> will be <code>1</code>. Ideally, you would add layout properties like gaps or padding to your screen so that the theme can pass them in instead of calculating them yourself inside the screen.
+</p>
+
+<p>
+Similarly, screens have a <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#pixelScale" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#pixelScale"  rel="nofollow">pixelScale</a></code> property. If you pass in values for <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#originalWidth" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#originalWidth"  rel="nofollow">originalWidth</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#originalHeight" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#originalHeight"  rel="nofollow">originalHeight</a></code>, the <code>pixelScale</code> will be calculated to provide a value that allows your content to be scaled up or down and still fit inside the current <code>actualWidth</code> and <code>actualHeight</code> bounds. Similarly, the default value is <code>1</code>, which provides no scaling.
+</p>
+
+<p>
+In both cases, <code>dpiScale</code> and <code>pixelScale</code> are simply numeric values. No actual scaling is done to your content. They&#039;re simply helpful values that you might consider using when laying out children.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Scaling" [1541-3098] -->
+<h2 class="sectionedit5" id="hardware_key_handlers">Hardware Key Handlers</h2>
+<div class="level2">
+
+<p>
+Some devices, such as Android phones and tablets, have hardware keys. These may include a back button, a search button, and a menu button. The <code>Screen</code> class provides a way to provide callbacks for when each of these keys is pressed. These are shortcuts to avoid needing to listen to the keyboard events manually and prevent the default behavior.
+</p>
+
+<p>
+Screen provides <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#backButtonHandler" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#backButtonHandler"  rel="nofollow">backButtonHandler</a></code>, <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#menuButtonHandler" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#menuButtonHandler"  rel="nofollow">menuButtonHandler</a></code>, and <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html#searchButtonHandler" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html#searchButtonHandler"  rel="nofollow">searchButtonHandler</a></code>.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>backButtonHandler = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;the back button has been pressed.&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Hardware Key Handlers" [3099-3956] -->
+<h2 class="sectionedit6" id="skinning_a_screen">Skinning a Screen</h2>
+<div class="level2">
+
+<p>
+For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/Screen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html"  rel="nofollow">Screen API reference</a>.
+</p>
+
+<p>
+As mentioned above, <code>Screen</code> is a subclass of <code>LayoutGroup</code>. For more detailed information about the skinning options available to <code>Screen</code>, see <a href="/feathers/layout-group" class="wikilink1" title="feathers:layout-group">How to use the LayoutGroup component</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Skinning a Screen" [3957-4364] -->
+<h3 class="sectionedit7" id="targeting_a_screen_in_a_theme">Targeting a Screen in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Screen <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setScreenStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific screen to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">screen<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-screen&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Screen <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-screen&quot;</span><span class="sy0">,</span> setCustomScreenStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the screen&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the screen was added to the stage and initialized.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the screen&#039;s properties directly. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/Screen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html"  rel="nofollow">Screen API reference</a>.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Targeting a Screen in a theme" [4365-5442] -->
+<h2 class="sectionedit8" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/Screen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html"  rel="nofollow">Screen API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Related Links" [5443-] -->

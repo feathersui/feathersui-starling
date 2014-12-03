@@ -1,0 +1,231 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_callout_component">How to use the Feathers Callout component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html"  rel="nofollow">Callout</a></code> class renders content as a pop-up over all other content. Typically, a callout displays a rectangular border with an arrow or tail that points to an origin display object, such as a button. The arrow may appear on any of the callout&#039;s edges. The callout will close automatically when a touch is detected outside of the callout&#039;s bounds.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Callout component" [1-481] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+We create a <code>Callout</code> a bit differently than other components. Rather than calling a constructor, we call the static function <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#show%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#show%28%29"  rel="nofollow">Callout.show()</a></code>. Let&#039;s see how this works by displaying a Starling <code>Image</code> in a <code>Callout</code> when we touch a button. First, let&#039;s create the button:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>label = <span class="st0">&quot;Click Me&quot;</span><span class="sy0">;</span>
+button<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> button_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Then, in the listener for the <code>Event.TRIGGERED</code> event, we create the callout:
+</p>
+<pre class="code as3"><span class="kw3">function</span> button_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = Button<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw2">var</span> <span class="kw7">content</span><span class="sy0">:</span>Image = <span class="kw1">new</span> Image<span class="br0">&#40;</span> myTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw2">var</span> callout<span class="sy0">:</span>Callout = Callout<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> <span class="kw7">content</span><span class="sy0">,</span> button <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Two arguments are required. The first is the callout&#039;s content. This may be any Starling display object. The callout will be automatically resized to fit its content, unless you set <code>width</code> or <code>height</code> manually. The second argument is the origin of the callout. When the callout is shown, it will be automatically positioned so that its arrow points at the origin.
+</p>
+
+<p>
+A callout may be closed manually by calling the <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#close%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#close%28%29"  rel="nofollow">close()</a></code> function.
+</p>
+
+<p>
+Additional arguments are available for <code>Callout.show()</code>. Let&#039;s take a look at those.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [482-1975] -->
+<h3 class="sectionedit3" id="direction">Direction</h3>
+<div class="level3">
+
+<p>
+The next is the callout&#039;s direction, which is where the callout appears relative to its origin. By default, this is <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_ANY" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_ANY"  rel="nofollow">DIRECTION_ANY</a></code> which means that the callout may open <a href="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_UP" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_UP"  rel="nofollow">above</a>, <a href="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_DOWN" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_DOWN"  rel="nofollow">below</a>, to the <a href="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_LEFT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_LEFT"  rel="nofollow">left</a>, or to the <a href="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_RIGHT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_RIGHT"  rel="nofollow">right</a> of the origin. The exact direction will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to select a specific direction if you never want the callout to open in one of the other directions.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Direction" [1976-2905] -->
+<h3 class="sectionedit4" id="modality">Modality</h3>
+<div class="level3">
+
+<p>
+Following the direction is the <code>isModal</code> argument. This determines whether there is an overlay between the callout and the rest of the display list. When a callout is modal, the overlay blocks touches to everything that appears under the callout. The callout may be closed by touching outside the bounds of the callout, or by calling <code>close()</code> on the <code>Callout</code> instance. If the callout isn&#039;t modal, the callout will still close when the user touches something outside of the callout (the same as a modal callout), but there will be no overlay to block the touch, and anything below the callout will remain interactive.
+</p>
+
+<p>
+Callouts are displayed using the <code><a href="http://feathersui.com/documentation/feathers/core/PopUpManager.html" class="urlextern" title="http://feathersui.com/documentation/feathers/core/PopUpManager.html"  rel="nofollow">PopUpManager</a></code>. By default, modal overlays are managed by the <code>PopUpManager</code>, but you can give a custom overlay to callouts  (that will be different from other modal pop-ups) when you set the static property, <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#calloutOverlayFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#calloutOverlayFactory"  rel="nofollow">calloutOverlayFactory</a></code>:
+</p>
+<pre class="code as3">Callout<span class="sy0">.</span>calloutOverlayFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="kw1">new</span> TiledImage<span class="br0">&#40;</span> myTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+When <code><a href="http://feathersui.com/documentation/feathers/core/PopUpManager.html#addPopUp%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/core/PopUpManager.html#addPopUp%28%29"  rel="nofollow">PopUpManager.addPopUp()</a></code> is called to show the callout, the custom overlay factory will be passed in as an argument.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Modality" [2906-4324] -->
+<h3 class="sectionedit5" id="custom_callout_factory">Custom Callout Factory</h3>
+<div class="level3">
+
+<p>
+When a callout is created with <code>Callout.show()</code>, <code>Callout.calloutFactory()</code> is called to instantiate a <code>Callout</code> instance. The final argument of <code>Callout.show()</code> allows you to specify a custom callout factory. This let&#039;s you customize an individual callout to be different than other callouts. For instance, let&#039;s say that a particular callout should have different skins than others. We might create a callout factory function like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> customCalloutFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Callout
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> callout<span class="sy0">:</span>Callout = <span class="kw1">new</span> Callout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    callout<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-callout&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> callout<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+Callout<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> <span class="kw7">content</span><span class="sy0">,</span> origin<span class="sy0">,</span> Callout<span class="sy0">.</span>DIRECTION_ANY<span class="sy0">,</span> <span class="kw1">true</span><span class="sy0">,</span> customCalloutFactory <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+If you&#039;ve created a <a href="/feathers/custom-themes" class="wikilink1" title="feathers:custom-themes">custom theme</a>, you can set a styling function for a <code>Callout</code> with the style name <code>“custom-callout”</code> to provide different skins for this callout.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Custom Callout Factory" [4325-5256] -->
+<h2 class="sectionedit6" id="skinning_callouts">Skinning Callouts</h2>
+<div class="level2">
+
+<p>
+Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/Callout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html"  rel="nofollow">Callout API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+<p>
+Let&#039;s look at the skins first.
+</p>
+<pre class="code as3">callout<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> backgroundTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>topArrowSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> topArrowTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>rightArrowSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> rightArrowTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>bottomArrowSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> bottomArrowTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>leftArrowSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> leftArrowTexture <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The background and each of the directional arrows have separate skins. If your arrow skins need to seamlessly transition into the background while covering up part of the background&#039;s border, you might use a negative gap for each of the arrows:
+</p>
+<pre class="code as3">callout<span class="sy0">.</span>topArrowGap = callout<span class="sy0">.</span>rightArrowGap = callout<span class="sy0">.</span>bottomArrowGap =
+    callout<span class="sy0">.</span>leftArrowGap = <span class="sy0">-</span><span class="nu0">2</span><span class="sy0">;</span></pre>
+
+<p>
+Speaking of borders, you can use padding styles to ensure that the callout&#039;s edges are visible around the callout&#039;s content.
+</p>
+<pre class="code as3">callout<span class="sy0">.</span>topArrowGap = <span class="nu0">6</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>rightArrowGap = <span class="nu0">8</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>bottomArrowGap = <span class="nu0">6</span><span class="sy0">;</span>
+callout<span class="sy0">.</span>leftArrowGap = <span class="nu0">8</span><span class="sy0">;</span></pre>
+
+<p>
+Finally, there are static properties for the stage&#039;s padding. These ensure that callouts are positioned a certain number of pixels away from the edge of the stage.
+</p>
+<pre class="code as3">Callout<span class="sy0">.</span>stagePaddingTop = Callout<span class="sy0">.</span>stagePaddingRight = Callout<span class="sy0">.</span>stagePaddingBottom =
+    Callout<span class="sy0">.</span>stagePaddingLeft = <span class="nu0">10</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Skinning Callouts" [5257-6870] -->
+<h3 class="sectionedit7" id="targeting_a_callout_in_a_theme">Targeting a Callout in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Callout <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setCalloutStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific callout to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">callout<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-callout&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can specify the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Callout <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-callout&quot;</span><span class="sy0">,</span> setCustomCalloutStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the callout&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the callout was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the callout&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Targeting a Callout in a theme" [6871-7875] -->
+<h3 class="sectionedit8" id="skinning_callouts_without_a_theme">Skinning Callouts without a theme</h3>
+<div class="level3">
+
+<p>
+If you&#039;re not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#calloutFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#calloutFactory"  rel="nofollow">Callout.calloutFactory</a></code> static property to a function that provides skins for the callout. This factory will be called any time that <code>Callout.show()</code> is used to create a callout.
+</p>
+<pre class="code as3"><span class="kw3">function</span> skinnedCalloutFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Callout
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> callout<span class="sy0">:</span>Callout = <span class="kw1">new</span> Callout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    callout<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> myTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    callout<span class="sy0">.</span>topArrowSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> myTopTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">// etc...</span>
+    <span class="kw1">return</span> callout<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+Callout<span class="sy0">.</span>calloutFactory = skinnedCalloutFactory<span class="sy0">;</span></pre>
+
+<p>
+Another option is to pass a callout factory to <code>Callout.show()</code>. This allows you to create a specific callout differently than the default global <code>Callout.calloutFactory</code>.
+</p>
+<pre class="code as3"><span class="kw3">function</span> skinnedCalloutFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Callout
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> callout<span class="sy0">:</span>Callout = <span class="kw1">new</span> Callout<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    callout<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> myTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    callout<span class="sy0">.</span>topArrowSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> myTopTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">// etc...</span>
+    <span class="kw1">return</span> callout<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+Callout<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> <span class="kw7">content</span><span class="sy0">,</span> origin<span class="sy0">,</span> directions<span class="sy0">,</span> isModal<span class="sy0">,</span> skinnedCalloutFactory <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You should generally always skin the callouts with a factory or with a theme instead of passing the skins to the <code>Callout</code> instance returned by calling <code>Callout.show()</code>. If you skin an callout after <code>Callout.show()</code> is called, it may not be positioned or sized correctly.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Skinning Callouts without a theme" [7876-9439] -->
+<h2 class="sectionedit9" id="disposal">Disposal</h2>
+<div class="level2">
+
+<p>
+When manually closing the callout, you may call the <code><span class="curid"><a href="/feathers/callout" class="wikilink1" title="feathers:callout">close()</a></span></code> function and pass in <code>true</code> or <code>false</code> for the <code>dispose</code> argument.
+</p>
+
+<p>
+It&#039;s possible that the callout will close itself automatically. Properties like <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#closeOnTouchBeganOutside" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#closeOnTouchBeganOutside"  rel="nofollow">closeOnTouchBeganOutside</a></code>, <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#closeOnTouchEndedOutside" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#closeOnTouchEndedOutside"  rel="nofollow">closeOnTouchEndedOutside</a></code>, and <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#closeOnKeys" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#closeOnKeys"  rel="nofollow">closeOnKeys</a></code> allow this behavior to be customized.
+</p>
+
+<p>
+By default, when the callout closes itself, it will also dispose itself. Set the <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#disposeOnSelfClose" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#disposeOnSelfClose"  rel="nofollow">disposeOnSelfClose</a></code> property to <code>false</code> if you intend to reuse the callout. Simply add it to the <code><a href="/feathers/pop-ups" class="wikilink1" title="feathers:pop-ups">PopUpManager</a></code> again to reuse it.
+</p>
+
+<p>
+Finally, you may want to reuse the callout&#039;s content. By default, the callout will also dispose its content when it is disposed. Set the <code><a href="http://feathersui.com/documentation/feathers/controls/Callout.html#disposeContent" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html#disposeContent"  rel="nofollow">disposeContent</a></code> property to <code>false</code> to allow your code to reuse the callout&#039;s content in another callout or elsewhere on the display list after the original callout is disposed.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Disposal" [9440-10807] -->
+<h2 class="sectionedit10" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/Callout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Callout.html"  rel="nofollow">Callout API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Related Links" [10808-] -->

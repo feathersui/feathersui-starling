@@ -1,0 +1,151 @@
+
+<h1 class="sectionedit1" id="feathers_coding_conventions_for_contributors">Feathers Coding Conventions for Contributors</h1>
+<div class="level1">
+
+<p>
+This is the code formatting style used within the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers</a> library. When contributing code to Feathers, you are required to use this style. Pull Requests to the <a href="https://github.com/joshtynjala/feathers" class="urlextern" title="https://github.com/joshtynjala/feathers"  rel="nofollow">Feathers project on Github</a> that are formatted with a different style will be rejected. The author respects that you may have your own personal style, and the author would attempt to follow your style if he were to contribute to your open source project. Save him some time so that he doesn&#039;t need to manually reformat your contributed code.
+</p>
+
+<p>
+If you are not contributing code to Feathers, then please feel no obligation to follow this style guide when working with the library. This guide is aimed at developers who wish to contribute bug fixes and enhancements to Feathers.
+</p>
+
+<p>
+The terms “public” and “private” are used below in a general sense. When the specific <code>public</code> or <code>private</code> namespace is referenced, it will be clearly styled. When not marked as a namespace, public refers to any <abbr title="Application Programming Interface">API</abbr> that is meant to be exposed to someone using a particular class. It may include things like <code>public</code> members and <code>protected</code> members that are meant to be accessed in subclasses. Similarly, private refers to APIs that are meant to be used only internally. Private APIs may be part of the <code>protected</code> namespace, but using these APIs in subclasses is an at-your-own-risk convenience only.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Feathers Coding Conventions for Contributors" [1-1463] -->
+<h2 class="sectionedit2" id="whitespace">Whitespace</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> Use tabs to indent lines of code. Do not use spaces for indentation.</div>
+</li>
+<li class="level1"><div class="li"> Place one space before and after operators like +, -, *, /, ?, :, &lt;, &gt;, ==, etc.</div>
+</li>
+<li class="level1"><div class="li"> Place no spaces between if/for/while/etc. and the opening parenthesis.</div>
+</li>
+<li class="level1"><div class="li"> One empty line should appear between functions.</div>
+</li>
+<li class="level1"><div class="li"> All blocks should be indented by one tab more than their parent block.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT2 SECTION "Whitespace" [1464-1847] -->
+<h2 class="sectionedit3" id="line_length">Line Length</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> Try to keep lines shorter than 80 characters. If a statement is longer than 80 characters, try to break it before 80, and continue on the next line with one indent more than the first line.</div>
+</li>
+<li class="level1"><div class="li"> Particularly messy <code>if</code> statements should be organized with extra parentheses and new lines to make them as readable as possible. It may be better to break up parts into separate variables.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT3 SECTION "Line Length" [1848-2262] -->
+<h2 class="sectionedit4" id="braces">Braces</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> All opening braces <code>{</code> should be placed on a new line. Braces should not appear at the end of the line.</div>
+</li>
+<li class="level1"><div class="li"> All if/for/while and other constructs must always use braces, even if the language considers them optional for content that is only one line.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT4 SECTION "Braces" [2263-2543] -->
+<h2 class="sectionedit5" id="naming">Naming</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> Names should be descriptive and clear. Extreme brevity is not a goal.</div>
+</li>
+<li class="level1"><div class="li"> When an <abbr title="Application Programming Interface">API</abbr> is similar to one in Apache Flex or Adobe&#039;s Flash Pro ActionScript 3 components, the same name or a similar one is recommended for use in Feathers.</div>
+</li>
+<li class="level1"><div class="li"> Names should not be abbreviated, but commonly recognized acronyms are generally acceptable. Acronyms should have every letter capitalized.</div>
+</li>
+<li class="level1"><div class="li"> Classes should use <code>CamelCaseNames</code>, and they must start with a capital letter.</div>
+</li>
+<li class="level1"><div class="li"> Variable and functions should use <code>camelCaseNames</code>, and they must start with a lower-case letter.</div>
+</li>
+<li class="level1"><div class="li"> However, private member variables or variables associated with a getter or setter should start with an underscore <code>_</code> followed by a lower-case letter.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT5 SECTION "Naming" [2544-3292] -->
+<h2 class="sectionedit6" id="access_levels">Access Levels</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> In general, properties and methods should be <code>public</code> or <code>protected</code>. Use of <code>private</code> is discouraged because it limits developers trying to extend components.</div>
+</li>
+<li class="level1"><div class="li"> Custom namespaces are strongly discouraged.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT6 SECTION "Access Levels" [3293-3537] -->
+<h2 class="sectionedit7" id="class_organization">Class Organization</h2>
+<div class="level2">
+
+<p>
+In general, classes should be organized in the following manner:
+</p>
+<ol>
+<li class="level1"><div class="li"> <code>static</code> Variables</div>
+</li>
+<li class="level1"><div class="li"> <code>static</code> Functions</div>
+</li>
+<li class="level1"><div class="li"> Constructor</div>
+</li>
+<li class="level1"><div class="li"> Member Variables and Properties</div>
+</li>
+<li class="level1"><div class="li"> <code>public</code> Member Functions</div>
+</li>
+<li class="level1"><div class="li"> <code>protected</code> Member Functions</div>
+</li>
+<li class="level1"><div class="li"> <code>private</code> Member Functions</div>
+</li>
+</ol>
+
+</div>
+<!-- EDIT7 SECTION "Class Organization" [3538-3837] -->
+<h3 class="sectionedit8" id="additional_notes_on_class_organization">Additional Notes on Class Organization</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> Public getters and setters should appear immediately after the private variable that they expose.</div>
+</li>
+<li class="level1"><div class="li"> In general, within a function category (such as <code>public</code> or <code>protected</code>), overridden functions should appear first, followed by new functions, followed by event listeners. If there&#039;s a mix of event listeners and signal listeners, signal listeners should appear before event listeners.</div>
+</li>
+<li class="level1"><div class="li"> Static functions should follow the same access level ordering as member functions.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT8 SECTION "Additional Notes on Class Organization" [3838-4369] -->
+<h2 class="sectionedit9" id="the_this_keyword">The this keyword</h2>
+<div class="level2">
+
+<p>
+The <code>this</code> keyword should be used to reference member variables and functions. The author is particularly serious about this one, in case you didn&#039;t notice when you looked at the Feathers source code.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "The this keyword" [4370-4602] -->
+<h2 class="sectionedit10" id="documentation">Documentation</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> Use <a href="http://help.adobe.com/en_US/flex/using/WSd0ded3821e0d52fe1e63e3d11c2f44bb7b-7fed.html" class="urlextern" title="http://help.adobe.com/en_US/flex/using/WSd0ded3821e0d52fe1e63e3d11c2f44bb7b-7fed.html"  rel="nofollow">asdoc comments</a> for all public APIs.</div>
+</li>
+<li class="level1"><div class="li"> Mark private APIs <code>@private</code> so that they are hidden from the generated <abbr title="HyperText Markup Language">HTML</abbr>. If needed, they may still contain a description, but it will only be seen when reading the source code.</div>
+</li>
+<li class="level1"><div class="li"> Use <code>&lt;code&gt;&lt;/code&gt;</code> tags when referring to specific classes, variables, properties, and functions in your descriptions.</div>
+</li>
+<li class="level1"><div class="li"> Consider adding a <code>@see</code> tag when you refer to other public APIs or classes.</div>
+</li>
+<li class="level1"><div class="li"> When referring to a measurement of some sort, such as dimensions or time, <em>always</em> include the unit, such as pixels or seconds.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT10 SECTION "Documentation" [4603-] -->

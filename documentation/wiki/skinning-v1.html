@@ -1,0 +1,146 @@
+
+<h1 class="sectionedit1" id="skinning_feathers_10_components_without_a_theme">Skinning Feathers 1.0 Components Without a Theme</h1>
+<div class="level1">
+
+<p>
+<a href="/feathers/themes" class="wikilink1" title="feathers:themes">Feathers themes</a> are highly recommended for the convenience that they provide. A theme class can keep all of your project&#039;s skinning code in one place. A theme can automatically skin any component added to the display list, including providing separate skins for different variations of the same type of component. However, not all Feathers developers will want to use themes, and Feathers provides APIs to skin all components and their sub-components without using a monolithic theme class.
+</p>
+
+<p>
+See the documentation for the <a href="/feathers/start#feathers_components" class="wikilink1" title="feathers:start">individual Feathers components</a> for complete details on how that specific component may be skinned. Below, we&#039;ll outline skinning idioms that are common to all Feathers components.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Skinning Feathers 1.0 Components Without a Theme" [1-807] -->
+<h2 class="sectionedit2" id="sub-component_factories">Sub-Component Factories</h2>
+<div class="level2">
+
+<p>
+Sub-components may be skinned using a <em>factory</em>. This is a function that is called when a component needs to create one of its sub-components. It receives no arguments and returns an instance of the sub-component. Below, we see a factory for a <code><a href="/feathers/slider" class="wikilink1" title="feathers:slider">Slider</a></code> component&#039;s thumb sub-component:
+</p>
+<pre class="code as3">slider<span class="sy0">.</span>thumbFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> thumb<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    thumb<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> upTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    thumb<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> downTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> thumb<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+As you can see, this function creates a new <code><a href="/feathers/button" class="wikilink1" title="feathers:button">Button</a></code> instance and provides it with some skins before returning it.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Sub-Component Factories" [808-1504] -->
+<h3 class="sectionedit3" id="sub-components_with_sub-components">Sub-Components with Sub-Components</h3>
+<div class="level3">
+
+<p>
+If a sub-component is complex enough to have sub-components of its own, you can provide separate factories for those as well. Simply pass a reference to a function. In the example below, we&#039;ll skin the scroll bar on a <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> component:
+</p>
+<pre class="code as3"><span class="kw3">function</span> simpleScrollBarThumbFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> thumb<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    thumb<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Scale3Image<span class="br0">&#40;</span> thumbTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> thumb<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw3">function</span> simpleScrollBarFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>SimpleScrollBar
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> scrollBar<span class="sy0">:</span>SimpleScrollBar = <span class="kw1">new</span> SimpleScrollBar<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    scrollBar<span class="sy0">.</span>thumbFactory = simpleScrollBarThumbFactory<span class="sy0">;</span>
+    <span class="kw1">return</span> scrollBar<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+list<span class="sy0">.</span>verticalScrollBarFactory = simpleScrollBarFactory<span class="sy0">;</span></pre>
+
+<p>
+If you prefer you could use closures to place the entire body of <code>simpleScrollBarThumbFactory</code> inside <code>simpleScrollBarFactory</code>. However, many levels of factory nesting may make your code more difficult to read, so it&#039;s not recommended, in most cases.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Sub-Components with Sub-Components" [1505-2488] -->
+<h3 class="sectionedit4" id="multiple_factories">Multiple Factories</h3>
+<div class="level3">
+
+<p>
+Does your component already have a factory for skinning, and you want to set additional properties on the sub-component? It&#039;s easy to reuse the existing factory in your new factory. Below, we&#039;ve already skinned a <code><a href="/feathers/panel" class="wikilink1" title="feathers:panel">Panel</a></code> component&#039;s header in a factory, but we also want to set its title:
+</p>
+<pre class="code as3"><span class="kw2">var</span> headerWithSkinsFactory<span class="sy0">:</span><a href="http://www.google.com/search?q=function%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:function.html"><span class="kw5">Function</span></a> = panel<span class="sy0">.</span>headerFactory<span class="sy0">;</span>
+panel<span class="sy0">.</span>headerFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> header<span class="sy0">:</span>Header = headerWithSkinsFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    header<span class="sy0">.</span>title = <span class="st0">&quot;Tools&quot;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> header<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+You could certainly provide all of the code for skinning and setting other properties in a single factory. However, if you would like to make your skinning code reusable across many <code>Header</code> components that may have different titles (or different <code>leftItems</code> or <code>rightItems</code>, for that matter), this approach is essential.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Multiple Factories" [2489-3369] -->
+<h2 class="sectionedit5" id="sub-component_properties">Sub-Component Properties</h2>
+<div class="level2">
+
+<p>
+Instead of using factories to change properties, you can pass those properties into the parent component, which will set them on its child when it redraws. This is slightly worse for performance, so factories are recommended in most cases. However, this can be useful for adjusting properties and skins long after a sub-component has been created.
+</p>
+
+<p>
+Reusing the slider example from the beginning, we&#039;ll pass in the skins without a factory:
+</p>
+<pre class="code as3">slider<span class="sy0">.</span>thumbProperties<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> upTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+slider<span class="sy0">.</span>thumbProperties<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> downTextures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Passing in properties this way will <strong>not</strong> set them directly on the sub-component right away. They will be passed on before the next frame is rendered. In general, you should not use this method to <em>get</em> the value of a property. You should only use it to <em>set</em> the value of a property. The <code>thumbProperties</code> object does not know anything about the actual <code>Button</code> instance that it&#039;s storing data for. The following code will result in an error, unless you&#039;ve actually set <code>isSelected</code> yourself:
+</p>
+<pre class="code as3"><span class="kw2">var</span> isSelected<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = slider<span class="sy0">.</span>thumbProperties<span class="sy0">.</span>isSelected<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Sub-Component Properties" [3370-4588] -->
+<h3 class="sectionedit6" id="nesting_sub-component_properties">Nesting Sub-Component Properties</h3>
+<div class="level3">
+
+<p>
+You can nest sub-component properties objects too. It&#039;s a little messy, though. In general, it&#039;s better to provide factories, but the option is here, if needed.
+</p>
+
+<p>
+Let&#039;s use the scroll bar skinning example again, but this time use sub-component properties instead of factories::
+</p>
+<pre class="code as3">list<span class="sy0">.</span>verticalScrollBarProperties<span class="sy0">.</span>@thumbProperties<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Scale3Image<span class="br0">&#40;</span> thumbTextures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Notice the use of the <em>attribute</em> operator (<code>@</code>) here. The attribute operator tells the system to create a sub-component properties object inside another sub-component properties object, but only if it doesn&#039;t already exist. It should not be used for regular properties, though, so that&#039;s why <code>defaultSkin</code> doesn&#039;t start with <code>@</code>. Again, its only for sub-component properties objects that are inside other sub-component properties objects.
+</p>
+
+<p>
+A benefit of this syntax is that it helps you avoid overwriting objects that may already exist. If you set the <code>thumbProperties</code> with a whole new object, like we&#039;re about to do below, it would replace any values inside <code>thumbProperties</code> that may have been set elsewhere in your application:
+</p>
+<pre class="code as3"><span class="co1">//WARNING: this may overwrite things!</span>
+list<span class="sy0">.</span>verticalScrollBarProperties<span class="sy0">.</span>thumbProperties =
+<span class="br0">&#123;</span>
+   defaultSkin<span class="sy0">:</span> <span class="kw1">new</span> Scale3Image<span class="br0">&#40;</span> thumbTextures <span class="br0">&#41;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+Instead, you should use <code>@thumbProperties</code> and pass in properties individually so that anything that was already in <code>thumbProperties</code> isn&#039;t removed.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Nesting Sub-Component Properties" [4589-6090] -->
+<h2 class="sectionedit7" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Introduction to Feathers Themes</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Related Links" [6091-] -->

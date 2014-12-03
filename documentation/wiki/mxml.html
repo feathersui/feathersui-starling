@@ -1,0 +1,76 @@
+
+<h1 class="sectionedit1" id="feathers_mxml_support">Feathers MXML Support</h1>
+<div class="level1">
+
+<p>
+Feathers has partial support for MXML, with some limitations. You can instantiate components, containers, layouts, and collections in XML. You can also listen for events. However, binding and setting a component&#039;s id are not supported with Feathers in MXML due to incompatibilities between the native <code>EventDispatcher</code> and the Starling Framework <code>EventDispatcher</code>.
+</p>
+
+<p>
+<p><div class="noteclassic">
+MXML is not supported in the official Feathers builds because they are built with ASC 2.0, which doesn&#039;t compile MXML. However, if you build with the Flex SDK, you can include MXML support. See <a href="https://github.com/joshtynjala/feathers/issues/186" class="urlextern" title="https://github.com/joshtynjala/feathers/issues/186"  rel="nofollow">Feathers issue #186 on Github</a> for instructions about how to use the Feathers build script to compile your own custom Feathers SWC that includes MXML support.
+
+</div></p>
+</p>
+
+<p>
+The Feathers MXML namespace is <code>library://ns.feathersui.com/mxml</code>.
+</p>
+
+<p>
+Let&#039;s create an MXML document for a <code><a href="/feathers/panel-screen" class="wikilink1" title="feathers:panel-screen">PanelScreen</a></code>:
+</p>
+<pre class="code mxml"><span class="sc3"><span class="re1">&lt;feathers:PanelScreen</span> xmlns:fx=<span class="st0">&quot;http://ns.adobe.com/mxml/2009&quot;</span></span>
+<span class="sc3">    xmlns:feathers=<span class="st0">&quot;library://ns.feathersui.com/mxml&quot;</span><span class="re2">&gt;</span></span>
+<span class="sc3"><span class="re1">&lt;/feathers:PanelScreen</span><span class="re2">&gt;</span></span></pre>
+
+<p>
+Just like with Flex, you can add children as child elements of a container in the MXML. For instance, you might add a <code>Button</code>:
+</p>
+<pre class="code mxml"><span class="sc3"><span class="re1">&lt;feathers:PanelScreen</span> xmlns:fx=<span class="st0">&quot;http://ns.adobe.com/mxml/2009&quot;</span></span>
+<span class="sc3">    xmlns:feathers=<span class="st0">&quot;library://ns.feathersui.com/mxml&quot;</span><span class="re2">&gt;</span></span>
+&nbsp;
+    <span class="sc3"><span class="re1">&lt;feathers:Button</span> label=<span class="st0">&quot;Click Me&quot;</span><span class="re2">/&gt;</span></span>
+<span class="sc3"><span class="re1">&lt;/feathers:PanelScreen</span><span class="re2">&gt;</span></span></pre>
+
+<p>
+Let&#039;s add an event listener to the button:
+</p>
+<pre class="code mxml"><span class="sc3"><span class="re1">&lt;feathers:Button</span> label=<span class="st0">&quot;Click Me&quot;</span> triggered=<span class="st0">&quot;button_triggeredHandler(event)&quot;</span><span class="re2">/&gt;</span></span>
+&nbsp;
+<span class="sc3"><span class="re1">&lt;fx:Script</span><span class="re2">&gt;</span>&lt;!<span class="br0">&#91;</span>CDATA<span class="br0">&#91;</span></span>
+&nbsp;
+<span class="sc3">    import starling.events.Event;</span>
+&nbsp;
+<span class="sc3">    private function button_triggeredHandler<span class="br0">&#40;</span>event:starling.events.Event<span class="br0">&#41;</span>:void</span>
+<span class="sc3">    <span class="br0">&#123;</span></span>
+<span class="sc3">    <span class="br0">&#125;</span></span>
+&nbsp;
+<span class="sc3"><span class="br0">&#93;</span><span class="br0">&#93;</span><span class="re2">&gt;</span><span class="re1">&lt;/fx:Script</span><span class="re2">&gt;</span></span></pre>
+
+<p>
+Notice that we need to use the fully qualified class name <code>starling.events.Event</code> due to the fact that MXML implicitly imports <code>flash.events.Event</code>.
+</p>
+
+<p>
+Let&#039;s adjust the layout a bit to put the button in the center of the screen:
+</p>
+<pre class="code mxml"><span class="sc3"><span class="re1">&lt;feathers:layout</span><span class="re2">&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;feathers:AnchorLayout</span><span class="re2">/&gt;</span></span>
+<span class="sc3"><span class="re1">&lt;/feathers:layout</span><span class="re2">&gt;</span></span>
+&nbsp;
+<span class="sc3"><span class="re1">&lt;feathers:Button</span> label=<span class="st0">&quot;Click Me&quot;</span> triggered=<span class="st0">&quot;button_triggeredHandler(event)&quot;</span><span class="re2">&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;feathers:layoutData</span><span class="re2">&gt;</span></span>
+        <span class="sc3"><span class="re1">&lt;feathers:AnchorLayoutData</span> horizontalCenter=<span class="st0">&quot;0&quot;</span> verticalCenter=<span class="st0">&quot;0&quot;</span><span class="re2">/&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;/feathers:layoutData</span><span class="re2">&gt;</span></span>
+<span class="sc3"><span class="re1">&lt;/feathers:Button</span><span class="re2">&gt;</span></span></pre>
+
+<p>
+That&#039;s the basics. For more detailed sample code, take a look at the <a href="https://github.com/joshtynjala/feathers/blob/master/examples/MXML" class="urlextern" title="https://github.com/joshtynjala/feathers/blob/master/examples/MXML"  rel="nofollow">MXML Example on Github</a>.
+</p>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>

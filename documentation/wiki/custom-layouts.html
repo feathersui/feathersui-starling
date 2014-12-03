@@ -1,0 +1,461 @@
+
+<h1 class="sectionedit1" id="introduction_to_custom_layouts_for_feathers_components">Introduction to Custom Layouts for Feathers Components</h1>
+<div class="level1">
+
+<p>
+Several Feathers components support the ability to customize layouts. <a href="/feathers/start#layouts" class="wikilink1" title="feathers:start">Several layouts</a> are provided by Feathers out of the box. However, if those don&#039;t quite fit your needs, you can create custom layouts by implementing the <code><a href="http://feathersui.com/documentation/feathers/layout/ILayout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ILayout.html"  rel="nofollow">ILayout</a></code> interface. This interface provides the most basic <abbr title="Application Programming Interface">API</abbr> required to use a custom layout with a Feathers component. A number of other interfaces are available with more advanced functionality, and we&#039;ll look at those below.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Introduction to Custom Layouts for Feathers Components" [1-613] -->
+<h2 class="sectionedit2" id="a_simple_example_layout">A Simple Example Layout</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by looking at the complete source code for a custom layout. Don&#039;t worry, we&#039;ll look at more closely it in smaller, digestible chunks in a moment.
+</p>
+
+<p>
+This custom layout will be similar to <code><a href="/feathers/vertical-layout" class="wikilink1" title="feathers:vertical-layout">VerticalLayout</a></code>, but it won&#039;t offer so many options available to the built-in version. This <code>SimpleVerticalLayout</code> class will position items from top to bottom, aligned to the top and left. We&#039;ll offer one customizable property, a gap between items, to show how to implement something like that.
+</p>
+<pre class="code as3"><span class="kw4">package</span> feathersx<span class="sy0">.</span>layout
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>core<span class="sy0">.</span>IFeathersControl<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>layout<span class="sy0">.</span>ILayout<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>layout<span class="sy0">.</span>LayoutBoundsResult<span class="sy0">;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>layout<span class="sy0">.</span>ViewPortBounds<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">import</span> <span class="kw6">flash.geom</span><span class="sy0">.</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">import</span> starling<span class="sy0">.</span>display<span class="sy0">.</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a><span class="sy0">;</span>
+	<span class="kw1">import</span> starling<span class="sy0">.</span>events<span class="sy0">.</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">;</span>
+	<span class="kw1">import</span> starling<span class="sy0">.</span>events<span class="sy0">.</span><a href="http://www.google.com/search?q=eventdispatcher%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:eventdispatcher.html"><span class="kw5">EventDispatcher</span></a><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> SimpleVerticalLayout <span class="kw1">extends</span> <a href="http://www.google.com/search?q=eventdispatcher%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:eventdispatcher.html"><span class="kw5">EventDispatcher</span></a> implements ILayout
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> SimpleVerticalLayout<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">protected</span> <span class="kw2">var</span> _gap<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> gap<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a>
+		<span class="br0">&#123;</span>
+			<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_gap<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> gap<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_gap == <span class="kw7">value</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">return</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>_gap = <span class="kw7">value</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> layout<span class="br0">&#40;</span>items<span class="sy0">:</span>Vector<span class="sy0">.&lt;</span>DisplayObject<span class="sy0">&gt;,</span> viewPortBounds<span class="sy0">:</span>ViewPortBounds = <span class="kw1">null</span><span class="sy0">,</span> result<span class="sy0">:</span>LayoutBoundsResult = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span>LayoutBoundsResult
+		<span class="br0">&#123;</span>
+			<span class="co1">// initialize the view port's position and dimensions</span>
+			<span class="kw2">var</span> startX<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+			<span class="kw2">var</span> startY<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+			<span class="kw2">var</span> explicitWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw8">NaN</span><span class="sy0">;</span>
+			<span class="kw2">var</span> explicitHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw8">NaN</span><span class="sy0">;</span>
+			<span class="kw2">var</span> minWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+			<span class="kw2">var</span> minHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+			<span class="kw2">var</span> maxWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">.</span><span class="kw8">POSITIVE_INFINITY</span><span class="sy0">;</span>
+			<span class="kw2">var</span> maxHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">.</span><span class="kw8">POSITIVE_INFINITY</span><span class="sy0">;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span>viewPortBounds<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				startX = viewPortBounds<span class="sy0">.</span><span class="kw7">x</span><span class="sy0">;</span>
+				startY = viewPortBounds<span class="sy0">.</span><span class="kw7">y</span><span class="sy0">;</span>
+				explicitWidth = viewPortBounds<span class="sy0">.</span>explicitWidth<span class="sy0">;</span>
+				explicitHeight = viewPortBounds<span class="sy0">.</span>explicitHeight<span class="sy0">;</span>
+				minWidth = viewPortBounds<span class="sy0">.</span>minWidth<span class="sy0">;</span>
+				minHeight = viewPortBounds<span class="sy0">.</span>minHeight<span class="sy0">;</span>
+				maxWidth = viewPortBounds<span class="sy0">.</span>maxWidth<span class="sy0">;</span>
+				maxHeight = viewPortBounds<span class="sy0">.</span>maxHeight<span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="co1">// loop through the items and position them</span>
+			<span class="kw2">var</span> positionY<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = startY<span class="sy0">;</span>
+			<span class="kw2">var</span> maxItemWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+			<span class="kw2">var</span> itemCount<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = items<span class="sy0">.</span><span class="kw7">length</span><span class="sy0">;</span>
+			<span class="kw1">for</span><span class="br0">&#40;</span><span class="kw2">var</span> i<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> itemCount<span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw2">var</span> item<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a> = items<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span>
+				<span class="co1">// skip items that aren't included in the layout</span>
+				<span class="kw2">var</span> layoutItem<span class="sy0">:</span>ILayoutDisplayObject = item <span class="kw1">as</span> ILayoutDisplayObject<span class="sy0">;</span>
+				<span class="kw1">if</span><span class="br0">&#40;</span>layoutItem <span class="sy0">&amp;&amp;</span> <span class="sy0">!</span>layoutItem<span class="sy0">.</span>includeInLayout<span class="br0">&#41;</span>
+				<span class="br0">&#123;</span>
+					<span class="kw1">continue</span><span class="sy0">;</span>
+				<span class="br0">&#125;</span>
+				<span class="co1">// special case for Feathers components</span>
+				<span class="kw1">if</span><span class="br0">&#40;</span>item <span class="kw1">is</span> IFeathersControl<span class="br0">&#41;</span>
+				<span class="br0">&#123;</span>
+					IFeathersControl<span class="br0">&#40;</span>item<span class="br0">&#41;</span><span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+				<span class="br0">&#125;</span>
+				item<span class="sy0">.</span><span class="kw7">x</span> = startX<span class="sy0">;</span>
+				item<span class="sy0">.</span><span class="kw7">y</span> = positionY<span class="sy0">;</span>
+				positionY <span class="sy0">+</span>= item<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="kw1">this</span><span class="sy0">.</span>_gap<span class="sy0">;</span>
+&nbsp;
+				<span class="co1">// used for the final content width below</span>
+				maxItemWidth = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>maxItemWidth<span class="sy0">,</span> item<span class="sy0">.</span><span class="kw7">width</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="co1">// used for the final content height below</span>
+			positionY <span class="sy0">-</span>= <span class="br0">&#40;</span>startY <span class="sy0">+</span> <span class="kw1">this</span><span class="sy0">.</span>_gap<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+			<span class="co1">// prepare the result object and return it</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>result<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				result = <span class="kw1">new</span> LayoutBoundsResult<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw2">var</span> viewPortWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = explicitWidth<span class="sy0">;</span>
+			<span class="kw2">var</span> viewPortHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = explicitHeight<span class="sy0">;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw7">isNaN</span><span class="br0">&#40;</span>viewPortWidth<span class="br0">&#41;</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				viewPortWidth = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>minWidth<span class="sy0">,</span> <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">min</span><span class="br0">&#40;</span>maxWidth<span class="sy0">,</span> maxItemWidth<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw7">isNaN</span><span class="br0">&#40;</span>explicitHeight<span class="br0">&#41;</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				viewPortHeight = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>minHeight<span class="sy0">,</span> <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">min</span><span class="br0">&#40;</span>maxHeight<span class="sy0">,</span> positionY<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			<span class="kw2">var</span> contentWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>maxItemWidth<span class="sy0">,</span> viewPortWidth<span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw2">var</span> contentHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>positionY<span class="sy0">,</span> viewPortHeight<span class="br0">&#41;</span><span class="sy0">;</span>
+			result<span class="sy0">.</span>viewPortWidth = viewPortWidth<span class="sy0">;</span>
+			result<span class="sy0">.</span>viewPortHeight = viewPortHeight<span class="sy0">;</span>
+			result<span class="sy0">.</span>contentWidth = contentWidth<span class="sy0">;</span>
+			result<span class="sy0">.</span>contentHeight = contentHeight<span class="sy0">;</span>
+			<span class="kw1">return</span> result<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">public</span> <span class="kw3">function</span> getScrollPositionForIndex<span class="br0">&#40;</span><span class="kw7">index</span><span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a><span class="sy0">,</span> items<span class="sy0">:</span>Vector<span class="sy0">.&lt;</span>DisplayObject<span class="sy0">&gt;,</span> <span class="kw7">x</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> <span class="kw7">y</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> viewPortWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> viewPortHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> result<span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a> = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a>
+		<span class="br0">&#123;</span>
+			<span class="co1">// loop through the items to calculate the scroll position</span>
+			<span class="kw2">var</span> positionY<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+			<span class="kw1">for</span><span class="br0">&#40;</span><span class="kw2">var</span> i<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="kw7">index</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw2">var</span> item<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a> = items<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span>
+				<span class="kw2">var</span> layoutItem<span class="sy0">:</span>ILayoutDisplayObject = item <span class="kw1">as</span> ILayoutDisplayObject<span class="sy0">;</span>
+				<span class="kw1">if</span><span class="br0">&#40;</span>layoutItem <span class="sy0">&amp;&amp;</span> <span class="sy0">!</span>layoutItem<span class="sy0">.</span>includeInLayout<span class="br0">&#41;</span>
+				<span class="br0">&#123;</span>
+					<span class="kw1">continue</span><span class="sy0">;</span>
+				<span class="br0">&#125;</span>
+				<span class="kw1">if</span><span class="br0">&#40;</span>item <span class="kw1">is</span> IFeathersControl<span class="br0">&#41;</span>
+				<span class="br0">&#123;</span>
+					IFeathersControl<span class="br0">&#40;</span>item<span class="br0">&#41;</span><span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+				<span class="br0">&#125;</span>
+				positionY <span class="sy0">+</span>= item<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="kw1">this</span><span class="sy0">.</span>_gap<span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="co1">// prepare the result object and return it</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>result<span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				result = <span class="kw1">new</span> <a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+			result<span class="sy0">.</span><span class="kw7">x</span> = <span class="nu0">0</span><span class="sy0">;</span>
+			result<span class="sy0">.</span><span class="kw7">y</span> = positionY<span class="sy0">;</span>
+			<span class="kw1">return</span> result<span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+We&#039;ll go into the low-level details in a moment, but let&#039;s look at a couple of important parts of the <code>SimpleVerticalLayout</code> class first.
+</p>
+<ul>
+<li class="level1"><div class="li"> The class implements <code><a href="http://feathersui.com/documentation/feathers/layout/ILayout.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ILayout.html"  rel="nofollow">feathers.layout.ILayout</a></code>. This interface defines two functions that all layouts need, which we&#039;ll be digging into next. There are some other interfaces for more advanced layout capabilities, but <code>ILayout</code> is the bare minimum.</div>
+</li>
+<li class="level1"><div class="li"> The class extends the standard Starling <code><a href="http://doc.starling-framework.org/core/starling/events/EventDispatcher.html" class="urlextern" title="http://doc.starling-framework.org/core/starling/events/EventDispatcher.html"  rel="nofollow">starling.events.EventDispatcher</a></code> because ILayout specifies that layouts should dispatch <code>Event.CHANGE</code> when their properties change. This will allow components that use layouts to properly invalidate when they need to call the <code>layout()</code> function again.</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT2 SECTION "A Simple Example Layout" [614-6009] -->
+<h2 class="sectionedit3" id="the_layout_function">The layout() function</h2>
+<div class="level2">
+
+<p>
+The first function defined by the <code>ILayout</code> interface is <code><a href="http://feathersui.com/documentation/feathers/layout/ILayout.html#layout()" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ILayout.html#layout()"  rel="nofollow">layout()</a></code>. Please take a moment to review its signature below:
+</p>
+<pre class="code as3">layout<span class="br0">&#40;</span>items<span class="sy0">:</span>Vector<span class="sy0">.&lt;</span>DisplayObject<span class="sy0">&gt;,</span> viewPortBounds<span class="sy0">:</span>ViewPortBounds = <span class="kw1">null</span><span class="sy0">,</span> result<span class="sy0">:</span>LayoutBoundsResult = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span>LayoutBoundsResult</pre>
+
+<p>
+This function&#039;s main purpose is to set the final transformations on the items in the layout, such as position and dimensions. If the final dimensions of the view port aren&#039;t specified, it will also calculate those values and return them.
+</p>
+
+<p>
+The first argument is a <code>Vector.&lt;DisplayObject&gt;</code> of the items to layout. A layout implementation can loop through these items and transform them as needed. Below, you can see a this exact loop from our class:
+</p>
+<pre class="code as3"><span class="kw2">var</span> itemCount<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = items<span class="sy0">.</span><span class="kw7">length</span><span class="sy0">;</span>
+<span class="kw1">for</span><span class="br0">&#40;</span><span class="kw2">var</span> i<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> itemCount<span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> item<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a> = items<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span>
+	<span class="co1">// skip items that aren't included in the layout</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>item <span class="kw1">is</span> ILayoutDisplayObject <span class="sy0">&amp;&amp;</span> <span class="sy0">!</span>ILayoutDisplayObject<span class="br0">&#40;</span>item<span class="br0">&#41;</span><span class="sy0">.</span>includeInLayout<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">continue</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>item <span class="kw1">is</span> IFeathersControl<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		IFeathersControl<span class="br0">&#40;</span>item<span class="br0">&#41;</span><span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	item<span class="sy0">.</span><span class="kw7">x</span> = startX<span class="sy0">;</span>
+	item<span class="sy0">.</span><span class="kw7">y</span> = positionY<span class="sy0">;</span>
+	positionY <span class="sy0">+</span>= item<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="kw1">this</span><span class="sy0">.</span>_gap<span class="sy0">;</span>
+	maxItemWidth = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>maxItemWidth<span class="sy0">,</span> item<span class="sy0">.</span><span class="kw7">width</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In this loop, we set the item&#039;s position. If this were a more advanced layout, we might perform other transformations, like setting the width or height, or even rotating the item. We&#039;re also tracking the total width of each item, which we may use later to calculate the final view port width, if required.
+</p>
+
+<p>
+Notice that we check the datatype of each item two times using the <code>is</code> keyword.
+</p>
+
+<p>
+First, we check if the item is an <code><a href="http://feathersui.com/documentation/feathers/layout/ILayoutDisplayObject.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ILayoutDisplayObject.html"  rel="nofollow">ILayoutDisplayObject</a></code>. If so, we want to check if the <code><a href="http://feathersui.com/documentation/feathers/layout/ILayoutDisplayObject.html#includeInLayout" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ILayoutDisplayObject.html#includeInLayout"  rel="nofollow">includeInLayout</a></code> property has been set to <code>false</code>. If so, we will skip that item.
+</p>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>ILayoutDisplayObject</code> interface and related layout features, please take a look at the <a href="/feathers/layout-data" class="wikilink1" title="feathers:layout-data">ILayoutDisplayObject and ILayoutData</a> article.
+
+</div></p>
+</p>
+
+<p>
+Next, we check if an item is a Feathers component. If we encounters one, we need to call <code><a href="http://wiki.starling-framework.org/feathers/faq/zero-dimensions" class="urlextern" title="http://wiki.starling-framework.org/feathers/faq/zero-dimensions"  rel="nofollow">validate()</a></code>. If a Feathers component is in an invalid state, it may not report the correct dimensions, so this function call is required for accurate bounds calculations and positioning.
+</p>
+
+<p>
+The second argument is an optional <code><a href="http://feathersui.com/documentation/feathers/layout/ViewPortBounds.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ViewPortBounds.html"  rel="nofollow">ViewPortBounds</a></code> object. This object specifies restrictions on the layout, such as dimensions, starting position, and scroll position (for scrolling containers). If the <code>ViewPortBounds</code> object is not provided, the layout is expected to assume that it has no restrictions on dimensions, the container has not scrolled, and item positioning should start at the standard origin <code>(0,0)</code>. The code below will use <code>viewPortBounds</code>, if it is not <code>null</code>, or it will select sensible defaults for all values:
+</p>
+<pre class="code as3"><span class="kw2">var</span> startX<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+<span class="kw2">var</span> startY<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+<span class="kw2">var</span> explicitWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw8">NaN</span><span class="sy0">;</span>
+<span class="kw2">var</span> explicitHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw8">NaN</span><span class="sy0">;</span>
+<span class="kw2">var</span> minWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+<span class="kw2">var</span> minHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+<span class="kw2">var</span> maxWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">.</span><span class="kw8">POSITIVE_INFINITY</span><span class="sy0">;</span>
+<span class="kw2">var</span> maxHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">.</span><span class="kw8">POSITIVE_INFINITY</span><span class="sy0">;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span>viewPortBounds<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	startX = viewPortBounds<span class="sy0">.</span><span class="kw7">x</span><span class="sy0">;</span>
+	startY = viewPortBounds<span class="sy0">.</span><span class="kw7">y</span><span class="sy0">;</span>
+	explicitWidth = viewPortBounds<span class="sy0">.</span>explicitWidth<span class="sy0">;</span>
+	explicitHeight = viewPortBounds<span class="sy0">.</span>explicitHeight<span class="sy0">;</span>
+	minWidth = viewPortBounds<span class="sy0">.</span>minWidth<span class="sy0">;</span>
+	minHeight = viewPortBounds<span class="sy0">.</span>minHeight<span class="sy0">;</span>
+	maxWidth = viewPortBounds<span class="sy0">.</span>maxWidth<span class="sy0">;</span>
+	maxHeight = viewPortBounds<span class="sy0">.</span>maxHeight<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In a moment, we&#039;ll spend some time looking at <a href="#viewportbounds_properties" title="feathers:custom-layouts ↵" class="wikilink1">every property defined by ViewPortBounds</a>, including those interesting <code>NaN</code> values.
+</p>
+
+<p>
+The final argument is an optional <code><a href="http://feathersui.com/documentation/feathers/layout/LayoutBoundsResult.html" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/LayoutBoundsResult.html"  rel="nofollow">LayoutBoundsResult</a></code> object. This object is used to specify the final view port dimensions and the dimensions of the content within the view port. The content may be larger than the view port, and a component like <code><a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">ScrollContainer</a></code> will use that to determine if it needs to scroll.
+</p>
+
+<p>
+This argument actually becomes the return value of the <code>layout()</code> function. By passing in (and reusing) a pre-created <code>LayoutBoundsResult</code> object, Feathers can avoid unnecessary garbage collection. It is optional, though, so the layout is expected to create a new instance of <code>LayoutBoundsResult</code> if the argument is <code>null</code>.
+</p>
+
+<p>
+Below, we see how the dimensions of the content and some of the values from <code>ViewPortBounds</code> are used to calculate the properties on the <code>LayoutBoundsResult</code> object:
+</p>
+<pre class="code as3"><span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>result<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	result = <span class="kw1">new</span> LayoutBoundsResult<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+<span class="kw2">var</span> viewPortWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = explicitWidth<span class="sy0">;</span>
+<span class="kw2">var</span> viewPortHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = explicitHeight<span class="sy0">;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw7">isNaN</span><span class="br0">&#40;</span>viewPortWidth<span class="br0">&#41;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	viewPortWidth = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>minWidth<span class="sy0">,</span> <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">min</span><span class="br0">&#40;</span>maxWidth<span class="sy0">,</span> maxItemWidth<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw7">isNaN</span><span class="br0">&#40;</span>explicitHeight<span class="br0">&#41;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	viewPortHeight = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>minHeight<span class="sy0">,</span> <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">min</span><span class="br0">&#40;</span>maxHeight<span class="sy0">,</span> positionY<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+<span class="kw2">var</span> contentWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>maxItemWidth<span class="sy0">,</span> viewPortWidth<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw2">var</span> contentHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <a href="http://www.google.com/search?q=math%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:math.html"><span class="kw5">Math</span></a><span class="sy0">.</span><span class="kw7">max</span><span class="br0">&#40;</span>positionY<span class="sy0">,</span> viewPortHeight<span class="br0">&#41;</span><span class="sy0">;</span>
+result<span class="sy0">.</span>viewPortWidth = viewPortWidth<span class="sy0">;</span>
+result<span class="sy0">.</span>viewPortHeight = viewPortHeight<span class="sy0">;</span>
+result<span class="sy0">.</span>contentWidth = contentWidth<span class="sy0">;</span>
+result<span class="sy0">.</span>contentHeight = contentHeight<span class="sy0">;</span>
+<span class="kw1">return</span> result<span class="sy0">;</span></pre>
+
+<p>
+Notice that if the view port&#039;s dimensions are not explicitly specified by the <code>ViewPortBounds</code> argument (in other words, if they&#039;re <code>NaN</code>), we calculate the view port dimensions manually, using the combined height of all items and the maximum width of the items. In that case, we also need to take into account the minimum and maximum dimensions. Finally, the content dimensions should either be equal to or larger than the view port dimensions.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "The layout() function" [6010-12051] -->
+<h3 class="sectionedit4" id="viewportbounds_properties">ViewPortBounds properties</h3>
+<div class="level3">
+
+<p>
+Let&#039;s look in more detail at the properties on a <code>ViewPortBounds</code> object. This object specifies dimensions, starting position, and scroll position values of the container&#039;s view port.
+</p>
+
+<p>
+The <code>explicitWidth</code> and <code>explicitHeight</code> properties may specify that the view port has an exact width and height that cannot change. The layout may position its items beyond these dimensions, but it should expect that the container will be required to scroll if any items are positioned beyond the explicit dimensions. If the value of one of these properties is <code>NaN</code> (which can be checked by passing the value to the <code>isNaN()</code> function), the view port dimension in question is not restricted to an exact value.
+</p>
+
+<p>
+The <code>minWidth</code>, <code>minHeight</code>, <code>maxWidth</code>, and <code>maxHeight</code> properties specify restrictions on view port dimensions that should be taken into account if <code>explicitWidth</code> or <code>explicitHeight</code> is not specified (if they are <code>NaN</code>, as explained above). The layout should take these values into account when it calculates its preferred width and height.
+</p>
+
+<p>
+The <code>scrollX</code> and <code>scrollY</code> properties specify the scroll position of the container that is using the layout. If the container has not been scrolled, or it cannot scroll, the value will be <code>0</code>.
+</p>
+
+<p>
+The <code>x</code> and <code>y</code> properties specify the starting position of the layout. The layout should consider the point <code>(x,y)</code> as its origin, instead of <code>(0,0)</code>.
+</p>
+
+<p>
+Again, this is an optional argument. If the layout receives <code>null</code>, it may assume the following defaults, which we&#039;ve previously pointed out in the source code:
+</p>
+<ul>
+<li class="level1"><div class="li"> <code>explicitWidth = NaN</code></div>
+</li>
+<li class="level1"><div class="li"> <code>explicitHeight = NaN</code></div>
+</li>
+<li class="level1"><div class="li"> <code>minWidth = 0</code></div>
+</li>
+<li class="level1"><div class="li"> <code>minHeight = 0</code></div>
+</li>
+<li class="level1"><div class="li"> <code>maxWidth = Number.POSITIVE_INFINITY</code></div>
+</li>
+<li class="level1"><div class="li"> <code>maxHeight = Number.POSITIVE_INFINITY</code></div>
+</li>
+<li class="level1"><div class="li"> <code>scrollX = 0</code></div>
+</li>
+<li class="level1"><div class="li"> <code>scrollY = 0</code></div>
+</li>
+<li class="level1"><div class="li"> <code>x = 0</code></div>
+</li>
+<li class="level1"><div class="li"> <code>y = 0</code></div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT4 SECTION "ViewPortBounds properties" [12052-13938] -->
+<h3 class="sectionedit5" id="layoutboundsresult_properties">LayoutBoundsResult properties</h3>
+<div class="level3">
+
+<p>
+Let&#039;s look in more detail at the properties on a <code>LayoutBoundsResult</code> object. This object is returned by the <code>layout()</code> function and “fills in the blanks” from the <code>ViewPortBounds</code> object passed as one of the arguments to the <code>layout()</code> function.
+</p>
+
+<p>
+The <code>viewPortWidth</code> and <code>viewPortHeight</code> properties specify the final width and height of the container&#039;s view port. If the <code>ViewPortBounds</code> object specifies an <code>explicitWidth</code> or <code>explicitHeight</code>, those values should <strong>always</strong> be used. If not, then these values must be calculated by the layout (how they are calculated depends on the layout algorithm), using <code>minWidth</code>, <code>minHeight</code>, <code>maxWidth</code>, and <code>maxHeight</code> as restrictions.
+</p>
+
+<p>
+The <code>contentWidth</code> and <code>contentHeight</code> properties specify the width and height of the content. They may be the same as <code>viewPortWidth</code> and <code>viewPortHeight</code>, but if the view port contains content that goes beyond its bounds, these values may be larger, which allows a layout to tell the container that its view port should scroll, if the container supports scrolling.
+</p>
+
+<p>
+The <code>contentX</code> and <code>contentY</code> properties specify where the content begins for scrolling containers to set the minimum scroll positions. These values are typically set to <code>0</code> (zero), but they may also be negative.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "LayoutBoundsResult properties" [13939-15281] -->
+<h2 class="sectionedit6" id="the_getscrollpositionforindex_function">The getScrollPositionForIndex() function</h2>
+<div class="level2">
+
+<p>
+The second function defined by <code>ILayout</code> is <code><a href="http://feathersui.com/documentation/feathers/layout/ILayout.html#getScrollPositionForIndex()" class="urlextern" title="http://feathersui.com/documentation/feathers/layout/ILayout.html#getScrollPositionForIndex()"  rel="nofollow">getScrollPositionForIndex()</a></code>. Please take a moment to review its signature below:
+</p>
+<pre class="code as3">getScrollPositionForIndex<span class="br0">&#40;</span><span class="kw7">index</span><span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a><span class="sy0">,</span> items<span class="sy0">:</span>Vector<span class="sy0">.&lt;</span>DisplayObject<span class="sy0">&gt;,</span> <span class="kw7">x</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> <span class="kw7">y</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> viewPortWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> viewPortHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> result<span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a> = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a></pre>
+
+<p>
+This function may be called by a component that supports layout to calculate a scroll position that ensures that a specific item is fully visible in the view port. The item&#039;s exact position within the view port is determined entirely by the layout. A custom layout might consider aligning the item to the center, or it might align it to one of the edges. The only rule is that the item must be fully visible when the view port is scrolled to that position. If you&#039;re calling this function, you should make no other assumptions about the item&#039;s position.
+</p>
+
+<p>
+The first argument is the zero-based index of the item that needs to be fully visible in the view port. You can see that this is used for the ending condition in the <code>for</code> loop:
+</p>
+<pre class="code as3"><span class="kw1">for</span><span class="br0">&#40;</span><span class="kw2">var</span> i<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="kw7">index</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span></pre>
+
+<p>
+In other words, we don&#039;t need to loop through every item to see where the final scroll position will be unless we need the final scroll position for the final item.
+</p>
+
+<p>
+Next, the full list of items are passed in. In the code below, we loop through the items mentioned above, adding each item&#039;s height and the gap between the items, similar to the <code>layout()</code> function, except that we aren&#039;t setting the positions of items:
+</p>
+<pre class="code as3"><span class="kw2">var</span> positionY<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="nu0">0</span><span class="sy0">;</span>
+<span class="kw1">for</span><span class="br0">&#40;</span><span class="kw2">var</span> i<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> <span class="kw7">index</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> item<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a> = items<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>item <span class="kw1">is</span> ILayoutDisplayObject <span class="sy0">&amp;&amp;</span> <span class="sy0">!</span>ILayoutDisplayObject<span class="br0">&#40;</span>item<span class="br0">&#41;</span><span class="sy0">.</span>includeInLayout<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">continue</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>item <span class="kw1">is</span> IFeathersControl<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		IFeathersControl<span class="br0">&#40;</span>item<span class="br0">&#41;</span><span class="sy0">.</span>validate<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	positionY <span class="sy0">+</span>= item<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="kw1">this</span><span class="sy0">.</span>_gap<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+As above, we need to check if the item is included in the layout or not, and we need to validate Feathers controls before we can access their correct dimensions.
+</p>
+
+<p>
+For the next arguments, it&#039;s important to understand that <code>getScrollPositionForIndex()</code> must always be called after <code>layout()</code>. With that in mind, we don&#039;t pass a <code>ViewPortBounds</code> object to <code>getScrollPositionForIndex()</code> like we do for <code>layout()</code>. We know the final x, y, width and height values now, so minimum and maximum dimensions are irrelevant.
+</p>
+
+<p>
+The third and fourth arguments are the x and y position of the view port. These values match up with the x and y values of the <code>ViewPortBounds</code> object passed to <code>layout()</code>. These values often are not needed.
+</p>
+
+<p>
+The fifth and sixth arguments are the final dimensions of the view port. They&#039;re equivalent to the <code>viewPortWidth</code> and <code>viewPortHeight</code> properties of the <code>LayoutBoundsResult</code> object returned by <code>layout()</code>. We don&#039;t need these values in this example, but other layouts may use them if items need to be resized based on the width and height of the view port.
+</p>
+
+<p>
+The seventh, and final, argument is an optional <code>flash.geom.Point</code> object where the <code>x</code> and <code>y</code> properties are equivalent, respectively, to <code>horizontalScrollPosition</code> and <code>verticalScrollPosition</code> values of a scrolling container.
+</p>
+
+<p>
+If the result value isn&#039;t <code>null</code>, <code>getScrollPositionForIndex()</code> must use it as the return value. By passing in (and reusing) a pre-created <code>Point</code> object, Feathers can avoid unnecessary garbage collection. It is optional, though, so the layout is expected to create a new instance of <code>Point</code> if the argument is <code>null</code>.
+</p>
+
+<p>
+Below, we can see how we check if the result is <code>null</code> or not, and the final scroll position is set before returning:
+</p>
+<pre class="code as3"><span class="kw1">if</span><span class="br0">&#40;</span><span class="sy0">!</span>result<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	result = <span class="kw1">new</span> <a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+result<span class="sy0">.</span><span class="kw7">x</span> = <span class="nu0">0</span><span class="sy0">;</span>
+result<span class="sy0">.</span><span class="kw7">y</span> = positionY<span class="sy0">;</span>
+<span class="kw1">return</span> result<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "The getScrollPositionForIndex() function" [15282-19191] -->
+<h2 class="sectionedit7" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/layout-data" class="wikilink1" title="feathers:layout-data">ILayoutDisplayObject and ILayoutData</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/virtual-custom-layouts" class="wikilink1" title="feathers:virtual-custom-layouts">Virtualized Custom Layouts for Feathers Components</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Related Links" [19192-] -->

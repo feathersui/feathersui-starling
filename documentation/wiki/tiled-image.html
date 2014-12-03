@@ -1,0 +1,76 @@
+
+<h1 class="sectionedit1" id="tiled_image">Tiled Image</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/display/TiledImage.html" class="urlextern" title="http://feathersui.com/documentation/feathers/display/TiledImage.html"  rel="nofollow">TiledImage</a></code> class repeats a texture in a given region, horizontally and vertically. If the dimensions of the tiled image aren&#039;t a perfect multiple of the dimensions of the texture, the edges will be clipped.
+</p>
+
+<p>
+A tiled image may use any Starling texture, including sub-textures from <a href="http://wiki.starling-framework.org/manual/textures_and_images#texture_atlases" class="urlextern" title="http://wiki.starling-framework.org/manual/textures_and_images#texture_atlases"  rel="nofollow">texture atlases</a>.
+</p>
+
+<p>
+<img src="/_media/feathers/tiled.png" class="mediacenter" alt="" />
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Tiled Image" [1-523] -->
+<h2 class="sectionedit2" id="code">Code</h2>
+<div class="level2">
+
+<p>
+First, we need a texture. We might create one from bitmap data:
+</p>
+<pre class="code as3"><span class="kw2">var</span> texture<span class="sy0">:</span>Texture = Texture<span class="sy0">.</span>fromBitmapData<span class="br0">&#40;</span> <span class="kw7">bitmapData</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Or we might create one from a texture atlas:
+</p>
+<pre class="code as3"><span class="kw2">var</span> texture<span class="sy0">:</span>Texture = atlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;my-texture&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+<pre class="code as3"><span class="kw2">var</span> image<span class="sy0">:</span>TiledImage = <span class="kw1">new</span> TiledImage<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+image<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">300</span><span class="sy0">;</span>
+image<span class="sy0">.</span><span class="kw7">height</span> = <span class="nu0">200</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> image <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+If you want to scale the texture up or down before tiling it, a second parameter is available in the constructor:
+</p>
+<pre class="code as3"><span class="kw2">var</span> image<span class="sy0">:</span>TiledImage = <span class="kw1">new</span> TiledImage<span class="br0">&#40;</span> texture<span class="sy0">,</span> <span class="nu0">0.5</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+This option is useful when scaling for different screen resolutions or densities.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Code" [524-1214] -->
+<h2 class="sectionedit3" id="tips_and_tricks">Tips and Tricks</h2>
+<div class="level2">
+
+<p>
+Tiling images on the GPU involve some gotchas. If your images aren&#039;t drawn to whole pixels or they are scaled, the textures may bleed a bit and cause unsightly lines or empty gaps between images. During animations, flickering may happen where textures meet as these gaps quickly appear and disappear. It can help to always ensure that your display objects aren&#039;t placed on fractional pixels, but that can be an exercise in frustration, especially on a deep display list.
+</p>
+
+<p>
+The popular <a href="http://texturepacker.com/" class="urlextern" title="http://texturepacker.com/"  rel="nofollow">Texture Packer</a> software, used to create texture atlases, offers a useful feature named “Extrude”. When you enable this feature, the pixels around the edges of your sub-textures will be duplicated, but it won&#039;t change the size of your sub-textures. The duplicated pixels appear just outside the sub-texture&#039;s bounds. When texture bleeding happens, the same color that appears on the edge of the sub-texture will bleed into the bounds instead of a transparent pixel or another color.
+</p>
+
+<p>
+When tiling images, extruding is always recommended.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Tips and Tricks" [1215-2294] -->
+<h2 class="sectionedit4" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/display/TiledImage.html" class="urlextern" title="http://feathersui.com/documentation/feathers/display/TiledImage.html"  rel="nofollow">TiledImage API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Related Links" [2295-] -->

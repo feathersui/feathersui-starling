@@ -1,0 +1,69 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_scroll_screen_component">How to use the Feathers Scroll Screen component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollScreen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollScreen.html"  rel="nofollow">ScrollScreen</a></code> component is simply a combination between the <code><a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">ScrollContainer</a></code> component and the <code><a href="/feathers/screen" class="wikilink1" title="feathers:screen">Screen</a></code> component.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Scroll Screen component" [1-299] -->
+<h2 class="sectionedit2" id="skinning_a_scrollscreen">Skinning a ScrollScreen</h2>
+<div class="level2">
+
+<p>
+For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/ScrollScreen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollScreen.html"  rel="nofollow">ScrollScreen API reference</a>.
+</p>
+
+<p>
+As mentioned above, <code>ScrollScreen</code> is a subclass of <code>ScrollContainer</code>. For more detailed information about the skinning options available to <code>ScrollScreen</code>, see <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the ScrollContainer component</a>.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Skinning a ScrollScreen" [300-739] -->
+<h3 class="sectionedit3" id="targeting_a_scrollscreen_in_a_theme">Targeting a ScrollScreen in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollScreen <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setScrollScreenStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific scroll screen to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">screen<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-scroll-screen&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollScreen <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-scroll-screen&quot;</span><span class="sy0">,</span> setCustomScrollScreenStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the screen&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the screen was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the screen&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Targeting a ScrollScreen in a theme" [740-1776] -->
+<h2 class="sectionedit4" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/ScrollScreen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollScreen.html"  rel="nofollow">ScrollScreen API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">How to use the Feathers ScrollContainer component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/screen" class="wikilink1" title="feathers:screen">How to use the Feathers Screen component</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Related Links" [1777-] -->
