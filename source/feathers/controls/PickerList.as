@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
@@ -363,7 +364,21 @@ package feathers.controls
 			}
 			var oldSelectedIndex:int = this.selectedIndex;
 			var oldSelectedItem:Object = this.selectedItem;
+			if(this._dataProvider)
+			{
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_multipleEventHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_multipleEventHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_multipleEventHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_multipleEventHandler);
+			}
 			this._dataProvider = value;
+			if(this._dataProvider)
+			{
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_multipleEventHandler);
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_multipleEventHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_multipleEventHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_multipleEventHandler);
+			}
 			if(!this._dataProvider || this._dataProvider.length == 0)
 			{
 				this.selectedIndex = -1;
@@ -1291,6 +1306,7 @@ package feathers.controls
 				this._popUpContentManager.dispose();
 				this._popUpContentManager = null;
 			}
+			this.dataProvider = null;
 			super.dispose();
 		}
 
@@ -1420,6 +1436,11 @@ package feathers.controls
 			{
 				this.layout();
 			}
+
+			//final validation to avoid juggler next frame issues
+			//also, to ensure that property changes on the pop-up list are fully
+			//committed
+			this.list.validate();
 
 			this.handlePendingActions();
 		}
@@ -1788,6 +1809,17 @@ package feathers.controls
 				return;
 			}
 			this.closeList();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_multipleEventHandler():void
+		{
+			//we need to ensure that the pop-up list has received the new
+			//selected index, or it might update the selected index to an
+			//incorrect value after an item is added, removed, or replaced.
+			this.validate();
 		}
 
 		/**
