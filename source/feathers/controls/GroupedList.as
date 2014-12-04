@@ -745,12 +745,18 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
@@ -2805,6 +2811,113 @@ package feathers.controls
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
+
+			//the entire data provider was replaced. select no item.
+			this.setSelectedLocation(-1, -1);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_addItemHandler(event:Event, indices:Array):void
+		{
+			if(this._selectedGroupIndex == -1)
+			{
+				return;
+			}
+			var groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //adding an item to a group
+			{
+				var itemIndex:int = indices[1] as int;
+				if(this._selectedGroupIndex == groupIndex && this._selectedItemIndex >= itemIndex)
+				{
+					//adding an item at an index that is less than or equal to
+					//the item that is selected. need to update the selected
+					//item index.
+					this.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex + 1);
+				}
+			}
+			else //adding an entire group
+			{
+				//adding a group before the group that the selected item is in.
+				//need to update the selected group index.
+				this.setSelectedLocation(this._selectedGroupIndex + 1, this._selectedItemIndex);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_removeItemHandler(event:Event, indices:Array):void
+		{
+			if(this._selectedGroupIndex == -1)
+			{
+				return;
+			}
+			var groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //removing an item from a group
+			{
+				var itemIndex:int = indices[1] as int;
+				if(this._selectedGroupIndex == groupIndex)
+				{
+					if(this._selectedItemIndex == itemIndex)
+					{
+						//removing the item that was selected.
+						//now, nothing will be selected.
+						this.setSelectedLocation(-1, -1);
+					}
+					else if(this._selectedItemIndex > itemIndex)
+					{
+						//removing an item from the same group that appears
+						//before the item that is selected. need to update the
+						//selected item index.
+						this.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex - 1);
+					}
+				}
+			}
+			else //removing an entire group
+			{
+				if(this._selectedGroupIndex == groupIndex)
+				{
+					//removing the group that the selected item was in.
+					//now, nothing will be selected.
+					this.setSelectedLocation(-1, -1);
+				}
+				else if(this._selectedGroupIndex > groupIndex)
+				{
+					//removing a group before the group that the selected item
+					//is in. need to update the selected group index.
+					this.setSelectedLocation(this._selectedGroupIndex - 1, this._selectedItemIndex);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_replaceItemHandler(event:Event, indices:Array):void
+		{
+			if(this._selectedGroupIndex == -1)
+			{
+				return;
+			}
+			var groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //replacing an item from a group
+			{
+				var itemIndex:int = indices[1] as int;
+				if(this._selectedGroupIndex == groupIndex && this._selectedItemIndex == itemIndex)
+				{
+					//replacing the selected item.
+					//now, nothing will be selected.
+					this.setSelectedLocation(-1, -1);
+				}
+			}
+			else if(this._selectedGroupIndex == groupIndex) //replacing an entire group
+			{
+				//replacing the group with the selected item.
+				//now, nothing will be selected.
+				this.setSelectedLocation(-1, -1);
+			}
 		}
 
 		/**
