@@ -2,6 +2,7 @@ package
 {
     import feathers.system.DeviceCapabilities;
     import feathers.tests.ButtonTests;
+    import feathers.tests.GroupedListTests;
     import feathers.tests.ListTests;
     import feathers.tests.PickerListTests;
     import feathers.tests.SliderHorizontalTests;
@@ -67,6 +68,7 @@ package
             this._flexunit.run(
             [
                 ButtonTests,
+                GroupedListTests,
                 ListTests,
                 PickerListTests,
                 SliderHorizontalTests,
