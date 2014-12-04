@@ -59,6 +59,11 @@ package feathers.data
 		function removeItemAt(data:Object, index:int, ...rest:Array):Object;
 
 		/**
+		 * Removes all items from the data source.
+		 */
+		function removeAll(data:Object):void;
+
+		/**
 		 * Determines which location the item appears at within the data source.
 		 * If the item isn't in the data source, returns an empty <code>Vector.&lt;int&gt;</code>.
 		 *
