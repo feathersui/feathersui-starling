@@ -3,11 +3,13 @@ package
     import feathers.system.DeviceCapabilities;
     import feathers.tests.ButtonTests;
     import feathers.tests.ListTests;
+    import feathers.tests.PickerListTests;
     import feathers.tests.SliderHorizontalTests;
     import feathers.tests.TabBarEmptyDataProviderTests;
     import feathers.tests.TabBarTests;
     import feathers.tests.ToggleButtonTests;
     import feathers.tests.ToggleGroupTests;
+    import feathers.tests.ToggleSwitchTests;
 
     import flash.display.MovieClip;
     import flash.display.Sprite;
@@ -66,9 +68,11 @@ package
             [
                 ButtonTests,
                 ListTests,
+                PickerListTests,
                 SliderHorizontalTests,
                 ToggleButtonTests,
                 ToggleGroupTests,
+                ToggleSwitchTests,
                 TabBarTests,
                 TabBarEmptyDataProviderTests,
             ]);
