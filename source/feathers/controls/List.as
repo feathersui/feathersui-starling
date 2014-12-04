@@ -459,12 +459,18 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
@@ -1367,6 +1373,88 @@ package feathers.controls
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
+
+			//the entire data provider was replaced. select no item.
+			this._selectedIndices.removeAll();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_addItemHandler(event:Event, index:int):void
+		{
+			if(this._selectedIndex == -1)
+			{
+				return;
+			}
+			var selectionChanged:Boolean = false;
+			var newIndices:Vector.<int> = new <int>[];
+			var indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var currentIndex:int = this._selectedIndices.getItemAt(i) as int;
+				if(currentIndex >= index)
+				{
+					currentIndex++;
+					selectionChanged = true;
+				}
+				newIndices.push(currentIndex);
+			}
+			if(selectionChanged)
+			{
+				this._selectedIndices.data = newIndices;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_removeItemHandler(event:Event, index:int):void
+		{
+			if(this._selectedIndex == -1)
+			{
+				return;
+			}
+			var selectionChanged:Boolean = false;
+			var newIndices:Vector.<int> = new <int>[];
+			var indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var currentIndex:int = this._selectedIndices.getItemAt(i) as int;
+				if(currentIndex == index)
+				{
+					selectionChanged = true;
+				}
+				else
+				{
+					if(currentIndex > index)
+					{
+						currentIndex--;
+						selectionChanged = true;
+					}
+					newIndices.push(currentIndex);
+				}
+			}
+			if(selectionChanged)
+			{
+				this._selectedIndices.data = newIndices;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
+		{
+			if(this._selectedIndex == -1)
+			{
+				return;
+			}
+			var indexOfIndex:int = this._selectedIndices.getItemIndex(index);
+			if(indexOfIndex >= 0)
+			{
+				this._selectedIndices.removeItemAt(indexOfIndex);
+			}
 		}
 		
 		/**
