@@ -1108,24 +1108,6 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_addItemHandler(event:Event, index:int):void
 		{
-			var selectionChanged:Boolean = false;
-			var newIndices:Vector.<int> = new <int>[];
-			var indexCount:int = this._selectedIndices.length;
-			for(var i:int = 0; i < indexCount; i++)
-			{
-				var currentIndex:int = this._selectedIndices.getItemAt(i) as int;
-				if(currentIndex >= index)
-				{
-					currentIndex++;
-					selectionChanged = true;
-				}
-				newIndices.push(currentIndex);
-			}
-			if(selectionChanged)
-			{
-				this._selectedIndices.data = newIndices;
-			}
-
 			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -1136,31 +1118,6 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_removeItemHandler(event:Event, index:int):void
 		{
-			var selectionChanged:Boolean = false;
-			var newIndices:Vector.<int> = new <int>[];
-			var indexCount:int = this._selectedIndices.length;
-			for(var i:int = 0; i < indexCount; i++)
-			{
-				var currentIndex:int = this._selectedIndices.getItemAt(i) as int;
-				if(currentIndex == index)
-				{
-					selectionChanged = true;
-				}
-				else
-				{
-					if(currentIndex > index)
-					{
-						currentIndex--;
-						selectionChanged = true;
-					}
-					newIndices.push(currentIndex);
-				}
-			}
-			if(selectionChanged)
-			{
-				this._selectedIndices.data = newIndices;
-			}
-
 			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -1171,12 +1128,6 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
-			var indexOfIndex:int = this._selectedIndices.getItemIndex(index);
-			if(indexOfIndex >= 0)
-			{
-				this._selectedIndices.removeItemAt(indexOfIndex);
-			}
-
 			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -1187,7 +1138,6 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_resetHandler(event:Event):void
 		{
-			this._selectedIndices.removeAll();
 			this._updateForDataReset = true;
 
 			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
