@@ -176,5 +176,132 @@ package feathers.tests
 			Assert.assertFalse("The selectedItem property was not changed",
 				beforeSelectedItem === this._list.selectedItem);
 		}
+
+		[Test]
+		public function testRemoveItemBeforeSelectedIndex():void
+		{
+			this._list.selectedIndex = 1;
+			var beforeSelectedIndex:int = this._list.selectedIndex;
+			var beforeSelectedItem:Object = this._list.selectedItem;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.removeItemAt(0);
+			trace(beforeSelectedItem, this._list.selectedItem, beforeSelectedIndex, this._list.selectedIndex);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertFalse("The selectedIndex property was not changed",
+				beforeSelectedIndex === this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
+				beforeSelectedItem, this._list.selectedItem);
+		}
+
+		[Test]
+		public function testRemoveItemAfterSelectedIndex():void
+		{
+			this._list.selectedIndex = 1;
+			var beforeSelectedIndex:int = this._list.selectedIndex;
+			var beforeSelectedItem:Object = this._list.selectedItem;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.removeItemAt(2);
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was incorrectly changed",
+				beforeSelectedIndex, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
+				beforeSelectedItem, this._list.selectedItem);
+		}
+
+		[Test]
+		public function testRemoveSelectedIndex():void
+		{
+			this._list.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.removeItemAt(1);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not changed to -1",
+				-1, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not changed to null",
+				null, this._list.selectedItem);
+		}
+
+		[Test]
+		public function testReplaceItemAtSelectedIndex():void
+		{
+			this._list.selectedIndex = 1;
+			var beforeSelectedIndex:int = this._list.selectedIndex;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.setItemAt({ label: "New Item" }, beforeSelectedIndex);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not changed to -1",
+				-1, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not changed to null",
+				null, this._list.selectedItem);
+		}
+
+		[Test]
+		public function testDeselectAllOnNullDataProvider():void
+		{
+			this._list.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider = null;
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not set to -1",
+				-1, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not set to null",
+				null, this._list.selectedItem);
+		}
+
+		[Test]
+		public function testDeselectAllOnDataProviderRemoveAll():void
+		{
+			this._list.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.removeAll();
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not set to -1",
+				-1, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not set to null",
+				null, this._list.selectedItem);
+		}
+
+		[Test]
+		public function testAddItemBeforeSelectedIndex():void
+		{
+			this._list.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			var beforeSelectedIndex:int = this._list.selectedIndex;
+			var beforeSelectedItem:Object = this._list.selectedItem;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.addItemAt({label: "New Item"}, 0);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertFalse("The selectedIndex property was not changed",
+				beforeSelectedIndex === this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
+				beforeSelectedItem, this._list.selectedItem);
+		}
 	}
 }
