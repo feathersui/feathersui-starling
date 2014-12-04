@@ -138,6 +138,15 @@ package feathers.data
 		/**
 		 * @inheritDoc
 		 */
+		public function removeAll(data:Object):void
+		{
+			var branch:Array = data as Array;
+			branch.length = 0;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getItemLocation(data:Object, item:Object, result:Vector.<int> = null, ...rest:Array):Vector.<int>
 		{
 			if(!result)

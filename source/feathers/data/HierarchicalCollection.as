@@ -332,6 +332,20 @@ package feathers.data
 		}
 
 		/**
+		 * Removes all items from the collection.
+		 */
+		public function removeAll():void
+		{
+			if(this.getLength() == 0)
+			{
+				return;
+			}
+			this._dataDescriptor.removeAll(this._data);
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.RESET, false);
+		}
+
+		/**
 		 * Replaces the item at the specified location with a new item.
 		 */
 		public function setItemAt(item:Object, index:int, ...rest:Array):void
