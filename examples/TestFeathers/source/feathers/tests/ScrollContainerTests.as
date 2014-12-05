@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.Button;
 	import feathers.controls.ScrollContainer;
 
 	import org.flexunit.Assert;
@@ -136,6 +137,31 @@ package feathers.tests
 				hasResized = true;
 			});
 			this._container.removeChild(child);
+			this._container.validate();
+			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
+			Assert.assertFalse("The width of the layout group was not changed.",
+				originalWidth === this._container.width);
+			Assert.assertFalse("The height of the layout group was not changed.",
+				originalHeight === this._container.height);
+		}
+
+		[Test]
+		public function testResizeWhenResizingFeathersControlChild():void
+		{
+			var child:Button = new Button();
+			child.defaultSkin = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._container.addChild(child);
+			this._container.validate();
+
+			var originalWidth:Number = this._container.width;
+			var originalHeight:Number = this._container.height;
+			var hasResized:Boolean = false;
+			this._container.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			child.width = ITEM_WIDTH * 2;
+			child.height = ITEM_HEIGHT * 2;
 			this._container.validate();
 			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
 			Assert.assertFalse("The width of the layout group was not changed.",
