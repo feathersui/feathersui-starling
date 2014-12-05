@@ -1569,7 +1569,14 @@ package feathers.controls.text
 		 */
 		protected function textField_changeHandler(event:flash.events.Event):void
 		{
-			this.text = this.textField.text;
+			if(this._isHTML)
+			{
+				this.text = this.textField.htmlText;
+			}
+			else
+			{
+				this.text = this.textField.text;
+			}
 		}
 
 		/**
