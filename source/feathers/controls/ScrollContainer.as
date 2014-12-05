@@ -525,7 +525,9 @@ package feathers.controls
 			{
 				return super.addChildAt(child, index);
 			}
-			return DisplayObjectContainer(this.viewPort).addChildAt(child, index);
+			var result:DisplayObject = DisplayObjectContainer(this.viewPort).addChildAt(child, index);
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+			return result;
 		}
 
 		/**
@@ -565,7 +567,9 @@ package feathers.controls
 			{
 				return super.removeChildAt(index, dispose);
 			}
-			return DisplayObjectContainer(this.viewPort).removeChildAt(index, dispose);
+			var result:DisplayObject = DisplayObjectContainer(this.viewPort).removeChildAt(index, dispose);
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+			return result;
 		}
 
 		/**
