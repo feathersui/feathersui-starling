@@ -8,8 +8,11 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.IVirtualLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -428,6 +431,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreChildChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function get numChildren():int
 		{
 			if(!this.displayListBypassEnabled)
@@ -526,6 +534,14 @@ package feathers.controls
 				return super.addChildAt(child, index);
 			}
 			var result:DisplayObject = DisplayObjectContainer(this.viewPort).addChildAt(child, index);
+			if(result is IFeathersControl)
+			{
+				result.addEventListener(Event.RESIZE, child_resizeHandler);
+			}
+			if(result is ILayoutDisplayObject)
+			{
+				result.addEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 			return result;
 		}
@@ -568,6 +584,14 @@ package feathers.controls
 				return super.removeChildAt(index, dispose);
 			}
 			var result:DisplayObject = DisplayObjectContainer(this.viewPort).removeChildAt(index, dispose);
+			if(result is IFeathersControl)
+			{
+				result.removeEventListener(Event.RESIZE, child_resizeHandler);
+			}
+			if(result is ILayoutDisplayObject)
+			{
+				result.removeEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 			return result;
 		}
@@ -749,7 +773,10 @@ package feathers.controls
 				this.layoutViewPort.layout = this._layout;
 			}
 
+			var oldIgnoreChildChanges:Boolean = this._ignoreChildChanges;
+			this._ignoreChildChanges = true;
 			super.draw();
+			this._ignoreChildChanges = oldIgnoreChildChanges;
 		}
 
 		/**
@@ -787,6 +814,30 @@ package feathers.controls
 		protected function scrollContainer_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function child_resizeHandler(event:Event):void
+		{
+			if(this._ignoreChildChanges)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function child_layoutDataChangeHandler(event:Event):void
+		{
+			if(this._ignoreChildChanges)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
