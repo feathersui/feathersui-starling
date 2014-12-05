@@ -1,11 +1,11 @@
 package feathers.tests
 {
 	import feathers.controls.ScrollContainer;
-	import feathers.core.FeathersControl;
 
 	import org.flexunit.Assert;
 
 	import starling.display.Quad;
+	import starling.events.Event;
 
 	public class ScrollContainerTests
 	{
@@ -50,10 +50,8 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeWithChildAtOrigin():void
 		{
-			trace("adding child");
 			this._container.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));
 			this._container.validate();
-			trace("asserting!")
 			Assert.assertStrictlyEquals("The width of the scroll container was not calculated correctly.",
 				ITEM_WIDTH, this._container.width);
 			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly.",
@@ -102,6 +100,48 @@ package feathers.tests
 				ITEM_WIDTH, this._container.width);
 			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._container.height);
+		}
+
+		[Test]
+		public function testResizeWhenAddingChild():void
+		{
+			var originalWidth:Number = this._container.width;
+			var originalHeight:Number = this._container.height;
+			var hasResized:Boolean = false;
+			this._container.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			this._container.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));
+			this._container.validate();
+			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
+			Assert.assertFalse("The width of the layout group was not changed.",
+				originalWidth === this._container.width);
+			Assert.assertFalse("The height of the layout group was not changed.",
+				originalHeight === this._container.height);
+		}
+
+		[Test]
+		public function testResizeWhenRemovingChild():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._container.addChild(child);
+			this._container.validate();
+			var originalWidth:Number = this._container.width;
+			var originalHeight:Number = this._container.height;
+
+			var hasResized:Boolean = false;
+			this._container.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			this._container.removeChild(child);
+			this._container.validate();
+			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
+			Assert.assertFalse("The width of the layout group was not changed.",
+				originalWidth === this._container.width);
+			Assert.assertFalse("The height of the layout group was not changed.",
+				originalHeight === this._container.height);
 		}
 	}
 }

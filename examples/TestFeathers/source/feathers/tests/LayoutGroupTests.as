@@ -1,10 +1,12 @@
 package feathers.tests
 {
+	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 
 	import org.flexunit.Assert;
 
 	import starling.display.Quad;
+	import starling.events.Event;
 
 	public class LayoutGroupTests
 	{
@@ -127,6 +129,73 @@ package feathers.tests
 				ITEM_WIDTH, this._group.width);
 			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._group.height);
+		}
+
+		[Test]
+		public function testResizeWhenAddingChild():void
+		{
+			var originalWidth:Number = this._group.width;
+			var originalHeight:Number = this._group.height;
+			var hasResized:Boolean = false;
+			this._group.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			this._group.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));
+			this._group.validate();
+			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
+			Assert.assertFalse("The width of the layout group was not changed.",
+				originalWidth === this._group.width);
+			Assert.assertFalse("The height of the layout group was not changed.",
+				originalHeight === this._group.height);
+		}
+
+		[Test]
+		public function testResizeWhenRemovingChild():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._group.addChild(child);
+			this._group.validate();
+			var originalWidth:Number = this._group.width;
+			var originalHeight:Number = this._group.height;
+
+			var hasResized:Boolean = false;
+			this._group.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			this._group.removeChild(child);
+			this._group.validate();
+			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
+			Assert.assertFalse("The width of the layout group was not changed.",
+				originalWidth === this._group.width);
+			Assert.assertFalse("The height of the layout group was not changed.",
+				originalHeight === this._group.height);
+		}
+
+		[Test]
+		public function testResizeWhenResizingFeathersControlChild():void
+		{
+			var child:Button = new Button();
+			child.defaultSkin = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._group.addChild(child);
+			this._group.validate();
+
+			var originalWidth:Number = this._group.width;
+			var originalHeight:Number = this._group.height;
+			var hasResized:Boolean = false;
+			this._group.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			child.width = ITEM_WIDTH * 2;
+			child.height = ITEM_HEIGHT * 2;
+			this._group.validate();
+			Assert.assertTrue("Event.RESIZE was not dispatched", hasResized);
+			Assert.assertFalse("The width of the layout group was not changed.",
+				originalWidth === this._group.width);
+			Assert.assertFalse("The height of the layout group was not changed.",
+				originalHeight === this._group.height);
 		}
 	}
 }
