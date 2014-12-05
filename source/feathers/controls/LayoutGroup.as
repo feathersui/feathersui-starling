@@ -621,9 +621,10 @@ package feathers.controls
 				this.refreshViewPortBounds();
 				if(this._layout)
 				{
+					var oldIgnoreChildChanges:Boolean = this._ignoreChildChanges;
 					this._ignoreChildChanges = true;
 					this._layout.layout(this.items, this.viewPortBounds, this._layoutResult);
-					this._ignoreChildChanges = false;
+					this._ignoreChildChanges = oldIgnoreChildChanges;
 				}
 				else
 				{
@@ -741,6 +742,7 @@ package feathers.controls
 			{
 				maxY = 0;
 			}
+			var oldIgnoreChildChanges:Boolean = this._ignoreChildChanges;
 			this._ignoreChildChanges = true;
 			var itemCount:int = this.items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -767,7 +769,7 @@ package feathers.controls
 					maxY = itemMaxY;
 				}
 			}
-			this._ignoreChildChanges = false;
+			this._ignoreChildChanges = oldIgnoreChildChanges;
 			this._layoutResult.contentX = 0;
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = maxX;
