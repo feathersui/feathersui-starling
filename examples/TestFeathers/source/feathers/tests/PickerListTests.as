@@ -189,7 +189,6 @@ package feathers.tests
 				hasChanged = true;
 			});
 			this._list.dataProvider.removeItemAt(0);
-			trace(beforeSelectedItem, this._list.selectedItem, beforeSelectedIndex, this._list.selectedIndex);
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertFalse("The selectedIndex property was not changed",
 				beforeSelectedIndex === this._list.selectedIndex);
