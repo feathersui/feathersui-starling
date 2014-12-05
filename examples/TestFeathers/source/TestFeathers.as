@@ -1,10 +1,12 @@
 package
 {
-    import feathers.system.DeviceCapabilities;
     import feathers.tests.ButtonTests;
     import feathers.tests.GroupedListTests;
+    import feathers.tests.LayoutGroupTests;
     import feathers.tests.ListTests;
     import feathers.tests.PickerListTests;
+    import feathers.tests.ProgressBarTests;
+    import feathers.tests.ScrollContainerTests;
     import feathers.tests.SliderHorizontalTests;
     import feathers.tests.TabBarEmptyDataProviderTests;
     import feathers.tests.TabBarTests;
@@ -12,21 +14,16 @@ package
     import feathers.tests.ToggleGroupTests;
     import feathers.tests.ToggleSwitchTests;
 
-    import flash.display.MovieClip;
     import flash.display.Sprite;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
     import flash.events.Event;
     import flash.system.System;
-    import flash.ui.ContextMenu;
-    import flash.utils.getDefinitionByName;
 
     import org.flexunit.internals.TraceListener;
-
     import org.flexunit.runner.FlexUnitCore;
 
     import starling.core.Starling;
-    import starling.display.Quad;
     import starling.display.Sprite;
     import starling.events.Event;
 
@@ -69,8 +66,11 @@ package
             [
                 ButtonTests,
                 GroupedListTests,
+                LayoutGroupTests,
                 ListTests,
                 PickerListTests,
+                ProgressBarTests,
+                ScrollContainerTests,
                 SliderHorizontalTests,
                 ToggleButtonTests,
                 ToggleGroupTests,
