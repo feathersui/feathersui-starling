@@ -661,12 +661,12 @@ package feathers.controls
 			{
 				return false;
 			}
-			this.textRenderer.minWidth = this._minWidth;
-			this.textRenderer.maxWidth = this._maxWidth;
-			this.textRenderer.width = this.explicitWidth;
-			this.textRenderer.minHeight = this._minHeight;
-			this.textRenderer.maxHeight = this._maxHeight;
-			this.textRenderer.height = this.explicitHeight;
+			this.textRenderer.minWidth = this._minWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.minHeight = this._minHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
