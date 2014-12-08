@@ -329,6 +329,10 @@ package feathers.controls
 			{
 				return;
 			}
+			if(value && value.parent)
+			{
+				value.removeFromParent();
+			}
 			this._backgroundSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
@@ -363,6 +367,10 @@ package feathers.controls
 			if(this._backgroundDisabledSkin == value)
 			{
 				return;
+			}
+			if(value && value.parent)
+			{
+				value.removeFromParent();
 			}
 			this._backgroundDisabledSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
