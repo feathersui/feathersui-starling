@@ -1158,19 +1158,48 @@ package feathers.layout
 				}
 			}
 
+			var canRepeatItems:Boolean = this._repeatItems && totalHeight > availableHeight && !(this._useVirtualLayout && this._hasVariableItemDimensions);
+
 			//in this section, we handle vertical alignment. items will be
 			//aligned vertically if the total height of all items is less than
 			//the available height of the view port.
 			if(totalHeight < availableHeight)
 			{
-				var verticalAlignOffsetY:Number = 0;
-				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				if(this._repeatItems && !canRepeatItems)
 				{
-					verticalAlignOffsetY = availableHeight - totalHeight;
+					if(this._useVirtualLayout)
+					{
+						verticalAlignOffsetY = Math.round(availableHeight - calculatedTypicalItemHeight) / 2;
+						totalHeight += 2 * verticalAlignOffsetY;
+					}
+					else
+					{
+						//last item should be centered at the max scroll position
+						itemHeight = discoveredItems[discoveredItemCount - 1].height;
+						totalHeight += Math.round(availableHeight - itemHeight) / 2;
+						//first item should be centered at the min scroll position
+						itemHeight = discoveredItems[0].height;
+						verticalAlignOffsetY = Math.round(availableHeight - itemHeight) / 2;
+						totalHeight += verticalAlignOffsetY;
+					}
+					//we don't want to use the normal padding top and bottom
+					//values if repeatItems is true.
+					totalHeight -= (this._paddingTop + this._paddingBottom);
+					//the padding top value was already applied, so we need to
+					//adjust the offset to account for it
+					verticalAlignOffsetY -= this._paddingTop;
 				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				else
 				{
-					verticalAlignOffsetY = Math.round((availableHeight - totalHeight) / 2);
+					var verticalAlignOffsetY:Number = 0;
+					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						verticalAlignOffsetY = availableHeight - totalHeight;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						verticalAlignOffsetY = Math.round((availableHeight - totalHeight) / 2);
+					}
 				}
 				if(verticalAlignOffsetY != 0)
 				{
@@ -1186,7 +1215,6 @@ package feathers.layout
 				}
 			}
 
-			var canRepeatItems:Boolean = this._repeatItems && totalHeight > availableHeight && !(this._useVirtualLayout && this._hasVariableItemDimensions);
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];

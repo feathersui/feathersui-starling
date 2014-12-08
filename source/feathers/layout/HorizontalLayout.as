@@ -1155,19 +1155,48 @@ package feathers.layout
 				}
 			}
 
+			var canRepeatItems:Boolean = this._repeatItems && totalWidth > availableWidth && !(this._useVirtualLayout && this._hasVariableItemDimensions);
+
 			//in this section, we handle horizontal alignment. items will be
 			//aligned horizontally if the total width of all items is less than
 			//the available width of the view port.
 			if(totalWidth < availableWidth)
 			{
 				var horizontalAlignOffsetX:Number = 0;
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				if(this._repeatItems && !canRepeatItems)
 				{
-					horizontalAlignOffsetX = availableWidth - totalWidth;
+					if(this._useVirtualLayout)
+					{
+						horizontalAlignOffsetX = Math.round(availableWidth - calculatedTypicalItemWidth) / 2;
+						totalWidth += 2 * horizontalAlignOffsetX;
+					}
+					else
+					{
+						//last item should be centered at the max scroll position
+						itemWidth = discoveredItems[discoveredItemCount - 1].width;
+						totalWidth += Math.round(availableWidth - itemWidth) / 2;
+						//first item should be centered at the min scroll position
+						itemWidth = discoveredItems[0].width;
+						horizontalAlignOffsetX = Math.round(availableWidth - itemWidth) / 2;
+						totalWidth += horizontalAlignOffsetX;
+					}
+					//we don't want to use the normal padding left and right
+					//values if repeatItems is true.
+					totalWidth -= (this._paddingLeft + this._paddingRight);
+					//the padding left value was already applied, so we need to
+					//adjust the offset to account for it
+					horizontalAlignOffsetX -= this._paddingLeft;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				else
 				{
-					horizontalAlignOffsetX = Math.round((availableWidth - totalWidth) / 2);
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						horizontalAlignOffsetX = availableWidth - totalWidth;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						horizontalAlignOffsetX = Math.round((availableWidth - totalWidth) / 2);
+					}
 				}
 				if(horizontalAlignOffsetX != 0)
 				{
@@ -1183,7 +1212,6 @@ package feathers.layout
 				}
 			}
 
-			var canRepeatItems:Boolean = this._repeatItems && totalWidth > availableWidth && !(this._useVirtualLayout && this._hasVariableItemDimensions);
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
