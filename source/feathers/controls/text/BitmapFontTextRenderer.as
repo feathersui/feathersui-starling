@@ -585,8 +585,9 @@ package feathers.controls.text
 				var offsetX:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
+					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
 					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
-					if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
+					if(currentCharIsWhitespace)
 					{
 						if(!previousCharIsWhitespace)
 						{
@@ -602,7 +603,7 @@ package feathers.controls.text
 						word = "";
 					}
 
-					if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
 					{
 						//we're just reusing this variable to avoid creating a
 						//new one. it'll be reset to 0 in a moment.
@@ -629,13 +630,24 @@ package feathers.controls.text
 			{
 				currentX = 0;
 			}
+			//if the text ends in extra whitespace, the currentX value will be
+			//larger than the max line width. we'll remove that and add extra
+			//lines.
+			if(this._wordWrap)
+			{
+				while(currentX > maxLineWidth)
+				{
+					currentX -= maxLineWidth;
+					currentY += lineHeight;
+				}
+			}
 			if(maxX < currentX)
 			{
 				maxX = currentX;
 			}
 
 			result.x = maxX;
-			result.y = currentY + font.lineHeight * scale;
+			result.y = currentY + lineHeight;
 			return result;
 		}
 
@@ -775,8 +787,9 @@ package feathers.controls.text
 				var offsetX:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
+					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
 					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
-					if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
+					if(currentCharIsWhitespace)
 					{
 						if(!previousCharIsWhitespace)
 						{
@@ -801,7 +814,7 @@ package feathers.controls.text
 						this.addBufferToBatch(0);
 					}
 
-					if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
 					{
 						if(isAligned)
 						{
@@ -855,6 +868,17 @@ package feathers.controls.text
 				this.alignBuffer(maxLineWidth, currentX, 0);
 				this.addBufferToBatch(0);
 			}
+			//if the text ends in extra whitespace, the currentX value will be
+			//larger than the max line width. we'll remove that and add extra
+			//lines.
+			if(this._wordWrap)
+			{
+				while(currentX > maxLineWidth)
+				{
+					currentX -= maxLineWidth;
+					currentY += lineHeight;
+				}
+			}
 			if(maxX < currentX)
 			{
 				maxX = currentX;
@@ -879,7 +903,7 @@ package feathers.controls.text
 			this._characterBatch.x = this._batchX;
 
 			result.x = maxX;
-			result.y = currentY + font.lineHeight * scale;
+			result.y = currentY + lineHeight;
 			return result;
 		}
 
