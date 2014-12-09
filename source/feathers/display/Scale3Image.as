@@ -509,9 +509,9 @@ package feathers.display
 					var scaledFirstRegionSize:Number = this._textures.firstRegionSize * oppositeEdgeScale;
 					var scaledThirdRegionSize:Number = (this._frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
 					var sumFirstAndThird:Number = scaledFirstRegionSize + scaledThirdRegionSize;
-					if(sumFirstAndThird > this._width)
+					if(sumFirstAndThird > this._height)
 					{
-						var distortionScale:Number = (this._width / sumFirstAndThird);
+						var distortionScale:Number = (this._height / sumFirstAndThird);
 						scaledFirstRegionSize *= distortionScale;
 						scaledThirdRegionSize *= distortionScale;
 						sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
