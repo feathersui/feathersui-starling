@@ -3876,6 +3876,14 @@ package feathers.controls
 					{
 						this._horizontalPageIndex = this._minHorizontalPageIndex;
 					}
+					else if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY && this._horizontalScrollPosition < 0)
+					{
+						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / this.actualPageWidth);
+					}
+					else if(this._maxHorizontalScrollPosition == Number.POSITIVE_INFINITY && this._horizontalScrollPosition >= 0)
+					{
+						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / this.actualPageWidth);
+					}
 					else
 					{
 						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
@@ -3906,6 +3914,14 @@ package feathers.controls
 					else if(this._verticalScrollPosition == this._minVerticalScrollPosition)
 					{
 						this._verticalPageIndex = this._minVerticalPageIndex;
+					}
+					else if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY && this._verticalScrollPosition < 0)
+					{
+						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / this.actualPageHeight);
+					}
+					else if(this._maxVerticalScrollPosition == Number.POSITIVE_INFINITY && this._verticalScrollPosition >= 0)
+					{
+						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / this.actualPageHeight);
 					}
 					else
 					{
