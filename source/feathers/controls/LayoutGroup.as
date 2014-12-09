@@ -545,6 +545,10 @@ package feathers.controls
 				}
 				return result;
 			}
+			if(forTouch && (!this.visible || !this.touchable))
+			{
+				return null;
+			}
 			if(this.currentBackgroundSkin && this._hitArea.contains(localX, localY))
 			{
 				return this;
