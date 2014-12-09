@@ -9,12 +9,48 @@ package feathers.controls
 {
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.ILayout;
-	import feathers.layout.VerticalLayout;
+	import feathers.layout.IVirtualLayout;
+	import feathers.layout.VerticalSpinnerLayout;
 
+	import flash.ui.Keyboard;
+
+	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
+	/**
+	 * A customized <code>List</code> component where scrolling updates the
+	 * the selected item. Layouts may loop infinitely.
+	 *
+	 * <p>The following example creates a list, gives it a data provider, tells
+	 * the item renderer how to interpret the data, and listens for when the
+	 * selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var list:SpinnerList = new SpinnerList();
+	 *
+	 * list.dataProvider = new ListCollection(
+	 * [
+	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
+	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
+	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
+	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
+	 * ]);
+	 *
+	 * list.itemRendererFactory = function():IListItemRenderer
+	 * {
+	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	 *     renderer.labelField = "text";
+	 *     renderer.iconSourceField = "thumbnail";
+	 *     return renderer;
+	 * };
+	 *
+	 * list.addEventListener( Event.CHANGE, list_changeHandler );
+	 *
+	 * this.addChild( list );</listing>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/spinner-list
+	 */
 	public class SpinnerList extends List
 	{
 		/**
@@ -70,31 +106,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function set layout(value:ILayout):void
-		{
-			if(value is VerticalLayout)
-			{
-				var verticalLayout:VerticalLayout = VerticalLayout(value);
-				//these properties are required for this component.
-				verticalLayout.repeatItems = true;
-				verticalLayout.hasVariableItemDimensions = false;
-			}
-			else if(value is HorizontalLayout)
-			{
-				var horizontalLayout:HorizontalLayout = HorizontalLayout(value);
-				horizontalLayout.repeatItems = true;
-				horizontalLayout.hasVariableItemDimensions = false;
-			}
-			else
-			{
-				throw new ArgumentError("SpinnerList requires VerticalLayout or HorizontalLayout.");
-			}
-			super.layout = value;
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function initialize():void
 		{
 			if(this._layout == null)
@@ -108,11 +119,11 @@ package feathers.controls
 					this.verticalScrollPolicy = SCROLL_POLICY_ON;
 				}
 
-				var layout:VerticalLayout = new VerticalLayout();
+				var layout:VerticalSpinnerLayout = new VerticalSpinnerLayout();
 				layout.useVirtualLayout = true;
 				layout.padding = 0;
 				layout.gap = 0;
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = VerticalSpinnerLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.requestedRowCount = 5;
 				this.layout = layout;
 			}
@@ -123,17 +134,68 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function refreshMinAndMaxScrollPositions():void
+		override protected function refreshPageCount():void
 		{
-			super.refreshMinAndMaxScrollPositions();
-			if(this._layout is VerticalLayout)
+			super.refreshPageCount();
+			var typicalItem:DisplayObject = IVirtualLayout(this._layout).typicalItem;
+			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 			{
-				this.actualPageHeight = this.explicitPageHeight = VerticalLayout(this._layout).typicalItem.height;
+				this.actualPageHeight = this.explicitPageHeight = typicalItem.height;
 			}
-			else //horizontal
+			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 			{
-				this.actualPageWidth = this.explicitPageWidth = HorizontalLayout(this._layout).typicalItem.width;
+				this.actualPageWidth = this.explicitPageWidth = typicalItem.width;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function handlePendingScroll():void
+		{
+			if(this.pendingItemIndex >= 0)
+			{
+				var itemIndex:int = this.pendingItemIndex;
+				this.pendingItemIndex = -1;
+				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+				{
+					this.pendingVerticalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+				}
+				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+				{
+					this.pendingHorizontalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+				}
+			}
+			super.handlePendingScroll();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateNearestPageIndexForItem(itemIndex:int, currentPageIndex:int, maxPageIndex:int):int
+		{
+			if(maxPageIndex != int.MAX_VALUE)
+			{
+				return itemIndex;
+			}
+			var itemCount:int = this._dataProvider.length;
+			var fullDataProviderOffsets:int = currentPageIndex / itemCount;
+			var currentItemIndex:int = currentPageIndex % itemCount;
+			if(itemIndex < currentItemIndex)
+			{
+				var previousPageIndex:Number = fullDataProviderOffsets * itemCount + itemIndex;
+				var nextPageIndex:Number = (fullDataProviderOffsets + 1) * itemCount + itemIndex;
+			}
+			else
+			{
+				previousPageIndex = (fullDataProviderOffsets - 1) * itemCount + itemIndex;
+				nextPageIndex = fullDataProviderOffsets * itemCount + itemIndex;
+			}
+			if((nextPageIndex - currentPageIndex) < (currentPageIndex - previousPageIndex))
+			{
+				return nextPageIndex;
+			}
+			return previousPageIndex;
 		}
 
 		/**
@@ -142,11 +204,11 @@ package feathers.controls
 		protected function spinnerList_scrollCompleteHandler(event:Event):void
 		{
 			var itemCount:int = this._dataProvider.length;
-			if(this._layout is VerticalLayout)
+			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 			{
 				var pageIndex:int = this._verticalPageIndex % itemCount;
 			}
-			else //horizontal
+			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 			{
 				pageIndex = this._horizontalPageIndex % itemCount;
 			}
@@ -163,57 +225,72 @@ package feathers.controls
 		protected function spinnerList_triggeredHandler(event:Event, item:Object):void
 		{
 			var itemIndex:int = this._dataProvider.getItemIndex(item);
-			if(this._layout is VerticalLayout)
+			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 			{
-				if(this._maxVerticalPageIndex != int.MAX_VALUE)
-				{
-					this.scrollToPageIndex(0, itemIndex);
-					return;
-				}
-				var pageIndex:int = this._verticalPageIndex;
+				itemIndex = this.calculateNearestPageIndexForItem(itemIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+				this.throwToPage(this._horizontalPageIndex, itemIndex, this._pageThrowDuration);
 			}
-			else //horizontal
+			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 			{
-				if(this._maxHorizontalPageIndex != int.MAX_VALUE)
-				{
-					this.scrollToPageIndex(itemIndex, 0);
-					return;
-				}
-				pageIndex = this._horizontalPageIndex;
+				itemIndex = this.calculateNearestPageIndexForItem(itemIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+				this.throwToPage(itemIndex, this._verticalPageIndex);
 			}
-			var itemCount:int = this._dataProvider.length;
-			var fullDataProviderOffsets:int = pageIndex / itemCount;
-			if(itemIndex < pageIndex)
-			{
-				var previousIndex:Number = fullDataProviderOffsets * itemCount + itemIndex;
-				var nextIndex:Number = (fullDataProviderOffsets + 1) * itemCount + itemIndex;
-			}
-			else
-			{
-				nextIndex = fullDataProviderOffsets * itemCount + itemIndex;
-				previousIndex = (fullDataProviderOffsets - 1) * itemCount + itemIndex;
-			}
+		}
 
-			if((nextIndex - pageIndex) < (pageIndex - previousIndex))
+		/**
+		 * @private
+		 */
+		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._dataProvider)
 			{
-				if(this._layout is VerticalLayout)
+				return;
+			}
+			var changedSelection:Boolean = false;
+			if(event.keyCode == Keyboard.HOME)
+			{
+				if(this._dataProvider.length > 0)
 				{
-					this.scrollToPageIndex(0, nextIndex);
-				}
-				else //horizontal
-				{
-					this.scrollToPageIndex(nextIndex, 0);
+					this.selectedIndex = 0;
+					changedSelection = true;
 				}
 			}
-			else
+			else if(event.keyCode == Keyboard.END)
 			{
-				if(this._layout is VerticalLayout)
+				this.selectedIndex = this._dataProvider.length - 1;
+				changedSelection = true;
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				var newIndex:int = this._selectedIndex - 1;
+				if(newIndex < 0)
 				{
-					this.scrollToPageIndex(0, previousIndex);
+					newIndex = this._dataProvider.length + newIndex;
 				}
-				else //horizontal
+				this.selectedIndex = newIndex;
+				changedSelection = true;
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				newIndex = this._selectedIndex + 1;
+				if(newIndex >= this._dataProvider.length)
 				{
-					this.scrollToPageIndex(previousIndex, 0);
+					newIndex -= this._dataProvider.length;
+				}
+				this.selectedIndex = newIndex;
+				changedSelection = true;
+			}
+			if(changedSelection)
+			{
+				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+				{
+					var pageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
+				}
+				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+				{
+					pageIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this.throwToPage(pageIndex, this._verticalPageIndex);
 				}
 			}
 		}
