@@ -130,7 +130,7 @@ package feathers.controls
 			{
 				this.actualPageHeight = this.explicitPageHeight = VerticalLayout(this._layout).typicalItem.height;
 			}
-			else if(this._layout is HorizontalLayout)
+			else //horizontal
 			{
 				this.actualPageWidth = this.explicitPageWidth = HorizontalLayout(this._layout).typicalItem.width;
 			}
@@ -141,15 +141,20 @@ package feathers.controls
 		 */
 		protected function spinnerList_scrollCompleteHandler(event:Event):void
 		{
+			var itemCount:int = this._dataProvider.length;
 			if(this._layout is VerticalLayout)
 			{
-				trace(this.verticalPageIndex, this.maxVerticalPageIndex);
-				this.selectedIndex = this.verticalPageIndex;
+				var pageIndex:int = this._verticalPageIndex % itemCount;
 			}
-			else if(this._layout is HorizontalLayout)
+			else //horizontal
 			{
-				this.selectedIndex = this.horizontalPageIndex;
+				pageIndex = this._horizontalPageIndex % itemCount;
 			}
+			if(pageIndex < 0)
+			{
+				pageIndex = itemCount + pageIndex;
+			}
+			this.selectedIndex = pageIndex;
 		}
 
 		/**
@@ -157,14 +162,59 @@ package feathers.controls
 		 */
 		protected function spinnerList_triggeredHandler(event:Event, item:Object):void
 		{
-			var pageIndex:int = this._dataProvider.getItemIndex(item);
+			var itemIndex:int = this._dataProvider.getItemIndex(item);
 			if(this._layout is VerticalLayout)
 			{
-				this.scrollToPageIndex(0, pageIndex);
+				if(this._maxVerticalPageIndex != int.MAX_VALUE)
+				{
+					this.scrollToPageIndex(0, itemIndex);
+					return;
+				}
+				var pageIndex:int = this._verticalPageIndex;
 			}
-			else if(this._layout is HorizontalLayout)
+			else //horizontal
 			{
-				this.scrollToPageIndex(pageIndex, 0);
+				if(this._maxHorizontalPageIndex != int.MAX_VALUE)
+				{
+					this.scrollToPageIndex(itemIndex, 0);
+					return;
+				}
+				pageIndex = this._horizontalPageIndex;
+			}
+			var itemCount:int = this._dataProvider.length;
+			var fullDataProviderOffsets:int = pageIndex / itemCount;
+			if(itemIndex < pageIndex)
+			{
+				var previousIndex:Number = fullDataProviderOffsets * itemCount + itemIndex;
+				var nextIndex:Number = (fullDataProviderOffsets + 1) * itemCount + itemIndex;
+			}
+			else
+			{
+				nextIndex = fullDataProviderOffsets * itemCount + itemIndex;
+				previousIndex = (fullDataProviderOffsets - 1) * itemCount + itemIndex;
+			}
+
+			if((nextIndex - pageIndex) < (pageIndex - previousIndex))
+			{
+				if(this._layout is VerticalLayout)
+				{
+					this.scrollToPageIndex(0, nextIndex);
+				}
+				else //horizontal
+				{
+					this.scrollToPageIndex(nextIndex, 0);
+				}
+			}
+			else
+			{
+				if(this._layout is VerticalLayout)
+				{
+					this.scrollToPageIndex(0, previousIndex);
+				}
+				else //horizontal
+				{
+					this.scrollToPageIndex(previousIndex, 0);
+				}
 			}
 		}
 	}
