@@ -12,6 +12,6 @@ Flash Builder 4.6 and Flash Builder 4.7 have both been tested and confirmed to w
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../start.html).
+This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
 
 
