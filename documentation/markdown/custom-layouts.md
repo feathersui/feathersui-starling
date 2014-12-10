@@ -1,6 +1,6 @@
 # Introduction to Custom Layouts for Feathers Components
 
-Several Feathers components support the ability to customize layouts. [Several layouts](start.html#layouts) are provided by Feathers out of the box. However, if those don't quite fit your needs, you can create custom layouts by implementing the `ILayout` interface. This interface provides the most basic API required to use a custom layout with a Feathers component. A number of other interfaces are available with more advanced functionality, and we'll look at those below.
+Several Feathers components support the ability to customize layouts. [Several layouts](index.html#layouts) are provided by Feathers out of the box. However, if those don't quite fit your needs, you can create custom layouts by implementing the `ILayout` interface. This interface provides the most basic API required to use a custom layout with a Feathers component. A number of other interfaces are available with more advanced functionality, and we'll look at those below.
 
 ## A Simple Example Layout
 
@@ -371,6 +371,6 @@ return result;
 
 -   [Virtualized Custom Layouts for Feathers Components](virtual-custom-layouts.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

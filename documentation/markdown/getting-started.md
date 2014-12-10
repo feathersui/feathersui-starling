@@ -8,7 +8,7 @@ In the following beginner-level tutorial, we'll create our first [Feathers Butto
 
 -   [Download Feathers](http://feathersui.com/download/).
 
--   Check the [Introduction](start.html#introduction) section of the Feathers documentation for instructions on how to add Feathers to your favorite development environment.
+-   Check the [Introduction](index.html#introduction) section of the Feathers documentation for instructions on how to add Feathers to your favorite development environment.
 
 -   Look inside the `themes` directory of the Feathers ZIP file to find `MetalWorksMobileTheme.swc`. Add it to your project's build settings the same way that you added `feathers.swc`.
 
@@ -113,6 +113,6 @@ That should get you started with the very basics of working with Feathers. For m
 
 For more extensive sample code, check out the other Feathers examples included in the *examples* directory when you [download Feathers](http://feathersui.com/download/). For example themes (including `MetalWorksMobileTheme`), check out the *themes* directory.
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

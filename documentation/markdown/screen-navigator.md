@@ -283,6 +283,6 @@ protected function mainMenuScreen_onHomePage( sender:MainMenuScreen ):void
 
 -   [How to use the Feathers PanelScreen component](panel-screen.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

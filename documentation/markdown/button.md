@@ -238,6 +238,6 @@ Similar to `stateToSkinFunction`, button also provides `stateToIconFunction` to 
 
 -   [Button API Documentation](http://feathersui.com/documentation/feathers/controls/Button.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

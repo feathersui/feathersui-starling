@@ -192,6 +192,6 @@ The toggle switch's off track may be skinned similarly to the on track. The name
 
 -   [ToggleSwitch API Documentation](http://feathersui.com/documentation/feathers/controls/ToggleSwitch.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

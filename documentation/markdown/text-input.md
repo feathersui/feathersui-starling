@@ -214,6 +214,6 @@ If you aren't using a theme, then you may set any of the text input's properties
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

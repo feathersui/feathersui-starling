@@ -93,6 +93,6 @@ If you aren't using a theme, then you may set any of the group's properties dire
 
 -   [LayoutGroup API Documentation](http://feathersui.com/documentation/feathers/controls/LayoutGroup.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

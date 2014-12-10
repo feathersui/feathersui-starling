@@ -46,6 +46,6 @@ After all references to the component have been removed, it becomes eligible for
 
 -   [Feathers Component Validation with draw()](component-validation.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

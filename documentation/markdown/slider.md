@@ -192,6 +192,6 @@ A slider also provides a `showThumb` property. If set to `false`, the thumb will
 
 -   [Slider API Documentation](http://feathersui.com/documentation/feathers/controls/Slider.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

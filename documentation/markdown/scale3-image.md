@@ -67,6 +67,6 @@ You can easily change the `width` property for horizontal `Scale3Image` objects 
 
 -   [Scale3Image API Documentation](http://feathersui.com/documentation/feathers/display/Scale3Image.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

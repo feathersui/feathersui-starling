@@ -246,6 +246,6 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

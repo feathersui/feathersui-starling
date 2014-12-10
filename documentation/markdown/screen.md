@@ -66,6 +66,6 @@ If you aren't using a theme, then you may set any of the screen's properties dir
 
 -   [Screen API Documentation](http://feathersui.com/documentation/feathers/controls/Screen.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

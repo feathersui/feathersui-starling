@@ -1,6 +1,6 @@
 # Custom Item Renderers with FeathersControl and IListItemRenderer
 
-The `FeathersControl` class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a `List` or `GroupedList`, you're actually going to create a [custom Feathers component](start.html#custom_components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
+The `FeathersControl` class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a `List` or `GroupedList`, you're actually going to create a [custom Feathers component](index.html#custom_components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
 
 Feathers includes three interfaces that define the API used by the `List` or `GroupedList` components to communicate with their item renderers.
 
@@ -531,13 +531,13 @@ package
 
 ## Next Steps
 
-Looking to do more with your custom item renderer? Check out the [Feathers Cookbook](cookbook/start.html) for “recipes” that show you how to implement typical features in custom item renderers.
+Looking to do more with your custom item renderer? Check out the [Feathers Cookbook](cookbook/index.html) for “recipes” that show you how to implement typical features in custom item renderers.
 
 ## Related Links
 
 -   [Introduction to Custom Item Renderers](item-renderers.html)
 
--   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/start.html#custom_item_renderers)
+-   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
 -   [IListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html)
 
@@ -545,6 +545,6 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 
 -   [IGroupedListHeaderOrFooterRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

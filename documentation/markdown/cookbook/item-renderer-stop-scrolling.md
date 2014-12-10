@@ -68,6 +68,6 @@ Scrolling will be stopped only when touches originate on the child. If touches o
 
 -   [Introduction to Custom Item Renderers](../item-renderers.html)
 
-This is a recipe in the [Feathers Cookbook](start.html). For more information about Feathers, return to the [Feathers Documentation](../start.html).
+This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
 
 

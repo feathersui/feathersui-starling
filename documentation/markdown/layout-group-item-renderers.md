@@ -1,6 +1,6 @@
 # Custom Item Renderers with Feathers Layout Group
 
-The `LayoutGroup` container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](start.html#custom_components), but it's especially useful for custom item renderers in the `List` and `GroupedList` components.
+The `LayoutGroup` container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](index.html#custom_components), but it's especially useful for custom item renderers in the `List` and `GroupedList` components.
 
 Feathers includes three subclasses of `LayoutGroup` that are designed specifically to help you get started creating custom item renderers.
 
@@ -262,13 +262,13 @@ package
 
 ## Next Steps
 
-Looking to do more with your custom item renderer? Check out the [Feathers Cookbook](cookbook/start.html) for “recipes” that show you how to implement typical features in custom item renderers and in other Feathers UI components.
+Looking to do more with your custom item renderer? Check out the [Feathers Cookbook](cookbook/index.html) for “recipes” that show you how to implement typical features in custom item renderers and in other Feathers UI components.
 
 ## Related Links
 
 -   [Introduction to Custom Item Renderers](item-renderers.html)
 
--   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/start.html#custom_item_renderers)
+-   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
 -   [LayoutGroupListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
 
@@ -276,6 +276,6 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 
 -   [LayoutGroupGroupedListHeaderOrFooterRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

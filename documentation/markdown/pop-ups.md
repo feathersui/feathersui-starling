@@ -87,6 +87,6 @@ In this case, we move pop-ups into a dedicated container on the stage. This migh
 
 -   [PopUpManager API Documentation](http://feathersui.com/documentation/feathers/core/PopUpManager.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

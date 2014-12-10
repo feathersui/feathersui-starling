@@ -137,6 +137,6 @@ Separate skins for the first and last tabs are completely optional.
 
 -   [TabBar API Documentation](http://feathersui.com/documentation/feathers/controls/TabBar.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

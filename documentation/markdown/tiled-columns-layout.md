@@ -85,6 +85,6 @@ The `LayoutGroup` and `ScrollContainer` components never use virtual layouts.
 
 -   [TiledColumnsLayout API Documentation](http://feathersui.com/documentation/feathers/layout/TiledColumnsLayout.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

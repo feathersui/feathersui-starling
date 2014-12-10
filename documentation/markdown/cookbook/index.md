@@ -1,6 +1,6 @@
 # Feathers Cookbook
 
-Simple and targeted tutorials about [Feathers](../start.html) designed to demonstrate how to use or extend the components to implement specific common behaviors.
+Simple and targeted tutorials about [Feathers](../index.html) designed to demonstrate how to use or extend the components to implement specific common behaviors.
 
 ## Custom Item Renderers
 

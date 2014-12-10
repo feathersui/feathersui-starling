@@ -46,6 +46,6 @@ Most likely, you will only need the `quick` target, which simply builds the SWC 
 
 -   `package` creates a full release build of Feathers, and then it packages everything into a ZIP file.
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

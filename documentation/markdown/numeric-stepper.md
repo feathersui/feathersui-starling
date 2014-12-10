@@ -197,6 +197,6 @@ In this situation, think of the text input as a label that simply displays the v
 
 -   [NumericStepper API Documentation](http://feathersui.com/documentation/feathers/controls/NumericStepper.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

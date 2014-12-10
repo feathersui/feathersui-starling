@@ -144,6 +144,6 @@ Separate skins for the first and last buttons are completely optional.
 
 -   [ButtonGroup API Documentation](http://feathersui.com/documentation/feathers/controls/ButtonGroup.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

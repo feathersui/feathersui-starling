@@ -132,6 +132,6 @@ This is actually something common that happens on GPUs when you position texture
 
 ------------------------------------------------------------------------
 
-For more information about Feathers, return to the [Feathers Documentation](start.html).
+For more information about Feathers, return to the [Feathers Documentation](index.html).
 
 

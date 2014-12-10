@@ -58,6 +58,6 @@ Let's adjust the layout a bit to put the button in the center of the screen:
 
 That's the basics. For more detailed sample code, take a look at the [MXML Example on Github](https://github.com/joshtynjala/feathers/blob/master/examples/MXML).
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

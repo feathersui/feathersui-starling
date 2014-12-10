@@ -166,6 +166,6 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 -   [ScrollText API Documentation](http://feathersui.com/documentation/feathers/controls/ScrollText.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

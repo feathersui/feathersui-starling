@@ -115,6 +115,6 @@ If you aren't using a theme, then you may set any of the header's properties dir
 
 -   [Header API Documentation](http://feathersui.com/documentation/feathers/controls/Header.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

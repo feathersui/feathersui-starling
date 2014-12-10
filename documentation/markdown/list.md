@@ -410,6 +410,6 @@ The following properties are available on some layouts:
 
 -   [Creating Custom Item Renderers](item-renderers.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 
