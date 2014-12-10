@@ -10,7 +10,9 @@
 
 	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
 
-	<target name="docs" depends="-docs,-cleanup" description="builds API reference only"/>
+	<target name="help" depends="-prepare,-help,-cleanup" description="builds help files only"/>
+
+	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
 
 	<target name="full" depends="-feathers,-docs,-themes,-includes,-cleanup" description="build everything">
 
@@ -81,7 +83,9 @@
 		</java>
 	</target>
 
-	<target name="-docs" depends="-starling">
+	<target name="-docs" depends="-api,-help"/>
+
+	<target name="-api" depends="-starling">
 		<echo message="Generating API Reference"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="+flexlib=${airsdk.framework}"/>
@@ -99,11 +103,48 @@
 			<arg value="-window-title=Feathers User Interface Controls for Starling Framework API Reference"/>
 			<arg value="-footer=${footer.text}"/>
 			<arg value="-package-description-file=./package-descriptions.xml"/>
-			<arg value="-output=${docs.output}"/>
+			<arg value="-output=${api.output}"/>
 		</java>
-		<copy overwrite="true" todir="${docs.output}/images">
-			<fileset dir="${docs.root}/api-reference/images">
-				<include name="logo.jpg"/>
+		<copy overwrite="true" todir="${api.output}/images">
+			<fileset dir="${api.root}/images">
+				<include name="*.jpg"/>
+				<include name="*.png"/>
+				<include name="*.gif"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="-help">
+		<echo message="Generating Help Files"/>
+		<mkdir dir="${help.output}"/>
+		<apply executable="pandoc" dir="${basedir}" dest="${help.output}" failonerror="true">
+			<srcfile/>
+			<arg value="-f"/>
+			<arg value="markdown_github"/>
+			<arg value="-t"/>
+			<arg value="html"/>
+			<arg value="-o"/>
+			<targetfile/>
+			<fileset dir="${help.root}" includes="*.md" />
+			<mapper type="glob" from="*.md" to="*.html"/>
+		</apply>
+		<mkdir dir="${help.output}/cookbook"/>
+		<apply executable="pandoc" dir="${basedir}" dest="${help.output}/cookbook" failonerror="true">
+			<srcfile/>
+			<arg value="-f"/>
+			<arg value="markdown_github"/>
+			<arg value="-t"/>
+			<arg value="html"/>
+			<arg value="-o"/>
+			<targetfile/>
+			<fileset dir="${help.root}/cookbook" includes="*.md" />
+			<mapper type="glob" from="*.md" to="*.html"/>
+		</apply>
+		<copy overwrite="true" todir="${help.output}/images">
+			<fileset dir="${help.root}/images">
+				<include name="*.png"/>
+				<include name="*.gif"/>
+				<include name="*.jpg"/>
 			</fileset>
 		</copy>
 	</target>
