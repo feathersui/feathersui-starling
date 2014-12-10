@@ -665,7 +665,7 @@ package feathers.controls.supportClasses
 			var typicalItemIndex:int = 0;
 			var newTypicalItemIsInDataProvider:Boolean = false;
 			var typicalItem:Object = this._typicalItem;
-			if(typicalItem)
+			if(typicalItem !== null)
 			{
 				if(this._dataProvider)
 				{
@@ -686,7 +686,7 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			if(typicalItem)
+			if(typicalItem !== null)
 			{
 				var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
 				if(!typicalRenderer && this._typicalItemRenderer)
