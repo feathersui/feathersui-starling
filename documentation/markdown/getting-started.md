@@ -16,7 +16,7 @@ In the following beginner-level tutorial, we'll create our first [Feathers Butto
 
 ## Final Result
 
-[![feathers-hello-world.jpg](/_media/feathers/feathers-hello-world.jpg)](http://feathersui.com/examples/hello-world/)
+[![feathers-hello-world.jpg](images/feathers-hello-world.jpg)](http://feathersui.com/examples/hello-world/)
 
 See the [Hello World example](http://feathersui.com/examples/hello-world/) running live in your browser. Requires [Adobe Flash Player](http://get.adobe.com/flash).
 

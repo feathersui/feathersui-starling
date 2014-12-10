@@ -4,13 +4,13 @@ The `Scale3Image` class displays a texture divided into three regions, either ho
 
 ## Regions
 
-![](/_media/feathers/scale3.png)
+![](images/scale3.png)
 
 The image above shows two ways to divide a “pill” shape into three regions. The two lines on each shape show where the image is sliced. The exact pixel location of these “slices” are easily configurable, as you will see later.
 
 The image below uses arrows to show how each of the regions will scale. Some regions will not scale. Some will scale only in one direction, horizontally or vertically.
 
-![](/_media/feathers/scale3-arrows.png)
+![](images/scale3-arrows.png)
 
 From this point forward, each region will be named by its horizontal or vertical position. Horizontal positions are “left”, “center”, and “right”. Vertical positions are “top”, “middle”, and “bottom”.
 
@@ -24,7 +24,7 @@ The middle region will scale vertically. It will not scale horizontally.
 
 `Scale3Image` is designed to mainly scale in one direction. However, it is capable of scaling in the other direction too. In this situation, the “caps” will scale to maintain aspect ratio. As an example, if a cap is a half circle, it will remain perfectly round after scaling in both directions. The goal is to avoid distortion of the caps.
 
-![](/_media/feathers/scale3-both.png)
+![](images/scale3-both.png)
 
 The image above shows how the caps maintain aspect ratio when scaled in the opposite direction.
 

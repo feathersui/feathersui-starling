@@ -6,25 +6,25 @@ For those looking to tweak the example themes provided with Feathers, the follow
 
 ### Metal Works Mobile Theme
 
-![](/_media/feathers/feathers-metal-works-mobile-theme.jpg?w=760&tok=65b407)
+![](images/feathers-metal-works-mobile-theme.jpg)
 
 -   [Metal Works Mobile Theme PSD](http://feathersui.com/download/themes/MetalWorksMobileTheme.psd)
 
 ### Metal Works Desktop Theme
 
-![](/_media/feathers/feathers-metal-works-desktop-theme.png)
+![](images/feathers-metal-works-desktop-theme.png)
 
 -   [Metal Works Desktop Theme PSD](http://feathersui.com/download/themes/MetalWorksDesktopTheme.psd)
 
 ### Minimal Mobile Theme
 
-![](/_media/feathers/feathers-minimal-mobile-theme.jpg?w=760&tok=b6fd61)
+![](images/feathers-minimal-mobile-theme.jpg)
 
 -   [Minimal Mobile Theme PSD](http://feathersui.com/download/themes/MinimalMobileTheme.psd)
 
 ### Minimal Desktop Theme
 
-![](/_media/feathers/feathers-minimal-desktop-theme.png)
+![](images/feathers-minimal-desktop-theme.png)
 
 -   [Minimal Desktop Theme PSD](http://feathersui.com/download/themes/MinimalDesktopTheme.psd)
 
