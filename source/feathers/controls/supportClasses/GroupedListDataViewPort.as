@@ -1143,7 +1143,17 @@ package feathers.controls.supportClasses
 			var typicalItemItemIndex:int = 0;
 			if(this._dataProvider)
 			{
-				if(typicalItem === null)
+				if(typicalItem !== null)
+				{
+					this._dataProvider.getItemLocation(typicalItem, HELPER_VECTOR);
+					if(HELPER_VECTOR.length > 1)
+					{
+						newTypicalItemIsInDataProvider = true;
+						typicalItemGroupIndex = HELPER_VECTOR[0];
+						typicalItemItemIndex = HELPER_VECTOR[1];
+					}
+				}
+				else
 				{
 					groupCount = this._dataProvider.getLength();
 					if(groupCount > 0)
@@ -1154,20 +1164,11 @@ package feathers.controls.supportClasses
 							if(typicalGroupLength > 0)
 							{
 								newTypicalItemIsInDataProvider = true;
+								typicalItemGroupIndex = i;
 								typicalItem = this._dataProvider.getItemAt(i, 0);
 								break;
 							}
 						}
-					}
-				}
-				else
-				{
-					this._dataProvider.getItemLocation(typicalItem, HELPER_VECTOR);
-					if(HELPER_VECTOR.length > 1)
-					{
-						newTypicalItemIsInDataProvider = true;
-						typicalItemGroupIndex = HELPER_VECTOR[0];
-						typicalItemItemIndex = HELPER_VECTOR[1];
 					}
 				}
 			}
