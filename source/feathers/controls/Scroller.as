@@ -864,6 +864,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _snapOnComplete:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalScrollBarFactory:Function = defaultScrollBarFactory;
 
 		/**
@@ -4630,7 +4635,7 @@ package feathers.controls
 		 */
 		protected function throwHorizontally(pixelsPerMS:Number):void
 		{
-			if(this._snapToPages)
+			if(this._snapToPages && !this._snapOnComplete)
 			{
 				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
@@ -4714,7 +4719,7 @@ package feathers.controls
 		 */
 		protected function throwVertically(pixelsPerMS:Number):void
 		{
-			if(this._snapToPages)
+			if(this._snapToPages && !this._snapOnComplete)
 			{
 				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
