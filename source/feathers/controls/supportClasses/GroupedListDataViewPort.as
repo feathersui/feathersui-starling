@@ -1143,7 +1143,7 @@ package feathers.controls.supportClasses
 			var typicalItemItemIndex:int = 0;
 			if(this._dataProvider)
 			{
-				if(!typicalItem)
+				if(typicalItem === null)
 				{
 					groupCount = this._dataProvider.getLength();
 					if(groupCount > 0)
@@ -1160,7 +1160,7 @@ package feathers.controls.supportClasses
 						}
 					}
 				}
-				else if(typicalItem)
+				else
 				{
 					this._dataProvider.getItemLocation(typicalItem, HELPER_VECTOR);
 					if(HELPER_VECTOR.length > 1)
@@ -1172,7 +1172,7 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			if(typicalItem)
+			if(typicalItem !== null)
 			{
 				var isFirst:Boolean = false;
 				var isSingle:Boolean = false;
