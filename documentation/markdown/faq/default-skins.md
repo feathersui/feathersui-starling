@@ -14,6 +14,6 @@ Of course, if you don't like the idea of themes at all, feel free to skin your c
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../start.html).
+This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
 
 

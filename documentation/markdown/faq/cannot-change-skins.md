@@ -6,6 +6,6 @@ In general, it's best to keep all of your skinning code inside the theme. If you
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../start.html).
+This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
 
 

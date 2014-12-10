@@ -41,6 +41,6 @@ The Wikipedia article [List of displays by pixel density](http://en.wikipedia.or
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../start.html).
+This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
 
 

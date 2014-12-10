@@ -8,6 +8,6 @@ Vector-based text capabilities provided by flash.text.TextField, Flash Text Engi
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../start.html).
+This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
 
 
