@@ -134,15 +134,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function refreshPageCount():void
+		override protected function refreshMinAndMaxScrollPositions():void
 		{
-			super.refreshPageCount();
+			super.refreshMinAndMaxScrollPositions();
 			var typicalItem:DisplayObject = IVirtualLayout(this._layout).typicalItem;
-			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+			if(this._maxVerticalScrollPosition != this._minVerticalScrollPosition)
 			{
 				this.actualPageHeight = this.explicitPageHeight = typicalItem.height;
 			}
-			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+			else if(this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition)
 			{
 				this.actualPageWidth = this.explicitPageWidth = typicalItem.width;
 			}
