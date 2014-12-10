@@ -59,6 +59,8 @@ package feathers.controls
 		public function SpinnerList()
 		{
 			this._snapToPages = true;
+			this._snapOnComplete = true;
+			this.decelerationRate = Scroller.DECELERATION_RATE_FAST;
 			this.addEventListener(Event.TRIGGERED, spinnerList_triggeredHandler);
 			this.addEventListener(FeathersEventType.SCROLL_COMPLETE, spinnerList_scrollCompleteHandler);
 		}
