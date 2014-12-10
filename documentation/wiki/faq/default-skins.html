@@ -1,0 +1,34 @@
+
+<h1 class="sectionedit1" id="faqwhy_don_t_the_feathers_components_have_default_skins">FAQ: Why don&#039;t the Feathers components have default skins?</h1>
+<div class="level1">
+
+<p>
+In other words, why themes? Well, ideally, I&#039;d love to provide a basic set of skins for all components that get applied automatically. These skins would have configurable styles, like colors, gradients, corner radiuses, padding, and all that useful stuff. The sort of thing a lot of developers love about the styleable skins provided in Flex 2-3. Decent for anything that doesn&#039;t need a skin created by a professional designer, but easy enough to customize that a developer can differentiate the look of his or her app a little bit, if needed.
+</p>
+
+<p>
+However, that sort of flexibility provided by the classic Flash software-based vector renderer is not really available on a GPU. The GPU is heavily optimized for drawing triangles with textures. A textured quad like <code>starling.display.Image</code> is an ideal Starling display object to use as a skin. However, it&#039;s rather static in nature and modifying bitmaps at runtime to customize individual controls is a rather expensive task. It would involve creating separate textures (which can hurt performance), but a texture atlas is always recommended. You can draw vectors to bitmaps and generate texture atlases at runtime, but setting up an easy system that everyone will want to use (and can pick up easily) is something that I, personally, don&#039;t know how to do right now.
+</p>
+
+<p>
+If we&#039;re sticking to bitmaps, a “default” skin on every component will offer little to no customization. Most likely, it would bulk up every Feathers application with extra code and embedded assets because it would be difficult to separate this default skin from the rest of Feathers. Not necessarily impossible, but more effort than simply copying some classes into your project (like you probably already do with many libraries) and adding a single line of code to instantiate a theme.
+</p>
+
+<p>
+Nothing says that you need to use one of the example themes included with Feathers, though. In fact, I encourage you to <a href="/feathers/custom-themes" class="wikilink1" title="feathers:custom-themes">create your own themes</a>. Those examples are just what I called them, examples. When I was a game developer, I created a custom skin for every game I ever made. A game with the default iOS or Android skin can still be fun, I guess, but I know I&#039;d be less likely to even consider trying that game than a similar one that has a more unique look and feel. Similarly, even though I created the “Metal Works” theme for Feathers, I don&#039;t think I&#039;d ever use it for a game. Most players expect a game to be more immersive than a regular app and to provide a unique atmosphere. Metal Works and other example themes are there to show you one way to can skin your application.
+</p>
+
+<p>
+Even with a “regular app”, there are always skinning details that need to be customized in ways that can be unique to your specific app. All example <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">themes can be extended</a> for this reason. If you&#039;re working on an app, rather than a game, a few custom skins added to the defaults might be the right way to go. Feel free to use the <a href="/feathers/theme-sources" class="wikilink1" title="feathers:theme-sources">example theme PSDs files</a> to add your own custom skins in the same style. Then, rebuild the texture atlases and use those new sub-textures in a subclass of the original theme.
+</p>
+
+<p>
+Of course, if you don&#039;t like the idea of themes at all, feel free to skin your components directly. I really love themes because it puts all of the skinning code in one place and separates it from the “business logic” of the rest of the app. For a game, you could say that you&#039;re separating it from the game mechanics or rules, if “business logic” sounds to stuffy for you. This separation helps keep me organized and it prevents confusion because each “unit” of code has a more focused purpose.
+</p>
+<hr />
+
+<p>
+This is a detailed response to a <a href="/feathers/faq" class="wikilink1" title="feathers:faq">Frequently Asked Question</a> about <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers</a>.
+</p>
+
+</div>
