@@ -864,6 +864,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _snapOnComplete:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalScrollBarFactory:Function = defaultScrollBarFactory;
 
 		/**
@@ -3876,6 +3881,14 @@ package feathers.controls
 					{
 						this._horizontalPageIndex = this._minHorizontalPageIndex;
 					}
+					else if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY && this._horizontalScrollPosition < 0)
+					{
+						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / this.actualPageWidth);
+					}
+					else if(this._maxHorizontalScrollPosition == Number.POSITIVE_INFINITY && this._horizontalScrollPosition >= 0)
+					{
+						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / this.actualPageWidth);
+					}
 					else
 					{
 						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
@@ -3906,6 +3919,14 @@ package feathers.controls
 					else if(this._verticalScrollPosition == this._minVerticalScrollPosition)
 					{
 						this._verticalPageIndex = this._minVerticalPageIndex;
+					}
+					else if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY && this._verticalScrollPosition < 0)
+					{
+						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / this.actualPageHeight);
+					}
+					else if(this._maxVerticalScrollPosition == Number.POSITIVE_INFINITY && this._verticalScrollPosition >= 0)
+					{
+						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / this.actualPageHeight);
 					}
 					else
 					{
@@ -4404,6 +4425,11 @@ package feathers.controls
 			var changedPosition:Boolean = false;
 			if(targetHorizontalScrollPosition === targetHorizontalScrollPosition) //!isNaN
 			{
+				if(this._snapToPages && targetHorizontalScrollPosition > this._minHorizontalScrollPosition &&
+					targetHorizontalScrollPosition < this._maxHorizontalScrollPosition)
+				{
+					targetHorizontalScrollPosition = roundToNearest(targetHorizontalScrollPosition, this.actualPageWidth);
+				}
 				if(this._horizontalAutoScrollTween)
 				{
 					Starling.juggler.remove(this._horizontalAutoScrollTween);
@@ -4438,6 +4464,11 @@ package feathers.controls
 
 			if(targetVerticalScrollPosition === targetVerticalScrollPosition) //!isNaN
 			{
+				if(this._snapToPages && targetVerticalScrollPosition > this._minVerticalScrollPosition &&
+					targetVerticalScrollPosition < this._maxVerticalScrollPosition)
+				{
+					targetVerticalScrollPosition = roundToNearest(targetVerticalScrollPosition, this.actualPageHeight);
+				}
 				if(this._verticalAutoScrollTween)
 				{
 					Starling.juggler.remove(this._verticalAutoScrollTween);
@@ -4604,7 +4635,7 @@ package feathers.controls
 		 */
 		protected function throwHorizontally(pixelsPerMS:Number):void
 		{
-			if(this._snapToPages)
+			if(this._snapToPages && !this._snapOnComplete)
 			{
 				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
@@ -4668,7 +4699,7 @@ package feathers.controls
 			}
 
 			var absPixelsPerMS:Number = Math.abs(pixelsPerMS);
-			if(absPixelsPerMS <= MINIMUM_VELOCITY)
+			if(!this._snapToPages && absPixelsPerMS <= MINIMUM_VELOCITY)
 			{
 				this.finishScrollingHorizontally();
 				return;
@@ -4688,7 +4719,7 @@ package feathers.controls
 		 */
 		protected function throwVertically(pixelsPerMS:Number):void
 		{
-			if(this._snapToPages)
+			if(this._snapToPages && !this._snapOnComplete)
 			{
 				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
@@ -4752,7 +4783,7 @@ package feathers.controls
 			}
 
 			var absPixelsPerMS:Number = Math.abs(pixelsPerMS);
-			if(absPixelsPerMS <= MINIMUM_VELOCITY)
+			if(!this._snapToPages && absPixelsPerMS <= MINIMUM_VELOCITY)
 			{
 				this.finishScrollingVertically();
 				return;
@@ -5400,16 +5431,19 @@ package feathers.controls
 				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
-				if(this._horizontalScrollPosition < this._minHorizontalScrollPosition || this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
+				if(this._horizontalScrollPosition < this._minHorizontalScrollPosition ||
+					this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
 				{
 					isFinishingHorizontally = true;
 					this.finishScrollingHorizontally();
 				}
-				if(this._verticalScrollPosition < this._minVerticalScrollPosition || this._verticalScrollPosition > this._maxVerticalScrollPosition)
+				if(this._verticalScrollPosition < this._minVerticalScrollPosition ||
+					this._verticalScrollPosition > this._maxVerticalScrollPosition)
 				{
 					isFinishingVertically = true;
 					this.finishScrollingVertically();
 				}
+
 				if(isFinishingHorizontally && isFinishingVertically)
 				{
 					return;

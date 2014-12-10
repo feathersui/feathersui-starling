@@ -573,39 +573,6 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _repeatItems:Boolean = false;
-
-		/**
-		 * Determines whether the items will repeat infinitely when scrolling
-		 * vertically. If all items will fit within the viewport height because
-		 * scrolling isn't required, then the items will not repeat.
-		 *
-		 * <p>This property will be ignored (items will not repeat) if the
-		 * <code>hasVariableItemDimensions</code> property is <code>true</code>.</p>
-		 *
-		 * @default false
-		 */
-		public function get repeatItems():Boolean
-		{
-			return this._repeatItems;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set repeatItems(value:Boolean):void
-		{
-			if(this._repeatItems == value)
-			{
-				return;
-			}
-			this._repeatItems = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _manageVisibility:Boolean = false;
 
 		/**
@@ -891,7 +858,7 @@ package feathers.layout
 		 */
 		public function get requiresLayoutOnScroll():Boolean
 		{
-			return this._useVirtualLayout || this._repeatItems || this._manageVisibility;
+			return this._useVirtualLayout || this._manageVisibility;
 		}
 
 		/**
@@ -1155,48 +1122,19 @@ package feathers.layout
 				}
 			}
 
-			var canRepeatItems:Boolean = this._repeatItems && totalWidth > availableWidth && !(this._useVirtualLayout && this._hasVariableItemDimensions);
-
 			//in this section, we handle horizontal alignment. items will be
 			//aligned horizontally if the total width of all items is less than
 			//the available width of the view port.
 			if(totalWidth < availableWidth)
 			{
 				var horizontalAlignOffsetX:Number = 0;
-				if(this._repeatItems && !canRepeatItems)
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					if(this._useVirtualLayout)
-					{
-						horizontalAlignOffsetX = Math.round(availableWidth - calculatedTypicalItemWidth) / 2;
-						totalWidth += 2 * horizontalAlignOffsetX;
-					}
-					else
-					{
-						//last item should be centered at the max scroll position
-						itemWidth = discoveredItems[discoveredItemCount - 1].width;
-						totalWidth += Math.round(availableWidth - itemWidth) / 2;
-						//first item should be centered at the min scroll position
-						itemWidth = discoveredItems[0].width;
-						horizontalAlignOffsetX = Math.round(availableWidth - itemWidth) / 2;
-						totalWidth += horizontalAlignOffsetX;
-					}
-					//we don't want to use the normal padding left and right
-					//values if repeatItems is true.
-					totalWidth -= (this._paddingLeft + this._paddingRight);
-					//the padding left value was already applied, so we need to
-					//adjust the offset to account for it
-					horizontalAlignOffsetX -= this._paddingLeft;
+					horizontalAlignOffsetX = availableWidth - totalWidth;
 				}
-				else
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
-					{
-						horizontalAlignOffsetX = availableWidth - totalWidth;
-					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
-					{
-						horizontalAlignOffsetX = Math.round((availableWidth - totalWidth) / 2);
-					}
+					horizontalAlignOffsetX = Math.round((availableWidth - totalWidth) / 2);
 				}
 				if(horizontalAlignOffsetX != 0)
 				{
@@ -1219,28 +1157,6 @@ package feathers.layout
 				if(layoutItem && !layoutItem.includeInLayout)
 				{
 					continue;
-				}
-
-				//if we're repeating items, then we may need to adjust the x
-				//position of some items so that they appear inside the viewport
-				if(canRepeatItems)
-				{
-					if(scrollX > 0)
-					{
-						item.x += totalWidth * int((scrollX + availableWidth) / totalWidth);
-						if(item.x >= scrollX + availableWidth)
-						{
-							item.x -= totalWidth;
-						}
-					}
-					else if(scrollX < 0)
-					{
-						item.x += totalWidth * (int(scrollX / totalWidth) - 1);
-						if((item.x + item.width) < scrollX)
-						{
-							item.x += totalWidth;
-						}
-					}
 				}
 
 				//in this section, we handle vertical alignment and percent
@@ -1332,16 +1248,8 @@ package feathers.layout
 			{
 				result = new LayoutBoundsResult();
 			}
-			if(canRepeatItems)
-			{
-				result.contentX = Number.NEGATIVE_INFINITY;
-				result.contentWidth = Number.POSITIVE_INFINITY;
-			}
-			else
-			{
-				result.contentX = 0;
-				result.contentWidth = totalWidth;
-			}
+			result.contentX = 0;
+			result.contentWidth = totalWidth;
 			result.contentY = 0;
 			result.contentHeight = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY ? availableHeight : totalHeight;
 			result.viewPortWidth = availableWidth;
@@ -1548,7 +1456,6 @@ package feathers.layout
 				{
 					totalItemWidth = totalItemWidth - this._gap + this._lastGap;
 				}
-				var canRepeatItems:Boolean = this._repeatItems && totalItemWidth > width;
 				var indexOffset:int = 0;
 				if(totalItemWidth < width)
 				{
@@ -1561,41 +1468,28 @@ package feathers.layout
 						indexOffset = Math.ceil(((width - totalItemWidth) / (calculatedTypicalItemWidth + this._gap)) / 2);
 					}
 				}
-				if(canRepeatItems)
+				var minimum:int = (scrollX - this._paddingLeft) / (calculatedTypicalItemWidth + this._gap);
+				if(minimum < 0)
 				{
-					scrollX %= totalItemWidth;
-					if(scrollX < 0)
-					{
-						scrollX += totalItemWidth;
-					}
-					var minimum:int = (scrollX - this._paddingLeft) / (calculatedTypicalItemWidth + this._gap);
-					var maximum:int = minimum + maxVisibleTypicalItemCount;
+					minimum = 0;
 				}
-				else
+				minimum -= indexOffset;
+				//if we're scrolling beyond the final item, we should keep the
+				//indices consistent so that items aren't destroyed and
+				//recreated unnecessarily
+				var maximum:int = minimum + maxVisibleTypicalItemCount;
+				if(maximum >= itemCount)
 				{
-					minimum = (scrollX - this._paddingLeft) / (calculatedTypicalItemWidth + this._gap);
-					if(minimum < 0)
-					{
-						minimum = 0;
-					}
-					minimum -= indexOffset;
-					//if we're scrolling beyond the final item, we should keep the
-					//indices consistent so that items aren't destroyed and
-					//recreated unnecessarily
-					maximum = minimum + maxVisibleTypicalItemCount;
-					if(maximum >= itemCount)
-					{
-						maximum = itemCount - 1;
-					}
-					minimum = maximum - maxVisibleTypicalItemCount;
-					if(minimum < 0)
-					{
-						minimum = 0;
-					}
+					maximum = itemCount - 1;
+				}
+				minimum = maximum - maxVisibleTypicalItemCount;
+				if(minimum < 0)
+				{
+					minimum = 0;
 				}
 				for(var i:int = minimum; i <= maximum; i++)
 				{
-					if(!canRepeatItems || (i >= 0 && i < itemCount))
+					if(i >= 0 && i < itemCount)
 					{
 						result[resultLastIndex] = i;
 					}
