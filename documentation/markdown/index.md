@@ -52,7 +52,7 @@ Trying out Feathers for the first time? The following tutorials should help.
 
 Looking for quick recipes that show you how to do common tasks using Feathers?
 
--   [Feathers Cookbook](cookbook/start.html)
+-   [Feathers Cookbook](cookbook/index.html)
 
 ## Feathers Components
 

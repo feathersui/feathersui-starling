@@ -282,6 +282,6 @@ Please see the [FAQ: Draw Calls and Feathers Text](faq/draw-calls.html) article 
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

@@ -69,6 +69,6 @@ The `minWidth` and `minHeight` properties are used by `setSizeInternal()` to adj
 
 -   [Feathers Component Validation with draw()](component-validation.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

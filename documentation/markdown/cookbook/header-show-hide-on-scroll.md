@@ -131,6 +131,6 @@ The final calculated value replaces the `top` property of the `AnchorLayoutData`
 
 ------------------------------------------------------------------------
 
-This is a recipe in the [Feathers Cookbook](start.html). For more information about Feathers, return to the [Feathers Documentation](../start.html).
+This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
 
 

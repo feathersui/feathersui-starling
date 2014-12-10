@@ -455,6 +455,6 @@ The `pageWidth` and `pageHeight` properties may be used to customize the size of
 
 -   [Creating Custom Item Renderers](item-renderers.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

@@ -47,6 +47,6 @@ When tiling images, extruding is always recommended.
 
 -   [TiledImage API Documentation](http://feathersui.com/documentation/feathers/display/TiledImage.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

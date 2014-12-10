@@ -307,6 +307,6 @@ The alert will automatically remove itself from the display list and dispose its
 
 -   [Alert API Documentation](http://feathersui.com/documentation/feathers/controls/Alert.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

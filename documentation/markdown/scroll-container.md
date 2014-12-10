@@ -206,6 +206,6 @@ List is much better at supporting layouts with dozens or hundreds of items, and 
 
 -   [How to use the Feathers LayoutGroup component](layout-group.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

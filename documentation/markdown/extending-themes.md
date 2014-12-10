@@ -144,6 +144,6 @@ You can set the `defaultStyleFunction` on the `StyleNameFunctionStyleProvider`. 
 
 -   [Introduction to Feathers Themes](themes.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

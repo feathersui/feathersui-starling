@@ -89,6 +89,6 @@ The example code above adds only a single background skin. What if you want to d
 
 -   [Introduction to Custom Item Renderers](../item-renderers.html)
 
-This is a recipe in the [Feathers Cookbook](start.html). For more information about Feathers, return to the [Feathers Documentation](../start.html).
+This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
 
 

@@ -22,6 +22,6 @@ These three phases are not a core part of `FeathersControl`. They are not requir
 
 -   [Feathers Component Lifecycle](component-lifecycle.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

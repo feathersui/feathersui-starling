@@ -181,6 +181,6 @@ if( !this.hasLongPressed && isInBounds )
 
 -   [Feathers Cookbook: Dispatching a triggered event from a custom item renderer](item-renderer-triggered-on-tap.html)
 
-This is a recipe in the [Feathers Cookbook](start.html). For more information about Feathers, return to the [Feathers Documentation](../start.html).
+This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
 
 

@@ -104,6 +104,6 @@ In general, you should only pass skins to the scroll bar's thumb through `thumbP
 
 -   [SimpleScrollBar API Documentation](http://feathersui.com/documentation/feathers/controls/SimpleScrollBar.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

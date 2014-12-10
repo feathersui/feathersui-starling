@@ -146,6 +146,6 @@ layout.hasVariableItemDimensions = false;
 
 -   [HorizontalLayout API Documentation](http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

@@ -50,6 +50,6 @@ On mobile, you generally should not use `TextArea`. It is designed specifically 
 
 -   [Introduction to Feathers Text Renderers](text-renderers.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

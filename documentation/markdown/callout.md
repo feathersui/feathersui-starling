@@ -173,6 +173,6 @@ Finally, you may want to reuse the callout's content. By default, the callout wi
 
 -   [Callout API Documentation](http://feathersui.com/documentation/feathers/controls/Callout.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

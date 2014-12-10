@@ -163,6 +163,6 @@ The `getScrollPositionForIndex()` function does not need to be changed. It is me
 
 -   [Introduction to Custom Feathers Layouts](custom-layouts.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

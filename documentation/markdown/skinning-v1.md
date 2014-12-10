@@ -2,7 +2,7 @@
 
 [Feathers themes](themes.html) are highly recommended for the convenience that they provide. A theme class can keep all of your project's skinning code in one place. A theme can automatically skin any component added to the display list, including providing separate skins for different variations of the same type of component. However, not all Feathers developers will want to use themes, and Feathers provides APIs to skin all components and their sub-components without using a monolithic theme class.
 
-See the documentation for the [individual Feathers components](start.html#feathers_components) for complete details on how that specific component may be skinned. Below, we'll outline skinning idioms that are common to all Feathers components.
+See the documentation for the [individual Feathers components](index.html#feathers_components) for complete details on how that specific component may be skinned. Below, we'll outline skinning idioms that are common to all Feathers components.
 
 ## Sub-Component Factories
 
@@ -105,6 +105,6 @@ Instead, you should use `@thumbProperties` and pass in properties individually s
 
 -   [Introduction to Feathers Themes](themes.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

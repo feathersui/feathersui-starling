@@ -174,6 +174,6 @@ if( drawers.isLeftDrawerOpen )
 
 -   [Drawers API Documentation](http://feathersui.com/documentation/feathers/controls/Drawers.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

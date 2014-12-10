@@ -150,6 +150,6 @@ Of you aren't using a theme, then you may set the item renderer's properties thr
 
 -   [Creating Custom Item Renderers](item-renderers.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

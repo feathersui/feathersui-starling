@@ -124,6 +124,6 @@ StandardIcons.listDrillDownAccessoryTexture = atlas.getTexture("list-drill-down-
 
 -   [Extending Feathers Themes](extending-themes.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

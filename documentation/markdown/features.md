@@ -52,7 +52,7 @@ Feathers is a user interface component library built on the Starling Framework, 
 
 ## Components
 
-Feathers includes [many different components](start.html#feathers_components), including buttons, sliders, toggle switches, check boxes, radio buttons, lists and grouped lists, progress bars, text inputs, tab bars, navigators, scrolling and layout containers, callouts/popovers, and others. Take a look at a few noteworthy features available for some of these components.
+Feathers includes [many different components](index.html#feathers_components), including buttons, sliders, toggle switches, check boxes, radio buttons, lists and grouped lists, progress bars, text inputs, tab bars, navigators, scrolling and layout containers, callouts/popovers, and others. Take a look at a few noteworthy features available for some of these components.
 
 -   Button
 
@@ -106,6 +106,6 @@ Feathers includes [many different components](start.html#feathers_components), i
 
     -   Specify animated transitions for switching screens.
 
-To learn more about Feathers, return to the [Feathers Documentation](start.html).
+To learn more about Feathers, return to the [Feathers Documentation](index.html).
 
 

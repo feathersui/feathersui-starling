@@ -123,6 +123,6 @@ Notice that custom skin textures are still used like above, but I used some text
 
 -   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

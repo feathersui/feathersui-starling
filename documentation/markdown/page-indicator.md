@@ -101,6 +101,6 @@ If you aren't using a theme, then you may set any of the page indicator's proper
 
 -   [PageIndicator API Documentation](http://feathersui.com/documentation/feathers/controls/PageIndicator.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

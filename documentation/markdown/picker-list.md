@@ -208,6 +208,6 @@ You can completely customize the pop-up behavior of the picker list by implement
 
 -   [PickerList API Documentation](http://feathersui.com/documentation/feathers/controls/PickerList.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

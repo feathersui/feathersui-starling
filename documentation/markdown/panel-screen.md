@@ -41,6 +41,6 @@ If you aren't using a theme, then you may set any of the panel screen's properti
 
 -   [How to use the Feathers Screen component](screen.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

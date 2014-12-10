@@ -41,6 +41,6 @@ If you aren't using a theme, then you may set any of the check's properties dire
 
 -   [Button API Documentation](http://feathersui.com/documentation/feathers/controls/Button.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

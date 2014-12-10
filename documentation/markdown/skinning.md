@@ -234,6 +234,6 @@ For more information about how themes use style providers, see [Extending Feathe
 
 -   [Extending Feathers 2.0 Themes](extending-themes.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

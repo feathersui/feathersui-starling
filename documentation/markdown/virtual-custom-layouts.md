@@ -49,6 +49,6 @@ For layouts with tens of thousands of items (or more, depending on the system), 
 
 -   [Introduction to Custom Feathers Layouts](custom-layouts.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 

@@ -102,6 +102,6 @@ Obviously, if you create a [custom theme](custom-themes.html) for your applicati
 
 -   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)
 
-For more tutorials, return to the [Feathers Documentation](start.html).
+For more tutorials, return to the [Feathers Documentation](index.html).
 
 
