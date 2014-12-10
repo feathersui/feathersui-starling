@@ -4,7 +4,7 @@ The `TiledImage` class repeats a texture in a given region, horizontally and ver
 
 A tiled image may use any Starling texture, including sub-textures from [texture atlases](http://wiki.starling-framework.org/manual/textures_and_images#texture_atlases).
 
-![](/_media/feathers/tiled.png)
+![](images/tiled.png)
 
 ## Code
 
