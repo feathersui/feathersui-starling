@@ -140,6 +140,18 @@
 			<fileset dir="${help.root}/cookbook" includes="*.md" />
 			<mapper type="glob" from="*.md" to="*.html"/>
 		</apply>
+		<mkdir dir="${help.output}/faq"/>
+		<apply executable="pandoc" dir="${basedir}" dest="${help.output}/faq" failonerror="true">
+			<srcfile/>
+			<arg value="-f"/>
+			<arg value="markdown_github"/>
+			<arg value="-t"/>
+			<arg value="html"/>
+			<arg value="-o"/>
+			<targetfile/>
+			<fileset dir="${help.root}/faq" includes="*.md" />
+			<mapper type="glob" from="*.md" to="*.html"/>
+		</apply>
 		<copy overwrite="true" todir="${help.output}/images">
 			<fileset dir="${help.root}/images">
 				<include name="*.png"/>
