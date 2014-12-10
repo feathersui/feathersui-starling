@@ -141,7 +141,7 @@
 			<mapper type="glob" from="*.md" to="*.html"/>
 		</apply>
 		<mkdir dir="${help.output}/faq"/>
-		<apply executable="pandoc" dir="${basedir}" dest="${help.output}/faq" failonerror="true">
+		<apply executable="${pandoc}" dir="${basedir}" dest="${help.output}/faq" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
 			<arg value="markdown_github"/>
