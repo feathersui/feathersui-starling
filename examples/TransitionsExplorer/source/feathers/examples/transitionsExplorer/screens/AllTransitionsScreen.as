@@ -19,7 +19,7 @@ package feathers.examples.transitionsExplorer.screens
 	{
 		public static const COLOR_FADE:String = "colorFade";
 		public static const COVER:String = "cover";
-		public static const CROSSFADE:String = "crossfade";
+		public static const FADE:String = "fade";
 		public static const CUBE:String = "cube";
 		public static const FLIP:String = "flip";
 		public static const REVEAL:String = "reveal";
@@ -48,7 +48,7 @@ package feathers.examples.transitionsExplorer.screens
 			[
 				{ label: "Color Fade", event: COLOR_FADE, single: true },
 				{ label: "Cover", event: COVER },
-				{ label: "Crossfade", event: CROSSFADE, single: true },
+				{ label: "Fade", event: FADE },
 				{ label: "Cube", event: CUBE },
 				{ label: "Flip", event: FLIP },
 				{ label: "Reveal", event: REVEAL },
