@@ -7,13 +7,12 @@ package feathers.examples.transitionsExplorer
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.transitionsExplorer.screens.AllTransitionsScreen;
+	import feathers.examples.transitionsExplorer.screens.ColorFadeTransitionScreen;
 	import feathers.examples.transitionsExplorer.screens.FadeTransitionScreen;
 	import feathers.examples.transitionsExplorer.screens.FourWayTransitionScreen;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.motion.transitions.ColorFade;
 	import feathers.motion.transitions.Cover;
-	import feathers.motion.transitions.Fade;
 	import feathers.motion.transitions.Cube;
 	import feathers.motion.transitions.Flip;
 	import feathers.motion.transitions.Reveal;
@@ -32,6 +31,7 @@ package feathers.examples.transitionsExplorer
 		private static const TEST_PATTERN2:Class;
 
 		private static const MENU_SCREEN_ID_ALL_TRANSITIONS:String = "allTransitions";
+		private static const MENU_SCREEN_ID_COLOR_FADE:String = "colorFade";
 		private static const MENU_SCREEN_ID_COVER:String = "cover";
 		private static const MENU_SCREEN_ID_CUBE:String = "cube";
 		private static const MENU_SCREEN_ID_FADE:String = "fade";
@@ -68,14 +68,19 @@ package feathers.examples.transitionsExplorer
 			this.addChild(this._menu);
 
 			var allTransitionsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AllTransitionsScreen);
-			allTransitionsItem.setFunctionForPushEvent(AllTransitionsScreen.COLOR_FADE, colorFadeHandler);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.COVER, MENU_SCREEN_ID_COVER);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.CUBE, MENU_SCREEN_ID_CUBE);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.FADE, MENU_SCREEN_ID_FADE);
+			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.COLOR_FADE, MENU_SCREEN_ID_COLOR_FADE);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.FLIP, MENU_SCREEN_ID_FLIP);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.REVEAL, MENU_SCREEN_ID_REVEAL);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.SLIDE, MENU_SCREEN_ID_SLIDE);
 			this._menu.addScreen(MENU_SCREEN_ID_ALL_TRANSITIONS, allTransitionsItem);
+
+			var colorFadeItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ColorFadeTransitionScreen);
+			colorFadeItem.setFunctionForPushEvent(FourWayTransitionScreen.TRANSITION, transitionHandler);
+			colorFadeItem.addPopEvent(Event.COMPLETE);
+			this._menu.addScreen(MENU_SCREEN_ID_COLOR_FADE, colorFadeItem);
 
 			var coverItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(FourWayTransitionScreen);
 			coverItem.properties.transitionName = "Cover";
@@ -169,11 +174,5 @@ package feathers.examples.transitionsExplorer
 		{
 			this._content.showScreen(this.getNextScreenID(), transition);
 		}
-
-		private function colorFadeHandler(event:Event):void
-		{
-			this._content.showScreen(this.getNextScreenID(), ColorFade.createColorFadeTransition());
-		}
-
 	}
 }

@@ -19,8 +19,8 @@ package feathers.examples.transitionsExplorer.screens
 	{
 		public static const COLOR_FADE:String = "colorFade";
 		public static const COVER:String = "cover";
-		public static const FADE:String = "fade";
 		public static const CUBE:String = "cube";
+		public static const FADE:String = "fade";
 		public static const FLIP:String = "flip";
 		public static const REVEAL:String = "reveal";
 		public static const SLIDE:String = "slide";
@@ -46,7 +46,7 @@ package feathers.examples.transitionsExplorer.screens
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
 			[
-				{ label: "Color Fade", event: COLOR_FADE, single: true },
+				{ label: "Color Fade", event: COLOR_FADE },
 				{ label: "Cover", event: COVER },
 				{ label: "Fade", event: FADE },
 				{ label: "Cube", event: CUBE },
@@ -81,10 +81,6 @@ package feathers.examples.transitionsExplorer.screens
 
 		private function accessorySourceFunction(item:Object):Texture
 		{
-			if(item.hasOwnProperty("single") && item.single === true)
-			{
-				return null;
-			}
 			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 

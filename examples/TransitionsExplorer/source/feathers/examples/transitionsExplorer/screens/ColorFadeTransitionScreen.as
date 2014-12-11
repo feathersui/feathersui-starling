@@ -10,16 +10,23 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.motion.transitions.Fade;
+	import feathers.motion.transitions.ColorFade;
 
 	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 
-	public class FadeTransitionScreen extends PanelScreen
+	public class ColorFadeTransitionScreen extends PanelScreen
 	{
 		public static const TRANSITION:String = "transition";
 
-		public function FadeTransitionScreen()
+		private static function fadeToRandomColor(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void
+		{
+			var randomColor:uint = Math.random() * 0xffffff;
+			ColorFade.createColorFadeTransition(randomColor)(oldScreen, newScreen, completeCallback);
+		}
+
+		public function ColorFadeTransitionScreen()
 		{
 			super();
 		}
@@ -37,9 +44,9 @@ package feathers.examples.transitionsExplorer.screens
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
 			[
-				{ label: "Fade In", transition: Fade.createFadeInTransition() },
-				{ label: "Fade Out", transition: Fade.createFadeOutTransition() },
-				{ label: "Crossfade", transition: Fade.createCrossfadeTransition() },
+				{ label: "Black", transition: ColorFade.createBlackFadeToBlackTransition() },
+				{ label: "White", transition: ColorFade.createWhiteFadeTransition() },
+				{ label: "Custom", transition: fadeToRandomColor, accessory: "(random for demo)" },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
@@ -54,6 +61,8 @@ package feathers.examples.transitionsExplorer.screens
 				renderer.isQuickHitAreaEnabled = true;
 
 				renderer.labelField = "label";
+
+				renderer.accessoryLabelField = "accessory";
 				return renderer;
 			};
 
@@ -67,7 +76,7 @@ package feathers.examples.transitionsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Fade";
+			header.title = "Color Fade";
 
 			this._backButton = new Button();
 			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
