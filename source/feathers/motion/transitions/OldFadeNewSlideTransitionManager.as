@@ -221,7 +221,7 @@ package feathers.motion.transitions
 			{
 				if(this._crossfadeTransition === null)
 				{
-					this._crossfadeTransition = Crossfade.createCrossfadeTransition(this._duration, this._ease, {delay: this._delay});
+					this._crossfadeTransition = Fade.createCrossfadeTransition(this._duration, this._ease, {delay: this._delay});
 				}
 				this._crossfadeTransition(oldScreen, null, onComplete);
 				onComplete = null;

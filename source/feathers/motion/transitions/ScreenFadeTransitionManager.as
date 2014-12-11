@@ -154,7 +154,7 @@ package feathers.motion.transitions
 			}
 			if(this._transition === null)
 			{
-				this._transition = Crossfade.createCrossfadeTransition(this._duration, this._ease, {delay: this._delay});
+				this._transition = Fade.createCrossfadeTransition(this._duration, this._ease, {delay: this._delay});
 			}
 			this._transition(oldScreen, newScreen, onComplete);
 		}
