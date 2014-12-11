@@ -436,7 +436,9 @@ package feathers.controls.renderers
 		 */
 		public function set data(value:Object):void
 		{
-			if(this._data == value)
+			//we need to use strict equality here because the data can be
+			//non-strictly equal to null
+			if(this._data === value)
 			{
 				return;
 			}
@@ -2963,8 +2965,10 @@ package feathers.controls.renderers
 			{
 				return item as String;
 			}
-			else if(item)
+			else if(item !== null)
 			{
+				//we need to use strict equality here because the data can be
+				//non-strictly equal to null
 				return item.toString();
 			}
 			return "";
@@ -3519,7 +3523,9 @@ package feathers.controls.renderers
 		 */
 		protected function commitData():void
 		{
-			if(this._data && this._owner)
+			//we need to use strict equality here because the data can be
+			//non-strictly equal to null
+			if(this._data !== null && this._owner)
 			{
 				if(this._itemHasLabel)
 				{
