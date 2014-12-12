@@ -195,7 +195,7 @@ buttonStyleProvider.setFunctionForStyleName( "warning-button", skinWarningButton
 Button.globalStyleProvider = buttonStyleProvider;
 ```
 
-As you can see, the default function to skin a `Button` will still be the same `skinNormalButton()` function. However, we've called `setFunctionForStyleName()` to pass in our `skinWarningButton()` function, and we associated this function with the “warning-button” *style name*.
+As you can see, the default function to skin a `Button` will still be the same `skinNormalButton()` function. However, we've called `setFunctionForStyleName()` to pass in our `skinWarningButton()` function, and we associated this function with the "warning-button" *style name*.
 
 A style name is a string that allows us to differentiate different types of the same component. We can add a style name to any component with the `styleNameList` property:
 
@@ -211,7 +211,7 @@ button2.y = 100;
 this.addChild( button2 );
 ```
 
-In the example above, we added the “warning-button” style name to the `styleNameList` of the second button. The `StyleNameFunctionStyleProvider` will use this value to determine that it needs to call `setWarningButtonStyles()` instead of `setNormalButtonStyles()` when it skins the second button.
+In the example above, we added the "warning-button" style name to the `styleNameList` of the second button. The `StyleNameFunctionStyleProvider` will use this value to determine that it needs to call `setWarningButtonStyles()` instead of `setNormalButtonStyles()` when it skins the second button.
 
 Tip: To avoid making simple mistakes that the compiler can easily catch for you, it's usually a good idea to define custom style names as constants.
 

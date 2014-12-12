@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # When I try to access the width or height properties of a Feathers component, why do I get 0?
 
-If you haven't set the `width` and `height` explicitly, a Feathers component will automatically resize itself to what is considered its “ideal” dimensions based on its skins and other properties. However, a component won't measure itself immediately after you set its properties.
+If you haven't set the `width` and `height` explicitly, a Feathers component will automatically resize itself to what is considered its "ideal" dimensions based on its skins and other properties. However, a component won't measure itself immediately after you set its properties.
 
 A Feathers component will *invalidate* when you change one of its properties. The change you made to the property will be queued up to be processed immediately before Starling renders the next frame. During this time, you can change any number of other properties, and all of the changes will be processed in one batch in time to display them to the user. This can help to improve performance quite a bit.
 

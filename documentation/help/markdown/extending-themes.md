@@ -77,7 +77,7 @@ We call the `getStyleProviderForClass()` function to access the global style pro
 
 Because `MetalWorksMobileTheme` is a subclass of `StyleNameFunctionTheme`, the style provider returned by `getStyleProviderForClass()` is a `StyleNameFunctionStyleProvider`. We learned about this type of style provider in [Skinning Feathers components](skinning.html). It allows us to specify combinations of style names and functions to provide multiple skins for the same type of component.
 
-We call `setFunctionForStyleName()` and pass in a “custom-button” style name (you can use any string that you want, as long as it is unique to your app) and a reference to our `setCustomButtonStyles()` function that we defined earlier.
+We call `setFunctionForStyleName()` and pass in a "custom-button" style name (you can use any string that you want, as long as it is unique to your app) and a reference to our `setCustomButtonStyles()` function that we defined earlier.
 
 That's all we need to add to the theme. Next, let's make a little tweak to the code that creates our special button:
 
@@ -88,7 +88,7 @@ specialButton.styleNameList.add( "custom-button" );
 this.addChild( specialButton );
 ```
 
-We add the “custom-button” string to the button's `styleNameList`, and now the button will be skinned using our `setCustomButtonStyles()` function instead of the default function defined by `MetalWorksMobileTheme`.
+We add the "custom-button" string to the button's `styleNameList`, and now the button will be skinned using our `setCustomButtonStyles()` function instead of the default function defined by `MetalWorksMobileTheme`.
 
 ## Adding custom components to a theme
 

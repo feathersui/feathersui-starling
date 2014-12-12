@@ -15,7 +15,7 @@ Feathers is a user interface component library built on the Starling Framework, 
 
     -   Supports multi-touch input.
 
-    -   Scrolling with optional pages, “throw” physics and elastic, springy edges (and you can select traditional desktop scrollbar and mouse wheel input, if needed).
+    -   Scrolling with optional pages, "throw" physics and elastic, springy edges (and you can select traditional desktop scrollbar and mouse wheel input, if needed).
 
     -   Easy to scale for different screen dimensions and DPIs.
 
@@ -35,7 +35,7 @@ Feathers is a user interface component library built on the Starling Framework, 
 
     -   Sub-components may be easily skinned through their parent, nesting infinitely.
 
-    -   Supports “themes” that separate all skinning code from the rest of the application. Example themes are easily extended.
+    -   Supports "themes" that separate all skinning code from the rest of the application. Example themes are easily extended.
 
     -   Add one of the example themes with one line of code.
 
@@ -89,7 +89,7 @@ Feathers includes [many different components](index.html#feathers_components), i
 
     -   Custom item renderers.
 
-    -   A robust default item renderer with label, icon, and “accessory” views with all the states that buttons provide.
+    -   A robust default item renderer with label, icon, and "accessory" views with all the states that buttons provide.
 
     -   A ListCollection class with data descriptors to support any type of data. Supports Array, Vector, and XMLList out of the box.
 

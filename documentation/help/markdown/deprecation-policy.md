@@ -15,7 +15,7 @@ If an API is deprecated in version 1.1, it will continue to exist side by side w
 
 ## Why?
 
-A lot of software projects have a more conservative stance on deprecated APIs. Those APIs may stick around until the next major version update, or even longer. Feathers evolves more quickly. With only one primary developer, a smaller API surface without too much baggage from old APIs is essential. Feathers won't break APIs immediately because that's a pain for everyone, but the “two minor versions or six months” rule should be fair enough to keep Feathers feeling stable.
+A lot of software projects have a more conservative stance on deprecated APIs. Those APIs may stick around until the next major version update, or even longer. Feathers evolves more quickly. With only one primary developer, a smaller API surface without too much baggage from old APIs is essential. Feathers won't break APIs immediately because that's a pain for everyone, but the "two minor versions or six months" rule should be fair enough to keep Feathers feeling stable.
 
 ## Interfaces
 

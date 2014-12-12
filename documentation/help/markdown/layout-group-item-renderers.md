@@ -267,7 +267,7 @@ package
 
 ## Next Steps
 
-Looking to do more with your custom item renderer? Check out the [Feathers Cookbook](cookbook/index.html) for “recipes” that show you how to implement typical features in custom item renderers and in other Feathers UI components.
+Looking to do more with your custom item renderer? Check out the [Feathers Cookbook](cookbook/index.html) for "recipes" that show you how to implement typical features in custom item renderers and in other Feathers UI components.
 
 ## Related Links
 

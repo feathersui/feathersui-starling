@@ -86,7 +86,7 @@ function customAlertFactory():Alert
 Alert.show( "I have something important to say", "Alert Title", new ListCollection({label: "OK"}), true, true, customAlertFactory );
 ```
 
-If you're working with a [theme](extending-themes.html), you can set a custom styling function for a `Alert` with the style name “custom-alert” to provide different skins for this alert.
+If you're working with a [theme](extending-themes.html), you can set a custom styling function for a `Alert` with the style name "custom-alert" to provide different skins for this alert.
 
 ## Skinning an Alert
 

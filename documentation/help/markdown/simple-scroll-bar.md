@@ -28,7 +28,7 @@ If, for some reason, you want to use a `SimpleScrollBar` outside of a subclass o
 
 ## Skinning a SimpleScrollBar
 
-The `SimpleScrollBar` has one part that may be skinned, its thumb. A SimpleScrollBar's track is invisible. That's where the “simple” part comes from. For full details about what skin and style properties are available, see the [SimpleScrollBar API reference](http://feathersui.com/documentation/feathers/controls/SimpleScrollBar.html).
+The `SimpleScrollBar` has one part that may be skinned, its thumb. A SimpleScrollBar's track is invisible. That's where the "simple" part comes from. For full details about what skin and style properties are available, see the [SimpleScrollBar API reference](http://feathersui.com/documentation/feathers/controls/SimpleScrollBar.html).
 
 ### Targeting a SimpleScrollBar in a theme
 

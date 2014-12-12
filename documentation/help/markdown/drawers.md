@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers Drawers component
 
-The `Drawers` class provides a container that supports main content in the center with “drawers”, or slide-out menus, that may be opened and closed with a gesture around all four edges. Drawers may also be docked to remain open at all times, or based on the stage orientation. Drawers may be opened by listening to an event from the main content, such as one triggered by a button press.
+The `Drawers` class provides a container that supports main content in the center with "drawers", or slide-out menus, that may be opened and closed with a gesture around all four edges. Drawers may also be docked to remain open at all times, or based on the stage orientation. Drawers may be opened by listening to an event from the main content, such as one triggered by a button press.
 
 ## The Basics
 
@@ -55,7 +55,7 @@ package
 }
 ```
 
-The initial code for these two classes is almost identical, so the `OptionScreen` class is not shown. To create the `OptionsScreen`, copy the code from the `StartScreen` and change the class and constructor names to `OptionsScreen` and change the title to `“Options”`. That's it!
+The initial code for these two classes is almost identical, so the `OptionScreen` class is not shown. To create the `OptionsScreen`, copy the code from the `StartScreen` and change the class and constructor names to `OptionsScreen` and change the title to `"Options"`. That's it!
 
 Next, we'll want to add some content to a drawer. Let's add a `List` component to act as a menu.
 
@@ -86,7 +86,7 @@ To use the list as a drawer, simply set the `leftDrawer` property:
 drawers.leftDrawer = list;
 ```
 
-For simplicity, we're focusing on the left drawer for every code example. However, drawers may be placed on all four sides of the main content, so every property or method with the word “left” in the name will have a cousin with “top”, “right”, or “bottom” in the name.
+For simplicity, we're focusing on the left drawer for every code example. However, drawers may be placed on all four sides of the main content, so every property or method with the word "left" in the name will have a cousin with "top", "right", or "bottom" in the name.
 
 If you run the code right now, you will see the `StartScreen` displayed and nothing else. If you touch near the left edge of the `StartScreen`, you can drag to the right to reveal the list with the two screens. Select the Options item in the list, and the options screen will be displayed. Tap the main content to close the drawer.
 
@@ -120,13 +120,13 @@ Now, the `Drawers` container can listen for that event to open a drawer:
 drawers.leftDrawerToggleEventType = "showMenu";
 ```
 
-In production code, you probably want to make the `“showMenu”` event type into a constant somewhere that various classes can access it.
+In production code, you probably want to make the `"showMenu"` event type into a constant somewhere that various classes can access it.
 
 Now, when you press the new menu button in the `StartScreen` header, the left drawer will open.
 
 ## Docking Drawers
 
-If you would prefer that a drawer is open all of the time, you can “dock” it. When a drawer is docked, it cannot be closed. Think of it like a permanent side bar, rather than a menu that you can show and hide. Let's dock the drawer:
+If you would prefer that a drawer is open all of the time, you can "dock" it. When a drawer is docked, it cannot be closed. Think of it like a permanent side bar, rather than a menu that you can show and hide. Let's dock the drawer:
 
 ``` code
 drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;

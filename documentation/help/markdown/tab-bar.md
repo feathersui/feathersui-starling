@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers TabBar component
 
-The `TabBar` class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar's tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more “pill” shaped control that looks more like a segmented button bar than a set of tabs.
+The `TabBar` class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar's tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more "pill" shaped control that looks more like a segmented button bar than a set of tabs.
 
 The [DisplayObjectExplorer example](http://feathersui.com/examples/display-object-explorer) demonstrates how to connect a `TabBar` to a `ScreenNavigator`.
 

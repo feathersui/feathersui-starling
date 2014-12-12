@@ -21,7 +21,7 @@ button.nameList.add( "my-custom-button" );
 this.addChild( button );
 ```
 
-In the code above, we've added the `“my-custom-button”` name to the button. We can now use this name when we create our extended theme. As you can see, it is just a string. The only restriction is that names cannot contain spaces.
+In the code above, we've added the `"my-custom-button"` name to the button. We can now use this name when we create our extended theme. As you can see, it is just a string. The only restriction is that names cannot contain spaces.
 
 Names only work when added to a component *before* it is added to the stage for the first time. You **cannot** change names later to give a component a different skin.
 

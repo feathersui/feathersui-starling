@@ -70,7 +70,7 @@ In future versions of Feathers, this theme might require additional assets that 
 
 -   fonts/pf\_ronda\_seven.fnt
 
-As you can see, the bitmap font file that `MinimalMobileThemeWithAssetManager` uses is in a separate directory from the image files. The parent directory of `images` and `fonts` is the real “root” directory for this theme's files.
+As you can see, the bitmap font file that `MinimalMobileThemeWithAssetManager` uses is in a separate directory from the image files. The parent directory of `images` and `fonts` is the real "root" directory for this theme's files.
 
 ### Loading assets with a custom asset manager
 

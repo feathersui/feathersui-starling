@@ -191,7 +191,7 @@ The slider's maximum track may be skinned similarly to the minimum track. The na
 
 ### No Thumb
 
-A slider also provides a `showThumb` property. If set to `false`, the thumb will be hidden, and the track will become draggable instead. Combine this with a minimum and a maximum track to have a slider that “fills” with a color as the value increases.
+A slider also provides a `showThumb` property. If set to `false`, the thumb will be hidden, and the track will become draggable instead. Combine this with a minimum and a maximum track to have a slider that "fills" with a color as the value increases.
 
 ## Related Links
 
