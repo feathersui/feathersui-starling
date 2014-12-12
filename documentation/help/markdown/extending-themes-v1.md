@@ -13,7 +13,7 @@ The tutorial explains the theme architecture in Feathers 1.3.1 and below. For ne
 
 In [Introduction to Feathers themes](themes.html), you learned about *alternate style names*. When you extend a theme to style certain components differently than the default, you will be creating your own custom alternate skin names.
 
-To add a name to a component, you use the [nameList](http://feathersui.com/documentation/feathers/core/FeathersControl.html#nameList) property.
+To add a name to a component, you use the [nameList](../api-reference/feathers/core/FeathersControl.html#nameList) property.
 
 ``` code
 var button:Button = new Button();

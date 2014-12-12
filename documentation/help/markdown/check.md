@@ -9,7 +9,7 @@ The `Check` component is little more than a [Button](button.html) component that
 
 ## Skinning a Check
 
-A skinned `Check` component usually has no background (or a transparent one) and the touch states of the check are displayed through the icon skins. For full details about what skin and style properties are available, see the [Check API reference](http://feathersui.com/documentation/feathers/controls/Check.html).
+A skinned `Check` component usually has no background (or a transparent one) and the touch states of the check are displayed through the icon skins. For full details about what skin and style properties are available, see the [Check API reference](../api-reference/feathers/controls/Check.html).
 
 As mentioned above, `Check` is a subclass of `Button`. For more detailed information about the skinning options available to `Check`, see [How to use the Button component](button.html).
 
@@ -42,9 +42,9 @@ If you aren't using a theme, then you may set any of the check's properties dire
 
 -   [How to use the Feathers Button component](button.html)
 
--   [Check API Documentation](http://feathersui.com/documentation/feathers/controls/Check.html)
+-   [Check API Documentation](../api-reference/feathers/controls/Check.html)
 
--   [Button API Documentation](http://feathersui.com/documentation/feathers/controls/Button.html)
+-   [Button API Documentation](../api-reference/feathers/controls/Button.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

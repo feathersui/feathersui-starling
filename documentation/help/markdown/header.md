@@ -29,11 +29,11 @@ header.leftItems = new <DisplayObject>[ backButton ];
 
 Notice that we create our button just like we would any regular button, including adding an event listener, except we don't add it to the display list. We pass it to the `leftItems` property in a `Vector.<DisplayObject>` and the header manages adding it as a child and keeping it in the header's layout.
 
-We could add additional buttons or controls to the [right items](http://feathersui.com/documentation/feathers/controls/Header.html#rightItems) region, if we wanted.
+We could add additional buttons or controls to the [right items](../api-reference/feathers/controls/Header.html#rightItems) region, if we wanted.
 
 ## Skinning a Header
 
-A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the [Header API reference](http://feathersui.com/documentation/feathers/controls/Header.html). We'll look at a few of the most common properties below.
+A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the [Header API reference](../api-reference/feathers/controls/Header.html). We'll look at a few of the most common properties below.
 
 The header has a `backgroundSkin` and `backgroundDisabledSkin`. If the header is disabled, the `backgroundDisabledSkin` will be used. However, if the `backgroundDisabledSkin` isn't provided, the header will fall back to the `backgroundSkin`.
 
@@ -118,7 +118,7 @@ If you aren't using a theme, then you may set any of the header's properties dir
 
 ## Related Links
 
--   [Header API Documentation](http://feathersui.com/documentation/feathers/controls/Header.html)
+-   [Header API Documentation](../api-reference/feathers/controls/Header.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

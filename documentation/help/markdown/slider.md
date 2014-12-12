@@ -46,7 +46,7 @@ function slider_changeHandler( event:Event ):void
 
 ## Skinning a Slider
 
-The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [Slider API reference](http://feathersui.com/documentation/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
+The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [Slider API reference](../api-reference/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
 
 ### Track(s) and Layout
 
@@ -195,7 +195,7 @@ A slider also provides a `showThumb` property. If set to `false`, the thumb will
 
 ## Related Links
 
--   [Slider API Documentation](http://feathersui.com/documentation/feathers/controls/Slider.html)
+-   [Slider API Documentation](../api-reference/feathers/controls/Slider.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

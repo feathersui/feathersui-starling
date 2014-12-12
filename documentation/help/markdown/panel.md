@@ -107,7 +107,7 @@ In general, you should only skins to the panel's footer through `footerPropertie
 
 ## Layout
 
-We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html) to the children of a `Panel` to do the positioning manually:
+We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](../api-reference/feathers/layout/HorizontalLayout.html) to the children of a `Panel` to do the positioning manually:
 
 ``` code
 var layout:HorizontalLayout = new HorizontalLayout();
@@ -119,7 +119,7 @@ We can set a number of other properties on the layout too. In the case of `Horiz
 
 ## Skinning a Panel
 
-The skins for a `Panel` control are divided into the header, the content, and the footer. Additionally, a panel may have background skins and various other styles. For full details about what skin and style properties are available, see the [Panel API reference](http://feathersui.com/documentation/feathers/controls/Panel.html). We'll look at a few of the most common properties below.
+The skins for a `Panel` control are divided into the header, the content, and the footer. Additionally, a panel may have background skins and various other styles. For full details about what skin and style properties are available, see the [Panel API reference](../api-reference/feathers/controls/Panel.html). We'll look at a few of the most common properties below.
 
 ### Background Skins and Basic Styles
 
@@ -362,7 +362,7 @@ The `pageWidth` and `pageHeight` properties may be used to customize the size of
 
 ## Related Links
 
--   [Panel API Documentation](http://feathersui.com/documentation/feathers/controls/Panel.html)
+-   [Panel API Documentation](../api-reference/feathers/controls/Panel.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

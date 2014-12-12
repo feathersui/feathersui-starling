@@ -115,7 +115,7 @@ loader.smoothing = TextureSmoothing.NONE;
 
 ## Related Links
 
--   [ImageLoader API Documentation](http://feathersui.com/documentation/feathers/controls/ImageLoader.html)
+-   [ImageLoader API Documentation](../api-reference/feathers/controls/ImageLoader.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

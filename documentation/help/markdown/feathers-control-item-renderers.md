@@ -544,11 +544,11 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
--   [IListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/IListItemRenderer.html)
+-   [IListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/IListItemRenderer.html)
 
--   [IGroupedListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListItemRenderer.html)
+-   [IGroupedListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html)
 
--   [IGroupedListHeaderOrFooterRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html)
+-   [IGroupedListHeaderOrFooterRenderer API Documentation](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

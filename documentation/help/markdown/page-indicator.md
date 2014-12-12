@@ -37,7 +37,7 @@ function pageIndicator_changeHandler( event:Event ):void
 
 ## Skinning a Page Indicator
 
-You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about what skin and style properties are available, see the [PageIndicator API reference](http://feathersui.com/documentation/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
+You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about what skin and style properties are available, see the [PageIndicator API reference](../api-reference/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
 
 ### Layout
 
@@ -47,7 +47,7 @@ You may set the `direction` of a page indicator to `DIRECTION_HORIZONTAL` or `DI
 pages.direction = PageIndicator.DIRECTION_VERTICAL;
 ```
 
-We can set other layout properies, such as the [gap between symbols](http://feathersui.com/documentation/feathers/controls/PageIndicator.html#gap), the padding around the edges, and the alignment, both [horizontally](http://feathersui.com/documentation/feathers/controls/PageIndicator.html#horizontalAlign) and [vertically](http://feathersui.com/documentation/feathers/controls/PageIndicator.html#verticalAlign):
+We can set other layout properies, such as the [gap between symbols](../api-reference/feathers/controls/PageIndicator.html#gap), the padding around the edges, and the alignment, both [horizontally](../api-reference/feathers/controls/PageIndicator.html#horizontalAlign) and [vertically](../api-reference/feathers/controls/PageIndicator.html#verticalAlign):
 
 ``` code
 pages.gap = 4;
@@ -104,7 +104,7 @@ If you aren't using a theme, then you may set any of the page indicator's proper
 
 ## Related Links
 
--   [PageIndicator API Documentation](http://feathersui.com/documentation/feathers/controls/PageIndicator.html)
+-   [PageIndicator API Documentation](../api-reference/feathers/controls/PageIndicator.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

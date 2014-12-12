@@ -102,7 +102,7 @@ list.isSelectable = false;
 
 ## Skinning a List
 
-A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available on a `List`, see the [List API reference](http://feathersui.com/documentation/feathers/controls/List.html). We'll look at a few of the most common properties below.
+A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available on a `List`, see the [List API reference](../api-reference/feathers/controls/List.html). We'll look at a few of the most common properties below.
 
 We'll start the skinning process by giving our list appropriate background skins.
 
@@ -409,7 +409,7 @@ The following properties are available on some layouts:
 
 ## Related Links
 
--   [List API Documentation](http://feathersui.com/documentation/feathers/controls/List.html)
+-   [List API Documentation](../api-reference/feathers/controls/List.html)
 
 -   [How to use the Feathers Default Item Renderers](default-item-renderers.html)
 

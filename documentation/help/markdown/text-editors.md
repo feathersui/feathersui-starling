@@ -41,13 +41,13 @@ On mobile, you generally should not use `TextArea`. It is designed specifically 
 
 ## Related Links
 
--   [ITextEditor API Documentation](http://feathersui.com/documentation/feathers/core/text/ITextEditor.html)
+-   [ITextEditor API Documentation](../api-reference/feathers/core/text/ITextEditor.html)
 
--   [StageTextTextEditor API Documentation](http://feathersui.com/documentation/feathers/controls/text/StageTextTextEditor.html)
+-   [StageTextTextEditor API Documentation](../api-reference/feathers/controls/text/StageTextTextEditor.html)
 
--   [TextFieldTextEditor API Documentation](http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditor.html)
+-   [TextFieldTextEditor API Documentation](../api-reference/feathers/controls/text/TextFieldTextEditor.html)
 
--   [TextFieldTextEditorViewPort API Documentation](http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditorViewPort.html)
+-   [TextFieldTextEditorViewPort API Documentation](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html)
 
 -   [How to use the Feathers TextInput component](text-input.html)
 

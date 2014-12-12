@@ -29,7 +29,7 @@ progress.direction = ProgressBar.DIRECTION_VERTICAL;
 
 ## Skinning a Progress Bar
 
-A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [ProgressBar API reference](http://feathersui.com/documentation/feathers/controls/ProgressBar.html). We'll look at a few of the most common properties below.
+A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [ProgressBar API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common properties below.
 
 The `backgroundSkin` and `fillSkin` properties are used to customize the appearance of the progress bar.
 
@@ -85,7 +85,7 @@ If you aren't using a theme, then you may set any of the progress bar's properti
 
 ## Related Links
 
--   [ProgressBar API Documentation](http://feathersui.com/documentation/feathers/controls/ProgressBar.html)
+-   [ProgressBar API Documentation](../api-reference/feathers/controls/ProgressBar.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

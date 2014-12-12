@@ -122,13 +122,13 @@ In the example above, we restrict to numeric values only.
 
 ## Skinning a Text Input
 
-A text input provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [TextInput API reference](http://feathersui.com/documentation/feathers/controls/TextInput.html). We'll look at a few of the most common properties below.
+A text input provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [TextInput API reference](../api-reference/feathers/controls/TextInput.html). We'll look at a few of the most common properties below.
 
 ### Font Styles
 
 The font styles of a text input may be changed through the [text editor](text-editors.html). Each text editor displays fonts differently and has different properties, so the way to make changes to the font styles depends on each text editor.
 
-The default text editor is `StageTextTextEditor`. The editor uses `flash.text.StageText` to provide an input field from the native operating system. Many of the font styles available to `StageText` (such as `fontFamily`, `fontSize`, and `color` among many others) are exposed through the `StageTextTextEditor` class. See the [API documentation](http://feathersui.com/documentation/feathers/controls/text/StageTextTextEditor.html) for full details.
+The default text editor is `StageTextTextEditor`. The editor uses `flash.text.StageText` to provide an input field from the native operating system. Many of the font styles available to `StageText` (such as `fontFamily`, `fontSize`, and `color` among many others) are exposed through the `StageTextTextEditor` class. See the [API documentation](../api-reference/feathers/controls/text/StageTextTextEditor.html) for full details.
 
 Another core text editor provided by Feathers is `TextFieldTextEditor`. This text editor places a `flash.text.TextField` with its `type` set to `TextFieldType.INPUT` on the native stage. This text editor accepts a `flash.text.TextFormat` object to pass to the `TextField` to style the text.
 
@@ -213,7 +213,7 @@ If you aren't using a theme, then you may set any of the text input's properties
 
 ## Related Links
 
--   [TextInput API Documentation](http://feathersui.com/documentation/feathers/controls/TextInput.html)
+-   [TextInput API Documentation](../api-reference/feathers/controls/TextInput.html)
 
 -   [How to Use the Feathers Text Area Component](text-area.html)
 

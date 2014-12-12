@@ -80,7 +80,7 @@ button.labelFactory = function():ITextRenderer
 
 Be careful, if you're using a theme. The theme applies its styles after this function returns. That means that the theme may end up replacing any properties that you set in the factory. See [Extending Feathers Themes](extending-themes.html) for details about how to customize a theme's styles.
 
-Other components with the ability to display text may have a different name for their text renderer factories. For example, the factory for the title text renderer of a `Header` component is called `titleFactory`. Check the [API documentation](http://feathersui.com/documentation/) for a specific component to learn the names of any properties that allow you to change the factories for its text renderers.
+Other components with the ability to display text may have a different name for their text renderer factories. For example, the factory for the title text renderer of a `Header` component is called `titleFactory`. Check the [API documentation](../api-reference/) for a specific component to learn the names of any properties that allow you to change the factories for its text renderers.
 
 ## The Label Component
 
@@ -142,7 +142,7 @@ textRenderer.width = 100;
 textRenderer.wordWrap = true;
 ```
 
-`BitmapFontTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [API reference](http://feathersui.com/documentation/feathers/controls/text/BitmapFontTextRenderer.html).
+`BitmapFontTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [API reference](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html).
 
 ## TextFieldTextRenderer
 
@@ -192,7 +192,7 @@ textRenderer.text = "<span class='heading'>hello</span> world!";
 textRenderer.isHTML = true;
 ```
 
-`TextFieldTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [API reference](http://feathersui.com/documentation/feathers/controls/text/TextFieldTextRenderer.html).
+`TextFieldTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [API reference](../api-reference/feathers/controls/text/TextFieldTextRenderer.html).
 
 ## TextBlockTextRenderer
 
@@ -241,7 +241,7 @@ textRenderer.width = 100;
 textRenderer.wordWrap = true;
 ```
 
-`TextBlockTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [API reference](http://feathersui.com/documentation/feathers/controls/text/TextBlockTextRenderer.html).
+`TextBlockTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [API reference](../api-reference/feathers/controls/text/TextBlockTextRenderer.html).
 
 ## Custom Text Renderers
 
@@ -275,13 +275,13 @@ Please see the [FAQ: Draw Calls and Feathers Text](faq/draw-calls.html) article 
 
 ## Related Links
 
--   [ITextRenderer API Documentation](http://feathersui.com/documentation/feathers/core/text/ITextRenderer.html)
+-   [ITextRenderer API Documentation](../api-reference/feathers/core/text/ITextRenderer.html)
 
--   [BitmapFontTextRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/text/BitmapFontTextRenderer.html)
+-   [BitmapFontTextRenderer API Documentation](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html)
 
--   [TextFieldTextRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/text/TextFieldTextRenderer.html)
+-   [TextFieldTextRenderer API Documentation](../api-reference/feathers/controls/text/TextFieldTextRenderer.html)
 
--   [TextBlockTextRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/text/TextBlockTextRenderer.html)
+-   [TextBlockTextRenderer API Documentation](../api-reference/feathers/controls/text/TextBlockTextRenderer.html)
 
 -   [How to use the Feathers Label component](label.html)
 

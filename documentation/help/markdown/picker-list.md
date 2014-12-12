@@ -53,7 +53,7 @@ Don't forget that you need to set the `selectedIndex` to `-1` if you want to dis
 
 ## Skinning a Picker List
 
-The skins for a `PickerList` control are divided into several parts, including the button and pop-up list sub-components. For full details about what skin and style properties are available, see the [PickerList API reference](http://feathersui.com/documentation/feathers/controls/PickerList.html).
+The skins for a `PickerList` control are divided into several parts, including the button and pop-up list sub-components. For full details about what skin and style properties are available, see the [PickerList API reference](../api-reference/feathers/controls/PickerList.html).
 
 ### Targeting a PickerList in a theme
 
@@ -211,7 +211,7 @@ You can completely customize the pop-up behavior of the picker list by implement
 
 ## Related Links
 
--   [PickerList API Documentation](http://feathersui.com/documentation/feathers/controls/PickerList.html)
+-   [PickerList API Documentation](../api-reference/feathers/controls/PickerList.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -9,7 +9,7 @@ The `PanelScreen` component is simply a combination between the `Panel` componen
 
 ## Skinning a Panel Screen
 
-For full details about what skin and style properties are available, see the [PanelScreen API reference](http://feathersui.com/documentation/feathers/controls/PanelScreen.html).
+For full details about what skin and style properties are available, see the [PanelScreen API reference](../api-reference/feathers/controls/PanelScreen.html).
 
 As mentioned above, `PanelScreen` is a subclass of `Panel`. For more detailed information about the skinning options available to `PanelScreen`, see [How to use the Panel component](panel.html).
 
@@ -40,7 +40,7 @@ If you aren't using a theme, then you may set any of the panel screen's properti
 
 ## Related Links
 
--   [PanelScreen API Documentation](http://feathersui.com/documentation/feathers/controls/PanelScreen.html)
+-   [PanelScreen API Documentation](../api-reference/feathers/controls/PanelScreen.html)
 
 -   [How to use the Feathers Panel component](panel.html)
 

@@ -37,7 +37,7 @@ Additional arguments are available for `Callout.show()`. Let's take a look at th
 
 ### Direction
 
-The next is the callout's direction, which is where the callout appears relative to its origin. By default, this is `DIRECTION_ANY` which means that the callout may open [above](http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_UP), [below](http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_DOWN), to the [left](http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_LEFT), or to the [right](http://feathersui.com/documentation/feathers/controls/Callout.html#DIRECTION_RIGHT) of the origin. The exact direction will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to select a specific direction if you never want the callout to open in one of the other directions.
+The next is the callout's direction, which is where the callout appears relative to its origin. By default, this is `DIRECTION_ANY` which means that the callout may open [above](../api-reference/feathers/controls/Callout.html#DIRECTION_UP), [below](../api-reference/feathers/controls/Callout.html#DIRECTION_DOWN), to the [left](../api-reference/feathers/controls/Callout.html#DIRECTION_LEFT), or to the [right](../api-reference/feathers/controls/Callout.html#DIRECTION_RIGHT) of the origin. The exact direction will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to select a specific direction if you never want the callout to open in one of the other directions.
 
 ### Modality
 
@@ -72,7 +72,7 @@ If you've created a [custom theme](custom-themes.html), you can set a styling fu
 
 ## Skinning Callouts
 
-Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [Callout API reference](http://feathersui.com/documentation/feathers/controls/Callout.html). We'll look at a few of the most common properties below.
+Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [Callout API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common properties below.
 
 Let's look at the skins first.
 
@@ -176,7 +176,7 @@ Finally, you may want to reuse the callout's content. By default, the callout wi
 
 ## Related Links
 
--   [Callout API Documentation](http://feathersui.com/documentation/feathers/controls/Callout.html)
+-   [Callout API Documentation](../api-reference/feathers/controls/Callout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

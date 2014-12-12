@@ -42,7 +42,7 @@ container.height = 200;
 
 ## Layout
 
-We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html) to the children of a `ScrollContainer` to do the positioning manually:
+We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](../api-reference/feathers/layout/HorizontalLayout.html) to the children of a `ScrollContainer` to do the positioning manually:
 
 ``` code
 var layout:HorizontalLayout = new HorizontalLayout();
@@ -54,7 +54,7 @@ We can set a number of other properties on the layout too. In the case of `Horiz
 
 ## Skinning a Scroll Container
 
-The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [ScrollContainer API reference](http://feathersui.com/documentation/feathers/controls/ScrollContainer.html). We'll look at a few of the most common properties below.
+The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [ScrollContainer API reference](../api-reference/feathers/controls/ScrollContainer.html). We'll look at a few of the most common properties below.
 
 ### Background Skins and Basic Styles
 
@@ -207,7 +207,7 @@ List is much better at supporting layouts with dozens or hundreds of items, and 
 
 ## Related Links
 
--   [ScrollContainer API Documentation](http://feathersui.com/documentation/feathers/controls/ScrollContainer.html)
+-   [ScrollContainer API Documentation](../api-reference/feathers/controls/ScrollContainer.html)
 
 -   [How to use the Feathers LayoutGroup component](layout-group.html)
 

@@ -19,7 +19,7 @@ this.addChild( label );
 
 ## Styling the Label
 
-For full details about what skin and style properties are available, see the [Label API reference](http://feathersui.com/documentation/feathers/controls/Label.html). We'll look at a few of the most common properties below.
+For full details about what skin and style properties are available, see the [Label API reference](../api-reference/feathers/controls/Label.html). We'll look at a few of the most common properties below.
 
 ### Styling the Label's Text Renderer
 
@@ -96,11 +96,11 @@ Generally, all of the Feathers example apps use `Label` for generic text, and yo
 
 ## Related Links
 
--   [Label API Documentation](http://feathersui.com/documentation/feathers/controls/Label.html)
+-   [Label API Documentation](../api-reference/feathers/controls/Label.html)
 
--   [BitmapFontTextRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/text/BitmapFontTextRenderer.html)
+-   [BitmapFontTextRenderer API Documentation](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html)
 
--   [TextFieldTextRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/text/TextFieldTextRenderer.html)
+-   [TextFieldTextRenderer API Documentation](../api-reference/feathers/controls/text/TextFieldTextRenderer.html)
 
 -   [Text Renderers](text-renderers.html)
 

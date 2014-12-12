@@ -43,7 +43,7 @@ function oneButton_triggeredHandler( event:Event ):void
 
 ## Skinning
 
-A button group's buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about what skin and style properties are available, see the [ButtonGroup API reference](http://feathersui.com/documentation/feathers/controls/ButtonGroup.html). We'll look at a few of the most common properties below.
+A button group's buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about what skin and style properties are available, see the [ButtonGroup API reference](../api-reference/feathers/controls/ButtonGroup.html). We'll look at a few of the most common properties below.
 
 ### Layout
 
@@ -147,7 +147,7 @@ Separate skins for the first and last buttons are completely optional.
 
 ## Related Links
 
--   [ButtonGroup API Documentation](http://feathersui.com/documentation/feathers/controls/ButtonGroup.html)
+-   [ButtonGroup API Documentation](../api-reference/feathers/controls/ButtonGroup.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

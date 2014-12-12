@@ -9,7 +9,7 @@ The `ScreenNavigator` component can display any Feathers control as a screen. Ho
 
 ## Accessing the ScreenNavigator
 
-The [owner](http://feathersui.com/documentation/feathers/controls/Screen.html#owner) property provides access to the `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling `showScreen()`. You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
+The [owner](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling `showScreen()`. You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
 
 ## Screen ID
 
@@ -38,7 +38,7 @@ this.backButtonHandler = function():void
 
 ## Skinning a Screen
 
-For full details about what skin and style properties are available, see the [Screen API reference](http://feathersui.com/documentation/feathers/controls/Screen.html).
+For full details about what skin and style properties are available, see the [Screen API reference](../api-reference/feathers/controls/Screen.html).
 
 As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the LayoutGroup component](layout-group.html).
 
@@ -65,11 +65,11 @@ getStyleProviderForClass( Screen )
 
 Trying to change the screen's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the screen was added to the stage and initialized.
 
-If you aren't using a theme, then you may set any of the screen's properties directly. For full details about what skin and style properties are available, see the [Screen API reference](http://feathersui.com/documentation/feathers/controls/Screen.html).
+If you aren't using a theme, then you may set any of the screen's properties directly. For full details about what skin and style properties are available, see the [Screen API reference](../api-reference/feathers/controls/Screen.html).
 
 ## Related Links
 
--   [Screen API Documentation](http://feathersui.com/documentation/feathers/controls/Screen.html)
+-   [Screen API Documentation](../api-reference/feathers/controls/Screen.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

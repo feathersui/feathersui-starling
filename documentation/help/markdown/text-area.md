@@ -80,7 +80,7 @@ In the example above, we restrict to numeric values only.
 
 ## Skinning a Text Area
 
-A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [TextArea API reference](http://feathersui.com/documentation/feathers/controls/TextArea.html). We'll look at a few of the most common properties below.
+A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [TextArea API reference](../api-reference/feathers/controls/TextArea.html). We'll look at a few of the most common properties below.
 
 ### Font Styles
 
@@ -245,7 +245,7 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 ## Related Links
 
--   [TextArea API Documentation](http://feathersui.com/documentation/feathers/controls/TextArea.html)
+-   [TextArea API Documentation](../api-reference/feathers/controls/TextArea.html)
 
 -   [How to Use the Feathers Text Input Component](text-input.html)
 
