@@ -31,7 +31,7 @@ The `isInvalid()` method is used to determine if a specific flag has been set wi
 
 ## setSizeInternal()
 
-The `setSizeInternal()` method is called to specify ideal dimensions. It chooses between explicit and ideal dimensions to calculate the final “actual” dimensions used for layout.
+The `setSizeInternal()` method is called to specify ideal dimensions. It chooses between explicit and ideal dimensions to calculate the final "actual" dimensions used for layout.
 
 The final argument determines if the component should invalidate after adjusting the dimensions. If you call it during validation (during `draw()`, basically), then you should probably pass `false`. Otherwise, the component will end up redrawing itself every render cycle, which you probably don't want.
 
@@ -39,7 +39,7 @@ See below for more detailed information on component dimensions.
 
 ## isQuickHitAreaEnabled
 
-The `isQuickHitAreaEnabled` property is similar to `mouseChildren` from the classic display list. However, it takes things a step further and limits the component's hit area to a simple rectangle, which can greatly improve performance of touch hit tests. The rectangular hit area is automatically calculated based on the component's “actual” width and height dimensions (see below). This is most useful in buttons, but any component where the children don't need to receive touch events can benefit from it.
+The `isQuickHitAreaEnabled` property is similar to `mouseChildren` from the classic display list. However, it takes things a step further and limits the component's hit area to a simple rectangle, which can greatly improve performance of touch hit tests. The rectangular hit area is automatically calculated based on the component's "actual" width and height dimensions (see below). This is most useful in buttons, but any component where the children don't need to receive touch events can benefit from it.
 
 ## styleName and styleNameList
 
@@ -60,7 +60,7 @@ var button:Button = new Button();
 button.width = 150;
 ```
 
-The `actualWidth` and `actualHeight` variables are the values returned by the `width` and `height` getters. These values should also be used when drawing the component. The “actual” dimensions typically default to the values of `explicitWidth` and `explicitHeight`, but if explicit dimensions are not specified, the component may try to calculate ideal dimensions. These could be hard-coded pixel values or they could be determined based on the dimensions of skins or other children (such as sub-components). How the ideal dimensions are calculated is often different from component to component.
+The `actualWidth` and `actualHeight` variables are the values returned by the `width` and `height` getters. These values should also be used when drawing the component. The "actual" dimensions typically default to the values of `explicitWidth` and `explicitHeight`, but if explicit dimensions are not specified, the component may try to calculate ideal dimensions. These could be hard-coded pixel values or they could be determined based on the dimensions of skins or other children (such as sub-components). How the ideal dimensions are calculated is often different from component to component.
 
 A custom component should pass its ideal calculated dimensions to the `setSizeInternal()` method before the layout phase. This method will determine if the dimensions were already set explicitly. If so, the ideal values will be ignored, and the `actualWidth` and `actualHeight` variables will be set to the explicit dimensions. If not, they will be set to the ideal dimensions instead.
 

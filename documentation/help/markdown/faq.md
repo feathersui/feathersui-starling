@@ -133,7 +133,7 @@ Subclasses shouldn't necessarily have the same skins as their superclass, and yo
 
 ### Why do I see colored lines or strange gaps between tiles when I use TiledImage?
 
-This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the “extrude” setting to work around this issue. The `TiledImage` documentation has a detailed explaination of this issue and the extrude workaround.
+This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the "extrude" setting to work around this issue. The `TiledImage` documentation has a detailed explaination of this issue and the extrude workaround.
 
 ------------------------------------------------------------------------
 

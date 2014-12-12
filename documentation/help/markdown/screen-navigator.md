@@ -93,7 +93,7 @@ protected function optionsButton_triggeredHandler( event:Event ):void
 }
 ```
 
-Next, let's repeat the process to add a “complete” event to the event map for `OptionsScreen` so that we can navigate back to the `MainMenuScreen`:
+Next, let's repeat the process to add a "complete" event to the event map for `OptionsScreen` so that we can navigate back to the `MainMenuScreen`:
 
 ``` code
 this._navigator.addScreen( OPTIONS, new ScreenNavigatorItem( OptionsScreen,
@@ -132,7 +132,7 @@ However, this approach of using the `owner` property is not recommended. In gene
 
 Alternatively, you may use the [as3-signals](https://github.com/robertpenner/as3-signals) library to trigger navigation. Feathers doesn't actually require as3-signals as a dependency. At runtime, Feathers will check to see if as3-signals is compiled into the SWF. If it is, then it will enable special behavior to listen for signals, if they're defined.
 
-If as3-signals has been detected, the `ScreenNavigator` will first check a screen for a signal that's a public property before falling back to adding an event listener. For example, if the event map defines a “complete” key, the `ScreenNavigator` will check of the screen has a property named `complete`. If it does, then it will check if that value of that property implements the `ISignal` interface. If both of these conditions are true, a listener will be added to the signal. If either condition is false, then the `ScreenNavigator` will fall back to adding a listener for the “complete” event instead.
+If as3-signals has been detected, the `ScreenNavigator` will first check a screen for a signal that's a public property before falling back to adding an event listener. For example, if the event map defines a "complete" key, the `ScreenNavigator` will check of the screen has a property named `complete`. If it does, then it will check if that value of that property implements the `ISignal` interface. If both of these conditions are true, a listener will be added to the signal. If either condition is false, then the `ScreenNavigator` will fall back to adding a listener for the "complete" event instead.
 
 Let's rework the example above to use signals instead of events. Let's start with changing how `MainMenuScreen` is added to the `ScreenNavigator`:
 
@@ -221,7 +221,7 @@ public function set optionsData( value:OptionsData ):void
 
 See [ScreenNavigator Transitions](transitions.html) for a more detailed look at transitions.
 
-The `ScreenNavigator` class supports transition animations when changing screens. A number of useful transition “manager” classes are pre-defined in the `feathers.motion.transitions` package. Some of these track the history of screens to add a little extra context to their animations. For instance, the `ScreenSlidingStackTransitionManager` stores a stack of recent screens to intelligently choose the direction a screen slides in from when it is shown (either the left side or the right side).
+The `ScreenNavigator` class supports transition animations when changing screens. A number of useful transition "manager" classes are pre-defined in the `feathers.motion.transitions` package. Some of these track the history of screens to add a little extra context to their animations. For instance, the `ScreenSlidingStackTransitionManager` stores a stack of recent screens to intelligently choose the direction a screen slides in from when it is shown (either the left side or the right side).
 
 To use the `ScreenSlidingStackTransitionManager`, we simply need to pass a `ScreenNavigator` instance to the constructor.
 
@@ -259,7 +259,7 @@ Note that the `ScreenNavigator` will dispatch the `FeathersEventType.TRANSITION_
 
 ## Advanced Functionality
 
-The `ScreenNavigatorItem` event map can be used for more than just navigation. You can also call a function when an event or signal is dispatched. Let's add a new signal to the main menu that will be dispatched when a “About Our Product” button is clicked. We want it to open a website in the browser.
+The `ScreenNavigatorItem` event map can be used for more than just navigation. You can also call a function when an event or signal is dispatched. Let's add a new signal to the main menu that will be dispatched when a "About Our Product" button is clicked. We want it to open a website in the browser.
 
 ``` code
 this._navigator.addScreen( MAIN_MENU, new ScreenNavigatorItem( MainMenuScreen,

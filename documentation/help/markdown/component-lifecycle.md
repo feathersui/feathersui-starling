@@ -19,7 +19,7 @@ The component is added to the display list and its `initialize()` function is ca
 
 The component's `draw()` function is called. The component should handle any changes that have been made to its properties. Then, if the component's dimensions have not be specified, it should automatically calculate ideal width and height values. These should be passed to `setSizeInternal()` where other values such as minimum width and height will come into play. After the final dimensions are determined, the component should position and size its children.
 
-Read [Anatomy of a Feathers Component](component-properties-methods.html) for more detailed information about the various “width” and “height” properties and variables that are available on a Feathers component.
+Read [Anatomy of a Feathers Component](component-properties-methods.html) for more detailed information about the various "width" and "height" properties and variables that are available on a Feathers component.
 
 ## Render
 

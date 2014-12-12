@@ -37,7 +37,7 @@ function pageIndicator_changeHandler( event:Event ):void
 
 ## Skinning a Page Indicator
 
-You can customize the layout of a page indicator, and you can customize the appearance of a its “normal” and “selected” symbols. For full details about what skin and style properties are available, see the [PageIndicator API reference](http://feathersui.com/documentation/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
+You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about what skin and style properties are available, see the [PageIndicator API reference](http://feathersui.com/documentation/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
 
 ### Layout
 

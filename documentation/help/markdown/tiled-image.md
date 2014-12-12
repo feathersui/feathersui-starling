@@ -44,7 +44,7 @@ This option is useful when scaling for different screen resolutions or densities
 
 Tiling images on the GPU involve some gotchas. If your images aren't drawn to whole pixels or they are scaled, the textures may bleed a bit and cause unsightly lines or empty gaps between images. During animations, flickering may happen where textures meet as these gaps quickly appear and disappear. It can help to always ensure that your display objects aren't placed on fractional pixels, but that can be an exercise in frustration, especially on a deep display list.
 
-The popular [Texture Packer](http://texturepacker.com/) software, used to create texture atlases, offers a useful feature named “Extrude”. When you enable this feature, the pixels around the edges of your sub-textures will be duplicated, but it won't change the size of your sub-textures. The duplicated pixels appear just outside the sub-texture's bounds. When texture bleeding happens, the same color that appears on the edge of the sub-texture will bleed into the bounds instead of a transparent pixel or another color.
+The popular [Texture Packer](http://texturepacker.com/) software, used to create texture atlases, offers a useful feature named "Extrude". When you enable this feature, the pixels around the edges of your sub-textures will be duplicated, but it won't change the size of your sub-textures. The duplicated pixels appear just outside the sub-texture's bounds. When texture bleeding happens, the same color that appears on the edge of the sub-texture will bleed into the bounds instead of a transparent pixel or another color.
 
 When tiling images, extruding is always recommended.
 

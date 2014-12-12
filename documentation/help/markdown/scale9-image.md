@@ -11,13 +11,13 @@ The `Scale9Image` class displays a texture divided into nine regions. When the d
 
 ![](images/scale9.png)
 
-The image above divides a rounded rectangle into nine regions. The four lines, two horizontal and two vertical, show where the image is sliced. The exact pixel location of these “slices” are easily configurable, as you will see later.
+The image above divides a rounded rectangle into nine regions. The four lines, two horizontal and two vertical, show where the image is sliced. The exact pixel location of these "slices" are easily configurable, as you will see later.
 
 The image below uses arrows to show how each of the regions will scale. Some regions will not scale. Some will scale only horizontally. Some will scale only vertically. Finally, some may scale in both directions.
 
 ![](images/scale9-arrows.png)
 
-From this point forward, each region will be named by combining its horizontal and vertical position. Horizontal positions are “left”, “center”, and “right”. Vertical positions are “top”, “middle”, and “bottom”.
+From this point forward, each region will be named by combining its horizontal and vertical position. Horizontal positions are "left", "center", and "right". Vertical positions are "top", "middle", and "bottom".
 
 The top-left, top-right, bottom-left, and bottom-right regions (the corners) will not be scaled.
 

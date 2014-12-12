@@ -9,7 +9,7 @@ You've already [added a background skin](item-renderer-background-skin.html), bu
 
 ## Up and Down States
 
-Let's start out by tracking whether the user is touching the item renderer or not. If we use terms that you might associate with a button, this will require a default “up” state and a “down” state for when it is pressed.
+Let's start out by tracking whether the user is touching the item renderer or not. If we use terms that you might associate with a button, this will require a default "up" state and a "down" state for when it is pressed.
 
 First, let's define a `currentState` property:
 

@@ -9,7 +9,7 @@ This is the code formatting style used within the [Feathers](index.html) library
 
 If you are not contributing code to Feathers, then please feel no obligation to follow this style guide when working with the library. This guide is aimed at developers who wish to contribute bug fixes and enhancements to Feathers.
 
-The terms “public” and “private” are used below in a general sense. When the specific `public` or `private` namespace is referenced, it will be clearly styled. When not marked as a namespace, public refers to any API that is meant to be exposed to someone using a particular class. It may include things like `public` members and `protected` members that are meant to be accessed in subclasses. Similarly, private refers to APIs that are meant to be used only internally. Private APIs may be part of the `protected` namespace, but using these APIs in subclasses is an at-your-own-risk convenience only.
+The terms "public" and "private" are used below in a general sense. When the specific `public` or `private` namespace is referenced, it will be clearly styled. When not marked as a namespace, public refers to any API that is meant to be exposed to someone using a particular class. It may include things like `public` members and `protected` members that are meant to be accessed in subclasses. Similarly, private refers to APIs that are meant to be used only internally. Private APIs may be part of the `protected` namespace, but using these APIs in subclasses is an at-your-own-risk convenience only.
 
 ## Whitespace
 

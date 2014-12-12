@@ -39,7 +39,7 @@ Consider the following item in a data provider:
 { text: "Example Item" }
 ```
 
-For an item renderer to display “Example Item” string, it needs to know about the item's `text` property:
+For an item renderer to display "Example Item" string, it needs to know about the item's `text` property:
 
 ``` code
 renderer.labelField = "text";

@@ -94,7 +94,7 @@ panel.footerFactory = function():ScrollContainer
 }
 ```
 
-You can set any properties that you desire on the footer inside this factory, including skins. In this example, we're using a scroll container with a “toolbar” alternate name that usually makes it look similar to a `Panel` component's `Header` and usually gives it a horizontal layout (the exact behavior depends on the theme, but this is the most common behavior).
+You can set any properties that you desire on the footer inside this factory, including skins. In this example, we're using a scroll container with a "toolbar" alternate name that usually makes it look similar to a `Panel` component's `Header` and usually gives it a horizontal layout (the exact behavior depends on the theme, but this is the most common behavior).
 
 Alternatively, you could use a simple footer factory that sets no properties, and pass in properties through the `headerProperties` object.
 

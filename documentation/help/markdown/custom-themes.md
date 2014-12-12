@@ -45,7 +45,7 @@ If Feathers themes had a CSS-like dialect, we might create a declaration like th
 Button.feathers-toggle-switch-thumb {}
 ```
 
-In ActionScript, we can pass in a component *name* to `setInitializerForClass()` as the third argument to make the initializer target any component with the specified class **and** the specified name. We'll pass in the name `“feathers-toggle-switch-thumb”`, which is defined in the constant `ToggleSwitch.DEFAULT_CHILD_NAME_THUMB`:
+In ActionScript, we can pass in a component *name* to `setInitializerForClass()` as the third argument to make the initializer target any component with the specified class **and** the specified name. We'll pass in the name `"feathers-toggle-switch-thumb"`, which is defined in the constant `ToggleSwitch.DEFAULT_CHILD_NAME_THUMB`:
 
 ``` code
 setInitializerForClass( Button, buttonInitializer );
@@ -111,7 +111,7 @@ To apply an alternate skin in your theme, simply create an initializer for that 
 setInitializerForClass( GroupedList, buttonInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
 ```
 
-In the code above, an initializer is defined for an alternate “inset” skin supported by [GroupedList](grouped-list.html). As you can see, it's exactly the same as if you were providing a skin for a sub-component like a slider thumb or something like that.
+In the code above, an initializer is defined for an alternate "inset" skin supported by [GroupedList](grouped-list.html). As you can see, it's exactly the same as if you were providing a skin for a sub-component like a slider thumb or something like that.
 
 If you choose not to provide an alternate skin, the regular skin will be applied to any component that would prefer to use the alternate skin. This will happen automatically, and you do not need any extra code to ensure that your theme falls back to the regular skin.
 

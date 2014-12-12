@@ -301,7 +301,7 @@ Again, this is an optional argument. If the layout receives `null`, it may assum
 
 ### LayoutBoundsResult properties
 
-Let's look in more detail at the properties on a `LayoutBoundsResult` object. This object is returned by the `layout()` function and “fills in the blanks” from the `ViewPortBounds` object passed as one of the arguments to the `layout()` function.
+Let's look in more detail at the properties on a `LayoutBoundsResult` object. This object is returned by the `layout()` function and "fills in the blanks" from the `ViewPortBounds` object passed as one of the arguments to the `layout()` function.
 
 The `viewPortWidth` and `viewPortHeight` properties specify the final width and height of the container's view port. If the `ViewPortBounds` object specifies an `explicitWidth` or `explicitHeight`, those values should **always** be used. If not, then these values must be calculated by the layout (how they are calculated depends on the layout algorithm), using `minWidth`, `minHeight`, `maxWidth`, and `maxHeight` as restrictions.
 

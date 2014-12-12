@@ -15,7 +15,7 @@ HUD/Console logging library
 
 ## PullToRefresh by duckleg
 
-This library aims to provide a reusable Pull to Refresh widget for Adobe AIR mobile. It was based on Starling Framework. The inherited component is allowed to display a “loading” busy indicator at the top of the list and dispatch a event.
+This library aims to provide a reusable Pull to Refresh widget for Adobe AIR mobile. It was based on Starling Framework. The inherited component is allowed to display a "loading" busy indicator at the top of the list and dispatch a event.
 
 -   [PullToRefresh on Github](https://github.com/duckleg/PullToRefresh)
 
