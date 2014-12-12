@@ -117,43 +117,55 @@
 	<target name="-help">
 		<echo message="Generating Help Files"/>
 		<mkdir dir="${help.output}"/>
-		<apply executable="pandoc" dir="${basedir}" dest="${help.output}" failonerror="true">
+		<apply executable="pandoc" dir="${help.root}" dest="${help.output}" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github"/>
+			<arg value="markdown_github+yaml_metadata_block"/>
 			<arg value="-t"/>
-			<arg value="html"/>
+			<arg value="html5"/>
+			<arg value="-s"/>
+			<arg value="--template=template"/>
+			<arg value="--variable=title-suffix:Feathers ${feathers.version} Help"/>
+			<arg value="--variable=lang:en"/>
 			<arg value="-o"/>
 			<targetfile/>
-			<fileset dir="${help.root}" includes="*.md" />
+			<fileset dir="${help.root}/markdown" includes="*.md" />
 			<mapper type="glob" from="*.md" to="*.html"/>
 		</apply>
 		<mkdir dir="${help.output}/cookbook"/>
-		<apply executable="pandoc" dir="${basedir}" dest="${help.output}/cookbook" failonerror="true">
+		<apply executable="pandoc" dir="${help.root}" dest="${help.output}/cookbook" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github"/>
+			<arg value="markdown_github+yaml_metadata_block"/>
 			<arg value="-t"/>
-			<arg value="html"/>
+			<arg value="html5"/>
+			<arg value="-s"/>
+			<arg value="--template=template"/>
+			<arg value="--variable=title-suffix:Feathers ${feathers.version} Cookbook"/>
+			<arg value="--variable=lang:en"/>
 			<arg value="-o"/>
 			<targetfile/>
-			<fileset dir="${help.root}/cookbook" includes="*.md" />
+			<fileset dir="${help.root}/markdown/cookbook" includes="*.md" />
 			<mapper type="glob" from="*.md" to="*.html"/>
 		</apply>
 		<mkdir dir="${help.output}/faq"/>
-		<apply executable="${pandoc}" dir="${basedir}" dest="${help.output}/faq" failonerror="true">
+		<apply executable="${pandoc}" dir="${help.root}" dest="${help.output}/faq" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github"/>
+			<arg value="markdown_github+yaml_metadata_block"/>
 			<arg value="-t"/>
-			<arg value="html"/>
+			<arg value="html5"/>
+			<arg value="-s"/>
+			<arg value="--template=template"/>
+			<arg value="--variable=title-suffix:Feathers ${feathers.version} FAQ"/>
+			<arg value="--variable=lang:en"/>
 			<arg value="-o"/>
 			<targetfile/>
-			<fileset dir="${help.root}/faq" includes="*.md" />
+			<fileset dir="${help.root}/markdown/faq" includes="*.md" />
 			<mapper type="glob" from="*.md" to="*.html"/>
 		</apply>
 		<copy overwrite="true" todir="${help.output}/images">
-			<fileset dir="${help.root}/images">
+			<fileset dir="${help.root}/markdown/images">
 				<include name="*.png"/>
 				<include name="*.gif"/>
 				<include name="*.jpg"/>
