@@ -10,6 +10,8 @@
 
 	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
 
+	<target name="docs" depends="-prepare,-docs,-cleanup" description="builds help files and API reference only"/>
+
 	<target name="help" depends="-prepare,-help,-cleanup" description="builds help files only"/>
 
 	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
@@ -99,19 +101,14 @@
 			<arg value="-theme="/>
 			<arg value="-compiler.fonts.local-fonts-snapshot="/>
 
+			<arg value="-templates-path"/>
+			<arg value="${api.root}/templates"/>
 			<arg value="-main-title=Feathers ${feathers.version} API Reference"/>
 			<arg value="-window-title=Feathers User Interface Controls for Starling Framework API Reference"/>
 			<arg value="-footer=${footer.text}"/>
 			<arg value="-package-description-file=./package-descriptions.xml"/>
 			<arg value="-output=${api.output}"/>
 		</java>
-		<copy overwrite="true" todir="${api.output}/images">
-			<fileset dir="${api.root}/images">
-				<include name="*.jpg"/>
-				<include name="*.png"/>
-				<include name="*.gif"/>
-			</fileset>
-		</copy>
 	</target>
 
 	<target name="-help">
