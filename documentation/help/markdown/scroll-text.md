@@ -36,7 +36,7 @@ scrollText.height = 200;
 
 ## Skinning a Scroll Text
 
-For full details about what skin and style properties are available, see the [ScrollText API reference](http://feathersui.com/documentation/feathers/controls/ScrollText.html). We'll look at a few of the most common properties below.
+For full details about what skin and style properties are available, see the [ScrollText API reference](../api-reference/feathers/controls/ScrollText.html). We'll look at a few of the most common properties below.
 
 ### Font Styles
 
@@ -54,7 +54,7 @@ scrollText.isHTML = true;
 scrollText.text = "<font color=\"#ff0000\">Hello world</font>";
 ```
 
-A number of other styling properties from `flash.text.TextField` are available to use with `ScrollText`, including `antiAliasType`, `backgroundColor`, `borderColor`, `gridFitType`, `styleSheet`, `sharpness`, `thickness`, and others. See the [ScrollText API documentation](http://feathersui.com/documentation/feathers/controls/ScrollText.html) for full details.
+A number of other styling properties from `flash.text.TextField` are available to use with `ScrollText`, including `antiAliasType`, `backgroundColor`, `borderColor`, `gridFitType`, `styleSheet`, `sharpness`, `thickness`, and others. See the [ScrollText API documentation](../api-reference/feathers/controls/ScrollText.html) for full details.
 
 ### Targeting a ScrollText in a theme
 
@@ -169,7 +169,7 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 ## Related Links
 
--   [ScrollText API Documentation](http://feathersui.com/documentation/feathers/controls/ScrollText.html)
+-   [ScrollText API Documentation](../api-reference/feathers/controls/ScrollText.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

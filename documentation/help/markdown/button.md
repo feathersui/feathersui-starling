@@ -66,7 +66,7 @@ function button_changeHandler( event:Event ):void
 
 ## Skinning a Button
 
-A number of skins and styles may be customized on a button, including the background skin, the label text format, and the icon. For full details about what skin and style properties are available, see the [Alert API reference](http://feathersui.com/documentation/feathers/controls/Alert.html). We'll look at a few of the most common properties below.
+A number of skins and styles may be customized on a button, including the background skin, the label text format, and the icon. For full details about what skin and style properties are available, see the [Alert API reference](../api-reference/feathers/controls/Alert.html). We'll look at a few of the most common properties below.
 
 ### Background Skins
 
@@ -241,7 +241,7 @@ Similar to `stateToSkinFunction`, button also provides `stateToIconFunction` to 
 
 ## Related Links
 
--   [Button API Documentation](http://feathersui.com/documentation/feathers/controls/Button.html)
+-   [Button API Documentation](../api-reference/feathers/controls/Button.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

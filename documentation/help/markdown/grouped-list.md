@@ -51,7 +51,7 @@ var groceryList:HierarchicalCollection = new HierarchicalCollection(
 list.dataProvider = groceryList;
 ```
 
-`HierarchicalCollection` wraps any type of data to provide a common API that the `GroupedList` component can understand. Out of the box, `HierarchicalCollection` automatically supports an `Array` of objects representing each group. Each group object has a `children` property (you can [customize this property name](http://feathersui.com/documentation/feathers/data/ArrayChildrenHierarchicalCollectionDataDescriptor.html#childrenField), if you prefer) that contains an `Array` of objects in the group. Each group can contain extra data for the header and footer, as we'll see in more detail shortly. It's even possible to support custom types of data, if needed.
+`HierarchicalCollection` wraps any type of data to provide a common API that the `GroupedList` component can understand. Out of the box, `HierarchicalCollection` automatically supports an `Array` of objects representing each group. Each group object has a `children` property (you can [customize this property name](../api-reference/feathers/data/ArrayChildrenHierarchicalCollectionDataDescriptor.html#childrenField), if you prefer) that contains an `Array` of objects in the group. Each group can contain extra data for the header and footer, as we'll see in more detail shortly. It's even possible to support custom types of data, if needed.
 
 Now, we need to tell the item renderer how to display the data. The grouped list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
@@ -174,7 +174,7 @@ list.isSelectable = false;
 
 ## Skinning a Grouped List
 
-A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available, see the [GroupedList API reference](http://feathersui.com/documentation/feathers/controls/GroupedList.html). We'll look at a few of the most common properties below.
+A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available, see the [GroupedList API reference](../api-reference/feathers/controls/GroupedList.html). We'll look at a few of the most common properties below.
 
 We'll start the skinning process by giving our grouped list appropriate background skins.
 
@@ -454,7 +454,7 @@ The `pageWidth` and `pageHeight` properties may be used to customize the size of
 
 ## Related Links
 
--   [GroupedList API Documentation](http://feathersui.com/documentation/feathers/controls/GroupedList.html)
+-   [GroupedList API Documentation](../api-reference/feathers/controls/GroupedList.html)
 
 -   [How to use the Feathers Default Item Renderers](default-item-renderers.html)
 

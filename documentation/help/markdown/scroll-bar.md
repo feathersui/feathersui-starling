@@ -28,7 +28,7 @@ If, for some reason, you want to use a `ScrollBar` outside of a subclass of `Scr
 
 ## Skinning a ScrollBar
 
-The skins for a `ScrollBar` control are divided into several parts, including the thumb, the track(s), and the increment and decrement buttons. For full details about what skin and style properties are available, see the [ScrollBar API reference](http://feathersui.com/documentation/feathers/controls/ScrollBar.html).
+The skins for a `ScrollBar` control are divided into several parts, including the thumb, the track(s), and the increment and decrement buttons. For full details about what skin and style properties are available, see the [ScrollBar API reference](../api-reference/feathers/controls/ScrollBar.html).
 
 ### Targeting a ScrollBar in a theme
 
@@ -229,7 +229,7 @@ The scroll bar's increment button may be skinned similarly to the decrement butt
 
 ## Related Links
 
--   [ScrollBar API Documentation](http://feathersui.com/documentation/feathers/controls/ScrollBar.html)
+-   [ScrollBar API Documentation](../api-reference/feathers/controls/ScrollBar.html)
 
 -   [How to use the Feathers SimpleScrollBar Component](simple-scroll-bar.html)
 

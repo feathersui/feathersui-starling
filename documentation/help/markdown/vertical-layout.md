@@ -149,7 +149,7 @@ layout.hasVariableItemDimensions = false;
 
 ## Related Links
 
--   [VerticalLayout API Documentation](http://feathersui.com/documentation/feathers/layout/VerticalLayout.html)
+-   [VerticalLayout API Documentation](../api-reference/feathers/layout/VerticalLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -88,7 +88,7 @@ The `LayoutGroup` and `ScrollContainer` components never use virtual layouts.
 
 ## Related Links
 
--   [TiledRowsLayout API Documentation](http://feathersui.com/documentation/feathers/layout/TiledRowsLayout.html)
+-   [TiledRowsLayout API Documentation](../api-reference/feathers/layout/TiledRowsLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

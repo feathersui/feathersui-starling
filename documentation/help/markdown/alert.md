@@ -90,7 +90,7 @@ If you're working with a [theme](extending-themes.html), you can set a custom st
 
 ## Skinning an Alert
 
-The skins for an `Alert` control are divided into the header, the message text renderer, and the button group. Additionally, an alert may have background skins and various other styles. For full details about what skin and style properties are available, see the [Alert API reference](http://feathersui.com/documentation/feathers/controls/Alert.html).
+The skins for an `Alert` control are divided into the header, the message text renderer, and the button group. Additionally, an alert may have background skins and various other styles. For full details about what skin and style properties are available, see the [Alert API reference](../api-reference/feathers/controls/Alert.html).
 
 ### Background Skins and Basic Styles
 
@@ -310,7 +310,7 @@ The alert will automatically remove itself from the display list and dispose its
 
 ## Related Links
 
--   [Alert API Documentation](http://feathersui.com/documentation/feathers/controls/Alert.html)
+-   [Alert API Documentation](../api-reference/feathers/controls/Alert.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

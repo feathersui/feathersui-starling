@@ -45,7 +45,7 @@ function stepper_changeHandler( event:Event ):void
 
 ## Skinning a Numeric Stepper
 
-The skins for a `NumericStepper` control are divided into three parts. There are the increment and decrement buttons and the text input. There are a few different layout modes that control where the buttons are placed relative to the text input. For full details about what skin and style properties are available, see the [NumericStepper API reference](http://feathersui.com/documentation/feathers/controls/NumericStepper.html). We'll look at a few of the most common properties below.
+The skins for a `NumericStepper` control are divided into three parts. There are the increment and decrement buttons and the text input. There are a few different layout modes that control where the buttons are placed relative to the text input. For full details about what skin and style properties are available, see the [NumericStepper API reference](../api-reference/feathers/controls/NumericStepper.html). We'll look at a few of the most common properties below.
 
 ### Layout Modes
 
@@ -200,7 +200,7 @@ In this situation, think of the text input as a label that simply displays the v
 
 ## Related Links
 
--   [NumericStepper API Documentation](http://feathersui.com/documentation/feathers/controls/NumericStepper.html)
+-   [NumericStepper API Documentation](../api-reference/feathers/controls/NumericStepper.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

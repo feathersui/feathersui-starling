@@ -106,7 +106,7 @@ Similar to `iconField`, a display object in the list's data provider that is dis
 
 ## Skinning a Default Item Renderer
 
-The `DefaultListItemRenderer` class is a subclass of the `Button` component. Like a button, the default item renderer can change its background skin based on the touch state, and it supports different background skins when selected too. Similarly, an item renderer may have both a label and an icon, and all of the layout options used by buttons for alignment, gap, and padding apply to an item renderer too. For full details about these style properties, see [How to use the Feathers Button component](button.html). For the full listing of all style properties available on the default item renderers, see the [DefaultListItemRenderer API reference](http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html).
+The `DefaultListItemRenderer` class is a subclass of the `Button` component. Like a button, the default item renderer can change its background skin based on the touch state, and it supports different background skins when selected too. Similarly, an item renderer may have both a label and an icon, and all of the layout options used by buttons for alignment, gap, and padding apply to an item renderer too. For full details about these style properties, see [How to use the Feathers Button component](button.html). For the full listing of all style properties available on the default item renderers, see the [DefaultListItemRenderer API reference](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html).
 
 Next, we'll look at a few of the common properties that the default item renderers add beyond what normal button's provide.
 
@@ -145,9 +145,9 @@ Of you aren't using a theme, then you may set the item renderer's properties thr
 
 ## Related Links
 
--   [DefaultListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html)
+-   [DefaultListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html)
 
--   [DefaultListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html)
+-   [DefaultListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html)
 
 -   [How to use the Feathers List component](list.html)
 

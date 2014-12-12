@@ -280,7 +280,7 @@ protected function mainMenuScreen_onHomePage( sender:MainMenuScreen ):void
 
 ## Related Links
 
--   [ScreenNavigator API Documentation](http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html)
+-   [ScreenNavigator API Documentation](../api-reference/feathers/controls/ScreenNavigator.html)
 
 -   [ScreenNavigator Transitions](transitions.html)
 

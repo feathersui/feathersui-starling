@@ -9,7 +9,7 @@ The `ScrollScreen` component is simply a combination between the `ScrollContaine
 
 ## Skinning a ScrollScreen
 
-For full details about what skin and style properties are available, see the [ScrollScreen API reference](http://feathersui.com/documentation/feathers/controls/ScrollScreen.html).
+For full details about what skin and style properties are available, see the [ScrollScreen API reference](../api-reference/feathers/controls/ScrollScreen.html).
 
 As mentioned above, `ScrollScreen` is a subclass of `ScrollContainer`. For more detailed information about the skinning options available to `ScrollScreen`, see [How to use the ScrollContainer component](button.html).
 
@@ -40,7 +40,7 @@ If you aren't using a theme, then you may set any of the screen's properties dir
 
 ## Related Links
 
--   [ScrollScreen API Documentation](http://feathersui.com/documentation/feathers/controls/ScrollScreen.html)
+-   [ScrollScreen API Documentation](../api-reference/feathers/controls/ScrollScreen.html)
 
 -   [How to use the Feathers ScrollContainer component](scroll-container.html)
 

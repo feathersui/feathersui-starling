@@ -59,7 +59,7 @@ trace( "radio.label:", radio.label );
 
 ## Skinning a Radio
 
-A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For full details about what skin and style properties are available, see the [Radio API reference](http://feathersui.com/documentation/feathers/controls/Radio.html).
+A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For full details about what skin and style properties are available, see the [Radio API reference](../api-reference/feathers/controls/Radio.html).
 
 As mentioned above, `Radio` is a subclass of `Button`. For more detailed information about the skinning options available to `Radio`, see [How to use the Button component](button.html).
 
@@ -96,11 +96,11 @@ In general, a set of `Radio` controls should be used only when there are three o
 
 -   [How to use the Feathers Button component](button.html)
 
--   [Radio API Documentation](http://feathersui.com/documentation/feathers/controls/Radio.html)
+-   [Radio API Documentation](../api-reference/feathers/controls/Radio.html)
 
--   [ToggleGroup API Documentation](http://feathersui.com/documentation/feathers/core/ToggleGroup.html)
+-   [ToggleGroup API Documentation](../api-reference/feathers/core/ToggleGroup.html)
 
--   [Button API Documentation](http://feathersui.com/documentation/feathers/controls/Button.html)
+-   [Button API Documentation](../api-reference/feathers/controls/Button.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -35,7 +35,7 @@ Trying out Feathers for the first time? The following tutorials should help.
 
 -   [Frequently Asked Questions (FAQ)](faq.html)
 
--   [Feathers API Reference](http://feathersui.com/documentation/)
+-   [Feathers API Reference](../api-reference/)
 
 -   Setting up Feathers in your IDE of choice
 

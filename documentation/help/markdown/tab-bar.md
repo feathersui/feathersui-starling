@@ -46,7 +46,7 @@ The `selectedIndex` property indicates the zero-based index of the currently sel
 
 ## Skinning a Tab Bar
 
-Except for a couple of layout properties, most of the skinning happens on the tabs. For full details about what skin and style properties are available, see the [TabBar API reference](http://feathersui.com/documentation/feathers/controls/TabBar.html). We'll look at a few of the most common properties below.
+Except for a couple of layout properties, most of the skinning happens on the tabs. For full details about what skin and style properties are available, see the [TabBar API reference](../api-reference/feathers/controls/TabBar.html). We'll look at a few of the most common properties below.
 
 ### Layout
 
@@ -140,7 +140,7 @@ Separate skins for the first and last tabs are completely optional.
 
 ## Related Links
 
--   [TabBar API Documentation](http://feathersui.com/documentation/feathers/controls/TabBar.html)
+-   [TabBar API Documentation](../api-reference/feathers/controls/TabBar.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

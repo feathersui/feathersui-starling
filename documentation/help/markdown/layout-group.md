@@ -44,7 +44,7 @@ You'll notice that the children are still visible. By default, clipping is disab
 
 ## Layout
 
-We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](http://feathersui.com/documentation/feathers/layout/HorizontalLayout.html) to the children of a `LayoutGroup` to do the positioning manually:
+We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](../api-reference/feathers/layout/HorizontalLayout.html) to the children of a `LayoutGroup` to do the positioning manually:
 
 ``` code
 var layout:HorizontalLayout = new HorizontalLayout();
@@ -56,7 +56,7 @@ We can set a number of other properties on the layout too. In the case of `Horiz
 
 ## Skinning a Layout Group
 
-The skins for a `LayoutGroup` control are mainly the background skins. For full details about what skin and style properties are available, see the [LayoutGroup API reference](http://feathersui.com/documentation/feathers/controls/LayoutGroup.html). We'll look at a few of the most common properties below.
+The skins for a `LayoutGroup` control are mainly the background skins. For full details about what skin and style properties are available, see the [LayoutGroup API reference](../api-reference/feathers/controls/LayoutGroup.html). We'll look at a few of the most common properties below.
 
 ### Background Skins and Basic Styles
 
@@ -96,7 +96,7 @@ If you aren't using a theme, then you may set any of the group's properties dire
 
 ## Related Links
 
--   [LayoutGroup API Documentation](http://feathersui.com/documentation/feathers/controls/LayoutGroup.html)
+-   [LayoutGroup API Documentation](../api-reference/feathers/controls/LayoutGroup.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -275,11 +275,11 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
--   [LayoutGroupListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
+-   [LayoutGroupListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
 
--   [LayoutGroupGroupedListItemRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html)
+-   [LayoutGroupGroupedListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html)
 
--   [LayoutGroupGroupedListHeaderOrFooterRenderer API Documentation](http://feathersui.com/documentation/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html)
+-   [LayoutGroupGroupedListHeaderOrFooterRenderer API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 
