@@ -182,7 +182,7 @@ package feathers.controls.text
 	 * will still work in desktop apps, but it is more appropriate for mobile
 	 * apps.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/text-editors
+	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
 	 *
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */

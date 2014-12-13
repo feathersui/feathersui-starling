@@ -65,7 +65,7 @@ package feathers.themes
 	 *     <li>images/aeon_desktop.xml</li>
 	 * </ul>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 * @see http://feathersui.com/help/theme-assets.html
 	 */
 	public class AeonDesktopThemeWithAssetManager extends BaseAeonDesktopTheme
 	{

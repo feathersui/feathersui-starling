@@ -15,7 +15,7 @@ package feathers.examples.helloWorld
 	 * <p>Note: This example requires the MetalWorksMobileTheme, which is one of
 	 * the themes included with Feathers.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/getting-started
+	 * @see http://feathersui.com/help/getting-started.html
 	 */
 	public class Main extends Sprite
 	{
@@ -47,7 +47,7 @@ package feathers.examples.helloWorld
 			//components manually. you should always create a theme immediately
 			//when your app starts up to ensure that all components are
 			//properly skinned.
-			//see http://wiki.starling-framework.org/feathers/themes
+			//see http://feathersui.com/help/themes.html
 			new MetalWorksMobileTheme();
 
 			//create a button and give it some text to display.

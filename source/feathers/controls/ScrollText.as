@@ -74,7 +74,7 @@ package feathers.controls
 	 * scrollText.text = "Hello World";
 	 * this.addChild( scrollText );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/scroll-text
+	 * @see ../../../help/scroll-text.html How to use the Feathers ScrollText component
 	 * @see feathers.controls.text.TextFieldTextRenderer
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */

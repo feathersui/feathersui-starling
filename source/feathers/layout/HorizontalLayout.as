@@ -71,7 +71,7 @@ package feathers.layout
 	/**
 	 * Positions items from left to right in a single row.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/horizontal-layout
+	 * @see ../../../help/horizontal-layout.html How to use HorizontalLayout with Feathers containers
 	 */
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{
@@ -583,7 +583,7 @@ package feathers.layout
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.0. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.
 		 * Originally, the <code>manageVisibility</code> property could be used
 		 * to improve performance of non-virtual layouts by hiding items that
 		 * were outside the view port. However, other performance improvements

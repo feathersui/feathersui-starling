@@ -17,8 +17,8 @@ package feathers.themes
 	 * to each component class.
 	 *
 	 * @see feathers.skins.StyleNameFunctionStyleProvider
-	 * @see http://wiki.starling-framework.org/feathers/skinning Skinning Feathers Components
-	 * @see http://wiki.starling-framework.org/feathers/extending-themes Extending Feathers Themes
+	 * @see ../../../help/skinning.html Skinning Feathers components
+	 * @see ../../../help/custom-themes.html Creating custom Feathers themes
 	 */
 	public class StyleNameFunctionTheme extends EventDispatcher
 	{

@@ -159,8 +159,11 @@ package feathers.controls
 	 *
 	 * this.addChild( list );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/list
-	 * @see GroupedList
+	 * @see ../../../help/list.html How to use the Feathers List component
+	 * @see ../../../help/default-item-renderers.html How to use the Feathers default item renderer
+	 * @see ../../../help/item-renderers.html Creating custom item renderers for the Feathers List and GroupedList components
+	 * @see feathers.controls.GroupedList
+	 * @see feathers.controls.SpinnerList
 	 */
 	public class List extends Scroller implements IFocusContainer
 	{

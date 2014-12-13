@@ -187,7 +187,7 @@ package feathers.controls.text
 	 * <code>StageText</code>, <code>StageTextTextEditor</code> is not
 	 * compatible with the Feathers <code>FocusManager</code>.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/text-editors
+	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
 	 */

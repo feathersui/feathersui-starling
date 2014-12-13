@@ -38,7 +38,7 @@ package feathers.themes
 	 * <p>This version of the theme embeds its assets. To load assets at
 	 * runtime, see <code>MinimalDesktopThemeWithAssetManager</code> instead.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 * @see http://feathersui.com/help/theme-assets.html
 	 */
 	public class MinimalDesktopTheme extends BaseMinimalDesktopTheme
 	{

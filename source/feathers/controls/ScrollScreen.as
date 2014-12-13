@@ -46,11 +46,9 @@ package feathers.controls
 	 *     }
 	 * }</listing>
 	 *
-	 * @see ScreenNavigator
-	 * @see PanelScreen
-	 * @see Screen
-	 * @see ScrollContainer
-	 * @see http://wiki.starling-framework.org/feathers/scroll-screen
+	 * @see ../../../help/scroll-screen.html How to use the Feathers ScrollScreen component
+	 * @see feathers.controls.StackScreenNavigator
+	 * @see feathers.controls.ScreenNavigator
 	 */
 	public class ScrollScreen extends ScrollContainer implements IScreen
 	{

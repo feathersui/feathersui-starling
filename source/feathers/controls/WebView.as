@@ -108,11 +108,11 @@ package feathers.controls
 	 * account for overlooked requirements or other issues. Upgrading to future
 	 * versions of Feathers may involve manual changes to your code that uses
 	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
 	 * will not go into effect until this component's status is upgraded from
 	 * beta to stable.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/web-view
+	 * @see ../../../help/web-view.html How to use the Feathers WebView component
 	 */
 	public class WebView extends FeathersControl
 	{

@@ -49,7 +49,7 @@ package feathers.controls
 	 * noButton.label = "No";
 	 * group.addChild( noButton );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/layout-group
+	 * @see ../../../help/layout-group.html How to use the Feathers LayoutGroup component
 	 * @see feathers.controls.ScrollContainer
 	 */
 	public class LayoutGroup extends FeathersControl

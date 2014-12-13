@@ -49,7 +49,7 @@ package feathers.controls
 	 *
 	 * this.addChild( list );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/spinner-list
+	 * @see ../../../help/spinner-list.html How to use the Feathers SpinnerList component
 	 */
 	public class SpinnerList extends List
 	{

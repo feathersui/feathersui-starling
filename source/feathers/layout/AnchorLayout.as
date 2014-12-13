@@ -42,16 +42,7 @@ package feathers.layout
 	 * Positions and sizes items by anchoring their edges (or center points)
 	 * to their parent container or to other items.
 	 *
-	 * <p><strong>Beta Layout:</strong> This is a new layout, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this layout. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
-	 * will not go into effect until this layout's status is upgraded from
-	 * beta to stable.</p>
-	 *
-	 * @see http://wiki.starling-framework.org/feathers/anchor-layout
+	 * @see ../../../help/anchor-layout How to use AnchorLayout with Feathers containers
 	 * @see AnchorLayoutData
 	 */
 	public class AnchorLayout extends EventDispatcher implements ILayout

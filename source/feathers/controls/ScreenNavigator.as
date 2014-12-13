@@ -28,8 +28,8 @@ package feathers.controls
 	 *
 	 * navigator.showScreen( "mainMenu" );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
-	 * @see http://wiki.starling-framework.org/feathers/transitions
+	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component
+	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 	 * @see feathers.controls.ScreenNavigatorItem
 	 */
 	public class ScreenNavigator extends BaseScreenNavigator
@@ -111,7 +111,7 @@ package feathers.controls
 		 *
 		 * @see #showScreen()
 		 * @see #clearScreen()
-		 * @see http://wiki.starling-framework.org/feathers/transitions
+		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 		 */
 		public function get transition():Function
 		{

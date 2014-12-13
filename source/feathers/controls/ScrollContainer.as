@@ -67,7 +67,7 @@ package feathers.controls
 	 * noButton.label = "No";
 	 * container.addChild( noButton );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/scroll-container
+	 * @see ../../../help/scroll-container.html How to use the Feathers ScrollContainer component
 	 * @see feathers.controls.LayoutGroup
 	 */
 	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer
@@ -105,7 +105,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see ScrollContainer#ALTERNATE_STYLE_NAME_TOOLBAR
 		 */

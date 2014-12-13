@@ -31,7 +31,7 @@ package feathers.controls
 	 * item.setScreenIDForEvent( Event.COMPLETE, "mainMenu" );
 	 * navigator.addScreen( "settings", item );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
+	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component
 	 * @see feathers.controls.ScreenNavigator
 	 */
 	public class ScreenNavigatorItem implements IScreenNavigatorItem

@@ -27,8 +27,8 @@ package feathers.controls
 	 * check.addEventListener( Event.CHANGE, check_changeHandler );
 	 * this.addChild( check );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/check
-	 * @see ToggleSwitch
+	 * @see ../../../help/check.html How to use the Feathers Check component
+	 * @see feathers.controls.ToggleSwitch
 	 */
 	public class Check extends ToggleButton
 	{

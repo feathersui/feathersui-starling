@@ -135,11 +135,11 @@ package feathers.controls.text
 	 * account for overlooked requirements or other issues. Upgrading to future
 	 * versions of Feathers may involve manual changes to your code that uses
 	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
 	 * will not go into effect until this component's status is upgraded from
 	 * beta to stable.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/text-editors
+	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
 	 */
 	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor

@@ -19,7 +19,6 @@ package feathers.layout
 	 * Extra, optional data used by an <code>HorizontalLayout</code> instance to
 	 * position and size a display object.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/horizontal-layout
 	 * @see HorizontalLayout
 	 * @see ILayoutDisplayObject
 	 */

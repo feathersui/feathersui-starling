@@ -74,7 +74,7 @@ package feathers.controls
 	 *     Callout.show( label, button );
 	 * }</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/callout
+	 * @see ../../../help/callout.html How to use the Feathers Callout component
 	 */
 	public class Callout extends FeathersControl
 	{
