@@ -70,9 +70,8 @@ package feathers.controls
 	 * textArea.addEventListener( Event.CHANGE, input_changeHandler );
 	 * this.addChild( textArea );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/text-area
+	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
 	 * @see feathers.controls.TextInput
-	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 */
 	public class TextArea extends Scroller
 	{

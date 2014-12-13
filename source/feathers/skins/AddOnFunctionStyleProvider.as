@@ -25,7 +25,7 @@ package feathers.skins
 	 * button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );
 	 * this.addChild( button );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/skinning Skinning Feathers Components
+	 * @see ../../../help/skinning.html Skinning Feathers components
 	 */
 	public class AddOnFunctionStyleProvider implements IStyleProvider
 	{

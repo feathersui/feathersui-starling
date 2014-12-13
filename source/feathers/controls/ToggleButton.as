@@ -55,7 +55,7 @@ package feathers.controls
 	 * button.addEventListener( Event.CHANGE, button_changeHandler );
 	 * this.addChild( button );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/toggle-button
+	 * @see ../../../help/toggle-button.html How to use the Feathers ToggleButton component
 	 */
 	public class ToggleButton extends Button implements IToggle
 	{

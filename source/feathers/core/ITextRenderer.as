@@ -12,7 +12,7 @@ package feathers.core
 	/**
 	 * Interface that handles common capabilities of rendering text.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/text-renderers
+	 * @see ../../../help/text-renderers Introduction to Feathers text renderers
 	 */
 	public interface ITextRenderer extends IFeathersControl, ITextBaselineControl
 	{

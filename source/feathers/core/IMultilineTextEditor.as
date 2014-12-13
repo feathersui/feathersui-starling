@@ -14,7 +14,7 @@ package feathers.core
 	 * is expected to provide its own scroll bars.
 	 *
 	 * @see feathers.controls.TextInput
-	 * @see http://wiki.starling-framework.org/feathers/text-editors
+	 * @see ../../../help/text-editors Introduction to Feathers text editors
 	 */
 	public interface IMultilineTextEditor extends ITextEditor
 	{

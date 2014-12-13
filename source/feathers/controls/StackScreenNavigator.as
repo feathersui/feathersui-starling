@@ -28,8 +28,8 @@ package feathers.controls
 	 *
 	 * navigator.rootScreenID = "mainMenu";</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/stack-screen-navigator
-	 * @see http://wiki.starling-framework.org/feathers/transitions
+	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
+	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 	 * @see feathers.controls.StackScreenNavigatorItem
 	 */
 	public class StackScreenNavigator extends BaseScreenNavigator
@@ -111,7 +111,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #pushScreen()
-		 * @see http://wiki.starling-framework.org/feathers/transitions
+		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 		 */
 		public function get pushTransition():Function
 		{
@@ -172,7 +172,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #popScreen()
-		 * @see http://wiki.starling-framework.org/feathers/transitions
+		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 		 */
 		public function get popTransition():Function
 		{
@@ -237,7 +237,7 @@ package feathers.controls
 		 *
 		 * @see #popTransition
 		 * @see #popToRootScreen()
-		 * @see http://wiki.starling-framework.org/feathers/transitions
+		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 		 */
 		public function get popToRootTransition():Function
 		{

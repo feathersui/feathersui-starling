@@ -213,7 +213,7 @@ package feathers.core
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ITextRenderer</pre>
 		 *
-		 * @see http://wiki.starling-framework.org/feathers/text-renderers
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 * @see feathers.core.ITextRenderer
 		 */
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
@@ -230,7 +230,7 @@ package feathers.core
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ITextEditor</pre>
 		 *
-		 * @see http://wiki.starling-framework.org/feathers/text-editors
+		 * @see ../../../help/text-editors.html Introduction to Feathers text editors
 		 * @see feathers.core.ITextEditor
 		 */
 		public static var defaultTextEditorFactory:Function = function():ITextEditor
@@ -265,7 +265,7 @@ package feathers.core
 		 * selectors. In Feathers, they are a non-unique identifier that can
 		 * differentiate multiple styles of the same type of UI control. A
 		 * single control may have many style names, and many controls can share
-		 * a single style name. A <a href="http://wiki.starling-framework.org/feathers/themes">theme</a>
+		 * a single style name. A <a target="_top" href="../../../help/themes.html">theme</a>
 		 * or another skinning mechanism may use style names to provide a
 		 * variety of visual appearances for a single component class.
 		 *
@@ -276,8 +276,8 @@ package feathers.core
 		 * @default ""
 		 *
 		 * @see #styleNameList
-		 * @see http://wiki.starling-framework.org/feathers/themes
-		 * @see http://wiki.starling-framework.org/feathers/extending-themes
+		 * @see ../../../help/themes.html Introduction the Feathers themes
+		 * @see ../../../help/custom-themes.html Creating custom Feathers themes
 		 */
 		public function get styleName():String
 		{
@@ -302,7 +302,7 @@ package feathers.core
 		 * like classes in CSS selectors. They are a non-unique identifier that
 		 * can differentiate multiple styles of the same type of UI control. A
 		 * single control may have many names, and many controls can share a
-		 * single name. A <a href="http://wiki.starling-framework.org/feathers/themes">theme</a>
+		 * single name. A <a target="_top" href="../../../help/themes.html">theme</a>
 		 * or another skinning mechanism may use style names to provide a
 		 * variety of visual appearances for a single component class.
 		 *
@@ -315,8 +315,8 @@ package feathers.core
 		 * control.styleNameList.add( "custom-component-name" );</listing>
 		 *
 		 * @see #styleName
-		 * @see http://wiki.starling-framework.org/feathers/themes
-		 * @see http://wiki.starling-framework.org/feathers/extending-themes
+		 * @see ../../../help/themes.html Introduction to Feathers themes
+		 * @see ../../../help/custom-themes.html Creating custom Feathers themes
 		 */
 		public function get styleNameList():TokenList
 		{
@@ -330,7 +330,7 @@ package feathers.core
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.0. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #styleNameList
 		 */
@@ -357,7 +357,7 @@ package feathers.core
 		 *
 		 * @see #styleName
 		 * @see #styleNameList
-		 * @see http://wiki.starling-framework.org/feathers/themes
+		 * @see ../../../help/themes.html Introduction to Feathers themes
 		 */
 		public function get styleProvider():IStyleProvider
 		{

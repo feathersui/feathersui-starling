@@ -34,7 +34,7 @@ package feathers.controls
 	 * item.addPopEvent( Event.COMPLETE );
 	 * navigator.addScreen( "settings", item );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/stack-screen-navigator
+	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see feathers.controls.StackScreenNavigator
 	 */
 	public class StackScreenNavigatorItem implements IScreenNavigatorItem

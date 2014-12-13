@@ -46,11 +46,9 @@ package feathers.controls
 	 *     }
 	 * }</listing>
 	 *
-	 * @see ScreenNavigator
-	 * @see ScrollScreen
-	 * @see Screen
-	 * @see Panel
-	 * @see http://wiki.starling-framework.org/feathers/panel-screen
+	 * @see ../../../panel-screen.html How to use the Feathers PanelScreen component
+	 * @see feathers.controls.StackScreenNavigator
+	 * @see feathers.controls.ScreenNavigator
 	 */
 	public class PanelScreen extends Panel implements IScreen
 	{
@@ -67,7 +65,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see PanelScreen#DEFAULT_CHILD_STYLE_NAME_HEADER
 		 */

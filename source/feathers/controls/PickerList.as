@@ -128,7 +128,7 @@ package feathers.controls
 	 *
 	 * this.addChild( list );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/picker-list
+	 * @see ../../../help/picker-list.html How to use the Feathers PickerList component
 	 */
 	public class PickerList extends FeathersControl implements IFocusDisplayObject
 	{
@@ -155,7 +155,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see PickerList#DEFAULT_CHILD_STYLE_NAME_BUTTON
 		 */
@@ -175,7 +175,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see PickerList#DEFAULT_CHILD_STYLE_NAME_LIST
 		 */
@@ -235,7 +235,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #buttonStyleName
 		 */
@@ -273,7 +273,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #listStyleName
 		 */
@@ -836,7 +836,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #customButtonStyleName
 		 */
@@ -1031,7 +1031,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #customListStyleName
 		 */

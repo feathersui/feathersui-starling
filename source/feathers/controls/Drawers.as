@@ -163,7 +163,7 @@ package feathers.controls
 	 * wants to display the slide out the <code>List</code> that is used as
 	 * the left drawer.</p>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/drawers
+	 * @see ../../../help/drawers.html How to use the Feathers Drawers component
 	 */
 	public class Drawers extends FeathersControl
 	{

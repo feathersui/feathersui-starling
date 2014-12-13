@@ -48,8 +48,8 @@ package feathers.controls
 	 * toggle.addEventListener( Event.CHANGE, toggle_changeHandler );
 	 * this.addChild( toggle );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/toggle-switch
-	 * @see Check
+	 * @see ../../../help/toggle-switch.html How to use the Feathers ToggleSwitch component
+	 * @see feathers.controls.Check
 	 */
 	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject
 	{
@@ -138,7 +138,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_OFF_LABEL
 		 */
@@ -157,7 +157,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_ON_LABEL
 		 */
@@ -176,7 +176,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_OFF_TRACK
 		 */
@@ -195,7 +195,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_ON_TRACK
 		 */
@@ -214,7 +214,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_THUMB
 		 */
@@ -280,7 +280,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #onLabelStyleName
 		 */
@@ -314,7 +314,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #offLabelStyleName
 		 */
@@ -352,7 +352,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #onTrackStyleName
 		 */
@@ -390,7 +390,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #offTrackStyleName
 		 */
@@ -427,7 +427,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #tabStyleName
 		 */
@@ -1488,7 +1488,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #customOnTrackStyleName
 		 */
@@ -1682,7 +1682,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #customOffTrackStyleName
 		 */
@@ -1874,7 +1874,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #customThumbStyleName
 		 */

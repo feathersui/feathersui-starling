@@ -19,7 +19,6 @@ package feathers.layout
 	 * Extra, optional data used by an <code>VerticalLayout</code> instance to
 	 * position and size a display object.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/vertical-layout
 	 * @see VerticalLayout
 	 * @see ILayoutDisplayObject
 	 */

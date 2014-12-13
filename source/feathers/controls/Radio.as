@@ -43,7 +43,7 @@ package feathers.controls
 	 * radio3.toggleGroup = group;
 	 * this.addChild( radio3 );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/radio
+	 * @see ../../../help/radio.html How to use the Feathers Radio component
 	 * @see feathers.core.ToggleGroup
 	 */
 	public class Radio extends ToggleButton implements IGroupedToggle

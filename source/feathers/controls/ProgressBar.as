@@ -25,7 +25,7 @@ package feathers.controls
 	 * progress.value = 20;
 	 * this.addChild( progress );</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/progress-bar
+	 * @see ../../../help/progress-bar.html How to use the Feathers ProgressBar component
 	 */
 	public class ProgressBar extends FeathersControl
 	{

@@ -73,7 +73,8 @@ package feathers.controls
 	/**
 	 * A text input that provides a pop-up list with suggestions as you type.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/auto-complete
+	 * @see ../../../help/auto-complete.html How to use the Feathers AutoComplete component
+	 * @see feathers.controls.TextInput
 	 */
 	public class AutoComplete extends TextInput
 	{

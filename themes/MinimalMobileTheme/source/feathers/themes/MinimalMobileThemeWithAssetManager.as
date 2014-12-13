@@ -68,7 +68,7 @@ package feathers.themes
 	 *     <li>fonts/pf_ronda_seven.fnt</li>
 	 * </ul>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 * @see http://feathersui.com/help/theme-assets.html
 	 */
 	public class MinimalMobileThemeWithAssetManager extends BaseMinimalMobileTheme
 	{

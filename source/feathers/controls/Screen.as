@@ -46,8 +46,9 @@ package feathers.controls
 	 *     }
 	 * }</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/screen
-	 * @see ScreenNavigator
+	 * @see ../../../help/screen.html How to use the Feathers Screen component
+	 * @see feathers.controls.StackScreenNavigator
+	 * @see feathers.controls.ScreenNavigator
 	 */
 	public class Screen extends LayoutGroup implements IScreen
 	{

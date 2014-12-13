@@ -20,7 +20,6 @@ package feathers.layout
 	 * Extra, optional data used by an <code>AnchorLayout</code> instance to
 	 * position and size a display object.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/anchor-layout
 	 * @see AnchorLayout
 	 * @see ILayoutDisplayObject
 	 */

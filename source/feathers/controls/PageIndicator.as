@@ -52,7 +52,7 @@ package feathers.controls
 	 * Displays a selected index, usually corresponding to a page index in
 	 * another UI control, using a highlighted symbol.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/page-indicator
+	 * @see ../../../help/page-indicator.html How to use the Feathers PageIndicator component
 	 */
 	public class PageIndicator extends FeathersControl
 	{

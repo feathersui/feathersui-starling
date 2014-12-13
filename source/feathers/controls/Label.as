@@ -18,10 +18,10 @@ package feathers.controls
 	import starling.display.DisplayObject;
 
 	/**
-	 * Displays text.
+	 * Displays text using a text renderer.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/label
-	 * @see http://wiki.starling-framework.org/feathers/text-renderers
+	 * @see ../../../help/label.html How to use the Feathers Label component
+	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 	 */
 	public class Label extends FeathersControl implements ITextBaselineControl
 	{
@@ -58,7 +58,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see Label#ALTERNATE_STYLE_NAME_HEADING
 		 */
@@ -92,7 +92,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.1. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see Label#ALTERNATE_STYLE_NAME_DETAIL
 		 */

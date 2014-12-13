@@ -44,7 +44,7 @@ package feathers.layout
 	 * Positions items from top to bottom in a single column and repeats
 	 * infinitely.
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/vertical-spinner-layout
+	 * @see ../../../help/vertical-spinner-layout.html How to use VerticalSpinnerLayout with the Feathers List component
 	 */
 	public class VerticalSpinnerLayout extends EventDispatcher implements ITrimmedVirtualLayout
 	{
