@@ -1,9 +1,9 @@
 ---
-title: Feathers transitions for screen navigators  
+title: Transitions for Feathers screen navigators  
 author: Josh Tynjala
 
 ---
-# Feathers transitions for screen navigators
+# Transitions for Feathers screen navigators
 
 A *transition* provides animation when a [`StackScreenNavigator`](../api-reference/feathers/controls/StackScreenNavigator.html) or a [`ScreenNavigator`](../api-reference/feathers/controls/ScreenNavigator.html) component navigates from one screen to another. Transitions help establish a relationship between two screens, providing extra context to improve the user experience.
 
