@@ -478,8 +478,8 @@ package feathers.layout
 
 		/**
 		 * When the layout is virtualized, and this value is true, the items may
-		 * have variable height values. If false, the items will all share the
-		 * same height value with the typical item.
+		 * have variable width values. If false, the items will all share the
+		 * same width value with the typical item.
 		 *
 		 * @default false
 		 */
