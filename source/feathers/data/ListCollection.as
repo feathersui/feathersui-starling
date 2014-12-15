@@ -211,36 +211,35 @@ package feathers.data
 			{
 				return;
 			}
-			if(!value)
-			{
-				this.removeAll();
-				return;
-			}
 			this._data = value;
 			//we'll automatically detect an array, vector, or xmllist for convenience
 			if(this._data is Array && !(this._dataDescriptor is ArrayListCollectionDataDescriptor))
 			{
-				this.dataDescriptor = new ArrayListCollectionDataDescriptor();
+				this._dataDescriptor = new ArrayListCollectionDataDescriptor();
 			}
 			else if(this._data is Vector.<Number> && !(this._dataDescriptor is VectorNumberListCollectionDataDescriptor))
 			{
-				this.dataDescriptor = new VectorNumberListCollectionDataDescriptor();
+				this._dataDescriptor = new VectorNumberListCollectionDataDescriptor();
 			}
 			else if(this._data is Vector.<int> && !(this._dataDescriptor is VectorIntListCollectionDataDescriptor))
 			{
-				this.dataDescriptor = new VectorIntListCollectionDataDescriptor();
+				this._dataDescriptor = new VectorIntListCollectionDataDescriptor();
 			}
 			else if(this._data is Vector.<uint> && !(this._dataDescriptor is VectorUintListCollectionDataDescriptor))
 			{
-				this.dataDescriptor = new VectorUintListCollectionDataDescriptor();
+				this._dataDescriptor = new VectorUintListCollectionDataDescriptor();
 			}
 			else if(this._data is Vector.<*> && !(this._dataDescriptor is VectorListCollectionDataDescriptor))
 			{
-				this.dataDescriptor = new VectorListCollectionDataDescriptor();
+				this._dataDescriptor = new VectorListCollectionDataDescriptor();
 			}
 			else if(this._data is XMLList && !(this._dataDescriptor is XMLListListCollectionDataDescriptor))
 			{
-				this.dataDescriptor = new XMLListListCollectionDataDescriptor();
+				this._dataDescriptor = new XMLListListCollectionDataDescriptor();
+			}
+			if(this._data === null)
+			{
+				this._dataDescriptor = null;
 			}
 			this.dispatchEventWith(CollectionEventType.RESET);
 			this.dispatchEventWith(Event.CHANGE);
@@ -280,6 +279,10 @@ package feathers.data
 		 */
 		public function get length():int
 		{
+			if(!this._dataDescriptor)
+			{
+				return 0;
+			}
 			return this._dataDescriptor.getLength(this._data);
 		}
 
