@@ -3,6 +3,7 @@ package
     import feathers.tests.ButtonTests;
     import feathers.tests.GroupedListTests;
     import feathers.tests.LayoutGroupTests;
+    import feathers.tests.ListCollectionWithArrayTests;
     import feathers.tests.ListTests;
     import feathers.tests.PickerListTests;
     import feathers.tests.ProgressBarTests;
@@ -68,6 +69,7 @@ package
                 GroupedListTests,
                 LayoutGroupTests,
                 ListTests,
+                ListCollectionWithArrayTests,
                 PickerListTests,
                 ProgressBarTests,
                 ScrollContainerTests,
