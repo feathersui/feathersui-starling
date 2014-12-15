@@ -595,6 +595,14 @@ package feathers.core
 		 */
 		protected function stage_mouseFocusChangeHandler(event:FocusEvent):void
 		{
+			if(event.relatedObject)
+			{
+				//we need to allow mouse focus to be passed to native display
+				//objects. for instance, hyperlinks in TextField won't work
+				//unless the TextField can be focused.
+				this.focus = null;
+				return;
+			}
 			event.preventDefault();
 		}
 
