@@ -113,8 +113,6 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [ScreenNavigator](screen-navigator.html)
 
-    -   [ScreenNavigator Transitions](transitions.html)
-
 -   [ScrollBar](scroll-bar.html)
 
 -   [ScrollContainer](scroll-container.html)
@@ -126,6 +124,8 @@ A more detailed look at each of the components that Feathers provides.
 -   [SimpleScrollBar](simple-scroll-bar.html)
 
 -   [Slider](slider.html)
+
+-   [StackScreenNavigator](stack-screen-navigator.html)
 
 -   [TabBar](tab-bar.html)
 
