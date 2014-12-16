@@ -25,7 +25,6 @@ package feathers.controls
 	 * var navigator:StackScreenNavigator = new StackScreenNavigator();
 	 * navigator.addScreen( "mainMenu", new StackScreenNavigatorItem( MainMenuScreen );
 	 * this.addChild( navigator );
-	 *
 	 * navigator.rootScreenID = "mainMenu";</listing>
 	 *
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
