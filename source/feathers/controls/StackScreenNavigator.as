@@ -387,7 +387,15 @@ package feathers.controls
 		{
 			if(transition === null)
 			{
-				transition = this.pushTransition;
+				var item:StackScreenNavigatorItem = this.getScreen(id);
+				if(item && item.pushTransition !== null)
+				{
+					transition = item.pushTransition;
+				}
+				else
+				{
+					transition = this.pushTransition;
+				}
 			}
 			if(this._activeScreenID)
 			{
@@ -415,12 +423,20 @@ package feathers.controls
 			{
 				return this._activeScreen;
 			}
-			if(transition == null)
+			if(transition === null)
 			{
-				transition = this.popTransition;
+				var screenItem:StackScreenNavigatorItem = this.getScreen(this._activeScreenID);
+				if(screenItem && screenItem.popTransition !== null)
+				{
+					transition = screenItem.popTransition;
+				}
+				else
+				{
+					transition = this.popTransition;
+				}
 			}
-			var item:StackItem = this._stack.pop();
-			return this.showScreenInternal(item.id, transition, item.properties);
+			var stackItem:StackItem = this._stack.pop();
+			return this.showScreenInternal(stackItem.id, transition, stackItem.properties);
 		}
 
 		/**

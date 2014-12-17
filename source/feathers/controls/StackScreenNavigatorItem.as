@@ -220,6 +220,112 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _pushTransition:Function;
+
+		/**
+		 * A custom push transition for this screen only. If <code>null</code>,
+		 * the default <code>pushTransition</code> defined by the
+		 * <code>StackScreenNavigator</code> will be used.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+		 *
+		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+		 * arguments may be <code>null</code>, but never both. The
+		 * <code>oldScreen</code> argument will be <code>null</code> when the
+		 * first screen is displayed or when a new screen is displayed after
+		 * clearing the screen. The <code>newScreen</code> argument will
+		 * be null when clearing the screen.</p>
+		 *
+		 * <p>The <code>completeCallback</code> function <em>must</em> be called
+		 * when the transition effect finishes. This callback indicate to the
+		 * screen navigator that the transition has finished. This function has
+		 * the following signature:</p>
+		 *
+		 * <pre>function(cancelTransition:Boolean = false):void</pre>
+		 *
+		 * <p>The first argument defaults to <code>false</code>, meaning that
+		 * the transition completed successfully. In most cases, this callback
+		 * may be called without arguments. If a transition is cancelled before
+		 * completion (perhaps through some kind of user interaction), and the
+		 * previous screen should be restored, pass <code>true</code> as the
+		 * first argument to the callback to inform the screen navigator that
+		 * the transition is cancelled.</p>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+		 */
+		public function get pushTransition():Function
+		{
+			return this._pushTransition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pushTransition(value:Function):void
+		{
+			this._pushTransition = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _popTransition:Function;
+
+		/**
+		 * A custom pop transition for this screen only. If <code>null</code>,
+		 * the default <code>popTransition</code> defined by the
+		 * <code>StackScreenNavigator</code> will be used.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+		 *
+		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+		 * arguments may be <code>null</code>, but never both. The
+		 * <code>oldScreen</code> argument will be <code>null</code> when the
+		 * first screen is displayed or when a new screen is displayed after
+		 * clearing the screen. The <code>newScreen</code> argument will
+		 * be null when clearing the screen.</p>
+		 *
+		 * <p>The <code>completeCallback</code> function <em>must</em> be called
+		 * when the transition effect finishes. This callback indicate to the
+		 * screen navigator that the transition has finished. This function has
+		 * the following signature:</p>
+		 *
+		 * <pre>function(cancelTransition:Boolean = false):void</pre>
+		 *
+		 * <p>The first argument defaults to <code>false</code>, meaning that
+		 * the transition completed successfully. In most cases, this callback
+		 * may be called without arguments. If a transition is cancelled before
+		 * completion (perhaps through some kind of user interaction), and the
+		 * previous screen should be restored, pass <code>true</code> as the
+		 * first argument to the callback to inform the screen navigator that
+		 * the transition is cancelled.</p>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+		 */
+		public function get popTransition():Function
+		{
+			return this._popTransition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set popTransition(value:Function):void
+		{
+			this._popTransition = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get canDispose():Boolean
