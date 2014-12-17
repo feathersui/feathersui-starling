@@ -49,11 +49,11 @@ package feathers.examples.layoutExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Layouts in Feathers";
+
 			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 
 			this.layout = new AnchorLayout();
-
-			this.headerProperties.title = "Layouts in Feathers";
 
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(

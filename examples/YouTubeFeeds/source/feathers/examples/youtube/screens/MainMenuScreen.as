@@ -60,6 +60,8 @@ package feathers.examples.youtube.screens
 		{
 			super.initialize();
 
+			this.title = "YouTube Feeds";
+
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
@@ -92,8 +94,6 @@ package feathers.examples.youtube.screens
 			//hide the loading message if we're using restored results
 			this._message.visible = this.savedDataProvider === null;
 			this.addChild(this._message);
-
-			this.headerProperties.title = "YouTube Feeds";
 
 			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}

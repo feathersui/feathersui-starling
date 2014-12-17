@@ -27,6 +27,8 @@ package feathers.examples.layoutExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Anchor Layout";
+
 			this.layout = new AnchorLayout();
 
 			var centeredLayoutData:AnchorLayoutData = new AnchorLayoutData();
@@ -62,8 +64,6 @@ package feathers.examples.layoutExplorer.screens
 			label2.text = "The label is positioned relative to the button.";
 			label2.layoutData = relativeLayoutData;
 			this.addChild(label2);
-
-			this.headerProperties.title = "Anchor Layout";
 
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{

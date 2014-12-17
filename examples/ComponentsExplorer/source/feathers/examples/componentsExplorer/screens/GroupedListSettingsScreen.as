@@ -50,6 +50,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Grouped List Settings";
+
 			this.layout = new AnchorLayout();
 
 			this._stylePicker = new PickerList();
@@ -97,7 +99,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Grouped List Settings";
 			header.rightItems = new <DisplayObject>
 			[
 				this._doneButton

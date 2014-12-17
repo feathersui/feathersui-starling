@@ -86,7 +86,7 @@ package feathers.examples.youtube.screens
 			{
 				if(this._model && this._model.selectedVideo)
 				{
-					this.headerProperties.title = this._model.selectedVideo.title;
+					this.title = this._model.selectedVideo.title;
 					var content:String = '<p><b><font size="+2">' + this._model.selectedVideo.title + '</font></b></p>';
 					content += '<p><font size="-2" color="#999999">' + this._model.selectedVideo.author + '</font></p><br>';
 					content += this._model.selectedVideo.description.replace(/\r\n/g, "<br>");
@@ -94,7 +94,7 @@ package feathers.examples.youtube.screens
 				}
 				else
 				{
-					this.headerProperties.title = null;
+					this.title = null;
 					this._scrollText.text = "";
 				}
 			}

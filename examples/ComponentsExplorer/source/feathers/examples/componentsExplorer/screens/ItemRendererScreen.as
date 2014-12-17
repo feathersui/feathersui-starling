@@ -93,6 +93,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()!
 			super.initialize();
 
+			this.title = "Item Renderer";
+
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
@@ -232,7 +234,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Item Renderer";
 			if(this._backButton)
 			{
 				header.leftItems = new <DisplayObject>

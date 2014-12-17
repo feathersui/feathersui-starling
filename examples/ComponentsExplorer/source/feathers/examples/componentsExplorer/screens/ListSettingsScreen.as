@@ -49,6 +49,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "List Settings";
+
 			this.layout = new AnchorLayout();
 
 			this._isSelectableToggle = new ToggleSwitch();
@@ -89,7 +91,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "List Settings";
 			header.rightItems = new <DisplayObject>
 			[
 				this._doneButton

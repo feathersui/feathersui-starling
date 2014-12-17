@@ -36,6 +36,8 @@ package feathers.examples.layoutExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Horizontal Layout";
+
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.gap = this.settings.gap;
 			layout.paddingTop = this.settings.paddingTop;
@@ -58,8 +60,6 @@ package feathers.examples.layoutExplorer.screens
 				var quad:Quad = new Quad(size, size, 0xff8800);
 				this.addChild(quad);
 			}
-
-			this.headerProperties.title = "Horizontal Layout";
 
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{

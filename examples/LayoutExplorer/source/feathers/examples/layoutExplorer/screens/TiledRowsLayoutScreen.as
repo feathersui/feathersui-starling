@@ -35,6 +35,8 @@ package feathers.examples.layoutExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Tiled Rows Layout";
+
 			var layout:TiledRowsLayout = new TiledRowsLayout();
 			layout.paging = this.settings.paging;
 			layout.horizontalGap = this.settings.horizontalGap;
@@ -59,8 +61,6 @@ package feathers.examples.layoutExplorer.screens
 				var quad:Quad = new Quad(size, size, 0xff8800);
 				this.addChild(quad);
 			}
-
-			this.headerProperties.title = "Tiled Rows Layout";
 
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{

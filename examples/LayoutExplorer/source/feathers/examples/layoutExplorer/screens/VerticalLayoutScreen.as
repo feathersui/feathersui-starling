@@ -36,6 +36,8 @@ package feathers.examples.layoutExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Vertical Layout";
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = this.settings.gap;
 			layout.paddingTop = this.settings.paddingTop;
@@ -58,8 +60,6 @@ package feathers.examples.layoutExplorer.screens
 				var quad:Quad = new Quad(size, size, 0xff8800);
 				this.addChild(quad);
 			}
-
-			this.headerProperties.title = "Vertical Layout";
 
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{

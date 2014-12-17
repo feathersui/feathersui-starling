@@ -39,6 +39,8 @@ package feathers.examples.transitionsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Color Fade";
+
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
@@ -76,7 +78,6 @@ package feathers.examples.transitionsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Color Fade";
 
 			this._backButton = new Button();
 			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);

@@ -39,6 +39,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Label";
+
 			this._normalLabel = new Label();
 			this._normalLabel.text = "This is a normal label.";
 			this.addChild(this._normalLabel);
@@ -78,7 +80,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Label";
 			if(this._backButton)
 			{
 				header.leftItems = new <DisplayObject>

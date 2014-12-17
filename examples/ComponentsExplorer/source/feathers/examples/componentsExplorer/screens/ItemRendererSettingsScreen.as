@@ -62,6 +62,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Item Renderer Settings";
+
 			this.layout = new AnchorLayout();
 
 			this._hasIconToggle = new ToggleSwitch();
@@ -236,7 +238,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Item Renderer Settings";
 			header.rightItems = new <DisplayObject>
 			[
 				this._doneButton

@@ -40,6 +40,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "List";
+
 			this.layout = new AnchorLayout();
 
 			var items:Array = [];
@@ -104,7 +106,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "List";
 			if(this._backButton)
 			{
 				header.leftItems = new <DisplayObject>

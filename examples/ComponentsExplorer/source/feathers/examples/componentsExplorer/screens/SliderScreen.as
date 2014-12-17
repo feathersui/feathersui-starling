@@ -43,6 +43,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Slider";
+
 			this._horizontalSlider = new Slider();
 			this._horizontalSlider.direction = Slider.DIRECTION_HORIZONTAL;
 			this._horizontalSlider.minimum = 0;
@@ -90,7 +92,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Slider";
 			if(this._backButton)
 			{
 				header.leftItems = new <DisplayObject>

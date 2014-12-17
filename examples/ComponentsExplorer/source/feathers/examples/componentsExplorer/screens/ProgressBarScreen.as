@@ -40,6 +40,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Progress Bar";
+
 			this._horizontalProgress = new ProgressBar();
 			this._horizontalProgress.direction = ProgressBar.DIRECTION_HORIZONTAL;
 			this._horizontalProgress.minimum = 0;
@@ -84,7 +86,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Progress Bar";
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				header.leftItems = new <DisplayObject>

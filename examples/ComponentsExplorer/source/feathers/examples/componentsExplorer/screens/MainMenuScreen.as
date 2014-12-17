@@ -70,11 +70,9 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
-			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+			this.title = "Feathers";
 
 			this.layout = new AnchorLayout();
-
-			this.headerProperties.title = "Feathers";
 
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
@@ -102,6 +100,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 			var itemRendererAccessorySourceFunction:Function = null;
 			if(!isTablet)
 			{

@@ -39,9 +39,9 @@ package feathers.examples.transitionsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
-			this.layout = new AnchorLayout();
+			this.title = "Transitions";
 
-			this.headerProperties.title = "Transitions";
+			this.layout = new AnchorLayout();
 
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(

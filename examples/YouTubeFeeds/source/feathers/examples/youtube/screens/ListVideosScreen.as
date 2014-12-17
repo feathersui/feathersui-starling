@@ -83,9 +83,9 @@ package feathers.examples.youtube.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
-			this.layout = new AnchorLayout();
+			this.title = this._model.selectedList.name;
 
-			this.headerProperties.title = this._model.selectedList.name;
+			this.layout = new AnchorLayout();
 
 			this._list = new List();
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
@@ -103,7 +103,6 @@ package feathers.examples.youtube.screens
 			//restore the list when later navigating back to this screen.
 			if(this.savedDataProvider)
 			{
-				this.headerProperties.title = this._model.selectedList.name;
 				this._list.dataProvider = this.savedDataProvider;
 				this._list.selectedIndex = this.savedSelectedIndex;
 				this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
