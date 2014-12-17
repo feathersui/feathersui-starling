@@ -35,6 +35,8 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
+	import feathers.motion.transitions.Cover;
+	import feathers.motion.transitions.Reveal;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.motion.transitions.Slide;
 	import feathers.system.DeviceCapabilities;
@@ -136,6 +138,9 @@ package feathers.examples.componentsExplorer
 			var groupedListSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(GroupedListSettingsScreen);
 			groupedListSettingsItem.addPopEvent(Event.COMPLETE);
 			groupedListSettingsItem.properties.settings = groupedListSettings;
+			//custom push and pop transitions for this settings screen
+			groupedListSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			groupedListSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(GROUPED_LIST_SETTINGS, groupedListSettingsItem);
 
 			var itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
@@ -148,6 +153,9 @@ package feathers.examples.componentsExplorer
 			var itemRendererSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ItemRendererSettingsScreen);
 			itemRendererSettingsItem.addPopEvent(Event.COMPLETE);
 			itemRendererSettingsItem.properties.settings = itemRendererSettings;
+			//custom push and pop transitions for this settings screen
+			itemRendererSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			itemRendererSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, itemRendererSettingsItem);
 
 			var labelItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(LabelScreen);
@@ -164,6 +172,9 @@ package feathers.examples.componentsExplorer
 			var listSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ListSettingsScreen);
 			listSettingsItem.addPopEvent(Event.COMPLETE);
 			listSettingsItem.properties.settings = listSettings;
+			//custom push and pop transitions for this settings screen
+			listSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			listSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(LIST_SETTINGS, listSettingsItem);
 
 			var numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
@@ -176,6 +187,9 @@ package feathers.examples.componentsExplorer
 			var numericStepperSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(NumericStepperSettingsScreen);
 			numericStepperSettingsItem.addPopEvent(Event.COMPLETE);
 			numericStepperSettingsItem.properties.settings = numericStepperSettings;
+			//custom push and pop transitions for this settings screen
+			numericStepperSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			numericStepperSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, numericStepperSettingsItem);
 
 			var pageIndicatorItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(PageIndicatorScreen);
@@ -204,6 +218,9 @@ package feathers.examples.componentsExplorer
 			var sliderSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SliderSettingsScreen);
 			sliderSettingsItem.addPopEvent(Event.COMPLETE);
 			sliderSettingsItem.properties.settings = sliderSettings;
+			//custom push and pop transitions for this settings screen
+			sliderSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			sliderSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(SLIDER_SETTINGS, sliderSettingsItem);
 
 			var tabBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TabBarScreen);

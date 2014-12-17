@@ -1,6 +1,7 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
@@ -24,7 +25,7 @@ package feathers.examples.componentsExplorer.screens
 		public var settings:NumericStepperSettings;
 
 		private var _list:List;
-		private var _backButton:Button;
+		private var _doneButton:Button;
 		private var _stepStepper:NumericStepper;
 
 		override public function dispose():void
@@ -65,18 +66,25 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this.addChild(this._list);
 
-			this._backButton = new Button();
-			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
-			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
+			this._doneButton = new Button();
+			this._doneButton.label = "Done";
+			this._doneButton.addEventListener(Event.TRIGGERED, doneButton_triggeredHandler);
+			//we'll add this as a child in the header factory
 
-			this.headerProperties.title = "Numeric Stepper Settings";
-			this.headerProperties.leftItems = new <DisplayObject>
-			[
-				this._backButton
-			];
+			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = this.onBackButton;
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			header.title = "Numeric Stepper Settings";
+			header.rightItems = new <DisplayObject>
+			[
+				this._doneButton
+			];
+			return header;
 		}
 
 		private function disposeItemAccessory(item:Object):void
@@ -94,7 +102,7 @@ package feathers.examples.componentsExplorer.screens
 			this.settings.step = this._stepStepper.value;
 		}
 
-		private function backButton_triggeredHandler(event:Event):void
+		private function doneButton_triggeredHandler(event:Event):void
 		{
 			this.onBackButton();
 		}

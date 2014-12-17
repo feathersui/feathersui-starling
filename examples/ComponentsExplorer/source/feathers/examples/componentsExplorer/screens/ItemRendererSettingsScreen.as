@@ -2,6 +2,7 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.GroupedList;
+	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
@@ -30,7 +31,7 @@ package feathers.examples.componentsExplorer.screens
 		public var settings:ItemRendererSettings;
 
 		private var _list:GroupedList;
-		private var _backButton:Button;
+		private var _doneButton:Button;
 		private var _gapPicker:PickerList;
 		private var _hasIconToggle:ToggleSwitch;
 		private var _hasAccessoryToggle:ToggleSwitch;
@@ -222,18 +223,25 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this.addChild(this._list);
 
-			this._backButton = new Button();
-			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
-			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
+			this._doneButton = new Button();
+			this._doneButton.label = "Done";
+			this._doneButton.addEventListener(Event.TRIGGERED, doneButton_triggeredHandler);
+			//we'll add this as a child in the header factory
 
-			this.headerProperties.title = "Item Renderer Settings";
-			this.headerProperties.leftItems = new <DisplayObject>
-			[
-				this._backButton
-			];
+			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = this.onBackButton;
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			header.title = "Item Renderer Settings";
+			header.rightItems = new <DisplayObject>
+			[
+				this._doneButton
+			];
+			return header;
 		}
 
 		private function disposeItemAccessory(item:Object):void
@@ -301,7 +309,7 @@ package feathers.examples.componentsExplorer.screens
 			this.settings.verticalAlign = this._verticalAlignPicker.selectedItem as String;
 		}
 
-		private function backButton_triggeredHandler(event:Event):void
+		private function doneButton_triggeredHandler(event:Event):void
 		{
 			this.onBackButton();
 		}
