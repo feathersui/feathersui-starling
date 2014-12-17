@@ -335,32 +335,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _title:String = null;
-
-		/**
-		 * The title text displayed in the alert's header.
-		 */
-		public function get title():String
-		{
-			return this._title;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set title(value:String):void
-		{
-			if(this._title == value)
-			{
-				return;
-			}
-			this._title = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _message:String = null;
 
 		/**
@@ -573,7 +547,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #titleFactory
+		 * @see #messageFactory
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 * @see feathers.controls.text.TextFieldTextRenderer
@@ -815,6 +789,11 @@ package feathers.controls
 				IValidating(this._icon).validate();
 			}
 
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
+			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+			this._ignoreFooterResizing = true;
+
 			var oldHeaderWidth:Number = this.header.width;
 			var oldHeaderHeight:Number = this.header.height;
 			this.header.width = this.explicitWidth;
@@ -850,9 +829,10 @@ package feathers.controls
 				{
 					newWidth = Math.max(newWidth, this.footer.width);
 				}
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
+				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
+					this.originalBackgroundWidth > newWidth)
 				{
-					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+					newWidth = this.originalBackgroundWidth;
 				}
 			}
 			if(needsHeight)
@@ -866,10 +846,11 @@ package feathers.controls
 						newHeight = Math.max(newHeight, this._icon.height);
 					}
 				}
-				newHeight += this._bottomViewPortOffset + this._topViewPortOffset
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
+				newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
+					this.originalBackgroundHeight > newHeight)
 				{
-					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
+					newHeight = this.originalBackgroundHeight;
 				}
 			}
 
@@ -880,6 +861,8 @@ package feathers.controls
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
 			}
+			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
+			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -956,15 +939,6 @@ package feathers.controls
 			uiTextRenderer.styleNameList.add(this.messageName);
 			uiTextRenderer.touchable = false;
 			this.addChild(DisplayObject(this.messageTextRenderer));
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function refreshHeaderStyles():void
-		{
-			super.refreshHeaderStyles();
-			this.headerHeader.title = this._title;
 		}
 
 		/**
