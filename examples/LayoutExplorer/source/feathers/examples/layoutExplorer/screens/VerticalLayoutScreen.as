@@ -29,9 +29,6 @@ package feathers.examples.layoutExplorer.screens
 
 		public var settings:VerticalLayoutSettings;
 
-		private var _backButton:Button;
-		private var _settingsButton:Button;
-
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
@@ -64,21 +61,12 @@ package feathers.examples.layoutExplorer.screens
 
 			this.headerFactory = this.customHeaderFactory;
 
+			//this screen doesn't use a back button on tablets because the main
+			//app's uses a split layout
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				this._backButton = new Button();
-				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
-				this._backButton.label = "Back";
-				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-				//we'll add this as a child in the header factory
-
 				this.backButtonHandler = this.onBackButton;
 			}
-
-			this._settingsButton = new Button();
-			this._settingsButton.label = "Settings";
-			this._settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
-			//we'll add this as a child in the header factory
 
 			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
@@ -86,16 +74,25 @@ package feathers.examples.layoutExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			if(this._backButton)
+			//this screen doesn't use a back button on tablets because the main
+			//app's uses a split layout
+			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
+				var backButton:Button = new Button();
+				backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
+				backButton.label = "Back";
+				backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 				header.leftItems = new <DisplayObject>
 				[
-					this._backButton
+					backButton
 				];
 			}
+			var settingsButton:Button = new Button();
+			settingsButton.label = "Settings";
+			settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
 			header.rightItems = new <DisplayObject>
 			[
-				this._settingsButton
+				settingsButton
 			];
 			return header;
 		}

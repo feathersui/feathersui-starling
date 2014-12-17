@@ -26,7 +26,6 @@ package feathers.examples.componentsExplorer.screens
 		public var settings:GroupedListSettings;
 
 		private var _list:List;
-		private var _doneButton:Button;
 
 		private var _stylePicker:PickerList;
 		private var _isSelectableToggle:ToggleSwitch;
@@ -86,11 +85,6 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this.addChild(this._list);
 
-			this._doneButton = new Button();
-			this._doneButton.label = "Done";
-			this._doneButton.addEventListener(Event.TRIGGERED, doneButton_triggeredHandler);
-			//we'll add this as a child in the header factory
-
 			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = this.onBackButton;
@@ -99,9 +93,12 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
+			var doneButton:Button = new Button();
+			doneButton.label = "Done";
+			doneButton.addEventListener(Event.TRIGGERED, doneButton_triggeredHandler);
 			header.rightItems = new <DisplayObject>
 			[
-				this._doneButton
+				doneButton
 			];
 			return header;
 		}

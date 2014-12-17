@@ -117,11 +117,6 @@ package feathers.examples.youtube.screens
 			this._message.visible = this.savedDataProvider === null;
 			this.addChild(this._message);
 
-			this._backButton = new Button();
-			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
-			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
-
 			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = onBackButton;
@@ -133,6 +128,10 @@ package feathers.examples.youtube.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
+			this._backButton = new Button();
+			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
+			this._backButton.label = "Back";
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
 			header.leftItems = new <DisplayObject>
 			[
 				this._backButton

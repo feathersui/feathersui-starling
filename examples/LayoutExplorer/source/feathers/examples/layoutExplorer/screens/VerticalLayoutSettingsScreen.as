@@ -27,7 +27,6 @@ package feathers.examples.layoutExplorer.screens
 		public var settings:VerticalLayoutSettings;
 
 		private var _list:List;
-		private var _doneButton:Button;
 
 		private var _itemCountStepper:NumericStepper;
 		private var _gapStepper:NumericStepper;
@@ -145,20 +144,18 @@ package feathers.examples.layoutExplorer.screens
 
 			this.headerFactory = this.customHeaderFactory;
 
-			this._doneButton = new Button();
-			this._doneButton.label = "Back";
-			this._doneButton.addEventListener(Event.TRIGGERED, doneButton_triggeredHandler);
-			//we'll add this as a child in the header factory
-
 			this.backButtonHandler = this.onBackButton;
 		}
 
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
+			var doneButton:Button = new Button();
+			doneButton.label = "Done";
+			doneButton.addEventListener(Event.TRIGGERED, doneButton_triggeredHandler);
 			header.rightItems = new <DisplayObject>
 			[
-				this._doneButton
+				doneButton
 			];
 			return header;
 		}

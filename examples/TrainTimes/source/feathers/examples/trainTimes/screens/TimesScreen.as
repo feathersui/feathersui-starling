@@ -62,15 +62,14 @@ package feathers.examples.trainTimes.screens
 
 			this.headerFactory = this.customHeaderFactory;
 
-			this._backButton = new Button();
-			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-
 			this.backButtonHandler = this.onBackButton;
 		}
 
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
+			this._backButton = new Button();
+			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 			header.leftItems = new <DisplayObject>
 			[
 				this._backButton
