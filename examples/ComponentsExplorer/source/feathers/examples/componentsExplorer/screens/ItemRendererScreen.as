@@ -1,6 +1,7 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
@@ -105,19 +106,18 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this.addChild(this._list);
 
-			this.headerProperties.title = "Item Renderer";
+			this.headerFactory = this.customHeaderFactory;
 
+			//we don't display the back button on tablets because the app's
+			//layout puts the main component list side by side with the selected
+			//component.
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._backButton = new Button();
 				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-
-				this.headerProperties.leftItems = new <DisplayObject>
-				[
-					this._backButton
-				];
+				//we'll add this as a child in the header factory
 
 				this.backButtonHandler = this.onBackButton;
 			}
@@ -125,51 +125,48 @@ package feathers.examples.componentsExplorer.screens
 			this._settingsButton = new Button();
 			this._settingsButton.label = "Settings";
 			this._settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
-
-			this.headerProperties.rightItems = new <DisplayObject>
-			[
-				this._settingsButton
-			];
+			//we'll add this as a child in the header factory
 		}
 
 		override protected function draw():void
-		{if(this.settings.hasIcon)
 		{
-			switch(this.settings.iconType)
+			if(this.settings.hasIcon)
 			{
-				case ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL:
+				switch(this.settings.iconType)
 				{
-					this._listItem.iconText = "Icon Text";
-					this._list.itemRendererProperties.iconLabelField = "iconText";
+					case ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL:
+					{
+						this._listItem.iconText = "Icon Text";
+						this._list.itemRendererProperties.iconLabelField = "iconText";
 
-					//clear these in case this setting has changed
-					delete this._listItem.iconTexture;
-					delete this._listItem.icon;
-					break;
+						//clear these in case this setting has changed
+						delete this._listItem.iconTexture;
+						delete this._listItem.icon;
+						break;
+					}
+					case ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE:
+					{
+						this._listItem.iconTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
+						this._list.itemRendererProperties.iconSourceField = "iconTexture";
+
+						//clear these in case this setting has changed
+						delete this._listItem.iconText;
+						delete this._listItem.icon;
+						break;
+					}
+					default:
+					{
+						this._listItem.icon = new ToggleSwitch();
+						this._list.itemRendererProperties.iconField = "icon";
+
+						//clear these in case this setting has changed
+						delete this._listItem.iconText;
+						delete this._listItem.iconTexture;
+
+					}
 				}
-				case ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE:
-				{
-					this._listItem.iconTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
-					this._list.itemRendererProperties.iconSourceField = "iconTexture";
-
-					//clear these in case this setting has changed
-					delete this._listItem.iconText;
-					delete this._listItem.icon;
-					break;
-				}
-				default:
-				{
-					this._listItem.icon = new ToggleSwitch();
-					this._list.itemRendererProperties.iconField = "icon";
-
-					//clear these in case this setting has changed
-					delete this._listItem.iconText;
-					delete this._listItem.iconTexture;
-
-				}
+				this._list.itemRendererProperties.iconPosition = this.settings.iconPosition;
 			}
-			this._list.itemRendererProperties.iconPosition = this.settings.iconPosition;
-		}
 			if(this.settings.hasAccessory)
 			{
 				switch(this.settings.accessoryType)
@@ -230,6 +227,24 @@ package feathers.examples.componentsExplorer.screens
 
 			//never forget to call super.draw()!
 			super.draw();
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			header.title = "Item Renderer";
+			if(this._backButton)
+			{
+				header.leftItems = new <DisplayObject>
+				[
+					this._backButton
+				];
+			}
+			header.rightItems = new <DisplayObject>
+			[
+				this._settingsButton
+			];
+			return header;
 		}
 
 		private function disposeItemIconOrAccessory(item:Object):void

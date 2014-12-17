@@ -2,6 +2,7 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Check;
+	import feathers.controls.Header;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.Radio;
@@ -113,22 +114,35 @@ package feathers.examples.componentsExplorer.screens
 			this._radioGroup.addItem(this._radio3);
 			this._radioContainer.addChild(this._radio3);
 
-			this.headerProperties.title = "Toggles";
+			this.headerFactory = this.customHeaderFactory;
 
+			//we don't display the back button on tablets because the app's
+			//layout puts the main component list side by side with the selected
+			//component.
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._backButton = new Button();
 				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-
-				this.headerProperties.leftItems = new <DisplayObject>
-				[
-					this._backButton
-				];
+				//we'll add this as a child in the header factory
 
 				this.backButtonHandler = this.onBackButton;
 			}
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			header.title = "Toggles";
+			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			{
+				header.leftItems = new <DisplayObject>
+				[
+					this._backButton
+				];
+			}
+			return header;
 		}
 
 		override protected function draw():void
