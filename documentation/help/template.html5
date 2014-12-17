@@ -32,6 +32,8 @@ $endif$
 $for(header-includes)$
   $header-includes$
 $endfor$
+<script type="text/javascript" src="//use.typekit.net/tsu5tna.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 <body>
 $for(include-before)$

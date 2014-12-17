@@ -117,11 +117,12 @@
 		<apply executable="pandoc" dir="${help.root}" dest="${help.output}" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
 			<arg value="--template=template"/>
+			<arg value="--css=css/feathers-help.css"/>
 			<arg value="--variable=title-suffix:Feathers ${feathers.version} Help"/>
 			<arg value="--variable=lang:en"/>
 			<arg value="-o"/>
@@ -133,12 +134,13 @@
 		<apply executable="pandoc" dir="${help.root}" dest="${help.output}/cookbook" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
 			<arg value="--template=template"/>
-			<arg value="--variable=title-suffix:Feathers ${feathers.version} Cookbook"/>
+			<arg value="--css=../css/feathers-help.css"/>
+			<arg value="--variable=title-suffix:Cookbook for Feathers ${feathers.version}"/>
 			<arg value="--variable=lang:en"/>
 			<arg value="-o"/>
 			<targetfile/>
@@ -149,12 +151,13 @@
 		<apply executable="${pandoc}" dir="${help.root}" dest="${help.output}/faq" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
 			<arg value="--template=template"/>
-			<arg value="--variable=title-suffix:Feathers ${feathers.version} FAQ"/>
+			<arg value="--css=../css/feathers-help.css"/>
+			<arg value="--variable=title-suffix:FAQ for Feathers ${feathers.version}"/>
 			<arg value="--variable=lang:en"/>
 			<arg value="-o"/>
 			<targetfile/>
@@ -166,6 +169,12 @@
 				<include name="*.png"/>
 				<include name="*.gif"/>
 				<include name="*.jpg"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${help.output}/css"/>
+		<copy overwrite="true" todir="${help.output}/css">
+			<fileset dir="${help.root}/css">
+				<include name="*.css"/>
 			</fileset>
 		</copy>
 	</target>
