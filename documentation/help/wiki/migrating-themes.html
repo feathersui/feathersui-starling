@@ -1,0 +1,180 @@
+
+<h1 class="sectionedit1" id="migrating_legacy_themes_to_feathers_20">Migrating legacy themes to Feathers 2.0</h1>
+<div class="level1">
+
+<p>
+Feathers 2.0 includes a <a href="/feathers/skinning" class="wikilink1" title="feathers:skinning">new skinning architecture</a>. The <code>DisplayListWatcher</code> class that legacy themes extended still exists, and you can continue using it for the foreseeable future. However, if you&#039;re ready to modernize your theme to take advantage of the new style provider system, you will need to make a number of fundamental changes to your themes.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Migrating legacy themes to Feathers 2.0" [1-424] -->
+<h2 class="sectionedit2" id="extend_a_new_classstylenamefunctiontheme">Extend a new class: StyleNameFunctionTheme</h2>
+<div class="level2">
+
+<p>
+A legacy theme will extend the <code>feathers.core.DisplayListWatcher</code> class.
+</p>
+<pre class="code as3"><span class="co1">// legacy</span>
+<span class="kw1">public</span> <span class="kw4">class</span> CustomTheme <span class="kw1">extends</span> DisplayListWatcher</pre>
+
+<p>
+To create a modern theme, extend <code><a href="http://feathersui.com/documentation/feathers/themes/StyleNameFunctionTheme.html" class="urlextern" title="http://feathersui.com/documentation/feathers/themes/StyleNameFunctionTheme.html"  rel="nofollow">feathers.themes.StyleNameFunctionTheme</a></code> instead.
+</p>
+<pre class="code as3"><span class="co1">// modern</span>
+<span class="kw1">public</span> <span class="kw4">class</span> CustomTheme <span class="kw1">extends</span> StyleNameFunctionTheme</pre>
+
+<p>
+After this change, if you try to compile, you will probably see a number of errors. We need to make a few more changes, but they&#039;re pretty straightforward.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Extend a new class: StyleNameFunctionTheme" [425-1051] -->
+<h2 class="sectionedit3" id="replace_calls_to_setinitializerforclass">Replace calls to setInitializerForClass()</h2>
+<div class="level2">
+
+<p>
+The modern <code>StyleNameFunctionTheme</code> still calls functions that set properties on components, similar to legacy themes. You can still use strings (called style names) to differentiate between components of the same type that need to have different appearances. The <abbr title="Application Programming Interface">API</abbr> has changed a bit for setting these functions, though.
+</p>
+
+<p>
+In a legacy theme, you might call <code>setInitializerForClass()</code> and pass in a class and a function. You could optionally pass in a style name as the optional third argument, to specify function for alternate styles:
+</p>
+<pre class="code as3"><span class="co1">// legacy</span>
+<span class="kw1">this</span><span class="sy0">.</span>setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> setButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> setCustomButtonStyles<span class="sy0">,</span> <span class="st0">&quot;my-custom-button&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In a modern theme, you first ask for then global style provider for a specific class. Then, you can either set its default style function or set a function for a specific style name:
+</p>
+<pre class="code as3"><span class="co1">// modern</span>
+<span class="kw1">this</span><span class="sy0">.</span>getStyleProviderForClass<span class="br0">&#40;</span>Button<span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setButtonStyles<span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>getStyleProviderForClass<span class="br0">&#40;</span>Button<span class="br0">&#41;</span><span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;my-custom-button&quot;</span><span class="sy0">,</span> setCustomButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Replace calls to setInitializerForClass()" [1052-2216] -->
+<h3 class="sectionedit4" id="the_quick-and-dirty_way">The quick-and-dirty way</h3>
+<div class="level3">
+
+<p>
+Replacing every call to <code>setInitializerForClass()</code> can be time consuming and tedious. If you need to migrate faster, and you want to worry about cleaning things up later, you can copy the following function into your theme class:
+</p>
+<pre class="code as3"><span class="kw1">public</span> <span class="kw3">function</span> setInitializerForClass<span class="br0">&#40;</span><span class="kw7">type</span><span class="sy0">:</span><a href="http://www.google.com/search?q=class%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:class.html"><span class="kw5">Class</span></a><span class="sy0">,</span> styleFunction<span class="sy0">:</span><a href="http://www.google.com/search?q=function%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:function.html"><span class="kw5">Function</span></a><span class="sy0">,</span> styleName<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> styleProvider<span class="sy0">:</span>StyleNameFunctionStyleProvider = <span class="kw1">this</span><span class="sy0">.</span>getStyleProviderForClass<span class="br0">&#40;</span><span class="kw7">type</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>styleName<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		styleProvider<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span>styleName<span class="sy0">,</span> styleFunction<span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">else</span>
+	<span class="br0">&#123;</span>
+		styleProvider<span class="sy0">.</span>defaultStyleFunction = styleFunction<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+As you can see, it implements <code>setInitializerForClass()</code> with the same function signature, but it uses style providers under the hood.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "The quick-and-dirty way" [2217-2994] -->
+<h2 class="sectionedit5" id="replace_calls_to_setinitializerforclassandsubclasses">Replace calls to setInitializerForClassAndSubclasses()</h2>
+<div class="level2">
+
+<p>
+There is no direct replacement for this function. It mainly existed to work around limitations in the legacy architecture where a subclass wouldnt be automatically skinned like its superclass. A modern theme will treat subclasses the same as their superclasses (unless a component chooses to opt out), so this function is no longer necessary for its original purpose.
+</p>
+
+<p>
+Here&#039;s an example of calling <code>setInitializerForClassAndSubclasses()</code> in a legacy theme:
+</p>
+<pre class="code as3"><span class="co1">// legacy</span>
+<span class="kw1">this</span><span class="sy0">.</span>setInitializerForClassAndSubclasses<span class="br0">&#40;</span> Scroller<span class="sy0">,</span> setScrollerStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You should switch to calling that function directly when you style the subclasses. For instance, if you have a function that sets common styles on the <code>Scroller</code> class, you would call that function in a function that sets specific styles on the <code>List</code> class.
+</p>
+<pre class="code as3"><span class="co1">// modern</span>
+<span class="kw1">protected</span> <span class="kw3">function</span> setListStyles<span class="br0">&#40;</span> list<span class="sy0">:</span>List <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>setScrollerStyles<span class="br0">&#40;</span> list <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="co1">// set other styles here</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+When an instance of the <code>List</code> class (or any of its subclasses) needs to be styled, <code>setScrollerStyles()</code> will be called too.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Replace calls to setInitializerForClassAndSubclasses()" [2995-4164] -->
+<h2 class="sectionedit6" id="replace_calls_to_exclude">Replace calls to exclude()</h2>
+<div class="level2">
+
+<p>
+In a legacy theme, you could exclude a component from being skinned by passing it to the <code>exclude()</code> function defined by <code>DisplayListWatcher</code>.
+</p>
+<pre class="code as3"><span class="co1">// legacy</span>
+theme<span class="sy0">.</span>exclude<span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In a modern theme, you can remove a component&#039;s style provider:
+</p>
+<pre class="code as3"><span class="co1">// modern</span>
+button<span class="sy0">.</span>styleProvider = <span class="kw1">null</span><span class="sy0">;</span></pre>
+
+<p>
+Make sure you do that before the component initializes. That&#039;s when the theme is asked to style the component. By default, a component will initialize when it is added to the stage.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Replace calls to exclude()" [4165-4714] -->
+<h2 class="sectionedit7" id="replace_name_and_namelist_with_stylename_and_stylenamelist">Replace name and nameList with styleName and styleNameList</h2>
+<div class="level2">
+
+<p>
+In order to fix some issues developers had using <code>getChildByName()</code>, Feathers no longer uses the <code>name</code> and <code>nameList</code> properties to indicate to the theme that it should give a component an alternate visual appearance.
+</p>
+
+<p>
+In a legacy theme, you would add a string to the <code>nameList</code> property (or set the <code>name</code> property directly):
+</p>
+<pre class="code as3"><span class="co1">// legacy</span>
+button<span class="sy0">.</span>nameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;my-custom-button&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="co1">// or</span>
+button<span class="sy0">.</span><span class="kw7">name</span> = <span class="st0">&quot;my-custom-button&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+In a modern theme, you should use the <code>styleNameList</code> or <code>styleName</code> properties instead:
+</p>
+<pre class="code as3"><span class="co1">// modern</span>
+button<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;my-custom-button&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="co1">// or</span>
+button<span class="sy0">.</span>styleName = <span class="st0">&quot;my-custom-button&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code>nameList</code> property still exists, temporarily. It simply maps to the <code>styleNameList</code> property so that legacy code will continue to work. However, the <code>nameList</code> property is considered deprecated, and it will be removed in a future version of Feathers.
+</p>
+
+<p>
+The <code>name</code> property is no longer used for styling Feathers components at all. It does not map to the <code>styleName</code> property the way that <code>nameList</code> maps to the <code>styleNameList</code> property. This change makes a strict distinction between <code>name</code> and <code>styleName</code> in order to fix issues using <code>getChildByName()</code> with Feathers components.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Replace name and nameList with styleName and styleNameList" [4715-6060] -->
+<h2 class="sectionedit8" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/skinning" class="wikilink1" title="feathers:skinning">Skinning Feathers components</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Introduction to Feathers Themes</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">Extending Feathers Themes</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Related Links" [6061-] -->
