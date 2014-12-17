@@ -348,6 +348,99 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _title:String = null;
+
+		/**
+		 * The panel's title to display in the header.
+		 *
+		 * <p>By default, this value is passed to the <code>title</code>
+		 * property of the header, if that property exists. However, if the
+		 * header is not a <code>feathers.controls.Header</code> instance,
+		 * changing the value of <code>titleField</code> will allow the panel to
+		 * pass its title to a different property on the header instead.</p>
+		 *
+		 * <p>In the following example, a custom header factory is provided to
+		 * the panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.title = "Settings";</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #headerTitleField
+		 * @see #headerFactory
+		 */
+		public function get title():String
+		{
+			return this._title;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set title(value:String):void
+		{
+			if(this._title == value)
+			{
+				return;
+			}
+			this._title = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+
+		/**
+		 * @private
+		 */
+		protected var _headerTitleField:String = "title";
+
+		/**
+		 * A property of the header that should be used to display the panel's
+		 * title.
+		 *
+		 * <p>By default, this value is passed to the <code>title</code>
+		 * property of the header, if that property exists. However, if the
+		 * header is not a <code>feathers.controls.Header</code> instance,
+		 * changing the value of <code>titleField</code> will allow the panel to
+		 * pass the title to a different property name instead.</p>
+		 *
+		 * <p>In the following example, a <code>Button</code> is used as a
+		 * custom header, and the title is passed to its <code>label</code>
+		 * property:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.headerFactory = function():IFeathersControl
+		 * {
+		 *     return new Button();
+		 * };
+		 * panel.titleField = "label";</listing>
+		 *
+		 * @default "title"
+		 *
+		 * @see #title
+		 * @see #headerFactory
+		 */
+		public function get headerTitleField():String
+		{
+			return this._headerTitleField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerTitleField(value:String):void
+		{
+			if(this._headerTitleField == value)
+			{
+				return;
+			}
+			this._headerTitleField = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _headerFactory:Function;
 
 		/**
@@ -1097,6 +1190,7 @@ package feathers.controls
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
 			}
+			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -1174,6 +1268,10 @@ package feathers.controls
 		 */
 		protected function refreshHeaderStyles():void
 		{
+			if(Object(this.header).hasOwnProperty(this._headerTitleField))
+			{
+				this.header[this._headerTitleField] = this._title;
+			}
 			for(var propertyName:String in this._headerProperties)
 			{
 				var propertyValue:Object = this._headerProperties[propertyName];
