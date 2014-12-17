@@ -302,5 +302,18 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
 				beforeSelectedItem, this._list.selectedItem);
 		}
+
+		[Test]
+		public function testDisposeWithoutChangeEvent():void
+		{
+			this._list.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dispose();
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+		}
 	}
 }
