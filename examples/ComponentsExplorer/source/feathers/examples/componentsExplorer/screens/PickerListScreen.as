@@ -33,6 +33,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Picker List";
+
 			this.layout = new AnchorLayout();
 
 			var items:Array = [];
@@ -101,7 +103,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Picker List";
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				header.leftItems = new <DisplayObject>

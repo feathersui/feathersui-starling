@@ -78,6 +78,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Callout";
+
 			this.layout = new AnchorLayout();
 			this._topLeftLayoutData = new AnchorLayoutData();
 			this._topRightLayoutData = new AnchorLayoutData();
@@ -128,7 +130,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Callout";
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				header.leftItems = new <DisplayObject>

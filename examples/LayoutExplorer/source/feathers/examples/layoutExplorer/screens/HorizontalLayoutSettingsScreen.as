@@ -55,6 +55,8 @@ package feathers.examples.layoutExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Horizontal Layout Settings";
+
 			this.layout = new AnchorLayout();
 
 			this._itemCountStepper = new NumericStepper();
@@ -145,7 +147,6 @@ package feathers.examples.layoutExplorer.screens
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backButton_onRelease);
 
-			this.headerProperties.title = "Horizontal Layout Settings";
 			this.headerProperties.leftItems = new <DisplayObject>
 			[
 				this._backButton

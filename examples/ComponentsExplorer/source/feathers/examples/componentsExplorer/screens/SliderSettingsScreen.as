@@ -49,6 +49,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Slider Settings";
+
 			this.layout = new AnchorLayout();
 
 			this._liveDraggingToggle = new ToggleSwitch();
@@ -95,7 +97,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Slider Settings";
 			header.rightItems = new <DisplayObject>
 			[
 				this._doneButton

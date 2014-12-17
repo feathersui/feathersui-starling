@@ -67,6 +67,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Toggles";
+
 			this._toggleSwitchContainer = new LayoutGroup();
 			this.addChild(this._toggleSwitchContainer);
 
@@ -134,7 +136,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Toggles";
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				header.leftItems = new <DisplayObject>

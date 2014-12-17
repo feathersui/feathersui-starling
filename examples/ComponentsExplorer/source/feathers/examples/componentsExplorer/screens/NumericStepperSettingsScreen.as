@@ -46,6 +46,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Numeric Stepper Settings";
+
 			this.layout = new AnchorLayout();
 
 			this._stepStepper = new NumericStepper();
@@ -79,7 +81,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Numeric Stepper Settings";
 			header.rightItems = new <DisplayObject>
 			[
 				this._doneButton

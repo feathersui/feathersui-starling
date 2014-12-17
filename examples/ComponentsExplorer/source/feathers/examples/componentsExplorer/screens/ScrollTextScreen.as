@@ -29,6 +29,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Scroll Text";
+
 			this.layout = new AnchorLayout();
 
 			this._scrollText = new ScrollText();
@@ -56,7 +58,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Scroll Text";
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				header.leftItems = new <DisplayObject>

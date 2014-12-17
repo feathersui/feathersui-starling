@@ -48,6 +48,8 @@ package feathers.examples.componentsExplorer.screens
 		{
 			//never forget to call super.initialize()
 			super.initialize();
+
+			this.title = "Button";
 			
 			this._normalButton = new Button();
 			this._normalButton.label = "Normal Button";
@@ -117,7 +119,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Button";
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				header.leftItems = new <DisplayObject>

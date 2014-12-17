@@ -48,6 +48,8 @@ package feathers.examples.trainTimes.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Schedule";
+
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
@@ -60,7 +62,6 @@ package feathers.examples.trainTimes.screens
 			this._backButton = new Button();
 			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
-			this.headerProperties.title = "Schedule";
 			this.headerProperties.leftItems = new <DisplayObject>
 			[
 				this._backButton

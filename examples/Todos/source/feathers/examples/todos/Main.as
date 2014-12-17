@@ -32,7 +32,6 @@ package feathers.examples.todos
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "TODOS";
 			header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
 
 			if(!this._input)
@@ -84,6 +83,8 @@ package feathers.examples.todos
 			super.initialize();
 
 			new MetalWorksMobileTheme();
+
+			this.title = "TODOS";
 
 			this.width = this.stage.stageWidth;
 			this.height = this.stage.stageHeight;

@@ -40,6 +40,8 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
+			this.title = "Grouped List";
+
 			this.layout = new AnchorLayout();
 
 			var groups:Array =
@@ -158,7 +160,6 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
-			header.title = "Grouped List";
 			if(this._backButton)
 			{
 				header.leftItems = new <DisplayObject>
