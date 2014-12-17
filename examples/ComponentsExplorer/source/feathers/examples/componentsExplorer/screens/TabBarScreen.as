@@ -23,7 +23,6 @@ package feathers.examples.componentsExplorer.screens
 			super();
 		}
 
-		private var _backButton:Button;
 		private var _tabBar:TabBar;
 		private var _label:Label;
 
@@ -57,17 +56,10 @@ package feathers.examples.componentsExplorer.screens
 
 			this.headerFactory = this.customHeaderFactory;
 
-			//we don't display the back button on tablets because the app's
-			//layout puts the main component list side by side with the selected
-			//component.
+			//this screen doesn't use a back button on tablets because the main
+			//app's uses a split layout
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				this._backButton = new Button();
-				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
-				this._backButton.label = "Back";
-				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-				//we'll add this as a child in the header factory
-
 				this.backButtonHandler = this.onBackButton;
 			}
 		}
@@ -75,11 +67,17 @@ package feathers.examples.componentsExplorer.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
+			//this screen doesn't use a back button on tablets because the main
+			//app's uses a split layout
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
+				var backButton:Button = new Button();
+				backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
+				backButton.label = "Back";
+				backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 				header.leftItems = new <DisplayObject>
 				[
-					this._backButton
+					backButton
 				];
 			}
 			return header;

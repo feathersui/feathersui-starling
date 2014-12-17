@@ -58,15 +58,6 @@ package feathers.examples.youtube.screens
 			this._scrollText.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._scrollText);
 
-			this._backButton = new Button();
-			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
-			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, onBackButton);
-
-			this._watchButton = new Button();
-			this._watchButton.label = "Watch";
-			this._watchButton.addEventListener(Event.TRIGGERED, watchButton_triggeredHandler);
-
 			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = onBackButton;
@@ -77,14 +68,24 @@ package feathers.examples.youtube.screens
 		private function customHeaderFactory():Header
 		{
 			var header:Header = new Header();
+
+			this._backButton = new Button();
+			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
+			this._backButton.label = "Back";
+			this._backButton.addEventListener(Event.TRIGGERED, onBackButton);
 			header.leftItems = new <DisplayObject>
 			[
 				this._backButton
 			];
+
+			this._watchButton = new Button();
+			this._watchButton.label = "Watch";
+			this._watchButton.addEventListener(Event.TRIGGERED, watchButton_triggeredHandler);
 			header.rightItems = new <DisplayObject>
 			[
 				this._watchButton
 			];
+
 			return header;
 		}
 

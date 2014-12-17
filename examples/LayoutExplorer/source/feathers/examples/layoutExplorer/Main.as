@@ -17,6 +17,8 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.TiledRowsLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
+	import feathers.motion.transitions.Cover;
+	import feathers.motion.transitions.Reveal;
 	import feathers.motion.transitions.Slide;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
@@ -80,6 +82,8 @@ package feathers.examples.layoutExplorer
 			var horizontalSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(HorizontalLayoutSettingsScreen);
 			horizontalSettingsItem.addPopEvent(Event.COMPLETE);
 			horizontalSettingsItem.properties.settings = horizontalLayoutSettings;
+			horizontalSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			horizontalSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(HORIZONTAL_SETTINGS, horizontalSettingsItem);
 
 			var verticalLayoutSettings:VerticalLayoutSettings = new VerticalLayoutSettings();
@@ -92,6 +96,8 @@ package feathers.examples.layoutExplorer
 			var verticalSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(VerticalLayoutSettingsScreen);
 			verticalSettingsItem.addPopEvent(Event.COMPLETE);
 			verticalSettingsItem.properties.settings = verticalLayoutSettings;
+			verticalSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			verticalSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(VERTICAL_SETTINGS, verticalSettingsItem);
 
 			var tiledRowsLayoutSettings:TiledRowsLayoutSettings = new TiledRowsLayoutSettings();
@@ -104,6 +110,8 @@ package feathers.examples.layoutExplorer
 			var tiledRowsSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TiledRowsLayoutSettingsScreen);
 			tiledRowsSettingsItem.addPopEvent(Event.COMPLETE);
 			tiledRowsSettingsItem.properties.settings = tiledRowsLayoutSettings;
+			tiledRowsSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			tiledRowsSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(TILED_ROWS_SETTINGS, tiledRowsSettingsItem);
 
 			var tiledColumnsLayoutSettings:TiledColumnsLayoutSettings = new TiledColumnsLayoutSettings();
@@ -116,6 +124,8 @@ package feathers.examples.layoutExplorer
 			var tiledColumnsSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TiledColumnsLayoutSettingsScreen);
 			tiledColumnsSettingsItem.addPopEvent(Event.COMPLETE);
 			tiledColumnsSettingsItem.properties.settings = tiledColumnsLayoutSettings;
+			tiledColumnsSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			tiledColumnsSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(TILED_COLUMNS_SETTINGS, tiledColumnsSettingsItem);
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
