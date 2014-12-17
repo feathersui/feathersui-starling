@@ -384,6 +384,15 @@ package feathers.layout
 		/**
 		 * The alignment of the items vertically, on the y-axis.
 		 *
+		 * <p>If the <code>verticalAlign</code> property is set to
+		 * <code>HorizontalLayout.VERTICAL_ALIGN_JUSTIFY</code>, the
+		 * <code>height</code>, <code>minHeight</code>, and
+		 * <code>maxHeight</code> properties of the items may be changed, and
+		 * their original values ignored by the layout. In this situation, if
+		 * the height needs to be constrained, the <code>height</code>,
+		 * <code>minHeight</code>, or <code>maxHeight</code> properties should
+		 * instead be set on the parent container that is using this layout.</p>
+		 *
 		 * @default HorizontalLayout.VERTICAL_ALIGN_TOP
 		 *
 		 * @see #VERTICAL_ALIGN_TOP
@@ -899,7 +908,10 @@ package feathers.layout
 			{
 				//in some cases, we may need to validate all of the items so
 				//that we can use their dimensions below.
-				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom, explicitWidth);
+				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom,
+					minHeight - this._paddingTop - this._paddingBottom,
+					maxHeight - this._paddingTop - this._paddingBottom,
+					explicitWidth);
 			}
 
 			if(!this._useVirtualLayout)
@@ -1676,15 +1688,14 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, justifyHeight:Number, distributedWidth:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>, explicitHeight:Number,
+			minHeight:Number, maxHeight:Number, distributedWidth:Number):void
 		{
 			//if the alignment is justified, then we want to set the height of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
 			var isJustified:Boolean = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY;
-			var mustSetJustifyHeight:Boolean = isJustified && justifyHeight === justifyHeight; //!isNaN
-
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1697,17 +1708,19 @@ package feathers.layout
 				{
 					item.width = distributedWidth;
 				}
-				if(mustSetJustifyHeight)
-				{
-					item.height = justifyHeight;
-				}
-				else if(isJustified && item is IFeathersControl)
+				if(isJustified)
 				{
 					//the alignment is justified, but we don't yet have a width
 					//to use, so we need to ensure that we accurately measure
 					//the items instead of using an old justified height that
 					//may be wrong now!
-					item.height = NaN;
+					item.height = explicitHeight;
+					if(item is IFeathersControl)
+					{
+						var feathersItem:IFeathersControl = IFeathersControl(item);
+						feathersItem.minHeight = minHeight;
+						feathersItem.maxHeight = maxHeight;
+					}
 				}
 				if(item is IValidating)
 				{
