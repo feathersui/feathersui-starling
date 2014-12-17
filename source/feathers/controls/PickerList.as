@@ -1306,6 +1306,9 @@ package feathers.controls
 				this._popUpContentManager.dispose();
 				this._popUpContentManager = null;
 			}
+			//clearing selection now so that the data provider setter won't
+			//cause a selection change that triggers events.
+			this._selectedIndex = -1;
 			this.dataProvider = null;
 			super.dispose();
 		}
