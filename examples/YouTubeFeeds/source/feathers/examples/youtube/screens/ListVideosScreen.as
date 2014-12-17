@@ -1,6 +1,7 @@
 package feathers.examples.youtube.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
@@ -120,15 +121,23 @@ package feathers.examples.youtube.screens
 			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
-			this.headerProperties.leftItems = new <DisplayObject>
-			[
-				this._backButton
-			];
+
+			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = onBackButton;
 
 			this._isTransitioning = true;
 			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			header.leftItems = new <DisplayObject>
+			[
+				this._backButton
+			];
+			return header;
 		}
 
 		override protected function draw():void

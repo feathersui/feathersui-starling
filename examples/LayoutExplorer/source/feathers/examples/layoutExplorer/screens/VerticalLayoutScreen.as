@@ -1,6 +1,7 @@
 package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollContainer;
 	import feathers.events.FeathersEventType;
@@ -61,17 +62,15 @@ package feathers.examples.layoutExplorer.screens
 				this.addChild(quad);
 			}
 
+			this.headerFactory = this.customHeaderFactory;
+
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._backButton = new Button();
 				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-
-				this.headerProperties.leftItems = new <DisplayObject>
-				[
-					this._backButton
-				];
+				//we'll add this as a child in the header factory
 
 				this.backButtonHandler = this.onBackButton;
 			}
@@ -79,13 +78,26 @@ package feathers.examples.layoutExplorer.screens
 			this._settingsButton = new Button();
 			this._settingsButton.label = "Settings";
 			this._settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
+			//we'll add this as a child in the header factory
 
-			this.headerProperties.rightItems = new <DisplayObject>
+			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			if(this._backButton)
+			{
+				header.leftItems = new <DisplayObject>
+				[
+					this._backButton
+				];
+			}
+			header.rightItems = new <DisplayObject>
 			[
 				this._settingsButton
 			];
-
-			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
+			return header;
 		}
 
 		private function onBackButton():void

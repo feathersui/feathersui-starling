@@ -1,6 +1,7 @@
 package feathers.examples.youtube.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollText;
 	import feathers.events.FeathersEventType;
@@ -61,22 +62,30 @@ package feathers.examples.youtube.screens
 			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, onBackButton);
-			this.headerProperties.leftItems = new <DisplayObject>
-			[
-				this._backButton
-			];
 
 			this._watchButton = new Button();
 			this._watchButton.label = "Watch";
 			this._watchButton.addEventListener(Event.TRIGGERED, watchButton_triggeredHandler);
-			this.headerProperties.rightItems = new <DisplayObject>
-			[
-				this._watchButton
-			];
+
+			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = onBackButton;
 
 			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			header.leftItems = new <DisplayObject>
+			[
+				this._backButton
+			];
+			header.rightItems = new <DisplayObject>
+			[
+				this._watchButton
+			];
+			return header;
 		}
 
 		override protected function draw():void
