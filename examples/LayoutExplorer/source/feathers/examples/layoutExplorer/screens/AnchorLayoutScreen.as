@@ -1,6 +1,7 @@
 package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
 	import feathers.layout.AnchorLayout;
@@ -65,20 +66,31 @@ package feathers.examples.layoutExplorer.screens
 			label2.layoutData = relativeLayoutData;
 			this.addChild(label2);
 
+			this.headerFactory = this.customHeaderFactory;
+
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._backButton = new Button();
 				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
-
-				this.headerProperties.leftItems = new <DisplayObject>
-				[
-					this._backButton
-				];
+				//we'll add this as a child in the header factory
 
 				this.backButtonHandler = this.onBackButton;
 			}
+		}
+
+		private function customHeaderFactory():Header
+		{
+			var header:Header = new Header();
+			if(this._backButton)
+			{
+				header.leftItems = new <DisplayObject>
+				[
+					this._backButton
+				];
+			}
+			return header;
 		}
 
 		private function onBackButton():void
