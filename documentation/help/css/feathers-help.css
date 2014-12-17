@@ -64,7 +64,7 @@ pre.code
 {
 	background: #efeeea;
 	color: #454545;
-	font-family: Consolas, Monaco, Lucida Console, monospace;
+	font-family: "source-code-pro",Monaco,Consolas,Lucida Console,monospace;
 	line-height: 24px;
 	margin: 18px 0;
 	overflow: auto;
