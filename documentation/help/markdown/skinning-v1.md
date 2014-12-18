@@ -9,6 +9,8 @@ author: Josh Tynjala
 
 See the documentation for the [individual Feathers components](index.html#feathers_components) for complete details on how that specific component may be skinned. Below, we'll outline skinning idioms that are common to all Feathers components.
 
+<aside class="warn">The tutorial explains skinning in Feathers 1.3.1 and below. For newer versions of Feathers, see [Skinning Feathers 2.0 Components](skinning.html).</aside>
+
 ## Sub-Component Factories
 
 Sub-components may be skinned using a *factory*. This is a function that is called when a component needs to create one of its sub-components. It receives no arguments and returns an instance of the sub-component. Below, we see a factory for a `Slider` component's thumb sub-component:

@@ -9,9 +9,9 @@ Using one of the example [themes](themes.html) included with Feathers, we can qu
 
 Whatever our needs, eventually, we may want to make some styling tweaks or to provide some alternative skins for a subset of components in our app. The examples themes are designed with extensibility in mind. Let's learn to modify the themes to use our custom skins.
 
-This tutorial covers the new theme architecture in Feathers 2.0. If you are using Feathers 1.3.1 or below, you should read [Extending legacy Feathers 1.x themes](http://wiki.starling-framework.org/feathers/extending-themes-v1) instead.
+<aside class="warn">This tutorial covers the new theme architecture in Feathers 2.0. If you are using Feathers 1.3.1 or below, you should read [Extending legacy Feathers 1.x themes](extending-themes-v1.html) instead.</aside>
 
-If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how do basic skinning without themes. You'll get an introduction to style providers, which are the foundation of a theme's architecture.
+<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how do basic skinning without themes. You'll get an introduction to style providers, which are the foundation of a theme's architecture.</aside>
 
 ## Adding an alternate style function
 

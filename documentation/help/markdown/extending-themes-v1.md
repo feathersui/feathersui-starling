@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 Sometimes, you want to use an existing Feathers [theme](themes.html), but you want certain components to look different than the default style. Sometimes, you can just modify the component's properties directly, but often, you will need to extend the theme and apply different skins and styles through the theme architecture.
 
-The tutorial explains the theme architecture in Feathers 1.3.1 and below. For newer versions of Feathers, see [Extending Feathers 2.0 Themes](extending-themes.html). For information about upgrading themes to use the new architecture, see [Migrating legacy themes to Feathers 2.0](migrating-themes.html).
+<aside class="warn">The tutorial explains the theme architecture in Feathers 1.3.1 and below. For newer versions of Feathers, see [Extending Feathers 2.0 Themes](extending-themes.html). For information about upgrading themes to use the new architecture, see [Migrating legacy themes to Feathers 2.0](migrating-themes.html).</aside>
 
 ## Names
 
