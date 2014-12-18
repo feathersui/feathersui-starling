@@ -19,6 +19,8 @@ package feathers.examples.transitionsExplorer
 	import feathers.motion.transitions.Slide;
 	import feathers.themes.MetalWorksMobileTheme;
 
+	import starling.display.Quad;
+
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -148,11 +150,21 @@ package feathers.examples.transitionsExplorer
 			this._content.layoutData = contentLayoutData;
 			this.addChildAt(this._content, 0);
 
-			var content1:ImageLoader = new ImageLoader();
-			content1.source = Texture.fromEmbeddedAsset(TEST_PATTERN1, false);
+			var content1:LayoutGroup = new LayoutGroup();
+			content1.layout = new AnchorLayout();
+			var image:ImageLoader = new ImageLoader();
+			image.source = Texture.fromEmbeddedAsset(TEST_PATTERN1, false);
+			image.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			content1.addChild(image);
+			content1.backgroundSkin = new Quad(1, 1, 0x000000);
 			this._content.addScreen(CONTENT_SCREEN_ID_ONE, new ScreenNavigatorItem(content1));
-			var content2:ImageLoader = new ImageLoader();
-			content2.source = Texture.fromEmbeddedAsset(TEST_PATTERN2, false);
+			var content2:LayoutGroup = new LayoutGroup();
+			content2.layout = new AnchorLayout();
+			image = new ImageLoader();
+			image.source = Texture.fromEmbeddedAsset(TEST_PATTERN2, false);
+			image.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			content2.addChild(image);
+			content2.backgroundSkin = new Quad(1, 1, 0xffffff);
 			this._content.addScreen(CONTENT_SCREEN_ID_TWO, new ScreenNavigatorItem(content2));
 
 			this._content.showScreen(CONTENT_SCREEN_ID_ONE);
