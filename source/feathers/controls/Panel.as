@@ -25,7 +25,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var panel:Panel = new Panel();
-	 * panel.headerProperties.title = "Is it time to party?";
+	 * panel.title = "Is it time to party?";
 	 *
 	 * var layout:HorizontalLayout = new HorizontalLayout();
 	 * layout.gap = 20;
@@ -461,21 +461,16 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * panel.headerFactory = function():IFeathersControl
 		 * {
-		 *     var backButton:Button = new Button();
-		 *     backButton.label = "Back";
-		 *     backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
-		 *
 		 *     var header:Header = new Header();
-		 *     header.leftItems = new &lt;DisplayObject&gt;
-		 *     [
-		 *         backButton
-		 *     ];
+		 *     var closeButton:Button = new Button();
+		 *     closeButton.label = "Close";
+		 *     closeButton.addEventListener( Event.TRIGGERED, closeButton_triggeredHandler );
+		 *     header.rightItems = new &lt;DisplayObject&gt;[ closeButton ];
 		 *     return header;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl
 		 * @see feathers.controls.Header
 		 * @see #headerProperties
 		 */
@@ -600,7 +595,10 @@ package feathers.controls
 		 * <p>In the following example, the header properties are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * panel.headerProperties.title = "Hello World";</listing>
+		 * var closeButton:Button = new Button();
+		 * closeButton.label = "Close";
+		 * closeButton.addEventListener( Event.TRIGGERED, closeButton_triggeredHandler );
+		 * panel.headerProperties.rightItems = new &lt;DisplayObject&gt;[ closeButton ];</listing>
 		 *
 		 * @default null
 		 *
