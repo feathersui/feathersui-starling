@@ -44,9 +44,9 @@ function slider_changeHandler( event:Event ):void
 }
 ```
 
-## Skinning a Slider
+## Skinning a `Slider`
 
-The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [Slider API reference](../api-reference/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
+The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [`Slider` API reference](../api-reference/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
 
 ### Track(s) and Layout
 
@@ -58,7 +58,7 @@ If we'd like to have separate buttons for both sides of the track (one for the m
 
 When the value of `trackLayoutMode` is `Slider.TRACK_LAYOUT_MODE_SINGLE`, the slider's will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is draggable.
 
-### Targeting a Slider in a theme
+### Targeting a `Slider` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

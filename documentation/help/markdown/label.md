@@ -17,11 +17,11 @@ label.text = "Hello World";
 this.addChild( label );
 ```
 
-## Styling the Label
+## Styling the `Label`
 
-For full details about what skin and style properties are available, see the [Label API reference](../api-reference/feathers/controls/Label.html). We'll look at a few of the most common properties below.
+For full details about what skin and style properties are available, see the [`Label` API reference](../api-reference/feathers/controls/Label.html). We'll look at a few of the most common properties below.
 
-### Styling the Label's Text Renderer
+### Styling the Text Renderer
 
 This section explains how to customize the text renderer sub-component. Feathers provides multiple text renderers to choose from, and each one will have different properties that may be set to customize font styles and other capabilities. For more information about text renderers, including which ones are available, please read [Introduction to Feathers Text Renderers](text-renderers.html).
 
@@ -63,7 +63,7 @@ Again, this example styles the properties of a `BitmapFontTextRenderer`. Other t
 
 In general, you should only style the label's text renderer through `textRendererProperties` if you need to change skins after the thumb is created. Using `textRendererFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
-### Targeting a Label in a theme
+### Targeting a `Label` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

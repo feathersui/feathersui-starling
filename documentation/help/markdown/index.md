@@ -63,105 +63,107 @@ Looking for quick recipes that show you how to do common tasks using Feathers?
 
 A more detailed look at each of the components that Feathers provides.
 
--   [Alert](alert.html)
+-   [`Alert`](alert.html)
 
--   [Button](button.html)
+-   [`Button`](button.html)
 
--   [ButtonGroup](button-group.html)
+-   [`ButtonGroup`](button-group.html)
 
--   [Callout](callout.html)
+-   [`Callout`](callout.html)
 
--   [Check](check.html)
+-   [`Check`](check.html)
 
--   [Drawers](drawers.html)
+-   [`Drawers`](drawers.html)
 
--   [GroupedList](grouped-list.html)
-
-    -   [Default Item Renderers](default-item-renderers.html)
-
-    -   [Custom Item Renderers](item-renderers.html)
-
--   [Header](header.html)
-
--   [ImageLoader](image-loader.html)
-
--   [Label](label.html)
-
--   [LayoutGroup](layout-group.html)
-
--   [List](list.html)
+-   [`GroupedList`](grouped-list.html)
 
     -   [Default Item Renderers](default-item-renderers.html)
 
     -   [Custom Item Renderers](item-renderers.html)
 
--   [NumericStepper](numeric-stepper.html)
+-   [`Header`](header.html)
 
--   [PageIndicator](page-indicator.html)
+-   [`ImageLoader`](image-loader.html)
 
--   [Panel](panel.html)
+-   [`Label`](label.html)
 
--   [PanelScreen](panel-screen.html)
+-   [`LayoutGroup`](layout-group.html)
 
--   [PickerList](picker-list.html)
+-   [`List`](list.html)
 
--   [ProgressBar](progress-bar.html)
+    -   [Default Item Renderers](default-item-renderers.html)
 
--   [Radio](radio.html)
+    -   [Custom Item Renderers](item-renderers.html)
 
--   [Screen](screen.html)
+-   [`NumericStepper`](numeric-stepper.html)
 
--   [ScreenNavigator](screen-navigator.html)
+-   [`PageIndicator`](page-indicator.html)
 
--   [ScrollBar](scroll-bar.html)
+-   [`Panel`](panel.html)
 
--   [ScrollContainer](scroll-container.html)
+-   [`PanelScreen`](panel-screen.html)
 
--   [ScrollScreen](scroll-screen.html)
+-   [`PickerList`](picker-list.html)
 
--   [ScrollText](scroll-text.html)
+-   [`ProgressBar`](progress-bar.html)
 
--   [SimpleScrollBar](simple-scroll-bar.html)
+-   [`Radio`](radio.html)
 
--   [Slider](slider.html)
+-   [`Screen`](screen.html)
 
--   [StackScreenNavigator](stack-screen-navigator.html)
+-   [`ScreenNavigator`](screen-navigator.html)
 
--   [TabBar](tab-bar.html)
+-   [`ScrollBar`](scroll-bar.html)
 
--   [TextArea](text-area.html)
+-   [`ScrollContainer`](scroll-container.html)
 
--   [TextInput](text-input.html)
+-   [`ScrollScreen`](scroll-screen.html)
 
--   [ToggleSwitch](toggle-switch.html)
+-   [`ScrollText`](scroll-text.html)
 
-A bit further down, you can find number of articles that go into detail about the Feathers component architecture and how to create [custom components](#custom_components).
+-   [`SimpleScrollBar`](simple-scroll-bar.html)
+
+-   [`Slider`](slider.html)
+
+-   [`StackScreenNavigator`](stack-screen-navigator.html)
+
+-   [`TabBar`](tab-bar.html)
+
+-   [`TextArea`](text-area.html)
+
+-   [`TextInput`](text-input.html)
+
+-   [`ToggleButton`](toggle-button.html)
+
+-   [`ToggleSwitch`](toggle-switch.html)
+
+A bit further down, you can find number of articles that go into detail about the Feathers component architecture and how to create [custom components](#custom-components).
 
 ## Display Objects
 
 Custom Starling display objects included with Feathers for skinning. These display objects are designed to scale up to any size without distortion.
 
--   [Scale3Image](scale3-image.html)
+-   [`Scale3Image`](scale3-image.html)
 
--   [Scale9Image](scale9-image.html)
+-   [`Scale9Image`](scale9-image.html)
 
--   [TiledImage](tiled-image.html)
+-   [`TiledImage`](tiled-image.html)
 
 ## Layouts
 
 A more detailed look at each of the layout algorithms that Feathers provides.
 
--   [AnchorLayout](anchor-layout.html)
+-   [`AnchorLayout`](anchor-layout.html)
 
--   [HorizontalLayout](horizontal-layout.html)
+-   [`HorizontalLayout`](horizontal-layout.html)
 
--   [VerticalLayout](vertical-layout.html)
+-   [`VerticalLayout`](vertical-layout.html)
 
--   [TiledColumnsLayout](tiled-columns-layout.html)
+-   [`TiledColumnsLayout`](tiled-columns-layout.html)
 
--   [TiledRowsLayout](tiled-rows-layout.html)
+-   [`TiledRowsLayout`](tiled-rows-layout.html)
 
-A bit further down, you can find number of articles that go into detail about the Feathers layout architecture and how to create [custom layouts](#custom_layouts).
+A bit further down, you can find number of articles that go into detail about the Feathers layout architecture and how to create [custom layouts](#custom-layouts).
 
 ## Skinning and Themes
 
@@ -207,19 +209,17 @@ All Feathers components that support the built-in layouts also support custom la
 
 -   [Introduction to custom Feathers layouts](custom-layouts.html)
 
--   [ILayoutDisplayObject and ILayoutData](layout-data.html)
+-   [`ILayoutDisplayObject` and `ILayoutData`](layout-data.html)
 
 -   [Creating virtualized custom Feathers layouts](virtual-custom-layouts.html)
 
 ## Advanced UI
 
--   [Pop Up Management](pop-ups.html)
+-   [Pop-up Management](pop-ups.html)
 
 -   [Focus Management](focus.html)
 
 -   [Drag and Drop](drag-drop.html)
-
--   [Using MXML with Feathers](mxml.html)
 
 ## Miscellaneous
 

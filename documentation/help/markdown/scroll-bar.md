@@ -26,11 +26,11 @@ Make sure that you set the `direction` property to an appropriate value. However
 
 If, for some reason, you want to use a `ScrollBar` outside of a subclass of `Scroller`, the values like `minimum`, `maximum`, `step` and `value` that the `Scroller` normally handles work similarly to a `Slider` component.
 
-## Skinning a ScrollBar
+## Skinning a `ScrollBar`
 
-The skins for a `ScrollBar` control are divided into several parts, including the thumb, the track(s), and the increment and decrement buttons. For full details about what skin and style properties are available, see the [ScrollBar API reference](../api-reference/feathers/controls/ScrollBar.html).
+The skins for a `ScrollBar` control are divided into several parts, including the thumb, the track(s), and the increment and decrement buttons. For full details about what skin and style properties are available, see the [`ScrollBar` API reference](../api-reference/feathers/controls/ScrollBar.html).
 
-### Targeting a ScrollBar in a theme
+### Targeting a `ScrollBar` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

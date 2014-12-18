@@ -120,9 +120,9 @@ input.restrict = "0-9";
 
 In the example above, we restrict to numeric values only.
 
-## Skinning a Text Input
+## Skinning a `TextInput`
 
-A text input provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [TextInput API reference](../api-reference/feathers/controls/TextInput.html). We'll look at a few of the most common properties below.
+A text input provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`TextInput` API reference](../api-reference/feathers/controls/TextInput.html). We'll look at a few of the most common properties below.
 
 ### Font Styles
 
@@ -186,7 +186,7 @@ input.typicalText = "The quick brown fox jumps over the lazy dog";
 
 By default, the text input uses only its background skin for measurement. `typicalText` is useful when there is a maximum width based on the font size. For instance, the `NumericStepper` component uses this property to provide the text input with its maximum value.
 
-### Targeting a TextInput in a theme
+### Targeting a `TextInput` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

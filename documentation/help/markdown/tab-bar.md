@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 The `TabBar` class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar's tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more "pill" shaped control that looks more like a segmented button bar than a set of tabs.
 
-The [DisplayObjectExplorer example](http://feathersui.com/examples/display-object-explorer) demonstrates how to connect a `TabBar` to a `ScreenNavigator`.
+<aside class="info">The [DisplayObjectExplorer example](http://feathersui.com/examples/display-object-explorer) demonstrates how to connect a `TabBar` to a `ScreenNavigator`.</aside>
 
 ## The Basics
 
@@ -44,15 +44,15 @@ function tabs_changeHandler( event:Event ):void
 
 The `selectedIndex` property indicates the zero-based index of the currently selected tab.
 
-## Skinning a Tab Bar
+## Skinning a `TabBar`
 
-Except for a couple of layout properties, most of the skinning happens on the tabs. For full details about what skin and style properties are available, see the [TabBar API reference](../api-reference/feathers/controls/TabBar.html). We'll look at a few of the most common properties below.
+Except for a couple of layout properties, most of the skinning happens on the tabs. For full details about what skin and style properties are available, see the [`TabBar` API reference](../api-reference/feathers/controls/TabBar.html). We'll look at a few of the most common properties below.
 
 ### Layout
 
 For layout, you can set the `direction` property to `DIRECTION_HORIZONTAL` or `DIRECTION_VERTICAL`. The `gap` property sets the extra space, measured in pixels, between tabs.
 
-### Targeting a TabBar in a theme
+### Targeting a `TabBar` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

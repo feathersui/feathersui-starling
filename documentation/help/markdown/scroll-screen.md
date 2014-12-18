@@ -9,11 +9,11 @@ The `ScrollScreen` component is meant to be a base class for custom screens to b
 
 ## Skinning a `ScrollScreen`
 
-For full details about what skin and style properties are available, see the [ScrollScreen API reference](../api-reference/feathers/controls/ScrollScreen.html).
+For full details about what skin and style properties are available, see the [`ScrollScreen` API reference](../api-reference/feathers/controls/ScrollScreen.html).
 
 As mentioned above, `ScrollScreen` is a subclass of `ScrollContainer`. For more detailed information about the skinning options available to `ScrollScreen`, see [How to use the `ScrollContainer` component](button.html).
 
-### Targeting a ScrollScreen in a theme
+### Targeting a `ScrollScreen` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

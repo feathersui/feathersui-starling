@@ -136,9 +136,9 @@ panel.layout = layout;
 
 We can set a number of other properties on the layout too. In the case of `HorizontalLayout` (and [`VerticalLayout`](vertical-layout.html) too), we can customize things like padding around the edges along with horizontal and vertical alignment. Other layouts may expose more or completely different properties that may be customized. Check their API documentation for complete details.
 
-## Skinning a Panel
+## Skinning a `Panel`
 
-The skins for a `Panel` control are divided into the header, the content, and the footer. Additionally, a panel may have background skins and various other styles. For full details about what skin and style properties are available, see the [Panel API reference](../api-reference/feathers/controls/Panel.html). We'll look at a few of the most common properties below.
+The skins for a `Panel` control are divided into the header, the content, and the footer. Additionally, a panel may have background skins and various other styles. For full details about what skin and style properties are available, see the [`Panel` API reference](../api-reference/feathers/controls/Panel.html). We'll look at a few of the most common properties below.
 
 ### Background Skins and Basic Styles
 
@@ -166,7 +166,7 @@ If all four padding values should be the same, you may use the [`padding`](../ap
 panel.padding = 20;
 ```
 
-### Targeting a Panel in a theme
+### Targeting a `Panel` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

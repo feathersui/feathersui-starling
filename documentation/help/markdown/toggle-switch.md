@@ -33,11 +33,11 @@ function toggle_changeHandler( event:Event ):void
 }
 ```
 
-## Skinning a ToggleSwitch
+## Skinning a `ToggleSwitch`
 
-The skins for a `ToggleSwitch` control are divided into the thumb, labels for off and on text, and one or two tracks. For full details about what skin and style properties are available, see the [ToggleSwitch API reference](../api-reference/feathers/controls/ToggleSwitch.html). We'll look at a few of the most common properties below.
+The skins for a `ToggleSwitch` control are divided into the thumb, labels for off and on text, and one or two tracks. For full details about what skin and style properties are available, see the [`ToggleSwitch` API reference](../api-reference/feathers/controls/ToggleSwitch.html). We'll look at a few of the most common properties below.
 
-### Targeting a ToggleSwitch in a theme
+### Targeting a `ToggleSwitch` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

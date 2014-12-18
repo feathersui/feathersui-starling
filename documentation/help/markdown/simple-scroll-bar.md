@@ -26,11 +26,11 @@ Make sure that you set the `direction` property to the appropriate value. Howeve
 
 If, for some reason, you want to use a `SimpleScrollBar` outside of a subclass of `Scroller`, the values like `minimum`, `maximum`, `step` and `value` that the `Scroller` normally handles work similarly to a `Slider` component.
 
-## Skinning a SimpleScrollBar
+## Skinning a `SimpleScrollBar`
 
-The `SimpleScrollBar` has one part that may be skinned, its thumb. A SimpleScrollBar's track is invisible. That's where the "simple" part comes from. For full details about what skin and style properties are available, see the [SimpleScrollBar API reference](../api-reference/feathers/controls/SimpleScrollBar.html).
+The `SimpleScrollBar` has one part that may be skinned, its thumb. A SimpleScrollBar's track is invisible. That's where the "simple" part comes from. For full details about what skin and style properties are available, see the [`SimpleScrollBar` API reference](../api-reference/feathers/controls/SimpleScrollBar.html).
 
-### Targeting a SimpleScrollBar in a theme
+### Targeting a `SimpleScrollBar` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

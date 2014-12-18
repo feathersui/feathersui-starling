@@ -27,9 +27,9 @@ By default, the progress bar direction is horizontal. You can change the `direct
 progress.direction = ProgressBar.DIRECTION_VERTICAL;
 ```
 
-## Skinning a Progress Bar
+## Skinning a `ProgressBar`
 
-A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [ProgressBar API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common properties below.
+A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [`ProgressBar` API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common properties below.
 
 The `backgroundSkin` and `fillSkin` properties are used to customize the appearance of the progress bar.
 
@@ -58,7 +58,7 @@ progress.paddingBottom = 2;
 progress.paddingLeft = 3;
 ```
 
-### Targeting a ProgressBar in a theme
+### Targeting a `ProgressBar` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
