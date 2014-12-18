@@ -25,6 +25,36 @@ a:hover, a:active
 	color: #0a549c;
 }
 
+a[href^="http://"], a[href^="https://"], a[href^="//"]
+{
+	background: url(../images/world.png) center left no-repeat;
+	padding: 0 0 0 20px;
+}
+
+a[href^="http://doc.starling-framework.org"],
+	a[href^="../api-reference/"]
+{
+	background: url(../images/book_open.png) center left no-repeat;
+	padding: 0 0 0 20px;
+}
+
+a[href^="http://wiki.starling-framework.org"]
+{
+	background: url(../images/starling.png) center left no-repeat;
+	padding: 0 0 0 20px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2),
+	screen and (min--moz-device-pixel-ratio: 2),
+	screen and (min-device-pixel-ratio: 2)
+{
+	a[href^="http://wiki.starling-framework.org"]
+	{
+		background: url(../images/starling@2x.png) center left no-repeat;
+		background-size: 16px 16px;
+	}
+}
+
 p
 {
 	margin: 12px 0;
@@ -76,8 +106,23 @@ pre.code code
 	display: block;
 }
 
+aside.info, aside.warn, aside.question
+{
+	padding: 24px 24px 20px 80px;
+	margin: 18px 0;
+}
+
 aside.info
 {
-	background: #ecf4fa;
-	padding: 18px;
+	background: #ecf4fa url(../images/info.png) 16px 28px no-repeat;
+}
+
+aside.warn
+{
+	background: #faf4ec url(../images/warning.png) 16px 28px no-repeat;
+}
+
+aside.question
+{
+	background: #f4faec url(../images/warning.png) 16px 28px no-repeat;
 }
