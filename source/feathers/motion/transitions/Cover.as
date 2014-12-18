@@ -9,6 +9,7 @@ package feathers.motion.transitions
 {
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	public class Cover
@@ -19,21 +20,24 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-				if(oldScreen)
+				if(!oldScreen && !newScreen)
 				{
-					oldScreen.x = 0;
-					oldScreen.y = 0;
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				if(newScreen)
 				{
 					newScreen.x = newScreen.width;
 					newScreen.y = 0;
-					new CoverTween(newScreen, -newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
-				else //we only have the old screen
+				if(oldScreen)
 				{
-					new CoverClipTween(oldScreen, -oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
+					oldScreen.x = 0;
+					oldScreen.y = 0;
+					new CoverTween(newScreen, oldScreen, -oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
+				}
+				else //we only have the new screen
+				{
+					slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete);
 				}
 			}
 		}
@@ -42,21 +46,24 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-				if(oldScreen)
+				if(!oldScreen && !newScreen)
 				{
-					oldScreen.x = 0;
-					oldScreen.y = 0;
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				if(newScreen)
 				{
 					newScreen.x = -newScreen.width;
 					newScreen.y = 0;
-					new CoverTween(newScreen, newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
-				else //we only have the old screen
+				if(oldScreen)
 				{
-					new CoverClipTween(oldScreen, oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
+					oldScreen.x = 0;
+					oldScreen.y = 0;
+					new CoverTween(newScreen, oldScreen, oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
+				}
+				else //we only have the new screen
+				{
+					slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete);
 				}
 			}
 		}
@@ -65,21 +72,24 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-				if(oldScreen)
+				if(!oldScreen && !newScreen)
 				{
-					oldScreen.x = 0;
-					oldScreen.y = 0;
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				if(newScreen)
 				{
 					newScreen.x = 0;
 					newScreen.y = newScreen.height;
-					new CoverTween(newScreen, 0, -newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
-				else //we only have the old screen
+				if(oldScreen)
 				{
-					new CoverClipTween(oldScreen, 0, -oldScreen.height, duration, ease, onComplete, tweenProperties);
+					oldScreen.x = 0;
+					oldScreen.y = 0;
+					new CoverTween(newScreen, oldScreen, 0, -oldScreen.height, duration, ease, onComplete, tweenProperties);
+				}
+				else //we only have the new screen
+				{
+					slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete);
 				}
 			}
 		}
@@ -88,48 +98,54 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-				if(oldScreen)
+				if(!oldScreen && !newScreen)
 				{
-					oldScreen.x = 0;
-					oldScreen.y = 0;
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				if(newScreen)
 				{
 					newScreen.x = 0;
 					newScreen.y = -newScreen.height;
-					new CoverTween(newScreen, 0, newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
-				else //we only have the old screen
+				if(oldScreen)
 				{
-					new CoverClipTween(oldScreen, 0, oldScreen.height, duration, ease, onComplete, tweenProperties);
+					oldScreen.x = 0;
+					oldScreen.y = 0;
+					new CoverTween(newScreen, oldScreen, 0, oldScreen.height, duration, ease, onComplete, tweenProperties);
+				}
+				else //we only have the new screen
+				{
+					slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete);
 				}
 			}
 		}
 
-		private static function validateAndCleanup(oldScreen:DisplayObject, newScreen:DisplayObject):void
+		private static function slideInNewScreen(newScreen:DisplayObject,
+			duration:Number, ease:Object, tweenProperties:Object, onComplete:Function):void
 		{
-			if(!oldScreen && !newScreen)
+			var tween:Tween = new Tween(newScreen, duration, ease);
+			if(newScreen.x != 0)
 			{
-				throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				tween.animate("x", 0);
 			}
-
-			if(oldScreen)
+			if(newScreen.y !== 0)
 			{
-				var activeTween:Tween = CoverTween.SCREEN_TO_TWEEN[oldScreen] as Tween;
-				if(activeTween)
+				tween.animate("y", 0);
+			}
+			if(tweenProperties)
+			{
+				for(var propertyName:String in tweenProperties)
 				{
-					//force the existing tween to finish so that the
-					//properties of the old screen end up in a good state.
-					activeTween.advanceTime(activeTween.totalTime);
+					tween[propertyName] = tweenProperties[propertyName];
 				}
 			}
+			tween.onComplete = onComplete;
+			Starling.juggler.add(tween);
 		}
 	}
 }
 
 import flash.geom.Rectangle;
-import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.Starling;
@@ -138,57 +154,15 @@ import starling.display.Sprite;
 
 class CoverTween extends Tween
 {
-	internal static const SCREEN_TO_TWEEN:Dictionary = new Dictionary(true);
-
-	public function CoverTween(target:DisplayObject, xOffset:Number, yOffset:Number,
-			duration:Number, ease:Object, onCompleteCallback:Function,
-			tweenProperties:Object)
+	public function CoverTween(newScreen:DisplayObject, oldScreen:DisplayObject,
+		xOffset:Number, yOffset:Number, duration:Number, ease:Object, onCompleteCallback:Function,
+		tweenProperties:Object)
 	{
-		super(target, duration, ease);
-		SCREEN_TO_TWEEN[target] = this;
-		if(xOffset != 0)
-		{
-			this.animate("x", target.x + xOffset);
-		}
-		if(yOffset != 0)
-		{
-			this.animate("y", target.y + yOffset);
-		}
-		if(tweenProperties)
-		{
-			for(var propertyName:String in tweenProperties)
-			{
-				this[propertyName] = tweenProperties[propertyName];
-			}
-		}
-		this._onCompleteCallback = onCompleteCallback;
-		this.onComplete = this.cleanupTween;
-		Starling.juggler.add(this);
-	}
-
-	private var _onCompleteCallback:Function;
-
-	private function cleanupTween():void
-	{
-		delete SCREEN_TO_TWEEN[this.target];
-		if(this._onCompleteCallback !== null)
-		{
-			this._onCompleteCallback();
-		}
-	}
-}
-
-class CoverClipTween extends Tween
-{
-	public function CoverClipTween(target:DisplayObject, xOffset:Number, yOffset:Number,
-			duration:Number, ease:Object, onCompleteCallback:Function,
-			tweenProperties:Object)
-	{
-		var clipRect:Rectangle = new Rectangle(0, 0, target.width, target.height);
+		var clipRect:Rectangle = new Rectangle(0, 0, oldScreen.width, oldScreen.height);
 		this._temporaryParent = new Sprite();
 		this._temporaryParent.clipRect = clipRect;
-		target.parent.addChild(this._temporaryParent);
-		this._temporaryParent.addChild(target);
+		oldScreen.parent.addChild(this._temporaryParent);
+		this._temporaryParent.addChild(oldScreen);
 
 		super(this._temporaryParent.clipRect, duration, ease);
 
@@ -210,7 +184,6 @@ class CoverClipTween extends Tween
 			this.animate("y", yOffset);
 			this.animate("height", 0);
 		}
-		CoverTween.SCREEN_TO_TWEEN[target] = this;
 		if(tweenProperties)
 		{
 			for(var propertyName:String in tweenProperties)
@@ -219,21 +192,52 @@ class CoverClipTween extends Tween
 			}
 		}
 		this._onCompleteCallback = onCompleteCallback;
+		if(newScreen)
+		{
+			this._savedNewScreen = newScreen;
+			this._savedXOffset = xOffset;
+			this._savedYOffset = yOffset;
+			this.onUpdate = this.updateNewScreen;
+		}
 		this.onComplete = this.cleanupTween;
 		Starling.juggler.add(this);
 	}
 
+	private var _savedXOffset:Number;
+	private var _savedYOffset:Number;
+	private var _savedNewScreen:DisplayObject;
 	private var _temporaryParent:Sprite;
 	private var _onCompleteCallback:Function;
+
+	private function updateNewScreen():void
+	{
+		var clipRect:Rectangle = this._temporaryParent.clipRect;
+		if(this._savedXOffset < 0)
+		{
+			this._savedNewScreen.x = clipRect.width;
+		}
+		else if(this._savedXOffset > 0)
+		{
+			this._savedNewScreen.x = -clipRect.width;
+		}
+		if(this._savedYOffset < 0)
+		{
+			this._savedNewScreen.y = clipRect.height;
+		}
+		else if(this._savedYOffset > 0)
+		{
+			this._savedNewScreen.y = -clipRect.height;
+		}
+	}
 
 	private function cleanupTween():void
 	{
 		var target:DisplayObject = this._temporaryParent.removeChildAt(0);
 		this._temporaryParent.parent.addChild(target);
 		this._temporaryParent.removeFromParent(true);
-		delete CoverTween.SCREEN_TO_TWEEN[target];
 		target.x = 0;
 		target.y = 0;
+		this._savedNewScreen = null;
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();
