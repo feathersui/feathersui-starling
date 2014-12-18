@@ -3,7 +3,7 @@ title: How to use the Feathers Scale9Image display object
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Scale9Image display object
+# How to use the Feathers `Scale9Image` display object
 
 The `Scale9Image` class displays a texture divided into nine regions. When the dimensions of a `Scale9Image` are changed, the corners will not scale and each of the edges will scale in only one direction. The center region will be scaled in both directions normally. `Scale9Image` allows you to create a shape with features like rounded corners and borders for user interface components like buttons and windows.
 
@@ -65,7 +65,7 @@ You can easily change the `width` and `height` properties, and the regions will 
 
 ## Related Links
 
--   [Scale9Image API Documentation](../api-reference/feathers/display/Scale9Image.html)
+-   [`feathers.display.Scale9Image` API Documentation](../api-reference/feathers/display/Scale9Image.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

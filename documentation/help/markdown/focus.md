@@ -60,7 +60,7 @@ If a pop-up is not modal, then the same focus manager will remain active and eve
 
 ## Related Links
 
--   [FocusManager API Documentation](../api-reference/feathers/core/FocusManager.html)
+-   [`feathers.core.FocusManager` API Documentation](../api-reference/feathers/core/FocusManager.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

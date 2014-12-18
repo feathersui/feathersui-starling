@@ -3,13 +3,13 @@ title: How to use the Feathers Radio component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Radio component
+# How to use the Feathers `Radio` component
 
-The `Radio` component is a [Button](button.html) component with extra code to handle the management of `isSelected` among a set of radio buttons in a `ToggleGroup`.
+The `Radio` component is a [`ToggleButton`](toggle-button.html) component that integrates with a `ToggleGroup` so that only one `Radio` in the group is selected at a time.
 
-A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For more detailed information about the skinning options available to `Radio`, see [How to use the Button component](button.html).
+A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
 
-## Using ToggleGroup
+## Using `ToggleGroup`
 
 If no `ToggleGroup` is provided, a `Radio` will automatically add itself to `Radio.defaultToggleGroup`. In general, though, you should always create a `ToggleGroup` for a distinct set of radio buttons.
 
@@ -61,7 +61,7 @@ trace( "radio.label:", radio.label );
 
 A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For full details about what skin and style properties are available, see the [Radio API reference](../api-reference/feathers/controls/Radio.html).
 
-As mentioned above, `Radio` is a subclass of `Button`. For more detailed information about the skinning options available to `Radio`, see [How to use the Button component](button.html).
+As mentioned above, `Radio` is a subclass of `Button`. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
 
 ### Targeting a Radio in a theme
 
@@ -94,13 +94,11 @@ In general, a set of `Radio` controls should be used only when there are three o
 
 ## Related Links
 
--   [How to use the Feathers Button component](button.html)
+-   [`feathers.controls.Radio` API Documentation](../api-reference/feathers/controls/Radio.html)
 
--   [Radio API Documentation](../api-reference/feathers/controls/Radio.html)
+-   [`feathers.core.ToggleGroup` API Documentation](../api-reference/feathers/core/ToggleGroup.html)
 
--   [ToggleGroup API Documentation](../api-reference/feathers/core/ToggleGroup.html)
-
--   [Button API Documentation](../api-reference/feathers/controls/Button.html)
+-   [How to use the Feathers `ToggleButton` component](toggle-button.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

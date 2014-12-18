@@ -3,13 +3,13 @@ title: How to use the Feathers PageIndicator component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers PageIndicator component
+# How to use the Feathers `PageIndicator` component
 
 The `PageIndicator` component displays a series of symbols, with one being highlighted, to show the user which index among a limited set is selected. Typically, it is paired with a `List` or a similar component that supports paging. The user can tap the `PageIndicator` to either side of the selected symbol to navigate forward or backward.
 
 ## The Basics
 
-First, let's create a page indicator and give it a number of symbols.
+First, let's create a `PageIndicator` control, give it a number of pages, and add it to the display list.
 
 ``` code
 var pages:PageIndicator = new PageIndicator();
@@ -17,7 +17,7 @@ pages.pageCount = 5;
 this.addChild( pages );
 ```
 
-The `pageCount` property. You'll see that the first symbol is automatically selected. If you tap the page indicator on the right side, it will advance to the next index.
+The number of symbols that a page indicator displays is controlled by the `pageCount` property. You'll see that the first symbol is automatically selected. If you tap the page indicator on the right side, it will advance to the next index.
 
 If we want to react to the selected index changing, we can add a listener for `Event.CHANGE`:
 
@@ -104,7 +104,7 @@ If you aren't using a theme, then you may set any of the page indicator's proper
 
 ## Related Links
 
--   [PageIndicator API Documentation](../api-reference/feathers/controls/PageIndicator.html)
+-   [`feathers.controls.PageIndicator` API Documentation](../api-reference/feathers/controls/PageIndicator.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

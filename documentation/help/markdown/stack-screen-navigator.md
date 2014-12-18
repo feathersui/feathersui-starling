@@ -3,7 +3,7 @@ title: How to use the Feathers StackScreenNavigator component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers StackScreenNavigator component
+# How to use the Feathers `StackScreenNavigator` component
 
 The [`StackScreenNavigator`](../api-reference/feathers/controls/StackScreenNavigator.html) class supports navigation between screens or menus, with a history stack that makes it simple to return to the previous screen. Events dispatched from the active screen can be used to push a new screen onto the stack, to pop the active screen, or even to call a function. When a new screen is pushed onto the stack, the previous screen may save its current state to be restored later.
 
@@ -11,7 +11,7 @@ Navigation can be enhanced with animation, called a [*transition*](transitions.h
 
 ## The Basics
 
-Let's start by creating a `StackScreenNavigator` and adding it to the display list:
+First, let's create a `StackScreenNavigator` component and add it to the display list:
 
 ``` code
 this._navigator = new StackScreenNavigator();
@@ -299,15 +299,15 @@ Modifying `OptionsScreen` to use signals instead of events would be the same.
 
 ## Related Links
 
--   [StackScreenNavigator API Documentation](../api-reference/feathers/controls/StackScreenNavigator.html)
+-   [`feathers.controls.StackScreenNavigator` API Documentation](../api-reference/feathers/controls/StackScreenNavigator.html)
 
 -   [Transitions for Feathers screen navigators](transitions.html)
 
--   [How to use the Feathers Screen component](screen.html)
+-   [How to use the Feathers `Screen` component](screen.html)
 
--   [How to use the Feathers ScrollScreen component](panel-screen.html)
+-   [How to use the Feathers `ScrollScreen` component](panel-screen.html)
 
--   [How to use the Feathers PanelScreen component](panel-screen.html)
+-   [How to use the Feathers `PanelScreen` component](panel-screen.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

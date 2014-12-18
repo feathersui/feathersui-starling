@@ -3,7 +3,7 @@ title: How to use the Feathers ScrollText component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ScrollText Component
+# How to use the Feathers `ScrollText` Component
 
 The `ScrollText` is designed for displaying long passages of text. With longer text, `TextFieldTextRenderer` may run into the maximum texture size limits. `BitmapFontTextRenderer` may be a good alternative, but with enough characters, then it may begin to affect performance. `ScrollText` provides the workaround of displaying text on the runtime's classic software-rendered display list.
 
@@ -11,7 +11,7 @@ A disadvantage of displaying text on the classic display list is that the text w
 
 ## The Basics
 
-Let's create a `ScrollText` instance, give it some text, and add it to the display list.
+First, let's create a `ScrollText` component, give it some text to display, and add it to the display list.
 
 ``` code
 var scrollText:ScrollText = new ScrollText();
@@ -83,7 +83,7 @@ If you aren't using a theme, then you may set any of the scroll text's propertie
 
 ### Skinning the Scroll Bars
 
-This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers ScrollBar component](scroll-bar.html) (or [SimpleScrollBar](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
 
 #### With a Theme
 
@@ -169,7 +169,7 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 ## Related Links
 
--   [ScrollText API Documentation](../api-reference/feathers/controls/ScrollText.html)
+-   [`feathers.controls.ScrollText` API Documentation](../api-reference/feathers/controls/ScrollText.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,7 +3,7 @@ title: How to use the Feathers TabBar component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers TabBar component
+# How to use the Feathers `TabBar` component
 
 The `TabBar` class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar's tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more "pill" shaped control that looks more like a segmented button bar than a set of tabs.
 
@@ -11,7 +11,7 @@ The [DisplayObjectExplorer example](http://feathersui.com/examples/display-objec
 
 ## The Basics
 
-Let's start by creating a tab bar, setting it's data provider to display a few tabs, and adding it to the display list:
+First, let's create a `TabBar` control, set its data provider to display a few tabs, and add it to the display list:
 
 ``` code
 var tabs:TabBar = new TabBar();
@@ -79,7 +79,7 @@ If you aren't using a theme, then you may set any of the tab bar's properties di
 
 ### Skinning the Tabs
 
-This section only explains how to access the tab sub-components, which are simply buttons. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the tab sub-components, which are simply buttons. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -128,7 +128,7 @@ In general, you should only pass properties to the tab bar's tabs through `tabPr
 
 ### Skinning the First and Last Tabs
 
-This section only explains how to access the first and last tab sub-components. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the first and last tab sub-components. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The tab bar's first and last tabs will have the same skins as the other tabs by default. However, their skins may be customized separately, if desired.
 
@@ -140,7 +140,7 @@ Separate skins for the first and last tabs are completely optional.
 
 ## Related Links
 
--   [TabBar API Documentation](../api-reference/feathers/controls/TabBar.html)
+-   [`feathers.controls.TabBar` API Documentation](../api-reference/feathers/controls/TabBar.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

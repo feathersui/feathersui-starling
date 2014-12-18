@@ -3,7 +3,7 @@ title: Creating custom item renderers with the Layout Group container
 author: Josh Tynjala
 
 ---
-# Creating custom item renderers with the Layout Group container
+# Creating custom item renderers with the `LayoutGroup` container
 
 The `LayoutGroup` container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](index.html#custom_components), but it's especially useful for custom item renderers in the `List` and `GroupedList` components.
 
@@ -275,11 +275,11 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
--   [LayoutGroupListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
+-   [`feathers.controls.renderers.LayoutGroupListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
 
--   [LayoutGroupGroupedListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html)
+-   [`feathers.controls.renderers.LayoutGroupGroupedListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html)
 
--   [LayoutGroupGroupedListHeaderOrFooterRenderer API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html)
+-   [`feathers.controls.renderers.LayoutGroupGroupedListHeaderOrFooterRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

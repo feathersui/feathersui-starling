@@ -3,13 +3,13 @@ title: Pop Up Management in Feathers
 author: Josh Tynjala
 
 ---
-# Pop Up Management in Feathers
+# Displaying pop-ups above other content in Feathers
 
 Feathers includes a `PopUpManager` that allows you to display content above the rest of your application. It provides options to make the pop-up modal and to center it on screen. You can customize the modal overlay to create any display object to block interaction with the content below the modal pop-up. You can even customize where pop-ups will appear on the display list.
 
 If the [focus management](focus.html) is enabled, modal pop-ups will be given their own focus manager so that focus cannot be given to components below the modal overlay.
 
-## Adding Pop Ups
+## Adding pop-ps
 
 `PopUpManager.addPopUp()` is used to add a display object as a pop up. You must create the display object beforehand:
 
@@ -26,7 +26,7 @@ The second argument, `isModal`, tells the `PopUpManager` whether the pop-up is m
 
 A fourth argument, also optional, allows you to pass in a custom factory for the modal overlay. By default, `PopUpManager.overlayFactory` is used to create the overlay, but you can customize it for individual pop-ups, if needed. We'll look at custom overlay factories further below.
 
-## Removing Pop Ups
+## Removing pop-ups
 
 There are two ways to remove pop-ups. The first is by calling `PopUpManager.removePopUp()`
 
@@ -42,7 +42,7 @@ If you prefer, you may also use the standard `removeFromParent()` function avail
 popUp.removeFromParent( true );
 ```
 
-## Centering Pop Ups
+## Centering pop-ups
 
 There are two ways to center pop-ups, with different behavior.
 
@@ -50,7 +50,7 @@ The first way to center a pop-up is to pass a value of `true` to the third argum
 
 If you choose not to center a pop-up when you call `PopUpManager.addPopUp()`, you can center it manually by calling `PopUpManager.centerPopUp()` and passing the pop-up as the only argument. This will center the pop-up only once. If the pop-up resizes or the stage resizes, you will need to call `PopUpManager.centerPopUp()` again to reposition it so that it remains centered.
 
-## Customizing the Pop Up Manager
+## Customizing the `PopUpManager`
 
 By customizing `PopUpManager.overlayFactory` you can change the appearance of the modal overlay. By default, this overlay is a fully transparent `Quad`. It will block touches to the content below, but it has no appearance.
 
@@ -90,7 +90,7 @@ In this case, we move pop-ups into a dedicated container on the stage. This migh
 
 ## Related Links
 
--   [PopUpManager API Documentation](../api-reference/feathers/core/PopUpManager.html)
+-   [`feathers.core.PopUpManager` API Documentation](../api-reference/feathers/core/PopUpManager.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

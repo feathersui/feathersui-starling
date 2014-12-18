@@ -3,13 +3,13 @@ title: How to use the Feathers Drawers component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Drawers component
+# How to use the Feathers `Drawers` component
 
 The `Drawers` class provides a container that supports main content in the center with "drawers", or slide-out menus, that may be opened and closed with a gesture around all four edges. Drawers may also be docked to remain open at all times, or based on the stage orientation. Drawers may be opened by listening to an event from the main content, such as one triggered by a button press.
 
 ## The Basics
 
-Let's start by creating a `Drawers` container and adding it to the display list:
+First, let's create a `Drawers` component and add it to the display list:
 
 ``` code
 var drawers:Drawers = new Drawers();
@@ -177,7 +177,7 @@ if( drawers.isLeftDrawerOpen )
 
 ## Related Links
 
--   [Drawers API Documentation](../api-reference/feathers/controls/Drawers.html)
+-   [`feathers.controls.Drawers` API Documentation](../api-reference/feathers/controls/Drawers.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

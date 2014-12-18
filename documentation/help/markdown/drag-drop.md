@@ -44,6 +44,10 @@ function(event:DragDropEvent, dragData:DragData):void
 
 In the `DragDropEvent.DRAG_DROP` listener, you use `dragData.getDataForFormat()` with the same string to retrieve the display object or other data.
 
+## Related Links
+
+-   [`feathers.dragDrop.DragDropManager` API Documentation](../api-reference/feathers/dragDrop/DragDropManager.html)
+
 For more tutorials, return to the [Feathers Documentation](index.html).
 
 

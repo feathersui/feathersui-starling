@@ -3,13 +3,13 @@ title: How to use the Feathers Image Loader component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ImageLoader component
+# How to use the Feathers `ImageLoader` component
 
 The `ImageLoader` class wraps `starling.display.Image` inside a Feathers component to add additional features. For instance, you can easily load an image from a URL and automatically convert it to a texture that is fully managed by the `ImageLoader`. The texture will be disposed when the `ImageLoader` is disposed. A number of other useful properties have been added to `ImageLoader`. See below for more details.
 
 ## The Basics
 
-Let's create an `ImageLoader` and pass in a texture:
+First, let's create an `ImageLoader` control, pass in a texture to display, and add it to the display list:
 
 ``` code
 var loader:ImageLoader = new ImageLoader();
@@ -115,7 +115,7 @@ loader.smoothing = TextureSmoothing.NONE;
 
 ## Related Links
 
--   [ImageLoader API Documentation](../api-reference/feathers/controls/ImageLoader.html)
+-   [`feathers.controls.ImageLoader` API Documentation](../api-reference/feathers/controls/ImageLoader.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

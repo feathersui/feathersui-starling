@@ -3,13 +3,13 @@ title: How to use the Feathers ProgressBar component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ProgressBar component
+# How to use the Feathers `ProgressBar` component
 
 The `ProgressBar` class displays a visual indicator of how much of a task has been completed.
 
 ## The Basics
 
-Let's start out by creating a progress bar, giving it some values, and adding it to the display list.
+First, let's create a `ProgressBar` control, set up its range of values, and add it to the display list.
 
 ``` code
 var progress:ProgressBar = new ProgressBar();
@@ -85,7 +85,7 @@ If you aren't using a theme, then you may set any of the progress bar's properti
 
 ## Related Links
 
--   [ProgressBar API Documentation](../api-reference/feathers/controls/ProgressBar.html)
+-   [`feathers.controls.ProgressBar` API Documentation](../api-reference/feathers/controls/ProgressBar.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

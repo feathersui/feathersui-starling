@@ -3,7 +3,7 @@ title: How to use the Feathers ScrollContainer component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ScrollContainer component
+# How to use the Feathers `ScrollContainer` component
 
 The `ScrollContainer` class provides a generic container for display object layout and scrolling a view port. By default, you can position components manually, but you can also pass in a layout to position the children automatically. Scrolling is vertical or horizontal, and is enabled when the width or height of the content exceeds the width or height of the container. You can also disable scrolling completely, if desired.
 
@@ -11,7 +11,7 @@ You may also be interested in the `LayoutGroup` component. This container lightw
 
 ## The Basics
 
-Let's start by creating a `ScrollContainer` and adding it to the display list:
+First, let's create a `ScrollContainer` component and add it to the display list:
 
 ``` code
 var container:ScrollContainer = new ScrollContainer();
@@ -109,7 +109,7 @@ If you aren't using a theme, then you may set any of the scroll container's prop
 
 ### Skinning the Scroll Bars
 
-This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers ScrollBar component](scroll-bar.html) (or [SimpleScrollBar](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
 
 #### With a Theme
 
@@ -207,9 +207,9 @@ List is much better at supporting layouts with dozens or hundreds of items, and 
 
 ## Related Links
 
--   [ScrollContainer API Documentation](../api-reference/feathers/controls/ScrollContainer.html)
+-   [`feathers.controls.ScrollContainer` API Documentation](../api-reference/feathers/controls/ScrollContainer.html)
 
--   [How to use the Feathers LayoutGroup component](layout-group.html)
+-   [How to use the Feathers `LayoutGroup` component](layout-group.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

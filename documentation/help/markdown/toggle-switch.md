@@ -3,13 +3,13 @@ title: How to use the Feathers ToggleSwitch component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ToggleSwitch component
+# How to use the Feathers `ToggleSwitch` component
 
 The `ToggleSwitch` component switches between on and off states. It can be considered a stylized alternative to a [Check](check.html) control that is especially relevant when targeting touch screens. The thumb may be dragged from side to side, or it may be tapped to change selection.
 
 ## The Basics
 
-Let's create a toggle switch.
+First, let's create a toggle switch, select it, and add it to the display list.
 
 ``` code
 var toggle:ToggleSwitch = new ToggleSwitch();
@@ -79,7 +79,7 @@ toggle.onLabelProperties.textFormat = new BitmapFontTextFormat( myBitmapFont, my
 
 ### Skinning the Thumb
 
-This section only explains how to access the thumb sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -139,7 +139,7 @@ When the value of `trackLayoutMode` is `ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`, 
 
 ### Skinning the On Track
 
-This section only explains how to access the on track sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the on track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -189,13 +189,13 @@ In general, you should only pass properties to the toggle switch's on track thro
 
 ### Skinning the Off Track
 
-This section only explains how to access the off track sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the off track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The toggle switch's off track may be skinned similarly to the on track. The name to use with [themes](themes.html) is `ToggleSwitch.DEFAULT_CHILD_NAME_OFF_TRACK` or you can customize the name with `customOffTrackName`. If you aren't using a theme, then you can use `offTrackFactory` and `offTrackProperties`.
 
 ## Related Links
 
--   [ToggleSwitch API Documentation](../api-reference/feathers/controls/ToggleSwitch.html)
+-   [`feathers.controls.ToggleSwitch` API Documentation](../api-reference/feathers/controls/ToggleSwitch.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,7 +3,7 @@ title: How to use the Feathers TiledImage display object
 author: Josh Tynjala
 
 ---
-# How to use the Feathers TiledImage display object
+# How to use the Feathers `TiledImage` display object
 
 The `TiledImage` class repeats a texture in a given region, horizontally and vertically. If the dimensions of the tiled image aren't a perfect multiple of the dimensions of the texture, the edges will be clipped.
 
@@ -50,7 +50,7 @@ When tiling images, extruding is always recommended.
 
 ## Related Links
 
--   [TiledImage API Documentation](../api-reference/feathers/display/TiledImage.html)
+-   [`feathers.display.TiledImage` API Documentation](../api-reference/feathers/display/TiledImage.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

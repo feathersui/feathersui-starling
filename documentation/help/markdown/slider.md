@@ -3,13 +3,13 @@ title: How to use the Feathers Slider component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Slider component
+# How to use the Feathers `Slider` component
 
 The `Slider` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction.
 
 ## The Basics
 
-Let's create a slider.
+First, let's create a `Slider` control, set up its range of values, and add it to the display list.
 
 ``` code
 var slider:Slider = new Slider();
@@ -85,7 +85,7 @@ If you aren't using a theme, then you may set any of the slider's properties dir
 
 ### Skinning the Thumb
 
-This section only explains how to access the thumb sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -135,7 +135,7 @@ In general, you should only pass skins to the slider's thumb through `thumbPrope
 
 ### Skinning the Minimum Track
 
-This section only explains how to access the minimum track sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the minimum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -185,7 +185,7 @@ In general, you should only pass properties to the slider's minimum track throug
 
 ### Skinning the Maximum Track
 
-This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The slider's maximum track may be skinned similarly to the minimum track. The name to use with [themes](themes.html) is `DefaulterSlider_CHILD_NAME_MAXIMUM_TRACK` or you can customize the name with `customMaximumTrackName`. If you aren't using a theme, then you can use `maximumTrackFactory` and `maximumTrackProperties`.
 
@@ -195,7 +195,7 @@ A slider also provides a `showThumb` property. If set to `false`, the thumb will
 
 ## Related Links
 
--   [Slider API Documentation](../api-reference/feathers/controls/Slider.html)
+-   [`feathers.controls.Slider` API Documentation](../api-reference/feathers/controls/Slider.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,9 +3,9 @@ title: How to use the Feathers Callout component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Callout component
+# How to use the Feathers `Callout` component
 
-The `Callout` class renders content as a pop-up over all other content. Typically, a callout displays a rectangular border with an arrow or tail that points to an origin display object, such as a button. The arrow may appear on any of the callout's edges. The callout will close automatically when a touch is detected outside of the callout's bounds.
+The `Callout` class renders content as a [pop-up](pop-ups.html) over all other content. Typically, a callout displays a rectangular border with an arrow or tail that points to an origin display object, such as a button. The arrow may appear on any of the callout's edges. The callout will close automatically when a touch is detected outside of the callout's bounds.
 
 ## The Basics
 
@@ -176,7 +176,7 @@ Finally, you may want to reuse the callout's content. By default, the callout wi
 
 ## Related Links
 
--   [Callout API Documentation](../api-reference/feathers/controls/Callout.html)
+-   [`feathers.controls.Callout` API Documentation](../api-reference/feathers/controls/Callout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

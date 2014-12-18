@@ -3,13 +3,13 @@ title: How to use the Feathers Header component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Header component
+# How to use the Feathers `Header` component
 
 The `Header` component displays an optional title and a region on the left and right sides for extra controls (usually buttons for navigation).
 
 ## The Basics
 
-Let's start by creating a header with a title.
+First, let's create a `Header` control, give it a title, and add it to the display list.
 
 ``` code
 var header:Header = new Header();
@@ -118,7 +118,7 @@ If you aren't using a theme, then you may set any of the header's properties dir
 
 ## Related Links
 
--   [Header API Documentation](../api-reference/feathers/controls/Header.html)
+-   [`feathers.controlsHeader` API Documentation](../api-reference/feathers/controls/Header.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

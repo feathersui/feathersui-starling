@@ -3,15 +3,15 @@ title: How to use the Feathers ScrollScreen component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ScrollScreen component
+# How to use the Feathers `ScrollScreen` component
 
-The `ScrollScreen` component is simply a combination between the `ScrollContainer` component and the `Screen` component.
+The `ScrollScreen` component is meant to be a base class for custom screens to be displayed by `StackScreenNavigator` and `ScreenNavigator`. `ScrollScreen` is based on the `ScrollContainer` component, and it provides scrolling and optional layout.
 
-## Skinning a ScrollScreen
+## Skinning a `ScrollScreen`
 
 For full details about what skin and style properties are available, see the [ScrollScreen API reference](../api-reference/feathers/controls/ScrollScreen.html).
 
-As mentioned above, `ScrollScreen` is a subclass of `ScrollContainer`. For more detailed information about the skinning options available to `ScrollScreen`, see [How to use the ScrollContainer component](button.html).
+As mentioned above, `ScrollScreen` is a subclass of `ScrollContainer`. For more detailed information about the skinning options available to `ScrollScreen`, see [How to use the `ScrollContainer` component](button.html).
 
 ### Targeting a ScrollScreen in a theme
 
@@ -40,11 +40,11 @@ If you aren't using a theme, then you may set any of the screen's properties dir
 
 ## Related Links
 
--   [ScrollScreen API Documentation](../api-reference/feathers/controls/ScrollScreen.html)
+-   [`feathers.controls.ScrollScreen` API Documentation](../api-reference/feathers/controls/ScrollScreen.html)
 
--   [How to use the Feathers ScrollContainer component](scroll-container.html)
+-   [How to use the Feathers `ScrollContainer` component](scroll-container.html)
 
--   [How to use the Feathers Screen component](screen.html)
+-   [How to use the Feathers `Screen` component](screen.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

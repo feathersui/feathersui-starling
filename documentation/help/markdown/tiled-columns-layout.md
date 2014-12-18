@@ -3,13 +3,13 @@ title: Using TiledColumnsLayout in Feathers containers
 author: Josh Tynjala
 
 ---
-# Using TiledColumnsLayout in Feathers containers
+# Using `TiledColumnsLayout` in Feathers containers
 
-The `TiledColumnsLayout` class may be used by components that support layout, such as `List` and `ScrollContainer`, to display items from top to bottom in multiple columns. It supports paging horizontally or vertically, and you can modify a number of useful options for the spacing and alignment.
+The `TiledColumnsLayout` class may be used by components that support layout, such as `List`, `LayoutGroup` and `ScrollContainer`, to display items from top to bottom in multiple columns. It supports paging horizontally or vertically, and you can modify a number of useful options for the spacing and alignment.
 
 ## The Basics
 
-Let's create a tiled columns layout and add it to a [scroll container](scroll-container.html):
+First, let's create a `TiledColumnsLayout` and pass it to a [`ScrollContainer`](scroll-container.html):
 
 ``` code
 var layout:TiledColumnsLayout = new TiledColumnsLayout();
@@ -88,7 +88,7 @@ The `LayoutGroup` and `ScrollContainer` components never use virtual layouts.
 
 ## Related Links
 
--   [TiledColumnsLayout API Documentation](../api-reference/feathers/layout/TiledColumnsLayout.html)
+-   [`feathers.layout.TiledColumnsLayout` API Documentation](../api-reference/feathers/layout/TiledColumnsLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

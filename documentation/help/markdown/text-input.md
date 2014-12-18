@@ -3,13 +3,13 @@ title: How to use the Feathers TextInput component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers TextInput component
+# How to use the Feathers `TextInput` component
 
 The `TextInput` class supports the editing of text. It displays a background skin and uses a [text editor](text-editors.html) to allow the user to modify the text.
 
 ## The Basics
 
-Let's start by creating a text input and giving it some default text:
+First, let's create a `TextInput` control, give it some text to display, and add it to the display list:
 
 ``` code
 var input:TextInput = new TextInput();
@@ -213,9 +213,9 @@ If you aren't using a theme, then you may set any of the text input's properties
 
 ## Related Links
 
--   [TextInput API Documentation](../api-reference/feathers/controls/TextInput.html)
+-   [`feathers.controls.TextInput` API Documentation](../api-reference/feathers/controls/TextInput.html)
 
--   [How to Use the Feathers Text Area Component](text-area.html)
+-   [How to Use the Feathers `TextArea` Component](text-area.html)
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
 

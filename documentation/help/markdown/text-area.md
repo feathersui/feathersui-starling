@@ -3,7 +3,7 @@ title: How to use the Feathers TextArea component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers TextArea Component
+# How to use the Feathers `TextArea` Component
 
 The `TextArea` class supports the editing of multiline, uniformly-formatted text.
 
@@ -11,7 +11,7 @@ The `TextArea` class supports the editing of multiline, uniformly-formatted text
 
 ## The Basics
 
-Let's start by creating a text area and giving it some default text:
+First, let's create a `TextArea` control, give it some text to display, and add it to the display list:
 
 ``` code
 var textArea:TextArea = new TextArea();
@@ -159,7 +159,7 @@ If you aren't using a theme, then you may set any of the text area's properties 
 
 ### Skinning the Scroll Bars
 
-This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers ScrollBar component](scroll-bar.html) (or [SimpleScrollBar](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
 
 #### With a Theme
 
@@ -245,9 +245,9 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 ## Related Links
 
--   [TextArea API Documentation](../api-reference/feathers/controls/TextArea.html)
+-   [`feathers.controls.TextArea` API Documentation](../api-reference/feathers/controls/TextArea.html)
 
--   [How to Use the Feathers Text Input Component](text-input.html)
+-   [How to Use the Feathers `TextInput` Component](text-input.html)
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
 

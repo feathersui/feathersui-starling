@@ -3,13 +3,13 @@ title: How to use the Feathers PickerList component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers PickerList component
+# How to use the Feathers `PickerList` component
 
-The `PickerList` class displays a `Button` that may be triggered to show a pop-up [List](list.html). The way that the list is displayed may be customized for different platforms by changing the picker list's *pop-up content manager*. Several different options are available, including drop downs, callouts, and simply filling the stage vertically.
+The `PickerList` class displays a `Button` that may be triggered to show a [pop-up](pop-ups.html) [`List`](list.html). The way that the list is displayed may be customized for different platforms by changing the picker list's *pop-up content manager*. Several different options are available, including drop downs, callouts, and simply filling the stage vertically.
 
 ## The Basics
 
-Let's start by creating our picker list control:
+First, let's create a `PickerList` control and add it to the display list:
 
 ``` code
 var list:PickerList = new PickerList();
@@ -82,7 +82,7 @@ If you aren't using a theme, then you may set any of the picker list's propertie
 
 ### Skinning the Button
 
-Please read [How to use the Feathers Button component](button.html) for full details about how to skin this component.
+Please read [How to use the Feathers `Button` component](button.html) for full details about how to skin this component.
 
 #### With a Theme
 
@@ -133,7 +133,7 @@ In general, you should only skins to the picker list's button through `buttonPro
 
 ### Skinning the List
 
-Please read [How to use the Feathers List component](list.html) for full details about how to skin this component.
+Please read [How to use the Feathers `List` component](list.html) for full details about how to skin this component.
 
 #### With a Theme
 
@@ -211,7 +211,7 @@ You can completely customize the pop-up behavior of the picker list by implement
 
 ## Related Links
 
--   [PickerList API Documentation](../api-reference/feathers/controls/PickerList.html)
+-   [`feathers.controls.PickerList` API Documentation](../api-reference/feathers/controls/PickerList.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

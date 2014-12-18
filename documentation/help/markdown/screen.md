@@ -3,17 +3,17 @@ title: How to use the Feathers Screen component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Screen component
+# How to use the Feathers `Screen `component
 
-The `ScreenNavigator` component can display any Feathers control as a screen. However, using the `Screen` class as your base class for a new screen is recommended because it provides a number of convenient properties.
+The `Screen` component is meant to be a base class for custom screens to be displayed by `StackScreenNavigator` and `ScreenNavigator`. `Screen` is based on the `Layout` component, and it provides optional layout.
 
-## Accessing the ScreenNavigator
+## Accessing the screen navigator
 
-The [owner](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling `showScreen()`. You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
+The [owner](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `StackScreenNavigator` or `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling `showScreen()`. You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
 
 ## Screen ID
 
-The `screenID` property refers to the string that the `ScreenNavigator` uses to identify the current screen when calling functions like `showScreen()`
+The `screenID` property refers to the string that the screen navigator uses to identify the current screen when calling functions like `pushScreen()` on a `StackScreenNavigator` or `showScreen()` on a `ScreenNavigator`.
 
 ## Scaling
 
@@ -36,13 +36,13 @@ this.backButtonHandler = function():void
 }
 ```
 
-## Skinning a Screen
+## Skinning a `Screen`
 
 For full details about what skin and style properties are available, see the [Screen API reference](../api-reference/feathers/controls/Screen.html).
 
-As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the LayoutGroup component](layout-group.html).
+As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the Feathers `LayoutGroup` component](layout-group.html).
 
-### Targeting a Screen in a theme
+### Targeting a `Screen` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
@@ -69,7 +69,7 @@ If you aren't using a theme, then you may set any of the screen's properties dir
 
 ## Related Links
 
--   [Screen API Documentation](../api-reference/feathers/controls/Screen.html)
+-   [`feathers.controls.Screen` API Documentation](../api-reference/feathers/controls/Screen.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,13 +3,13 @@ title: Using VerticalLayout in Feathers containers
 author: Josh Tynjala
 
 ---
-# Using VerticalLayout in Feathers containers
+# Using `VerticalLayout` in Feathers containers
 
-The `VerticalLayout` class may be used by components that support layout, such as `List` and `ScrollContainer`, to display items from top to bottom in a single column. It supports a number of useful options for adjusting the spacing and alignment.
+The `VerticalLayout` class may be used by components that support layout, such as `List`, `LayoutGroup` and `ScrollContainer`, to display items from top to bottom in a single column. It supports a number of useful options for adjusting the spacing and alignment.
 
 ## The Basics
 
-Let's create a vertical layout and add it to a [scroll container](scroll-container.html):
+First, let's create a `VerticalLayout` and pass it to a [`ScrollContainer`](scroll-container.html):
 
 ``` code
 var layout:VerticalLayout = new VerticalLayout();
@@ -149,7 +149,7 @@ layout.hasVariableItemDimensions = false;
 
 ## Related Links
 
--   [VerticalLayout API Documentation](../api-reference/feathers/layout/VerticalLayout.html)
+-   [`feathers.layout.VerticalLayout` API Documentation](../api-reference/feathers/layout/VerticalLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

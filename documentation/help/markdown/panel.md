@@ -3,13 +3,13 @@ title: How to use the Feathers Panel component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Panel component
+# How to use the Feathers `Panel` component
 
 The [`Panel`](../api-reference/feathers/controls/Panel.html) component is a container that supports layout and scrolling, similar to [`ScrollContainer`](scroll-container.html), but it also adds a header and an optional footer above and below the content, respectively. This component is useful for creating windows and dialogs and making any kind of grouping that needs a header or title.
 
 ## The Basics
 
-Let's start by creating a `Panel` and adding it to the display list:
+First, let's create a `Panel` container and add it to the display list:
 
 ``` code
 var panel:Panel = new Panel();
@@ -195,7 +195,7 @@ If you aren't using a theme, then you may set any of the panel's properties dire
 
 This section only explains how to access the header sub-component. The header may be any type of Feathers control. Please read the appropriate documentation for full details about the skinning properties that are available on the component that is used for the header.
 
-<aside class="info">For the default header, please read [How to use the Feathers Header component](header.html) for full details about the skinning properties that are available on `Header` components.</aside>
+<aside class="info">For the default header, please read [How to use the Feathers `Header` component](header.html) for full details about the skinning properties that are available on `Header` components.</aside>
 
 #### With a Theme
 
@@ -203,7 +203,7 @@ If you're creating a [theme](themes.html), you can target the [`Panel.DEFAULT_CH
 
 ``` code
 getStyleProviderForClass( Header )
-    .setFunctionForStyleName( Panel.DEFAULT_CHILD_NAME_HEADER, setPanelHeaderStyles );
+    .setFunctionForStyleName( Panel.DEFAULT_CHILD_STYLE_NAME_HEADER, setPanelHeaderStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -382,7 +382,7 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 
 ## Related Links
 
--   [Panel API Documentation](../api-reference/feathers/controls/Panel.html)
+-   [`feathers.controls.Panel` API Documentation](../api-reference/feathers/controls/Panel.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

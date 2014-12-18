@@ -3,13 +3,13 @@ title: How to use the Feathers Button component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Button component
+# How to use the Feathers `Button` component
 
 The `Button` class displays a touchable button with optional toggle capabilities. It can display an optional label and an optional icon with a variety of layout options. Buttons have states for each of the different touch phases and the skin, label, and icon can all be customized for each state, including variations for selected states.
 
 ## The Basics
 
-First, let's create a Button control, give it a label, and add it to the display list:
+First, let's create a `Button` control, give it a label, and add it to the display list:
 
 ``` code
 var button:Button = new Button();
@@ -241,7 +241,7 @@ Similar to `stateToSkinFunction`, button also provides `stateToIconFunction` to 
 
 ## Related Links
 
--   [Button API Documentation](../api-reference/feathers/controls/Button.html)
+-   [`feathers.controls.Button` API Documentation](../api-reference/feathers/controls/Button.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

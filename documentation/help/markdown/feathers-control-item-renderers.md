@@ -3,7 +3,7 @@ title: Creating custom item renderers with FeathersControl and IListItemRenderer
 author: Josh Tynjala
 
 ---
-# Creating custom item renderers with FeathersControl and IListItemRenderer
+# Creating custom item renderers with `FeathersControl` and `IListItemRenderer`
 
 The `FeathersControl` class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a `List` or `GroupedList`, you're actually going to create a [custom Feathers component](index.html#custom_components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
 
@@ -544,11 +544,11 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
--   [IListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/IListItemRenderer.html)
+-   [`feathers.controls.renderers.IListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/IListItemRenderer.html)
 
--   [IGroupedListItemRenderer API Documentation](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html)
+-   [`feathers.controls.renderers.IGroupedListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html)
 
--   [IGroupedListHeaderOrFooterRenderer API Documentation](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html)
+-   [`feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer` API Documentation](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

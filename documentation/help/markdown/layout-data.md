@@ -3,7 +3,7 @@ title: ILayoutDisplayObject and ILayoutData
 author: Josh Tynjala
 
 ---
-# ILayoutDisplayObject and ILayoutData
+# `ILayoutDisplayObject` and `ILayoutData`
 
 Some layouts may allow developers to customize individual display objects by adding optional *layout data*. All Feathers components have a `layoutData` property that can be used to specify additional information about the component that the parent container's layout can use for measurement and positioning.
 
