@@ -3,7 +3,7 @@ title: How to use the Feathers ScreenNavigator component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ScreenNavigator component
+# How to use the Feathers `ScreenNavigator` component
 
 The [`ScreenNavigator`](../api-reference/feathers/controls/ScreenNavigator.html) class supports navigation between screens or pages. It is best suited for working with a set of screens in a flat hierarchy. For instance, each screen might be associated with a tab in a [`TabBar`](tab-bar.html).
 
@@ -13,7 +13,7 @@ Events dispatched from the active screen can be used to trigger navigation. Navi
 
 ## The Basics
 
-Create a `ScreenNavigator` like this:
+First, let's create a `ScreenNavigator` component and add it to the display list:
 
 ``` code
 this._navigator = new ScreenNavigator();
@@ -290,17 +290,17 @@ Modifying `OptionsScreen` to use signals instead of events would be the same.
 
 ## Related Links
 
--   [ScreenNavigator API Documentation](../api-reference/feathers/controls/ScreenNavigator.html)
+-   [`feathers.controls.ScreenNavigator` API Documentation](../api-reference/feathers/controls/ScreenNavigator.html)
 
--   [ScreenNavigator Transitions](transitions.html)
+-   [Transitions for Feathers screen navigators](transitions.html)
 
--   [How to use the Feathers StackScreenNavigator component](stack-screen-navigator.html)
+-   [How to use the Feathers `StackScreenNavigator` component](stack-screen-navigator.html)
 
--   [How to use the Feathers Screen component](screen.html)
+-   [How to use the Feathers `Screen` component](screen.html)
 
--   [How to use the Feathers ScrollScreen component](panel-screen.html)
+-   [How to use the Feathers `ScrollScreen` component](panel-screen.html)
 
--   [How to use the Feathers PanelScreen component](panel-screen.html)
+-   [How to use the Feathers `PanelScreen` component](panel-screen.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

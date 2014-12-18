@@ -3,7 +3,7 @@ title: How to use the Feathers LayoutGroup component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers LayoutGroup component
+# How to use the Feathers `LayoutGroup` component
 
 The `LayoutGroup` class provides a generic container for layout without scrolling. By default, you can position children manually, but you can also pass in a layout implementation to position the children automatically.
 
@@ -11,7 +11,7 @@ If you need scrolling, you should use the `ScrollContainer` component instead.
 
 ## The Basics
 
-Let's start by creating a `LayoutGroup` and adding it to the display list:
+First, let's create a `LayoutGroup` container and add it to the display list:
 
 ``` code
 var group:LayoutGroup = new LayoutGroup();
@@ -96,7 +96,7 @@ If you aren't using a theme, then you may set any of the group's properties dire
 
 ## Related Links
 
--   [LayoutGroup API Documentation](../api-reference/feathers/controls/LayoutGroup.html)
+-   [`feathers.controls.LayoutGroup` API Documentation](../api-reference/feathers/controls/LayoutGroup.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

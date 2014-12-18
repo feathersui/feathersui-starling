@@ -6,7 +6,8 @@ author: Josh Tynjala
 # Creating custom Feathers layouts with virtualization
 
 This is an advanced tutorial about creating custom layouts. Before continuing, please be sure that you read the [Introduction to Custom Layouts](custom-layouts.html) first.
-Please note that this tutorial is a work in progress and should be considered incomplete.
+
+<aside class="warn">Please note that this tutorial is a work in progress and should be considered incomplete.</aside>
 
 ## The measureViewPort() function
 

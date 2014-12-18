@@ -3,13 +3,13 @@ title: How to use the Feathers Label component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Label component
+# How to use the Feathers `Label` component
 
 The `Label` component is for displaying text. It uses the default [text renderer](text-renderers.html).
 
 ### The Basics
 
-Let's start by creating our Label control and adding it to the display list:
+First, let's create a `Label` control, give it some text to display, and add it to the display list:
 
 ``` code
 var label:Label = new Label();
@@ -96,13 +96,9 @@ Generally, all of the Feathers example apps use `Label` for generic text, and yo
 
 ## Related Links
 
--   [Label API Documentation](../api-reference/feathers/controls/Label.html)
+-   [`feathers.controls.Label` API Documentation](../api-reference/feathers/controls/Label.html)
 
--   [BitmapFontTextRenderer API Documentation](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html)
-
--   [TextFieldTextRenderer API Documentation](../api-reference/feathers/controls/text/TextFieldTextRenderer.html)
-
--   [Text Renderers](text-renderers.html)
+-   [Introduction to Feathers Text Renderers](text-renderers.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

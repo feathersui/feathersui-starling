@@ -3,9 +3,9 @@ title: Anchor Layout in Feathers containers
 author: Josh Tynjala
 
 ---
-# Using AnchorLayout in Feathers containers
+# Using `AnchorLayout` in Feathers containers
 
-The `AnchorLayout` class may be used by components that support layout, such as `ScrollContainer`, to constrain, or *anchor*, the edges of a component to the edges of its parent container. `AnchorLayout` is often used for *fluid* layouts that can automatically adjust themselves as the container is resized. For example, you might use it to display one or more sidebars next to a main view in an application. The main view can be anchored to the sidebars and the container to fill the remaining space.
+The `AnchorLayout` class may be used by containers that support layout, such as `LayoutGroup` and `ScrollContainer`, to constrain, or *anchor*, the edges of a component to the edges of its parent container. `AnchorLayout` is often used for *fluid* layouts that can automatically adjust themselves as the container is resized. For example, you might use it to display one or more sidebars next to a main view in an application. The main view can be anchored to the sidebars and the container to fill the remaining space.
 
 `AnchorLayout` also provides the ability to anchor a component relative to the edges of its siblings in the parent container.
 
@@ -107,7 +107,7 @@ If we anchor the top edge of our second button to the top edge of the container,
 
 ## Related Links
 
--   [AnchorLayout API Documentation](../api-reference/feathers/layout/AnchorLayout.html)
+-   [`feathers.layout.AnchorLayout` API Documentation](../api-reference/feathers/layout/AnchorLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

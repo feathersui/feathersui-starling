@@ -3,11 +3,11 @@ title: How to use the Feathers ScrollBar component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ScrollBar component
+# How to use the Feathers `ScrollBar` component
 
 The `ScrollBar` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction. A scroll bar also has a button on each side of the track that adjusts the value by a small step when triggered. This component is designed to be used with subclasses of the `Scroller` class like the `ScrollContainer` and `List` components.
 
-Additionally, Feathers offers a `SimpleScrollBar` component. This is a mobile-style scroll bar that only has a thumb to visually indicate the scroll position and range. It has no visible track nor buttons for stepping the scroll position.
+<aside class="info">Additionally, Feathers offers a `SimpleScrollBar` component. This is a mobile-style scroll bar that only has a thumb to visually indicate the scroll position and range. It has no visible track nor buttons for stepping the scroll position.</aside>
 
 ## The Basics
 
@@ -57,7 +57,7 @@ If you aren't using a theme, then you may set any of the scroll bar's properties
 
 ### Skinning the Thumb
 
-This section only explains how to access the thumb sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -117,7 +117,7 @@ When the value of `trackLayoutMode` is `ScrollBar.TRACK_LAYOUT_MODE_SINGLE`, the
 
 ### Skinning the Minimum Track
 
-This section only explains how to access the minimum track sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the minimum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -167,7 +167,7 @@ In general, you should only pass properties to the scroll bar's minimum track th
 
 ### Skinning the Maximum Track
 
-This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The scroll bar's maximum track may be skinned similarly to the minimum track. The name to use with [themes](themes.html) is `ScrollBar.DEFAULT_CHILD_NAME_MAXIMUM_TRACK` or you can customize the name with `customMaximumTrackName`. If you aren't using a theme, then you can use `maximumTrackFactory` and `maximumTrackProperties`.
 
@@ -223,15 +223,15 @@ In general, you should only pass properties to the scroll bar's decrement button
 
 ### Skinning the Increment Button
 
-This section only explains how to access the increment button sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the increment button sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The scroll bar's increment button may be skinned similarly to the decrement button. The name to use with [themes](themes.html) is `ScrollBar.DEFAULT_CHILD_NAME_INCREMENT_BUTTON` or you can customize the name with `customIncrementButtonName`. If you aren't using a theme, then you can use `incrementButtonFactory` and `incrementButtonProperties`.
 
 ## Related Links
 
--   [ScrollBar API Documentation](../api-reference/feathers/controls/ScrollBar.html)
+-   [`feathers.controls.ScrollBar` API Documentation](../api-reference/feathers/controls/ScrollBar.html)
 
--   [How to use the Feathers SimpleScrollBar Component](simple-scroll-bar.html)
+-   [How to use the Feathers `SimpleScrollBar` Component](simple-scroll-bar.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

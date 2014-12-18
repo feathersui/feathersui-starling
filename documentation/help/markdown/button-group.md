@@ -3,7 +3,7 @@ title: How to use the Feathers ButtonGroup component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers ButtonGroup component
+# How to use the Feathers `ButtonGroup` component
 
 The `ButtonGroup` class displays a set of [buttons](button.html) displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog might populate its OK/Cancel/Yes/No/etc. buttons using a `ButtonGroup`.
 
@@ -86,7 +86,7 @@ If you aren't using a theme, then you may set any of the button group's properti
 
 ### Skinning the Buttons
 
-This section only explains how to access the button sub-components. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the button sub-components. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -135,7 +135,7 @@ In general, you should only pass properties to the button group's buttons throug
 
 ### Skinning the First and Last Buttons
 
-This section only explains how to access the first and last button sub-components. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the first and last button sub-components. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The button group's first and last buttons will have the same skins as the other buttons by default. However, their skins may be customized separately, if desired.
 
@@ -147,7 +147,7 @@ Separate skins for the first and last buttons are completely optional.
 
 ## Related Links
 
--   [ButtonGroup API Documentation](../api-reference/feathers/controls/ButtonGroup.html)
+-   [`feathers.controls.ButtonGroup` API Documentation](../api-reference/feathers/controls/ButtonGroup.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,13 +3,13 @@ title: How to use the Feathers List component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers List component
+# How to use the Feathers `List` component
 
 The `List` class renders a series of items from a flat data source such as an `Array` or `Vector`. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers.
 
 ## The Basics
 
-Let's start by creating our `List` control:
+First, let's create a `List` control and add it to the display list:
 
 ``` code
 var list:List = new List();
@@ -179,7 +179,7 @@ If you aren't using a theme, then you may set any of the list's properties direc
 
 ### Skinning the Scroll Bars
 
-This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers ScrollBar component](scroll-bar.html) (or [SimpleScrollBar](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
 
 #### With a Theme
 
@@ -409,11 +409,11 @@ The following properties are available on some layouts:
 
 ## Related Links
 
--   [List API Documentation](../api-reference/feathers/controls/List.html)
+-   [`feathers.controls.List` API Documentation](../api-reference/feathers/controls/List.html)
 
 -   [How to use the Feathers Default Item Renderers](default-item-renderers.html)
 
--   [Creating Custom Item Renderers](item-renderers.html)
+-   [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

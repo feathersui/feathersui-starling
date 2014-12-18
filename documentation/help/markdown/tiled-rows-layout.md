@@ -3,9 +3,9 @@ title: Using TiledRowsLayout in Feathers containers
 author: Josh Tynjala
 
 ---
-# Using TiledRowsLayout in Feathers containers
+# Using `TiledRowsLayout` in Feathers containers
 
-The `TiledRowsLayout` class may be used by components that support layout, such as `List` and `ScrollContainer`, to display items from left to right in multiple rows. It supports paging horizontally or vertically, and you can modify a number of useful options for the spacing and alignment.
+The `TiledRowsLayout` class may be used by components that support layout, such as `List`, `LayoutGroup`, and `ScrollContainer`, to display items from left to right in multiple rows. It supports paging horizontally or vertically, and you can modify a number of useful options for the spacing and alignment.
 
 ## The Basics
 
@@ -88,7 +88,7 @@ The `LayoutGroup` and `ScrollContainer` components never use virtual layouts.
 
 ## Related Links
 
--   [TiledRowsLayout API Documentation](../api-reference/feathers/layout/TiledRowsLayout.html)
+-   [`feathers.layout.TiledRowsLayout` API Documentation](../api-reference/feathers/layout/TiledRowsLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

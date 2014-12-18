@@ -5,9 +5,9 @@ author: Josh Tynjala
 ---
 # Feathers MXML support
 
-Feathers has partial support for MXML, with some limitations. You can instantiate components, containers, layouts, and collections in XML. You can also listen for events. However, binding and setting a component's id are not supported with Feathers in MXML due to incompatibilities between the native `EventDispatcher` and the Starling Framework `EventDispatcher`.
+Feathers can be built with partial support for MXML. However, it has significant limitations. You can instantiate components, containers, layouts, and collections in MXML. You can also listen for events. However, binding and setting a component's id are not supported with Feathers in MXML because the compiler cannot handle incompatibilities between the native `flash.events.EventDispatcher` and the Starling Framework `starling.events.EventDispatcher`.
 
-MXML is not supported in the official Feathers builds because they are built with ASC 2.0, which doesn't compile MXML. However, if you build with the Flex SDK, you can include MXML support. See [Feathers issue \#186 on Github](https://github.com/joshtynjala/feathers/issues/186) for instructions about how to use the Feathers build script to compile your own custom Feathers SWC that includes MXML support.
+<aside class="warn">MXML is not supported in the official Feathers builds because they are built with ASC 2.0, which doesn't compile MXML. However, if you build with the Flex SDK, you can include MXML support. See [Feathers issue \#186 on Github](https://github.com/joshtynjala/feathers/issues/186) for instructions about how to use the Feathers build script to compile your own custom Feathers SWC that includes MXML support.</code>
 
 The Feathers MXML namespace is `library://ns.feathersui.com/mxml`.
 
@@ -64,5 +64,3 @@ Let's adjust the layout a bit to put the button in the center of the screen:
 That's the basics. For more detailed sample code, take a look at the [MXML Example on Github](https://github.com/joshtynjala/feathers/blob/master/examples/MXML).
 
 For more tutorials, return to the [Feathers Documentation](index.html).
-
-

@@ -3,13 +3,13 @@ title: How to use the Feathers NumericStepper component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers NumericStepper component
+# How to use the Feathers `NumericStepper` component
 
 The `NumericStepper` component displays a numeric value between a minimum and maximum. The value may be changed by pressing the increment or decrement [buttons](button.html). If editing is enabled (typically not enabled on mobile), the value may be changed by typing a value into a [text input](text-input.html).
 
 ## The Basics
 
-Let's create a numeric stepper.
+First, let's create a `NumericStepper` control, set up its range of values, and add it to the display list.
 
 ``` code
 var stepper:NumericStepper = new NumericStepper();
@@ -84,7 +84,7 @@ If you aren't using a theme, then you may set any of the numeric stepper's prope
 
 ### Skinning the Decrement Button
 
-This section only explains how to access the decrement button sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the decrement button sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -134,7 +134,7 @@ In general, you should only skins to the numeric stepper's decrement button thro
 
 ### Skinning the Increment Button
 
-This section only explains how to access the increment button sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the increment button sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 The numeric stepper's increment button may be skinned similarly to the decrement button. The name to use with [themes](themes.html) is `NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON` or you can customize the name with `customIncrementButtonName`. If you aren't using a theme, then you can use `incrementButtonFactory` and `incrementButtonProperties`.
 
@@ -147,7 +147,7 @@ stepper.incrementButtonLabel = "+";
 
 ### Skinning the Text Input
 
-This section only explains how to access the text input sub-component. Please read [How to use the Feathers Text Input component](text-input.html) for full details about the skinning properties that are available on `TextInput` components.
+This section only explains how to access the text input sub-component. Please read [How to use the Feathers `TextInput` component](text-input.html) for full details about the skinning properties that are available on `TextInput` components.
 
 #### With a Theme
 
@@ -200,7 +200,7 @@ In this situation, think of the text input as a label that simply displays the v
 
 ## Related Links
 
--   [NumericStepper API Documentation](../api-reference/feathers/controls/NumericStepper.html)
+-   [`feathers.controls.NumericStepper` API Documentation](../api-reference/feathers/controls/NumericStepper.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

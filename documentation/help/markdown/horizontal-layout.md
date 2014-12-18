@@ -3,13 +3,13 @@ title: Horizontal Layout in Feathers containers
 author: Josh Tynjala
 
 ---
-# Using HorizontalLayout in Feathers containers
+# Using `HorizontalLayout` in Feathers containers
 
-The `HorizontalLayout` class may be used by components that support layout, such as `List` and `ScrollContainer`, to display items from left to right in a single row. It supports a number of useful options for adjusting the spacing and alignment.
+The `HorizontalLayout` class may be used by components that support layout, such as `List`, `LayoutGroup` and `ScrollContainer`, to display items from left to right in a single row. It supports a number of useful options for adjusting the spacing and alignment.
 
 ## The Basics
 
-Let's create a horizontal layout and add it to a [scroll container](scroll-container.html):
+First, let's create a horizontal layout and pass it to a [`ScrollContainer`](scroll-container.html):
 
 ``` code
 var layout:HorizontalLayout = new HorizontalLayout();
@@ -149,7 +149,7 @@ layout.hasVariableItemDimensions = false;
 
 ## Related Links
 
--   [HorizontalLayout API Documentation](../api-reference/feathers/layout/HorizontalLayout.html)
+-   [`feathers.layout.HorizontalLayout` API Documentation](../api-reference/feathers/layout/HorizontalLayout.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,11 +3,11 @@ title: How to use the Feathers SimpleScrollBar component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers SimpleScrollBar Component
+# How to use the Feathers `SimpleScrollBar` Component
 
 The `SimpleScrollBar` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along an invisible track in either a horizontal or a vertical direction. This component is designed to be used with subclasses of the `Scroller` class like the `ScrollContainer` and `List` components.
 
-Additionally, Feathers offers a `ScrollBar` component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.
+<aside class="info">Additionally, Feathers offers a `ScrollBar` component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
 
 ## The Basics
 
@@ -57,7 +57,7 @@ If you aren't using a theme, then you may set any of the simple scroll bar's pro
 
 ### Skinning the Thumb
 
-This section only explains how to access the thumb sub-component. Please read [How to use the Feathers Button component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
 #### With a Theme
 
@@ -107,7 +107,7 @@ In general, you should only pass skins to the scroll bar's thumb through `thumbP
 
 ## Related Links
 
--   [SimpleScrollBar API Documentation](../api-reference/feathers/controls/SimpleScrollBar.html)
+-   [`feathers.controls.SimpleScrollBar` API Documentation](../api-reference/feathers/controls/SimpleScrollBar.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

@@ -3,7 +3,7 @@ title: How to use the Feathers Scale3Image display object
 author: Josh Tynjala
 
 ---
-# How to use the Feathers Scale3Image display object
+# How to use the Feathers `Scale3Image` display object
 
 The `Scale3Image` class displays a texture divided into three regions, either horizontally or vertically. When the direction of a `Scale3Image` is horizontal and the width is changed, the left and right regions will not scale and the center region will scale horizontally. When the direction of a `Scale3Image` is vertical, the top and bottom regions will not scale and the center region will scale vertically. This display object allows you to create skins with "pill" shapes for UI components like buttons, and sub-components like thumbs and tracks on scroll bars and sliders.
 
@@ -70,7 +70,7 @@ You can easily change the `width` property for horizontal `Scale3Image` objects 
 
 ## Related Links
 
--   [Scale3Image API Documentation](../api-reference/feathers/display/Scale3Image.html)
+-   [`feathers.display.Scale3Image` API Documentation](../api-reference/feathers/display/Scale3Image.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

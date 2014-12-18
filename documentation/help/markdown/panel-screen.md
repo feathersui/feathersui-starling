@@ -3,15 +3,15 @@ title: How to use the Feathers PanelScreen component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers PanelScreen component
+# How to use the Feathers `PanelScreen` component
 
-The `PanelScreen` component is simply a combination between the `Panel` component and the `Screen` component.
+The `PanelScreen` component is meant to be a base class for custom screens to be displayed by `StackScreenNavigator` and `ScreenNavigator`. `PanelScreen` is based on the `Panel` component, and it provides an scrolling, a header and optional footer, and optional layout.
 
 ## Skinning a Panel Screen
 
 For full details about what skin and style properties are available, see the [PanelScreen API reference](../api-reference/feathers/controls/PanelScreen.html).
 
-As mentioned above, `PanelScreen` is a subclass of `Panel`. For more detailed information about the skinning options available to `PanelScreen`, see [How to use the Panel component](panel.html).
+As mentioned above, `PanelScreen` is a subclass of `Panel`. For more detailed information about the skinning options available to `PanelScreen`, see [How to use the Feathers `Panel` component](panel.html).
 
 ### Targeting a PanelScreen in a theme
 
@@ -40,11 +40,9 @@ If you aren't using a theme, then you may set any of the panel screen's properti
 
 ## Related Links
 
--   [PanelScreen API Documentation](../api-reference/feathers/controls/PanelScreen.html)
+-   [`feathers.controls.PanelScreen` API Documentation](../api-reference/feathers/controls/PanelScreen.html)
 
--   [How to use the Feathers Panel component](panel.html)
-
--   [How to use the Feathers Screen component](screen.html)
+-   [How to use the Feathers `Panel` component](panel.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 
