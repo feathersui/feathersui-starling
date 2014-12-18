@@ -312,6 +312,16 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		protected var _waitingTransition:Function;
+
+		/**
+		 * @private
+		 */
+		private var _waitingForTransitionFrameCount:int = 1;
+
+		/**
+		 * @private
+		 */
 		protected var _isTransitionActive:Boolean = false;
 
 		/**
@@ -602,7 +612,14 @@ package feathers.controls.supportClasses
 			}
 			if(transition != null)
 			{
-				transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+				//temporarily make the active screen invisible because the
+				//transition doesn't start right away.
+				this._activeScreen.visible = false;
+				this._waitingForTransitionFrameCount = 0;
+				this._waitingTransition = transition;
+				//this is a workaround for an issue with transition performance.
+				//see the comment in the listener for details.
+				this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
 			}
 			else
 			{
@@ -646,7 +663,12 @@ package feathers.controls.supportClasses
 			{
 				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
-				transition(this._previousScreenInTransition, null, transitionComplete);
+
+				this._waitingForTransitionFrameCount = 0;
+				this._waitingTransition = transition;
+				//this is a workaround for an issue with transition performance.
+				//see the comment in the listener for details.
+				this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -763,6 +785,32 @@ package feathers.controls.supportClasses
 		protected function stage_resizeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		private function waitingForTransition_enterFrameHandler(event:Event):void
+		{
+			//we need to wait a couple of frames before we can start the
+			//transition to make it as smooth as possible. this feels a little
+			//hacky, to be honest, but I can't figure out why waiting only one
+			//frame won't do the trick. the delay is so small though that it's
+			//virtually impossible to notice.
+			if(this._waitingForTransitionFrameCount < 2)
+			{
+				this._waitingForTransitionFrameCount++;
+				return;
+			}
+			this.removeEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
+			if(this._activeScreen)
+			{
+				this._activeScreen.visible = true;
+			}
+
+			var transition:Function = this._waitingTransition;
+			this._waitingTransition = null;
+			transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 		}
 	}
 }
