@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Check` component
 
-The `Check` component is actually a [`ToggleButton`](toggle-button.html) component, but it is given a different visual appearance.
+The [`Check`](../api-reference/feathers/controls/Check.html) component is actually a [`ToggleButton`](toggle-button.html) component, but it is given a different visual appearance.
 
 ## The Basics
 
@@ -20,13 +20,13 @@ this.addChild( check );
 
 See [How to use the Feathers `ToggleButton` component](toggle-button.html) for a more detailed look at this component's capabilities.
 
-## Skinning a Check
+## Skinning a `Check`
 
-A skinned `Check` component usually has no background (or a transparent one) and the touch states of the check are displayed through the icon skins. For full details about what skin and style properties are available, see the [Check API reference](../api-reference/feathers/controls/Check.html).
+A skinned `Check` component usually has no background (or a transparent one) and the touch states of the check are displayed through the icon skins. For full details about what skin and style properties are available, see the [`Check` API reference](../api-reference/feathers/controls/Check.html).
 
 As mentioned above, `Check` is a subclass of `Button`. For more detailed information about the skinning options available to `Check`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
 
-### Targeting a Check in a theme
+### Targeting a `Check` in a theme
 
 If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 
