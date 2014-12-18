@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ButtonGroup` component
 
-The `ButtonGroup` class displays a set of [buttons](button.html) displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog might populate its OK/Cancel/Yes/No/etc. buttons using a `ButtonGroup`.
+The [`ButtonGroup`](../api-reference/feathers/controls/ButtonGroup.html) class displays a set of [buttons](button.html) displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog might populate its OK/Cancel/Yes/No/etc. buttons using a `ButtonGroup`.
 
 ## The Basics
 
@@ -27,7 +27,7 @@ group.dataProvider = new ListCollection(
 ]);
 ```
 
-Like the `List` or `TabBar` components, the `ButtonGroup` uses a `ListCollection` as its data provider.
+Like the [`List`](list.html) or [`TabBar`](tab-bar.html) components, the `ButtonGroup` uses a [`ListCollection`](../api-reference/feathers/data/ListCollection.html) as its data provider.
 
 A number of fields in each item from the collection are automatically detected by the button group. For instance, we set the `label` on each button above. Each of a button's icon states may also be used here, along with `isToggle` and `isSelected` to make them into toggling buttons.
 
@@ -41,13 +41,13 @@ function oneButton_triggeredHandler( event:Event ):void
 }
 ```
 
-## Skinning
+## Skinning a `ButtonGroup`
 
-A button group's buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about what skin and style properties are available, see the [ButtonGroup API reference](../api-reference/feathers/controls/ButtonGroup.html). We'll look at a few of the most common properties below.
+A button group's buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about what skin and style properties are available, see the [`ButtonGroup` API reference](../api-reference/feathers/controls/ButtonGroup.html). We'll look at a few of the most common properties below.
 
 ### Layout
 
-The `ButtonGroup` has a strict horizontal or vertical layout that you can customize using the `direction` property. Additionally, you can set the `gap` between buttons, including special gaps for the first and last buttons.
+The `ButtonGroup` has a strict horizontal or vertical layout that you can customize using the [`direction`](../api-reference/feathers/controls/ButtonGroup.html#direction) property. Additionally, you can set the [`gap`](../api-reference/feathers/controls/ButtonGroup.html#gap) between buttons, including special gaps for the first and last buttons.
 
 ``` code
 group.direction = ButtonGroup.DIRECTION_VERTICAL;
@@ -55,11 +55,11 @@ group.gap = 10;
 group.lastGap = 20;
 ```
 
-The `firstGap` and `lastGap` are completely optional, and if they are not defined, the regular `gap` value will be used.
+The [`firstGap`](../api-reference/feathers/controls/ButtonGroup.html#firstGap) and [`lastGap`](../api-reference/feathers/controls/ButtonGroup.html#lastGap) are completely optional, and if they are not defined, the regular `gap` value will be used.
 
 With a vertical layout, each button's width will match the width of the button group. Similarly, with a horizontal layout, the buttons will fill the entire height.
 
-### Targeting a ButtonGroup in a theme
+### Targeting a `ButtonGroup` in a theme
 
 If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 
@@ -90,20 +90,20 @@ This section only explains how to access the button sub-components. Please read 
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ButtonGroup.DEFAULT_CHILD_NAME_BUTTON` style name.
+If you're creating a [theme](themes.html), you can target the [`ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON`](../api-reference/feathers/controls/ButtonGroup.html#DEFAULT_CHILD_STYLE_NAME_BUTTON) style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ButtonGroup.DEFAULT_CHILD_NAME_BUTTON, setButtonBarButtonStyles );
+    .setFunctionForStyleName( ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, setButtonBarButtonStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-group.customButtonName = "my-custom-button";
+group.customButtonStyleName = "my-custom-button";
 ```
 
-You can set the styling function for the `customButtonName` like this:
+You can set the styling function for the [`customButtonStyleName`](../api-reference/feathers/controls/ButtonGroup.html#customButtonStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -112,7 +112,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `buttonFactory` to provide skins for the buttons:
+If you are not using a theme, you can use [`buttonFactory`](../api-reference/feathers/controls/ButtonGroup.html#buttonFactory) to provide skins for the buttons:
 
 ``` code
 group.buttonFactory = function():Button
@@ -125,7 +125,7 @@ group.buttonFactory = function():Button
 };
 ```
 
-In addition to the `buttonFactory`, you may use the `buttonProperties` to pass properties to the buttons. The values of these properties are shared by *all* buttons, so display objects should never be passed in using `buttonProperties`. A display object may only have one parent, so passing in a display object as a skin to every button is impossible. Other types of styles, like gap and padding, can be passed in through `buttonProperties`:
+In addition to the `buttonFactory`, you may use the [`buttonProperties`](../api-reference/feathers/controls/ButtonGroup.html#buttonProperties) to pass properties to the buttons. The values of these properties are shared by *all* buttons, so display objects should never be passed in using `buttonProperties`. A display object may only have one parent, so passing in a display object as a skin to every button is impossible. Other types of styles, like gap and padding, can be passed in through `buttonProperties`:
 
 ``` code
 group.buttonProperties.gap = 20;
@@ -139,9 +139,9 @@ This section only explains how to access the first and last button sub-component
 
 The button group's first and last buttons will have the same skins as the other buttons by default. However, their skins may be customized separately, if desired.
 
-For the first button, you can customize the style name with `customFirstButtonName`. If you aren't using a theme, then you can use `firstButtonFactory`.
+For the first button, you can customize the style name with [`customFirstButtonStyleName`](../api-reference/feathers/controls/ButtonGroup.html#customFirstButtonStyleName). If you aren't using a theme, then you can use [`firstButtonFactory`](../api-reference/feathers/controls/ButtonGroup.html#firstButtonFactory).
 
-For the last button, you can customize the style name with `customLastButtonName`. If you aren't using a theme, then you can use `lastButtonFactory`.
+For the last button, you can customize the style name with [`customLastButtonStyleName`](../api-reference/feathers/controls/ButtonGroup.html#customLastButtonStyleName). If you aren't using a theme, then you can use [`lastButtonFactory`](../api-reference/feathers/controls/ButtonGroup.html#lastButtonFactory).
 
 Separate skins for the first and last buttons are completely optional.
 
