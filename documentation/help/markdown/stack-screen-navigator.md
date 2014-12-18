@@ -5,15 +5,13 @@ author: Josh Tynjala
 ---
 # How to use the Feathers StackScreenNavigator component
 
-The [`StackScreenNavigator`](../api-reference/feathers/controls/StackScreenNavigator.html) class supports navigation between screens or menus, with a history stack that makes it simple to display a new screen or to return to the previous one.
+The [`StackScreenNavigator`](../api-reference/feathers/controls/StackScreenNavigator.html) class supports navigation between screens or menus, with a history stack that makes it simple to return to the previous screen. Events dispatched from the active screen can be used to push a new screen onto the stack, to pop the active screen, or even to call a function. When a new screen is pushed onto the stack, the previous screen may save its current state to be restored later.
 
-Navigation can be enhanced with animation, called a [transition](transitions.html). Feathers provides a number of transitions out of the box, and a simple API lets you create custom transitions.
-
-Events dispatched from the active screen can be used to push a new screen onto the stack or to pop the active screen. When a new screen is pushed onto the stack, the previous screen may save its current state to be restored later.
+Navigation can be enhanced with animation, called a [*transition*](transitions.html). Feathers provides a number of transitions out of the box, and a simple API allows anyone to create custom transitions. Separate transitions may be defined on a `StackScreenNavigator` for both push and pop actions, but an individual screen may also define its own unique transitions that are different from these defaults.
 
 ## The Basics
 
-Create a `StackScreenNavigator` like this:
+Let's start by creating a `StackScreenNavigator` and adding it to the display list:
 
 ``` code
 this._navigator = new StackScreenNavigator();
@@ -31,7 +29,7 @@ this._navigator.addScreen( "mainMenu", mainMenuItem );
 
 This screen's ID is `"mainMenu"`. We'll use this ID later when we ask the screen navigator to display this screen. There are a number of other APIs that require this ID too.
 
-The first argument required by the `StackScreenNavigatorItem` constructor may be one of three types. We can pass in a `Class` to instantiate, a display object that has already been instantiated, or a `Function` that returns a display object. In most cases, a `Class` is recommended. For more details, see the [`screen`](http://feathersui.com/beta/api-reference/feathers/controls/StackScreenNavigatorItem.html#screen) property.
+The first argument required by the `StackScreenNavigatorItem` constructor may be one of three types. We can pass in a `Class` to instantiate, a display object that has already been instantiated, or a `Function` that returns a display object. In most cases, a `Class` is recommended. For more details, see the [`screen`](../api-reference/feathers/controls/StackScreenNavigatorItem.html#screen) property.
 
 <aside class="info">In the example above, `MainMenuScreen` is another class that we create in our project that extends the [`Screen`](screen.html) class. In general, it's best to extend a class that implements the `IScreen` interface, like [`Screen`](screen.html), [`PanelScreen`](panel-screen.html), or [`ScrollScreen`](scroll-screen.html). Each offers different features. For instance, `Screen` is the most basic with optional support for layouts, while `PanelScreen` offers layouts, scrolling, and a customizable header and footer.</aside>
 
@@ -41,13 +39,13 @@ To show the first screen, called the *root screen*, set the [`rootScreenID`](../
 this._navigator.rootScreenID = "mainMenu";
 ```
 
-To access the currently visible screen, use the `activeScreen` property.
+To access the currently visible screen, use the [`activeScreen`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreen) property.
 
 ``` code
 var mainMenu:MainMenuScreen = MainMenuScreen( this._navigator.activeScreen );
 ```
 
-We can also use `activeScreenID` to get the ID of the active screen. In this case, again, it would be `"mainMenu"`.
+We can also use [`activeScreenID`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreenID) to get the ID of the active screen. In this case, again, it would be `"mainMenu"`.
 
 ## Navigation
 
@@ -110,7 +108,7 @@ var optionsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( Options
 optionsItem.addPopEvent( Event.COMPLETE );
 ```
 
-To register an event that should pop the active screen, we call `addPopEvent()` on the `StackScreenNavigatorItem`. In this case, we simply pass in the `Event.COMPLETE` constant. We don't need to pass in the ID for the main menu screen because `StackScreenNavigator` keeps track of its own history.
+To register an event that should pop the active screen, we call [`addPopEvent()`](../api-reference/feathers/controls/StackScreenNavigatorItem.html#addPopEvent()) on the `StackScreenNavigatorItem`. In this case, we simply pass in the `Event.COMPLETE` constant. We don't need to pass in the ID for the main menu screen because `StackScreenNavigator` keeps track of its own history.
 
 Inside `OptionsScreen`, we might dispatch an event when a button is triggered, similar to how we did it in `MainMenuScreen`:
 
@@ -127,7 +125,7 @@ We can call `setScreenIDForPushEvent()` and `addPopEvent()` as many times as nee
 
 ## Transitions
 
-As we learned above, we can either push a new screen onto the top of the stack to show it, or we can pop a screen from the stack to hide it. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a *transition*, and we can specify transitions for both push and pop actions.
+As we learned above, we can either push a new screen onto the top of the stack to show it, or we can pop a screen from the stack to hide it. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a [*transition*](transitions.html), and we can specify transitions for both push and pop actions.
 
 We can find a number of useful transition classes in the [`feathers.motion.transitions`](../api-reference/feathers/motion/transitions/package-detail.html) package. One example is the [`Slide`](../api-reference/feathers/motion/transitions/Slide.html) class, which slides the old screen out of view by animating its `x` or `y` property, while simultaneously animating the new screen into view.
 
@@ -135,7 +133,7 @@ We can find a number of useful transition classes in the [`feathers.motion.trans
 
 Each of the built-in transition classes has one or more static methods that you can call to create the *transition function* that the screen navigator calls when pushing or poping a screen. In this case, let's call [`Slide.createSlideLeftTransition()`](../api-reference/feathers/motion/transitions/Slide.html#createSlideLeftTransition()) and [`Slide.createSlideRightTransition()`](../api-reference/feathers/motion/transitions/Slide.html#createSlideRightTransition()).
 
-We can pass the results to the [`pushTransition`](../api-reference/feathers/controls/StackScreenNavigator#pushTransition) and [`popTransition`](../api-reference/feathers/controls/StackScreenNavigator#popTransition) properties on the screen navigator:
+We can pass the results to the [`pushTransition`](../api-reference/feathers/controls/StackScreenNavigator.html#pushTransition) and [`popTransition`](../api-reference/feathers/controls/StackScreenNavigator.html#popTransition) properties on the screen navigator:
 
 ``` code
 this._navigator.pushTransition = Slide.createSlideLeftTransition();
@@ -147,13 +145,27 @@ In the code above, we don't need to pass any arguments to `Slide.createSlideLeft
 ``` code
 this._navigator.pushTransition = Slide.createSlideLeftTransition( 0.75, Transitions.EASE_IN_OUT );
 ```
+
 Now, the animation will last a little longer while easing in and out.
 
-See [Transitions for Feathers screen navigators](transitions.html) for a more detailed look at the available transitions, including instructions for creating custom transitions.
+<aside class="info">See [Transitions for Feathers screen navigators](transitions.html) for a more detailed look at the available transitions, including instructions for creating custom transitions.</aside>
+
+### Custom transitions for individual screens
+
+Let's say that we want the push and pop transitions for most screens to be the same throughout our app. However, we have a screen for quick settings changes that we want to slide in from the bottom to cover up the existing screen. Then, when the quick settings panel is closed, it should slide down to reveal the previous screen below.
+
+``` code
+var quickSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( QuickSettingsScreen );
+quickSettingsItem.addPopEvent( Event.COMPLETE );
+quickSettingsItem.pushTransition = Cover.createCoverUpTransition();
+quickSettingsItem.popTransition = Reveal.createRevealDownTransition();
+```
+
+It's as easy as setting the [`pushTransition`](../api-reference/feathers/controls/StackScreenNavigatorItem.html#pushTransition) and [`popTransition`](../api-reference/feathers/controls/StackScreenNavigatorItem.html#popTransition) properties on the `StackScreenNavigatorItem`.
 
 ### Events when transitions start and complete
 
-The `StackScreenNavigator` dispatches `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` events when the transition starts and ends. You might listen to `FeathersEventType.TRANSITION_COMPLETE` to delay the initialization of your screen until the transition has completed. For instance, you might have other animations that need to play, but once the screen is fully visible.
+In your screen class, you can listen for one of several events to know when transitions start and begin. `StackScreenNavigator` dispatches `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` events when the transition starts and ends. You might listen to `FeathersEventType.TRANSITION_COMPLETE` to delay the initialization of your screen until the transition has completed. For instance, you might have other animations that need to play, but once the screen is fully visible.
 
 ``` code
 this.owner.addEventListener( FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler );

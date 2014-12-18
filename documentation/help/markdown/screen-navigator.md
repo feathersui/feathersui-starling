@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 The [`ScreenNavigator`](../api-reference/feathers/controls/ScreenNavigator.html) class supports navigation between screens or pages. It is best suited for working with a set of screens in a flat hierarchy. For instance, each screen might be associated with a tab in a [`TabBar`](tab-bar.html).
 
-Events dispatched from the active screen can be used to trigger navigation. Navigation can be enhanced with animation, called a [transition](transitions.html). Feathers provides a number of transitions out of the box, and a simple API lets you create custom transitions.
+Events dispatched from the active screen can be used to trigger navigation. Navigation can be enhanced with animation, called a [*transition*](transitions.html). Feathers provides a number of transitions out of the box, and a simple API lets you create custom transitions.
 
 <aside class="info">For a screen navigator that keeps a history that allows you to navigate back to previous screens, see [`StackScreenNavigator`](stack-screen-navigator.html) instead.</aside>
 
@@ -31,7 +31,7 @@ this._navigator.addScreen( "mainMenu", mainMenuItem );
 
 This screen's ID is `"mainMenu"`. We'll use this ID later when we ask the screen navigator to display this screen. There are a number of other APIs that require this ID too.
 
-The first argument required by the `ScreenNavigatorItem` constructor may be one of three types. We can pass in a `Class` to instantiate, a display object that has already been instantiated, or a `Function` that returns a display object. In most cases, a `Class` is recommended. For more details, see the [`screen`](http://feathersui.com/beta/api-reference/feathers/controls/ScreenNavigatorItem.html#screen) property.
+The first argument required by the `ScreenNavigatorItem` constructor may be one of three types. We can pass in a `Class` to instantiate, a display object that has already been instantiated, or a `Function` that returns a display object. In most cases, a `Class` is recommended. For more details, see the [`screen`](../api-reference/feathers/controls/ScreenNavigatorItem.html#screen) property.
 
 <aside class="info">In the example above, `MainMenuScreen` is another class that we create in our project that extends the [`Screen`](screen.html) class. In general, it's best to extend a class that implements the `IScreen` interface, like [`Screen`](screen.html), [`PanelScreen`](panel-screen.html), or [`ScrollScreen`](scroll-screen.html). Each offers different features. For instance, `Screen` is the most basic with optional support for layouts, while `PanelScreen` offers layouts, scrolling, and a customizable header and footer.</aside>
 
@@ -41,15 +41,15 @@ To show a specific screen, call [`showScreen()`](../api-reference/feathers/contr
 this._navigator.showScreen( "mainMenu" );
 ```
 
-To access the currently visible screen, use the `activeScreen` property.
+To access the currently visible screen, use the [`activeScreen`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreen) property.
 
 ``` code
 var mainMenu:MainMenuScreen = MainMenuScreen( this._navigator.activeScreen );
 ```
 
-You can also use `activeScreenID` to get the ID of the active screen. In this case, again, it would be `"mainMenu"`.
+You can also use [`activeScreenID`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreenID) to get the ID of the active screen. In this case, again, it would be `"mainMenu"`.
 
-To make the `ScreenNavigator` remove the active screen, call `clearScreen()`.
+To make the `ScreenNavigator` remove the active screen, call [`clearScreen()`](../api-reference/feathers/controls/supportClasses/ScreenNavigator.html#clearScreen()).
 
 ``` code
 this._navigator.clearScreen();
@@ -132,7 +132,7 @@ We can call `setScreenIDForEvent()` as many times as needed to listen for multip
 
 ## Transitions
 
-As we learned above, we can either show a screen or we can clear the currently active screen. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a *transition*.
+As we learned above, we can either show a screen or we can clear the currently active screen. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a [*transition*](transitions.html).
 
 We can find a number of useful transition classes in the [`feathers.motion.transitions`](../api-reference/feathers/motion/transitions/package-detail.html) package. One example is the [`Fade`](../api-reference/feathers/motion/transitions/Slide.Fade) class, which fades a screen by animating its `alpha` property.
 
@@ -152,7 +152,7 @@ this._navigator.transition = Fade.createFadeInTransition( 0.75, Transitions.EASE
 
 Now, the animation will last a little longer while easing in and out.
 
-See [Transitions for Feathers screen navigators](transitions.html) for a more detailed look at the available transitions, including instructions for creating custom transitions.
+<aside class="info">See [Transitions for Feathers screen navigators](transitions.html) for a more detailed look at the available transitions, including instructions for creating custom transitions.</aside>
 
 ### Events when transitions start and complete
 
