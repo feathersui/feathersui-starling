@@ -18,8 +18,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				if(newScreen)
 				{
 					if(oldScreen)
@@ -44,8 +46,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				if(newScreen)
 				{
 					if(oldScreen)
@@ -70,8 +74,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				if(newScreen)
 				{
 					if(oldScreen)
@@ -96,8 +102,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				if(newScreen)
 				{
 					if(oldScreen)
@@ -117,25 +125,6 @@ package feathers.motion.transitions
 				}
 			}
 		}
-
-		private static function validateAndCleanup(oldScreen:DisplayObject, newScreen:DisplayObject):void
-		{
-			if(!oldScreen && !newScreen)
-			{
-				throw new ArgumentError(SCREEN_REQUIRED_ERROR);
-			}
-
-			if(oldScreen)
-			{
-				var activeTween:SlideTween = SlideTween.SCREEN_TO_TWEEN[oldScreen] as SlideTween;
-				if(activeTween)
-				{
-					//force the existing tween to finish so that the
-					//properties of the old screen end up in a good state.
-					activeTween.advanceTime(activeTween.totalTime);
-				}
-			}
-		}
 	}
 }
 
@@ -147,14 +136,11 @@ import starling.display.DisplayObject;
 
 class SlideTween extends Tween
 {
-	internal static const SCREEN_TO_TWEEN:Dictionary = new Dictionary(true);
-
 	public function SlideTween(target:DisplayObject, otherTarget:DisplayObject,
 		xOffset:Number, yOffset:Number, duration:Number, ease:Object,
 		onCompleteCallback:Function, tweenProperties:Object)
 	{
 		super(target, duration, ease);
-		SCREEN_TO_TWEEN[target] = this;
 		if(xOffset != 0)
 		{
 			this._xOffset = xOffset;
@@ -212,7 +198,6 @@ class SlideTween extends Tween
 
 	private function cleanupTween():void
 	{
-		delete SCREEN_TO_TWEEN[this.target];
 		this.target.x = 0;
 		this.target.y = 0;
 		if(this._otherTarget)

@@ -32,18 +32,6 @@ package feathers.motion.transitions
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-
-				if(oldScreen)
-				{
-					var activeTween:ColorFadeTween = ColorFadeTween.SCREEN_TO_TWEEN[oldScreen] as ColorFadeTween;
-					if(activeTween)
-					{
-						//force the existing tween to finish so that the
-						//properties of the old screen end up in a good state.
-						activeTween.advanceTime(activeTween.totalTime);
-					}
-				}
-
 				if(newScreen)
 				{
 					newScreen.alpha = 0;
@@ -73,14 +61,11 @@ import starling.display.Quad;
 
 class ColorFadeTween extends Tween
 {
-	internal static const SCREEN_TO_TWEEN:Dictionary = new Dictionary(true);
-
 	public function ColorFadeTween(target:DisplayObject, otherTarget:DisplayObject,
 		color:uint, duration:Number, ease:Object, onCompleteCallback:Function,
 		tweenProperties:Object)
 	{
 		super(target, duration, ease);
-		SCREEN_TO_TWEEN[target] = this;
 		if(target.alpha == 0)
 		{
 			this.fadeTo(1);
@@ -138,7 +123,6 @@ class ColorFadeTween extends Tween
 
 	private function cleanupTween():void
 	{
-		delete SCREEN_TO_TWEEN[this.target];
 		this._overlay.removeFromParent(true);
 		this.target.visible = true;
 		if(this._otherTarget)

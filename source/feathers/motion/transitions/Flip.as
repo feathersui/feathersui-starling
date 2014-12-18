@@ -18,7 +18,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				new FlipTween(newScreen, oldScreen, Math.PI, 0, duration, ease, onComplete, tweenProperties);
 			}
 		}
@@ -27,7 +30,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				new FlipTween(newScreen, oldScreen, -Math.PI, 0, duration, ease, onComplete, tweenProperties);
 			}
 		}
@@ -36,7 +42,10 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
+				if(!oldScreen && !newScreen)
+				{
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
+				}
 				new FlipTween(newScreen, oldScreen, 0, -Math.PI, duration, ease, onComplete, tweenProperties);
 			}
 		}
@@ -45,27 +54,11 @@ package feathers.motion.transitions
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
-				validateAndCleanup(oldScreen, newScreen);
-				new FlipTween(newScreen, oldScreen, 0, Math.PI, duration, ease, onComplete, tweenProperties);
-			}
-		}
-
-		private static function validateAndCleanup(oldScreen:DisplayObject, newScreen:DisplayObject):void
-		{
-			if(!oldScreen && !newScreen)
-			{
-				throw new ArgumentError(SCREEN_REQUIRED_ERROR);
-			}
-
-			if(oldScreen)
-			{
-				var activeTween:FlipTween = FlipTween.SCREEN_TO_TWEEN[oldScreen] as FlipTween;
-				if(activeTween)
+				if(!oldScreen && !newScreen)
 				{
-					//force the existing tween to finish so that the
-					//properties of the old screen end up in a good state.
-					activeTween.advanceTime(activeTween.totalTime);
+					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
+				new FlipTween(newScreen, oldScreen, 0, Math.PI, duration, ease, onComplete, tweenProperties);
 			}
 		}
 	}
@@ -81,8 +74,6 @@ import starling.display.Sprite3D;
 
 class FlipTween extends Tween
 {
-	internal static const SCREEN_TO_TWEEN:Dictionary = new Dictionary(true);
-
 	public function FlipTween(newScreen:DisplayObject, oldScreen:DisplayObject,
 		rotationYOffset:Number, rotationXOffset:Number,
 		duration:Number, ease:Object, onCompleteCallback:Function,
@@ -237,7 +228,6 @@ class FlipTween extends Tween
 			screen.y = 0;
 			this._navigator.addChild(screen);
 		}
-		delete SCREEN_TO_TWEEN[this.target];
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();
