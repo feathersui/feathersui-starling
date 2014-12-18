@@ -43,9 +43,9 @@ function stepper_changeHandler( event:Event ):void
 }
 ```
 
-## Skinning a Numeric Stepper
+## Skinning a `NumericStepper`
 
-The skins for a `NumericStepper` control are divided into three parts. There are the increment and decrement buttons and the text input. There are a few different layout modes that control where the buttons are placed relative to the text input. For full details about what skin and style properties are available, see the [NumericStepper API reference](../api-reference/feathers/controls/NumericStepper.html). We'll look at a few of the most common properties below.
+The skins for a `NumericStepper` control are divided into three parts. There are the increment and decrement buttons and the text input. There are a few different layout modes that control where the buttons are placed relative to the text input. For full details about what skin and style properties are available, see the [`NumericStepper` API reference](../api-reference/feathers/controls/NumericStepper.html). We'll look at a few of the most common properties below.
 
 ### Layout Modes
 
@@ -57,7 +57,7 @@ stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL
 
 There are two additional options for `buttonLayoutMode`. You can use `NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL` to place the decrement button on the left side of the text input and the increment button button on the right side. Similarly, you can use `NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL` to place the increment button on top of the text input and the decrement button on the bottom.
 
-### Targeting a NumericStepper in a theme
+### Targeting a `NumericStepper` in a theme
 
 If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 

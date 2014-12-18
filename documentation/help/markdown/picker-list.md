@@ -51,11 +51,11 @@ list.selectedIndex = -1;
 
 Don't forget that you need to set the `selectedIndex` to `-1` if you want to display the prompt because the picker list will automatically select the first item.
 
-## Skinning a Picker List
+## Skinning a `PickerList`
 
-The skins for a `PickerList` control are divided into several parts, including the button and pop-up list sub-components. For full details about what skin and style properties are available, see the [PickerList API reference](../api-reference/feathers/controls/PickerList.html).
+The skins for a `PickerList` control are divided into several parts, including the button and pop-up list sub-components. For full details about what skin and style properties are available, see the [`PickerList` API reference](../api-reference/feathers/controls/PickerList.html).
 
-### Targeting a PickerList in a theme
+### Targeting a `PickerList` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

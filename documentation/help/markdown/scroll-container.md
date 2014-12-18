@@ -52,9 +52,9 @@ container.layout = layout;
 
 We can set a number of other properties on the layout too. In the case of `HorizontalLayout` (and `VerticalLayout` too), we can customize things like padding around the edges along with horizontal and vertical alignment. Other layouts may expose more or completely different properties that may be customized. Check their API documentation for complete details.
 
-## Skinning a Scroll Container
+## Skinning a `ScrollContainer`
 
-The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [ScrollContainer API reference](../api-reference/feathers/controls/ScrollContainer.html). We'll look at a few of the most common properties below.
+The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [`ScrollContainer` API reference](../api-reference/feathers/controls/ScrollContainer.html). We'll look at a few of the most common properties below.
 
 ### Background Skins and Basic Styles
 
@@ -82,7 +82,7 @@ If all four padding values should be the same, you may use the `padding` propert
 container.padding = 20;
 ```
 
-### Targeting a ScrollContainer in a theme
+### Targeting a `ScrollContainer` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

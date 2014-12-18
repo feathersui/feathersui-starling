@@ -78,9 +78,9 @@ textArea.restrict = "0-9";
 
 In the example above, we restrict to numeric values only.
 
-## Skinning a Text Area
+## Skinning a `TextArea`
 
-A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [TextArea API reference](../api-reference/feathers/controls/TextArea.html). We'll look at a few of the most common properties below.
+A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`TextArea` API reference](../api-reference/feathers/controls/TextArea.html). We'll look at a few of the most common properties below.
 
 ### Font Styles
 
@@ -132,7 +132,7 @@ textArea.paddingLeft = 10;
 
 The dimensions of the text editor will be affected by the padding to show more of the background skin around the edges. This can allow you to reveal a border.
 
-### Targeting a TextArea in a theme
+### Targeting a `TextArea` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

@@ -38,7 +38,7 @@ this.backButtonHandler = function():void
 
 ## Skinning a `Screen`
 
-For full details about what skin and style properties are available, see the [Screen API reference](../api-reference/feathers/controls/Screen.html).
+For full details about what skin and style properties are available, see the [`Screen` API reference](../api-reference/feathers/controls/Screen.html).
 
 As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the Feathers `LayoutGroup` component](layout-group.html).
 

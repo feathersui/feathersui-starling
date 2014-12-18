@@ -31,9 +31,9 @@ Notice that we create our button just like we would any regular button, includin
 
 We could add additional buttons or controls to the [right items](../api-reference/feathers/controls/Header.html#rightItems) region, if we wanted.
 
-## Skinning a Header
+## Skinning a `Header`
 
-A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the [Header API reference](../api-reference/feathers/controls/Header.html). We'll look at a few of the most common properties below.
+A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the [`Header` API reference](../api-reference/feathers/controls/Header.html). We'll look at a few of the most common properties below.
 
 The header has a `backgroundSkin` and `backgroundDisabledSkin`. If the header is disabled, the `backgroundDisabledSkin` will be used. However, if the `backgroundDisabledSkin` isn't provided, the header will fall back to the `backgroundSkin`.
 
@@ -91,7 +91,7 @@ header.titleProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
 
 Using a custom factory is better for performance and it will allow you to use code hinting in your IDE, if available.
 
-### Targeting a Header in a theme
+### Targeting a `Header` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

@@ -100,9 +100,9 @@ To disable selection completely, use the `isSelectable` property:
 list.isSelectable = false;
 ```
 
-## Skinning a List
+## Skinning a `List`
 
-A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available on a `List`, see the [List API reference](../api-reference/feathers/controls/List.html). We'll look at a few of the most common properties below.
+A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available on a `List`, see the [`List` API reference](../api-reference/feathers/controls/List.html). We'll look at a few of the most common properties below.
 
 We'll start the skinning process by giving our list appropriate background skins.
 
@@ -152,7 +152,7 @@ list.verticalScrollPolicy = List.SCROLL_POLICY_OFF;
 
 Generally, a list will use something called *[layout virtualization](faq/layout-virtualization.html)* by default because it offers significant performance improvements. When using a virtual layout, a list will display a limited number of item renderers at a time (usually only those that are visible in the view port) to avoid using massive amounts of memory. This means that data providers can contain thousands, or even tens of thousands, of items without a large performance impact. Additionally, the list will reuse that small number of item renderers to display different items as it scrolls. This keeps the runtime from creating many temporary objects that need to be garbage collected. To learn more, see [FAQ: What is layout virtualization?](faq/layout-virtualization.html)
 
-### Targeting a List in a theme
+### Targeting a `List` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

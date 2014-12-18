@@ -34,9 +34,9 @@ scrollText.width = 200;
 scrollText.height = 200;
 ```
 
-## Skinning a Scroll Text
+## Skinning a `ScrollText`
 
-For full details about what skin and style properties are available, see the [ScrollText API reference](../api-reference/feathers/controls/ScrollText.html). We'll look at a few of the most common properties below.
+For full details about what skin and style properties are available, see the [`ScrollText` API reference](../api-reference/feathers/controls/ScrollText.html). We'll look at a few of the most common properties below.
 
 ### Font Styles
 
@@ -56,7 +56,7 @@ scrollText.text = "<font color=\"#ff0000\">Hello world</font>";
 
 A number of other styling properties from `flash.text.TextField` are available to use with `ScrollText`, including `antiAliasType`, `backgroundColor`, `borderColor`, `gridFitType`, `styleSheet`, `sharpness`, `thickness`, and others. See the [ScrollText API documentation](../api-reference/feathers/controls/ScrollText.html) for full details.
 
-### Targeting a ScrollText in a theme
+### Targeting a `ScrollText` in a theme
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 

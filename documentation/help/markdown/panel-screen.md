@@ -7,13 +7,13 @@ author: Josh Tynjala
 
 The `PanelScreen` component is meant to be a base class for custom screens to be displayed by `StackScreenNavigator` and `ScreenNavigator`. `PanelScreen` is based on the `Panel` component, and it provides an scrolling, a header and optional footer, and optional layout.
 
-## Skinning a Panel Screen
+## Skinning a `PanelScreen`
 
-For full details about what skin and style properties are available, see the [PanelScreen API reference](../api-reference/feathers/controls/PanelScreen.html).
+For full details about what skin and style properties are available, see the [`PanelScreen` API reference](../api-reference/feathers/controls/PanelScreen.html).
 
 As mentioned above, `PanelScreen` is a subclass of `Panel`. For more detailed information about the skinning options available to `PanelScreen`, see [How to use the Feathers `Panel` component](panel.html).
 
-### Targeting a PanelScreen in a theme
+### Targeting a `PanelScreen` in a theme
 
 If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 

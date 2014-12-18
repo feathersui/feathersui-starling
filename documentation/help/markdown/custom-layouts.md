@@ -231,7 +231,7 @@ if(viewPortBounds)
 }
 ```
 
-In a moment, we'll spend some time looking at [every property defined by ViewPortBounds](#viewportbounds_properties), including those interesting `NaN` values.
+In a moment, we'll spend some time looking at [every property defined by ViewPortBounds](#viewportbounds-properties), including those interesting `NaN` values.
 
 The final argument is an optional `LayoutBoundsResult` object. This object is used to specify the final view port dimensions and the dimensions of the content within the view port. The content may be larger than the view port, and a component like `ScrollContainer` will use that to determine if it needs to scroll.
 

@@ -35,9 +35,9 @@ function pageIndicator_changeHandler( event:Event ):void
 }
 ```
 
-## Skinning a Page Indicator
+## Skinning a `PageIndicator`
 
-You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about what skin and style properties are available, see the [PageIndicator API reference](../api-reference/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
+You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about what skin and style properties are available, see the [`PageIndicator` API reference](../api-reference/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
 
 ### Layout
 
@@ -77,7 +77,7 @@ pages.selectedSymbolFactory = function():DisplayObject
 
 The page indicator will automatically reuse symbols if the page count or the selected index changes.
 
-### Targeting a PageIndicator in a theme
+### Targeting a `PageIndicator` in a theme
 
 If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 

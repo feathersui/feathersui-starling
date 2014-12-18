@@ -54,9 +54,9 @@ group.layout = layout;
 
 We can set a number of other properties on the layout too. In the case of `HorizontalLayout` (and `VerticalLayout` too), we can customize things like padding around the edges along with horizontal and vertical alignment. Other layouts may expose more or completely different properties that may be customized. Check their API documentation for complete details.
 
-## Skinning a Layout Group
+## Skinning a `LayoutGroup`
 
-The skins for a `LayoutGroup` control are mainly the background skins. For full details about what skin and style properties are available, see the [LayoutGroup API reference](../api-reference/feathers/controls/LayoutGroup.html). We'll look at a few of the most common properties below.
+The skins for a `LayoutGroup` control are mainly the background skins. For full details about what skin and style properties are available, see the [`LayoutGroup` API reference](../api-reference/feathers/controls/LayoutGroup.html). We'll look at a few of the most common properties below.
 
 ### Background Skins and Basic Styles
 

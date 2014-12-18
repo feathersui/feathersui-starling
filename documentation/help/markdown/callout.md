@@ -70,7 +70,7 @@ Callout.show( content, origin, Callout.DIRECTION_ANY, true, customCalloutFactory
 
 If you've created a [custom theme](custom-themes.html), you can set a styling function for a `Callout` with the style name `"custom-callout"` to provide different skins for this callout.
 
-## Skinning Callouts
+## Skinning a `Callout`
 
 Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [Callout API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common properties below.
 
@@ -107,7 +107,7 @@ Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom
     Callout.stagePaddingLeft = 10;
 ```
 
-### Targeting a Callout in a theme
+### Targeting a `Callout` in a theme
 
 If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 
@@ -132,7 +132,7 @@ Trying to change the callout's styles and skins outside of the theme may result 
 
 If you aren't using a theme, then you may set any of the callout's properties directly.
 
-### Skinning Callouts without a theme
+### Skinning a `Callout` without a theme
 
 If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the `Callout.calloutFactory` static property to a function that provides skins for the callout. This factory will be called any time that `Callout.show()` is used to create a callout.
 
