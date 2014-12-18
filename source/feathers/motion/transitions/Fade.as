@@ -23,7 +23,6 @@ package feathers.motion.transitions
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-
 				if(newScreen)
 				{
 					newScreen.alpha = 0;
@@ -55,7 +54,6 @@ package feathers.motion.transitions
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-
 				if(oldScreen)
 				{
 					//make sure the old screen is on top
@@ -87,7 +85,6 @@ package feathers.motion.transitions
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-
 				if(newScreen)
 				{
 					newScreen.alpha = 0;
