@@ -1,3 +1,8 @@
+*
+{
+	box-sizing: border-box;
+}
+
 html
 {
 	text-align: center;
@@ -110,6 +115,7 @@ aside.info, aside.warn, aside.question
 {
 	padding: 24px 24px 20px 80px;
 	margin: 18px 0;
+	min-height: 92px;
 }
 
 aside.info
