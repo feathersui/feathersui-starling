@@ -5,13 +5,13 @@ author: Josh Tynjala
 ---
 # Introduction to custom layouts for Feathers containers
 
-Several Feathers components support the ability to customize layouts. [Several layouts](index.html#layouts) are provided by Feathers out of the box. However, if those don't quite fit your needs, you can create custom layouts by implementing the `ILayout` interface. This interface provides the most basic API required to use a custom layout with a Feathers component. A number of other interfaces are available with more advanced functionality, and we'll look at those below.
+Several Feathers components support the ability to customize layouts. [Several layouts](index.html#layouts) are provided by Feathers out of the box. However, if those don't quite fit your needs, you can create custom layouts by implementing the [`ILayout`](../api-reference/feathers/layout/ILayout.html) interface. This interface provides the most basic API required to use a custom layout with a Feathers component. A number of other interfaces are available with more advanced functionality, and we'll look at those below.
 
 ## A Simple Example Layout
 
 Let's start by looking at the complete source code for a custom layout. Don't worry, we'll look at more closely it in smaller, digestible chunks in a moment.
 
-This custom layout will be similar to `VerticalLayout`, but it won't offer so many options available to the built-in version. This `SimpleVerticalLayout` class will position items from top to bottom, aligned to the top and left. We'll offer one customizable property, a gap between items, to show how to implement something like that.
+This custom layout will be similar to [`VerticalLayout`](vertical-layout.html), but it won't offer so many options available to the built-in version. This `SimpleVerticalLayout` class, as we'll call it, will position items from top to bottom, aligned to the top and left. We'll offer one customizable property, a gap between items, to show how to implement something like that.
 
 ``` code
 package feathersx.layout
@@ -160,13 +160,13 @@ package feathersx.layout
 
 We'll go into the low-level details in a moment, but let's look at a couple of important parts of the `SimpleVerticalLayout` class first.
 
--   The class implements `feathers.layout.ILayout`. This interface defines two functions that all layouts need, which we'll be digging into next. There are some other interfaces for more advanced layout capabilities, but `ILayout` is the bare minimum.
+-   The class implements [`feathers.layout.ILayout`](../api-reference/feathers/layout/ILayout.html). This interface defines two functions that all layouts need, which we'll be digging into next. There are some other interfaces for more advanced layout capabilities, but `ILayout` is the bare minimum.
 
--   The class extends the standard Starling `starling.events.EventDispatcher` because ILayout specifies that layouts should dispatch `Event.CHANGE` when their properties change. This will allow components that use layouts to properly invalidate when they need to call the `layout()` function again.
+-   The class extends the standard Starling [`starling.events.EventDispatcher`](http://doc.starling-framework.org/core/starling/events/EventDispatcher.html) because `ILayout` specifies that layouts should dispatch `Event.CHANGE` when their properties change. This will allow components that use layouts to properly invalidate when they need to call the [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()) function again.
 
 ## The layout() function
 
-The first function defined by the `ILayout` interface is `layout()`. Please take a moment to review its signature below:
+The first function defined by the `ILayout` interface is [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()). Please take a moment to review its signature below:
 
 ``` code
 layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
@@ -201,13 +201,13 @@ In this loop, we set the item's position. If this were a more advanced layout, w
 
 Notice that we check the datatype of each item two times using the `is` keyword.
 
-First, we check if the item is an `ILayoutDisplayObject`. If so, we want to check if the `includeInLayout` property has been set to `false`. If so, we will skip that item.
+First, we check if the item is an [`ILayoutDisplayObject`](../api-reference/feathers/layout/ILayoutDisplayObject.html). If so, we want to check if the [`includeInLayout`](../api-reference/feathers/layout/ILayoutDisplayObject.html#includeInLayout) property has been set to `false`. If so, we will skip that item.
 
-For more information about the `ILayoutDisplayObject` interface and related layout features, please take a look at the [ILayoutDisplayObject and ILayoutData](layout-data.html) article.
+For more information about the `ILayoutDisplayObject` interface and related layout features, please take a look at the [`ILayoutDisplayObject` and `ILayoutData`](layout-data.html) article.
 
 Next, we check if an item is a Feathers component. If we encounters one, we need to call `validate()`. If a Feathers component is in an invalid state, it may not report the correct dimensions, so this function call is required for accurate bounds calculations and positioning.
 
-The second argument is an optional `ViewPortBounds` object. This object specifies restrictions on the layout, such as dimensions, starting position, and scroll position (for scrolling containers). If the `ViewPortBounds` object is not provided, the layout is expected to assume that it has no restrictions on dimensions, the container has not scrolled, and item positioning should start at the standard origin `(0,0)`. The code below will use `viewPortBounds`, if it is not `null`, or it will select sensible defaults for all values:
+The second argument is an optional [`ViewPortBounds`](../api-reference/feathers/layout/ViewPortBounds.html) object. This object specifies restrictions on the layout, such as dimensions, starting position, and scroll position (for scrolling containers). If the `ViewPortBounds` object is not provided, the layout is expected to assume that it has no restrictions on dimensions, the container has not scrolled, and item positioning should start at the standard origin `(0,0)`. The code below will use `viewPortBounds`, if it is not `null`, or it will select sensible defaults for all values:
 
 ``` code
 var startX:Number = 0;
@@ -233,7 +233,7 @@ if(viewPortBounds)
 
 In a moment, we'll spend some time looking at [every property defined by ViewPortBounds](#viewportbounds-properties), including those interesting `NaN` values.
 
-The final argument is an optional `LayoutBoundsResult` object. This object is used to specify the final view port dimensions and the dimensions of the content within the view port. The content may be larger than the view port, and a component like `ScrollContainer` will use that to determine if it needs to scroll.
+The final argument is an optional [`LayoutBoundsResult`](../api-reference/feathers/layout/LayoutBoundsResult.html) object. This object is used to specify the final view port dimensions and the dimensions of the content within the view port. The content may be larger than the view port, and a component like `ScrollContainer` will use that to determine if it needs to scroll.
 
 This argument actually becomes the return value of the `layout()` function. By passing in (and reusing) a pre-created `LayoutBoundsResult` object, Feathers can avoid unnecessary garbage collection. It is optional, though, so the layout is expected to create a new instance of `LayoutBoundsResult` if the argument is `null`.
 
@@ -267,15 +267,15 @@ Notice that if the view port's dimensions are not explicitly specified by the `V
 
 ### ViewPortBounds properties
 
-Let's look in more detail at the properties on a `ViewPortBounds` object. This object specifies dimensions, starting position, and scroll position values of the container's view port.
+Let's look in more detail at the properties on a [`ViewPortBounds`](../api-reference/feathers/layout/ViewPortBounds.html) object. This object specifies dimensions, starting position, and scroll position values of the container's view port.
 
-The `explicitWidth` and `explicitHeight` properties may specify that the view port has an exact width and height that cannot change. The layout may position its items beyond these dimensions, but it should expect that the container will be required to scroll if any items are positioned beyond the explicit dimensions. If the value of one of these properties is `NaN` (which can be checked by passing the value to the `isNaN()` function), the view port dimension in question is not restricted to an exact value.
+The [`explicitWidth`](../api-reference/feathers/layout/ViewPortBounds.html#explicitWidth) and [`explicitHeight`](../api-reference/feathers/layout/ViewPortBounds.html#explicitHeight) properties may specify that the view port has an exact width and height that cannot change. The layout may position its items beyond these dimensions, but it should expect that the container will be required to scroll if any items are positioned beyond the explicit dimensions. If the value of one of these properties is `NaN` (which can be checked by passing the value to the `isNaN()` function), the view port dimension in question is not restricted to an exact value.
 
-The `minWidth`, `minHeight`, `maxWidth`, and `maxHeight` properties specify restrictions on view port dimensions that should be taken into account if `explicitWidth` or `explicitHeight` is not specified (if they are `NaN`, as explained above). The layout should take these values into account when it calculates its preferred width and height.
+The [`minWidth`](../api-reference/feathers/layout/ViewPortBounds.html#minWidth), [`minHeight`](../api-reference/feathers/layout/ViewPortBounds.html#minHeight), [`maxWidth`](../api-reference/feathers/layout/ViewPortBounds.html#maxWidth), and [`maxHeight`](../api-reference/feathers/layout/ViewPortBounds.html#maxHeight) properties specify restrictions on view port dimensions that should be taken into account if `explicitWidth` or `explicitHeight` is not specified (if they are `NaN`, as explained above). The layout should take these values into account when it calculates its preferred width and height.
 
-The `scrollX` and `scrollY` properties specify the scroll position of the container that is using the layout. If the container has not been scrolled, or it cannot scroll, the value will be `0`.
+The [`scrollX`](../api-reference/feathers/layout/ViewPortBounds.html#scrollX) and [`scrollY`](../api-reference/feathers/layout/ViewPortBounds.html#scrollY) properties specify the scroll position of the container that is using the layout. If the container has not been scrolled, or it cannot scroll, the value will be `0`.
 
-The `x` and `y` properties specify the starting position of the layout. The layout should consider the point `(x,y)` as its origin, instead of `(0,0)`.
+The [`x`](../api-reference/feathers/layout/ViewPortBounds.html#x) and [`y`](../api-reference/feathers/layout/ViewPortBounds.html#y) properties specify the starting position of the layout. The layout should consider the point `(x,y)` as its origin, instead of `(0,0)`. However, in most cases `x` and `y` will both probably be `0`.
 
 Again, this is an optional argument. If the layout receives `null`, it may assume the following defaults, which we've previously pointed out in the source code:
 
@@ -301,17 +301,17 @@ Again, this is an optional argument. If the layout receives `null`, it may assum
 
 ### LayoutBoundsResult properties
 
-Let's look in more detail at the properties on a `LayoutBoundsResult` object. This object is returned by the `layout()` function and "fills in the blanks" from the `ViewPortBounds` object passed as one of the arguments to the `layout()` function.
+Let's look in more detail at the properties on a [`LayoutBoundsResult`](../api-reference/feathers/layout/LayoutBoundsResult.html) object. This object is returned by the [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()) function and "fills in the blanks" from the `ViewPortBounds` object passed as one of the arguments to the `layout()` function.
 
-The `viewPortWidth` and `viewPortHeight` properties specify the final width and height of the container's view port. If the `ViewPortBounds` object specifies an `explicitWidth` or `explicitHeight`, those values should **always** be used. If not, then these values must be calculated by the layout (how they are calculated depends on the layout algorithm), using `minWidth`, `minHeight`, `maxWidth`, and `maxHeight` as restrictions.
+The [`viewPortWidth`](../api-reference/feathers/layout/LayoutBoundsResult.html#viewPortWidth) and [`viewPortHeight`](../api-reference/feathers/layout/LayoutBoundsResult.html#viewPortHeight) properties specify the final width and height of the container's view port. If the `ViewPortBounds` object specifies an `explicitWidth` or `explicitHeight`, those values should **always** be used. If not, then these values must be calculated by the layout (how they are calculated depends on the layout algorithm), using `minWidth`, `minHeight`, `maxWidth`, and `maxHeight` as restrictions.
 
-The `contentWidth` and `contentHeight` properties specify the width and height of the content. They may be the same as `viewPortWidth` and `viewPortHeight`, but if the view port contains content that goes beyond its bounds, these values may be larger, which allows a layout to tell the container that its view port should scroll, if the container supports scrolling.
+The [`contentWidth`](../api-reference/feathers/layout/LayoutBoundsResult.html#contentWidth) and [`contentHeight`](../api-reference/feathers/layout/LayoutBoundsResult.html#contentHeight) properties specify the width and height of the content. They may be the same as `viewPortWidth` and `viewPortHeight`, but if the view port contains content that goes beyond its bounds, these values may be larger, which allows a layout to tell the container that its view port should scroll, if the container supports scrolling.
 
-The `contentX` and `contentY` properties specify where the content begins for scrolling containers to set the minimum scroll positions. These values are typically set to `0` (zero), but they may also be negative.
+The [`contentX`](../api-reference/feathers/layout/LayoutBoundsResult.html#contentX) and [`contentY`](../api-reference/feathers/layout/LayoutBoundsResult.html#contentY) properties specify where the content begins for scrolling containers to set the minimum scroll positions. These values are typically set to `0` (zero), but they may also be negative.
 
 ## The getScrollPositionForIndex() function
 
-The second function defined by `ILayout` is `getScrollPositionForIndex()`. Please take a moment to review its signature below:
+The second function defined by [`ILayout`](../api-reference/feathers/layout/ILayout.html) is [`getScrollPositionForIndex()`](../api-reference/feathers/layout/ILayout.html#getScrollPositionForIndex()). Please take a moment to review its signature below:
 
 ``` code
 getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
@@ -372,7 +372,7 @@ return result;
 
 ## Related Links
 
--   [ILayoutDisplayObject and ILayoutData](layout-data.html)
+-   [`ILayoutDisplayObject` and `ILayoutData`](layout-data.html)
 
 -   [Virtualized Custom Layouts for Feathers Components](virtual-custom-layouts.html)
 
