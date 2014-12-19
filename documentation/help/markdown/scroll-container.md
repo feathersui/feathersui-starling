@@ -203,7 +203,7 @@ The `pageWidth` and `pageHeight` properties may be used to customize the size of
 
 Many developers try to use ScrollContainer any time that they need to scroll some content. This will work for a small set of children, but especially on mobile, there are limits to what ScrollContainer can handle. If your layout contains many children that basically look the same, and maybe you're referring to them as "cells" or "items", then ScrollContainer is probably not the correct component for this type of UI. Instead, you should probably use the [List component](list.html).
 
-List is much better at supporting layouts with dozens or hundreds of items, and its [item renderers can be customized](item-renderers.html) to completely change their appearance. If you need headers or footers, [GroupedList](http://wiki.starling-framework.org/feathers/grouped-list) might be a better choice.
+List is much better at supporting layouts with dozens or hundreds of items, and its [item renderers can be customized](item-renderers.html) to completely change their appearance. If you need headers or footers, [GroupedList](grouped-list.html) might be a better choice.
 
 ## Related Links
 

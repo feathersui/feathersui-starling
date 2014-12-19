@@ -34,7 +34,7 @@ override protected function initialize():void
 }
 ```
 
-For more information about the `initialize()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `initialize()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](../component-properties-methods.html).</aside>
 
 Now, let's create our `TouchEvent.TOUCH` listener. Comments appear inline to explain each step of the process. To see where a touch begins, look at the `else` block near the bottom.
 

@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Feathers coding conventions for contributors
 
-This is the code formatting style used within the [Feathers](index.html) library. When contributing code to Feathers, you are required to use this style. Pull Requests to the [Feathers project on Github](https://github.com/joshtynjala/feathers) that are formatted with a different style will be rejected. The author respects that you may have your own personal style, and the author would attempt to follow your style if he were to contribute to your open source project. Save him some time so that he doesn't need to manually reformat your contributed code.
+This is the code formatting style used within the [Feathers](index.html) library. When contributing code to Feathers, you are required to use this style. [Pull Requests](https://help.github.com/articles/using-pull-requests) to the [Feathers project on Github](https://github.com/joshtynjala/feathers) that are formatted with a different style will be rejected. The author respects that you may have your own personal style, and the author would attempt to follow your style if he were to contribute to your open source project. Save him some time so that he doesn't need to manually reformat your contributed code.
 
 If you are not contributing code to Feathers, then please feel no obligation to follow this style guide when working with the library. This guide is aimed at developers who wish to contribute bug fixes and enhancements to Feathers.
 

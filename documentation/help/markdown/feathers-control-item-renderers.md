@@ -184,7 +184,7 @@ override protected function initialize():void
 
 The `initialize()` function is called once the very first time that the component is added to the stage. It's a good place to create sub-components and other children and possibly to do things like add event listeners that you don't intend to remove until the component is disposed. In general, it is better to use `initialize()` for this sort of thing instead of the constructor.
 
-For more information about the `initialize()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `initialize()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 ### Parsing the data
 
@@ -204,7 +204,7 @@ override protected function draw():void
 
 You may remember that we called the `invalidate()` function in the setter functions above. In the `data` setter, we passed in `INVALIDATION_FLAG_DATA`. Inside the `draw()` function, we call `isInvalid()` to see if that flag has been set.
 
-For more information about the `draw()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `draw()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 Let's add a `commitData()` function to call when the data changes:
 
@@ -264,7 +264,7 @@ protected function autoSizeIfNeeded():Boolean
 
 Let's start by checking whether the width and height properties have been set. We have internal variables named `explicitWidth` and `explicitHeight` that will either be a valid number of pixels or they will be `NaN` if they aren't set. If both the width and the height have been set already, we can simply return without any measuring.
 
-For more information about the `explicitWidth` and `explicitHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `explicitWidth` and `explicitHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 Next, we update the width and height of the `Label` sub-component. If the item renderer's explicit dimensions are `NaN`, then the explicit dimensions of the `Label` will be set to `NaN` too, meaning that the `Label` should measure itself too, just like the item renderer is doing.
 
@@ -299,7 +299,7 @@ return this.setSizeInternal(newWidth, newHeight, false);
 
 The return value is true if the dimensions are different than the last time that the component validated. We return this same value from `autoSizeIfNeeded()` for use in the `draw()` function.
 
-For more information about the `setSizeInternal()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `setSizeInternal()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 Speaking of the `draw()` function, we want to add some code to call the `autoSizeIfNeeded()` from there:
 
@@ -335,7 +335,7 @@ protected function layoutChildren():void
 
 The `actualWidth` and `actualHeight` variables hold the final width and height of the item renderer. These variables are derived using a combination of the explicit dimensions and the measured dimensions that we calculated before passing them to `setSizeInternal()`.
 
-For more information about the `actualWidth` and `actualHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `actualWidth` and `actualHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 We call the `layoutChildren()` function at the end of the `draw()` function:
 
