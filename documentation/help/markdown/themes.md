@@ -11,7 +11,7 @@ Themes are not required, of course. You can skin any Feathers component manually
 
 A number of sample themes are available in the `themes` directory included with Feathers. Just grab the compiled SWC file for the theme you'd like to use, and drop it into your project. Instantiate the theme when your app first starts up by adding only a single line of code. Any component that you instantiate will be skinned automatically. We'll see an example in a moment.
 
-Curious about themes as an architectural decision and why Feathers doesn't provide default skins? See [Why don't the Feathers components have default skins?](http://wiki.starling-framework.org/feathers/faq?&#why_don_t_the_feathers_components_have_default_skins) in the [Feathers FAQ](http://wiki.starling-framework.org/feathers/faq).
+Curious about themes as an architectural decision and why Feathers doesn't provide default skins? See [Why don't the Feathers components have default skins?](faq.html#why-dont-the-feathers-components-have-default-skins) in the [Feathers FAQ](faq.html).
 
 ## Initializing a Theme
 
@@ -99,11 +99,11 @@ Obviously, if you create a [custom theme](custom-themes.html) for your applicati
 
 ## Related Links
 
--   [Managing Assets in Feathers Themes](theme-assets.html)
+-   [Managing assets in Feathers themes](theme-assets.html)
 
--   [Extending Feathers Themes](extending-themes.html)
+-   [Extending Feathers example themes](extending-themes.html)
 
--   [Creating Custom Feathers Themes](custom-themes.html)
+-   [Creating custom Feathers themes](custom-themes.html)
 
 -   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)
 

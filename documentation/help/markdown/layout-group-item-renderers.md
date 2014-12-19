@@ -92,7 +92,7 @@ override protected function initialize():void
 
 The `initialize()` function is called once the very first time that the component is added to the stage. It's a good place to create sub-components and other children and possibly to do things like add event listeners that you don't intend to remove until the component is disposed. In general, it is better to use `initialize()` for this sort of thing instead of the constructor.
 
-For more information about the `initialize()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `initialize()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 ### Parsing the data
 
@@ -170,7 +170,7 @@ public function set padding(value:Number):void
 
 When we change a property that requires the component to change something about its appearance, we need to call the `invalidate()` function. This will tell the component that it needs to update its appearance before the next time that Starling renders to the screen. We'll explain that constant, `INVALIDATION_FLAG_LAYOUT`, in a moment.
 
-For more information about the `invalidate()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](http://wiki.starling-framework.org/feathers/component-properties-methods).
+<aside class="info">For more information about the `invalidate()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 The base class offers a `preLayout()` function that you can override to update layout properties on children *before* the layout code is run. We're going to update the `Label` component's `AnchorLayoutData` in this function:
 

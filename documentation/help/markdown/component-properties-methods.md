@@ -66,7 +66,7 @@ A custom component should pass its ideal calculated dimensions to the `setSizeIn
 
 If explicit dimensions have been set, and you want to use the component's ideal dimensions instead, pass `NaN` to the `width` and `height` setters.
 
-The `minWidth` and `minHeight` properties are used by `setSizeInternal()` to adjust the ideal dimensions to a minimum value. `minWidth` and `minHeight` do \_not\_ affect explicit dimensions in any way.
+The `minWidth` and `minHeight` properties are used by `setSizeInternal()` to adjust the ideal dimensions to a minimum value. `minWidth` and `minHeight` do *not* affect explicit dimensions in any way.
 
 ## Related Links
 

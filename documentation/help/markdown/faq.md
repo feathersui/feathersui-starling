@@ -41,7 +41,7 @@ Please visit the [Feathers forum](http://forum.starling-framework.org/forum/feat
 
 Feel free to [report bugs and request features](https://github.com/joshtynjala/feathers/issues) on Github at any time.
 
-Pull requests are welcome for bug fixes. Before submitting a pull request, be sure to take a look at the [Feathers Coding Conventions for Contributors](http://wiki.starling-framework.org/feathers/coding-conventions). All code in Feathers is expected to match the coding style described in that document. Contributions that don't follow the coding conventions may be given a lower priority due to the extra effort required to reformat your code.
+Pull requests are welcome for bug fixes. Before submitting a pull request, be sure to take a look at the [Feathers Coding Conventions for Contributors](coding-conventions.html). All code in Feathers is expected to match the coding style described in that document. Contributions that don't follow the coding conventions may be given a lower priority due to the extra effort required to reformat your code.
 
 For new components and other major contributions, I encourage you to create your own project on [Github](http://github.com/) as an extension to Feathers or as a fork. [Send me a link](https://twitter.com/joshtynjala), and I'll be happy to share it with the community. If enough developers show interest in your project, and there's demand for including it in the core Feathers library, we can discuss the details further.
 
