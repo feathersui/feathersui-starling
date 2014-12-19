@@ -5,11 +5,11 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Callout` component
 
-The `Callout` class renders content as a [pop-up](pop-ups.html) over all other content. Typically, a callout displays a rectangular border with an arrow or tail that points to an origin display object, such as a button. The arrow may appear on any of the callout's edges. The callout will close automatically when a touch is detected outside of the callout's bounds.
+The [`Callout`](../api-reference/feathers/controls/Callout.html) class renders content as a [pop-up](pop-ups.html) over all other content. Typically, a callout displays a rectangular border with an arrow or tail that points to an origin display object, such as a button. The arrow may appear on any of the callout's edges. The callout will close automatically when a touch is detected outside of the callout's bounds.
 
 ## The Basics
 
-We create a `Callout` a bit differently than other components. Rather than calling a constructor, we call the static function `Callout.show()`. Let's see how this works by displaying a Starling `Image` in a `Callout` when we touch a button. First, let's create the button:
+We create a `Callout` a bit differently than other components. Rather than calling a constructor, we call the static function [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()). Let's see how this works by displaying a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) in a `Callout` when we touch a button. First, let's create the button:
 
 ``` code
 var button:Button = new Button();
@@ -31,19 +31,19 @@ function button_triggeredHandler( event:Event ):void
 
 Two arguments are required. The first is the callout's content. This may be any Starling display object. The callout will be automatically resized to fit its content, unless you set `width` or `height` manually. The second argument is the origin of the callout. When the callout is shown, it will be automatically positioned so that its arrow points at the origin.
 
-A callout may be closed manually by calling the `close()` function.
+A callout may be closed manually by calling the [`close()`](../api-reference/feathers/controls/Callout.html#close()) function.
 
 Additional arguments are available for `Callout.show()`. Let's take a look at those.
 
 ### Direction
 
-The next is the callout's direction, which is where the callout appears relative to its origin. By default, this is `DIRECTION_ANY` which means that the callout may open [above](../api-reference/feathers/controls/Callout.html#DIRECTION_UP), [below](../api-reference/feathers/controls/Callout.html#DIRECTION_DOWN), to the [left](../api-reference/feathers/controls/Callout.html#DIRECTION_LEFT), or to the [right](../api-reference/feathers/controls/Callout.html#DIRECTION_RIGHT) of the origin. The exact direction will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to select a specific direction if you never want the callout to open in one of the other directions.
+The next is the callout's direction, which is where the callout appears relative to its origin. By default, this is [`Callout.DIRECTION_ANY`](../api-reference/feathers/controls/Callout.html#DIRECTION_ANY) which means that the callout may open [above](../api-reference/feathers/controls/Callout.html#DIRECTION_UP), [below](../api-reference/feathers/controls/Callout.html#DIRECTION_DOWN), to the [left](../api-reference/feathers/controls/Callout.html#DIRECTION_LEFT), or to the [right](../api-reference/feathers/controls/Callout.html#DIRECTION_RIGHT) of the origin. The exact direction will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to select a specific direction if you never want the callout to open in one of the other directions.
 
 ### Modality
 
-Following the direction is the `isModal` argument. This determines whether there is an overlay between the callout and the rest of the display list. When a callout is modal, the overlay blocks touches to everything that appears under the callout. The callout may be closed by touching outside the bounds of the callout, or by calling `close()` on the `Callout` instance. If the callout isn't modal, the callout will still close when the user touches something outside of the callout (the same as a modal callout), but there will be no overlay to block the touch, and anything below the callout will remain interactive.
+Following the direction is the `isModal` parameter. This determines whether there is an overlay between the callout and the rest of the display list. When a callout is modal, the overlay blocks touches to everything that appears under the callout. The callout may be closed by touching outside the bounds of the callout, or by calling `close()` on the `Callout` instance. If the callout isn't modal, the callout will still close when the user touches something outside of the callout (the same as a modal callout), but there will be no overlay to block the touch, and anything below the callout will remain interactive.
 
-Callouts are displayed using the `PopUpManager`. By default, modal overlays are managed by the `PopUpManager`, but you can give a custom overlay to callouts (that will be different from other modal pop-ups) when you set the static property, `calloutOverlayFactory`:
+Callouts are displayed using the [`PopUpManager`](pop-ups.html). By default, modal overlays are managed by the `PopUpManager`, but you can give a custom overlay to callouts (that will be different from other modal pop-ups) when you set the static property, [`calloutOverlayFactory`](../api-reference/feathers/controls/Callout.html#calloutOverlayFactory):
 
 ``` code
 Callout.calloutOverlayFactory = function():DisplayObject
@@ -52,11 +52,11 @@ Callout.calloutOverlayFactory = function():DisplayObject
 };
 ```
 
-When `PopUpManager.addPopUp()` is called to show the callout, the custom overlay factory will be passed in as an argument.
+When [`PopUpManager.addPopUp()`](../api-reference/feathers/core/PopUpManager.html#addPopUp()) is called to show the callout, the custom overlay factory will be passed in as an argument.
 
 ### Custom Callout Factory
 
-When a callout is created with `Callout.show()`, `Callout.calloutFactory()` is called to instantiate a `Callout` instance. The final argument of `Callout.show()` allows you to specify a custom callout factory. This let's you customize an individual callout to be different than other callouts. For instance, let's say that a particular callout should have different skins than others. We might create a callout factory function like this:
+When a callout is created with `Callout.show()`, the function stored by the [`Callout.calloutFactory()`](../api-reference/feathers/controls/Callout.html#calloutFactory) property is called to instantiate a `Callout` instance. The final argument of `Callout.show()` allows you to specify a custom callout factory. This let's you customize an individual callout to be different than other callouts. For instance, let's say that a particular callout should have different skins than others. We might create a callout factory function like this:
 
 ``` code
 function customCalloutFactory():Callout
@@ -72,7 +72,7 @@ If you've created a [custom theme](custom-themes.html), you can set a styling fu
 
 ## Skinning a `Callout`
 
-Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [Callout API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common properties below.
+Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [`Callout` API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common properties below.
 
 Let's look at the skins first.
 
@@ -134,7 +134,7 @@ If you aren't using a theme, then you may set any of the callout's properties di
 
 ### Skinning a `Callout` without a theme
 
-If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the `Callout.calloutFactory` static property to a function that provides skins for the callout. This factory will be called any time that `Callout.show()` is used to create a callout.
+If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the [`Callout.calloutFactory`](../api-reference/feathers/controls/Callout.html#calloutFactory) static property to a function that provides skins for the callout. This factory will be called any time that [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()) is used to create a callout.
 
 ``` code
 function skinnedCalloutFactory():Callout
@@ -166,13 +166,13 @@ You should generally always skin the callouts with a factory or with a theme ins
 
 ## Disposal
 
-When manually closing the callout, you may call the `close()` function and pass in `true` or `false` for the `dispose` argument.
+When manually closing the callout, you may call the [`close()`](../api-reference/feathers/controls/Callout.html#close()) function and pass in `true` or `false` for the `dispose` argument.
 
-It's possible that the callout will close itself automatically. Properties like `closeOnTouchBeganOutside`, `closeOnTouchEndedOutside`, and `closeOnKeys` allow this behavior to be customized.
+It's possible that the callout will close itself automatically. Properties like [`closeOnTouchBeganOutside`](../api-reference/feathers/controls/Callout.html#closeOnTouchBeganOutside), [`closeOnTouchEndedOutside`](../api-reference/feathers/controls/Callout.html#closeOnTouchEndedOutside), and [`closeOnKeys`](../api-reference/feathers/controls/Callout.html#closeOnKeys) allow this behavior to be customized.
 
-By default, when the callout closes itself, it will also dispose itself. Set the `disposeOnSelfClose` property to `false` if you intend to reuse the callout. Simply add it to the `PopUpManager` again to reuse it.
+By default, when the callout closes itself, it will also dispose itself. Set the [`disposeOnSelfClose`](../api-reference/feathers/controls/Callout.html#disposeOnSelfClose) property to `false` if you intend to reuse the callout. Simply add it to the [`PopUpManager`](pop-ups.html) again to reuse it.
 
-Finally, you may want to reuse the callout's content. By default, the callout will also dispose its content when it is disposed. Set the `disposeContent` property to `false` to allow your code to reuse the callout's content in another callout or elsewhere on the display list after the original callout is disposed.
+Finally, you may want to reuse the callout's content. By default, the callout will also dispose its content when it is disposed. Set the [`disposeContent`](../api-reference/feathers/controls/Callout.html#disposeContent) property to `false` to allow your code to reuse the callout's content in another callout or elsewhere on the display list after the original callout is disposed.
 
 ## Related Links
 
