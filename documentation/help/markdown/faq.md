@@ -97,7 +97,7 @@ To quickly get up and running with some sample skins, you may want to use a [the
 
 Your development environment is not properly simulating the display density of the target mobile device. Please follow [these instructions](faq/display-density.html) for fixing this issue.
 
-### When I try to access the width or height properties of a Feathers component, why do I get 0?
+### When I try to access the `width` or `height` properties of a Feathers component, why do I get `0`?
 
 You can call `component.validate()` to force a component to immediately measure itself and handle changes to its properties. Normally, a component will queue up a number of changes and process them all in one batch right before Starling renders a new frame. Please see [this detailed explanation](faq/zero-dimensions.html) for more information.
 
@@ -111,9 +111,11 @@ Drawing text in the GPU involves many tradeoffs. Sometimes it is impossible to a
 
 ### Why do my custom item renderers show the wrong data?
 
-`List` and `GroupedList` components use something called *layout virtualization* to minimize the number of item renderers that need to be created at any time. Additionally, lists will reuse item renderers when they scroll off screen to display different data that has scrolled on screen. This provides a significant performance boost, especially on mobile. When you create a custom item renderer, you need to ensure that it is designed to properly update when the list asks it to display a different item from the data provider. Please see [this detailed explanation](faq/layout-virtualization.html) for more information.
+`List` and `GroupedList` components use something called *layout virtualization* to minimize the number of item renderers that need to be created at any time. Additionally, lists will reuse item renderers when they scroll off screen to display different data that has scrolled on screen. This provides a significant performance boost, especially on mobile.
 
-### Why can't I see a filter in a List or ScrollContainer?
+When you create a custom item renderer, you need to ensure that it is designed to properly update when the list asks it to display a different item from the data provider. Please see [this detailed explanation](faq/layout-virtualization.html) for more information.
+
+### Why can't I see a filter in a `List` or `ScrollContainer`?
 
 Starling filters aren't compatible with the clipping rectangle. You need to turn off clipping.
 
@@ -121,19 +123,19 @@ Starling filters aren't compatible with the clipping rectangle. You need to turn
 list.clipContent = false;
 ```
 
-This applies to any scrolling component or container, and a few others like `ScreenNavigator`.
+This applies to any scrolling component or container, and a few others like `StackScreenNavigator` and `ScreenNavigator`.
 
 ### Why isn't the text visible when I flatten a Feathers component?
 
-Unfortunately, `flash.text.TextField` often does not draw correctly `BitmapData` until a frame later. If you are using the Feathers `TextFieldTextRenderer`, it will wait a frame before uploading its text as a texture on the GPU. Since flattening happens immediately, the TextField won't be ready in time. The best workaround is to immediately validate the component and wait a frame before flattening.
+Unfortunately, `flash.text.TextField` often does not draw correctly `BitmapData` until a frame later. If you are using the Feathers `TextFieldTextRenderer`, it will wait a frame before uploading its text as a texture on the GPU. Since flattening happens immediately, the `TextField` won't be ready in time. The best workaround is to immediately validate the component and wait a frame before flattening.
 
-### Why don't I see skins when I subclass a Feathers component?
+### Why do I see colored lines or strange gaps between tiles when I use `TiledImage`?
 
-Subclasses shouldn't necessarily have the same skins as their superclass, and you will need to tell the theme that it should apply the same skins to the subclass as its superclass. Please see [this detailed explanation](faq/subclass-skins.html) for more information.
+This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the "extrude" setting to work around this issue. The [`TiledImage`](tiled-image.html) documentation has a detailed explaination of this issue and the extrude workaround.
 
-### Why do I see colored lines or strange gaps between tiles when I use TiledImage?
+### How do I create a `List` where each item renderer can have a different height?
 
-This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the "extrude" setting to work around this issue. The `TiledImage` documentation has a detailed explaination of this issue and the extrude workaround.
+Pass in a [`VerticalLayout`](vertical-layout.html) with its [`hasVariableItemDimensions`](../api-reference/feathers/layout/VerticalLayout.html#hasVariableItemDimensions) property set to `true`. By default, `VerticalLayout` forces all item renderers to have the same height because this improves performance for most lists.
 
 ------------------------------------------------------------------------
 

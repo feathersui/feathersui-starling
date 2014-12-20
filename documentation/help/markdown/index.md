@@ -5,39 +5,15 @@ author: Josh Tynjala
 ---
 # Feathers
 
-Say hello to [Feathers](http://feathersui.com/). Light-weight, skinnable, and extensible UI components for mobile and desktop. Feathers puts it all together in one package — along with blazing fast GPU powered graphics (courtesy of Starling Framework) to create a smooth and responsive experience.
+Get started with [Feathers](http://feathersui.com/), the open source library of user interface components for the hardware-accelerated [Starling Framework](http://gamua.com/starling/). A robust skinning system enables your creativity, fluid layouts make it easy to deploy to a variety of screens, and support for both touch and mouse interaction puts your apps on mobile and desktop. With Feathers and Starling, you can build fully-standalone native apps for iOS, Android, Windows, and Mac OS X, and you can even deploy to desktop web browsers with Adobe Flash Player.
 
-Feathers is free and open source. Feathers runs on Starling Framework and the Adobe Flash runtimes, including Adobe AIR on iOS, Android, Windows, and Mac OS X and Adobe Flash Player in desktop browsers.
+## Installation & Getting Started
 
--   [Feathers Website](http://feathersui.com/)
+-   [Download Starling Framework](http://gamua.com/starling/download/)
 
 -   [Download Feathers](http://feathersui.com/download/)
 
--   [Showcase](http://feathersui.com/showcase/)
-
--   [Support Forum](http://forum.starling-framework.org/forum/feathers)
-
--   [Submit Bug Reports and Feature Requests](https://github.com/joshtynjala/feathers/issues)
-
--   [Github Project](https://github.com/joshtynjala/feathers)
-
--   [Like Feathers on Facebook](http://facebook.com/feathersui)
-
--   [Follow Feathers on Twitter](http://twitter.com/feathersui)
-
--   [Find Feathers on Google+](http://plus.google.com/+Feathersui)
-
-## Introduction
-
-Trying out Feathers for the first time? The following tutorials should help.
-
--   [List of Feathers Features](features.html)
-
--   [Frequently Asked Questions (FAQ)](faq.html)
-
--   [Feathers API Reference](../api-reference/)
-
--   Setting up Feathers in your IDE of choice
+-   Set up Starling and Feathers in your preferred development environment:
 
     -   [Flash Builder](flash-builder.html)
 
@@ -47,23 +23,37 @@ Trying out Feathers for the first time? The following tutorials should help.
 
     -   [Flash Professional](flash-pro.html)
 
--   [Getting Started with Feathers](getting-started.html)
+-   Follow the instructions in [Getting Started with Feathers](getting-started.html) to create your first "Hello World" app using Feathers.
+
+## Help & Support
+
+There are a number of places where you can get help with Feathers issues or to ask questions.
+
+-   Bookmark the [Feathers API Reference](../api-reference/) for easy access to all of the classes, properties, methods, and events that Feathers components offer.
+
+-   Study the [Frequently Asked Questions (FAQ)](faq.html). Feathers makes some default choices that aren't necessarily intuitive because they improve performance significantly. For beginners, the FAQ will answer a number of common questions.
+
+-   Ask for help at [Feathers in the Starling Forum](http://forum.starling-framework.org/forum/feathers). Many of the community's experts (including Josh Tynjala, the main author behind Feathers) visit frequently to answer questions. Be sure to try a couple of searches to see if someone else has had the same issue -- maybe your questions have been answered already! If not, then feel free to start a new thread.
+
+-   Submit [bug reports and feature requests](https://github.com/joshtynjala/feathers/issues) on Github. If you're not quite sure if you've found a bug or not, or if you simply have a question, then please post in the forums first. We can escalate to a bug report later, if needed.
+
+-   Looking for quick recipes that show you how to do common tasks using Feathers? Check out the [Feathers Cookbook](cookbook/index.html).
+
+## Core Concepts
 
 -   [Introduction to Themes](themes.html)
 
--   [Text Renderers](text-renderers.html)
+-   [Introduction to Text Renderers](text-renderers.html)
 
--   [Text Editors](text-editors.html)
-
-Looking for quick recipes that show you how to do common tasks using Feathers?
-
--   [Feathers Cookbook](cookbook/index.html)
+-   [Introduction Text Editors](text-editors.html)
 
 ## Feathers Components
 
 A more detailed look at each of the components that Feathers provides.
 
 -   [`Alert`](alert.html)
+
+-   [`AutoComplete`](auto-complete.html)
 
 -   [`Button`](button.html)
 
@@ -73,13 +63,11 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`Check`](check.html)
 
+-   [`DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
+
 -   [`Drawers`](drawers.html)
 
 -   [`GroupedList`](grouped-list.html)
-
-    -   [Default Item Renderers](default-item-renderers.html)
-
-    -   [Custom Item Renderers](item-renderers.html)
 
 -   [`Header`](header.html)
 
@@ -90,10 +78,6 @@ A more detailed look at each of the components that Feathers provides.
 -   [`LayoutGroup`](layout-group.html)
 
 -   [`List`](list.html)
-
-    -   [Default Item Renderers](default-item-renderers.html)
-
-    -   [Custom Item Renderers](item-renderers.html)
 
 -   [`NumericStepper`](numeric-stepper.html)
 
@@ -125,6 +109,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`Slider`](slider.html)
 
+-   [`SpinnerList`](spinner-list.html)
+
 -   [`StackScreenNavigator`](stack-screen-navigator.html)
 
 -   [`TabBar`](tab-bar.html)
@@ -151,7 +137,7 @@ Custom Starling display objects included with Feathers for skinning. These displ
 
 ## Layouts
 
-A more detailed look at each of the layout algorithms that Feathers provides.
+A detailed look at each of the layout algorithms that Feathers provides out-of-the-box.
 
 -   [`AnchorLayout`](anchor-layout.html)
 
@@ -159,11 +145,21 @@ A more detailed look at each of the layout algorithms that Feathers provides.
 
 -   [`VerticalLayout`](vertical-layout.html)
 
+-   [`VerticalSpinnerLayout`](vertical-spinner-layout.html)
+
 -   [`TiledColumnsLayout`](tiled-columns-layout.html)
 
 -   [`TiledRowsLayout`](tiled-rows-layout.html)
 
-A bit further down, you can find number of articles that go into detail about the Feathers layout architecture and how to create [custom layouts](#custom-layouts).
+### Custom Layouts
+
+If the built-in layouts don't provide what you need, Feathers containers support custom layouts too.
+
+-   [Introduction to custom Feathers layouts](custom-layouts.html)
+
+-   [`ILayoutDisplayObject` and `ILayoutData`](layout-data.html)
+
+-   [Creating virtualized custom Feathers layouts](virtual-custom-layouts.html)
 
 ## Skinning and Themes
 
@@ -178,6 +174,8 @@ Some tutorials on how to skin components and how to use Feathers themes.
 -   [Creating Custom Themes](custom-themes.html)
 
 -   [Managing Assets in Feathers Themes](theme-assets.html)
+
+-   [Migrating legacy Feathers 1.x themes to Feathers 2.x](migrating-themes.html)
 
 More skinning resources.
 
@@ -199,27 +197,17 @@ Item renderers are custom components used by lists to display items from the dat
 
 -   [Introduction to Custom Item Renderers](item-renderers.html)
 
--   [Custom Item Renderers with LayoutGroup](layout-group-item-renderers.html)
+-   [Custom Item Renderers with `LayoutGroup`](layout-group-item-renderers.html)
 
--   [Custom Item Renderers with FeathersControl and IListItemRenderer](feathers-control-item-renderers.html)
+-   [Custom Item Renderers with `FeathersControl` and `IListItemRenderer`](feathers-control-item-renderers.html)
 
-## Custom Layouts
+## Managing UI interactions
 
-All Feathers components that support the built-in layouts also support custom layouts.
+-   [Displaying pop-ups above other content in Feathers](pop-ups.html)
 
--   [Introduction to custom Feathers layouts](custom-layouts.html)
+-   [Keyboard focus management](focus.html)
 
--   [`ILayoutDisplayObject` and `ILayoutData`](layout-data.html)
-
--   [Creating virtualized custom Feathers layouts](virtual-custom-layouts.html)
-
-## Advanced UI
-
--   [Pop-up Management](pop-ups.html)
-
--   [Focus Management](focus.html)
-
--   [Drag and Drop](drag-drop.html)
+-   [Drag and drop between Feathers components](drag-drop.html)
 
 ## Miscellaneous
 

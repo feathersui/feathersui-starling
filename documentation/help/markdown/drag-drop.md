@@ -1,21 +1,23 @@
 ---
-title: Feathers Drag and Drop  
+title: Drag and drop between Feathers components  
 author: Josh Tynjala
 
 ---
-# Feathers Drag and Drop
+# Drag and drop between Feathers components
 
-The following description of how to use the Feathers `DragDropManager` is taken from [this forum thread](http://forum.starling-framework.org/topic/would-you-please-give-us-an-examples-on-how-to-use-dragdropmanager). This text combines multiple posts into a single source, without much editing, so refer to the linked thread if some context is missing. More thorough documentation with a full example will be added in the future.
+<aside class="warn">The following description of how to use the Feathers [`DragDropManager`](../api-reference/feathers/dragDrop/DragDropManager.html) is taken from [this forum thread](http://forum.starling-framework.org/topic/would-you-please-give-us-an-examples-on-how-to-use-dragdropmanager). This text combines multiple posts into a single source, without much editing, so refer to the linked thread if some context is missing. More thorough documentation will be added in the future.</aside>
 
-1) You need to implement the `IDragSource` and `IDropTarget` interfaces on the appropriate objects.
+<aside class="info">In the `examples/DragDrop` directory that comes with Feathers, you can find a simple, working example of the `DragDropManager`.</aside>
 
-2) Call `DragDropManager.startDrag()`, passing in the `IDragSource`, the `Touch` object that initiated the drag, and a `DragData` object which stores the data that is being dragged. You can specify data by "format" so that different targets can accept different types of data.
+1) You need to implement the [`IDragSource`](../api-reference/feathers/dragDrop/IDragSource.html) and [`IDropTarget`](../api-reference/feathers/dragDrop/IDropTarget.html) interfaces on the appropriate objects.
 
-3) When the `IDropTarget` dispatches `DragDropEvent.DRAG_ENTER` (the `DragDropManager` handles the event dispatching, you just need to listen), and the `DragData` object includes data of the correct format, it should call `DragDropManager.acceptDrag()`.
+2) Call [`DragDropManager.startDrag()`](../api-reference/feathers/dragDrop/DragDropManager.html#startDrag()), passing in the `IDragSource`, the [`Touch`](http://doc.starling-framework.org/core/starling/events/Touch.html) object that initiated the drag, and a [`DragData`](../api-reference/feathers/dragDrop/DragData.html) object which stores the data that is being dragged. You can specify data by "format" so that different targets can accept different types of data.
 
-4) The `IDropTarget` will dispatch `DragDropEvent.DRAG_DROP` if you drop the object (stop touching or release the mouse button) over the `IDropTarget`. If it does, you need to handle the drop in the event listener.
+3) When the `IDropTarget` dispatches [`DragDropEvent.DRAG_ENTER`](../api-reference/feathers/events/DragDropEvent.html#DRAG_ENTER) (the `DragDropManager` handles the event dispatching, you just need to listen), and the `DragData` object includes data of the correct format, it should call [`DragDropManager.acceptDrag()`](../api-reference/feathers/dragDrop/DragDropManager.html#acceptDrag()).
 
-5) The `IDragSource` will dispatch `DragDropEvent.DRAG_COMPLETE` whether the drop was accepted or not. The `isDropped` property of the event is a `Boolean` that indicates if the drag was successfully dropped on a target that accepted it, of if it was cancelled. If the data that was dragged needs to be removed from the source after being dropped on the target, this event listener is the place to do it. Just check the `isDropped` property to see if it was dropped or cancelled.
+4) The `IDropTarget` will dispatch [`DragDropEvent.DRAG_DROP`](../api-reference/feathers/events/DragDropEvent.html#DRAG_DROP) if you drop the object (stop touching or release the mouse button) over the `IDropTarget`. If it does, you need to handle the drop in the event listener.
+
+5) The `IDragSource` will dispatch [`DragDropEvent.DRAG_COMPLETE`](../api-reference/feathers/events/DragDropEvent.html#DRAG_COMPLETE) whether the drop was accepted or not. The [`isDropped`](../api-reference/feathers/events/DragDropEvent.html#isDropped) property of the event is a `Boolean` that indicates if the drag was successfully dropped on a target that accepted it, of if it was cancelled. If the data that was dragged needs to be removed from the source after being dropped on the target, this event listener is the place to do it. Just check the `isDropped` property to see if it was dropped or cancelled.
 
 You can pass the "ghosted drag image" as the "avatar" when you call `DragDropManager.startDrag()`. The avatar is what follows the mouse while you're dragging.
 

@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `GroupedList` component
 
-The `GroupedList` class renders groups of items from a hierarchical data source. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers, similar to the `List` component.
+The [`GroupedList`](../api-reference/feathers/controls/GroupedList.html) class renders groups of items from a hierarchical data source. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers, similar to the [`List`](list.html) component.
 
 ## The Basics
 
@@ -18,7 +18,7 @@ list.height = 300;
 this.addChild( list );
 ```
 
-Next, we want the grouped list to display some items, so let's create a `HierarchicalCollection` as its data provider. In the example below, a specially-formatted set of objects is passed to the `HierarchicalCollection`:
+Next, we want the grouped list to display some items, so let's create a [`HierarchicalCollection`](../api-reference/feathers/data/HierarchicalCollection.html) as its data provider. In the example below, a specially-formatted set of objects is passed to the `HierarchicalCollection`:
 
 ``` code
 var groceryList:HierarchicalCollection = new HierarchicalCollection(
@@ -55,7 +55,7 @@ list.dataProvider = groceryList;
 
 Now, we need to tell the item renderer how to display the data. The grouped list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
-By default, a list renders items from the data provider using the `DefaultGroupedListItemRenderer` component. This default item renderer has many options for displaying strings, textures, and even adding display objects from the data provider as children. Let's look at a couple of these properties right now.
+By default, a list renders items from the data provider using the [`DefaultGroupedListItemRenderer`](default-item-renderers.html) component. This default item renderer has many options for displaying strings, textures, and even adding display objects from the data provider as children. Let's look at a couple of these properties right now.
 
 Start by taking a moment to review one of the items from the data provider:
 
@@ -70,19 +70,19 @@ list.itemRendererProperties.labelField = "text";
 list.itemRendererProperties.iconSourceField = "thumbnail";
 ```
 
-When using the `labelField`, the default item renderer will automatically create a [text renderer](text-renderers.html) to display the string. Similarly, when you use the `iconSourceField`, the item renderer will automatically create an `ImageLoader` to display the texture. You may also use `iconSourceField` to ask the `ImageLoader` to display an image loaded from a URL instead of a texture. The value is passed to the `ImageLoader`'s `source` property.
+When using the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField), the default item renderer will automatically create a [text renderer](text-renderers.html) to display the string. Similarly, when you use the [`iconSourceField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField), the item renderer will automatically create an [`ImageLoader`](image-loader.html) to display the texture. You may also use `iconSourceField` to ask the `ImageLoader` to display an image loaded from a URL instead of a texture. The value is passed to the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property of the `ImageLoader`.
 
-The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the Feathers Default Item Renderers](default-item-renderers.html) for complete details.
+The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for complete details.
 
 ## Headers and Footers
 
 The main difference between lists and grouped lists is that items in the grouped lists are divided into groups. These groups typically have a header, and you may optionally add a footer as well. For instance, if you have items in the list grouped alphabetically, the headers might display the letters of the alphabet, like A, B, C, etc. For the footer, you might provide instructions, a description of the group, or other clarifying information.
 
-Just like items, headers and footers have renderers. In fact, they both use the same renderer by default, `DefaultGroupedListHeaderOrFooterRenderer`. This is a renderer that may display a label, an image, or any Starling display object, depending on which properties you set.
+Just like items, headers and footers have renderers. In fact, they both use the same renderer by default, [`DefaultGroupedListHeaderOrFooterRenderer`](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html). This is a renderer that may display a label, an image, or any Starling display object, depending on which properties you set.
 
-That doesn't mean that header and footer renderers always need to be the same type. They can be different, if you prefer. Custom header and footer renderers simply need to implement the `IGroupedListHeaderOrFooterRenderer` interface.
+That doesn't mean that header and footer renderers always need to be the same type. They can be different, if you prefer. Custom header and footer renderers simply need to implement the [`IGroupedListHeaderOrFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) interface.
 
-To customize what content is passed to the header from a group in the data provider, you can use the `headerField` or `headerFunction` properties.
+To customize what content is passed to the header from a group in the data provider, you can use the [`headerField`](../api-reference/feathers/controls/GroupedList.html#headerField) or [`headerFunction`](../api-reference/feathers/controls/GroupedList.html#headerFunction) properties.
 
 Consider the following group from the data provider:
 
@@ -104,9 +104,9 @@ list.headerField = "header";
 
 Using the data provider in the example above, we tell the grouped list to pass the `header` property of the group to the header renderer.
 
-For footers, a grouped list provides `footerField` and `footerFunction` properties.
+For footers, a grouped list provides [`footerField`](../api-reference/feathers/controls/GroupedList.html#footerField) and [`footerFunction`](../api-reference/feathers/controls/GroupedList.html#footerFunction) properties.
 
-Once the header or footer renderer has its data, it may need to drill down further into the properties, similar to an item renderer. The default header and footer renderer has a `contentLabelFactory` property that is similar to the item renderer's `labelField` property.
+Once the header or footer renderer has its data, it may need to drill down further into the properties, similar to an item renderer. The default header and footer renderer has a [`contentLabelField`](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField) property that is similar to the item renderer's `labelField` property.
 
 ``` code
 renderer.headerRendererProperties.contentLabelField = "text";
@@ -124,13 +124,13 @@ The default behavior of the default header or footer renderer is simply to call 
 }
 ```
 
-Check the `DefaultGroupedListHeaderOrFooterRenderer` API reference for full details about how to display other types of children (instead of a text renderer) in the default header or footer renderer.
+Check the [`DefaultGroupedListHeaderOrFooterRenderer` API reference](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html) for full details about how to display other types of children (instead of a text renderer) in the default header or footer renderer.
 
 ## Selection
 
-The `GroupedList` component may have one selected item. You can access information about selection through a combination of the `selectedGroupIndex` and `selectedItemIndex` properties. You can also access the `selectedItem` property. If there is no selection, the value of `selectedGroupIndex` and `selectedItemIndex` will be `-1` and the value of `selectedItem` will be `null`.
+The `GroupedList` component may have one selected item. You can access information about selection through a combination of the [`selectedGroupIndex`](../api-reference/feathers/controls/GroupedList.html#selectedGroupIndex) and [`selectedItemIndex`](../api-reference/feathers/controls/GroupedList.html#selectedItemIndex) properties. You can also access the [`selectedItem`](../api-reference/feathers/controls/GroupedList.html#selectedItem) property. If there is no selection, the value of `selectedGroupIndex` and `selectedItemIndex` will be `-1` and the value of `selectedItem` will be `null`.
 
-To listen for when the selection changes, listen to the `Event.CHANGE` event:
+To listen for when the selection changes, listen to the [`Event.CHANGE`](../api-reference/feathers/controls/GroupedList.html#event:change) event:
 
 ``` code
 list.addEventListener( Event.CHANGE, list_changeHandler );
@@ -166,7 +166,7 @@ If needed, you can clear selection manually:
 list.setSelectedLocation(-1, -1);
 ```
 
-To disable selection completely, use the `isSelectable` property:
+To disable selection completely, use the [`isSelectable`](../api-reference/feathers/controls/GroupedList.html#isSelectable) property:
 
 ``` code
 list.isSelectable = false;
@@ -183,7 +183,7 @@ list.backgroundSkin = new Scale9Image( enabledTextures );
 list.backgroundDisabledSkin = new Image( disabledTextures );
 ```
 
-The `backgroundSkin` property provides the default background for when the grouped list is enabled. The `backgroundDisabledSkin` is displayed when the grouped list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled grouped list, it will fall back to using the `backgroundSkin` in the disabled state.
+The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the grouped list is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the grouped list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled grouped list, it will fall back to using the `backgroundSkin` in the disabled state.
 
 Padding may be added around the edges of the grouped list's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the grouped list's content, but the grouped list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
@@ -194,7 +194,7 @@ list.paddingBottom = 15;
 list.paddingLeft = 20;
 ```
 
-If all four padding values should be the same, you may use the `padding` property to quickly set them all at once:
+If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
 
 ``` code
 list.padding = 20;
@@ -202,7 +202,7 @@ list.padding = 20;
 
 ### Layouts
 
-The default layout for a grouped list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a `HorizontalLayout` and customize it a bit:
+The default layout for a grouped list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a [`HorizontalLayout`](horizontal-layout.html) and customize it a bit:
 
 ``` code
 var layout:HorizontalLayout = new HorizontalLayout();
@@ -213,7 +213,7 @@ layout.paddingTop = layout.paddingRight = layout.paddingBottom =
 list.layout = layout;
 ```
 
-When the grouped list automatically defaults to a `VerticalLayout`, it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view port. If we're switching to a horizontal layout, the scroll policies won't be updated automatically, so we should also manually adjust the scroll policies:
+When the grouped list automatically defaults to a [`VerticalLayout`](vertical-layout.html), it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view port. If we're switching to a horizontal layout, the scroll policies won't be updated automatically, so we should also manually adjust the scroll policies:
 
 ``` code
 list.horizontalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
@@ -255,57 +255,57 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR` style name for the horizontal scroll bar and the `Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR` style name for the vertical scroll bar.
+If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
 ``` code
 getStyleProviderForClass( ScrollBar )
-    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
+    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
-    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
 ``` code
-list.customHorizontalScrollBarName = "custom-horizontal-scroll-bar";
-list.customVerticalScrollBarName = "custom-vertical-scroll-bar";
+list.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
+list.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
-You can set the function for the `customHorizontalScrollBarName` and the `customVerticalScrollBarName` like this:
+You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
 ``` code
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
-    .setFunctionForStyleName( "custom-vertical-scroll-bar", setCustomVerticalScrollBarStyles );
+    .setFunctionForStyleName( "custom-vertical-scroll-bar", setCustomVerticalScrollBarStyles,  );
 ```
 
 #### Without a Theme
 
-If you are not using a theme, you can use `horizontalScrollBarFactory` and `verticalScrollBarFactory` to provide skins for the grouped list's scroll bars:
+If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the list's scroll bars:
 
 ``` code
 list.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
     //skin the scroll bar here
     scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
     return scrollBar;
 }
 ```
 
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the `horizontalScrollBarProperties` and the `verticalScrollBarProperties` to pass skins to the scroll bars.
+Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
 
 ``` code
 list.horizontalScrollBarProperties.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
 ```
 
-In general, you should only pass skins to the grouped list's scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+In general, you should only pass skins to the list's scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the Item Renderers
 
-This section only explains how to access the item renderer sub-components. Please read [How to use the Feathers Default Item Renderers](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
+This section only explains how to access the item renderer sub-components. Please read [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
+
 [Custom item renderers](item-renderers.html) may be accessed similarly, but they won't necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the `DefaultGroupedListItemRenderer` class in the code below with references to your custom item renderer class.
 
 #### With a Theme
@@ -319,21 +319,21 @@ getStyleProviderForClass( DefaultGroupedListItemRenderer ).defaultStyleFunction 
 If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
 
 ``` code
-list.itemRendererName = "custom-item-renderer";
+list.customItemRendererStyleName = "custom-item-renderer";
 ```
 
-You can set the function for the custom `itemRendererName` like this:
+You can set the function for the custom [`customItemRendererStyleName`](../api-reference/feathers/controls/GroupedList.html#customItemRendererStyleName) like this:
 
 ``` code
 getStyleProviderForClass( DefaultGroupedListItemRenderer )
     .setFunctionForStyleName( "custom-item-renderer", setCustomItemRendererStyles );
 ```
 
-To customize the appearance of the first, last, and a single item renderer in a group, use the `firstItemRendererName`, `lastItemRendererName`, and `singleItemRendererName` properties. Changing the appearance of these item renderers to look different from the others is completely optional.
+To customize the appearance of the first, last, and a single item renderer in a group, use the [`customFirstItemRendererStyleName`](../api-reference/feathers/controls/GroupedList.html#customFirstItemRendererStyleName), [`customLastItemRendererStyleName`](../api-reference/feathers/controls/GroupedList.html#customLastItemRendererStyleName), and [`customSingleItemRendererStyleName`](../api-reference/feathers/controls/GroupedList.html#customSingleItemRendererStyleName) properties. Changing the appearance of these item renderers to look different from the others is completely optional.
 
 #### Without a theme
 
-If you are not using a theme, you can use `itemRendererFactory` to provide skins for the grouped list's item renderers:
+If you are not using a theme, you can use [`itemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#itemRendererFactory) to provide skins for the grouped list's item renderers:
 
 ``` code
 list.itemRendererFactory = function():IGroupedListItemRenderer
@@ -346,23 +346,23 @@ list.itemRendererFactory = function():IGroupedListItemRenderer
 }
 ```
 
-Alternatively, or in addition to the `itemRendererFactory`, you may use the `itemRendererProperties` to pass styles to the item renderers. However, you cannot pass in display objects (such as background skins) using `itemRendererProperties`. Remember that a grouped list usually contains multiple item renderers, and Starling display objects may not be added to more than one parent at the same time. With that in mind, more than one item renderer in a grouped list won't be able to share the same display object as a skin.
+Alternatively, or in addition to the `itemRendererFactory`, you may use the [`itemRendererProperties`](../api-reference/feathers/controls/GroupedList.html#itemRendererProperties) to pass styles to the item renderers. However, you cannot pass in display objects (such as background skins) using `itemRendererProperties`. Remember that a grouped list usually contains multiple item renderers, and Starling display objects may not be added to more than one parent at the same time. With that in mind, more than one item renderer in a grouped list won't be able to share the same display object as a skin.
 
 In general, you should only pass styles to the grouped list's item renderers through `itemRendererProperties` if you need to change those styles after the item renderers have been created. Using `itemRendererFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ## Custom Item Renderers
 
-If the default item renderer doesn't have the features that you need, the `GroupedList` component offers the ability to use [custom item renderers](item-renderers.html) instead. Custom item renderers must be Feathers components that implement the `IGroupedListItemRenderer` interface.
+If the default item renderer doesn't have the features that you need, the `GroupedList` component offers the ability to use [custom item renderers](item-renderers.html) instead. Custom item renderers must be Feathers components that implement the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface.
 
-For full details about implementing custom item renderers, see [Introduction to custom item renderers](item-renderers.html).
+<aside class="info">For full details about implementing custom item renderers, see [Introduction to custom item renderers](item-renderers.html).</aside>
 
-The easiest way to tell a grouped list to display its data using a custom item renderer is to set the `itemRendererType` property:
+The easiest way to tell a grouped list to display its data using a custom item renderer is to set the [`itemRendererType`](../api-reference/feathers/controls/GroupedList.html#itemRendererType) property:
 
 ``` code
 list.itemRendererType = ExampleCustomItemRenderer;
 ```
 
-Sometimes, you might want to change some properties on each item renderer as it is created. You can use the `itemRendererFactory` property instead of itemRendererType to call a function that returns a newly created item renderer:
+Sometimes, you might want to change some properties on each item renderer as it is created. You can use the [`itemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#itemRendererFactory) property instead of itemRendererType to call a function that returns a newly created item renderer:
 
 ``` code
 list.itemRendererFactory = function():IGroupedListItemRenderer
@@ -379,29 +379,29 @@ With a grouped list, it's often desirable to give the first and last items rende
 
 The following properties will allow you to customize these special item renderers. Providing a different style for these item renderers is completely optional.
 
--   `firstItemRendererType`
+-   [`firstItemRendererType`](../api-reference/feathers/controls/GroupedList.html#firstItemRendererType)
 
--   `firstItemRendererFactory`
+-   [`firstItemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#firstItemRendererFactory)
 
--   `lastItemRendererType`
+-   [`lastItemRendererType`](../api-reference/feathers/controls/GroupedList.html#lastItemRendererType)
 
--   `lastItemRendererFactory`
+-   [`lastItemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#lastItemRendererFactory)
 
--   `singleItemRendererType`
+-   [`singleItemRendererType`](../api-reference/feathers/controls/GroupedList.html#singleItemRendererType)
 
--   `singleItemRendererFactory`
+-   [`singleItemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#singleItemRendererFactory)
 
 Each of the type and factory properties work similarly to the `itemRendererType` and `itemRendererFactory` properties.
 
 ## Custom Header and Footer Renderers
 
-To pass in a custom header renderer, use the `headerRendererType` property, similar to the `itemRendererType` property:
+To pass in a custom header renderer, use the [`headerRendererType`](../api-reference/feathers/controls/GroupedList.html#headerRendererType) property, similar to the `itemRendererType` property:
 
 ``` code
 list.headerRendererType = ExampleCustomHeaderRenderer;
 ```
 
-You can also use a `headerRendererFunction`, similar to `itemRendererFunction`:
+You can also use a [`headerRendererFactory`](../api-reference/feathers/controls/GroupedList.html#headerRendererFactory), similar to `itemRendererFactory`:
 
 ``` code
 list.headerRendererFunction = function():IGroupedListHeaderOrFooterRenderer
@@ -412,7 +412,7 @@ list.headerRendererFunction = function():IGroupedListHeaderOrFooterRenderer
 }
 ```
 
-To customize the type or properties of footer renderers, you can use `footerRendererType` or `footerRendererFunction`.
+To customize the type or properties of footer renderers, you can use `footerRendererType` or `footerRendererFactory`.
 
 ## Customizing Scrolling Behavior
 
@@ -420,43 +420,43 @@ A number of properties are available to customize scrolling behavior and the scr
 
 ### Interaction Modes
 
-Lists provide two main scrolling interaction modes, which can be changed using the `interactionMode` property.
+Scrolling containers provide two main interaction modes, which can be changed using the [`interactionMode`](../api-reference/feathers/controls/Scroller.html#interactionMode) property.
 
-By default, you can scroll using touch, just like you would on many mobile devices including smartphones and tablets. This mode allows you to grab the list anywhere within its bounds and drag it around to scroll. This mode is defined by the constant, `INTERACTION_MODE_TOUCH`.
+By default, you can scroll using touch, just like you would on many mobile devices including smartphones and tablets. This mode allows you to grab the container anywhere within its bounds and drag it around to scroll. This mode is defined by the constant, [`INTERACTION_MODE_TOUCH`](../api-reference/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH).
 
-Alternatively, you can set `interactionMode` to `INTERACTION_MODE_MOUSE`. This mode allows you to scroll using the horizontal or vertical scroll bar sub-components. You can also use the mouse wheel to scroll vertically.
+Alternatively, you can set `interactionMode` to [`INTERACTION_MODE_MOUSE`](../api-reference/feathers/controls/Scroller.html#INTERACTION_MODE_MOUSE). This mode allows you to scroll using the horizontal or vertical scroll bar sub-components. You can also use the mouse wheel to scroll vertically.
 
 ### Scroll Bar Display Mode
 
-The `scrollBarDisplayMode` property controls how and when scroll bars are displayed. This value may be overridden by the scroll policy, as explained below.
+The [`scrollBarDisplayMode`](../api-reference/feathers/controls/Scroller.html#scrollBarDisplayMode) property controls how and when scroll bars are displayed. This value may be overridden by the scroll policy, as explained below.
 
-The default value is `SCROLL_BAR_DISPLAY_MODE_FLOAT`, which displays the scroll bars above the view port's content, rather than affecting the size of the view port. When the scroll bars are floating, they fade out when the list is not actively scrolling. This is a familiar behavior for scroll bars in the touch interaction mode. In the mouse interaction mode, the scroll bars will appear when the mouse hovers over them and then disappear when the hover ends.
+The default value is [`SCROLL_BAR_DISPLAY_MODE_FLOAT`](../api-reference/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FLOAT), which displays the scroll bars above the view port's content, rather than affecting the size of the view port. When the scroll bars are floating, they fade out when the container is not actively scrolling. This is a familiar behavior for scroll bars in the touch interaction mode. In the mouse interaction mode, the scroll bars will appear when the mouse hovers over them and then disappear when the hover ends.
 
-To completely hide the scroll bars, but still allow scrolling, you can set `scrollBarDisplayMode` to `SCROLL_BAR_DISPLAY_MODE_NONE`.
+To completely hide the scroll bars, but still allow scrolling, you can set `scrollBarDisplayMode` to [`SCROLL_BAR_DISPLAY_MODE_NONE`](../api-reference/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_NONE).
 
-Finally, if you want the scroll bars to always be visible outside of the content in a fixed position, you can set `scrollBarDisplayMode` to `SCROLL_BAR_DISPLAY_MODE_FIXED`. This is best for traditional desktop scrollable content.
+Finally, if you want the scroll bars to always be visible outside of the content in a fixed position, you can set `scrollBarDisplayMode` to [`SCROLL_BAR_DISPLAY_MODE_FIXED`](../api-reference/feathers/controls/Scroller.html#SCROLL_BAR_DISPLAY_MODE_FIXED). This is best for traditional desktop scrollable content.
 
 ### Scroll Policies
 
-The two previous properties control how scrolling works. The `horizontalScrollPolicy` and `verticalScrollPolicy` properties control whether scrolling is enabled or not.
+The two previous properties control how scrolling works. The [`horizontalScrollPolicy`](../api-reference/feathers/controls/Scroller.html#horizontalScrollPolicy) and [`verticalScrollPolicy`](../api-reference/feathers/controls/Scroller.html#verticalScrollPolicy) properties control whether scrolling is enabled or not.
 
-The default scroll policy for both directions is `SCROLL_POLICY_AUTO`. If the content's width is greater than the view port's width, the list may scroll horizontally (same for height and vertical scrolling). If not, then the list will not scroll in that direction. In addition to the `scrollBarDisplayMode`, this can affect whether the scroll bar is visible or not.
+The default scroll policy for both directions is [`SCROLL_POLICY_AUTO`](../api-reference/feathers/controls/Scroller.html#SCROLL_POLICY_AUTO). If the content's width is greater than the view port's width, the container may scroll horizontally (same for height and vertical scrolling). If not, then the container will not scroll in that direction. In addition to the `scrollBarDisplayMode`, this can affect whether the scroll bar is visible or not.
 
-You can completely disable scrolling in either direction, set the scroll policy to `SCROLL_POLICY_OFF`. The scroll bar will not be visible, and the list won't scroll, even if the content is larger than the view port.
+You can completely disable scrolling in either direction, set the scroll policy to [`SCROLL_POLICY_OFF`](../api-reference/feathers/controls/Scroller.html#SCROLL_POLICY_OFF). The scroll bar will not be visible, and the container won't scroll, even if the content is larger than the view port.
 
-Finally, you can ensure that scrolling is always enabled by setting the scroll policy to `SCROLL_POLICY_ON`. If combined with `hasElasticEdges` in the touch interaction mode, it will create a playful edge that always bounces back, even when the content is smaller than the view port. If using the mouse interaction mode, the scroll bar may always be visible under the same circumstances, though it may be disabled if the content is smaller than the view port.
+Finally, you can ensure that scrolling is always enabled by setting the scroll policy to [`SCROLL_POLICY_ON`](../api-reference/feathers/controls/Scroller.html#SCROLL_POLICY_ON). If combined with `hasElasticEdges` in the touch interaction mode, it will create a playful edge that always bounces back, even when the content is smaller than the view port. If using the mouse interaction mode, the scroll bar may always be visible under the same circumstances, though it may be disabled if the content is smaller than the view port.
 
 ### Paging
 
-Set the `snapToPages` property to true to make the list snap to the nearest full page. A page is defined as a multiple of the view ports width or height. If the view port is 100 pixels wide, then the first horizontal page starts at 0 pixels, the second at 100, and the third at 200.
+Set the [`snapToPages`](../api-reference/feathers/controls/Scroller.html#snapToPages) property to true to make the scroll position snap to the nearest full page. A page is defined as a multiple of the view ports width or height. If the view port is 100 pixels wide, then the first horizontal page starts at 0 pixels, the second at 100, and the third at 200.
 
-The `pageWidth` and `pageHeight` properties may be used to customize the size of a page. Rather than using the full view port width or height, any pixel value may be specified for page snapping.
+The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) and [`pageHeight`](../api-reference/feathers/controls/Scroller.html#pageHeight) properties may be used to customize the size of a page. Rather than using the full view port width or height, any pixel value may be specified for page snapping.
 
 ## Related Links
 
 -   [`feathers.controls.GroupedList` API Documentation](../api-reference/feathers/controls/GroupedList.html)
 
--   [How to use the Feathers Default Item Renderers](default-item-renderers.html)
+-   [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
 
 -   [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html)
 

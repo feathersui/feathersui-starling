@@ -36,6 +36,12 @@ a[href^="http://"], a[href^="https://"], a[href^="//"]
 	padding: 0 0 0 20px;
 }
 
+a[href^="http://feathersui.com/examples/"]
+{
+	background: transparent;
+	padding: 0;
+}
+
 a[href^="http://doc.starling-framework.org"],
 	a[href^="../api-reference/"]
 {

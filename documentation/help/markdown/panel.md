@@ -251,7 +251,7 @@ If you're creating a [theme](themes.html), you can target the [`Panel.DEFAULT_CH
 
 ``` code
 getStyleProviderForClass( ScrollContainer )
-    .setFunctionForStyleName( Panel.DEFAULT_CHILD_NAME_FOOTER, setPanelFooterStyles );
+    .setFunctionForStyleName( Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER, setPanelFooterStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -295,20 +295,20 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
+If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
 ``` code
 getStyleProviderForClass( ScrollBar )
-    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
+    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
-    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
 ``` code
-panel.customHorizontalScrollBarName = "custom-horizontal-scroll-bar";
-panel.customVerticalScrollBarName = "custom-vertical-scroll-bar";
+panel.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
+panel.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
@@ -348,7 +348,7 @@ A number of properties are available to customize scrolling behavior and the scr
 
 ### Interaction Modes
 
-Panels provide two main scrolling interaction modes, which can be changed using the [`interactionMode`](../api-reference/feathers/controls/Scroller.html#interactionMode) property.
+Scrolling containers provide two main interaction modes, which can be changed using the [`interactionMode`](../api-reference/feathers/controls/Scroller.html#interactionMode) property.
 
 By default, you can scroll using touch, just like you would on many mobile devices including smartphones and tablets. This mode allows you to grab the panel anywhere within its bounds and drag it around to scroll. This mode is defined by the constant, [`INTERACTION_MODE_TOUCH`](../api-reference/feathers/controls/Scroller.html#INTERACTION_MODE_TOUCH).
 
@@ -376,7 +376,7 @@ Finally, you can ensure that scrolling is always enabled by setting the scroll p
 
 ### Paging
 
-Set the [`snapToPages`](../api-reference/feathers/controls/Scroller.html#snapToPages) property to true to make the panel snap to the nearest full page. A page is defined as a multiple of the view ports width or height. If the view port is 100 pixels wide, then the first horizontal page starts at 0 pixels, the second at 100, and the third at 200.
+Set the [`snapToPages`](../api-reference/feathers/controls/Scroller.html#snapToPages) property to true to make the scroll position snap to the nearest full page. A page is defined as a multiple of the view ports width or height. If the view port is 100 pixels wide, then the first horizontal page starts at 0 pixels, the second at 100, and the third at 200.
 
 The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) and [`pageHeight`](../api-reference/feathers/controls/Scroller.html#pageHeight) properties may be used to customize the size of a page. Rather than using the full view port width or height, any pixel value may be specified for page snapping.
 
