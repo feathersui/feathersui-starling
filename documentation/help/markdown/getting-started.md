@@ -13,9 +13,9 @@ In the following beginner-level tutorial, we'll create our first [Feathers Butto
 
 -   [Download Feathers](http://feathersui.com/download/).
 
--   Check the [Introduction](index.html#introduction) section of the Feathers documentation for instructions on how to add Feathers to your favorite development environment.
+-   Check the [Installation](index.html#installation-getting-started) section of the Feathers Help for instructions on how to add Feathers to your favorite development environment.
 
--   Look inside the `themes` directory of the Feathers ZIP file to find `MetalWorksMobileTheme.swc`. Add it to your project's build settings the same way that you added `feathers.swc`.
+-   Look inside the `themes/MetalWorksMobileTheme/swc` directory of the Feathers ZIP file to find `MetalWorksMobileTheme.swc`. Add it to your project's build settings the same way that you added `feathers.swc`.
 
 -   The complete source code for the Hello World example is included with Feathers in the *examples* directory, so please feel free to follow along.
 
@@ -66,7 +66,7 @@ new MetalWorksMobileTheme();
 
 The theme listens for certain events on the display list to detect when a new Feathers component is added. When a new component is added, the theme will create appropriate skins, including backgrounds, icons, text formats, and skins for sub-components, and pass them in automatically.
 
-Most of the Feathers examples, including the Hello World example, use a class named `MetalWorksMobileTheme`. This is a sample [theme](themes.html) that provides pre-made skins for Feathers components. You can find it in the *themes* directory of the the Feathers ZIP file. Add `MetalWorksMobileTheme.swc` to your project's build settings the same way that you added `feathers.swc`.
+<aside class="info">Most of the Feathers examples, including the Hello World example, use a class named `MetalWorksMobileTheme`. This is a sample [theme](themes.html) that provides pre-made skins for Feathers components. You can find it in the *themes* directory of the the Feathers ZIP file. Add `MetalWorksMobileTheme.swc` to your project's build settings the same way that you added `feathers.swc`.</aside>
 
 With the theme created, let's create the `Button` and set it's label:
 

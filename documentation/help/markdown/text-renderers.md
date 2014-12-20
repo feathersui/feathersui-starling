@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Introduction to Feathers text renderers
 
-There are muliple different approaches to displaying text on the GPU, each with advantages and disadvantages. None of these approaches are ultimately better than the others. With that in mind, when Feathers needs to display text in a component, it provides APIs to allow you to choose the appropriate //text renderer// based on your project's requirements.
+There are muliple different approaches to displaying text on the GPU, each with advantages and disadvantages. None of these approaches are ultimately better than the others. With that in mind, when Feathers needs to display text in a component, it provides APIs to allow you to choose the appropriate *text renderer* based on your project's requirements.
 
 Different text renderers may be more appropriate for some situations than others. You should keep a number of factors in mind when choosing a text renderer, including (but not necessarily limited to) the following:
 

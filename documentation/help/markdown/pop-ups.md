@@ -1,5 +1,5 @@
 ---
-title: Pop Up Management in Feathers  
+title: Displaying pop-ups above other content in Feathers  
 author: Josh Tynjala
 
 ---

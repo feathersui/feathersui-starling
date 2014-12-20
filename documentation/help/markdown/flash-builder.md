@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 Let's get your [Flash Builder](http://www.adobe.com/products/flash-builder.html) development environment setup to use Feathers.
 
-These instructions apply to Flash Builder 4.7. Minor variations may exist between different versions of Flash Builder.
+<aside class="info">These instructions apply to Flash Builder 4.7. Minor variations may exist between different versions of Flash Builder.</aside>
 
 1. Download the latest stable versions of [Feathers](http://feathersui.com/download/) and [Starling Framework](http://gamua.com/starling/download/).
 
@@ -21,7 +21,7 @@ These instructions apply to Flash Builder 4.7. Minor variations may exist betwee
 
 6. Choose the **Add SWC…** button and select the location of **starling.swc**. Repeat for **feathers.swc**.
 
-Alternatively, you can choose **Add SWC Folder…** and select a folder where both Starling and Feathers SWCs are located.
+	Alternatively, you can choose **Add SWC Folder…** and select a folder where both Starling and Feathers SWCs are located.
 
 7. Click **Finish**.
 

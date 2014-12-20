@@ -39,9 +39,9 @@ The terms "public" and "private" are used below in a general sense. When the spe
 
 -   Names should be descriptive and clear. Extreme brevity is not a goal.
 
--   When an API is similar to one in Apache Flex or Adobe's Flash Pro ActionScript 3 components, the same name or a similar one is recommended for use in Feathers.
+-   When an API is similar to one in Apache Flex or in Adobe's ActionScript 3.0 components for Flash Professional, the same name or a similar one is recommended for use in Feathers.
 
--   Names should not be abbreviated, but commonly recognized acronyms are generally acceptable. Acronyms should have every letter capitalized.
+-   Names should not be abbreviated, in most cases. Commonly recognized acronyms are generally acceptable. Acronyms should have every letter capitalized.
 
 -   Classes should use `CamelCaseNames`, and they must start with a capital letter.
 
