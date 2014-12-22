@@ -4341,9 +4341,9 @@ package feathers.controls
 		{
 			if(this is IScrollContainer)
 			{
-				return IScrollContainer(this).setRawChildIndex(child, index);
+				IScrollContainer(this).setRawChildIndex(child, index);
 			}
-			return this.setChildIndex(child, index);
+			this.setChildIndex(child, index);
 		}
 
 		/**
