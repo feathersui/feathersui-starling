@@ -57,7 +57,7 @@ package feathers.data
 		public function addItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
-			(data as Vector.<Number>).splice(index, 0, Number(item));
+			(data as Vector.<Number>).splice(index, 0, item as Number);
 		}
 		
 		/**
