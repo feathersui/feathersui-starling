@@ -27,6 +27,8 @@ Special thanks to everyone in the community who has contributed code to [Feather
 
 -   [Renaun Erickson](https://github.com/renaun)
 
+-   [SamYStudiO](https://github.com/SamYStudiO)
+
 -   [sfreeland](https://github.com/sfreeland)
 
 -   [yohairosen](https://github.com/yohairosen)
