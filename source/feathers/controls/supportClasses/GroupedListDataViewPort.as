@@ -2681,19 +2681,19 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
-			if(!layout || !layout.hasVariableItemDimensions)
-			{
-				return;
-			}
 			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
 			if(renderer.layoutIndex < 0)
 			{
 				return;
 			}
-			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 		}
 
 		private function headerOrFooterRenderer_resizeHandler(event:Event):void
@@ -2702,19 +2702,19 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
-			if(!layout || !layout.hasVariableItemDimensions)
-			{
-				return;
-			}
 			var renderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(event.currentTarget);
 			if(renderer.layoutIndex < 0)
 			{
 				return;
 			}
-			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 		}
 
 		private function renderer_triggeredHandler(event:Event):void
