@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Label` component
 
-The `Label` component is for displaying text. It uses the default [text renderer](text-renderers.html).
+The [`Label`](../api-reference/feathers/controls/Label.html) component is for displaying text. It uses a [text renderer](text-renderers.html).
 
 ### The Basics
 
@@ -25,7 +25,7 @@ For full details about what skin and style properties are available, see the [`L
 
 This section explains how to customize the text renderer sub-component. Feathers provides multiple text renderers to choose from, and each one will have different properties that may be set to customize font styles and other capabilities. For more information about text renderers, including which ones are available, please read [Introduction to Feathers Text Renderers](text-renderers.html).
 
-If you are not using a theme, you can use `textRendererFactory` to provide styles for the label's text renderer:
+If you are not using a theme, you can use [`textRendererFactory`](../api-reference/feathers/controls/Label.html#textRendererFactory) to provide styles for the label's text renderer:
 
 ``` code
 label.textRendererFactory = function():ITextRenderer
@@ -37,7 +37,7 @@ label.textRendererFactory = function():ITextRenderer
 }
 ```
 
-In the example above, we provide styles for a `BitmapFontTextRenderer`. The styles for a `TextFieldTextRenderer` will be different:
+In the example above, we provide styles for a [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html). The styles for another text renderer, like [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html), will be different:
 
 ``` code
 label.textRendererFactory = function():ITextRenderer
@@ -50,9 +50,9 @@ label.textRendererFactory = function():ITextRenderer
 }
 ```
 
-It is best to look at the API documentation for the specific text renderer that you are using to see what capabilities it exposes.
+It is best to look at the API documentation for the specific text renderer that you are using to see what capabilities it exposes. Each has its own advantages and disadvantages.
 
-Alternatively, or in addition to the `textRendererFactory`, you may use the `textRendererProperties` to pass styles to the text renderer.
+Alternatively, or in addition to the `textRendererFactory`, you may use [`textRendererProperties`](../api-reference/feathers/controls/Label.html#textRendererProperties) to pass styles to the text renderer.
 
 ``` code
 label.textRendererProperties.textFormat = new BitmapFontTextFormat( myPixelFont );

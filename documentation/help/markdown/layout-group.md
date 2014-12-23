@@ -5,9 +5,9 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `LayoutGroup` component
 
-The `LayoutGroup` class provides a generic container for layout without scrolling. By default, you can position children manually, but you can also pass in a layout implementation to position the children automatically.
+The [`LayoutGroup`](../api-reference/feathers/controls/LayoutGroup.html) class provides a generic container for layout, without scrolling. By default, you can position children manually, but you can also pass in a layout implementation, like [`HorizontalLayout`](horizontal-layout.html) or [`VerticalLayout`](vertical-layout.html) to position the children automatically.
 
-If you need scrolling, you should use the `ScrollContainer` component instead.
+<aside class="info">If you need scrolling, you should use the [`ScrollContainer`](scroll-container.html) component instead.</aside>
 
 ## The Basics
 
@@ -18,7 +18,7 @@ var group:LayoutGroup = new LayoutGroup();
 this.addChild( group );
 ```
 
-A `LayoutGroup` works a lot like any `DisplayObjectContainer`, so you can use the standard `addChild()`, `removeChild()` and other display list manipulation functions.
+A `LayoutGroup` works a lot like any [`DisplayObjectContainer`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html), so you can use the standard `addChild()`, `removeChild()` and other display list manipulation functions.
 
 ``` code
 var xPosition:Number = 0;
@@ -31,7 +31,7 @@ for(var i:int = 0; i < 5; i++)
 }
 ```
 
-The children of a `LayoutGroup` do not need to be Feathers UI controls. As you can see above, we've added some Starling `Quad` instances.
+The children of a `LayoutGroup` do not need to be Feathers UI controls. As you can see above, we've added some Starling [`Quad`](http://doc.starling-framework.org/core/starling/display/Quad.html) instances.
 
 By default, the `LayoutGroup` will automatically resize itself to fit the area that the children occupy. We can set the width and height manually, if desired, to override this behavior:
 
@@ -40,11 +40,11 @@ group.width = 200;
 group.height = 200;
 ```
 
-You'll notice that the children are still visible. By default, clipping is disabled on `LayoutGroup` to maximize rendering performance. Set `clipContent` to `true` to enable clipping, if desired.
+You'll notice that the children are still visible. By default, clipping is disabled on `LayoutGroup` to maximize rendering performance. Set the [`clipContent`](../api-reference/feathers/controls/LayoutGroup.html#clipContent) property to `true` to enable clipping, if desired.
 
 ## Layout
 
-We manually positioned the quads in the example code above. Instead, let's apply a [HorizontalLayout](../api-reference/feathers/layout/HorizontalLayout.html) to the children of a `LayoutGroup` to do the positioning manually:
+We manually positioned the quads in the example code above. Instead, let's pass a [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html) to the [`layout`](../api-reference/feathers/controls/LayoutGroup.html#layout) property of the `LayoutGroup`. This layout will calculate the positioning of children for us automatically:
 
 ``` code
 var layout:HorizontalLayout = new HorizontalLayout();
@@ -52,7 +52,9 @@ layout.gap = 10;
 group.layout = layout;
 ```
 
-We can set a number of other properties on the layout too. In the case of `HorizontalLayout` (and `VerticalLayout` too), we can customize things like padding around the edges along with horizontal and vertical alignment. Other layouts may expose more or completely different properties that may be customized. Check their API documentation for complete details.
+Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.html#gap) property, but `HorizontalLayout` provides many more useful features. See [How to use `HorizontalLayout` with Feathers containers](../api-reference/feathers/layout/HorizontalLayout.html) for complete details.
+
+<aside class="info">Feathers comes with a number of different layouts, in addition to `HorizontalLayout`. Each is compatible with the same `layout` property on a `LayoutGroup`.</aside>
 
 ## Skinning a `LayoutGroup`
 
@@ -67,7 +69,7 @@ container.backgroundSkin = new Scale9Image( enabledTextures );
 container.backgroundDisabledSkin = new Image( disabledTextures );
 ```
 
-The `backgroundSkin` property provides the default background for when the container is enabled. The `backgroundDisabledSkin` is displayed when the group is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled group, it will fall back to using the `backgroundSkin` in the disabled state.
+The [`backgroundSkin`](../api-reference/feathers/controls/LayoutGroup.html#backgroundSkin) property provides the default background for when the container is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/LayoutGroup.html#backgroundDisabledSkin) is displayed when the group is disabled.
 
 ### Targeting a LayoutGroup in a theme
 

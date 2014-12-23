@@ -354,7 +354,7 @@ In general, you should only pass styles to the grouped list's item renderers thr
 
 If the default item renderer doesn't have the features that you need, the `GroupedList` component offers the ability to use [custom item renderers](item-renderers.html) instead. Custom item renderers must be Feathers components that implement the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface.
 
-<aside class="info">For full details about implementing custom item renderers, see [Introduction to custom item renderers](item-renderers.html).</aside>
+<aside class="info">For full details about implementing custom item renderers, see [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html).</aside>
 
 The easiest way to tell a grouped list to display its data using a custom item renderer is to set the [`itemRendererType`](../api-reference/feathers/controls/GroupedList.html#itemRendererType) property:
 

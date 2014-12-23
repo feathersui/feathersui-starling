@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Header` component
 
-The `Header` component displays an optional title and a region on the left and right sides for extra controls (usually buttons for navigation).
+The [`Header`](../api-reference/feathers/controls/Header.html) component displays an optional title and a region on the left and right sides for extra controls (usually buttons for navigation).
 
 ## The Basics
 
@@ -17,7 +17,7 @@ header.title = "Settings";
 this.addChild( header );
 ```
 
-Next, we'll add a back button to the `left items` region.
+Next, we'll add a back button to the left side of the header.
 
 ``` code
 var backButton:Button = new Button();
@@ -27,15 +27,17 @@ backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
 header.leftItems = new <DisplayObject>[ backButton ];
 ```
 
-Notice that we create our button just like we would any regular button, including adding an event listener, except we don't add it to the display list. We pass it to the `leftItems` property in a `Vector.<DisplayObject>` and the header manages adding it as a child and keeping it in the header's layout.
+Notice that we create our button just like we would any regular button, including adding an event listener, except we don't add it to the display list. We pass it to the [`leftItems`](../api-reference/feathers/controls/Header.html#leftItems) property in a `Vector.<DisplayObject>` and the header manages adding it as a child and keeping it in the header's layout.
 
-We could add additional buttons or controls to the [right items](../api-reference/feathers/controls/Header.html#rightItems) region, if we wanted.
+We could add additional buttons or controls to the [`rightItems`](../api-reference/feathers/controls/Header.html#rightItems) region or the [`centerItems`](../api-reference/feathers/controls/Header.html#centerItems) region, if desired.
+
+<aside class="warn">Normally, the title text renderer is displayed in the center region of the `Header`. If the `centerItems` property is used, the title will be hidden. The [`titleAlign`](../api-reference/feathers/controls/Header.html#titleAlign) property, which we'll learn how to use in a moment, may be used to reposition the title on the left or right side so that it doesn't conflict with the center items.</aside>
 
 ## Skinning a `Header`
 
 A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the [`Header` API reference](../api-reference/feathers/controls/Header.html). We'll look at a few of the most common properties below.
 
-The header has a `backgroundSkin` and `backgroundDisabledSkin`. If the header is disabled, the `backgroundDisabledSkin` will be used. However, if the `backgroundDisabledSkin` isn't provided, the header will fall back to the `backgroundSkin`.
+The header has [`backgroundSkin`](../api-reference/feathers/controls/Header.html#backgroundSkin) and [`backgroundDisabledSkin`](../api-reference/feathers/controls/Header.html#backgroundDisabledSkin) properties:
 
 ``` code
 header.backgroundSkin = new Scale9Image( textures );
@@ -43,15 +45,15 @@ header.backgroundSkin = new Scale9Image( textures );
 
 The background stretches to fill the entire width and height of the header.
 
-By default the header's title appears in the center. There are special alignment options named `TITLE_ALIGN_PREFER_LEFT` and `TITLE_ALIGN_PREFER_RIGHT` which will align the title to the left or right side of the header, but *only* when there are no items on the left or right side respectively.
+By default, the header's title text renderer appears in the center. The `titleAlig` property may be set to [`Header.TITLE_ALIGN_PREFER_LEFT`](../api-reference/feathers/controls/Header.html#TITLE_ALIGN_PREFER_LEFT) to position the title on the left, if the `leftItems` property is `null`. Similarly, we can use [`Header.TITLE_ALIGN_PREFER_RIGHT`](../api-reference/feathers/controls/Header.html#TITLE_ALIGN_PREFER_RIGHT) to align the title to the right side of the header.
 
-In this case, we don't have any items on the right, so we can align the title to the right, if we'd like:
+We don't have any items on the right side of the header, so we can align the title to the right:
 
 ``` code
 header.titleAlign = Header.TITLE_ALIGN_PREFER_RIGHT;
 ```
 
-Similar to many Feathers components, the `Header` provides gap and padding values for layouts.
+Similar to many Feathers components, the `Header` provides [`gap`](../api-reference/feathers/controls/Header.html#gap) and various padding values for layouts.
 
 ``` code
 header.gap = 10;
@@ -61,15 +63,15 @@ header.paddingBottom = 15;
 header.paddingLeft = 20;
 ```
 
-If all four padding values should be the same, you may use the `padding` property to set them all at once:
+If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Header.html#padding) property to set them all at once:
 
 ``` code
 header.padding = 20;
 ```
 
-#### Styling a Header's Title
+#### Styling a Header's title text renderer
 
-You can customize the header's title in two ways. You might create a custom title [text renderer](text-renderers.html) factory:
+You can customize the header's title [text renderer](text-renderers.html) in two ways. You might create a custom [`titleFactory`](../api-reference/feathers/controls/Header.html#titleFactory):
 
 ``` code
 header.titleFactory = function():ITextRenderer
@@ -83,13 +85,13 @@ header.titleFactory = function():ITextRenderer
 }
 ```
 
-Alternatively, you can pass in the title's styles through the header's `titleProperties` property:
+Alternatively, you can pass in the title's styles through the header's [`titleProperties`](../api-reference/feathers/controls/Header.html#titleProperties) property:
 
 ``` code
 header.titleProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
 ```
 
-Using a custom factory is better for performance and it will allow you to use code hinting in your IDE, if available.
+In general, you should only pass skins to the header's title text renderer with `titleProperties` if you need to change styles after the text renderer is created. Using `titleFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Targeting a `Header` in a theme
 
@@ -118,7 +120,7 @@ If you aren't using a theme, then you may set any of the header's properties dir
 
 ## Related Links
 
--   [`feathers.controlsHeader` API Documentation](../api-reference/feathers/controls/Header.html)
+-   [`feathers.controls.Header` API Documentation](../api-reference/feathers/controls/Header.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

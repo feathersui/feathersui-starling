@@ -5,29 +5,27 @@ author: Josh Tynjala
 ---
 # `ILayoutDisplayObject` and `ILayoutData`
 
-Some layouts may allow developers to customize individual display objects by adding optional *layout data*. All Feathers components have a `layoutData` property that can be used to specify additional information about the component that the parent container's layout can use for measurement and positioning.
+Some layouts may allow developers to customize individual display objects by adding optional *layout data*. All Feathers components have a [`layoutData`](../api-reference/feathers/layout/ILayoutDisplayObject.html#layoutData) property that can be used to specify additional information about the component that the parent container's layout can use for measurement and positioning.
 
-This document explains advanced layout features. It builds on the basics explained in [Introduction to Custom Feathers Layouts](custom-layouts.html).
-
-This document is a work in progress, and some sections are currently incomplete.
+<aside class="info">This document explains advanced layout features. It builds on the basics explained in [Introduction to Custom Feathers Layouts](custom-layouts.html).</aside>
 
 ## ILayoutDisplayObject
 
-Any display object that may implement the `ILayoutDisplayObject` interface to support more advanced layout features when added as children of Feathers containers. The base `FeathersControl` class implements this interface, so most custom components will automatically support the ability to specify layout data.
+Any display object that may implement the [`ILayoutDisplayObject`](../api-reference/feathers/layout/ILayoutDisplayObject.html) interface to support more advanced layout features when added as children of Feathers containers. The base [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class implements this interface, so most custom components will automatically support the ability to specify layout data.
 
 The `ILayoutDisplayObject` interface defines two properties and an event.
 
-The `includeInLayout` property may be set to `false` to tell a layout to completely ignore a display object. The object won't affect the measurement of the container and the layout won't position, resize, or otherwise transform the display object. This can be used to position a display object manually, but to keep it in the same container as other display objects that need to be in a layout.
+The [`includeInLayout`](../api-reference/feathers/layout/ILayoutDisplayObject.html#includeInLayout) property may be set to `false` to tell a layout to completely ignore a display object. The object won't affect the measurement of the container and the layout won't position, resize, or otherwise transform the display object. This can be used to position a display object manually, but to keep it in the same container as other display objects that need to be in a layout.
 
-The `layoutData` property is used to set additional properties on the display object that are specific to the layout.
+The [`layoutData`](../api-reference/feathers/layout/ILayoutDisplayObject.html#layoutData) property is used to set additional properties on the display object that are specific to the layout.
 
-`FeathersEventType.LAYOUT_DATA_CHANGE` should be dispatched by the display object when a property of the `ILayoutData` object is changed. This is to inform the container that the layout may be affected by this change to the layout data. The display object should listen for `Event.CHANGE` on the layout data to know when this event should be dispatched.
+[`FeathersEventType.LAYOUT_DATA_CHANGE`](../api-reference/feathers/events/FeathersEventType.html#LAYOUT_DATA_CHANGE) should be dispatched by the display object when a property of the `ILayoutData` object is changed. This is to inform the container that the layout may be affected by this change to the layout data. The display object should listen for [`Event.CHANGE`](../api-reference/feathers/layout/ILayoutData.html#event:change) on the layout data to know when this event should be dispatched.
 
 ## ILayoutData
 
-The `ILayoutData` interface defines one required event and no properties or methods. Other properties will be specific to the layout.
+The [`ILayoutData`](../api-reference/feathers/layout/ILayoutData.html) interface defines one required event and no properties or methods. Other properties will be specific to the layout.
 
-`Event.CHANGE` should be dispatched when the value any property of the layout data changes.
+[`Event.CHANGE`](../api-reference/feathers/layout/ILayoutData.html#event:change) should be dispatched when the value any property of the layout data changes.
 
 ## Example
 
@@ -70,7 +68,7 @@ package feathersx.layout
 }
 ```
 
-The class needs to extend `starling.events.EventDispatcher` in order to be able to dispatch `Event.CHANGE` when its `percentWidth` property changes. The metadata for this event appears above the class definition. Obviously, we implement the `ILayoutData` interface.
+The class needs to extend [`starling.events.EventDispatcher`](http://doc.starling-framework.org/core/starling/events/EventDispatcher.html) in order to be able to dispatch `Event.CHANGE` when its `percentWidth` property changes. The metadata for this event appears above the class definition. Obviously, we implement the `ILayoutData` interface.
 
 The `percentWidth` getter and setter are also defined. The getter simply returns the `_percentWidth` member variable used to store the value. The setter checks if the value has changed. If so, it stores the new value in the `_percentWidth` member variable and then dispatches `Event.CHANGE`.
 
@@ -165,6 +163,10 @@ In the second loop, in addition to checking `includeInLayout` if the item is an 
 The `getScrollPositionForIndex()` function does not need to be changed. It is meant to be called after the `layout()` function, so the `percentWidth` values are already processed.
 
 ## Related Links
+
+-   [`feathers.layout.ILayoutDisplayObject` API Reference](../api-reference/feathers/layout/ILayoutDisplayObject.html)
+
+-   [`feathers.layout.ILayoutData` API Reference](../api-reference/feathers/layout/ILayoutData.html)
 
 -   [Introduction to Custom Feathers Layouts](custom-layouts.html)
 

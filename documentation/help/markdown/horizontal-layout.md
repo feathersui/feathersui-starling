@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Using `HorizontalLayout` in Feathers containers
 
-The `HorizontalLayout` class may be used by components that support layout, such as `List`, `LayoutGroup` and `ScrollContainer`, to display items from left to right in a single row. It supports a number of useful options for adjusting the spacing and alignment.
+The [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items from left to right in a single row. It supports a number of useful options for adjusting the spacing and alignment.
 
 ## The Basics
 
@@ -21,7 +21,7 @@ this.addChild( container );
 
 There are a number of simple properties that may be used to affect the layout. The most common are padding and gap.
 
-The *padding* is the space around the content that the layout positions and sizes. You may set padding on each side of the container separately. Below, we make the top and bottom padding 10 pixels and the left and right padding 15 pixels:
+The *padding* is the space around the content that the layout positions and sizes. You may set padding on each side of the container separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/HorizontalLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/HorizontalLayout.html#paddingBottom) properties to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/HorizontalLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/HorizontalLayout.html#paddingRight) to `15` pixels:
 
 ``` code
 layout.paddingTop = 10;
@@ -30,22 +30,30 @@ layout.paddingBottom = 10;
 layout.paddingLeft = 15;
 ```
 
-The *gap* is the space between items. Let's set the gap to 5 pixels:
+If we wanted to set all four properties to the same value, we could set the [`padding`](../api-reference/feathers/layout/HorizontalLayout.html#padding) property instead:
+
+``` code
+layout.padding = 10;
+```
+
+The *gap* is the space between items. Let's set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.html#gap) property to `5` pixels:
 
 ``` code
 layout.gap = 5;
 ```
 
-We can *align* the items in the layout horizontally and vertically. Horizontal alignment may be used only when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout. Otherwise, the container will need to scroll. Let's adjust the alignments so that the content will be aligned to the horizontal center and vertical middle:
+We can *align* the items in the layout [horizontally](../api-reference/feathers/layout/HorizontalLayout.html#horizontalAlign) and [vertically](../api-reference/feathers/layout/HorizontalLayout.html#verticalAlign). Horizontal alignment may be used only when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout. Otherwise, the container will need to scroll. Let's adjust the alignments so that the content will be aligned to the horizontal center and vertical middle:
 
 ``` code
 layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 ```
 
+The `verticalAlign` property may be set to [`HorizontalLayout.VERTICAL_ALIGN_JUSTIFY`](../api-reference/feathers/layout/HorizontalLayout.html#VERTICAL_ALIGN_JUSTIFY), meaning that the height of all items in the layout is adjusted to fill the full height of the container.
+
 ## Percentage Dimensions
 
-You may pass in `HorizontalLayoutData` to specify the width or height using a percentage value. In the simplest, very common case, this is a percentage of the parent container's width or height.
+You may pass in [`HorizontalLayoutData`](../api-reference/feathers/layout/HorizontalLayoutData.html) to specify the width or height using a percentage value. In the simplest, very common case, this is a percentage of the parent container's width or height.
 
 In the following example, we add two buttons to a container using `HorizontalLayout`. The first button takes up 25% of the container's width, and the second button takes up 75% of the container's width:
 
@@ -65,7 +73,7 @@ button2.layoutData = button2LayoutData;
 container.addChild(button2);
 ```
 
-If there are other children in the container with fixed pixel widths, `percentWidth` will be based on the remaining space in the parent container after the fixed pixel width is subtracted from the container's height.
+If there are other children in the container with fixed pixel widths, [`percentWidth`](../api-reference/feathers/layout/HorizontalLayoutData.html#percentWidth) will be based on the remaining space in the parent container after the fixed pixel width is subtracted from the container's height.
 
 In the following example, we have two buttons again, but this time, the first button is a fixed 300 pixels wide. Now, the percentages are based on the width of the container *minus 300 pixels*. We want the second button to simply fill the remaining horizontal space in the container, so we set `percentWidth` to `100`:
 
@@ -85,7 +93,7 @@ container.addChild(button2);
 
 Because the first button's width is 300 pixels, and not a percentage, the second button's width won't be equal to the width of the container, even though `percentWidth` is equal to `100`. Percentages are always calculated after fixed values in pixels are accounted for.
 
-We can also set `percentHeight` to fill a percentage of the container's height. For `HorizontalLayout`, since the children are positioned one after the other from the left to the right, there are never fixed values to account for vertically.
+We can also set [`percentHeight`](../api-reference/feathers/layout/HorizontalLayoutData.html#percentHeight) to fill a percentage of the container's height. For `HorizontalLayout`, since the children are positioned one after the other from the left to the right, there are never fixed values to account for vertically.
 
 Let's use the same width values from the previous example, but we'll specify 100% height on the first button:
 
@@ -125,23 +133,21 @@ Percentage dimensions always take precedence, so if we were to pass a numeric va
 
 ## Virtual Horizontal Layout
 
-In a `List` or `GroupedList`, the layout may be *virtualized*, meaning that some items in the layout will not actually exist if they are not visible. This helps to improve performance of a scrolling list because only a limited number of item renderers will be created at any given moment. If the list's data provider is very large, a virtual layout is essential, even on desktop computers that have incredible processing power compared to mobile devices.
+In a [`List`](list.html) or [`GroupedList`](grouped-list.html), the layout may be *virtualized*, meaning that some items in the layout will not actually exist if they are not visible. This helps to improve performance of a scrolling list because only a limited number of item renderers will be created at any given moment. If the list's data provider is very large, a virtual layout is essential, even on desktop computers that have incredible processing power compared to mobile devices.
 
-A virtualized layout will need as estimate about how big a "virtual" item renderer should be. You should set the `typicalItem` property of the list to have it determine the *typical* width and height of an item renderer to use as this estimated value. If you don't pass in a typical item, the first item in the data provider is used for this estimate.
+A virtualized layout will need as estimate about how big a "virtual" item renderer should be. You should set the [`typicalItem`](../api-reference/feathers/controls/List.html#typicalItem) property of the list to have it determine the *typical* width and height of an item renderer to use as this estimated value. If you don't pass in a typical item, the first item in the data provider is used for this estimate.
 
-You should not manually set the `typicalItemWidth` and `typicalItemHeight` properties on a `HorizontalLayout`. If you do, the list will simply replace your values with its own values calculated from its `typicalItem`!
-
-By default `useVirtualLayout` is `true`. You may disable virtual layouts by setting it to `false`. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, you should rarely disable `useVirtualLayout`.
+By default [`useVirtualLayout`](../api-reference/feathers/layout/HorizontalLayout.html#useVirtualLayout) is `true` for containers that support it. You may disable virtual layouts by setting it to `false`. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, you should rarely disable `useVirtualLayout`.
 
 ``` code
 layout.useVirtualLayout = false;
 ```
 
-The `LayoutGroup` and `ScrollContainer` components never use virtual layouts.
+The [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html) components never use virtual layouts.
 
 ### Variable Item Dimensions in a Virtual Horizontal Layout
 
-By default, a virtualized horizontal layout will assume that all items will have the same width. This restriction helps improve performance, and most lists won't need items with variable widths. However, you can set the `hasVariableItemDimensions` property to `true`, if you need your list's item renderers to have different width values. When you do this, the typical item width is used as an estimated width for virtual item renderers, and the real width value for each item renderer is stored as it comes into view, improving the accuracy of the layout over time.
+By default, a virtualized horizontal layout will assume that all items will have the same width. This restriction helps improve performance, and most lists won't need items with variable widths. However, you can set the [`hasVariableItemDimensions`](../api-reference/feathers/layout/HorizontalLayout.html#hasVariableItemDimensions) property to `true`, if you need your list's item renderers to have different width values. When you do this, the typical item width is used as an estimated width for virtual item renderers, and the real width value for each item renderer is stored as it comes into view, improving the accuracy of the layout over time.
 
 ``` code
 layout.hasVariableItemDimensions = false;

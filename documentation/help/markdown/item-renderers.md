@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Creating custom item renderers for the Feathers `List` and `GroupedList` components
 
-The [Default Item Renderers](default-item-renderers.html) provide an abundance of customization options to display up to three children with a variety of layouts. However, sometimes, you need more children or more advanced layout capabilities to translate a design to code for a customized list. In those situations, you may need to create a custom item renderer class.
+The [default item renderers](default-item-renderers.html) provide an abundance of customization options to display up to three children with a variety of layouts. However, sometimes, you need more children or more advanced layout capabilities to translate a design to code for a customized list. In those situations, you may need to create a custom item renderer class.
 
 Custom item renderers are basically [custom Feathers components](index.html#custom_components). When you create a custom item renderer, you will be working at a low level inside the Feathers architecture. Ideally, you should understand the internals of Feathers components before proceeding.
 
