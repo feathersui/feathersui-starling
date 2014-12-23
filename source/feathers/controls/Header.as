@@ -1025,7 +1025,9 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the header is disabled.
+		 * A background to display when the header is disabled. If the property
+		 * is <code>null</code>, the value of the <code>backgroundSkin</code>
+		 * property will be used instead.
 		 *
 		 * <p>In the following example, the header's disabled background skin is
 		 * set to a <code>Quad</code>:</p>
