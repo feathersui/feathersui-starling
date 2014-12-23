@@ -35,7 +35,7 @@ for(var i:int = 0; i < 5; i++)
 }
 ```
 
-The children of a `Panel` do not need to be Feathers UI controls. As you can see above, we've added some Starling `Quad` instances.
+The children of a `Panel` do not need to be Feathers UI controls. As you can see above, we've added some Starling [`Quad`](http://doc.starling-framework.org/core/starling/display/Quad.html) instances.
 
 By default, the `Panel` will automatically resize itself to fit the area that the children occupy (plus its header and footer). We can set the width and height manually, if desired, to override this behavior:
 
@@ -75,6 +75,8 @@ closeButton.addEventListener( Event.TRIGGERED, closeButton_triggeredHandler );
 panel.headerProperties.rightItems = new <DisplayObject>[ closeButton ];
 ```
 
+In general, you should only pass properties to the panel's header through `headerProperties` if you need to change them after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+
 Remember, the panel's header does not need to be a `Header` instance. It simply needs to be a Feathers component. If you wanted to make a `Panel` with a clickable header, you could provide a `headerFactory` that returns a [`Button`](button.html):
 
 ``` code
@@ -86,15 +88,13 @@ panel.headerFactory = function():Button
 }
 ```
 
-In this case, you should also update the [`headerTitleField`](../api-reference/feathers/controls/Panel.html#headerTitleField) property so that the panel's title is correctly displayed by the button's label:
+In this case, you should also update the [`headerTitleField`](../api-reference/feathers/controls/Panel.html#headerTitleField) property so that the panel's title is correctly displayed by the button's [`label`](../api-reference/feathers/controls/Button.html#label):
 
 ``` code
 panel.headerTitleField = "label";
 ```
 
 Using a button as the panel's header might be useful for creating a panel that can collapse and expand.
-
-In general, you should only pass properties to the panel's header through `headerProperties` if you need to change them after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### The Footer
 
@@ -103,23 +103,20 @@ By default, a panel doesn't have a footer. However, if you want to add a footer,
 You can customize the panel's footer in two ways. The first way is to provide a custom [`footerFactory`](../api-reference/feathers/controls/Panel.html#footerFactory):
 
 ``` code
-panel.footerFactory = function():ScrollContainer
+panel.footerFactory = function():LayoutGroup
 {
-    var container:ScrollContainer = new ScrollContainer();
-    container.styleNameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
-    container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-    container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-    return container;
+    var footer:LayoutGroup = new LayoutGroup();
+    footer.styleNameList.add( LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR );
+    return footer;
 }
 ```
 
-You can set any properties that you desire on the footer inside this factory, including skins. In this example, we're using a scroll container with a "toolbar" alternate style name that usually makes it look similar to a `Panel` component's `Header` with a horizontal layout (the exact behavior depends on the theme, but this is the most common behavior).
+You can set any properties that you desire on the footer inside this factory, including skins. In this example, we're using a [`LayoutGroup`] with a "toolbar" alternate style name. Typically, a theme will use this style name to make a `LayoutGroup` look similar to `Header` and give it a horizontal layout (the exact behavior depends on the theme, but this is the most common behavior).
 
-Alternatively, you could use a simple footer factory that sets no properties, and pass in properties through the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) object.
+Alternatively, you could use a simple footer factory that sets no properties, and pass in properties through the [`footerProperties`](../api-reference/feathers/controls/Panel.html#footerProperties) object.
 
 ``` code
-panel.footerProperties.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-panel.footerProperties.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
+panel.footerProperties.clipContent = true;
 ```
 
 In general, you should only skins to the panel's footer through `footerProperties` if you need to change properties or skins after the footer is created. Using `footerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
@@ -134,7 +131,9 @@ layout.gap = 10;
 panel.layout = layout;
 ```
 
-We can set a number of other properties on the layout too. In the case of `HorizontalLayout` (and [`VerticalLayout`](vertical-layout.html) too), we can customize things like padding around the edges along with horizontal and vertical alignment. Other layouts may expose more or completely different properties that may be customized. Check their API documentation for complete details.
+Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.html#gap) property, but `HorizontalLayout` provides many more useful features. See [How to use `HorizontalLayout` with Feathers containers](../api-reference/feathers/layout/HorizontalLayout.html) for complete details.
+
+<aside class="info">Feathers comes with a number of different [layouts](index.html#layouts), in addition to `HorizontalLayout`.</aside>
 
 ## Skinning a `Panel`
 

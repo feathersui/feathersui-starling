@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `PageIndicator` component
 
-The `PageIndicator` component displays a series of symbols, with one being highlighted, to show the user which index among a limited set is selected. Typically, it is paired with a `List` or a similar component that supports paging. The user can tap the `PageIndicator` to either side of the selected symbol to navigate forward or backward.
+The [`PageIndicator`](../api-reference/feathers/controls/PageIndicator.html) component displays a series of symbols, with one being highlighted, to show the user which index among a limited set is selected. Typically, it is paired with a [`List`](list.html) or a similar component that supports scrolling and paging. The user can tap the `PageIndicator` to either side of the selected symbol to navigate forward or backward.
 
 ## The Basics
 
@@ -17,9 +17,9 @@ pages.pageCount = 5;
 this.addChild( pages );
 ```
 
-The number of symbols that a page indicator displays is controlled by the `pageCount` property. You'll see that the first symbol is automatically selected. If you tap the page indicator on the right side, it will advance to the next index.
+The number of symbols that a page indicator displays is controlled by the [`pageCount`](../api-reference/feathers/controls/PageIndicator.html#pageCount) property. You'll see that the first symbol is automatically selected. If you tap the page indicator on the right side, it will advance to the next index.
 
-If we want to react to the selected index changing, we can add a listener for `Event.CHANGE`:
+If we want to react to the selected index changing, we can add a listener for [`Event.CHANGE`](../api-reference/feathers/controls/PageIndicator.html#event:change):
 
 ``` code
 pages.addEventListener( Event.CHANGE, pageIndicator_changeHandler );
@@ -41,13 +41,13 @@ You can customize the layout of a page indicator, and you can customize the appe
 
 ### Layout
 
-You may set the `direction` of a page indicator to `DIRECTION_HORIZONTAL` or `DIRECTION_VERTICAL`. The default layout direction is horizontal. Below, we change it to vertical:
+You may set the [`direction`](../api-reference/feathers/controls/PageIndicator.html#direction) of a page indicator to [`PageIndicator.DIRECTION_HORIZONTAL`](../api-reference/feathers/controls/PageIndicator.html#DIRECTION_HORIZONTAL) or [`PageIndicator.DIRECTION_VERTICAL`](../api-reference/feathers/controls/PageIndicator.html#DIRECTION_VERTICAL). The default layout direction is horizontal. Below, we change it to vertical:
 
 ``` code
 pages.direction = PageIndicator.DIRECTION_VERTICAL;
 ```
 
-We can set other layout properies, such as the [gap between symbols](../api-reference/feathers/controls/PageIndicator.html#gap), the padding around the edges, and the alignment, both [horizontally](../api-reference/feathers/controls/PageIndicator.html#horizontalAlign) and [vertically](../api-reference/feathers/controls/PageIndicator.html#verticalAlign):
+We can set other layout properies, such as the [`gap`](../api-reference/feathers/controls/PageIndicator.html#gap) between symbols, the padding around the edges, and the alignment, both [`horizontalAlign`](../api-reference/feathers/controls/PageIndicator.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/PageIndicator.html#verticalAlign):
 
 ``` code
 pages.gap = 4;
@@ -61,7 +61,7 @@ pages.verticalAlign = PageIndicator.VERTICAL_ALIGN_MIDDLE;
 
 ### Symbol Skins
 
-The symbols may be created using the `normalSymbolFactory` and `selectedSymbolFactory` for normal and selected symbols respectively. These functions are expected to return any Starling display objects. Below, we return Starling Images with different textures for normal and selected states:
+The symbols may be created using the [`normalSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#normalSymbolFactory) and [`selectedSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#selectedSymbolFactory) for normal and selected symbols, respectively. These functions are expected to return any Starling display objects. Below, we return Starling Images with different textures for normal and selected states:
 
 ``` code
 pages.normalSymbolFactory = function():DisplayObject
