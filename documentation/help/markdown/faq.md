@@ -137,6 +137,14 @@ This is actually something common that happens on GPUs when you position texture
 
 Pass in a [`VerticalLayout`](vertical-layout.html) with its [`hasVariableItemDimensions`](../api-reference/feathers/layout/VerticalLayout.html#hasVariableItemDimensions) property set to `true`. By default, `VerticalLayout` forces all item renderers to have the same height because this improves performance for most lists.
 
+### How do I update an item renderer in a list after I change a property on an item?
+
+You can pass the item's index to [`updateItemAt()`](../api-reference/feathers/data/ListCollection.html#updateItemAt()) on the list's data provider. The list will force the item renderer to redraw.
+
+``` code
+list.dataProvider.updateItemAt( itemIndex );
+```
+
 ------------------------------------------------------------------------
 
 For more information about Feathers, return to the [Feathers Documentation](index.html).
