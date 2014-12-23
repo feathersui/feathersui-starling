@@ -45,7 +45,7 @@ There are a number of places where you can get help with Feathers issues or to a
 
 -   [Introduction to Text Renderers](text-renderers.html)
 
--   [Introduction Text Editors](text-editors.html)
+-   [Introduction to Text Editors](text-editors.html)
 
 ## Feathers Components
 

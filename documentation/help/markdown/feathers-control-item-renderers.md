@@ -5,23 +5,23 @@ author: Josh Tynjala
 ---
 # Creating custom item renderers with `FeathersControl` and `IListItemRenderer`
 
-The `FeathersControl` class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a `List` or `GroupedList`, you're actually going to create a [custom Feathers component](index.html#custom_components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
+The [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a [`List`](list.html) or [`GroupedList`](grouped-list.html), you're actually going to create a [custom Feathers component](index.html#custom-components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
 
 Feathers includes three interfaces that define the API used by the `List` or `GroupedList` components to communicate with their item renderers.
 
--   `IListItemRenderer` can be used to implement an item renderer in `List`.
+-   [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) can be used to implement an item renderer in [`List`](list.html).
 
--   `IGroupedListItemRenderer` can be used to implement an item renderer in `GroupedList`.
+-   [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) can be used to implement an item renderer in [`GroupedList`](grouped-list.html).
 
--   `IGroupedListHeaderOrFoooterItemRenderer` can be used to implement either a header renderer or a footer renderer in `GroupedList`.
+-   [`IGroupedListHeaderOrFooterItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) can be used to implement either a header renderer or a footer renderer in [`GroupedList`](grouped-list.html).
 
 Below, we will look at how to create a simple custom item renderer using one of these interfaces. We'll also be taking peek at many aspects of the core architecture used by the Feathers components. At the very end, the complete source code for a simple custom item renderer will be provided to offer a starting point for other custom item renderers.
 
-The `FeathersControl` class comes from the low-level foundation of the Feathers architecture, and it requires a stronger knowledge of Feathers internals to use property. You'll often get the best performance with it, but it's a bit trickier to manage for developers new to Feathers. If you're looking for the easiest way to built custom item renderers, please see [Custom Item Renderers with LayoutGroup](layout-group-item-renderers.html) instead.
+<aside class="info">The [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class comes from the low-level foundation of the Feathers architecture, and it requires an intimate knowledge of Feathers internals to use effectively. You may be able to get better performance with it over the alternative, but it's a bit trickier to manage for developers that are less experienced with Feathers. If you're looking for the easiest way to built custom item renderers, please see [Creating custom item renderers with `LayoutGroup`](layout-group-item-renderers.html) instead.</aside>
 
 ## The Simplest Item Renderer
 
-Let's implement a very simple item renderer. It will contain a `Label` component to display some text and it will be possible to customize some padding around the edges.
+Let's implement a very simple item renderer. It will contain a [`Label`](label.html) component to display some text and it will be possible to customize some padding around the edges.
 
 When it's finished, we'll want to use it like this:
 
@@ -48,11 +48,11 @@ Notice that we set a `padding` property to adjust the layout. The item renderer 
 
 We could go crazy and add background skins, icons, the ability to customize the which field from the item that the label text comes from, and many more things. We're going to keep it simple for now to avoid making thing confusing with extra complexity.
 
-For this example, we're creating an item renderer for a `List` component, but it will be the exact same process to create an item renderer, header renderer, or footer renderer for a `GroupedList` component. You simply need to change the interface that you implement. For example, instead of the `IListItemRenderer` interface, you might implement the `IGroupedListItemRenderer` interface.
+For this example, we're creating an item renderer for a [`List`](list.html) component, but it will be virtually the exact same process to create an item renderer, header renderer, or footer renderer for a [`GroupedList`](grouped-list.html) component. You simply need to change the interface that you implement. For example, instead of the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, you might implement the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface.
 
 ## Implementation Details
 
-Let's start out with the basic framework for our custom item renderer. We want to subclass `feathers.core.FeathersControl` and we want to implement the `feathers.controls.renderers.IListItemRenderer` interface:
+Let's start out with the basic framework for our custom item renderer. We want to subclass [`feathers.core.FeathersControl`](../api-reference/feathers/core/FeathersControl.html) and we want to implement the [`feathers.controls.renderers.IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface:
 
 ``` code
 package
@@ -73,7 +73,7 @@ Next, we'll implement the properties required by the `IListItemRenderer` interfa
 
 ### Implementing IListItemRenderer
 
-The `IListItemRenderer` interface defines several properties, including `owner`, `index`, `data`, and `isSelected`. Each of these properties can be implemented the same way in most cases, and the relevant code is included below.
+The [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface defines several properties, including [`owner`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#owner), [`index`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#index), [`data`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#data), and [`isSelected`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#isSelected). Each of these properties can be implemented the same way in most cases, and the relevant code is included below.
 
 ``` code
 protected var _index:int = -1;
@@ -160,13 +160,13 @@ public function set isSelected(value:Boolean):void
 
 The `isSelected` property indicates if the item has been selected. It's common for an item to be selected when it is touched, but that's not required.
 
-The `IGroupedListItemRenderer` interface is very similar. Instead of an `index` property, this type of item renderer has `groupIndex` and `itemIndex` properties to specify where in the data provider the item is located. An additional `layoutIndex` property specifies the item's order in the layout, including headers and footers. The `owner` property should be typed as `GroupedList` instead of `List`, obviously.
+<aside class="info">The [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface is very similar. Instead of an `index` property, this type of item renderer has [`groupIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#groupIndex) and [`itemIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#itemIndex) properties to specify where in the data provider the item is located. An additional [`layoutIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#layoutIndex) property specifies the item's order in the layout, including headers and footers. The `owner` property should be typed as `GroupedList` instead of `List`, obviously.</aside>
 
-Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the `IGroupedListHeaderOrFooterRenderer` interface. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.
+<aside class="info">Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the [`IGroupedListHeaderOrFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) interface. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.</aside>
 
 ### Adding Children
 
-We want to display a `Label` component, so let's add a member variable for it:
+We want to display a [`Label`](label.html) component, so let's add a member variable for it:
 
 ``` code
 protected var _label:Label;
@@ -188,7 +188,7 @@ The `initialize()` function is called once the very first time that the componen
 
 ### Parsing the data
 
-Next, we want to access the `data` property and display something in our `Label` component. Let's start by overriding the `draw()` function and checking if the appropriate invalidation flag is set to indicate that the data has changed.
+Next, we want to access the [`data`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#data) property and display something in our `Label` component. Let's start by overriding the `draw()` function and checking if the appropriate invalidation flag is set to indicate that the data has changed.
 
 ``` code
 override protected function draw():void
@@ -202,7 +202,7 @@ override protected function draw():void
 }
 ```
 
-You may remember that we called the `invalidate()` function in the setter functions above. In the `data` setter, we passed in `INVALIDATION_FLAG_DATA`. Inside the `draw()` function, we call `isInvalid()` to see if that flag has been set.
+You may remember that we called the [`invalidate()`](../api-reference/feathers/core/FeathersControl.html#invalidate()) function in the setter functions above. In the `data` setter, we passed in [`INVALIDATION_FLAG_DATA`](../api-reference/feathers/core/FeathersControl.html#INVALIDATION_FLAG_DATA). Inside the `draw()` function, we call [`isInvalid()`](../api-reference/feathers/core/FeathersControl.html#isInvalid()) to see if that flag has been set.
 
 <aside class="info">For more information about the `draw()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
@@ -222,7 +222,7 @@ protected function commitData():void
 }
 ```
 
-For this particular item renderer, we're requiring all items in the data provider to have a `label` property that holds the text to display in the `Label` component. If we were building a generic item renderer, ideally, we might like to make that field name customizable, like the `labelField` property in `DefaultListItemRenderer`. However, let's keep it simple.
+For this particular item renderer, we're requiring all items in the data provider to have a `label` property that holds the text to display in the `Label` component. If we were building a generic item renderer, ideally, we might like to make that field name customizable, like the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField) property in [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html). However, let's keep it simple.
 
 Don't forget to handle the case where the data property is `null`. You don't want any runtime errors causing you trouble.
 
@@ -262,7 +262,7 @@ protected function autoSizeIfNeeded():Boolean
     }
 ```
 
-Let's start by checking whether the width and height properties have been set. We have internal variables named `explicitWidth` and `explicitHeight` that will either be a valid number of pixels or they will be `NaN` if they aren't set. If both the width and the height have been set already, we can simply return without any measuring.
+Let's start by checking whether the width and height properties have been set. We have internal variables named [`explicitWidth`](../api-reference/feathers/core/FeathersControl.html#explicitWidth) and [`explicitHeight`](../api-reference/feathers/core/FeathersControl.html#explicitHeight) that will either be a valid number of pixels or they will be `NaN` if they aren't set. If both the width and the height have been set already, we can simply return without any measuring.
 
 <aside class="info">For more information about the `explicitWidth` and `explicitHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
@@ -291,7 +291,7 @@ if(needsHeight)
 
 In more complex item renderers, we might add together the dimensions of multiple sub-components. For this simple item renderer, we'll simply ask the `Label` sub-component for its width and height, and then we add the padding to those values.
 
-Finally, we tell Feathers what the final dimensions will be using the `setSizeInternal()` function:
+Finally, we tell Feathers what the final dimensions will be using the [`setSizeInternal()`](../api-reference/feathers/core/FeathersControl.html#setSizeInternal()) function:
 
 ``` code
 return this.setSizeInternal(newWidth, newHeight, false);
@@ -317,7 +317,7 @@ override protected function draw():void
 }
 ```
 
-Notice that we don't actually use the returned `Boolean` value. This particular component doesn't need it, but more complex components may use that value, along with `INVALIDATION_FLAG_SIZE`, to selectively call other functions.
+Notice that we don't actually use the returned `Boolean` value. This particular component doesn't need it, but more complex components may use that value, along with [`INVALIDATION_FLAG_SIZE`](../api-reference/feathers/core/FeathersControl.html#INVALIDATION_FLAG_SIZE), to selectively call other functions.
 
 ### Adjusting the layout
 
@@ -333,7 +333,7 @@ protected function layoutChildren():void
 }
 ```
 
-The `actualWidth` and `actualHeight` variables hold the final width and height of the item renderer. These variables are derived using a combination of the explicit dimensions and the measured dimensions that we calculated before passing them to `setSizeInternal()`.
+The [`actualWidth`](../api-reference/feathers/core/FeathersControl.html#actualWidth) and [`actualHeight`](../api-reference/feathers/core/FeathersControl.html#actualHeight) variables hold the final width and height of the item renderer. These variables are derived using a combination of the explicit dimensions and the measured dimensions that we calculated before passing them to `setSizeInternal()`.
 
 <aside class="info">For more information about the `actualWidth` and `actualHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
