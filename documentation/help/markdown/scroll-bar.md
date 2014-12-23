@@ -5,26 +5,24 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ScrollBar` component
 
-The `ScrollBar` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction. A scroll bar also has a button on each side of the track that adjusts the value by a small step when triggered. This component is designed to be used with subclasses of the `Scroller` class like the `ScrollContainer` and `List` components.
+The [`ScrollBar`](../api-reference/feathers/controls/ScrollBar.html) component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction. A scroll bar also has a button on each side of the track that adjusts the value by a small step when triggered. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
 
-<aside class="info">Additionally, Feathers offers a `SimpleScrollBar` component. This is a mobile-style scroll bar that only has a thumb to visually indicate the scroll position and range. It has no visible track nor buttons for stepping the scroll position.</aside>
+<aside class="info">Additionally, Feathers offers a [`SimpleScrollBar`](simple-scroll-bar.html) component. This is a mobile-style scroll bar that only has a thumb to visually indicate the scroll position and range. It has no visible track nor buttons for stepping the scroll position.</aside>
 
 ## The Basics
 
-You can use the `ScrollBar` with a `Scroller` by instantiating it in the `horizontalScrollBarFactory` or the `verticalScrollBarFactory`.
+You can use the `ScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) or the [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory).
 
 ``` code
 list.horizontalScrollBarFactory = function():IScrollBar
 {
-    var scrollBar:ScrollBar = new ScrollBar();
-    scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-    return scrollBar;
+    return new ScrollBar();
 }
 ```
 
-Make sure that you set the `direction` property to an appropriate value. However, the `Scroller` will handle setting properties like `minimum`, `maximum`, and `step`, and it will automatically listen for `Event.CHANGE` to know when the `value` property changes.
+The container will automatically handle setting properties like [`direction`](../api-reference/feathers/controls/ScrollBar.html#direction), [`minimum`](../api-reference/feathers/controls/ScrollBar.html#minimum), [`maximum`](../api-reference/feathers/controls/ScrollBar.html#maximum), and [`step`](../api-reference/feathers/controls/ScrollBar.html#step), and it will automatically listen for [`Event.CHANGE`](../api-reference/feathers/controls/ScrollBar.html#event:change) to know when the [`value`](../api-reference/feathers/controls/ScrollBar.html#value) property changes.
 
-If, for some reason, you want to use a `ScrollBar` outside of a subclass of `Scroller`, the values like `minimum`, `maximum`, `step` and `value` that the `Scroller` normally handles work similarly to a `Slider` component.
+<aside class="info">If, for some reason, you want to use a `ScrollBar` outside of a container, the values like `minimum`, `maximum`, `step` and `value` that are normally handled by the container work similarly to the same properties on a [`Slider`](slider.html) component.</aside>
 
 ## Skinning a `ScrollBar`
 
@@ -61,20 +59,20 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ScrollBar.DEFAULT_CHILD_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_NAME_THUMB, setScrollBarThumbStyles );
+    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-scrollBar.customThumbName = "custom-thumb";
+scrollBar.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbName` like this:
+You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/ScrollBar.html#customThumbStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -83,7 +81,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `thumbFactory` to provide skins for the scroll bar's thumb:
+If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/ScrollBar.html#thumbFactory) to provide skins for the scroll bar's thumb:
 
 ``` code
 scrollBar.thumbFactory = function():Button
@@ -96,7 +94,7 @@ scrollBar.thumbFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `thumbFactory`, you may use the `thumbProperties` to pass skins to the thumb.
+Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/ScrollBar.html#thumbProperties) to pass skins to the thumb.
 
 ``` code
 scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
@@ -107,9 +105,9 @@ In general, you should only pass skins to the scroll bar's thumb through `thumbP
 
 ### Track(s) and Layout
 
-The scroll bar's track is made from either one or two buttons, depending on the value of the `trackLayoutMode` property. The default value of this property is `ScrollBar.TRACK_LAYOUT_MODE_SINGLE`, which creates a single track that fills the entire width and height of the scroll bar.
+The scroll bar's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ScrollBar.html#trackLayoutMode) property. The default value of this property is [`ScrollBar.TRACK_LAYOUT_MODE_SINGLE`](../api-reference/feathers/controls/ScrollBar.html#TRACK_LAYOUT_MODE_SINGLE), which creates a single track that fills the entire width and height of the scroll bar.
 
-If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to `ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX`. In this mode, the width or height of each track (depending on the direction of the scroll bar) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX`](../api-reference/feathers/controls/ScrollBar.html#TRACK_LAYOUT_MODE_MIN_MAX). In this mode, the width or height of each track (depending on the direction of the scroll bar) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
 `ScrollBar.TRACK_LAYOUT_MODE_SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
 
@@ -121,20 +119,20 @@ This section only explains how to access the minimum track sub-component. Please
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ScrollBar.DEFAULT_CHILD_NAME_MINIMUM_TRACK` style name.
+If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK) style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_NAME_MINIMUM_TRACK, setScrollBarMinimumTrackStyles );
+    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, setScrollBarMinimumTrackStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-scrollBar.customMinimumTrackName = "custom-minimum-track";
+scrollBar.customMinimumTrackStyleName = "custom-minimum-track";
 ```
 
-You can set the function for the `customMinimumTrackName` like this:
+You can set the function for the [`customMinimumTrackStyleName`](../api-reference/feathers/controls/ScrollBar.html#customMinimumTrackStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -143,7 +141,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `minimumTrackFactory` to provide skins for the scroll bar's minimum track:
+If you are not using a theme, you can use [`minimumTrackFactory`](../api-reference/feathers/controls/ScrollBar.html#minimumTrackFactory) to provide skins for the scroll bar's minimum track:
 
 ``` code
 scrollBar.minimumTrackFactory = function():Button
@@ -156,7 +154,7 @@ scrollBar.minimumTrackFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `minimumTrackFactory`, you may use the `minimumTrackProperties` to pass skins to the minimum track.
+Alternatively, or in addition to the `minimumTrackFactory`, you may use the [`minimumTrackProperties`](../api-reference/feathers/controls/ScrollBar.html#minimumTrackProperties) to pass skins to the minimum track.
 
 ``` code
 scrollBar.minimumTrackProperties.defaultSkin = new Image( upTexture );
@@ -169,7 +167,7 @@ In general, you should only pass properties to the scroll bar's minimum track th
 
 This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The scroll bar's maximum track may be skinned similarly to the minimum track. The name to use with [themes](themes.html) is `ScrollBar.DEFAULT_CHILD_NAME_MAXIMUM_TRACK` or you can customize the name with `customMaximumTrackName`. If you aren't using a theme, then you can use `maximumTrackFactory` and `maximumTrackProperties`.
+The scroll bar's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK) or you can customize the style name with [`customMaximumTrackStyleName`](../api-reference/feathers/controls/ScrollBar.html#customMaximumTrackStyleName). If you aren't using a theme, then you can use [`maximumTrackFactory`](../api-reference/feathers/controls/ScrollBar.html#maximumTrackFactory) and [`maximumTrackProperties`](../api-reference/feathers/controls/ScrollBar.html#maximumTrackProperties).
 
 ### Skinning the Decrement Button
 
@@ -177,20 +175,20 @@ This section only explains how to access the decrement button sub-component. Ple
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ScrollBar.DEFAULT_CHILD_NAME_DECREMENT_BUTTON` style name.
+If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON) style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_NAME_DECREMENT_BUTTON, setScrollBarDecrementButtonStyles );
+    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON, setScrollBarDecrementButtonStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-scrollBar.customDecrementButtonName = "custom-decrement-button";
+scrollBar.customDecrementButtonStyleName = "custom-decrement-button";
 ```
 
-You can set the function for the `customDecrementButtonName` like this:
+You can set the function for the [`customDecrementButtonStyleName`](../api-reference/feathers/controls/ScrollBar.html#customDecrementButtonStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -199,7 +197,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `decrementButtonFactory` to provide skins for the scroll bar's decrement button:
+If you are not using a theme, you can use [`decrementButtonFactory`](../api-reference/feathers/controls/ScrollBar.html#decrementButtonFactory) to provide skins for the scroll bar's decrement button:
 
 ``` code
 scrollBar.decrementButtonFactory = function():Button
@@ -212,7 +210,7 @@ scrollBar.decrementButtonFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `decrementButtonFactory`, you may use the `decrementButtonProperties` to pass skins to the decrement button.
+Alternatively, or in addition to the `decrementButtonFactory`, you may use the [`decrementButtonProperties`](../api-reference/feathers/controls/ScrollBar.html#decrementButtonProperties) to pass skins to the decrement button.
 
 ``` code
 scrollBar.decrementButtonProperties.defaultSkin = new Image( upTexture );
@@ -225,7 +223,7 @@ In general, you should only pass properties to the scroll bar's decrement button
 
 This section only explains how to access the increment button sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The scroll bar's increment button may be skinned similarly to the decrement button. The name to use with [themes](themes.html) is `ScrollBar.DEFAULT_CHILD_NAME_INCREMENT_BUTTON` or you can customize the name with `customIncrementButtonName`. If you aren't using a theme, then you can use `incrementButtonFactory` and `incrementButtonProperties`.
+The scroll bar's increment button may be skinned similarly to the decrement button. The style name to use with [themes](themes.html) is [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON) or you can customize the style name with [`customIncrementButtonStyleName`](../api-reference/feathers/controls/ScrollBar.html#customIncrementButtonStyleName). If you aren't using a theme, then you can use [`incrementButtonFactory`](../api-reference/feathers/controls/ScrollBar.html#incrementButtonFactory) and [`incrementButtonProperties`](../api-reference/feathers/controls/ScrollBar.html#incrementButtonProperties).
 
 ## Related Links
 

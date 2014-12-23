@@ -205,7 +205,7 @@ Notice the `isInBounds` local variable. What we're doing there with the call to 
 
 The second case may be a little confusing, so let's go into a bit more detail. When Starling handles a touch, it will dispatch `TouchEvent.TOUCH` to the original target for every single phase of the touch, regardless of whether other objects may be blocking the touch. It's our responsibility to ensure that a touch is still valid for the original target. We'll always receive the event for `TouchPhase.ENDED`, but the call to the `hitTest()` on the stage may not return the item renderer or any of its children. If that's the case, then we go back to `STATE_UP` instead of `STATE_HOVER`.
 
-Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new `flash.geom.Point` for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
+Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
 
 ``` code
 private static const HELPER_POINT:Point = new Point();

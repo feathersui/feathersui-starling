@@ -71,11 +71,11 @@ Let's look at another example. The `GroupedList` component has a regular skin th
 
 To see the difference between these two styles, you can view the `GroupedList` in the [Component Explorer](http://feathersui.com/examples/components-explorer/). In the settings screen for the `GroupedList`, change the "Group Style" to "inset".
 
-Alternate style names get exposed as public static constants on any class that provides them. For instance, `GroupedList` defines `ALTERNATE_NAME_INSET_GROUPED_LIST`. The inset style can be used by adding the constant to a grouped list's `styleNameList`, like this:
+Alternate style names get exposed as public static constants on any class that provides them. For instance, `GroupedList` defines `ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST`. The inset style can be used by adding the constant to a grouped list's `styleNameList`, like this:
 
 ``` code
 var list:GroupedList = new GroupedList();
-list.styleNameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
+list.styleNameList.add( GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST );
 this.addChild( list );
 ```
 

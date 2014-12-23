@@ -83,20 +83,20 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ToggleSwitch.DEFAULT_CHILD_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the `ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB` style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_NAME_THUMB, setToggleSwitchThumbStyles );
+    .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, setToggleSwitchThumbStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-toggle.customThumbName = "custom-thumb";
+toggle.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbName` like this:
+You can set the function for the `customThumbStyleName` like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -143,20 +143,20 @@ This section only explains how to access the on track sub-component. Please read
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK` style name.
+If you're creating a [theme](themes.html), you can target the `ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK` style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK, setToggleSwitchOnTrackStyles );
+    .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, setToggleSwitchOnTrackStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-toggle.customOnTrackName = "custom-on-track";
+toggle.customOnTrackStyleName = "custom-on-track";
 ```
 
-You can set the function for the `customOnTrackName` like this:
+You can set the function for the `customOnTrackStyleName` like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -191,7 +191,7 @@ In general, you should only pass properties to the toggle switch's on track thro
 
 This section only explains how to access the off track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The toggle switch's off track may be skinned similarly to the on track. The name to use with [themes](themes.html) is `ToggleSwitch.DEFAULT_CHILD_NAME_OFF_TRACK` or you can customize the name with `customOffTrackName`. If you aren't using a theme, then you can use `offTrackFactory` and `offTrackProperties`.
+The toggle switch's off track may be skinned similarly to the on track. The style name to use with [themes](themes.html) is `ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK` or you can customize the style name with `customOffTrackStyleName`. If you aren't using a theme, then you can use `offTrackFactory` and `offTrackProperties`.
 
 ## Related Links
 

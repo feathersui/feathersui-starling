@@ -83,20 +83,20 @@ This section only explains how to access the tab sub-components, which are simpl
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `TabBar.DEFAULT_CHILD_NAME_TAB` style name.
+If you're creating a [theme](themes.html), you can target the `TabBar.DEFAULT_CHILD_STYLE_NAME_TAB` style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( setTabStyles, TabBar.DEFAULT_CHILD_NAME_TAB );
+    .setFunctionForStyleName( setTabStyles, TabBar.DEFAULT_CHILD_STYLE_NAME_TAB );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-tabBar.customTabName = "custom-tab";
+tabBar.customTabStyleName = "custom-tab";
 ```
 
-You can set the function for the `customTabName` like this:
+You can set the function for the `customTabStyleName` like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -132,9 +132,9 @@ This section only explains how to access the first and last tab sub-components. 
 
 The tab bar's first and last tabs will have the same skins as the other tabs by default. However, their skins may be customized separately, if desired.
 
-For the first tab, you can customize the name with `customFirstTabName`. If you aren't using a theme, then you can use `firstTabFactory` and `firstTabProperties`.
+For the first tab, you can customize the name with `customFirstTabStyleName`. If you aren't using a theme, then you can use `firstTabFactory` and `firstTabProperties`.
 
-For the last tab, you can customize the name with `customLastTabName`. If you aren't using a theme, then you can use `lastTabFactory` and `lastTabProperties`.
+For the last tab, you can customize the name with `customLastTabStyleName`. If you aren't using a theme, then you can use `lastTabFactory` and `lastTabProperties`.
 
 Separate skins for the first and last tabs are completely optional.
 

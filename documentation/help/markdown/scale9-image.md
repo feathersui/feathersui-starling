@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Scale9Image` display object
 
-The `Scale9Image` class displays a texture divided into nine regions. When the dimensions of a `Scale9Image` are changed, the corners will not scale and each of the edges will scale in only one direction. The center region will be scaled in both directions normally. `Scale9Image` allows you to create a shape with features like rounded corners and borders for user interface components like buttons and windows.
+The [`Scale9Image`](../api-reference/feathers/display/Scale9Image.html) class displays a texture divided into nine regions. When the dimensions of a `Scale9Image` are changed, the corners will not scale and each of the edges will scale in only one direction. The center region will be scaled in both directions normally. `Scale9Image` allows you to create a shape with features like rounded corners and borders for user interface components like buttons and windows.
 
 ## Regions
 
@@ -31,7 +31,7 @@ The middle-center region will scale both horizontally and vertically.
 
 A rectangle defines the *grid*. Actually, this rectangle specifically defines the middle-center region described above. Each of the other regions can be automatically calculated using the rectangle and the original width and height of the texture.
 
-The orange rounded rectangle pictured above is 200 pixels wide and 130 pixels tall. Using the lines in the picture, we'll define the scale 9 grid. The x and y values of the rectangle are both 30. The width of the rectangle is 140 pixels. The height of the rectangle is 70 pixels.
+The orange rounded rectangle pictured above is `200` pixels wide and `130` pixels tall. Using the lines in the picture, we'll define the scale 9 grid. The x and y values of the rectangle are both `30`. The width of the rectangle is `140` pixels. The height of the rectangle is `70` pixels.
 
 ``` code
 30 + 140 + 30 = 200
@@ -42,7 +42,7 @@ The left and right regions don't necessarily need to be the same size. Neither d
 
 ## Code
 
-First, let's create a `feathers.textures.Scale9Textures` object:
+First, let's create a [`feathers.textures.Scale9Textures`](../api-reference/feathers/textures/Scale9Textures.html) object:
 
 ``` code
 var texture:Texture = Texture.fromBitmapData( bitmapData );
@@ -50,9 +50,9 @@ var rect:Rectangle = new Rectangle( 30, 30, 140, 70 );
 var textures:Scale9Textures = new Scale9Textures( texture, rect );
 ```
 
-This object is created from a standard `starling.textures.Texture` object and the `flash.geom.Rectangle` object that defines the middle center region.
+This object is created from a standard [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html) object and the [`flash.geom.Rectangle`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Rectangle.html) object that defines the middle center region.
 
-We'll pass the `Scale9Textures` object to a new `feathers.display.Scale9Image` object:
+We'll pass the `Scale9Textures` object to a new [`feathers.display.Scale9Image`](../api-reference/feathers/display/Scale9Image.html) object:
 
 ``` code
 var image:Scale9Image = new Scale9Image( textures );

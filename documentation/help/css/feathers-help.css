@@ -43,7 +43,8 @@ a[href^="http://feathersui.com/examples/"]
 }
 
 a[href^="http://doc.starling-framework.org"],
-	a[href^="../api-reference/"]
+	a[href^="../api-reference/"],
+	a[href^="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/"]
 {
 	background: url(../images/book_open.png) center left no-repeat;
 	padding: 0 0 0 20px;
