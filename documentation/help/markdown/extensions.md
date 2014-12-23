@@ -7,6 +7,12 @@ author: Josh Tynjala
 
 Various members of the community have contributed the following extensions or components using Feathers.
 
+## Quill by Code-Herder
+
+Makes interface creation and styling fast and accessible to artists, designers, etc. with JSON. 
+
+-   [Quill on Github](https://github.com/Code-Herder/Quill)
+
 ## Logi by justpinegames
 
 HUD/Console logging library
