@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Scale3Image` display object
 
-The `Scale3Image` class displays a texture divided into three regions, either horizontally or vertically. When the direction of a `Scale3Image` is horizontal and the width is changed, the left and right regions will not scale and the center region will scale horizontally. When the direction of a `Scale3Image` is vertical, the top and bottom regions will not scale and the center region will scale vertically. This display object allows you to create skins with "pill" shapes for UI components like buttons, and sub-components like thumbs and tracks on scroll bars and sliders.
+The [`Scale3Image`](../api-reference/feathers/display/Scale3Image.html) class displays a texture divided into three regions, either horizontally or vertically. When the direction of a `Scale3Image` is horizontal and the width is changed, the left and right regions will not scale and the center region will scale horizontally. When the direction of a `Scale3Image` is vertical, the top and bottom regions will not scale and the center region will scale vertically. This display object allows you to create skins with "pill" shapes for UI components like buttons, and sub-components like thumbs and tracks on scroll bars and sliders.
 
 ## Regions
 
@@ -27,7 +27,7 @@ The middle region will scale vertically. It will not scale horizontally.
 
 ### Scaling in the Opposite Direction
 
-`Scale3Image` is designed to mainly scale in one direction. However, it is capable of scaling in the other direction too. In this situation, the "caps" will scale to maintain aspect ratio. As an example, if a cap is a half circle, it will remain perfectly round after scaling in both directions. The goal is to avoid distortion of the caps.
+[`Scale3Image`](../api-reference/feathers/display/Scale3Image.html) is designed to mainly scale in one direction. However, it is capable of scaling in the other direction too. In this situation, the "caps" will scale to maintain aspect ratio. As an example, if a cap is a half circle, it will remain perfectly round after scaling in both directions. The goal is to avoid distortion of the caps.
 
 ![](images/scale3-both.png)
 
@@ -37,7 +37,7 @@ The image above shows how the caps maintain aspect ratio when scaled in the oppo
 
 Two numeric values defines the *grid*. Actually, these specifically defines the center or middle region described above. Each of the other regions can be automatically calculated using these values along with the original width and height of the texture.
 
-The horizontal orange pill shape pictured above is 200 pixels wide and 80 pixels tall. Using the lines in the picture, we'll define the grid. The x value is 40. The width value is 120 pixels.
+The horizontal orange pill shape pictured above is `200` pixels wide and `80` pixels tall. Using the lines in the picture, we'll define the grid. The x value is `40`. The width value is `120` pixels.
 
 ``` code
 40 + 120 + 40 = 200
@@ -49,16 +49,16 @@ The left and right regions don't necessarily need to be the same size. Neither d
 
 ## Code
 
-First, let's create a `feathers.textures.Scale3Textures` object:
+First, let's create a [`feathers.textures.Scale3Textures`](../api-reference/feathers/textures/Scale3Textures.html) object:
 
 ``` code
 var texture:Texture = Texture.fromBitmapData( bitmapData );
 var textures:Scale3Textures = new Scale3Textures( texture, 40, 120, Scale3Textures.DIRECTION_HORIZONTAL );
 ```
 
-This object is created from a standard `starling.textures.Texture` object, the two region values, and the constant representing the direction of the regions. Either `Scale3Image.DIRECTION_HORIZONTAL` or `Scale3Image.DIRECTION_VERTICAL`.
+This object is created from a standard [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html) object, the two region values, and the constant representing the direction of the regions. Either [`Scale3Textures.DIRECTION_HORIZONTAL`](../api-reference/feathers/textures/Scale3Textures.html#DIRECTION_HORIZONTAL) or [`Scale3Textures.DIRECTION_VERTICAL`](../api-reference/feathers/textures/Scale3Textures.html#DIRECTION_VERTICAL).
 
-We'll pass the `Scale3Textures` object to a new `feathers.display.Scale3Image` object:
+We'll pass the `Scale3Textures` object to a new [`feathers.display.Scale3Image`](../api-reference/feathers/display/Scale3Image.html) object:
 
 ``` code
 var image:Scale3Image = new Scale3Image( textures );

@@ -86,7 +86,7 @@ It's a little complicated, but it will ensure that we are only tracking a single
 
 The key part is the line with the `isInBounds` local variable. What we're doing there with the call to `contains()` and `hitTest()` is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
 
-Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new `flash.geom.Point` for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
+Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
 
 ``` code
 private static const HELPER_POINT:Point = new Point();

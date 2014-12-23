@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ProgressBar` component
 
-The `ProgressBar` class displays a visual indicator of how much of a task has been completed.
+The [`ProgressBar`](../api-reference/feathers/controls/ProgressBar.html) class displays a visual indicator of how much of a task has been completed. It may fill up horizontally or vertically.
 
 ## The Basics
 
@@ -19,9 +19,9 @@ progress.value = 10;
 this.addChild( progress );
 ```
 
-The `minimum` and `maximum` properties set the range of the progress bar. The `value` property must be a value between the minimum and maximum.
+The [`minimum`](../api-reference/feathers/controls/ProgressBar.html#minimum) and [`maximum`](../api-reference/feathers/controls/ProgressBar.html#maximum) properties set the range of the progress bar. The [`value`](../api-reference/feathers/controls/ProgressBar.html#value) property must be a value between the minimum and maximum.
 
-By default, the progress bar direction is horizontal. You can change the `direction` property to make the progress bar vertically-oriented instead.
+By default, the progress bar direction is horizontal. You can change the [`direction`](../api-reference/feathers/controls/ProgressBar.html#direction) property to make the progress bar vertically-oriented instead.
 
 ``` code
 progress.direction = ProgressBar.DIRECTION_VERTICAL;
@@ -31,7 +31,7 @@ progress.direction = ProgressBar.DIRECTION_VERTICAL;
 
 A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [`ProgressBar` API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common properties below.
 
-The `backgroundSkin` and `fillSkin` properties are used to customize the appearance of the progress bar.
+The [`backgroundSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundSkin) and [`fillSkin`](../api-reference/feathers/controls/ProgressBar.html#fillSkin) properties are used to customize the appearance of the progress bar.
 
 ``` code
 var backgroundSkin:Scale9Image = new Scale9Image( backgroundTextures );
@@ -47,7 +47,7 @@ Notice that we're setting width values on the skins before passing them in. For 
 
 For the fill skin, we want to ensure that the fill is never smaller than 20 pixels. Perhaps the fill is a rounded rectangle, so the edges need to be at least 10 pixels wide before they start to overlap or distort. We want to avoid that, so we set the width of the `fillSkin` to inform the progress bar that this is the width that corresponds to the value of the `minimum` property. In other words, if the `value` property is equal to the `minimum` property (in this case, if they are `0`), then the fill skin will be 20 pixels wide. As the `value` property increases toward `100`, the fill skin's width will increase up to 150 pixels.
 
-Additionally, two other skin properties, `backgroundDisabledSkin` and `fillDisabledSkin`, may be used to give a progress bar a different appearance when it is disabled. These skins are optional. For instance, if the `backgroundDisabledSkin` is not provided, the regular `backgroundSkin` will be used when `isEnabled` is false.
+Additionally, two other skin properties, [`backgroundDisabledSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundDisabledSkin) and [`fillDisabledSkin`](../api-reference/feathers/controls/ProgressBar.html#fillDisabledSkin), may be used to give a progress bar a different appearance when it is disabled. These skins are optional. For instance, if the `backgroundDisabledSkin` is not provided, the regular `backgroundSkin` will be used when [`isEnabled`](../api-reference/feathers/core/FeathersControl.html#isEnabled) is false.
 
 Like many components, the progress bar has padding values. These can be used to add space between the edge of the background and the edge of the fill. For instance, you might want to display part of the background as a border around the fill.
 

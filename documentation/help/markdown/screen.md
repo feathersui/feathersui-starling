@@ -5,29 +5,13 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Screen `component
 
-The `Screen` component is meant to be a base class for custom screens to be displayed by `StackScreenNavigator` and `ScreenNavigator`. `Screen` is based on the `Layout` component, and it provides optional layout.
-
-## Accessing the screen navigator
-
-The [owner](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `StackScreenNavigator` or `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling `showScreen()`. You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
-
-## Screen ID
-
-The `screenID` property refers to the string that the screen navigator uses to identify the current screen when calling functions like `pushScreen()` on a `StackScreenNavigator` or `showScreen()` on a `ScreenNavigator`.
-
-## Scaling
-
-Many Feathers [themes](themes.html) automatically scale skins to the current device's DPI. Screens have a similar `dpiScale` property which may be used for adjusting pixel-based measurements for layout. It is calculated using the current DPI and an `originalDPI`, which is generally set by the theme. If it is not provided, the current DPI will be used, and the `dpiScale` will be `1`. Ideally, you would add layout properties like gaps or padding to your screen so that the theme can pass them in instead of calculating them yourself inside the screen.
-
-Similarly, screens have a `pixelScale` property. If you pass in values for `originalWidth` and `originalHeight`, the `pixelScale` will be calculated to provide a value that allows your content to be scaled up or down and still fit inside the current `actualWidth` and `actualHeight` bounds. Similarly, the default value is `1`, which provides no scaling.
-
-In both cases, `dpiScale` and `pixelScale` are simply numeric values. No actual scaling is done to your content. They're simply helpful values that you might consider using when laying out children.
+The [`Screen`](../api-reference/feathers/controls/Screen.html) component is meant to be a base class for custom screens to be displayed by [`StackScreenNavigator`](stack-screen-navigator.html) and [`ScreenNavigator`](screen-navigator). `Screen` is based on the [`LayoutGroup`](layout-group.html) component, and it provides optional layout.
 
 ## Hardware Key Handlers
 
 Some devices, such as Android phones and tablets, have hardware keys. These may include a back button, a search button, and a menu button. The `Screen` class provides a way to provide callbacks for when each of these keys is pressed. These are shortcuts to avoid needing to listen to the keyboard events manually and prevent the default behavior.
 
-Screen provides `backButtonHandler`, `menuButtonHandler`, and `searchButtonHandler`.
+Screen provides [`backButtonHandler`](../api-reference/feathers/controls/Screen.html#backButtonHandler), [`menuButtonHandler`](../api-reference/feathers/controls/Screen.html#menuButtonHandler), and [`searchButtonHandler`](../api-reference/feathers/controls/Screen.html#searchButtonHandler).
 
 ``` code
 this.backButtonHandler = function():void
@@ -36,11 +20,19 @@ this.backButtonHandler = function():void
 }
 ```
 
+## Screen ID
+
+The [`screenID`](../api-reference/feathers/controls/Screen.html#screenID) property refers to the string that the screen navigator uses to identify the current screen when calling functions like [`pushScreen()`](../api-reference/feathers/controls/StackScreenNavigator.html#pushScreen()) on a `StackScreenNavigator` or [`showScreen()`](../api-reference/feathers/controls/ScreenNavigator.html#showScreen()) on a `ScreenNavigator`.
+
+## Accessing the screen navigator
+
+The [`owner`](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `StackScreenNavigator` or `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling [`showScreen()`](../api-reference/feathers/controls/ScreenNavigator.html#showScreen()). You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
+
 ## Skinning a `Screen`
 
 For full details about what skin and style properties are available, see the [`Screen` API reference](../api-reference/feathers/controls/Screen.html).
 
-As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the Feathers `LayoutGroup` component](layout-group.html).
+<aside class="info">As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the Feathers `LayoutGroup` component](layout-group.html).</aside>
 
 ### Targeting a `Screen` in a theme
 

@@ -89,20 +89,20 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `Slider.DEFAULT_CHILD_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the `Slider.DEFAULT_CHILD_STYLE_NAME_THUMB` style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( Slider.DEFAULT_CHILD_NAME_THUMB, setSliderThumbStyles );
+    .setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_THUMB, setSliderThumbStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-slider.customThumbName = "custom-thumb";
+slider.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbName` like this:
+You can set the function for the `customThumbStyleName` like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -139,20 +139,20 @@ This section only explains how to access the minimum track sub-component. Please
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK` style name.
+If you're creating a [theme](themes.html), you can target the `Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK` style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK, setSliderMinimumTrackStyles );
+    .setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, setSliderMinimumTrackStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-slider.customMinimumTrackName = "custom-minimum-track";
+slider.customMinimumTrackStyleName = "custom-minimum-track";
 ```
 
-You can set the function for the `customMinimumTrackName` like this:
+You can set the function for the `customMinimumTrackStyleName` like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -187,7 +187,7 @@ In general, you should only pass properties to the slider's minimum track throug
 
 This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The slider's maximum track may be skinned similarly to the minimum track. The name to use with [themes](themes.html) is `DefaulterSlider_CHILD_NAME_MAXIMUM_TRACK` or you can customize the name with `customMaximumTrackName`. If you aren't using a theme, then you can use `maximumTrackFactory` and `maximumTrackProperties`.
+The slider's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is `DefaulterSlider_CHILD_STYLE_NAME_MAXIMUM_TRACK` or you can customize the style name with `customMaximumTrackStyleName`. If you aren't using a theme, then you can use `maximumTrackFactory` and `maximumTrackProperties`.
 
 ### No Thumb
 

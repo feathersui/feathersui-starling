@@ -5,26 +5,24 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `SimpleScrollBar` Component
 
-The `SimpleScrollBar` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along an invisible track in either a horizontal or a vertical direction. This component is designed to be used with subclasses of the `Scroller` class like the `ScrollContainer` and `List` components.
+The `SimpleScrollBar` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along an invisible track in either a horizontal or a vertical direction. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
 
-<aside class="info">Additionally, Feathers offers a `ScrollBar` component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
+<aside class="info">Additionally, Feathers offers a [`ScrollBar`](scroll-bar.html) component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
 
 ## The Basics
 
-You can use the `SimpleScrollBar` with a `Scroller` by instantiating it in the `horizontalScrollBarFactory` or the `verticalScrollBarFactory`.
+You can use the `SimpleScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the `horizontalScrollBarFactory` or the `verticalScrollBarFactory`.
 
 ``` code
 list.horizontalScrollBarFactory = function():IScrollBar
 {
-    var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-    scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-    return scrollBar;
+    return new SimpleScrollBar();
 }
 ```
 
-Make sure that you set the `direction` property to the appropriate value. However, the `Scroller` will handle setting properties like `minimum`, `maximum`, and `step`, and it will automatically listen for `Event.CHANGE` to know when the `value` property changes.
+The container will automatically handle setting properties like [`direction`](../api-reference/feathers/controls/ScrollBar.html#direction), [`minimum`](../api-reference/feathers/controls/ScrollBar.html#minimum), [`maximum`](../api-reference/feathers/controls/ScrollBar.html#maximum), and [`step`](../api-reference/feathers/controls/ScrollBar.html#step), and it will automatically listen for [`Event.CHANGE`](../api-reference/feathers/controls/ScrollBar.html#event:change) to know when the [`value`](../api-reference/feathers/controls/ScrollBar.html#value) property changes.
 
-If, for some reason, you want to use a `SimpleScrollBar` outside of a subclass of `Scroller`, the values like `minimum`, `maximum`, `step` and `value` that the `Scroller` normally handles work similarly to a `Slider` component.
+<aside class="info">If, for some reason, you want to use a `SimpleScrollBar` outside of a container, the values like `minimum`, `maximum`, `step` and `value` that are normally handled by the container work similarly to the same properties on a [`Slider`](slider.html) component.</aside>
 
 ## Skinning a `SimpleScrollBar`
 
@@ -61,20 +59,20 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ScrollBar.DEFAULT_CHILD_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the `ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB` style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_NAME_THUMB, setScrollBarThumbStyles );
+    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
-scrollBar.customThumbName = "custom-thumb";
+scrollBar.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbName` like this:
+You can set the function for the `customThumbStyleName` like this:
 
 ``` code
 getStyleProviderForClass( Button )

@@ -354,7 +354,7 @@ The third and fourth arguments are the x and y position of the view port. These 
 
 The fifth and sixth arguments are the final dimensions of the view port. They're equivalent to the `viewPortWidth` and `viewPortHeight` properties of the `LayoutBoundsResult` object returned by `layout()`. We don't need these values in this example, but other layouts may use them if items need to be resized based on the width and height of the view port.
 
-The seventh, and final, argument is an optional `flash.geom.Point` object where the `x` and `y` properties are equivalent, respectively, to `horizontalScrollPosition` and `verticalScrollPosition` values of a scrolling container.
+The seventh, and final, argument is an optional [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) object where the `x` and `y` properties are equivalent, respectively, to `horizontalScrollPosition` and `verticalScrollPosition` values of a scrolling container.
 
 If the result value isn't `null`, `getScrollPositionForIndex()` must use it as the return value. By passing in (and reusing) a pre-created `Point` object, Feathers can avoid unnecessary garbage collection. It is optional, though, so the layout is expected to create a new instance of `Point` if the argument is `null`.
 
