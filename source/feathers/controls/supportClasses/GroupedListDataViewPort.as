@@ -1256,6 +1256,13 @@ package feathers.controls.supportClasses
 			virtualLayout.typicalItem = DisplayObject(typicalItemRenderer);
 			this._typicalItemRenderer = typicalItemRenderer;
 			this._typicalItemIsInDataProvider = newTypicalItemIsInDataProvider;
+			if(this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
+			{
+				//we need to know if this item renderer resizes to adjust the
+				//layout because the layout may use this item renderer to resize
+				//the other item renderers
+				this._typicalItemRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
+			}
 		}
 
 		private function refreshItemRendererStyles():void
@@ -2678,6 +2685,10 @@ package feathers.controls.supportClasses
 		private function itemRenderer_resizeHandler(event:Event):void
 		{
 			if(this._ignoreRendererResizing)
+			{
+				return;
+			}
+			if(event.currentTarget === this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
 			{
 				return;
 			}

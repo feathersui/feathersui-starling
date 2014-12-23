@@ -738,6 +738,13 @@ package feathers.controls.supportClasses
 			virtualLayout.typicalItem = DisplayObject(typicalRenderer);
 			this._typicalItemRenderer = typicalRenderer;
 			this._typicalItemIsInDataProvider = newTypicalItemIsInDataProvider;
+			if(this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
+			{
+				//we need to know if this item renderer resizes to adjust the
+				//layout because the layout may use this item renderer to resize
+				//the other item renderers
+				this._typicalItemRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+			}
 		}
 
 		private function refreshItemRendererStyles():void
@@ -1178,6 +1185,10 @@ package feathers.controls.supportClasses
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
+			if(event.currentTarget === this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
+			{
+				return;
+			}
 			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
