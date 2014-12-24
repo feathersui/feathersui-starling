@@ -1661,17 +1661,8 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IValidating#validate()
-		 *
-		 * <p>Additionally, a Feathers component cannot validate until it
-		 * initializes. A component initializes after it has been added to the
-		 * stage. If the component has been added to its parent before the
-		 * parent has access to the stage, the component may not initialize
-		 * until after its parent's <code>Event.ADDED_TO_STAGE</code> has been
-		 * dispatched to all listeners.</p>
 		 * 
 		 * @see #invalidate()
-		 * @see #initialize()
-		 * @see #event:initialize feathers.events.FeathersEventType.INITIALIZE
 		 */
 		public function validate():void
 		{
