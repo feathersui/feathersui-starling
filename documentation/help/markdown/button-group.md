@@ -31,6 +31,8 @@ Like the [`List`](list.html) or [`TabBar`](tab-bar.html) components, the `Button
 
 A number of fields in each item from the collection are automatically detected by the button group. For instance, we set the `label` on each button above. Each of a button's icon states may also be used here, along with `isToggle` and `isSelected` to make them into toggling buttons.
 
+<aside class="info">For full details about which properties can be set on tabs, see the description of the [`dataProvider`](../api-reference/feathers/controls/TabBar.html#dataProvider) property.</aside>
+
 Additionally, we can add a few event listeners to each button, including `Event.TRIGGERED` and `Event.CHANGE` (using the `String` values, `triggered` and `change`). In the example above, we add a listener to `triggered`. The listener on the first item might look something like this:
 
 ``` code

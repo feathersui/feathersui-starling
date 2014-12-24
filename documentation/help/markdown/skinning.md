@@ -13,9 +13,9 @@ For practical reasons, Feathers components [don't have default skins](faq/defaul
 
 All skins and styles available on Feathers components are exposed as public properties. Styling a component is as simple as passing values to the appropriate setters.
 
-If you're using an example theme, you will also want to read [Extending Feathers Themes](extending-themes.html) to see how skins should be customized when using themes.
+If you're using an example theme, you will also want to read [Extending Feathers example themes](extending-themes.html) to see how skins should be customized when using themes.
 
-Let's look at a simple example of skinning a `Button` component:
+Let's look at a simple example of skinning a [`Button`](button.html) component:
 
 ``` code
 var button:Button = new Button();
@@ -25,13 +25,13 @@ button.downSkin = new Quad( 200, 60, 0x999999 );
 this.addChild( button );
 ```
 
-In the code above, we set the `defaultSkin` and `downSkin` properties to provide the button with background skins. In the button's up state, we see the `defaultSkin`, and when we press the button, we see the `downSkin`. The `Button` class has many more properties for styling things like the label's font, but let's keep things simple right now. For more details about styling buttons, take a look at [How to use the Feathers Button component](button.html).
+In the code above, we set the [`defaultSkin`](../api-reference/feathers/controls/Button.html#defaultSkin) and [`downSkin`](../api-reference/feathers/controls/Button.html#downSkin) properties to provide the button with background skins. In the button's up state, we see the `defaultSkin`, and when we press the button, we see the `downSkin`. The `Button` class has many more properties for styling things like the label's font, but let's keep things simple right now. For more details about styling buttons, take a look at [How to use the Feathers `Button` component](button.html).
 
 ## Skinning multiple components of the same type
 
 If you want more than one button to use the same skins, you might be looking for a way to avoid copy and pasting the same code over and over again. Feathers components support something called a *style provider* that is designed to set a component's skins after it initializes.
 
-Let's create one of the simplest style providers, called `FunctionStyleProvider`:
+Let's create one of the simplest style providers, called [`FunctionStyleProvider`](../api-reference/feathers/skins/FunctionStyleProvider.html):
 
 ``` code
 function skinButton( button:Button ):void
@@ -45,7 +45,7 @@ var customButtonStyles:FunctionStyleProvider = new FunctionStyleProvider( skinBu
 
 As you can see, we've created a function that we can call when we want to skin the component. The function takes one argument, a reference to the component that we want to skin. You can see that we set the same `defaultSkin` and `downSkin` properties as in the previous example. Simply pass the function to the `FunctionStyleProvider` constructor.
 
-Telling a component to use a style provider is as simple as passing it to the `styleProvider` property:
+Telling a component to use a style provider is as simple as passing it to the [`styleProvider`](../api-reference/feathers/core/FeathersControl.html#styleProvider) property:
 
 ``` code
 var button1:Button = new Button();
@@ -64,9 +64,9 @@ Now, we have two buttons, and they'll both use the same skins.
 
 ## Automatically skinning all components of the same type
 
-In the previous example, we created the `FunctionStyleProvider` as a local variable and simply set the `styleProvider` property on our two buttons. That will work well if you only create buttons in that one single function. However, apps usually consist of many functions across multiple classes, and buttons may be created in many different places. We want to be able to easily reuse a style provider anywhere in our app. To do this, we need to set a *global style provider*.
+In the previous example, we created the [`FunctionStyleProvider`](../api-reference/feathers/skins/FunctionStyleProvider.html) as a local variable and simply set the [`styleProvider`](../api-reference/feathers/core/FeathersControl.html#styleProvider) property on our two buttons. That will work well if you only create buttons in that one single function. However, apps usually consist of many functions across multiple classes, and buttons may be created in many different places. We want to be able to easily reuse a style provider anywhere in our app. To do this, we need to set a *global style provider*.
 
-Each component class (such as `Button`, `Slider`, or `List`) provides a static `globalStyleProvider` property. In the following example, we'll set the global style provider for all buttons:
+Each component class (such as [`Button`](button.html), [`Slider`](slider.html), or [`List`](list.html)) provides a static `globalStyleProvider` property. In the following example, we'll set the global style provider for all buttons:
 
 ``` code
 function skinButton( button:Button ):void
@@ -78,7 +78,7 @@ function skinButton( button:Button ):void
 Button.globalStyleProvider = new FunctionStyleProvider( skinButton );
 ```
 
-As you can see, we created the `FunctionStyleProvider` the same way we did it in the previous example. The main difference is that we passed it to the static `Button.globalStyleProvider` property.
+As you can see, we created the `FunctionStyleProvider` the same way we did it in the previous example. The main difference is that we passed it to the static [`Button.globalStyleProvider`](../api-reference/feathers/controls/Button.html#globalStyleProvider) property.
 
 Now, when we create our buttons, we don't need to set the `styleProvider` property at all:
 
@@ -128,7 +128,7 @@ Alternatively, instead of setting the `styleProvider` property to `null`, you co
 
 ### Minor changes to the global styles for an individual component
 
-If we're generally happy with the styles provided by the global style provider, but we want to make some minor tweaks for one instance of a component, we can wrap the existing style provider with an `AddOnFunctionStyleProvider`. This style provider allows to us call an extra function after the original style provider has applied its styles.
+If we're generally happy with the styles provided by the global style provider, but we want to make some minor tweaks for one instance of a component, we can wrap the existing style provider with an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html). This style provider allows to us call an extra function after the original style provider has applied its styles.
 
 Let's use an `AddOnFunctionStyleProvider` to add an icon to a `Button` component:
 
@@ -175,7 +175,7 @@ button2.y = 100;
 this.addChild( button2 );
 ```
 
-However, just like before, it would be better if we could use `Button.globalStyleProvider` so that we don't need to set the `styleProvider` property on every `Button` instance. Thankfully, `FunctionStyleProvider` isn't the only style provider available. There's another one called `StyleNameFunctionStyleProvider` that allows us to define multiple functions.
+However, just like before, it would be better if we could use `Button.globalStyleProvider` so that we don't need to set the `styleProvider` property on every `Button` instance. Thankfully, `FunctionStyleProvider` isn't the only style provider available. There's another one called [`StyleNameFunctionStyleProvider`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html) that allows us to define multiple functions.
 
 ``` code
 function skinNormalButton( button:Button ):void
@@ -195,9 +195,9 @@ buttonStyleProvider.setFunctionForStyleName( "warning-button", skinWarningButton
 Button.globalStyleProvider = buttonStyleProvider;
 ```
 
-As you can see, the default function to skin a `Button` will still be the same `skinNormalButton()` function. However, we've called `setFunctionForStyleName()` to pass in our `skinWarningButton()` function, and we associated this function with the "warning-button" *style name*.
+As you can see, the default function to skin a `Button` will still be the same `skinNormalButton()` function. However, we've called [`setFunctionForStyleName()`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html#setFunctionForStyleName()) to pass in our `skinWarningButton()` function, and we associated this function with the "warning-button" *style name*.
 
-A style name is a string that allows us to differentiate different types of the same component. We can add a style name to any component with the `styleNameList` property:
+A style name is a string that allows us to differentiate different types of the same component. We can add a style name to any component with the [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) property:
 
 ``` code
 var button1:Button = new Button();
@@ -219,9 +219,9 @@ Tip: To avoid making simple mistakes that the compiler can easily catch for you,
 
 Style providers are the basic building blocks of *[themes](themes.html)*, which allow you combine all of your global styling code into one class. Typically, a theme is instantiated when your app first starts up.
 
-The example themes included with Feathers define functions for skinning components, exactly like those that we worked with in the code examples above. The example themes create a `StyleNameFunctionStyleProvider` for each component class, and these are used as global style providers. Some functions are passed into the `defaultStyleFunction` property of the `StyleNameFunctionStyleProvider` to provide default styles when a component doesn't have any style names. Other functions get passed to the `setFunctionForStyleName()` method to be associated with style names.
+The example themes included with Feathers define functions for skinning components, exactly like those that we worked with in the code examples above. The example themes create a [`StyleNameFunctionStyleProvider`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html) for each component class, and these are used as global style providers. Some functions are passed into the [`defaultStyleFunction`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html#defaultStyleFunction) property of the `StyleNameFunctionStyleProvider` to provide default styles when a component doesn't have any style names. Other functions get passed to the [`setFunctionForStyleName()`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html#setFunctionForStyleName()) method to be associated with style names.
 
-For more information about how themes use style providers, see [Extending Feathers 2.0 themes](extending-themes.html).
+For more information about how themes use style providers, see [Extending Feathers examples themes](extending-themes.html).
 
 ## Glossary
 
@@ -237,7 +237,7 @@ For more information about how themes use style providers, see [Extending Feathe
 
 -   [Introduction to Feathers Themes](themes.html)
 
--   [Extending Feathers 2.0 Themes](extending-themes.html)
+-   [Extending Feathers example themes](extending-themes.html)
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

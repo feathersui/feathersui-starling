@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Slider` component
 
-The `Slider` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction.
+The [`Slider`](../api-reference/feathers/controls/Slider.html) component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction.
 
 ## The Basics
 
@@ -19,16 +19,16 @@ slider.value = 50;
 this.addChild( slider );
 ```
 
-The `value` property indicates the current value of the slider, while the `minimum` and `maximum` properties establish a range of possible values. We can further control the slider's behavior with a couple more useful properties:
+The [`value`](../api-reference/feathers/controls/Slider.html#value) property indicates the current value of the slider, while the [`minimum`](../api-reference/feathers/controls/Slider.html#minimum) and [`maximum`](../api-reference/feathers/controls/Slider.html#maximum) properties establish a range of possible values. We can further control the slider's behavior with a couple more useful properties:
 
 ``` code
 slider.step = 1;
 slider.page = 10;
 ```
 
-The `step` property controls how the slider's value is rounded as it is dragged. If we set the slider's `step` to `1`, as we do above, the slider will be dragged along whole numbers only and it cannot have a value like `4.5`. The `page` value comes into play when you touch the slider's track. The value will be incremented or decremented repeatedly until the touch on the track ends. Typically, the `page` is larger than the `step`.
+The [`step`](../api-reference/feathers/controls/Slider.html#step) property controls how the slider's value is rounded as it is dragged. If we set the slider's `step` to `1`, as we do above, the slider will be dragged along whole numbers only and it cannot have a value like `4.5`. The [`page`](../api-reference/feathers/controls/Slider.html#page) value comes into play when you touch the slider's track. The value will be incremented or decremented repeatedly until the touch on the track ends. Typically, the `page` is larger than the `step`.
 
-Add a listener to the `Event.CHANGE` event to know when the `value` property changes:
+Add a listener to the [`Event.CHANGE`](../api-reference/feathers/controls/Slider.html#event:change) event to know when the `value` property changes:
 
 ``` code
 slider.addEventListener( Event.CHANGE, slider_changeHandler );
@@ -50,9 +50,9 @@ The skins for a `Slider` control are divided into the thumb and one or two track
 
 ### Track(s) and Layout
 
-The slider's track is made from either one or two buttons, depending on the value of the `trackLayoutMode` property. The default value of this property is `Slider.TRACK_LAYOUT_MODE_SINGLE`, which creates a single track that fills the entire width or height of the slider (depending on the slider's direction).
+The slider's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/Slider.html#trackLayoutMode) property. The default value of this property is [`Slider.TRACK_LAYOUT_MODE_SINGLE`](../api-reference/feathers/controls/Slider.html#TRACK_LAYOUT_MODE_SINGLE), which creates a single track that fills the entire width or height of the slider (depending on the slider's direction).
 
-If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to `Slider.TRACK_LAYOUT_MODE_MIN_MAX`. In this mode, the width or height of each track (depending on the direction of the slider's ) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`Slider.TRACK_LAYOUT_MODE_MIN_MAX`](../api-reference/feathers/controls/Slider.html#TRACK_LAYOUT_MODE_MIN_MAX). In this mode, the width or height of each track (depending on the direction of the slider) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
 `Slider.TRACK_LAYOUT_MODE_SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `Slider.TRACK_LAYOUT_MODE_MIN_MAX` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
 
@@ -89,7 +89,7 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `Slider.DEFAULT_CHILD_STYLE_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the [`Slider.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
 ``` code
 getStyleProviderForClass( Button )
@@ -102,7 +102,7 @@ You can override the default style name to use a different one in your theme, if
 slider.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbStyleName` like this:
+You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/Slider.html#customThumbStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -111,7 +111,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `thumbFactory` to provide skins for the slider's thumb:
+If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/Slider.html#thumbFactory) to provide skins for the slider's thumb:
 
 ``` code
 slider.thumbFactory = function():Button
@@ -124,7 +124,7 @@ slider.thumbFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `thumbFactory`, you may use the `thumbProperties` to pass skins to the thumb.
+Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/Slider.html#thumbProperties) to pass skins to the thumb.
 
 ``` code
 slider.thumbProperties.defaultSkin = new Image( upTexture );
@@ -139,7 +139,7 @@ This section only explains how to access the minimum track sub-component. Please
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK` style name.
+If you're creating a [theme](themes.html), you can target the [`Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK) style name.
 
 ``` code
 getStyleProviderForClass( Button )
@@ -152,7 +152,7 @@ You can override the default style name to use a different one in your theme, if
 slider.customMinimumTrackStyleName = "custom-minimum-track";
 ```
 
-You can set the function for the `customMinimumTrackStyleName` like this:
+You can set the function for the [`customMinimumTrackStyleName`](../api-reference/feathers/controls/Slider.html#customMinimumTrackStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -161,7 +161,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `minimumTrackFactory` to provide skins for the slider's minimum track:
+If you are not using a theme, you can use [`minimumTrackFactory`](../api-reference/feathers/controls/Slider.html#minimumTrackFactory) to provide skins for the slider's minimum track:
 
 ``` code
 slider.minimumTrackFactory = function():Button
@@ -174,7 +174,7 @@ slider.minimumTrackFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `minimumTrackFactory`, you may use the `minimumTrackProperties` to pass skins to the minimum track.
+Alternatively, or in addition to the `minimumTrackFactory`, you may use the [`minimumTrackProperties`](../api-reference/feathers/controls/Slider.html#minimumTrackProperties) to pass skins to the minimum track.
 
 ``` code
 slider.minimumTrackProperties.defaultSkin = new Image( upTexture );
@@ -187,11 +187,11 @@ In general, you should only pass properties to the slider's minimum track throug
 
 This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The slider's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is `DefaulterSlider_CHILD_STYLE_NAME_MAXIMUM_TRACK` or you can customize the style name with `customMaximumTrackStyleName`. If you aren't using a theme, then you can use `maximumTrackFactory` and `maximumTrackProperties`.
+The slider's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is [`Slider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK) or you can customize the style name with [`customMaximumTrackStyleName`](../api-reference/feathers/controls/Slider.html#customMaximumTrackStyleName). If you aren't using a theme, then you can use [`maximumTrackFactory`](../api-reference/feathers/controls/Slider.html#maximumTrackFactory) and [`maximumTrackProperties`](../api-reference/feathers/controls/Slider.html#maximumTrackProperties).
 
 ### No Thumb
 
-A slider also provides a `showThumb` property. If set to `false`, the thumb will be hidden, and the track will become draggable instead. Combine this with a minimum and a maximum track to have a slider that "fills" with a color as the value increases.
+A slider also provides a [`showThumb`](../api-reference/feathers/controls/Slider.html#showThumb) property. If set to `false`, the thumb will be hidden, and the track will become draggable instead. Combine this with a minimum and a maximum track to have a slider that "fills" with a color as the value increases.
 
 ## Related Links
 
