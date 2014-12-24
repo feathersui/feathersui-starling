@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ToggleSwitch` component
 
-The `ToggleSwitch` component switches between on and off states. It can be considered a stylized alternative to a [Check](check.html) control that is especially relevant when targeting touch screens. The thumb may be dragged from side to side, or it may be tapped to change selection.
+The [`ToggleSwitch`](../api-reference/feathers/controls/ToggleSwitch.html) component switches between on and off states. It can be considered a stylized alternative to a [`Check`](check.html) control that is especially relevant when targeting touch screens. The thumb may be dragged from side to side, or it may be tapped to change selection.
 
 ## The Basics
 
@@ -17,7 +17,7 @@ toggle.isSelected = true;
 this.addChild( toggle );
 ```
 
-The `isSelected` property indicates if the toggle switch is on (`true`) or off (`false`). Add a listener to the `Event.CHANGE` event to know when the `isSelected` property changes:
+The [`isSelected`](../api-reference/feathers/controls/ToggleSwitch.html#isSelected) property indicates if the toggle switch is on (`true`) or off (`false`). Add a listener to [`Event.CHANGE`](../api-reference/feathers/controls/ToggleSwitch.html#event:change) to know when the `isSelected` property changes:
 
 ``` code
 toggle.addEventListener( Event.CHANGE, toggle_changeHandler );
@@ -83,7 +83,7 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
 ``` code
 getStyleProviderForClass( Button )
@@ -96,7 +96,7 @@ You can override the default style name to use a different one in your theme, if
 toggle.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbStyleName` like this:
+You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customThumbStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -105,7 +105,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `thumbFactory` to provide skins for the toggle switch's thumb:
+If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/ToggleSwitch.html#thumbFactory) to provide skins for the toggle switch's thumb:
 
 ``` code
 toggle.thumbFactory = function():Button
@@ -118,7 +118,7 @@ toggle.thumbFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `thumbFactory`, you may use the `thumbProperties` to pass skins to the thumb.
+Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/ToggleSwitch.html#thumbProperties) to pass skins to the thumb.
 
 ``` code
 toggle.thumbProperties.defaultSkin = new Image( upTexture );
@@ -129,9 +129,9 @@ In general, you should only skins to the toggle switch's thumb through `thumbPro
 
 ### Track(s) and Layout
 
-The toggle switch's track is made from either one or two buttons, depending on the value of the `trackLayoutMode` property. The default value of this property is `ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`, which creates a single track that fills the entire width and height of the toggle switch.
+The toggle switch's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ToggleSwitch.html#trackLayoutMode) property. The default value of this property is [`ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`](../api-reference/feathers/controls/ToggleSwitch.html#TRACK_LAYOUT_MODE_SINGLE), which creates a single track that fills the entire width and height of the toggle switch.
 
-If we'd like to have separate buttons for both sides of the track (one for the on side and another for the off side), we can set `trackLayoutMode` to `ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`. In this mode, the width or height of each track (depending on the direction of the toggle switch) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+If we'd like to have separate buttons for both sides of the track (one for the on side and another for the off side), we can set `trackLayoutMode` to [`ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`](../api-reference/feathers/controls/ToggleSwitch.html#TRACK_LAYOUT_MODE_ON_OFF). In this mode, the width or height of each track (depending on the direction of the toggle switch) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
 `ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
 
@@ -143,7 +143,7 @@ This section only explains how to access the on track sub-component. Please read
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK` style name.
+If you're creating a [theme](themes.html), you can target the [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_ON_TRACK) style name.
 
 ``` code
 getStyleProviderForClass( Button )
@@ -156,7 +156,7 @@ You can override the default style name to use a different one in your theme, if
 toggle.customOnTrackStyleName = "custom-on-track";
 ```
 
-You can set the function for the `customOnTrackStyleName` like this:
+You can set the function for the [`customOnTrackStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customOnTrackStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -165,7 +165,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `onTrackFactory` to provide skins for the toggle switch's on track:
+If you are not using a theme, you can use [`onTrackFactory`](../api-reference/feathers/controls/ToggleSwitch.html#onTrackFactory) to provide skins for the toggle switch's on track:
 
 ``` code
 toggle.onTrackFactory = function():Button
@@ -178,7 +178,7 @@ toggle.onTrackFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `onTrackFactory`, you may use the `onTrackProperties` to pass skins to the on track.
+Alternatively, or in addition to the `onTrackFactory`, you may use the [`onTrackProperties`](../api-reference/feathers/controls/ToggleSwitch.html#onTrackProperties) to pass skins to the on track.
 
 ``` code
 toggle.onTrackProperties.defaultSkin = new Image( upTexture );
@@ -191,7 +191,7 @@ In general, you should only pass properties to the toggle switch's on track thro
 
 This section only explains how to access the off track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The toggle switch's off track may be skinned similarly to the on track. The style name to use with [themes](themes.html) is `ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK` or you can customize the style name with `customOffTrackStyleName`. If you aren't using a theme, then you can use `offTrackFactory` and `offTrackProperties`.
+The toggle switch's off track may be skinned similarly to the on track. The style name to use with [themes](themes.html) is [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_OFF_TRACK) or you can customize the style name with [`customOffTrackStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customOffTrackStyleName). If you aren't using a theme, then you can use [`offTrackFactory`](../api-reference/feathers/controls/ToggleSwitch.html#offTrackFactory) and [`offTrackProperties`](../api-reference/feathers/controls/ToggleSwitch.html#offTrackProperties).
 
 ## Related Links
 
