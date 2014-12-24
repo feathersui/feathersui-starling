@@ -1,5 +1,5 @@
 ---
-title: How to prevent a List from scrolling when a child of a custom item renderer is touched 
+title: How to prevent a List from scrolling when a child of a custom item renderer is touched  
 author: Josh Tynjala
 
 ---

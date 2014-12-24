@@ -1,5 +1,5 @@
 ---
-title: How to save the state of a screen in a ScreenNavigator and restore it later 
+title: How to save the state of a screen in a ScreenNavigator and restore it later  
 author: Josh Tynjala
 
 ---
