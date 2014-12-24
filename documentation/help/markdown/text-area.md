@@ -5,23 +5,30 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `TextArea` Component
 
-The `TextArea` class supports the editing of multiline, uniformly-formatted text.
+The [`TextArea`](../api-reference/feathers/controls/TextArea.html) class supports the editing of multiline, uniformly-formatted text.
 
-`TextArea` is designed specifically for desktop apps, and it is *not* recommended for use in mobile touchscreen apps. Instead, on mobile, you should use a `TextInput` component with a `StageTextTextEditor` with its `multiline` property set to `true`. The underlying `StageText` will provide its own native scroll bar.
+<aside class="info">`TextArea` is designed specifically for desktop apps, and it is *not* recommended for use in mobile touchscreen apps. Instead, on mobile, you should use a [`TextInput`](text-input.html) component with a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html) with its [`multiline`](../api-reference/feathers/controls/text/StageTextTextEditor.html#multiline) property set to `true`. The underlying `StageText` will provide its own native scroll bar.</aside>
 
 ## The Basics
 
-First, let's create a `TextArea` control, give it some text to display, and add it to the display list:
+First, let's create a `TextArea` control and add it to the display list:
 
 ``` code
 var textArea:TextArea = new TextArea();
-textArea.text = "Hello\nWorld";
 this.addChild( textArea );
+```
+
+### Changing text programmatically
+
+Text may be changed programatically by setting the [`text`](../api-reference/feathers/controls/TextArea.html#text) property:
+
+``` code
+textArea.text = "Hello\nWorld";
 ```
 
 ### Focus and Selection
 
-You may programmatically set focus to the text area:
+You may programmatically set focus to the text area by calling [`setFocus()`](../api-reference/feathers/controls/TextArea.html#setFocus()):
 
 ``` code
 textArea.setFocus();
@@ -33,7 +40,7 @@ You can select part of the text too:
 textArea.selectRange(0, textArea.text.length);
 ```
 
-If you simply want to set the position of the cursor, you can omit the second argument to `selectRange()`:
+If you simply want to set the position of the cursor, you can omit the second argument to [`selectRange()`](../api-reference/feathers/controls/TextArea.html#selectRange()):
 
 ``` code
 textArea.selectRange(0);
@@ -41,11 +48,13 @@ textArea.selectRange(0);
 
 ### Events
 
-Text areas provide some useful events. One of the most common requirements is knowing, in real time, when the value of the `text` property has changed:
+Text areas provide some useful events. One of the most common requirements is knowing, in real time, when the value of the [`text`](../api-reference/feathers/controls/TextArea.html#text) property has changed:
 
 ``` code
 textArea.addEventListener( Event.CHANGE, textArea_changeHandler );
 ```
+
+We can listen for [`Event.CHANGE`](../api-reference/feathers/controls/TextArea.html#event:change).
 
 You might also want to know when the text area receives and loses focus:
 
@@ -54,23 +63,25 @@ textArea.addEventListener( FeathersEventType.FOCUS_IN, textArea_focusInHandler )
 textArea.addEventListener( FeathersEventType.FOCUS_OUT, textArea_focusOutHandler );
 ```
 
+The [`FeathersEventType.FOCUS_IN`](../api-reference/feathers/controls/TextArea.html#event:focusIn) and [`FeathersEventType.FOCUS_OUT`](../api-reference/feathers/controls/TextArea.html#event:focusOut) events are specially dispatched by the `TextArea`, even if the [focus manager](focus.html) is not enabled.
+
 ## Customizing Input Behavior
 
 Several properties allow you to customize a text area's behavior.
 
-Set the `isEditable` property to false to make the text uneditable, without giving the text area a disabled appearance:
+Set the [`isEditable`](../api-reference/feathers/controls/TextArea.html#isEditable) property to false to make the text uneditable, without giving the text area a disabled appearance:
 
 ``` code
 textArea.isEditable = false;
 ```
 
-To limit the number of characters that may be entered, use the `maxChars` property:
+To limit the number of characters that may be entered, use the [`maxChars`](../api-reference/feathers/controls/TextArea.html#maxChars) property:
 
 ``` code
 textArea.maxChars = 16;
 ```
 
-The `restrict` property limits the set of characters that can be entered into the text area. It works like the `restrict` property on `flash.text.TextField`.
+The [`restrict`](../api-reference/feathers/controls/TextArea.html#restrict) property limits the set of characters that can be entered into the text area. It works like the `restrict` property on `flash.text.TextField`.
 
 ``` code
 textArea.restrict = "0-9";
@@ -86,11 +97,11 @@ A text area provides a number of properties to customize its appearance. For ful
 
 The font styles of a text area may be changed through the [text editor view port](text-editors.html). Each text editor displays fonts differently and has different properties, so the way to make changes to the font styles depends on each text editor.
 
-Currently, Feathers comes with only one text editor view port, `TextFieldTextEditorViewPort`, but it's possible to create custom implementations to replace it.
+Currently, Feathers comes with only one text editor view port, [`TextFieldTextEditorViewPort`](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html), but it's possible to create custom implementations to replace it.
 
-`TextFieldTextEditorViewPort` places a `flash.text.TextField` with its `type` set to `TextFieldType.INPUT` on the native stage. This text editor accepts a `flash.text.TextFormat` object to pass to the `TextField` to style the text.
+`TextFieldTextEditorViewPort` places a [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) with its [`type`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#type) property set to [`TextFieldType.INPUT`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFieldType.html#INPUT) on the native stage. This text editor accepts a [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) object to pass to the `TextField` to style the text.
 
-The text editor may be styled using the `textEditorFactory`:
+The text editor may be styled using the [`textEditorFactory`](../api-reference/feathers/controls/TextArea.html#textEditorFactory):
 
 ``` code
 textArea.textEditorFactory = function():ITextEditorViewPOrt
@@ -101,7 +112,7 @@ textArea.textEditorFactory = function():ITextEditorViewPOrt
 }
 ```
 
-You may also pass properties to the text editor through `textEditorProperties`:
+You may also pass properties to the text editor through [`textEditorProperties`](../api-reference/feathers/controls/TextArea.html#textEditorProperties):
 
 ``` code
 textArea.textEditorProperties.textFormat = new TextFormat( "_sans", 12, 0x333333 );
@@ -119,7 +130,7 @@ textArea.backgroundDisabledSkin = new Scale9Image( disabledBackgroundSkinTexture
 textArea.backgroundFocusedSkin = new Scale9Image( focusedBackgroundSkinTextures );
 ```
 
-The default background skin is displayed when the text area doesn't have focus and is enabled. The disabled background skin is displayed when the text area is not enabled, but if you don't provide a disabled background skin, the default background skin will be used. Similarly, the focused background skin is displayed when the text area has focus. Again, text area will fall back to the default background skin if there is no focused background skin.
+The default [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) is displayed when the text area doesn't have focus and is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgrounDisabledSkin) is displayed when the text area is not enabled, but if you don't provide a disabled background skin, the default background skin will be used. Similarly, the [`backgroundFocusedSkin`](../api-reference/feathers/controls/TextArea.html#backgroundFocusedSkin) is displayed when the text area has focus. Again, text area will fall back to the default background skin if there is no focused background skin.
 
 You can change the padding values on each side:
 
@@ -163,7 +174,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR` style name for the horizontal scroll bar and the `Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR` style name for the vertical scroll bar.
+If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
 ``` code
 getStyleProviderForClass( ScrollBar )
@@ -179,7 +190,7 @@ textArea.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 textArea.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
-You can set the funciton for the `customHorizontalScrollBarStyleName` and the `customVerticalScrollBarStyleName` like this:
+You can set the funciton for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
 ``` code
 getStyleProviderForClass( ScrollBar )
@@ -190,7 +201,7 @@ getStyleProviderForClass( ScrollBar )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `horizontalScrollBarFactory` and `verticalScrollBarFactory` to provide skins for the text area's scroll bars:
+If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the text area's scroll bars:
 
 ``` code
 textArea.horizontalScrollBarFactory = function():ScrollBar
@@ -203,7 +214,7 @@ textArea.horizontalScrollBarFactory = function():ScrollBar
 }
 ```
 
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the `horizontalScrollBarProperties` and the `verticalScrollBarProperties` to pass skins to the scroll bars.
+Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
 
 ``` code
 textArea.horizontalScrollBarProperties.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;

@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `TiledImage` display object
 
-The `TiledImage` class repeats a texture in a given region, horizontally and vertically. If the dimensions of the tiled image aren't a perfect multiple of the dimensions of the texture, the edges will be clipped.
+The [`TiledImage`](../api-reference/feathers/display/TiledImage.html) class repeats a texture in a given region, horizontally and vertically. If the dimensions of the tiled image aren't a perfect multiple of the dimensions of the texture, the edges will be clipped.
 
 A tiled image may use any Starling texture, including sub-textures from [texture atlases](http://wiki.starling-framework.org/manual/textures_and_images#texture_atlases).
 

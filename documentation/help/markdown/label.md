@@ -23,7 +23,7 @@ For full details about what skin and style properties are available, see the [`L
 
 ### Styling the Text Renderer
 
-This section explains how to customize the text renderer sub-component. Feathers provides multiple text renderers to choose from, and each one will have different properties that may be set to customize font styles and other capabilities. For more information about text renderers, including which ones are available, please read [Introduction to Feathers Text Renderers](text-renderers.html).
+This section explains how to customize the [text renderer](text-renderers.html) sub-component. Feathers provides multiple text renderers to choose from, and each one will have different properties that may be set to customize font styles and other capabilities. For more information about text renderers, including which ones are available, please read [Introduction to Feathers Text Renderers](text-renderers.html).
 
 If you are not using a theme, you can use [`textRendererFactory`](../api-reference/feathers/controls/Label.html#textRendererFactory) to provide styles for the label's text renderer:
 
