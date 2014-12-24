@@ -1,5 +1,5 @@
 ---
-title: How to select (or deselect) a custom item renderer on tap or click 
+title: How to select (or deselect) a custom item renderer on tap or click  
 author: Josh Tynjala
 
 ---

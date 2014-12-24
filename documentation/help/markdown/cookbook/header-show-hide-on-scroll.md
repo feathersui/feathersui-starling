@@ -1,5 +1,5 @@
 ---
-title: How to show or hide a header when scrolling a list or container 
+title: How to show or hide a header when scrolling a list or container  
 author: Josh Tynjala
 
 ---

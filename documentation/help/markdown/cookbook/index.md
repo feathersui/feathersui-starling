@@ -1,5 +1,5 @@
 ---
-title: Feathers Cookbook 
+title: Feathers Cookbook  
 author: Josh Tynjala
 
 ---

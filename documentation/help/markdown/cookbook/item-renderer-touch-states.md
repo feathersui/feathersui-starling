@@ -1,5 +1,5 @@
 ---
-title: How to support multiple touch states in a custom item renderer 
+title: How to support multiple touch states in a custom item renderer  
 author: Josh Tynjala
 
 ---

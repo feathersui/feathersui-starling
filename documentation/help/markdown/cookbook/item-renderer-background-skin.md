@@ -1,5 +1,5 @@
 ---
-title: How to add a background skin to a custom item renderer based on FeathersControl and IListItemRenderer 
+title: How to add a background skin to a custom item renderer based on FeathersControl and IListItemRenderer  
 author: Josh Tynjala
 
 ---

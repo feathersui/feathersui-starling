@@ -1,5 +1,5 @@
 ---
-title: How to dispatch a long press event from a custom item renderer 
+title: How to dispatch a long press event from a custom item renderer  
 author: Josh Tynjala
 
 ---
