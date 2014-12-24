@@ -29,9 +29,6 @@ package feathers.core
 		 * properties are changed until until the last possible moment the
 		 * display object is rendered. This allows multiple properties to be
 		 * changed at a time without requiring a full update every time.
-		 *
-		 * <p>A display object cannot validate if it does not have access to the
-		 * stage.</p>
 		 */
 		function validate():void;
 	}
