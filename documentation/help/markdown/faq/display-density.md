@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Why do the Feathers component skins and font sizes appear very small?
 
-The Feathers themes that are included as examples scale the skins, fonts, and other assets based on the device's display density (also known as DPI or PPI) to ensure that the components and text display at the same physical size (as in inches or centimeters) on different devices. This value is reported by the Flash runtimes as `Capabilities.screenDPI`. Some IDEs don't seem to inform ADL (AIR Debug Launcher) that a specific device needs a custom display density value to be simulated properly. The instructions below should help you fix this issue in many IDEs.
+The Feathers themes that are included as examples scale the skins, fonts, and other assets based on the device's display density (also known as DPI or PPI) to ensure that the components and text display at the same physical size (as in inches or centimeters) on different devices. This value is reported by the Flash runtimes as [`Capabilities.screenDPI`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/system/Capabilities.html#screenDPI). Some IDEs don't seem to inform ADL (AIR Debug Launcher) that a specific device needs a custom display density value to be simulated properly. The instructions below should help you fix this issue in many IDEs.
 
 Some sources have reported that the `Capabilities.screenDPI` value reported by Adobe AIR is not accurate for some mobile devices. Adobe AIR is providing the same screen density value that is used by native apps. In these cases, the manufacturer has chosen to report an incorrect value on purpose. It is best to respect the manufacturer's choice, in these rare cases.
 
@@ -46,6 +46,6 @@ The Wikipedia article [List of displays by pixel density](http://en.wikipedia.or
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
+This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
 
 

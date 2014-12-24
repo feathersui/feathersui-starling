@@ -31,7 +31,7 @@ There are a number of places where you can get help with Feathers issues or to a
 
 -   Bookmark the [Feathers API Reference](../api-reference/) for easy access to all of the classes, properties, methods, and events that Feathers components offer.
 
--   Study the [Frequently Asked Questions (FAQ)](faq.html). Feathers makes some default choices that aren't necessarily intuitive because they improve performance significantly. For beginners, the FAQ will answer a number of common questions.
+-   Study the [Frequently Asked Questions (FAQ)](faq/index.html). Feathers makes some default choices that aren't necessarily intuitive because they improve performance significantly. For beginners, the FAQ will answer a number of common questions.
 
 -   Ask for help at [Feathers in the Starling Forum](http://forum.starling-framework.org/forum/feathers). Many of the community's experts (including Josh Tynjala, the main author behind Feathers) visit frequently to answer questions. Be sure to try a couple of searches to see if someone else has had the same issue -- maybe your questions have been answered already! If not, then feel free to start a new thread.
 

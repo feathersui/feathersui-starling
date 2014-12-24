@@ -9,7 +9,7 @@ If you haven't set the `width` and `height` explicitly, a Feathers component wil
 
 A Feathers component will *invalidate* when you change one of its properties. The change you made to the property will be queued up to be processed immediately before Starling renders the next frame. During this time, you can change any number of other properties, and all of the changes will be processed in one batch in time to display them to the user. This can help to improve performance quite a bit.
 
-If you can't wait until the next frame, and you need to the component to measure itself immediately and process any other property changes, you can call the `validate()` function yourself:
+If you can't wait until the next frame, and you need to the component to measure itself immediately and process any other property changes, you can call the [`validate()`](../../api-reference/feathers/core/FeathersControl.html#validate()) function yourself:
 
 ``` code
 label.text = "hello";
@@ -24,6 +24,6 @@ A component must be on the display list for `validate()` to work. A call to `val
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
+This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
 
 

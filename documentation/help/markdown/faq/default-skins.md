@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 In other words, why themes? Well, ideally, I'd love to provide a basic set of skins for all components that get applied automatically. These skins would have configurable styles, like colors, gradients, corner radiuses, padding, and all that useful stuff. The sort of thing a lot of developers love about the styleable skins provided in Flex 2-3. Decent for anything that doesn't need a skin created by a professional designer, but easy enough to customize that a developer can differentiate the look of his or her app a little bit, if needed.
 
-However, that sort of flexibility provided by the classic Flash software-based vector renderer is not really available on a GPU. The GPU is heavily optimized for drawing triangles with textures. A textured quad like `starling.display.Image` is an ideal Starling display object to use as a skin. However, it's rather static in nature and modifying bitmaps at runtime to customize individual controls is a rather expensive task. It would involve creating separate textures (which can hurt performance), but a texture atlas is always recommended. You can draw vectors to bitmaps and generate texture atlases at runtime, but setting up an easy system that everyone will want to use (and can pick up easily) is something that I, personally, don't know how to do right now.
+However, that sort of flexibility provided by the classic Flash software-based vector renderer is not really available on a GPU. The GPU is heavily optimized for drawing triangles with textures. A textured quad like [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) is an ideal Starling display object to use as a skin. However, it's rather static in nature and modifying bitmaps at runtime to customize individual controls is a rather expensive task. It would involve creating separate textures (which can hurt performance), but a texture atlas is always recommended. You can draw vectors to bitmaps and generate texture atlases at runtime, but setting up an easy system that everyone will want to use (and can pick up easily) is something that I, personally, don't know how to do right now.
 
 If we're sticking to bitmaps, a "default" skin on every component will offer little to no customization. Most likely, it would bulk up every Feathers application with extra code and embedded assets because it would be difficult to separate this default skin from the rest of Feathers. Not necessarily impossible, but more effort than simply copying some classes into your project (like you probably already do with many libraries) and adding a single line of code to instantiate a theme.
 
@@ -19,6 +19,6 @@ Of course, if you don't like the idea of themes at all, feel free to skin your c
 
 ------------------------------------------------------------------------
 
-This is a detailed response to a [Frequently Asked Question](../faq.html) about [Feathers](../index.html).
+This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
 
 
