@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to select (or deselect) a custom item renderer on tap or click
 
-The example [custom item renderers](../item-renderers.html) have an `isSelected` property, but they don't offer any way to change it. This is because some item renderers may support a variety of interactions to select, such as a long-press, a swipe, or a tap/click. Since it's the simplest interaction, let's take a look at how to select a custom item renderer on tap or click.
+The example [custom item renderers](../item-renderers.html) have an [`isSelected`](../../api-reference/feathers/controls/renderers/IToggle.html#isSelected) property, but they don't offer any way to change it. This is because some item renderers may support a variety of interactions to select, such as a long-press, a swipe, or a tap/click. Since it's the simplest interaction, let's take a look at how to select a custom item renderer on tap or click.
 
 First, let's make sure that we're only tracking a single touch ID:
 
@@ -15,7 +15,7 @@ protected var touchID:int = -1;
 
 There's no reason to track more than one touch here, so if a touch begins, we'll ignore other touches that begin before the original touch ends.
 
-Inside our constructor, or in the component's `initialize()` function, we can listen for `TouchEvent.TOUCH`:
+Inside our constructor, or in the component's `initialize()` function, we can listen for [`TouchEvent.TOUCH`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:touch):
 
 ``` code
 override protected function initialize():void
@@ -84,9 +84,9 @@ private function touchHandler( event:TouchEvent ):void
 
 It's a little complicated, but it will ensure that we are only tracking a single touch ID at a time. In multi-touch environments, this is essential.
 
-The key part is the line with the `isInBounds` local variable. What we're doing there with the call to `contains()` and `hitTest()` is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
+The key part is the line with the `isInBounds` local variable. What we're doing there with the call to [`contains()`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#contains()) and [`hitTest()`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#hitTest()) is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer, and 2) nothing else on the display list has moved above the item renderer to block the touch.
 
-Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
+Also, you may have seen the `HELPER_POINT` object we passed to [`getLocation()`](http://doc.starling-framework.org/core/starling/events/Touch.html#getLocation()) We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
 
 ``` code
 private static const HELPER_POINT:Point = new Point();
@@ -94,13 +94,13 @@ private static const HELPER_POINT:Point = new Point();
 
 It's static to avoid creating a different `Point` object for every item renderer. We simply need to ensure that multiple item renderers won't be modifying it at the same time. Since the item renderer isn't dispatching any events between the call to `getLocation()` and the call to `hitTest()`, we know that only one item renderer may be using `HELPER_POINT` at any given time.
 
-Finally, add a listener for `Event.REMOVED_FROM_STAGE` inside the constructor or in the `initialize()` function:
+Finally, add a listener for [`Event.REMOVED_FROM_STAGE`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:removedFromStage) inside the constructor or in the `initialize()` function:
 
 ``` code
 this.addEventListener( Event.REMOVED_FROM_STAGE, removedFromStageHandler );
 ```
 
-The listener will clear the `touchID` to `-1` just we did in `TouchPhase.ENDED`:
+The listener will clear the `touchID` to `-1` just like we did in `TouchPhase.ENDED`:
 
 ``` code
 private function removedFromStageHandler( event:Event ):void
@@ -119,11 +119,11 @@ You may have noticed in the code above that the `isSelected` property is set to 
 this.isSelected = !this.isSelected;
 ```
 
-By default, the `List` component may select only one item at a time. If you select one item by tapping it, and then select another item by tapping it, the first item will be deselected automatically. If you wish to keep both the first item and the second item selected at the same time, set the `allowMultipleSelection` property on the `List` to `true`.
+By default, the `List` component may select only one item at a time. If you select one item by tapping it, and then select another item by tapping it, the first item will be deselected automatically. If you wish to keep both the first item and the second item selected at the same time, set the [`allowMultipleSelection`](../../api-reference/feathers/controls/List.html#allowMultipleSelection) property on the `List` to `true`.
 
 ## Event.TRIGGERED in PickerList
 
-The `PickerList` component additionally listens for `Event.TRIGGERED` to know when to close its pop-up list. If you tap or click an item that is already selected, it may not change the selection, so an additional event is required.
+The `PickerList` component additionally listens for [`Event.TRIGGERED`](../../api-reference/feathers/controls/Button.html#event:triggered) to know when to close its pop-up list. If you tap or click an item that is already selected, it may not change the selection, so an additional event is required.
 
 Before you set `isSelected`, simply dispatch `Event.TRIGGERED`:
 

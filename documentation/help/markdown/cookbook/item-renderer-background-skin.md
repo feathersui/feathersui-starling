@@ -3,9 +3,11 @@ title: How to add a background skin to a custom item renderer based on FeathersC
 author: Josh Tynjala
 
 ---
-# How to add a background skin to a custom item renderer based on FeathersControl and IListItemRenderer
+# How to add a background skin to a custom item renderer based on `FeathersControl` and `IListItemRenderer`
 
-The example [custom item renderer with FeathersControl and IListItemRenderer](../feathers-control-item-renderers.html) offers an easy-to-understand foundation to build upon. It's pretty limited in features, though. For instance, you may want some kind of background skin.
+The example [custom item renderer with `FeathersControl` and `IListItemRenderer`](../feathers-control-item-renderers.html) offers an easy-to-understand foundation to build upon. It's pretty limited in features, though. For instance, you may want some kind of background skin.
+
+<aside class="info">If you've created a [custom item renderer based on `LayoutGroup`](../layout-group-item-renderers.html), you don't need to implement the background skin yourself. You can simply set the [`backgroundSkin`](../../api-reference/feathers/controls/LayoutGroup.html#backgroundSkin) property.</aside>
 
 ## A backgroundSkin getter and setter
 
@@ -88,7 +90,7 @@ Instead of always using the current dimensions of the background skin for measur
 
 The example code above adds only a single background skin. What if you want to display a different background skin for each touch phase?
 
--   [Cookbook: Handling touch states in a custom item renderer](item-renderer-touch-states.html)
+-   [Cookbook: How to support multiple touch states in a custom item renderer](item-renderer-touch-states.html)
 
 ## Related Links
 
