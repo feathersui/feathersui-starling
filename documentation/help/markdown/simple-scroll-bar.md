@@ -5,13 +5,13 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `SimpleScrollBar` Component
 
-The `SimpleScrollBar` component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along an invisible track in either a horizontal or a vertical direction. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
+The [`SimpleScrollBar`](../api-reference/feathers/controls/SimpleScrollBar.html) component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along an invisible track in either a horizontal or a vertical direction. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
 
 <aside class="info">Additionally, Feathers offers a [`ScrollBar`](scroll-bar.html) component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
 
 ## The Basics
 
-You can use the `SimpleScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the `horizontalScrollBarFactory` or the `verticalScrollBarFactory`.
+You can use the `SimpleScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) or the [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory).
 
 ``` code
 list.horizontalScrollBarFactory = function():IScrollBar
@@ -20,7 +20,7 @@ list.horizontalScrollBarFactory = function():IScrollBar
 }
 ```
 
-The container will automatically handle setting properties like [`direction`](../api-reference/feathers/controls/ScrollBar.html#direction), [`minimum`](../api-reference/feathers/controls/ScrollBar.html#minimum), [`maximum`](../api-reference/feathers/controls/ScrollBar.html#maximum), and [`step`](../api-reference/feathers/controls/ScrollBar.html#step), and it will automatically listen for [`Event.CHANGE`](../api-reference/feathers/controls/ScrollBar.html#event:change) to know when the [`value`](../api-reference/feathers/controls/ScrollBar.html#value) property changes.
+The container will automatically handle setting properties like [`direction`](../api-reference/feathers/controls/SimpleScrollBar.html#direction), [`minimum`](../api-reference/feathers/controls/SimpleScrollBar.html#minimum), [`maximum`](../api-reference/feathers/controls/SimpleScrollBar.html#maximum), and [`step`](../api-reference/feathers/controls/SimpleScrollBar.html#step), and it will automatically listen for [`Event.CHANGE`](../api-reference/feathers/controls/SimpleScrollBar.html#event:change) to know when the [`value`](../api-reference/feathers/controls/SimpleScrollBar.html#value) property changes.
 
 <aside class="info">If, for some reason, you want to use a `SimpleScrollBar` outside of a container, the values like `minimum`, `maximum`, `step` and `value` that are normally handled by the container work similarly to the same properties on a [`Slider`](slider.html) component.</aside>
 
@@ -59,11 +59,11 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the `ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB` style name.
+If you're creating a [theme](themes.html), you can target the [`SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/SimpleScrollBar.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
+    .setFunctionForStyleName( SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -72,7 +72,7 @@ You can override the default style name to use a different one in your theme, if
 scrollBar.customThumbStyleName = "custom-thumb";
 ```
 
-You can set the function for the `customThumbStyleName` like this:
+You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/SimpleScrollBar.html#customThumbStyleName) like this:
 
 ``` code
 getStyleProviderForClass( Button )
@@ -81,7 +81,7 @@ getStyleProviderForClass( Button )
 
 #### Without a Theme
 
-If you are not using a theme, you can use `thumbFactory` to provide skins for the scroll bar's thumb:
+If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/SimpleScrollBar.html#thumbFactory) to provide skins for the scroll bar's thumb:
 
 ``` code
 scrollBar.thumbFactory = function():Button
@@ -94,7 +94,7 @@ scrollBar.thumbFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `thumbFactory`, you may use the `thumbProperties` to pass skins to the thumb.
+Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/SimpleScrollBar.html#thumbProperties) to pass skins to the thumb.
 
 ``` code
 scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
