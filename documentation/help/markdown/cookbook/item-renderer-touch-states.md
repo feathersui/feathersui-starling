@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to support multiple touch states in a custom item renderer
 
-You've already [added a background skin](item-renderer-background-skin.html), but maybe you want to display different background skins depending on if the user is touching your item renderer or not. You might also be interested in displaying different icons or changing the text styles on different touch phases. Let's listen to `TouchEvent.TOUCH` and start tracking which touch phase is active. We'll map the touch phases to states, and then we can choose a background skin (or anything else) based on the current state.
+We've already [added a background skin](item-renderer-background-skin.html), but maybe you want to display different background skins depending on if the user is touching your item renderer or not. You might also be interested in displaying different icons or changing the text styles on different touch phases. Let's listen to [`TouchEvent.TOUCH`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:touch) and start tracking which touch phase is active. We'll map the touch phases to states, and then we can choose a background skin (or anything else) based on the current state.
 
 ## Up and Down States
 
@@ -119,13 +119,13 @@ private function touchHandler(event:TouchEvent):void
 
 It's a little complicated, but it will ensure that we are only tracking a single touch ID at a time. In multi-touch environments, this is essential.
 
-Finally, add a listener for `Event.REMOVED_FROM_STAGE` inside the constructor or in the `initialize()` function:
+Finally, add a listener for [`Event.REMOVED_FROM_STAGE`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:removedFromStage) inside the constructor or in the `initialize()` function:
 
 ``` code
 this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 ```
 
-The listener will clear the `touchID` to `-1` just we did in `TouchPhase.ENDED`:
+The listener will clear the `touchID` to `-1` just we did in [`TouchPhase.ENDED`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#ENDED):
 
 ``` code
 private function removedFromStageHandler(event:Event):void
@@ -138,7 +138,7 @@ This ensures that if a component is reused later, it won't be trying to track a 
 
 ## Hover State
 
-On mobile, Starling doesn't dispatch touch events for `TouchPhase.HOVER`. However, on devices with a mouse, you may want to support a separate background skin (or icon or label styles) when the mouse hovers over your item renderer.
+On mobile, Starling doesn't dispatch touch events for [`TouchPhase.HOVER`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#HOVER). However, on devices with a mouse, you may want to support a separate background skin (or icon or label styles) when the mouse hovers over your item renderer.
 
 Let's start by adding a new state for `TouchPhase.HOVER`:
 
@@ -178,7 +178,7 @@ else
 }
 ```
 
-Now, if we don't find a touch for `TouchPhase.BEGAN`, we also check for `TouchPhase.HOVER`. This puts us into the hover state. If we check for `TouchPhase.BEGAN` and `TouchPhase.HOVER`, and we still don't find a touch, that means that a hover has ended, and we can return to `STATE_UP`.
+Now, if we don't find a touch for [`TouchPhase.BEGAN`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we also check for `TouchPhase.HOVER`. This puts us into the hover state. If we check for `TouchPhase.BEGAN` and `TouchPhase.HOVER`, and we still don't find a touch, that means that a hover has ended, and we can return to `STATE_UP`.
 
 That's not all we need to do, though. When a touch ends, we need to figure out if the mouse is still hovering over our item renderer or if the touch ended outside of the item renderer to decide if we want to change to `STATE_UP` or `STATE_HOVER`:
 
@@ -201,11 +201,11 @@ if( touch.phase == TouchPhase.ENDED )
 }
 ```
 
-Notice the `isInBounds` local variable. What we're doing there with the call to `contains()` and `hitTest()` is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
+Notice the `isInBounds` local variable. What we're doing there with the call to [`contains()`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#contains()) and [`hitTest()`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#hitTest()) is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
 
 The second case may be a little confusing, so let's go into a bit more detail. When Starling handles a touch, it will dispatch `TouchEvent.TOUCH` to the original target for every single phase of the touch, regardless of whether other objects may be blocking the touch. It's our responsibility to ensure that a touch is still valid for the original target. We'll always receive the event for `TouchPhase.ENDED`, but the call to the `hitTest()` on the stage may not return the item renderer or any of its children. If that's the case, then we go back to `STATE_UP` instead of `STATE_HOVER`.
 
-Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
+Also, you may have seen the `HELPER_POINT` object we passed to [`getLocation()`](http://doc.starling-framework.org/core/starling/events/Touch.html#getLocation()). We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
 
 ``` code
 private static const HELPER_POINT:Point = new Point();
@@ -215,7 +215,7 @@ It's static to avoid creating a different `Point` object for every item renderer
 
 ## Selecting a Background Skin
 
-[Previously](item-renderer-background-skin.html), we added a single `backgroundSkin` property. If we want to show different background skins based on the touch phases, we'll need to add more properties like `backgroundSkin` for each touch phase. In the following source code, we'll assume that a `downBackgroundSkin` property has been added. We can copy the implementation from `backgroundSkin` to `downBackgroundSkin`, but for both properties, we need to make one change. When we add the child, we also set its `visible` property to `false`:
+Previously, [we added a single `backgroundSkin` property](item-renderer-background-skin.html). If we want to show different background skins based on the touch phases, we'll need to add more properties like `backgroundSkin` for each touch phase. In the following source code, we'll assume that a `downBackgroundSkin` property has been added. We can copy the implementation from `backgroundSkin` to `downBackgroundSkin`, but for both properties, we need to make one change. When we add the child, we also set its `visible` property to `false`:
 
 ``` code
 if( this._downBackgroundSkin )
@@ -269,7 +269,7 @@ In this simple example code, we're only checking for `STATE_DOWN`. We could chec
 
 ### In LayoutGroup Item Renderers
 
-If you have a [custom item renderer created with LayoutGroup](../layout-group-item-renderers.html), you can call this function in your `preLayout()` function:
+If you have a [custom item renderer created with `LayoutGroup`](../layout-group-item-renderers.html), you can call this function in your `preLayout()` function:
 
 ``` code
 override protected function preLayout():void
@@ -297,7 +297,7 @@ override protected function postLayout():void
 
 ### In FeathersControl Item Renderers
 
-If you have a [custom item renderer created with FeathersControl and IListItemRenderer](../feathers-control-item-renderers.html), you can call this function in your `draw()` function. First, check for the appropriate flag:
+If you have a [custom item renderer created with `FeathersControl` and `IListItemRenderer`](../feathers-control-item-renderers.html), you can call this function in your `draw()` function. First, check for the appropriate flag:
 
 ``` code
 var stateInvalid:Boolean = this.isInvalid( INVALIDATION_FLAG_STATE );

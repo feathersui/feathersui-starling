@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 Sometimes, when you interact with the child of a custom item renderer, you want to ensure that the list won't start scrolling at the same time. For instance, if the child is a slider or another component that requires dragging, you don't want that drag to simultaneously scroll the list.
 
-How you implement this depends on the sub-component's type. Some components may dispatch useful events that indicate that the user has started dragging or scrolling something. For instance, some components, like sliders, will dispatch `FeathersEventType.BEGIN_INTERACTION` to indicate when the users begins interacting with them in a meaningful way. Others, like lists or scroll containers may dispatch `FeathersEventType.SCROLL_START`.
+How you implement this depends on the sub-component's type. Some components may dispatch useful events that indicate that the user has started dragging or scrolling something. For instance, some components, like sliders, will dispatch [`FeathersEventType.BEGIN_INTERACTION`](../../api-reference/feathers/events/FeathersEventType.html#BEGIN_INTERACTION) to indicate when the users begins interacting with them in a meaningful way. Others, like lists or scroll containers may dispatch [`FeathersEventType.SCROLL_START`](../../api-reference/feathers/events/FeathersEventType.html#SCROLL_START).
 
 For most display objects, you can usually simply listen for `TouchEvent.TOUCH` on the child:
 
@@ -50,7 +50,7 @@ protected function child_touchHandler( event:TouchEvent ):void
 }
 ```
 
-If the list attempts to start scrolling, it will dispatch `FeathersEventType.SCROLL_START`. If we call `stopScrolling()` right away, this will tell the list that it should not scroll right now because we're busy with the touch:
+If the list attempts to start scrolling, it will dispatch `FeathersEventType.SCROLL_START`. If we call [`stopScrolling()`](../../api-reference/feathers/controls/Scroller.html#stopScrolling()) right away, this will tell the list that it should not scroll right now because we're busy with the touch:
 
 ``` code
 protected function owner_scrollStartHandler( event:Event ):void

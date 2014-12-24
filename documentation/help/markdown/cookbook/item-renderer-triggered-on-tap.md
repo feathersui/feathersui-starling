@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to dispatch a triggered event from a custom item renderer
 
-Sometimes, you want a [custom item renderer](../item-renderers.html) to dispatch `Event.TRIGGERED`, similar to a `Button`. Additionally, item renderers in a `PickerList` must dispatch `Event.TRIGGERED` to properly close the pop-up list when tapping an item that is already selected.
+Sometimes, you want a [custom item renderer](../item-renderers.html) to dispatch [`Event.TRIGGERED`](http://doc.starling-framework.org/core/starling/events/Event.html#TRIGGERED), similar to a [`Button`](../button.html). Additionally, item renderers in a [`PickerList`](../picker-list.html) must dispatch `Event.TRIGGERED` to properly close the pop-up list when tapping an item that is already selected.
 
 First, let's make sure that we're only tracking a single touch ID:
 
@@ -15,7 +15,7 @@ protected var touchID:int = -1;
 
 There's no reason to track more than one touch here, so if a touch begins, we'll ignore other touches that begin before the original touch ends.
 
-Inside our constructor, or in the component's `initialize()` function, we can listen for `TouchEvent.TOUCH`:
+Inside our constructor, or in the component's `initialize()` function, we can listen for [`TouchEvent.TOUCH`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:touch):
 
 ``` code
 override protected function initialize():void
@@ -84,9 +84,9 @@ private function touchHandler( event:TouchEvent ):void
 
 It's a little complicated, but it will ensure that we are only tracking a single touch ID at a time. In multi-touch environments, this is essential.
 
-The key part is the line with the `isInBounds` local variable. What we're doing there with the call to `contains()` and `hitTest()` is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
+The key part is the line with the `isInBounds` local variable. What we're doing there with the call to [`contains()`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#contains()) and [`hitTest()`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#hitTest()) is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
 
-Also, you may have seen the `HELPER_POINT` object we passed to `getLocation()`. We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
+Also, you may have seen the `HELPER_POINT` object we passed to [`getLocation()`](http://doc.starling-framework.org/core/starling/events/Touch.html#getLocation()). We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
 
 ``` code
 private static const HELPER_POINT:Point = new Point();
@@ -94,13 +94,13 @@ private static const HELPER_POINT:Point = new Point();
 
 It's static to avoid creating a different `Point` object for every item renderer. We simply need to ensure that multiple item renderers won't be modifying it at the same time. Since the item renderer isn't dispatching any events between the call to `getLocation()` and the call to `hitTest()`, we know that only one item renderer may be using `HELPER_POINT` at any given time.
 
-Finally, add a listener for `Event.REMOVED_FROM_STAGE` inside the constructor or in the `initialize()` function:
+Finally, add a listener for [`Event.REMOVED_FROM_STAGE`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:removedFromStage) inside the constructor or in the `initialize()` function:
 
 ``` code
 this.addEventListener( Event.REMOVED_FROM_STAGE, removedFromStageHandler );
 ```
 
-The listener will clear the `touchID` to `-1` just we did in `TouchPhase.ENDED`:
+The listener will clear the `touchID` to `-1` just we did in [`TouchPhase.ENDED`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#ENDED):
 
 ``` code
 private function removedFromStageHandler( event:Event ):void

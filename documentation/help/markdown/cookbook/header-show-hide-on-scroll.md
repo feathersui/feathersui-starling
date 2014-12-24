@@ -9,7 +9,7 @@ In order to show as much content as possible, some mobile UIs will only reveal a
 
 ## The Layout
 
-Let's start by defining the `Header` and `List` components as member variables:
+Let's start by defining the [`Header`](../header.html) and [`List`](../list.html) components as member variables:
 
 ``` code
 private var _header:Header;
@@ -27,14 +27,14 @@ this.addChild(this._header);
 var items:Array = [];
 for(var i:int = 0; i < 100; i++)
 {
-    items.push({label: i.toString()});
+    items.push( { label: i.toString() } );
 }
 this._list = new List();
-this._list.dataProvider = new ListCollection(items);
+this._list.dataProvider = new ListCollection( items );
 this.addChild(this._list);
 ```
 
-Now, we're ready to add the layout code. We'll use `AnchorLayout` to position a header and a list, with the list's position relative to the header. The header and list should be placed inside a container that supports layouts, such as [LayoutGroup](../layout-group.html).
+Now, we're ready to add the layout code. We'll use [`AnchorLayout`](../anchor-layout.html) to position a header and a list, with the list's position relative to the header. The header and list should be placed inside a container that supports layouts, such as [`LayoutGroup`](../layout-group.html).
 
 ``` code
 this.layout = new AnchorLayout();
@@ -54,7 +54,7 @@ listLayoutData.left = 0;
 this._list.layoutData = listLayoutData;
 ```
 
-Notice that the top, right, and left edges of the header are anchored to its parent. We're going to change the value of the `top` anchor later when we want to change the header's `y` position, but to start out, the header will be fully visible.
+Notice that the top, right, and left edges of the header are anchored to its parent. We're going to change the value of the [`top`](../../api-reference/feathers/layout/AnchorLayoutData.html#top) anchor later when we want to change the header's `y` position, but to start out, the header will be fully visible.
 
 The top of the list is anchored to the header. When the header moves, the list will move too. The other edges of the list are anchored to the edges of its parent. Since the list's bottom edge is anchored to its parent, and the top edge is anchored to the header, when the header moves, the list will not only move, but it will resize too.
 
@@ -63,7 +63,7 @@ The top of the list is anchored to the header. When the header moves, the list w
 Let's add a listener to handle touches:
 
 ``` code
-this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
+this._list.addEventListener( TouchEvent.TOUCH, list_touchHandler );
 ```
 
 Before we implement the listener, we'll need a couple of member variables to track the state of the touch that is dragging the list:
@@ -107,7 +107,7 @@ private function list_touchHandler(event:TouchEvent):void
 }
 ```
 
-It's mostly boilerplate for tracking the appropriate touch ID. There are two important things to note. First, in the section for `TouchPhase.BEGAN`, we initialize the value of the `_previousGlobalTouchY` variable. Second, in the section for `TouchPhase.MOVED`, we call another function named `dragHeader()`. Let's implement that function now.
+It's mostly boilerplate for tracking the appropriate touch ID. There are two important things to note. First, in the section for [`TouchPhase.BEGAN`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we initialize the value of the `_previousGlobalTouchY` variable. Second, in the section for [`TouchPhase.MOVED`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we call another function named `dragHeader()`. Let's implement that function now.
 
 ``` code
 private function dragHeader(touch:Touch):void

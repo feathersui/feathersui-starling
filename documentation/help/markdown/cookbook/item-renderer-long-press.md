@@ -23,7 +23,7 @@ protected var touchBeganTime:int;
 
 We'll use this value to calculate the duration of the touch, which will determine if we should dispatch the long press event yet.
 
-Inside our constructor, or in the component's `initialize()` function, we can listen for `TouchEvent.TOUCH`:
+Inside our constructor, or in the component's `initialize()` function, we can listen for [`TouchEvent.TOUCH`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:touch):
 
 ``` code
 override protected function initialize():void
@@ -94,9 +94,9 @@ private function touchHandler( event:TouchEvent ):void
 
 The structure is a little complicated, but it will ensure that we are only tracking a single touch ID at a time. In multi-touch environments, this is essential.
 
-There are two sections that specifically apply to our long press event. In the section for TouchPhase.BEGAN, we call `getTimer()` to save the time that the touch began. Then, we listen for `Event.ENTER_FRAME` to track how much time has passed since the touch began. We'll look at this listener in a moment. In `TouchPhase.ENDED`, we remove that listener because the touch ends.
+There are two sections that specifically apply to our long press event. In the section for TouchPhase.BEGAN, we call `getTimer()` to save the time that the touch began. Then, we listen for [`Event.ENTER_FRAME`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:enterFrame) to track how much time has passed since the touch began. We'll look at this listener in a moment. In [`TouchPhase.ENDED`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#ENDED), we remove that listener because the touch ends.
 
-We need to add one more thing to properly handle touch events before moving on. Let's add a listener for `Event.REMOVED_FROM_STAGE` inside the constructor or in the `initialize()` function:
+We need to add one more thing to properly handle touch events before moving on. Let's add a listener for [`Event.REMOVED_FROM_STAGE`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#event:removedFromStage) inside the constructor or in the `initialize()` function:
 
 ``` code
 this.addEventListener( Event.REMOVED_FROM_STAGE, removedFromStageHandler );
@@ -132,11 +132,11 @@ We calculate the duration of the touch in seconds. If it's greater than half a s
 
 You can change the duration to any number of seconds that you prefer. Similar to `Button`, you might consider adding a property to your class to make the duration customizable.
 
-Be sure to remove the `Event.ENTER_FRAME` listener. We'll wait to set `touchID` to `-1` when the touch actually ends. Then, dispatch the `FeathersEventType.LONG_PRESS` constant defined by Feathers.
+Be sure to remove the `Event.ENTER_FRAME` listener. We'll wait to set `touchID` to `-1` when the touch actually ends. Then, dispatch the [`FeathersEventType.LONG_PRESS`](../../api-reference/feathers/events/FeathersEventType.html#LONG_PRESS) constant defined by Feathers.
 
 ## Combined with Event.TRIGGERED or Event.CHANGE
 
-If you plan to combine, `FeathersEventType.LONG_PRESS` with `Event.TRIGGERED` or `Event.CHANGE`, you will want to add a couple extra things to ensure that the other two events aren't dispatched after a long press.
+If you plan to combine, `FeathersEventType.LONG_PRESS` with [`Event.TRIGGERED`](http://doc.starling-framework.org/core/starling/events/Event.html#TRIGGERED) or [`Event.CHANGE`](http://doc.starling-framework.org/core/starling/events/Event.html#CHANGE), you will want to add a couple extra things to ensure that the other two events aren't dispatched after a long press.
 
 First, let's add a member variable to track whether a long press has happened:
 
@@ -144,7 +144,7 @@ First, let's add a member variable to track whether a long press has happened:
 protected var hasLongPressed:Boolean = false;
 ```
 
-Next, when we add the `Event.ENTER_FRAME` listener on `TouchPhase.BEGAN`, we should always reset it to `false`:
+Next, when we add the `Event.ENTER_FRAME` listener on [`TouchPhase.BEGAN`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we should always reset it to `false`:
 
 ``` code
 // we haven't long pressed yet because the touch just began
@@ -168,7 +168,7 @@ if( accumulatedTime >= 0.5 )
 }
 ```
 
-Finally, on `TouchPhase.ENDED`, when we check the bounds before dispatching `Event.TRIGGERED` or setting `isSelected`, we should also check if we've long pressed:
+Finally, on [`TouchPhase.ENDED`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#ENDED), when we check the bounds before dispatching `Event.TRIGGERED` or setting `isSelected`, we should also check if we've long pressed:
 
 ``` code
 if( !this.hasLongPressed && isInBounds )
@@ -182,9 +182,9 @@ if( !this.hasLongPressed && isInBounds )
 
 -   [Introduction to Custom Item Renderers](../item-renderers.html)
 
--   [Feathers Cookbook: Selecting a custom item renderer on tap or click](item-renderer-select-on-tap.html)
+-   [Feathers Cookbook: How to select (or deselect) a custom item renderer on tap or click](item-renderer-select-on-tap.html)
 
--   [Feathers Cookbook: Dispatching a triggered event from a custom item renderer](item-renderer-triggered-on-tap.html)
+-   [Feathers Cookbook: How to dispatch a triggered event from a custom item renderer](item-renderer-triggered-on-tap.html)
 
 This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
 

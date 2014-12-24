@@ -1,13 +1,13 @@
 ---
-title: How to save the state of a screen and restore it later 
+title: How to save the state of a screen in a ScreenNavigator and restore it later 
 author: Josh Tynjala
 
 ---
-# How to save the state of a screen and restore it later
+# How to save the state of a screen in a `ScreenNavigator` and restore it later
 
 Many times, when a user navigates away from a screen, they may return to the same screen in the future. In these cases, it is often desirable to restore the state of the screen as it was when the user navigated away. For instance, you might restore the scroll position of a list that appears on the screen.
 
-`ScreenNavigatorItem` offers a simple system for setting properties on a screen when it is created. We can take advantage of this feature to store additional properties. In the following code, we store the vertical scroll position of a list in a property named `savedVerticalScrollPosition`:
+[`ScreenNavigatorItem`](../../api-reference/feathers/controls/ScreenNavigatorItem.html) offers a simple system for setting properties on a screen when it is created. We can take advantage of this feature to store additional properties. In the following code, we store the vertical scroll position of a list in a property named `savedVerticalScrollPosition`:
 
 ``` code
 var screenItem:ScreenNavigatorItem = this.owner.getScreen(this.screenID);
