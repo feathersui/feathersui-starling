@@ -31,7 +31,7 @@ Your project is ready. If you're unsure how to proceed, start by using the code 
 
 <aside class="warn">Flash Professional's ability to properly simulate devices on AIR is limited compared to other development environments. Flash Professional's AIR simulator does not provide the correct screen DPI/PPI for the mobile device that it is simulating. The value of `Capabilities.screenDPI` is used by Feathers themes to scale skins to an appropriate physical size for each device.
 
-In order to use the DPI scaling capabilities of Feathers themes, you will need to run **ADL** from the AIR SDK on the command line or test on a real device. For more details, see [Why do the Feathers component skins and font sizes appear very small?](faq.html#why-do-the-feathers-component-skins-and-font-sizes-appear-very-small) in the [Feathers FAQ](faq.html).</aside>
+In order to use the DPI scaling capabilities of Feathers themes, you will need to run **ADL** from the AIR SDK on the command line or test on a real device. For more details, see [Why do the Feathers component skins and font sizes appear very small?](faq/display-density.html) in the [Feathers FAQ](faq/index.html).</aside>
 
 For more tutorials, return to the [Feathers Documentation](index.html).
 

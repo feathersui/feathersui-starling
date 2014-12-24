@@ -41,7 +41,7 @@ Please visit the [Feathers forum](http://forum.starling-framework.org/forum/feat
 
 Feel free to [report bugs and request features](https://github.com/joshtynjala/feathers/issues) on Github at any time.
 
-Pull requests are welcome for bug fixes. Before submitting a pull request, be sure to take a look at the [Feathers Coding Conventions for Contributors](coding-conventions.html). All code in Feathers is expected to match the coding style described in that document. Contributions that don't follow the coding conventions may be given a lower priority due to the extra effort required to reformat your code.
+Pull requests are welcome for bug fixes. Before submitting a pull request, be sure to take a look at the [Feathers Coding Conventions for Contributors](../coding-conventions.html). All code in Feathers is expected to match the coding style described in that document. Contributions that don't follow the coding conventions may be given a lower priority due to the extra effort required to reformat your code.
 
 For new components and other major contributions, I encourage you to create your own project on [Github](http://github.com/) as an extension to Feathers or as a fork. [Send me a link](https://twitter.com/joshtynjala), and I'll be happy to share it with the community. If enough developers show interest in your project, and there's demand for including it in the core Feathers library, we can discuss the details further.
 
@@ -71,7 +71,7 @@ Use the latest, bleeding edge code from the [Feathers Github project](https://gi
 
 ### Why don't the Feathers components have default skins?
 
-Ideally, I'd love to provide a basic set of skins for all components that get applied automatically. However, there are some important considerations for optimizing texture atlases for the GPU, mobile performance and memory limits, and the inevitable customizations that are required for just about every app. These considerations often aren't present in a software-based UI framework due to how much easier it is to draw dynamic shapes at runtime in software than it is in hardware. Please see [this detailed explanation](faq/default-skins.html) for more information.
+Ideally, I'd love to provide a basic set of skins for all components that get applied automatically. However, there are some important considerations for optimizing texture atlases for the GPU, mobile performance and memory limits, and the inevitable customizations that are required for just about every app. These considerations often aren't present in a software-based UI framework due to how much easier it is to draw dynamic shapes at runtime in software than it is in hardware. Please see [this detailed explanation](default-skins.html) for more information.
 
 ## Common Issues
 
@@ -79,41 +79,41 @@ A few tips for common issues you may encounter as a new Feathers user.
 
 ### Why do I get compiler errors that some classes cannot be found when I use the Feathers SWC?
 
-Double check that your development environment has been set up correctly. Instructions are provided for setting up [Flash Builder](flash-builder.html), [IntelliJ IDEA](intellij-idea.html), [Flash Professional](flash-pro.html), and [FlashDevelop](flashdevelop.html). Please see [this detailed explanation](faq/swc-missing-classes.html) for more information.
+Double check that your development environment has been set up correctly. Instructions are provided for setting up [Flash Builder](../flash-builder.html), [IntelliJ IDEA](../intellij-idea.html), [Flash Professional](../flash-pro.html), and [FlashDevelop](../flashdevelop.html). Please see [this detailed explanation](swc-missing-classes.html) for more information.
 
 ### When I add a Feathers component to the display list, why don't I see anything?
 
 Have you provided skins for the component? The Feathers components don't have default skins. Default skins would add unnecessary extra filesize to your projects and they wouldn't be very styleable due to the bitmap-centric nature of GPUs. On mobile, every byte counts (especially since Adobe AIR's captive runtime is rather large), and forcing every Feathers app to include a texture atlas for a default skin would be too much of a burden for many developers. Take a look at [Getting Started with Feathers](getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
 
-To quickly get up and running with some sample skins, you may want to use a [theme](themes.html). Take a look at [Getting Started with Feathers](getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
+To quickly get up and running with some sample skins, you may want to use a [theme](../themes.html). Take a look at [Getting Started with Feathers](../getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
 
 ### Why do I get null object reference runtime errors the first time I try to display a Feathers component?
 
 Have you provided skins for the component? The Feathers components don't have default skins. Default skins would add unnecessary extra filesize to your projects, and they wouldn't be very styleable due to the bitmap-centric nature of GPUs. On mobile, every byte counts (especially since Adobe AIR's captive runtime is rather large), and forcing every Feathers app to include a texture atlas for default skins would be too much of a burden for many developers.
 
-To quickly get up and running with some sample skins, you may want to use a [theme](themes.html). Take a look at [Getting Started with Feathers](getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
+To quickly get up and running with some sample skins, you may want to use a [theme](../themes.html). Take a look at [Getting Started with Feathers](../getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
 
 ### Why do the Feathers component skins and font sizes appear very small?
 
-Your development environment is not properly simulating the display density of the target mobile device. Please follow [these instructions](faq/display-density.html) for fixing this issue.
+Your development environment is not properly simulating the display density of the target mobile device. Please follow [these instructions](display-density.html) for fixing this issue.
 
 ### When I try to access the `width` or `height` properties of a Feathers component, why do I get `0`?
 
-You can call `component.validate()` to force a component to immediately measure itself and handle changes to its properties. Normally, a component will queue up a number of changes and process them all in one batch right before Starling renders a new frame. Please see [this detailed explanation](faq/zero-dimensions.html) for more information.
+You can call `component.validate()` to force a component to immediately measure itself and handle changes to its properties. Normally, a component will queue up a number of changes and process them all in one batch right before Starling renders a new frame. Please see [this detailed explanation](zero-dimensions.html) for more information.
 
 ### When I try to change a component's skins, why do I always see the theme's skins?
 
-If you want a component to use different skins than the theme's default style, you should [extend the theme](extending-themes.html). Please see [this detailed explanation](faq/cannot-change-skins.html) for more information.
+If you want a component to use different skins than the theme's default style, you should [extend the theme](../extending-themes.html). Please see [this detailed explanation](cannot-change-skins.html) for more information.
 
 ### Why are there so many draw calls? Aren't those bad?
 
-Drawing text in the GPU involves many tradeoffs. Sometimes it is impossible to avoid extra draw calls. Sometimes, you can get increased performance in situations that require more draw calls. Feathers has been tuned to get the best performance most of the time, but there are options to control this behavior, if needed. Please see [this detailed explanation](faq/draw-calls.html) for more information.
+Drawing text in the GPU involves many tradeoffs. Sometimes it is impossible to avoid extra draw calls. Sometimes, you can get increased performance in situations that require more draw calls. Feathers has been tuned to get the best performance most of the time, but there are options to control this behavior, if needed. Please see [this detailed explanation](draw-calls.html) for more information.
 
 ### Why do my custom item renderers show the wrong data?
 
 `List` and `GroupedList` components use something called *layout virtualization* to minimize the number of item renderers that need to be created at any time. Additionally, lists will reuse item renderers when they scroll off screen to display different data that has scrolled on screen. This provides a significant performance boost, especially on mobile.
 
-When you create a custom item renderer, you need to ensure that it is designed to properly update when the list asks it to display a different item from the data provider. Please see [this detailed explanation](faq/layout-virtualization.html) for more information.
+When you create a custom item renderer, you need to ensure that it is designed to properly update when the list asks it to display a different item from the data provider. Please see [this detailed explanation](layout-virtualization.html) for more information.
 
 ### Why can't I see a filter in a `List` or `ScrollContainer`?
 
@@ -131,15 +131,15 @@ Unfortunately, `flash.text.TextField` often does not draw correctly `BitmapData`
 
 ### Why do I see colored lines or strange gaps between tiles when I use `TiledImage`?
 
-This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the "extrude" setting to work around this issue. The [`TiledImage`](tiled-image.html) documentation has a detailed explaination of this issue and the extrude workaround.
+This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the "extrude" setting to work around this issue. The [`TiledImage`](../tiled-image.html) documentation has a detailed explaination of this issue and the extrude workaround.
 
 ### How do I create a `List` where each item renderer can have a different height?
 
-Pass in a [`VerticalLayout`](vertical-layout.html) with its [`hasVariableItemDimensions`](../api-reference/feathers/layout/VerticalLayout.html#hasVariableItemDimensions) property set to `true`. By default, `VerticalLayout` forces all item renderers to have the same height because this improves performance for most lists.
+Pass in a [`VerticalLayout`](../vertical-layout.html) with its [`hasVariableItemDimensions`](../../api-reference/feathers/layout/VerticalLayout.html#hasVariableItemDimensions) property set to `true`. By default, `VerticalLayout` forces all item renderers to have the same height because this improves performance for most lists.
 
 ### How do I update an item renderer in a list after I change a property on an item?
 
-You can pass the item's index to [`updateItemAt()`](../api-reference/feathers/data/ListCollection.html#updateItemAt()) on the list's data provider. The list will force the item renderer to redraw.
+You can pass the item's index to [`updateItemAt()`](../../api-reference/feathers/data/ListCollection.html#updateItemAt()) on the list's data provider. The list will force the item renderer to redraw.
 
 ``` code
 list.dataProvider.updateItemAt( itemIndex );
@@ -147,6 +147,6 @@ list.dataProvider.updateItemAt( itemIndex );
 
 ------------------------------------------------------------------------
 
-For more information about Feathers, return to the [Feathers Documentation](index.html).
+For more information about Feathers, return to the [Feathers Documentation](../index.html).
 
 
