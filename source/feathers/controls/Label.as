@@ -1282,7 +1282,7 @@ package feathers.controls
 				}
 				else
 				{
-					newWidth = 0;
+					newHeight = 0;
 				}
 				
 				if(this.originalBackgroundHeight === this.originalBackgroundHeight &&
