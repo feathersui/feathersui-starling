@@ -10,20 +10,61 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * fade a display object to a solid color.
+	 *
+	 * @see ../../../help/transitions.html#colorfade Transitions for Feathers screen navigators: ColorFade
+	 */
 	public class ColorFade
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that hides the
+		 * old screen as a solid black color fades in over it. Then, the solid
+		 * black color fades back out to show that the new screen has replaced
+		 * the old screen.
+		 *
+		 * @see ../../../help/transitions.html#colorfade Transitions for Feathers screen navigators: ColorFade
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createBlackFadeToBlackTransition(duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return createColorFadeTransition(0x000000, duration, ease, tweenProperties);
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that hides the old screen as a solid
+		 * white color fades in over it. Then, the solid white color fades back
+		 * out to show that the new screen has replaced the old screen.
+		 *
+		 * @see ../../../help/transitions.html#colorfade Transitions for Feathers screen navigators: ColorFade
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createWhiteFadeTransition(duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return createColorFadeTransition(0xffffff, duration, ease, tweenProperties);
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that hides the
+		 * old screen as a customizable solid color fades in over it. Then, the
+		 * solid color fades back out to show that the new screen has replaced
+		 * the old screen.
+		 *
+		 * @see ../../../help/transitions.html#colorfade Transitions for Feathers screen navigators: ColorFade
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createColorFadeTransition(color:uint, duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -50,8 +91,6 @@ package feathers.motion
 		}
 	}
 }
-
-import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.Starling;

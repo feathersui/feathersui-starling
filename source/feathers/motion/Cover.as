@@ -12,10 +12,30 @@ package feathers.motion
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * slide a display object into view, animating the `x` or `y` property, to
+	 * cover the content below it.
+	 *
+	 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
+	 */
 	public class Cover
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * new screen into view to the left, animating the `x` property, to
+		 * cover up the old screen, which remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCoverLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -42,6 +62,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * new screen into view to the right, animating the `x` property, to
+		 * cover up the old screen, which remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCoverRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -68,6 +98,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * new screen up into view, animating the `y` property, to cover up the
+		 * old screen, which remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCoverUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -94,6 +134,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * new screen down into view, animating the `y` property, to cover up the
+		 * old screen, which remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCoverDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -120,6 +170,9 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		private static function slideInNewScreen(newScreen:DisplayObject,
 			duration:Number, ease:Object, tweenProperties:Object, onComplete:Function):void
 		{

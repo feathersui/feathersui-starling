@@ -53,7 +53,7 @@ The [`Fade`](../api-reference/feathers/motion/Fade.html) transition animates the
 
 ### Fade in
 
-The new screen may fade in, animating the `alpha` property from `0` to `1`, while the old screen remains fully opaque at a lower depth.
+The new screen may fade in, animating the `alpha` property from `0.0` to `1.0`, while the old screen remains fully opaque at a lower depth.
 
 ``` code
 Fade.createFadeInTransition();
@@ -61,7 +61,7 @@ Fade.createFadeInTransition();
 
 ### Fade out
 
-Alternatively, the old screen may fade out, animating the `alpha` property from `1` to `0`, while the new screen remains fully opaque at a lower depth. 
+Alternatively, the old screen may fade out, animating the `alpha` property from `1.0` to `0.0`, while the new screen remains fully opaque at a lower depth. 
 
 ``` code
 Fade.createFadeOutTransition();
@@ -69,7 +69,7 @@ Fade.createFadeOutTransition();
 
 ### Crossfade
 
-A third option is to crossfade the screens. In other words, the old screen fades out, animating the `alpha` property from `1` to `0`. Simulataneously, the new screen fades in, animating its `alpha` property from `0` to `1`.
+A third option is to crossfade the screens. In other words, the old screen fades out, animating the `alpha` property from `1.0` to `0.0`. Simultaneously, the new screen fades in, animating its `alpha` property from `0.0` to `1.0`.
 
 ``` code
 Fade.createCrossfadeTransition();

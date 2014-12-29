@@ -10,10 +10,30 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * slides a display object from off-stage. The display object may slide up,
+	 * right, down, or left.
+	 *
+	 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
+	 */
 	public class Slide
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * new screen to the left from off-stage, pushing the old screen in the
+		 * same direction.
+		 *
+		 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createSlideLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -42,6 +62,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that that slides
+		 * the new screen to the right from off-stage, pushing the old screen in
+		 * the same direction.
+		 *
+		 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createSlideRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -70,6 +100,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that that slides
+		 * the new screen up from off-stage, pushing the old screen in the same
+		 * direction.
+		 *
+		 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createSlideUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -98,6 +138,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that that slides
+		 * the new screen down from off-stage, pushing the old screen in the
+		 * same direction.
+		 *
+		 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createSlideDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -127,8 +177,6 @@ package feathers.motion
 		}
 	}
 }
-
-import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.Starling;
