@@ -6,7 +6,7 @@ package feathers.examples.trainTimes
 	import feathers.examples.trainTimes.screens.StationScreen;
 	import feathers.examples.trainTimes.screens.TimesScreen;
 	import feathers.examples.trainTimes.themes.TrainTimesTheme;
-	import feathers.motion.transitions.Slide;
+	import feathers.motion.Slide;
 
 	import starling.events.Event;
 

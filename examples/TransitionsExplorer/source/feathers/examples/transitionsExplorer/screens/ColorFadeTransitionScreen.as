@@ -9,8 +9,8 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.motion.transitions.Fade;
-	import feathers.motion.transitions.ColorFade;
+	import feathers.motion.Fade;
+	import feathers.motion.ColorFade;
 
 	import starling.display.DisplayObject;
 

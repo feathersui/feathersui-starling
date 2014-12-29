@@ -134,9 +134,9 @@ We can call `setScreenIDForEvent()` as many times as needed to listen for multip
 
 As we learned above, we can either show a screen or we can clear the currently active screen. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a [*transition*](transitions.html).
 
-We can find a number of useful transition classes in the [`feathers.motion.transitions`](../api-reference/feathers/motion/transitions/package-detail.html) package. One example is the [`Fade`](../api-reference/feathers/motion/transitions/Slide.Fade) class, which fades a screen by animating its `alpha` property.
+We can find a number of useful transition classes in the [`feathers.motion`](../api-reference/feathers/motion/package-detail.html) package. One example is the [`Fade`](../api-reference/feathers/motion/Fade.html) class, which fades a screen by animating its `alpha` property.
 
-Each of the built-in transition classes has one or more static methods that you can call to create a *transition function* that screen navigator calls when navigating to a different screen. In this case, let's call [`Fade.createFadeInTransition()`](../api-reference/feathers/motion/transitions/Fade.html#createFadeInTransition()).
+Each of the built-in transition classes has one or more static methods that you can call to create a *transition function* that screen navigator calls when navigating to a different screen. In this case, let's call [`Fade.createFadeInTransition()`](../api-reference/feathers/motion/Fade.html#createFadeInTransition()).
 
 We can pass the result to the screen navigator's [`transition`](../api-reference/feathers/controls/ScreenNavigator.html#transition) property:
 

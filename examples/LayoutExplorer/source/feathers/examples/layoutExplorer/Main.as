@@ -17,9 +17,9 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.TiledRowsLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
-	import feathers.motion.transitions.Cover;
-	import feathers.motion.transitions.Reveal;
-	import feathers.motion.transitions.Slide;
+	import feathers.motion.Cover;
+	import feathers.motion.Reveal;
+	import feathers.motion.Slide;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 

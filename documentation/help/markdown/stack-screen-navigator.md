@@ -127,11 +127,11 @@ We can call `setScreenIDForPushEvent()` and `addPopEvent()` as many times as nee
 
 As we learned above, we can either push a new screen onto the top of the stack to show it, or we can pop a screen from the stack to hide it. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a [*transition*](transitions.html), and we can specify transitions for both push and pop actions.
 
-We can find a number of useful transition classes in the [`feathers.motion.transitions`](../api-reference/feathers/motion/transitions/package-detail.html) package. One example is the [`Slide`](../api-reference/feathers/motion/transitions/Slide.html) class, which slides the old screen out of view by animating its `x` or `y` property, while simultaneously animating the new screen into view.
+We can find a number of useful transition classes in the [`feathers.motion`](../api-reference/feathers/motion/package-detail.html) package. One example is the [`Slide`](../api-reference/feathers/motion/Slide.html) class, which slides the old screen out of view by animating its `x` or `y` property, while simultaneously animating the new screen into view.
 
 `StackScreenNavigator` supports separate transitions for push and pop actions. This lets us clearly show, visually, that a screen is being added or removed from the stack. Using the `Slide` transition, we might want a new screen to slide to the left when it is pushed, and a screen being popped should slide in the opposite direction -- to the right.
 
-Each of the built-in transition classes has one or more static methods that you can call to create the *transition function* that the screen navigator calls when pushing or poping a screen. In this case, let's call [`Slide.createSlideLeftTransition()`](../api-reference/feathers/motion/transitions/Slide.html#createSlideLeftTransition()) and [`Slide.createSlideRightTransition()`](../api-reference/feathers/motion/transitions/Slide.html#createSlideRightTransition()).
+Each of the built-in transition classes has one or more static methods that you can call to create the *transition function* that the screen navigator calls when pushing or poping a screen. In this case, let's call [`Slide.createSlideLeftTransition()`](../api-reference/feathers/motion/Slide.html#createSlideLeftTransition()) and [`Slide.createSlideRightTransition()`](../api-reference/feathers/motion/Slide.html#createSlideRightTransition()).
 
 We can pass the results to the [`pushTransition`](../api-reference/feathers/controls/StackScreenNavigator.html#pushTransition) and [`popTransition`](../api-reference/feathers/controls/StackScreenNavigator.html#popTransition) properties on the screen navigator:
 

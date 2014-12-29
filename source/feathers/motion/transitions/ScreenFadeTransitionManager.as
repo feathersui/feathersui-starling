@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.motion.transitions
 {
 	import feathers.controls.ScreenNavigator;
+	import feathers.motion.Fade;
 
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
