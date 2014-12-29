@@ -52,9 +52,17 @@ package feathers.text
 		public var font:BitmapFont;
 		
 		/**
-		 * The multiply color.
+		 * The color used to tint the bitmap font's texture when rendered.
+		 * Tinting works like the "multiply" blend mode. In other words, the
+		 * <code>color</code> property can only make the text render with a
+		 * darker color. With that in mind, if the characters in the original
+		 * texture are black, then you cannot change their color at all. To be
+		 * able to render the text using any color, the characters in the
+		 * original texture should be white.
 		 *
 		 * @default 0xffffff
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/BlendMode.html#MULTIPLY starling.display.BlendMode.MULTIPLY
 		 */
 		public var color:uint;
 		
