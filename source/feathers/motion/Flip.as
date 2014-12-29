@@ -10,10 +10,34 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * positions display objects in 3D space is if they are printed on opposite
+	 * sides of a postcard. A display object may appear on the front or back
+	 * side, and the card rotates around its center to reveal the other side.
+	 * The card may rotate up or down around the x-axis, or they may rotate left
+	 * or right around the y-axis.
+	 *
+	 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
+	 */
 	public class Flip
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space is if they are printed on opposite sides of a
+		 * postcard, and the card rotates left, around its y-axis, to reveal the
+		 * new screen on the back side.
+		 *
+		 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createFlipLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -26,6 +50,17 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space is if they are printed on opposite sides of a
+		 * postcard, and the card rotates right, around its y-axis, to reveal
+		 * the new screen on the back side.
+		 *
+		 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createFlipRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -38,6 +73,17 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space is if they are printed on opposite sides of a
+		 * postcard, and the card rotates up, around its x-axis, to reveal the
+		 * new screen on the back side.
+		 *
+		 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createFlipUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -50,6 +96,17 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space is if they are printed on opposite sides of a
+		 * postcard, and the card rotates down, around its x-axis, to reveal the
+		 * new screen on the back side.
+		 *
+		 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createFlipDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -63,8 +120,6 @@ package feathers.motion
 		}
 	}
 }
-
-import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.Starling;

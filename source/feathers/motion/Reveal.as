@@ -12,10 +12,31 @@ package feathers.motion
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * slides a display object out of view, animating the `x` or `y` property,
+	 * to reveal the content below it. The display object may slide up, right,
+	 * down, or left.
+	 *
+	 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
+	 */
 	public class Reveal
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * old screen out of view to the left, animating the `x` property, to
+		 * reveal the new screen under it. The new screen remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createRevealLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -42,6 +63,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * old screen out of view to the right, animating the `x` property, to
+		 * reveal the new screen under it. The new screen remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createRevealRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -68,6 +99,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * old screen up out of view, animating the `y` property, to reveal the
+		 * new screen under it. The new screen remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createRevealUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -94,6 +135,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that slides the
+		 * old screen down out of view, animating the `y` property, to reveal the
+		 * new screen under it. The new screen remains stationary.
+		 *
+		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createRevealDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -120,6 +171,9 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		private static function slideOutOldScreen(oldScreen:DisplayObject,
 			xOffset:Number, yOffset:Number, duration:Number, ease:Object,
 			tweenProperties:Object, onComplete:Function):void

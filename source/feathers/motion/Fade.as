@@ -11,10 +11,29 @@ package feathers.motion
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * animates the `alpha` property of a display object to fade it in or out.
+	 *
+	 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
+	 */
 	public class Fade
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that fades in
+		 * the new screen by animating the `alpha` property from `0.0` to `1.0`,
+		 * while the old screen remains fully opaque at a lower depth.
+		 *
+		 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createFadeInTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -46,6 +65,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that fades out
+		 * the old screen by animating the `alpha` property from `1.0` to `0.0`,
+		 * while the new screen remains fully opaque at a lower depth.
+		 *
+		 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createFadeOutTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -77,6 +106,17 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that crossfades
+		 * the screens. In other words, the old screen fades out, animating the
+		 * `alpha` property from `1.0` to `0.0`. Simultaneously, the new screen
+		 * fades in, animating its `alpha` property from `0.0` to `1.0`.
+		 *
+		 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCrossfadeTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -103,8 +143,6 @@ package feathers.motion
 		}
 	}
 }
-
-import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.Starling;

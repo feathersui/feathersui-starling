@@ -10,10 +10,31 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 
+	/**
+	 * Creates animated effects, like transitions for screen navigators, that
+	 * positions a display object in 3D space as if it is on a side of a cube,
+	 * and the cube may rotate up or down around the x-axis, or it may rotate
+	 * left or right around the y-axis..
+	 *
+	 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
+	 */
 	public class Cube
 	{
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space as if they are on two adjacent sides of a
+		 * cube, and the cube rotates left around the y-axis.
+		 *
+		 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCubeLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -26,6 +47,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space as if they are on two adjacent sides of a
+		 * cube, and the cube rotates right around the y-axis.
+		 *
+		 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCubeRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -38,6 +69,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space as if they are on two adjacent sides of a
+		 * cube, and the cube rotates up around the x-axis.
+		 *
+		 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCubeUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
@@ -50,6 +91,16 @@ package feathers.motion
 			}
 		}
 
+		/**
+		 * Creates a transition function for a screen navigator that positions
+		 * the screens in 3D space as if they are on two adjacent sides of a
+		 * cube, and the cube rotates down around the y-axis.
+		 *
+		 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
+		 * @see feathers.controls.StackScreenNavigator#pushTransition
+		 * @see feathers.controls.StackScreenNavigator#popTransition
+		 * @see feathers.controls.ScreenNavigator#transition
+		 */
 		public static function createCubeDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
