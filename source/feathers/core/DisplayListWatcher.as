@@ -20,6 +20,10 @@ package feathers.core
 	 * initializer functions to set properties, call methods, or otherwise
 	 * modify them. Useful for initializing skins and styles on UI controls.
 	 *
+	 * <p><strong>Note:</strong> This class is no longer recommended as a base
+	 * class for themes. See <a href="../../../help/custom-themes.html">Custom
+	 * Feathers themes</a> for complete details.</p>
+	 *
 	 * <p>In the example below, the <code>buttonInitializer()</code> function
 	 * will be called when a <code>Button</code> is added to the display list,
 	 * and no values are specified in its <code>styleNameList</code> that match
