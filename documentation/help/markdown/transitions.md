@@ -11,7 +11,7 @@ Feathers offers a number of classes to quickly create common transitions. Screen
 
 ## ColorFade
 
-With a [`ColorFade`](../api-reference/feathers/motion/transitions/ColorFade.html) transition, the old screen is hidden as a solid color fades in over it. Then, the solid color fades back out to show that the new screen has replaced the old screen.
+With a [`ColorFade`](../api-reference/feathers/motion/ColorFade.html) transition, the old screen is hidden as a solid color fades in over it. Then, the solid color fades back out to show that the new screen has replaced the old screen.
 
 ``` code
 var color:uint = 0xff851b;
@@ -27,7 +27,7 @@ ColorFade.createWhiteFadeTransition();
 
 ## Cover
 
-A [`Cover`](../api-reference/feathers/motion/transitions/Cover.html) transition slides the new screen into view, animating the `x` or `y` property, to cover up the old screen. The new screen may slide up, right, down, or left. The old screen remains stationary.
+A [`Cover`](../api-reference/feathers/motion/Cover.html) transition slides the new screen into view, animating the `x` or `y` property, to cover up the old screen. The new screen may slide up, right, down, or left. The old screen remains stationary.
 
 ``` code
 Cover.createCoverLeftTransition();
@@ -38,7 +38,7 @@ Cover.createCoverownTransition();
 
 ## Cube
 
-A [`Cube`](../api-reference/feathers/motion/transitions/Cube.html) transition positions the screens in 3D space as if they are on two adjacent sides of a cube. The cube may rotate up or down around the x-axis, or it may rotate left or right around the y-axis.
+A [`Cube`](../api-reference/feathers/motion/Cube.html) transition positions the screens in 3D space as if they are on two adjacent sides of a cube. The cube may rotate up or down around the x-axis, or it may rotate left or right around the y-axis.
 
 ``` code
 Cube.createCubeLeftTransition();
@@ -49,7 +49,7 @@ Cube.createCubeDownTransition();
 
 ## Fade
 
-The [`Fade`](../api-reference/feathers/motion/transitions/Fade.html) transition animates the opacity of one or both screens.
+The [`Fade`](../api-reference/feathers/motion/Fade.html) transition animates the opacity of one or both screens.
 
 ### Fade in
 
@@ -79,7 +79,7 @@ Since both screens are semi-transparent during a crossfade, the background behin
 
 ## Flip
 
-The [`Flip`](../api-reference/feathers/motion/transitions/Flip.html) transition positions the screens in 3D space is if they are printed on opposite sides of a postcard. The old screen appears on the front, and the card rotates around its center to show the new screen on the back side. The screens may rotate up or down around the x-axis, or they may rotate left or right around the y-axis.
+The [`Flip`](../api-reference/feathers/motion/Flip.html) transition positions the screens in 3D space is if they are printed on opposite sides of a postcard. The old screen appears on the front, and the card rotates around its center to show the new screen on the back side. The screens may rotate up or down around the x-axis, or they may rotate left or right around the y-axis.
 
 ``` code
 Flip.createFlipLeftTransition();
@@ -90,7 +90,7 @@ Flip.createFlipDownTransition();
 
 ## Reveal
 
-A [`Reveal`](../api-reference/feathers/motion/transitions/Reveal.html) transition slides the old screen out of view, animating the `x` or `y` property, to reveal the new screen under it. The old screen may slide up, right, down, or left. The new screen remains stationary.
+A [`Reveal`](../api-reference/feathers/motion/Reveal.html) transition slides the old screen out of view, animating the `x` or `y` property, to reveal the new screen under it. The old screen may slide up, right, down, or left. The new screen remains stationary.
 
 ``` code
 Reveal.createRevealLeftTransition();
@@ -101,7 +101,7 @@ Reveal.createRevealDownTransition();
 
 ## Slide
 
-With a [`Slide`](../api-reference/feathers/motion/transitions/Slide.html) transition, the new screen slides in from off-stage, pushing the old screen in the same direction. The screens may slide up, right, down, or left.
+With a [`Slide`](../api-reference/feathers/motion/Slide.html) transition, the new screen slides in from off-stage, pushing the old screen in the same direction. The screens may slide up, right, down, or left.
 
 ``` code
 Slide.createSlideLeftTransition();

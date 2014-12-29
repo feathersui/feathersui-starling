@@ -12,11 +12,11 @@ package feathers.examples.transitionsExplorer
 	import feathers.examples.transitionsExplorer.screens.FourWayTransitionScreen;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.motion.transitions.Cover;
-	import feathers.motion.transitions.Cube;
-	import feathers.motion.transitions.Flip;
-	import feathers.motion.transitions.Reveal;
-	import feathers.motion.transitions.Slide;
+	import feathers.motion.Cover;
+	import feathers.motion.Cube;
+	import feathers.motion.Flip;
+	import feathers.motion.Reveal;
+	import feathers.motion.Slide;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.display.Quad;

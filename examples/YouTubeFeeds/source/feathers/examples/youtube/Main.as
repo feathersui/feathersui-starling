@@ -11,7 +11,7 @@ package feathers.examples.youtube
 	import feathers.examples.youtube.screens.MainMenuScreen;
 	import feathers.examples.youtube.screens.VideoDetailsScreen;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
-	import feathers.motion.transitions.Slide;
+	import feathers.motion.Slide;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.events.Event;

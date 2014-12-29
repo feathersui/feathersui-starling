@@ -9,6 +9,8 @@ package feathers.motion.transitions
 {
 	import feathers.controls.IScreen;
 	import feathers.controls.ScreenNavigator;
+	import feathers.motion.Fade;
+	import feathers.motion.Slide;
 
 	import flash.utils.getQualifiedClassName;
 

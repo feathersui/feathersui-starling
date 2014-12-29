@@ -35,10 +35,10 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
-	import feathers.motion.transitions.Cover;
-	import feathers.motion.transitions.Reveal;
+	import feathers.motion.Cover;
+	import feathers.motion.Reveal;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
-	import feathers.motion.transitions.Slide;
+	import feathers.motion.Slide;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
