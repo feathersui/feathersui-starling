@@ -42,12 +42,12 @@ package feathers.data
 	public interface IAutoCompleteSource extends IFeathersEventDispatcher
 	{
 		/**
-		 * Loads suggestions based on the text from an <code>AutoComplete</code>
-		 * text input.
+		 * Loads suggestions based on the text entered into an
+		 * <code>AutoComplete</code> component.
 		 *
 		 * <p>If an existing <code>ListCollection</code> is passed in as the
 		 * result, all items will be removed before new items are added.</p>
 		 */
-		function load(text:String, result:ListCollection = null):void;
+		function load(textToMatch:String, suggestionsResult:ListCollection = null):void;
 	}
 }
