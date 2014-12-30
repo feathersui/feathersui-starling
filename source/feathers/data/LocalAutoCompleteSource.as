@@ -39,10 +39,19 @@ package feathers.data
 	 * Creates a list of suggestions for an <code>AutoComplete</code> component
 	 * by searching through items in a <code>ListCollection</code>.
 	 *
+	 * @see feathers.controls.AutoComplete
 	 * @see feathers.data.ListCollection
 	 */
 	public class LocalAutoCompleteSource extends EventDispatcher implements IAutoCompleteSource
 	{
+		/**
+		 * @private
+		 */
+		protected static function defaultCompareFunction(item:Object, textToMatch:String):Boolean
+		{
+			return item.toString().toLowerCase().indexOf(textToMatch.toLowerCase()) >= 0;
+		}
+
 		/**
 		 * Constructor.
 		 */
@@ -74,9 +83,41 @@ package feathers.data
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _compareFunction:Function = defaultCompareFunction;
+
+		/**
+		 * A function used to compare items from the data provider with the
+		 * string passed to the <code>load()</code> function in order to
+		 * generate a list of suggestions. The function should return
+		 * <code>true</code> if the item should be included in the list of
+		 * suggestions.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object, textToMatch:String ):Boolean</pre>
+		 */
+		public function get compareFunction():Function
+		{
+			return this._compareFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set compareFunction(value:Function):void
+		{
+			if(value === null)
+			{
+				value = defaultCompareFunction;
+			}
+			this._compareFunction = value;
+		}
+
+		/**
 		 * @copy feathers.data.IAutoCompleteSource#load()
 		 */
-		public function load(text:String, result:ListCollection = null):void
+		public function load(textToMatch:String, result:ListCollection = null):void
 		{
 			if(result)
 			{
@@ -86,17 +127,18 @@ package feathers.data
 			{
 				result = new ListCollection();
 			}
-			if(!this._dataProvider || text.length == 0)
+			if(!this._dataProvider || textToMatch.length == 0)
 			{
 				this.dispatchEventWith(Event.COMPLETE, false, result);
 				return;
 			}
+			var compareFunction:Function = this._compareFunction;
 			for(var i:int = 0; i < this._dataProvider.length; i++)
 			{
 				var item:Object = this._dataProvider.getItemAt(i);
-				if(item.toString().toLowerCase().indexOf(text.toLowerCase()) >= 0)
+				if(compareFunction(item, textToMatch))
 				{
-					result.push(item);
+					result.addItem(item);
 				}
 			}
 			this.dispatchEventWith(Event.COMPLETE, false, result);
