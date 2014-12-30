@@ -589,6 +589,7 @@ package feathers.controls.text
 				this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
 				this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
 				this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
+				this._nativeFocus.removeEventListener(flash.events.Event.SELECT_ALL, nativeStage_selectAllHandler);
 			}
 			this._nativeFocus = value;
 			if(this._nativeFocus)
@@ -596,6 +597,7 @@ package feathers.controls.text
 				this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
 				this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
 				this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
+				this._nativeFocus.addEventListener(flash.events.Event.SELECT_ALL, nativeStage_selectAllHandler, false, 0, true);
 			}
 		}
 
@@ -1148,9 +1150,9 @@ package feathers.controls.text
 			{
 				return;
 			}
-			//ignore cut, copy, and paste
+			//ignore select all, cut, copy, and paste
 			var charCode:uint = event.charCode;
-			if(event.ctrlKey && (charCode == 99 || charCode == 118 || charCode == 120)) //c, p, and x
+			if(event.ctrlKey && (charCode == 97 || charCode == 99 || charCode == 118 || charCode == 120)) //a, c, p, and x
 			{
 				return;
 			}
@@ -1303,10 +1305,6 @@ package feathers.controls.text
 						newIndex = this._selectionBeginIndex - 1;
 					}
 				}
-				else if(event.ctrlKey && charCode == 97) //a
-				{
-					this.selectRange(0, currentValue.length);
-				}
 				else if(charCode >= 32 && !event.ctrlKey && !event.altKey) //ignore control characters
 				{
 					if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
@@ -1323,6 +1321,18 @@ package feathers.controls.text
 			{
 				this.selectRange(newIndex, newIndex);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeStage_selectAllHandler(event:flash.events.Event):void
+		{
+			if(!this._isEditable || !this._isEnabled)
+			{
+				return;
+			}
+			this.selectRange(0, this._text.length);
 		}
 
 		/**
