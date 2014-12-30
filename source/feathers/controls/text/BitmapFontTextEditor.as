@@ -670,9 +670,9 @@ package feathers.controls.text
 				{
 					this._cursorSkin.visible = false;
 				}
-				else if(this._hasFocus)
+				else
 				{
-					this._cursorSkin.visible = this._selectionBeginIndex >= 0;
+					this._cursorSkin.visible = this._hasFocus;
 				}
 				this._selectionSkin.visible = false;
 			}
