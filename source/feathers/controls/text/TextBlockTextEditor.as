@@ -434,6 +434,22 @@ package feathers.controls.text
 			{
 				super.text = value;
 			}
+			var textLength:int = this._text.length;
+			//we need to account for the possibility that the text is in the
+			//middle of being selected when it changes
+			if(this._selectionAnchorIndex > textLength)
+			{
+				this._selectionAnchorIndex = textLength;
+			}
+			//then, we need to make sure the selected range is still valid
+			if(this._selectionBeginIndex > textLength)
+			{
+				this.selectRange(textLength, textLength);
+			}
+			else if(this._selectionEndIndex > textLength)
+			{
+				this.selectRange(this._selectionBeginIndex, textLength);
+			}
 			this.dispatchEventWith(starling.events.Event.CHANGE);
 		}
 
