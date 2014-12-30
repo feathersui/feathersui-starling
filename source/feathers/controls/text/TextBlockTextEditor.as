@@ -1220,8 +1220,8 @@ package feathers.controls.text
 					}
 					else if(this._selectionBeginIndex > 0)
 					{
-						this.text = currentValue.substr(0, this._selectionBeginIndex - 1) + currentValue.substr(this._selectionEndIndex);
 						newIndex = this._selectionBeginIndex - 1;
+						this.text = currentValue.substr(0, this._selectionBeginIndex - 1) + currentValue.substr(this._selectionEndIndex);
 					}
 				}
 				else if(charCode >= 32 && !event.ctrlKey && !event.altKey) //ignore control characters
