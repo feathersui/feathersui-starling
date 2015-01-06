@@ -14,6 +14,9 @@
 
 	<target name="help" depends="-prepare,-help,-cleanup" description="builds help files only"/>
 
+	<!-- builds help files to deploy to website -->
+	<target name="web-help" depends="-web,-prepare,-help,-cleanup"/>
+
 	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
 
 	<target name="full" depends="-feathers,-docs,-themes,-includes,-cleanup" description="build everything">
@@ -39,7 +42,12 @@
 		</delete>
 	</target>
 
+	<target name="-web">
+		<property name="web" value="true"/>
+	</target>
+
 	<target name="-prepare">
+		<property name="web" value=""/>
 		<delete dir="${output.path}"/>
 	</target>
 
@@ -125,6 +133,7 @@
 			<arg value="--css=css/feathers-help.css"/>
 			<arg value="--variable=title-suffix:Feathers ${feathers.version} Help"/>
 			<arg value="--variable=lang:en"/>
+			<arg value="--variable=web:${web}"/>
 			<arg value="-o"/>
 			<targetfile/>
 			<fileset dir="${help.root}/markdown" includes="*.md" />
