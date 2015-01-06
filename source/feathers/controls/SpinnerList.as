@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.core.IValidating;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.IVirtualLayout;
@@ -108,6 +109,48 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _selectionOverlaySkin:DisplayObject;
+
+		/**
+		 * An optional skin to display in the horizontal or vertical center of
+		 * the list to highlight the currently selected item. If the list
+		 * scrolls vertically, the <code>selectionOverlaySkin</code> will fill
+		 * the entire width of the list, and it will be positioned in the
+		 * vertical center. If the list scrolls horizontally, the
+		 * <code>selectionOverlaySkin</code> will fill the entire height of the
+		 * list, and it will be positioned in the horizontal center.
+		 *
+		 * @default null
+		 */
+		public function get selectionOverlaySkin():DisplayObject
+		{
+			return this._selectionOverlaySkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionOverlaySkin(value:DisplayObject):void
+		{
+			if(this._selectionOverlaySkin == value)
+			{
+				return;
+			}
+			if(this._selectionOverlaySkin && this._selectionOverlaySkin.parent == this)
+			{
+				this.removeRawChildInternal(this._selectionOverlaySkin);
+			}
+			this._selectionOverlaySkin = value;
+			if(this._selectionOverlaySkin)
+			{
+				this.addRawChildInternal(this._selectionOverlaySkin);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(this._layout == null)
@@ -169,6 +212,26 @@ package feathers.controls
 				}
 			}
 			super.handlePendingScroll();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutChildren():void
+		{
+			super.layoutChildren();
+
+			if(this._selectionOverlaySkin)
+			{
+				if(this._selectionOverlaySkin is IValidating)
+				{
+					IValidating(this._selectionOverlaySkin).validate();
+				}
+				this._selectionOverlaySkin.width = this.actualWidth;
+				this._selectionOverlaySkin.height = this.actualPageHeight;
+				this._selectionOverlaySkin.x = 0;
+				this._selectionOverlaySkin.y = Math.round((this.actualHeight - this.actualPageHeight) / 2);
+			}
 		}
 
 		/**
