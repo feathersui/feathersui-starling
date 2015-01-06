@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html$if(lang)$ lang="$lang$"$endif$>
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<meta charset="utf-8">
+	<meta name="generator" content="pandoc">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 $for(author-meta)$
-  <meta name="author" content="$author-meta$">
+	<meta name="author" content="$author-meta$">
 $endfor$
 $if(date-meta)$
-  <meta name="dcterms.date" content="$date-meta$">
+	<meta name="dcterms.date" content="$date-meta$">
 $endif$
-  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$$if(title-suffix)$ - $title-suffix$$endif$</title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-$if(quotes)$
-  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
-$endif$
+	<title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$$if(title-suffix)$ - $title-suffix$$endif$</title>
+	<style type="text/css">code{white-space: pre;}</style>
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 $if(highlighting-css)$
-  <style type="text/css">
+	<style type="text/css">
 $highlighting-css$
-  </style>
+	</style>
 $endif$
 $for(css)$
-  <link rel="stylesheet" href="$css$">
+	<link rel="stylesheet" href="$css$">
 $endfor$
 $if(math)$
-  $math$
+	$math$
 $endif$
 $for(header-includes)$
-  $header-includes$
+	$header-includes$
 $endfor$
-<script type="text/javascript" src="//use.typekit.net/tsu5tna.js"></script>
-<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+$if(web)$
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-34854617-1']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+	<script type="text/javascript" src="//use.typekit.net/tsu5tna.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+$endif$
 </head>
 <body>
 $for(include-before)$
