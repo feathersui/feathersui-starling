@@ -689,6 +689,12 @@ package feathers.controls.supportClasses
 			if(typicalItem !== null)
 			{
 				var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
+				if(typicalRenderer)
+				{
+					//the index may have changed if items were added, removed or
+					//reordered in the data provider
+					typicalRenderer.index = typicalItemIndex;
+				}
 				if(!typicalRenderer && this._typicalItemRenderer)
 				{
 					//we can reuse the typical item renderer if the old typical item
@@ -923,7 +929,8 @@ package feathers.controls.supportClasses
 				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
 				if(renderer)
 				{
-					//the index may have changed if data was added or removed
+					//the index may have changed if items were added, removed or
+					//reordered in the data provider
 					renderer.index = index;
 					//if this item renderer used to be the typical item
 					//renderer, but it isn't anymore, it may have been set invisible!

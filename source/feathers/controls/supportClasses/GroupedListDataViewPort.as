@@ -1198,6 +1198,13 @@ package feathers.controls.supportClasses
 				{
 					typicalItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
 				}
+				if(typicalItemRenderer)
+				{
+					//the indices may have changed if items were added, removed,
+					//or reordered in the data provider
+					typicalItemRenderer.groupIndex = typicalItemGroupIndex;
+					typicalItemRenderer.itemIndex = typicalItemItemIndex;
+				}
 				if(!typicalItemRenderer && !newTypicalItemIsInDataProvider && this._typicalItemRenderer)
 				{
 					//can use reuse the old item renderer instance
@@ -1739,6 +1746,14 @@ package feathers.controls.supportClasses
 				{
 					if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
 					{
+						if(this._typicalItemRenderer && this._typicalItemIsInDataProvider &&
+							this._typicalItemRenderer.groupIndex === i &&
+							this._typicalItemRenderer.itemIndex === j)
+						{
+							//the indices may have changed if items were added, removed,
+							//or reordered in the data provider
+							this._typicalItemRenderer.layoutIndex = currentIndex;
+						}
 						this._layoutItems[currentIndex] = null;
 					}
 					else
@@ -1839,7 +1854,8 @@ package feathers.controls.supportClasses
 			var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(rendererMap[item]);
 			if(itemRenderer)
 			{
-				//the indices may have changed if data was added or removed
+				//the indices may have changed if items were added, removed,
+				//or reordered in the data provider
 				itemRenderer.groupIndex = groupIndex;
 				itemRenderer.itemIndex = itemIndex;
 				itemRenderer.layoutIndex = layoutIndex;
