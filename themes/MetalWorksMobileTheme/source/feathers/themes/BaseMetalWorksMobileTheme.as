@@ -48,6 +48,7 @@ package feathers.themes
 	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
+	import feathers.controls.SpinnerList;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
@@ -65,6 +66,7 @@ package feathers.themes
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.display.Scale3Image;
+	import feathers.display.Scale9Image;
 	import feathers.display.Scale9Image;
 	import feathers.display.TiledImage;
 	import feathers.layout.HorizontalLayout;
@@ -151,11 +153,12 @@ package feathers.themes
 		protected static const BACK_BUTTON_SCALE3_REGION2:Number = 6;
 		protected static const FORWARD_BUTTON_SCALE3_REGION1:Number = 6;
 		protected static const FORWARD_BUTTON_SCALE3_REGION2:Number = 6;
-		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 2, 82);
+		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(3, 0, 2, 82);
 		protected static const INSET_ITEM_RENDERER_FIRST_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
 		protected static const INSET_ITEM_RENDERER_LAST_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 3, 75);
 		protected static const INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 62);
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(19, 19, 50, 50);
+		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(3, 9, 1, 70);
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
 
@@ -164,6 +167,12 @@ package feathers.themes
 		 * The theme's custom style name for item renderers in a PickerList.
 		 */
 		protected static const THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-picker-list-item-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for item renderers in a SpinnerList.
+		 */
+		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-spinner-list-item-renderer";
 
 		/**
 		 * @private
@@ -517,6 +526,7 @@ package feathers.themes
 		protected var tabSelectedSkinTextures:Scale9Textures;
 		protected var tabSelectedDisabledSkinTextures:Scale9Textures;
 		protected var pickerListItemSelectedIconTexture:Texture;
+		protected var spinnerListSelectionOverlaySkinTextures:Scale9Textures;
 		protected var radioUpIconTexture:Texture;
 		protected var radioDownIconTexture:Texture;
 		protected var radioDisabledIconTexture:Texture;
@@ -724,6 +734,8 @@ package feathers.themes
 			this.pickerListButtonIconDisabledTexture = this.atlas.getTexture("picker-list-icon-disabled");
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
 
+			this.spinnerListSelectionOverlaySkinTextures = new Scale9Textures(this.atlas.getTexture("spinner-list-selection-overlay-skin"), SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID);
+
 			this.radioUpIconTexture = backgroundSkinTexture;
 			this.radioDownIconTexture = backgroundDownSkinTexture;
 			this.radioDisabledIconTexture = backgroundDisabledSkinTexture;
@@ -818,6 +830,8 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			//the picker list has a custom item renderer name defined by the theme
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
+			//the spinner list has a custom item renderer name defined by the theme
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 
@@ -883,6 +897,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK, this.setHorizontalSliderMaximumTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK, this.setVerticalSliderMaximumTrackStyles);
+
+			//spinner list
+			this.getStyleProviderForClass(SpinnerList).defaultStyleFunction = this.setSpinnerListStyles;
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
@@ -1529,7 +1546,7 @@ package feathers.themes
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.gutterSize;
 			renderer.minGap = this.gutterSize;
@@ -1745,8 +1762,8 @@ package feathers.themes
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
-			renderer.paddingRight = this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
+			renderer.paddingRight = this.gutterSize;
 			renderer.gap = Number.POSITIVE_INFINITY;
 			renderer.minGap = this.gutterSize;
 			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
@@ -2005,6 +2022,52 @@ package feathers.themes
 			skinSelector.displayObjectProperties.height = this.wideControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
 			track.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// SpinnerList
+	//-------------------------
+
+		protected function setSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setListStyles(list);
+			list.itemRendererName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
+			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures);
+		}
+
+		protected function setSpinnerListItemRendererStyles(renderer:DefaultListItemRenderer):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
+			skinSelector.displayObjectProperties =
+			{
+				width: this.gridSize,
+				height: this.gridSize,
+				textureScale: this.scale
+			};
+			renderer.stateToSkinFunction = skinSelector.updateValue;
+
+			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
+
+			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.paddingTop = this.smallGutterSize;
+			renderer.paddingBottom = this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
+			renderer.paddingRight = this.gutterSize;
+			renderer.gap = this.gutterSize;
+			renderer.minGap = this.gutterSize;
+			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = this.gutterSize;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.minWidth = this.gridSize;
+			renderer.minHeight = this.gridSize;
+			renderer.minTouchWidth = this.gridSize;
+			renderer.minTouchHeight = this.gridSize;
+
+			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
+			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
 	//-------------------------
