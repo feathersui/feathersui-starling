@@ -46,7 +46,7 @@ package feathers.layout
 	 *
 	 * @see ../../../help/vertical-spinner-layout.html How to use VerticalSpinnerLayout with the Feathers List component
 	 */
-	public class VerticalSpinnerLayout extends EventDispatcher implements ITrimmedVirtualLayout
+	public class VerticalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{
 		/**
 		 * The items will be aligned to the left of the bounds.
@@ -509,6 +509,14 @@ package feathers.layout
 			}
 			this._typicalItemHeight = value;
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @copy feathers.layout.ISpinnerLayout#snapInterval
+		 */
+		public function get snapInterval():Number
+		{
+			return this._typicalItem.height + this._gap;
 		}
 
 		/**

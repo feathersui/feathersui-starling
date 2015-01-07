@@ -10,8 +10,10 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.IVirtualLayout;
+	import feathers.layout.ILayout;
+	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.VerticalSpinnerLayout;
+	import feathers.skins.IStyleProvider;
 
 	import flash.ui.Keyboard;
 
@@ -55,6 +57,15 @@ package feathers.controls
 	public class SpinnerList extends List
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>SpinnerList</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function SpinnerList()
@@ -64,6 +75,18 @@ package feathers.controls
 			this.decelerationRate = Scroller.DECELERATION_RATE_FAST;
 			this.addEventListener(Event.TRIGGERED, spinnerList_triggeredHandler);
 			this.addEventListener(FeathersEventType.SCROLL_COMPLETE, spinnerList_scrollCompleteHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			if(SpinnerList.globalStyleProvider)
+			{
+				return SpinnerList.globalStyleProvider;
+			}
+			return List.globalStyleProvider;
 		}
 
 		/**
@@ -88,6 +111,18 @@ package feathers.controls
 				throw new ArgumentError("SpinnerList requires single selection.");
 			}
 			super.snapToPages = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set layout(value:ILayout):void
+		{
+			if(value && !(value is ISpinnerLayout))
+			{
+				throw new ArgumentError("SpinnerList requires layouts to implement the ISpinnerLayout interface.");
+			}
+			super.layout = value;
 		}
 
 		/**
@@ -182,14 +217,13 @@ package feathers.controls
 		override protected function refreshMinAndMaxScrollPositions():void
 		{
 			super.refreshMinAndMaxScrollPositions();
-			var typicalItem:DisplayObject = IVirtualLayout(this._layout).typicalItem;
 			if(this._maxVerticalScrollPosition != this._minVerticalScrollPosition)
 			{
-				this.actualPageHeight = this.explicitPageHeight = typicalItem.height;
+				this.actualPageHeight = ISpinnerLayout(this._layout).snapInterval;
 			}
 			else if(this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition)
 			{
-				this.actualPageWidth = this.explicitPageWidth = typicalItem.width;
+				this.actualPageWidth = ISpinnerLayout(this._layout).snapInterval;
 			}
 		}
 
