@@ -679,6 +679,10 @@ package feathers.layout
 			}
 
 			var canRepeatItems:Boolean = totalHeight > availableHeight;
+			if(canRepeatItems)
+			{
+				totalHeight += gap;
+			}
 
 			//in this section, we handle vertical alignment. the selected item
 			//needs to be centered vertically.
