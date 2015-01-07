@@ -31,6 +31,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ScrollTextScreen;
 	import feathers.examples.componentsExplorer.screens.SliderScreen;
 	import feathers.examples.componentsExplorer.screens.SliderSettingsScreen;
+	import feathers.examples.componentsExplorer.screens.SpinnerListScreen;
 	import feathers.examples.componentsExplorer.screens.TabBarScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
@@ -66,6 +67,7 @@ package feathers.examples.componentsExplorer
 		private static const PROGRESS_BAR:String = "progressBar";
 		private static const SCROLL_TEXT:String = "scrollText";
 		private static const SLIDER:String = "slider";
+		private static const SPINNER_LIST:String = "spinnerList";
 		private static const SLIDER_SETTINGS:String = "sliderSettings";
 		private static const TAB_BAR:String = "tabBar";
 		private static const TEXT_INPUT:String = "textInput";
@@ -223,6 +225,10 @@ package feathers.examples.componentsExplorer
 			sliderSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(SLIDER_SETTINGS, sliderSettingsItem);
 
+			var spinnerListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SpinnerListScreen);
+			spinnerListItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(SPINNER_LIST, spinnerListItem);
+
 			var tabBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TabBarScreen);
 			tabBarItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(TAB_BAR, tabBarItem);
@@ -267,6 +273,7 @@ package feathers.examples.componentsExplorer
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PROGRESS_BAR, PROGRESS_BAR);
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SCROLL_TEXT, SCROLL_TEXT);
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SLIDER, SLIDER);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SPINNER_LIST, SPINNER_LIST);
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TAB_BAR, TAB_BAR);
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TEXT_INPUT, TEXT_INPUT);
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TOGGLES, TOGGLES);
