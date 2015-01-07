@@ -191,7 +191,7 @@ package feathers.examples.componentsExplorer.screens
 
 		private function list_changeHandler(event:Event):void
 		{
-			trace("GroupedList onChange:", this._list.selectedGroupIndex, this._list.selectedItemIndex);
+			trace("GroupedList change:", this._list.selectedGroupIndex, this._list.selectedItemIndex);
 		}
 	}
 }
