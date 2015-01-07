@@ -31,6 +31,7 @@ package feathers.examples.componentsExplorer.screens
 	[Event(name="showProgressBar",type="starling.events.Event")]
 	[Event(name="showScrollText",type="starling.events.Event")]
 	[Event(name="showSlider",type="starling.events.Event")]
+	[Event(name="showSpinnerList",type="starling.events.Event")]
 	[Event(name="showTabBar",type="starling.events.Event")]
 	[Event(name="showTextInput",type="starling.events.Event")]
 	[Event(name="showToggles",type="starling.events.Event")]
@@ -51,6 +52,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_PROGRESS_BAR:String = "showProgressBar";
 		public static const SHOW_SCROLL_TEXT:String = "showScrollText";
 		public static const SHOW_SLIDER:String = "showSlider";
+		public static const SHOW_SPINNER_LIST:String = "showSpinnerList";
 		public static const SHOW_TAB_BAR:String = "showTabBar";
 		public static const SHOW_TEXT_INPUT:String = "showTextInput";
 		public static const SHOW_TOGGLES:String = "showToggles";
@@ -91,6 +93,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Progress Bar", event: SHOW_PROGRESS_BAR },
 				{ label: "Scroll Text", event: SHOW_SCROLL_TEXT },
 				{ label: "Slider", event: SHOW_SLIDER},
+				{ label: "Spinner List", event: SHOW_SPINNER_LIST },
 				{ label: "Tab Bar", event: SHOW_TAB_BAR },
 				{ label: "Text Input", event: SHOW_TEXT_INPUT },
 				{ label: "Toggles", event: SHOW_TOGGLES },
