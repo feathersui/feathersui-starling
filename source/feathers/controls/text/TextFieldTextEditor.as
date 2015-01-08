@@ -309,7 +309,7 @@ package feathers.controls.text
 			{
 				gutterDimensionsOffset = 2;
 			}
-			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
+			return gutterDimensionsOffset + this.textSnapshot.y + this.textField.getLineMetrics(0).ascent;
 		}
 
 		/**
@@ -920,15 +920,15 @@ package feathers.controls.text
 					{
 						gutterPositionOffset = 0;
 					}
-					var positionX:Number = position.x + gutterPositionOffset;
-					var positionY:Number = position.y + gutterPositionOffset;
+					var positionX:Number = position.x - this.textSnapshot.x + gutterPositionOffset;
+					var positionY:Number = position.y - this.textSnapshot.y + gutterPositionOffset;
 					if(positionX < 0)
 					{
 						this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._pendingSelectionBeginIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
+						this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, positionY);
 						if(this._pendingSelectionBeginIndex < 0)
 						{
 							if(this._multiline)
@@ -951,7 +951,7 @@ package feathers.controls.text
 							}
 							else
 							{
-								this._pendingSelectionBeginIndex = this.textField.getCharIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
+								this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
 								if(this._pendingSelectionBeginIndex < 0)
 								{
 									this._pendingSelectionBeginIndex = this._text.length;
@@ -1307,6 +1307,14 @@ package feathers.controls.text
 				}
 			}
 			this.doPendingActions();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getSelectionIndexAtPoint(pointX:Number, pointY:Number):int
+		{
+			return this.textField.getCharIndexAtPoint(pointX, pointY);
 		}
 
 		/**

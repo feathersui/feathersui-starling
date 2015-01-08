@@ -280,14 +280,9 @@ package feathers.controls.text
 		 */
 		public function set horizontalScrollPosition(value:Number):void
 		{
-			if(this._horizontalScrollPosition == value)
-			{
-				return;
-			}
+			//this value is basically ignored because the text does not scroll
+			//horizontally. instead, it wraps.
 			this._horizontalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			//hack because the superclass doesn't know about the scroll flag
-			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
@@ -319,6 +314,151 @@ package feathers.controls.text
 		}
 
 		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the view port's top edge and
+		 * the view port's content.
+		 *
+		 * @default 0
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the view port's right edge and
+		 * the view port's content.
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the view port's bottom edge and
+		 * the view port's content.
+		 *
+		 * @default 0
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the view port's left edge and
+		 * the view port's content.
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function measure(result:Point = null):Point
@@ -339,10 +479,10 @@ package feathers.controls.text
 			}
 
 			var newWidth:Number = this._visibleWidth;
-			this.measureTextField.width = newWidth + gutterDimensionsOffset;
+			this.measureTextField.width = newWidth - this._paddingLeft - this._paddingRight + gutterDimensionsOffset;
 			if(needsWidth)
 			{
-				newWidth = this.measureTextField.width - gutterDimensionsOffset;
+				newWidth = this.measureTextField.width + this._paddingLeft + this._paddingRight - gutterDimensionsOffset;
 				if(newWidth < this._minVisibleWidth)
 				{
 					newWidth = this._minVisibleWidth;
@@ -352,7 +492,7 @@ package feathers.controls.text
 					newWidth = this._maxVisibleWidth;
 				}
 			}
-			var newHeight:Number = this.measureTextField.height - gutterDimensionsOffset;
+			var newHeight:Number = this.measureTextField.height + this._paddingTop + this._paddingBottom - gutterDimensionsOffset;
 			if(this._useGutter)
 			{
 				newHeight += 4;
@@ -367,30 +507,39 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override protected function getSelectionIndexAtPoint(pointX:Number, pointY:Number):int
+		{
+			pointY += this._verticalScrollPosition;
+			return this.textField.getCharIndexAtPoint(pointX, pointY);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function refreshSnapshotParameters():void
 		{
-			var textFieldWidth:Number = this._visibleWidth;
+			var textFieldWidth:Number = this._visibleWidth - this._paddingLeft - this._paddingRight;
 			if(textFieldWidth !== textFieldWidth) //isNaN
 			{
 				if(this._maxVisibleWidth < Number.POSITIVE_INFINITY)
 				{
-					textFieldWidth = this._maxVisibleWidth;
+					textFieldWidth = this._maxVisibleWidth - this._paddingLeft - this._paddingRight;
 				}
 				else
 				{
-					textFieldWidth = this._minVisibleWidth;
+					textFieldWidth = this._minVisibleWidth - this._paddingLeft - this._paddingRight;
 				}
 			}
-			var textFieldHeight:Number = this._visibleHeight;
+			var textFieldHeight:Number = this._visibleHeight - this._paddingTop - this._paddingBottom;
 			if(textFieldHeight !== textFieldHeight) //isNaN
 			{
 				if(this._maxVisibleHeight < Number.POSITIVE_INFINITY)
 				{
-					textFieldHeight = this._maxVisibleHeight;
+					textFieldHeight = this._maxVisibleHeight - this._paddingTop - this._paddingBottom;
 				}
 				else
 				{
-					textFieldHeight = this._minVisibleHeight;
+					textFieldHeight = this._minVisibleHeight - this._paddingTop - this._paddingBottom;
 				}
 			}
 
@@ -426,8 +575,8 @@ package feathers.controls.text
 				gutterDimensionsOffset = 0;
 			}
 			this._ignoreScrolling = true;
-			this.textField.width = this._visibleWidth + gutterDimensionsOffset;
-			var textFieldHeight:Number = this._visibleHeight + gutterDimensionsOffset;
+			this.textField.width = this._visibleWidth - this._paddingLeft - this._paddingRight + gutterDimensionsOffset;
+			var textFieldHeight:Number = this._visibleHeight - this._paddingTop - this._paddingBottom + gutterDimensionsOffset;
 			if(this.textField.height != textFieldHeight)
 			{
 				this.textField.height = textFieldHeight;
@@ -469,8 +618,8 @@ package feathers.controls.text
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			var scaleX:Number = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			var scaleY:Number = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
-			var offsetX:Number = Math.round(this._horizontalScrollPosition * scaleX);
-			var offsetY:Number = Math.round(this._verticalScrollPosition * scaleY);
+			var offsetX:Number = Math.round(this._paddingLeft * scaleX);
+			var offsetY:Number = Math.round((this._paddingTop + this._verticalScrollPosition) * scaleY);
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var gutterPositionOffset:Number = 2;
 			if(this._useGutter)
@@ -494,8 +643,8 @@ package feathers.controls.text
 				return;
 			}
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this.textSnapshot.x = this._horizontalScrollPosition + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-			this.textSnapshot.y = this._verticalScrollPosition + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+			this.textSnapshot.x = this._paddingLeft + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+			this.textSnapshot.y = this._paddingTop + this._verticalScrollPosition + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 		}
 
 		/**
