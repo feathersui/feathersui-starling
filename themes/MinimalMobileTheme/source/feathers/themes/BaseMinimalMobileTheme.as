@@ -48,6 +48,7 @@ package feathers.themes
 	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
+	import feathers.controls.SpinnerList;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
@@ -110,6 +111,12 @@ package feathers.themes
 
 		/**
 		 * @private
+		 * The theme's custom style name for item renderers in a SpinnerList.
+		 */
+		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "minimal-mobile-spinner-list-item-renderer";
+
+		/**
+		 * @private
 		 * The theme's custom style name for the minimum track of a horizontal slider.
 		 */
 		protected static const THEME_STYLE_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "minimal-mobile-horizontal-slider-minimum-track";
@@ -129,6 +136,7 @@ package feathers.themes
 		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(25, 21, 1, 1);
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(0, 5, 3, 1);
 		protected static const LIST_ITEM_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
+		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(0, 5, 1, 1);
 		protected static const BACK_BUTTON_SCALE_REGION1:int = 30;
 		protected static const BACK_BUTTON_SCALE_REGION2:int = 1;
 		protected static const FORWARD_BUTTON_SCALE_REGION1:int = 9;
@@ -331,6 +339,7 @@ package feathers.themes
 		protected var listItemDownTextures:Scale9Textures;
 		protected var listItemSelectedTextures:Scale9Textures;
 		protected var pickerListItemSelectedIconTexture:Texture;
+		protected var spinnerListSelectionOverlaySkinTextures:Scale9Textures;
 
 		protected var headerSkinTextures:Scale9Textures;
 
@@ -546,6 +555,7 @@ package feathers.themes
 			this.listItemDownTextures = new Scale9Textures(this.atlas.getTexture("list-item-down"), LIST_ITEM_SCALE_9_GRID);
 			this.listItemSelectedTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected"), LIST_ITEM_SCALE_9_GRID);
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
+			this.spinnerListSelectionOverlaySkinTextures = new Scale9Textures(this.atlas.getTexture("spinner-list-selection-overlay-skin"), SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID);
 
 			this.headerSkinTextures = new Scale9Textures(this.atlas.getTexture("header-skin"), HEADER_SCALE_9_GRID);
 
@@ -640,6 +650,7 @@ package feathers.themes
 			//item renderers for lists
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
@@ -703,6 +714,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Slider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSliderThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
+
+			//spinner list
+			this.getStyleProviderForClass(SpinnerList).defaultStyleFunction = this.setSpinnerListStyles;
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
@@ -1701,6 +1715,45 @@ package feathers.themes
 			thumb.minTouchHeight = this.gridSize;
 
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// SpinnerList
+	//-------------------------
+
+		protected function setSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setListStyles(list);
+			list.itemRendererName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
+			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures);
+		}
+
+		protected function setSpinnerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		{
+			renderer.defaultLabelProperties.textFormat = this.disabledTextFormat;
+			renderer.defaultSelectedLabelProperties.textFormat = this.primaryTextFormat;
+			renderer.disabledLabelProperties.textFormat = this.disabledTextFormat;
+			renderer.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			renderer.paddingTop = this.smallGutterSize;
+			renderer.paddingBottom = this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
+			renderer.paddingRight = this.gutterSize;
+			renderer.gap = Number.POSITIVE_INFINITY;
+			renderer.minGap = this.gutterSize;
+			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
+			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = this.gutterSize;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.minWidth = this.gridSize;
+			renderer.minHeight = this.gridSize;
+			renderer.minTouchWidth = this.gridSize;
+			renderer.minTouchHeight = this.gridSize;
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
+			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
 	//-------------------------
