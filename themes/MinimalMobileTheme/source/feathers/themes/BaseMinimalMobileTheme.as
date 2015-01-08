@@ -1804,6 +1804,7 @@ package feathers.themes
 
 			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
 			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			textArea.textEditorProperties.padding = this.smallGutterSize;
 
 			textArea.padding = this.smallGutterSize;
 
@@ -1813,7 +1814,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.wideControlSize,
-				height: this.controlSize * 2,
+				height: this.wideControlSize,
 				textureScale: this.scale
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
