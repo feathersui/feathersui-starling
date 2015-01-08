@@ -1867,6 +1867,10 @@ package feathers.themes
 
 			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
 			textArea.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			textArea.textEditorProperties.paddingTop = this.extraSmallGutterSize;
+			textArea.textEditorProperties.paddingRight = this.smallGutterSize;
+			textArea.textEditorProperties.paddingBottom = this.extraSmallGutterSize;
+			textArea.textEditorProperties.paddingLeft = this.smallGutterSize;
 
 			textArea.padding = this.borderSize;
 

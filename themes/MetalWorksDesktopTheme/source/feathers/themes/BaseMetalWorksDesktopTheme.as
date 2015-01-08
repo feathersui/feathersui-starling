@@ -2202,6 +2202,10 @@ package feathers.themes
 
 			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
 			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			textArea.textEditorProperties.paddingTop = this.extraSmallGutterSize;
+			textArea.textEditorProperties.paddingRight = this.smallGutterSize;
+			textArea.textEditorProperties.paddingBottom = this.extraSmallGutterSize;
+			textArea.textEditorProperties.paddingLeft = this.smallGutterSize;
 		}
 
 	//-------------------------

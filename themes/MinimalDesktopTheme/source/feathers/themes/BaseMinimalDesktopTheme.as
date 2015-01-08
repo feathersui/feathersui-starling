@@ -1861,6 +1861,10 @@ package feathers.themes
 
 			textArea.textEditorProperties.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, PRIMARY_TEXT_COLOR);
 			textArea.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
+			textArea.textEditorProperties.paddingTop = this.extraSmallGutterSize;
+			textArea.textEditorProperties.paddingRight = this.smallGutterSize;
+			textArea.textEditorProperties.paddingBottom = this.extraSmallGutterSize;
+			textArea.textEditorProperties.paddingLeft = this.smallGutterSize;
 
 			textArea.padding = this.borderSize;
 
