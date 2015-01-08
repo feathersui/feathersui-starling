@@ -261,10 +261,20 @@ package feathers.controls
 				{
 					IValidating(this._selectionOverlaySkin).validate();
 				}
-				this._selectionOverlaySkin.width = this.actualWidth;
-				this._selectionOverlaySkin.height = this.actualPageHeight;
-				this._selectionOverlaySkin.x = 0;
-				this._selectionOverlaySkin.y = Math.round((this.actualHeight - this.actualPageHeight) / 2);
+				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+				{
+					this._selectionOverlaySkin.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+					this._selectionOverlaySkin.height = this.actualPageHeight;
+					this._selectionOverlaySkin.x = this._leftViewPortOffset;
+					this._selectionOverlaySkin.y = Math.round(this._topViewPortOffset + (this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - this.actualPageHeight) / 2);
+				}
+				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+				{
+					this._selectionOverlaySkin.width = this.actualPageWidth;
+					this._selectionOverlaySkin.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+					this._selectionOverlaySkin.x = Math.round(this._leftViewPortOffset + (this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - this.actualPageWidth) / 2);
+					this._selectionOverlaySkin.y = this._topViewPortOffset;
+				}
 			}
 		}
 
