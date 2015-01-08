@@ -63,7 +63,6 @@ package feathers.examples.componentsExplorer.screens
 				{ text: "Fox" },
 			]);
 			this._list.typicalItem = {text: "Item 1000"};
-			this._list.autoHideBackground = true;
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -133,7 +132,7 @@ package feathers.examples.componentsExplorer.screens
 
 		private function list_changeHandler(event:Event):void
 		{
-			trace("Spinner List selection change:", this._list.selectedIndex);
+			trace("SpinnerList change:", this._list.selectedIndex);
 		}
 	}
 }
