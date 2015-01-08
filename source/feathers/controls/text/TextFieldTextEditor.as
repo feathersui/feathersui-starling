@@ -1293,7 +1293,7 @@ package feathers.controls.text
 
 			this.checkIfNewSnapshotIsNeeded();
 
-			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
+			if(!this._textFieldHasFocus && (sizeInvalid || stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
 			{
 				if(this._useSnapshotDelayWorkaround)
 				{
