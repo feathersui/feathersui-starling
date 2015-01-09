@@ -62,14 +62,6 @@ package feathers.textures
 			{
 				throw new ArgumentError(SECOND_REGION_ERROR);
 			}
-			var textureScale:Number = texture.scale;
-			//the region sizes do not account for the texture's scale factor,
-			//so we need to scale them to match.
-			if(textureScale != 1)
-			{
-				firstRegionSize /= textureScale;
-				secondRegionSize /= textureScale;
-			}
 			var textureFrame:Rectangle = texture.frame;
 			if(!textureFrame)
 			{
