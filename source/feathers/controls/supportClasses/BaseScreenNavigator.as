@@ -338,7 +338,12 @@ package feathers.controls.supportClasses
 		 */
 		override public function dispose():void
 		{
-			this.clearScreenInternal();
+			if(this._activeScreen)
+			{
+				this.cleanupActiveScreen();
+				this._activeScreen = null;
+				this._activeScreenID = null;
+			}
 			super.dispose();
 		}
 
@@ -355,7 +360,9 @@ package feathers.controls.supportClasses
 			}
 			if(this._activeScreen)
 			{
-				this.clearScreenInternal(defaultTransition);
+				//if someone meant to have a transition, they would have called
+				//clearScreen()
+				this.clearScreenInternal(null);
 				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			for(var id:String in this._screens)
@@ -532,7 +539,7 @@ package feathers.controls.supportClasses
 			{
 				//if someone meant to have a transition, they would have called
 				//clearScreen()
-				this.clearScreenInternal(defaultTransition);
+				this.clearScreenInternal(null);
 				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[id]);
@@ -567,7 +574,7 @@ package feathers.controls.supportClasses
 			this._previousScreenInTransitionID = this._activeScreenID;
 			if(this._activeScreen)
 			{
-				this.clearScreenInternal();
+				this.cleanupActiveScreen();
 			}
 
 			this._isTransitionActive = true;
@@ -651,24 +658,25 @@ package feathers.controls.supportClasses
 
 			this.cleanupActiveScreen();
 
-			if(transition != null)
-			{
-				this._isTransitionActive = true;
-				this._previousScreenInTransition = this._activeScreen;
-				this._previousScreenInTransitionID = this._activeScreenID;
-			}
+			this._isTransitionActive = true;
+			this._previousScreenInTransition = this._activeScreen;
+			this._previousScreenInTransitionID = this._activeScreenID;
 			this._activeScreen = null;
 			this._activeScreenID = null;
+
+			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
+			this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
 			if(transition !== null)
 			{
-				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
-				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
-
 				this._waitingForTransitionFrameCount = 0;
 				this._waitingTransition = transition;
 				//this is a workaround for an issue with transition performance.
 				//see the comment in the listener for details.
 				this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
+			}
+			else
+			{
+				defaultTransition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -700,7 +708,7 @@ package feathers.controls.supportClasses
 				if(this._activeScreen)
 				{
 					var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[this._activeScreenID]);
-					this.clearScreenInternal();
+					this.cleanupActiveScreen();
 					this.removeChild(this._activeScreen, item.canDispose);
 				}
 				this._activeScreen = this._previousScreenInTransition;

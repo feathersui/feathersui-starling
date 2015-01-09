@@ -75,7 +75,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _pushTransition:Function = defaultTransition;
+		protected var _pushTransition:Function;
 
 		/**
 		 * A function that is called when the screen navigator pushes a new
@@ -126,17 +126,13 @@ package feathers.controls
 			{
 				return;
 			}
-			if(value === null)
-			{
-				value = defaultTransition;
-			}
 			this._pushTransition = value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _popTransition:Function = defaultTransition;
+		protected var _popTransition:Function;
 
 		/**
 		 * A function that is called when the screen navigator pops a screen
@@ -186,10 +182,6 @@ package feathers.controls
 			if(this._popTransition == value)
 			{
 				return;
-			}
-			if(value === null)
-			{
-				value = defaultTransition;
 			}
 			this._popTransition = value;
 		}
@@ -252,10 +244,6 @@ package feathers.controls
 			{
 				return;
 			}
-			if(value === null)
-			{
-				value = defaultTransition;
-			}
 			this._popToRootTransition = value;
 		}
 
@@ -310,7 +298,7 @@ package feathers.controls
 			}
 			else
 			{
-				this.clearScreenInternal(defaultTransition);
+				this.clearScreenInternal(null);
 			}
 		}
 

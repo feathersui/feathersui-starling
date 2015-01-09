@@ -78,7 +78,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _transition:Function = defaultTransition;
+		protected var _transition:Function;
 
 		/**
 		 * A function that is called when a new screen is shown. Typically used
@@ -109,6 +109,8 @@ package feathers.controls
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
 		 *
+		 * @default null
+		 *
 		 * @see #showScreen()
 		 * @see #clearScreen()
 		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
@@ -126,10 +128,6 @@ package feathers.controls
 			if(this._transition == value)
 			{
 				return;
-			}
-			if(value === null)
-			{
-				value = defaultTransition;
 			}
 			this._transition = value;
 		}
