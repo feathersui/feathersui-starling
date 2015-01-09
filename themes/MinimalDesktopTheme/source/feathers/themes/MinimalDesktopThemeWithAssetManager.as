@@ -162,13 +162,15 @@ package feathers.themes
 		 */
 		protected function loadAssets(assetsBasePath:Object, assetManager:AssetManager):void
 		{
-			if(!assetManager)
+			var oldScaleFactor:Number = -1;
+			if(assetManager)
+			{
+				oldScaleFactor = assetManager.scaleFactor;
+				assetManager.scaleFactor = Starling.contentScaleFactor;
+			}
+			else
 			{
 				assetManager = new AssetManager(Starling.contentScaleFactor);
-			}
-			else if(assetManager.scaleFactor != Starling.contentScaleFactor)
-			{
-				throw new ArgumentError("The scaleFactor property of the AssetManager is invalid. Expected " + Starling.contentScaleFactor + ". Received " + assetManager.scaleFactor + ".");
 			}
 			this.assetManager = assetManager;
 			//add a trailing slash, if needed
@@ -182,6 +184,11 @@ package feathers.themes
 			{
 				var asset:String = assetPaths[i];
 				this.assetManager.enqueue(assetsBasePath + asset);
+			}
+			if(oldScaleFactor != -1)
+			{
+				//restore the old scale factor, just in case
+				this.assetManager.scaleFactor = oldScaleFactor;
 			}
 			this.assetManager.loadQueue(assetManager_onProgress);
 		}
