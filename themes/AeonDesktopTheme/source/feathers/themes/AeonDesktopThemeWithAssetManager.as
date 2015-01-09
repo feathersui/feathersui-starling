@@ -78,7 +78,7 @@ package feathers.themes
 		/**
 		 * Constructor.
 		 * @param assetsBasePath The root folder of the assets.
-		 * @param assetManager An optional pre-created asset manager.
+		 * @param assetManager An optional pre-created AssetManager. The scaleFactor property must be equal to Starling.contentScaleFactor. To load assets with a different scale factor, use multiple AssetManager instances.
 		 */
 		public function AeonDesktopThemeWithAssetManager(assetsBasePath:String = null, assetManager:AssetManager = null)
 		{
@@ -148,11 +148,15 @@ package feathers.themes
 		 */
 		protected function loadAssets(assetsBasePath:String, assetManager:AssetManager):void
 		{
-			this.assetManager = assetManager;
-			if(!this.assetManager)
+			if(!assetManager)
 			{
-				this.assetManager = new AssetManager(Starling.contentScaleFactor);
+				assetManager = new AssetManager(Starling.contentScaleFactor);
 			}
+			else if(assetManager.scaleFactor != Starling.contentScaleFactor)
+			{
+				throw new ArgumentError("The scaleFactor property of the AssetManager is invalid. Expected " + Starling.contentScaleFactor + ". Received " + assetManager.scaleFactor + ".");
+			}
+			this.assetManager = assetManager;
 			//add a trailing slash, if needed
 			if(assetsBasePath.lastIndexOf("/") != assetsBasePath.length - 1)
 			{
