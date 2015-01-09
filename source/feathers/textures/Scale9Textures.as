@@ -59,14 +59,6 @@ package feathers.textures
 			{
 				throw new ArgumentError(ZERO_HEIGHT_ERROR);
 			}
-			var textureScale:Number = texture.scale;
-			//the scale9Grid does not account for the texture's scale factor,
-			//so we need to scale the grid to match.
-			if(textureScale != 1)
-			{
-				scale9Grid = scale9Grid.clone();
-				scale9Grid.setTo(scale9Grid.x / textureScale, scale9Grid.y / textureScale, scale9Grid.width / textureScale, scale9Grid.height / textureScale);
-			}
 			var textureFrame:Rectangle = texture.frame;
 			if(!textureFrame)
 			{
