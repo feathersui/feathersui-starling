@@ -9,7 +9,7 @@ The [`AutoComplete`](../api-reference/feathers/controls/AutoComplete.html) class
 
 ## The Basics
 
-First, let's create a `AutoComplete` control and add it to the display list:
+First, let's create an `AutoComplete` control and add it to the display list:
 
 ``` code
 var input:AutoComplete = new AutoComplete();
@@ -59,7 +59,67 @@ As you can see above, the first argument to the `compareFunction` is typed as `O
 
 ### `URLAutoCompleteSource`
 
-In some cases, you may want to request suggestions from a server instead.
+In some cases, you may want to request personalized suggestions from a server instead. We can pass the text entered by the user to a backend API using [`URLAutoCompleteSource`](../api-reference/feathers/data/URLAutoCompleteSource.html).
+
+To load suggestions from the web, we need a URL. The [`urlRequestFunction`](../api-reference/feathers/data/URLAutoCompleteSource.html#urlRequestFunction) property can be used to generate a [`URLRequest`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html):
+
+``` code
+var source:URLAutoCompleteSource = new URLAutoCompleteSource();
+source.urlRequestFunction = function( textToMatch:String ):URLRequest
+{
+	var request:URLRequest = new URLRequest( "http://example.com/search_suggestions" );
+	var variables:URLVariables = new URLVariables();
+	variables.query = textToMatch;
+	request.data = variables;
+	return request;
+};
+input.source = source;
+```
+
+The `urlRequestFunction` takes one argument, the text entered into the `AutoComplete`. We can pass that to the server to return relevant suggestions.
+
+By default, `URLAutoCompleteSource` parses the result as a JSON array. If the result returned by the API looks similar to the example below, it can be parsed automatically:
+
+``` code
+[
+	"adobe",
+	"adobe flash",
+	"adobe reader",
+	"adobe creative cloud"
+]
+```
+
+However, if the API returns data in a different format, we can use the [`parseResultFunction`](../api-reference/feathers/data/URLAutoCompleteSource.html#parseResultFunction) property to tell the `URLAutoCompleteSource` how to convert the result into something that the pop-up list of suggestions can display.
+
+Let's create a `parseResultFunction` for some XML in the following format:
+
+``` code
+<search>
+	<suggestion>adobe</suggestion>
+	<suggestion>adobe flash</suggestion>
+	<suggestion>adobe reader</suggestion>
+	<suggestion>adobe creative cloud</suggestion>
+</search>
+```
+
+In the custom `parseResultFunction` below, we loop through each `<suggestion>` element in the result and extract the string. We'll return an `Array` of these strings:
+
+``` code
+source.parseResultFunction = function( result:String ):Object
+{
+	var parsedSuggestions:Array = [];
+	var xmlResult:XML = new XML( result );
+	var resultCount:int = xmlResult.suggestion.length();
+	for( var i:int = 0; i < resultCount; i++ )
+	{
+		var suggestion:XML = xmlResult.suggestion[i];
+		parsedSuggestions.push( suggestion.toString() );
+	}
+	return parsedSuggestions;
+};
+```
+
+The `parseResultFunction` may return any type of object that may be passed to a `ListCollection`, such as an `Array` or a `Vector`.
 
 ## Customizing suggestion behavior
 
