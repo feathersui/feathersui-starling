@@ -186,55 +186,52 @@ Note that the `StackScreenNavigator` will dispatch the `FeathersEventType.TRANSI
 
 ## Property Injection
 
-The third argument you can pass to the `StackScreenNavigatorItem` constructor is an initializer object. This is a set of key-value pairs that map to properties on the screen being defined. When the screen is shown, each of these properties will be passed to the screen. If you have multiple screens that need to share some data, this is a useful way to ensure that they each have access to it. For instance, you might have an `OptionsData` class that stores things like audio volume and other common options.
+Optionally, we can pass properties to the screen before it is shown. If we have multiple screens that need to share some data, this is a useful way to ensure that each screen has access to it. For instance, we might have an `OptionsData` class that stores things like audio volume and other common options. We'd want to pass that to the `OptionsScreen` to let the user change the volume, obviously. We'd also want to pass it to other screens that play audio so that it plays at the correct volume.
 
-In our main app, we store the `OptionsData` instance.
+In the class where we create the `StackScreenNavigator`, let's create an `OptionsData` instance too. In a moment, we'll pass it to each screen that needs it.
 
 ``` code
 this._optionsData = new OptionsData();
 ```
 
-Then, when we add our `OptionsScreen`, we pass it the `OptionsData` instance in using the initializer.
+Now, when we add our `OptionsScreen` to the `StackScreenNavigator`, we pass it the `OptionsData` instance in using the [`properties`](../api-reference/feathers/controls/StackScreenNavigatorItem.html#properties) property on the `StackScreenNavigatorItem`:
 
 ``` code
-this._navigator.addScreen( OPTIONS, new StackScreenNavigatorItem( OptionsScreen,
-{
-    complete: MAIN_MENU
-},
-{
-    optionsData: _optionsData
-}));
+var optionsItem:StackScreenNavivatorItem = new StackScreenNavigatorItem( OptionsScreen );
+optionsItem.properties.options = this._optionsData;
 ```
 
-In `OptionsScreen`, we need to add a variable or a getter and setter for this data:
+In `OptionsScreen`, we need to add a variable or a getter and setter named `options` to match up with `optionsItem.properties.options`:
 
 ``` code
-protected var _optionsData:OptionsData;
+protected var _options:OptionsData;
  
-public function get optionsData():OptionsData
+public function get options():OptionsData
 {
-    return this._optionsData;
+    return this._options;
 }
  
-public function set optionsData( value:OptionsData ):void
+public function set options( value:OptionsData ):void
 {
-    this._optionsData = value;
+    this._options = value;
 }
 ```
 
-If you want to redraw when `optionsData` changes, you should invalidate the screen, and the `draw()` function will be called again:
+We want to update the screen when the `options` property changes, so we should invalidate the screen, and the `draw()` function will be called again:
 
 ``` code
-public function set optionsData( value:OptionsData ):void
+public function set options( value:OptionsData ):void
 {
-    if(this._optionsData == value)
+    if(this._options == value)
     {
         return;
     }
-    this._optionsData = value;
+    this._options = value;
     this.invalidate( INVALIDATION_FLAG_DATA );
 }
 ```
+
+<aside class="warn">Objects that are passed by value (like `Number`, `Boolean`, and `int`) should not be used directly with property injection. Each screen will get a copy instead of a reference, so if one screen changes the value, another won't see the change. Always combine simple values like this together into a custom class that can be passed by reference.</aside>
 
 ## Advanced Functionality
 
@@ -242,23 +239,27 @@ public function set optionsData( value:OptionsData ):void
 
 ### Call a function instead of navigating to a different screen
 
-The `StackScreenNavigatorItem` event map can be used for more than just navigation. You can also call a function when an event or signal is dispatched. Let's add a new signal to the main menu that will be dispatched when a "About Our Product" button is clicked. We want it to open a website in the browser.
+The `StackScreenNavigatorItem` event map can be used for more than simply navigating from one screen to another. You can also call a function when an event or signal is dispatched. Let's add a new event to the main menu that will be dispatched when an "About Our Product" button is clicked. We want it to open a website in the browser.
 
 ``` code
-this._navigator.addScreen( MAIN_MENU, new StackScreenNavigatorItem( MainMenuScreen,
-{
-    onOptions: OPTIONS,
-    onHomePage: mainMenuScreen_onHomePage
-}));
+var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
+mainMenuItem.setScreenIDForPushEvent( MainMenuScreen.SHOW_OPTIONS, OPTIONS );
+mainMenuItem.setFunctionForPushEvent( MainMenuScreen.LINK_TO_HOME_PAGE, openHomePageLink );
 ```
 
-The function receives the signal or event listener arguments.
+The function may optionally receives the event listener arguments.
 
 ``` code
-protected function mainMenuScreen_onHomePage( sender:MainMenuScreen ):void
+protected function openHomePageLink():void
 {
     navigateToURL( new URLRequest( "http://www.example.com/" ), "_blank" );
 }
+```
+
+Optionally, the function may receive the listener arguments for the event dispatched by the screen, if needed:
+
+``` code
+protected function openHomePageLink( event:Event ):void
 ```
 
 ### Listen to signals instead of events
