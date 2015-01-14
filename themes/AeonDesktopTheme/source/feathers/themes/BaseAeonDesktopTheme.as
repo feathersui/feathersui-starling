@@ -1109,8 +1109,8 @@ package feathers.themes
 
 			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
 
-			list.headerRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
-			list.footerRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
+			list.customHeaderRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
+			list.customFooterRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
 
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.useVirtualLayout = true;

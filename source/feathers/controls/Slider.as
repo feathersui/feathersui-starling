@@ -1492,7 +1492,7 @@ package feathers.controls
 		 * to the slider:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.customThumbName = "my-custom-thumb";</listing>
+		 * slider.customThumbStyleName = "my-custom-thumb";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component style name to
 		 * provide different styles than the default:</p>

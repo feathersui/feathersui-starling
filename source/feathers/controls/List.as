@@ -991,16 +991,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _itemRendererName:String;
+		protected var _customItemRendererStyleName:String;
 
 		/**
-		 * A name to add to all item renderers in this list. Typically used by a
-		 * theme to provide different skins to different lists.
+		 * A style name to add to all item renderers in this list. Typically
+		 * used by a theme to provide different skins to different lists.
 		 *
 		 * <p>The following example sets the item renderer name:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererName = "my-custom-item-renderer";</listing>
+		 * list.customItemRendererStyleName = "my-custom-item-renderer";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component name to provide
 		 * different skins than the default style:</p>
@@ -1012,9 +1012,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customItemRendererStyleName():String
+		{
+			return this._customItemRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customItemRendererStyleName(value:String):void
+		{
+			if(this._customItemRendererStyleName == value)
+			{
+				return;
+			}
+			this._customItemRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customItemRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customItemRendererStyleName
+		 */
 		public function get itemRendererName():String
 		{
-			return this._itemRendererName;
+			return this.customItemRendererStyleName;
 		}
 
 		/**
@@ -1022,12 +1050,7 @@ package feathers.controls
 		 */
 		public function set itemRendererName(value:String):void
 		{
-			if(this._itemRendererName == value)
-			{
-				return;
-			}
-			this._itemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customItemRendererStyleName = value;
 		}
 
 		/**
@@ -1279,7 +1302,7 @@ package feathers.controls
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
-			this.dataViewPort.itemRendererName = this._itemRendererName;
+			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
 		}

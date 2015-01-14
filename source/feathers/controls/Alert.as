@@ -264,8 +264,8 @@ package feathers.controls
 		public function Alert()
 		{
 			super();
-			this.headerName = DEFAULT_CHILD_STYLE_NAME_HEADER;
-			this.footerName = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
+			this.headerStyleName = DEFAULT_CHILD_STYLE_NAME_HEADER;
+			this.footerStyleName = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
 			this.buttonGroupFactory = defaultButtonGroupFactory;
 		}
 
