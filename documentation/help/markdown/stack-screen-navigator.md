@@ -76,7 +76,11 @@ Now that we have a second screen, let's look at how we can navigate from the mai
 
 ### Dispatch events from the screen
 
-The best way to navigate from one screen to another is to dispatch an event from the currently active screen. Using the `StackScreenNavigatorItem`, we can associate an event with either a push or a pop action. The `StackScreenNavigator` will automatically navigate to a different screen when one of these events is dispatched. Let's map an event from the main menu screen that will push the options screen onto the stack:
+The best way to navigate from one screen to another is to dispatch an event from the currently active screen. Using the `StackScreenNavigatorItem`, we can associate an event with either a push or a pop action. The `StackScreenNavigator` will automatically navigate to a different screen when one of these events is dispatched.
+
+#### Pushing a new screen onto the stack
+
+Let's map an event from the main menu screen that will push the options screen onto the stack:
 
 ``` code
 var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
@@ -100,6 +104,39 @@ protected function optionsButton_triggeredHandler( event:Event ):void
     this.dispatchEventWith( SHOW_OPTIONS );
 }
 ```
+
+Sometimes, when we push a new screen onto the stack, we want to save the state of the old screen so that we can restore it later when we pop the new screen and return to the old screen again. We can include some extra data with the event that we dispatch, and the `StackScreenNavigator` will automatically restore that data later.
+
+As an example, let's say that we want to save the scroll position of a `List` so that the user doesn't lose their place when they return to this screen. Let's add a property to the screen for this saved scroll position:
+
+``` code
+public var savedVerticalScrollPosition:Number = 0;
+```
+
+When we initially create the `List`, we can set its `verticalScrollPosition` property.
+
+``` code
+this.list.verticalScrollPosition = this.savedVerticalScrollPosition;
+```
+
+We've set the default value to `0`, which is the same default that the `List` would start with normally. At this point, everything should behave the same as it did previously.
+
+When we push a new screen, we can create a set of key-value pairs (an `Object`) to map a property names to values. We'll save the `verticalScrollPosition` property of the `List` as one of these values. When we dispatch the event to push a new screen, we'll pass the `Object` to the event's `data` property:
+
+``` code
+protected function optionsButton_triggeredHandler( event:Event ):void
+{
+    var savedProperties:Object =
+    {
+        savedVerticalScrollPosition: this.list.verticalScrollPosition
+    };
+    this.dispatchEventWith( SHOW_OPTIONS, false, savedProperties );
+}
+```
+
+Notice that we store the value using the name `savedVerticalScrollPosition` to match up with the `public` property that we defined a moment ago. The `StackScreenNavigator` will automatically use this property name to restore the value later when the new screen is popped and this screen is restored.
+
+#### Popping the active screen from the stack
 
 Next, let's add an event to pop the options screen from the top of the stack and return to the main menu screen:
 
