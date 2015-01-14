@@ -22,6 +22,8 @@ package
     import flash.system.System;
 
     import org.flexunit.internals.TraceListener;
+    import org.flexunit.listeners.AirCIListener;
+    import org.flexunit.listeners.CIListener;
     import org.flexunit.runner.FlexUnitCore;
 
     import starling.core.Starling;
@@ -62,6 +64,7 @@ package
             starlingRoot = starling.display.Sprite(this._starling.root);
             this._flexunit = new FlexUnitCore();
             this._flexunit.addListener(new TraceListener());
+            this._flexunit.addListener(new CIListener());
             this._flexunit.addEventListener(FlexUnitCore.TESTS_COMPLETE, flexunit_testsCompleteHandler);
             this._flexunit.run(
             [

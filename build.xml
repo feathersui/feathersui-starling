@@ -7,6 +7,7 @@
 	<property file="./sdk.properties"/>
 	<property file="./build.local.properties"/>
 	<property file="./build.properties"/>
+	<taskdef resource="flexUnitTasks.tasks" classpath="${flexunit}"/>
 
 	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
 
@@ -19,7 +20,9 @@
 
 	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
 
-	<target name="full" depends="-feathers,-docs,-themes,-includes,-cleanup" description="build everything">
+	<target name="test" depends="-test,-cleanup" description="runs unit tests"/>
+
+	<target name="full" depends="-feathers,-test,-docs,-themes,-includes,-cleanup" description="builds everything">
 
 		<!-- move feathers.swc to its final location for distribution.
 			basically, we didn't want the extra swc directory for a quick build. -->
@@ -32,7 +35,7 @@
 		<delete file="${output.path}/feathers.swc"/>
 	</target>
 
-	<target name="package" depends="full" description="build everything and package a zip">
+	<target name="package" depends="full" description="builds everything and creates a zip file for distribution">
 		<zip destfile="${output.path}/feathers.zip">
 			<zipfileset dir="${output.path}"/>
 		</zip>
@@ -404,5 +407,23 @@
 				<exclude name="source/YouTubeFeedsWeb.as"/>
 			</fileset>
 		</copy>
+	</target>
+
+	<target name="-test" depends="-feathers">
+		<java jar="${mxmlc}" dir="${test.root}/source" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-library-path+=${dependency.output}"/>
+			<arg value="-library-path+=${flexunit.root}"/>
+			<arg value="-library-path+=${output.path}"/>
+			<arg value="-output=${dependency.output}/TestFeathers.swf"/>
+			<arg value="TestFeathers.as"/>
+		</java>
+		<flexunit
+			player="flash"
+			swf="${dependency.output}/TestFeathers.swf"
+			haltonfailure="true"
+			verbose="true"
+			toDir="${dependency.output}"/>
 	</target>
 </project>
