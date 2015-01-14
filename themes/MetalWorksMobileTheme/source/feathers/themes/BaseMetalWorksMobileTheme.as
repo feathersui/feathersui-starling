@@ -1340,12 +1340,12 @@ package feathers.themes
 
 		protected function setInsetGroupedListStyles(list:GroupedList):void
 		{
-			list.itemRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER;
-			list.firstItemRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER;
-			list.lastItemRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER;
-			list.singleItemRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER;
-			list.headerRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
-			list.footerRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
+			list.customItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER;
+			list.customFirstItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER;
+			list.customLastItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER;
+			list.customSingleItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER;
+			list.customHeaderRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
+			list.customFooterRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
 
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.useVirtualLayout = true;
@@ -1710,7 +1710,7 @@ package feathers.themes
 				list.listProperties.padding = this.smallGutterSize;
 			}
 
-			list.listProperties.itemRendererName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
+			list.listProperties.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
@@ -2031,7 +2031,7 @@ package feathers.themes
 		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
 			this.setListStyles(list);
-			list.itemRendererName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
+			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
 			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures);
 		}
 

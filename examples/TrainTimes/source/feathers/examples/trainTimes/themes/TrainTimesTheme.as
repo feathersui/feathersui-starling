@@ -347,7 +347,7 @@ package feathers.examples.trainTimes.themes
 		{
 			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			list.itemRendererName = TIMES_LIST_ITEM_RENDERER_NAME;
+			list.customItemRendererStyleName = TIMES_LIST_ITEM_RENDERER_NAME;
 		}
 
 		protected function setTimesListItemRendererStyles(renderer:DefaultListItemRenderer):void

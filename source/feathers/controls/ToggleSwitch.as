@@ -544,12 +544,9 @@ package feathers.controls
 		 *
 		 * <p>In the following example, the toggle switch's left padding is
 		 * set to 20 pixels:</p>
-		 *
+		 * 
 		 * <listing version="3.0">
-		 *
-		 *
-		 * <listing version="3.0">
-		 * toggle.customOnTrackName = "my-custom-on-track";</listing>.paddingLeft = 20;</listing>
+		 * toggle.paddingLeft = 20;</listing>
 		 *
 		 * @default 0
 		 */

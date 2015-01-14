@@ -1122,8 +1122,8 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			list.headerRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
-			list.footerRendererName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
+			list.customHeaderRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
+			list.customFooterRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
 
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.useVirtualLayout = true;
@@ -1414,7 +1414,7 @@ package feathers.themes
 				list.listProperties.padding = this.borderSize;
 			}
 
-			list.listProperties.itemRendererName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
+			list.listProperties.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
 		}
 
 		protected function setPickerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
@@ -1724,7 +1724,7 @@ package feathers.themes
 		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
 			this.setListStyles(list);
-			list.itemRendererName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
+			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
 			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures);
 		}
 

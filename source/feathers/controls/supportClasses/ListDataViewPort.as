@@ -310,20 +310,20 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
-		private var _itemRendererName:String;
+		private var _customItemRendererStyleName:String;
 
-		public function get itemRendererName():String
+		public function get customItemRendererStyleName():String
 		{
-			return this._itemRendererName;
+			return this._customItemRendererStyleName;
 		}
 
-		public function set itemRendererName(value:String):void
+		public function set customItemRendererStyleName(value:String):void
 		{
-			if(this._itemRendererName == value)
+			if(this._customItemRendererStyleName == value)
 			{
 				return;
 			}
-			this._itemRendererName = value;
+			this._customItemRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
@@ -1062,9 +1062,9 @@ package feathers.controls.supportClasses
 						renderer = new this._itemRendererType();
 					}
 					var uiRenderer:IFeathersControl = IFeathersControl(renderer);
-					if(this._itemRendererName && this._itemRendererName.length > 0)
+					if(this._customItemRendererStyleName && this._customItemRendererStyleName.length > 0)
 					{
-						uiRenderer.styleNameList.add(this._itemRendererName);
+						uiRenderer.styleNameList.add(this._customItemRendererStyleName);
 					}
 					this.addChild(DisplayObject(renderer));
 				}
