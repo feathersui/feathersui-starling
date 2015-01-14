@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/15.0">
+<application xmlns="http://ns.adobe.com/air/application/16.0">
 	<id>com.feathersui.examples.Todos</id>
 	<filename>Todos</filename>
 	<name>Todos</name>
-	<versionNumber>2.0.1</versionNumber>
+	<versionNumber>2.1.0</versionNumber>
 	<description>Todos example application built with Feathers UI controls for Starling</description>
-	<copyright>2014 Josh Tynjala</copyright>
+	<copyright>2015 Josh Tynjala</copyright>
 
 	<initialWindow>
 		<content>Todos.swf</content>
