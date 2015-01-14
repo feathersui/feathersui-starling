@@ -140,6 +140,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function set selectedIndex(value:int):void
+		{
+			if(this._selectedIndex != value)
+			{
+				this.scrollToDisplayIndex(value, 0);
+			}
+			super.selectedIndex = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function set dataProvider(value:ListCollection):void
 		{
 			super.dataProvider = value;
