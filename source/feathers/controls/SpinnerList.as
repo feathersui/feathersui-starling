@@ -96,7 +96,7 @@ package feathers.controls
 		{
 			if(!value)
 			{
-				throw new ArgumentError("SpinnerList requires snapping to pages.");
+				throw new ArgumentError("SpinnerList requires snapToPages to be true.");
 			}
 			super.snapToPages = value;
 		}
@@ -108,7 +108,19 @@ package feathers.controls
 		{
 			if(value)
 			{
-				throw new ArgumentError("SpinnerList requires single selection.");
+				throw new ArgumentError("SpinnerList requires allowMultipleSelection to be false.");
+			}
+			super.allowMultipleSelection = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set isSelectable(value:Boolean):void
+		{
+			if(!value)
+			{
+				throw new ArgumentError("SpinnerList requires isSelectable to be true.");
 			}
 			super.snapToPages = value;
 		}
