@@ -58,7 +58,7 @@ The default item renderers can support up to three children, including a label, 
 
 The `List` component may have one selected item. You can access information about selection through the [`selectedIndex`](../api-reference/feathers/controls/List.html#selectedIndex) and [`selectedItem`](../api-reference/feathers/controls/List.html#selectedItem) properties. If there is no selection, the value of `selectedIndex` will be `-1` and the value of `selectedItem` will be `null`.
 
-To listen for when the selection changes, listen to the [`Event.CHANGE`](../api-reference/feathers/controls/List.html#event:change) event:
+To listen for when the selection changes, listen to [`Event.CHANGE`](../api-reference/feathers/controls/List.html#event:change):
 
 ``` code
 list.addEventListener( Event.CHANGE, list_changeHandler );
