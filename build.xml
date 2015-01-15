@@ -154,6 +154,7 @@
 			<arg value="--css=../css/feathers-help.css"/>
 			<arg value="--variable=title-suffix:Cookbook for Feathers ${feathers.version}"/>
 			<arg value="--variable=lang:en"/>
+			<arg value="--variable=web:${web}"/>
 			<arg value="-o"/>
 			<targetfile/>
 			<fileset dir="${help.root}/markdown/cookbook" includes="*.md" />
@@ -171,6 +172,7 @@
 			<arg value="--css=../css/feathers-help.css"/>
 			<arg value="--variable=title-suffix:FAQ for Feathers ${feathers.version}"/>
 			<arg value="--variable=lang:en"/>
+			<arg value="--variable=web:${web}"/>
 			<arg value="-o"/>
 			<targetfile/>
 			<fileset dir="${help.root}/markdown/faq" includes="*.md" />
