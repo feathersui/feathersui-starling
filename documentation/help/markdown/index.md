@@ -123,6 +123,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`ToggleSwitch`](toggle-switch.html)
 
+-   [`WebView`](web-view.html)
+
 A bit further down, you can find number of articles that go into detail about the Feathers component architecture and how to create [custom components](#custom-components).
 
 ## Display Objects
