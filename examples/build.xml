@@ -13,6 +13,7 @@
 		<ant dir="${basedir}/TileList" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TransitionsExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="android" description="Builds Android APKs from all examples.">
@@ -26,6 +27,7 @@
 		<ant dir="${basedir}/TileList" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TransitionsExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="ios" description="Builds iOS IPAs from all examples.">
@@ -39,6 +41,7 @@
 		<ant dir="${basedir}/TileList" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TransitionsExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="install-android" description="Installs Android APKs to a device.">
@@ -52,6 +55,7 @@
 		<ant dir="${basedir}/TileList" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TransitionsExplorer" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="install-ios" description="Installs iOS IPAs to a device.">
@@ -65,6 +69,7 @@
 		<ant dir="${basedir}/TileList" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TransitionsExplorer" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 </project>
