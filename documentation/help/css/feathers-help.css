@@ -3,9 +3,10 @@
 	box-sizing: border-box;
 }
 
-html
+html, body
 {
-	text-align: center;
+	margin: 0;
+	padding: 0;
 }
 
 body
@@ -13,10 +14,35 @@ body
 	font-family: "source-sans-pro",sans-serif;
 	background: #fffefa;
 	color: #252525;
+	text-align: center;
 	font-size: 16px;
 	line-height: 28px;
-	text-align: left;
+}
+
+header, footer
+{
+	background: #f3f2ee;
+}
+
+header .content, footer .content
+{
+	display: flex;
 	max-width: 740px;
+	text-align: left;
+	margin: auto;
+}
+
+header form.search
+{
+	flex-grow: 1;
+	text-align: right;
+	margin: 12px 0;
+}
+
+article
+{
+	max-width: 740px;
+	text-align: left;
 	margin: auto;
 }
 
