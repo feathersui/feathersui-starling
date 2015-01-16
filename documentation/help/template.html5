@@ -47,7 +47,7 @@ $endif$
 <body>
 <header>
 <div class="content">
-<p class="title">$if(breadcrumb)$<a href="../index.html">$breadcrumb$</a> / $endif$<a href="index.html">$if(title-suffix)$$title-suffix$$else$Feathers Help$endif$</a></p>
+<nav>$if(breadcrumb)$<a href="../index.html">$breadcrumb$</a> / $endif$<a href="index.html">$if(title-suffix)$$title-suffix$$else$Feathers Help$endif$</a></nav>
 $if(search-url)$
 <form class="search" action="https://google.com/search" method="get">
 	<input type="search" id="query" name="q">
@@ -73,7 +73,8 @@ $include-after$
 $endfor$
 <footer>
 <div class="content">
-<p>Copyright 2012-2015 Josh Tynjala. All rights reserved.</p>
+<nav>$if(breadcrumb)$<a href="../index.html">$breadcrumb$</a> / $endif$<a href="index.html">$if(title-suffix)$$title-suffix$$else$Feathers Help$endif$</a></nav>
+<p class="copyright">Copyright 2012-2015 Josh Tynjala. All rights reserved.</p>
 </div>
 </footer>
 </body>

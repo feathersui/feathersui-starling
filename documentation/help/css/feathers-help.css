@@ -32,11 +32,22 @@ header .content, footer .content
 	margin: auto;
 }
 
-header form.search
+header nav, footer nav
+{
+	margin: 12px 0;
+}
+
+header .search
 {
 	flex-grow: 1;
 	text-align: right;
 	margin: 12px 0;
+}
+
+footer .copyright
+{
+	flex-grow: 1;
+	text-align: right;
 }
 
 article
