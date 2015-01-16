@@ -10,7 +10,7 @@ $endfor$
 $if(date-meta)$
 	<meta name="dcterms.date" content="$date-meta$">
 $endif$
-	<title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$$if(title-suffix)$ - $title-suffix$$endif$</title>
+	<title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$$if(title-suffix)$ - $title-suffix$$endif$$if(breadcrumb)$ - $breadcrumb$$endif$</title>
 	<style type="text/css">code{white-space: pre;}</style>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -45,6 +45,18 @@ $if(web)$
 $endif$
 </head>
 <body>
+<header>
+<div class="content">
+<p class="title">$if(breadcrumb)$<a href="../index.html">$breadcrumb$</a> / $endif$<a href="index.html">$if(title-suffix)$$title-suffix$$else$Feathers Help$endif$</a></p>
+$if(search-url)$
+<form class="search" action="https://google.com/search" method="get">
+	<input type="search" id="query" name="q">
+	<input type="hidden" name="sitesearch" value="$search-url$">
+	<input type="submit" value="Search">
+</form>
+$endif$
+</div>
+</header>
 $for(include-before)$
 $include-before$
 $endfor$
@@ -53,9 +65,16 @@ $if(toc)$
 $toc$
 </nav>
 $endif$
+<article>
 $body$
+</article>
 $for(include-after)$
 $include-after$
 $endfor$
+<footer>
+<div class="content">
+<p>Copyright 2012-2015 Josh Tynjala. All rights reserved.</p>
+</div>
+</footer>
 </body>
 </html>
