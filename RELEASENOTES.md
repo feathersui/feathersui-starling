@@ -14,6 +14,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Unit tests: created unit tests for a number of Feathers components.
 * Help: help files are now distributed with Feathers for offline use.
 * AnchorLayout: fixed issue where items positioned relative to horizontalCenterAnchorDisplayObject or verticalCenterAnchorDisplayObject were not positioned correctly whent he anchor was at a higher depth.
+* Button: added scaleWhenDown and scaleWhenHovering properties to scale the button in these states.
 * BaseDefaultItemRenderer: fixed issue where data that is == null would be ignored in some cases by changing to stricter === null check.
 * BitmapFontTextEditor, TextBlockTextEditor: fixed issue where clearing the text on focus would cause the selection range to be invalid.
 * BitmapFontTextEditor, TextBlockTextEditor: listens for flash.events.Event.SELECT_ALL instead of Ctrl/Command+A with a keyboard event because it didn't work properly on Mac.
@@ -22,6 +23,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * DropDownPopUpContentManager: fixed issue where the source would close the pop-up while validating, but the pop-up was being positioned, causing a runtime error, so now checks if open after source is validated.
 * FeathersControl: added move() convenience function to set x and y properties, similar to how setSize() sets width and height.
 * FeathersControl: the styleProvider property may be changed after initialization.
+* FeathersControl: changes to styleNameList after initialization now causes the styleProvider to be re-applied.
 * FeathersControl: may now flatten even when not initialized or on stage.
 * FocusManager: both containers and their children may receive focus separately, using new IFocusContainer interface.
 * HierarchicalCollection: added removeAll() function, similar to ListCollection.
@@ -31,6 +33,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Label: added backgroundSkin, backgroundDisabledSkin, and padding properties.
 * LayoutGroup: added LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR.
 * LayoutGroup: added autoSizeMode property to specify that it should fill the stage.
+* List, GroupedList: fixed issue where scrolling backwards would sometimes cause item renderers to jump around instead of scrolling smoothly with a virtual layout with variable item dimensions where an item resized. Layout may adjust scroll position, if needed.
 * List, GroupedList: updates scroll position, if needed, when using arrow keys to change selection.
 * List, GroupedList: dispatches Event.TRIGGERED when an item renderer is triggered. The event data is the item from the data provider.
 * List, GroupedList: added stricter === null check when checking if a typicalItem has been set because values like 0 could match == null.
