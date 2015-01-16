@@ -50,6 +50,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * ScreenNavigator: added support for transitions that may cancel themselves.
 * ScreenNavigator: added optional transition function argument to showScreen() and clearScreen().
 * ScreenNavigator: fixes issue where active screen wasn't properly cleared if removed with removeScreen() or removeAllScreens().
+* ScreenNavigator: dispatches FeathersEventType.TRANSITION_IN_START, FeathersEventType.TRANSITION_IN_COMPLETE, FeathersEventType.TRANSITION_OUT_START, and FeathersEventType.TRANSITION_OUT_COMPLETE on screens (not on self). Screens may listen for these events instead of the events dispatched by ScreenNavigator.
 * ScreenNavigatorItem: added setFunctionForEvent() and setScreenIDForEvent().
 * ScreenNavigatorItem: The properties getter will always be a valid object. It won't return null.
 * ScrollBar: hides thumb when ranging is infinite.
