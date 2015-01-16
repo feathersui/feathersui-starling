@@ -1,9 +1,9 @@
 ---
-title: Feathers MXML support  
+title: Feathers experimental MXML support  
 author: Josh Tynjala
 
 ---
-# Feathers MXML support
+# Feathers experimental MXML support
 
 Feathers can be built with partial support for MXML. However, it has significant limitations. You can instantiate components, containers, layouts, and collections in MXML. You can also listen for events. However, binding and setting a component's id are not supported with Feathers in MXML because the compiler cannot handle incompatibilities between the native `flash.events.EventDispatcher` and the Starling Framework `starling.events.EventDispatcher`.
 
