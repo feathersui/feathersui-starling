@@ -2,6 +2,75 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.1 BETA
+
+* New Component: AutoComplete, a TextInput that provides a pop-up list of suggestions.
+* New Component: SpinnerList, a list that changes selection when scrolling to an item.
+* New Component: StackScreenNavigator, a variation of ScreenNavigator with a history stack that you can push and pop.
+* New Component: WebView, displays a native web browser using StageWebView, but may be positioned in local coordinates. Available in AIR only.
+* New Layout: VerticalSpinnerLayout, the default layout for the new SpinnerList component.
+* New Transitions: ColorFade, Cover, Cube, Fade, Flip, Reveal, Slide.
+* New Example: TransitionsExplorer demonstrates each transition.
+* Unit tests: created unit tests for a number of Feathers components.
+* Help: help files are now distributed with Feathers for offline use.
+* AnchorLayout: fixed issue where items positioned relative to horizontalCenterAnchorDisplayObject or verticalCenterAnchorDisplayObject were not positioned correctly whent he anchor was at a higher depth.
+* BaseDefaultItemRenderer: fixed issue where data that is == null would be ignored in some cases by changing to stricter === null check.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed issue where clearing the text on focus would cause the selection range to be invalid.
+* BitmapFontTextEditor, TextBlockTextEditor: listens for flash.events.Event.SELECT_ALL instead of Ctrl/Command+A with a keyboard event because it didn't work properly on Mac.
+* BitmapFontTextRenderer: fixed issue where the last word of a line would sometimes appear on the next line.
+* CalloutPopUpContentManager, DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: detects if pop-up is removed from stage externally so that Event.CLOSE is properly dispatched.
+* DropDownPopUpContentManager: fixed issue where the source would close the pop-up while validating, but the pop-up was being positioned, causing a runtime error, so now checks if open after source is validated.
+* FeathersControl: added move() convenience function to set x and y properties, similar to how setSize() sets width and height.
+* FeathersControl: the styleProvider property may be changed after initialization.
+* FeathersControl: may now flatten even when not initialized or on stage.
+* FocusManager: both containers and their children may receive focus separately, using new IFocusContainer interface.
+* HierarchicalCollection: added removeAll() function, similar to ListCollection.
+* HorizontalLayout, VerticalLayout: when alignment is justified, the size of the item renderer is reset so that an accurate measurement can be taken instead of using the old justified size.
+* HorizontalLayout: added requestColumnCount property for more control over width auto-measurement.
+* HorizontalLayout, VerticalLayout: fixed issue where the number of item renderers didn't remain constant when using hasVariableItemDimensions when all item renderers were the same size.
+* Label: added backgroundSkin, backgroundDisabledSkin, and padding properties.
+* LayoutGroup: added LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR.
+* LayoutGroup: added autoSizeMode property to specify that it should fill the stage.
+* List, GroupedList: updates scroll position, if needed, when using arrow keys to change selection.
+* List, GroupedList: dispatches Event.TRIGGERED when an item renderer is triggered. The event data is the item from the data provider.
+* List, GroupedList: added stricter === null check when checking if a typicalItem has been set because values like 0 could match == null.
+* List, GroupedList: fixed issue where layout didn't update after an item renderer resized while the list wasn't validating.
+* List, GroupedList: fixed issue where the typical item renderer resized, but the layout wasn't updated.
+* List, GroupedList: fixed issue where changing the index of a typical item chosen from the data provider would not update the index of its item renderer.
+* ListCollection: setting data property to null keeps null instead of removing all items from existing data.
+* NumericStepper: added valueFormatFunction and valueParseFunction properties to support custom formatting.
+* Panel: added new title and headerTitleField properties to use instead of going through headerProperties.
+* PickerList: dispatches Event.OPEN and Event.CLOSE when the pop-up list opens and closes.
+* PickerList, TabBar: fixes issue where Event.CHANGE was incorrectly dispatched on disposal because dataProvider was set to null.
+* Scale3Textures, Scale9Textures: fixed validation of region sizes when using a scaled texture that doesn't match Starling.contentScaleFactor.
+* ScreenNavigator: fixes issue where new screen wasn't resized properly by validating self if validation queue is currently busy.
+* ScreenNavigator: adds a delay of two frames before starting a transition animation because it significantly improves the performance of the transition.
+* ScreenNavigator: added isTransition active property to indicate if a transition is currently in progress.
+* ScreenNavigator: fixed issue where clearing a screen didn't dispatch FeathersEventType.TRANSITION_START.
+* ScreenNavigator: added support for transitions that may cancel themselves.
+* ScreenNavigator: added optional transition function argument to showScreen() and clearScreen().
+* ScreenNavigator: fixes issue where active screen wasn't properly cleared if removed with removeScreen() or removeAllScreens().
+* ScreenNavigatorItem: added setFunctionForEvent() and setScreenIDForEvent().
+* ScreenNavigatorItem: The properties getter will always be a valid object. It won't return null.
+* ScrollBar: hides thumb when ranging is infinite.
+* ScrollBar: sets touchable to false on tracks when range is 0 or infinite.
+* Scroller: performance improvements from less garbage collection.
+* Scroller: added support for scrolling horizontally with vertical scroll wheel.
+* Scroller: can receive focus to control scroll position with keyboard.
+* Scroller: fixed issue where snapToPages was ignored when using mouse wheel or throwing.
+* ScrollContainer: added autoSizeMode property to specify that it should fill the stage.
+* ScrollContainer: fixed issue where outer container didn't invalidate when adding or removing children, or when children are resized, causing validate() to have no effect.
+* StageTextTextEditor, TextFieldTextEditor: fixes issue where focus remained when parent was set invisible.
+* StyleNameFunctionTheme: the getStyleProviderForClass() function is now public.
+* TabBar, ToggleGroup, List, GroupedList, PickerList: fixed issue where Event.CHANGE was not dispatched when removing an item and the selectedIndex remains the same, but the selectedItem is different.
+* TabBar: default selectedIndex is -1 until the data provider is set.
+* TabBar: Event.CHANGE is dispatched immediately when selectedIndex property changes instead of waiting for validation. Makes it more consistent with other components, like List.
+* TextFieldTextEditor: fixed issue where HTML formatting is lost if edited when isHTML is true.
+* TextFieldTextEditor: fixed issue where snapshot wasn't updated when size changed, but data or styles did not.
+* TextFieldTextEditorViewPort: added padding properties.
+* TextFieldTextEditorViewPort: fixed issue where the selection index was wrong from touch.
+* VerticalLayout: added requestRowCount property for more control over height auto-measurement.
+
 ## 2.0.1
 
 * AddOnFunctionStyleProvider: fixed issue where function passed into constructor would be ignored.
