@@ -145,11 +145,10 @@ package feathers.examples.layoutExplorer
 			else
 			{
 				var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(MainMenuScreen);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_ANCHOR, ANCHOR);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_HORIZONTAL, HORIZONTAL);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_VERTICAL, VERTICAL);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TILED_ROWS, TILED_ROWS);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TILED_COLUMNS, TILED_COLUMNS);
+				for(eventType in MAIN_MENU_EVENTS)
+				{
+					mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);
+				}
 				this._navigator.addScreen(MAIN_MENU, mainMenuItem);
 				this._navigator.rootScreenID = MAIN_MENU;
 			}

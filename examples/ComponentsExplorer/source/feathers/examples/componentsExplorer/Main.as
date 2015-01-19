@@ -89,6 +89,7 @@ package feathers.examples.componentsExplorer
 			showProgressBar: PROGRESS_BAR,
 			showScrollText: SCROLL_TEXT,
 			showSlider: SLIDER,
+			showSpinnerList: SPINNER_LIST,
 			showTabBar: TAB_BAR,
 			showTextInput: TEXT_INPUT,
 			showToggles: TOGGLES
@@ -259,24 +260,10 @@ package feathers.examples.componentsExplorer
 			else
 			{
 				var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(MainMenuScreen);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_ALERT, ALERT);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_BUTTON, BUTTON);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_BUTTON_GROUP, BUTTON_GROUP);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_CALLOUT, CALLOUT);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_GROUPED_LIST, GROUPED_LIST);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_ITEM_RENDERER, ITEM_RENDERER);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_LABEL, LABEL);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_LIST, LIST);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_NUMERIC_STEPPER, NUMERIC_STEPPER);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PAGE_INDICATOR, PAGE_INDICATOR);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PICKER_LIST, PICKER_LIST);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PROGRESS_BAR, PROGRESS_BAR);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SCROLL_TEXT, SCROLL_TEXT);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SLIDER, SLIDER);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SPINNER_LIST, SPINNER_LIST);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TAB_BAR, TAB_BAR);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TEXT_INPUT, TEXT_INPUT);
-				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TOGGLES, TOGGLES);
+				for(eventType in MAIN_MENU_EVENTS)
+				{
+					mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);
+				}
 				this._navigator.addScreen(MAIN_MENU, mainMenuItem);
 				this._navigator.rootScreenID = MAIN_MENU;
 			}
