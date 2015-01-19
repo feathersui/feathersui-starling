@@ -96,13 +96,20 @@ The `List` and `GroupedList` components had some properties that didn't follow t
 
 #### ILayout
 
-A new method has been added to the `ILayout` interface. Custom implementations of `ILayout` created before Feathers 2.1.0 will have compiler errors until the required changes are made.
+The `getNearestScrollPositionForIndex()` method has been added to the `ILayout` interface. Custom implementations of `ILayout` created before Feathers 2.1.0 will have compiler errors until the required changes are made.
 
-The method `getNearestScrollPositionForIndex()` has been added to `ILayout` to provide the nearst scroll position for a new selected index when controlling a list's selection with the keyboard. Ideally, this function provides an updated scroll position that requires the minimum amount of scrolling to display the specified index. However, simply returning the result of `getScrollPositionForIndex()` may be acceptable:
+This method is meant to calculate an updated scroll position for a specific index that requires the minimum amount of scrolling to fully display the specified index within the container's view port. It was added so that components like `List` could update the scroll position when changing the selected index with the keyboard when the component has focus.
+
+To maintain the existing behavior (where the container doesn't scroll at all) to simply bypass the compiler error, the following implementation will return the existing scroll position:
 
 	public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 	{
-		return this.getScrollPositionForIndex(index, items, x, y, width, height, result);
+		if(!result)
+		{
+			return new Point(scrollX, scrollY);
+		}
+		result.setTo(scrollX, scrollY);
+		return result;
 	}
 
 #### Scroller now implements IFocusDisplayObject
