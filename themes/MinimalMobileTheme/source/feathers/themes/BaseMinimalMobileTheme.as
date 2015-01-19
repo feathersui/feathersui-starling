@@ -1725,7 +1725,7 @@ package feathers.themes
 		{
 			this.setListStyles(list);
 			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
-			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures);
+			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures, this.scale);
 		}
 
 		protected function setSpinnerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
