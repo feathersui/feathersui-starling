@@ -25,11 +25,12 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * FeathersControl: the styleProvider property may be changed after initialization.
 * FeathersControl: changes to styleNameList after initialization now causes the styleProvider to be re-applied.
 * FeathersControl: may now flatten even when not initialized or on stage.
-* FocusManager: both containers and their children may receive focus separately, using new IFocusContainer interface.
+* FocusManager: both containers and their children may receive focus separately (to allow the container to scroll with the keyboard), thanks to the new IFocusContainer interface.
 * HierarchicalCollection: added removeAll() function, similar to ListCollection.
 * HorizontalLayout, VerticalLayout: when alignment is justified, the size of the item renderer is reset so that an accurate measurement can be taken instead of using the old justified size.
 * HorizontalLayout: added requestColumnCount property for more control over width auto-measurement.
 * HorizontalLayout, VerticalLayout: fixed issue where the number of item renderers didn't remain constant when using hasVariableItemDimensions when all item renderers were the same size.
+* ILayout: added getNearestScrollPositionForIndex() function to support scrolling when changing selected index in components like List.
 * Label: added backgroundSkin, backgroundDisabledSkin, and padding properties.
 * LayoutGroup: added LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR.
 * LayoutGroup: added autoSizeMode property to specify that it should fill the stage.
@@ -74,6 +75,53 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * TextFieldTextEditorViewPort: added padding properties.
 * TextFieldTextEditorViewPort: fixed issue where the selection index was wrong from touch.
 * VerticalLayout: added requestRowCount property for more control over height auto-measurement.
+
+### 2.1 BETA Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `nameList` property on the `IFeathersControl` interface has been deprecated, and it is replaced by the `styleNameList` property. The `name` property is no longer connected to style names, and situations where it failed to work with `getChildByName()` have been resolved. The `styleName` property has been added to replace the former usage of the `name` property as a concatenated version of `nameList` (now, `styleNameList`). The `nameList` property was deprecated in Feathers 2.0.0, and it remains deprecated in Feathers 2.1.0.
+
+The `manageVisibility` property on layouts has been deprecated. In previous versions, this property could be used to improve performance of non-virtual layouts by hiding items that were outside the view port. However, other performance improvements have made it so that setting `manageVisibility` can now sometimes hurt performance instead of improving it. The `manageVisibility` property was deprecated in Feathers 2.0.0, and it remains deprecated in Feathers 2.1.0.
+
+Similar to how the `nameList` property was renamed `styleNameList` in Feathers 2.0.0, properties such as `customThumbName` on the `Slider` component have have been renamed too. In this case, `customThumbName` is deprecated and replaced by `customThumbStyleName`. Similarly, the static constant `Slider.DEFAULT_CHILD_NAME_THUMB` has been deprecated and renamed `Slider.DEFAULT_CHILD_STYLE_NAME_THUMB`. Similarly, the static constant `Button.ALTERNATE_NAME_BACK_BUTTON` has been deprecated and renamed `Button.ALTERNATE_STYLE_NAME_BACK_BUTTON`. On all components, APIs that refer to the *name* of sub-components have been deprecated and they have been replaced by a similar API that refers to the *style name* instead. For brevity, the list below shows the mapping between the old naming conventions and the new naming conventions instead of listing each renamed property individually.
+
+* `custom*Name` => `custom*StyleName`
+* `DEFAULT_CHILD_NAME_*` => `DEFAULT_CHILD_STYLE_NAME_*`
+* `ALTERNATE_NAME_*` => `ALTERNATE_STYLE_NAME_*`
+
+The `List` and `GroupedList` components had some properties that didn't follow the original `custom*Name` naming convention. In both classes, the `itemRendererName` property has been deprecated and replaced by `customItemRendererStyleName`. In `GroupedList`, `firstItemRendererName`, `lastItemRendererName` and `singleItemRendererName` have been deprecated and replaced by `customFirstItemRendererStyleName`, `customLastItemRendererStyleName`, and `customSingleItemRendererStyleName` respectively. Similarly, `headerRendererName` and `footerRendererName` have been deprecated and replaced by `customHeaderRendererStyleName` and `customFooterRendererStyleName` respectively. With this change, these properties no longer diverge from the naming convention used for similar properties on other components.
+
+### 2.1 BETA API Changes
+
+#### ILayout
+
+A new method has been added to the `ILayout` interface. Custom implementations of `ILayout` created before Feathers 2.1.0 will have compiler errors until the required changes are made.
+
+The method `getNearestScrollPositionForIndex()` has been added to `ILayout` to provide the nearst scroll position for a new selected index when controlling a list's selection with the keyboard. Ideally, this function provides an updated scroll position that requires the minimum amount of scrolling to display the specified index. However, simply returning the result of `getScrollPositionForIndex()` may be acceptable:
+
+	public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+	{
+		return this.getScrollPositionForIndex(index, items, x, y, width, height, result);
+	}
+
+#### Scroller now implements IFocusDisplayObject
+
+With the addition of the new `IFocusContainer` interface, it is now possible for a container and its children to both appear in the tab focus chain when the `FocusManager` is enabled. Previously, subclasses of `Scroller`, like `List` or `ScrollContainer`, could not receive focus to allow the user to control the scroll position with the keyboard because the children wouldn't be able to receive focus too. Now, with the new interface and an updated focus manager, that restriction is lifted, and `Scroller` implements `IFocusDisplayObject` to support keyboard scrolling.
+
+Subclasses of `Scroller` that need to support passing focus to children must now implement `IFocusContainer`. `List`, `ScrollContainer`, `GroupedList` have been updated, obviously, but custom subclasses of `Scroller` may need to be updated to support focus. `IFocusContainer` requires one property, `isChildFocusEnabled`. For convenience, you may copy following implementation of `isChildFocusEnabled` into a subclass of `Scroller`:
+
+	protected var _isChildFocusEnabled:Boolean = true;
+
+	public function get isChildFocusEnabled():Boolean
+	{
+		return this._isEnabled && this._isChildFocusEnabled;
+	}
+
+	public function set isChildFocusEnabled(value:Boolean):void
+	{
+		this._isChildFocusEnabled = value;
+	}
 
 ## 2.0.1
 
