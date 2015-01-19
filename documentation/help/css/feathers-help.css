@@ -26,10 +26,12 @@ header, footer
 
 header .content, footer .content
 {
+	display: -webkit-flex;
 	display: flex;
-	max-width: 740px;
-	text-align: left;
+	max-width: 760px;
 	margin: auto;
+	padding: 0 10px;
+	text-align: left;
 }
 
 header nav, footer nav
@@ -39,20 +41,23 @@ header nav, footer nav
 
 header .search
 {
-	flex-grow: 1;
+	-webkit-flex: 1;
+	flex: 1;
 	text-align: right;
 	margin: 12px 0;
 }
 
 footer .copyright
 {
-	flex-grow: 1;
+	-webkit-flex: 1;
+	flex: 1;
 	text-align: right;
 }
 
 article
 {
-	max-width: 740px;
+	max-width: 760px;
+	padding: 0 10px;
 	text-align: left;
 	margin: auto;
 }
