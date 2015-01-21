@@ -133,6 +133,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _snapshotVisibleWidth:int = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _snapshotVisibleHeight:int = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _needsNewTexture:Boolean = false;
 
 		/**
@@ -1014,16 +1024,43 @@ package feathers.controls.text
 		{
 			if(this.textSnapshot)
 			{
-				if(this._snapToPixels)
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var scaleFactor:Number = Starling.current.contentScaleFactor;
+				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
-					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					this.textSnapshot.x = this._textSnapshotOffsetX + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					this.textSnapshot.y = this._textSnapshotOffsetY + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+					var offsetX:Number = 0;
+					var offsetY:Number = 0;
 				}
 				else
 				{
-					this.textSnapshot.x = this._textSnapshotOffsetX;
-					this.textSnapshot.y = this._textSnapshotOffsetY;
+					offsetX = this._textSnapshotOffsetX / scaleFactor;
+					offsetY = this._textSnapshotOffsetY / scaleFactor;
+				}
+				if(this._snapToPixels)
+				{
+					offsetX += Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+				}
+				this.textSnapshot.x = offsetX;
+				this.textSnapshot.y = offsetX;
+				if(this.textSnapshots)
+				{
+					var snapshotSize:Number = this._maxTextureDimensions / scaleFactor;
+					var positionX:Number = offsetX + snapshotSize;
+					var positionY:Number = offsetY;
+					var snapshotCount:int = this.textSnapshots.length;
+					for(var i:int = 0; i < snapshotCount; i++)
+					{
+						if(positionX > this.actualWidth)
+						{
+							positionX = offsetX;
+							positionY += snapshotSize;
+						}
+						var snapshot:Image = this.textSnapshots[i];
+						snapshot.x = positionX;
+						snapshot.y = positionY;
+						positionX += snapshotSize;
+					}
 				}
 			}
 			super.render(support, parentAlpha);
@@ -1262,8 +1299,23 @@ package feathers.controls.text
 			{
 				this.textField.width = this.actualWidth + gutterDimensionsOffset;
 				this.textField.height = this.actualHeight + gutterDimensionsOffset;
-				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
 				var rectangleSnapshotWidth:Number = this.actualWidth * scaleFactor;
+				var rectangleSnapshotHeight:Number = this.actualHeight * scaleFactor;
+				if(this._nativeFilters && this._nativeFilters.length > 0)
+				{
+					HELPER_MATRIX.identity();
+					HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+					var bitmapData:BitmapData = new BitmapData(rectangleSnapshotWidth, rectangleSnapshotHeight, true, 0x00ff00ff);
+					bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+					this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
+					bitmapData.dispose();
+					bitmapData = null;
+					this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
+					this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
+					rectangleSnapshotWidth = HELPER_RECTANGLE.width;
+					rectangleSnapshotHeight = HELPER_RECTANGLE.height;
+				}
+				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
@@ -1286,7 +1338,6 @@ package feathers.controls.text
 						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
 					}
 				}
-				var rectangleSnapshotHeight:Number = this.actualHeight * scaleFactor;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotHeight > this._maxTextureDimensions)
@@ -1311,6 +1362,8 @@ package feathers.controls.text
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+				this._snapshotVisibleWidth = rectangleSnapshotWidth;
+				this._snapshotVisibleHeight = rectangleSnapshotHeight;
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
@@ -1430,8 +1483,8 @@ package feathers.controls.text
 			bitmapWidth:Number, bitmapHeight:Number, bitmapData:BitmapData = null):BitmapData
 		{
 			var scaleFactor:Number = Starling.contentScaleFactor;
-			var clipWidth:Number = (this.actualWidth * scaleFactor) - textFieldX;
-			var clipHeight:Number = (this.actualHeight * scaleFactor) - textFieldY;
+			var clipWidth:Number = this._snapshotVisibleWidth - textFieldX;
+			var clipHeight:Number = this._snapshotVisibleHeight - textFieldY;
 			if(!bitmapData || bitmapData.width != bitmapWidth || bitmapData.height != bitmapHeight)
 			{
 				if(bitmapData)
@@ -1450,40 +1503,10 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 0;
 			}
-			HELPER_MATRIX.tx = -(textFieldX + gutterPositionOffset);
-			HELPER_MATRIX.ty = -(textFieldY + gutterPositionOffset);
+			HELPER_MATRIX.tx = -(textFieldX + gutterPositionOffset) - this._textSnapshotOffsetX;
+			HELPER_MATRIX.ty = -(textFieldY + gutterPositionOffset) - this._textSnapshotOffsetY;
 			HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-
-			var useNativeFilters:Boolean = this._nativeFilters && this._nativeFilters.length > 0 &&
-				this._snapshotWidth <= this._maxTextureDimensions && this._snapshotHeight <= this._maxTextureDimensions;
-			if(useNativeFilters)
-			{
-				this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
-				if(bitmapData.rect.equals(HELPER_RECTANGLE))
-				{
-					this._textSnapshotOffsetX = 0;
-					this._textSnapshotOffsetY = 0;
-				}
-				else
-				{
-					HELPER_MATRIX.tx -= HELPER_RECTANGLE.x;
-					HELPER_MATRIX.ty -= HELPER_RECTANGLE.y;
-					var newBitmapData:BitmapData = new BitmapData(HELPER_RECTANGLE.width, HELPER_RECTANGLE.height, true, 0x00ff00ff);
-					this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
-					this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
-					HELPER_RECTANGLE.x = 0;
-					HELPER_RECTANGLE.y = 0;
-					newBitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-					bitmapData.dispose();
-					bitmapData = newBitmapData;
-				}
-			}
-			else
-			{
-				this._textSnapshotOffsetX = 0;
-				this._textSnapshotOffsetY = 0;
-			}
 			return bitmapData;
 		}
 
