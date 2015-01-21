@@ -1316,7 +1316,8 @@ package feathers.controls.text
 				var scaleFactor:Number = Starling.current.contentScaleFactor;
 				var rectangleSnapshotWidth:Number = this.actualWidth * scaleFactor;
 				var rectangleSnapshotHeight:Number = this.actualHeight * scaleFactor;
-				if(this._nativeFilters && this._nativeFilters.length > 0)
+				if(rectangleSnapshotWidth >= 1 && rectangleSnapshotHeight >= 1 &&
+					this._nativeFilters && this._nativeFilters.length > 0)
 				{
 					HELPER_MATRIX.identity();
 					HELPER_MATRIX.scale(scaleFactor, scaleFactor);
