@@ -218,6 +218,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _snapshotVisibleWidth:int = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _snapshotVisibleHeight:int = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _needsNewTexture:Boolean = false;
 
 		/**
@@ -1084,16 +1094,43 @@ package feathers.controls.text
 		{
 			if(this.textSnapshot)
 			{
-				if(this._snapToPixels)
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var scaleFactor:Number = Starling.current.contentScaleFactor;
+				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
-					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					this.textSnapshot.x = this._textSnapshotOffsetX + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					this.textSnapshot.y = this._textSnapshotOffsetY + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+					var offsetX:Number = 0;
+					var offsetY:Number = 0;
 				}
 				else
 				{
-					this.textSnapshot.x = this._textSnapshotOffsetX;
-					this.textSnapshot.y = this._textSnapshotOffsetY;
+					offsetX = this._textSnapshotOffsetX / scaleFactor;
+					offsetY = this._textSnapshotOffsetY / scaleFactor;
+				}
+				if(this._snapToPixels)
+				{
+					offsetX += Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+				}
+				this.textSnapshot.x = offsetX;
+				this.textSnapshot.y = offsetX;
+				if(this.textSnapshots)
+				{
+					var snapshotSize:Number = this._maxTextureDimensions / scaleFactor;
+					var positionX:Number = offsetX + snapshotSize;
+					var positionY:Number = offsetY;
+					var snapshotCount:int = this.textSnapshots.length;
+					for(var i:int = 0; i < snapshotCount; i++)
+					{
+						if(positionX > this.actualWidth)
+						{
+							positionX = offsetX;
+							positionY += snapshotSize;
+						}
+						var snapshot:Image = this.textSnapshots[i];
+						snapshot.x = positionX;
+						snapshot.y = positionY;
+						positionX += snapshotSize;
+					}
 				}
 			}
 			super.render(support, parentAlpha);
@@ -1205,6 +1242,8 @@ package feathers.controls.text
 				this.textBlock.tabStops = this._tabStops;
 				this.textBlock.textJustifier = this._textJustifier;
 				this.textBlock.userData = this._userData;
+
+				this._textLineContainer.filters = this._nativeFilters;
 			}
 
 			if(dataInvalid)
@@ -1274,8 +1313,24 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
+				var scaleFactor:Number = Starling.current.contentScaleFactor;
+				var rectangleSnapshotWidth:Number = this.actualWidth * scaleFactor;
+				var rectangleSnapshotHeight:Number = this.actualHeight * scaleFactor;
+				if(this._nativeFilters && this._nativeFilters.length > 0)
+				{
+					HELPER_MATRIX.identity();
+					HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+					var bitmapData:BitmapData = new BitmapData(rectangleSnapshotWidth, rectangleSnapshotHeight, true, 0x00ff00ff);
+					bitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+					this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
+					bitmapData.dispose();
+					bitmapData = null;
+					this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
+					this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
+					rectangleSnapshotWidth = HELPER_RECTANGLE.width;
+					rectangleSnapshotHeight = HELPER_RECTANGLE.height;
+				}
 				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
-				var rectangleSnapshotWidth:Number = this.actualWidth * Starling.contentScaleFactor;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
@@ -1298,7 +1353,6 @@ package feathers.controls.text
 						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
 					}
 				}
-				var rectangleSnapshotHeight:Number = this.actualHeight * Starling.contentScaleFactor;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotHeight > this._maxTextureDimensions)
@@ -1323,6 +1377,8 @@ package feathers.controls.text
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+				this._snapshotVisibleWidth = rectangleSnapshotWidth;
+				this._snapshotVisibleHeight = rectangleSnapshotHeight;
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
@@ -1439,9 +1495,8 @@ package feathers.controls.text
 		protected function drawTextLinesRegionToBitmapData(textLinesX:Number, textLinesY:Number,
 			bitmapWidth:Number, bitmapHeight:Number, bitmapData:BitmapData = null):BitmapData
 		{
-			var scaleFactor:Number = Starling.contentScaleFactor;
-			var clipWidth:Number = (this.actualWidth * scaleFactor) - textLinesX;
-			var clipHeight:Number = (this.actualHeight * scaleFactor) - textLinesY;
+			var clipWidth:Number = this._snapshotVisibleWidth - textLinesX;
+			var clipHeight:Number = this._snapshotVisibleHeight - textLinesY;
 			if(!bitmapData || bitmapData.width != bitmapWidth || bitmapData.height != bitmapHeight)
 			{
 				if(bitmapData)
@@ -1455,44 +1510,10 @@ package feathers.controls.text
 				//clear the bitmap data and reuse it
 				bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
 			}
-			HELPER_MATRIX.tx = -textLinesX - this._textSnapshotScrollX;
-			HELPER_MATRIX.ty = -textLinesY - this._textSnapshotScrollY;
+			HELPER_MATRIX.tx = -textLinesX - this._textSnapshotScrollX - this._textSnapshotOffsetX;
+			HELPER_MATRIX.ty = -textLinesY - this._textSnapshotScrollY - this._textSnapshotOffsetY;
 			HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
 			bitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-
-			var useNativeFilters:Boolean = this._nativeFilters && this._nativeFilters.length > 0 &&
-				this._snapshotWidth <= this._maxTextureDimensions && this._snapshotHeight <= this._maxTextureDimensions;
-			if(useNativeFilters)
-			{
-				//check to see if the bitmap data must be resized when the
-				//filters are applied.
-				this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
-				if(bitmapData.rect.equals(HELPER_RECTANGLE))
-				{
-					//in the ideal situation, we don't even need to resize the
-					//bitmap data.
-					this._textSnapshotOffsetX = 0;
-					this._textSnapshotOffsetY = 0;
-				}
-				else
-				{
-					HELPER_MATRIX.tx -= HELPER_RECTANGLE.x;
-					HELPER_MATRIX.ty -= HELPER_RECTANGLE.y;
-					var newBitmapData:BitmapData = new BitmapData(HELPER_RECTANGLE.width, HELPER_RECTANGLE.height, true, 0x00ff00ff);
-					this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
-					this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
-					HELPER_RECTANGLE.x = 0;
-					HELPER_RECTANGLE.y = 0;
-					newBitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-					bitmapData.dispose();
-					bitmapData = newBitmapData;
-				}
-			}
-			else
-			{
-				this._textSnapshotOffsetX = 0;
-				this._textSnapshotOffsetY = 0;
-			}
 			return bitmapData;
 		}
 
@@ -1654,7 +1675,6 @@ package feathers.controls.text
 				var line:TextLine = textLines[i];
 				if(line.validity === TextLineValidity.VALID)
 				{
-					line.filters = this._nativeFilters;
 					lastLine = line;
 					textLines[i] = line;
 					continue;
@@ -1762,7 +1782,6 @@ package feathers.controls.text
 					yPosition += line.ascent;
 					line.y = yPosition;
 					yPosition += line.descent;
-					line.filters = this._nativeFilters;
 					textLines[pushIndex] = line;
 					pushIndex++;
 					lineStartIndex += lineLength;
