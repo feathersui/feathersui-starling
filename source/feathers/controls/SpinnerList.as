@@ -31,7 +31,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var list:SpinnerList = new SpinnerList();
-	 *
+	 * 
 	 * list.dataProvider = new ListCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
@@ -39,7 +39,7 @@ package feathers.controls
 	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
 	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 	 * ]);
-	 *
+	 * 
 	 * list.itemRendererFactory = function():IListItemRenderer
 	 * {
 	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -47,9 +47,9 @@ package feathers.controls
 	 *     renderer.iconSourceField = "thumbnail";
 	 *     return renderer;
 	 * };
-	 *
+	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
-	 *
+	 * 
 	 * this.addChild( list );</listing>
 	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs

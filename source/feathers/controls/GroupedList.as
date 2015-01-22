@@ -141,7 +141,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var list:GroupedList = new GroupedList();
-	 *
+	 * 
 	 * list.dataProvider = new HierarchicalCollection(
 	 * [
 	 *     {
@@ -169,7 +169,7 @@ package feathers.controls
 	 *         ]
 	 *     },
 	 * ]);
-	 *
+	 * 
 	 * list.itemRendererFactory = function():IGroupedListItemRenderer
 	 * {
 	 *     var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
@@ -177,9 +177,9 @@ package feathers.controls
 	 *     renderer.iconSourceField = "thumbnail";
 	 *     return renderer;
 	 * };
-	 *
+	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
-	 *
+	 * 
 	 * this.addChild( list );</listing>
 	 *
 	 * @see ../../../help/grouped-list.html How to use the Feathers GroupedList component

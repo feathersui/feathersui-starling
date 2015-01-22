@@ -26,22 +26,21 @@ package feathers.controls
 	 * package
 	 * {
 	 *     import feathers.controls.Screen;
-	 *
+	 *     
 	 *     public class CustomScreen extends Screen
 	 *     {
 	 *         public function CustomScreen()
 	 *         {
+	 *             super();
 	 *         }
-	 *
+	 *         
 	 *         override protected function initialize():void
 	 *         {
-	 *             //runs once when screen is first added to the stage.
-	 *             //a good place to add children and set a layout.
-	 *         }
-	 *
-	 *         override protected function draw():void
-	 *         {
-	 *             //override only if you want to do manual measurement and layout.
+	 *             //runs once when screen is first added to the stage
+	 *             //a good place to add children and customize the layout
+	 *             
+	 *             //don't forget to call this!
+	 *             super.initialize()
 	 *         }
 	 *     }
 	 * }</listing>

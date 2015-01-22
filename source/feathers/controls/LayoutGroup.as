@@ -40,11 +40,11 @@ package feathers.controls
 	 * layout.padding = 20;
 	 * group.layout = layout;
 	 * this.addChild( group );
-	 *
+	 * 
 	 * var yesButton:Button = new Button();
 	 * yesButton.label = "Yes";
 	 * group.addChild( yesButton );
-	 *
+	 * 
 	 * var noButton:Button = new Button();
 	 * noButton.label = "No";
 	 * group.addChild( noButton );</listing>

@@ -30,18 +30,21 @@ package feathers.controls
 	 * package
 	 * {
 	 *     import feathers.controls.ScrollScreen;
-	 *
+	 *     
 	 *     public class CustomScreen extends ScrollScreen
 	 *     {
 	 *         public function CustomScreen()
 	 *         {
-	 *             this.addEventListener( FeathersEventType.INITIALIZE, initializeHandler );
+	 *             super();
 	 *         }
-	 *
-	 *         private function initializeHandler( event:Event ):void
+	 *         
+	 *         override protected function initialize():void
 	 *         {
-	 *             //runs once when screen is first added to the stage.
+	 *             //runs once when screen is first added to the stage
 	 *             //a good place to add children and customize the layout
+	 *             
+	 *             //don't forget to call this!
+	 *             super.initialize()
 	 *         }
 	 *     }
 	 * }</listing>

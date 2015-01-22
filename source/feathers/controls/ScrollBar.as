@@ -104,15 +104,11 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * list.horizontalScrollBarFactory = function():IScrollBar
 	 * {
-	 *     var scrollBar:ScrollBar = new ScrollBar();
-	 *     scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-	 *     return scrollBar;
+	 *     return new ScrollBar();
 	 * };
 	 * list.verticalScrollBarFactory = function():IScrollBar
 	 * {
-	 *     var scrollBar:ScrollBar = new ScrollBar();
-	 *     scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
-	 *     return scrollBar;
+	 *     return new ScrollBar();
 	 * };</listing>
 	 *
 	 * @see ../../../help/scroll-bar.html How to use the Feathers ScrollBar component

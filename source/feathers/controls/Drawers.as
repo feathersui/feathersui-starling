@@ -152,6 +152,7 @@ package feathers.controls
 	 * var list:List = new List();
 	 * // the navigator's screens, the list's data provider, and additional
 	 * // properties should be set here.
+	 * 
 	 * var drawers:Drawers = new Drawers();
 	 * drawers.content = navigator;
 	 * drawers.leftDrawer = menu;

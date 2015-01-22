@@ -12,8 +12,8 @@ package feathers.controls
 	/**
 	 * A screen to display in a screen navigator.
 	 *
-	 * @see StackScreenNavigator
-	 * @see ScreenNavigator
+	 * @see feathers.controls.StackScreenNavigator
+	 * @see feathers.controls.ScreenNavigator
 	 */
 	public interface IScreen extends IFeathersControl
 	{

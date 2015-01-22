@@ -43,11 +43,13 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var header:Header = new Header();
 	 * header.title = "I'm a header";
+	 * 
 	 * var backButton:Button = new Button();
 	 * backButton.label = "Back";
 	 * backButton.styleNameList.add( Button.ALTERNATE_STYLE_NAME_BACK_BUTTON );
 	 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
 	 * header.leftItems = new &lt;DisplayObject&gt;[ backButton ];
+	 * 
 	 * this.addChild( header );</listing>
 	 *
 	 * @see ../../../help/header.html How to use the Feathers Header component

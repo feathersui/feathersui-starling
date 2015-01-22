@@ -23,8 +23,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var navigator:StackScreenNavigator = new StackScreenNavigator();
-	 * navigator.addScreen( "mainMenu", new StackScreenNavigatorItem( MainMenuScreen );
+	 * navigator.addScreen( "mainMenu", new StackScreenNavigatorItem( MainMenuScreen ) );
 	 * this.addChild( navigator );
+	 * 
 	 * navigator.rootScreenID = "mainMenu";</listing>
 	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
