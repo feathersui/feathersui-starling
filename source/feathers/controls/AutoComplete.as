@@ -73,6 +73,23 @@ package feathers.controls
 	/**
 	 * A text input that provides a pop-up list with suggestions as you type.
 	 *
+	 * <p>The following example creates an <code>AutoComplete</code> with a
+	 * local collection of suggestions:</p>
+	 *
+	 * <listing version="3.0">
+	 * var input:AutoComplete = new AutoComplete();
+	 * input.source = new LocalAutoCompleteSource( new ListCollection(new &lt;String&gt;
+	 * [
+	 *     "Apple",
+	 *     "Banana",
+	 *     "Cherry",
+	 *     "Grape",
+	 *     "Lemon",
+	 *     "Orange",
+	 *     "Watermelon"
+	 * ]));
+	 * this.addChild( input );</listing>
+	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
 	 * may need some changes between now and the next version of Feathers to
 	 * account for overlooked requirements or other issues. Upgrading to future
@@ -180,6 +197,22 @@ package feathers.controls
 
 		/**
 		 * The source of the suggestions that appear in the pop-up list.
+		 *
+		 * <p>In the following example, a source of suggestions is provided:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.source = new LocalAutoCompleteSource( new ListCollection(new &lt;String&gt;
+		 * [
+		 *     "Apple",
+		 *     "Banana",
+		 *     "Cherry",
+		 *     "Grape",
+		 *     "Lemon",
+		 *     "Orange",
+		 *     "Watermelon"
+		 * ]));</listing>
+		 * 
+		 * @default null
 		 */
 		public function get source():IAutoCompleteSource
 		{
@@ -215,6 +248,11 @@ package feathers.controls
 		 * The time, in seconds, after the text has changed before requesting
 		 * suggestions from the <code>IAutoCompleteSource</code>.
 		 *
+		 * <p>In the following example, the delay is changed to 1.5 seconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.autoCompleteDelay = 1.5;</listing>
+		 *
 		 * @default 0.5
 		 *
 		 * @see #source
@@ -240,6 +278,12 @@ package feathers.controls
 		/**
 		 * The minimum number of entered characters required to request
 		 * suggestions from the <code>IAutoCompleteSource</code>.
+		 *
+		 * <p>In the following example, the minimum number of characters is
+		 * changed to <code>3</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.minimumAutoCompleteLength = 3;</listing>
 		 *
 		 * @default 2
 		 *
@@ -269,7 +313,7 @@ package feathers.controls
 		 * <p>In the following example, a pop-up content manager is provided:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.popUpContentManager = new CalloutPopUpContentManager();</listing>
+		 * input.popUpContentManager = new CalloutPopUpContentManager();</listing>
 		 *
 		 * @default null
 		 */
@@ -309,21 +353,20 @@ package feathers.controls
 		protected var _listFactory:Function;
 
 		/**
-		 * A function used to generate the picker list's pop-up list
-		 * sub-component. The list must be an instance of <code>List</code>.
-		 * This factory can be used to change properties on the list when it is
-		 * first created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use this factory to set skins and other
-		 * styles on the list.
+		 * A function used to generate the pop-up list sub-component. The list
+		 * must be an instance of <code>List</code>. This factory can be used to
+		 * change properties on the list when it is first created. For instance,
+		 * if you are skinning Feathers components without a theme, you might
+		 * use this factory to set skins and other styles on the list.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():List</pre>
 		 *
 		 * <p>In the following example, a custom list factory is passed to the
-		 * picker list:</p>
+		 * <code>AutoComplete</code>:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.listFactory = function():List
+		 * input.listFactory = function():List
 		 * {
 		 *     var popUpList:List = new List();
 		 *     popUpList.backgroundSkin = new Image( texture );
@@ -359,15 +402,15 @@ package feathers.controls
 		protected var _customListStyleName:String;
 
 		/**
-		 * A style name to add to the picker list's list sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * picker lists.
+		 * A style name to add to the list sub-component of the
+		 * <code>AutoComplete</code>. Typically used by a theme to provide
+		 * different styles to different <code>AutoComplete</code> instances.
 		 *
 		 * <p>In the following example, a custom list style name is passed to the
-		 * picker list:</p>
+		 * <code>AutoComplete</code>:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.customListStyleName = "my-custom-list";</listing>
+		 * input.customListStyleName = "my-custom-list";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component style name to provide
 		 * different styles than the default:</p>
@@ -406,8 +449,8 @@ package feathers.controls
 		protected var _listProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the picker's pop-up
-		 * list sub-component. The pop-up list is a
+		 * A set of key/value pairs to be passed down to the pop-up list
+		 * sub-component of the <code>AutoComplete</code>. The pop-up list is a
 		 * <code>feathers.controls.List</code> instance that is created by
 		 * <code>listFactory</code>.
 		 *
