@@ -99,7 +99,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * <code>SpinnerList</code> requires that the <code>snapToPages</code>
+		 * property is set to <code>true</code>. Attempts to set it to
+		 * <code>false</code> will result in a runtime error.
+		 *
+		 * @throws ArgumentError SpinnerList requires snapToPages to be true.
 		 */
 		override public function set snapToPages(value:Boolean):void
 		{
@@ -111,7 +115,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * <code>SpinnerList</code> requires that the <code>allowMultipleSelection</code>
+		 * property is set to <code>false</code>. Attempts to set it to
+		 * <code>true</code> will result in a runtime error.
+		 *
+		 * @throws ArgumentError SpinnerList requires allowMultipleSelection to be false.
 		 */
 		override public function set allowMultipleSelection(value:Boolean):void
 		{
@@ -123,7 +131,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * <code>SpinnerList</code> requires that the <code>isSelectable</code>
+		 * property is set to <code>true</code>. Attempts to set it to
+		 * <code>false</code> will result in a runtime error.
+		 *
+		 * @throws ArgumentError SpinnerList requires isSelectable to be true.
 		 */
 		override public function set isSelectable(value:Boolean):void
 		{
@@ -187,6 +199,12 @@ package feathers.controls
 		 * vertical center. If the list scrolls horizontally, the
 		 * <code>selectionOverlaySkin</code> will fill the entire height of the
 		 * list, and it will be positioned in the horizontal center.
+		 *
+		 * <p>The following example gives the spinner list a selection overlay
+		 * skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectionOverlaySkin = new Scale9Image( textures );</listing>
 		 *
 		 * @default null
 		 */
