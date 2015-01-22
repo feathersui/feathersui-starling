@@ -65,7 +65,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-	 *
+	 * 
 	 * function button_triggeredHandler( event:Event ):void
 	 * {
 	 *     var label:Label = new Label();

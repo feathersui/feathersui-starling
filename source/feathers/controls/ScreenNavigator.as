@@ -23,9 +23,8 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var navigator:ScreenNavigator = new ScreenNavigator();
-	 * navigator.addScreen( "mainMenu", new ScreenNavigatorItem( MainMenuScreen );
+	 * navigator.addScreen( "mainMenu", new ScreenNavigatorItem( MainMenuScreen ) );
 	 * this.addChild( navigator );
-	 *
 	 * navigator.showScreen( "mainMenu" );</listing>
 	 *
 	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component

@@ -58,11 +58,11 @@ package feathers.controls
 	 * layout.padding = 20;
 	 * container.layout = layout;
 	 * this.addChild( container );
-	 *
+	 * 
 	 * var yesButton:Button = new Button();
 	 * yesButton.label = "Yes";
 	 * container.addChild( yesButton );
-	 *
+	 * 
 	 * var noButton:Button = new Button();
 	 * noButton.label = "No";
 	 * container.addChild( noButton );</listing>

@@ -138,7 +138,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var list:List = new List();
-	 *
+	 * 
 	 * list.dataProvider = new ListCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
@@ -146,7 +146,7 @@ package feathers.controls
 	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
 	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 	 * ]);
-	 *
+	 * 
 	 * list.itemRendererFactory = function():IListItemRenderer
 	 * {
 	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -154,9 +154,9 @@ package feathers.controls
 	 *     renderer.iconSourceField = "thumbnail";
 	 *     return renderer;
 	 * };
-	 *
+	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
-	 *
+	 * 
 	 * this.addChild( list );</listing>
 	 *
 	 * @see ../../../help/list.html How to use the Feathers List component

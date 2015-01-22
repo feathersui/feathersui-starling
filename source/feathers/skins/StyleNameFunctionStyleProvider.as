@@ -45,12 +45,12 @@ package feathers.skins
 	 *     target.defaultSkin = new Image( alternateTexture );
 	 *     // set other styles...
 	 * });
-	 *
+	 * 
 	 * var button:Button = new Button();
 	 * button.label = "Click Me";
 	 * button.styleProvider = styleProvider;
 	 * this.addChild(button);
-	 *
+	 * 
 	 * var alternateButton:Button = new Button()
 	 * button.label = "No, click me!";
 	 * alternateButton.styleProvider = styleProvider;
