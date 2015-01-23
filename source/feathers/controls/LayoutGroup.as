@@ -26,6 +26,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+	[DefaultProperty("mxmlContent")]
 	/**
 	 * A generic container that supports layout. For a container that supports
 	 * scrolling and more robust skinning options, see <code>ScrollContainer</code>.
@@ -616,6 +617,12 @@ package feathers.controls
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
+
+			if(mxmlContentInvalid)
+			{
+				this.refreshMXMLContent();
+			}
 
 			//scrolling only affects the layout is requiresLayoutOnScroll is true
 			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
