@@ -39,6 +39,7 @@ package feathers.examples.componentsExplorer.screens
 	public class MainMenuScreen extends PanelScreen
 	{
 		public static const SHOW_ALERT:String = "showAlert";
+		public static const SHOW_AUTO_COMPLETE:String = "showAutoComplete";
 		public static const SHOW_BUTTON:String = "showButton";
 		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
 		public static const SHOW_CALLOUT:String = "showCallout";
@@ -80,6 +81,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.dataProvider = new ListCollection(
 			[
 				{ label: "Alert", event: SHOW_ALERT },
+				{ label: "Auto-complete", event: SHOW_AUTO_COMPLETE },
 				{ label: "Button", event: SHOW_BUTTON },
 				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
 				{ label: "Callout", event: SHOW_CALLOUT },
