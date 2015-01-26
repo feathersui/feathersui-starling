@@ -14,6 +14,7 @@ package feathers.controls.text
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 
 	import starling.core.RenderSupport;
@@ -22,6 +23,7 @@ package feathers.controls.text
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
 	/**
@@ -986,13 +988,26 @@ package feathers.controls.text
 		 */
 		protected function addCharacterToBatch(charData:BitmapChar, x:Number, y:Number, scale:Number, support:RenderSupport = null, parentAlpha:Number = 1):void
 		{
+			var texture:Texture = charData.texture;
+			var frame:Rectangle = texture.frame;
+			if(frame)
+			{
+				if(frame.width === 0 || frame.height === 0)
+				{
+					return;
+				}
+			}
+			else if(texture.width === 0 || texture.height === 0)
+			{
+				return;
+			}
 			if(!HELPER_IMAGE)
 			{
-				HELPER_IMAGE = new Image(charData.texture);
+				HELPER_IMAGE = new Image(texture);
 			}
 			else
 			{
-				HELPER_IMAGE.texture = charData.texture;
+				HELPER_IMAGE.texture = texture;
 				HELPER_IMAGE.readjustSize();
 			}
 			HELPER_IMAGE.scaleX = HELPER_IMAGE.scaleY = scale;
