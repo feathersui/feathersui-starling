@@ -12,6 +12,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.examples.componentsExplorer.screens.AlertScreen;
+	import feathers.examples.componentsExplorer.screens.AutoCompleteScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
@@ -49,6 +50,7 @@ package feathers.examples.componentsExplorer
 	{
 		private static const MAIN_MENU:String = "mainMenu";
 		private static const ALERT:String = "alert";
+		private static const AUTO_COMPLETE:String = "autoComplete";
 		private static const BUTTON:String = "button";
 		private static const BUTTON_SETTINGS:String = "buttonSettings";
 		private static const BUTTON_GROUP:String = "buttonGroup";
@@ -76,6 +78,7 @@ package feathers.examples.componentsExplorer
 		private static const MAIN_MENU_EVENTS:Object =
 		{
 			showAlert: ALERT,
+			showAutoComplete: AUTO_COMPLETE,
 			showButton: BUTTON,
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
@@ -118,6 +121,10 @@ package feathers.examples.componentsExplorer
 			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
 			alertItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ALERT, alertItem);
+
+			var autoCompleteItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AutoCompleteScreen);
+			autoCompleteItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(AUTO_COMPLETE, autoCompleteItem);
 
 			var buttonItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ButtonScreen);
 			buttonItem.addPopEvent(Event.COMPLETE);
