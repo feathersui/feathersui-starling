@@ -20,7 +20,7 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public static var globalStyleProvider:IStyleProvider;
 
-		public function TextInputScreen()
+		public function AutoCompleteScreen()
 		{
 		}
 

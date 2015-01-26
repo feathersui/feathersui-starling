@@ -36,12 +36,15 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TabBarScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
+	import feathers.examples.componentsExplorer.screens.WebViewScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.motion.Slide;
 	import feathers.system.DeviceCapabilities;
+
+	import flash.system.Capabilities;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -74,6 +77,7 @@ package feathers.examples.componentsExplorer
 		private static const TAB_BAR:String = "tabBar";
 		private static const TEXT_INPUT:String = "textInput";
 		private static const TOGGLES:String = "toggles";
+		private static const WEB_VIEW:String = "webView";
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
@@ -95,7 +99,8 @@ package feathers.examples.componentsExplorer
 			showSpinnerList: SPINNER_LIST,
 			showTabBar: TAB_BAR,
 			showTextInput: TEXT_INPUT,
-			showToggles: TOGGLES
+			showToggles: TOGGLES,
+			showWebView: WEB_VIEW
 		};
 		
 		public function Main()
@@ -114,7 +119,7 @@ package feathers.examples.componentsExplorer
 			EmbeddedAssets.initialize();
 
 			new ComponentsExplorerTheme();
-			
+
 			this._navigator = new StackScreenNavigator();
 			this.content = this._navigator;
 
@@ -248,6 +253,13 @@ package feathers.examples.componentsExplorer
 			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleScreen);
 			togglesItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(TOGGLES, togglesItem);
+
+			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
+			{
+				var webViewItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(WebViewScreen);
+				webViewItem.addPopEvent(Event.COMPLETE);
+				this._navigator.addScreen(WEB_VIEW, webViewItem);
+			}
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
