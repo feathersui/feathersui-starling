@@ -13,6 +13,8 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 
+	import flash.system.Capabilities;
+
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -57,6 +59,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_TAB_BAR:String = "showTabBar";
 		public static const SHOW_TEXT_INPUT:String = "showTextInput";
 		public static const SHOW_TOGGLES:String = "showToggles";
+		public static const SHOW_WEB_VIEW:String = "showWebView";
 		
 		public function MainMenuScreen()
 		{
@@ -100,6 +103,10 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Text Input", event: SHOW_TEXT_INPUT },
 				{ label: "Toggles", event: SHOW_TOGGLES },
 			]);
+			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
+			{
+				this._list.dataProvider.addItem( { label: "Web View", event: SHOW_WEB_VIEW } );
+			}
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
 			this._list.autoHideBackground = true;
