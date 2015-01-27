@@ -1031,23 +1031,16 @@ package feathers.controls
 				}
 				else //horizontal
 				{
-					if(range > 0)
+					if(adjustedPage === 0)
 					{
-						newWidth = 0;
+						newWidth = this.thumbOriginalWidth;
 					}
 					else
 					{
-						if(adjustedPage == 0)
+						newWidth = this.thumbOriginalWidth * range / adjustedPage;
+						if(newWidth < this.thumbOriginalWidth)
 						{
 							newWidth = this.thumbOriginalWidth;
-						}
-						else
-						{
-							newWidth = this.thumbOriginalWidth * range / adjustedPage;
-							if(newWidth < this.thumbOriginalWidth)
-							{
-								newWidth = this.thumbOriginalWidth;
-							}
 						}
 					}
 				}
@@ -1057,23 +1050,16 @@ package feathers.controls
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					if(range > 0)
+					if(adjustedPage === 0)
 					{
-						newHeight = 0;
+						newHeight = this.thumbOriginalHeight;
 					}
 					else
 					{
-						if(adjustedPage == 0)
+						newHeight = this.thumbOriginalHeight * range / adjustedPage;
+						if(newHeight < this.thumbOriginalHeight)
 						{
 							newHeight = this.thumbOriginalHeight;
-						}
-						else
-						{
-							newHeight = this.thumbOriginalHeight * range / adjustedPage;
-							if(newHeight < this.thumbOriginalHeight)
-							{
-								newHeight = this.thumbOriginalHeight;
-							}
 						}
 					}
 				}
