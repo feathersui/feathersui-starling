@@ -7,7 +7,9 @@ package
     import feathers.tests.ListTests;
     import feathers.tests.PickerListTests;
     import feathers.tests.ProgressBarTests;
+    import feathers.tests.ScrollBarHorizontalTests;
     import feathers.tests.ScrollContainerTests;
+    import feathers.tests.SimpleScrollBarHorizontalTests;
     import feathers.tests.SliderHorizontalTests;
     import feathers.tests.TabBarEmptyDataProviderTests;
     import feathers.tests.TabBarTests;
@@ -75,6 +77,8 @@ package
                 ListCollectionWithArrayTests,
                 PickerListTests,
                 ProgressBarTests,
+                SimpleScrollBarHorizontalTests,
+                ScrollBarHorizontalTests,
                 ScrollContainerTests,
                 SliderHorizontalTests,
                 ToggleButtonTests,
