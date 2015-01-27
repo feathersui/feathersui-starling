@@ -2588,9 +2588,9 @@ package feathers.controls
 			var adjustedPage:Number = this._page;
 			if(this._page == 0)
 			{
-				adjustedPage = step;
+				adjustedPage = this._step;
 			}
-			else if(adjustedPage > range)
+			if(adjustedPage > range)
 			{
 				adjustedPage = range;
 			}
@@ -2798,9 +2798,9 @@ package feathers.controls
 			var adjustedPage:Number = this._page;
 			if(this._page == 0)
 			{
-				adjustedPage = step;
+				adjustedPage = this._step;
 			}
-			else if(adjustedPage > range)
+			if(adjustedPage > range)
 			{
 				adjustedPage = range;
 			}
