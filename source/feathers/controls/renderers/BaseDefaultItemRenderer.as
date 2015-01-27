@@ -3921,6 +3921,8 @@ package feathers.controls.renderers
 		{
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
 			this.refreshMaxLabelWidth(false);
 			if(this._label && this.labelTextRenderer)
 			{
@@ -4009,6 +4011,7 @@ package feathers.controls.renderers
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
 		}
 
