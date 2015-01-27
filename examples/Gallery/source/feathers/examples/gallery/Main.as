@@ -1,113 +1,54 @@
 package feathers.examples.gallery
 {
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 
-	import flash.display.Bitmap;
-	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.system.LoaderContext;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
-	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
-	import starling.textures.Texture;
 
-	public class Main extends Sprite
+	public class Main extends LayoutGroup
 	{
 		//used by the extended theme
 		public static const THUMBNAIL_LIST_NAME:String = "thumbnailList";
 
-		private static const LOADER_CONTEXT:LoaderContext = new LoaderContext(true);
 		private static const FLICKR_URL:String = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=" + CONFIG::FLICKR_API_KEY + "&format=rest";
 		private static const FLICKR_PHOTO_URL:String = "https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg";
 
 		public function Main()
 		{
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
+			super();
 		}
 
-		protected var selectedImage:Image;
+		protected var selectedImage:ImageLoader;
 		protected var list:List;
 		protected var message:Label;
 		protected var apiLoader:URLLoader;
-		protected var loader:Loader;
 		protected var fadeTween:Tween;
-		protected var originalImageWidth:Number;
-		protected var originalImageHeight:Number;
 
-		protected function layout():void
+		override protected function initialize():void
 		{
-			this.list.width = this.stage.stageWidth;
-			this.list.height = 100;
-			this.list.y = this.stage.stageHeight - this.list.height;
+			super.initialize();
 
-			if(this.selectedImage)
-			{
-				var availableHeight:Number = this.stage.stageHeight - this.list.height;
-				var widthScale:Number = this.stage.stageWidth / this.originalImageWidth;
-				var heightScale:Number = availableHeight / this.originalImageHeight;
-				this.selectedImage.scaleX = this.selectedImage.scaleY = Math.min(1, widthScale, heightScale);
-				this.selectedImage.x = (this.stage.stageWidth - this.selectedImage.width) / 2;
-				this.selectedImage.y = (availableHeight - this.selectedImage.height) / 2;
-			}
-
-			this.message.validate();
-			availableHeight = this.stage.stageHeight - this.list.height;
-			this.message.x = (this.stage.stageWidth - this.message.width) / 2;
-			this.message.y = (availableHeight - this.message.height) / 2;
-		}
-
-		protected function list_changeHandler(event:starling.events.Event):void
-		{
-			var item:GalleryItem = GalleryItem(this.list.selectedItem);
-			if(!item)
-			{
-				if(this.selectedImage)
-				{
-					this.selectedImage.visible = false;
-				}
-				return;
-			}
-			if(this.loader)
-			{
-				this.loader.unloadAndStop(true);
-			}
-			else
-			{
-				this.loader = new Loader();
-				this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-				this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-				this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
-			}
-			this.loader.load(new URLRequest(item.url), LOADER_CONTEXT);
-			if(this.selectedImage)
-			{
-				this.selectedImage.visible = false;
-			}
-			if(this.fadeTween)
-			{
-				Starling.juggler.remove(this.fadeTween);
-				this.fadeTween = null;
-			}
-			this.message.text = "Loading...";
-			this.layout();
-		}
-
-		protected function addedToStageHandler(event:starling.events.Event):void
-		{
 			//this is an *extended* version of MetalWorksMobileTheme
 			new GalleryTheme();
+
+			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this.layout = new AnchorLayout();
 
 			this.apiLoader = new URLLoader();
 			this.apiLoader.addEventListener(flash.events.Event.COMPLETE, apiLoader_completeListener);
@@ -115,12 +56,15 @@ package feathers.examples.gallery
 			this.apiLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, apiLoader_errorListener);
 			this.apiLoader.load(new URLRequest(FLICKR_URL));
 
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-
 			var listLayout:HorizontalLayout = new HorizontalLayout();
 			listLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
 			listLayout.hasVariableItemDimensions = true;
-
+			
+			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			listLayoutData.left = 0;
+			listLayoutData.right = 0;
+			listLayoutData.bottom = 0;
+			
 			this.list = new List();
 			this.list.styleNameList.add(THUMBNAIL_LIST_NAME);
 			this.list.layout = listLayout;
@@ -128,18 +72,45 @@ package feathers.examples.gallery
 			this.list.snapScrollPositionsToPixels = true;
 			this.list.itemRendererType = GalleryItemRenderer;
 			this.list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+			this.list.height = 100;
+			this.list.layoutData = listLayoutData;
 			this.addChild(this.list);
-
+			
+			var imageLayoutData:AnchorLayoutData = new AnchorLayoutData(0, 0, 0, 0);
+			imageLayoutData.bottomAnchorDisplayObject = this.list;
+			
+			this.selectedImage = new ImageLoader();
+			this.selectedImage.layoutData = imageLayoutData;
+			this.selectedImage.addEventListener(starling.events.Event.COMPLETE, loader_completeHandler);
+			this.selectedImage.addEventListener(FeathersEventType.ERROR, loader_errorHandler);
+			this.addChild(this.selectedImage);
+			
+			var messageLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			messageLayoutData.horizontalCenter = 0;
+			messageLayoutData.verticalCenter = 0;
+			messageLayoutData.verticalCenterAnchorDisplayObject = this.selectedImage;
+			
 			this.message = new Label();
 			this.message.text = "Loading...";
+			this.message.layoutData = messageLayoutData;
 			this.addChild(this.message);
-
-			this.layout();
 		}
 
-		protected function stage_resizeHandler(event:ResizeEvent):void
+		protected function list_changeHandler(event:starling.events.Event):void
 		{
-			this.layout();
+			this.selectedImage.visible = false;
+			if(this.fadeTween)
+			{
+				Starling.juggler.remove(this.fadeTween);
+				this.fadeTween = null;
+			}
+			var item:GalleryItem = GalleryItem(this.list.selectedItem);
+			if(!item)
+			{
+				return;
+			}
+			this.selectedImage.source = item.url;
+			this.message.text = "Loading...";
 		}
 
 		protected function apiLoader_completeListener(event:flash.events.Event):void
@@ -148,7 +119,6 @@ package feathers.examples.gallery
 			if(result.attribute("stat") == "fail")
 			{
 				message.text = "Unable to load the list of images from Flickr at this time.";
-				this.layout();
 				return;
 			}
 			var items:Vector.<GalleryItem> = new <GalleryItem>[];
@@ -176,26 +146,10 @@ package feathers.examples.gallery
 		protected function apiLoader_errorListener(event:flash.events.Event):void
 		{
 			this.message.text = "Error loading images.";
-			this.layout();
 		}
 
-		protected function loader_completeHandler(event:flash.events.Event):void
+		protected function loader_completeHandler(event:starling.events.Event):void
 		{
-			var texture:Texture = Texture.fromBitmap(Bitmap(this.loader.content));
-			if(this.selectedImage)
-			{
-				this.selectedImage.texture.dispose();
-				this.selectedImage.texture = texture;
-				this.selectedImage.scaleX = this.selectedImage.scaleY = 1;
-				this.selectedImage.readjustSize();
-			}
-			else
-			{
-				this.selectedImage = new Image(texture);
-				this.addChildAt(this.selectedImage, 1);
-			}
-			this.originalImageWidth = this.selectedImage.width;
-			this.originalImageHeight = this.selectedImage.height;
 			this.selectedImage.alpha = 0;
 			this.selectedImage.visible = true;
 
@@ -204,14 +158,11 @@ package feathers.examples.gallery
 			Starling.juggler.add(this.fadeTween);
 
 			this.message.text = "";
-
-			this.layout();
 		}
 
 		protected function loader_errorHandler(event:flash.events.Event):void
 		{
 			this.message.text = "Error loading image.";
-			this.layout();
 		}
 	}
 }
