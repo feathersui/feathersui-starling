@@ -2273,6 +2273,7 @@ package feathers.controls
 					{
 						newWidth = this.minimumTrackOriginalWidth;
 					}
+					newWidth += this.incrementButton.width + this.decrementButton.width;
 				}
 			}
 			if(needsHeight)
@@ -2287,6 +2288,7 @@ package feathers.controls
 					{
 						newHeight = this.minimumTrackOriginalHeight;
 					}
+					newHeight += this.incrementButton.height + this.decrementButton.height;
 				}
 				else //horizontal
 				{
