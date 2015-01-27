@@ -19,6 +19,7 @@ package feathers.controls
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -63,6 +64,30 @@ package feathers.controls
 	 * @eventType starling.events.Event.COMPLETE
 	 */
 	[Event(name="complete",type="starling.events.Event")]
+
+	/**
+	 * Dispatched periodically as the source loads, if the source is a URL. This
+	 * event is not dispatched when the source is a texture.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>A value between 0.0 and 1.0 to indicate
+	 *   how much image data has loaded.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.PROGRESS
+	 */
+	[Event(name="progress",type="starling.events.Event")]
 
 	/**
 	 * Dispatched if an error occurs while loading the source content.
@@ -1164,6 +1189,7 @@ package feathers.controls
 							this.urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
 						}
 						this.urlLoader.addEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+						this.urlLoader.addEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
 						this.urlLoader.addEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
 						this.urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
 						this.urlLoader.load(new URLRequest(sourceURL));
@@ -1180,6 +1206,7 @@ package feathers.controls
 							this.loader = new Loader();
 						}
 						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+						this.loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
 						this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 						this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 						this.loader.load(new URLRequest(sourceURL), LOADER_CONTEXT);
@@ -1604,6 +1631,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function loader_progressHandler(event:ProgressEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.PROGRESS, false, event.bytesLoaded / event.bytesTotal);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function loader_errorHandler(event:ErrorEvent):void
 		{
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
@@ -1623,6 +1658,7 @@ package feathers.controls
 		{
 			var rawData:ByteArray = ByteArray(this.urlLoader.data);
 			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
 			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
 			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
 			this.urlLoader = null;
@@ -1645,9 +1681,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function rawDataLoader_progressHandler(event:ProgressEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.PROGRESS, false, event.bytesLoaded / event.bytesTotal);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function rawDataLoader_errorHandler(event:ErrorEvent):void
 		{
 			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
 			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
 			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
 			this.urlLoader = null;
