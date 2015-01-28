@@ -1,51 +1,57 @@
 ---
-title: Feathers experimental MXML support  
+title: Using MXML with Feathers  
 author: Josh Tynjala
 
 ---
-# Feathers experimental MXML support
+# Using MXML with Feathers
 
-Feathers can be built with partial support for MXML. However, it has significant limitations. You can instantiate components, containers, layouts, and collections in MXML. You can also listen for events. However, binding and setting a component's id are not supported with Feathers in MXML because the compiler cannot handle incompatibilities between the native `flash.events.EventDispatcher` and the Starling Framework `starling.events.EventDispatcher`.
+Feathers supports using MXML to declaratively layout user interfaces at compile time. With only a quick glance at MXML code, developers can easily recognize the relationship between a components and their parent containers. Adding a child to a container is as simple as nesting an XML element inside another.
 
-<aside class="warn">MXML is not supported in the official Feathers builds because they are built with ASC 2.0, which doesn't compile MXML. However, if you build with the Flex SDK, you can include MXML support. See [Feathers issue \#186 on Github](https://github.com/joshtynjala/feathers/issues/186) for instructions about how to use the Feathers build script to compile your own custom Feathers SWC that includes MXML support.</code>
+Data binding saves developers time by skipping the boilerplate code for setting up event listeners.
 
-The Feathers MXML namespace is `library://ns.feathersui.com/mxml`.
+## The Basics
 
-Let's create an MXML document for a `PanelScreen`:
+Let's create an MXML class that extends the [`LayoutGroup`](layout-group.html) component:
 
 ``` code
-<feathers:PanelScreen xmlns:fx="http://ns.adobe.com/mxml/2009"
+<feathers:LayoutGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:feathers="library://ns.feathersui.com/mxml">
-</feathers:PanelScreen>
+</feathers:LayoutGroup>
 ```
 
-Just like with Flex, you can add children as child elements of a container in the MXML. For instance, you might add a `Button`:
+The Feathers namespace must be included in your MXML document to add Feathers components. This identifier for this namespace is `library://ns.feathersui.com/mxml`. To reference a Feathers component, you must use the `feathers:` prefix before the name of the class. We're using the `LayoutGroup` component, so the XML element should be `<feathers:LayoutGroup/>`.
+
+Let's add a [`Button`](button.html) as a child of the `LayoutGroup`:
 
 ``` code
-<feathers:PanelScreen xmlns:fx="http://ns.adobe.com/mxml/2009"
+<feathers:LayoutGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:feathers="library://ns.feathersui.com/mxml">
  
     <feathers:Button label="Click Me"/>
-</feathers:PanelScreen>
+</feathers:LayoutGroup>
 ```
 
-Let's add an event listener to the button:
+It's as simple as adding a `<feathers:Button/>` element as a child of the `<feathers:LayoutGroup/>` element. As you can see, we've set the `label` property of the `Button` using an XML attribute.
+
+Now, let's add an event listener to the button:
 
 ``` code
 <feathers:Button label="Click Me" triggered="button_triggeredHandler(event)"/>
  
 <fx:Script><![CDATA[
  
-    import starling.events.Event;
- 
-    private function button_triggeredHandler(event:starling.events.Event):void
+    private function button_triggeredHandler(event:Event):void
     {
     }
  
 ]]></fx:Script>
 ```
 
-Notice that we need to use the fully qualified class name `starling.events.Event` due to the fact that MXML implicitly imports `flash.events.Event`.
+Similar to setting a property, we can add an event listener using an attribute with the string value of the event's type. The value of `Event.TRIGGERED` constant is `"triggered"`, so that's what we use in the MXML.
+
+We need to define the listener in ActionScript. To add ActionScript code to an MXML class, we need to create a `<fx:Script/>` element. Inside this element, we can add properties and methods just like we would in an ActionScript class.
+
+<aside class="info">Because ActionScript code may contain characters that are not valid XML, we must add `<![CDATA[` at the beginning of a script block and `]]>` at the end.</aside>
 
 Let's adjust the layout a bit to put the button in the center of the screen:
 
@@ -61,6 +67,8 @@ Let's adjust the layout a bit to put the button in the center of the screen:
 </feathers:Button>
 ```
 
-That's the basics. For more detailed sample code, take a look at the [MXML Example on Github](https://github.com/joshtynjala/feathers/blob/master/examples/MXML).
+Previously, we learned that there are two ways to set a property of a component. The first way to set a property was to add an attribute. We've set the `horizontalCenter` and `verticalCenter` properties on an `AnchorLayoutData` instance in the same way.
+
+Sometimes, it may be easier to set properties by adding child element with the property's name (prefixed by the namespace). In the code above, we set the `layout` property of the `LayoutGroup` to an [`AnchorLayout`](anchor-layout.html) instance, and we set the `layoutData` property of the `Button` to an `AnchorLayoutData` instance.
 
 For more tutorials, return to the [Feathers Documentation](index.html).
