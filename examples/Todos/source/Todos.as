@@ -42,18 +42,31 @@ package
 			var isPortraitOnly:Boolean = false;
 			if(Capabilities.manufacturer.indexOf("iOS") >= 0)
 			{
-				if(Capabilities.screenResolutionX == 1536 && Capabilities.screenResolutionY == 2048)
+				var isCurrentlyPortrait:Boolean = this.stage.orientation == StageOrientation.DEFAULT || this.stage.orientation == StageOrientation.UPSIDE_DOWN;
+				if(Capabilities.screenResolutionX == 1242 && Capabilities.screenResolutionY == 2208)
 				{
-					var isCurrentlyPortrait:Boolean = this.stage.orientation == StageOrientation.DEFAULT || this.stage.orientation == StageOrientation.UPSIDE_DOWN;
+					//iphone 6 plus
+					filePath = isCurrentlyPortrait ? "Default-414w-736h@3x.png" : "Default-414w-736h-Landscape@3x.png";
+				}
+				else if(Capabilities.screenResolutionX == 1536 && Capabilities.screenResolutionY == 2048)
+				{
+					//ipad retina
 					filePath = isCurrentlyPortrait ? "Default-Portrait@2x.png" : "Default-Landscape@2x.png";
 				}
 				else if(Capabilities.screenResolutionX == 768 && Capabilities.screenResolutionY == 1024)
 				{
-					isCurrentlyPortrait = this.stage.orientation == StageOrientation.DEFAULT || this.stage.orientation == StageOrientation.UPSIDE_DOWN;
+					//ipad classic
 					filePath = isCurrentlyPortrait ? "Default-Portrait.png" : "Default-Landscape.png";
+				}
+				else if(Capabilities.screenResolutionX == 750)
+				{
+					//iphone 6
+					isPortraitOnly = true;
+					filePath = "Default-375w-667h@2x.png";
 				}
 				else if(Capabilities.screenResolutionX == 640)
 				{
+					//iphone retina
 					isPortraitOnly = true;
 					if(Capabilities.screenResolutionY == 1136)
 					{
@@ -66,6 +79,7 @@ package
 				}
 				else if(Capabilities.screenResolutionX == 320)
 				{
+					//iphone classic
 					isPortraitOnly = true;
 					filePath = "Default.png";
 				}
