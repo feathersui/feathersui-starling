@@ -48,6 +48,8 @@
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
+			<key>UIStatusBarStyle</key>
+			<string>UIStatusBarStyleLightContent</string>
 		]]> 
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
