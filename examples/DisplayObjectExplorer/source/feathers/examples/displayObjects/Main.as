@@ -34,13 +34,10 @@ package feathers.examples.displayObjects
 		{
 			super.initialize();
 
-			this.layout = new AnchorLayout();
-
-			this.setSize(this.stage.stageWidth, this.stage.stageHeight);
-
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-
 			new DisplayObjectExplorerTheme();
+			
+			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this.layout = new AnchorLayout();
 
 			this._navigator = new ScreenNavigator();
 			this._navigator.addScreen(SCALE_9_IMAGE, new ScreenNavigatorItem(Scale9ImageScreen));
@@ -97,11 +94,6 @@ package feathers.examples.displayObjects
 		private function tabBar_changeHandler(event:Event):void
 		{
 			this._navigator.showScreen(this._tabBar.selectedItem.action);
-		}
-
-		private function stage_resizeHandler(event:ResizeEvent):void
-		{
-			this.setSize(this.stage.stageWidth, this.stage.stageHeight);
 		}
 	}
 }

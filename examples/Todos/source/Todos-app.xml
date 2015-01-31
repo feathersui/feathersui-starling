@@ -10,7 +10,7 @@
 	<initialWindow>
 		<content>Todos.swf</content>
 		<autoOrients>true</autoOrients>
-		<fullScreen>true</fullScreen>
+		<fullScreen>false</fullScreen>
 		<visible>true</visible>
 		<renderMode>direct</renderMode>
 	</initialWindow>
@@ -48,6 +48,8 @@
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
+			<key>UIStatusBarStyle</key>
+			<string>UIStatusBarStyleLightContent</string>
 		]]> 
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
