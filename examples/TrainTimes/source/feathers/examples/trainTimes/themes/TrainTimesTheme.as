@@ -324,6 +324,8 @@ package feathers.examples.trainTimes.themes
 
 		protected function setHeaderStyles(header:Header):void
 		{
+			header.useExtraPaddingForOSStatusBar = true;
+			
 			header.minWidth = 88 * this.scale;
 			header.minHeight = 88 * this.scale;
 			header.paddingTop = header.paddingRight = header.paddingBottom =
