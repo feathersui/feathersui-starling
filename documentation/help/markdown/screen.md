@@ -3,9 +3,35 @@ title: How to use the Feathers Screen component
 author: Josh Tynjala
 
 ---
-# How to use the Feathers `Screen `component
+# How to use the Feathers `Screen` component
 
 The [`Screen`](../api-reference/feathers/controls/Screen.html) component is meant to be a base class for custom screens to be displayed by [`StackScreenNavigator`](stack-screen-navigator.html) and [`ScreenNavigator`](screen-navigator). `Screen` is based on the [`LayoutGroup`](layout-group.html) component, and it provides optional layout.
+
+<aside class="info">If you need scrolling, you should use [`ScrollScreen`](scroll-container.html) or [`PanelScreen`](panel-screen.html) instead.</aside>
+
+## The Basics
+
+Just like [`LayoutGroup`](layout-group.html), you can add children and use layouts. Typically, you would override `initialize()` in a subclass of `Screen` and add children there:
+
+``` code
+protected function initialize():void
+{
+	// never forget to call this!
+	super.initialize();
+
+	// use a layout
+	var layout:HorizontalLayout = new HorizontalLayout();
+	layout.gap = 10;
+	this.layout = layout;
+
+	// add children
+	for(var i:int = 0; i < 5; i++)
+	{
+	    var quad:Quad = new Quad( 100, 100, 0xff0000 );
+	    group.addChild( quad );
+	}
+}
+```
 
 ## Hardware Key Handlers
 
@@ -57,7 +83,7 @@ getStyleProviderForClass( Screen )
 
 Trying to change the screen's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the screen was added to the stage and initialized.
 
-If you aren't using a theme, then you may set any of the screen's properties directly. For full details about what skin and style properties are available, see the [Screen API reference](../api-reference/feathers/controls/Screen.html).
+If you aren't using a theme, then you may set any of the screen's properties directly. For full details about what skin and style properties are available, see the [`Screen` API reference](../api-reference/feathers/controls/Screen.html).
 
 ## Related Links
 
