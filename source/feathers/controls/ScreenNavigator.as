@@ -62,8 +62,6 @@ package feathers.controls
 		public function ScreenNavigator()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, screenNavigator_addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, screenNavigator_removedFromStageHandler);
 		}
 
 		/**
