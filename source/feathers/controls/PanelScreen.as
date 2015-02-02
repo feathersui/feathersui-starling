@@ -75,6 +75,13 @@ package feathers.controls
 		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
 
 		/**
+		 * The default value added to the <code>styleNameList</code> of the footer.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_FOOTER:String = "feathers-panel-screen-footer";
+
+		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
 		 *
 		 * @see feathers.controls.Scroller#horizontalScrollPolicy
