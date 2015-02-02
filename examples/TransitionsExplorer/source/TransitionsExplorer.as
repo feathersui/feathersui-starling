@@ -5,7 +5,6 @@ package
     import flash.display.Loader;
     import flash.display.Sprite;
     import flash.display.StageAlign;
-    import flash.display.StageOrientation;
     import flash.display.StageScaleMode;
     import flash.events.Event;
     import flash.filesystem.File;
@@ -34,7 +33,6 @@ package
 
         private var _starling:Starling;
         private var _launchImage:Loader;
-        private var _savedAutoOrients:Boolean;
 
         private function showLaunchImage():void
         {
@@ -42,21 +40,20 @@ package
             var isPortraitOnly:Boolean = false;
             if(Capabilities.manufacturer.indexOf("iOS") >= 0)
             {
-                var isCurrentlyPortrait:Boolean = this.stage.orientation == StageOrientation.DEFAULT || this.stage.orientation == StageOrientation.UPSIDE_DOWN;
                 if(Capabilities.screenResolutionX == 1242 && Capabilities.screenResolutionY == 2208)
                 {
                     //iphone 6 plus
-                    filePath = isCurrentlyPortrait ? "Default-414w-736h@3x.png" : "Default-414w-736h-Landscape@3x.png";
+                    filePath = "Default-414w-736h-Landscape@3x.png";
                 }
                 else if(Capabilities.screenResolutionX == 1536 && Capabilities.screenResolutionY == 2048)
                 {
                     //ipad retina
-                    filePath = isCurrentlyPortrait ? "Default-Portrait@2x.png" : "Default-Landscape@2x.png";
+                    filePath = "Default-Landscape@2x.png";
                 }
                 else if(Capabilities.screenResolutionX == 768 && Capabilities.screenResolutionY == 1024)
                 {
                     //ipad classic
-                    filePath = isCurrentlyPortrait ? "Default-Portrait.png" : "Default-Landscape.png";
+                    filePath = "Default-Landscape.png";
                 }
                 else if(Capabilities.screenResolutionX == 750)
                 {
@@ -97,13 +94,12 @@ package
                     stream.close();
                     this._launchImage = new Loader();
                     this._launchImage.loadBytes(bytes);
-                    this.addChild(this._launchImage);
-                    this._savedAutoOrients = this.stage.autoOrients;
-                    this.stage.autoOrients = false;
                     if(isPortraitOnly)
                     {
-                        this.stage.setOrientation(StageOrientation.DEFAULT);
+                        this._launchImage.rotation = -90;
+                        this._launchImage.y = Capabilities.screenResolutionX;
                     }
+                    this.addChild(this._launchImage);
                 }
             }
         }
@@ -133,7 +129,6 @@ package
                 this.removeChild(this._launchImage);
                 this._launchImage.unloadAndStop(true);
                 this._launchImage = null;
-                this.stage.autoOrients = this._savedAutoOrients;
             }
         }
 
