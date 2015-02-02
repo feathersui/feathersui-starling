@@ -117,6 +117,12 @@ package feathers.controls
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
 		 *
+		 * <p>In the following example, a custom push transition is passed to
+		 * the screen navigator:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.pushTransition = Slide.createSlideLeftTransition();</listing>
+		 *
 		 * @default null
 		 *
 		 * @see #pushScreen()
@@ -173,6 +179,12 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
+		 *
+		 * <p>In the following example, a custom pop transition is passed to
+		 * the screen navigator:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.popTransition = Slide.createSlideRightTransition();</listing>
 		 *
 		 * @default null
 		 *
@@ -234,6 +246,12 @@ package feathers.controls
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
 		 *
+		 * <p>In the following example, a custom pop to root transition is
+		 * passed to the screen navigator:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.popToRootTransition = Fade.createFadeInTransition();</listing>
+		 *
 		 * @default null
 		 *
 		 * @see #popTransition
@@ -284,6 +302,11 @@ package feathers.controls
 		 * <p>If the stack contains screens when you set this property, they
 		 * will be removed from the stack. In other words, setting this property
 		 * will clear the stack, erasing the current history.</p>
+		 *
+		 * <p>In the following example, the root screen is set:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.rootScreenID = "someScreen";</listing>
 		 *
 		 * @see #popToRootScreen()
 		 */
