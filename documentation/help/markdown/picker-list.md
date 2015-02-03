@@ -213,7 +213,3 @@ You can completely customize the pop-up behavior of the picker list by implement
 ## Related Links
 
 -   [`feathers.controls.PickerList` API Documentation](../api-reference/feathers/controls/PickerList.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

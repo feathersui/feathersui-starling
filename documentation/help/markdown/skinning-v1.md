@@ -111,7 +111,3 @@ Instead, you should use `@thumbProperties` and pass in properties individually s
 ## Related Links
 
 -   [Introduction to Feathers Themes](themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

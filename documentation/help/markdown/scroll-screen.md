@@ -203,7 +203,3 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 -   [`feathers.controls.ScrollScreen` API Documentation](../api-reference/feathers/controls/ScrollScreen.html)
 
 -   [How to use the Feathers `ScrollContainer` component](scroll-container.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

@@ -66,7 +66,3 @@ You can easily change the `width` and `height` properties, and the regions will 
 ## Related Links
 
 -   [`feathers.display.Scale9Image` API Documentation](../api-reference/feathers/display/Scale9Image.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

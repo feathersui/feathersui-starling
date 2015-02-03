@@ -109,7 +109,3 @@ If you aren't using a theme, then you may set any of the screen's properties dir
 ## Related Links
 
 -   [`feathers.controls.Screen` API Documentation](../api-reference/feathers/controls/Screen.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

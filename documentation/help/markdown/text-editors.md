@@ -58,7 +58,3 @@ On mobile, you generally should not use `TextArea`. It is designed specifically 
 -   [How to use the Feathers TextArea component](text-area.html)
 
 -   [Introduction to Feathers Text Renderers](text-renderers.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

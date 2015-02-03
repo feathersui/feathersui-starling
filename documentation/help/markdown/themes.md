@@ -104,7 +104,3 @@ Obviously, if you create a [custom theme](custom-themes.html) for your applicati
 -   [Creating custom Feathers themes](custom-themes.html)
 
 -   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

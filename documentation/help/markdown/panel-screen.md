@@ -301,7 +301,3 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 -   [`feathers.controls.PanelScreen` API Documentation](../api-reference/feathers/controls/PanelScreen.html)
 
 -   [How to use the Feathers `Panel` component](panel.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

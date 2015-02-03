@@ -286,7 +286,3 @@ Please see the [FAQ: Draw Calls and Feathers Text](faq/draw-calls.html) article 
 -   [How to use the Feathers `Label` component](label.html)
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

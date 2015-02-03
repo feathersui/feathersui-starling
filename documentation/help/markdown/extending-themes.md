@@ -148,7 +148,3 @@ You can set the `defaultStyleFunction` on the `StyleNameFunctionStyleProvider`. 
 -   [Skinning Feathers components](skinning.html)
 
 -   [Introduction to Feathers Themes](themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

@@ -99,7 +99,3 @@ In general, a set of `Radio` controls should be used only when there are three o
 -   [`feathers.core.ToggleGroup` API Documentation](../api-reference/feathers/core/ToggleGroup.html)
 
 -   [How to use the Feathers `ToggleButton` component](toggle-button.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

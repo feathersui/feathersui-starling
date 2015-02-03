@@ -96,7 +96,3 @@ If you aren't using a theme, then you may set any of the spinner list's properti
 -   [`feathers.controls.SpinnerList` API Documentation](../api-reference/feathers/controls/SpinnerList.html)
 
 -   [How to Use the Feathers `List` Component](list.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

@@ -346,7 +346,3 @@ Modifying `OptionsScreen` to use signals instead of events would be the same.
 -   [How to use the Feathers `ScrollScreen` component](panel-screen.html)
 
 -   [How to use the Feathers `PanelScreen` component](panel-screen.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-
