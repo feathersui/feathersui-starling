@@ -1,114 +1,114 @@
 ---
-title: List of Feathers features  
+title: Features  
 author: Josh Tynjala
 
 ---
-# List of Feathers features
+# Features
 
-Feathers is a user interface component library built on the Starling Framework, a GPU-accelerated 2D library for the Adobe Flash Runtimes. Here are just a few of the features that Feathers offers.
+Feathers is an open source library of user interface components for [Starling Framework](http://gamua.com/starling/). Let's take a look at some of what Feathers has to offer.
 
 ## Overview
 
--   Designed with mobile devices in mind.
+-   Dozens of user interface components for apps and games.
 
-    -   Optimized for performance on phones and tablets.
+-   Hardware-accelerated graphics.
 
-    -   Supports multi-touch input.
+-   Target iOS, Android, Windows and Mac OS X.
 
-    -   Scrolling with optional pages, "throw" physics and elastic, springy edges (and you can select traditional desktop scrollbar and mouse wheel input, if needed).
+-   Built on top of Starling Framework and Adobe AIR.
 
-    -   Easy to scale for different screen dimensions and DPIs.
+-   Backed by Adobe and the community.
 
--   Simple, but powerful, component architecture.
+## Cross Platform
 
-    -   Invalidation. Queues property changes until Starling render phase.
+-   Create user interfaces for both desktop and mobile apps.
 
-    -   No vague getStyle()/setStyle() look-ups with string keys. Strictly-typed properties for all skins and visual properties.
+-   Easy to scale for different screen dimensions and DPIs.
 
-    -   Factories and interfaces allow you to customize sub-components. For instance, select the type best suited for phone, tablet, or desktop.
+-   Support for fluid layouts that fit to a wide variety of screen sizes.
 
-    -   Easy to understand for anyone familiar with Adobe Flex or the Flash Pro AS3 components.
+-   Choose between scrolling with touch physics including elastic, springy edges or traditional desktop scroll bars and the mouse scroll wheel.
 
--   All components are fully skinnable using Starling display objects.
+-   Support for keyboard focus navigation using the tab key, with the ability to disable focus on individual components or children of specific container. Includes full control over focus order.
 
-    -   If no width or height is provided, components will resize themselves automatically based on the provided skin and dimensions of sub-components.
+## Skinning
 
-    -   Sub-components may be easily skinned through their parent, nesting infinitely.
+-   All components may be skinned using any Starling display object.
 
-    -   Supports "themes" that separate all skinning code from the rest of the application. Example themes are easily extended.
+-   Strictly-typed properties for all skins and properties that affect visual styling. No vague `getStyle()` or `setStyle()` look-ups with string keys.
 
-    -   Add one of the example themes with one line of code.
+-   Scale 9, scale 3, and tiled image types provide fluid resizing for skins.
 
-    -   Scale 9, scale 3, and tiled image types provide fluid resizing for skins.
+-   Supports [themes](themes.html) that separate all skinning code from the application logic.
 
-    -   Smart image management that can improve performance by swapping textures without creating new image objects.
+## Architecture
 
--   Plus a lot more.
+-   Invalidation. Queues property changes until Starling render phase to maximize performance.
 
-    -   Choice of text rendering between bitmap fonts or vector fonts drawn to textures.
+-   Easy to understand for anyone familiar with Adobe Flex or the Flash Pro AS3 components.
 
-    -   Create your own custom text renderers (Flash Text Engine or TLF, perhaps?) using a simple interface.
+-   If no width or height is provided, components will resize themselves automatically based on the provided skin and dimensions of sub-components.
 
-    -   A powerful screen/menu navigation system with transitions.
+-   Factories and interfaces allow you to customize sub-components. For instance, select the type best suited for phone, tablet, or desktop.
 
-    -   Drag and drop.
+-   Choice of [text rendering](text-renderers.html) between bitmap fonts or vector fonts drawn to textures. Vector fonts may be rendered with either `flash.text.TextField` or Flash Text Engine.
 
-    -   Pop-up management (with or without modality).
+## Containers
 
-## Components
+-   Several built-in layouts, and support for [custom layouts](custom-layouts.html).
 
-Feathers includes [many different components](index.html#feathers_components), including buttons, sliders, toggle switches, check boxes, radio buttons, lists and grouped lists, progress bars, text inputs, tab bars, navigators, scrolling and layout containers, callouts/popovers, and others. Take a look at a few noteworthy features available for some of these components.
+-   [`LayoutGroup`](layout-group.html) is a lightweight Feathers container with support for layouts.
 
--   `Button`
+-   [`ScrollContainer`](scroll-container.html) supports scrolling and layouts.
 
-    -   Appearance may be customized for each touch/mouse state, including up, hover, down, and disabled.
+-   [`Panel`](panel.html) supports a header and an optional footer, in addition to scrolling and layouts.
 
-    -   Optional toggle/selection behavior. Doubles the number of states.
+-   [`Drawers`](drawers.html) provides slide-out drawers to display menus and other actions.
 
-    -   Customizable skins, icons, and label properties for each state, including the ability to specify defaults when some states will not be uniquely skinned.
+## Lists
 
--   `TextInput`
+-   The [`List`](list.html) component supports displaying a data provider using item renderers inside a scrollable container.
 
-    -   Uses the operating system's native input controls for seamless selection and copy/paste behavior.
+-   Support for hierarchical data using [`GroupedList`](grouped-list.html).
 
--   `ScrollContainer`
+-   [`PickerList`](picker-list.html) supports displaying a list as a drop-down triggered by a [`Button`](button.html).
 
-    -   Provides scrolling for any kind of content.
+-   Several built-in layouts, including [`VerticalLayout`](vertical-layout.html), [`HorizontalLayout`](horizontal-layout.html), and [`TiledRowsLayout`](tiled-rows-layout.html).
 
-    -   Supports a variety of built-in layouts, plus your own custom layouts.
+-   Support for [custom layouts](custom-layouts.html).
 
--   `List`
+-   Layout virtualization for improved performance (creates and reuses renderers only for visible data).
 
-    -   A scrolling list of items with optional selection.
+-   Support for selecting an item, including optional multiple selection.
 
-    -   Swappable, customizable, layout algorithms.
+-   A robust [default item renderer](default-item-renderers.html) with up to three sub-views with full control over how they are positioned relative to each other.
 
-    -   Layout virtualization for improved performance (creates and reuses renderers only for visible data).
+-   Support for [custom item renderers](item-renderers.html).
 
-    -   Variable item renderer dimensions.
+-   Variable item renderer dimensions.
 
-    -   Custom item renderers.
+-   A `ListCollection` class with data descriptors to support any type of data. Includes built-in support for `Array`, `Vector`, and `XMLList`.
 
-    -   A robust default item renderer with label, icon, and "accessory" views with all the states that buttons provide.
+-   Optionally split items into multiple pages, and snap to each page when scrolling.
 
-    -   A ListCollection class with data descriptors to support any type of data. Supports Array, Vector, and XMLList out of the box.
+## Menus and Navigation
 
--   `GroupedList`
+-   Create menus and navigate between screens using [`StackScreenNavigator`](stack-screen-navigator.html) or [`ScreenNavigator`](screen-navigator.html).
 
-    -   Everything that `List` provides, plus more.
+-   Push and pop screens using a history stack that easily supports a back button.
 
-    -   Groups or sections with optional headers and footers.
+-   [Animate the transition](transitions.html) between screens. Push and pop actions may use separate transitions, and individual screens may optionally be given their own unique transitions.
 
-    -   Separate renderer types/factories for headers, footers, and items.
+-   Support for custom transitions.
 
-    -   Multi-dimensional `HierarchicalCollection` with data descriptors.
-
--   `StackScreenNavigator`
-
-    -   Use events to trigger navigation between screens (such as game menus).
-
-    -   Push and pop to a history stack.
+-   Dispatch events to trigger navigation between screens.
     
-    -   Inject properties into screens to quickly configure them.
+-   Inject properties into screens to quickly configure them.
 
-    -   Specify animated transitions for changing screens. Push and pop actions may use separate transitions.
+## A lot more!
+
+-   Buttons, sliders, radio buttons, check boxes, toggle switches, steppers, text inputs, tabs, and tons of other common UI controls.
+
+-   A manager for drag and drop.
+
+-   Add pop-ups above all other content in the app. Includes support for modal pop-ups that display an overlay between the pop-up and everything under it.
