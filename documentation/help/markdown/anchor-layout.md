@@ -115,7 +115,3 @@ If we anchor the top edge of our second button to the top edge of the container,
 ## Related Links
 
 -   [`feathers.layout.AnchorLayout` API Documentation](../api-reference/feathers/layout/AnchorLayout.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

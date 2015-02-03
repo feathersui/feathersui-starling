@@ -177,7 +177,3 @@ Finally, you may want to reuse the callout's content. By default, the callout wi
 ## Related Links
 
 -   [`feathers.controls.Callout` API Documentation](../api-reference/feathers/controls/Callout.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

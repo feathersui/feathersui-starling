@@ -55,7 +55,3 @@ layout.useVirtualLayout = false;
 ## Related Links
 
 -   [`feathers.layout.VerticalSpinnerLayout` API Documentation](../api-reference/feathers/layout/VerticalSpinnerLayout.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

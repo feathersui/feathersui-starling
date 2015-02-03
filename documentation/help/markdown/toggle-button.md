@@ -102,5 +102,3 @@ Obviously, you could check `target.isSelected` in your own custom [`stateToSkinF
 -   [`feathers.controls.ToggleButton` API Documentation](../api-reference/feathers/controls/ToggleButton.html)
 
 -   [How to use the Feathers `Button` component](button.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).

@@ -17,7 +17,3 @@ author: Josh Tynjala
 -   [Introduction to Feathers themes](themes.html)
 
 -   [Extending Feathers example themes](extending-themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

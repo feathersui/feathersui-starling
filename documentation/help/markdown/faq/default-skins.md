@@ -16,9 +16,3 @@ Nothing says that you need to use one of the example themes included with Feathe
 Even with a "regular app", there are always skinning details that need to be customized in ways that can be unique to your specific app. All example [themes can be extended](../extending-themes.html) for this reason. If you're working on an app, rather than a game, a few custom skins added to the defaults might be the right way to go. Feel free to use the [example theme PSDs files](../theme-sources.html) to add your own custom skins in the same style. Then, rebuild the texture atlases and use those new sub-textures in a subclass of the original theme.
 
 Of course, if you don't like the idea of themes at all, feel free to skin your components directly. I really love themes because it puts all of the skinning code in one place and separates it from the "business logic" of the rest of the app. For a game, you could say that you're separating it from the game mechanics or rules, if "business logic" sounds to stuffy for you. This separation helps keep me organized and it prevents confusion because each "unit" of code has a more focused purpose.
-
-------------------------------------------------------------------------
-
-This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
-
-

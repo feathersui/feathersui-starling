@@ -59,7 +59,7 @@ Feathers is a user interface component library built on the Starling Framework, 
 
 Feathers includes [many different components](index.html#feathers_components), including buttons, sliders, toggle switches, check boxes, radio buttons, lists and grouped lists, progress bars, text inputs, tab bars, navigators, scrolling and layout containers, callouts/popovers, and others. Take a look at a few noteworthy features available for some of these components.
 
--   Button
+-   `Button`
 
     -   Appearance may be customized for each touch/mouse state, including up, hover, down, and disabled.
 
@@ -67,17 +67,17 @@ Feathers includes [many different components](index.html#feathers_components), i
 
     -   Customizable skins, icons, and label properties for each state, including the ability to specify defaults when some states will not be uniquely skinned.
 
--   TextInput
+-   `TextInput`
 
     -   Uses the operating system's native input controls for seamless selection and copy/paste behavior.
 
--   ScrollContainer
+-   `ScrollContainer`
 
     -   Provides scrolling for any kind of content.
 
     -   Supports a variety of built-in layouts, plus your own custom layouts.
 
--   List
+-   `List`
 
     -   A scrolling list of items with optional selection.
 
@@ -93,24 +93,22 @@ Feathers includes [many different components](index.html#feathers_components), i
 
     -   A ListCollection class with data descriptors to support any type of data. Supports Array, Vector, and XMLList out of the box.
 
--   GroupedList
+-   `GroupedList`
 
-    -   Everything that List provides, plus more.
+    -   Everything that `List` provides, plus more.
 
     -   Groups or sections with optional headers and footers.
 
     -   Separate renderer types/factories for headers, footers, and items.
 
-    -   Multi-dimensional HierarchicalCollection with data descriptors.
+    -   Multi-dimensional `HierarchicalCollection` with data descriptors.
 
--   ScreenNavigator
+-   `StackScreenNavigator`
 
-    -   Use events or, optionally, [as3-signals](https://github.com/robertpenner/as3-signals) to trigger navigation between screens (such as game menus).
+    -   Use events to trigger navigation between screens (such as game menus).
 
-    -   Pass properties into screens, such as a shared settings object or other assets.
+    -   Push and pop to a history stack.
+    
+    -   Inject properties into screens to quickly configure them.
 
-    -   Specify animated transitions for switching screens.
-
-To learn more about Feathers, return to the [Feathers Documentation](index.html).
-
-
+    -   Specify animated transitions for changing screens. Push and pop actions may use separate transitions.

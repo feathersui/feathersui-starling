@@ -43,9 +43,3 @@ adl -screensize 640x1096:640x1136 -XscreenDPI 326 YourProject-app.xml
 ```
 
 The Wikipedia article [List of displays by pixel density](http://en.wikipedia.org/wiki/List_of_displays_by_pixel_density) provides a useful list of display density values (and screen resolutions) for many different devices that you might want to simulate.
-
-------------------------------------------------------------------------
-
-This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
-
-

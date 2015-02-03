@@ -212,7 +212,3 @@ List is much better at supporting layouts with dozens or hundreds of items, and 
 -   [`feathers.controls.ScrollContainer` API Documentation](../api-reference/feathers/controls/ScrollContainer.html)
 
 -   [How to use the Feathers `LayoutGroup` component](layout-group.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

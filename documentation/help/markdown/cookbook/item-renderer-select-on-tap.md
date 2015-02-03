@@ -144,7 +144,3 @@ The `TouchEvent.TOUCH` listener is exactly the same everywhere else.
 -   [Feathers Cookbook: Dispatching a triggered event from a custom item renderer](item-renderer-triggered-on-tap.html)
 
 -   [Feathers Cookbook: Dispatching a long press event from a custom item renderer](item-renderer-long-press.html)
-
-This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
-
-

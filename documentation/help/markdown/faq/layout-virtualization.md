@@ -23,6 +23,4 @@ Most layouts that support virtualization have a [`useVirtualLayout`](../../api-r
 
 -   [How to use the Feathers Grouped List component](../grouped-list.html)
 
-This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
-
 
