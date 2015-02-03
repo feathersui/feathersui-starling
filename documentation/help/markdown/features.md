@@ -3,7 +3,7 @@ title: Features
 author: Josh Tynjala
 
 ---
-# Features
+# Feathers Features
 
 Feathers is an open source library of user interface components for [Starling Framework](http://gamua.com/starling/). Let's take a look at some of what Feathers has to offer.
 
@@ -41,7 +41,7 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   Supports [themes](themes.html) that separate all skinning code from the application logic.
 
-## Architecture
+## Robust Architecture
 
 -   Invalidation. Queues property changes until Starling render phase to maximize performance.
 
@@ -105,10 +105,14 @@ Feathers is an open source library of user interface components for [Starling Fr
     
 -   Inject properties into screens to quickly configure them.
 
-## A lot more!
+## More!
 
 -   Buttons, sliders, radio buttons, check boxes, toggle switches, steppers, text inputs, tabs, and tons of other common UI controls.
 
 -   A manager for drag and drop.
 
 -   Add pop-ups above all other content in the app. Includes support for modal pop-ups that display an overlay between the pop-up and everything under it.
+
+## Sound useful?
+
+[Download Feathers](http://feathersui.com/download/), and [get started](getting-started.html) building cross-platform, hardware-accelerated user interfaces for apps and games with Starling Framework and Feathers.
