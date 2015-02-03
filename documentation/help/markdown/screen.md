@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 The [`Screen`](../api-reference/feathers/controls/Screen.html) component is meant to be a base class for custom screens to be displayed by [`StackScreenNavigator`](stack-screen-navigator.html) and [`ScreenNavigator`](screen-navigator). `Screen` is based on the [`LayoutGroup`](layout-group.html) component, and it provides optional layout.
 
-<aside class="info">If you need scrolling, you should use [`ScrollScreen`](scroll-container.html) or [`PanelScreen`](panel-screen.html) instead.</aside>
+<aside class="info">If you need scrolling, you should use [`ScrollScreen`](scroll-screen.html) or [`PanelScreen`](panel-screen.html) instead.</aside>
 
 ## The Basics
 
@@ -46,13 +46,34 @@ this.backButtonHandler = function():void
 }
 ```
 
+## Events when transitions start and complete
+
+A `Screen` dispatches a number of events when the screen navigator shows and hides it with a [transition](transitions.html). To avoid long delays and to keep the transition animation smooth, it's often a good idea to postpone certain actions during initialization until after the transition has completed. We can listen for these events to know when to continue initializing the screen.
+
+When the screen is shown by the screen navigator, the screen dispatches [`FeathersEventType.TRANSITION_IN_START`](../api-reference/feathers/controls/Screen.html#event:transitionInStart) at the beginning of a transition, and it dispatches [`FeathersEventType.TRANSITION_IN_COMPLETE`](../api-reference/feathers/controls/Screen.html#event:transitionInComplete) when the transition has finished. Similarly, when the screen navigator shows a different screen and the active screen is hidden, we can listen for [`FeathersEventType.TRANSITION_OUT_START`](../api-reference/feathers/controls/Screen.html#event:transitionOutStart) and [`FeathersEventType.TRANSITION_OUT_COMPLETE`](../api-reference/feathers/controls/Screen.html#event:transitionOutComplete).
+
+Let's listen for `FeathersEventType.TRANSITION_IN_COMPLETE`:
+
+``` code
+this.addEventListener( FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler );
+```
+
+The event listener might look like this:
+
+``` code
+private function transitionInCompleteHandler( event:Event ):void
+{
+    // do something after the screen transitions in
+}
+```
+
 ## Screen ID
 
 The [`screenID`](../api-reference/feathers/controls/Screen.html#screenID) property refers to the string that the screen navigator uses to identify the current screen when calling functions like [`pushScreen()`](../api-reference/feathers/controls/StackScreenNavigator.html#pushScreen()) on a `StackScreenNavigator` or [`showScreen()`](../api-reference/feathers/controls/ScreenNavigator.html#showScreen()) on a `ScreenNavigator`.
 
 ## Accessing the screen navigator
 
-The [`owner`](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `StackScreenNavigator` or `ScreenNavigator` that is currently displaying the screen. You might want to use this property to manually navigate to another screen by calling [`showScreen()`](../api-reference/feathers/controls/ScreenNavigator.html#showScreen()). You might also use it to listen to events like `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` to determine when the screen has fully transitioned in or out.
+The [`owner`](../api-reference/feathers/controls/Screen.html#owner) property provides access to the `StackScreenNavigator` or `ScreenNavigator` that is currently displaying the screen.
 
 ## Skinning a `Screen`
 
