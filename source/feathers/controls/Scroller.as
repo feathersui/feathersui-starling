@@ -2817,7 +2817,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scroller.throwEase = Transitions.EASE_IN_OUT;</listing>
-		 *
+		 * 
 		 * @default starling.animation.Transitions.EASE_OUT
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
@@ -4597,6 +4597,12 @@ package feathers.controls
 			{
 				this.completeScroll();
 			}
+			else if(Math.abs(targetHorizontalScrollPosition - this._horizontalScrollPosition) < 1)
+			{
+				//this distance is too small to animate. just finish now.
+				this.horizontalScrollPosition = targetHorizontalScrollPosition;
+				this.completeScroll();
+			}
 			else
 			{
 				this.throwTo(targetHorizontalScrollPosition, NaN, this._elasticSnapDuration);
@@ -4621,6 +4627,12 @@ package feathers.controls
 			this._isDraggingVertically = false;
 			if(targetVerticalScrollPosition !== targetVerticalScrollPosition) //isNaN
 			{
+				this.completeScroll();
+			}
+			else if(Math.abs(targetVerticalScrollPosition - this._verticalScrollPosition) < 1)
+			{
+				//this distance is too small to animate. just finish now.
+				this.verticalScrollPosition = targetVerticalScrollPosition;
 				this.completeScroll();
 			}
 			else
