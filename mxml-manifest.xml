@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <componentPackage>
+	<!-- core components -->
+	<component id="AutoComplete" class="feathers.controls.AutoComplete"/>
 	<component id="Button" class="feathers.controls.Button"/>
 	<component id="ButtonGroup" class="feathers.controls.ButtonGroup"/>
 	<component id="Check" class="feathers.controls.Check"/>
+	<component id="Drawers" class="feathers.controls.Drawers"/>
 	<component id="GroupedList" class="feathers.controls.GroupedList"/>
 	<component id="Header" class="feathers.controls.Header"/>
 	<component id="ImageLoader" class="feathers.controls.ImageLoader"/>
@@ -21,36 +24,59 @@
 	<component id="ScreenNavigatorItem" class="feathers.controls.ScreenNavigatorItem"/>
 	<component id="ScrollBar" class="feathers.controls.ScrollBar"/>
 	<component id="ScrollContainer" class="feathers.controls.ScrollContainer"/>
+	<component id="ScrollScreen" class="feathers.controls.ScrollScreen"/>
+	<component id="ScrollText" class="feathers.controls.ScrollText"/>
 	<component id="SimpleScrollBar" class="feathers.controls.SimpleScrollBar"/>
 	<component id="Slider" class="feathers.controls.Slider"/>
+	<component id="SpinnerList" class="feathers.controls.SpinnerList"/>
+	<component id="StackScreenNavigator" class="feathers.controls.StackScreenNavigator"/>
+	<component id="StackScreenNavigatorItem" class="feathers.controls.StackScreenNavigatorItem"/>
 	<component id="TabBar" class="feathers.controls.TabBar"/>
 	<component id="TextArea" class="feathers.controls.TextArea"/>
 	<component id="TextInput" class="feathers.controls.TextInput"/>
+	<component id="ToggleButton" class="feathers.controls.ToggleButton"/>
 	<component id="ToggleSwitch" class="feathers.controls.ToggleSwitch"/>
+	<component id="WebView" class="feathers.controls.WebView"/>
 
+	<!-- item renderers -->
 	<component id="DefaultGroupedListItemRenderer" class="feathers.controls.renderers.DefaultGroupedListItemRenderer"/>
 	<component id="DefaultGroupedListHeaderOrFooterRenderer" class="feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer"/>
 	<component id="DefaultListItemRenderer" class="feathers.controls.renderers.DefaultListItemRenderer"/>
 	<component id="LayoutGroupListItemRenderer" class="feathers.controls.renderers.LayoutGroupListItemRenderer"/>
+	<component id="LayoutGroupGroupedListItemRenderer" class="feathers.controls.renderers.LayoutGroupGroupedListItemRenderer"/>
+	<component id="LayoutGroupGroupedListHeaderOrFooterRenderer" class="feathers.controls.renderers.LayoutGroupGroupedListHeaderOrFooterRenderer"/>
 
+	<!-- pop-ups for PickerList and AutoComplete -->
 	<component id="CalloutPopUpContentManager" class="feathers.controls.popups.CalloutPopUpContentManager"/>
 	<component id="DropDownPopUpContentManager" class="feathers.controls.popups.DropDownPopUpContentManager"/>
 	<component id="VerticalCenteredPopUpContentManager" class="feathers.controls.popups.VerticalCenteredPopUpContentManager"/>
 
-	<component id="BitmapFontTextRenderer" class="feathers.controls.text.BitmapFontTextRenderer"/>
-	<component id="TextFieldTextRenderer" class="feathers.controls.text.TextFieldTextRenderer"/>
-	<component id="TextFieldTextEditor" class="feathers.controls.text.TextFieldTextEditor"/>
-	<component id="StageTextTextEditor" class="feathers.controls.text.StageTextTextEditor"/>
-	<component id="TextFieldTextEditorViewPort" class="feathers.controls.text.TextFieldTextEditorViewPort"/>
-
-	<component id="FeathersControl" class="feathers.core.FeathersControl"/>
+	<!-- group for Radio and IToggle -->
 	<component id="ToggleGroup" class="feathers.core.ToggleGroup"/>
 
+	<!-- text renderers -->
+	<component id="BitmapFontTextRenderer" class="feathers.controls.text.BitmapFontTextRenderer"/>
+	<component id="TextFieldTextRenderer" class="feathers.controls.text.TextFieldTextRenderer"/>
+	<component id="TextBlockTextRenderer" class="feathers.controls.text.TextBlockTextRenderer"/>
+
+	<!-- text editors -->
+	<component id="StageTextTextEditor" class="feathers.controls.text.StageTextTextEditor"/>
+	<component id="TextFieldTextEditor" class="feathers.controls.text.TextFieldTextEditor"/>
+	<component id="TextBlockTextEditor" class="feathers.controls.text.TextBlockTextEditor"/>
+	<component id="BitmapFontTextEditor" class="feathers.controls.text.BitmapFontTextEditor"/>
+	<component id="TextFieldTextEditorViewPort" class="feathers.controls.text.TextFieldTextEditorViewPort"/>
+
+	<!-- data providers -->
 	<component id="ListCollection" class="feathers.data.ListCollection"/>
 	<component id="HierarchicalCollection" class="feathers.data.HierarchicalCollection"/>
+	<component id="LocalAutoCompleteSource" class="feathers.data.LocalAutoCompleteSource"/>
+	<component id="URLAutoCompleteSource" class="feathers.data.URLAutoCompleteSource"/>
 
+	<!-- layouts -->
 	<component id="HorizontalLayout" class="feathers.layout.HorizontalLayout"/>
+	<component id="HorizontalLayoutData" class="feathers.layout.HorizontalLayoutData"/>
 	<component id="VerticalLayout" class="feathers.layout.VerticalLayout"/>
+	<component id="VerticalLayoutData" class="feathers.layout.VerticalLayoutData"/>
 	<component id="TiledRowsLayout" class="feathers.layout.TiledRowsLayout"/>
 	<component id="TiledColumnsLayout" class="feathers.layout.TiledColumnsLayout"/>
 	<component id="AnchorLayout" class="feathers.layout.AnchorLayout"/>
