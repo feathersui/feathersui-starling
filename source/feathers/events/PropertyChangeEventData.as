@@ -13,8 +13,46 @@ package feathers.events
 	 */
 	public class PropertyChangeEventData
 	{
+		/**
+		 * The value of a property has been updated.
+		 */
 		public static const KIND_UPDATE:String = "update";
+
+		/**
+		 * A property has been deleted.
+		 */
 		public static const KIND_DELETE:String = "delete";
+
+		/**
+		 * @private
+		 */
+		private static const POOL:Vector.<PropertyChangeEventData> = new <PropertyChangeEventData>[];
+
+		/**
+		 * @private
+		 */
+		public static function fromPool(kind:String, property:Object,
+			newValue:Object, oldValue:Object, source:Object):PropertyChangeEventData
+		{
+			if(POOL.length > 0)
+			{
+				return POOL.pop().reset(kind, property, newValue, oldValue, source);
+			}
+			return new PropertyChangeEventData(kind, property, newValue, oldValue, source);
+		}
+
+		/**
+		 * @private
+		 */
+		public static function toPool(data:PropertyChangeEventData):void
+		{
+			data.newValue = null;
+			data.oldValue = null;
+			data.source = null;
+			data.kind = null;
+			data.property = null;
+			POOL[POOL.length] = data;
+		}
 		
 		/**
 		 * Constructor.
@@ -22,11 +60,7 @@ package feathers.events
 		public function PropertyChangeEventData(kind:String = KIND_UPDATE,
 			property:Object = null, newValue:Object = null, oldValue:Object = null, source:Object = null)
 		{
-			this.kind = kind;
-			this.property = property;
-			this.newValue = newValue;
-			this.oldValue = oldValue;
-			this.source = source;
+			this.reset(kind, property, newValue, oldValue, source);
 		}
 		
 		/**
@@ -53,5 +87,19 @@ package feathers.events
 		 * The object that the change occured on.
 		 */
 		public var source:Object;
+
+		/**
+		 * @private
+		 */
+		public function reset(kind:String, property:Object,
+			newValue:Object, oldValue:Object, source:Object):PropertyChangeEventData
+		{
+			this.kind = kind;
+			this.property = property;
+			this.newValue = newValue;
+			this.oldValue = oldValue;
+			this.source = source;
+			return this;
+		}
 	}
 }
