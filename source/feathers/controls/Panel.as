@@ -1341,6 +1341,10 @@ package feathers.controls
 				this.footer.height = oldFooterHeight;
 				this._ignoreFooterResizing = oldIgnoreFooterResizing;
 			}
+			else
+			{
+				this._bottomViewPortOffset += this._outerPaddingBottom;
+			}
 		}
 
 		/**
