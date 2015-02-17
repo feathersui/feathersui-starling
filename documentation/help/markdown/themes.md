@@ -69,7 +69,7 @@ Some components provide a set of alternate skin "style names" that may be added 
 
 Let's look at another example. The `GroupedList` component has a regular skin that looks a lot like the `List`, but with headers and footers. It tends to be best for groups that are strongly related, such as an alphabetized list of items. The `GroupedList` control also has an alternate "inset" style where the groups have rounded edges on the first and last item, and there is some padding between the edges of the component and the item renderers. This style is better for groups that are more weakly related. iOS uses a similar style very effectively in settings screens where it makes sense to differentiate each group a bit more.
 
-To see the difference between these two styles, you can view the `GroupedList` in the [Component Explorer](http://feathersui.com/examples/components-explorer/). In the settings screen for the `GroupedList`, change the "Group Style" to "inset".
+<aside class="info">To see the difference between these two styles, you can view the `GroupedList` in the [Component Explorer](http://feathersui.com/examples/components-explorer/). In the settings screen for the `GroupedList`, change the "Group Style" to "inset".</aside>
 
 Alternate style names get exposed as public static constants on any class that provides them. For instance, `GroupedList` defines `ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST`. The inset style can be used by adding the constant to a grouped list's `styleNameList`, like this:
 
