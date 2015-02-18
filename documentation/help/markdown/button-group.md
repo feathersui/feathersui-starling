@@ -150,7 +150,3 @@ Separate skins for the first and last buttons are completely optional.
 ## Related Links
 
 -   [`feathers.controls.ButtonGroup` API Documentation](../api-reference/feathers/controls/ButtonGroup.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

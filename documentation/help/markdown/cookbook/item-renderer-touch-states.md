@@ -335,7 +335,3 @@ Similarly, if you measure `_backgroundSkin` in `autoSizeIfNeeded()`, you should 
 ## Related Links
 
 -   [Introduction to Custom Item Renderers](../item-renderers.html)
-
-This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
-
-

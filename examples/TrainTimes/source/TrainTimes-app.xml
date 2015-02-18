@@ -24,11 +24,13 @@
 		<image57x57>icon57.png</image57x57>
 		<image58x58>icon58.png</image58x58>
 		<image72x72>icon72.png</image72x72>
+		<image87x87>icon87.png</image87x87>
 		<image96x96>icon96.png</image96x96>
 		<image100x100>icon100.png</image100x100>
 		<image114x114>icon114.png</image114x114>
 		<image128x128>icon128.png</image128x128>
 		<image144x144>icon144.png</image144x144>
+		<image180x180>icon180.png</image180x180>
 	</icon>
 	<android>
 		<manifestAdditions><![CDATA[

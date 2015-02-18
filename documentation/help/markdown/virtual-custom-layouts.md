@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 This is an advanced tutorial about creating custom layouts. Before continuing, please be sure that you read the [Introduction to Custom Layouts](custom-layouts.html) first.
 
-## The measureViewPort() function
+## The `measureViewPort()` function
 
 The first function defined by [`IVirtualLayout`](../api-reference/feathers/layout/IVirtualLayout.html) is [`measureViewPort()`](../api-reference/feathers/layout/IVirtualLayout.html#measureViewPort()). Please take a moment to review its signature below:
 
@@ -17,7 +17,7 @@ measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Poin
 
 Using a [`ViewPortBounds`](../api-reference/feathers/layout/ViewPortBounds.html) object and the number of items displayed, this function estimates the final width and height of the view port.
 
-## The getVisibleIndicesAtScrollPosition() function
+## The `getVisibleIndicesAtScrollPosition()` function
 
 The second function defined by `IVirtualLayout` is [`getVisibleIndicesAtScrollPosition()`](../api-reference/feathers/layout/IVirtualLayout.html#getVisibleIndicesAtScrollPosition()). Please take a moment to review its signature below:
 
@@ -52,7 +52,3 @@ For layouts with tens of thousands of items (or more, depending on the system), 
 ## Related Links
 
 -   [Introduction to Custom Feathers Layouts](custom-layouts.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

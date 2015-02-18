@@ -9,8 +9,4 @@ If you're using a [theme](../themes.html), it will listen for when new component
 
 In general, it's best to keep all of your skinning code inside the theme. If you want to style a component differently than the default provided by an existing theme, you should [extend the theme](../extending-themes.html). Once your new styles are part of the theme (don't worry, they're easy to add), you can reuse them anywhere in your app. No duplicated code, and you have a clean separation between the theme and your app's business logic.
 
-------------------------------------------------------------------------
-
-This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
-
 

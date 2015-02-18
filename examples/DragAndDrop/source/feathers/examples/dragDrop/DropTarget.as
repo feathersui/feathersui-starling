@@ -22,20 +22,13 @@ package feathers.examples.dragDrop
 			this.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
 		}
 
-		private var _background:Quad;
 		private var _dragFormat:String;
+		private var _backgroundQuad:Quad;
 
 		override protected function initialize():void
 		{
-			this._background = new Quad(1, 1, DEFAULT_COLOR);
-			this.addChildAt(this._background, 0);
-		}
-
-		override protected function draw():void
-		{
-			super.draw();
-			this._background.width = this.actualWidth;
-			this._background.height = this.actualHeight;
+			this._backgroundQuad = new Quad(1, 1, DEFAULT_COLOR);
+			this.backgroundSkin = this._backgroundQuad;
 		}
 
 		private function dragEnterHandler(event:DragDropEvent, dragData:DragData):void
@@ -45,22 +38,24 @@ package feathers.examples.dragDrop
 				return;
 			}
 			DragDropManager.acceptDrag(this);
-			this._background.color = HOVER_COLOR;
+			this._backgroundQuad.color = HOVER_COLOR;
 		}
 
 		private function dragExitHandler(event:DragDropEvent, dragData:DragData):void
 		{
-			this._background.color = DEFAULT_COLOR;
+			this._backgroundQuad.color = DEFAULT_COLOR;
 		}
 
 		private function dragDropHandler(event:DragDropEvent, dragData:DragData):void
 		{
 			var droppedObject:DisplayObject = DisplayObject(dragData.getDataForFormat(this._dragFormat))
-			droppedObject.x = event.localX - droppedObject.width / 2;
-			droppedObject.y = event.localY - droppedObject.height / 2;
+			droppedObject.x = Math.min(Math.max(event.localX - droppedObject.width / 2,
+				0), this.actualWidth - droppedObject.width); //keep within the bounds of the target
+			droppedObject.y = Math.min(Math.max(event.localY - droppedObject.height / 2,
+				0), this.actualHeight - droppedObject.height); //keep within the bounds of the target
 			this.addChild(droppedObject);
 
-			this._background.color = DEFAULT_COLOR;
+			this._backgroundQuad.color = DEFAULT_COLOR;
 		}
 	}
 }

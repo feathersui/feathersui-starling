@@ -118,7 +118,3 @@ This ensures that if a component is removed and then reused later, it won't reme
 -   [Feathers Cookbook: Selecting a custom item renderer on tap or click](item-renderer-select-on-tap.html)
 
 -   [Feathers Cookbook: Dispatching a long press event from a custom item renderer](item-renderer-long-press.html)
-
-This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
-
-

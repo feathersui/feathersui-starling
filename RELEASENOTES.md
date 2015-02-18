@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
-## 2.1 BETA
+## 2.1.0
 
 * New Component: AutoComplete, a TextInput that provides a pop-up list of suggestions.
 * New Component: SpinnerList, a list that changes selection when scrolling to an item.
@@ -16,6 +16,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * AnchorLayout: fixed issue where items positioned relative to horizontalCenterAnchorDisplayObject or verticalCenterAnchorDisplayObject were not positioned correctly whent he anchor was at a higher depth.
 * Button: added scaleWhenDown and scaleWhenHovering properties to scale the button in these states.
 * BaseDefaultItemRenderer: fixed issue where data that is == null would be ignored in some cases by changing to stricter === null check.
+* BitmapFontTextRenderer: fixed issue where a runtime error could be thrown if a character in the bitmap font had a width or height of 0.
 * BitmapFontTextEditor, TextBlockTextEditor: fixed issue where clearing the text on focus would cause the selection range to be invalid.
 * BitmapFontTextEditor, TextBlockTextEditor: listens for flash.events.Event.SELECT_ALL instead of Ctrl/Command+A with a keyboard event because it didn't work properly on Mac.
 * BitmapFontTextRenderer: fixed issue where the last word of a line would sometimes appear on the next line.
@@ -25,6 +26,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * FeathersControl: the styleProvider property may be changed after initialization.
 * FeathersControl: changes to styleNameList after initialization now causes the styleProvider to be re-applied.
 * FeathersControl: may now flatten even when not initialized or on stage.
+* FEATHERS_VERSION: new constant that can be used to see the version of Feathers being used.
 * FocusManager: both containers and their children may receive focus separately (to allow the container to scroll with the keyboard), thanks to the new IFocusContainer interface.
 * HierarchicalCollection: added removeAll() function, similar to ListCollection.
 * HorizontalLayout, VerticalLayout: when alignment is justified, the size of the item renderer is reset so that an accurate measurement can be taken instead of using the old justified size.
@@ -44,6 +46,8 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * ListCollection: setting data property to null keeps null instead of removing all items from existing data.
 * NumericStepper: added valueFormatFunction and valueParseFunction properties to support custom formatting.
 * Panel: added new title and headerTitleField properties to use instead of going through headerProperties.
+* Panel: fixed issue where outerPaddingBottom was ignored if the panel didn't have a footer.
+* PanelScreen: added missing DEFAULT_CHILD_STYLE_NAME_FOOTER constant for use in themes.
 * PickerList: dispatches Event.OPEN and Event.CLOSE when the pop-up list opens and closes.
 * PickerList, TabBar: fixes issue where Event.CHANGE was incorrectly dispatched on disposal because dataProvider was set to null.
 * Scale3Textures, Scale9Textures: fixed validation of region sizes when using a scaled texture that doesn't match Starling.contentScaleFactor.
@@ -63,6 +67,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Scroller: added support for scrolling horizontally with vertical scroll wheel.
 * Scroller: can receive focus to control scroll position with keyboard.
 * Scroller: fixed issue where snapToPages was ignored when using mouse wheel or throwing.
+* Scroller: fixed issue where animation for elastic snapping would restart on every touch when the distance was less than 1 pixel, causing it to appear that the item renderers could not be touched.
 * ScrollContainer: added autoSizeMode property to specify that it should fill the stage.
 * ScrollContainer: fixed issue where outer container didn't invalidate when adding or removing children, or when children are resized, causing validate() to have no effect.
 * StageTextTextEditor, TextFieldTextEditor: fixes issue where focus remained when parent was set invisible.
@@ -74,6 +79,9 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * TextFieldTextEditor: fixed issue where snapshot wasn't updated when size changed, but data or styles did not.
 * TextFieldTextEditorViewPort: added padding properties.
 * TextFieldTextEditorViewPort: fixed issue where the selection index was wrong from touch.
+* TextFieldTextRenderer, TextBlockTextRenderer: fixed issue where native filters could cause the text renderer to create a texture that is larger than the maximum dimensions allowed.
+* TextFieldTextRenderer, TextBlockTextRenderer: fixed issue where only the first texture (if multiple textures were required) was positioned properly when using native filters.
+* TextFieldTextRenderer, TextBlockTextRenderer: fixed issue where texture snapshots could be clipped too small when using native filters.
 * VerticalLayout: added requestRowCount property for more control over height auto-measurement.
 
 ### 2.1 BETA Deprecated APIs

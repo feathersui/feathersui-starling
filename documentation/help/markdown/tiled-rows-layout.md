@@ -87,7 +87,3 @@ The [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.
 ## Related Links
 
 -   [`feathers.layout.TiledRowsLayout` API Documentation](../api-reference/feathers/layout/TiledRowsLayout.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

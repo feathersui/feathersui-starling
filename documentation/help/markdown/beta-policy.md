@@ -12,5 +12,3 @@ Consider these APIs a preview of what's coming in the future. They simply need a
 When a beta API has been changed in any way, or it is considered finalized, the release notes will clearly explain what has happened. If changes to your code are required to migrate, instructions will be provided.
 
 Typically, completely new components added to Feathers will be marked as beta in their first release with the full library.
-
-

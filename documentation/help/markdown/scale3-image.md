@@ -71,7 +71,3 @@ You can easily change the `width` property for horizontal `Scale3Image` objects 
 ## Related Links
 
 -   [`feathers.display.Scale3Image` API Documentation](../api-reference/feathers/display/Scale3Image.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

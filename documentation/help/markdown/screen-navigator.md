@@ -156,24 +156,24 @@ Now, the animation will last a little longer while easing in and out.
 
 ### Events when transitions start and complete
 
-The `ScreenNavigator` dispatches `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` events when the transition starts and ends. You might listen to `FeathersEventType.TRANSITION_COMPLETE` to delay the initialization of your screen until the transition has completed. For instance, you might have other animations that need to play, but once the screen is fully visible.
+A `ScreenNavigator` dispatches [`FeathersEventType.TRANSITION_START`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#event:transitionStart) when a new screen is being shown and the transition animation begins. Similarly, it dispatches [`FeathersEventType.TRANSITION_COMPLETE`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#event:transitionComplete) when the transition animation has ended.
+
+<aside class="info">If a specific screen needs to know when its transition in (or out) starts or completes, we can listen for different events that provide more control. See [How to use the Feathers `Screen` component](screen.html) (or [`ScrollScreen`](scroll-screen.html) or [`PanelScreen`](panel-screen.html)) for details.</aside>
+
+Let's listen for `FeathersEventType.TRANSITION_COMPLETE`:
 
 ``` code
-this.owner.addEventListener( FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler );
+this._navigator.addEventListener( FeathersEventType.TRANSITION_COMPLETE, navigator_transitionCompleteHandler );
 ```
 
 The event listener might look like this:
 
 ``` code
-private function owner_transitionCompleteHandler( event:Event ):void
+private function navigator_transitionCompleteHandler( event:Event ):void
 {
-    this.owner.removeEventListener( FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler );
- 
-    // finish initialization here
+    // do something after the transition animation
 }
 ```
-
-Note that the `ScreenNavigator` will dispatch the `FeathersEventType.TRANSITION_START` and `FeathersEventType.TRANSITION_COMPLETE` events when a screen is being removed too. You will need to remove event listeners meant to be called only when the screen is added if you don't want them to run again when the screen is removed.
 
 ## Property Injection
 
@@ -302,7 +302,3 @@ Modifying `OptionsScreen` to use signals instead of events would be the same.
 -   [How to use the Feathers `ScrollScreen` component](panel-screen.html)
 
 -   [How to use the Feathers `PanelScreen` component](panel-screen.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

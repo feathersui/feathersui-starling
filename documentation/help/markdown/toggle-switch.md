@@ -196,7 +196,3 @@ The toggle switch's off track may be skinned similarly to the on track. The styl
 ## Related Links
 
 -   [`feathers.controls.ToggleSwitch` API Documentation](../api-reference/feathers/controls/ToggleSwitch.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-
