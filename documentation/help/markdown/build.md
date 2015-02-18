@@ -37,20 +37,20 @@ Alternatively, you may create a `build.local.properties` file and override the v
 
 3. Open a command prompt in the directory where build.xml is located.
 
-4. Run the command `ant quick`.
+4. Run the command `ant swc`.
 
 5. `feathers.swc` will be compiled and placed in an directory named `output`.
 
-Most likely, you will only need the `quick` target, which simply builds the SWC and does nothing else. There are several targets available that you may find useful.
+Most likely, you will only need the `swc` target, which simply builds the SWC and does nothing else. There are several targets available that you may find useful.
 
 -   `swc` compiles the Feathers SWC.
 
--   `docs` generates the Feathers API documentation.
+-   `api` generates the Feathers API documentation.
+
+-   `help` generates the Feathers Help files from Markdown.
+
+-   `test` runs the Feathers unit tests.
 
 -   `full` compiles the SWC, generates the API documentation, and copies all of the supporting files into the `output` directory to create a full release build of Feathers.
 
 -   `package` creates a full release build of Feathers, and then it packages everything into a ZIP file.
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

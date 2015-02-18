@@ -62,8 +62,6 @@ package feathers.controls
 		public function ScreenNavigator()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, screenNavigator_addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, screenNavigator_removedFromStageHandler);
 		}
 
 		/**
@@ -107,6 +105,12 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
+		 * 
+		 * <p>In the following example, a custom transition is passed to the
+		 * screen navigator:</p>
+		 * 
+		 * <listing version="3.0">
+		 * navigator.transition = Fade.createFadeInTransition();</listing>
 		 *
 		 * @default null
 		 *

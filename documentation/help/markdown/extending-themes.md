@@ -7,11 +7,9 @@ author: Josh Tynjala
 
 Using one of the example [themes](themes.html) included with Feathers, we can quickly style every Feathers component in our apps with a set of pre-made skins. This is a great way to get started with a new game, or an app with heavy branding, when we plan to integrate the final, custom design later. The example themes can even be useful for skinning productivity apps and things that don't require custom-designed branding and skins.
 
-Whatever our needs, eventually, we may want to make some styling tweaks or to provide some alternative skins for a subset of components in our app. The examples themes are designed with extensibility in mind. Let's learn to modify the themes to use our custom skins.
+Whatever our needs, eventually, we may need to make some style tweaks. Maybe we need to add icons to various buttons or we need to provide some alternate skins for certain components. Often, it's best to [create a theme from scratch](custom-themes.html). Other times, we might like how an existing theme looks, but we need to make a few minor tweaks here and there. The example themes included with Feathers are designed with basic extensibility in mind. Let's learn to modify the themes to add some extra custom styles.
 
-<aside class="warn">This tutorial covers the new theme architecture in Feathers 2.0. If you are using Feathers 1.3.1 or below, you should read [Extending legacy Feathers 1.x themes](extending-themes-v1.html) instead.</aside>
-
-<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how do basic skinning without themes. You'll get an introduction to style providers, which are the foundation of a theme's architecture.</aside>
+<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how to do basic skinning without themes. You'll get an introduction to style providers, which are the foundation of a theme's architecture.</aside>
 
 ## Adding an alternate style function
 
@@ -149,6 +147,4 @@ You can set the `defaultStyleFunction` on the `StyleNameFunctionStyleProvider`. 
 
 -   [Introduction to Feathers Themes](themes.html)
 
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-
+-   [Creating custom Feathers Themes](custom-themes.html)

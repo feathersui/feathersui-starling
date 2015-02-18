@@ -67,7 +67,7 @@
 			<arg value="source/LayoutExplorer-app.xml"/>
 			<arg value="-C"/>
 			<arg value="${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon87.png icon96.png icon100.png icon114.png icon128.png icon144.png icon180.png"/>
 			<arg value="-C"/>
 			<arg value="${launch.image.path}"/>
 			<arg line="Default.png Default-Portrait.png Default-Landscape.png Default@2x.png Default-Portrait@2x.png Default-Landscape@2x.png Default-568h@2x.png Default-375w-667h@2x.png Default-414w-736h@3x.png Default-414w-736h-Landscape@3x.png"/>
@@ -92,7 +92,7 @@
 			<arg value="source/LayoutExplorer-app.xml"/>
 			<arg value="-C"/>
 			<arg value="${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon87.png icon96.png icon100.png icon114.png icon128.png icon144.png icon180.png"/>
 			<arg value="-C"/>
 			<arg value="${output.path}"/>
 			<arg value="LayoutExplorer.swf"/>

@@ -202,7 +202,3 @@ In this situation, think of the text input as a label that simply displays the v
 ## Related Links
 
 -   [`feathers.controls.NumericStepper` API Documentation](../api-reference/feathers/controls/NumericStepper.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

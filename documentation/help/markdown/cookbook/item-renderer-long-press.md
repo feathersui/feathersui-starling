@@ -185,7 +185,3 @@ if( !this.hasLongPressed && isInBounds )
 -   [Feathers Cookbook: How to select (or deselect) a custom item renderer on tap or click](item-renderer-select-on-tap.html)
 
 -   [Feathers Cookbook: How to dispatch a triggered event from a custom item renderer](item-renderer-triggered-on-tap.html)
-
-This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
-
-

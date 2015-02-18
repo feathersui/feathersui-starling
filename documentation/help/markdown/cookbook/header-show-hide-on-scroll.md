@@ -134,8 +134,4 @@ The math is pretty simple here. The difference between the current `globalY` pos
 
 The final calculated value replaces the `top` property of the `AnchorLayoutData` associated with the header. This drags the header, and because the list is positioned relative to the header, the list is dragged too.
 
-------------------------------------------------------------------------
-
-This is a recipe in the [Feathers Cookbook](index.html). For more information about Feathers, return to the [Feathers Documentation](../index.html).
-
 

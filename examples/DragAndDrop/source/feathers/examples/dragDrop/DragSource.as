@@ -22,22 +22,13 @@ package feathers.examples.dragDrop
 			this.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
 		}
 
-		private var _background:Quad;
 		private var _touchID:int = -1;
 		private var _draggedObject:DisplayObject;
 		private var _dragFormat:String;
 
 		override protected function initialize():void
 		{
-			this._background = new Quad(1, 1, 0x36322e);
-			this.addChildAt(this._background, 0);
-		}
-
-		override protected function draw():void
-		{
-			super.draw();
-			this._background.width = this.actualWidth;
-			this._background.height = this.actualHeight;
+			this.backgroundSkin = new Quad(1, 1, 0x36322e);
 		}
 
 		private function touchHandler(event:TouchEvent):void
@@ -69,7 +60,7 @@ package feathers.examples.dragDrop
 			else
 			{
 				touch = event.getTouch(this, TouchPhase.BEGAN);
-				if(!touch || touch.target == this || touch.target == this._background)
+				if(!touch || touch.target == this || touch.target == this.backgroundSkin)
 				{
 					return;
 				}

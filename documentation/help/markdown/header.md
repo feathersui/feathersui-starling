@@ -121,7 +121,3 @@ If you aren't using a theme, then you may set any of the header's properties dir
 ## Related Links
 
 -   [`feathers.controls.Header` API Documentation](../api-reference/feathers/controls/Header.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

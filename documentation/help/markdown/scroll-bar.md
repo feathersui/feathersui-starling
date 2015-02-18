@@ -230,7 +230,3 @@ The scroll bar's increment button may be skinned similarly to the decrement butt
 -   [`feathers.controls.ScrollBar` API Documentation](../api-reference/feathers/controls/ScrollBar.html)
 
 -   [How to use the Feathers `SimpleScrollBar` Component](simple-scroll-bar.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

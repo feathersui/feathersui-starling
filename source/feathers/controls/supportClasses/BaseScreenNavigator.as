@@ -167,6 +167,8 @@ package feathers.controls.supportClasses
 					//signals not being used
 				}
 			}
+			this.addEventListener(Event.ADDED_TO_STAGE, screenNavigator_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, screenNavigator_removedFromStageHandler);
 		}
 
 		/**

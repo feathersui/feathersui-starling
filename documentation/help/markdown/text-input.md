@@ -232,7 +232,3 @@ If you aren't using a theme, then you may set any of the text input's properties
 -   [How to Use the Feathers `TextArea` Component](text-area.html)
 
 -   [Introduction to Feathers Text Editors](text-editors.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

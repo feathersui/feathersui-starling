@@ -459,7 +459,3 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 -   [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
 
 -   [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-
