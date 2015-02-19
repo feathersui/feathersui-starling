@@ -9,11 +9,9 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.motion.Fade;
 	import feathers.motion.ColorFade;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class ColorFadeTransitionScreen extends PanelScreen

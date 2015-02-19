@@ -1,7 +1,6 @@
 package feathers.examples.displayObjects.themes
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.examples.displayObjects.screens.Scale3ImageScreen;
 	import feathers.examples.displayObjects.screens.Scale9ImageScreen;

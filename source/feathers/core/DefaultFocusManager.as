@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
-	import feathers.core.IFocusDisplayObject;
 	import feathers.events.FeathersEventType;
 
 	import flash.display.InteractiveObject;

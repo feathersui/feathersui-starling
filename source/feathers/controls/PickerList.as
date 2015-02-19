@@ -10,7 +10,6 @@ package feathers.controls
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IToggle;

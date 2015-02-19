@@ -9,7 +9,6 @@ package feathers.tests
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
-
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;

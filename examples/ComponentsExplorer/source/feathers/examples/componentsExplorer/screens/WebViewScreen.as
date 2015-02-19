@@ -3,15 +3,10 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.LayoutGroup;
-	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.TextInput;
 	import feathers.controls.WebView;
-	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
-	import feathers.examples.componentsExplorer.data.ListSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayoutData;

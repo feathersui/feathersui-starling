@@ -1,8 +1,6 @@
 package feathers.examples.componentsExplorer
 {
 	import feathers.controls.Drawers;
-	import feathers.controls.ScreenNavigator;
-	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
@@ -40,7 +38,6 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.motion.Slide;
 	import feathers.system.DeviceCapabilities;
 
