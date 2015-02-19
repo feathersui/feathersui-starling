@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.supportClasses.BaseScreenNavigator;
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
 	import feathers.events.ExclusiveTouch;
@@ -148,7 +149,7 @@ package feathers.controls
 	 * left of the main content:</p>
 	 *
 	 * <listing version="3.0">
-	 * var navigator:ScreenNavigator = new ScreenNavigator();
+	 * var navigator:StackScreenNavigator = new StackScreenNavigator();
 	 * var list:List = new List();
 	 * // the navigator's screens, the list's data provider, and additional
 	 * // properties should be set here.
@@ -159,7 +160,7 @@ package feathers.controls
 	 * drawers.leftDrawerToggleEventType = Event.OPEN;
 	 * this.addChild( drawers );</listing>
 	 *
-	 * <p>In the example above, a screen in the <code>ScreenNavigator</code>
+	 * <p>In the example above, a screen in the <code>StackScreenNavigator</code>
 	 * component dispatches an event of type <code>Event.OPEN</code> when it
 	 * wants to display the slide out the <code>List</code> that is used as
 	 * the left drawer.</p>
@@ -405,7 +406,7 @@ package feathers.controls
 			this._content = value;
 			if(this._content)
 			{
-				if(this._content is ScreenNavigator)
+				if(this._content is BaseScreenNavigator)
 				{
 					this.contentEventDispatcherField = SCREEN_NAVIGATOR_CONTENT_EVENT_DISPATCHER_FIELD;
 					this.contentEventDispatcherChangeEventType = Event.CHANGE;
@@ -1571,8 +1572,9 @@ package feathers.controls
 		 * <code>contentEventDispatcherField</code> or
 		 * <code>contentEventDispatcherFunction</code>.
 		 *
-		 * <p>For a <code>ScreenNavigator</code> component, this value is
-		 * automatically set to <code>Event.CHANGE</code>.</p>
+		 * <p>For <code>StackScreenNavigator</code> and
+		 * <code>ScreenNavigator</code> components, this value is automatically
+		 * set to <code>Event.CHANGE</code>.</p>
 		 *
 		 * <p>In the following example, the drawers container will update its
 		 * content event dispatcher when the content dispatches an event of type
@@ -1620,9 +1622,10 @@ package feathers.controls
 		 * A property of the <code>content</code> that references an event
 		 * dispatcher that dispatches events to toggle drawers open and closed.
 		 *
-		 * <p>For a <code>ScreenNavigator</code> component, this value is
-		 * automatically set to <code>"activeScreen"</code> to listen for events
-		 * from the currently active/visible screen.</p>
+		 * <p>For <code>StackScreenNavigator</code> and
+		 * <code>ScreenNavigator</code> components, this value is automatically
+		 * set to <code>"activeScreen"</code> to listen for events from the
+		 * currently active/visible screen.</p>
 		 *
 		 * <p>In the following example, the content event dispatcher field is
 		 * customized:</p>
