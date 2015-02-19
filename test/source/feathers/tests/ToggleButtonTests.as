@@ -7,13 +7,9 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
-
 	import starling.events.Event;
-
 	import starling.events.Touch;
-
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 

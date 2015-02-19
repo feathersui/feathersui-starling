@@ -22,7 +22,6 @@ package feathers.controls
 	import flash.utils.getTimer;
 
 	import starling.core.RenderSupport;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;

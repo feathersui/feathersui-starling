@@ -9,7 +9,6 @@ package feathers.tests
 	import org.flexunit.async.Async;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
