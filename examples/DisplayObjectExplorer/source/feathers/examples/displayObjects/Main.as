@@ -14,7 +14,6 @@ package feathers.examples.displayObjects
 	import feathers.motion.transitions.TabBarSlideTransitionManager;
 
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
 
 	public class Main extends LayoutGroup
 	{

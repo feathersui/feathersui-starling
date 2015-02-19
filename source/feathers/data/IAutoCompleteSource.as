@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.data
 {
 	import feathers.core.IFeathersEventDispatcher;
-	import feathers.data.ListCollection;
 
 	/**
 	 * Dispatched when the suggestions finish loading.

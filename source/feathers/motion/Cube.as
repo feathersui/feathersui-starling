@@ -116,7 +116,6 @@ package feathers.motion
 }
 
 import flash.display3D.Context3DTriangleFace;
-import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.RenderSupport;
