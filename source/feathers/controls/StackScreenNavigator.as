@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
-	import feathers.controls.supportClasses.IScreenNavigatorItem;
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;

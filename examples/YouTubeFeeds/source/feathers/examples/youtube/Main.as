@@ -1,16 +1,11 @@
 package feathers.examples.youtube
 {
-	import feathers.controls.ScreenNavigator;
-	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
-	import feathers.examples.youtube.models.VideoDetails;
-	import feathers.examples.youtube.models.VideoFeed;
 	import feathers.examples.youtube.models.YouTubeModel;
 	import feathers.examples.youtube.screens.ListVideosScreen;
 	import feathers.examples.youtube.screens.MainMenuScreen;
 	import feathers.examples.youtube.screens.VideoDetailsScreen;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.motion.Slide;
 	import feathers.themes.MetalWorksMobileTheme;
 

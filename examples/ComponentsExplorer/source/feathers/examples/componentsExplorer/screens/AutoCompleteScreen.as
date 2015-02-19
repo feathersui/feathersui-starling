@@ -4,7 +4,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.TextInput;
 	import feathers.data.ListCollection;
 	import feathers.data.LocalAutoCompleteSource;
 	import feathers.skins.IStyleProvider;

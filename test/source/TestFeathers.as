@@ -24,7 +24,6 @@ package
     import flash.system.System;
 
     import org.flexunit.internals.TraceListener;
-    import org.flexunit.listeners.AirCIListener;
     import org.flexunit.listeners.CIListener;
     import org.flexunit.runner.FlexUnitCore;
 

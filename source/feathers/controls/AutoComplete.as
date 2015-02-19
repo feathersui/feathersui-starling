@@ -7,17 +7,15 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.data.IAutoCompleteSource;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IAutoCompleteSource;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
 	import flash.events.KeyboardEvent;
-
 	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 

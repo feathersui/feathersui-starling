@@ -2,8 +2,6 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.ScreenNavigatorItem;
-	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;

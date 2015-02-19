@@ -24,7 +24,6 @@
  */
 package feathers.themes
 {
-	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
