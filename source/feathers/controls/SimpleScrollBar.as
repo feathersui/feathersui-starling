@@ -450,6 +450,10 @@ package feathers.controls
 		/**
 		 * @inheritDoc
 		 *
+		 * <p>If this value is <code>0</code>, the <code>step</code> value
+		 * will be used instead. If the <code>step</code> value is
+		 * <code>0</code>, paging with the track is not possible.</p>
+		 *
 		 * @default 0
 		 *
 		 * @see #value
@@ -1007,8 +1011,16 @@ package feathers.controls
 			}
 
 			var range:Number = this._maximum - this._minimum;
-			//we're just going to make something up in this case
-			var adjustedPageStep:Number = this._page == 0 ? range / 10 : this._page;
+			var adjustedPage:Number = this._page;
+			if(adjustedPage === 0)
+			{
+				//fall back to using step!
+				adjustedPage = this._step;
+			}
+			if(adjustedPage > range)
+			{
+				adjustedPage = range;
+			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
@@ -1019,23 +1031,16 @@ package feathers.controls
 				}
 				else //horizontal
 				{
-					if(range > 0)
+					if(adjustedPage === 0)
 					{
-						newWidth = 0;
+						newWidth = this.thumbOriginalWidth;
 					}
 					else
 					{
-						if(adjustedPageStep == 0)
+						newWidth = this.thumbOriginalWidth * range / adjustedPage;
+						if(newWidth < this.thumbOriginalWidth)
 						{
 							newWidth = this.thumbOriginalWidth;
-						}
-						else
-						{
-							newWidth = this.thumbOriginalWidth * range / adjustedPageStep;
-							if(newWidth < this.thumbOriginalWidth)
-							{
-								newWidth = this.thumbOriginalWidth;
-							}
 						}
 					}
 				}
@@ -1045,23 +1050,16 @@ package feathers.controls
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					if(range > 0)
+					if(adjustedPage === 0)
 					{
-						newHeight = 0;
+						newHeight = this.thumbOriginalHeight;
 					}
 					else
 					{
-						if(adjustedPageStep == 0)
+						newHeight = this.thumbOriginalHeight * range / adjustedPage;
+						if(newHeight < this.thumbOriginalHeight)
 						{
 							newHeight = this.thumbOriginalHeight;
-						}
-						else
-						{
-							newHeight = this.thumbOriginalHeight * range / adjustedPageStep;
-							if(newHeight < this.thumbOriginalHeight)
-							{
-								newHeight = this.thumbOriginalHeight;
-							}
 						}
 					}
 				}
@@ -1135,14 +1133,14 @@ package feathers.controls
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-			var adjustedPageStep:Number = this._page;
+			var adjustedPage:Number = this._page;
 			if(this._page == 0)
 			{
-				adjustedPageStep = range;
+				adjustedPage = this._step;
 			}
-			else if(range < adjustedPageStep)
+			else if(adjustedPage > range)
 			{
-				adjustedPageStep = range;
+				adjustedPage = range;
 			}
 			var valueOffset:Number = 0;
 			if(this._value < this._minimum)
@@ -1157,7 +1155,7 @@ package feathers.controls
 			{
 				this.thumb.width = this.thumbOriginalWidth;
 				var thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
-				var thumbHeight:Number = contentHeight * adjustedPageStep / range;
+				var thumbHeight:Number = contentHeight * adjustedPage / range;
 				var heightOffset:Number = contentHeight - thumbHeight;
 				if(heightOffset > thumbHeight)
 				{
@@ -1186,7 +1184,7 @@ package feathers.controls
 			else //horizontal
 			{
 				var thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
-				var thumbWidth:Number = contentWidth * adjustedPageStep / range;
+				var thumbWidth:Number = contentWidth * adjustedPage / range;
 				var widthOffset:Number = contentWidth - thumbWidth;
 				if(widthOffset > thumbWidth)
 				{
@@ -1253,9 +1251,19 @@ package feathers.controls
 		 */
 		protected function adjustPage():void
 		{
+			var range:Number = this._maximum - this._minimum;
+			var adjustedPage:Number = this._page;
+			if(adjustedPage === 0)
+			{
+				adjustedPage = this._step;
+			}
+			if(adjustedPage > range)
+			{
+				adjustedPage = range;
+			}
 			if(this._touchValue < this._value)
 			{
-				var newValue:Number = Math.max(this._touchValue, this._value - this._page);
+				var newValue:Number = Math.max(this._touchValue, this._value - adjustedPage);
 				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);
@@ -1264,7 +1272,7 @@ package feathers.controls
 			}
 			else if(this._touchValue > this._value)
 			{
-				newValue = Math.min(this._touchValue, this._value + this._page);
+				newValue = Math.min(this._touchValue, this._value + adjustedPage);
 				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);

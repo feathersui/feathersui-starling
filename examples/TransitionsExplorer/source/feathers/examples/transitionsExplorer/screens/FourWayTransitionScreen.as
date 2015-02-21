@@ -11,7 +11,6 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.layout.AnchorLayoutData;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class FourWayTransitionScreen extends PanelScreen

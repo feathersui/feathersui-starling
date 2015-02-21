@@ -14,9 +14,3 @@ Check the minimum required versions of Starling Framework, Adobe Flash Player, a
 The Feathers SWC has been tested using both 1) the [Adobe Flex SDK 4.6](http://www.adobe.com/go/flex_sdk) merged with the latest version of "the original AIR SDK without the new compiler" and 2) the latest [Adobe AIR SDK & Compiler](http://www.adobe.com/go/air_sdk). Again, be sure to double check the Feathers README file to see which version of Adobe Flash Player, Adobe AIR, and Starling Framework are required.
 
 Flash Builder 4.6 and Flash Builder 4.7 have both been tested and confirmed to work correctly. If you are still using Flash Builder 4.5, please consider upgrading to at least Flash Builder 4.6. Your serial number from Flash Builder 4.5 is fully compatible with Flash Builder 4.6 without paying an upgrade fee.
-
-------------------------------------------------------------------------
-
-This is a detailed response to a [Frequently Asked Question](index.html) about [Feathers](../index.html).
-
-

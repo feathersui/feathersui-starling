@@ -35,5 +35,3 @@ browser.loadString( "<!doctype html><html><body><h1>Hello World</h1></body></htm
 ## Related Links
 
 -   [`feathers.controls.WebView` API Documentation](../api-reference/feathers/controls/WebView.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).

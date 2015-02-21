@@ -96,5 +96,3 @@ The `this` keyword should be used to reference member variables and functions. T
 -   Consider adding a `@see` tag when you refer to other public APIs or classes.
 
 -   When referring to a measurement of some sort, such as dimensions or time, *always* include the unit, such as pixels or seconds.
-
-

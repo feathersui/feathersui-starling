@@ -1,8 +1,6 @@
 package feathers.examples.componentsExplorer
 {
 	import feathers.controls.Drawers;
-	import feathers.controls.ScreenNavigator;
-	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
@@ -12,6 +10,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.examples.componentsExplorer.screens.AlertScreen;
+	import feathers.examples.componentsExplorer.screens.AutoCompleteScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
@@ -35,12 +34,14 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TabBarScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
+	import feathers.examples.componentsExplorer.screens.WebViewScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.motion.Slide;
 	import feathers.system.DeviceCapabilities;
+
+	import flash.system.Capabilities;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -49,6 +50,7 @@ package feathers.examples.componentsExplorer
 	{
 		private static const MAIN_MENU:String = "mainMenu";
 		private static const ALERT:String = "alert";
+		private static const AUTO_COMPLETE:String = "autoComplete";
 		private static const BUTTON:String = "button";
 		private static const BUTTON_SETTINGS:String = "buttonSettings";
 		private static const BUTTON_GROUP:String = "buttonGroup";
@@ -72,10 +74,12 @@ package feathers.examples.componentsExplorer
 		private static const TAB_BAR:String = "tabBar";
 		private static const TEXT_INPUT:String = "textInput";
 		private static const TOGGLES:String = "toggles";
+		private static const WEB_VIEW:String = "webView";
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
 			showAlert: ALERT,
+			showAutoComplete: AUTO_COMPLETE,
 			showButton: BUTTON,
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
@@ -92,7 +96,8 @@ package feathers.examples.componentsExplorer
 			showSpinnerList: SPINNER_LIST,
 			showTabBar: TAB_BAR,
 			showTextInput: TEXT_INPUT,
-			showToggles: TOGGLES
+			showToggles: TOGGLES,
+			showWebView: WEB_VIEW
 		};
 		
 		public function Main()
@@ -111,13 +116,17 @@ package feathers.examples.componentsExplorer
 			EmbeddedAssets.initialize();
 
 			new ComponentsExplorerTheme();
-			
+
 			this._navigator = new StackScreenNavigator();
 			this.content = this._navigator;
 
 			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
 			alertItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ALERT, alertItem);
+
+			var autoCompleteItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AutoCompleteScreen);
+			autoCompleteItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(AUTO_COMPLETE, autoCompleteItem);
 
 			var buttonItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ButtonScreen);
 			buttonItem.addPopEvent(Event.COMPLETE);
@@ -241,6 +250,13 @@ package feathers.examples.componentsExplorer
 			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleScreen);
 			togglesItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(TOGGLES, togglesItem);
+
+			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
+			{
+				var webViewItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(WebViewScreen);
+				webViewItem.addPopEvent(Event.COMPLETE);
+				this._navigator.addScreen(WEB_VIEW, webViewItem);
+			}
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{

@@ -127,7 +127,3 @@ Notice that custom skin textures are still used like above, but I used some text
 -   [Extending Feathers 2.0 themes](extending-themes.html)
 
 -   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

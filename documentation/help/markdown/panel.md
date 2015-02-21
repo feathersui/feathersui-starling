@@ -382,7 +382,3 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 ## Related Links
 
 -   [`feathers.controls.Panel` API Documentation](../api-reference/feathers/controls/Panel.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

@@ -238,7 +238,3 @@ For more information about how themes use style providers, see [Extending Feathe
 -   [Introduction to Feathers Themes](themes.html)
 
 -   [Extending Feathers example themes](extending-themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

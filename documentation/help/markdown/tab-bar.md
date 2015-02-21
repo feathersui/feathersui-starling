@@ -147,7 +147,3 @@ Separate skins for the first and last tabs are completely optional.
 ## Related Links
 
 -   [`feathers.controls.TabBar` API Documentation](../api-reference/feathers/controls/TabBar.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

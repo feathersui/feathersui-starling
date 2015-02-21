@@ -803,6 +803,10 @@ package feathers.controls
 		/**
 		 * @inheritDoc
 		 *
+		 * <p>If this value is <code>0</code>, the <code>step</code> value
+		 * will be used instead. If the <code>step</code> value is
+		 * <code>0</code>, paging with the track is not possible.</p>
+		 *
 		 * @default 0
 		 *
 		 * @see #value
@@ -2273,6 +2277,7 @@ package feathers.controls
 					{
 						newWidth = this.minimumTrackOriginalWidth;
 					}
+					newWidth += this.incrementButton.width + this.decrementButton.width;
 				}
 			}
 			if(needsHeight)
@@ -2287,6 +2292,7 @@ package feathers.controls
 					{
 						newHeight = this.minimumTrackOriginalHeight;
 					}
+					newHeight += this.incrementButton.height + this.decrementButton.height;
 				}
 				else //horizontal
 				{
@@ -2579,21 +2585,21 @@ package feathers.controls
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-			var adjustedPageStep:Number = this._page;
+			var adjustedPage:Number = this._page;
 			if(this._page == 0)
 			{
-				adjustedPageStep = range;
+				adjustedPage = this._step;
 			}
-			else if(adjustedPageStep > range)
+			if(adjustedPage > range)
 			{
-				adjustedPageStep = range;
+				adjustedPage = range;
 			}
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				contentHeight -= (this.decrementButton.height + this.incrementButton.height);
 				var thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPageStep / range);
+				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPage / range);
 				var trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				this.thumb.y = this.decrementButton.height + this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
@@ -2602,7 +2608,7 @@ package feathers.controls
 			{
 				contentWidth -= (this.decrementButton.width + this.decrementButton.width);
 				var thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
-				this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPageStep / range);
+				this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPage / range);
 				this.thumb.height = this.thumbOriginalHeight;
 				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this.decrementButton.width + this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
@@ -2788,9 +2794,19 @@ package feathers.controls
 		 */
 		protected function adjustPage():void
 		{
+			var range:Number = this._maximum - this._minimum;
+			var adjustedPage:Number = this._page;
+			if(this._page == 0)
+			{
+				adjustedPage = this._step;
+			}
+			if(adjustedPage > range)
+			{
+				adjustedPage = range;
+			}
 			if(this._touchValue < this._value)
 			{
-				var newValue:Number = Math.max(this._touchValue, this._value - this._page);
+				var newValue:Number = Math.max(this._touchValue, this._value - adjustedPage);
 				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);
@@ -2799,7 +2815,7 @@ package feathers.controls
 			}
 			else if(this._touchValue > this._value)
 			{
-				newValue = Math.min(this._touchValue, this._value + this._page);
+				newValue = Math.min(this._touchValue, this._value + adjustedPage);
 				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);

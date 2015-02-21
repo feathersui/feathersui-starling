@@ -164,7 +164,7 @@ We'll go into the low-level details in a moment, but let's look at a couple of i
 
 -   The class extends the standard Starling [`starling.events.EventDispatcher`](http://doc.starling-framework.org/core/starling/events/EventDispatcher.html) because `ILayout` specifies that layouts should dispatch `Event.CHANGE` when their properties change. This will allow components that use layouts to properly invalidate when they need to call the [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()) function again.
 
-## The layout() function
+## The `layout()` function
 
 The first function defined by the `ILayout` interface is [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()). Please take a moment to review its signature below:
 
@@ -265,7 +265,7 @@ return result;
 
 Notice that if the view port's dimensions are not explicitly specified by the `ViewPortBounds` argument (in other words, if they're `NaN`), we calculate the view port dimensions manually, using the combined height of all items and the maximum width of the items. In that case, we also need to take into account the minimum and maximum dimensions. Finally, the content dimensions should either be equal to or larger than the view port dimensions.
 
-### ViewPortBounds properties
+### `ViewPortBounds` properties
 
 Let's look in more detail at the properties on a [`ViewPortBounds`](../api-reference/feathers/layout/ViewPortBounds.html) object. This object specifies dimensions, starting position, and scroll position values of the container's view port.
 
@@ -299,7 +299,7 @@ Again, this is an optional argument. If the layout receives `null`, it may assum
 
 -   `y = 0`
 
-### LayoutBoundsResult properties
+### `LayoutBoundsResult` properties
 
 Let's look in more detail at the properties on a [`LayoutBoundsResult`](../api-reference/feathers/layout/LayoutBoundsResult.html) object. This object is returned by the [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()) function and "fills in the blanks" from the `ViewPortBounds` object passed as one of the arguments to the `layout()` function.
 
@@ -375,7 +375,3 @@ return result;
 -   [`ILayoutDisplayObject` and `ILayoutData`](layout-data.html)
 
 -   [Virtualized Custom Layouts for Feathers Components](virtual-custom-layouts.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

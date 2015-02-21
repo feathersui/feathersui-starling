@@ -20,7 +20,6 @@ package feathers.examples.transitionsExplorer
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.display.Quad;
-
 	import starling.events.Event;
 	import starling.textures.Texture;
 

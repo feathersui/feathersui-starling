@@ -70,5 +70,3 @@ Let's adjust the layout a bit to put the button in the center of the screen:
 Previously, we learned that there are two ways to set a property of a component. The first way to set a property was to add an attribute. We've set the `horizontalCenter` and `verticalCenter` properties on an `AnchorLayoutData` instance in the same way.
 
 Sometimes, it may be easier to set properties by adding child element with the property's name (prefixed by the namespace). In the code above, we set the `layout` property of the `LayoutGroup` to an [`AnchorLayout`](anchor-layout.html) instance, and we set the `layoutData` property of the `Button` to an `AnchorLayoutData` instance.
-
-For more tutorials, return to the [Feathers Documentation](index.html).

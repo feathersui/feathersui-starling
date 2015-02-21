@@ -216,5 +216,12 @@ package feathers.events
 		 * @see feathers.core.ITextEditor
 		 */
 		public static const SOFT_KEYBOARD_DEACTIVATE:String = "softKeyboardDeactivate";
+
+		/**
+		 * The <code>FeathersEventType.PROGRESS</code> event type is used by
+		 * Feathers classes with long-running tasks to indicate that progress
+		 * has been made, but the task is incomplete.
+		 */
+		public static const PROGRESS:String = "progress";
 	}
 }

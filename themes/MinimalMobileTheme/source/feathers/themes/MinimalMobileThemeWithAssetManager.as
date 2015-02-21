@@ -24,7 +24,6 @@
  */
 package feathers.themes
 {
-	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
@@ -83,7 +82,7 @@ package feathers.themes
 		 * @param assetsBasePath The root folder of the assets.
 		 * @param assetManager An optional pre-created AssetManager. The scaleFactor property must be equal to Starling.contentScaleFactor. To load assets with a different scale factor, use multiple AssetManager instances.
 		 */
-		public function MinimalMobileThemeWithAssetManager(assetsBasePath:String, assetManager:AssetManager = null)
+		public function MinimalMobileThemeWithAssetManager(assetsBasePath:String = "./", assetManager:AssetManager = null)
 		{
 			this.loadAssets(assetsBasePath, assetManager);
 		}
@@ -94,8 +93,8 @@ package feathers.themes
 		 */
 		protected var assetPaths:Vector.<String> = new <String>
 		[
-			"images/minimal_mobile.xml",
-			"images/minimal_mobile.png",
+			"images/" + ATLAS_NAME + ".xml",
+			"images/" + ATLAS_NAME + ".png",
 			"fonts/pf_ronda_seven.fnt"
 		];
 
@@ -167,11 +166,11 @@ package feathers.themes
 			if(assetManager)
 			{
 				oldScaleFactor = assetManager.scaleFactor;
-				assetManager.scaleFactor = Starling.contentScaleFactor;
+				assetManager.scaleFactor = 1;
 			}
 			else
 			{
-				assetManager = new AssetManager(Starling.contentScaleFactor);
+				assetManager = new AssetManager();
 			}
 			this.assetManager = assetManager;
 			//add a trailing slash, if needed

@@ -549,7 +549,3 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 -   [`feathers.controls.renderers.IGroupedListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html)
 
 -   [`feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer` API Documentation](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

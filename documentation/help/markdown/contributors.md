@@ -34,5 +34,3 @@ Special thanks to everyone in the community who has contributed code to [Feather
 -   [yohairosen](https://github.com/yohairosen)
 
 If I've forgotten to add you, or if you'd prefer to be removed from this list, please let me know.
-
-

@@ -22,7 +22,6 @@ package feathers.controls
 	import flash.utils.getTimer;
 
 	import starling.core.RenderSupport;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -2195,6 +2194,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreIconResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			var scale:Number = 1;
@@ -2498,6 +2502,10 @@ package feathers.controls
 			{
 				if(oldIcon)
 				{
+					if(oldIcon is IFeathersControl)
+					{
+						IFeathersControl(oldIcon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
+					}
 					this.removeChild(oldIcon, false);
 				}
 				if(this.currentIcon)
@@ -2509,6 +2517,10 @@ package feathers.controls
 						index = this.getChildIndex(DisplayObject(this.labelTextRenderer));
 					}
 					this.addChildAt(this.currentIcon, index);
+					if(this.currentIcon is IFeathersControl)
+					{
+						IFeathersControl(this.currentIcon).addEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
+					}
 				}
 			}
 		}
@@ -2569,6 +2581,8 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
 			this.refreshMaxLabelWidth(false);
 			if(this._label && this.labelTextRenderer && this.currentIcon)
 			{
@@ -2605,6 +2619,7 @@ package feathers.controls
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 
 		/**
@@ -2991,6 +3006,18 @@ package feathers.controls
 			}
 			this.resetTouchState();
 			this.trigger();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function currentIcon_resizeHandler():void
+		{
+			if(this._ignoreIconResizes)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

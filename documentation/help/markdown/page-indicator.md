@@ -105,7 +105,3 @@ If you aren't using a theme, then you may set any of the page indicator's proper
 ## Related Links
 
 -   [`feathers.controls.PageIndicator` API Documentation](../api-reference/feathers/controls/PageIndicator.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

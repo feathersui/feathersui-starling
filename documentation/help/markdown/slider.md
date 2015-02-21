@@ -196,7 +196,3 @@ A slider also provides a [`showThumb`](../api-reference/feathers/controls/Slider
 ## Related Links
 
 -   [`feathers.controls.Slider` API Documentation](../api-reference/feathers/controls/Slider.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

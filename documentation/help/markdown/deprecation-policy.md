@@ -36,5 +36,3 @@ If Feathers is ever officially ported to another language or runtime, the port w
 In cases where it is impossible for both a deprecated API and its replacement to live side by side, the deprecated API will be removed immediately. The release notes will include a section with detailed migration instructions that explain how to use the replacement API.
 
 In general, this option will only be used if it is expected that there will be no impact on the majority of Feathers projects. In other words, it is only possible to replace an API immediately without a deprecation period if it is not used frequently. For frequently used APIs, replacement will need to wait until the next major version.
-
-

@@ -86,7 +86,3 @@ If you aren't using a theme, then you may set any of the progress bar's properti
 ## Related Links
 
 -   [`feathers.controls.ProgressBar` API Documentation](../api-reference/feathers/controls/ProgressBar.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

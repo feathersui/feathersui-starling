@@ -32,5 +32,3 @@ For those looking to tweak the example themes provided with Feathers, the follow
 ![](images/feathers-minimal-desktop-theme.png)
 
 -   [Minimal Desktop Theme PSD](http://feathersui.com/download/themes/MinimalDesktopTheme.psd)
-
-

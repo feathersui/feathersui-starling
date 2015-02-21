@@ -99,7 +99,3 @@ Generally, all of the Feathers example apps use `Label` for generic text, and yo
 -   [`feathers.controls.Label` API Documentation](../api-reference/feathers/controls/Label.html)
 
 -   [Introduction to Feathers Text Renderers](text-renderers.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

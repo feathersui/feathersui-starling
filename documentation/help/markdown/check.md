@@ -57,6 +57,4 @@ If you aren't using a theme, then you may set any of the check's properties dire
 
 -   [How to use the Feathers `ToggleButton` component](toggle-button.html)
 
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-
+-   [How to use the Feathers `ToggleSwitch` component](toggle-switch.html)
