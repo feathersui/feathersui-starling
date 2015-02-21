@@ -5,6 +5,8 @@ author: Josh Tynjala
 ---
 # Using MXML with Feathers
 
+<aside class="warn">MXML support is <strong>not</strong> currently available in Feathers. Development of this feature is in a very early and unstable state. What you see below is simply preliminary documentation. Consider it a preview of things to come.</aside>
+
 Feathers supports using MXML to declaratively layout user interfaces at compile time. With only a quick glance at MXML code, developers can easily recognize the relationship between a components and their parent containers. Adding a child to a container is as simple as nesting an XML element inside another.
 
 Data binding saves developers time by skipping the boilerplate code for setting up event listeners.
