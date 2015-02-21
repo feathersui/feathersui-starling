@@ -9,7 +9,6 @@
 		<ant dir="${basedir}/Gallery" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
-		<!--<ant dir="${basedir}/MXML" target="build-web" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-web" inheritAll="false" useNativeBasedir="true"/>
@@ -23,7 +22,6 @@
 		<ant dir="${basedir}/Gallery" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
-		<!--<ant dir="${basedir}/MXML" target="build-android" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-android" inheritAll="false" useNativeBasedir="true"/>
@@ -37,7 +35,6 @@
 		<ant dir="${basedir}/Gallery" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
-		<!--<ant dir="${basedir}/MXML" target="build-ios" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
@@ -51,7 +48,6 @@
 		<ant dir="${basedir}/Gallery" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="install-android" inheritAll="false" useNativeBasedir="true"/>
-		<!--<ant dir="${basedir}/MXML" target="install-android" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="install-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="install-android" inheritAll="false" useNativeBasedir="true"/>
@@ -65,7 +61,6 @@
 		<ant dir="${basedir}/Gallery" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
-		<!--<ant dir="${basedir}/MXML" target="install-ios" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="install-ios" inheritAll="false" useNativeBasedir="true"/>

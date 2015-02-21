@@ -23,8 +23,6 @@
 
 	<target name="test" depends="-test,-cleanup" description="runs unit tests"/>
 
-	<target name="mxml" depends="-mxml,-cleanup"/>
-
 	<target name="full" depends="-feathers,-test,-docs,-themes,-includes,-cleanup" description="builds everything">
 
 		<!-- move feathers.swc to its final location for distribution.
@@ -87,21 +85,6 @@
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-include-sources+=${source.root}"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-output=${output.path}/feathers.swc"/>
-		</java>
-	</target>
-
-	<target name="-mxml" depends="-starling">
-		<echo message="Building feathers.swc with MXML support"/>
-		<java jar="${flex.compc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg value="+flexlib=${flexframework.root}"/>
-			<arg value="-swf-version=${swf.version}"/>
-			<arg value="-namespace+=${mxml.namespace},mxml-manifest.xml"/>
-			<arg value="-source-path+=${source.root}"/>
-			<arg value="-include-namespaces+=${mxml.namespace}"/>
-			<arg value="-include-sources+=${source.root}"/>
-			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${flexframework.lib}"/>
 			<arg value="-output=${output.path}/feathers.swc"/>
 		</java>
 	</target>
