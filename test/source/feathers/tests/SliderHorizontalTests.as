@@ -9,7 +9,6 @@ package feathers.tests
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
-
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -196,7 +195,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testInteractiveSelectionChangeWithTouchToLeftOfTrack():void
+		public function testInteractiveSelectionChangeWithTouchToLeftOfThumb():void
 		{
 			var beforeValue:Number = 5;
 			this._slider.minimum = 0;
@@ -231,7 +230,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testInteractiveSelectionChangeWithTouchToRightOfTrack():void
+		public function testInteractiveSelectionChangeWithTouchToRightOfThumb():void
 		{
 			var beforeValue:Number = 5;
 			this._slider.minimum = 0;

@@ -144,9 +144,3 @@ You can pass the item's index to [`updateItemAt()`](../../api-reference/feathers
 ``` code
 list.dataProvider.updateItemAt( itemIndex );
 ```
-
-------------------------------------------------------------------------
-
-For more information about Feathers, return to the [Feathers Documentation](../index.html).
-
-

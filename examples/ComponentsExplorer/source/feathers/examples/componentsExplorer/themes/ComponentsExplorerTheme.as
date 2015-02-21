@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.themes
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
+	import feathers.examples.componentsExplorer.screens.AutoCompleteScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
 	import feathers.examples.componentsExplorer.screens.ItemRendererScreen;
@@ -30,6 +31,7 @@ package feathers.examples.componentsExplorer.themes
 			this.getStyleProviderForClass(ButtonScreen).defaultStyleFunction = this.setButtonScreenStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonScreen.CHILD_STYLE_NAME_ICON_BUTTON, this.setButtonScreenIconButtonStyles);
 
+			this.getStyleProviderForClass(AutoCompleteScreen).defaultStyleFunction = this.setAutoCompleteScreenStyles;
 			this.getStyleProviderForClass(CalloutScreen).defaultStyleFunction = this.setCalloutScreenStyles;
 			this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;
 			this.getStyleProviderForClass(ItemRendererScreen).defaultStyleFunction = this.setItemRendererScreenStyles;
@@ -37,6 +39,18 @@ package feathers.examples.componentsExplorer.themes
 			this.getStyleProviderForClass(SliderScreen).defaultStyleFunction = this.setSliderScreenStyles;
 			this.getStyleProviderForClass(TextInputScreen).defaultStyleFunction = this.setTextInputScreenStyles;
 			this.getStyleProviderForClass(ToggleScreen).defaultStyleFunction = this.setToggleScreenStyles;
+		}
+		
+		protected function setAutoCompleteScreenStyles(screen:AutoCompleteScreen):void
+		{
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
+			screen.layout = verticalLayout;
+
+			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
 		}
 
 		protected function setButtonScreenIconButtonStyles(button:Button):void

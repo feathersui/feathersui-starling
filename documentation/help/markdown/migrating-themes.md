@@ -2,7 +2,7 @@
 
 Feathers 2.0 includes a [new skinning architecture](skinning.html). The [`DisplayListWatcher`](../api-reference/feathers/core/DisplayListWatcher.html) class that legacy themes extended still exists, and you can continue using it for the foreseeable future. However, if you're ready to modernize your theme to take advantage of the new style provider system, you will need to make a number of fundamental changes to your themes.
 
-## Extend a new class: StyleNameFunctionTheme
+## Extend a new class: `StyleNameFunctionTheme`
 
 A legacy theme will extend the [`feathers.core.DisplayListWatcher`](../api-reference/feathers/core/DisplayListWatcher.html) class.
 
@@ -20,7 +20,7 @@ public class CustomTheme extends StyleNameFunctionTheme
 
 After this change, if you try to compile, you will probably see a number of errors. We need to make a few more changes, but they're pretty straightforward.
 
-## Replace calls to setInitializerForClass()
+## Replace calls to `setInitializerForClass()`
 
 The modern [`StyleNameFunctionTheme`](../api-reference/feathers/themes/StyleNameFunctionTheme.html) still calls functions that set properties on components, similar to legacy themes. You can still use strings (called style names) to differentiate between components of the same type that need to have different appearances. The API has changed a bit for setting these functions, though.
 
@@ -61,7 +61,7 @@ public function setInitializerForClass(type:Class, styleFunction:Function, style
 
 As you can see, it implements `setInitializerForClass()` with the same function signature, but it uses style providers under the hood.
 
-## Replace calls to setInitializerForClassAndSubclasses()
+## Replace calls to `setInitializerForClassAndSubclasses()`
 
 There is no direct replacement for this function. It mainly existed to work around limitations in the legacy architecture where a subclass wouldnt be automatically skinned like its superclass. A modern theme will treat subclasses the same as their superclasses (unless a component chooses to opt out), so this function is no longer necessary for its original purpose.
 
@@ -86,7 +86,7 @@ protected function setListStyles( list:List ):void
 
 When an instance of the `List` class (or any of its subclasses) needs to be styled, `setScrollerStyles()` will be called too.
 
-## Replace calls to exclude()
+## Replace calls to `exclude()`
 
 In a legacy theme, you could exclude a component from being skinned by passing it to the [`exclude()`](../api-reference/feathers/core/DisplayListWatcher.html#exclude()) function defined by `DisplayListWatcher`.
 
@@ -104,7 +104,7 @@ button.styleProvider = null;
 
 Make sure you do that before the component initializes. That's when the theme is asked to style the component. By default, a component will initialize when it is added to the stage.
 
-## Replace name and nameList with styleName and styleNameList
+## Replace `name` and `nameList` with `styleName` and `styleNameList`
 
 In order to fix some issues developers had using [`getChildByName()`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#getChildByName()), Feathers no longer uses the [`name`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#name) and `nameList` properties to indicate to the theme that it should give a component an alternate visual appearance.
 
@@ -139,7 +139,3 @@ The [`name`](http://doc.starling-framework.org/core/starling/display/DisplayObje
 -   [Extending Feathers example themes](extending-themes.html)
 
 -   [Custom Feathers themes](extending-themes.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

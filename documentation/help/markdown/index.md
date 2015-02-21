@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Feathers
 
-Get started with [Feathers](http://feathersui.com/), the open source library of user interface components for the hardware-accelerated [Starling Framework](http://gamua.com/starling/). A robust skinning system enables your creativity, fluid layouts make it easy to deploy to a variety of screens, and support for both touch and mouse interaction puts your apps on mobile and desktop. With Feathers and Starling, you can build fully-standalone native apps for iOS, Android, Windows, and Mac OS X, and you can even deploy to desktop web browsers with Adobe Flash Player.
+Get started with [Feathers](http://feathersui.com/), the open source library of user interface components for the hardware-accelerated [Starling Framework](http://gamua.com/starling/). A robust skinning system enables your creativity, fluid layouts make it easy to deploy to a variety of screens, and support for both touch and mouse interaction puts your apps on mobile and desktop. With Feathers and Starling, you can build fully-standalone native apps for iOS, Android, Windows, and Mac OS X, and you can even deploy to desktop web browsers with Adobe Flash Player. [See an overview of features.](features.html)
 
 ## Installation & Getting Started
 

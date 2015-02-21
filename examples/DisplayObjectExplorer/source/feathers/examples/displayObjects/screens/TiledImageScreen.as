@@ -1,8 +1,7 @@
 package feathers.examples.displayObjects.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
-	import feathers.controls.Screen;
+	import feathers.controls.PanelScreen;
 	import feathers.display.TiledImage;
 	import feathers.examples.displayObjects.themes.DisplayObjectExplorerTheme;
 	import feathers.skins.IStyleProvider;
@@ -12,7 +11,7 @@ package feathers.examples.displayObjects.screens
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 
-	public class TiledImageScreen extends Screen
+	public class TiledImageScreen extends PanelScreen
 	{
 		[Embed(source="/../assets/images/tile-pattern.png")]
 		private static const TILE_TEXTURE:Class;
@@ -23,7 +22,6 @@ package feathers.examples.displayObjects.screens
 		{
 		}
 
-		private var _header:Header;
 		private var _image:TiledImage;
 		private var _rightButton:Button;
 		private var _bottomButton:Button;
@@ -40,23 +38,6 @@ package feathers.examples.displayObjects.screens
 		private var _bottomTouchPointID:int = -1;
 
 		private var _texture:Texture;
-
-		private var _padding:Number = 0;
-
-		public function get padding():Number
-		{
-			return this._padding;
-		}
-
-		public function set padding(value:Number):void
-		{
-			if(this._padding == value)
-			{
-				return;
-			}
-			this._padding = value;
-			this.invalidate(INVALIDATION_FLAG_LAYOUT);
-		}
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
@@ -75,10 +56,10 @@ package feathers.examples.displayObjects.screens
 
 		override protected function initialize():void
 		{
-			this._header = new Header();
-			this._header.title = "Tiled Image";
-			this.addChild(this._header);
-
+			super.initialize();
+			
+			this.title = "Tiled Image";
+			
 			this._texture = Texture.fromEmbeddedAsset(TILE_TEXTURE);
 
 			this._image = new TiledImage(this._texture);
@@ -97,19 +78,15 @@ package feathers.examples.displayObjects.screens
 			this.addChild(this._bottomButton);
 		}
 
-		override protected function draw():void
+		override protected function layoutChildren():void
 		{
-			this._header.width = this.actualWidth;
-			this._header.validate();
-
-			this._image.x = this._padding;
-			this._image.y = this._header.height + this._padding;
+			super.layoutChildren();
 
 			this._rightButton.validate();
 			this._bottomButton.validate();
 
-			this._maxDisplayObjectWidth = this.actualWidth - this._rightButton.width - this._image.x;
-			this._maxDisplayObjectHeight = this.actualHeight - this._bottomButton.height - this._image.y;
+			this._maxDisplayObjectWidth = this.actualWidth - this._paddingLeft - this._rightButton.width - this._image.x;
+			this._maxDisplayObjectHeight = this.actualHeight - this.header.height - this._paddingTop - this._bottomButton.height - this._image.y;
 
 			this._image.width = Math.max(this._minDisplayObjectWidth, Math.min(this._maxDisplayObjectWidth, this._image.width));
 			this._image.height = Math.max(this._minDisplayObjectHeight, Math.min(this._maxDisplayObjectHeight, this._image.height));

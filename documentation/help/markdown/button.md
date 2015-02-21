@@ -204,7 +204,3 @@ Similar to `stateToSkinFunction`, button also provides [`stateToIconFunction`](.
 ## Related Links
 
 -   [`feathers.controls.Button` API Documentation](../api-reference/feathers/controls/Button.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

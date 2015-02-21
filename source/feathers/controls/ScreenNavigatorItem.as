@@ -9,8 +9,6 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IScreenNavigatorItem;
 
-	import flash.errors.IllegalOperationError;
-
 	import starling.display.DisplayObject;
 
 	/**

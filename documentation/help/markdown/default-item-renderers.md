@@ -156,7 +156,3 @@ Of you aren't using a theme, then you may set the item renderer's properties thr
 -   [How to use the Feathers `GroupedList` component](grouped-list.html)
 
 -   [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

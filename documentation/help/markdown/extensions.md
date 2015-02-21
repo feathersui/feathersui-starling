@@ -40,5 +40,3 @@ SoftKeyboard is an on-screen virtual keyboard library. It is fully configurable 
 A clone of the ScreenSlidingStackTransitionManager with some modifications to mimick the transition used by the Android version of WhatsApp. Free to use.
 
 -   [ShrinkAndFadeStackTransitionManager.as code](https://github.com/kevinresol/FeathersExtension/blob/master/src/feathers/motion/transitions/ShrinkAndFadeStackTransitionManager.as)
-
-

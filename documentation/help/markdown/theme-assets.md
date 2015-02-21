@@ -95,7 +95,3 @@ Never call the `loadQueue()` function on the `AssetManager` that you pass to a t
 -   [Introduction to Feathers Themes](themes.html)
 
 -   [Starling Framework: Asset Management](http://wiki.starling-framework.org/manual/asset_management)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

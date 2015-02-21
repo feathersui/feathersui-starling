@@ -99,7 +99,3 @@ If you aren't using a theme, then you may set any of the group's properties dire
 ## Related Links
 
 -   [`feathers.controls.LayoutGroup` API Documentation](../api-reference/feathers/controls/LayoutGroup.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

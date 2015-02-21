@@ -280,7 +280,3 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 -   [`feathers.controls.renderers.LayoutGroupGroupedListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html)
 
 -   [`feathers.controls.renderers.LayoutGroupGroupedListHeaderOrFooterRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListHeaderOrFooterRenderer.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

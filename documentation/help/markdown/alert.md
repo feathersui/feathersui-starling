@@ -315,7 +315,3 @@ alert.removeFromParent( true );
 ## Related Links
 
 -   [`feathers.controls.Alert` API Documentation](../api-reference/feathers/controls/Alert.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

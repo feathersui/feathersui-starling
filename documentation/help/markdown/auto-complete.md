@@ -175,7 +175,3 @@ If you aren't using a theme, then you may set any of the auto complete's propert
 -   [`feathers.controls.AutoComplete` API Documentation](../api-reference/feathers/controls/AutoComplete.html)
 
 -   [How to Use the Feathers `TextInput` Component](text-input.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

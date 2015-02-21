@@ -38,7 +38,3 @@ Custom item renderers are basically [custom Feathers components](index.html#cust
 -   [How to use the Feathers `GroupedList` component](grouped-list.html)
 
 -   [How to use the Feathers Default Item Renderers](default-item-renderers.html)
-
-For more tutorials, return to the [Feathers Documentation](index.html).
-
-

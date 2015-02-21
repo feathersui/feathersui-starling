@@ -7,8 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.data
 {
-	import feathers.data.ListCollection;
-
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 

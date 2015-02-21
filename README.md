@@ -1,4 +1,4 @@
-# Feathers 2.1 BETA
+# Feathers 2.2 PRERELEASE
 
 ---
 
@@ -11,8 +11,8 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Beta Help](http://feathersui.com/beta/help)
-* [Beta API Reference](http://feathersui.com/beta/api-reference/)
+* [Help](http://feathersui.com/help)
+* [API Reference](http://feathersui.com/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/joshtynjala/feathers)
 
