@@ -17,6 +17,7 @@ package feathers.examples.transitionsExplorer
 	import feathers.motion.Flip;
 	import feathers.motion.Reveal;
 	import feathers.motion.Slide;
+	import feathers.motion.Wipe;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.display.Quad;
@@ -39,6 +40,7 @@ package feathers.examples.transitionsExplorer
 		private static const MENU_SCREEN_ID_FLIP:String = "flip";
 		private static const MENU_SCREEN_ID_REVEAL:String = "reveal";
 		private static const MENU_SCREEN_ID_SLIDE:String = "slide";
+		private static const MENU_SCREEN_ID_WIPE:String = "wipe";
 
 		private static const CONTENT_SCREEN_ID_ONE:String = "one";
 		private static const CONTENT_SCREEN_ID_TWO:String = "two";
@@ -76,6 +78,7 @@ package feathers.examples.transitionsExplorer
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.FLIP, MENU_SCREEN_ID_FLIP);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.REVEAL, MENU_SCREEN_ID_REVEAL);
 			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.SLIDE, MENU_SCREEN_ID_SLIDE);
+			allTransitionsItem.setScreenIDForPushEvent(AllTransitionsScreen.WIPE, MENU_SCREEN_ID_WIPE);
 			this._menu.addScreen(MENU_SCREEN_ID_ALL_TRANSITIONS, allTransitionsItem);
 
 			var colorFadeItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ColorFadeTransitionScreen);
@@ -137,6 +140,16 @@ package feathers.examples.transitionsExplorer
 			slideItem.setFunctionForPushEvent(FourWayTransitionScreen.TRANSITION, transitionHandler);
 			slideItem.addPopEvent(Event.COMPLETE);
 			this._menu.addScreen(MENU_SCREEN_ID_SLIDE, slideItem);
+
+			var wipeItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(FourWayTransitionScreen);
+			wipeItem.properties.transitionName = "Wipe";
+			wipeItem.properties.leftTransition = Wipe.createWipeLeftTransition();
+			wipeItem.properties.rightTransition = Wipe.createWipeRightTransition();
+			wipeItem.properties.upTransition = Wipe.createWipeUpTransition();
+			wipeItem.properties.downTransition = Wipe.createWipeDownTransition();
+			wipeItem.setFunctionForPushEvent(FourWayTransitionScreen.TRANSITION, transitionHandler);
+			wipeItem.addPopEvent(Event.COMPLETE);
+			this._menu.addScreen(MENU_SCREEN_ID_WIPE, wipeItem);
 
 			this._menu.pushScreen(MENU_SCREEN_ID_ALL_TRANSITIONS);
 

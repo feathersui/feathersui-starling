@@ -110,6 +110,17 @@ Slide.createSlideUpTransition();
 Slide.createSlideDownTransition();
 ```
 
+## Wipe
+
+With a [`Wipe`](../api-reference/feathers/motion/Wipe.html) transition, the old screen is wiped away, revealing the new screen under it. Both screens remain stationary, and clipping rectangles are used to alter their appearance. The screens may be wiped up, right, down, or left.
+
+``` code
+Wipe.createWipeLeftTransition();
+Wipe.createWipeRightTransition();
+Wipe.createWipeUpTransition();
+Wipe.createWipeDownTransition();
+```
+
 ## Custom transitions
 
  The `pushTransition` and `popTransition` properties on `StackScreenNavigator` (or the `transition` property on `ScreenNavigator`) are simply typed as `Function`. Let's take a look at the required function signature:
