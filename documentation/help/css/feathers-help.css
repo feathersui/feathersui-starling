@@ -194,3 +194,8 @@ aside.question
 {
 	background: #f4faec url(../images/warning.png) 16px 28px no-repeat;
 }
+
+article img
+{
+	max-width: 100%;
+}
