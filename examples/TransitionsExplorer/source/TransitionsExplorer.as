@@ -150,7 +150,7 @@ package
 
         private function stage_deactivateHandler(event:Event):void
         {
-            this._starling.stop();
+            this._starling.stop(true);
             this.stage.addEventListener(Event.ACTIVATE, stage_activateHandler, false, 0, true);
         }
 
