@@ -2,6 +2,9 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 1.4.0
+* Scale4Image, Scale9Image, TiledImage: updated overridden flatten method to compile with starling 1.6
+
 ## 1.3.1
 
 * NumericStepper: fixed issue where using step to calculate a new value didn't account for the minimum value.
