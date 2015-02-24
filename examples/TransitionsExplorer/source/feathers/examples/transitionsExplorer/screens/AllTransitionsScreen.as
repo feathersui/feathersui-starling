@@ -22,6 +22,7 @@ package feathers.examples.transitionsExplorer.screens
 		public static const FLIP:String = "flip";
 		public static const REVEAL:String = "reveal";
 		public static const SLIDE:String = "slide";
+		public static const WIPE:String = "wipe";
 
 		public function AllTransitionsScreen()
 		{
@@ -51,6 +52,7 @@ package feathers.examples.transitionsExplorer.screens
 				{ label: "Flip", event: FLIP },
 				{ label: "Reveal", event: REVEAL },
 				{ label: "Slide", event: SLIDE },
+				{ label: "Wipe", event: WIPE },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
