@@ -435,10 +435,10 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		override public function flatten():void
+		override public function flatten(ignoreChildOrder:Boolean = false):void
 		{
 			this.validate();
-			super.flatten();
+			super.flatten(ignoreChildOrder);
 		}
 
 		/**
