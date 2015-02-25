@@ -16,9 +16,12 @@ package feathers.display
 	import starling.utils.MatrixUtil;
 
 	/**
-	 * Passes renders another display object with a different transformation.
-	 * Touching the delegate does not pass touches to the target, but
-	 * interacting with the target will affect the rendering of the delegate.
+	 * Passes rendering to another display object, but provides its own separate
+	 * transformation.
+	 * 
+	 * <p>Touching the delegate does not pass touches to the target. The
+	 * delegate is a separate display object. However, interacting with the
+	 * target may affect the rendering of the delegate.</p>
 	 */
 	public class RenderDelegate extends DisplayObject
 	{
