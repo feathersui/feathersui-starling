@@ -1436,10 +1436,14 @@ package feathers.controls
 		/**
 		 * The index of the horizontal page, if snapping is enabled. If snapping
 		 * is disabled, the index will always be <code>0</code>.
+		 * 
+		 * @see #horizontalPageCount
+		 * @see #minHorizontalPageIndex
+		 * @see #maxHorizontalPageIndex
 		 */
 		public function get horizontalPageIndex():int
 		{
-			if(this.pendingHorizontalPageIndex >= 0)
+			if(this.hasPendingHorizontalPageIndex)
 			{
 				return this.pendingHorizontalPageIndex;
 			}
@@ -1491,6 +1495,7 @@ package feathers.controls
 		 * <code>int</code> cannot hold the value <code>Number.POSITIVE_INFINITY</code>.</p>
 		 *
 		 * @see #snapToPages
+		 * @see #horizontalPageIndex
 		 * @see #minHorizontalPageIndex
 		 * @see #maxHorizontalPageIndex
 		 */
@@ -1638,6 +1643,9 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scroller.verticalScrollPosition = scroller.maxVerticalScrollPosition;</listing>
+		 * 
+		 * @see #minVerticalScrollPosition
+		 * @see #maxVerticalScrollPosition
 		 */
 		public function get verticalScrollPosition():Number
 		{
@@ -1716,10 +1724,14 @@ package feathers.controls
 		/**
 		 * The index of the vertical page, if snapping is enabled. If snapping
 		 * is disabled, the index will always be <code>0</code>.
+		 *
+		 * @see #verticalPageCount
+		 * @see #minVerticalPageIndex
+		 * @see #maxVerticalPageIndex
 		 */
 		public function get verticalPageIndex():int
 		{
-			if(this.pendingVerticalPageIndex >= 0)
+			if(this.hasPendingVerticalPageIndex)
 			{
 				return this.pendingVerticalPageIndex;
 			}
@@ -1771,6 +1783,7 @@ package feathers.controls
 		 * <code>int</code> cannot hold the value <code>Number.POSITIVE_INFINITY</code>.</p>
 		 *
 		 * @see #snapToPages
+		 * @see #verticalPageIndex
 		 * @see #minVerticalPageIndex
 		 * @see #maxVerticalPageIndex
 		 */
@@ -2917,18 +2930,40 @@ package feathers.controls
 		protected var pendingVerticalScrollPosition:Number = NaN;
 
 		/**
-		 * The pending horizontal page index to scroll to after validating. A
-		 * value of <code>-1</code> means that the scroller won't scroll to a
-		 * horizontal page after validating.
+		 * A flag that indicates if the scroller should scroll to a new page
+		 * when it validates. If <code>true</code>, it will use the value of
+		 * <code>pendingHorizontalPageIndex</code> as the target page index.
+		 * 
+		 * @see #pendingHorizontalPageIndex
 		 */
-		protected var pendingHorizontalPageIndex:int = -1;
+		protected var hasPendingHorizontalPageIndex:Boolean = false;
 
 		/**
-		 * The pending vertical page index to scroll to after validating. A
-		 * value of <code>-1</code> means that the scroller won't scroll to a
-		 * vertical page after validating.
+		 * A flag that indicates if the scroller should scroll to a new page
+		 * when it validates. If <code>true</code>, it will use the value of
+		 * <code>pendingVerticalPageIndex</code> as the target page index.
+		 *
+		 * @see #pendingVerticalPageIndex
 		 */
-		protected var pendingVerticalPageIndex:int = -1;
+		protected var hasPendingVerticalPageIndex:Boolean = false;
+
+		/**
+		 * The pending horizontal page index to scroll to after validating. The
+		 * flag <code>hasPendingHorizontalPageIndex</code> must be set to true
+		 * if there is a pending page index to scroll to.
+		 * 
+		 * @see #hasPendingHorizontalPageIndex
+		 */
+		protected var pendingHorizontalPageIndex:int;
+
+		/**
+		 * The pending vertical page index to scroll to after validating. The
+		 * flag <code>hasPendingVerticalPageIndex</code> must be set to true
+		 * if there is a pending page index to scroll to.
+		 *
+		 * @see #hasPendingVerticalPageIndex
+		 */
+		protected var pendingVerticalPageIndex:int;
 
 		/**
 		 * The duration of the pending scroll action.
@@ -3060,8 +3095,10 @@ package feathers.controls
 					animationDuration = this.calculateDynamicThrowDuration(HELPER_POINT.length * this._logDecelerationRate + MINIMUM_VELOCITY);
 				}
 			}
-			this.pendingHorizontalPageIndex = -1;
-			this.pendingVerticalPageIndex = -1;
+			//cancel any pending scroll to a different page. we can have only
+			//one type of pending scroll at a time.
+			this.hasPendingHorizontalPageIndex = false;
+			this.hasPendingVerticalPageIndex = false;
 			if(this.pendingHorizontalScrollPosition == horizontalScrollPosition &&
 				this.pendingVerticalScrollPosition == verticalScrollPosition &&
 				this.pendingScrollDuration == animationDuration)
@@ -3076,10 +3113,11 @@ package feathers.controls
 
 		/**
 		 * After the next validation, animates the scroll position to a specific
-		 * page index. May scroll in only one direction by passing in a value of
-		 * <code>-1</code> for either page index. If the
-		 * <code>animationDuration</code> argument is <code>NaN</code> (the
-		 * default value) the value of the <code>pageThrowDuration</code>
+		 * page index. To scroll in only one direction, pass in the value of the
+		 * <code>horizontalPageIndex</code> or the
+		 * <code>verticalPageIndex</code> property to the appropriate parameter.
+		 * If the <code>animationDuration</code> argument is <code>NaN</code>
+		 * (the default value) the value of the <code>pageThrowDuration</code>
 		 * property is used for the duration. The duration is in seconds.
 		 *
 		 * <p>You can only scroll to a page if the <code>snapToPages</code>
@@ -3093,6 +3131,8 @@ package feathers.controls
 		 * @see #snapToPages
 		 * @see #pageThrowDuration
 		 * @see #throwEase
+		 * @see #horizontalPageIndex
+		 * @see #verticalPageIndex
 		 */
 		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = NaN):void
 		{
@@ -3100,15 +3140,13 @@ package feathers.controls
 			{
 				animationDuration = this._pageThrowDuration;
 			}
+			//cancel any pending scroll to a specific scroll position. we can
+			//have only one type of pending scroll at a time.
 			this.pendingHorizontalScrollPosition = NaN;
 			this.pendingVerticalScrollPosition = NaN;
-			var horizontalPageHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 && this.pendingHorizontalPageIndex != horizontalPageIndex) ||
-				(this.pendingHorizontalPageIndex < 0 && this._horizontalPageIndex != horizontalPageIndex);
-			var verticalPageHasChanged:Boolean = (this.pendingVerticalPageIndex >= 0 && this.pendingVerticalPageIndex != verticalPageIndex) ||
-				(this.pendingVerticalPageIndex < 0 && this._verticalPageIndex != verticalPageIndex);
-			var durationHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 || this.pendingVerticalPageIndex >= 0) && this.pendingScrollDuration == animationDuration
-			if(!horizontalPageHasChanged && !verticalPageHasChanged &&
-				!durationHasChanged)
+			this.hasPendingHorizontalPageIndex = this._horizontalPageIndex !== horizontalPageIndex;
+			this.hasPendingVerticalPageIndex = this._verticalPageIndex !== verticalPageIndex;
+			if(!this.hasPendingHorizontalPageIndex && !this.hasPendingVerticalPageIndex)
 			{
 				return;
 			}
@@ -4509,12 +4547,14 @@ package feathers.controls
 		/**
 		 * Immediately throws the scroller to the specified page index, with
 		 * optional animation. If you want to throw in only one direction, pass
-		 * in a parameter value of <code>-1</code> for the direction that should
-		 * not change. The scroller should be validated before throwing.
+		 * in the value from the <code>horizontalPageIndex</code> or
+		 * <code>verticalPageIndex</code> property to the appropriate parameter.
+		 * The scroller must be validated before throwing, to ensure that the
+		 * minimum and maximum scroll positions are accurate.
 		 *
 		 * @see #scrollToPageIndex()
 		 */
-		protected function throwToPage(targetHorizontalPageIndex:int = -1, targetVerticalPageIndex:int = -1, duration:Number = 0.5):void
+		protected function throwToPage(targetHorizontalPageIndex:int, targetVerticalPageIndex:int, duration:Number = 0.5):void
 		{
 			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
 			if(targetHorizontalPageIndex >= this._minHorizontalPageIndex)
@@ -5088,12 +5128,23 @@ package feathers.controls
 				this.pendingHorizontalScrollPosition = NaN;
 				this.pendingVerticalScrollPosition = NaN;
 			}
-			if(this.pendingHorizontalPageIndex >= 0 || this.pendingVerticalPageIndex >= 0)
+			if(this.hasPendingHorizontalPageIndex && this.hasPendingVerticalPageIndex)
 			{
+				//both
 				this.throwToPage(this.pendingHorizontalPageIndex, this.pendingVerticalPageIndex, this.pendingScrollDuration);
-				this.pendingHorizontalPageIndex = -1;
-				this.pendingVerticalPageIndex = -1;
 			}
+			else if(this.hasPendingHorizontalPageIndex)
+			{
+				//horizontal only
+				this.throwToPage(this.pendingHorizontalPageIndex, this._verticalPageIndex, this.pendingScrollDuration);
+			}
+			else if(this.hasPendingVerticalPageIndex)
+			{
+				//vertical only
+				this.throwToPage(this._horizontalPageIndex, this.pendingVerticalPageIndex, this.pendingScrollDuration);
+			}
+			this.hasPendingHorizontalPageIndex = false;
+			this.hasPendingVerticalPageIndex = false;
 		}
 
 		/**
