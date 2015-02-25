@@ -295,6 +295,10 @@ package feathers.controls
 				{
 					this.pendingHorizontalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
 				}
+				this.throwToPage(this.pendingHorizontalPageIndex, this.pendingVerticalPageIndex, this.pendingScrollDuration);
+				this.pendingHorizontalPageIndex = -1;
+				this.pendingVerticalPageIndex = -1;
+				return;
 			}
 			super.handlePendingScroll();
 		}
