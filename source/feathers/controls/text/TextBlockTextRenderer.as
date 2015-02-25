@@ -1112,7 +1112,7 @@ package feathers.controls.text
 					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
 				this.textSnapshot.x = offsetX;
-				this.textSnapshot.y = offsetX;
+				this.textSnapshot.y = offsetY;
 				if(this.textSnapshots)
 				{
 					var snapshotSize:Number = this._maxTextureDimensions / scaleFactor;
