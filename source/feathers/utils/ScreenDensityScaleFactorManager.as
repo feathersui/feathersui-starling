@@ -54,9 +54,10 @@ package feathers.utils
 	 * <p>Special behavior has been implemented for iPads to give them scale
 	 * factors of <code>1</code> and <code>2</code>, just like native apps.
 	 * Using Android's rules for DPI buckets, non-Retina iPads would have been
-	 * "ldpi" devices and Retina iPads would have been "mdpi" devices. However,
-	 * because it makes more sense to make Starling use the same scale factor as
-	 * native apps on iPad, this class makes a special exception just for them.</p>
+	 * "ldpi" devices (scale factor <code>0.75</code>) and Retina iPads would
+	 * have been "hdpi" devices (scale factor <code>1.5</code>. However, because
+	 * it makes more sense to make Starling use the same scale factor as native
+	 * apps on iPad, this class makes a special exception just for them.</p>
 	 * 
 	 * <p>The following example demonstrates how to use
 	 * <code>ScreenDensityScaleFactorManager</code>:</p>
