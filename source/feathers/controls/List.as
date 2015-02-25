@@ -1216,8 +1216,10 @@ package feathers.controls
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
-			this.pendingHorizontalPageIndex = -1;
-			this.pendingVerticalPageIndex = -1;
+			//cancel any pending scroll to a different page or scroll position.
+			//we can have only one type of pending scroll at a time.
+			this.hasPendingHorizontalPageIndex = false;
+			this.hasPendingVerticalPageIndex = false;
 			this.pendingHorizontalScrollPosition = NaN;
 			this.pendingVerticalScrollPosition = NaN;
 			if(this.pendingItemIndex == index &&
