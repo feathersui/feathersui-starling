@@ -66,7 +66,7 @@ override protected function initializeStyleProviders():void
 {
     super.initializeStyleProviders(); // don't forget this!
  
-    this.getStyleProviderForClass(Button)
+    this.getStyleProviderForClass( Button )
         .setFunctionForStyleName( "custom-button", this.setCustomButtonStyles );
 }
 ```
