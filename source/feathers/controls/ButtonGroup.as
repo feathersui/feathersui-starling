@@ -1837,6 +1837,11 @@ package feathers.controls
 				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			}
 			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
+			//final validation to avoid juggler next frame issues
+			for each(var button:Button in this.activeButtons)
+			{
+				button.validate();
+			}
 		}
 
 		/**
