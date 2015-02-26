@@ -282,12 +282,21 @@ package feathers.controls.supportClasses
 			var minY:Number = 0;
 			var explicitViewPortWidth:Number = this.viewPortBounds.explicitWidth;
 			var maxX:Number = explicitViewPortWidth;
+			//for some reason, if we don't call a function right here,
+			//compiling with the flex 4.6 SDK will throw a VerifyError
+			//for a stack overflow.
+			//we could change the !== check back to isNaN() instead, but
+			//isNaN() can allocate an object, so we should call a different
+			//function without allocation.
+			this.doNothing();
 			if(maxX !== maxX) //isNaN
 			{
 				maxX = 0;
 			}
 			var explicitViewPortHeight:Number = this.viewPortBounds.explicitHeight;
 			var maxY:Number = explicitViewPortHeight;
+			//see explanation above the previous call to this function.
+			this.doNothing();
 			if(maxY !== maxY) //isNaN
 			{
 				maxY = 0;
@@ -374,5 +383,12 @@ package feathers.controls.supportClasses
 			this._layoutResult.viewPortWidth = this._actualVisibleWidth;
 			this._layoutResult.viewPortHeight = this._actualVisibleHeight;
 		}
+
+		/**
+		 * @private
+		 * This function is here to work around a bug in the Flex 4.6 SDK
+		 * compiler. For explanation, see the places where it gets called.
+		 */
+		protected function doNothing():void {}
 	}
 }
