@@ -3905,7 +3905,7 @@ package feathers.controls
 		 */
 		protected function refreshPageIndices():void
 		{
-			if(!this._horizontalAutoScrollTween && this.pendingHorizontalPageIndex < 0)
+			if(!this._horizontalAutoScrollTween && !this.hasPendingHorizontalPageIndex)
 			{
 				if(this._snapToPages)
 				{
@@ -3944,7 +3944,7 @@ package feathers.controls
 					this._horizontalPageIndex = this._maxHorizontalPageIndex;
 				}
 			}
-			if(!this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
+			if(!this._verticalAutoScrollTween && !this.hasPendingVerticalPageIndex)
 			{
 				if(this._snapToPages)
 				{
