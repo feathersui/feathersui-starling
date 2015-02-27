@@ -86,15 +86,43 @@ package feathers.skins
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _callBeforeOriginalStyleProvider:Boolean = false;
+
+		/**
+		 * Determines if the add on function should be called before the
+		 * original style provider is applied, or after.
+		 *
+		 * @default false
+		 */
+		public function get callBeforeOriginalStyleProvider():Boolean
+		{
+			return this._callBeforeOriginalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set callBeforeOriginalStyleProvider(value:Boolean):void
+		{
+			this._callBeforeOriginalStyleProvider = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function applyStyles(target:IFeathersControl):void
 		{
+			if(this._callBeforeOriginalStyleProvider && this._addOnFunction !== null)
+			{
+				this._addOnFunction(target);
+			}
 			if(this._originalStyleProvider)
 			{
 				this._originalStyleProvider.applyStyles(target);
 			}
-			if(this._addOnFunction !== null)
+			if(!this._callBeforeOriginalStyleProvider && this._addOnFunction !== null)
 			{
 				this._addOnFunction(target);
 			}
