@@ -27,7 +27,7 @@ package feathers.themes
 		 */
 		public function StyleNameFunctionTheme()
 		{
-			this._registry = new StyleProviderRegistry();
+			this.createRegistry();
 		}
 
 		/**
@@ -55,5 +55,14 @@ package feathers.themes
 		{
 			return StyleNameFunctionStyleProvider(this._registry.getStyleProvider(type));
 		}
+
+		/**
+		 * @private
+		 */
+		protected function createRegistry():void
+		{
+			this._registry = new StyleProviderRegistry();
+		}
+		
 	}
 }
