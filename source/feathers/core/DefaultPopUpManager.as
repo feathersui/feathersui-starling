@@ -161,8 +161,11 @@ package feathers.core
 			}
 
 			this._popUps.push(popUp);
-			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 			this._root.addChild(popUp);
+			//this listener needs to be added after the pop-up is added to the
+			//root because the pop-up may not have been removed from its old
+			//parent yet, which will trigger the listener if it is added first.
+			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 
 			if(this._popUps.length == 1)
 			{
