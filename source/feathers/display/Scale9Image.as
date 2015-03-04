@@ -510,7 +510,7 @@ package feathers.display
 					var distortionScale:Number = (this._width / sumLeftAndRight);
 					scaledLeftWidth *= distortionScale;
 					scaledRightWidth *= distortionScale;
-					sumLeftAndRight + scaledLeftWidth + scaledRightWidth;
+					sumLeftAndRight = scaledLeftWidth + scaledRightWidth;
 				}
 				var scaledCenterWidth:Number = this._width - sumLeftAndRight;
 				var scaledTopHeight:Number = grid.y * this._textureScale;
