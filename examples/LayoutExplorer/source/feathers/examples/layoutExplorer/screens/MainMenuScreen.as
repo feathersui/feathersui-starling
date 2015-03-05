@@ -25,6 +25,8 @@ package feathers.examples.layoutExplorer.screens
 
 	[Event(name="showTiledColumns",type="starling.events.Event")]
 
+	[Event(name="showWaterfall",type="starling.events.Event")]
+
 	public class MainMenuScreen extends PanelScreen
 	{
 		public static const SHOW_ANCHOR:String = "showAnchor";
@@ -32,6 +34,7 @@ package feathers.examples.layoutExplorer.screens
 		public static const SHOW_VERTICAL:String = "showVertical";
 		public static const SHOW_TILED_ROWS:String = "showTiledRows";
 		public static const SHOW_TILED_COLUMNS:String = "showTiledColumns";
+		public static const SHOW_WATERFALL:String = "showWaterfall";
 
 		public function MainMenuScreen()
 		{
@@ -62,6 +65,7 @@ package feathers.examples.layoutExplorer.screens
 				{ text: "Vertical", event: SHOW_VERTICAL },
 				{ text: "Tiled Rows", event: SHOW_TILED_ROWS },
 				{ text: "Tiled Columns", event: SHOW_TILED_COLUMNS },
+				{ text: "Waterfall", event: SHOW_WATERFALL },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
