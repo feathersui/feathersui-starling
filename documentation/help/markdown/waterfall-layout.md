@@ -5,7 +5,9 @@ author: Josh Tynjala
 ---
 # Using `WaterfallLayout` in Feathers containers
 
-The [`WaterfallLayout`](../api-reference/feathers/layout/WaterfallLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items optimally in multiple columns. It supports a number of useful options for adjusting the spacing and alignment.
+The [`WaterfallLayout`](../api-reference/feathers/layout/WaterfallLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items with multiple columns of equal width where items may have variable heights. Items are added to the layout in order, but they may be added to any of the available columns. The layout selects the column where the column's height plus the item's height will result in the smallest possible total height.
+
+`WaterfallLayout` supports a number of useful options for adjusting the number of columns, the spacing between items, and the alignment of the columns.
 
 ## The Basics
 
