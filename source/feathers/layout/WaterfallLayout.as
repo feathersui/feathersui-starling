@@ -39,8 +39,11 @@ package feathers.layout
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * A layout that optimally positions items in multiple columns of equal
-	 * width.
+	 * A layout with multiple columns of equal width where items may have
+	 * variable heights. Items are added to the layout in order, but they may be
+	 * added to any of the available columns. The layout selects the column
+	 * where the column's height plus the item's height will result in the
+	 * smallest possible total height.
 	 *
 	 * @see ../../../help/waterfall-layout.html How to use WaterfallLayout with Feathers containers
 	 */
