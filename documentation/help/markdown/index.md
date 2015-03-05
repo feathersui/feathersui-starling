@@ -153,6 +153,8 @@ A detailed look at each of the layout algorithms that Feathers provides out-of-t
 
 -   [`TiledRowsLayout`](tiled-rows-layout.html)
 
+-   [`WaterfallLayout`](waterfall-layout.html)
+
 ### Custom Layouts
 
 If the built-in layouts don't provide what you need, Feathers containers support custom layouts too.
