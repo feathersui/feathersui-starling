@@ -1299,8 +1299,10 @@ package feathers.controls.text
 			{
 				this.textField.width = this.actualWidth + gutterDimensionsOffset;
 				this.textField.height = this.actualHeight + gutterDimensionsOffset;
-				var rectangleSnapshotWidth:Number = this.actualWidth * scaleFactor;
-				var rectangleSnapshotHeight:Number = this.actualHeight * scaleFactor;
+				//these are getting put into an int later, so we don't want it
+				//to possibly round down and cut off part of the text. 
+				var rectangleSnapshotWidth:Number = Math.ceil(this.actualWidth * scaleFactor);
+				var rectangleSnapshotHeight:Number = Math.ceil(this.actualHeight * scaleFactor);
 				if(rectangleSnapshotWidth >= 1 && rectangleSnapshotHeight >= 1 &&
 					this._nativeFilters && this._nativeFilters.length > 0)
 				{
