@@ -58,12 +58,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
+		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -564,6 +559,17 @@ package feathers.controls
 		{
 			if(this.currentBackgroundSkin && this.currentBackgroundSkin.hasVisibleArea)
 			{
+				var clipRect:Rectangle = this.clipRect;
+				if(clipRect)
+				{
+					clipRect = support.pushClipRect(this.getClipRect(stage, HELPER_RECTANGLE));
+					if(clipRect.isEmpty())
+					{
+						// empty clipping bounds - no need to render children.
+						support.popClipRect();
+						return;
+					}
+				}
 				var blendMode:String = this.blendMode;
 				support.pushMatrix();
 				support.transformMatrix(this.currentBackgroundSkin);
@@ -571,6 +577,10 @@ package feathers.controls
 				this.currentBackgroundSkin.render(support, parentAlpha * this.alpha);
 				support.blendMode = blendMode;
 				support.popMatrix();
+				if(clipRect)
+				{
+					support.popClipRect();
+				}
 			}
 			super.render(support, parentAlpha);
 		}
