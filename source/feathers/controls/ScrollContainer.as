@@ -759,11 +759,6 @@ package feathers.controls
 				this.refreshMXMLContent();
 			}
 
-			if(sizeInvalid)
-			{
-				this.layoutViewPort.autoSizeMode = this._autoSizeMode;
-			}
-
 			if(layoutInvalid)
 			{
 				if(this._layout is IVirtualLayout)
@@ -777,6 +772,24 @@ package feathers.controls
 			this._ignoreChildChanges = true;
 			super.draw();
 			this._ignoreChildChanges = oldIgnoreChildChanges;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
+			}
+			return super.autoSizeIfNeeded();
 		}
 
 		/**
