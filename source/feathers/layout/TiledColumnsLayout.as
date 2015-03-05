@@ -422,10 +422,15 @@ package feathers.layout
 
 		/**
 		 * Requests that the layout uses a specific number of rows in a column,
-		 * if possible. If the view port's explicit or maximum height is not
-		 * large enough to fit the requested number of rows, it will use fewer.
-		 * Set to <code>0</code> to calculate the number of rows automatically
-		 * based on width and height.
+		 * if possible. Set to <code>0</code> to calculate the maximum of
+		 * rows that will fit in the available space.
+		 *
+		 * <p>If the view port's explicit or maximum height is not large enough
+		 * to fit the requested number of rows, it will use fewer. If the
+		 * view port doesn't have an explicit height and the maximum height is
+		 * equal to <code>Number.POSITIVE_INFINITY</code>, the height will be
+		 * calculated automatically to fit the exact number of requested
+		 * rows.</p>
 		 *
 		 * <p>If paging is enabled, this value will be used to calculate the
 		 * number of rows in a page. If paging isn't enabled, this value will
@@ -1038,6 +1043,11 @@ package feathers.layout
 				availableHeight = maxHeight;
 				verticalTileCount = (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			}
+			else if(this._requestedRowCount > 0)
+			{
+				verticalTileCount = this._requestedRowCount;
+				availableHeight = this._paddingTop + this._paddingBottom + ((tileHeight + this._verticalGap) * verticalTileCount) - this._verticalGap;
+			}
 			else
 			{
 				//put everything in one column
@@ -1373,6 +1383,11 @@ package feathers.layout
 			{
 				availableHeight = maxHeight;
 				verticalTileCount = (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
+			}
+			else if(this._requestedRowCount > 0)
+			{
+				verticalTileCount = this._requestedRowCount;
+				availableHeight = this._paddingTop + this._paddingBottom + ((tileHeight + this._verticalGap) * verticalTileCount) - this._verticalGap;
 			}
 			else
 			{
