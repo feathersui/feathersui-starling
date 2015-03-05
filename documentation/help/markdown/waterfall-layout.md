@@ -36,6 +36,13 @@ The *gap* is the space between items. Let's set the [`gap`](../api-reference/fea
 layout.gap = 5;
 ```
 
+If needed, we can set the horizontal and vertical gaps separately. We'll set the [`horizontalGap`](../api-reference/feathers/layout/WaterfallLayout.html#horizontalGap) property to `4` pixels and the [`verticalGap`](../api-reference/feathers/layout/WaterfallLayout.html#verticalGap) property to `6` pixels:
+
+``` code
+layout.horizontalGap = 4;
+layout.verticalGap = 6;
+```
+
 We can *align* the items in the layout [horizontally](../api-reference/feathers/layout/WaterfallLayout.html#horizontalAlign). Let's adjust the horizontal alignment so that the content will be pulled to the right:
 
 ``` code

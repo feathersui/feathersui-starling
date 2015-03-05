@@ -38,6 +38,13 @@ The *gap* is the space between items, both horizontally or vertically. Let's set
 layout.gap = 5;
 ```
 
+If needed, we can set the horizontal and vertical gaps separately. We'll set the [`horizontalGap`](../api-reference/feathers/layout/TiledRowsLayout.html#horizontalGap) property to `4` pixels and the [`verticalGap`](../api-reference/feathers/layout/TiledRowsLayout.html#verticalGap) property to `6` pixels:
+
+``` code
+layout.horizontalGap = 4;
+layout.verticalGap = 6;
+```
+
 We can *align* the items in the layout [horizontally](../api-reference/feathers/layout/TiledRowsLayout.html#horizontalAlign) and [vertically](../api-reference/feathers/layout/TiledRowsLayout.html#verticalAlign). Vertical alignment may be used in two cases. In the first case, it will always apply when the tiles are divided into pages. Second, it will apply when the total height of the content (including padding and gap values) is less than or equal to the height of the container that uses the layout, regardless of whether the layout uses paging. Otherwise, the container will need to scroll. Let's adjust the alignments so that the content will be aligned to the top left:
 
 ``` code
