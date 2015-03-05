@@ -11,19 +11,27 @@ The [`WaterfallLayout`](../api-reference/feathers/layout/WaterfallLayout.html) c
 
 ## The Basics
 
-First, let's create a `WaterfallLayout` and pass it to a [`ScrollContainer`](scroll-container.html):
+First, let's create a `WaterfallLayout` and pass it to a [`LayoutGroup`](layout-group.html):
 
 ``` code
 var layout:WaterfallLayout = new WaterfallLayout();
  
-var container:ScrollContainer = new ScrollContainer();
+var container:LayoutGroup = new LayoutGroup();
 container.layout = layout;
 this.addChild( container );
 ```
 
-There are a number of simple properties that may be used to affect the layout. The most common are padding and gap.
+There are a number of simple properties that may be used to affect positioning and sizing of items in the layout. Let's look at some of the most common.
 
-The *padding* is the space around the content that the layout positions and sizes. You may set padding on each side of the container separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/WaterfallLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/WaterfallLayout.html#paddingBottom) to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/WaterfallLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/WaterfallLayout.html#paddingRight) to `15` pixels:
+### Spacing
+
+The *padding* is the space around the edges of the container. Let's set the [`padding`](../api-reference/feathers/layout/WaterfallLayout.html#padding) property to `12` pixels:
+
+``` code
+layout.padding = 12;
+```
+
+If needed, we may set padding on each side of the container separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/WaterfallLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/WaterfallLayout.html#paddingBottom) to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/WaterfallLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/WaterfallLayout.html#paddingRight) to `15` pixels:
 
 ``` code
 layout.paddingTop = 10;
@@ -45,11 +53,23 @@ layout.horizontalGap = 4;
 layout.verticalGap = 6;
 ```
 
-We can *align* the items in the layout [horizontally](../api-reference/feathers/layout/WaterfallLayout.html#horizontalAlign). Let's adjust the horizontal alignment so that the content will be pulled to the right:
+### Columns
+
+We can *align* the columns in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/WaterfallLayout.html#horizontalAlign) property. Let's adjust the horizontal alignment so that the content will be pulled to the right:
 
 ``` code
 layout.horizontalAlign = WaterfallLayout.HORIZONTAL_ALIGN_RIGHT;
 ```
+
+It's possible to request a specific number of columns for the layout to display. The layout may not always be able to accomodate this value because the container may be too small, but if there is enough room for the requested number of columns, that's the number it will display. Let's tell the layout to use three columns by setting the [`requestedColumnCount`](../api-reference/feathers/layout/WaterfallLayout.html#requestedColumnCount) property:
+
+``` code
+layout.requestedColumnCount = 3;
+```
+
+Now, the layout will always display three columns, even if the container can fit four or more. However, if only one or two columns can be fit into the container, the layout will display the maximum number that will fit.
+
+<aside class="info">If the width of the container is not set, the layout will automatically calculate a width that accomodates the `requestedColumnCount`.</aside>
 
 ## Related Links
 

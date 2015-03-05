@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Using `AnchorLayout` in Feathers containers
 
-The [`AnchorLayout`](../api-reference/feathers/layout/AnchorLayout.html) class may be used by containers that support layout, such as [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to constrain, or *anchor*, the edges of a component to the edges of its parent container. `AnchorLayout` is often used for *fluid* layouts that can automatically adjust themselves as the container is resized. For example, you might use it to display one or more sidebars next to a main view in an application. The main view can be anchored to the sidebars and the container to fill the remaining space.
+The [`AnchorLayout`](../api-reference/feathers/layout/AnchorLayout.html) class may be used by containers that support layout, such as [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to constrain, or *anchor*, the edges of a component to the edges of its parent container. `AnchorLayout` is often used for *fluid* layouts that can automatically adjust themselves as the container is resized. For example, we might use it to display one or more sidebars next to a main view in an application. The main view can be anchored to the sidebars and the container to fill the remaining space.
 
 `AnchorLayout` also provides the ability to anchor a component relative to the edges of its siblings in the parent container.
 
@@ -50,7 +50,7 @@ layoutData.verticalCenter = 0;
 button.layoutData = layoutData;
 ```
 
-By setting the [`horizontalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#horizontalCenter) and [`verticalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#verticalCenter) properties in the code above, we center the button both horizontally or vertically inside the container. When the container resizes, the button's position will be updated so that it stays in the center. You can test this, if you like, by resizing the container when the button is triggered:
+By setting the [`horizontalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#horizontalCenter) and [`verticalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#verticalCenter) properties in the code above, we center the button both horizontally or vertically inside the container. When the container resizes, the button's position will be updated so that it stays in the center. We can test this by resizing the container when the button is triggered:
 
 ``` code
 button.addEventListener( Event.TRIGGERED, function( event:Event ):void
@@ -98,7 +98,7 @@ layoutData2.bottomAnchorDisplayObject = button;
 button2.layoutData = layoutData2;
 ```
 
-Similar to our first example above, we've anchored the second button's bottom and right edges. However, as you can see, we've also specified a [`bottomAnchorDisplayObject`](../api-reference/feathers/layout/AnchorLayoutData.html#bottomAnchorDisplayObject). This tells the `AnchorLayout` to anchor our second button to the first button instead of to the parent container. When we resize the container, the second button's right edge will always be 10 pixels from the container's right edge and its bottom edge will always be 10 pixels from the first button.
+Similar to our first example above, we've anchored the second button's bottom and right edges. However, we've also specified a [`bottomAnchorDisplayObject`](../api-reference/feathers/layout/AnchorLayoutData.html#bottomAnchorDisplayObject). This tells the `AnchorLayout` to anchor our second button to the first button instead of to the parent container. When we resize the container, the second button's right edge will always be 10 pixels from the container's right edge and its bottom edge will always be 10 pixels from the first button.
 
 Let's expand this example in the same way that we did above. We want the second button to fill the remaining height in the container, above the first button.
 
