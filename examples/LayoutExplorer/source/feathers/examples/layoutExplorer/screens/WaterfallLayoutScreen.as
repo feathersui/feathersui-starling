@@ -36,6 +36,7 @@ package feathers.examples.layoutExplorer.screens
 			this.title = "Waterfall Layout";
 
 			var layout:WaterfallLayout = new WaterfallLayout();
+			layout.requestedColumnCount = this.settings.requestedColumnCount;
 			layout.horizontalGap = this.settings.horizontalGap;
 			layout.verticalGap = this.settings.verticalGap;
 			layout.paddingTop = this.settings.paddingTop;

@@ -9,6 +9,7 @@ package feathers.examples.layoutExplorer.data
 		}
 
 		public var itemCount:int = 75;
+		public var requestedRowCount:int = 0;
 		public var paging:String = TiledColumnsLayout.PAGING_NONE;
 		public var horizontalAlign:String = TiledColumnsLayout.HORIZONTAL_ALIGN_LEFT;
 		public var verticalAlign:String = TiledColumnsLayout.VERTICAL_ALIGN_TOP;

@@ -37,6 +37,7 @@ package feathers.examples.layoutExplorer.screens
 
 			var layout:TiledColumnsLayout = new TiledColumnsLayout();
 			layout.paging = this.settings.paging;
+			layout.requestedRowCount = this.settings.requestedRowCount;
 			layout.horizontalGap = this.settings.horizontalGap;
 			layout.verticalGap = this.settings.verticalGap;
 			layout.paddingTop = this.settings.paddingTop;
