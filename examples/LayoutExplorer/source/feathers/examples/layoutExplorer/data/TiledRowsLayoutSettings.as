@@ -10,6 +10,7 @@ package feathers.examples.layoutExplorer.data
 
 		public var paging:String = TiledRowsLayout.PAGING_NONE;
 		public var itemCount:int = 75;
+		public var requestedColumnCount:int = 0;
 		public var horizontalAlign:String = TiledRowsLayout.HORIZONTAL_ALIGN_LEFT;
 		public var verticalAlign:String = TiledRowsLayout.VERTICAL_ALIGN_TOP;
 		public var tileHorizontalAlign:String = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_LEFT;

@@ -29,6 +29,7 @@ package feathers.examples.layoutExplorer.screens
 		private var _list:List;
 
 		private var _itemCountStepper:NumericStepper;
+		private var _requestedRowCountStepper:NumericStepper;
 		private var _pagingPicker:PickerList;
 		private var _horizontalGapStepper:NumericStepper;
 		private var _verticalGapStepper:NumericStepper;
@@ -70,6 +71,14 @@ package feathers.examples.layoutExplorer.screens
 			this._itemCountStepper.step = 1;
 			this._itemCountStepper.value = this.settings.itemCount;
 			this._itemCountStepper.addEventListener(Event.CHANGE, itemCountStepper_changeHandler);
+
+			this._requestedRowCountStepper = new NumericStepper();
+			this._requestedRowCountStepper.minimum = 0;
+			//the layout can certainly handle more. this value is arbitrary.
+			this._requestedRowCountStepper.maximum = 10;
+			this._requestedRowCountStepper.step = 1;
+			this._requestedRowCountStepper.value = this.settings.requestedRowCount;
+			this._requestedRowCountStepper.addEventListener(Event.CHANGE, requestedRowCountStepper_changeHandler);
 
 			this._pagingPicker = new PickerList();
 			this._pagingPicker.typicalItem = TiledColumnsLayout.PAGING_HORIZONTAL;
@@ -176,6 +185,7 @@ package feathers.examples.layoutExplorer.screens
 			this._list.dataProvider = new ListCollection(
 			[
 				{ label: "Item Count", accessory: this._itemCountStepper },
+				{ label: "Requested Row Count", accessory: this._requestedRowCountStepper },
 				{ label: "Paging", accessory: this._pagingPicker },
 				{ label: "horizontalAlign", accessory: this._horizontalAlignPicker },
 				{ label: "verticalAlign", accessory: this._verticalAlignPicker },
@@ -227,6 +237,11 @@ package feathers.examples.layoutExplorer.screens
 		private function itemCountStepper_changeHandler(event:Event):void
 		{
 			this.settings.itemCount = this._itemCountStepper.value;
+		}
+
+		private function requestedRowCountStepper_changeHandler(event:Event):void
+		{
+			this.settings.requestedRowCount = this._requestedRowCountStepper.value;
 		}
 
 		private function pagingPicker_changeHandler(event:Event):void

@@ -9,6 +9,7 @@ package feathers.examples.layoutExplorer.data
 		}
 
 		public var itemCount:int = 75;
+		public var requestedColumnCount:int = 0;
 		public var horizontalAlign:String = WaterfallLayout.HORIZONTAL_ALIGN_CENTER;
 		public var horizontalGap:Number = 2;
 		public var verticalGap:Number = 2;
