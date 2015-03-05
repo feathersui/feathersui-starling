@@ -422,10 +422,15 @@ package feathers.layout
 
 		/**
 		 * Requests that the layout uses a specific number of columns in a row,
-		 * if possible. If the view port's explicit or maximum width is not large
-		 * enough to fit the requested number of columns, it will use fewer. Set
-		 * to <code>0</code> to calculate the number of columns automatically
-		 * based on width and height.
+		 * if possible. Set to <code>0</code> to calculate the maximum of
+		 * columns that will fit in the available space.
+		 *
+		 * <p>If the view port's explicit or maximum width is not large enough
+		 * to fit the requested number of columns, it will use fewer. If the
+		 * view port doesn't have an explicit width and the maximum width is
+		 * equal to <code>Number.POSITIVE_INFINITY</code>, the width will be
+		 * calculated automatically to fit the exact number of requested
+		 * columns.</p>
 		 *
 		 * <p>If paging is enabled, this value will be used to calculate the
 		 * number of columns in a page. If paging isn't enabled, this value will
@@ -1039,6 +1044,11 @@ package feathers.layout
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
+			else if(this._requestedColumnCount > 0)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+				availableWidth = this._paddingLeft + this._paddingRight + ((tileWidth + this._horizontalGap) * horizontalTileCount) - this._horizontalGap;
+			}
 			else
 			{
 				//put everything in one row
@@ -1370,6 +1380,11 @@ package feathers.layout
 			{
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+			}
+			else if(this._requestedColumnCount > 0)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+				availableWidth = this._paddingLeft + this._paddingRight + ((tileWidth + this._horizontalGap) * horizontalTileCount) - this._horizontalGap;
 			}
 			else
 			{
