@@ -7,6 +7,7 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
+	import feathers.examples.layoutExplorer.data.WaterfallLayoutSettings;
 	import feathers.examples.layoutExplorer.screens.AnchorLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutSettingsScreen;
@@ -17,6 +18,8 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.TiledRowsLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
+	import feathers.examples.layoutExplorer.screens.WaterfallLayoutScreen;
+	import feathers.examples.layoutExplorer.screens.WaterfallLayoutSettingsScreen;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
 	import feathers.motion.Slide;
@@ -34,10 +37,12 @@ package feathers.examples.layoutExplorer
 		private static const VERTICAL:String = "vertical";
 		private static const TILED_ROWS:String = "tiledRows";
 		private static const TILED_COLUMNS:String = "tiledColumns";
+		private static const WATERFALL:String = "waterfall";
 		private static const HORIZONTAL_SETTINGS:String = "horizontalSettings";
 		private static const VERTICAL_SETTINGS:String = "verticalSettings";
 		private static const TILED_ROWS_SETTINGS:String = "tiledRowsSettings";
 		private static const TILED_COLUMNS_SETTINGS:String = "tiledColumnsSettings";
+		private static const WATERFALL_SETTINGS:String = "waterfallSettings";
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
@@ -45,7 +50,8 @@ package feathers.examples.layoutExplorer
 			showHorizontal: HORIZONTAL,
 			showVertical: VERTICAL,
 			showTiledRows: TILED_ROWS,
-			showTiledColumns: TILED_COLUMNS
+			showTiledColumns: TILED_COLUMNS,
+			showWaterfall: WATERFALL
 		};
 
 		public function Main()
@@ -127,6 +133,20 @@ package feathers.examples.layoutExplorer
 			tiledColumnsSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			tiledColumnsSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(TILED_COLUMNS_SETTINGS, tiledColumnsSettingsItem);
+
+			var waterfallLayoutSettings:WaterfallLayoutSettings = new WaterfallLayoutSettings();
+			var waterfallItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(WaterfallLayoutScreen);
+			waterfallItem.setScreenIDForPushEvent(TiledColumnsLayoutScreen.SHOW_SETTINGS, WATERFALL_SETTINGS);
+			waterfallItem.addPopEvent(Event.COMPLETE);
+			waterfallItem.properties.settings = waterfallLayoutSettings;
+			this._navigator.addScreen(WATERFALL, waterfallItem);
+
+			var waterfallSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(WaterfallLayoutSettingsScreen);
+			waterfallSettingsItem.addPopEvent(Event.COMPLETE);
+			waterfallSettingsItem.properties.settings = waterfallLayoutSettings;
+			waterfallSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			waterfallSettingsItem.popTransition = Reveal.createRevealDownTransition();
+			this._navigator.addScreen(WATERFALL_SETTINGS, waterfallSettingsItem);
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
