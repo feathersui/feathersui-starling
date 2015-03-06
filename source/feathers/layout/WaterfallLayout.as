@@ -9,6 +9,8 @@ package feathers.layout
 {
 	import feathers.core.IValidating;
 
+	import flash.errors.IllegalOperationError;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -47,7 +49,7 @@ package feathers.layout
 	 *
 	 * @see ../../../help/waterfall-layout.html How to use WaterfallLayout with Feathers containers
 	 */
-	public class WaterfallLayout extends EventDispatcher implements ILayout
+	public class WaterfallLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
 		/**
 		 * The items will be aligned to the left of the bounds.
@@ -374,12 +376,101 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _useVirtualLayout:Boolean = true;
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @default true
+		 */
+		public function get useVirtualLayout():Boolean
+		{
+			return this._useVirtualLayout;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useVirtualLayout(value:Boolean):void
+		{
+			if(this._useVirtualLayout == value)
+			{
+				return;
+			}
+			this._useVirtualLayout = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _typicalItem:DisplayObject;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get typicalItem():DisplayObject
+		{
+			return this._typicalItem;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalItem(value:DisplayObject):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _hasVariableItemDimensions:Boolean = true;
+
+		/**
+		 * When the layout is virtualized, and this value is true, the items may
+		 * have variable height values. If false, the items will all share the
+		 * same height value with the typical item.
+		 *
+		 * @default true
+		 */
+		public function get hasVariableItemDimensions():Boolean
+		{
+			return this._hasVariableItemDimensions;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hasVariableItemDimensions(value:Boolean):void
+		{
+			if(this._hasVariableItemDimensions == value)
+			{
+				return;
+			}
+			this._hasVariableItemDimensions = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get requiresLayoutOnScroll():Boolean
 		{
-			return false;
+			return this._useVirtualLayout;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _heightCache:Array = [];
 
 		/**
 		 * @inheritDoc
@@ -398,14 +489,31 @@ package feathers.layout
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			
-			//in some cases, we may need to validate all of the items so
-			//that we can use their dimensions below.
-			this.validateItems(items);
+			if(this._useVirtualLayout)
+			{
+				//if the layout is virtualized, we'll need the dimensions of the
+				//typical item so that we have fallback values when an item is null
+				if(this._typicalItem is IValidating)
+				{
+					IValidating(this._typicalItem).validate();
+				}
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
 				
 			var columnWidth:Number = 0;
-			if(items.length > 0)
+			if(this._useVirtualLayout)
 			{
-				columnWidth = items[0].width;
+				columnWidth = calculatedTypicalItemWidth;
+			}
+			else if(items.length > 0)
+			{
+				var item:DisplayObject = items[0];
+				if(item is IValidating)
+				{
+					IValidating(item).validate();
+				}
+				columnWidth = item.width;
 			}
 			var availableWidth:Number = explicitWidth;
 			if(needsWidth)
@@ -463,23 +571,77 @@ package feathers.layout
 			var targetColumnHeight:Number = columnHeights[targetColumnIndex];
 			for(i = 0; i < itemCount; i++)
 			{
-				var item:DisplayObject = items[i];
-				//first, scale the items to fit into the column width
-				var scaleFactor:Number = columnWidth / item.width;
-				item.width *= scaleFactor;
-				if(item is ILayoutDisplayObject)
+				item = items[i];
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-					if(!layoutItem.includeInLayout)
+					var cachedHeight:Number = this._heightCache[i];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedHeight !== cachedHeight) //isNaN
 					{
-						continue;
+						//if all items must have the same height, we will
+						//use the height of the typical item (calculatedTypicalItemHeight).
+
+						//if items may have different heights, we first check
+						//the cache for a height value. if there isn't one, then
+						//we'll use calculatedTypicalItemHeight as a fallback.
+						var itemHeight:Number = calculatedTypicalItemHeight;
+					}
+					else
+					{
+						itemHeight = cachedHeight;
 					}
 				}
-				if(item is IValidating)
+				else
 				{
-					IValidating(item).validate();
+					if(item is ILayoutDisplayObject)
+					{
+						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+						if(!layoutItem.includeInLayout)
+						{
+							continue;
+						}
+					}
+					if(item is IValidating)
+					{
+						IValidating(item).validate();
+					}
+					//first, scale the items to fit into the column width
+					var scaleFactor:Number = columnWidth / item.width;
+					item.width *= scaleFactor;
+					if(item is IValidating)
+					{
+						//if we changed the width, we need to recalculate the
+						//height.
+						IValidating(item).validate();
+					}
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							itemHeight = item.height;
+							if(itemHeight != cachedHeight)
+							{
+								//update the cache if needed. this will notify
+								//the container that the virtualized layout has
+								//changed, and it the view port may need to be
+								//re-measured.
+								this._heightCache[i] = itemHeight;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else
+						{
+							item.height = itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					else
+					{
+						itemHeight = item.height;
+					}
 				}
-				var itemHeight:Number = item.height;
 				targetColumnHeight += itemHeight;
 				for(var j:int = 0; j < columnCount; j++)
 				{
@@ -494,8 +656,11 @@ package feathers.layout
 						targetColumnHeight = columnHeight;
 					}
 				}
-				item.x = horizontalAlignOffset + this._paddingLeft + targetColumnIndex * (columnWidth + this._horizontalGap);
-				item.y = targetColumnHeight - itemHeight;
+				if(item)
+				{
+					item.x = item.pivotX + boundsX + horizontalAlignOffset + this._paddingLeft + targetColumnIndex * (columnWidth + this._horizontalGap);
+					item.y = item.pivotY + boundsY + targetColumnHeight - itemHeight;
+				}
 				targetColumnHeight += this._verticalGap;
 				columnHeights[targetColumnIndex] = targetColumnHeight;
 			}
@@ -543,7 +708,342 @@ package feathers.layout
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;
 			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			if(!this._useVirtualLayout)
+			{
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+			}
 			
+			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			if(!needsWidth && !needsHeight)
+			{
+				result.x = explicitWidth;
+				result.y = explicitHeight;
+				return result;
+			}
+			
+			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			var minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			var maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+
+			if(this._typicalItem is IValidating)
+			{
+				IValidating(this._typicalItem).validate();
+			}
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var columnWidth:Number = calculatedTypicalItemWidth;
+			var availableWidth:Number = explicitWidth;
+			if(needsWidth)
+			{
+				if(maxWidth < Number.POSITIVE_INFINITY)
+				{
+					availableWidth = maxWidth;
+				}
+				else if(this._requestedColumnCount > 0)
+				{
+					availableWidth = ((columnWidth + this._horizontalGap) * this._requestedColumnCount) - this._horizontalGap;
+				}
+				else
+				{
+					availableWidth = columnWidth;
+				}
+				availableWidth += this._paddingLeft + this._paddingRight;
+				if(availableWidth < minWidth)
+				{
+					availableWidth = minWidth;
+				}
+				else if(availableWidth > maxWidth)
+				{
+					availableWidth = maxWidth;
+				}
+			}
+			var columnCount:int = int((availableWidth + this._horizontalGap - this._paddingLeft - this._paddingRight) / (columnWidth + this._horizontalGap));
+			if(this._requestedColumnCount > 0 && columnCount > this._requestedColumnCount)
+			{
+				columnCount = this._requestedColumnCount;
+			}
+			else if(columnCount < 1)
+			{
+				columnCount = 1;
+			}
+			
+			if(needsWidth)
+			{
+				result.x = this._paddingLeft + this._paddingRight + (columnCount * (columnWidth + this._horizontalGap)) - this._horizontalGap;
+			}
+			else
+			{
+				result.x = explicitWidth;
+			}
+			
+			if(needsHeight)
+			{
+				if(this._hasVariableItemDimensions)
+				{
+					var columnHeights:Vector.<Number> = new <Number>[];
+					for(var i:int = 0; i < columnCount; i++)
+					{
+						columnHeights[i] = this._paddingTop;
+					}
+					columnHeights.fixed = true;
+
+					var targetColumnIndex:int = 0;
+					var targetColumnHeight:Number = columnHeights[targetColumnIndex];
+					for(i = 0; i < itemCount; i++)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							var itemHeight:Number = this._heightCache[i];
+							if(itemHeight !== itemHeight) //isNaN
+							{
+								itemHeight = calculatedTypicalItemHeight;
+							}
+						}
+						else
+						{
+							itemHeight = calculatedTypicalItemHeight;
+						}
+						targetColumnHeight += itemHeight;
+						for(var j:int = 0; j < columnCount; j++)
+						{
+							if(j === targetColumnIndex)
+							{
+								continue;
+							}
+							var columnHeight:Number = columnHeights[j] + itemHeight;
+							if(columnHeight < targetColumnHeight)
+							{
+								targetColumnIndex = j;
+								targetColumnHeight = columnHeight;
+							}
+						}
+						targetColumnHeight += this._verticalGap;
+						columnHeights[targetColumnIndex] = targetColumnHeight;
+					}
+					var totalHeight:Number = columnHeights[0];
+					for(i = 1; i < columnCount; i++)
+					{
+						columnHeight = columnHeights[i];
+						if(columnHeight > totalHeight)
+						{
+							totalHeight = columnHeight;
+						}
+					}
+					totalHeight -= this._verticalGap;
+					totalHeight += this._paddingBottom;
+					if(totalHeight < 0)
+					{
+						totalHeight = 0;
+					}
+					if(totalHeight < minHeight)
+					{
+						totalHeight = minHeight;
+					}
+					else if(totalHeight > maxHeight)
+					{
+						totalHeight = maxHeight;
+					}
+					result.y = totalHeight;
+				}
+				else
+				{
+					result.y = this._paddingTop + this._paddingBottom + (Math.ceil(itemCount / columnCount) * (calculatedTypicalItemHeight + this._verticalGap)) - this._verticalGap;
+				}
+			}
+			else
+			{
+				result.y = explicitHeight;
+			}
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
+		{
+			if(result)
+			{
+				result.length = 0;
+			}
+			else
+			{
+				result = new <int>[];
+			}
+			if(!this._useVirtualLayout)
+			{
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+			}
+
+			if(this._typicalItem is IValidating)
+			{
+				IValidating(this._typicalItem).validate();
+			}
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			
+			var columnWidth:Number = calculatedTypicalItemWidth;
+			var columnCount:int = int((width + this._horizontalGap - this._paddingLeft - this._paddingRight) / (columnWidth + this._horizontalGap));
+			if(this._requestedColumnCount > 0 && columnCount > this._requestedColumnCount)
+			{
+				columnCount = this._requestedColumnCount;
+			}
+			else if(columnCount < 1)
+			{
+				columnCount = 1;
+			}
+			var resultLastIndex:int = 0;
+			if(this._hasVariableItemDimensions)
+			{
+				var columnHeights:Vector.<Number> = new <Number>[];
+				for(var i:int = 0; i < columnCount; i++)
+				{
+					columnHeights[i] = this._paddingTop;
+				}
+				columnHeights.fixed = true;
+
+				var maxPositionY:Number = scrollY + height;
+				var targetColumnIndex:int = 0;
+				var targetColumnHeight:Number = columnHeights[targetColumnIndex];
+				for(i = 0; i < itemCount; i++)
+				{
+					if(this._hasVariableItemDimensions)
+					{
+						var itemHeight:Number = this._heightCache[i];
+						if(itemHeight !== itemHeight) //isNaN
+						{
+							itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					else
+					{
+						itemHeight = calculatedTypicalItemHeight;
+					}
+					targetColumnHeight += itemHeight;
+					for(var j:int = 0; j < columnCount; j++)
+					{
+						if(j === targetColumnIndex)
+						{
+							continue;
+						}
+						var columnHeight:Number = columnHeights[j] + itemHeight;
+						if(columnHeight < targetColumnHeight)
+						{
+							targetColumnIndex = j;
+							targetColumnHeight = columnHeight;
+						}
+					}
+					if(targetColumnHeight > scrollY && (targetColumnHeight - itemHeight) < maxPositionY)
+					{
+						result[resultLastIndex] = i;
+						resultLastIndex++;
+					}
+					targetColumnHeight += this._verticalGap;
+					columnHeights[targetColumnIndex] = targetColumnHeight;
+				}
+				return result;
+			}
+			//this case can be optimized because we know that every item has
+			//the same height
+			
+			//we add one extra here because the first item renderer in view may
+			//be partially obscured, which would reveal an extra item renderer.
+			var maxVisibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + this._verticalGap)) + 1;
+			//we're calculating the minimum and maximum rows
+			var minimum:int = (scrollY - this._paddingTop) / (calculatedTypicalItemHeight + this._verticalGap);
+			if(minimum < 0)
+			{
+				minimum = 0;
+			}
+			//if we're scrolling beyond the final item, we should keep the
+			//indices consistent so that items aren't destroyed and
+			//recreated unnecessarily
+			var maximum:int = minimum + maxVisibleTypicalItemCount;
+			if(maximum >= itemCount)
+			{
+				maximum = itemCount - 1;
+			}
+			minimum = maximum - maxVisibleTypicalItemCount;
+			if(minimum < 0)
+			{
+				minimum = 0;
+			}
+			for(i = minimum; i <= maximum; i++)
+			{
+				for(j = 0; j < columnCount; j++)
+				{
+					var index:int = (i * columnCount) + j;
+					if(index >= 0 && i < itemCount)
+					{
+						result[resultLastIndex] = index;
+					}
+					else if(index < 0)
+					{
+						result[resultLastIndex] = itemCount + index;
+					}
+					else if(index >= itemCount)
+					{
+						result[resultLastIndex] = index - itemCount;
+					}
+					resultLastIndex++;
+				}
+			}
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function resetVariableVirtualCache():void
+		{
+			this._heightCache.length = 0;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function resetVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		{
+			delete this._heightCache[index];
+			if(item)
+			{
+				this._heightCache[index] = item.height;
+				this.dispatchEventWith(Event.CHANGE);
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		{
+			var heightValue:* = item ? item.height : undefined;
+			this._heightCache.splice(index, 0, heightValue);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeFromVariableVirtualCacheAtIndex(index:int):void
+		{
+			this._heightCache.splice(index, 1);
 		}
 
 		/**
@@ -551,7 +1051,53 @@ package feathers.layout
 		 */
 		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
-			return this.getScrollPositionForIndex(index, items, x, y, width, height, result);
+			var maxScrollY:Number = this.calculateMaxScrollYOfIndex(index, items, x, y, width, height);
+
+			if(this._useVirtualLayout)
+			{
+				if(this._hasVariableItemDimensions)
+				{
+					//we know it will be cached in the call to calculateMaxScrollYOfIndex()
+					var itemHeight:Number = this._heightCache[index];
+				}
+				else
+				{
+					itemHeight = this._typicalItem.height;
+				}
+			}
+			else
+			{
+				itemHeight = items[index].height;
+			}
+
+			if(!result)
+			{
+				result = new Point();
+			}
+			result.x = 0;
+
+			var bottomPosition:Number = maxScrollY - (height - itemHeight);
+			if(scrollY >= bottomPosition && scrollY <= maxScrollY)
+			{
+				//keep the current scroll position because the item is already
+				//fully visible
+				result.y = scrollY;
+			}
+			else
+			{
+				var topDifference:Number = Math.abs(maxScrollY - scrollY);
+				var bottomDifference:Number = Math.abs(bottomPosition - scrollY);
+				if(bottomDifference < topDifference)
+				{
+					result.y = bottomPosition;
+				}
+				else
+				{
+					result.y = maxScrollY;
+				}
+			}
+
+			return result;
 		}
 
 		/**
@@ -559,18 +1105,71 @@ package feathers.layout
 		 */
 		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
-			if(items.length == 0)
+			var maxScrollY:Number = this.calculateMaxScrollYOfIndex(index, items, x, y, width, height);
+
+			if(this._useVirtualLayout)
 			{
-				if(!result)
+				if(this._hasVariableItemDimensions)
 				{
-					result = new Point();
+					//we know it will be cached in the call to calculateMaxScrollYOfIndex()
+					var itemHeight:Number = this._heightCache[index];
 				}
-				result.setTo(0, 0);
-				return result;
+				else
+				{
+					itemHeight = this._typicalItem.height;
+				}
+			}
+			else
+			{
+				itemHeight = items[index].height;
 			}
 
-			//all items will be the same width, calculated in layout()
-			var columnWidth:Number = items[0].width;
+			if(!result)
+			{
+				result = new Point();
+			}
+			result.x = 0;
+			result.y = maxScrollY - Math.round((height - itemHeight) / 2);
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateMaxScrollYOfIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number):Number
+		{
+			if(items.length == 0)
+			{
+				return 0;
+			}
+
+			if(this._useVirtualLayout)
+			{
+				//if the layout is virtualized, we'll need the dimensions of the
+				//typical item so that we have fallback values when an item is null
+				if(this._typicalItem is IValidating)
+				{
+					IValidating(this._typicalItem).validate();
+				}
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			var columnWidth:Number = 0;
+			if(this._useVirtualLayout)
+			{
+				columnWidth = calculatedTypicalItemWidth;
+			}
+			else if(items.length > 0)
+			{
+				var item:DisplayObject = items[0];
+				if(item is IValidating)
+				{
+					IValidating(item).validate()
+				}
+				columnWidth = item.width;
+			}
+
 			var columnCount:int = int((width + this._horizontalGap - this._paddingLeft - this._paddingRight) / (columnWidth + this._horizontalGap));
 			if(this._requestedColumnCount > 0 && columnCount > this._requestedColumnCount)
 			{
@@ -592,16 +1191,71 @@ package feathers.layout
 			var targetColumnHeight:Number = columnHeights[targetColumnIndex];
 			for(i = 0; i < itemCount; i++)
 			{
-				var item:DisplayObject = items[i];
-				if(item is ILayoutDisplayObject)
+				item = items[i];
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-					if(!layoutItem.includeInLayout)
+					var cachedHeight:Number = this._heightCache[i];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedHeight !== cachedHeight) //isNaN
 					{
-						continue;
+						//if all items must have the same height, we will
+						//use the height of the typical item (calculatedTypicalItemHeight).
+
+						//if items may have different heights, we first check
+						//the cache for a height value. if there isn't one, then
+						//we'll use calculatedTypicalItemHeight as a fallback.
+						var itemHeight:Number = calculatedTypicalItemHeight;
+					}
+					else
+					{
+						itemHeight = cachedHeight;
 					}
 				}
-				var itemHeight:Number = item.height;
+				else
+				{
+					if(item is ILayoutDisplayObject)
+					{
+						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+						if(!layoutItem.includeInLayout)
+						{
+							continue;
+						}
+					}
+					if(item is IValidating)
+					{
+						IValidating(item).validate();
+					}
+					//first, scale the items to fit into the column width
+					var scaleFactor:Number = columnWidth / item.width;
+					item.width *= scaleFactor;
+					if(item is IValidating)
+					{
+						IValidating(item).validate();
+					}
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							itemHeight = item.height;
+							if(itemHeight != cachedHeight)
+							{
+								this._heightCache[i] = itemHeight;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else
+						{
+							item.height = itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					else
+					{
+						itemHeight = item.height;
+					}
+				}
 				targetColumnHeight += itemHeight;
 				for(var j:int = 0; j < columnCount; j++)
 				{
@@ -618,9 +1272,7 @@ package feathers.layout
 				}
 				if(i === index)
 				{
-					result.x = 0;
-					result.y = targetColumnHeight - itemHeight;
-					return result;
+					return targetColumnHeight - itemHeight;
 				}
 				targetColumnHeight += this._verticalGap;
 				columnHeights[targetColumnIndex] = targetColumnHeight;
@@ -642,29 +1294,7 @@ package feathers.layout
 			{
 				totalHeight = 0;
 			}
-			result.x = 0;
-			result.y = totalHeight;
-			return result;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function validateItems(items:Vector.<DisplayObject>):void
-		{
-			var itemCount:int = items.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:DisplayObject = items[i];
-				if(!item || (item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout))
-				{
-					continue;
-				}
-				if(item is IValidating)
-				{
-					IValidating(item).validate()
-				}
-			}
+			return totalHeight;
 		}
 	}
 }
