@@ -3682,24 +3682,6 @@ package feathers.controls
 
 			this.refreshPageCount();
 			this.refreshPageIndices();
-
-			if(maximumPositionsChanged)
-			{
-				if(this._horizontalAutoScrollTween && this._targetHorizontalScrollPosition > this._maxHorizontalScrollPosition &&
-					oldMaxHSP > this._maxHorizontalScrollPosition)
-				{
-					this._targetHorizontalScrollPosition -= (oldMaxHSP - this._maxHorizontalScrollPosition);
-					this.throwTo(this._targetHorizontalScrollPosition, NaN, this._horizontalAutoScrollTween.totalTime - this._horizontalAutoScrollTween.currentTime);
-					this.refreshHorizontalAutoScrollTweenEndRatio();
-				}
-				if(this._verticalAutoScrollTween && this._targetVerticalScrollPosition > this._maxVerticalScrollPosition &&
-					oldMaxVSP > this._maxVerticalScrollPosition)
-				{
-					this._targetVerticalScrollPosition -= (oldMaxVSP - this._maxVerticalScrollPosition);
-					this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
-					this.refreshVerticalAutoScrollTweenEndRatio();
-				}
-			}
 		}
 
 		/**
@@ -4493,6 +4475,7 @@ package feathers.controls
 						//replaced elsewhere.
 						this._horizontalAutoScrollTween.onComplete = horizontalAutoScrollTween_onComplete;
 						Starling.juggler.add(this._horizontalAutoScrollTween);
+						this.refreshHorizontalAutoScrollTweenEndRatio();
 					}
 				}
 				else
@@ -4532,6 +4515,7 @@ package feathers.controls
 						//replaced elsewhere.
 						this._verticalAutoScrollTween.onComplete = verticalAutoScrollTween_onComplete;
 						Starling.juggler.add(this._verticalAutoScrollTween);
+						this.refreshVerticalAutoScrollTweenEndRatio();
 					}
 				}
 				else
@@ -4764,7 +4748,6 @@ package feathers.controls
 				duration = this.calculateDynamicThrowDuration(pixelsPerMS);
 			}
 			this.throwTo(this._horizontalScrollPosition + this.calculateThrowDistance(pixelsPerMS), NaN, duration);
-			this.refreshHorizontalAutoScrollTweenEndRatio();
 		}
 
 		/**
@@ -4848,7 +4831,6 @@ package feathers.controls
 				duration = this.calculateDynamicThrowDuration(pixelsPerMS);
 			}
 			this.throwTo(NaN, this._verticalScrollPosition + this.calculateThrowDistance(pixelsPerMS), duration);
-			this.refreshVerticalAutoScrollTweenEndRatio();
 		}
 
 		/**
