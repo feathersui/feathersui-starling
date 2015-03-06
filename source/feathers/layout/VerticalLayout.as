@@ -1610,8 +1610,11 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					//we know it will be cached in the call to calculateMaxScrollYOfIndex()
 					var itemHeight:Number = this._heightCache[index];
+					if(itemHeight !== itemHeight) //isNaN
+					{
+						itemHeight = this._typicalItem.height;
+					}
 				}
 				else
 				{
@@ -1664,8 +1667,11 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					//we know it will be cached in the call to calculateMaxScrollYOfIndex()
 					var itemHeight:Number = this._heightCache[index];
+					if(itemHeight !== itemHeight) //isNaN
+					{
+						itemHeight = this._typicalItem.height;
+					}
 				}
 				else
 				{
