@@ -129,6 +129,9 @@ package feathers.controls.renderers
 			}
 			this._data = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			//LayoutGroup doesn't know about INVALIDATION_FLAG_DATA, so we need
+			//set set another flag that it understands.
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
