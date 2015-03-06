@@ -1683,7 +1683,7 @@ package feathers.layout
 			}
 			else if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
-				maxScrollX -= (width - lastItemWidth);
+				maxScrollX -= (width - itemWidth);
 			}
 			result.x = maxScrollX;
 			result.y = 0;
