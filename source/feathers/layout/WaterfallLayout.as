@@ -71,7 +71,7 @@ package feathers.layout
 		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -343,7 +343,7 @@ package feathers.layout
 		 * Requests that the layout uses a specific number of columns, if
 		 * possible. Set to <code>0</code> to calculate the maximum of columns
 		 * that will fit in the available space.
-		 * 
+		 *
 		 * <p>If the view port's explicit or maximum width is not large enough
 		 * to fit the requested number of columns, it will use fewer. If the
 		 * view port doesn't have an explicit width and the maximum width is
@@ -485,10 +485,10 @@ package feathers.layout
 			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-			
+
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
-			
+
 			if(this._useVirtualLayout)
 			{
 				//if the layout is virtualized, we'll need the dimensions of the
@@ -500,7 +500,7 @@ package feathers.layout
 				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
-				
+
 			var columnWidth:Number = 0;
 			if(this._useVirtualLayout)
 			{
@@ -555,7 +555,7 @@ package feathers.layout
 				columnHeights[i] = this._paddingTop;
 			}
 			columnHeights.fixed = true;
-			
+
 			var horizontalAlignOffset:Number = 0;
 			if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
@@ -565,7 +565,7 @@ package feathers.layout
 			{
 				horizontalAlignOffset = Math.round(((availableWidth - this._paddingLeft - this._paddingRight) - ((columnCount * (columnWidth + this._horizontalGap)) - this._horizontalGap)) / 2);
 			}
-			
+
 			var itemCount:int = items.length;
 			var targetColumnIndex:int = 0;
 			var targetColumnHeight:Number = columnHeights[targetColumnIndex];
@@ -723,7 +723,7 @@ package feathers.layout
 			{
 				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
 			}
-			
+
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
@@ -735,7 +735,7 @@ package feathers.layout
 				result.y = explicitHeight;
 				return result;
 			}
-			
+
 			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
 			var minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
 			var maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
@@ -783,7 +783,7 @@ package feathers.layout
 			{
 				columnCount = 1;
 			}
-			
+
 			if(needsWidth)
 			{
 				result.x = this._paddingLeft + this._paddingRight + (columnCount * (columnWidth + this._horizontalGap)) - this._horizontalGap;
@@ -792,7 +792,7 @@ package feathers.layout
 			{
 				result.x = explicitWidth;
 			}
-			
+
 			if(needsHeight)
 			{
 				if(this._hasVariableItemDimensions)
@@ -898,7 +898,7 @@ package feathers.layout
 			}
 			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
-			
+
 			var columnWidth:Number = calculatedTypicalItemWidth;
 			var columnCount:int = int((width + this._horizontalGap - this._paddingLeft - this._paddingRight) / (columnWidth + this._horizontalGap));
 			if(this._requestedColumnCount > 0 && columnCount > this._requestedColumnCount)
@@ -962,7 +962,7 @@ package feathers.layout
 			}
 			//this case can be optimized because we know that every item has
 			//the same height
-			
+
 			//we add one extra here because the first item renderer in view may
 			//be partially obscured, which would reveal an extra item renderer.
 			var maxVisibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + this._verticalGap)) + 1;
@@ -1057,8 +1057,11 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					//we know it will be cached in the call to calculateMaxScrollYOfIndex()
 					var itemHeight:Number = this._heightCache[index];
+					if(itemHeight !== itemHeight) //isNaN
+					{
+						itemHeight = this._typicalItem.height;
+					}
 				}
 				else
 				{
@@ -1111,8 +1114,11 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					//we know it will be cached in the call to calculateMaxScrollYOfIndex()
 					var itemHeight:Number = this._heightCache[index];
+					if(itemHeight !== itemHeight) //isNaN
+					{
+						itemHeight = this._typicalItem.height;
+					}
 				}
 				else
 				{
