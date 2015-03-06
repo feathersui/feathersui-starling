@@ -3690,12 +3690,14 @@ package feathers.controls
 				{
 					this._targetHorizontalScrollPosition -= (oldMaxHSP - this._maxHorizontalScrollPosition);
 					this.throwTo(this._targetHorizontalScrollPosition, NaN, this._horizontalAutoScrollTween.totalTime - this._horizontalAutoScrollTween.currentTime);
+					this.refreshHorizontalAutoScrollTweenEndRatio();
 				}
 				if(this._verticalAutoScrollTween && this._targetVerticalScrollPosition > this._maxVerticalScrollPosition &&
 					oldMaxVSP > this._maxVerticalScrollPosition)
 				{
 					this._targetVerticalScrollPosition -= (oldMaxVSP - this._maxVerticalScrollPosition);
 					this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
+					this.refreshVerticalAutoScrollTweenEndRatio();
 				}
 			}
 		}
