@@ -1606,8 +1606,11 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					//we know it will be cached in the call to calculateMaxScrollXOfIndex()
 					var itemWidth:Number = this._widthCache[index];
+					if(itemWidth !== itemWidth)
+					{
+						itemWidth = this._typicalItem.width;
+					}
 				}
 				else
 				{
@@ -1659,25 +1662,28 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					//we know it will be cached in the call to calculateMaxScrollXOfIndex()
-					var lastItemWidth:Number = this._widthCache[index];
+					var itemWidth:Number = this._widthCache[index];
+					if(itemWidth !== itemWidth)
+					{
+						itemWidth = this._typicalItem.width;
+					}
 				}
 				else
 				{
-					lastItemWidth = this._typicalItem.width;
+					itemWidth = this._typicalItem.width;
 				}
 			}
 			else
 			{
-				lastItemWidth = items[index].width;
+				itemWidth = items[index].width;
 			}
 			if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_CENTER)
 			{
-				maxScrollX -= Math.round((width - lastItemWidth) / 2);
+				maxScrollX -= Math.round((width - itemWidth) / 2);
 			}
 			else if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
-				maxScrollX -= (width - lastItemWidth);
+				maxScrollX -= (width - itemWidth);
 			}
 			result.x = maxScrollX;
 			result.y = 0;
