@@ -2,6 +2,15 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.1.1
+
+* BitmapFontTextRenderer, ScrollContainer: added workarounds for compiler bugs in Adobe Flex SDK 4.6.
+* ButtonGroup, TabBar: fixed issue where buttons or tabs would flicker and resize for a frame when the container resizes.
+* HorizontalLayout, VerticalLayout: fixed an issue that resulted in no scrolling when the scrollToDisplayIndex() function is called on a List.
+* ScrollContainer: fixed issue where setting autoSizeMode to AUTO_SIZE_MODE_STAGE resulted in being unable to scroll.
+* SpinnerList: fixed issue where setting the selected index programmatically didn't always update the scroll position.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where text would appear blurry because snapToPixels incorrectly snapped on the y-axis.
+
 ## 2.1.0
 
 * New Component: AutoComplete, a TextInput that provides a pop-up list of suggestions.
