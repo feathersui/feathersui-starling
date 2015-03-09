@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.TileList</id>
 	<filename>Tile List</filename>
 	<name>Tile List</name>
-	<versionNumber>2.1.0</versionNumber>
+	<versionNumber>2.1.1</versionNumber>
 	<description>TileList example application built with Feathers UI controls for Starling</description>
 	<copyright>2015 Josh Tynjala</copyright>
 

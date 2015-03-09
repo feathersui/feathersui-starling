@@ -1,6 +1,6 @@
-# Feathers Components Explorer
+# Feathers Transitions Explorer
 
-A little bit of everything in [Feathers](http://feathersui.com/), presented as a mobile app. Includes screens for each component, with configurable options.
+Each of the animated transitions available for the [Feathers](http://feathersui.com/) [`StackScreenNavigator`](http://feathersui.com/help/stack-screen-navigator.html) and [`ScreenNavigator`](http://feathersui.com/help/screen-navigator.html)components, presented as a mobile app.
 
 ## Requirements
 
@@ -10,4 +10,4 @@ In addition to Starling Framwork and Feathers, this example project requires the
 
 ## Web Demo
 
-View the [Components Explorer](http://feathersui.com/examples/components-explorer/) in your browser.
+View the [Transitions Explorer](http://feathersui.com/examples/transitions-explorer/) in your browser.
