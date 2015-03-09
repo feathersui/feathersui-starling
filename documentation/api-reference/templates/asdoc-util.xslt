@@ -687,18 +687,20 @@
 							</xsl:choose>
 						</td>
 						<td class="titleTableLogo" align="right" rowspan="3">
-							<img src="{$baseRef}images/logo.jpg" class="logoImage">
-								<xsl:attribute name="alt">
-									<xsl:call-template name="getLocalizedString">
-										<xsl:with-param name="key">AdobeLogo</xsl:with-param>
-									</xsl:call-template>
-								</xsl:attribute>
-								<xsl:attribute name="title">
-									<xsl:call-template name="getLocalizedString">
-										<xsl:with-param name="key">AdobeLogo</xsl:with-param>
-									</xsl:call-template>
-								</xsl:attribute>
-							</img>
+							<picture>
+								<img src="{$baseRef}images/logo.jpg" srcset="{$baseRef}images/logo@2x.jpg 2x" class="logoImage">
+									<xsl:attribute name="alt">
+										<xsl:call-template name="getLocalizedString">
+											<xsl:with-param name="key">AdobeLogo</xsl:with-param>
+										</xsl:call-template>
+									</xsl:attribute>
+									<xsl:attribute name="title">
+										<xsl:call-template name="getLocalizedString">
+											<xsl:with-param name="key">AdobeLogo</xsl:with-param>
+										</xsl:call-template>
+									</xsl:attribute>
+								</img>
+							</picture>
 						</td>
 					</tr>
 					<tr class="titleTableRow2">
