@@ -3,12 +3,15 @@ package feathers.examples.layoutExplorer
 	import feathers.controls.Drawers;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
+	import feathers.examples.layoutExplorer.data.FlowLayoutSettings;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
 	import feathers.examples.layoutExplorer.data.WaterfallLayoutSettings;
 	import feathers.examples.layoutExplorer.screens.AnchorLayoutScreen;
+	import feathers.examples.layoutExplorer.screens.FlowLayoutScreen;
+	import feathers.examples.layoutExplorer.screens.FlowLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.MainMenuScreen;
@@ -33,11 +36,13 @@ package feathers.examples.layoutExplorer
 	{
 		private static const MAIN_MENU:String = "mainMenu";
 		private static const ANCHOR:String = "anchor";
+		private static const FLOW:String = "flow";
 		private static const HORIZONTAL:String = "horizontal";
 		private static const VERTICAL:String = "vertical";
 		private static const TILED_ROWS:String = "tiledRows";
 		private static const TILED_COLUMNS:String = "tiledColumns";
 		private static const WATERFALL:String = "waterfall";
+		private static const FLOW_SETTINGS:String = "flowSettings";
 		private static const HORIZONTAL_SETTINGS:String = "horizontalSettings";
 		private static const VERTICAL_SETTINGS:String = "verticalSettings";
 		private static const TILED_ROWS_SETTINGS:String = "tiledRowsSettings";
@@ -47,6 +52,7 @@ package feathers.examples.layoutExplorer
 		private static const MAIN_MENU_EVENTS:Object =
 		{
 			showAnchor: ANCHOR,
+			showFlow: FLOW,
 			showHorizontal: HORIZONTAL,
 			showVertical: VERTICAL,
 			showTiledRows: TILED_ROWS,
@@ -77,6 +83,20 @@ package feathers.examples.layoutExplorer
 			var anchorItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AnchorLayoutScreen);
 			anchorItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ANCHOR, anchorItem);
+
+			var flowLayoutSettings:FlowLayoutSettings = new FlowLayoutSettings();
+			var flowItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(FlowLayoutScreen);
+			flowItem.setScreenIDForPushEvent(FlowLayoutScreen.SHOW_SETTINGS, FLOW_SETTINGS);
+			flowItem.addPopEvent(Event.COMPLETE);
+			flowItem.properties.settings = flowLayoutSettings;
+			this._navigator.addScreen(FLOW, flowItem);
+
+			var flowSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(FlowLayoutSettingsScreen);
+			flowSettingsItem.addPopEvent(Event.COMPLETE);
+			flowSettingsItem.properties.settings = flowLayoutSettings;
+			flowSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			flowSettingsItem.popTransition = Reveal.createRevealDownTransition();
+			this._navigator.addScreen(FLOW_SETTINGS, flowSettingsItem);
 
 			var horizontalLayoutSettings:HorizontalLayoutSettings = new HorizontalLayoutSettings();
 			var horizontalItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(HorizontalLayoutScreen);
