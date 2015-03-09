@@ -2,7 +2,7 @@
 
 ---
 
-**Warning:** This is a pre-release version of Feathers. It may contain bugs or unfinished features. It is not recommended for production apps because it is considered *unstable*. Use at your own risk. To download a stable build, visit the [Feathers website](http://feathersui.com/).
+**Warning:** This is a pre-release version of Feathers. It may contain bugs or unfinished features. It is not recommended for production apps because it is considered potentially *unstable*. Use at your own risk. To download a stable build, visit the [Feathers website](http://feathersui.com/).
 
 ---
 
