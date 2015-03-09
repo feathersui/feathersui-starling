@@ -9,6 +9,8 @@ package feathers.layout
 {
 	import feathers.core.IValidating;
 
+	import flash.errors.IllegalOperationError;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -39,13 +41,14 @@ package feathers.layout
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Positions items of different sizes from left to right in multiple rows.
-	 * Constrained to the suggested width, the flow layout will change in height
-	 * as the number of items increases or decreases.
+	 * Positions items of different dimensions from left to right in multiple
+	 * rows. When the width of a row reaches the width of the container, a new
+	 * row will be started. Constrained to the suggested width, the flow layout
+	 * will change in height as the number of items increases or decreases.
 	 *
 	 * @see ../../../help/flow-layout.html How to use FlowLayout with Feathers containers
 	 */
-	public class FlowLayout extends EventDispatcher implements ILayout
+	public class FlowLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
 		/**
 		 * If the total item height is smaller than the height of the bounds,
@@ -643,11 +646,6 @@ package feathers.layout
 							itemWidth = calculatedTypicalItemWidth;
 							itemHeight = calculatedTypicalItemHeight;
 						}
-						if(supportsMultipleRows && rowItemCount > 0 && (positionX + itemWidth) > (availableRowWidth - this._paddingRight))
-						{
-							//we've reached the end of the row, so go to next
-							break;
-						}
 					}
 					else
 					{
@@ -662,13 +660,7 @@ package feathers.layout
 							IValidating(item).validate();
 						}
 						itemWidth = item.width;
-						if(supportsMultipleRows && rowItemCount > 0 && (positionX + itemWidth) > (availableRowWidth - this._paddingRight))
-						{
-							//we've reached the end of the row, so go to next
-							break;
-						}
 						itemHeight = item.height;
-						item.x = item.pivotX + positionX;
 						if(this._useVirtualLayout)
 						{
 							if(this._hasVariableItemDimensions)
@@ -700,7 +692,16 @@ package feathers.layout
 								}
 							}
 						}
+					}
+					if(supportsMultipleRows && rowItemCount > 0 && (positionX + itemWidth) > (availableRowWidth - this._paddingRight))
+					{
+						//we've reached the end of the row, so go to next
+						break;
+					}
+					if(item)
+					{
 						this._rowItems[this._rowItems.length] = item;
+						item.x = item.pivotX + positionX;
 					}
 					positionX += itemWidth + horizontalGap;
 					//we compare with > instead of Math.max() because the rest
@@ -838,6 +839,144 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
+		public function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			if(!this._useVirtualLayout)
+			{
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+			}
+			//this function is very long because it may be called every frame,
+			//in some situations. testing revealed that splitting this function
+			//into separate, smaller functions affected performance.
+			//since the SWC compiler cannot inline functions, we can't use that
+			//feature either.
+
+			//since viewPortBounds can be null, we may need to provide some defaults
+			var boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
+			var boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
+			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			var minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			var maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+
+			//let's figure out if we can show multiple rows
+			var supportsMultipleRows:Boolean = true;
+			var availableRowWidth:Number = explicitWidth;
+			if(availableRowWidth !== availableRowWidth) //isNaN
+			{
+				availableRowWidth = maxWidth;
+				if(availableRowWidth === Number.POSITIVE_INFINITY)
+				{
+					supportsMultipleRows = false;
+				}
+			}
+			
+			if(this._typicalItem is IValidating)
+			{
+				IValidating(this._typicalItem).validate();
+			}
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var i:int = 0;
+			var positionY:Number = boundsY + this._paddingTop;
+			var maxItemHeight:Number = 0;
+			var horizontalGap:Number = this._horizontalGap;
+			var verticalGap:Number = this._verticalGap;
+			do
+			{
+				if(i > 0)
+				{
+					positionY += maxItemHeight + verticalGap;
+				}
+				//this section prepares some variables needed for the following loop
+				maxItemHeight = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
+				var positionX:Number = boundsX + this._paddingLeft;
+				var rowItemCount:int = 0;
+
+				//this first loop sets the x position of items, and it calculates
+				//the total width of all items
+				for(; i < itemCount; i++)
+				{
+					if(this._hasVariableItemDimensions)
+					{
+						var cachedWidth:Number = this._widthCache[i];
+						var cachedHeight:Number = this._heightCache[i];
+						if(cachedWidth !== cachedWidth)
+						{
+							var itemWidth:Number = calculatedTypicalItemWidth;
+						}
+						else
+						{
+							itemWidth = cachedWidth;
+						}
+						if(cachedHeight !== cachedHeight)
+						{
+							var itemHeight:Number = calculatedTypicalItemHeight;
+						}
+						else
+						{
+							itemHeight = cachedHeight;
+						}
+					}
+					else
+					{
+						itemWidth = calculatedTypicalItemWidth;
+						itemHeight = calculatedTypicalItemHeight;
+					}
+					if(supportsMultipleRows && rowItemCount > 0 && (positionX + itemWidth) > (availableRowWidth - this._paddingRight))
+					{
+						//we've reached the end of the row, so go to next
+						break;
+					}
+					positionX += itemWidth + horizontalGap;
+					//we compare with > instead of Math.max() because the rest
+					//arguments on Math.max() cause extra garbage collection and
+					//hurt performance
+					if(itemHeight > maxItemHeight)
+					{
+						//we need to know the maximum height of the items in the
+						//case where the height of the view port needs to be
+						//calculated by the layout.
+						maxItemHeight = itemHeight;
+					}
+					rowItemCount++;
+				}
+			}
+			while(i < itemCount)
+			
+			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
+			//the available height is the height of the viewport. if the explicit
+			//height is NaN, we need to calculate the viewport height ourselves
+			//based on the total height of all items.
+			var availableHeight:Number = explicitHeight;
+			if(availableHeight !== availableHeight) //isNaN
+			{
+				availableHeight = totalHeight;
+				if(availableHeight < minHeight)
+				{
+					availableHeight = minHeight;
+				}
+				else if(availableHeight > maxHeight)
+				{
+					availableHeight = maxHeight;
+				}
+			}
+
+			result.x = availableRowWidth;
+			result.y = availableHeight;
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
 			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
@@ -956,6 +1095,116 @@ package feathers.layout
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
+		{
+			if(result)
+			{
+				result.length = 0;
+			}
+			else
+			{
+				result = new <int>[];
+			}
+			if(!this._useVirtualLayout)
+			{
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+			}
+
+			if(this._typicalItem is IValidating)
+			{
+				IValidating(this._typicalItem).validate();
+			}
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var resultLastIndex:int = 0;
+
+			var i:int = 0;
+			var positionY:Number = this._paddingTop;
+			var maxItemHeight:Number = 0;
+			var horizontalGap:Number = this._horizontalGap;
+			var verticalGap:Number = this._verticalGap;
+			var maxPositionY:Number = scrollY + height;
+			do
+			{
+				if(i > 0)
+				{
+					positionY += maxItemHeight + verticalGap;
+					if(positionY >= maxPositionY)
+					{
+						//the following rows will not be visible, so we can stop
+						break;
+					}
+				}
+				//this section prepares some variables needed for the following loop
+				maxItemHeight = calculatedTypicalItemHeight;
+				var positionX:Number = this._paddingLeft;
+				var rowItemCount:int = 0;
+
+				//this first loop sets the x position of items, and it calculates
+				//the total width of all items
+				for(; i < itemCount; i++)
+				{
+					if(this._hasVariableItemDimensions)
+					{
+						var cachedWidth:Number = this._widthCache[i];
+						var cachedHeight:Number = this._heightCache[i];
+					}
+					if(this._hasVariableItemDimensions)
+					{
+						if(cachedWidth !== cachedWidth)
+						{
+							var itemWidth:Number = calculatedTypicalItemWidth;
+						}
+						else
+						{
+							itemWidth = cachedWidth;
+						}
+						if(cachedHeight !== cachedHeight)
+						{
+							var itemHeight:Number = calculatedTypicalItemHeight;
+						}
+						else
+						{
+							itemHeight = cachedHeight;
+						}
+					}
+					else
+					{
+						itemWidth = calculatedTypicalItemWidth;
+						itemHeight = calculatedTypicalItemHeight;
+					}
+					if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
+					{
+						//we've reached the end of the row, so go to next
+						break;
+					}
+					if((positionY + itemHeight) > scrollY)
+					{
+						result[resultLastIndex] = i;
+						resultLastIndex++;
+					}
+					positionX += itemWidth + horizontalGap;
+					//we compare with > instead of Math.max() because the rest
+					//arguments on Math.max() cause extra garbage collection and
+					//hurt performance
+					if(itemHeight > maxItemHeight)
+					{
+						//we need to know the maximum height of the items in the
+						//case where the height of the view port needs to be
+						//calculated by the layout.
+						maxItemHeight = itemHeight;
+					}
+					rowItemCount++;
+				}
+			}
+			while(i < itemCount)
+			return result;
+		}
+
+		/**
 		 * @private
 		 */
 		protected function calculateMaxScrollYAndRowHeightOfIndex(index:int, items:Vector.<DisplayObject>,
@@ -1036,11 +1285,6 @@ package feathers.layout
 							itemWidth = calculatedTypicalItemWidth;
 							itemHeight = calculatedTypicalItemHeight;
 						}
-						if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
-						{
-							//we've reached the end of the row, so go to next
-							break;
-						}
 					}
 					else
 					{
@@ -1055,11 +1299,6 @@ package feathers.layout
 							IValidating(item).validate();
 						}
 						itemWidth = item.width;
-						if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
-						{
-							//we've reached the end of the row, so go to next
-							break;
-						}
 						itemHeight = item.height;
 						if(this._useVirtualLayout && this._hasVariableItemDimensions)
 						{
@@ -1088,6 +1327,11 @@ package feathers.layout
 								}
 							}
 						}
+					}
+					if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
+					{
+						//we've reached the end of the row, so go to next
+						break;
 					}
 					//we don't check this at the beginning of the loop because
 					//it may break to start a new row and then redo this item
