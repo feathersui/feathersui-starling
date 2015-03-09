@@ -13,5 +13,5 @@ package feathers
 	 * information after a hyphen. For example, the beta version of Feathers 2.1
 	 * would use the following value: <code>2.1.0-beta</code>.
 	 */
-	public const FEATHERS_VERSION:String = "2.1.0";
+	public const FEATHERS_VERSION:String = "2.1.1";
 }

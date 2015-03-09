@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.DrawersExplorer</id>
 	<filename>Drawers</filename>
 	<name>Drawers</name>
-	<versionNumber>2.1.0</versionNumber>
+	<versionNumber>2.1.1</versionNumber>
 	<description>Drawers Explorer example application built with Feathers UI controls for Starling</description>
 	<copyright>2015 Josh Tynjala</copyright>
 
