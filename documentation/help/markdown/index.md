@@ -143,6 +143,8 @@ A detailed look at each of the layout algorithms that Feathers provides out-of-t
 
 -   [`AnchorLayout`](anchor-layout.html)
 
+-   [`FlowLayout`](flow-layout.html)
+
 -   [`HorizontalLayout`](horizontal-layout.html)
 
 -   [`VerticalLayout`](vertical-layout.html)
