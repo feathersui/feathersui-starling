@@ -239,7 +239,7 @@ Would you like to contribute a bug fix or new feature to Feathers? Please open a
 
 The following community projects are built on Feathers. Feel free to share your components and extensions in the [Feathers forum](http://forum.starling-framework.org/forum/feathers).
 
--   [List of Feathers Extensions and Components](extensions.html)
+-   [List of Feathers Extensions and Components](http://wiki.starling-framework.org/feathers/extensions)
 
 ## Platform UI Guidelines
 
