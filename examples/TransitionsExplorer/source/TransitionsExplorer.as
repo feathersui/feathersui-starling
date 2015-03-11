@@ -6,6 +6,8 @@ package
     import flash.display.Sprite;
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
+    import flash.display3D.Context3DProfile;
+    import flash.display3D.Context3DRenderMode;
     import flash.events.Event;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
@@ -108,7 +110,7 @@ package
         {
             Starling.handleLostContext = true;
             Starling.multitouchEnabled = true;
-            this._starling = new Starling(Main, this.stage);
+            this._starling = new Starling(Main, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE);
             this._starling.enableErrorChecking = false;
             //this._starling.showStats = true;
             //this._starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
