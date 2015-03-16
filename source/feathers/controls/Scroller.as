@@ -5715,6 +5715,10 @@ package feathers.controls
 					this._horizontalScrollBarTouchPointID = touch.id;
 					return;
 				}
+				if(this._isScrolling)
+				{
+					return;
+				}
 				touch = event.getTouch(displayHorizontalScrollBar, TouchPhase.HOVER);
 				if(touch)
 				{
@@ -5761,6 +5765,10 @@ package feathers.controls
 				if(touch)
 				{
 					this._verticalScrollBarTouchPointID = touch.id;
+					return;
+				}
+				if(this._isScrolling)
+				{
 					return;
 				}
 				touch = event.getTouch(displayVerticalScrollBar, TouchPhase.HOVER);
