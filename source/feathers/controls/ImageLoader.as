@@ -1090,10 +1090,25 @@ package feathers.controls
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
 					newWidth = this._currentTextureWidth * this._textureScale;
-					if(this._maintainAspectRatio && !needsHeight)
+					if(this._maintainAspectRatio)
 					{
-						var heightScale:Number = this.explicitHeight / (this._currentTextureHeight * this._textureScale);
-						newWidth *= heightScale;
+						var heightScale:Number = 1;
+						if(!needsHeight)
+						{
+							heightScale = this.explicitHeight / (this._currentTextureHeight * this._textureScale);
+						}
+						else if(this._maxHeight < this._currentTextureHeight)
+						{
+							heightScale = this._maxHeight / (this._currentTextureHeight * this._textureScale);
+						}
+						else if(this._minHeight > this._currentTextureHeight)
+						{
+							heightScale = this._minHeight / (this._currentTextureHeight * this._textureScale);
+						}
+						if(heightScale !== 1)
+						{
+							newWidth *= heightScale;
+						}
 					}
 				}
 				else
@@ -1109,10 +1124,25 @@ package feathers.controls
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
 					newHeight = this._currentTextureHeight * this._textureScale;
-					if(this._maintainAspectRatio && !needsWidth)
+					if(this._maintainAspectRatio)
 					{
-						var widthScale:Number = this.explicitWidth / (this._currentTextureWidth * this._textureScale);
-						newHeight *= widthScale;
+						var widthScale:Number = 1;
+						if(!needsWidth)
+						{
+							widthScale = this.explicitWidth / (this._currentTextureWidth * this._textureScale);
+						}
+						else if(this._maxWidth < this._currentTextureWidth)
+						{
+							widthScale = this._maxWidth / (this._currentTextureWidth * this._textureScale);
+						}
+						else if(this._minWidth > this._currentTextureWidth)
+						{
+							widthScale = this._minWidth / (this._currentTextureWidth * this._textureScale);
+						}
+						if(widthScale !== 1)
+						{
+							newHeight *= widthScale;
+						}
 					}
 				}
 				else
