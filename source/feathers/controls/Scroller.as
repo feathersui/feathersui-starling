@@ -308,8 +308,8 @@ package feathers.controls
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
-		 * The scroll bars appear above the scroller's view port, and fade out
-		 * when not in use.
+		 * The scroll bars appear above the scroller's view port, overlapping
+		 * the content, and they fade out when not in use.
 		 *
 		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
@@ -322,6 +322,14 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * The scroll bars appear above the scroller's view port, overlapping
+		 * the content, but they do not fade out when not in use.
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
 
 		/**
 		 * The scroll bars are never visible.
@@ -2107,6 +2115,7 @@ package feathers.controls
 		 *
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FLOAT
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED
+		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT
 		 * @see #SCROLL_BAR_DISPLAY_MODE_NONE
 		 */
 		public function get scrollBarDisplayMode():String
@@ -5137,7 +5146,12 @@ package feathers.controls
 		 */
 		protected function handlePendingRevealScrollBars():void
 		{
-			if(!this.isScrollBarRevealPending || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			if(!this.isScrollBarRevealPending)
+			{
+				return;
+			}
+			this.isScrollBarRevealPending = false;
+			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT)
 			{
 				return;
 			}
