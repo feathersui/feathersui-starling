@@ -944,6 +944,14 @@ package feathers.controls
 				this.track.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 				this.addChild(this.track);
 			}
+			if(this._value < this._minimum)
+			{
+				this.value = this._minimum;
+			}
+			else if(this._value > this._maximum)
+			{
+				this.value = this._maximum;
+			}
 		}
 
 		/**
