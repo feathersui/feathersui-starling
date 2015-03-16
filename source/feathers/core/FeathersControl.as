@@ -438,6 +438,11 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _isInitializing:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isInitialized:Boolean = false;
 
 		/**
@@ -1674,6 +1679,12 @@ package feathers.core
 			}
 			if(!this._isInitialized)
 			{
+				if(this._isInitializing)
+				{
+					//initializing components cannot validate until they've
+					//finished initializing. we'll have to wait.
+					return;
+				}
 				this.initializeInternal();
 			}
 			if(!this.isInvalid())
@@ -2039,12 +2050,14 @@ package feathers.core
 		 */
 		protected function initializeInternal():void
 		{
-			if(this._isInitialized)
+			if(this._isInitialized || this._isInitializing)
 			{
 				return;
 			}
+			this._isInitializing = true;
 			this.initialize();
 			this.invalidate(); //invalidate everything
+			this._isInitializing = false;
 			this._isInitialized = true;
 			this.dispatchEventWith(FeathersEventType.INITIALIZE);
 
