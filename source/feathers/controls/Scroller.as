@@ -1873,6 +1873,10 @@ package feathers.controls
 				return;
 			}
 			this._clipContent = value;
+			if(!value && this._viewPort)
+			{
+				this._viewPort.clipRect = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
 
@@ -4266,34 +4270,31 @@ package feathers.controls
 		{
 			var hasElasticEdgesAndTouch:Boolean = this._hasElasticEdges && (this._interactionMode == INTERACTION_MODE_TOUCH || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS);
 			var contentIsLargeEnoughToScroll:Boolean = this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition || this._maxVerticalScrollPosition != this._minVerticalScrollPosition;
-			if(this._clipContent && (hasElasticEdgesAndTouch || contentIsLargeEnoughToScroll))
+			if(!this._clipContent || (!hasElasticEdgesAndTouch && !contentIsLargeEnoughToScroll))
 			{
-				if(!this._viewPort.clipRect)
-				{
-					this._viewPort.clipRect = new Rectangle();
-				}
+				return;
+			}
 
-				var clipRect:Rectangle = this._viewPort.clipRect;
-				clipRect.x = this._horizontalScrollPosition;
-				clipRect.y = this._verticalScrollPosition;
-				var clipWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-				if(clipWidth < 0)
-				{
-					clipWidth = 0;
-				}
-				clipRect.width = clipWidth;
-				var clipHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
-				if(clipHeight < 0)
-				{
-					clipHeight = 0;
-				}
-				clipRect.height = clipHeight;
-				this._viewPort.clipRect = clipRect;
-			}
-			else
+			var clipRect:Rectangle = this._viewPort.clipRect;
+			if(!clipRect)
 			{
-				this._viewPort.clipRect = null;
+				clipRect = new Rectangle();
 			}
+			clipRect.x = this._horizontalScrollPosition;
+			clipRect.y = this._verticalScrollPosition;
+			var clipWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+			if(clipWidth < 0)
+			{
+				clipWidth = 0;
+			}
+			clipRect.width = clipWidth;
+			var clipHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+			if(clipHeight < 0)
+			{
+				clipHeight = 0;
+			}
+			clipRect.height = clipHeight;
+			this._viewPort.clipRect = clipRect;
 		}
 
 		/**
