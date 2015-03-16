@@ -627,8 +627,9 @@ package feathers.controls
 		{
 			var oldBypass:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
-			return super.getChildIndex(child);
+			var index:int = super.getChildIndex(child);
 			this.displayListBypassEnabled = oldBypass;
+			return index;
 		}
 
 		/**
