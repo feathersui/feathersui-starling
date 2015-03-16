@@ -1652,6 +1652,21 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _touchValue:Number;
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			if(this._value < this._minimum)
+			{
+				this.value = this._minimum;
+			}
+			else if(this._value > this._maximum)
+			{
+				this.value = this._maximum;
+			}
+		}
 		
 		/**
 		 * @private

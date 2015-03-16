@@ -2118,6 +2118,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function initialize():void
+		{
+			if(this._value < this._minimum)
+			{
+				this.value = this._minimum;
+			}
+			else if(this._value > this._maximum)
+			{
+				this.value = this._maximum;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
