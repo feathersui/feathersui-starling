@@ -2450,6 +2450,10 @@ package feathers.controls.supportClasses
 			var groupCount:int = this._dataProvider.getLength();
 			for(var i:int = 0; i < groupCount; i++)
 			{
+				if(itemIndex < 0 && groupIndex == i)
+				{
+					return displayIndex;
+				}
 				var group:Object = this._dataProvider.getItemAt(i);
 				var header:Object = this._owner.groupToHeaderData(group);
 				if(header)
