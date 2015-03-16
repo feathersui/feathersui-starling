@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/16.0">
+<application xmlns="http://ns.adobe.com/air/application/17.0">
 	<id>com.feathersui.examples.DisplayObjectExplorer</id>
 	<filename>Display Objects</filename>
 	<name>Display Objects</name>
