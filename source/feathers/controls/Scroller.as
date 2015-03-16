@@ -5212,9 +5212,18 @@ package feathers.controls
 		 */
 		protected function horizontalScrollBar_beginInteractionHandler(event:Event):void
 		{
+			if(this._horizontalAutoScrollTween)
+			{
+				Starling.juggler.remove(this._horizontalAutoScrollTween);
+				this._horizontalAutoScrollTween = null;
+			}
+			this._isDraggingHorizontally = false;
 			this._horizontalScrollBarIsScrolling = true;
 			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-			this.startScroll();
+			if(!this._isScrolling)
+			{
+				this.startScroll();
+			}
 		}
 
 		/**
@@ -5232,9 +5241,18 @@ package feathers.controls
 		 */
 		protected function verticalScrollBar_beginInteractionHandler(event:Event):void
 		{
+			if(this._verticalAutoScrollTween)
+			{
+				Starling.juggler.remove(this._verticalAutoScrollTween);
+				this._verticalAutoScrollTween = null;
+			}
+			this._isDraggingVertically = false;
 			this._verticalScrollBarIsScrolling = true;
 			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-			this.startScroll();
+			if(!this._isScrolling)
+			{
+				this.startScroll();
+			}
 		}
 
 		/**
