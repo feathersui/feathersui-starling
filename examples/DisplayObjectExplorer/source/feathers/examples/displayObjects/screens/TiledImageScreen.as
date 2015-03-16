@@ -60,7 +60,7 @@ package feathers.examples.displayObjects.screens
 			
 			this.title = "Tiled Image";
 			
-			this._texture = Texture.fromEmbeddedAsset(TILE_TEXTURE);
+			this._texture = Texture.fromEmbeddedAsset(TILE_TEXTURE, false);
 
 			this._image = new TiledImage(this._texture);
 			this._minDisplayObjectWidth = this._image.width;
