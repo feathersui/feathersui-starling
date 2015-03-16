@@ -258,6 +258,10 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._clipContent = value;
+			if(!value)
+			{
+				this.clipRect = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -434,21 +438,7 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid || sizeInvalid)
 			{
-				if(this._clipContent)
-				{
-					var clipRect:Rectangle = this.clipRect;
-					if(!clipRect)
-					{
-						clipRect = new Rectangle();
-					}
-					clipRect.width = this.actualWidth;
-					clipRect.height = this.actualHeight;
-					this.clipRect = clipRect;
-				}
-				else
-				{
-					this.clipRect = null;
-				}
+				this.refreshClipRect();
 			}
 		}
 
@@ -522,6 +512,25 @@ package feathers.controls.supportClasses
 				throw new ArgumentError("Screen with id '" + id + "' already defined. Cannot add two screens with the same id.");
 			}
 			this._screens[id] = item;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshClipRect():void
+		{
+			if(!this._clipContent)
+			{
+				return;
+			}
+			var clipRect:Rectangle = this.clipRect;
+			if(!clipRect)
+			{
+				clipRect = new Rectangle();
+			}
+			clipRect.width = this.actualWidth;
+			clipRect.height = this.actualHeight;
+			this.clipRect = clipRect;
 		}
 
 		/**

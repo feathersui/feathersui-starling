@@ -276,6 +276,10 @@ package feathers.controls
 				return;
 			}
 			this._clipContent = value;
+			if(!value)
+			{
+				this.clipRect = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
 
@@ -850,24 +854,21 @@ package feathers.controls
 		 */
 		protected function refreshClipRect():void
 		{
-			if(this._clipContent)
+			if(!this._clipContent)
 			{
-				if(!this.clipRect)
-				{
-					this.clipRect = new Rectangle();
-				}
+				return;
+			}
 
-				var clipRect:Rectangle = this.clipRect;
-				clipRect.x = 0;
-				clipRect.y = 0;
-				clipRect.width = this.actualWidth;
-				clipRect.height = this.actualHeight;
-				this.clipRect = clipRect;
-			}
-			else
+			var clipRect:Rectangle = this.clipRect;
+			if(!clipRect)
 			{
-				this.clipRect = null;
+				clipRect = new Rectangle();
 			}
+			clipRect.x = 0;
+			clipRect.y = 0;
+			clipRect.width = this.actualWidth;
+			clipRect.height = this.actualHeight;
+			this.clipRect = clipRect;
 		}
 
 		/**
