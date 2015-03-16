@@ -3536,7 +3536,6 @@ package feathers.controls
 					this._horizontalScrollBarHideTween = null;
 				}
 				this.horizontalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
-				this.horizontalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS;
 			}
 			if(this.verticalScrollBar)
 			{
@@ -3551,7 +3550,6 @@ package feathers.controls
 					this._verticalScrollBarHideTween = null;
 				}
 				this.verticalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
-				this.verticalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS;
 			}
 		}
 
@@ -4015,12 +4013,14 @@ package feathers.controls
 			var childCount:int = this.numRawChildrenInternal;
 			if(this.verticalScrollBar)
 			{
-				this.verticalScrollBar.visible = !isFixed || this._hasVerticalScrollBar;
+				this.verticalScrollBar.visible = this._hasVerticalScrollBar;
+				this.verticalScrollBar.touchable = this._hasVerticalScrollBar && this._interactionMode != INTERACTION_MODE_TOUCH;
 				this.setRawChildIndexInternal(DisplayObject(this.verticalScrollBar), childCount - 1);
 			}
 			if(this.horizontalScrollBar)
 			{
-				this.horizontalScrollBar.visible = !isFixed || this._hasHorizontalScrollBar;
+				this.horizontalScrollBar.visible = this._hasHorizontalScrollBar;
+				this.horizontalScrollBar.touchable = this._hasHorizontalScrollBar && this._interactionMode != INTERACTION_MODE_TOUCH;
 				if(this.verticalScrollBar)
 				{
 					this.setRawChildIndexInternal(DisplayObject(this.horizontalScrollBar), childCount - 2);
@@ -4063,7 +4063,10 @@ package feathers.controls
 						this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
 				{
 					this._hasHorizontalScrollBar = true;
-					this._bottomViewPortOffset += this.horizontalScrollBar.height;
+					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+					{
+						this._bottomViewPortOffset += this.horizontalScrollBar.height;
+					}
 				}
 				else
 				{
@@ -4090,13 +4093,16 @@ package feathers.controls
 						this._verticalScrollPolicy != SCROLL_POLICY_OFF))
 				{
 					this._hasVerticalScrollBar = true;
-					if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
 					{
-						this._leftViewPortOffset += this.verticalScrollBar.width;
-					}
-					else
-					{
-						this._rightViewPortOffset += this.verticalScrollBar.width;
+						if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+						{
+							this._leftViewPortOffset += this.verticalScrollBar.width;
+						}
+						else
+						{
+							this._rightViewPortOffset += this.verticalScrollBar.width;
+						}
 					}
 				}
 				else
@@ -4122,21 +4128,15 @@ package feathers.controls
 			this._rightViewPortOffset = this._paddingRight;
 			this._bottomViewPortOffset = this._paddingBottom;
 			this._leftViewPortOffset = this._paddingLeft;
-			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			this.calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars, useActualBounds);
+			this.calculateViewPortOffsetsForFixedVerticalScrollBar(forceScrollBars, useActualBounds);
+			//we need to double check the horizontal scroll bar if the scroll
+			//bars are fixed because adding a vertical scroll bar may require a
+			//horizontal one too.
+			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED &&
+				this._hasVerticalScrollBar && !this._hasHorizontalScrollBar)
 			{
 				this.calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars, useActualBounds);
-				this.calculateViewPortOffsetsForFixedVerticalScrollBar(forceScrollBars, useActualBounds);
-				//we need to double check the horizontal scroll bar because
-				//adding a vertical scroll bar may require a horizontal one too.
-				if(this._hasVerticalScrollBar && !this._hasHorizontalScrollBar)
-				{
-					this.calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars, useActualBounds);
-				}
-			}
-			else
-			{
-				this._hasHorizontalScrollBar = this._isDraggingHorizontally || this._horizontalAutoScrollTween;
-				this._hasVerticalScrollBar = this._isDraggingVertically || this._verticalAutoScrollTween;
 			}
 		}
 
