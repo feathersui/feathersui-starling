@@ -1473,9 +1473,13 @@ package feathers.controls.text
 			var texture:Texture = snapshot.texture;
 			texture.root.onRestore = function():void
 			{
+				var scaleFactor:Number = Starling.contentScaleFactor;
+				HELPER_MATRIX.identity();
+				HELPER_MATRIX.scale(scaleFactor, scaleFactor);
 				var bitmapData:BitmapData = self.drawTextFieldRegionToBitmapData(
-					snapshot.x, snapshot.y, snapshot.width, snapshot.height);
+					snapshot.x, snapshot.y, texture.nativeWidth, texture.nativeHeight);
 				texture.root.uploadBitmapData(bitmapData);
+				bitmapData.dispose();
 			};
 		}
 
