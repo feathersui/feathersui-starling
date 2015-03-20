@@ -895,7 +895,9 @@ package feathers.controls.text
 			{
 				this.positionSnapshot();
 			}
-			if(this.textField)
+			//we'll skip this if the text field isn't visible to avoid running
+			//that code every frame.
+			if(this.textField && this.textField.visible)
 			{
 				this.transformTextField();
 			}
@@ -1361,10 +1363,13 @@ package feathers.controls.text
 		 */
 		protected function transformTextField():void
 		{
-			if(!this.textField.visible)
-			{
-				return;
-			}
+			//there used to be some code here that returned immediately if the
+			//TextField wasn't visible. some mobile devices displayed the text
+			//at the wrong scale if the TextField weren't transformed before
+			//being made visible, so I had to remove it. I moved the visible
+			//check into render(), since it can still benefit from the
+			//optimization there. see issue #1104.
+			
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
