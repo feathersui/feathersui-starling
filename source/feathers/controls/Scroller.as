@@ -4277,13 +4277,10 @@ package feathers.controls
 		 */
 		protected function refreshClipRect():void
 		{
-			var hasElasticEdgesAndTouch:Boolean = this._hasElasticEdges && (this._interactionMode == INTERACTION_MODE_TOUCH || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS);
-			var contentIsLargeEnoughToScroll:Boolean = this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition || this._maxVerticalScrollPosition != this._minVerticalScrollPosition;
-			if(!this._clipContent || (!hasElasticEdgesAndTouch && !contentIsLargeEnoughToScroll))
+			if(!this._clipContent)
 			{
 				return;
 			}
-
 			var clipRect:Rectangle = this._viewPort.clipRect;
 			if(!clipRect)
 			{
