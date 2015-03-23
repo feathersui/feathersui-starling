@@ -1,4 +1,4 @@
-# Feathers 2.2 PRERELEASE
+# Feathers 2.2 PRERELEASE [![Build Status](https://travis-ci.org/joshtynjala/feathers.svg?branch=master)](https://travis-ci.org/joshtynjala/feathers)
 
 ---
 
