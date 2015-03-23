@@ -1,0 +1,29 @@
+git: 
+  depth: 10
+
+language: objective-c
+
+before_script:
+  # brew
+  - brew update > /dev/null
+  - brew tap homebrew/binary
+  - brew install ant adobe-air-sdk pandoc > /dev/null
+  - brew install caskroom/cask/brew-cask
+  - brew cask install flash-player-debugger
+  # air
+  - mkdir -p /usr/local/opt/adobe-air-sdk/libexec/frameworks/libs/player/11.1/
+  - wget -O playerglobal.swc http://download.macromedia.com/get/flashplayer/updaters/17/playerglobal17_0.swc
+  - cp -f playerglobal.swc /usr/local/opt/adobe-air-sdk/libexec/frameworks/libs/player/11.1/
+  - export AIR_HOME="/usr/local/opt/adobe-air-sdk/libexec"
+  # starling
+  - git clone git://github.com/Gamua/Starling-Framework.git --depth 1
+  - mkdir -p third-party/starling
+  - cp -r Starling-Framework/starling/src/* third-party/starling
+  # flexunit
+  - wget -O flexunit.zip http://mirrors.gigenet.com/apache/flex/flexunit/4.2.0/binaries/apache-flex-flexunit-4.2.0-4.12.0-bin.zip
+  - unzip -q flexunit.zip
+  - mkdir -p third-party/flexunit
+  - cp flexunit/* third-party/flexunit/
+
+script:
+  - ant full -Dairsdk.root="$AIR_HOME" -Dflashplayer="$HOME/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger"
