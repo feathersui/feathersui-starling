@@ -587,6 +587,53 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _customMessageStyleName:String;
+
+		/**
+		 * A style name to add to the alert's message text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different alerts.
+		 *
+		 * <p>In the following example, a custom message style name is passed
+		 * to the alert:</p>
+		 *
+		 * <listing version="3.0">
+		 * alert.customMessageStyleName = "my-custom-button-group";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-message", setCustomMessageStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_MESSAGE
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #messageFactory
+		 * @see #messageProperties
+		 */
+		public function get customMessageStyleName():String
+		{
+			return this._customMessageStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMessageStyleName(value:String):void
+		{
+			if(this._customMessageStyleName == value)
+			{
+				return;
+			}
+			this._customMessageStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
 		 * A function used to generate the alerts's button group sub-component.
 		 * The button group must be an instance of <code>ButtonGroup</code>.
 		 * This factory can be used to change properties on the button group
@@ -935,8 +982,9 @@ package feathers.controls
 
 			var factory:Function = this._messageFactory != null ? this._messageFactory : FeathersControl.defaultTextRendererFactory;
 			this.messageTextRenderer = ITextRenderer(factory());
+			var messageStyleName:String = this._customMessageStyleName != null ? this._customMessageStyleName : this.messageStyleName;
 			var uiTextRenderer:IFeathersControl = IFeathersControl(this.messageTextRenderer);
-			uiTextRenderer.styleNameList.add(this.messageName);
+			uiTextRenderer.styleNameList.add(messageStyleName);
 			uiTextRenderer.touchable = false;
 			this.addChild(DisplayObject(this.messageTextRenderer));
 		}
