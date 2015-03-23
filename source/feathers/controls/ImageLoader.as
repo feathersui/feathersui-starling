@@ -90,7 +90,23 @@ package feathers.controls
 	[Event(name="progress",type="starling.events.Event")]
 
 	/**
-	 * Dispatched if an error occurs while loading the source content.
+	 * DEPRECATED: Replaced by <code>Event.IO_ERROR</code> and
+	 * <code>Event.SECURITY_ERROR</code>.
+	 *
+	 * <p><strong>DEPRECATION WARNING:</strong> This event is deprecated
+	 * starting with Feathers 2.2. It will be removed in a future version of
+	 * Feathers according to the standard
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+	 *
+	 * @eventType feathers.events.FeathersEventType.ERROR
+	 * 
+	 * @see #event:ioError
+	 * @see #event:securityError
+	 */
+	[Event(name="error",type="starling.events.Event")]
+
+	/**
+	 * Dispatched if an IO error occurs while loading the source content.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -100,7 +116,7 @@ package feathers.controls
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The <code>flash.events.ErrorEvent</code>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.IOErrorEvent</code>
 	 *   dispatched by the loader.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
@@ -108,9 +124,32 @@ package feathers.controls
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
-	 * @eventType feathers.events.FeathersEventType.ERROR
+	 * @eventType starling.events.Event.IO_ERROR
 	 */
-	[Event(name="error",type="starling.events.Event")]
+	[Event(name="ioError",type="starling.events.Event")]
+
+	/**
+	 * Dispatched if a security error occurs while loading the source content.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.SecurityErrorEvent</code>
+	 *   dispatched by the loader.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.SECURITY_ERROR
+	 */
+	[Event(name="securityError",type="starling.events.Event")]
 
 	/**
 	 * Displays an image, either from an existing <code>Texture</code> object or
@@ -1015,8 +1054,8 @@ package feathers.controls
 			if(this.loader)
 			{
 				this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-				this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-				this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+				this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+				this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 				try
 				{
 					this.loader.close();
@@ -1180,8 +1219,8 @@ package feathers.controls
 					if(this.urlLoader)
 					{
 						this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-						this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
-						this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+						this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
+						this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
 						try
 						{
 							this.urlLoader.close();
@@ -1195,8 +1234,8 @@ package feathers.controls
 					if(this.loader)
 					{
 						this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-						this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-						this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+						this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+						this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 						try
 						{
 							this.loader.close();
@@ -1220,8 +1259,8 @@ package feathers.controls
 						}
 						this.urlLoader.addEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
 						this.urlLoader.addEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-						this.urlLoader.addEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
-						this.urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+						this.urlLoader.addEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
+						this.urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
 						this.urlLoader.load(new URLRequest(sourceURL));
 						return;
 					}
@@ -1237,8 +1276,8 @@ package feathers.controls
 						}
 						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 						this.loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
-						this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-						this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+						this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+						this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 						this.loader.load(new URLRequest(sourceURL), LOADER_CONTEXT);
 					}
 				}
@@ -1638,8 +1677,8 @@ package feathers.controls
 		{
 			var bitmap:Bitmap = Bitmap(this.loader.content);
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 			this.loader = null;
 
 			this.cleanupTexture();
@@ -1669,16 +1708,33 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function loader_errorHandler(event:ErrorEvent):void
+		protected function loader_ioErrorHandler(event:IOErrorEvent):void
 		{
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 			this.loader = null;
 
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(feathers.events.FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(starling.events.Event.IO_ERROR, false, event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function loader_securityErrorHandler(event:SecurityErrorEvent):void
+		{
+			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
+			this.loader = null;
+
+			this.cleanupTexture();
+			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.dispatchEventWith(feathers.events.FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(starling.events.Event.SECURITY_ERROR, false, event);
 		}
 
 		/**
@@ -1689,8 +1745,8 @@ package feathers.controls
 			var rawData:ByteArray = ByteArray(this.urlLoader.data);
 			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
 			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
+			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
 			this.urlLoader = null;
 
 			this.cleanupTexture();
@@ -1719,17 +1775,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function rawDataLoader_errorHandler(event:ErrorEvent):void
+		protected function rawDataLoader_ioErrorHandler(event:ErrorEvent):void
 		{
 			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
 			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
+			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
 			this.urlLoader = null;
 
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(starling.events.Event.IO_ERROR, false, event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function rawDataLoader_securityErrorHandler(event:ErrorEvent):void
+		{
+			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
+			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
+			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
+			this.urlLoader = null;
+
+			this.cleanupTexture();
+			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(starling.events.Event.SECURITY_ERROR, false, event);
 		}
 	}
 }
