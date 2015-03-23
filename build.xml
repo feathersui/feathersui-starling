@@ -423,6 +423,7 @@
 			<arg value="TestFeathers.as"/>
 		</java>
 		<flexunit
+			command="${flashplayer}"
 			player="flash"
 			swf="${dependency.output}/TestFeathers.swf"
 			haltonfailure="true"
