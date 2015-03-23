@@ -639,6 +639,12 @@ package feathers.controls.text
 				{
 					this.selectRange(newIndex, newIndex);
 				}
+				else
+				{
+					//the cursor may not have been positioned yet, so make sure
+					//that happens.
+					this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
+				}
 				this.focusIn();
 			}
 			else
@@ -695,12 +701,7 @@ package feathers.controls.text
 				this._cursorSkin.visible = false;
 				this._selectionSkin.visible = true;
 			}
-			var cursorIndex:int = endIndex;
-			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == endIndex)
-			{
-				cursorIndex = beginIndex;
-			}
-			this.positionCursorAtCharIndex(cursorIndex);
+			this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
 			this.positionSelectionBackground();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -902,6 +903,19 @@ package feathers.controls.text
 			{
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCursorIndexFromSelectionRange():int
+		{
+			var cursorIndex:int = this._selectionEndIndex;
+			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex)
+			{
+				cursorIndex = this._selectionBeginIndex;
+			}
+			return cursorIndex;
 		}
 
 		/**
