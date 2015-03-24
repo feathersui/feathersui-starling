@@ -4751,13 +4751,16 @@ package feathers.controls
 				}
 				else
 				{
+					//we need to use Math.round() on these values to avoid
+					//floating-point errors that could result in the values
+					//being rounded down too far.
 					if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY)
 					{
-						targetHorizontalPageIndex = snappedPageHorizontalScrollPosition / this.actualPageWidth;
+						targetHorizontalPageIndex = Math.round(snappedPageHorizontalScrollPosition / this.actualPageWidth);
 					}
 					else
 					{
-						targetHorizontalPageIndex = (snappedPageHorizontalScrollPosition - this._minHorizontalScrollPosition) / this.actualPageWidth;
+						targetHorizontalPageIndex = Math.round((snappedPageHorizontalScrollPosition - this._minHorizontalScrollPosition) / this.actualPageWidth);
 					}
 				}
 				this.throwToPage(targetHorizontalPageIndex, -1, this._pageThrowDuration);
@@ -4834,13 +4837,16 @@ package feathers.controls
 				}
 				else
 				{
+					//we need to use Math.round() on these values to avoid
+					//floating-point errors that could result in the values
+					//being rounded down too far.
 					if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY)
 					{
-						targetVerticalPageIndex = snappedPageVerticalScrollPosition / this.actualPageHeight;
+						targetVerticalPageIndex = Math.round(snappedPageVerticalScrollPosition / this.actualPageHeight);
 					}
 					else
 					{
-						targetVerticalPageIndex = (snappedPageVerticalScrollPosition - this._minVerticalScrollPosition) / this.actualPageHeight;
+						targetVerticalPageIndex = Math.round((snappedPageVerticalScrollPosition - this._minVerticalScrollPosition) / this.actualPageHeight);
 					}
 				}
 				this.throwToPage(-1, targetVerticalPageIndex, this._pageThrowDuration);
