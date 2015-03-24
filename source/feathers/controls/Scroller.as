@@ -484,6 +484,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const FUZZY_PAGE_SIZE_PADDING:Number = 0.000001;
+
+		/**
+		 * @private
+		 */
 		protected static function defaultScrollBarFactory():IScrollBar
 		{
 			return new SimpleScrollBar();
@@ -3884,6 +3889,13 @@ package feathers.controls
 				else
 				{
 					this._minHorizontalPageIndex = 0;
+					//floating point errors could result in the max page index
+					//being 1 larger than it should be.
+					var roundedDownRange:Number = roundDownToNearest(horizontalScrollRange, this.actualPageWidth);
+					if((horizontalScrollRange - roundedDownRange) < FUZZY_PAGE_SIZE_PADDING)
+					{
+						horizontalScrollRange = roundedDownRange;
+					}
 					this._maxHorizontalPageIndex = Math.ceil(horizontalScrollRange / this.actualPageWidth);
 				}
 
@@ -3905,6 +3917,13 @@ package feathers.controls
 				else
 				{
 					this._minVerticalPageIndex = 0;
+					//floating point errors could result in the max page index
+					//being 1 larger than it should be.
+					roundedDownRange = roundDownToNearest(verticalScrollRange, this.actualPageHeight);
+					if((verticalScrollRange - roundedDownRange) < FUZZY_PAGE_SIZE_PADDING)
+					{
+						verticalScrollRange = roundedDownRange;
+					}
 					this._maxVerticalPageIndex = Math.ceil(verticalScrollRange / this.actualPageHeight);
 				}
 			}
