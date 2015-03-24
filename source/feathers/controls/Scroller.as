@@ -3964,7 +3964,19 @@ package feathers.controls
 					else
 					{
 						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
-						this._horizontalPageIndex = Math.floor(adjustedHorizontalScrollPosition / this.actualPageWidth);
+						var unroundedPageIndex:Number = adjustedHorizontalScrollPosition / this.actualPageWidth;
+						var nextPageIndex:int = Math.ceil(unroundedPageIndex);
+						if(unroundedPageIndex != nextPageIndex && (nextPageIndex - unroundedPageIndex) < FUZZY_PAGE_SIZE_PADDING)
+						{
+							//we almost always want to round down, but a
+							//floating point math error may result in the page
+							//index being 1 too small in rare cases.
+							this._horizontalPageIndex = nextPageIndex;
+						}
+						else
+						{
+							this._horizontalPageIndex = Math.floor(unroundedPageIndex);
+						}
 					}
 				}
 				else
@@ -4003,7 +4015,19 @@ package feathers.controls
 					else
 					{
 						var adjustedVerticalScrollPosition:Number = this._verticalScrollPosition - this._minVerticalScrollPosition;
-						this._verticalPageIndex = Math.floor(adjustedVerticalScrollPosition / this.actualPageHeight);
+						unroundedPageIndex = adjustedVerticalScrollPosition / this.actualPageHeight;
+						nextPageIndex = Math.ceil(unroundedPageIndex);
+						if(unroundedPageIndex != nextPageIndex && (nextPageIndex - unroundedPageIndex) < FUZZY_PAGE_SIZE_PADDING)
+						{
+							//we almost always want to round down, but a
+							//floating point math error may result in the page
+							//index being 1 too small in rare cases.
+							this._verticalPageIndex = nextPageIndex;
+						}
+						else
+						{
+							this._verticalPageIndex = Math.floor(unroundedPageIndex);
+						}
 					}
 				}
 				else
