@@ -46,6 +46,11 @@ package feathers.controls.popups
 	public class DropDownPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
 		/**
+		 * @private
+		 */
+		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
+		
+		/**
 		 * Constructor.
 		 */
 		public function DropDownPopUpContentManager()
@@ -92,6 +97,16 @@ package feathers.controls.popups
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _lastGlobalX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _lastGlobalY:Number;
+
+		/**
 		 * @inheritDoc
 		 */
 		public function open(content:DisplayObject, source:DisplayObject):void
@@ -113,6 +128,7 @@ package feathers.controls.popups
 			var stage:Stage = Starling.current.stage;
 			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			stage.addEventListener(Event.ENTER_FRAME, stage_enterFrameHandler);
 
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
@@ -136,6 +152,7 @@ package feathers.controls.popups
 			var stage:Stage = Starling.current.stage;
 			stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			stage.removeEventListener(Event.ENTER_FRAME, stage_enterFrameHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(content is IFeathersControl)
 			{
@@ -164,6 +181,8 @@ package feathers.controls.popups
 		{
 			var stage:Stage = Starling.current.stage;
 			var globalOrigin:Rectangle = this.source.getBounds(stage);
+			this._lastGlobalX = globalOrigin.x;
+			this._lastGlobalY = globalOrigin.y;
 
 			if(this.source is IValidating)
 			{
@@ -287,6 +306,18 @@ package feathers.controls.popups
 		protected function content_resizeHandler(event:Event):void
 		{
 			this.layout();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_enterFrameHandler(event:Event):void
+		{
+			this.source.getBounds(Starling.current.stage, HELPER_RECTANGLE);
+			if(HELPER_RECTANGLE.x != this._lastGlobalX || HELPER_RECTANGLE.y != this._lastGlobalY)
+			{
+				this.layout();
+			}
 		}
 
 		/**
