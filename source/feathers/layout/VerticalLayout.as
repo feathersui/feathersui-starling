@@ -1235,9 +1235,14 @@ package feathers.layout
 						}
 						case HORIZONTAL_ALIGN_CENTER:
 						{
-							//round to the nearest pixel when dividing by 2 to
-							//align in the center
-							item.x = item.pivotX + boundsX + this._paddingLeft + Math.round((availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
+							item.x = item.pivotX + boundsX + this._paddingLeft;
+							if (availableWidth > this._paddingLeft + this._paddingRight + item.width)
+							{
+								//round to the nearest pixel when dividing by 2 to
+								//align in the center
+								item.x += Math.round((availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
+							}
+
 							break;
 						}
 						default: //left
