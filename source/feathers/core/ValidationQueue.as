@@ -157,6 +157,11 @@ package feathers.core
 			while(this._queue.length > 0) //rechecking length after the shift
 			{
 				var item:IValidating = this._queue.shift();
+				if(item.depth < 0)
+				{
+					//skip items that are no longer on the display list
+					continue;
+				}
 				item.validate();
 			}
 			var temp:Vector.<IValidating> = this._queue;
