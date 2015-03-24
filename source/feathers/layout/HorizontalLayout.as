@@ -1223,23 +1223,21 @@ package feathers.layout
 					}
 					//handle all other vertical alignment values (we handled
 					//justify already). the y position of all items is set here.
+					var verticalAlignHeight:Number = availableHeight;
+					if(totalHeight > verticalAlignHeight)
+					{
+						verticalAlignHeight = totalHeight;
+					}
 					switch(this._verticalAlign)
 					{
 						case VERTICAL_ALIGN_BOTTOM:
 						{
-							item.y = item.pivotY + boundsY + availableHeight - this._paddingBottom - item.height;
+							item.y = item.pivotY + boundsY + verticalAlignHeight - this._paddingBottom - item.height;
 							break;
 						}
 						case VERTICAL_ALIGN_MIDDLE:
 						{
-							item.y = item.pivotY + boundsY + this._paddingTop;
-							if (availableHeight > this._paddingTop + this._paddingBottom + item.height)
-							{
-								//round to the nearest pixel when dividing by 2 to
-								//align in the middle
-								item.y += Math.round((availableHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
-							}
-							
+							item.y = item.pivotY + boundsY + this._paddingTop + Math.round((verticalAlignHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
 							break;
 						}
 						default: //top
