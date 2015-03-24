@@ -3615,6 +3615,12 @@ package feathers.controls
 			this._viewPort.visibleWidth = this.explicitWidth - horizontalWidthOffset;
 			this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
 			var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+			if(this.currentBackgroundSkin && this.currentBackgroundSkin.width > minVisibleWidth)
+			{
+				//to avoid going through the loop too many times, we need to
+				//account for the background skin's size.
+				minVisibleWidth = this.currentBackgroundSkin.width;
+			}
 			if(minVisibleWidth < 0)
 			{
 				minVisibleWidth = 0;
@@ -3622,6 +3628,11 @@ package feathers.controls
 			this._viewPort.minVisibleWidth = minVisibleWidth;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+			if(this.currentBackgroundSkin && this.currentBackgroundSkin.height > minVisibleHeight)
+			{
+				//see note above about the background skin size
+				minVisibleHeight = this.currentBackgroundSkin.height;
+			}
 			if(minVisibleHeight < 0)
 			{
 				minVisibleHeight = 0;
@@ -3654,6 +3665,12 @@ package feathers.controls
 				//if we didn't need to do any measurement, we would have skipped
 				//setting this stuff earlier, and now is the last chance
 				var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+				if(this.currentBackgroundSkin && this.currentBackgroundSkin.width > minVisibleWidth)
+				{
+					//to avoid going through the loop too many times, we need to
+					//account for the background skin's size
+					minVisibleWidth = this.currentBackgroundSkin.width;
+				}
 				if(minVisibleWidth < 0)
 				{
 					minVisibleWidth = 0;
@@ -3661,6 +3678,11 @@ package feathers.controls
 				this._viewPort.minVisibleWidth = minVisibleWidth;
 				this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 				var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+				if(this.currentBackgroundSkin && this.currentBackgroundSkin.height > minVisibleHeight)
+				{
+					//see note above about the background skin size
+					minVisibleHeight = this.currentBackgroundSkin.height;
+				}
 				if(minVisibleHeight < 0)
 				{
 					minVisibleHeight = 0;
