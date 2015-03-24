@@ -1234,7 +1234,12 @@ package feathers.layout
 						{
 							//round to the nearest pixel when dividing by 2 to
 							//align in the middle
-							item.y = item.pivotY + boundsY + this._paddingTop + Math.round((availableHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
+							item.y = item.pivotY + boundsY + this._paddingTop;
+							if (availableHeight > this._paddingTop + this._paddingBottom + item.height)
+							{
+								item.y += (availableHeight - this._paddingTop - this._paddingBottom - item.height) / 2;
+							}
+							
 							break;
 						}
 						default: //top
