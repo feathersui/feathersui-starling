@@ -753,18 +753,23 @@ package feathers.layout
 				{
 					//handle all other horizontal alignment values (we handled
 					//justify already). the x position of all items is set.
+					var horizontalAlignWidth:Number = availableWidth;
+					if(totalWidth > horizontalAlignWidth)
+					{
+						horizontalAlignWidth = totalWidth;
+					}
 					switch(this._horizontalAlign)
 					{
 						case HORIZONTAL_ALIGN_RIGHT:
 						{
-							item.x = item.pivotX + boundsX + availableWidth - this._paddingRight - item.width;
+							item.x = item.pivotX + boundsX + horizontalAlignWidth - this._paddingRight - item.width;
 							break;
 						}
 						case HORIZONTAL_ALIGN_CENTER:
 						{
 							//round to the nearest pixel when dividing by 2 to
 							//align in the center
-							item.x = item.pivotX + boundsX + this._paddingLeft + Math.round((availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
+							item.x = item.pivotX + boundsX + this._paddingLeft + Math.round((horizontalAlignWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
 							break;
 						}
 						default: //left
