@@ -233,7 +233,7 @@ Would you like to contribute a bug fix or new feature to Feathers? Please open a
 
 -   [Feathers Coding Conventions for Contributors](coding-conventions.html)
 
--   [List of Feathers Contributors](contributors.html)
+-   [List of Feathers Contributors](http://wiki.starling-framework.org/feathers/contributors)
 
 ### Extensions and Components
 
