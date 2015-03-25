@@ -660,6 +660,43 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private var _cacheAsBitmap:Boolean = true;
+
+		/**
+		 * If set to <code>true</code>, an internal bitmap representation of the
+		 * <code>TextField</code> on the classic display list is cached by the
+		 * runtime. This caching can increase performance.
+		 *
+		 * <p>In the following example, bitmap caching is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.cacheAsBitmap = false;</listing>
+		 *
+		 * @default true
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/DisplayObject.html#cacheAsBitmap Full description of flash.display.DisplayObject.cacheAsBitmap in Adobe's Flash Platform API Reference
+		 */
+		public function get cacheAsBitmap():Boolean
+		{
+			return this._cacheAsBitmap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set cacheAsBitmap(value:Boolean):void
+		{
+			if(this._cacheAsBitmap == value)
+			{
+				return;
+			}
+			this._cacheAsBitmap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _condenseWhite:Boolean = false;
 
 		/**
@@ -1075,6 +1112,7 @@ package feathers.controls
 				this.textViewPort.backgroundColor = this._backgroundColor;
 				this.textViewPort.border = this._border;
 				this.textViewPort.borderColor = this._borderColor;
+				this.textViewPort.cacheAsBitmap = this._cacheAsBitmap;
 				this.textViewPort.condenseWhite = this._condenseWhite;
 				this.textViewPort.displayAsPassword = this._displayAsPassword;
 				this.textViewPort.gridFitType = this._gridFitType;
