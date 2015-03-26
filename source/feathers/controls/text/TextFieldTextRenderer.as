@@ -983,6 +983,44 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _useSnapshotDelayWorkaround:Boolean = false;
+
+		/**
+		 * Fixes an issue where <code>flash.text.TextField</code> renders
+		 * incorrectly when drawn to <code>BitmapData</code> by waiting one
+		 * frame.
+		 *
+		 * <p>Warning: enabling this workaround may cause slight flickering
+		 * after the <code>text</code> property is changed.</p>
+		 *
+		 * <p>In the following example, the workaround is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.useSnapshotDelayWorkaround = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get useSnapshotDelayWorkaround():Boolean
+		{
+			return this._useSnapshotDelayWorkaround;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useSnapshotDelayWorkaround(value:Boolean):void
+		{
+			if(this._useSnapshotDelayWorkaround == value)
+			{
+				return;
+			}
+			this._useSnapshotDelayWorkaround = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this.textSnapshot)
@@ -1381,9 +1419,16 @@ package feathers.controls.text
 				var hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
-					//we need to wait a frame for the TextField to render
-					//properly. sometimes two, and this is a known issue.
-					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+					if(this._useSnapshotDelayWorkaround)
+					{
+						//we need to wait a frame for the TextField to render
+						//properly. sometimes two, and this is a known issue.
+						this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+					}
+					else
+					{
+						this.refreshSnapshot();
+					}
 				}
 				if(this.textSnapshot)
 				{
