@@ -1926,6 +1926,13 @@ package feathers.layout
 						}
 					}
 					layoutItem.width = itemWidth;
+					if(layoutItem is IValidating)
+					{
+						//changing the width of the item may cause its height
+						//to change, so we need to validate. the height is
+						//needed for measurement.
+						IValidating(layoutItem).validate();
+					}
 				}
 			}
 			while(needsAnotherPass)
