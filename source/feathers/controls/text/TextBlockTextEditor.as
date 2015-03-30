@@ -1070,7 +1070,7 @@ package feathers.controls.text
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(!this._isEnabled || !this._isEditable || this.touchPointID >= 0)
+			if(!this._isEnabled || !this._isEditable || this.touchPointID >= 0 || event.isDefaultPrevented())
 			{
 				return;
 			}
@@ -1229,8 +1229,10 @@ package feathers.controls.text
 						this.text = currentValue.substr(0, this._selectionBeginIndex - 1) + currentValue.substr(this._selectionEndIndex);
 					}
 				}
-				else if(charCode >= 32 && !event.ctrlKey && !event.altKey) //ignore control characters
+				else if(charCode >= 32 && !event.ctrlKey) //ignore keyboard shortcuts
 				{
+					//alt key needs to be allowed here because it is used to
+					//enter non-ASCII characters
 					if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
 					{
 						this.replaceSelectedText(String.fromCharCode(charCode));
