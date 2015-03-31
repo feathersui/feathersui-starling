@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FocusManager;
+	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.text.TextInputNavigation;
@@ -16,8 +17,10 @@ package feathers.controls.text
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
 	import flash.display.InteractiveObject;
+	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.TextEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
@@ -133,7 +136,7 @@ package feathers.controls.text
 	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
 	 */
-	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor
+	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor, INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -556,40 +559,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _nativeFocus:InteractiveObject;
+		protected var _nativeFocus:Sprite;
 
 		/**
-		 * @private
+		 * @copy feathers.core.INativeFocusOwner#nativeFocus
 		 */
-		protected function get nativeFocus():InteractiveObject
+		public function get nativeFocus():InteractiveObject
 		{
 			return this._nativeFocus;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set nativeFocus(value:InteractiveObject):void
-		{
-			if(this._nativeFocus == value)
-			{
-				return;
-			}
-			if(this._nativeFocus)
-			{
-				this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
-				this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
-				this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
-				this._nativeFocus.removeEventListener(flash.events.Event.SELECT_ALL, nativeStage_selectAllHandler);
-			}
-			this._nativeFocus = value;
-			if(this._nativeFocus)
-			{
-				this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
-				this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
-				this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
-				this._nativeFocus.addEventListener(flash.events.Event.SELECT_ALL, nativeStage_selectAllHandler, false, 0, true);
-			}
 		}
 
 		/**
@@ -607,8 +584,12 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this.isCreated)
+			if(this._nativeFocus)
 			{
+				if(!this._nativeFocus.parent)
+				{
+					Starling.current.nativeStage.addChild(this._nativeFocus);
+				}
 				var newIndex:int = -1;
 				if(position)
 				{
@@ -640,7 +621,13 @@ package feathers.controls.text
 			this._selectionSkin.visible = false;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.nativeFocus = null;
+			var nativeStage:Stage = Starling.current.nativeStage;
+			if(nativeStage.focus === this._nativeFocus)
+			{
+				//only clear the native focus when our native target has focus
+				//because otherwise another component may lose focus
+				nativeStage.focus = Starling.current.nativeStage;
+			}
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 
@@ -687,6 +674,19 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			if(this._nativeFocus && this._nativeFocus.parent)
+			{
+				this._nativeFocus.parent.removeChild(this._nativeFocus);
+			}
+			this._nativeFocus = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			var oldBatchX:Number = this._batchX;
@@ -703,6 +703,20 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
+			if(!this._nativeFocus)
+			{
+				this._nativeFocus = new Sprite();
+				//let's ensure that this can only get focus through code
+				this._nativeFocus.tabEnabled = false;
+				this._nativeFocus.tabChildren = false;
+				this._nativeFocus.mouseEnabled = false;
+				this._nativeFocus.mouseChildren = false;
+			}
+			this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeFocus_cutHandler, false, 0, true);
+			this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeFocus_copyHandler, false, 0, true);
+			this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeFocus_pasteHandler, false, 0, true);
+			this._nativeFocus.addEventListener(flash.events.Event.SELECT_ALL, nativeFocus_selectAllHandler, false, 0, true);
+			this._nativeFocus.addEventListener(TextEvent.TEXT_INPUT, nativeFocus_textInputHandler, false, 0, true);
 			if(!this._cursorSkin)
 			{
 				this.cursorSkin = new Quad(1, 1, 0x000000);
@@ -791,19 +805,11 @@ package feathers.controls.text
 			var showCursor:Boolean = this._selectionBeginIndex >= 0 && this._selectionBeginIndex == this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = !showCursor;
-			var nativeStage:Stage = Starling.current.nativeStage;
-			//this is before the hasFocus check because the native stage may
-			//have lost focus when clicking on the text editor, so we may need
-			//to put it back in focus
-			if(!FocusManager.isEnabledForStage(this.stage) && !nativeStage.focus)
+			if(!FocusManager.isEnabledForStage(this.stage))
 			{
-				//something needs to be focused so that we can receive cut,
-				//copy, and paste events
-				nativeStage.focus = nativeStage;
+				//if there isn't a focus manager, we need to set focus manually
+				Starling.current.nativeStage.focus = this._nativeFocus;
 			}
-			//it shouldn't have changed, but let's be sure we're listening to
-			//the right object for cut/copy/paste events.
-			this.nativeFocus = nativeStage.focus;
 			if(this._hasFocus)
 			{
 				return;
@@ -1148,12 +1154,7 @@ package feathers.controls.text
 				return;
 			}
 			var newIndex:int = -1;
-			if(!FocusManager.isEnabledForStage(this.stage) && event.keyCode == Keyboard.TAB)
-			{
-				this.clearFocus();
-				return;
-			}
-			else if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
+			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
 				newIndex = 0;
 			}
@@ -1296,19 +1297,6 @@ package feathers.controls.text
 						this.text = currentValue.substr(0, this._selectionBeginIndex - 1) + currentValue.substr(this._selectionEndIndex);
 					}
 				}
-				else if(charCode >= 32 && !event.ctrlKey) //ignore keyboard shortcuts
-				{
-					//alt key needs to be allowed here because it is used to
-					//enter non-ASCII characters
-					if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
-					{
-						this.replaceSelectedText(String.fromCharCode(charCode));
-					}
-					else
-					{
-						return;
-					}
-				}
 			}
 			if(newIndex >= 0)
 			{
@@ -1319,7 +1307,20 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function nativeStage_selectAllHandler(event:flash.events.Event):void
+		protected function nativeFocus_textInputHandler(event:TextEvent):void
+		{
+			var text:String = event.text;
+			var charCode:int = text.charCodeAt(0);
+			if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
+			{
+				this.replaceSelectedText(text);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeFocus_selectAllHandler(event:flash.events.Event):void
 		{
 			if(!this._isEditable || !this._isEnabled)
 			{
@@ -1331,7 +1332,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function nativeStage_cutHandler(event:flash.events.Event):void
+		protected function nativeFocus_cutHandler(event:flash.events.Event):void
 		{
 			if(!this._isEditable || !this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
@@ -1344,7 +1345,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function nativeStage_copyHandler(event:flash.events.Event):void
+		protected function nativeFocus_copyHandler(event:flash.events.Event):void
 		{
 			if(!this._isEditable || !this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
@@ -1356,7 +1357,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function nativeStage_pasteHandler(event:flash.events.Event):void
+		protected function nativeFocus_pasteHandler(event:flash.events.Event):void
 		{
 			if(!this._isEditable || !this._isEnabled)
 			{
