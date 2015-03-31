@@ -195,6 +195,14 @@ package feathers.core
 				var nativeStage:Stage = this._starling.nativeStage;
 				if(this._focus)
 				{
+					if(this._focus is INativeFocusOwner)
+					{
+						nativeStage.focus = INativeFocusOwner(this._focus).nativeFocus;
+					}
+					//an INativeFocusOwner may return null for its
+					//nativeFocus property, so we still need to double-check
+					//that the native stage has something in focus. that's
+					//why there isn't an else here
 					if(!nativeStage.focus)
 					{
 						nativeStage.focus = this._nativeFocusTarget;
