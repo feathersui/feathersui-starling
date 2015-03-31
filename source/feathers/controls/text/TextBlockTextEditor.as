@@ -1087,7 +1087,12 @@ package feathers.controls.text
 				return;
 			}
 			var newIndex:int = -1;
-			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
+			if(!FocusManager.isEnabledForStage(this.stage) && event.keyCode == Keyboard.TAB)
+			{
+				this.clearFocus();
+				return;
+			}
+			else if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
 				newIndex = 0;
 			}
