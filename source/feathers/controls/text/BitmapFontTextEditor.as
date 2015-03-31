@@ -721,6 +721,8 @@ package feathers.controls.text
 				this._nativeFocus.tabChildren = false;
 				this._nativeFocus.mouseEnabled = false;
 				this._nativeFocus.mouseChildren = false;
+				//adds support for mobile
+				this._nativeFocus.needsSoftKeyboard = true;
 			}
 			this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeFocus_cutHandler, false, 0, true);
 			this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeFocus_copyHandler, false, 0, true);
@@ -820,6 +822,7 @@ package feathers.controls.text
 				//if there isn't a focus manager, we need to set focus manually
 				Starling.current.nativeStage.focus = this._nativeFocus;
 			}
+			this._nativeFocus.requestSoftKeyboard();
 			if(this._hasFocus)
 			{
 				return;
