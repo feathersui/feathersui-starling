@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMultilineTextEditor;
+	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
@@ -19,6 +20,8 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.skins.StateValueSelector;
+
+	import flash.display.InteractiveObject;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -195,7 +198,7 @@ package feathers.controls
 	 * @see feathers.controls.AutoComplete
 	 * @see feathers.controls.TextArea
 	 */
-	public class TextInput extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
+	public class TextInput extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl, INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -340,6 +343,22 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _textEditorHasFocus:Boolean = false;
+
+		/**
+		 * A text editor may be an <code>INativeFocusOwner</code>, so we need to
+		 * return the value of its <code>nativeFocus</code> property. If not,
+		 * then we return <code>null</code>.
+		 * 
+		 * @see feathers.core.INativeFocusOwner
+		 */
+		public function get nativeFocus():InteractiveObject
+		{
+			if(this.textEditor is INativeFocusOwner)
+			{
+				return INativeFocusOwner(this.textEditor).nativeFocus;
+			}
+			return null;
+		}
 
 		/**
 		 * @private
