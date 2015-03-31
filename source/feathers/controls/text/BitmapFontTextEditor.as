@@ -144,6 +144,16 @@ package feathers.controls.text
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		protected static const LINE_FEED:String = "\n";
+
+		/**
+		 * @private
+		 */
+		protected static const CARRIAGE_RETURN:String = "\r";
+
+		/**
 		 * Constructor.
 		 */
 		public function BitmapFontTextEditor()
@@ -1315,6 +1325,11 @@ package feathers.controls.text
 		protected function nativeFocus_textInputHandler(event:TextEvent):void
 		{
 			var text:String = event.text;
+			if(text === CARRIAGE_RETURN || text === LINE_FEED)
+			{
+				//ignore new lines
+				return;
+			}
 			var charCode:int = text.charCodeAt(0);
 			if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
 			{
