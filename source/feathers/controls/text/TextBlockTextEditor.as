@@ -1249,6 +1249,11 @@ package feathers.controls.text
 		protected function nativeFocus_textInputHandler(event:TextEvent):void
 		{
 			var text:String = event.text;
+			if(text === CARRIAGE_RETURN || text === LINE_FEED)
+			{
+				//ignore new lines
+				return;
+			}
 			var charCode:int = text.charCodeAt(0);
 			if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
 			{
