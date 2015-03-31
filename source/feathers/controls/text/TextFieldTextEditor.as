@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
+	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.geom.matrixToRotation;
@@ -15,6 +17,8 @@ package feathers.controls.text
 	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
+	import flash.display.InteractiveObject;
+	import flash.display.Stage;
 	import flash.display3D.Context3DProfile;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -33,6 +37,9 @@ package feathers.controls.text
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
@@ -186,7 +193,7 @@ package feathers.controls.text
 	 *
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
-	public class TextFieldTextEditor extends FeathersControl implements ITextEditor
+	public class TextFieldTextEditor extends FeathersControl implements ITextEditor, INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -212,6 +219,14 @@ package feathers.controls.text
 		 * The text field sub-component.
 		 */
 		protected var textField:TextField;
+
+		/**
+		 * @copy feathers.core.INativeFocusOwner#nativeFocus
+		 */
+		public function get nativeFocus():InteractiveObject
+		{
+			return this.textField;
+		}
 
 		/**
 		 * An image that displays a snapshot of the native <code>TextField</code>
@@ -985,7 +1000,7 @@ package feathers.controls.text
 				{
 					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
-				if(!this._focusManager)
+				if(!FocusManager.isEnabledForStage(this.stage))
 				{
 					Starling.current.nativeStage.focus = this.textField;
 				}
@@ -1006,11 +1021,17 @@ package feathers.controls.text
 		 */
 		public function clearFocus():void
 		{
-			if(!this._textFieldHasFocus || this._focusManager)
+			if(!this._textFieldHasFocus)
 			{
 				return;
 			}
-			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			var nativeStage:Stage = Starling.current.nativeStage;
+			if(nativeStage.focus === this.textField)
+			{
+				//only clear the native focus when our native target has focus
+				//because otherwise another component may lose focus
+				nativeStage.focus = nativeStage;
+			}
 		}
 
 		/**
@@ -1073,6 +1094,9 @@ package feathers.controls.text
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
+			//let's ensure that this can only get focus through code
+			this.textField.tabEnabled = false;
+			this.textField.mouseEnabled = false;
 			this.textField.visible = false;
 			this.textField.needsSoftKeyboard = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
@@ -1085,6 +1109,7 @@ package feathers.controls.text
 			this.measureTextField = new TextField();
 			this.measureTextField.autoSize = TextFieldAutoSize.LEFT;
 			this.measureTextField.selectable = false;
+			this.measureTextField.tabEnabled = false;
 			this.measureTextField.mouseWheelEnabled = false;
 			this.measureTextField.mouseEnabled = false;
 		}
@@ -1580,6 +1605,26 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function stage_touchHandler(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
+			if(!touch) //we only care about began touches
+			{
+				return;
+			}
+			touch.getLocation(this.stage, HELPER_POINT);
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			if(isInBounds) //if the touch is in the text editor, it's all good
+			{
+				return;
+			}
+			//if the touch begins anywhere else, it's a focus out!
+			this.clearFocus();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textField_changeHandler(event:flash.events.Event):void
 		{
 			if(this._isHTML)
@@ -1598,6 +1643,7 @@ package feathers.controls.text
 		protected function textField_focusInHandler(event:FocusEvent):void
 		{
 			this._textFieldHasFocus = true;
+			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.addEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
@@ -1609,6 +1655,7 @@ package feathers.controls.text
 		protected function textField_focusOutHandler(event:FocusEvent):void
 		{
 			this._textFieldHasFocus = false;
+			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 
 			if(this.resetScrollOnFocusOut)
 			{
@@ -1628,6 +1675,10 @@ package feathers.controls.text
 			if(event.keyCode == Keyboard.ENTER)
 			{
 				this.dispatchEventWith(FeathersEventType.ENTER);
+			}
+			else if(!FocusManager.isEnabledForStage(this.stage) && event.keyCode == Keyboard.TAB)
+			{
+				this.clearFocus();
 			}
 		}
 
