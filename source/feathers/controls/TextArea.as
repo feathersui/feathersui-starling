@@ -939,7 +939,7 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			else if(this._hasFocus && this._backgroundFocusedSkin)
+			else if(this.hasFocus && this._backgroundFocusedSkin)
 			{
 				this.currentBackgroundSkin = this._backgroundFocusedSkin;
 			}
