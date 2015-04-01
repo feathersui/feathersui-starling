@@ -312,7 +312,7 @@ package feathers.controls
 			super.isEnabled = value;
 			if(this._isEnabled)
 			{
-				this.currentState = this._hasFocus ? STATE_FOCUSED : STATE_ENABLED;
+				this.currentState = this.hasFocus ? STATE_FOCUSED : STATE_ENABLED;
 			}
 			else
 			{
