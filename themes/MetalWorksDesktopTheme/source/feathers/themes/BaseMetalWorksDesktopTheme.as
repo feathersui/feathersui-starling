@@ -559,6 +559,12 @@ package feathers.themes
 		{
 			if(this.atlas)
 			{
+				//these are saved globally, so we want to clear them out
+				if(StandardIcons.listDrillDownAccessoryTexture.root == this.atlas.texture.root)
+				{
+					StandardIcons.listDrillDownAccessoryTexture = null;
+				}
+				
 				//if anything is keeping a reference to the texture, we don't
 				//want it to keep a reference to the theme too.
 				this.atlas.texture.root.onRestore = null;
