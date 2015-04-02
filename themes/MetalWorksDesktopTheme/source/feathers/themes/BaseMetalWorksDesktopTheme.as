@@ -559,6 +559,10 @@ package feathers.themes
 		{
 			if(this.atlas)
 			{
+				//if anything is keeping a reference to the texture, we don't
+				//want it to keep a reference to the theme too.
+				this.atlas.texture.root.onRestore = null;
+				
 				this.atlas.dispose();
 				this.atlas = null;
 			}
