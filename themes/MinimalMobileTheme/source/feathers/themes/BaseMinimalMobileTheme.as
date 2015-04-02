@@ -85,6 +85,7 @@ package feathers.themes
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.text.TextField;
 	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -419,7 +420,8 @@ package feathers.themes
 		protected var scrollTextDisabledTextFormat:TextFormat;
 
 		/**
-		 * Disposes the texture atlas before calling super.dispose()
+		 * Disposes the texture atlas and bitmap font before calling
+		 * super.dispose().
 		 */
 		override public function dispose():void
 		{
@@ -428,6 +430,7 @@ package feathers.themes
 				this.atlas.dispose();
 				this.atlas = null;
 			}
+			TextField.unregisterBitmapFont(FONT_NAME);
 
 			//don't forget to call super.dispose()!
 			super.dispose();
