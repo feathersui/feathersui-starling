@@ -824,6 +824,7 @@ package feathers.controls
 		 */
 		protected var _selectedGroupIndex:int = -1;
 
+		[Bindable(event="change")]
 		/**
 		 * The group index of the currently selected item. Returns <code>-1</code>
 		 * if no item is selected.
@@ -860,6 +861,7 @@ package feathers.controls
 		 */
 		protected var _selectedItemIndex:int = -1;
 
+		[Bindable(event="change")]
 		/**
 		 * The item index of the currently selected item. Returns <code>-1</code>
 		 * if no item is selected.
@@ -891,6 +893,7 @@ package feathers.controls
 			return this._selectedItemIndex;
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.

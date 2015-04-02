@@ -77,6 +77,7 @@ package feathers.controls
 		 */
 		function set maximum(value:Number):void;
 
+		[Bindable(event="change")]
 		/**
 		 * The current numeric value.
 		 *

@@ -129,6 +129,7 @@ package feathers.controls
 		 */
 		protected var _isSelected:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * Indicates if the button is selected or not. The button may be
 		 * selected programmatically, even if <code>isToggle</code> is <code>false</code>,

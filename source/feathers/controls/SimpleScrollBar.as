@@ -317,6 +317,7 @@ package feathers.controls
 		 */
 		protected var _value:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 *

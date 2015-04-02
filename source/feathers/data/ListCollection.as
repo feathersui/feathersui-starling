@@ -296,7 +296,8 @@ package feathers.data
 		{
 			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
 		}
-		
+
+		[Bindable(event="change")]
 		/**
 		 * Returns the item at the specified index in the collection.
 		 */
@@ -304,7 +305,8 @@ package feathers.data
 		{
 			return this._dataDescriptor.getItemAt(this._data, index);
 		}
-		
+
+		[Bindable(event="change")]
 		/**
 		 * Determines which index the item appears at within the collection. If
 		 * the item isn't in the collection, returns <code>-1</code>.
@@ -441,6 +443,7 @@ package feathers.data
 			return this.removeItemAt(0);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Determines if the specified item is in the collection.
 		 */

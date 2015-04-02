@@ -110,6 +110,7 @@ package feathers.layout
 		 */
 		protected var _rowItems:Vector.<DisplayObject> = new <DisplayObject>[];
 
+		[Bindable(event="change")]
 		/**
 		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
 		 * to the same value. The <code>gap</code> getter always returns the
@@ -140,6 +141,7 @@ package feathers.layout
 		 */
 		protected var _horizontalGap:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The horizontal space, in pixels, between items.
 		 *
@@ -168,6 +170,7 @@ package feathers.layout
 		 */
 		protected var _verticalGap:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The vertical space, in pixels, between items.
 		 *
@@ -191,6 +194,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
@@ -225,6 +229,7 @@ package feathers.layout
 		 */
 		protected var _paddingTop:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, above of items.
 		 *
@@ -253,6 +258,7 @@ package feathers.layout
 		 */
 		protected var _paddingRight:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, to the right of the items.
 		 *
@@ -281,6 +287,7 @@ package feathers.layout
 		 */
 		protected var _paddingBottom:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, below the items.
 		 *
@@ -309,6 +316,7 @@ package feathers.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, to the left of the items.
 		 *
@@ -337,6 +345,7 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * If the total row width is less than the bounds, the items in the row
@@ -373,6 +382,7 @@ package feathers.layout
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the total height of the content is less than the bounds, the
@@ -409,6 +419,7 @@ package feathers.layout
 		 */
 		protected var _rowVerticalAlign:String = VERTICAL_ALIGN_TOP;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the height of an item is less than the height of a row, it can be
@@ -445,6 +456,7 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 *
@@ -473,6 +485,7 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
@@ -499,6 +512,7 @@ package feathers.layout
 		 */
 		protected var _hasVariableItemDimensions:Boolean = true;
 
+		[Bindable(event="change")]
 		/**
 		 * When the layout is virtualized, and this value is true, the items may
 		 * have variable width and height values. If false, the items will all
@@ -524,6 +538,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */

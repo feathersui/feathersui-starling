@@ -405,7 +405,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _selectedIndex:int = -1;
-		
+
+		[Bindable(event="change")]
 		/**
 		 * The index of the currently selected item. Returns <code>-1</code> if
 		 * no item is selected.
@@ -454,7 +455,8 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
+		[Bindable(event="change")]
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.

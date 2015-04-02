@@ -1141,6 +1141,7 @@ package feathers.controls
 		 */
 		protected var _selectedIndex:int = -1;
 
+		[Bindable(event="change")]
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
 		 * selected.

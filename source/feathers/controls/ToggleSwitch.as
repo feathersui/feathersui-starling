@@ -1142,6 +1142,7 @@ package feathers.controls
 		 */
 		protected var _isSelected:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * Indicates if the toggle switch is selected (ON) or not (OFF).
 		 *

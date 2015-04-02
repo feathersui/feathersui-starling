@@ -377,6 +377,7 @@ package feathers.controls
 		 */
 		protected var _text:String = "";
 
+		[Bindable(event="change")]
 		/**
 		 * The text displayed by the text area. The text area dispatches
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>

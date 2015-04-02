@@ -176,6 +176,7 @@ package feathers.controls.supportClasses
 		 */
 		protected var _activeScreenID:String;
 
+		[Bindable(event="change")]
 		/**
 		 * The string identifier for the currently active screen.
 		 */
@@ -189,6 +190,7 @@ package feathers.controls.supportClasses
 		 */
 		protected var _activeScreen:DisplayObject;
 
+		[Bindable(event="change")]
 		/**
 		 * A reference to the currently active screen.
 		 */

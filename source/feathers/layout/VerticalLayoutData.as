@@ -38,6 +38,7 @@ package feathers.layout
 		 */
 		protected var _percentWidth:Number;
 
+		[Bindable(event="change")]
 		/**
 		 * The width of the layout object, as a percentage of the container's
 		 * width.
@@ -69,6 +70,7 @@ package feathers.layout
 		 */
 		protected var _percentHeight:Number;
 
+		[Bindable(event="change")]
 		/**
 		 * The height of the layout object, as a percentage of the container's
 		 * height. The container will calculate the sum of all of its children

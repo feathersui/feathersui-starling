@@ -149,6 +149,7 @@ package feathers.core
 	 */
 	public interface ITextEditor extends IFeathersControl, ITextBaselineControl
 	{
+		[Bindable(event="change")]
 		/**
 		 * The text displayed by the editor.
 		 */

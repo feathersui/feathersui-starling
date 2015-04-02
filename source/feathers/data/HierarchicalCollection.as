@@ -234,6 +234,7 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Determines if a node from the data source is a branch.
 		 */
@@ -242,6 +243,7 @@ package feathers.data
 			return this._dataDescriptor.isBranch(node);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * The number of items at the specified location in the collection.
 		 */
@@ -263,6 +265,7 @@ package feathers.data
 			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, rest);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Returns the item at the specified location in the collection.
 		 */
@@ -273,6 +276,7 @@ package feathers.data
 			return this._dataDescriptor.getItemAt.apply(null, rest);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Determines which location the item appears at within the collection. If
 		 * the item isn't in the collection, returns <code>null</code>.

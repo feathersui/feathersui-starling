@@ -149,6 +149,7 @@ package feathers.layout
 		 */
 		protected var _gap:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, between items.
 		 *
@@ -177,6 +178,7 @@ package feathers.layout
 		 */
 		protected var _firstGap:Number = NaN;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, between the first and second items. If the
 		 * value of <code>firstGap</code> is <code>NaN</code>, the value of the
@@ -207,6 +209,7 @@ package feathers.layout
 		 */
 		protected var _lastGap:Number = NaN;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, between the last and second to last items. If
 		 * the value of <code>lastGap</code> is <code>NaN</code>, the value of
@@ -232,6 +235,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
@@ -266,6 +270,7 @@ package feathers.layout
 		 */
 		protected var _paddingTop:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, that appears on top, before the first item.
 		 *
@@ -294,6 +299,7 @@ package feathers.layout
 		 */
 		protected var _paddingRight:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The minimum space, in pixels, to the right of the items.
 		 *
@@ -322,6 +328,7 @@ package feathers.layout
 		 */
 		protected var _paddingBottom:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, that appears on the bottom, after the last
 		 * item.
@@ -351,6 +358,7 @@ package feathers.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The minimum space, in pixels, to the left of the items.
 		 *
@@ -373,13 +381,13 @@ package feathers.layout
 			this._paddingLeft = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-
-
+		
 		/**
 		 * @private
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the total item height is less than the bounds, the positions of
@@ -414,6 +422,7 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
@@ -457,6 +466,7 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 *
@@ -485,6 +495,7 @@ package feathers.layout
 		 */
 		protected var _hasVariableItemDimensions:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * When the layout is virtualized, and this value is true, the items may
 		 * have variable height values. If false, the items will all share the
@@ -515,6 +526,7 @@ package feathers.layout
 		 */
 		protected var _distributeHeights:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * Distributes the height of the view port equally to each item. If the
 		 * view port height needs to be measured, the largest item's height will
@@ -546,6 +558,7 @@ package feathers.layout
 		 */
 		protected var _requestedRowCount:int = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * Requests that the layout set the view port dimensions to display a
 		 * specific number of rows (plus gaps and padding), if possible. If the
@@ -584,6 +597,7 @@ package feathers.layout
 		 */
 		protected var _manageVisibility:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * Determines if items will be set invisible if they are outside the
 		 * view port. If <code>true</code>, you will not be able to manually
@@ -624,6 +638,7 @@ package feathers.layout
 		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
@@ -650,6 +665,7 @@ package feathers.layout
 		 */
 		protected var _afterVirtualizedItemCount:int = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
@@ -676,6 +692,7 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 *
@@ -706,6 +723,7 @@ package feathers.layout
 		 */
 		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * If set to <code>true</code>, the width and height of the
 		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
@@ -744,6 +762,7 @@ package feathers.layout
 		 */
 		protected var _typicalItemWidth:Number = NaN;
 
+		[Bindable(event="change")]
 		/**
 		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -791,6 +810,7 @@ package feathers.layout
 		 */
 		protected var _typicalItemHeight:Number = NaN;
 
+		[Bindable(event="change")]
 		/**
 		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -838,6 +858,7 @@ package feathers.layout
 		 */
 		protected var _scrollPositionVerticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * When the scroll position is calculated for an item, an attempt will
@@ -862,6 +883,7 @@ package feathers.layout
 			this._scrollPositionVerticalAlign = value;
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
