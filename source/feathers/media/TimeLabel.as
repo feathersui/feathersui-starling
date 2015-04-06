@@ -11,10 +11,15 @@ package feathers.media
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
 
+	import flash.geom.Point;
+
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
-	 * A specialized label that displays the current playhead time and total 
+	 * A specialized label that displays the current playhead time and total
 	 * running time of a media player that plays timed content.
 	 *
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
@@ -23,6 +28,42 @@ package feathers.media
 	public class TimeLabel extends Label implements IMediaPlayerControl
 	{
 		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+		
+		/**
+		 * The label displays only the current time of the media content.
+		 * 
+		 * @see #displayMode
+		 */
+		public static const DISPLAY_MODE_CURRENT_TIME:String = "currentTime";
+		
+		/**
+		 * The label displays only the total time of the media content.
+		 * 
+		 * @see #displayMode
+		 */
+		public static const DISPLAY_MODE_TOTAL_TIME:String = "totalTime";
+
+		/**
+		 * The label displays only the remaining time of the media content. In
+		 * other words, the total time minus the current time.
+		 * 
+		 * @see #displayMode
+		 */
+		public static const DISPLAY_MODE_REMAINING_TIME:String = "remainingTime";
+
+		/**
+		 * The label displays the current time of the media content, followed by
+		 * some text specified by the <code>delimiter</code> property, and
+		 * completed by the total time of the media content.
+		 * 
+		 * @see #displayMode
+		 */
+		public static const DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES:String = "currentAndTotalTimes";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>TimeLabel</code> components.
 		 *
@@ -30,12 +71,13 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
 		public function TimeLabel()
 		{
+			this.addEventListener(TouchEvent.TOUCH, timeLabel_touchHandler);
 		}
 
 		/**
@@ -89,11 +131,159 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _delimiter:String = " / ";
+
+		/**
+		 * When the value of <code>displayMode</code> is
+		 * <code>TimeLabel.DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES</code>, this
+		 * text is inserted between the two times to separate them.
+		 *
+		 * @default " / "
+		 * 
+		 * @see #DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES
+		 */
+		public function get delimiter():String
+		{
+			return this._delimiter;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set delimiter(value:String):void
+		{
+			if(this._delimiter == value)
+			{
+				return;
+			}
+			this._delimiter = value;
+			this.updateText();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _displayMode:String = DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES;
+
+		[Inspectable(type="String",enumeration="currentAndTotalTimes,currentTime,totalTime,remainingTime")]
+		/**
+		 * Determines how the time is displayed by the label.
+		 *
+		 * @default TimeLabel.DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES
+		 * 
+		 * @see #DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES
+		 * @see #DISPLAY_MODE_CURRENT_TIME
+		 * @see #DISPLAY_MODE_TOTAL_TIME
+		 * @see #DISPLAY_MODE_REMAINING_TIME
+		 */
+		public function get displayMode():String
+		{
+			return this._displayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set displayMode(value:String):void
+		{
+			if(this._displayMode == value)
+			{
+				return;
+			}
+			this._displayMode = value;
+			//reset this value because it would be unexpected for the label
+			//not to change when changing this property.
+			this._isToggled = false;
+			this.updateText();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isToggled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _toggleDisplayMode:Boolean = false;
+
+		/**
+		 * If the <code>displayMode</code> property is set to
+		 * <code>TimeLabel.DISPLAY_MODE_CURRENT_TIME</code> or
+		 * <code>TimeLabel.DISPLAY_MODE_REMAINING_TIME</code>, and this property
+		 * is set to <code>true</code>, the label will switch to displaying the
+		 * current time and the remaining time, if tapped or clicked. If the
+		 * <code>displayMode</code> property is not set to one of the specified
+		 * values, this property is ignored.
+		 *
+		 * @default false
+		 * 
+		 * @see #displayMode
+		 */
+		public function get toggleDisplayMode():Boolean
+		{
+			return this._toggleDisplayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleDisplayMode(value:Boolean):void
+		{
+			if(this._toggleDisplayMode == value)
+			{
+				return;
+			}
+			this._toggleDisplayMode = value;
+			this._isToggled = false;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function updateText():void
 		{
 			var currentTime:Number = this._mediaPlayer ? this._mediaPlayer.currentTime : 0;
 			var totalTime:Number = this._mediaPlayer ? this._mediaPlayer.totalTime : 0;
-			this.text = this.secondsToTimeString(currentTime) + " / " + this.secondsToTimeString(totalTime);
+			var displayMode:String = this._displayMode;
+			if(this._isToggled)
+			{
+				if(displayMode === DISPLAY_MODE_CURRENT_TIME)
+				{
+					displayMode = DISPLAY_MODE_REMAINING_TIME;
+				}
+				else
+				{
+					displayMode = DISPLAY_MODE_CURRENT_TIME;
+				}
+			}
+			switch(displayMode)
+			{
+				case DISPLAY_MODE_CURRENT_TIME:
+				{
+					this.text = this.secondsToTimeString(currentTime);
+					break;
+				}
+				case DISPLAY_MODE_TOTAL_TIME:
+				{
+					this.text = this.secondsToTimeString(totalTime);
+					break;
+				}
+				case DISPLAY_MODE_REMAINING_TIME:
+				{
+					this.text = this.secondsToTimeString(currentTime - totalTime);
+					break;
+				}
+				default:
+				{
+					this.text = this.secondsToTimeString(currentTime) + this._delimiter + this.secondsToTimeString(totalTime);
+				}
+			}
 		}
 
 		/**
@@ -101,6 +291,11 @@ package feathers.media
 		 */
 		protected function secondsToTimeString(seconds:Number):String
 		{
+			var isNegative:Boolean = seconds < 0;
+			if(isNegative)
+			{
+				seconds = -seconds;
+			}
 			var hours:int = int(seconds / 3600);
 			var minutes:int = int(seconds / 60);
 			seconds = int(seconds - (hours * 3600) - (minutes * 60));
@@ -112,6 +307,10 @@ package feathers.media
 					time = "0" + time;
 				}
 				time = hours + ":" + time;
+			}
+			if(isNegative)
+			{
+				time = "-" + time;
 			}
 			return time;
 		}
@@ -130,6 +329,50 @@ package feathers.media
 		protected function mediaPlayer_totalTimeChangeHandler(event:Event):void
 		{
 			this.updateText();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function timeLabel_touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled || !this._toggleDisplayMode ||
+				!(this._displayMode === DISPLAY_MODE_CURRENT_TIME || this._displayMode === DISPLAY_MODE_CURRENT_TIME))
+			{
+				this.touchPointID = -1;
+				return;
+			}
+
+			if(this.touchPointID >= 0)
+			{
+				var touch:Touch = event.getTouch(this, null, this.touchPointID);
+				if(!touch)
+				{
+					//this should never happen
+					return;
+				}
+
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					touch.getLocation(this.stage, HELPER_POINT);
+					var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+					if(isInBounds)
+					{
+						this._isToggled = !this._isToggled;
+						this.updateText();
+					}
+				}
+				return;
+			}
+			else //if we get here, we don't have a saved touch ID yet
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(touch)
+				{
+					this.touchPointID = touch.id;
+					return;
+				}
+			}
 		}
 	}
 }
