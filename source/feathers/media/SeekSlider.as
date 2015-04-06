@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.Slider;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
 
@@ -21,11 +23,32 @@ package feathers.media
 	public class SeekSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>SeekSlider</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function SeekSlider()
 		{
 			this.addEventListener(Event.CHANGE, seekSlider_changeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			if(SeekSlider.globalStyleProvider)
+			{
+				return SeekSlider.globalStyleProvider;
+			}
+			return Slider.globalStyleProvider;
 		}
 
 		/**

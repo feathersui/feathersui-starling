@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.core.FeathersControl;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundChannel;
 	import flash.media.SoundMixer;
@@ -26,6 +28,15 @@ package feathers.media
 	public class SpectrumBarGraphVisualizer extends FeathersControl implements IMediaPlayerControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>SpectrumBarGraphVisualizer</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * @private
 		 */
 		protected static var HELPER_QUAD:Quad = new Quad(1, 1);
@@ -41,6 +52,14 @@ package feathers.media
 		public function SpectrumBarGraphVisualizer()
 		{
 			this.isQuickHitAreaEnabled = true;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return SpectrumBarGraphVisualizer.globalStyleProvider;
 		}
 
 		/**

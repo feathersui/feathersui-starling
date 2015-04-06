@@ -9,6 +9,8 @@ package feathers.media
 {
 	import feathers.controls.ToggleButton;
 	import feathers.core.ToggleGroup;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.Stage;
 
@@ -27,6 +29,15 @@ package feathers.media
 	public class FullScreenToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>FullScreenToggleButton</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function FullScreenToggleButton()
@@ -37,6 +48,18 @@ package feathers.media
 			//player
 			this.isToggle = false;
 			this.addEventListener(Event.TRIGGERED, fullScreenButton_triggeredHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			if(FullScreenToggleButton.globalStyleProvider)
+			{
+				return FullScreenToggleButton.globalStyleProvider;
+			}
+			return ToggleButton.globalStyleProvider;
 		}
 
 		/**
