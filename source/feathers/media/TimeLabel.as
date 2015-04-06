@@ -19,8 +19,9 @@ package feathers.media
 	import starling.events.TouchPhase;
 
 	/**
-	 * A specialized label that displays the current playhead time and total
-	 * running time of a media player that plays timed content.
+	 * A specialized label that can display the current playhead time, total
+	 * time, remaining time, or a combined current and total time for a media
+	 * player.
 	 *
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
