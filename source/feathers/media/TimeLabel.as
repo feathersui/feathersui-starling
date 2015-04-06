@@ -11,6 +11,13 @@ package feathers.media
 
 	import starling.events.Event;
 
+	/**
+	 * A specialized label that displays the current playhead time and total 
+	 * running time of a media player that plays timed content.
+	 *
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class TimeLabel extends Label implements IMediaPlayerControl
 	{
 		/**
@@ -25,6 +32,9 @@ package feathers.media
 		 */
 		protected var _mediaPlayer:ITimedMediaPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;

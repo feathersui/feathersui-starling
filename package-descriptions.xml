@@ -36,6 +36,9 @@
 		<package name="feathers.layout"> 
 			<shortDescription><![CDATA[A variety of layout algorithms used to customize Feathers controls and containers.]]></shortDescription>
 		</package>
+		<package name="feathers.media"> 
+			<shortDescription><![CDATA[User interface controls for media playback.]]></shortDescription>
+		</package>
 		<package name="feathers.skins"> 
 			<shortDescription><![CDATA[Classes related to skinning and themes in Feathers.]]></shortDescription>
 		</package>

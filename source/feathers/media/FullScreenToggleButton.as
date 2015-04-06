@@ -18,6 +18,12 @@ package feathers.media
 	import starling.core.Starling;
 	import starling.events.Event;
 
+	/**
+	 * A specialized toggle button that controls whether a media player is
+	 * displayed normally or in full-screen mode.
+	 * 
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class FullScreenToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
 		/**
@@ -38,6 +44,9 @@ package feathers.media
 		 */
 		protected var _mediaPlayer:VideoPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;

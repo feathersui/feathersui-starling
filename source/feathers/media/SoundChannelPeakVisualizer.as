@@ -14,13 +14,30 @@ package feathers.media
 	import starling.display.Quad;
 	import starling.events.Event;
 
+	/**
+	 * A visualization of the left and right peaks of the
+	 * <code>flash.media.SoundChannel</code> from a <code>SoundPlayer</code>
+	 * component.
+	 *
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 */
 	public class SoundChannelPeakVisualizer extends FeathersControl implements IMediaPlayerControl
 	{
+		/**
+		 * Constructor.
+		 */
 		public function SoundChannelPeakVisualizer()
 		{
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected var leftPeakBar:Quad;
+
+		/**
+		 * @private
+		 */
 		protected var rightPeakBar:Quad;
 
 		/**
@@ -28,6 +45,9 @@ package feathers.media
 		 */
 		protected var _gap:Number = 0;
 
+		/**
+		 * The gap, in pixels, between the bars.
+		 */
 		public function get gap():Number
 		{
 			return this._gap;
@@ -49,8 +69,11 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected var _mediaPlayer:AudioPlayer;
+		protected var _mediaPlayer:SoundPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;
@@ -69,7 +92,7 @@ package feathers.media
 			{
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.PLAYBACK_STATE_CHANGE, mediaPlayer_playbackStateChange);
 			}
-			this._mediaPlayer = value as AudioPlayer;
+			this._mediaPlayer = value as SoundPlayer;
 			if(this._mediaPlayer)
 			{
 				this.handlePlaybackStateChange();
@@ -78,12 +101,18 @@ package feathers.media
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.mediaPlayer = null;
 			super.dispose();
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this.leftPeakBar)
@@ -97,7 +126,10 @@ package feathers.media
 				this.addChild(this.rightPeakBar);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			this.autoSizeIfNeeded();
@@ -122,7 +154,10 @@ package feathers.media
 			this.rightPeakBar.width = barWidth;
 			super.draw();
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
 			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
@@ -143,7 +178,10 @@ package feathers.media
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function handlePlaybackStateChange():void
 		{
 			if(this._mediaPlayer.isPlaying)
@@ -155,12 +193,18 @@ package feathers.media
 				this.removeEventListener(Event.ENTER_FRAME, peakVisualizer_enterFrameHandler);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function mediaPlayer_playbackStateChange(event:Event):void
 		{
 			this.handlePlaybackStateChange();
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function peakVisualizer_enterFrameHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);

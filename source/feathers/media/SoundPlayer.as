@@ -10,21 +10,24 @@ package feathers.media
 	import flash.events.ErrorEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
-	import flash.events.SecurityErrorEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
-	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
 	import starling.events.Event;
 
-	public class AudioPlayer extends BaseTimedMediaPlayer implements IAudioPlayer
+	/**
+	 * Controls playback of audio with a <code>flash.media.Sound</code> object.
+	 * 
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 */
+	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer
 	{
 		/**
 		 * Constructor.
 		 */
-		public function AudioPlayer()
+		public function SoundPlayer()
 		{
 		}
 		
@@ -32,7 +35,13 @@ package feathers.media
 		 * @private
 		 */
 		protected var _sound:Sound;
-
+		
+		/**
+		 * The <code>flash.media.Sound</code> object that has loaded the
+		 * content specified by <code>audioSource</code>.
+		 * 
+		 * @see #soundSource
+		 */
 		public function get sound():Sound
 		{
 			return this._sound;
@@ -42,7 +51,10 @@ package feathers.media
 		 * @private
 		 */
 		protected var _soundChannel:SoundChannel;
-		
+
+		/**
+		 * The currently playing <code>flash.media.SoundChannel</code>.
+		 */
 		public function get soundChannel():SoundChannel
 		{
 			return this._soundChannel;
@@ -51,35 +63,46 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected var _audioSource:Object;
-		
-		public function get audioSource():Object
+		protected var _soundSource:Object;
+
+		/**
+		 * A URL specified as a <code>String</code> representing a URL, a
+		 * <code>flash.net.URLRequest</code>, or a
+		 * <code>flash.media.Sound</code> object. In the case of a
+		 * <code>String</code> or a <code>URLRequest</code>, a new
+		 * <code>flash.media.Sound</code> object will be created internally and
+		 * the content will by loaded automatically.
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html flash.net.URLRequest
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html flash.media.Sound
+		 */
+		public function get soundSource():Object
 		{
-			return this._audioSource;
+			return this._soundSource;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set audioSource(value:Object):void
+		public function set soundSource(value:Object):void
 		{
-			if(this._audioSource === value)
+			if(this._soundSource === value)
 			{
 				return;
 			}
-			this._audioSource = value;
+			this._soundSource = value;
 			this._isLoaded = false;
-			if(this._audioSource is String)
+			if(this._soundSource is String)
 			{
 				this.loadSourceFromURL(value as String);
 			}
-			else if(this._audioSource is URLRequest)
+			else if(this._soundSource is URLRequest)
 			{
 				this.loadSourceFromURLRequest(URLRequest(value));
 			}
-			else if(this._audioSource is Sound)
+			else if(this._soundSource is Sound)
 			{
-				this._sound = Sound(this._audioSource);
+				this._sound = Sound(this._soundSource);
 			}
 			else
 			{
@@ -92,6 +115,9 @@ package feathers.media
 		 */
 		protected var _isLoading:Boolean = false;
 
+		/**
+		 * Indicates if the audio data is currently loading.
+		 */
 		public function get isLoading():Boolean
 		{
 			return this._isLoading;
@@ -102,6 +128,12 @@ package feathers.media
 		 */
 		protected var _isLoaded:Boolean = false;
 
+		/**
+		 * Indicates if the audio content has finished loading.
+		 * 
+		 * @see #event:loadProgress feathers.media.MediaPlayerEventType.LOAD_PROGRESS
+		 * @see #event:loadComplete feathers.media.MediaPlayerEventType.LOAD_COMPLETE
+		 */
 		public function get isLoaded():Boolean
 		{
 			return this._isLoaded;
@@ -111,7 +143,12 @@ package feathers.media
 		 * @private
 		 */
 		protected var _soundTransform:SoundTransform;
-		
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html flash.media.SoundTransform
+		 */
 		public function get soundTransform():SoundTransform
 		{
 			if(!this._soundTransform)
@@ -138,6 +175,12 @@ package feathers.media
 		 */
 		protected var _autoPlay:Boolean = true;
 
+		/**
+		 * Determines if the video starts playing immediately when the
+		 * <code>audioSource</code> property is set.
+		 * 
+		 * @see #soundSource
+		 */
 		public function get autoPlay():Boolean
 		{
 			return this._autoPlay;
@@ -156,6 +199,10 @@ package feathers.media
 		 */
 		protected var _autoRewind:Boolean = true;
 
+		/**
+		 * Determines if the playhead automatically returns to the start time of
+		 * the media after it completes playback.
+		 */
 		public function get autoRewind():Boolean
 		{
 			return this._autoRewind;
@@ -168,7 +215,10 @@ package feathers.media
 		{
 			this._autoRewind = value;
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override public function play():void
 		{
 			if(this._isPlaying)
@@ -199,7 +249,7 @@ package feathers.media
 			}
 			this._soundChannel = this._sound.play(this._currentTime * 1000, 0, this._soundTransform);
 			this._soundChannel.addEventListener(flash.events.Event.SOUND_COMPLETE, soundChannel_soundCompleteHandler);
-			this.addEventListener(starling.events.Event.ENTER_FRAME, audioPlayer_enterFrameHandler);
+			this.addEventListener(Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
 		}
 
 		/**
@@ -212,7 +262,7 @@ package feathers.media
 				//this could be null when seeking
 				return;
 			}
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, audioPlayer_enterFrameHandler);
+			this.removeEventListener(Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
 			this._soundChannel.stop();
 			this._soundChannel.removeEventListener(flash.events.Event.SOUND_COMPLETE, soundChannel_soundCompleteHandler);
 			this._soundChannel = null;
@@ -276,7 +326,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function audioPlayer_enterFrameHandler(event:starling.events.Event):void
+		protected function soundPlayer_enterFrameHandler(event:Event):void
 		{
 			this._currentTime = this._soundChannel.position / 1000;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);

@@ -17,20 +17,45 @@ package feathers.media
 	import starling.display.QuadBatch;
 	import starling.events.Event;
 
+	/**
+	 * A visualization of the audio spectrum of the runtime's currently playing
+	 * audio content.
+	 *
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 */
 	public class SpectrumBarGraphVisualizer extends FeathersControl implements IMediaPlayerControl
 	{
+		/**
+		 * @private
+		 */
 		protected static var HELPER_QUAD:Quad = new Quad(1, 1);
-		protected static const MAX_BAR_COUNT:int = 256;
 		
+		/**
+		 * @private
+		 */
+		protected static const MAX_BAR_COUNT:int = 256;
+
+		/**
+		 * Constructor
+		 */
 		public function SpectrumBarGraphVisualizer()
 		{
 			this.isQuickHitAreaEnabled = true;
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected var _bars:QuadBatch;
-		
+
+		/**
+		 * @private
+		 */
 		protected var _bytes:ByteArray = new ByteArray();
-		
+
+		/**
+		 * @private
+		 */
 		protected var _barValues:Vector.<Number> = new <Number>[];
 
 		/**
@@ -38,6 +63,9 @@ package feathers.media
 		 */
 		protected var _barCount:int = 16;
 
+		/**
+		 * The number of bars displayed by the visualizer.
+		 */
 		public function get barCount():int
 		{
 			return this._barCount;
@@ -69,6 +97,9 @@ package feathers.media
 		 */
 		protected var _gap:Number = 0;
 
+		/**
+		 * The gap, in pixels, between the bars.
+		 */
 		public function get gap():Number
 		{
 			return this._gap;
@@ -92,6 +123,9 @@ package feathers.media
 		 */
 		protected var _color:uint = 0x000000;
 
+		/**
+		 * The color of the bars.
+		 */
 		public function get color():uint
 		{
 			return this._color;
@@ -115,6 +149,9 @@ package feathers.media
 		 */
 		protected var _mediaPlayer:ITimedMediaPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;
@@ -142,25 +179,37 @@ package feathers.media
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.mediaPlayer = null;
 			super.dispose();
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this._bars = new QuadBatch();
 			this.addChild(this._bars);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			this.autoSizeIfNeeded();
 			this.layoutBarGraph();
 			super.draw();
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
 			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
@@ -182,6 +231,9 @@ package feathers.media
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function layoutBarGraph():void
 		{
 			this._bars.reset();
@@ -245,7 +297,10 @@ package feathers.media
 				xPosition += barWidth + this._gap;
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function handlePlaybackStateChange():void
 		{
 			if(this._mediaPlayer.isPlaying)
@@ -257,12 +312,18 @@ package feathers.media
 				this.removeEventListener(Event.ENTER_FRAME, peakVisualizer_enterFrameHandler);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function mediaPlayer_playbackStateChange(event:Event):void
 		{
 			this.handlePlaybackStateChange();
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function peakVisualizer_enterFrameHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);

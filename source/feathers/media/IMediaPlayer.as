@@ -9,6 +9,9 @@ package feathers.media
 {
 	import feathers.core.IFeathersEventDispatcher;
 
+	/**
+	 * A base interface for all types of media players.
+	 */
 	public interface IMediaPlayer extends IFeathersEventDispatcher
 	{
 	}

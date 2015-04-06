@@ -7,13 +7,17 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.media
 {
-	import feathers.controls.Button;
 	import feathers.controls.ToggleButton;
-
-	import flash.net.NetStream;
 
 	import starling.events.Event;
 
+	/**
+	 * A specialized toggle button that controls whether a media player is
+	 * playing or paused.
+	 *
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class PlayPauseToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
 		/**
@@ -33,7 +37,10 @@ package feathers.media
 		 * @private
 		 */
 		protected var _mediaPlayer:ITimedMediaPlayer;
-		
+
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;

@@ -11,6 +11,13 @@ package feathers.media
 
 	import starling.events.Event;
 
+	/**
+	 * A specialized slider that displays and controls the current position of
+	 * the playhead of a media player.
+	 *
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class SeekSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
@@ -26,6 +33,9 @@ package feathers.media
 		 */
 		protected var _mediaPlayer:ITimedMediaPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;
