@@ -7,6 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.media
 {
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
+
 	import flash.events.ErrorEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -25,10 +28,27 @@ package feathers.media
 	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>SoundPlayer</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function SoundPlayer()
 		{
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return SoundPlayer.globalStyleProvider;
 		}
 		
 		/**
@@ -131,8 +151,8 @@ package feathers.media
 		/**
 		 * Indicates if the audio content has finished loading.
 		 * 
-		 * @see #event:loadProgress feathers.media.MediaPlayerEventType.LOAD_PROGRESS
-		 * @see #event:loadComplete feathers.media.MediaPlayerEventType.LOAD_COMPLETE
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 * @see #event:loadComplete feathers.events.MediaPlayerEventType.LOAD_COMPLETE
 		 */
 		public function get isLoaded():Boolean
 		{

@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.core.FeathersControl;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundChannel;
 
@@ -24,10 +26,27 @@ package feathers.media
 	public class SoundChannelPeakVisualizer extends FeathersControl implements IMediaPlayerControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>SoundChannelPeakVisualizer</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function SoundChannelPeakVisualizer()
 		{
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return SoundChannelPeakVisualizer.globalStyleProvider;
 		}
 
 		/**

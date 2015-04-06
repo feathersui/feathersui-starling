@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.Slider;
+	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundTransform;
 
@@ -23,6 +24,15 @@ package feathers.media
 	public class VolumeSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>VolumeSlider</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function VolumeSlider()
@@ -30,6 +40,18 @@ package feathers.media
 			this.minimum = 0;
 			this.maximum = 1;
 			this.addEventListener(Event.CHANGE, volumeSlider_changeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			if(VolumeSlider.globalStyleProvider)
+			{
+				return VolumeSlider.globalStyleProvider;
+			}
+			return Slider.globalStyleProvider;
 		}
 
 		/**

@@ -27,7 +27,7 @@ package feathers.media
 	 * 
 	 * @see #totalTime
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.TOTAL_TIME_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.TOTAL_TIME_CHANGE
 	 */
 	[Event(name="totalTimeChange",type="starling.events.Event")]
 
@@ -51,7 +51,7 @@ package feathers.media
 	 * 
 	 * @see #currentTime
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.CURRENT_TIME_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.CURRENT_TIME_CHANGE
 	 */
 	[Event(name="currentTimeChange",type="starling.events.Event")]
 
@@ -76,7 +76,7 @@ package feathers.media
 	 * 
 	 * @see #isPlaying
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
 	 */
 	[Event(name="playbackStageChange",type="starling.events.Event")]
 
@@ -88,21 +88,21 @@ package feathers.media
 		/**
 		 * The current position of the playhead, in seconds.
 		 *
-		 * @see #event:currentTimeChange feathers.media.MediaPlayerEventType.CURRENT_TIME_CHANGE
+		 * @see #event:currentTimeChange feathers.events.MediaPlayerEventType.CURRENT_TIME_CHANGE
 		 */
 		function get currentTime():Number;
 
 		/**
 		 * The maximum position of the playhead, in seconds.
 		 *
-		 * @see #event:totalTimeChange feathers.media.MediaPlayerEventType.TOTAL_TIME_CHANGE
+		 * @see #event:totalTimeChange feathers.events.MediaPlayerEventType.TOTAL_TIME_CHANGE
 		 */
 		function get totalTime():Number;
 
 		/**
 		 * Determines if the media content is currently playing.
 		 *
-		 * @see #event:playbackStateChange feathers.media.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
+		 * @see #event:playbackStateChange feathers.events.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
 		 */
 		function get isPlaying():Boolean;
 

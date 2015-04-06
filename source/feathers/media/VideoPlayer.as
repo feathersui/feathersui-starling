@@ -10,6 +10,8 @@ package feathers.media
 	import feathers.controls.LayoutGroup;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
@@ -46,7 +48,7 @@ package feathers.media
 	 * @see #nativeWidth
 	 * @see #nativeHeight
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.DIMENSIONS_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 	 */
 	[Event(name="dimensionsChange",type="starling.events.Event")]
 
@@ -72,7 +74,7 @@ package feathers.media
 	 * @see #isFullScreen
 	 * @see #toggleFullScreen()
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.DISPLAY_STATE_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 	 */
 	[Event(name="displayStateChange",type="starling.events.Event")]
 
@@ -99,10 +101,27 @@ package feathers.media
 		protected static const NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:String = "NetStream.Seek.Notify";
 		
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>VideoPlayer</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function VideoPlayer()
 		{
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return VideoPlayer.globalStyleProvider;
 		}
 
 		/**
@@ -162,7 +181,7 @@ package feathers.media
 		/**
 		 * @inheritDoc
 		 *
-		 * @see #event:dimensionsChange feathers.media.MediaPlayerEventType.DIMENSIONS_CHANGE
+		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 		 */
 		public function get nativeWidth():Number
 		{
@@ -176,7 +195,7 @@ package feathers.media
 		/**
 		 * @inheritDoc
 		 *
-		 * @see #event:dimensionsChange feathers.media.MediaPlayerEventType.DIMENSIONS_CHANGE
+		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 		 */
 		public function get nativeHeight():Number
 		{
@@ -273,7 +292,7 @@ package feathers.media
 		 * Indicates if the video player is currently full screen or not.
 		 * 
 		 * @see #toggleFullScreen()
-		 * @see #event:displayStateChange feathers.media.MediaPlayerEventType.DISPLAY_STATE_CHANGE
+		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
 		public function get isFullScreen():Boolean
 		{
@@ -352,7 +371,7 @@ package feathers.media
 		 * Goes to full screen or returns to normal display.
 		 * 
 		 * @see #isFullScreen
-		 * @see #event:displayStateChange feathers.media.MediaPlayerEventType.DISPLAY_STATE_CHANGE
+		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
 		public function toggleFullScreen():void
 		{

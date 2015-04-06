@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.media
 {
+	import feathers.events.MediaPlayerEventType;
+
 	import starling.errors.AbstractClassError;
 
 	/**
@@ -29,7 +31,7 @@ package feathers.media
 	 *
 	 * @see #totalTime
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.TOTAL_TIME_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.TOTAL_TIME_CHANGE
 	 */
 	[Event(name="totalTimeChange",type="starling.events.Event")]
 
@@ -53,7 +55,7 @@ package feathers.media
 	 *
 	 * @see #currentTime
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.CURRENT_TIME_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.CURRENT_TIME_CHANGE
 	 */
 	[Event(name="currentTimeChange",type="starling.events.Event")]
 
@@ -78,7 +80,7 @@ package feathers.media
 	 *
 	 * @see #isPlaying
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
 	 */
 	[Event(name="playbackStageChange",type="starling.events.Event")]
 
@@ -108,7 +110,7 @@ package feathers.media
 		/**
 		 * @inheritDoc
 		 *
-		 * @see #event:playbackStateChange feathers.media.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
+		 * @see #event:playbackStateChange feathers.events.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
 		 */
 		public function get isPlaying():Boolean
 		{
@@ -123,7 +125,7 @@ package feathers.media
 		/**
 		 * @inheritDoc
 		 *
-		 * @see #event:currentTimeChange feathers.media.MediaPlayerEventType.CURRENT_TIME_CHANGE
+		 * @see #event:currentTimeChange feathers.events.MediaPlayerEventType.CURRENT_TIME_CHANGE
 		 */
 		public function get currentTime():Number
 		{
@@ -138,7 +140,7 @@ package feathers.media
 		/**
 		 * @inheritDoc
 		 *
-		 * @see #event:totalTimeChange feathers.media.MediaPlayerEventType.TOTAL_TIME_CHANGE
+		 * @see #event:totalTimeChange feathers.events.MediaPlayerEventType.TOTAL_TIME_CHANGE
 		 */
 		public function get totalTime():Number
 		{

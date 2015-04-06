@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.ToggleButton;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
 
@@ -21,6 +23,15 @@ package feathers.media
 	public class PlayPauseToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>PlayPauseToggleButton</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function PlayPauseToggleButton()
@@ -31,6 +42,18 @@ package feathers.media
 			//player
 			this.isToggle = false;
 			this.addEventListener(Event.TRIGGERED, playPlayButton_triggeredHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			if(PlayPauseToggleButton.globalStyleProvider)
+			{
+				return PlayPauseToggleButton.globalStyleProvider;
+			}
+			return ToggleButton.globalStyleProvider;
 		}
 
 		/**

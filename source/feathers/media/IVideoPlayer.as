@@ -29,7 +29,7 @@ package feathers.media
 	 * @see #nativeWidth
 	 * @see #nativeHeight
 	 *
-	 * @eventType feathers.media.MediaPlayerEventType.DIMENSIONS_CHANGE
+	 * @eventType feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 	 */
 	[Event(name="dimensionsChange",type="starling.events.Event")]
 
@@ -41,14 +41,14 @@ package feathers.media
 		/**
 		 * The original, native width of the loaded video.
 		 * 
-		 * @see #event:dimensionsChange feathers.media.MediaPlayerEventType.DIMENSIONS_CHANGE
+		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 		 */
 		function get nativeWidth():Number;
 		
 		/**
 		 * The original, native height of the loaded video.
 		 *
-		 * @see #event:dimensionsChange feathers.media.MediaPlayerEventType.DIMENSIONS_CHANGE
+		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 		 */
 		function get nativeHeight():Number;
 	}
