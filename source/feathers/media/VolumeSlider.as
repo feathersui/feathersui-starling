@@ -13,6 +13,13 @@ package feathers.media
 
 	import starling.events.Event;
 
+	/**
+	 * A specialized slider that controls the volume of a media player that
+	 * plays audio content.
+	 *
+	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class VolumeSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
@@ -30,6 +37,9 @@ package feathers.media
 		 */
 		protected var _mediaPlayer:IAudioPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;
