@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.SpinnerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.IFocusContainer;
@@ -392,7 +393,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(value is ISpinnerLayout)
+			if(!(this is SpinnerList) && value is ISpinnerLayout)
 			{
 				throw new ArgumentError("Layouts that implement the ISpinnerLayout interface should be used with the SpinnerList component.");
 			}
