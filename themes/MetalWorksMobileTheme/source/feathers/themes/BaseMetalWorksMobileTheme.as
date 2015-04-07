@@ -135,6 +135,8 @@ package feathers.themes
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.8;
 		protected static const DRAWER_OVERLAY_COLOR:uint = 0x29241e;
 		protected static const DRAWER_OVERLAY_ALPHA:Number = 0.4;
+		protected static const VIDEO_OVERLAY_COLOR:uint = 0x1a1816;
+		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
 
 		/**
 		 * The screen density of an iPhone with Retina display. The textures
@@ -568,6 +570,8 @@ package feathers.themes
 		protected var playPauseButtonPlayDownIconTexture:Texture;
 		protected var playPauseButtonPauseUpIconTexture:Texture;
 		protected var playPauseButtonPauseDownIconTexture:Texture;
+		protected var largePlayPauseButtonPlayUpIconTexture:Texture;
+		protected var largePlayPauseButtonPlayDownIconTexture:Texture;
 		protected var fullScreenToggleButtonEnterUpIconTexture:Texture;
 		protected var fullScreenToggleButtonEnterDownIconTexture:Texture;
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
@@ -809,6 +813,8 @@ package feathers.themes
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon");
 			this.playPauseButtonPauseUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-up-icon");
 			this.playPauseButtonPauseDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-down-icon");
+			this.largePlayPauseButtonPlayUpIconTexture = this.atlas.getTexture("large-play-pause-toggle-button-play-up-icon");
+			this.largePlayPauseButtonPlayDownIconTexture = this.atlas.getTexture("large-play-pause-toggle-button-play-down-icon");
 			this.fullScreenToggleButtonEnterUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-up-icon");
 			this.fullScreenToggleButtonEnterDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-down-icon");
 			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon");
@@ -973,6 +979,7 @@ package feathers.themes
 			
 			//play/pause toggle button
 			this.getStyleProviderForClass(PlayPauseToggleButton).defaultStyleFunction = this.setPlayPauseToggleButtonStyles;
+			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_LARGE_PLAY_PAUSE_TOGGLE_BUTTON, this.setLargePlayPauseToggleButtonStyles);
 
 			//full screen toggle button
 			this.getStyleProviderForClass(FullScreenToggleButton).defaultStyleFunction = this.setFullScreenToggleButtonStyles;
@@ -2325,6 +2332,27 @@ package feathers.themes
 			button.minHeight = this.controlSize;
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
+		}
+
+		protected function setLargePlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
+		{
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueForState(this.largePlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
+			iconSelector.setValueForState(this.largePlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.largePlayPauseButtonPlayDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.displayObjectProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale
+			};
+			button.stateToIconFunction = iconSelector.updateValue;
+
+			button.hasLabelTextRenderer = false;
+			
+			var overlaySkin:Quad = new Quad(1, 1, VIDEO_OVERLAY_COLOR);
+			overlaySkin.alpha = VIDEO_OVERLAY_ALPHA;
+			button.upSkin = overlaySkin;
+			button.hoverSkin = overlaySkin;
 		}
 
 	//-------------------------
