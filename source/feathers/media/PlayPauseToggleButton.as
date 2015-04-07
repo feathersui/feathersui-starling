@@ -49,11 +49,7 @@ package feathers.media
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			if(PlayPauseToggleButton.globalStyleProvider)
-			{
-				return PlayPauseToggleButton.globalStyleProvider;
-			}
-			return ToggleButton.globalStyleProvider;
+			return PlayPauseToggleButton.globalStyleProvider;
 		}
 
 		/**

@@ -55,11 +55,7 @@ package feathers.media
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			if(FullScreenToggleButton.globalStyleProvider)
-			{
-				return FullScreenToggleButton.globalStyleProvider;
-			}
-			return ToggleButton.globalStyleProvider;
+			return FullScreenToggleButton.globalStyleProvider;
 		}
 
 		/**
