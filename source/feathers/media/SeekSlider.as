@@ -9,6 +9,7 @@ package feathers.media
 {
 	import feathers.controls.Slider;
 	import feathers.events.MediaPlayerEventType;
+	import feathers.media.SeekSlider;
 	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
@@ -23,6 +24,108 @@ package feathers.media
 	public class SeekSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
+		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 *
+		 * @see #direction
+		 */
+		public static const DIRECTION_HORIZONTAL:String = "horizontal";
+
+		/**
+		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 *
+		 * @see #direction
+		 */
+		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The slider has only one track, that fills the full length of the
+		 * slider. In this layout mode, the "minimum" track is displayed and
+		 * fills the entire length of the slider. The maximum track will not
+		 * exist.
+		 *
+		 * @see #trackLayoutMode
+		 */
+		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
+
+		/**
+		 * The slider has two tracks, stretching to fill each side of the slider
+		 * with the thumb in the middle. The tracks will be resized as the thumb
+		 * moves. This layout mode is designed for sliders where the two sides
+		 * of the track may be colored differently to show the value
+		 * "filling up" as the slider is dragged.
+		 *
+		 * <p>Since the width and height of the tracks will change, consider
+		 * using a special display object such as a <code>Scale9Image</code>,
+		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
+		 * designed to be resized dynamically.</p>
+		 *
+		 * @see #trackLayoutMode
+		 * @see feathers.display.Scale9Image
+		 * @see feathers.display.Scale3Image
+		 * @see feathers.display.TiledImage
+		 */
+		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
+
+		/**
+		 * The slider's track dimensions fill the full width and height of the
+		 * slider.
+		 *
+		 * @see #trackScaleMode
+		 */
+		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
+
+		/**
+		 * If the slider's direction is horizontal, the width of the track will
+		 * fill the full width of the slider, and if the slider's direction is
+		 * vertical, the height of the track will fill the full height of the
+		 * slider. The other edge will not be scaled.
+		 *
+		 * @see #trackScaleMode
+		 */
+		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
+
+		/**
+		 * When the track is touched, the slider's thumb jumps directly to the
+		 * touch position, and the slider's <code>value</code> property is
+		 * updated to match as if the thumb were dragged to that position.
+		 *
+		 * @see #trackInteractionMode
+		 */
+		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
+
+		/**
+		 * When the track is touched, the <code>value</code> is increased or
+		 * decreased (depending on the location of the touch) by the value of
+		 * the <code>page</code> property.
+		 *
+		 * @see #trackInteractionMode
+		 */
+		public static const TRACK_INTERACTION_MODE_BY_PAGE:String = "byPage";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * minimum track.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK:String = "feathers-seek-slider-minimum-track";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * maximum track.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK:String = "feathers-seek-slider-maximum-track";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the thumb.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-seek-slider-thumb";
+		
+		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>SeekSlider</code> components.
 		 *
@@ -36,6 +139,10 @@ package feathers.media
 		 */
 		public function SeekSlider()
 		{
+			super();
+			this.thumbStyleName = SeekSlider.DEFAULT_CHILD_STYLE_NAME_THUMB;
+			this.minimumTrackStyleName = SeekSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
+			this.maximumTrackStyleName = SeekSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
 			this.addEventListener(Event.CHANGE, seekSlider_changeHandler);
 		}
 
@@ -44,11 +151,7 @@ package feathers.media
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			if(SeekSlider.globalStyleProvider)
-			{
-				return SeekSlider.globalStyleProvider;
-			}
-			return Slider.globalStyleProvider;
+			return SeekSlider.globalStyleProvider;
 		}
 
 		/**
