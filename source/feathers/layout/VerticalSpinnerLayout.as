@@ -41,8 +41,8 @@ package feathers.layout
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Positions items from top to bottom in a single column and repeats
-	 * infinitely.
+	 * For use with the <code>SpinnerList</code> component, positions items from
+	 * top to bottom in a single column and repeats infinitely.
 	 *
 	 * <p><strong>Beta Layout:</strong> This is a new layout, and its APIs
 	 * may need some changes between now and the next version of Feathers to
@@ -53,7 +53,7 @@ package feathers.layout
 	 * will not go into effect until this component's status is upgraded from
 	 * beta to stable.</p>
 	 *
-	 * @see ../../../help/vertical-spinner-layout.html How to use VerticalSpinnerLayout with the Feathers List component
+	 * @see ../../../help/vertical-spinner-layout.html How to use VerticalSpinnerLayout with the Feathers SpinnerList component
 	 */
 	public class VerticalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{
@@ -610,6 +610,7 @@ package feathers.layout
 						continue;
 					}
 					item.y = item.pivotY + positionY;
+					item.height = calculatedTypicalItemHeight;
 					var itemWidth:Number = item.width;
 					//we compare with > instead of Math.max() because the rest
 					//arguments on Math.max() cause extra garbage collection and
@@ -668,7 +669,6 @@ package feathers.layout
 			var availableHeight:Number = explicitHeight;
 			if(availableHeight !== availableHeight) //isNaN
 			{
-				availableHeight = totalHeight;
 				if(this._requestedRowCount > 0)
 				{
 					availableHeight = this._requestedRowCount * (calculatedTypicalItemHeight + gap) - gap;
@@ -981,6 +981,8 @@ package feathers.layout
 		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
 			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
+			//normally, this isn't acceptable, but because the selection is
+			//based on the scroll position, it must work this way.
 			return this.getScrollPositionForIndex(index, items, x, y, width, height, result);
 		}
 
@@ -1066,51 +1068,6 @@ package feathers.layout
 			{
 				IValidating(this._typicalItem).validate();
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function calculateMaxScrollYOfIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number):Number
-		{
-			if(this._useVirtualLayout)
-			{
-				this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
-				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
-			}
-
-			var positionY:Number = y;
-			var gap:Number = this._gap;
-			var startIndexOffset:int = 0;
-			var endIndexOffset:Number = 0;
-			var itemCount:int = items.length;
-			var totalItemCount:int = itemCount;
-			if(this._useVirtualLayout)
-			{
-				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
-				if(index < this._beforeVirtualizedItemCount)
-				{
-					//this makes it skip the loop below
-					startIndexOffset = index + 1;
-				}
-				else
-				{
-					startIndexOffset = this._beforeVirtualizedItemCount;
-					endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
-					if(endIndexOffset < 0)
-					{
-						endIndexOffset = 0;
-					}
-					positionY += (endIndexOffset * (calculatedTypicalItemHeight + gap));
-				}
-				positionY += (startIndexOffset * (calculatedTypicalItemHeight + gap));
-			}
-			index -= (startIndexOffset + endIndexOffset);
-			for(var i:int = 0; i < index; i++)
-			{
-				positionY += calculatedTypicalItemHeight + gap;
-			}
-			return positionY;
 		}
 	}
 }
