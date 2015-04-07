@@ -102,16 +102,55 @@ package feathers.media
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.PLAYBACK_STATE_CHANGE, mediaPlayer_playbackStateChangeHandler);
 			}
 			this._mediaPlayer = value as ITimedMediaPlayer;
+			this.refreshState();
 			if(this._mediaPlayer)
 			{
-				this.isSelected = this._mediaPlayer.isPlaying;
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.PLAYBACK_STATE_CHANGE, mediaPlayer_playbackStateChangeHandler);
 			}
-			else
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _touchableWhenPlaying:Boolean = true;
+
+		/**
+		 * Determines if the button may be touched when the media player is
+		 * playing its content. In other words, this button will only work when
+		 * the content is paused.
+		 * 
+		 * @default true
+		 */
+		public function get touchableWhenPlaying():Boolean
+		{
+			return this._touchableWhenPlaying;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set touchableWhenPlaying(value:Boolean):void
+		{
+			if(this._touchableWhenPlaying == value)
+			{
+				return;
+			}
+			this._touchableWhenPlaying = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshState():void
+		{
+			if(!this._mediaPlayer)
 			{
 				this.isSelected = false;
+				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.isSelected = this._mediaPlayer.isPlaying;
+			this.touchable = !this._isSelected || this._touchableWhenPlaying;
 		}
 
 		/**
@@ -127,7 +166,7 @@ package feathers.media
 		 */
 		protected function mediaPlayer_playbackStateChangeHandler(event:Event):void
 		{
-			this.isSelected = this._mediaPlayer.isPlaying;
+			this.refreshState();
 		}
 	}
 }
