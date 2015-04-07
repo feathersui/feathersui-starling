@@ -49,6 +49,20 @@ package feathers.controls.popups
 		 * @private
 		 */
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
+
+		/**
+		 * The pop-up content will be positioned below the source, if possible. 
+		 * 
+		 * @see #primaryDirection
+		 */
+		public static const PRIMARY_DIRECTION_DOWN:String = "down";
+
+		/**
+		 * The pop-up content will be positioned above the source, if possible.
+		 *
+		 * @see #primaryDirection
+		 */
+		public static const PRIMARY_DIRECTION_UP:String = "up";
 		
 		/**
 		 * Constructor.
@@ -94,6 +108,32 @@ package feathers.controls.popups
 		public function set gap(value:Number):void
 		{
 			this._gap = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _primaryDirection:String = PRIMARY_DIRECTION_DOWN;
+
+		/**
+		 * The space, in pixels, between the source and the pop-up.
+		 * 
+		 * @default DropDownPopUpContentManager.PRIMARY_DIRECTION_DOWN
+		 * 
+		 * @see #PRIMARY_DIRECTION_DOWN
+		 * @see #PRIMARY_DIRECTION_UP
+		 */
+		public function get primaryDirection():String
+		{
+			return this._primaryDirection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set primaryDirection(value:String):void
+		{
+			this._primaryDirection = value;
 		}
 
 		/**
@@ -223,7 +263,8 @@ package feathers.controls.popups
 			}
 
 			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height + this._gap);
-			if(downSpace >= 0)
+			//skip this if the primary direction is up
+			if(this._primaryDirection == PRIMARY_DIRECTION_DOWN && downSpace >= 0)
 			{
 				layoutBelow(globalOrigin);
 				return;
@@ -233,6 +274,13 @@ package feathers.controls.popups
 			if(upSpace >= 0)
 			{
 				layoutAbove(globalOrigin);
+				return;
+			}
+			
+			//do what we skipped earlier if the primary direction is up
+			if(this._primaryDirection == PRIMARY_DIRECTION_UP && downSpace >= 0)
+			{
+				layoutBelow(globalOrigin);
 				return;
 			}
 
