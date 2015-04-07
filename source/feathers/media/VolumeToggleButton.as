@@ -11,6 +11,7 @@ package feathers.media
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.core.PropertyProxy;
+	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
@@ -148,7 +149,12 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected var oldVolume:Number;
+		protected var _oldVolume:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreChanges:Boolean = false;
 
 		/**
 		 * @private
@@ -191,14 +197,12 @@ package feathers.media
 				return;
 			}
 			this._mediaPlayer = value as IAudioPlayer;
+			this.refreshVolumeFromMediaPlayer();
 			if(this._mediaPlayer)
 			{
-				this.isSelected = this._mediaPlayer.soundTransform.volume == 0;
+				this._mediaPlayer.addEventListener(MediaPlayerEventType.SOUND_TRANSFORM_CHANGE, mediaPlayer_soundTransformChangeHandler);
 			}
-			else
-			{
-				this.isSelected = false;
-			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -591,25 +595,59 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function refreshVolumeFromMediaPlayer():void
+		{
+			var oldIgnoreChanges:Boolean = this._ignoreChanges;
+			this._ignoreChanges = true;
+			if(this._mediaPlayer)
+			{
+				this.isSelected = this._mediaPlayer.soundTransform.volume == 0;
+			}
+			else
+			{
+				this.isSelected = false;
+			}
+			this._ignoreChanges = oldIgnoreChanges;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function mediaPlayer_soundTransformChangeHandler(event:Event):void
+		{
+			this.refreshVolumeFromMediaPlayer();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function volumeButton_changeHandler(event:Event):void
 		{
+			if(this._ignoreChanges)
+			{
+				return;
+			}
 			var soundTransform:SoundTransform = this._mediaPlayer.soundTransform;
 			if(this._isSelected)
 			{
-				var currentVolume:Number = soundTransform.volume;
-				if(currentVolume == 0)
+				this._oldVolume = soundTransform.volume;
+				if(this._oldVolume === 0)
 				{
-					//volume was already zero, so we should fall back to some
-					//default value
-					currentVolume = 1;
+					this._oldVolume = 1;
 				}
-				this.oldVolume = currentVolume;
 				soundTransform.volume = 0;
 				this._mediaPlayer.soundTransform = soundTransform;
 			}
 			else
 			{
-				soundTransform.volume = this.oldVolume;
+				var newVolume:Number = this._oldVolume;
+				if(newVolume !== newVolume) //isNaN
+				{
+					//volume was already zero, so we should fall back to some
+					//default value
+					newVolume = 1;
+				}
+				soundTransform.volume = newVolume;
 				this._mediaPlayer.soundTransform = soundTransform;
 			}
 		}

@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.Slider;
+	import feathers.events.MediaPlayerEventType;
 	import feathers.media.VolumeSlider;
 	import feathers.skins.IStyleProvider;
 
@@ -160,6 +161,11 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _ignoreChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _mediaPlayer:IAudioPlayer;
 
 		/**
@@ -180,6 +186,21 @@ package feathers.media
 				return;
 			}
 			this._mediaPlayer = value as IAudioPlayer;
+			this.refreshVolumeFromMediaPlayer();
+			if(this._mediaPlayer)
+			{
+				this._mediaPlayer.addEventListener(MediaPlayerEventType.SOUND_TRANSFORM_CHANGE, mediaPlayer_soundTransformChangeHandler);
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshVolumeFromMediaPlayer():void
+		{
+			var oldIgnoreChanges:Boolean = this._ignoreChanges;
+			this._ignoreChanges = true;
 			if(this._mediaPlayer)
 			{
 				this.value = this._mediaPlayer.soundTransform.volume;
@@ -188,6 +209,15 @@ package feathers.media
 			{
 				this.value = 0;
 			}
+			this._ignoreChanges = oldIgnoreChanges;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function mediaPlayer_soundTransformChangeHandler(event:Event):void
+		{
+			this.refreshVolumeFromMediaPlayer();
 		}
 
 		/**
@@ -195,7 +225,7 @@ package feathers.media
 		 */
 		protected function volumeSlider_changeHandler(event:Event):void
 		{
-			if(!this._mediaPlayer)
+			if(!this._mediaPlayer || this._ignoreChanges)
 			{
 				return;
 			}

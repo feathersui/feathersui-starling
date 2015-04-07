@@ -53,6 +53,11 @@ package feathers.events
 		public static const DIMENSIONS_CHANGE:String = "dimensionsChange";
 
 		/**
+		 * Dispatched when a media player's sound transform is changed.
+		 */
+		public static const SOUND_TRANSFORM_CHANGE:String = "soundTransformChange";
+
+		/**
 		 * Dispatched periodically when a media player's content is loading to
 		 * indicate the current progress.
 		 */
