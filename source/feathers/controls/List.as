@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
@@ -390,6 +391,10 @@ package feathers.controls
 			if(this._layout == value)
 			{
 				return;
+			}
+			if(value is ISpinnerLayout)
+			{
+				throw new ArgumentError("Layouts that implement the ISpinnerLayout interface should be used with the SpinnerList component.");
 			}
 			if(this._layout)
 			{
