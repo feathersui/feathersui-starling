@@ -11,6 +11,12 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 
 -   [How to set additional properties on the buttons in a `ButtonGroup`](button-group-add-new-button-properties.html)
 
+## `Callout`
+
+-   [How to close a `Callout` without disposing it (or without disposing its content)](callout-restrict-disposal.html)
+
+-   [How to stop a `Callout` from closing automatically after touch or keyboard input](callout-stop-closing-automatically.html)
+
 ## Custom Item Renderers
 
 -   [How to add a background skin to a custom item renderer based on `FeathersControl` and `IListItemRenderer`](item-renderer-background-skin.html)
