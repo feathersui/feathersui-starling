@@ -7,6 +7,16 @@ author: Josh Tynjala
 
 Simple and targeted tutorials about [Feathers](../index.html) designed to demonstrate how to use or extend the components to implement specific common behaviors.
 
+## `ButtonGroup`
+
+-   [How to set additional properties on the buttons in a `ButtonGroup`](button-group-add-new-button-properties.html)
+
+## `Callout`
+
+-   [How to close a `Callout` without disposing it (or without disposing its content)](callout-restrict-disposal.html)
+
+-   [How to stop a `Callout` from closing automatically after touch or keyboard input](callout-stop-closing-automatically.html)
+
 ## Custom Item Renderers
 
 -   [How to add a background skin to a custom item renderer based on `FeathersControl` and `IListItemRenderer`](item-renderer-background-skin.html)
@@ -28,5 +38,9 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 ## Screen Navigator
 
 -   [How to save the state of a screen in a `ScreenNavigator` and restore it later](screen-navigator-saving-state.html)
+
+## `TabBar`
+
+-   [How to set additional properties on the tabs in a `TabBar`](tab-bar-add-new-tab-properties.html)
 
 
