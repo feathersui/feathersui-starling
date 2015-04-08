@@ -147,6 +147,8 @@ A detailed look at each of the layout algorithms that Feathers provides out-of-t
 
 -   [`HorizontalLayout`](horizontal-layout.html)
 
+-   [`HorizontalSpinnerLayout`](horizontal-spinner-layout.html)
+
 -   [`VerticalLayout`](vertical-layout.html)
 
 -   [`VerticalSpinnerLayout`](vertical-spinner-layout.html)
