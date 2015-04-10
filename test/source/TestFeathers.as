@@ -52,10 +52,8 @@ package
 
         private function loaderInfo_completeHandler(event:flash.events.Event):void
         {
-            Starling.handleLostContext = true;
             Starling.multitouchEnabled = true;
             this._starling = new Starling(starling.display.Sprite, this.stage);
-            this._starling.enableErrorChecking = false;
             this._starling.addEventListener(starling.events.Event.ROOT_CREATED, starling_rootCreatedHandler);
             this._starling.start();
         }
