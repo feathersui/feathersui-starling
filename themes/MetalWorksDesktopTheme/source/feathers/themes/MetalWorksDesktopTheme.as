@@ -53,6 +53,11 @@ package feathers.themes {
 		protected static const ATLAS_BITMAP:Class;
 
 		/**
+		 * @private
+		 */
+		protected static const ATLAS_SCALE_FACTOR:int = 2;
+
+		/**
 		 * Constructor.
 		 */
 		public function MetalWorksDesktopTheme()
@@ -77,7 +82,7 @@ package feathers.themes {
 		protected function initializeTextureAtlas():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false, false, 1);
+			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false, false, ATLAS_SCALE_FACTOR);
 			atlasTexture.root.onRestore = this.atlasTexture_onRestore;
 			atlasBitmapData.dispose();
 			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
