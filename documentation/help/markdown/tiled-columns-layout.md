@@ -7,6 +7,8 @@ author: Josh Tynjala
 
 The [`TiledColumnsLayout`](../api-reference/feathers/layout/TiledColumnsLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items from top to bottom in multiple columns. It supports paging horizontally or vertically, and a number of useful options for the spacing and alignment may be modified.
 
+<picture><img src="images/tiled-columns-layout.png" srcset="images/tiled-columns-layout@2x.png 2x" alt="Screenshot of Feathers TiledColumnsLayout" /></picture>
+
 ## The Basics
 
 First, let's create a `TiledColumnsLayout` and pass it to a [`LayoutGroup`](layout-group.html):
