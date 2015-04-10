@@ -7,6 +7,8 @@ author: Josh Tynjala
 
 The [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items from left to right in a single row. It supports a number of useful options for adjusting the spacing and alignment.
 
+<picture><img src="images/horizontal-layout.png" srcset="images/horizontal-layout@2x.png 2x" alt="Screenshot of Feathers HorizontalLayout" /></picture>
+
 ## The Basics
 
 First, let's create a horizontal layout and pass it to a [`LayoutGroup`](layout-group.html):
