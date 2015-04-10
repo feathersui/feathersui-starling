@@ -112,10 +112,9 @@ package
 
 		private function loaderInfo_completeHandler(event:Event):void
 		{
-			Starling.handleLostContext = true;
 			Starling.multitouchEnabled = true;
 			this._starling = new Starling(Main, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE);
-			this._starling.enableErrorChecking = false;
+			this._starling.supportHighResolutions = true;
 			this._starling.start();
 			if(this._launchImage)
 			{
