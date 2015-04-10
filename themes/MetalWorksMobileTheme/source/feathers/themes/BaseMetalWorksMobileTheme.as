@@ -328,6 +328,12 @@ package feathers.themes
 		protected var scale:Number = 1;
 
 		/**
+		 * StageText scales strangely when contentsScaleFactor > 1, so we need
+		 * to account for that.
+		 */
+		protected var stageTextScale:Number = 1;
+
+		/**
 		 * A smaller font size for details.
 		 */
 		protected var smallFontSize:int;
@@ -346,6 +352,13 @@ package feathers.themes
 		 * An extra large font size.
 		 */
 		protected var extraLargeFontSize:int;
+
+		/**
+		 * The font size used for text inputs that use StageText.
+		 * 
+		 * @see #stageTextScale
+		 */
+		protected var inputFontSize:int;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
@@ -649,11 +662,17 @@ package feathers.themes
 		 */
 		protected function initializeScale():void
 		{
-			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
+			var starling:Starling = Starling.current;
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor; 
+			}
+			var scaledDPI:int = DeviceCapabilities.dpi / (starling.contentScaleFactor / nativeScaleFactor);
 			this._originalDPI = scaledDPI;
 			if(this._scaleToDPI)
 			{
-				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+				if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
 					this._originalDPI = ORIGINAL_DPI_IPAD_RETINA;
 				}
@@ -663,6 +682,7 @@ package feathers.themes
 				}
 			}
 			this.scale = scaledDPI / this._originalDPI;
+			this.stageTextScale = this.scale / nativeScaleFactor;
 		}
 
 		/**
@@ -690,6 +710,7 @@ package feathers.themes
 			this.regularFontSize = Math.round(24 * this.scale);
 			this.largeFontSize = Math.round(28 * this.scale);
 			this.extraLargeFontSize = Math.round(36 * this.scale);
+			this.inputFontSize = Math.round(24 * this.stageTextScale);
 
 			//these are for components that don't use FTE
 			this.scrollTextTextFormat = new TextFormat("_sans", this.regularFontSize, LIGHT_TEXT_COLOR);
@@ -2256,7 +2277,7 @@ package feathers.themes
 			input.padding = this.smallGutterSize;
 
 			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = this.regularFontSize;
+			input.textEditorProperties.fontSize = this.inputFontSize;
 			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
 			input.textEditorProperties.disabledColor = DISABLED_TEXT_COLOR;
 

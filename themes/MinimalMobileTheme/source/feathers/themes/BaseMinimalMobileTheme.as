@@ -278,6 +278,12 @@ package feathers.themes
 		protected var scale:Number = 1;
 
 		/**
+		 * StageText scales strangely when contentsScaleFactor > 1, so we need
+		 * to account for that.
+		 */
+		protected var stageTextScale:Number = 1;
+
+		/**
 		 * A normal font size.
 		 */
 		protected var fontSize:int;
@@ -488,10 +494,16 @@ package feathers.themes
 		 */
 		protected function initializeScale():void
 		{
-			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
+			var starling:Starling = Starling.current;
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			var scaledDPI:int = DeviceCapabilities.dpi / (starling.contentScaleFactor / nativeScaleFactor);
 			if(this._scaleToDPI)
 			{
-				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+				if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
 					this._originalDPI = ORIGINAL_DPI_IPAD_RETINA;
 				}
@@ -507,6 +519,7 @@ package feathers.themes
 			//our min scale is 0.25 because lines in the graphics are four
 			//pixels wide and this will keep them crisp.
 			this.scale = Math.max(0.25, scaledDPI / this._originalDPI);
+			this.stageTextScale = this.scale / nativeScaleFactor;
 		}
 
 		/**
@@ -605,7 +618,7 @@ package feathers.themes
 			this.fontSize = Math.max(4, roundToNearest(24 * this.scale, 8));
 			this.largeFontSize = Math.max(4, roundToNearest(32 * this.scale, 8));
 			this.smallFontSize = Math.max(4, roundToNearest(16 * this.scale, 8));
-			this.inputFontSize = 26 * this.scale;
+			this.inputFontSize = 26 * this.stageTextScale;
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
