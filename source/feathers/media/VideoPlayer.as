@@ -15,6 +15,7 @@ package feathers.media
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
+	import flash.errors.IllegalOperationError;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.media.SoundTransform;
@@ -365,6 +366,32 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _hideRootWhenFullScreen:Boolean = true;
+
+		/**
+		 * Determines if the Starling root display object is hidden when the
+		 * video player switches to full screen mode. By hiding the root display
+		 * object, rendering performance is optimized because Starling skips a
+		 * portion of the display list that is obscured by the video player.
+		 *
+		 * @default true
+		 */
+		public function get hideRootWhenFullScreen():Boolean
+		{
+			return this._hideRootWhenFullScreen;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideRootWhenFullScreen(value:Boolean):void
+		{
+			this._hideRootWhenFullScreen = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function get hasVisibleArea():Boolean
 		{
 			if(this._isFullScreen)
@@ -401,11 +428,16 @@ package feathers.media
 		 */
 		public function toggleFullScreen():void
 		{
+			if(!this.stage)
+			{
+				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.")
+			}
 			var nativeStage:Stage = Starling.current.nativeStage;
 			var oldIgnoreDisplayListEvents:Boolean = this._ignoreDisplayListEvents;
 			this._ignoreDisplayListEvents = true;
 			if(this._isFullScreen)
 			{
+				this.root.visible = true;
 				PopUpManager.removePopUp(this._fullScreenContainer, false);
 				var childCount:int = this._fullScreenContainer.numChildren;
 				for(var i:int = 0; i < childCount; i++)
@@ -417,6 +449,10 @@ package feathers.media
 			}
 			else
 			{
+				if(this._hideRootWhenFullScreen)
+				{
+					this.root.visible = false;
+				}
 				nativeStage.displayState = this._fullScreenDisplayState;
 				if(!this._fullScreenContainer)
 				{
