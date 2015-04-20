@@ -207,7 +207,7 @@ package feathers.controls.text
 		protected var _text:String = null;
 		
 		/**
-		 * The text to display.
+		 * @inheritDoc
 		 *
 		 * <p>In the following example, the text is changed:</p>
 		 *
@@ -276,8 +276,7 @@ package feathers.controls.text
 		protected var _wordWrap:Boolean = false;
 
 		/**
-		 * If the width or maxWidth values are set, then the text will continue
-		 * on the next line, if it is too long.
+		 * @inheritDoc
 		 *
 		 * <p>In the following example, word wrap is enabled:</p>
 		 *

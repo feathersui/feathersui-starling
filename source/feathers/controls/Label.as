@@ -172,7 +172,7 @@ package feathers.controls
 
 		/**
 		 * Determines if the text wraps to the next line when it reaches the
-		 * width of the component.
+		 * width (or max width) of the component.
 		 *
 		 * <p>In the following example, the label's text is wrapped:</p>
 		 *

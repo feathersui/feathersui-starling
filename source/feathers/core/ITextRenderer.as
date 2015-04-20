@@ -18,6 +18,10 @@ package feathers.core
 	{
 		/**
 		 * The text to render.
+		 *
+		 * <p>If using the <code>Label</code> component, this property should
+		 * be set on the <code>Label</code>, and it will be passed down to the
+		 * text renderer.</p>
 		 */
 		function get text():String;
 
@@ -28,7 +32,11 @@ package feathers.core
 
 		/**
 		 * Determines if the text wraps to the next line when it reaches the
-		 * width of the component.
+		 * width (or max width) of the component.
+		 *
+		 * <p>If using the <code>Label</code> component, this property should
+		 * be set on the <code>Label</code>, and it will be passed down to the
+		 * text renderer automatically.</p>
 		 */
 		function get wordWrap():Boolean;
 
