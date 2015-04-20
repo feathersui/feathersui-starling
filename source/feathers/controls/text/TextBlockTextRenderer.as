@@ -261,7 +261,7 @@ package feathers.controls.text
 		 * <listing version="3.0">
 		 * textRenderer.text = "Lorem ipsum";</listing>
 		 *
-		 * @default ""
+		 * @default null
 		 */
 		public function get text():String
 		{
@@ -494,8 +494,7 @@ package feathers.controls.text
 		protected var _wordWrap:Boolean = false;
 
 		/**
-		 * Determines if the text wraps to the next line when it reaches the
-		 * width of the component.
+		 * @inheritDoc
 		 *
 		 * <p>In the following example, word wrap is enabled:</p>
 		 *
