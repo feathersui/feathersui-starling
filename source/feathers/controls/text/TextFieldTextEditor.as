@@ -324,7 +324,7 @@ package feathers.controls.text
 			{
 				gutterDimensionsOffset = 2;
 			}
-			return gutterDimensionsOffset + this.textSnapshot.y + this.textField.getLineMetrics(0).ascent;
+			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
 		}
 
 		/**
