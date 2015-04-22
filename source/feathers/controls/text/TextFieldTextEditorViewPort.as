@@ -314,6 +314,14 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @private
+		 */
+		override public function get baseline():Number
+		{
+			return super.baseline + this._paddingTop + this._verticalScrollPosition;
+		}
+
+		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
