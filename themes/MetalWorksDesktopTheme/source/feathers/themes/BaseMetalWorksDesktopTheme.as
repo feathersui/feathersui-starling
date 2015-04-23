@@ -127,8 +127,6 @@ package feathers.themes
 		protected static const SELECTED_TEXT_COLOR:uint = 0xff9900;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x8a8a8a;
 		protected static const DARK_DISABLED_TEXT_COLOR:uint = 0x383430;
-		protected static const LIST_BACKGROUND_COLOR:uint = 0x383430;
-		protected static const LIST_BACKGROUND_HOVER_COLOR:uint = 0xff7700;
 		protected static const GROUPED_LIST_HEADER_BACKGROUND_COLOR:uint = 0x292523;
 		protected static const GROUPED_LIST_FOOTER_BACKGROUND_COLOR:uint = 0x292523;
 		protected static const SCROLL_BAR_TRACK_COLOR:uint = 0x1a1816;
@@ -155,6 +153,9 @@ package feathers.themes
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(7, 7, 1, 11);
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
+		
+		protected static const ITEM_RENDERER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 1, 1);
+		protected static const ITEM_RENDERER_SELECTED_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 1, 22);
 
 		/**
 		 * @private
@@ -531,7 +532,9 @@ package feathers.themes
 		protected var checkSelectedDisabledIconTexture:Texture;
 		protected var pageIndicatorNormalSkinTexture:Texture;
 		protected var pageIndicatorSelectedSkinTexture:Texture;
-		protected var itemRendererSelectedSkinTexture:Texture;
+		protected var itemRendererUpSkinTexture:Texture;
+		protected var itemRendererHoverSkinTexture:Texture;
+		protected var itemRendererSelectedUpSkinTexture:Texture;
 		protected var backgroundPopUpSkinTextures:Scale9Textures;
 		protected var calloutTopArrowSkinTexture:Texture;
 		protected var calloutRightArrowSkinTexture:Texture;
@@ -669,7 +672,7 @@ package feathers.themes
 			this.calloutBackgroundMinSize = Math.round(5 * this.scale);
 			this.progressBarFillMinSize = Math.round(7 * this.scale);
 			this.scrollBarGutterSize = Math.round(4 * this.scale);
-			this.calloutArrowOverlapGap = Math.min(-1, Math.round(-1 * this.scale));
+			this.calloutArrowOverlapGap = Math.min(-2, Math.round(-2 * this.scale));
 			this.focusPaddingSize = Math.min(-1, Math.round(-2 * this.scale));
 			this.buttonMinWidth = this.gridSize * 2 + this.gutterSize;
 			this.wideControlSize = this.gridSize * 4 + this.gutterSize * 3;
@@ -775,13 +778,15 @@ package feathers.themes
 			this.checkSelectedDownIconTexture = this.atlas.getTexture("check-selected-down-icon0000");
 			this.checkSelectedDisabledIconTexture = this.atlas.getTexture("check-selected-disabled-icon0000");
 
-			this.pageIndicatorSelectedSkinTexture = this.atlas.getTexture("page-indicator-selected-icon0000");
-			this.pageIndicatorNormalSkinTexture = this.atlas.getTexture("page-indicator-icon0000");
+			this.pageIndicatorSelectedSkinTexture = this.atlas.getTexture("page-indicator-selected-symbol0000");
+			this.pageIndicatorNormalSkinTexture = this.atlas.getTexture("page-indicator-symbol0000");
 
 			this.searchIconTexture = this.atlas.getTexture("search-icon0000");
 			this.searchIconDisabledTexture = this.atlas.getTexture("search-disabled-icon0000");
 
-			this.itemRendererSelectedSkinTexture = this.atlas.getTexture("item-renderer-selected-up-skin0000");
+			this.itemRendererUpSkinTexture = Texture.fromTexture(this.atlas.getTexture("item-renderer-up-skin0000"), ITEM_RENDERER_SKIN_TEXTURE_REGION);
+			this.itemRendererHoverSkinTexture = Texture.fromTexture(this.atlas.getTexture("item-renderer-hover-skin0000"), ITEM_RENDERER_SKIN_TEXTURE_REGION);
+			this.itemRendererSelectedUpSkinTexture = Texture.fromTexture(this.atlas.getTexture("item-renderer-selected-up-skin0000"), ITEM_RENDERER_SELECTED_SKIN_TEXTURE_REGION);
 
 			this.headerBackgroundSkinTexture = this.atlas.getTexture("header-background-skin0000");
 			this.headerPopupBackgroundSkinTexture = this.atlas.getTexture("header-popup-background-skin0000");
@@ -1501,10 +1506,10 @@ package feathers.themes
 		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = LIST_BACKGROUND_COLOR;
-			skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTexture;
-			skinSelector.setValueForState(LIST_BACKGROUND_HOVER_COLOR, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTexture, Button.STATE_DOWN, false);
+			skinSelector.defaultValue = this.itemRendererUpSkinTexture;
+			skinSelector.defaultSelectedValue = this.itemRendererSelectedUpSkinTexture;
+			skinSelector.setValueForState(this.itemRendererHoverSkinTexture, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.itemRendererSelectedUpSkinTexture, Button.STATE_DOWN, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
