@@ -79,6 +79,8 @@ package feathers.controls
 		 */
 		public function SpinnerList()
 		{
+			super();
+			this._scrollBarDisplayMode = SCROLL_BAR_DISPLAY_MODE_NONE;
 			this._snapToPages = true;
 			this._snapOnComplete = true;
 			this.decelerationRate = Scroller.DECELERATION_RATE_FAST;
