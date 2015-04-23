@@ -1145,11 +1145,7 @@ package feathers.controls
 			this.currentState = STATE_FOCUSED;
 			this._touchPointID = -1;
 			this.invalidate(INVALIDATION_FLAG_STATE);
-			if(this._focusManager)
-			{
-				this._focusManager.focus = this;
-			}
-			else
+			if(!this._focusManager)
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 			}
@@ -1163,11 +1159,10 @@ package feathers.controls
 			this._textEditorHasFocus = false;
 			this.currentState = this._isEnabled ? STATE_ENABLED : STATE_DISABLED;
 			this.invalidate(INVALIDATION_FLAG_STATE);
-			if(this._focusManager)
+			if(!this._focusManager)
 			{
-				return;
+				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
-			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 	}
 }
