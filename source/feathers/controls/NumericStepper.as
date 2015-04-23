@@ -2102,18 +2102,26 @@ package feathers.controls
 		{
 			if(event.keyCode == Keyboard.HOME)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.toMinimum();
 			}
 			else if(event.keyCode == Keyboard.END)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.toMaximum();
 			}
 			else if(event.keyCode == Keyboard.UP)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.increment();
 			}
 			else if(event.keyCode == Keyboard.DOWN)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.decrement();
 			}
 		}
