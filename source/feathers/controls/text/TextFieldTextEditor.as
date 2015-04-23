@@ -1030,7 +1030,7 @@ package feathers.controls.text
 			{
 				//only clear the native focus when our native target has focus
 				//because otherwise another component may lose focus
-				nativeStage.focus = nativeStage;
+				nativeStage.focus = null;
 			}
 		}
 
@@ -1094,9 +1094,11 @@ package feathers.controls.text
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
-			//let's ensure that this can only get focus through code
+			//let's ensure that the text field can only get keyboard focus
+			//through code. no need to set mouseEnabled to false since the text
+			//field won't be visible until it needs to be interactive, so it
+			//can't receive focus with mouse/touch anyway.
 			this.textField.tabEnabled = false;
-			this.textField.mouseEnabled = false;
 			this.textField.visible = false;
 			this.textField.needsSoftKeyboard = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
