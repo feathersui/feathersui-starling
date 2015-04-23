@@ -658,7 +658,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Panel.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPanelHeaderStyles);
 
 			//panel screen
-			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setScrollerStyles;
+			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setPanelScreenStyles;
 
 			//picker list (see also: item renderers)
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
@@ -687,7 +687,7 @@ package feathers.themes
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
 
 			//scroll screen
-			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollerStyles;
+			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollScreenStyles;
 
 			//scroll text
 			this.getStyleProviderForClass(ScrollText).defaultStyleFunction = this.setScrollTextStyles;
@@ -1417,6 +1417,15 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// PanelScreen
+	//-------------------------
+
+		protected function setPanelScreenStyles(screen:PanelScreen):void
+		{
+			this.setScrollerStyles(screen);
+		}
+
+	//-------------------------
 	// PickerList
 	//-------------------------
 
@@ -1726,6 +1735,15 @@ package feathers.themes
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			container.backgroundSkin = backgroundSkin;
+		}
+
+	//-------------------------
+	// ScrollScreen
+	//-------------------------
+
+		protected function setScrollScreenStyles(screen:ScrollScreen):void
+		{
+			this.setScrollerStyles(screen);
 		}
 
 	//-------------------------
