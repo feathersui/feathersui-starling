@@ -62,6 +62,9 @@ package feathers.examples.displayObjects.themes
 
 		private function setScale9ImageScreenStyles(screen:Scale9ImageScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			screen.horizontalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.padding = 30 * this.scale;
@@ -69,6 +72,9 @@ package feathers.examples.displayObjects.themes
 
 		private function setScale3ImageScreenStyles(screen:Scale3ImageScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			screen.horizontalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.padding = 30 * this.scale;
@@ -76,6 +82,9 @@ package feathers.examples.displayObjects.themes
 
 		private function setTiledImageScreenStyles(screen:TiledImageScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			screen.horizontalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.padding = 30 * this.scale;
