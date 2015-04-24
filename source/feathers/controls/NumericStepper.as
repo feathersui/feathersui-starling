@@ -1757,6 +1757,10 @@ package feathers.controls
 			this.textInput.styleNameList.add(textInputStyleName);
 			this.textInput.addEventListener(FeathersEventType.ENTER, textInput_enterHandler);
 			this.textInput.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
+			//while we're setting isFocusEnabled to false on the text input when
+			//we have a focus manager, we'll still be able to call setFocus() on
+			//the text input manually.
+			this.textInput.isFocusEnabled = !this._focusManager;
 			this.addChild(this.textInput);
 		}
 
