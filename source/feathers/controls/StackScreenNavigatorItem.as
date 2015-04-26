@@ -9,6 +9,8 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IScreenNavigatorItem;
 
+	import mx.core.IMXMLObject;
+
 	import starling.display.DisplayObject;
 
 	/**
@@ -46,7 +48,7 @@ package feathers.controls
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see feathers.controls.StackScreenNavigator
 	 */
-	public class StackScreenNavigatorItem implements IScreenNavigatorItem
+	public class StackScreenNavigatorItem implements IScreenNavigatorItem, IMXMLObject
 	{
 		/**
 		 * Constructor.
@@ -56,7 +58,7 @@ package feathers.controls
 		 * @param popEvent An event that pops the screen from the top of the stack.
 		 * @param properties A set of key-value pairs to pass to the screen when it is shown.
 		 */
-		public function StackScreenNavigatorItem(screen:Object, pushEvents:Object = null, popEvent:String = null, properties:Object = null)
+		public function StackScreenNavigatorItem(screen:Object = null, pushEvents:Object = null, popEvent:String = null, properties:Object = null)
 		{
 			this._screen = screen;
 			this._pushEvents = pushEvents ? pushEvents : {};
@@ -340,6 +342,27 @@ package feathers.controls
 		public function get canDispose():Boolean
 		{
 			return !(this._screen is DisplayObject);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _mxmlID:String;
+
+		/**
+		 * @private
+		 */
+		public function get mxmlID():String
+		{
+			return this._mxmlID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function initialized(document:Object, id:String):void
+		{
+			this._mxmlID = id;
 		}
 
 		/**

@@ -13,6 +13,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+	[DefaultProperty("mxmlContent")]
 	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
@@ -331,6 +332,40 @@ package feathers.controls
 			else
 			{
 				this.clearScreenInternal(null);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _mxmlContent:Array;
+
+		[ArrayElementType(elementType="feathers.controls.StackScreenNavigatorItem")]
+		/**
+		 * @private
+		 */
+		public function get mxmlContent():Array
+		{
+			return this._mxmlContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set mxmlContent(value:Array):void
+		{
+			if(this._mxmlContent == value)
+			{
+				return;
+			}
+			this._mxmlContent = value;
+			this.removeAllScreens();
+			var screenCount:int = value.length;
+			for(var i:int = 0; i < screenCount; i++)
+			{
+				var screenItem:StackScreenNavigatorItem = StackScreenNavigatorItem(value[i]);
+				var screenID:String = screenItem.mxmlID;
+				this.addScreen(screenID, screenItem);
 			}
 		}
 
