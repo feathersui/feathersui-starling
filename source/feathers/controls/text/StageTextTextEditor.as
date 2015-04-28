@@ -1331,7 +1331,7 @@ package feathers.controls.text
 
 			var oldIgnoreStageTextChanges:Boolean = this._ignoreStageTextChanges;
 			this._ignoreStageTextChanges = true;
-			if(stylesInvalid)
+			if(stateInvalid || stylesInvalid)
 			{
 				this.refreshStageTextProperties();
 			}
@@ -1440,7 +1440,7 @@ package feathers.controls.text
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
 			}
 
-			if(!this._stageTextHasFocus && (stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
+			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
 				var hasText:Boolean = this._text.length > 0;
 				if(hasText)
