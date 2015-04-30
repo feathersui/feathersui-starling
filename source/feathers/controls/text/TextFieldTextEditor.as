@@ -1586,7 +1586,7 @@ package feathers.controls.text
 				{
 					if(!target.hasVisibleArea)
 					{
-						this.textField.stage.focus = null;
+						this.clearFocus();
 						break;
 					}
 					target = target.parent;
