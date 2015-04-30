@@ -1029,8 +1029,12 @@ package feathers.controls.text
 			if(nativeStage.focus === this.textField)
 			{
 				//only clear the native focus when our native target has focus
-				//because otherwise another component may lose focus
-				nativeStage.focus = null;
+				//because otherwise another component may lose focus.
+				
+				//don't set focus to null here. the focus manager will interpret
+				//that as the runtime automatically clearing focus for other
+				//reasons.
+				nativeStage.focus = nativeStage;
 			}
 		}
 
