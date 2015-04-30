@@ -1,5 +1,6 @@
 package
 {
+	import feathers.tests.BitmapFontTextEditorFocusTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
@@ -14,9 +15,12 @@ package
 	import feathers.tests.ScrollContainerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
 	import feathers.tests.SliderHorizontalTests;
+	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
 	import feathers.tests.TabBarTests;
 	import feathers.tests.TextAreaFocusTests;
+	import feathers.tests.TextBlockTextEditorFocusTests;
+	import feathers.tests.TextFieldTextEditorFocusTests;
 	import feathers.tests.TextInputFocusTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
@@ -96,6 +100,10 @@ package
 				FocusManagerTests,
 				TextInputFocusTests,
 				TextAreaFocusTests,
+				StageTextTextEditorFocusTests,
+				TextFieldTextEditorFocusTests,
+				BitmapFontTextEditorFocusTests,
+				TextBlockTextEditorFocusTests,
 				
 				//misc
 				PopUpManagerTests,
