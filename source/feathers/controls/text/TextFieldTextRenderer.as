@@ -484,7 +484,9 @@ package feathers.controls.text
 
 		/**
 		 * The type of anti-aliasing used for this text field, defined as
-		 * constants in the <code>flash.text.AntiAliasType</code> class.
+		 * constants in the <code>flash.text.AntiAliasType</code> class. You can
+		 * control this setting only if the font is embedded (with the
+		 * <code>embedFonts</code> property set to true).
 		 *
 		 * <p>In the following example, the anti-alias type is changed:</p>
 		 *
