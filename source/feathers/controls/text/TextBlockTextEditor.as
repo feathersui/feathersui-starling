@@ -648,12 +648,17 @@ package feathers.controls.text
 			this._selectionSkin.visible = false;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.removeEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			var nativeStage:Stage = Starling.current.nativeStage;
 			if(nativeStage.focus === this._nativeFocus)
 			{
 				//only clear the native focus when our native target has focus
-				//because otherwise another component may lose focus
-				nativeStage.focus = Starling.current.nativeStage;
+				//because otherwise another component may lose focus.
+
+				//don't set focus to null here. the focus manager will interpret
+				//that as the runtime automatically clearing focus for other
+				//reasons.
+				nativeStage.focus = nativeStage;
 			}
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
@@ -800,6 +805,7 @@ package feathers.controls.text
 			//that the focus manager can see, it's not being used anyway.
 			this._hasFocus = true;
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
 
@@ -997,6 +1003,24 @@ package feathers.controls.text
 			this.validate();
 			var selectionIndex:int = this._selectionBeginIndex + text.length;
 			this.selectRange(selectionIndex, selectionIndex);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hasFocus_enterFrameHandler(event:starling.events.Event):void
+		{
+			var target:DisplayObject = this;
+			do
+			{
+				if(!target.hasVisibleArea)
+				{
+					this.clearFocus();
+					break;
+				}
+				target = target.parent;
+			}
+			while(target)
 		}
 
 		/**
