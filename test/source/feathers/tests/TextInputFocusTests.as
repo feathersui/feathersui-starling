@@ -33,6 +33,7 @@ package feathers.tests
 		[After]
 		public function cleanup():void
 		{
+			TestFeathers.starlingRoot.visible = true;
 			FocusManager.setEnabledForStage(this._textInput.stage, false);
 			this._textInput.removeFromParent(true);
 			this._textInput = null;
@@ -64,6 +65,19 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testFocusOutEventAfterSetVisibleToFalseWithoutFocusManager():void
+		{
+			var hasDispatchedFocusOut:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_OUT, function(event:Event):void
+			{
+				hasDispatchedFocusOut = true;
+			});
+			this._textInput.setFocus();
+			this._textInput.visible = false;
+			Assert.assertTrue("FeathersEventType.FOCUS_OUT was not dispatched after setting visible property to false", hasDispatchedFocusOut);
+		}
+
+		[Test]
 		public function testFocusInEventAfterSetFocusFunctionWithFocusManager():void
 		{
 			FocusManager.setEnabledForStage(this._textInput.stage, true);
@@ -75,6 +89,13 @@ package feathers.tests
 		{
 			FocusManager.setEnabledForStage(this._textInput.stage, true);
 			this.testFocusOutEventAfterClearFocusFunctionWithoutFocusManager();
+		}
+
+		[Test]
+		public function testFocusOutEventAfterSetVisibleToFalseWithFocusManager():void
+		{
+			FocusManager.setEnabledForStage(this._textInput.stage, true);
+			this.testFocusOutEventAfterSetVisibleToFalseWithoutFocusManager();
 		}
 	}
 }
