@@ -19,7 +19,7 @@ For those looking to tweak the example themes provided with Feathers, the follow
 
 ![](images/feathers-metal-works-desktop-theme.png)
 
--   [Metal Works Desktop Theme PSD](http://feathersui.com/download/themes/MetalWorksDesktopTheme.psd)
+-   [Metal Works Desktop Theme FLA for Flash CC](http://feathersui.com/download/themes/metalworks_desktop.fla)
 
 ### Minimal Mobile Theme
 
@@ -32,3 +32,9 @@ For those looking to tweak the example themes provided with Feathers, the follow
 ![](images/feathers-minimal-desktop-theme.png)
 
 -   [Minimal Desktop Theme PSD](http://feathersui.com/download/themes/MinimalDesktopTheme.psd)
+
+### Aeon Desktop Theme
+
+![](images/feathers-aeon-desktop-theme.png)
+
+-   [Aeon Desktop Theme FLA for Flash CC](http://feathersui.com/download/themes/aeon_desktop.fla)
