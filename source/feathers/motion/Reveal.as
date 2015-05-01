@@ -200,6 +200,8 @@ package feathers.motion
 	}
 }
 
+import feathers.display.RenderDelegate;
+
 import flash.geom.Rectangle;
 
 import starling.animation.Tween;
@@ -233,7 +235,15 @@ class RevealTween extends Tween
 		this._temporaryParent = new Sprite();
 		this._temporaryParent.clipRect = clipRect;
 		newScreen.parent.addChild(this._temporaryParent);
-		this._temporaryParent.addChild(newScreen);
+		var delegate:RenderDelegate = new RenderDelegate(newScreen);
+		delegate.alpha = newScreen.alpha;
+		delegate.blendMode = newScreen.blendMode;
+		delegate.rotation = newScreen.rotation;
+		delegate.scaleX = newScreen.scaleX;
+		delegate.scaleY = newScreen.scaleY;
+		this._temporaryParent.addChild(delegate);
+		newScreen.visible = false;
+		this._savedNewScreen = newScreen;
 
 		super(this._temporaryParent.clipRect, duration, ease);
 
@@ -277,6 +287,7 @@ class RevealTween extends Tween
 
 	private var _savedXOffset:Number;
 	private var _savedYOffset:Number;
+	private var _savedNewScreen:DisplayObject;
 	private var _savedOldScreen:DisplayObject;
 	private var _temporaryParent:Sprite;
 	private var _onCompleteCallback:Function;
@@ -304,9 +315,10 @@ class RevealTween extends Tween
 
 	private function cleanupTween():void
 	{
-		var target:DisplayObject = this._temporaryParent.removeChildAt(0);
-		this._temporaryParent.parent.addChild(target);
 		this._temporaryParent.removeFromParent(true);
+		this._temporaryParent = null;
+		this._savedNewScreen.visible = true;
+		this._savedNewScreen = null;
 		if(this._savedOldScreen)
 		{
 			this._savedOldScreen.x = 0;
