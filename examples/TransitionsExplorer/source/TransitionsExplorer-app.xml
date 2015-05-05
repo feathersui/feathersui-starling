@@ -13,6 +13,7 @@
 		<fullScreen>true</fullScreen>
 		<visible>true</visible>
 		<renderMode>direct</renderMode>
+		<depthAndStencil>true</depthAndStencil>
 	</initialWindow>
 
 	<supportedLanguages>en</supportedLanguages>
