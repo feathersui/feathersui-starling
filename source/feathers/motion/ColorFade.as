@@ -10,6 +10,8 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 
+	[Exclude(name="createBlackFadeToBlackTransition",kind="method")]
+
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
 	 * fade a display object to a solid color.
@@ -24,6 +26,16 @@ package feathers.motion
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
 		/**
+		 * @private
+		 * This was accidentally named wrong. It is included for temporary
+		 * backward compatibility.
+		 */
+		public static function createBlackFadeToBlackTransition(duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		{
+			return createBlackFadeTransition(duration, ease, tweenProperties);
+		}
+
+		/**
 		 * Creates a transition function for a screen navigator that hides the
 		 * old screen as a solid black color fades in over it. Then, the solid
 		 * black color fades back out to show that the new screen has replaced
@@ -34,7 +46,7 @@ package feathers.motion
 		 * @see feathers.controls.StackScreenNavigator#popTransition
 		 * @see feathers.controls.ScreenNavigator#transition
 		 */
-		public static function createBlackFadeToBlackTransition(duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		public static function createBlackFadeTransition(duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return createColorFadeTransition(0x000000, duration, ease, tweenProperties);
 		}

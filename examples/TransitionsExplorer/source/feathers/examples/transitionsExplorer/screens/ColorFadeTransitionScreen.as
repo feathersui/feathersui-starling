@@ -44,7 +44,7 @@ package feathers.examples.transitionsExplorer.screens
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
 			[
-				{ label: "Black", transition: ColorFade.createBlackFadeToBlackTransition() },
+				{ label: "Black", transition: ColorFade.createBlackFadeTransition() },
 				{ label: "White", transition: ColorFade.createWhiteFadeTransition() },
 				{ label: "Custom", transition: fadeToRandomColor, accessory: "(random for demo)" },
 			]);
