@@ -41,6 +41,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "One" },
 				{ label: "Two" },
 				{ label: "Three" },
+				{ label: "Disabled", isEnabled: false },
 			]);
 			this._tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
 			this._tabBar.layoutData = new AnchorLayoutData(NaN, 0, 0, 0);
