@@ -57,7 +57,7 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]
+		[Embed(source="/../assets/fonts/pf_ronda_seven_desktop.fnt",mimeType="application/octet-stream")]
 		protected static const FONT_XML:Class;
 
 		/**

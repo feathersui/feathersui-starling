@@ -82,7 +82,7 @@ package feathers.themes
 		 * @param assetsBasePath The root folder of the assets.
 		 * @param assetManager An optional pre-created AssetManager. The scaleFactor property must be equal to Starling.contentScaleFactor. To load assets with a different scale factor, use multiple AssetManager instances.
 		 */
-		public function MinimalDesktopThemeWithAssetManager(assetsBasePath:Object = "./", assetManager:AssetManager = null)
+		public function MinimalDesktopThemeWithAssetManager(assetsBasePath:String = "./", assetManager:AssetManager = null)
 		{
 			this.loadAssets(assetsBasePath, assetManager);
 		}
@@ -95,7 +95,7 @@ package feathers.themes
 		[
 			"images/" + ATLAS_NAME + ".xml",
 			"images/" + ATLAS_NAME + ".png",
-			"fonts/pf_ronda_seven.fnt"
+			"fonts/pf_ronda_seven_desktop.fnt"
 		];
 
 		/**
@@ -159,7 +159,7 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-		protected function loadAssets(assetsBasePath:Object, assetManager:AssetManager):void
+		protected function loadAssets(assetsBasePath:String, assetManager:AssetManager):void
 		{
 			var oldScaleFactor:Number = -1;
 			if(assetManager)
@@ -169,7 +169,7 @@ package feathers.themes
 			}
 			else
 			{
-				assetManager = new AssetManager();
+				assetManager = new AssetManager(ATLAS_SCALE_FACTOR);
 			}
 			this.assetManager = assetManager;
 			//add a trailing slash, if needed
