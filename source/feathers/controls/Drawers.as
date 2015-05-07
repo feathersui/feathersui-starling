@@ -134,6 +134,7 @@ package feathers.controls
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
+	[DefaultProperty("content")]
 	/**
 	 * A container that displays primary content in the center surrounded by
 	 * optional "drawers" that can open and close on the edges. Useful for
