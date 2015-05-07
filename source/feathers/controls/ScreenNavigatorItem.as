@@ -13,6 +13,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	[DefaultProperty("screen")]
 	/**
 	 * Data for an individual screen that will be displayed by a
 	 * <code>ScreenNavigator</code> component.
