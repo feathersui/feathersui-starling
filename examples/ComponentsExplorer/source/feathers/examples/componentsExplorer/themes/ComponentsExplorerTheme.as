@@ -43,6 +43,9 @@ package feathers.examples.componentsExplorer.themes
 		
 		protected function setAutoCompleteScreenStyles(screen:AutoCompleteScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
@@ -69,6 +72,9 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setButtonScreenStyles(screen:ButtonScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
@@ -81,16 +87,25 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setCalloutScreenStyles(screen:CalloutScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			screen.layoutPadding = this.gutterSize;
 		}
 
 		protected function setItemRendererScreenStyles(screen:ItemRendererScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			screen.itemRendererGap = this.gutterSize;
 		}
 
 		protected function setLabelScreenStyles(screen:LabelScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
@@ -103,6 +118,9 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setProgressBarScreenStyles(screen:ProgressBarScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
@@ -112,6 +130,9 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setSliderScreenStyles(screen:SliderScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
@@ -121,6 +142,9 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setTextInputScreenStyles(screen:TextInputScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
@@ -133,6 +157,9 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setToggleScreenStyles(screen:ToggleScreen):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+			
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;

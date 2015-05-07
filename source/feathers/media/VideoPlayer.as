@@ -7,27 +7,107 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.media
 {
-	import feathers.controls.ImageLoader;
 	import feathers.controls.LayoutGroup;
-	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
+	import flash.errors.IllegalOperationError;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.media.SoundTransform;
-	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import flash.net.URLRequest;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
+	/**
+	 * Dispatched when the original native width or height of the video content
+	 * is calculated.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #nativeWidth
+	 * @see #nativeHeight
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
+	 */
+	[Event(name="dimensionsChange",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the media player changes to the full-screen display mode
+	 * or back to the normal display mode.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #isFullScreen
+	 * @see #toggleFullScreen()
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
+	 */
+	[Event(name="displayStateChange",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the media player's sound transform changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #soundTransform
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.SOUND_TRANSFORM_CHANGE
+	 */
+	[Event(name="soundTransformChange",type="starling.events.Event")]
+
+	/**
+	 * Controls playback of video with a <code>flash.net.NetStream</code> object.
+	 *
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class VideoPlayer extends BaseTimedMediaPlayer implements IVideoPlayer
 	{
 		/**
@@ -46,10 +126,27 @@ package feathers.media
 		protected static const NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:String = "NetStream.Seek.Notify";
 		
 		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>VideoPlayer</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
+		/**
 		 * Constructor.
 		 */
 		public function VideoPlayer()
 		{
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return VideoPlayer.globalStyleProvider;
 		}
 
 		/**
@@ -67,6 +164,12 @@ package feathers.media
 		 */
 		protected var _soundTransform:SoundTransform;
 
+		/**
+		 * @inheritDoc
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html flash.media.SoundTransform
+		 * @see #event:soundTransformChange feathers.events.MediaPlayerEventType.SOUND_TRANSFORM_CHANGE
+		 */
 		public function get soundTransform():SoundTransform
 		{
 			if(!this._soundTransform)
@@ -86,18 +189,27 @@ package feathers.media
 			{
 				this._netStream.soundTransform = this._soundTransform;
 			}
+			this.dispatchEventWith(MediaPlayerEventType.SOUND_TRANSFORM_CHANGE);
 		}
 
 		/**
 		 * @private
 		 */
 		protected var _texture:Texture;
-		
+
+		/**
+		 * The texture used to display the video.
+		 */
 		public function get texture():Texture
 		{
 			return this._texture;
 		}
-		
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
+		 */
 		public function get nativeWidth():Number
 		{
 			if(this._texture)
@@ -107,6 +219,11 @@ package feathers.media
 			return 0;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
+		 */
 		public function get nativeHeight():Number
 		{
 			if(this._texture)
@@ -127,7 +244,9 @@ package feathers.media
 		protected var _netStream:NetStream;
 
 		/**
-		 * The <code>flash.media.NetStream</code> object used to play the video.
+		 * The <code>flash.net.NetStream</code> object used to play the video.
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html flash.net.NetStream
 		 */
 		public function get netStream():NetStream
 		{
@@ -139,6 +258,13 @@ package feathers.media
 		 */
 		protected var _videoSource:String;
 
+		/**
+		 * A string representing the URL or any other accepted arguments passed
+		 * to the <code>play()</code> function of a <code>NetStream</code>
+		 * object.
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#play() Full description of flash.net.NetStream.play() in Adobe's Flash Platform API Reference
+		 */
 		public function get videoSource():String
 		{
 			return this._videoSource;
@@ -165,6 +291,12 @@ package feathers.media
 		 */
 		protected var _autoPlay:Boolean = true;
 
+		/**
+		 * Determines if the video starts playing immediately when the
+		 * <code>videoSource</code> property is set.
+		 *
+		 * @see #videoSource
+		 */
 		public function get autoPlay():Boolean
 		{
 			return this._autoPlay;
@@ -185,19 +317,38 @@ package feathers.media
 
 		/**
 		 * Indicates if the video player is currently full screen or not.
+		 * 
+		 * @see #toggleFullScreen()
+		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
 		public function get isFullScreen():Boolean
 		{
 			return this._isFullScreen;
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _fullScreenDisplayState:String = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 
+		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen")]
+		/**
+		 * When the video player is displayed full-screen, determines the value
+		 * of the native stage's <code>displayState</code> property.
+		 * 
+		 * @default StageDisplayState.FULL_SCREEN_INTERACTIVE
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN StageDisplayState.FULL_SCREEN
+		 */
 		public function get fullScreenDisplayState():String
 		{
 			return this._fullScreenDisplayState;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set fullScreenDisplayState(value:String):void
 		{
 			if(this._fullScreenDisplayState == value)
@@ -211,7 +362,36 @@ package feathers.media
 				nativeStage.displayState = this._fullScreenDisplayState;
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
+		protected var _hideRootWhenFullScreen:Boolean = true;
+
+		/**
+		 * Determines if the Starling root display object is hidden when the
+		 * video player switches to full screen mode. By hiding the root display
+		 * object, rendering performance is optimized because Starling skips a
+		 * portion of the display list that is obscured by the video player.
+		 *
+		 * @default true
+		 */
+		public function get hideRootWhenFullScreen():Boolean
+		{
+			return this._hideRootWhenFullScreen;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideRootWhenFullScreen(value:Boolean):void
+		{
+			this._hideRootWhenFullScreen = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function get hasVisibleArea():Boolean
 		{
 			if(this._isFullScreen)
@@ -242,14 +422,22 @@ package feathers.media
 
 		/**
 		 * Goes to full screen or returns to normal display.
+		 * 
+		 * @see #isFullScreen
+		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
 		public function toggleFullScreen():void
 		{
+			if(!this.stage)
+			{
+				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.")
+			}
 			var nativeStage:Stage = Starling.current.nativeStage;
 			var oldIgnoreDisplayListEvents:Boolean = this._ignoreDisplayListEvents;
 			this._ignoreDisplayListEvents = true;
 			if(this._isFullScreen)
 			{
+				this.root.visible = true;
 				PopUpManager.removePopUp(this._fullScreenContainer, false);
 				var childCount:int = this._fullScreenContainer.numChildren;
 				for(var i:int = 0; i < childCount; i++)
@@ -261,6 +449,10 @@ package feathers.media
 			}
 			else
 			{
+				if(this._hideRootWhenFullScreen)
+				{
+					this.root.visible = false;
+				}
 				nativeStage.displayState = this._fullScreenDisplayState;
 				if(!this._fullScreenContainer)
 				{

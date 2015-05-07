@@ -7,6 +7,8 @@ author: Josh Tynjala
 
 The [`VerticalLayout`](../api-reference/feathers/layout/VerticalLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items from top to bottom in a single column. It supports a number of useful options for adjusting the spacing and alignment.
 
+<picture><img src="images/vertical-layout.png" srcset="images/vertical-layout@2x.png 2x" alt="Screenshot of Feathers VerticalLayout" /></picture>
+
 ## The Basics
 
 First, let's create a `VerticalLayout` and pass it to a [`LayoutGroup`](layout-group.html):

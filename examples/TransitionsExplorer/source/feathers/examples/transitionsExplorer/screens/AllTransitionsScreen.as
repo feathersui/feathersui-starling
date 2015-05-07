@@ -20,6 +20,7 @@ package feathers.examples.transitionsExplorer.screens
 		public static const CUBE:String = "cube";
 		public static const FADE:String = "fade";
 		public static const FLIP:String = "flip";
+		public static const IRIS:String = "iris";
 		public static const REVEAL:String = "reveal";
 		public static const SLIDE:String = "slide";
 		public static const WIPE:String = "wipe";
@@ -50,6 +51,7 @@ package feathers.examples.transitionsExplorer.screens
 				{ label: "Fade", event: FADE },
 				{ label: "Cube", event: CUBE },
 				{ label: "Flip", event: FLIP },
+				{ label: "Iris", event: IRIS },
 				{ label: "Reveal", event: REVEAL },
 				{ label: "Slide", event: SLIDE },
 				{ label: "Wipe", event: WIPE },

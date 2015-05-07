@@ -28,6 +28,9 @@ package feathers.examples.drawersExplorer.skins
 
 		protected function setContentViewStyles(view:ContentView):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setScrollerStyles(view);
+			
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.padding = 20 * this.scale;
@@ -36,6 +39,9 @@ package feathers.examples.drawersExplorer.skins
 
 		protected function setLeftAndRightDrawerViewStyles(view:DrawerView):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setScrollerStyles(view);
+			
 			view.backgroundSkin = new Quad(10, 10, LIST_BACKGROUND_COLOR);
 
 			var layout:VerticalLayout = new VerticalLayout();
@@ -48,6 +54,9 @@ package feathers.examples.drawersExplorer.skins
 
 		protected function setTopAndBottomDrawerViewStyles(view:DrawerView):void
 		{
+			//don't forget to set styles from the super class, if required
+			this.setScrollerStyles(view);
+			
 			view.backgroundSkin = new Quad(10, 10, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
 			var layout:HorizontalLayout = new HorizontalLayout();

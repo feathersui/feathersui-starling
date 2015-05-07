@@ -41,13 +41,10 @@ package
 			this.gotoAndStop(2);
 			this.graphics.clear();
 
-			Starling.handleLostContext = true;
 			Starling.multitouchEnabled = true;
 			var MainType:Class = getDefinitionByName("feathers.examples.transitionsExplorer.Main") as Class;
 			this._starling = new Starling(MainType, this.stage);
-			this._starling.enableErrorChecking = false;
-			//this._starling.showStats = true;
-			//this._starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
+			this._starling.supportHighResolutions = true;
 			this._starling.start();
 		}
 

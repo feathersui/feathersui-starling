@@ -2883,18 +2883,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _snapScrollPositionsToPixels:Boolean = false;
+		protected var _snapScrollPositionsToPixels:Boolean = true;
 
 		/**
 		 * If enabled, the scroll position will always be adjusted to whole
 		 * pixels.
 		 *
-		 * <p>In the following example, the scroll position is snapped to pixels:</p>
+		 * <p>In the following example, the scroll position is not snapped to pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.snapScrollPositionsToPixels = true;</listing>
+		 * scroller.snapScrollPositionsToPixels = false;</listing>
 		 *
-		 * @default false
+		 * @default true
 		 */
 		public function get snapScrollPositionsToPixels():Boolean
 		{

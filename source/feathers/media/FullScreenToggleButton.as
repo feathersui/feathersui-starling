@@ -9,6 +9,8 @@ package feathers.media
 {
 	import feathers.controls.ToggleButton;
 	import feathers.core.ToggleGroup;
+	import feathers.events.MediaPlayerEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.Stage;
 
@@ -18,8 +20,23 @@ package feathers.media
 	import starling.core.Starling;
 	import starling.events.Event;
 
+	/**
+	 * A specialized toggle button that controls whether a media player is
+	 * displayed normally or in full-screen mode.
+	 * 
+	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 */
 	public class FullScreenToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
+		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>FullScreenToggleButton</code> components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+		
 		/**
 		 * Constructor.
 		 */
@@ -36,8 +53,19 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return FullScreenToggleButton.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _mediaPlayer:VideoPlayer;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get mediaPlayer():IMediaPlayer
 		{
 			return this._mediaPlayer;

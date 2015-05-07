@@ -7,6 +7,8 @@ author: Josh Tynjala
 
 The [`TiledRowsLayout`](../api-reference/feathers/layout/TiledRowsLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items from left to right in multiple rows. It supports paging horizontally or vertically, and a number of useful options for the spacing and alignment may be modified.
 
+<picture><img src="images/tiled-rows-layout.png" srcset="images/tiled-rows-layout@2x.png 2x" alt="Screenshot of Feathers TiledRowsLayout" /></picture>
+
 ## The Basics
 
 Let's create a tiled rows layout and add it to a [`LayoutGroup`](layout-group.html):

@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.SpinnerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.IFocusContainer;
@@ -14,6 +15,7 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
@@ -390,6 +392,10 @@ package feathers.controls
 			if(this._layout == value)
 			{
 				return;
+			}
+			if(!(this is SpinnerList) && value is ISpinnerLayout)
+			{
+				throw new ArgumentError("Layouts that implement the ISpinnerLayout interface should be used with the SpinnerList component.");
 			}
 			if(this._layout)
 			{

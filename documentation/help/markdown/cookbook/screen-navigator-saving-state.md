@@ -34,4 +34,4 @@ override protected function initialize():void
 
 ## Related Links
 
--   [How to use the ScreenNavigator component](../screen-navigator.html)
+-   [How to use the Feathers `ScreenNavigator` component](../screen-navigator.html)

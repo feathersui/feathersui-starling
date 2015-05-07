@@ -86,7 +86,8 @@ package feathers.controls
 			"selectedUpIcon",
 			"selectedDownIcon",
 			"selectedHoverIcon",
-			"selectedDisabledIcon"
+			"selectedDisabledIcon",
+			"isEnabled"
 		];
 
 		/**
@@ -395,6 +396,7 @@ package feathers.controls
 		 *     <li>selectedDownIcon</li>
 		 *     <li>selectedHoverIcon</li>
 		 *     <li>selectedDisabledIcon</li>
+		 *     <li>isEnabled</li>
 		 * </ul>
 		 *
 		 * <p>The following example passes in a data provider:</p>
@@ -1587,7 +1589,7 @@ package feathers.controls
 		{
 			for each(var tab:ToggleButton in this.activeTabs)
 			{
-				tab.isEnabled = this._isEnabled;
+				tab.isEnabled &&= this._isEnabled;
 			}
 		}
 

@@ -26,6 +26,8 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
@@ -324,7 +326,7 @@ package feathers.controls.text
 			{
 				gutterDimensionsOffset = 2;
 			}
-			return gutterDimensionsOffset + this.textSnapshot.y + this.textField.getLineMetrics(0).ascent;
+			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
 		}
 
 		/**
@@ -738,6 +740,323 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		private var _antiAliasType:String = AntiAliasType.ADVANCED;
+
+		/**
+		 * The type of anti-aliasing used for this text field, defined as
+		 * constants in the <code>flash.text.AntiAliasType</code> class. You can
+		 * control this setting only if the font is embedded (with the
+		 * <code>embedFonts</code> property set to true).
+		 *
+		 * <p>In the following example, the anti-alias type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.antiAliasType = AntiAliasType.NORMAL;</listing>
+		 *
+		 * @default flash.text.AntiAliasType.ADVANCED
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#antiAliasType Full description of flash.text.TextField.antiAliasType in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/AntiAliasType.html flash.text.AntiAliasType
+		 * @see #embedFonts
+		 */
+		public function get antiAliasType():String
+		{
+			return this._antiAliasType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set antiAliasType(value:String):void
+		{
+			if(this._antiAliasType == value)
+			{
+				return;
+			}
+			this._antiAliasType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _gridFitType:String = GridFitType.PIXEL;
+
+		/**
+		 * Determines whether Flash Player forces strong horizontal and vertical
+		 * lines to fit to a pixel or subpixel grid, or not at all using the
+		 * constants defined in the <code>flash.text.GridFitType</code> class.
+		 * This property applies only if the <code>antiAliasType</code> property
+		 * of the text field is set to <code>flash.text.AntiAliasType.ADVANCED</code>.
+		 *
+		 * <p>In the following example, the grid fit type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.gridFitType = GridFitType.SUBPIXEL;</listing>
+		 *
+		 * @default flash.text.GridFitType.PIXEL
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#gridFitType Full description of flash.text.TextField.gridFitType in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/GridFitType.html flash.text.GridFitType
+		 * @see #antiAliasType
+		 */
+		public function get gridFitType():String
+		{
+			return this._gridFitType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gridFitType(value:String):void
+		{
+			if(this._gridFitType == value)
+			{
+				return;
+			}
+			this._gridFitType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _sharpness:Number = 0;
+
+		/**
+		 * The sharpness of the glyph edges in this text field. This property
+		 * applies only if the <code>antiAliasType</code> property of the text
+		 * field is set to <code>flash.text.AntiAliasType.ADVANCED</code>. The
+		 * range for <code>sharpness</code> is a number from <code>-400</code>
+		 * to <code>400</code>.
+		 *
+		 * <p>In the following example, the sharpness is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.sharpness = 200;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#sharpness Full description of flash.text.TextField.sharpness in Adobe's Flash Platform API Reference
+		 * @see #antiAliasType
+		 */
+		public function get sharpness():Number
+		{
+			return this._sharpness;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sharpness(value:Number):void
+		{
+			if(this._sharpness == value)
+			{
+				return;
+			}
+			this._sharpness = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _thickness:Number = 0;
+
+		/**
+		 * The thickness of the glyph edges in this text field. This property
+		 * applies only if the <code>antiAliasType</code> property is set to
+		 * <code>flash.text.AntiAliasType.ADVANCED</code>. The range for
+		 * <code>thickness</code> is a number from <code>-200</code> to
+		 * <code>200</code>.
+		 *
+		 * <p>In the following example, the thickness is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.thickness = 100;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#thickness Full description of flash.text.TextField.thickness in Adobe's Flash Platform API Reference
+		 * @see #antiAliasType
+		 */
+		public function get thickness():Number
+		{
+			return this._thickness;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set thickness(value:Number):void
+		{
+			if(this._thickness == value)
+			{
+				return;
+			}
+			this._thickness = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _background:Boolean = false;
+
+		/**
+		 * Specifies whether the text field has a background fill. Use the
+		 * <code>backgroundColor</code> property to set the background color of
+		 * a text field.
+		 *
+		 * <p>In the following example, the background is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.background = true;
+		 * textRenderer.backgroundColor = 0xff0000;</listing>
+		 *
+		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#background Full description of flash.text.TextField.background in Adobe's Flash Platform API Reference
+		 * @see #backgroundColor
+		 */
+		public function get background():Boolean
+		{
+			return this._background;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set background(value:Boolean):void
+		{
+			if(this._background == value)
+			{
+				return;
+			}
+			this._background = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _backgroundColor:uint = 0xffffff;
+
+		/**
+		 * The color of the text field background that is displayed if the
+		 * <code>background</code> property is set to <code>true</code>.
+		 *
+		 * <p>In the following example, the background color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.background = true;
+		 * textRenderer.backgroundColor = 0xff000ff;</listing>
+		 *
+		 * @default 0xffffff
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#backgroundColor Full description of flash.text.TextField.backgroundColor in Adobe's Flash Platform API Reference
+		 * @see #background
+		 */
+		public function get backgroundColor():uint
+		{
+			return this._backgroundColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundColor(value:uint):void
+		{
+			if(this._backgroundColor == value)
+			{
+				return;
+			}
+			this._backgroundColor = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _border:Boolean = false;
+
+		/**
+		 * Specifies whether the text field has a border. Use the
+		 * <code>borderColor</code> property to set the border color.
+		 *
+		 * <p>Note: this property cannot be used when the <code>useGutter</code>
+		 * property is set to <code>false</code> (the default value!).</p>
+		 *
+		 * <p>In the following example, the border is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.border = true;
+		 * textRenderer.borderColor = 0xff0000;</listing>
+		 *
+		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#border Full description of flash.text.TextField.border in Adobe's Flash Platform API Reference
+		 * @see #borderColor
+		 */
+		public function get border():Boolean
+		{
+			return this._border;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set border(value:Boolean):void
+		{
+			if(this._border == value)
+			{
+				return;
+			}
+			this._border = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _borderColor:uint = 0x000000;
+
+		/**
+		 * The color of the text field border that is displayed if the
+		 * <code>border</code> property is set to <code>true</code>.
+		 *
+		 * <p>In the following example, the border color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.border = true;
+		 * textRenderer.borderColor = 0xff00ff;</listing>
+		 *
+		 * @default 0x000000
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#borderColor Full description of flash.text.TextField.borderColor in Adobe's Flash Platform API Reference
+		 * @see #border
+		 */
+		public function get borderColor():uint
+		{
+			return this._borderColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set borderColor(value:uint):void
+		{
+			if(this._borderColor == value)
+			{
+				return;
+			}
+			this._borderColor = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _useGutter:Boolean = false;
 
 		/**
@@ -1029,7 +1348,11 @@ package feathers.controls.text
 			if(nativeStage.focus === this.textField)
 			{
 				//only clear the native focus when our native target has focus
-				//because otherwise another component may lose focus
+				//because otherwise another component may lose focus.
+				
+				//don't set focus to null here. the focus manager will interpret
+				//that as the runtime automatically clearing focus for other
+				//reasons.
 				nativeStage.focus = nativeStage;
 			}
 		}
@@ -1094,9 +1417,11 @@ package feathers.controls.text
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
-			//let's ensure that this can only get focus through code
+			//let's ensure that the text field can only get keyboard focus
+			//through code. no need to set mouseEnabled to false since the text
+			//field won't be visible until it needs to be interactive, so it
+			//can't receive focus with mouse/touch anyway.
 			this.textField.tabEnabled = false;
-			this.textField.mouseEnabled = false;
 			this.textField.visible = false;
 			this.textField.needsSoftKeyboard = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
@@ -1246,6 +1571,14 @@ package feathers.controls.text
 		 */
 		protected function commitStylesAndData(textField:TextField):void
 		{
+			textField.antiAliasType = this._antiAliasType;
+			textField.background = this._background;
+			textField.backgroundColor = this._backgroundColor;
+			textField.border = this._border;
+			textField.borderColor = this._borderColor;
+			textField.gridFitType = this._gridFitType;
+			textField.sharpness = this._sharpness;
+			textField.thickness = this._thickness;
 			textField.maxChars = this._maxChars;
 			textField.restrict = this._restrict;
 			textField.alwaysShowSelection = this._alwaysShowSelection;
@@ -1580,7 +1913,7 @@ package feathers.controls.text
 				{
 					if(!target.hasVisibleArea)
 					{
-						this.textField.stage.focus = null;
+						this.clearFocus();
 						break;
 					}
 					target = target.parent;

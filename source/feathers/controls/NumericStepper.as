@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.INativeFocusOwner;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -16,6 +17,8 @@ package feathers.controls
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundToPrecision;
+
+	import flash.display.InteractiveObject;
 
 	import flash.events.TimerEvent;
 	import flash.ui.Keyboard;
@@ -68,7 +71,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/numeric-stepper.html How to use the Feathers NumericStepper component
 	 */
-	public class NumericStepper extends FeathersControl implements IRange, IFocusDisplayObject
+	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -365,6 +368,22 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return NumericStepper.globalStyleProvider;
+		}
+
+		/**
+		 * A text input's text editor may be an <code>INativeFocusOwner</code>,
+		 * so we need to return the value of its <code>nativeFocus</code>
+		 * property.
+		 *
+		 * @see feathers.core.INativeFocusOwner
+		 */
+		public function get nativeFocus():InteractiveObject
+		{
+			if(this.textInput)
+			{
+				return this.textInput.nativeFocus;
+			}
+			return null;
 		}
 
 		/**
@@ -1739,7 +1758,10 @@ package feathers.controls
 			this.textInput.styleNameList.add(textInputStyleName);
 			this.textInput.addEventListener(FeathersEventType.ENTER, textInput_enterHandler);
 			this.textInput.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
-			this.textInput.isFocusEnabled = this._focusManager == null;
+			//while we're setting isFocusEnabled to false on the text input when
+			//we have a focus manager, we'll still be able to call setFocus() on
+			//the text input manually.
+			this.textInput.isFocusEnabled = !this._focusManager;
 			this.addChild(this.textInput);
 		}
 
@@ -2085,18 +2107,26 @@ package feathers.controls
 		{
 			if(event.keyCode == Keyboard.HOME)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.toMinimum();
 			}
 			else if(event.keyCode == Keyboard.END)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.toMaximum();
 			}
 			else if(event.keyCode == Keyboard.UP)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.increment();
 			}
 			else if(event.keyCode == Keyboard.DOWN)
 			{
+				//prevent default so that text input selection doesn't change
+				event.preventDefault();
 				this.decrement();
 			}
 		}

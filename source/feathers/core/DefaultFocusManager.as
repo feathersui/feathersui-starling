@@ -744,7 +744,7 @@ package feathers.core
 				//lost focus for some reason, and there's no focus at all, force it
 				//back into focus.
 				//this can happen on app deactivate!
-				nativeStage.focus = this._nativeFocusTarget;
+				nativeStage.focus = nativeFocus;
 			}
 			if(nativeFocus != nativeStage.focus)
 			{

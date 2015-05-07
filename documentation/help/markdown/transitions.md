@@ -88,6 +88,17 @@ Flip.createFlipUpTransition();
 Flip.createFlipDownTransition();
 ```
 
+## Iris
+
+The [`Iris`](../api-reference/feathers/motion/Iris.html) transition shows or hides a screen by masking it with circle that grows or shrinks in radius.
+
+``` code
+Iris.createIrisOpenTransition();
+Flip.createIrisOpenTransitionAt(x, y);
+Flip.createIrisCloseTransition();
+Flip.createIrisCloseTransitionAt(x, y);
+```
+
 ## Reveal
 
 A [`Reveal`](../api-reference/feathers/motion/Reveal.html) transition slides the old screen out of view, animating the `x` or `y` property, to reveal the new screen under it. The old screen may slide up, right, down, or left. The new screen remains stationary.

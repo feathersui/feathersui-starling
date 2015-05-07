@@ -13,6 +13,13 @@ package feathers.events
 	 * constants are meant to be used with <code>dispatchEventWith()</code> and
 	 * take advantage of the Starling's event object pooling. The object passed
 	 * to an event listener will be of type <code>starling.events.Event</code>.
+	 *
+	 * <listing version="3.0">
+	 * function listener( event:Event ):void
+	 * {
+	 *     trace( "creation complete" );
+	 * }
+	 * component.addEventListener( FeathersEventType.CREATION_COMPLETE, listener );</listing>
 	 */
 	public class FeathersEventType
 	{

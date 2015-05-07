@@ -1995,14 +1995,14 @@ package feathers.controls
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
-				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
-				this.thumb.y = this._minimumPadding + trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum));
+				this.thumb.x = Math.round((this.actualWidth - this.thumb.width) / 2);
+				this.thumb.y = Math.round(this._minimumPadding + trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum)));
 			}
 			else
 			{
 				var trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this._minimumPadding - this._maximumPadding;
-				this.thumb.x = this._minimumPadding + (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
-				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
+				this.thumb.x = Math.round(this._minimumPadding + (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum)));
+				this.thumb.y = Math.round((this.actualHeight - this.thumb.height) / 2);
 			}
 		}
 

@@ -2423,11 +2423,15 @@ package feathers.controls
 			}
 			this._textEditorHasFocus = true;
 			this.currentState = STATE_FOCUSED;
-			if(this._focusManager && this._isFocusEnabled)
+			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
 			{
+				//if setFocus() was called manually, we need to notify the focus
+				//manager (unless isFocusEnabled is false).
+				//if the focus manager already knows that we have focus, it will
+				//simply return without doing anything.
 				this._focusManager.focus = this;
 			}
-			else
+			else if(!this._focusManager)
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 			}
@@ -2440,14 +2444,13 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = false;
 			this.currentState = this._isEnabled ? STATE_ENABLED : STATE_DISABLED;
-			if(this._focusManager && this._isFocusEnabled)
+			if(this._focusManager && this._focusManager.focus === this)
 			{
-				if(this._focusManager.focus == this)
-				{
-					this._focusManager.focus = null;
-				}
+				//if clearFocus() was called manually, we need to notify the
+				//focus manager if it still thinks we have focus.
+				this._focusManager.focus = null;
 			}
-			else
+			else if(!this._focusManager)
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}

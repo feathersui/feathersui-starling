@@ -1246,7 +1246,7 @@ package feathers.controls
 						}
 					}
 
-					if(sourceURL.toLowerCase().lastIndexOf(ATF_FILE_EXTENSION) == sourceURL.length - 3)
+					if(isATFURL(sourceURL))
 					{
 						if(this.loader)
 						{
@@ -1330,6 +1330,19 @@ package feathers.controls
 				this.image.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 				this.image.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function isATFURL(sourceURL:String):Boolean
+		{
+			var index:int = sourceURL.indexOf("?");
+			if(index >= 0)
+			{
+				sourceURL = sourceURL.substr(0, index);
+			}
+			return sourceURL.toLowerCase().lastIndexOf(ATF_FILE_EXTENSION) === sourceURL.length - 3;
 		}
 
 		/**

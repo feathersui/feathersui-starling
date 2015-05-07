@@ -12,14 +12,26 @@ package feathers.media
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.errors.AbstractClassError;
 
 	import starling.events.Event;
 
+	/**
+	 * An abstract superclass for media players that should implement the
+	 * <code>feathers.media.IMediaPlayer</code> interface.
+	 */
 	public class BaseMediaPlayer extends LayoutGroup implements IMediaPlayer
 	{
+		/**
+		 * Constructor.
+		 */
 		public function BaseMediaPlayer()
 		{
 			super();
+			if(Object(this).constructor === BaseMediaPlayer)
+			{
+				throw new AbstractClassError();
+			}
 			this.addEventListener(Event.ADDED, mediaPlayer_addedHandler);
 			this.addEventListener(Event.REMOVED, mediaPlayer_removedHandler);
 		}

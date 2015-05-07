@@ -7,6 +7,8 @@ author: Josh Tynjala
 
 The [`FlowLayout`](../api-reference/feathers/layout/FlowLayout.html) class may be used by components that support layout, such as [`List`](list.html), [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html), to display items from left to right in multiple rows. It supports paging horizontally or vertically, and a number of useful options for the spacing and alignment may be modified.
 
+<picture><img src="images/flow-layout.png" srcset="images/flow-layout@2x.png 2x" alt="Screenshot of Feathers FlowLayout" /></picture>
+
 ## The Basics
 
 Let's create a flow layout and add it to a [`LayoutGroup`](layout-group.html):

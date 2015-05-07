@@ -115,6 +115,8 @@ package feathers.motion
 	}
 }
 
+import feathers.display.RenderDelegate;
+
 import flash.display3D.Context3DTriangleFace;
 
 import starling.animation.Tween;
@@ -156,7 +158,15 @@ class CubeTween extends Tween
 				this._newScreenParent.z = this._navigator.height;
 				this._newScreenParent.rotationX = -rotationXOffset;
 			}
-			this._newScreenParent.addChild(newScreen);
+			var delegate:RenderDelegate = new RenderDelegate(newScreen);
+			delegate.alpha = newScreen.alpha;
+			delegate.blendMode = newScreen.blendMode;
+			delegate.rotation = newScreen.rotation;
+			delegate.scaleX = newScreen.scaleX;
+			delegate.scaleY = newScreen.scaleY;
+			this._newScreenParent.addChild(delegate);
+			newScreen.visible = false;
+			this._savedNewScreen = newScreen;
 			cube.addChild(this._newScreenParent);
 		}
 		if(oldScreen)
@@ -165,7 +175,15 @@ class CubeTween extends Tween
 			{
 				this._navigator = oldScreen.parent;
 			}
-			cube.addChildAt(oldScreen, 0);
+			delegate = new RenderDelegate(oldScreen);
+			delegate.alpha = oldScreen.alpha;
+			delegate.blendMode = oldScreen.blendMode;
+			delegate.rotation = oldScreen.rotation;
+			delegate.scaleX = oldScreen.scaleX;
+			delegate.scaleY = oldScreen.scaleY;
+			cube.addChildAt(delegate, 0);
+			oldScreen.visible = false;
+			this._savedOldScreen = oldScreen;
 		}
 		this._navigator.addChild(cube);
 
@@ -207,22 +225,23 @@ class CubeTween extends Tween
 	private var _navigator:DisplayObjectContainer;
 	private var _newScreenParent:Sprite3D;
 	private var _onCompleteCallback:Function;
+	private var _savedNewScreen:DisplayObject;
+	private var _savedOldScreen:DisplayObject;
 
 	private function cleanupTween():void
 	{
 		var cube:Sprite3D = Sprite3D(this.target);
-		if(this._newScreenParent)
+		cube.removeFromParent(true);
+		if(this._savedNewScreen)
 		{
-			var newScreen:DisplayObject = this._newScreenParent.getChildAt(0);
-			this._navigator.addChild(newScreen);
-			cube.removeChild(this._newScreenParent, true);
+			this._savedNewScreen.visible = true;
+			this._savedNewScreen = null;
 		}
-		if(cube.numChildren > 0)
+		if(this._savedOldScreen)
 		{
-			var oldScreen:DisplayObject = cube.removeChildAt(0);
-			this._navigator.addChild(oldScreen);
+			this._savedOldScreen.visible = true;
+			this._savedOldScreen = null;
 		}
-		this._navigator.removeChild(cube, true);
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();
