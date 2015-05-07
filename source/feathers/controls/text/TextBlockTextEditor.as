@@ -1272,6 +1272,7 @@ package feathers.controls.text
 			if(newIndex >= 0)
 			{
 				this.validate();
+				this._selectionAnchorIndex = newIndex;
 				this.selectRange(newIndex, newIndex);
 			}
 		}
@@ -1307,6 +1308,7 @@ package feathers.controls.text
 			{
 				return;
 			}
+			this._selectionAnchorIndex = 0;
 			this.selectRange(0, this._text.length);
 		}
 
