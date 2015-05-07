@@ -53,8 +53,14 @@ package feathers.tests
 			this._textInput.parent.visible = true;
 			
 			FocusManager.setEnabledForStage(TestFeathers.starlingRoot.stage, false);
+			
 			this._textInput.removeFromParent(true);
 			this._textInput = null;
+
+			this._textInput2.removeFromParent(true);
+			this._textInput2 = null;
+			
+			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
 
 		[Test]

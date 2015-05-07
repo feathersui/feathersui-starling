@@ -40,7 +40,11 @@ package feathers.tests
 		{
 			this._button.removeFromParent(true);
 			this._button = null;
+			this._button2.removeFromParent(true);
+			this._button2 = null;
 			FocusManager.setEnabledForStage(TestFeathers.starlingRoot.stage, false);
+
+			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
 
 		[Test]
