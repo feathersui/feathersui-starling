@@ -295,6 +295,11 @@ package feathers.controls
 		protected var _popToRootScreenEvents:Vector.<String>;
 
 		/**
+		 * @private
+		 */
+		protected var _tempRootScreenID:String;
+
+		/**
 		 * Sets the first screen at the bottom of the stack, or the root screen.
 		 * When this screen is shown, there will be no transition.
 		 *
@@ -311,7 +316,11 @@ package feathers.controls
 		 */
 		public function get rootScreenID():String
 		{
-			if(this._stack.length == 0)
+			if(this._tempRootScreenID !== null)
+			{
+				return this._tempRootScreenID;
+			}
+			else if(this._stack.length == 0)
 			{
 				return this._activeScreenID;
 			}
@@ -323,14 +332,21 @@ package feathers.controls
 		 */
 		public function set rootScreenID(value:String):void
 		{
-			this._stack.length = 0;
-			if(value !== null)
+			if(this._isInitialized)
 			{
-				this.showScreenInternal(value, null);
+				this._stack.length = 0;
+				if(value !== null)
+				{
+					this.showScreenInternal(value, null);
+				}
+				else
+				{
+					this.clearScreenInternal(null);
+				}
 			}
 			else
 			{
-				this.clearScreenInternal(null);
+				this._tempRootScreenID = value;
 			}
 		}
 
@@ -487,6 +503,21 @@ package feathers.controls
 			var item:StackItem = this._stack[0];
 			this._stack.length = 0;
 			return this.showScreenInternal(item.id, transition, item.properties);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+			
+			if(this._tempRootScreenID !== null)
+			{
+				var screenID:String = this._tempRootScreenID;
+				this._tempRootScreenID = null;
+				this.showScreenInternal(screenID, null);
+			}
 		}
 
 		/**
