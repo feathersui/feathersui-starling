@@ -31,7 +31,9 @@ For those looking to tweak the example themes provided with Feathers, the follow
 
 ![](images/feathers-minimal-desktop-theme.png)
 
--   [Minimal Desktop Theme PSD](http://feathersui.com/download/themes/MinimalDesktopTheme.psd)
+-   [Minimal Desktop Theme FLA for Flash CC](http://feathersui.com/download/themes/MinimalDesktopTheme.fla)
+
+Note: The Generate Sprite Sheet feature in Flash CC has a bug where exported images that use inner drop shadow filters have extra transparent padding around the edges. Skins in MinimalDesktopTheme make heavy use of inner drop shadows, and they must be exported manually and trimmed in Photoshop. A bug report has been filed with Adobe.
 
 ### Aeon Desktop Theme
 
