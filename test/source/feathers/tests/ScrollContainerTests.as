@@ -35,6 +35,8 @@ package feathers.tests
 		{
 			this._container.removeFromParent(true);
 			this._container = null;
+
+			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
 
 		[Test]
