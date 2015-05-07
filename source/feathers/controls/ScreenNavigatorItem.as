@@ -9,6 +9,8 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IScreenNavigatorItem;
 
+	import mx.core.IMXMLObject;
+
 	import starling.display.DisplayObject;
 
 	/**
@@ -32,7 +34,7 @@ package feathers.controls
 	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component
 	 * @see feathers.controls.ScreenNavigator
 	 */
-	public class ScreenNavigatorItem implements IScreenNavigatorItem
+	public class ScreenNavigatorItem implements IScreenNavigatorItem, IMXMLObject
 	{
 		/**
 		 * Constructor.
@@ -157,6 +159,27 @@ package feathers.controls
 		public function get canDispose():Boolean
 		{
 			return !(this._screen is DisplayObject);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _mxmlID:String;
+
+		/**
+		 * @private
+		 */
+		public function get mxmlID():String
+		{
+			return this._mxmlID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function initialized(document:Object, id:String):void
+		{
+			this._mxmlID = id;
 		}
 
 		/**
