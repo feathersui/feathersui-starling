@@ -271,6 +271,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _lastGlobalScaleX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastGlobalScaleY:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _needsNewTexture:Boolean = false;
 
 		/**
@@ -1153,6 +1163,48 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _updateSnapshotOnScaleChange:Boolean = false;
+
+		/**
+		 * Refreshes the texture snapshot every time that the text editor is
+		 * scaled. Based on the scale in global coordinates, so scaling the
+		 * parent will require a new snapshot.
+		 *
+		 * <p>Warning: setting this property to true may result in reduced
+		 * performance because every change of the scale requires uploading a
+		 * new texture to the GPU. Use with caution. Consider setting this
+		 * property to false temporarily during animations that modify the
+		 * scale.</p>
+		 *
+		 * <p>In the following example, the snapshot will be updated when the
+		 * text editor is scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get updateSnapshotOnScaleChange():Boolean
+		{
+			return this._updateSnapshotOnScaleChange;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set updateSnapshotOnScaleChange(value:Boolean):void
+		{
+			if(this._updateSnapshotOnScaleChange == value)
+			{
+				return;
+			}
+			this._updateSnapshotOnScaleChange = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _useSnapshotDelayWorkaround:Boolean = false;
 
 		/**
@@ -1227,6 +1279,14 @@ package feathers.controls.text
 		{
 			if(this.textSnapshot)
 			{
+				if(this._updateSnapshotOnScaleChange)
+				{
+					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+					if(matrixToScaleX(HELPER_MATRIX) != this._lastGlobalScaleX || matrixToScaleY(HELPER_MATRIX) != this._lastGlobalScaleY)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
+				}
 				this.positionSnapshot();
 			}
 			//we'll skip this if the text field isn't visible to avoid running
@@ -1703,11 +1763,20 @@ package feathers.controls.text
 
 			var scaleFactor:Number = Starling.contentScaleFactor;
 			var clipWidth:Number = this.actualWidth * scaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				clipWidth *= matrixToScaleX(HELPER_MATRIX);
+			}
 			if(clipWidth < 0)
 			{
 				clipWidth = 0;
 			}
 			var clipHeight:Number = this.actualHeight * scaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				clipHeight *= matrixToScaleY(HELPER_MATRIX);
+			}
 			if(clipHeight < 0)
 			{
 				clipHeight = 0;
@@ -1835,9 +1904,19 @@ package feathers.controls.text
 				gutterPositionOffset = 0;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.translate(this._textFieldOffsetX - gutterPositionOffset, this._textFieldOffsetY - gutterPositionOffset);
 			HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+			if(this._updateSnapshotOnScaleChange)
+			{
+				HELPER_MATRIX.scale(globalScaleX, globalScaleY);
+			}
 			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldSnapshotClipRect);
 			var newTexture:Texture;
@@ -1870,6 +1949,13 @@ package feathers.controls.text
 					var existingTexture:Texture = this.textSnapshot.texture;
 					existingTexture.root.uploadBitmapData(bitmapData);
 				}
+			}
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.textSnapshot.scaleX = 1 / globalScaleX;
+				this.textSnapshot.scaleY = 1 / globalScaleY;
+				this._lastGlobalScaleX = globalScaleX;
+				this._lastGlobalScaleY = globalScaleY;
 			}
 			this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
 			bitmapData.dispose();
@@ -1984,7 +2070,6 @@ package feathers.controls.text
 			this._textFieldHasFocus = true;
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.addEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
 
@@ -2001,8 +2086,8 @@ package feathers.controls.text
 				this.textField.scrollH = this.textField.scrollV = 0;
 			}
 
+			//the text may have changed, so we invalidate the data flag
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 

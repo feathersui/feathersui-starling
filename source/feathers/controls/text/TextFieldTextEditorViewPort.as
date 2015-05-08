@@ -558,11 +558,20 @@ package feathers.controls.text
 
 			var scaleFactor:Number = Starling.contentScaleFactor;
 			var clipWidth:Number = textFieldWidth * scaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				clipWidth *= matrixToScaleX(HELPER_MATRIX);
+			}
 			if(clipWidth < 0)
 			{
 				clipWidth = 0;
 			}
 			var clipHeight:Number = textFieldHeight * scaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				clipHeight *= matrixToScaleY(HELPER_MATRIX);
+			}
 			if(clipHeight < 0)
 			{
 				clipHeight = 0;
