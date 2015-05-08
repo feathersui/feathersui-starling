@@ -553,22 +553,22 @@ package feathers.controls.text
 
 			this._textFieldOffsetX = 0;
 			this._textFieldOffsetY = 0;
-			this._textFieldClipRect.x = 0;
-			this._textFieldClipRect.y = 0;
+			this._textFieldSnapshotClipRect.x = 0;
+			this._textFieldSnapshotClipRect.y = 0;
 
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var clipWidth:Number = textFieldWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
+			var scaleFactor:Number = Starling.contentScaleFactor;
+			var clipWidth:Number = textFieldWidth * scaleFactor;
 			if(clipWidth < 0)
 			{
 				clipWidth = 0;
 			}
-			var clipHeight:Number = textFieldHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
+			var clipHeight:Number = textFieldHeight * scaleFactor;
 			if(clipHeight < 0)
 			{
 				clipHeight = 0;
 			}
-			this._textFieldClipRect.width = clipWidth;
-			this._textFieldClipRect.height = clipHeight;
+			this._textFieldSnapshotClipRect.width = clipWidth;
+			this._textFieldSnapshotClipRect.height = clipHeight;
 		}
 
 		/**
