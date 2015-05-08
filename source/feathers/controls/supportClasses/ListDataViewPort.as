@@ -880,7 +880,8 @@ package feathers.controls.supportClasses
 			}
 
 			var unrenderedItemCount:int = useVirtualLayout ? HELPER_VECTOR.length : itemCount;
-			if(useVirtualLayout && this._typicalItemIsInDataProvider && HELPER_VECTOR.indexOf(this._typicalItemRenderer.index) >= 0)
+			if(useVirtualLayout && this._typicalItemIsInDataProvider && this._typicalItemRenderer &&
+				HELPER_VECTOR.indexOf(this._typicalItemRenderer.index) >= 0)
 			{
 				//add an extra item renderer if the typical item is from the
 				//data provider and it is visible. this helps keep the number of
