@@ -1560,7 +1560,12 @@ package feathers.controls.text
 					var newTexture:Texture;
 					if(!this.textSnapshot || this._needsNewTexture)
 					{
-						newTexture = Texture.fromBitmapData(bitmapData, false, false, scaleFactor);
+						//skip Texture.fromBitmapData() because we don't want
+						//it to create an onRestore function that will be
+						//immediately discarded for garbage collection. 
+						newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
+							true, false, false, scaleFactor);
+						newTexture.root.uploadBitmapData(bitmapData);
 					}
 					var snapshot:Image = null;
 					if(snapshotIndex >= 0)
