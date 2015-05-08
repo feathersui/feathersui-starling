@@ -495,6 +495,15 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected static function defaultThrowEase(ratio:Number):Number
+		{
+			ratio -= 1;
+			return 1 - ratio * ratio * ratio * ratio;
+		}
+
+		/**
 		 * Constructor.
 		 */
 		public function Scroller()
@@ -2838,7 +2847,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _throwEase:Object = Transitions.EASE_OUT;
+		protected var _throwEase:Object = defaultThrowEase;
 
 		/**
 		 * The easing function used for "throw" animations.
@@ -2848,8 +2857,6 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scroller.throwEase = Transitions.EASE_IN_OUT;</listing>
-		 * 
-		 * @default starling.animation.Transitions.EASE_OUT
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
 		 */
@@ -2863,6 +2870,10 @@ package feathers.controls
 		 */
 		public function set throwEase(value:Object):void
 		{
+			if(value == null)
+			{
+				value = defaultThrowEase;
+			}
 			this._throwEase = value;
 		}
 
