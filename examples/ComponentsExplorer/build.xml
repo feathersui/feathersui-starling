@@ -25,7 +25,7 @@
 		<echo message="Building ComponentsExplorerWeb.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
-			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-swf-version=${swf.version.web}"/>
 			<arg value="-advanced-telemetry=true"/>
 			<arg value="-frame=two,feathers.examples.componentsExplorer.Main"/>
 			<arg value="-source-path+=source"/>
@@ -40,8 +40,9 @@
 		<echo message="Building ComponentsExplorer.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${airmobile.config}"/>
-			<arg value="-swf-version=${swf.version}"/>
-			<arg value="-advanced-telemetry=true"/>
+			<arg value="-swf-version=${swf.version.air}"/>
+			<!-- uncomment for profiling with scout -->
+			<!--<arg value="-advanced-telemetry=true"/>-->
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
@@ -56,9 +57,6 @@
 			<arg value="-package"/>
 			<arg value="-target"/>
 			<arg value="ipa-app-store"/>
-			<!-- uncomment to use the new, faster compiling for ios -->
-			<!--<arg value="-useLegacyAOT"/>
-			<arg value="no"/>-->
 			<!-- uncomment for actionscript sampling with scout on ios -->
 			<!--<arg value="-sampler"/>-->
 			<arg value="-provisioning-profile"/>
