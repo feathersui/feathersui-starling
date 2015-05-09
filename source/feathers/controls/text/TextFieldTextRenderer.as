@@ -10,6 +10,8 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DProfile;
@@ -985,6 +987,58 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _lastGlobalScaleX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastGlobalScaleY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _updateSnapshotOnScaleChange:Boolean = false;
+
+		/**
+		 * Refreshes the texture snapshot every time that the text renderer is
+		 * scaled. Based on the scale in global coordinates, so scaling the
+		 * parent will require a new snapshot.
+		 *
+		 * <p>Warning: setting this property to true may result in reduced
+		 * performance because every change of the scale requires uploading a
+		 * new texture to the GPU. Use with caution. Consider setting this
+		 * property to false temporarily during animations that modify the
+		 * scale.</p>
+		 *
+		 * <p>In the following example, the snapshot will be updated when the
+		 * text renderer is scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.updateSnapshotOnScaleChange = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get updateSnapshotOnScaleChange():Boolean
+		{
+			return this._updateSnapshotOnScaleChange;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set updateSnapshotOnScaleChange(value:Boolean):void
+		{
+			if(this._updateSnapshotOnScaleChange == value)
+			{
+				return;
+			}
+			this._updateSnapshotOnScaleChange = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _useSnapshotDelayWorkaround:Boolean = false;
 
 		/**
@@ -1065,6 +1119,18 @@ package feathers.controls.text
 			if(this.textSnapshot)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				if(this._updateSnapshotOnScaleChange)
+				{
+					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+					if(globalScaleX != this._lastGlobalScaleX || globalScaleY != this._lastGlobalScaleY)
+					{
+						//the snapshot needs to be updated because the scale has
+						//changed since the last snapshot was taken.
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+						this.validate();
+					}
+				}
 				var scaleFactor:Number = Starling.current.contentScaleFactor;
 				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
@@ -1081,27 +1147,52 @@ package feathers.controls.text
 					offsetX += Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
 					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
-				this.textSnapshot.x = offsetX;
-				this.textSnapshot.y = offsetY;
-				if(this.textSnapshots)
+
+				var snapshotIndex:int = -1;
+				var totalBitmapWidth:Number = this._snapshotWidth;
+				var totalBitmapHeight:Number = this._snapshotHeight;
+				var xPosition:Number = offsetX;
+				var yPosition:Number = offsetY;
+				do
 				{
-					var snapshotSize:Number = this._maxTextureDimensions / scaleFactor;
-					var positionX:Number = offsetX + snapshotSize;
-					var positionY:Number = offsetY;
-					var snapshotCount:int = this.textSnapshots.length;
-					for(var i:int = 0; i < snapshotCount; i++)
+					var currentBitmapWidth:Number = totalBitmapWidth;
+					if(currentBitmapWidth > this._maxTextureDimensions)
 					{
-						if(positionX > this.actualWidth)
-						{
-							positionX = offsetX;
-							positionY += snapshotSize;
-						}
-						var snapshot:Image = this.textSnapshots[i];
-						snapshot.x = positionX;
-						snapshot.y = positionY;
-						positionX += snapshotSize;
+						currentBitmapWidth = this._maxTextureDimensions;
 					}
+					do
+					{
+						var currentBitmapHeight:Number = totalBitmapHeight;
+						if(currentBitmapHeight > this._maxTextureDimensions)
+						{
+							currentBitmapHeight = this._maxTextureDimensions;
+						}
+						if(snapshotIndex < 0)
+						{
+							var snapshot:Image = this.textSnapshot;
+						}
+						else
+						{
+							snapshot = this.textSnapshots[snapshotIndex];
+						}
+						snapshot.x = xPosition / scaleFactor;
+						snapshot.y = yPosition / scaleFactor;
+						if(this._updateSnapshotOnScaleChange)
+						{
+							snapshot.x /= this._lastGlobalScaleX;
+							snapshot.y /= this._lastGlobalScaleX;
+						}
+						snapshotIndex++;
+						yPosition += currentBitmapHeight;
+						totalBitmapHeight -= currentBitmapHeight;
+					}
+					while(totalBitmapHeight > 0)
+					xPosition += currentBitmapWidth;
+					totalBitmapWidth -= currentBitmapWidth;
+					yPosition = offsetY;
+					totalBitmapHeight = this._snapshotHeight;
 				}
+				while(totalBitmapWidth > 0)
 			}
 			super.render(support, parentAlpha);
 		}
@@ -1343,6 +1434,12 @@ package feathers.controls.text
 				//to possibly round down and cut off part of the text. 
 				var rectangleSnapshotWidth:Number = Math.ceil(this.actualWidth * scaleFactor);
 				var rectangleSnapshotHeight:Number = Math.ceil(this.actualHeight * scaleFactor);
+				if(this._updateSnapshotOnScaleChange)
+				{
+					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+					rectangleSnapshotWidth *= matrixToScaleX(HELPER_MATRIX);
+					rectangleSnapshotHeight *= matrixToScaleY(HELPER_MATRIX);
+				}
 				if(rectangleSnapshotWidth >= 1 && rectangleSnapshotHeight >= 1 &&
 					this._nativeFilters && this._nativeFilters.length > 0)
 				{
@@ -1574,8 +1671,18 @@ package feathers.controls.text
 				return;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+			if(this._updateSnapshotOnScaleChange)
+			{
+				HELPER_MATRIX.scale(globalScaleX, globalScaleY);
+			}
 			var totalBitmapWidth:Number = this._snapshotWidth;
 			var totalBitmapHeight:Number = this._snapshotHeight;
 			var xPosition:Number = 0;
@@ -1658,6 +1765,13 @@ package feathers.controls.text
 					}
 					snapshot.x = xPosition / scaleFactor;
 					snapshot.y = yPosition / scaleFactor;
+					if(this._updateSnapshotOnScaleChange)
+					{
+						snapshot.scaleX = 1 / globalScaleX;
+						snapshot.scaleY = 1 / globalScaleY;
+						snapshot.x /= globalScaleX;
+						snapshot.y /= globalScaleY;
+					}
 					snapshotIndex++;
 					yPosition += currentBitmapHeight;
 					totalBitmapHeight -= currentBitmapHeight;
@@ -1687,6 +1801,11 @@ package feathers.controls.text
 				{
 					this.textSnapshots.length = snapshotIndex;
 				}
+			}
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this._lastGlobalScaleX = globalScaleX;
+				this._lastGlobalScaleY = globalScaleY;
 			}
 			this._needsNewTexture = false;
 		}

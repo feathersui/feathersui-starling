@@ -1284,7 +1284,10 @@ package feathers.controls.text
 					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 					if(matrixToScaleX(HELPER_MATRIX) != this._lastGlobalScaleX || matrixToScaleY(HELPER_MATRIX) != this._lastGlobalScaleY)
 					{
+						//the snapshot needs to be updated because the scale has
+						//changed since the last snapshot was taken.
 						this.invalidate(INVALIDATION_FLAG_SIZE);
+						this.validate();
 					}
 				}
 				this.positionSnapshot();
