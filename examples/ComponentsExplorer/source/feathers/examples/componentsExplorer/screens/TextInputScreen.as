@@ -59,7 +59,7 @@ package feathers.examples.componentsExplorer.screens
 			this.addChild(this._passwordInput);
 
 			this._notEditableInput = new TextInput();
-			this._notEditableInput.prompt = "Not Editable";
+			this._notEditableInput.text = "Not Editable";
 			this._notEditableInput.isEditable = false;
 			this.addChild(this._notEditableInput);
 

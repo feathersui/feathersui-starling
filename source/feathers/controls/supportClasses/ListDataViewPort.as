@@ -203,6 +203,7 @@ package feathers.controls.supportClasses
 		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _activeRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _rendererMap:Dictionary = new Dictionary(true);
+		private var _minimumItemCount:int;
 
 		private var _layoutIndexOffset:int = 0;
 
@@ -879,6 +880,18 @@ package feathers.controls.supportClasses
 			}
 
 			var unrenderedItemCount:int = useVirtualLayout ? HELPER_VECTOR.length : itemCount;
+			if(useVirtualLayout && this._typicalItemIsInDataProvider && this._typicalItemRenderer &&
+				HELPER_VECTOR.indexOf(this._typicalItemRenderer.index) >= 0)
+			{
+				//add an extra item renderer if the typical item is from the
+				//data provider and it is visible. this helps keep the number of
+				//item renderers constant!
+				this._minimumItemCount = unrenderedItemCount + 1;
+			}
+			else
+			{
+				this._minimumItemCount = unrenderedItemCount;
+			}
 			var canUseBeforeAndAfter:Boolean = this._layout is ITrimmedVirtualLayout && useVirtualLayout &&
 				(!(this._layout is IVariableVirtualLayout) || !IVariableVirtualLayout(this._layout).hasVariableItemDimensions) &&
 				unrenderedItemCount > 0;
@@ -1034,10 +1047,35 @@ package feathers.controls.supportClasses
 
 		private function freeInactiveRenderers():void
 		{
+			//we may keep around some extra renderers to avoid too much
+			//allocation and garbage collection. they'll be hidden.
 			var itemCount:int = this._inactiveRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
+			var keepCount:int = this._minimumItemCount - this._activeRenderers.length;
+			if(itemCount < keepCount)
+			{
+				keepCount = itemCount;
+			}
+			for(var i:int = 0; i < keepCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers.shift();
+				if(!renderer)
+				{
+					keepCount++;
+					if(itemCount < keepCount)
+					{
+						keepCount = itemCount;
+					}
+					continue;
+				}
+				renderer.data = null;
+				renderer.index = -1;
+				renderer.visible = false;
+				this._activeRenderers.push(renderer);
+			}
+			itemCount -= keepCount;
+			for(i = 0; i < itemCount; i++)
+			{
+				renderer = this._inactiveRenderers.shift();
 				if(!renderer)
 				{
 					continue;

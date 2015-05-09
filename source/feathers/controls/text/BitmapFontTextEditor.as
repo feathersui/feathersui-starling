@@ -1105,7 +1105,7 @@ package feathers.controls.text
 		 */
 		protected function textEditor_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || !this._isEditable)
+			if(!this._isEnabled)
 			{
 				this.touchPointID = -1;
 				return;
@@ -1180,7 +1180,7 @@ package feathers.controls.text
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(!this._isEnabled || !this._isEditable || this.touchPointID >= 0 || event.isDefaultPrevented())
+			if(!this._isEnabled || this.touchPointID >= 0 || event.isDefaultPrevented())
 			{
 				return;
 			}
@@ -1296,17 +1296,23 @@ package feathers.controls.text
 			}
 			if(newIndex < 0)
 			{
-				var currentValue:String = this._text;
-				if(this._displayAsPassword)
-				{
-					currentValue = this._unmaskedText;
-				}
 				if(event.keyCode == Keyboard.ENTER)
 				{
 					this.dispatchEventWith(FeathersEventType.ENTER);
 					return;
 				}
-				else if(event.keyCode == Keyboard.DELETE)
+				//everything after this point edits the text, so return if the text
+				//editor isn't editable.
+				if(!this._isEditable)
+				{
+					return;
+				}
+				var currentValue:String = this._text;
+				if(this._displayAsPassword)
+				{
+					currentValue = this._unmaskedText;
+				}
+				if(event.keyCode == Keyboard.DELETE)
 				{
 					if(event.altKey || event.ctrlKey)
 					{
@@ -1342,6 +1348,7 @@ package feathers.controls.text
 			}
 			if(newIndex >= 0)
 			{
+				this._selectionAnchorIndex = newIndex;
 				this.selectRange(newIndex, newIndex);
 			}
 		}
@@ -1351,6 +1358,10 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_textInputHandler(event:TextEvent):void
 		{
+			if(!this._isEditable || !this._isEnabled)
+			{
+				return;
+			}
 			var text:String = event.text;
 			if(text === CARRIAGE_RETURN || text === LINE_FEED)
 			{
@@ -1369,10 +1380,11 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_selectAllHandler(event:flash.events.Event):void
 		{
-			if(!this._isEditable || !this._isEnabled)
+			if(!this._isEnabled)
 			{
 				return;
 			}
+			this._selectionAnchorIndex = 0;
 			this.selectRange(0, this._text.length);
 		}
 
@@ -1381,11 +1393,15 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_cutHandler(event:flash.events.Event):void
 		{
-			if(!this._isEditable || !this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
+			if(!this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
 				return;
 			}
 			Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, this.getSelectedText());
+			if(!this._isEditable)
+			{
+				return;
+			}
 			this.deleteSelectedText();
 		}
 
@@ -1394,7 +1410,7 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_copyHandler(event:flash.events.Event):void
 		{
-			if(!this._isEditable || !this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
+			if(!this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
 				return;
 			}

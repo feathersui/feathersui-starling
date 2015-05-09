@@ -379,14 +379,6 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
-		 */
-		override public function get isFocusEnabled():Boolean
-		{
-			return this._isEditable && super.isFocusEnabled;
-		}
-
-		/**
 		 * When the <code>FocusManager</code> isn't enabled, <code>hasFocus</code>
 		 * can be used instead of <code>FocusManager.focus == textInput</code>
 		 * to determine if the text input has focus.
@@ -2314,7 +2306,7 @@ package feathers.controls
 		 */
 		protected function textInput_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || !this._isEditable)
+			if(!this._isEnabled)
 			{
 				this._touchPointID = -1;
 				return;
