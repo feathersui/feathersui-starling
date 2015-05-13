@@ -1475,7 +1475,9 @@ package feathers.controls.text
 					}
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
-				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
+				textureRoot.scale != scaleFactor ||
+				this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 				this._snapshotVisibleWidth = rectangleSnapshotWidth;
 				this._snapshotVisibleHeight = rectangleSnapshotHeight;
 			}
@@ -1583,12 +1585,21 @@ package feathers.controls.text
 			texture.root.onRestore = function():void
 			{
 				var scaleFactor:Number = Starling.contentScaleFactor;
-				HELPER_MATRIX.identity();
-				HELPER_MATRIX.scale(scaleFactor, scaleFactor);
-				var bitmapData:BitmapData = self.drawTextLinesRegionToBitmapData(
-					snapshot.x, snapshot.y, texture.nativeWidth, texture.nativeHeight);
-				texture.root.uploadBitmapData(bitmapData);
-				bitmapData.dispose();
+				if(texture.scale != scaleFactor)
+				{
+					//if we've changed between scale factors, we need to
+					//recreate the texture to match the new scale factor.
+					invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					HELPER_MATRIX.identity();
+					HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+					var bitmapData:BitmapData = self.drawTextLinesRegionToBitmapData(
+						snapshot.x, snapshot.y, texture.nativeWidth, texture.nativeHeight);
+					texture.root.uploadBitmapData(bitmapData);
+					bitmapData.dispose();
+				}
 			};
 		}
 
