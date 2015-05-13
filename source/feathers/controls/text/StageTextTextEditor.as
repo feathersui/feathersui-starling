@@ -1110,7 +1110,9 @@ package feathers.controls.text
 				}
 				//for some reason, we don't need to account for the native scale factor here
 				scaleFactor = Starling.contentScaleFactor;
-				var newFontSize:Number = this._fontSize * scaleFactor * smallerGlobalScale;
+				//StageText's fontSize property is an int, so we need to
+				//specifically avoid using Number here.
+				var newFontSize:int = this._fontSize * scaleFactor * smallerGlobalScale;
 				if(this.stageText.fontSize != newFontSize)
 				{
 					//we need to check if this value has changed because on iOS
@@ -1571,7 +1573,15 @@ package feathers.controls.text
 			}
 			//for some reason, we don't need to account for the native scale factor here
 			var scaleFactor:Number = Starling.contentScaleFactor;
-			this.stageText.fontSize = this._fontSize * scaleFactor * smallerGlobalScale;
+			//StageText's fontSize property is an int, so we need to
+			//specifically avoid using Number here.
+			var newFontSize:int = this._fontSize * scaleFactor * smallerGlobalScale;
+			if(this.stageText.fontSize != newFontSize)
+			{
+				//see comment in render() for why we check if the font size has
+				//changed before passing a value to the setter
+				this.stageText.fontSize = newFontSize;
+			}
 
 			this.stageText.fontWeight = this._fontWeight;
 			this.stageText.locale = this._locale;
