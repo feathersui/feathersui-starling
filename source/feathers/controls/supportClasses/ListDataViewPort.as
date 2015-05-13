@@ -817,7 +817,7 @@ package feathers.controls.supportClasses
 			if(itemRendererTypeIsInvalid)
 			{
 				this.recoverInactiveRenderers();
-				this.freeInactiveRenderers();
+				this.freeInactiveRenderers(false);
 				if(this._typicalItemRenderer)
 				{
 					if(this._typicalItemIsInDataProvider)
@@ -864,7 +864,7 @@ package feathers.controls.supportClasses
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
 			this.renderUnrenderedData();
-			this.freeInactiveRenderers();
+			this.freeInactiveRenderers(true);
 			this._updateForDataReset = false;
 		}
 
@@ -1045,12 +1045,19 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function freeInactiveRenderers():void
+		private function freeInactiveRenderers(allowKeep:Boolean):void
 		{
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
 			var itemCount:int = this._inactiveRenderers.length;
-			var keepCount:int = this._minimumItemCount - this._activeRenderers.length;
+			if(allowKeep)
+			{
+				var keepCount:int = this._minimumItemCount - this._activeRenderers.length;
+			}
+			else
+			{
+				keepCount = 0;
+			}
 			if(itemCount < keepCount)
 			{
 				keepCount = itemCount;
