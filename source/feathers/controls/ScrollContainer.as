@@ -379,6 +379,7 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
+			this._measureViewPort = this._autoSizeMode != AUTO_SIZE_MODE_STAGE;
 			if(this.stage)
 			{
 				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
