@@ -1860,7 +1860,9 @@ package feathers.controls.text
 				this._snapshotHeight = getNextPowerOfTwo(this._textFieldSnapshotClipRect.height);
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
-			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
+			textureRoot.scale != Starling.contentScaleFactor ||
+			this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}
 
 		/**
@@ -1889,7 +1891,17 @@ package feathers.controls.text
 		 */
 		protected function texture_onRestore():void
 		{
-			this.refreshSnapshot();
+			if(this.textSnapshot && this.textSnapshot.texture &&
+				this.textSnapshot.texture.scale != Starling.contentScaleFactor)
+			{
+				//if we've changed between scale factors, we need to recreate
+				//the texture to match the new scale factor.
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.refreshSnapshot();
+			}
 		}
 
 		/**
