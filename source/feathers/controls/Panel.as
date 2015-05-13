@@ -1135,6 +1135,10 @@ package feathers.controls
 			{
 				return false;
 			}
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
+			}
 
 			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
 			this._ignoreHeaderResizing = true;
