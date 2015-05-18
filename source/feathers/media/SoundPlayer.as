@@ -265,6 +265,32 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _loop:Boolean = false;
+
+		/**
+		 * Determines if, upon reaching the end of the sound, the playhead
+		 * automatically returns to the start of the media and plays again.
+		 * 
+		 * <p>If <code>loop</code> is <code>true</code>, the
+		 * <code>autoRewind</code> property will be ignored because looping will
+		 * always automatically rewind to the beginning.</p>
+		 */
+		public function get loop():Boolean
+		{
+			return this._loop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set loop(value:Boolean):void
+		{
+			this._loop = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function play():void
 		{
 			if(this._isPlaying)
@@ -332,7 +358,12 @@ package feathers.media
 		 */
 		protected function handleSoundComplete():void
 		{
-			if(this._autoRewind)
+			if(this._loop)
+			{
+				this.stop();
+				this.play();
+			}
+			else if(this._autoRewind)
 			{
 				this.stop();
 			}
