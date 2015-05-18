@@ -2561,11 +2561,11 @@ package feathers.themes
 			if(slider.direction == SeekSlider.DIRECTION_VERTICAL)
 			{
 				slider.minWidth = this.smallControlSize;
-				slider.minHeight = this.controlSize;
+				slider.minHeight = this.wideControlSize;
 			}
 			else //horizontal
 			{
-				slider.minWidth = this.controlSize;
+				slider.minWidth = this.wideControlSize;
 				slider.minHeight = this.smallControlSize;
 			}
 		}
