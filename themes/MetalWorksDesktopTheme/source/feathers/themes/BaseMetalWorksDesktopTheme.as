@@ -72,11 +72,11 @@ package feathers.themes
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
+	import feathers.media.MuteToggleButton;
 	import feathers.media.PlayPauseToggleButton;
 	import feathers.media.SeekSlider;
 	import feathers.media.VideoPlayer;
 	import feathers.media.VolumeSlider;
-	import feathers.media.VolumeToggleButton;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
 	import feathers.textures.Scale3Textures;
@@ -576,10 +576,10 @@ package feathers.themes
 		protected var fullScreenToggleButtonEnterDownIconTexture:Texture;
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
 		protected var fullScreenToggleButtonExitDownIconTexture:Texture;
-		protected var volumeToggleButtonLoudUpIconTexture:Texture;
-		protected var volumeToggleButtonLoudDownIconTexture:Texture;
-		protected var volumeToggleButtonMutedUpIconTexture:Texture;
-		protected var volumeToggleButtonMutedDownIconTexture:Texture;
+		protected var muteToggleButtonLoudUpIconTexture:Texture;
+		protected var muteToggleButtonLoudDownIconTexture:Texture;
+		protected var muteToggleButtonMutedUpIconTexture:Texture;
+		protected var muteToggleButtonMutedDownIconTexture:Texture;
 		protected var volumeSliderTrackSkinTextures:Scale9Textures;
 
 		/**
@@ -832,10 +832,10 @@ package feathers.themes
 			this.fullScreenToggleButtonEnterDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-down-icon0000");
 			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon0000");
 			this.fullScreenToggleButtonExitDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-down-icon0000");
-			this.volumeToggleButtonMutedUpIconTexture = this.atlas.getTexture("volume-toggle-button-muted-up-icon0000");
-			this.volumeToggleButtonMutedDownIconTexture = this.atlas.getTexture("volume-toggle-button-muted-down-icon0000");
-			this.volumeToggleButtonLoudUpIconTexture = this.atlas.getTexture("volume-toggle-button-loud-up-icon0000");
-			this.volumeToggleButtonLoudDownIconTexture = this.atlas.getTexture("volume-toggle-button-loud-down-icon0000");
+			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("volume-toggle-button-muted-up-icon0000");
+			this.muteToggleButtonMutedDownIconTexture = this.atlas.getTexture("volume-toggle-button-muted-down-icon0000");
+			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("volume-toggle-button-loud-up-icon0000");
+			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("volume-toggle-button-loud-down-icon0000");
 			this.volumeSliderTrackSkinTextures = new Scale9Textures(this.atlas.getTexture("volume-slider-track-skin0000"), VOLUME_SLIDER_TRACK_SCALE9_GRID);
 		}
 
@@ -1000,8 +1000,8 @@ package feathers.themes
 			//full screen toggle button
 			this.getStyleProviderForClass(FullScreenToggleButton).defaultStyleFunction = this.setFullScreenToggleButtonStyles;
 
-			//volume toggle button
-			this.getStyleProviderForClass(VolumeToggleButton).defaultStyleFunction = this.setVolumeToggleButtonStyles;
+			//mute toggle button
+			this.getStyleProviderForClass(MuteToggleButton).defaultStyleFunction = this.setMuteToggleButtonStyles;
 
 			//seek slider
 			this.getStyleProviderForClass(SeekSlider).defaultStyleFunction = this.setSeekSliderStyles;
@@ -1481,8 +1481,6 @@ package feathers.themes
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			group.backgroundSkin = backgroundSkin;
-			
-			trace(this.headerBackgroundSkinTexture, this.headerBackgroundSkinTexture.root, this.headerBackgroundSkinTexture.root.base);
 
 			group.minWidth = this.gridSize;
 			group.minHeight = this.gridSize;
@@ -2141,11 +2139,13 @@ package feathers.themes
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK;
+				slider.minHeight = this.controlSize;
 			}
-			else
+			else //horizontal
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackStyleName = THEME_STYLE_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK;
+				slider.minWidth = this.controlSize;
 			}
 			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 			slider.focusPadding = this.focusPaddingSize;
@@ -2526,16 +2526,16 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// VolumeToggleButton
+	// MuteToggleButton
 	//-------------------------
 
-		protected function setVolumeToggleButtonStyles(button:VolumeToggleButton):void
+		protected function setMuteToggleButtonStyles(button:MuteToggleButton):void
 		{
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.defaultValue = this.volumeToggleButtonLoudUpIconTexture;
-			iconSelector.defaultSelectedValue = this.volumeToggleButtonMutedUpIconTexture;
-			iconSelector.setValueForState(this.volumeToggleButtonLoudDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.volumeToggleButtonMutedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.defaultValue = this.muteToggleButtonLoudUpIconTexture;
+			iconSelector.defaultSelectedValue = this.muteToggleButtonMutedUpIconTexture;
+			iconSelector.setValueForState(this.muteToggleButtonLoudDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.muteToggleButtonMutedDownIconTexture, Button.STATE_DOWN, true);
 			iconSelector.displayObjectProperties =
 			{
 				scaleX: this.scale,
@@ -2543,6 +2543,7 @@ package feathers.themes
 			};
 			button.stateToIconFunction = iconSelector.updateValue;
 
+			button.showVolumeSliderOnHover = true;
 			button.hasLabelTextRenderer = false;
 
 			button.minWidth = this.controlSize;
@@ -2557,6 +2558,16 @@ package feathers.themes
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.showThumb = false;
+			if(slider.direction == SeekSlider.DIRECTION_VERTICAL)
+			{
+				slider.minWidth = this.smallControlSize;
+				slider.minHeight = this.controlSize;
+			}
+			else //horizontal
+			{
+				slider.minWidth = this.controlSize;
+				slider.minHeight = this.smallControlSize;
+			}
 		}
 
 		protected function setSeekSliderThumbStyles(button:Button):void

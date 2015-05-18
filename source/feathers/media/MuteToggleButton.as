@@ -77,7 +77,7 @@ package feathers.media
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
 	 */
-	public class VolumeToggleButton extends ToggleButton implements IMediaPlayerControl
+	public class MuteToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
 		/**
 		 * @private
@@ -99,7 +99,7 @@ package feathers.media
 		
 		/**
 		 * The default <code>IStyleProvider</code> for all
-		 * <code>VolumeToggleButton</code> components.
+		 * <code>MuteToggleButton</code> components.
 		 *
 		 * @default null
 		 * @see feathers.core.FeathersControl#styleProvider
@@ -119,11 +119,11 @@ package feathers.media
 		/**
 		 * Constructor.
 		 */
-		public function VolumeToggleButton()
+		public function MuteToggleButton()
 		{
 			super();
-			this.addEventListener(Event.CHANGE, volumeButton_changeHandler);
-			this.addEventListener(TouchEvent.TOUCH, volumeButton_touchHandler);
+			this.addEventListener(Event.CHANGE, muteToggleButton_changeHandler);
+			this.addEventListener(TouchEvent.TOUCH, muteToggleButton_touchHandler);
 		}
 
 		/**
@@ -171,7 +171,7 @@ package feathers.media
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return VolumeToggleButton.globalStyleProvider;
+			return MuteToggleButton.globalStyleProvider;
 		}
 
 		/**
@@ -254,6 +254,45 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _showVolumeSliderOnHover:Boolean = false;
+
+		/**
+		 * Determines if a <code>VolumeSlider</code> component is displayed as a
+		 * pop-up when hovering over the toggle button. This property is
+		 * intended for use on desktop platforms only. On mobile platforms,
+		 * Starling does not dispatch events for hover, so the volume slider
+		 * will not be shown.
+		 *
+		 * <p>In the following example, showing the volume slider is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.showVolumeSliderOnHover = true;</listing>
+		 *
+		 * @default false
+		 *
+		 * @see feathers.media.VolumeSlider
+		 */
+		public function get showVolumeSliderOnHover():Boolean
+		{
+			return this._showVolumeSliderOnHover;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set showVolumeSliderOnHover(value:Boolean):void
+		{
+			if(this._showVolumeSliderOnHover == value)
+			{
+				return;
+			}
+			this._showVolumeSliderOnHover = value;
+			this.invalidate(INVALIDATION_FLAG_VOLUME_SLIDER_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _volumeSliderFactory:Function;
 
 		/**
@@ -282,6 +321,7 @@ package feathers.media
 		 * @default null
 		 *
 		 * @see feathers.media.VolumeSlider
+		 * @see #showVolumeSliderOnHover
 		 * @see #volumeSliderProperties
 		 */
 		public function get volumeSliderFactory():Function
@@ -326,6 +366,7 @@ package feathers.media
 		 *
 		 * @default null
 		 *
+		 * @see #showVolumeSliderOnHover
 		 * @see #DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #volumeSliderFactory
@@ -378,6 +419,7 @@ package feathers.media
 		 *
 		 * @default null
 		 *
+		 * @see #showVolumeSliderOnHover
 		 * @see #volumeSliderFactory
 		 * @see feathers.media.VolumeSlider
 		 */
@@ -526,7 +568,7 @@ package feathers.media
 				this.createVolumeSlider();
 			}
 
-			if(volumeSliderFactoryInvalid || stylesInvalid)
+			if(this.slider && (volumeSliderFactoryInvalid || stylesInvalid))
 			{
 				this.refreshVolumeSliderProperties();
 			}
@@ -555,6 +597,10 @@ package feathers.media
 				//disposing separately because the slider may not have a parent
 				this.slider.dispose();
 				this.slider = null;
+			}
+			if(!this._showVolumeSliderOnHover)
+			{
+				return;
 			}
 
 			var factory:Function = this._volumeSliderFactory != null ? this._volumeSliderFactory : defaultVolumeSliderFactory;
@@ -621,9 +667,9 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function volumeButton_changeHandler(event:Event):void
+		protected function muteToggleButton_changeHandler(event:Event):void
 		{
-			if(this._ignoreChanges)
+			if(this._ignoreChanges || !this._mediaPlayer)
 			{
 				return;
 			}
@@ -655,8 +701,13 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function volumeButton_touchHandler(event:TouchEvent):void
+		protected function muteToggleButton_touchHandler(event:TouchEvent):void
 		{
+			if(!this.slider)
+			{
+				this._touchPointID = -1;
+				return;
+			}
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this, null, this._touchPointID);
