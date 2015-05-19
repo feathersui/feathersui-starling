@@ -727,6 +727,7 @@ package feathers.controls
 			this._scaleContent = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
+		
 		/**
 		 * @private
 		 */
@@ -766,6 +767,52 @@ package feathers.controls
 				return;
 			}
 			this._maintainAspectRatio = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _scaleMode:String = ScaleMode.SHOW_ALL;
+
+		[Inspectable(type="String",enumeration="showAll,noBorder,none")]
+		/**
+		 * Determines how the texture is scaled if <code>scaleContent</code> and
+		 * <code>maintainAspectRatio</code> are both set to <code>true</code>.
+		 * See the <code>starling.utils.ScaleMode</code> class for details about
+		 * each scaling mode.
+		 *
+		 * <p>If the <code>scaleContent</code> property is set to
+		 * <code>false</code>, or the <code>maintainAspectRatio</code> property
+		 * is set to false, the <code>scaleMode</code> property is ignored.</p>
+		 *
+		 * <p>In the following example, the image loader's aspect ratio is not
+		 * maintained:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.scaleMode = ScaleMode.NO_BORDER;</listing>
+		 *
+		 * @default starling.utils.ScaleMode.SHOW_ALL
+		 *
+		 * @see #scaleContent
+		 * @see #maintainAspectRatio
+		 * @see http://doc.starling-framework.org/core/starling/utils/ScaleMode.html starling.utils.ScaleMode
+		 */
+		public function get scaleMode():String
+		{
+			return this._scaleMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleMode(value:String):void
+		{
+			if(this._scaleMode == value)
+			{
+				return;
+			}
+			this._scaleMode = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
@@ -1313,7 +1360,7 @@ package feathers.controls
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
 					newWidth = this._currentTextureWidth * this._textureScale;
-					if(this._maintainAspectRatio)
+					if(this._scaleContent && this._maintainAspectRatio)
 					{
 						var heightScale:Number = 1;
 						if(!needsHeight)
@@ -1347,7 +1394,7 @@ package feathers.controls
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
 					newHeight = this._currentTextureHeight * this._textureScale;
-					if(this._maintainAspectRatio)
+					if(this._scaleContent && this._maintainAspectRatio)
 					{
 						var widthScale:Number = 1;
 						if(!needsWidth)
@@ -1503,7 +1550,7 @@ package feathers.controls
 					HELPER_RECTANGLE2.y = 0;
 					HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 					HELPER_RECTANGLE2.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-					RectangleUtil.fit(HELPER_RECTANGLE, HELPER_RECTANGLE2, ScaleMode.SHOW_ALL, false, HELPER_RECTANGLE);
+					RectangleUtil.fit(HELPER_RECTANGLE, HELPER_RECTANGLE2, this._scaleMode, false, HELPER_RECTANGLE);
 					this.image.x = HELPER_RECTANGLE.x + this._paddingLeft;
 					this.image.y = HELPER_RECTANGLE.y + this._paddingTop;
 					this.image.width = HELPER_RECTANGLE.width;
@@ -1519,13 +1566,15 @@ package feathers.controls
 			}
 			else
 			{
+				var imageWidth:Number = this._currentTextureWidth * this._textureScale;
+				var imageHeight:Number = this._currentTextureHeight * this._textureScale;
 				if(this._horizontalAlign === HORIZONTAL_ALIGN_RIGHT)
 				{
-					this.image.x = this.actualWidth - this._paddingRight - this._currentTextureWidth;
+					this.image.x = this.actualWidth - this._paddingRight - imageWidth;
 				}
 				else if(this._horizontalAlign === HORIZONTAL_ALIGN_CENTER)
 				{
-					this.image.x = this._paddingLeft + ((this.actualWidth - this._paddingLeft - this._paddingRight) - this._currentTextureWidth) / 2;
+					this.image.x = this._paddingLeft + ((this.actualWidth - this._paddingLeft - this._paddingRight) - imageWidth) / 2;
 				}
 				else //left
 				{
@@ -1533,33 +1582,33 @@ package feathers.controls
 				}
 				if(this._verticalAlign === VERTICAL_ALIGN_BOTTOM)
 				{
-					this.image.y = this.actualHeight - this._paddingBottom - this._currentTextureHeight;
+					this.image.y = this.actualHeight - this._paddingBottom - imageHeight;
 				}
 				else if(this._verticalAlign === VERTICAL_ALIGN_MIDDLE)
 				{
-					this.image.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._currentTextureHeight) / 2;
+					this.image.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - imageHeight) / 2;
 				}
 				else //top
 				{
 					this.image.y = this._paddingTop;
 				}
-				this.image.width = this._currentTextureWidth;
-				this.image.height = this._currentTextureHeight;
-				if(this.actualWidth != this._currentTextureWidth ||
-					this.actualHeight != this._currentTextureHeight)
+				this.image.width = imageWidth;
+				this.image.height = imageHeight;
+			}
+			if((!this._scaleContent || (this._maintainAspectRatio && this._scaleMode !== ScaleMode.SHOW_ALL)) &&
+				(this.actualWidth != imageWidth || this.actualHeight != imageHeight))
+			{
+				var clipRect:Rectangle = this.clipRect;
+				if(!clipRect)
 				{
-					var clipRect:Rectangle = this.clipRect;
-					if(!clipRect)
-					{
-						clipRect = new Rectangle()
-					}
-					clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
-					this.clipRect = clipRect;
+					clipRect = new Rectangle()
 				}
-				else
-				{
-					this.clipRect = null;
-				}
+				clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
+				this.clipRect = clipRect;
+			}
+			else
+			{
+				this.clipRect = null;
 			}
 		}
 
