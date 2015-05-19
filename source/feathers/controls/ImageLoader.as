@@ -217,6 +217,54 @@ package feathers.controls
 		protected static var textureQueueTail:ImageLoader;
 
 		/**
+		 * The content will be aligned horizontally to the left edge of the
+		 * <code>ImageLoader</code>.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The content will be aligned horizontally to the center of the
+		 * <code>ImageLoader</code>.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The content will be aligned horizontally to the right edge of the
+		 * <code>ImageLoader</code>.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * The content will be aligned vertically to the top edge of the
+		 * <code>ImageLoader</code>.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The content will be aligned vertically to the middle of the
+		 * <code>ImageLoader</code>.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The content will be aligned vertically to the bottom edge of the
+		 * <code>ImageLoader</code>.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>ImageLoader</code>
 		 * components.
 		 *
@@ -640,6 +688,45 @@ package feathers.controls
 			this._snapToPixels = value;
 		}
 
+
+		/**
+		 * @private
+		 */
+		private var _scaleContent:Boolean = true;
+
+		/**
+		 * Determines if the content will be scaled if the dimensions of the
+		 * <code>ImageLoader</code> are changed.
+		 *
+		 * <p>In the following example, the image loader's content is not
+		 * scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.scaleContent = false;</listing>
+		 *
+		 * @default true
+		 *
+		 * @see #horizontalAlign
+		 * @see #verticalAlign
+		 * @see #maintainAspectRatio
+		 */
+		public function get scaleContent():Boolean
+		{
+			return this._scaleContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleContent(value:Boolean):void
+		{
+			if(this._scaleContent == value)
+			{
+				return;
+			}
+			this._scaleContent = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
 		/**
 		 * @private
 		 */
@@ -647,7 +734,12 @@ package feathers.controls
 
 		/**
 		 * Determines if the aspect ratio of the texture is maintained when the
-		 * aspect ratio of the component is different.
+		 * dimensions of the <code>ImageLoader</code> are changed manually and
+		 * the new dimensions have a different aspect ratio than the texture.
+		 * 
+		 * <p>If the <code>scaleContent</code> property is set to
+		 * <code>false</code>, the <code>maintainAspectRatio</code> property is
+		 * ignored.</p>
 		 *
 		 * <p>In the following example, the image loader's aspect ratio is not
 		 * maintained:</p>
@@ -656,6 +748,8 @@ package feathers.controls
 		 * loader.maintainAspectRatio = false;</listing>
 		 *
 		 * @default true
+		 * 
+		 * @see #scaleContent
 		 */
 		public function get maintainAspectRatio():Boolean
 		{
@@ -673,6 +767,96 @@ package feathers.controls
 			}
 			this._maintainAspectRatio = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * The location where the content is aligned horizontally (on
+		 * the x-axis) when its width is larger or smaller than the width of
+		 * the <code>ImageLoader</code>.
+		 *
+		 * <p>If the <code>scaleContent</code> property is set to
+		 * <code>true</code>, the <code>horizontalAlign</code> property is
+		 * ignored.</p>
+		 *
+		 * <p>The following example aligns the content to the right:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;</listing>
+		 *
+		 * @default ImageLoader.HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #scaleContent
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * The location where the content is aligned vertically (on
+		 * the y-axis) when its height is larger or smaller than the height of
+		 * the <code>ImageLoader</code>.
+		 *
+		 * <p>If the <code>scaleContent</code> property is set to
+		 * <code>true</code>, the <code>verticalAlign</code> property is
+		 * ignored.</p>
+		 *
+		 * <p>The following example aligns the content to the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.verticalAlign = ImageLoader.VERTICAL_ALIGN_BOTTOM;</listing>
+		 *
+		 * @default ImageLoader.VERTICAL_ALIGN_TOP
+		 * 
+		 * @see #scaleContent
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1307,28 +1491,75 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._maintainAspectRatio)
+			if(this._scaleContent)
 			{
-				HELPER_RECTANGLE.x = 0;
-				HELPER_RECTANGLE.y = 0;
-				HELPER_RECTANGLE.width = this._currentTextureWidth * this._textureScale;
-				HELPER_RECTANGLE.height = this._currentTextureHeight * this._textureScale;
-				HELPER_RECTANGLE2.x = 0;
-				HELPER_RECTANGLE2.y = 0;
-				HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				HELPER_RECTANGLE2.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-				RectangleUtil.fit(HELPER_RECTANGLE, HELPER_RECTANGLE2, ScaleMode.SHOW_ALL, false, HELPER_RECTANGLE);
-				this.image.x = HELPER_RECTANGLE.x + this._paddingLeft;
-				this.image.y = HELPER_RECTANGLE.y + this._paddingTop;
-				this.image.width = HELPER_RECTANGLE.width;
-				this.image.height = HELPER_RECTANGLE.height;
+				if(this._maintainAspectRatio)
+				{
+					HELPER_RECTANGLE.x = 0;
+					HELPER_RECTANGLE.y = 0;
+					HELPER_RECTANGLE.width = this._currentTextureWidth * this._textureScale;
+					HELPER_RECTANGLE.height = this._currentTextureHeight * this._textureScale;
+					HELPER_RECTANGLE2.x = 0;
+					HELPER_RECTANGLE2.y = 0;
+					HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+					HELPER_RECTANGLE2.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					RectangleUtil.fit(HELPER_RECTANGLE, HELPER_RECTANGLE2, ScaleMode.SHOW_ALL, false, HELPER_RECTANGLE);
+					this.image.x = HELPER_RECTANGLE.x + this._paddingLeft;
+					this.image.y = HELPER_RECTANGLE.y + this._paddingTop;
+					this.image.width = HELPER_RECTANGLE.width;
+					this.image.height = HELPER_RECTANGLE.height;
+				}
+				else
+				{
+					this.image.x = this._paddingLeft;
+					this.image.y = this._paddingTop;
+					this.image.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+					this.image.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+				}
 			}
 			else
 			{
-				this.image.x = this._paddingLeft;
-				this.image.y = this._paddingTop;
-				this.image.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this.image.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+				if(this._horizontalAlign === HORIZONTAL_ALIGN_RIGHT)
+				{
+					this.image.x = this.actualWidth - this._paddingRight - this._currentTextureWidth;
+				}
+				else if(this._horizontalAlign === HORIZONTAL_ALIGN_CENTER)
+				{
+					this.image.x = this._paddingLeft + ((this.actualWidth - this._paddingLeft - this._paddingRight) - this._currentTextureWidth) / 2;
+				}
+				else //left
+				{
+					this.image.x = this._paddingLeft;
+				}
+				if(this._verticalAlign === VERTICAL_ALIGN_BOTTOM)
+				{
+					this.image.y = this.actualHeight - this._paddingBottom - this._currentTextureHeight;
+				}
+				else if(this._verticalAlign === VERTICAL_ALIGN_MIDDLE)
+				{
+					this.image.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._currentTextureHeight) / 2;
+				}
+				else //top
+				{
+					this.image.y = this._paddingTop;
+				}
+				this.image.width = this._currentTextureWidth;
+				this.image.height = this._currentTextureHeight;
+				if(this.actualWidth != this._currentTextureWidth ||
+					this.actualHeight != this._currentTextureHeight)
+				{
+					var clipRect:Rectangle = this.clipRect;
+					if(!clipRect)
+					{
+						clipRect = new Rectangle()
+					}
+					clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
+					this.clipRect = clipRect;
+				}
+				else
+				{
+					this.clipRect = null;
+				}
 			}
 		}
 
