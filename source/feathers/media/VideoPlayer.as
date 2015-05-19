@@ -104,6 +104,32 @@ package feathers.media
 	[Event(name="soundTransformChange",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the <code>flash.net.NetStream</code> object dispatches
+	 * <code>flash.events.IOErrorEvent.IO_ERROR</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.IOErrorEvent</code>
+	 *   dispatched by the <code>flash.net.NetStream</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html#event:ioError flash.media.Sound: flash.events.IOErrorEvent.IO_ERROR
+	 *
+	 * @eventType starling.events.Event.IO_ERROR
+	 */
+	[Event(name="ioError",type="starling.events.Event")]
+
+	/**
 	 * Controls playback of video with a <code>flash.net.NetStream</code> object.
 	 *
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
@@ -549,7 +575,7 @@ package feathers.media
 		 */
 		protected function netStream_ioErrorHandler(event:IOErrorEvent):void
 		{
-			trace("video error", event);
+			this.dispatchEventWith(event.type, false, event);
 		}
 
 		/**
