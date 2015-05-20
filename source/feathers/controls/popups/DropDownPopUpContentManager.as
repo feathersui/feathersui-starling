@@ -139,6 +139,31 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
+		protected var _fitContentMinWidthToOrigin:Boolean = true;
+
+		/**
+		 * If enabled, the pop-up content's <code>minWidth</code> property will
+		 * be set to the <code>width</code> property of the origin, if it is
+		 * smaller.
+		 *
+		 * @default true
+		 */
+		public function get fitContentMinWidthToOrigin():Boolean
+		{
+			return this._fitContentMinWidthToOrigin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fitContentMinWidthToOrigin(value:Boolean):void
+		{
+			this._fitContentMinWidthToOrigin = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _lastGlobalX:Number;
 
 		/**
@@ -238,7 +263,7 @@ package feathers.controls.popups
 			var sourceWidth:Number = this.source.width;
 			var hasSetBounds:Boolean = false;
 			var uiContent:IFeathersControl = this.content as IFeathersControl;
-			if(uiContent && uiContent.minWidth < sourceWidth)
+			if(this._fitContentMinWidthToOrigin && uiContent && uiContent.minWidth < sourceWidth)
 			{
 				uiContent.minWidth = sourceWidth;
 				hasSetBounds = true;
@@ -247,7 +272,7 @@ package feathers.controls.popups
 			{
 				uiContent.validate();
 			}
-			if(!hasSetBounds && this.content.width < sourceWidth)
+			if(!hasSetBounds && this._fitContentMinWidthToOrigin && this.content.width < sourceWidth)
 			{
 				this.content.width = sourceWidth;
 			}
