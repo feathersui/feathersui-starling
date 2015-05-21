@@ -166,6 +166,7 @@ package feathers.media
 		 */
 		public function SoundPlayer()
 		{
+			super();
 		}
 
 		/**
@@ -183,7 +184,7 @@ package feathers.media
 		
 		/**
 		 * The <code>flash.media.Sound</code> object that has loaded the
-		 * content specified by <code>audioSource</code>.
+		 * content specified by <code>soundSource</code>.
 		 * 
 		 * @see #soundSource
 		 */
@@ -217,6 +218,11 @@ package feathers.media
 		 * <code>String</code> or a <code>URLRequest</code>, a new
 		 * <code>flash.media.Sound</code> object will be created internally and
 		 * the content will by loaded automatically.
+		 *
+		 * <p>In the following example, a sound file URL is passed in:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.soundSource = "http://example.com/sound.mp3";</listing>
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html flash.net.URLRequest
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html flash.media.Sound
@@ -261,7 +267,8 @@ package feathers.media
 		protected var _isLoading:Boolean = false;
 
 		/**
-		 * Indicates if the audio data is currently loading.
+		 * Indicates if the <code>flash.media.Sound</code> object is currently
+		 * loading its content.
 		 */
 		public function get isLoading():Boolean
 		{
@@ -274,7 +281,8 @@ package feathers.media
 		protected var _isLoaded:Boolean = false;
 
 		/**
-		 * Indicates if the audio content has finished loading.
+		 * Indicates if the <code>flash.media.Sound</code> object has finished
+		 * loading its content.
 		 * 
 		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 		 * @see #event:loadComplete feathers.events.MediaPlayerEventType.LOAD_COMPLETE
@@ -291,6 +299,11 @@ package feathers.media
 
 		/**
 		 * @inheritDoc
+		 *
+		 * <p>In the following example, the audio is muted:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.soundTransform = new SoundTransform(0);</listing>
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html flash.media.SoundTransform
 		 * @see #event:soundTransformChange feathers.events.MediaPlayerEventType.SOUND_TRANSFORM_CHANGE
@@ -323,8 +336,13 @@ package feathers.media
 		protected var _autoPlay:Boolean = true;
 
 		/**
-		 * Determines if the video starts playing immediately when the
-		 * <code>audioSource</code> property is set.
+		 * Determines if the sound starts playing immediately when the
+		 * <code>soundSource</code> property is set.
+		 *
+		 * <p>In the following example, automatic playback is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.autoPlay = false;</listing>
 		 * 
 		 * @see #soundSource
 		 */
@@ -353,6 +371,11 @@ package feathers.media
 		 * <p>If <code>loop</code> is <code>true</code>, the
 		 * <code>autoRewind</code> property will be ignored because looping will
 		 * always automatically rewind to the beginning.</p>
+		 *
+		 * <p>In the following example, looping is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.loop = true;</listing>
 		 */
 		public function get loop():Boolean
 		{
