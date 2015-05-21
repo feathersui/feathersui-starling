@@ -159,8 +159,7 @@ package feathers.data
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ITEM
 	 */
 	[Event(name="updateItem",type="starling.events.Event")]
-
-	[DefaultProperty("data")]
+	
 	/**
 	 * Wraps a two-dimensional data source with a common API for use with UI
 	 * controls that support this type of data.
