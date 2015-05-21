@@ -42,6 +42,7 @@ package feathers.controls
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
+	[DefaultProperty("mxmlContent")]
 	/**
 	 * A generic container that supports layout, scrolling, and a background
 	 * skin. For a lighter container, see <code>LayoutGroup</code>, which
@@ -71,6 +72,11 @@ package feathers.controls
 	 */
 	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer
 	{
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
+		
 		/**
 		 * An alternate style name to use with <code>ScrollContainer</code> to
 		 * allow a theme to give it a toolbar style. If a theme does not provide
@@ -335,6 +341,48 @@ package feathers.controls
 			}
 			this._layout = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _mxmlContentIsReady:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _mxmlContent:Array;
+
+		[ArrayElementType("feathers.core.IFeathersControl")]
+		/**
+		 * @private
+		 */
+		public function get mxmlContent():Array
+		{
+			return this._mxmlContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set mxmlContent(value:Array):void
+		{
+			if(this._mxmlContent == value)
+			{
+				return;
+			}
+			if(this._mxmlContent && this._mxmlContentIsReady)
+			{
+				var childCount:int = this._mxmlContent.length;
+				for(var i:int = 0; i < childCount; i++)
+				{
+					var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
+					this.removeChild(child, true);
+				}
+			}
+			this._mxmlContent = value;
+			this._mxmlContentIsReady = false;
+			this.invalidate(INVALIDATION_FLAG_MXML_CONTENT);
 		}
 
 		/**
@@ -702,6 +750,15 @@ package feathers.controls
 			this.layoutViewPort.readjustLayout();
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
+		
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+			this.refreshMXMLContent();
+		}
 
 		/**
 		 * @private
@@ -709,6 +766,12 @@ package feathers.controls
 		override protected function draw():void
 		{
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
+
+			if(mxmlContentInvalid)
+			{
+				this.refreshMXMLContent();
+			}
 
 			if(layoutInvalid)
 			{
@@ -741,6 +804,24 @@ package feathers.controls
 				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
 			}
 			return super.autoSizeIfNeeded();
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function refreshMXMLContent():void
+		{
+			if(!this._mxmlContent || this._mxmlContentIsReady)
+			{
+				return;
+			}
+			var childCount:int = this._mxmlContent.length;
+			for(var i:int = 0; i < childCount; i++)
+			{
+				var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
+				this.addChild(child);
+			}
+			this._mxmlContentIsReady = true;
 		}
 
 		/**

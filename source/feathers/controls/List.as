@@ -123,6 +123,7 @@ package feathers.controls
 	 */
 	[Event(name="rendererRemove",type="starling.events.Event")]
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * Displays a one-dimensional list of items. Supports scrolling, custom
 	 * item renderers, and custom layouts.

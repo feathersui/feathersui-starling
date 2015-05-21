@@ -96,6 +96,7 @@ package feathers.controls
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * Displays a button that may be triggered to display a pop-up list.
 	 * The list may be customized to display in different ways, such as a

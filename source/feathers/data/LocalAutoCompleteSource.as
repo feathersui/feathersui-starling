@@ -33,6 +33,7 @@ package feathers.data
 	 */
 	[Event(name="complete",type="starling.events.Event")]
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * Creates a list of suggestions for an <code>AutoComplete</code> component
 	 * by searching through items in a <code>ListCollection</code>.
