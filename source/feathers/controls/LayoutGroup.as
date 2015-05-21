@@ -26,7 +26,6 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-	[DefaultProperty("mxmlContent")]
 	/**
 	 * A generic container that supports layout. For a container that supports
 	 * scrolling and more robust skinning options, see <code>ScrollContainer</code>.
@@ -59,11 +58,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
-
-		/**
-		 * @private
-		 */
-		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
 
 		/**
 		 * Flag to indicate that the clipping has changed.
@@ -197,48 +191,6 @@ package feathers.controls
 				this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _mxmlContentIsReady:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _mxmlContent:Array;
-
-		[ArrayElementType("feathers.core.IFeathersControl")]
-		/**
-		 * @private
-		 */
-		public function get mxmlContent():Array
-		{
-			return this._mxmlContent;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set mxmlContent(value:Array):void
-		{
-			if(this._mxmlContent == value)
-			{
-				return;
-			}
-			if(this._mxmlContent && this._mxmlContentIsReady)
-			{
-				var childCount:int = this._mxmlContent.length;
-				for(var i:int = 0; i < childCount; i++)
-				{
-					var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
-					this.removeChild(child, true);
-				}
-			}
-			this._mxmlContent = value;
-			this._mxmlContentIsReady = false;
-			this.invalidate(INVALIDATION_FLAG_MXML_CONTENT);
 		}
 
 		/**
@@ -614,14 +566,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			this.refreshMXMLContent();
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
@@ -631,12 +575,6 @@ package feathers.controls
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
-
-			if(mxmlContentInvalid)
-			{
-				this.refreshMXMLContent();
-			}
 
 			//scrolling only affects the layout is requiresLayoutOnScroll is true
 			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
@@ -829,24 +767,6 @@ package feathers.controls
 					IValidating(item).validate();
 				}
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function refreshMXMLContent():void
-		{
-			if(!this._mxmlContent || this._mxmlContentIsReady)
-			{
-				return;
-			}
-			var childCount:int = this._mxmlContent.length;
-			for(var i:int = 0; i < childCount; i++)
-			{
-				var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
-				this.addChild(child);
-			}
-			this._mxmlContentIsReady = true;
 		}
 
 		/**
