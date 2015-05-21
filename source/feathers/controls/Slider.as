@@ -806,6 +806,43 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _thumbOffset:Number = 0;
+
+		/**
+		 *
+		 * Offsets the position of the thumb by a certain number of pixels in a
+		 * direction perpendicular to the track. This does not affect the
+		 * measurement of the slider. The slider will measure itself as if the
+		 * thumb were not offset from its original position.
+		 *
+		 * <p>In the following example, the thumb is offset by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.thumbOffset = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get thumbOffset():Number
+		{
+			return this._thumbOffset;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set thumbOffset(value:Number):void
+		{
+			if(this._thumbOffset == value)
+			{
+				return;
+			}
+			this._thumbOffset = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _minimumPadding:Number = 0;
 
 		/**
@@ -1995,14 +2032,18 @@ package feathers.controls
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
-				this.thumb.x = Math.round((this.actualWidth - this.thumb.width) / 2);
-				this.thumb.y = Math.round(this._minimumPadding + trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum)));
+				this.thumb.x = Math.round((this.actualWidth - this.thumb.width) / 2) + this._thumbOffset;
+				//maximum is at the top, so we need to start the y position of
+				//the thumb from the maximum padding
+				this.thumb.y = Math.round(this._maximumPadding + trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum)));
 			}
-			else
+			else //horizontal
 			{
 				var trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this._minimumPadding - this._maximumPadding;
+				//minimum is at the left, so we need to start the x position of
+				//the thumb from the minimum padding
 				this.thumb.x = Math.round(this._minimumPadding + (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum)));
-				this.thumb.y = Math.round((this.actualHeight - this.thumb.height) / 2);
+				this.thumb.y = Math.round((this.actualHeight - this.thumb.height) / 2) + this._thumbOffset;
 			}
 		}
 

@@ -256,7 +256,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textFieldClipRect:Rectangle = new Rectangle();
+		protected var _textFieldSnapshotClipRect:Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -267,6 +267,16 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _textFieldOffsetY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastGlobalScaleX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastGlobalScaleY:Number = 0;
 
 		/**
 		 * @private
@@ -1153,6 +1163,48 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _updateSnapshotOnScaleChange:Boolean = false;
+
+		/**
+		 * Refreshes the texture snapshot every time that the text editor is
+		 * scaled. Based on the scale in global coordinates, so scaling the
+		 * parent will require a new snapshot.
+		 *
+		 * <p>Warning: setting this property to true may result in reduced
+		 * performance because every change of the scale requires uploading a
+		 * new texture to the GPU. Use with caution. Consider setting this
+		 * property to false temporarily during animations that modify the
+		 * scale.</p>
+		 *
+		 * <p>In the following example, the snapshot will be updated when the
+		 * text editor is scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get updateSnapshotOnScaleChange():Boolean
+		{
+			return this._updateSnapshotOnScaleChange;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set updateSnapshotOnScaleChange(value:Boolean):void
+		{
+			if(this._updateSnapshotOnScaleChange == value)
+			{
+				return;
+			}
+			this._updateSnapshotOnScaleChange = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _useSnapshotDelayWorkaround:Boolean = false;
 
 		/**
@@ -1227,6 +1279,17 @@ package feathers.controls.text
 		{
 			if(this.textSnapshot)
 			{
+				if(this._updateSnapshotOnScaleChange)
+				{
+					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+					if(matrixToScaleX(HELPER_MATRIX) != this._lastGlobalScaleX || matrixToScaleY(HELPER_MATRIX) != this._lastGlobalScaleY)
+					{
+						//the snapshot needs to be updated because the scale has
+						//changed since the last snapshot was taken.
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+						this.validate();
+					}
+				}
 				this.positionSnapshot();
 			}
 			//we'll skip this if the text field isn't visible to avoid running
@@ -1698,22 +1761,31 @@ package feathers.controls.text
 		{
 			this._textFieldOffsetX = 0;
 			this._textFieldOffsetY = 0;
-			this._textFieldClipRect.x = 0;
-			this._textFieldClipRect.y = 0;
+			this._textFieldSnapshotClipRect.x = 0;
+			this._textFieldSnapshotClipRect.y = 0;
 
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var clipWidth:Number = this.actualWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
+			var scaleFactor:Number = Starling.contentScaleFactor;
+			var clipWidth:Number = this.actualWidth * scaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				clipWidth *= matrixToScaleX(HELPER_MATRIX);
+			}
 			if(clipWidth < 0)
 			{
 				clipWidth = 0;
 			}
-			var clipHeight:Number = this.actualHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
+			var clipHeight:Number = this.actualHeight * scaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				clipHeight *= matrixToScaleY(HELPER_MATRIX);
+			}
 			if(clipHeight < 0)
 			{
 				clipHeight = 0;
 			}
-			this._textFieldClipRect.width = clipWidth;
-			this._textFieldClipRect.height = clipHeight;
+			this._textFieldSnapshotClipRect.width = clipWidth;
+			this._textFieldSnapshotClipRect.height = clipHeight;
 		}
 
 		/**
@@ -1730,6 +1802,13 @@ package feathers.controls.text
 			
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			var smallerGlobalScale:Number = globalScaleX;
+			if(globalScaleY < smallerGlobalScale)
+			{
+				smallerGlobalScale = globalScaleY;
+			}
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var nativeScaleFactor:Number = 1;
@@ -1738,10 +1817,10 @@ package feathers.controls.text
 				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			var gutterPositionOffset:Number = 2;
-			if(this._useGutter)
+			var gutterPositionOffset:Number = 0;
+			if(!this._useGutter)
 			{
-				gutterPositionOffset = 0;
+				gutterPositionOffset = 2 * smallerGlobalScale;
 			}
 			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset);
 			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset);
@@ -1772,16 +1851,18 @@ package feathers.controls.text
 			var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
 			if(canUseRectangleTexture)
 			{
-				this._snapshotWidth = this._textFieldClipRect.width;
-				this._snapshotHeight = this._textFieldClipRect.height;
+				this._snapshotWidth = this._textFieldSnapshotClipRect.width;
+				this._snapshotHeight = this._textFieldSnapshotClipRect.height;
 			}
 			else
 			{
-				this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width);
-				this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height);
+				this._snapshotWidth = getNextPowerOfTwo(this._textFieldSnapshotClipRect.width);
+				this._snapshotHeight = getNextPowerOfTwo(this._textFieldSnapshotClipRect.height);
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
-			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
+			textureRoot.scale != Starling.contentScaleFactor ||
+			this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}
 
 		/**
@@ -1810,7 +1891,17 @@ package feathers.controls.text
 		 */
 		protected function texture_onRestore():void
 		{
-			this.refreshSnapshot();
+			if(this.textSnapshot && this.textSnapshot.texture &&
+				this.textSnapshot.texture.scale != Starling.contentScaleFactor)
+			{
+				//if we've changed between scale factors, we need to recreate
+				//the texture to match the new scale factor.
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.refreshSnapshot();
+			}
 		}
 
 		/**
@@ -1827,19 +1918,31 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 0;
 			}
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 			var scaleFactor:Number = Starling.contentScaleFactor;
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.translate(this._textFieldOffsetX - gutterPositionOffset, this._textFieldOffsetY - gutterPositionOffset);
-			HELPER_MATRIX.scale(scaleFactor * globalScaleX, scaleFactor * globalScaleY);
+			HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+			if(this._updateSnapshotOnScaleChange)
+			{
+				HELPER_MATRIX.scale(globalScaleX, globalScaleY);
+			}
 			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
+			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldSnapshotClipRect);
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
 			{
-				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+				//skip Texture.fromBitmapData() because we don't want
+				//it to create an onRestore function that will be
+				//immediately discarded for garbage collection. 
+				newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
+					true, false, false, scaleFactor);
+				newTexture.root.uploadBitmapData(bitmapData);
 				newTexture.root.onRestore = texture_onRestore;
 			}
 			if(!this.textSnapshot)
@@ -1862,9 +1965,13 @@ package feathers.controls.text
 					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
-			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.textSnapshot.scaleX = 1 / globalScaleX;
+				this.textSnapshot.scaleY = 1 / globalScaleY;
+				this._lastGlobalScaleX = globalScaleX;
+				this._lastGlobalScaleY = globalScaleY;
+			}
 			this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
 			bitmapData.dispose();
 			this._needsNewTexture = false;
@@ -1978,7 +2085,6 @@ package feathers.controls.text
 			this._textFieldHasFocus = true;
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.addEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
 
@@ -1995,8 +2101,8 @@ package feathers.controls.text
 				this.textField.scrollH = this.textField.scrollV = 0;
 			}
 
+			//the text may have changed, so we invalidate the data flag
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 

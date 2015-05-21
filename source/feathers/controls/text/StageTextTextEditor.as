@@ -1042,6 +1042,58 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _lastGlobalScaleX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastGlobalScaleY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _updateSnapshotOnScaleChange:Boolean = false;
+
+		/**
+		 * Refreshes the texture snapshot every time that the text editor is
+		 * scaled. Based on the scale in global coordinates, so scaling the
+		 * parent will require a new snapshot.
+		 *
+		 * <p>Warning: setting this property to true may result in reduced
+		 * performance because every change of the scale requires uploading a
+		 * new texture to the GPU. Use with caution. Consider setting this
+		 * property to false temporarily during animations that modify the
+		 * scale.</p>
+		 *
+		 * <p>In the following example, the snapshot will be updated when the
+		 * text editor is scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get updateSnapshotOnScaleChange():Boolean
+		{
+			return this._updateSnapshotOnScaleChange;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set updateSnapshotOnScaleChange(value:Boolean):void
+		{
+			if(this._updateSnapshotOnScaleChange == value)
+			{
+				return;
+			}
+			this._updateSnapshotOnScaleChange = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._measureTextField)
@@ -1072,57 +1124,26 @@ package feathers.controls.text
 		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			var desktopGutterPositionOffset:Number = 0;
-			var desktopGutterDimensionsOffset:Number = 0;
-			if(this._stageTextIsTextField)
-			{
-				desktopGutterPositionOffset = 2;
-				desktopGutterDimensionsOffset = 4;
-			}
-			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
-			var stageTextViewPort:Rectangle = this.stageText.viewPort;
-			if(!stageTextViewPort)
-			{
-				stageTextViewPort = new Rectangle();
-			}
-			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
-			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
-			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
-			stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
-			this.stageText.viewPort = stageTextViewPort;
-
-			if(this.stageText.visible)
+			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-				var smallerGlobalScale:Number = globalScaleX;
-				if(globalScaleY < globalScaleX)
+				if(matrixToScaleX(HELPER_MATRIX) != this._lastGlobalScaleX || matrixToScaleY(HELPER_MATRIX) != this._lastGlobalScaleY)
 				{
-					smallerGlobalScale = globalScaleY;
-				}
-				//for some reason, we don't need to account for the native scale factor here
-				scaleFactor = Starling.contentScaleFactor;
-				var newFontSize:Number = this._fontSize * scaleFactor * smallerGlobalScale;
-				if(this.stageText.fontSize != newFontSize)
-				{
-					//we need to check if this value has changed because on iOS
-					//if displayAsPassword is set to true, the new character
-					//will not be shown if the font size changes. instead, it
-					//immediately changes to a bullet. (Github issue #881)
-					this.stageText.fontSize = newFontSize;
+					//the snapshot needs to be updated because the scale has
+					//changed since the last snapshot was taken.
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+					this.validate();
 				}
 			}
+			this.refreshViewPortAndFontSize();
 
 			if(this.textSnapshot)
 			{
+				var desktopGutterPositionOffset:Number = 0;
+				if(this._stageTextIsTextField)
+				{
+					desktopGutterPositionOffset = 2;
+				}
 				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
 				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
 			}
@@ -1434,10 +1455,13 @@ package feathers.controls.text
 
 			if(positionInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
-				this.refreshViewPort();
+				this.refreshViewPortAndFontSize();
+				this.refreshMeasureTextFieldDimensions()
 				var viewPort:Rectangle = this.stageText.viewPort;
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
-				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
+					textureRoot.scale != Starling.contentScaleFactor ||
+					viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
 			}
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
@@ -1559,18 +1583,6 @@ package feathers.controls.text
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
 
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-			var smallerGlobalScale:Number = globalScaleX;
-			if(globalScaleY < globalScaleX)
-			{
-				smallerGlobalScale = globalScaleY;
-			}
-			//for some reason, we don't need to account for the native scale factor here
-			var scaleFactor:Number = Starling.contentScaleFactor;
-			this.stageText.fontSize = this._fontSize * scaleFactor * smallerGlobalScale;
-
 			this.stageText.fontWeight = this._fontWeight;
 			this.stageText.locale = this._locale;
 			this.stageText.maxChars = this._maxChars;
@@ -1611,15 +1623,24 @@ package feathers.controls.text
 		 */
 		protected function texture_onRestore():void
 		{
-			this.refreshSnapshot();
-			if(this.textSnapshot)
+			if(this.textSnapshot.texture.scale != Starling.contentScaleFactor)
 			{
-				this.textSnapshot.visible = !this._stageTextHasFocus;
-				this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
+				//if we've changed between scale factors, we need to recreate
+				//the texture to match the new scale factor.
+				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
-			if(!this._stageTextHasFocus)
+			else
 			{
-				this.stageText.visible = false;
+				this.refreshSnapshot();
+				if(this.textSnapshot)
+				{
+					this.textSnapshot.visible = !this._stageTextHasFocus;
+					this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
+				}
+				if(!this._stageTextHasFocus)
+				{
+					this.stageText.visible = false;
+				}
 			}
 		}
 
@@ -1673,7 +1694,13 @@ package feathers.controls.text
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
 			{
-				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+				var scaleFactor:Number = Starling.contentScaleFactor;
+				//skip Texture.fromBitmapData() because we don't want
+				//it to create an onRestore function that will be
+				//immediately discarded for garbage collection. 
+				newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
+					true, false, false, scaleFactor);
+				newTexture.root.uploadBitmapData(bitmapData);
 				newTexture.root.onRestore = texture_onRestore;
 			}
 			if(!this.textSnapshot)
@@ -1697,10 +1724,24 @@ package feathers.controls.text
 				}
 			}
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
-			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
+			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.textSnapshot.scaleX = 1 / globalScaleX;
+				this.textSnapshot.scaleY = 1 / globalScaleY;
+				this._lastGlobalScaleX = globalScaleX;
+				this._lastGlobalScaleY = globalScaleY;
+			}
+			else
+			{
+				this.textSnapshot.scaleX = 1;
+				this.textSnapshot.scaleY = 1;
+			}
 			if(nativeScaleFactor > 1 && bitmapData.width == viewPort.width)
 			{
+				//when we fall back to using a snapshot that is half size on
+				//older runtimes, we need to scale it up.
 				this.textSnapshot.scaleX *= nativeScaleFactor;
 				this.textSnapshot.scaleY *= nativeScaleFactor;
 			}
@@ -1711,15 +1752,8 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshViewPort():void
+		protected function refreshViewPortAndFontSize():void
 		{
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
-			var stageTextViewPort:Rectangle = this.stageText.viewPort;
-			if(!stageTextViewPort)
-			{
-				stageTextViewPort = new Rectangle();
-			}
-
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			var desktopGutterPositionOffset:Number = 0;
 			var desktopGutterDimensionsOffset:Number = 0;
@@ -1728,9 +1762,23 @@ package feathers.controls.text
 				desktopGutterPositionOffset = 2;
 				desktopGutterDimensionsOffset = 4;
 			}
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			if(this._stageTextHasFocus || this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+				var smallerGlobalScale:Number = globalScaleX;
+				if(globalScaleY < smallerGlobalScale)
+				{
+					smallerGlobalScale = globalScaleY;
+				}
+			}
+			else
+			{
+				globalScaleX = 1;
+				globalScaleY = 1;
+				smallerGlobalScale = 1;
+			}
 			MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
@@ -1738,6 +1786,12 @@ package feathers.controls.text
 				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var stageTextViewPort:Rectangle = this.stageText.viewPort;
+			if(!stageTextViewPort)
+			{
+				stageTextViewPort = new Rectangle();
+			}
 			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
 			stageTextViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * scaleFactor);
 			var viewPortWidth:Number = Math.round((this.actualWidth + desktopGutterDimensionsOffset) * scaleFactor * globalScaleX);
@@ -1756,6 +1810,27 @@ package feathers.controls.text
 			stageTextViewPort.height = viewPortHeight;
 			this.stageText.viewPort = stageTextViewPort;
 
+			//for some reason, we don't need to account for the native scale factor here
+			scaleFactor = Starling.contentScaleFactor;
+			//StageText's fontSize property is an int, so we need to
+			//specifically avoid using Number here.
+			var newFontSize:int = this._fontSize * scaleFactor * smallerGlobalScale;
+			if(this.stageText.fontSize != newFontSize)
+			{
+				//we need to check if this value has changed because on iOS
+				//if displayAsPassword is set to true, the new character
+				//will not be shown if the font size changes. instead, it
+				//immediately changes to a bullet. (Github issue #881)
+				this.stageText.fontSize = newFontSize;
+			}
+			
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshMeasureTextFieldDimensions():void
+		{
 			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = this.actualWidth + 4;
 			this._measureTextField.height = this.actualHeight;

@@ -59,7 +59,6 @@ package feathers.controls
 	 */
 	[Event(name="triggered", type="starling.events.Event")]
 
-	[DefaultProperty("dataProvider")]
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
 	 *

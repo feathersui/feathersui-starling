@@ -104,6 +104,60 @@ package feathers.media
 	[Event(name="soundTransformChange",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the video texture is ready to be rendered. Indicates that
+	 * the <code>texture</code> property will return a
+	 * <code>starling.textures.Texture</code> that may be displayed in an
+	 * <code>ImageLoader</code> or another component.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.IOErrorEvent</code>
+	 *   dispatched by the <code>flash.net.NetStream</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 * 
+	 * @see #texture
+	 *
+	 * @eventType starling.events.Event.READY
+	 */
+	[Event(name="ready",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the <code>flash.net.NetStream</code> object dispatches
+	 * <code>flash.events.IOErrorEvent.IO_ERROR</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.IOErrorEvent</code>
+	 *   dispatched by the <code>flash.net.NetStream</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#event:ioError flash.net.NetStream: flash.events.IOErrorEvent.IO_ERROR
+	 *
+	 * @eventType starling.events.Event.IO_ERROR
+	 */
+	[Event(name="ioError",type="starling.events.Event")]
+
+	/**
 	 * Controls playback of video with a <code>flash.net.NetStream</code> object.
 	 *
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
@@ -139,6 +193,7 @@ package feathers.media
 		 */
 		public function VideoPlayer()
 		{
+			super();
 		}
 
 		/**
@@ -166,6 +221,11 @@ package feathers.media
 
 		/**
 		 * @inheritDoc
+		 *
+		 * <p>In the following example, the audio is muted:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.soundTransform = new SoundTransform(0);</listing>
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html flash.media.SoundTransform
 		 * @see #event:soundTransformChange feathers.events.MediaPlayerEventType.SOUND_TRANSFORM_CHANGE
@@ -195,13 +255,49 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _isWaitingForTextureReady:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _texture:Texture;
 
 		/**
-		 * The texture used to display the video.
+		 * The texture used to display the video. This texture is not
+		 * automatically rendered by the <code>VideoPlayer</code> component. A
+		 * component like an <code>ImageLoader</code> should be added as a child
+		 * of the <code>VideoPlayer</code> to display the texture when it is
+		 * ready.
+		 * 
+		 * <p>The <code>texture</code> property will initially return
+		 * <code>null</code>. Listen for <code>Event.READY</code> to know when
+		 * a valid texture is available to render.</p>
+		 * 
+		 * <p>In the following example, a listener is added for
+		 * <code>Event.READY</code>, and the texture is displayed by an
+		 * <code>ImageLoader</code> component:</p>
+		 * 
+		 * <listing version="3.0">
+		 * function videoPlayer_readyHandler( event:Event ):void
+		 * {
+		 * 	var view:ImageLoader = new ImageLoader();
+		 * 	view.source = videoPlayer.texture;
+		 * 	videoPlayer.addChildAt(view, 0);
+		 * }
+		 * 
+		 * videoPlayer.addEventListener( Event.READY, videoPlayer_readyHandler );</listing>
+		 * 
+		 * @see #event:ready starling.events.Event.READY
+		 * @see feathers.controls.ImageLoader
 		 */
 		public function get texture():Texture
 		{
+			//there can be runtime errors if the texture is rendered before it
+			//is ready, so we must return null until we're sure it's safe
+			if(this._isWaitingForTextureReady)
+			{
+				return null;
+			}
 			return this._texture;
 		}
 
@@ -259,9 +355,14 @@ package feathers.media
 		protected var _videoSource:String;
 
 		/**
-		 * A string representing the URL or any other accepted arguments passed
-		 * to the <code>play()</code> function of a <code>NetStream</code>
-		 * object.
+		 * A string representing the video URL or any other accepted value that
+		 * may be passed to the <code>play()</code> function of a
+		 * <code>NetStream</code> object.
+		 * 
+		 * <p>In the following example, a video file URL is passed in:</p>
+		 * 
+		 * <listing version="3.0">
+		 * videoPlayer.videoSource = "http://example.com/video.m4v";</listing>
 		 * 
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#play() Full description of flash.net.NetStream.play() in Adobe's Flash Platform API Reference
 		 */
@@ -294,6 +395,11 @@ package feathers.media
 		/**
 		 * Determines if the video starts playing immediately when the
 		 * <code>videoSource</code> property is set.
+		 *
+		 * <p>In the following example, automatic playback is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.autoPlay = false;</listing>
 		 *
 		 * @see #videoSource
 		 */
@@ -336,6 +442,12 @@ package feathers.media
 		 * When the video player is displayed full-screen, determines the value
 		 * of the native stage's <code>displayState</code> property.
 		 * 
+		 * <p>In the following example, the display state for full-screen mode
+		 * is changed:</p>
+		 * 
+		 * <listing version="3.0">
+		 * videoPlayer.fullScreenDisplayState = StageDisplayState.FULL_SCREEN;</listing>
+		 * 
 		 * @default StageDisplayState.FULL_SCREEN_INTERACTIVE
 		 * 
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
@@ -373,6 +485,12 @@ package feathers.media
 		 * video player switches to full screen mode. By hiding the root display
 		 * object, rendering performance is optimized because Starling skips a
 		 * portion of the display list that is obscured by the video player.
+		 *
+		 * <p>In the following example, the root display object isn't hidden
+		 * when the video player is displayed in full screen:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.hideRootWhenFullScreen = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -498,11 +616,13 @@ package feathers.media
 			}
 			else
 			{
+				this._isWaitingForTextureReady = true;
+				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, videoTexture_onComplete);
+				//don't call play() until after Texture.fromNetStream() because
+				//the texture needs to be created first.
+				//however, we need to call play() even though a video texture
+				//isn't ready to be rendered yet.
 				this._netStream.play(this._videoSource);
-			}
-			if(!this._texture)
-			{
-				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor);
 			}
 			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 		}
@@ -537,6 +657,16 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function videoTexture_onComplete():void
+		{
+			this._isWaitingForTextureReady = false;
+			//the texture is ready to be displayed.
+			this.dispatchEventWith(Event.READY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function netStream_onMetaData(metadata:Object):void
 		{
 			this.dispatchEventWith(MediaPlayerEventType.DIMENSIONS_CHANGE);
@@ -549,7 +679,7 @@ package feathers.media
 		 */
 		protected function netStream_ioErrorHandler(event:IOErrorEvent):void
 		{
-			trace("video error", event);
+			this.dispatchEventWith(event.type, false, event);
 		}
 
 		/**

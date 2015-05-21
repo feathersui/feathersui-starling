@@ -72,11 +72,11 @@ package feathers.themes
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
+	import feathers.media.MuteToggleButton;
 	import feathers.media.PlayPauseToggleButton;
 	import feathers.media.SeekSlider;
 	import feathers.media.VideoPlayer;
 	import feathers.media.VolumeSlider;
-	import feathers.media.VolumeToggleButton;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
 	import feathers.textures.Scale3Textures;
@@ -254,6 +254,16 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK:String = "metalworks-desktop-vertical-slider-maximum-track";
 
 		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_POP_UP_VOLUME_SLIDER_THUMB:String = "metalworks-desktop-pop-up-volume-slider-thumb";
+
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_POP_UP_VOLUME_SLIDER_MINIMUM_TRACK:String = "metalworks-desktop-pop-up-volume-slider-minimum-track";
+
+		/**
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
@@ -391,7 +401,7 @@ package feathers.themes
 		protected var progressBarFillMinSize:int;
 		protected var scrollBarGutterSize:int;
 		protected var popUpSize:int;
-		protected var volumeSliderPaddingSize:int;
+		protected var popUpVolumeSliderPaddingSize:int;
 
 		/**
 		 * The FTE FontDescription used for text of a normal weight.
@@ -576,11 +586,13 @@ package feathers.themes
 		protected var fullScreenToggleButtonEnterDownIconTexture:Texture;
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
 		protected var fullScreenToggleButtonExitDownIconTexture:Texture;
-		protected var volumeToggleButtonLoudUpIconTexture:Texture;
-		protected var volumeToggleButtonLoudDownIconTexture:Texture;
-		protected var volumeToggleButtonMutedUpIconTexture:Texture;
-		protected var volumeToggleButtonMutedDownIconTexture:Texture;
-		protected var volumeSliderTrackSkinTextures:Scale9Textures;
+		protected var muteToggleButtonLoudUpIconTexture:Texture;
+		protected var muteToggleButtonLoudDownIconTexture:Texture;
+		protected var muteToggleButtonMutedUpIconTexture:Texture;
+		protected var muteToggleButtonMutedDownIconTexture:Texture;
+		protected var volumeSliderMinimumTrackSkinTexture:Texture;
+		protected var volumeSliderMaximumTrackSkinTexture:Texture;
+		protected var popUpVolumeSliderTrackSkinTextures:Scale9Textures;
 
 		/**
 		 * Disposes the texture atlas before calling super.dispose()
@@ -677,7 +689,7 @@ package feathers.themes
 			this.buttonMinWidth = this.gridSize * 2 + this.gutterSize;
 			this.wideControlSize = this.gridSize * 4 + this.gutterSize * 3;
 			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.volumeSliderPaddingSize = Math.round(10 * this.scale);
+			this.popUpVolumeSliderPaddingSize = Math.round(10 * this.scale);
 		}
 
 		/**
@@ -832,11 +844,13 @@ package feathers.themes
 			this.fullScreenToggleButtonEnterDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-down-icon0000");
 			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon0000");
 			this.fullScreenToggleButtonExitDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-down-icon0000");
-			this.volumeToggleButtonMutedUpIconTexture = this.atlas.getTexture("volume-toggle-button-muted-up-icon0000");
-			this.volumeToggleButtonMutedDownIconTexture = this.atlas.getTexture("volume-toggle-button-muted-down-icon0000");
-			this.volumeToggleButtonLoudUpIconTexture = this.atlas.getTexture("volume-toggle-button-loud-up-icon0000");
-			this.volumeToggleButtonLoudDownIconTexture = this.atlas.getTexture("volume-toggle-button-loud-down-icon0000");
-			this.volumeSliderTrackSkinTextures = new Scale9Textures(this.atlas.getTexture("volume-slider-track-skin0000"), VOLUME_SLIDER_TRACK_SCALE9_GRID);
+			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("mute-toggle-button-muted-up-icon0000");
+			this.muteToggleButtonMutedDownIconTexture = this.atlas.getTexture("mute-toggle-button-muted-down-icon0000");
+			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("mute-toggle-button-loud-up-icon0000");
+			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("mute-toggle-button-loud-down-icon0000");
+			this.popUpVolumeSliderTrackSkinTextures = new Scale9Textures(this.atlas.getTexture("pop-up-volume-slider-track-skin0000"), VOLUME_SLIDER_TRACK_SCALE9_GRID);
+			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin0000");
+			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin0000");
 		}
 
 		/**
@@ -1000,8 +1014,8 @@ package feathers.themes
 			//full screen toggle button
 			this.getStyleProviderForClass(FullScreenToggleButton).defaultStyleFunction = this.setFullScreenToggleButtonStyles;
 
-			//volume toggle button
-			this.getStyleProviderForClass(VolumeToggleButton).defaultStyleFunction = this.setVolumeToggleButtonStyles;
+			//mute toggle button
+			this.getStyleProviderForClass(MuteToggleButton).defaultStyleFunction = this.setMuteToggleButtonStyles;
 
 			//seek slider
 			this.getStyleProviderForClass(SeekSlider).defaultStyleFunction = this.setSeekSliderStyles;
@@ -1011,8 +1025,12 @@ package feathers.themes
 
 			//volume slider
 			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setVolumeSliderStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSliderThumbStyles);
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVolumeSliderTrackStyles);
+			this.getStyleProviderForClass(VolumeSlider).setFunctionForStyleName(MuteToggleButton.DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER, this.setPopUpVolumeSliderStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setVolumeSliderThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVolumeSliderMinimumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setVolumeSliderMaximumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_POP_UP_VOLUME_SLIDER_THUMB, this.setSliderThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_POP_UP_VOLUME_SLIDER_MINIMUM_TRACK, this.setPopUpVolumeSliderTrackStyles);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -1481,8 +1499,6 @@ package feathers.themes
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			group.backgroundSkin = backgroundSkin;
-			
-			trace(this.headerBackgroundSkinTexture, this.headerBackgroundSkinTexture.root, this.headerBackgroundSkinTexture.root.base);
 
 			group.minWidth = this.gridSize;
 			group.minHeight = this.gridSize;
@@ -2141,11 +2157,13 @@ package feathers.themes
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK;
+				slider.minHeight = this.controlSize;
 			}
-			else
+			else //horizontal
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackStyleName = THEME_STYLE_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK;
+				slider.minWidth = this.controlSize;
 			}
 			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 			slider.focusPadding = this.focusPaddingSize;
@@ -2502,18 +2520,56 @@ package feathers.themes
 
 		protected function setVolumeSliderStyles(slider:VolumeSlider):void
 		{
-			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
+			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
+			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 			slider.focusPadding = this.focusPaddingSize;
-			slider.minimumPadding = this.volumeSliderPaddingSize;
-			slider.maximumPadding = this.volumeSliderPaddingSize;
+			slider.showThumb = false;
+			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;
+			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height;
 		}
 
-		protected function setVolumeSliderTrackStyles(track:Button):void
+		protected function setVolumeSliderThumbStyles(button:Button):void
+		{
+			var thumbSize:Number = 6 * this.scale;
+			button.defaultSkin = new Quad(thumbSize, thumbSize);
+			button.defaultSkin.width = 0;
+			button.hasLabelTextRenderer = false;
+		}
+
+		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
+			track.defaultSkin = defaultSkin;
+		}
+
+		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
+			track.defaultSkin = defaultSkin;
+		}
+
+		protected function setPopUpVolumeSliderStyles(slider:VolumeSlider):void
+		{
+			slider.direction = VolumeSlider.DIRECTION_VERTICAL;
+			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_SINGLE;
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			slider.focusPadding = this.focusPaddingSize;
+			slider.minimumPadding = this.popUpVolumeSliderPaddingSize;
+			slider.maximumPadding = this.popUpVolumeSliderPaddingSize;
+			slider.customThumbStyleName = THEME_STYLE_NAME_POP_UP_VOLUME_SLIDER_THUMB;
+			slider.customMinimumTrackStyleName = THEME_STYLE_NAME_POP_UP_VOLUME_SLIDER_MINIMUM_TRACK;
+		}
+
+		protected function setPopUpVolumeSliderTrackStyles(track:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.volumeSliderTrackSkinTextures;
-			//skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.defaultValue = this.popUpVolumeSliderTrackSkinTextures;
 			skinSelector.displayObjectProperties =
 			{
 				textureScale: this.scale
@@ -2526,16 +2582,16 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// VolumeToggleButton
+	// MuteToggleButton
 	//-------------------------
 
-		protected function setVolumeToggleButtonStyles(button:VolumeToggleButton):void
+		protected function setMuteToggleButtonStyles(button:MuteToggleButton):void
 		{
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.defaultValue = this.volumeToggleButtonLoudUpIconTexture;
-			iconSelector.defaultSelectedValue = this.volumeToggleButtonMutedUpIconTexture;
-			iconSelector.setValueForState(this.volumeToggleButtonLoudDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.volumeToggleButtonMutedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.defaultValue = this.muteToggleButtonLoudUpIconTexture;
+			iconSelector.defaultSelectedValue = this.muteToggleButtonMutedUpIconTexture;
+			iconSelector.setValueForState(this.muteToggleButtonLoudDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.muteToggleButtonMutedDownIconTexture, Button.STATE_DOWN, true);
 			iconSelector.displayObjectProperties =
 			{
 				scaleX: this.scale,
@@ -2543,6 +2599,7 @@ package feathers.themes
 			};
 			button.stateToIconFunction = iconSelector.updateValue;
 
+			button.showVolumeSliderOnHover = true;
 			button.hasLabelTextRenderer = false;
 
 			button.minWidth = this.controlSize;
@@ -2557,6 +2614,16 @@ package feathers.themes
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.showThumb = false;
+			if(slider.direction == SeekSlider.DIRECTION_VERTICAL)
+			{
+				slider.minWidth = this.smallControlSize;
+				slider.minHeight = this.wideControlSize;
+			}
+			else //horizontal
+			{
+				slider.minWidth = this.wideControlSize;
+				slider.minHeight = this.smallControlSize;
+			}
 		}
 
 		protected function setSeekSliderThumbStyles(button:Button):void

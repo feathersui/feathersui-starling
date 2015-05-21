@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.Slider;
+	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.media.SeekSlider;
 	import feathers.skins.IStyleProvider;
@@ -144,6 +145,7 @@ package feathers.media
 			this.minimumTrackStyleName = SeekSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
 			this.maximumTrackStyleName = SeekSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
 			this.addEventListener(Event.CHANGE, seekSlider_changeHandler);
+			this.addEventListener(FeathersEventType.END_INTERACTION, seekSlider_endInteractionHandler);
 		}
 
 		/**
@@ -178,14 +180,12 @@ package feathers.media
 			}
 			if(this._mediaPlayer)
 			{
-				this._mediaPlayer.removeEventListener(MediaPlayerEventType.PLAYBACK_STATE_CHANGE, mediaPlayer_playbackStateChangeHandler);
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.CURRENT_TIME_CHANGE, mediaPlayer_currentTimeChangeHandler);
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.TOTAL_TIME_CHANGE, mediaPlayer_totalTimeChangeHandler);
 			}
 			this._mediaPlayer = value as ITimedMediaPlayer;
 			if(this._mediaPlayer)
 			{
-				this._mediaPlayer.addEventListener(MediaPlayerEventType.PLAYBACK_STATE_CHANGE, mediaPlayer_playbackStateChangeHandler);
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.CURRENT_TIME_CHANGE, mediaPlayer_currentTimeChangeHandler);
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.TOTAL_TIME_CHANGE, mediaPlayer_totalTimeChangeHandler);
 				this.minimum = 0;
@@ -203,6 +203,20 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function updateValueFromMediaPlayerCurrentTime():void
+		{
+			if(this.isDragging)
+			{
+				//if we're currently dragging, ignore changes by the player
+				return;
+			}
+			this._value = this._mediaPlayer.currentTime;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function seekSlider_changeHandler(event:Event):void
 		{
 			if(!this._mediaPlayer)
@@ -215,12 +229,11 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function mediaPlayer_playbackStateChangeHandler(event:Event):void
+		protected function seekSlider_endInteractionHandler(event:Event):void
 		{
-			if(!this._mediaPlayer.isPlaying)
-			{
-				this._touchPointID = -1;
-			}
+			//we may have ignored some changes from the media player while we
+			//were dragging, so we should update the value if it's out of sync.
+			this.updateValueFromMediaPlayerCurrentTime();
 		}
 
 		/**
@@ -228,13 +241,7 @@ package feathers.media
 		 */
 		protected function mediaPlayer_currentTimeChangeHandler(event:Event):void
 		{
-			if(this.isDragging)
-			{
-				//if we're currently dragging, ignore changes by the player
-				return;
-			}
-			this._value = this._mediaPlayer.currentTime;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.updateValueFromMediaPlayerCurrentTime();
 		}
 
 		/**

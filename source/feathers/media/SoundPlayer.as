@@ -21,6 +21,107 @@ package feathers.media
 	import starling.events.Event;
 
 	/**
+	 * Dispatched periodically when a media player's content is loading to
+	 * indicate the current progress.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>A numeric value between <code>0</code>
+	 *   and <code>1</code> that indicates how much of the media has loaded so far.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+	 */
+	[Event(name="loadProgress",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when a media player's content is fully loaded and it
+	 * may be played to completion without buffering.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #isLoaded
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.LOAD_COMPLETE
+	 */
+	[Event(name="loadComplete",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the <code>flash.media.Sound</code> object dispatches
+	 * <code>flash.events.IOErrorEvent.IO_ERROR</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.IOErrorEvent</code>
+	 *   dispatched by the <code>flash.media.Sound</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html#event:ioError flash.media.Sound: flash.events.IOErrorEvent.IO_ERROR
+	 *
+	 * @eventType starling.events.Event.IO_ERROR
+	 */
+	[Event(name="ioError",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the <code>flash.media.Sound</code> object dispatches
+	 * <code>flash.events.SecurityErrorEvent.SECURITY_ERROR</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.SecurityErrorEvent</code>
+	 *   dispatched by the <code>flash.media.Sound</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html#event:securityError flash.media.Sound: flash.events.SecurityErrorEvent.SECURITY_ERROR
+	 *
+	 * @eventType starling.events.Event.SECURITY_ERROR
+	 */
+	[Event(name="securityError",type="starling.events.Event")]
+
+	/**
 	 * Dispatched when the media player's sound transform changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -65,6 +166,7 @@ package feathers.media
 		 */
 		public function SoundPlayer()
 		{
+			super();
 		}
 
 		/**
@@ -82,7 +184,7 @@ package feathers.media
 		
 		/**
 		 * The <code>flash.media.Sound</code> object that has loaded the
-		 * content specified by <code>audioSource</code>.
+		 * content specified by <code>soundSource</code>.
 		 * 
 		 * @see #soundSource
 		 */
@@ -116,6 +218,11 @@ package feathers.media
 		 * <code>String</code> or a <code>URLRequest</code>, a new
 		 * <code>flash.media.Sound</code> object will be created internally and
 		 * the content will by loaded automatically.
+		 *
+		 * <p>In the following example, a sound file URL is passed in:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.soundSource = "http://example.com/sound.mp3";</listing>
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html flash.net.URLRequest
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html flash.media.Sound
@@ -160,7 +267,8 @@ package feathers.media
 		protected var _isLoading:Boolean = false;
 
 		/**
-		 * Indicates if the audio data is currently loading.
+		 * Indicates if the <code>flash.media.Sound</code> object is currently
+		 * loading its content.
 		 */
 		public function get isLoading():Boolean
 		{
@@ -173,7 +281,8 @@ package feathers.media
 		protected var _isLoaded:Boolean = false;
 
 		/**
-		 * Indicates if the audio content has finished loading.
+		 * Indicates if the <code>flash.media.Sound</code> object has finished
+		 * loading its content.
 		 * 
 		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 		 * @see #event:loadComplete feathers.events.MediaPlayerEventType.LOAD_COMPLETE
@@ -190,6 +299,11 @@ package feathers.media
 
 		/**
 		 * @inheritDoc
+		 *
+		 * <p>In the following example, the audio is muted:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.soundTransform = new SoundTransform(0);</listing>
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html flash.media.SoundTransform
 		 * @see #event:soundTransformChange feathers.events.MediaPlayerEventType.SOUND_TRANSFORM_CHANGE
@@ -222,8 +336,13 @@ package feathers.media
 		protected var _autoPlay:Boolean = true;
 
 		/**
-		 * Determines if the video starts playing immediately when the
-		 * <code>audioSource</code> property is set.
+		 * Determines if the sound starts playing immediately when the
+		 * <code>soundSource</code> property is set.
+		 *
+		 * <p>In the following example, automatic playback is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.autoPlay = false;</listing>
 		 * 
 		 * @see #soundSource
 		 */
@@ -243,40 +362,32 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected var _autoRewind:Boolean = true;
+		protected var _loop:Boolean = false;
 
 		/**
-		 * Determines if the playhead automatically returns to the start time of
-		 * the media after it completes playback.
+		 * Determines if, upon reaching the end of the sound, the playhead
+		 * automatically returns to the start of the media and plays again.
+		 * 
+		 * <p>If <code>loop</code> is <code>true</code>, the
+		 * <code>autoRewind</code> property will be ignored because looping will
+		 * always automatically rewind to the beginning.</p>
+		 *
+		 * <p>In the following example, looping is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.loop = true;</listing>
 		 */
-		public function get autoRewind():Boolean
+		public function get loop():Boolean
 		{
-			return this._autoRewind;
+			return this._loop;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set autoRewind(value:Boolean):void
+		public function set loop(value:Boolean):void
 		{
-			this._autoRewind = value;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function play():void
-		{
-			if(this._isPlaying)
-			{
-				return;
-			}
-			if(this._isLoading)
-			{
-				this._autoPlay = true;
-				return;
-			}
-			super.play();
+			this._loop = value;
 		}
 
 		/**
@@ -284,8 +395,12 @@ package feathers.media
 		 */
 		override protected function playMedia():void
 		{
-			if(this._currentTime == this._totalTime)
+			if(!this._sound.isBuffering && this._currentTime == this._totalTime)
 			{
+				//flash.events.Event.SOUND_COMPLETE may not be dispatched (or
+				//maybe it is dispatched, but before the listener can be added)
+				//if currentTime is equal to totalTime, so we need to do it
+				//manually.
 				this.handleSoundComplete();
 				return;
 			}
@@ -332,13 +447,11 @@ package feathers.media
 		 */
 		protected function handleSoundComplete():void
 		{
-			if(this._autoRewind)
+			//return to the beginning
+			this.stop();
+			if(this._loop)
 			{
-				this.stop();
-			}
-			else
-			{
-				this.pause();
+				this.play();
 			}
 		}
 
@@ -361,12 +474,17 @@ package feathers.media
 				this._sound.removeEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 				this._sound.removeEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
 				this._sound.removeEventListener(Event.COMPLETE, sound_completeHandler);
+				this._sound = null;
 			}
 			this._sound = new Sound();
 			this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 			this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
 			this._sound.addEventListener(Event.COMPLETE, sound_completeHandler);
 			this._sound.load(request);
+			if(this._autoPlay)
+			{
+				this.play();
+			}
 		}
 
 		/**
@@ -380,6 +498,8 @@ package feathers.media
 
 		/**
 		 * @private
+		 * This isn't when the sound finishes playing. It's when the sound has
+		 * finished loading.
 		 */
 		protected function sound_completeHandler(event:flash.events.Event):void
 		{
@@ -388,10 +508,6 @@ package feathers.media
 			this._isLoading = false;
 			this._isLoaded = true;
 			this.dispatchEventWith(MediaPlayerEventType.LOAD_COMPLETE);
-			if(this._autoPlay)
-			{
-				this.play();
-			}
 		}
 
 		/**
@@ -399,6 +515,12 @@ package feathers.media
 		 */
 		protected function sound_progressHandler(event:ProgressEvent):void
 		{
+			var oldTotalTime:Number = this._totalTime;
+			this._totalTime = this._sound.length / 1000;
+			if(oldTotalTime !== this._totalTime)
+			{
+				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+			}
 			this.dispatchEventWith(MediaPlayerEventType.LOAD_PROGRESS, false, event.bytesLoaded / event.bytesTotal);
 		}
 
@@ -407,7 +529,9 @@ package feathers.media
 		 */
 		protected function sound_errorHandler(event:ErrorEvent):void
 		{
-			trace("sound error", event);
+			//since it's just a string in both cases, we'll reuse event.type for
+			//the Starling event.
+			this.dispatchEventWith(event.type, false, event);
 		}
 
 		/**

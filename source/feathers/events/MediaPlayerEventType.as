@@ -65,7 +65,7 @@ package feathers.events
 
 		/**
 		 * Dispatched when a media player's content is fully loaded and it
-		 * may begin playing.
+		 * may be played to completion without buffering.
 		 */
 		public static const LOAD_COMPLETE:String = "loadComplete";
 	}

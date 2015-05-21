@@ -156,7 +156,6 @@ package feathers.data
 	 */
 	[Event(name="updateItem",type="starling.events.Event")]
 
-	[DefaultProperty("data")]
 	/**
 	 * Wraps a data source with a common API for use with UI controls, like
 	 * lists, that support one dimensional collections of data. Supports custom
