@@ -353,6 +353,10 @@ package feathers.media
 		 * @private
 		 */
 		protected var _videoSource:String;
+		
+		public var pseudoStreaming:Boolean;
+		
+		public var timePlayed:Number;
 
 		/**
 		 * A string representing the video URL or any other accepted value that
@@ -380,6 +384,7 @@ package feathers.media
 			{
 				return;
 			}
+			timePlayed = 0;
 			this._videoSource = value;
 			if(this._autoPlay)
 			{
@@ -650,7 +655,7 @@ package feathers.media
 		 */
 		protected function videoPlayer_enterFrameHandler(event:Event):void
 		{
-			this._currentTime = this._netStream.time;
+			this._currentTime = this._netStream.time + this.timePlayed;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 		}
 
@@ -703,9 +708,19 @@ package feathers.media
 					}
 					break;
 				}
+				case "NetStream.Play.Start":
+				{
+					if(!this._isPlaying)
+					{
+						this._netStream.pause();
+					}
+					this._currentTime = this._netStream.time + this.timePlayed;
+					this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
+					break;
+				}
 				case NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:
 				{
-					this._currentTime = this._netStream.time;
+					this._currentTime = this._netStream.time + this.timePlayed;
 					this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 					break;
 				}
