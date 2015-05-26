@@ -180,6 +180,11 @@ package feathers.media
 		protected static const NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:String = "NetStream.Seek.Notify";
 		
 		/**
+		 * @private
+		 */
+		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_START:String = "NetStream.Play.Start";
+		
+		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>VideoPlayer</code> components.
 		 *
@@ -708,7 +713,7 @@ package feathers.media
 					}
 					break;
 				}
-				case "NetStream.Play.Start":
+				case NET_STATUS_CODE_NETSTREAM_PLAY_START:
 				{
 					if(!this._isPlaying)
 					{
