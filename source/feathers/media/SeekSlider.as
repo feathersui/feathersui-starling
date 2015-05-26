@@ -12,6 +12,7 @@ package feathers.media
 	import feathers.events.MediaPlayerEventType;
 	import feathers.media.SeekSlider;
 	import feathers.skins.IStyleProvider;
+	import feathers.media.VideoPlayer;
 
 	import starling.events.Event;
 
@@ -184,6 +185,7 @@ package feathers.media
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.TOTAL_TIME_CHANGE, mediaPlayer_totalTimeChangeHandler);
 			}
 			this._mediaPlayer = value as ITimedMediaPlayer;
+			this._videoPlayer = this._mediaPlayer as VideoPlayer;
 			if(this._mediaPlayer)
 			{
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.CURRENT_TIME_CHANGE, mediaPlayer_currentTimeChangeHandler);
@@ -217,13 +219,18 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		private var _videoPlayer:VideoPlayer;
 		protected function seekSlider_changeHandler(event:Event):void
 		{
 			if(!this._mediaPlayer)
 			{
 				return;
 			}
-			this._mediaPlayer.seek(this._value);
+			if(!this._videoPlayer.pseudoStreaming) this._mediaPlayer.seek(this._value);
+				else {
+					this._videoPlayer.timePlayed = this._value;
+					this._videoPlayer.netStream.play(this._videoPlayer.videoSource+"?start="+this._value);
+				}
 		}
 
 		/**
@@ -249,7 +256,7 @@ package feathers.media
 		 */
 		protected function mediaPlayer_totalTimeChangeHandler(event:Event):void
 		{
-			this.maximum = this._mediaPlayer.totalTime;
+			this.maximum = this._mediaPlayer.totalTime + this._videoPlayer.timePlayed;
 		}
 		
 	}
