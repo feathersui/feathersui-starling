@@ -87,11 +87,22 @@ package feathers.controls
 		protected var _pushTransition:Function;
 
 		/**
-		 * A function that is called when the screen navigator pushes a new
-		 * screen a new screen onto the stack. Typically used to provide some
-		 * kind of animation.
+		 * Typically used to provide some kind of animation or visual effect,
+		 * this function that is called when the screen navigator pushes a new
+		 * screen onto the stack. 
 		 *
-		 * <p>The function should have the following signature:</p>
+		 * <p>In the following example, the screen navigator is given a push
+		 * transition that slides the screens to the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.pushTransition = Slide.createSlideLeftTransition();</listing>
+		 *
+		 * <p>A number of animated transitions may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these transitions. It's possible
+		 * to create custom transitions too.</p>
+		 *
+		 * <p>A custom transition function should have the following signature:</p>
 		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
 		 *
 		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
@@ -115,12 +126,6 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
-		 *
-		 * <p>In the following example, a custom push transition is passed to
-		 * the screen navigator:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.pushTransition = Slide.createSlideLeftTransition();</listing>
 		 *
 		 * @default null
 		 *
@@ -150,11 +155,22 @@ package feathers.controls
 		protected var _popTransition:Function;
 
 		/**
-		 * A function that is called when the screen navigator pops a screen
-		 * from the top of the stack. Typically used to provide some kind of
-		 * animation.
+		 * Typically used to provide some kind of animation or visual effect,
+		 * this function that is called when the screen navigator pops a screen
+		 * from the top of the stack.
 		 *
-		 * <p>The function should have the following signature:</p>
+		 * <p>In the following example, the screen navigator is given a pop
+		 * transition that slides the screens to the right:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.popTransition = Slide.createSlideRightTransition();</listing>
+		 *
+		 * <p>A number of animated transitions may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these transitions. It's possible
+		 * to create custom transitions too.</p>
+		 *
+		 * <p>A custom transition function should have the following signature:</p>
 		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
 		 *
 		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
@@ -178,12 +194,6 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
-		 *
-		 * <p>In the following example, a custom pop transition is passed to
-		 * the screen navigator:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.popTransition = Slide.createSlideRightTransition();</listing>
 		 *
 		 * @default null
 		 *
@@ -213,14 +223,25 @@ package feathers.controls
 		protected var _popToRootTransition:Function = null;
 
 		/**
-		 * A function that is called when the screen navigator clears its stack,
+		 * Typically used to provide some kind of animation or visual effect, a
+		 * function that is called when the screen navigator clears its stack,
 		 * to show the first screen that was pushed onto the stack.
-		 * Typically used to provide some kind of animation.
 		 *
 		 * <p>If this property is <code>null</code>, the value of the
 		 * <code>popTransition</code> property will be used instead.</p>
 		 *
-		 * <p>The function should have the following signature:</p>
+		 * <p>In the following example, a custom pop to root transition is
+		 * passed to the screen navigator:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.popToRootTransition = Fade.createFadeInTransition();</listing>
+		 *
+		 * <p>A number of animated transitions may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these transitions. It's possible
+		 * to create custom transitions too.</p>
+		 *
+		 * <p>A custom transition function should have the following signature:</p>
 		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
 		 *
 		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
@@ -244,12 +265,6 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
-		 *
-		 * <p>In the following example, a custom pop to root transition is
-		 * passed to the screen navigator:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.popToRootTransition = Fade.createFadeInTransition();</listing>
 		 *
 		 * @default null
 		 *

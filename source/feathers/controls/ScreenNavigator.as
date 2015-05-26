@@ -78,10 +78,21 @@ package feathers.controls
 		protected var _transition:Function;
 
 		/**
-		 * A function that is called when a new screen is shown. Typically used
-		 * to provide some kind of animation.
+		 * Typically used to provide some kind of animation or visual effect,
+		 * this function is called when a new screen is shown. 
 		 *
-		 * <p>The function should have the following signature:</p>
+		 * <p>In the following example, the screen navigator is given a
+		 * transition that fades in the new screen on top of the old screen:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.transition = Fade.createFadeInTransition();</listing>
+		 *
+		 * <p>A number of animated transitions may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these transitions. It's possible
+		 * to create custom transitions too.</p>
+		 *
+		 * <p>A custom transition function should have the following signature:</p>
 		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
 		 *
 		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
@@ -105,12 +116,6 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
-		 * 
-		 * <p>In the following example, a custom transition is passed to the
-		 * screen navigator:</p>
-		 * 
-		 * <listing version="3.0">
-		 * navigator.transition = Fade.createFadeInTransition();</listing>
 		 *
 		 * @default null
 		 *
