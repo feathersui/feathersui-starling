@@ -226,11 +226,15 @@ package feathers.media
 			{
 				return;
 			}
-			if(!this._videoPlayer.pseudoStreaming) this._mediaPlayer.seek(this._value);
-				else {
-					this._videoPlayer.timePlayed = this._value;
-					this._videoPlayer.netStream.play(this._videoPlayer.videoSource+"?start="+this._value);
-				}
+			if(!this._videoPlayer.pseudoStreaming)
+			{
+				this._mediaPlayer.seek(this._value);
+			}
+			else
+			{
+				this._videoPlayer.timePlayed = this._value;
+				this._videoPlayer.netStream.play(this._videoPlayer.videoSource+"?start="+this._value);
+			}
 		}
 
 		/**
