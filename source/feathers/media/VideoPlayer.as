@@ -362,6 +362,8 @@ package feathers.media
 		public var pseudoStreaming:Boolean;
 		
 		public var timePlayed:Number;
+		
+		public var start:Number = 0;
 
 		/**
 		 * A string representing the video URL or any other accepted value that
@@ -389,7 +391,14 @@ package feathers.media
 			{
 				return;
 			}
-			timePlayed = 0;
+			if(start == 0)
+			{
+				timePlayed = 0;
+			}
+			else
+			{
+				timePlayed = start;
+			}
 			this._videoSource = value;
 			if(this._autoPlay)
 			{
@@ -632,7 +641,14 @@ package feathers.media
 				//the texture needs to be created first.
 				//however, we need to call play() even though a video texture
 				//isn't ready to be rendered yet.
-				this._netStream.play(this._videoSource);
+				if(!pseudoStreaming || start == 0)
+				{
+					this._netStream.play(this._videoSource);
+				}
+				else
+				{
+					this._netStream.play(this._videoSource+"?start="+start);
+				}
 			}
 			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 		}
@@ -709,7 +725,16 @@ package feathers.media
 				{
 					if(this._isPlaying)
 					{
-						this.stop();
+						if(!pseudoStreaming)
+						{
+							this.stop();
+						}
+						else
+						{
+							this.pause();
+							timePlayed = 0;
+							this._netStream.play(this.videoSource);
+						}
 					}
 					break;
 				}
