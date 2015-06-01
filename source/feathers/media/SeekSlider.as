@@ -185,7 +185,10 @@ package feathers.media
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.TOTAL_TIME_CHANGE, mediaPlayer_totalTimeChangeHandler);
 			}
 			this._mediaPlayer = value as ITimedMediaPlayer;
-			this._videoPlayer = this._mediaPlayer as VideoPlayer;
+			if(this._mediaPlayer is VideoPlayer)
+			{
+				this._videoPlayer = this._mediaPlayer as VideoPlayer;
+			}
 			if(this._mediaPlayer)
 			{
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.CURRENT_TIME_CHANGE, mediaPlayer_currentTimeChangeHandler);
@@ -226,14 +229,21 @@ package feathers.media
 			{
 				return;
 			}
-			if(!this._videoPlayer.pseudoStreaming)
+			if(this._mediaPlayer is VideoPlayer)
 			{
-				this._mediaPlayer.seek(this._value);
+				if(!this._videoPlayer.pseudoStreaming)
+				{
+					this._mediaPlayer.seek(this._value);
+				}
+				else
+				{
+					this._videoPlayer.timePlayed = this._value;
+					this._videoPlayer.netStream.play(this._videoPlayer.videoSource+"?start="+this._value);
+				}
 			}
 			else
 			{
-				this._videoPlayer.timePlayed = this._value;
-				this._videoPlayer.netStream.play(this._videoPlayer.videoSource+"?start="+this._value);
+				this._mediaPlayer.seek(this._value);
 			}
 		}
 
@@ -260,7 +270,14 @@ package feathers.media
 		 */
 		protected function mediaPlayer_totalTimeChangeHandler(event:Event):void
 		{
-			this.maximum = this._mediaPlayer.totalTime + this._videoPlayer.timePlayed;
+			if(this._mediaPlayer is VideoPlayer)
+			{
+				this.maximum = this._mediaPlayer.totalTime + this._videoPlayer.timePlayed;
+			}
+			else
+			{
+				this.maximum = this._mediaPlayer.totalTime;
+			}
 		}
 		
 	}
