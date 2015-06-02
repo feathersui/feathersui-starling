@@ -422,6 +422,7 @@ package feathers.controls.renderers
 		 */
 		protected var _data:Object;
 
+		[Bindable(event="dataChange")]
 		/**
 		 * The item displayed by this renderer. This property is set by the
 		 * list, and should not be set manually.
@@ -444,6 +445,11 @@ package feathers.controls.renderers
 			}
 			this._data = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+
+			//developers expect to set up bindings with the item's properties,
+			//so even though the data property doesn't change with user
+			//interaction, it needs to be bindable.
+			this.dispatchEventWith("dataChange");
 		}
 
 		/**
