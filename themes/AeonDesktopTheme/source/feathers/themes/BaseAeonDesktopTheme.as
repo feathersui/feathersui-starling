@@ -1167,8 +1167,8 @@ package feathers.themes
 			check.disabledLabelProperties.textFormat = this.disabledTextFormat;
 			check.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
 
-			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			check.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
+			check.verticalAlign = Check.VERTICAL_ALIGN_MIDDLE;
 
 			check.gap = this.smallGutterSize;
 			check.minWidth = this.controlSize;
@@ -1643,8 +1643,8 @@ package feathers.themes
 			radio.disabledLabelProperties.textFormat = this.disabledTextFormat;
 			radio.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
 
-			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
+			radio.verticalAlign = Radio.VERTICAL_ALIGN_MIDDLE;
 
 			radio.gap = this.smallGutterSize;
 			radio.minWidth = this.controlSize;
