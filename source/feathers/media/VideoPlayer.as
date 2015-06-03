@@ -391,13 +391,13 @@ package feathers.media
 			{
 				return;
 			}
-			if(start == 0)
+			if(this.start == 0)
 			{
-				timePlayed = 0;
+				this.timePlayed = 0;
 			}
 			else
 			{
-				timePlayed = start;
+				this.timePlayed = this.start;
 			}
 			this._videoSource = value;
 			if(this._autoPlay)
@@ -641,13 +641,14 @@ package feathers.media
 				//the texture needs to be created first.
 				//however, we need to call play() even though a video texture
 				//isn't ready to be rendered yet.
-				if(!pseudoStreaming || start == 0)
+				if(!this.pseudoStreaming || this.start == 0)
 				{
 					this._netStream.play(this._videoSource);
 				}
 				else
 				{
-					this._netStream.play(this._videoSource+"?start="+start);
+					this._netStream.play(this._videoSource+"?start="+this.start);
+					this.start = 0;
 				}
 			}
 			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
@@ -725,14 +726,14 @@ package feathers.media
 				{
 					if(this._isPlaying)
 					{
-						if(!pseudoStreaming)
+						if(!this.pseudoStreaming)
 						{
 							this.stop();
 						}
 						else
 						{
 							this.pause();
-							timePlayed = 0;
+							this.timePlayed = 0;
 							this._netStream.play(this.videoSource);
 						}
 					}
@@ -779,6 +780,19 @@ package feathers.media
 				return;
 			}
 			super.mediaPlayer_removedHandler(event);
+		}
+
+		override public function seek(seconds:Number):void
+		{
+			if(!this.pseudoStreaming)
+			{
+				super.seek(seconds);
+			}
+			else
+			{
+				this.timePlayed = seconds;
+				this._netStream.play(this._videoSource+"?start="+seconds);
+			}
 		}
 	}
 }
