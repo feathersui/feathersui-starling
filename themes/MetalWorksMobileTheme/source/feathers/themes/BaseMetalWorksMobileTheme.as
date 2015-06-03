@@ -1375,6 +1375,7 @@ package feathers.themes
 			check.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 
+			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
 			check.gap = this.smallGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
@@ -1962,6 +1963,7 @@ package feathers.themes
 			radio.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 			radio.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 
+			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = this.smallGutterSize;
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;

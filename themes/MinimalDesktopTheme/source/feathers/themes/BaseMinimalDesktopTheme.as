@@ -1163,8 +1163,8 @@ package feathers.themes
 			check.gap = this.smallGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
-			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			check.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
+			check.verticalAlign = Check.VERTICAL_ALIGN_MIDDLE;
 		}
 
 	//-------------------------
@@ -1664,8 +1664,8 @@ package feathers.themes
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;
 
-			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
+			radio.verticalAlign = Radio.VERTICAL_ALIGN_MIDDLE;
 		}
 
 	//-------------------------
