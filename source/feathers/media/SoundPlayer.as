@@ -541,10 +541,6 @@ package feathers.media
 		{
 			this.handleSoundComplete();
 		}
-
-		override public function seekSlider_change(value:Number):void
-		{
-			this.seek(value);
-		}
+		
 	}
 }
