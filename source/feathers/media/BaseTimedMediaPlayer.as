@@ -255,7 +255,7 @@ package feathers.media
 		
 		public function seekSlider_change(value:Number):void
 		{
-			
+			this.seek(value);
 		}
 
 		/**
