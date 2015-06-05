@@ -358,12 +358,6 @@ package feathers.media
 		 * @private
 		 */
 		protected var _videoSource:String;
-		
-		public var pseudoStreaming:Boolean;
-		
-		public var timePlayed:Number;
-		
-		public var start:Number = 0;
 
 		/**
 		 * A string representing the video URL or any other accepted value that
@@ -793,6 +787,55 @@ package feathers.media
 				this.timePlayed = seconds;
 				this._netStream.play(this._videoSource+"?start="+seconds);
 			}
+		}
+		
+		override public function seekSlider_change(value:Number):void
+		{
+			if(!this.pseudoStreaming)
+			{
+				this.seek(value);
+			}
+			else
+			{
+				this.timePlayed = value;
+				this.netStream.play(this.videoSource+"?start="+value);
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _pseudoStreaming:Boolean = true;
+
+		public function get pseudoStreaming():Boolean
+		{
+			return this._pseudoStreaming;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pseudoStreaming(value:Boolean):void
+		{
+			this._pseudoStreaming = value;
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _start:Number = 0;
+
+		public function get start():Number
+		{
+			return this._start;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set start(value:Number):void
+		{
+			this._start = value;
 		}
 	}
 }
