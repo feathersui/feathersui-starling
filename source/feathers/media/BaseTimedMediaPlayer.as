@@ -252,5 +252,28 @@ package feathers.media
 		{
 
 		}
+		
+		public function seekSlider_change(value:Number):void
+		{
+			
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _timePlayed:Number = 0;
+
+		public function get timePlayed():Number
+		{
+			return this._timePlayed;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set timePlayed(value:Number):void
+		{
+			this._timePlayed = value;
+		}	
 	}
 }
