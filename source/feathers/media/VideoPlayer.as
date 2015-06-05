@@ -793,7 +793,7 @@ package feathers.media
 		{
 			if(!this.pseudoStreaming)
 			{
-				this.seek(value);
+				super.seekSlider_change(value);
 			}
 			else
 			{
