@@ -147,7 +147,6 @@ package feathers.media
 		function seek(seconds:Number):void;
 
 		function get timePlayed():Number;
-		function set timePlayed(value:Number):void;
 
 		function seekSlider_change(value:Number):void;
 	}
