@@ -13,6 +13,7 @@ package feathers.controls.popups
 	import feathers.core.ValidationQueue;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
@@ -190,7 +191,7 @@ package feathers.controls.popups
 			}
 			this.content.addEventListener(Event.REMOVED_FROM_STAGE, content_removedFromStageHandler);
 			this.layout();
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = this.source.stage;
 			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			stage.addEventListener(Event.ENTER_FRAME, stage_enterFrameHandler);
@@ -214,11 +215,12 @@ package feathers.controls.popups
 			var content:DisplayObject = this.content;
 			this.content = null;
 			this.source = null;
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = content.stage;
 			stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			stage.removeEventListener(Event.ENTER_FRAME, stage_enterFrameHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			var starling:Starling = stageToStarling(stage);
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(content is IFeathersControl)
 			{
 				content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
@@ -272,9 +274,12 @@ package feathers.controls.popups
 				this.content.width = sourceWidth;
 			}
 
+			var stage:Stage = this.source.stage;
+			
 			//we need to be sure that the source is properly positioned before
 			//positioning the content relative to it.
-			var validationQueue:ValidationQueue = ValidationQueue.forStarling(Starling.current)
+			var starling:Starling = stageToStarling(stage);
+			var validationQueue:ValidationQueue = ValidationQueue.forStarling(starling);
 			if(validationQueue && !validationQueue.isValidating)
 			{
 				//force a COMPLETE validation of everything
@@ -282,7 +287,6 @@ package feathers.controls.popups
 				validationQueue.advanceTime(0);
 			}
 
-			var stage:Stage = Starling.current.stage;
 			var globalOrigin:Rectangle = this.source.getBounds(stage);
 			this._lastGlobalX = globalOrigin.x;
 			this._lastGlobalY = globalOrigin.y;
@@ -341,7 +345,7 @@ package feathers.controls.popups
 		protected function layoutAbove(globalOrigin:Rectangle):void
 		{
 			var idealXPosition:Number = globalOrigin.x;
-			var xPosition:Number = Starling.current.stage.stageWidth - this.content.width;
+			var xPosition:Number = this.content.stage.stageWidth - this.content.width;
 			if(xPosition > idealXPosition)
 			{
 				xPosition = idealXPosition;
@@ -360,7 +364,7 @@ package feathers.controls.popups
 		protected function layoutBelow(globalOrigin:Rectangle):void
 		{
 			var idealXPosition:Number = globalOrigin.x;
-			var xPosition:Number = Starling.current.stage.stageWidth - this.content.width;
+			var xPosition:Number = this.content.stage.stageWidth - this.content.width;
 			if(xPosition > idealXPosition)
 			{
 				xPosition = idealXPosition;
@@ -386,7 +390,7 @@ package feathers.controls.popups
 		 */
 		protected function stage_enterFrameHandler(event:Event):void
 		{
-			this.source.getBounds(Starling.current.stage, HELPER_RECTANGLE);
+			this.source.getBounds(this.source.stage, HELPER_RECTANGLE);
 			if(HELPER_RECTANGLE.x != this._lastGlobalX || HELPER_RECTANGLE.y != this._lastGlobalY)
 			{
 				this.layout();
@@ -448,7 +452,8 @@ package feathers.controls.popups
 				return;
 			}
 			//any began touch is okay here. we don't need to check all touches
-			var touch:Touch = event.getTouch(Starling.current.stage, TouchPhase.BEGAN);
+			var stage:Stage = Stage(event.currentTarget);
+			var touch:Touch = event.getTouch(stage, TouchPhase.BEGAN);
 			if(!touch)
 			{
 				return;
