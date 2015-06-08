@@ -105,6 +105,10 @@ You can call `component.validate()` to force a component to immediately measure 
 
 If you want a component to use different skins than the theme's default style, you should [extend the theme](../extending-themes.html). Please see [this detailed explanation](cannot-change-skins.html) for more information.
 
+### Why does my Feathers app throw "Error #1056: Cannot create property `elementFormat`"?
+
+This error usually pops up when we try to ask a component in our application to use a different [text renderer](../text-renderers.html) (or a different [text editor](../text-editors.html)) than the [theme](../themes.html) expects. You either need to remove the component's style provider or [extend the theme](../extending-themes.html). Please see [this detailed explanation](cannot-create-property-element-format.html) for more information.
+
 ### Why are there so many draw calls? Aren't those bad?
 
 Drawing text in the GPU involves many tradeoffs. Sometimes it is impossible to avoid extra draw calls. Sometimes, you can get increased performance in situations that require more draw calls. Feathers has been tuned to get the best performance most of the time, but there are options to control this behavior, if needed. Please see [this detailed explanation](draw-calls.html) for more information.
