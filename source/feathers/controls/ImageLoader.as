@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -1733,14 +1734,8 @@ package feathers.controls
 			{
 				return;
 			}
-			for each(var starling:Starling in Starling.all)
-			{
-				if(starling.stage === this.stage)
-				{
-					starling.makeCurrent();
-					break;
-				}
-			}
+			var starling:Starling = stageToStarling(this.stage);
+			starling.makeCurrent();
 		}
 
 		/**
