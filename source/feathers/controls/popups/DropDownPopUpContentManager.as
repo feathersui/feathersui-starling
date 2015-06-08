@@ -244,11 +244,6 @@ package feathers.controls.popups
 		 */
 		protected function layout():void
 		{
-			var stage:Stage = Starling.current.stage;
-			var globalOrigin:Rectangle = this.source.getBounds(stage);
-			this._lastGlobalX = globalOrigin.x;
-			this._lastGlobalY = globalOrigin.y;
-
 			if(this.source is IValidating)
 			{
 				IValidating(this.source).validate();
@@ -286,6 +281,11 @@ package feathers.controls.popups
 				//but only if we're not already doing that...
 				validationQueue.advanceTime(0);
 			}
+
+			var stage:Stage = Starling.current.stage;
+			var globalOrigin:Rectangle = this.source.getBounds(stage);
+			this._lastGlobalX = globalOrigin.x;
+			this._lastGlobalY = globalOrigin.y;
 
 			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height + this._gap);
 			//skip this if the primary direction is up
@@ -340,7 +340,7 @@ package feathers.controls.popups
 		 */
 		protected function layoutAbove(globalOrigin:Rectangle):void
 		{
-			var idealXPosition:Number = globalOrigin.x + (globalOrigin.width - this.content.width) / 2;
+			var idealXPosition:Number = globalOrigin.x;
 			var xPosition:Number = Starling.current.stage.stageWidth - this.content.width;
 			if(xPosition > idealXPosition)
 			{
