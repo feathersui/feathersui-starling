@@ -35,6 +35,10 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 
 -   [How to show or hide a header when scrolling a list or container](header-show-hide-on-scroll.html)
 
+## Miscellaneous
+
+-   [How to display a context menu with Feathers](context-menu.html)
+
 ## Screen Navigator
 
 -   [How to save the state of a screen in a `ScreenNavigator` and restore it later](screen-navigator-saving-state.html)
