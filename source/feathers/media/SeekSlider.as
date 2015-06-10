@@ -12,7 +12,6 @@ package feathers.media
 	import feathers.events.MediaPlayerEventType;
 	import feathers.media.SeekSlider;
 	import feathers.skins.IStyleProvider;
-	import feathers.media.VideoPlayer;
 
 	import starling.events.Event;
 
