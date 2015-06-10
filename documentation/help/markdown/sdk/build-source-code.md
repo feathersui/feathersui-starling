@@ -32,6 +32,6 @@ Note: When you prepare the Feathers SDK for use in an IDE as the final step, you
 
         ant main
 
-    When asked if you want to integrate with Adobe's embedded font support, type `n` and press the `Enter` key. We will do this in a later step.
+    When asked if you want to integrate with Adobe's embedded font support, type `y` and press the `Enter` key.
 
 1. Continue by following the instructions to [Build the Feathers SDK from a Binary Distribution](build-binary-distribution.html).
