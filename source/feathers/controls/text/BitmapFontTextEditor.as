@@ -676,13 +676,6 @@ package feathers.controls.text
 				this._cursorSkin.visible = false;
 				this._selectionSkin.visible = true;
 			}
-			var cursorIndex:int = endIndex;
-			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == endIndex)
-			{
-				cursorIndex = beginIndex;
-			}
-			this.positionCursorAtIndex(cursorIndex);
-			this.positionSelectionBackground();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -750,7 +743,16 @@ package feathers.controls.text
 		 */
 		override protected function draw():void
 		{
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			
 			super.draw();
+			
+			if(dataInvalid || selectionInvalid)
+			{
+				this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
+				this.positionSelectionBackground();
+			}
 
 			var clipRect:Rectangle = this.clipRect;
 			if(clipRect)
@@ -975,7 +977,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function positionCursorAtIndex(index:int):void
+		protected function positionCursorAtCharIndex(index:int):void
 		{
 			if(index < 0)
 			{
@@ -1005,6 +1007,19 @@ package feathers.controls.text
 			{
 				this._scrollX = maxScrollX;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCursorIndexFromSelectionRange():int
+		{
+			var cursorIndex:int = this._selectionEndIndex;
+			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex)
+			{
+				cursorIndex = this._selectionBeginIndex;
+			}
+			return cursorIndex;
 		}
 
 		/**
