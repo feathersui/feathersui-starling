@@ -1351,6 +1351,11 @@ package feathers.controls.text
 				return;
 			}
 			var pastedText:String = Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT) as String;
+			if(pastedText === null)
+			{
+				//the clipboard doesn't contain any text to paste
+				return;
+			}
 			if(this._restrict)
 			{
 				pastedText = this._restrict.filterText(pastedText);
