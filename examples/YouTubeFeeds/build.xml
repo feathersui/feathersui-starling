@@ -15,6 +15,8 @@
 	<fail unless="android.certificate.path"/>
 	<fail unless="android.certificate.password"/>
 
+	<fail unless="youtube.api.key"/>
+
 	<target name="build" depends="build-android,build-ios"/>
 
 	<target name="prepare">
@@ -26,6 +28,7 @@
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
+			<arg value="--define+=CONFIG::YOUTUBE_API_KEY,'${youtube.api.key}'"/>
 			<arg value="-frame=two,feathers.examples.youtube.Main"/>
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
@@ -41,6 +44,7 @@
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
+			<arg value="--define+=CONFIG::YOUTUBE_API_KEY,'${youtube.api.key}'"/>
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
