@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
@@ -71,6 +72,7 @@ package feathers.controls
 		public function StackScreenNavigator()
 		{
 			super();
+			this.addEventListener(FeathersEventType.INITIALIZE, stackScreenNavigator_initializeHandler);
 		}
 
 		/**
@@ -349,9 +351,18 @@ package feathers.controls
 		{
 			if(this._isInitialized)
 			{
+				//we may have delayed showing the root screen until after
+				//initialization, but this property could be set between when
+				//_isInitialized is set to true and when the screen is actually
+				//shown, so we need to clear this variable, just in case. 
+				this._tempRootScreenID = null;
+				
+				//this clears the whole stack and starts fresh
 				this._stack.length = 0;
 				if(value !== null)
 				{
+					//show without a transition because we're not navigating.
+					//we're forcibly replacing the root screen.
 					this.showScreenInternal(value, null);
 				}
 				else
@@ -518,21 +529,6 @@ package feathers.controls
 			var item:StackItem = this._stack[0];
 			this._stack.length = 0;
 			return this.showScreenInternal(item.id, transition, item.properties);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			super.initialize();
-			
-			if(this._tempRootScreenID !== null)
-			{
-				var screenID:String = this._tempRootScreenID;
-				this._tempRootScreenID = null;
-				this.showScreenInternal(screenID, null);
-			}
 		}
 
 		/**
@@ -771,6 +767,19 @@ package feathers.controls
 		protected function popToRootSignalListener(...rest:Array):void
 		{
 			this.popToRootScreen();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stackScreenNavigator_initializeHandler(event:Event):void
+		{
+			if(this._tempRootScreenID !== null)
+			{
+				var screenID:String = this._tempRootScreenID;
+				this._tempRootScreenID = null;
+				this.showScreenInternal(screenID, null);
+			}
 		}
 	}
 }
