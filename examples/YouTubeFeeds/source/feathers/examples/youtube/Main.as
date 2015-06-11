@@ -19,6 +19,8 @@ package feathers.examples.youtube
 
 		public function Main()
 		{
+			//set up the theme right away!
+			new MetalWorksMobileTheme();
 			super();
 		}
 
@@ -28,8 +30,6 @@ package feathers.examples.youtube
 		{
 			//never forget to call super.initialize()
 			super.initialize();
-
-			new MetalWorksMobileTheme();
 
 			this._model = new YouTubeModel();
 

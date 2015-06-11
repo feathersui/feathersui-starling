@@ -17,6 +17,7 @@ package feathers.examples.youtube.screens
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 
 	import starling.events.Event;
@@ -28,9 +29,15 @@ package feathers.examples.youtube.screens
 	{
 		public static const LIST_VIDEOS:String = "listVideos";
 
-		private static const CATEGORIES_URL:String = "http://gdata.youtube.com/schemas/2007/categories.cat";
-		private static const FEED_URL_BEFORE:String = "http://gdata.youtube.com/feeds/api/standardfeeds/US/most_popular_";
-		private static const FEED_URL_AFTER:String = "?v=2";
+		private static const PART_PARAMETER:String = "?part=snippet"; //must be first
+		private static const CHART_PARAMETER:String = "&chart=mostPopular";
+		private static const REGION_CODE_PARAMETER:String = "&regionCode=US";
+		private static const MAX_RESULTS_PARAMETER:String = "&maxResults=25";
+		private static const VIDEO_CATEGORY_ID_PARAMETER:String = "&videoCategoryId=";
+		private static const KEY_PARAMETER:String = "&key=" + CONFIG::YOUTUBE_API_KEY;
+		private static const FIELDS_PARAMETER:String = "&fields=items%2Fid%2Citems%2Fsnippet%2Ftitle%2Citems%2Fsnippet%2FchannelTitle%2Citems%2Fsnippet%2Fdescription%2Citems%2Fsnippet%2Fthumbnails";
+		private static const LIST_CATEGORIES_URL:String = "https://www.googleapis.com/youtube/v3/videoCategories" + PART_PARAMETER + REGION_CODE_PARAMETER + KEY_PARAMETER;
+		private static const LIST_VIDEOS_IN_CATEGORY_URL:String = "https://www.googleapis.com/youtube/v3/videos" + PART_PARAMETER + CHART_PARAMETER + REGION_CODE_PARAMETER + MAX_RESULTS_PARAMETER + FIELDS_PARAMETER + KEY_PARAMETER + VIDEO_CATEGORY_ID_PARAMETER;
 
 		public function MainMenuScreen()
 		{
@@ -111,10 +118,11 @@ package feathers.examples.youtube.screens
 					this.cleanUpLoader();
 				}
 				this._loader = new URLLoader();
+				this._loader.dataFormat = URLLoaderDataFormat.TEXT;
 				this._loader.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 				this._loader.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 				this._loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
-				this._loader.load(new URLRequest(CATEGORIES_URL));
+				this._loader.load(new URLRequest(LIST_CATEGORIES_URL));
 			}
 
 			//never forget to call super.draw()!
@@ -133,39 +141,25 @@ package feathers.examples.youtube.screens
 			this._loader = null;
 		}
 
-		private function parseFeed(feed:XML):void
+		private function parseListVideoCategoriesResult(result:Object):void
 		{
 			this._message.visible = false;
 
-			var atom:Namespace = feed.namespace("atom");
-			var yt:Namespace = feed.namespace("yt");
-			var deprecatedElement:QName = new QName(yt, "deprecated");
-			var browsableElement:QName = new QName(yt, "browsable");
-
 			var items:Vector.<VideoFeed> = new <VideoFeed>[];
-			var categories:XMLList = feed.atom::category;
-			var categoryCount:int = categories.length();
+			var categories:Array = result.items as Array;
+			var categoryCount:int = categories.length;
 			for(var i:int = 0; i < categoryCount; i++)
 			{
-				var category:XML = categories[i];
+				var category:Object = categories[i];
+				var assignable:Boolean = category.snippet.assignable as Boolean; 
+				if(!assignable)
+				{
+					continue;
+				}
 				var item:VideoFeed = new VideoFeed();
-				if(category.elements(deprecatedElement).length() > 0)
-				{
-					continue;
-				}
-				var browsable:XMLList = category.elements(browsableElement);
-				if(browsable.length() < 0)
-				{
-					continue;
-				}
-				var regions:String = browsable[0].@regions.toString();
-				if(regions.toString().indexOf("US") < 0)
-				{
-					continue;
-				}
-				item.name = category.@label[0].toString();
-				var term:String = category.@term[0].toString();
-				item.url = FEED_URL_BEFORE + encodeURI(term) + FEED_URL_AFTER;
+				item.name = category.snippet.title as String;
+				var categoryID:String = category.id as String;
+				item.url = LIST_VIDEOS_IN_CATEGORY_URL + categoryID;
 				items.push(item);
 			}
 			var collection:ListCollection = new ListCollection(items);
@@ -214,8 +208,8 @@ package feathers.examples.youtube.screens
 		{
 			try
 			{
-				var loaderData:* = this._loader.data;
-				this.parseFeed(new XML(loaderData));
+				var loaderData:String = this._loader.data as String;
+				this.parseListVideoCategoriesResult(JSON.parse(loaderData));
 			}
 			catch(error:Error)
 			{
