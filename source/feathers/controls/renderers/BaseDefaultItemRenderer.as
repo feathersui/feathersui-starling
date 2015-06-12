@@ -4091,7 +4091,7 @@ package feathers.controls.renderers
 				}
 				this.accessoryLabel.maxWidth = calculatedWidth;
 				this.accessoryLabel.maxHeight = calculatedHeight;
-				if(this.currentIcon && !iconAffectsAccessoryLabelMaxWidth)
+				if(hasIconToLeftOrRight && this.currentIcon && !iconAffectsAccessoryLabelMaxWidth)
 				{
 					calculatedWidth -= (this.currentIcon.width + adjustedGap);
 				}
@@ -4125,7 +4125,7 @@ package feathers.controls.renderers
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
 				this.iconLabel.maxHeight = calculatedHeight;
-				if(this.accessory && !accessoryAffectsIconLabelMaxWidth)
+				if(hasAccessoryToLeftOrRight && this.accessory && !accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
 				}
