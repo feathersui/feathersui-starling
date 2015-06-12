@@ -20,6 +20,9 @@ package feathers.examples.todos
 	{
 		public function Main()
 		{
+			//set up the theme right away!
+			new MetalWorksMobileTheme();
+			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
@@ -81,8 +84,6 @@ package feathers.examples.todos
 		{
 			//never forget to call super.initialize()
 			super.initialize();
-
-			new MetalWorksMobileTheme();
 
 			this.title = "TODOS";
 

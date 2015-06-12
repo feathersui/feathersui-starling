@@ -12,6 +12,8 @@ package feathers.examples.drawersExplorer
 	{
 		public function Main()
 		{
+			//set up the theme right away!
+			new DrawersExplorerTheme();
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
@@ -47,8 +49,6 @@ package feathers.examples.drawersExplorer
 		
 		private function addedToStageHandler(event:Event):void
 		{
-			new DrawersExplorerTheme();
-
 			this._drawers = new Drawers();
 
 			//a drawer may be opened by dragging from the edge of the content

@@ -102,6 +102,8 @@ package feathers.examples.componentsExplorer
 		
 		public function Main()
 		{
+			//set up the theme right away!
+			new ComponentsExplorerTheme();
 			super();
 		}
 
@@ -114,8 +116,6 @@ package feathers.examples.componentsExplorer
 			super.initialize();
 
 			EmbeddedAssets.initialize();
-
-			new ComponentsExplorerTheme();
 
 			this._navigator = new StackScreenNavigator();
 			this.content = this._navigator;

@@ -23,6 +23,9 @@ package feathers.examples.displayObjects
 
 		public function Main()
 		{
+			//set up the theme right away!
+			new DisplayObjectExplorerTheme();
+			super();
 		}
 
 		private var _navigator:ScreenNavigator;
@@ -32,8 +35,6 @@ package feathers.examples.displayObjects
 		override protected function initialize():void
 		{
 			super.initialize();
-
-			new DisplayObjectExplorerTheme();
 			
 			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
 			this.layout = new AnchorLayout();
