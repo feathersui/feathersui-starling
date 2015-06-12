@@ -49,6 +49,9 @@ package feathers.examples.transitionsExplorer
 
 		public function Main()
 		{
+			//set up the theme right away!
+			new MetalWorksMobileTheme();
+			super();
 			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
 		}
 
@@ -57,8 +60,6 @@ package feathers.examples.transitionsExplorer
 
 		override protected function initialize():void
 		{
-			new MetalWorksMobileTheme();
-
 			this.layout = new AnchorLayout();
 
 			this._menu = new StackScreenNavigator();
