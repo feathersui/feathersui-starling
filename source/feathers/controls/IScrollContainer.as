@@ -43,6 +43,12 @@ package feathers.controls
 		function getRawChildIndex(child:DisplayObject):int;
 
 		/**
+		 * Gets the direct child of the <code>Scroller</code> at a specific
+		 * index rather than delegating the call to the view port.
+		 */
+		function getRawChildAt(index:int):DisplayObject;
+
+		/**
 		 * Sets the index of a direct child of the <code>Scroller</code> rather
 		 * than delegating the call to the view port.
 		 */
