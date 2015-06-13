@@ -167,6 +167,10 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected static const PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:String = "NetStream.Play.Complete";
+		/**
+		 * @private
+		 */
 		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_STOP:String = "NetStream.Play.Stop";
 
 		/**
@@ -531,6 +535,8 @@ package feathers.media
 			}
 			if(this._netStream)
 			{
+				this._netStream.removeEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
+				this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 				this._netStream.close();
 				this._netStream = null;
 				this._netConnection = null;
@@ -601,7 +607,7 @@ package feathers.media
 				this._netConnection = new NetConnection();
 				this._netConnection.connect(null);
 				this._netStream = new NetStream(this._netConnection);
-				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData);
+				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData, this.netStream_onPlayStatus);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 				this._netStream.addEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			}
@@ -618,13 +624,13 @@ package feathers.media
 			{
 				this._isWaitingForTextureReady = true;
 				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, videoTexture_onComplete);
+				this._texture.root.onRestore = videoTexture_onRestore;
 				//don't call play() until after Texture.fromNetStream() because
 				//the texture needs to be created first.
 				//however, we need to call play() even though a video texture
 				//isn't ready to be rendered yet.
 				this._netStream.play(this._videoSource);
 			}
-			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 		}
 
 		/**
@@ -657,11 +663,37 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function videoTexture_onRestore():void
+		{
+			this.pauseMedia();
+			this._isWaitingForTextureReady = true;
+			this._texture.root.attachNetStream(this._netStream, videoTexture_onRestoreComplete);
+			//this will start playback from the beginning again, but we can seek
+			//back to the current time once the video texture is ready.
+			this._netStream.play(this._videoSource);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function videoTexture_onComplete():void
 		{
 			this._isWaitingForTextureReady = false;
-			//the texture is ready to be displayed.
+			//the texture is ready to be displayed
 			this.dispatchEventWith(Event.READY);
+			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function videoTexture_onRestoreComplete():void
+		{
+			//seek back to the video's current time from when the context was
+			//was lost. we couldn't seek when we started playing the video
+			//again. we had to wait until this callback.
+			this.seek(this._currentTime);
+			this.videoTexture_onComplete();
 		}
 
 		/**
@@ -672,6 +704,27 @@ package feathers.media
 			this.dispatchEventWith(MediaPlayerEventType.DIMENSIONS_CHANGE);
 			this._totalTime = metadata.duration;
 			this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function netStream_onPlayStatus(data:Object):void
+		{
+			var code:String = data.code as String;
+			switch(code)
+			{
+				case PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:
+				{
+					//the video has reached the end
+					if(this._isPlaying)
+					{
+						this.stop();
+						this.dispatchEventWith(Event.COMPLETE);
+					}
+					break;
+				}
+			}
 		}
 
 		/**
@@ -697,14 +750,24 @@ package feathers.media
 				}
 				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
 				{
-					if(this._isPlaying)
-					{
-						this.stop();
-					}
+					//on iOS when context is lost, the NetStream will stop
+					//automatically, and its time property will reset to 0.
+					//we want to seek to the correct time after the texture is
+					//restored, so we don't want _currentTime to get changed to
+					//0 when the Event.ENTER_FRAME listener is called one last
+					//time.
+					this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 					break;
 				}
 				case NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:
 				{
+					if(this._isWaitingForTextureReady)
+					{
+						//ignore until the texture is ready because we might
+						//be waiting to seek once the texture is ready, and this
+						//will screw up our current time.
+						return;
+					}
 					this._currentTime = this._netStream.time;
 					this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 					break;
@@ -740,9 +803,10 @@ package feathers.media
 
 dynamic class VideoPlayerNetStreamClient
 {
-	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function)
+	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function, onPlayStatusCallback:Function)
 	{
 		this.onMetaDataCallback = onMetaDataCallback;
+		this.onPlayStatusCallback = onPlayStatusCallback;
 	}
 	
 	public var onMetaDataCallback:Function;
@@ -750,5 +814,15 @@ dynamic class VideoPlayerNetStreamClient
 	public function onMetaData(metadata:Object):void
 	{
 		this.onMetaDataCallback(metadata);
+	}
+
+	public var onPlayStatusCallback:Function;
+
+	public function onPlayStatus(data:Object):void
+	{
+		if(this.onPlayStatusCallback !== null)
+		{
+			this.onPlayStatusCallback(data);
+		}
 	}
 }
