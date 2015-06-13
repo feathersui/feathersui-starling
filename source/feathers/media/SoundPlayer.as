@@ -449,6 +449,7 @@ package feathers.media
 		{
 			//return to the beginning
 			this.stop();
+			this.dispatchEventWith(Event.COMPLETE);
 			if(this._loop)
 			{
 				this.play();
