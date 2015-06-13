@@ -143,7 +143,7 @@ package feathers.core
 		 */
 		public function advanceTime(time:Number):void
 		{
-			if(this._isValidating)
+			if(this._isValidating || !this._starling.contextValid)
 			{
 				return;
 			}
