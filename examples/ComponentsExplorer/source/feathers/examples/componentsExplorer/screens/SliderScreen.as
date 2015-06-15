@@ -62,7 +62,6 @@ package feathers.examples.componentsExplorer.screens
 			this._verticalSlider.step = this.settings.step;
 			this._verticalSlider.page = this.settings.page;
 			this._verticalSlider.liveDragging = this.settings.liveDragging;
-			this._verticalSlider.addEventListener(Event.CHANGE, horizontalSlider_changeHandler);
 			this.addChild(this._verticalSlider);
 
 			this.headerFactory = this.customHeaderFactory;
@@ -109,7 +108,7 @@ package feathers.examples.componentsExplorer.screens
 		
 		private function horizontalSlider_changeHandler(event:Event):void
 		{
-			trace("slider change:", this._horizontalSlider.value.toString());
+			trace("horizontal slider change:", this._horizontalSlider.value.toString());
 		}
 		
 		private function backButton_triggeredHandler(event:Event):void
