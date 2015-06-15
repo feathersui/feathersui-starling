@@ -157,7 +157,7 @@ h6
 	line-height: 16px;
 }
 
-pre.code
+pre.code, pre.sourceCode
 {
 	background: #efeeea;
 	color: #454545;
@@ -168,7 +168,7 @@ pre.code
 	padding: 18px;
 }
 
-pre.code code
+pre code
 {
 	display: block;
 }
