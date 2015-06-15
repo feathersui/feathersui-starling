@@ -242,6 +242,18 @@ package feathers.media
 				return;
 			}
 			this._soundSource = value;
+			//reset the current and total time if we were playing a different
+			//sound previously
+			if(this._currentTime !== 0)
+			{
+				this._currentTime = 0;
+				this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
+			}
+			if(this._totalTime !== 0)
+			{
+				this._totalTime = 0;
+				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+			}
 			this._isLoaded = false;
 			if(this._soundSource is String)
 			{
