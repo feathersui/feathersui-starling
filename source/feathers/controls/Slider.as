@@ -2034,7 +2034,7 @@ package feathers.controls
 			}
 			else
 			{
-				var percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
+				percentage = (this._value - this._minimum) / (this._maximum - this._minimum);
 				if(percentage < 0)
 				{
 					percentage = 0;
