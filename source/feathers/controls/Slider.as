@@ -2027,21 +2027,37 @@ package feathers.controls
 		{
 			//this will auto-size the thumb, if needed
 			this.thumb.validate();
-
+			
+			if(this._minimum === this._maximum)
+			{
+				var percentage:Number = 1;
+			}
+			else
+			{
+				var percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
+				if(percentage < 0)
+				{
+					percentage = 0;
+				}
+				else if(percentage > 1)
+				{
+					percentage = 1;
+				}
+			}
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
 				this.thumb.x = Math.round((this.actualWidth - this.thumb.width) / 2) + this._thumbOffset;
 				//maximum is at the top, so we need to start the y position of
 				//the thumb from the maximum padding
-				this.thumb.y = Math.round(this._maximumPadding + trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum)));
+				this.thumb.y = Math.round(this._maximumPadding + trackScrollableHeight * (1 - percentage));
 			}
 			else //horizontal
 			{
 				var trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this._minimumPadding - this._maximumPadding;
 				//minimum is at the left, so we need to start the x position of
 				//the thumb from the minimum padding
-				this.thumb.x = Math.round(this._minimumPadding + (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum)));
+				this.thumb.x = Math.round(this._minimumPadding + (trackScrollableWidth * percentage));
 				this.thumb.y = Math.round((this.actualHeight - this.thumb.height) / 2) + this._thumbOffset;
 			}
 		}
