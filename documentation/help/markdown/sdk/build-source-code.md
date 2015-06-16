@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Build the Feathers SDK from Source Code
 
-The document explains how to build the SDK from source code.
+The document explains how to build the Feathers SDK from source code.
 
 <aside class="warn">Most developers should use the [Feathers SDK Installer](http://feathersui.com/sdk/installer/) instead. This tutorial is meant for advanced developers who want to modify the Feathers SDK compiler source code to contribute or create a fork.</aside>
 
