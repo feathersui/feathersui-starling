@@ -12,6 +12,7 @@ package feathers.media
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
@@ -55,7 +56,9 @@ package feathers.media
 
 	/**
 	 * Dispatched when the media player changes to the full-screen display mode
-	 * or back to the normal display mode.
+	 * or back to the normal display mode. The value of the
+	 * <code>isFullScreen</code> property indicates if the media player is
+	 * displayed in full screen mode or normally. 
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -438,7 +441,11 @@ package feathers.media
 		protected var _isFullScreen:Boolean = false;
 
 		/**
-		 * Indicates if the video player is currently full screen or not.
+		 * Indicates if the video player is currently full screen or not. When
+		 * the player is full screen, it will be displayed as a modal pop-up
+		 * that fills the entire Starling stage. Depending on the value of
+		 * <code>fullScreenDisplayState</code>, it may also change the value of
+		 * the native stage's <code>displayState</code> property.
 		 * 
 		 * @see #toggleFullScreen()
 		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
@@ -451,12 +458,74 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _normalDisplayState:String = StageDisplayState.NORMAL;
+
+		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen,normal")]
+		/**
+		 * When the video player is displayed normally (in other words, when it
+		 * isn't full-screen), determines the value of the native stage's
+		 * <code>displayState</code> property.
+		 * 
+		 * <p>Using this property, it is possible to set the native stage's
+		 * <code>displayState</code> property to
+		 * <code>StageDisplayState.FULL_SCREEN_INTERACTIVE</code> or
+		 * <code>StageDisplayState.FULL_SCREEN</code> when the video player
+		 * is not in full screen mode. This might be useful for mobile apps that
+		 * should always display in full screen, while allowing a video player
+		 * to toggle between filling the entire stage and displaying at a
+		 * smaller size within its parent's layout.</p>
+		 *
+		 * <p>In the following example, the display state for normal mode
+		 * is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.fullScreenDisplayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;</listing>
+		 *
+		 * @default StageDisplayState.NORMAL
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN StageDisplayState.FULL_SCREEN
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#NORMAL StageDisplayState.NORMAL
+		 * @see #fullScreenDisplayState
+		 */
+		public function get normalDisplayState():String
+		{
+			return this._normalDisplayState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set normalDisplayState(value:String):void
+		{
+			if(this._normalDisplayState == value)
+			{
+				return;
+			}
+			this._normalDisplayState = value;
+			if(!this._isFullScreen && this.stage)
+			{
+				var starling:Starling = stageToStarling(this.stage);
+				var nativeStage:Stage = starling.nativeStage;
+				nativeStage.displayState = this._normalDisplayState;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _fullScreenDisplayState:String = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 
-		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen")]
+		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen,normal")]
 		/**
 		 * When the video player is displayed full-screen, determines the value
 		 * of the native stage's <code>displayState</code> property.
+		 *
+		 * <p>Using this property, it is possible to set the native stage's
+		 * <code>displayState</code> property to
+		 * <code>StageDisplayState.NORMAL</code> when the video player is in
+		 * full screen mode. The video player will still be displayed as a modal
+		 * pop-up that fills the entire Starling stage, in this situation.</p>
 		 * 
 		 * <p>In the following example, the display state for full-screen mode
 		 * is changed:</p>
@@ -468,6 +537,8 @@ package feathers.media
 		 * 
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN StageDisplayState.FULL_SCREEN
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#NORMAL StageDisplayState.NORMAL
+		 * @see #normalDisplayState
 		 */
 		public function get fullScreenDisplayState():String
 		{
@@ -484,9 +555,10 @@ package feathers.media
 				return;
 			}
 			this._fullScreenDisplayState = value;
-			if(this._isFullScreen)
+			if(this._isFullScreen && this.stage)
 			{
-				var nativeStage:Stage = Starling.current.nativeStage;
+				var starling:Starling = stageToStarling(this.stage);
+				var nativeStage:Stage = starling.nativeStage;
 				nativeStage.displayState = this._fullScreenDisplayState;
 			}
 		}
@@ -559,7 +631,18 @@ package feathers.media
 		/**
 		 * Goes to full screen or returns to normal display.
 		 * 
+		 * <p> When the player is full screen, it will be displayed as a modal
+		 * pop-up that fills the entire Starling stage. Depending on the value
+		 * of <code>fullScreenDisplayState</code>, it may also change the value
+		 * of the native stage's <code>displayState</code> property.</p>
+		 * 
+		 * <p>When the player is displaying normally (in other words, when it is
+		 * not full screen), it will be displayed in its parent's layout like
+		 * any other Feathers component.</p>
+		 * 
 		 * @see #isFullScreen
+		 * @see #fullScreenDisplayState
+		 * @see #normalDisplayState
 		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
 		public function toggleFullScreen():void
@@ -568,7 +651,8 @@ package feathers.media
 			{
 				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.")
 			}
-			var nativeStage:Stage = Starling.current.nativeStage;
+			var starling:Starling = stageToStarling(this.stage);
+			var nativeStage:Stage = starling.nativeStage;
 			var oldIgnoreDisplayListEvents:Boolean = this._ignoreDisplayListEvents;
 			this._ignoreDisplayListEvents = true;
 			if(this._isFullScreen)
@@ -581,7 +665,7 @@ package feathers.media
 					var child:DisplayObject = this._fullScreenContainer.getChildAt(0);
 					this.addChild(child);
 				}
-				nativeStage.displayState = StageDisplayState.NORMAL;
+				nativeStage.displayState = this._normalDisplayState;
 			}
 			else
 			{
