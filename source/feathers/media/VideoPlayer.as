@@ -789,6 +789,10 @@ package feathers.media
 			//was lost. we couldn't seek when we started playing the video
 			//again. we had to wait until this callback.
 			this.seek(this._currentTime);
+			if(!this._isPlaying)
+			{
+				this.pauseMedia();
+			}
 			this.videoTexture_onComplete();
 		}
 
