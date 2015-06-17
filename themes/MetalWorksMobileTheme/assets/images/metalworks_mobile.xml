@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:209d7ebb3ff77097d94716f0b9f71856:165c9d4e5151aabae0058bbcba72fe9c:bd4b57f46e4d0b4891de5debabaa5c30$ -->
+<!-- $TexturePacker:SmartUpdate:0b895c8ab83bd673db76b1aa2b5e0395:261c95ced6ee201059ce35388fd2b0be:bd4b57f46e4d0b4891de5debabaa5c30$ -->
 <TextureAtlas imagePath="metalworks_mobile.png">
     <SubTexture name="background-disabled-skin" x="382" y="606" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="381" y="642" width="32" height="32"/>
@@ -36,8 +36,6 @@
     <SubTexture name="full-screen-toggle-button-exit-up-icon" x="417" y="646" width="58" height="58"/>
     <SubTexture name="header-background-skin" x="3" y="3" width="256" height="128"/>
     <SubTexture name="horizontal-scroll-bar-thumb-skin" x="407" y="454" width="26" height="10"/>
-    <SubTexture name="large-play-pause-toggle-button-play-down-icon" x="263" y="3" rotated="true" width="246" height="226"/>
-    <SubTexture name="large-play-pause-toggle-button-play-up-icon" x="3" y="135" rotated="true" width="246" height="226"/>
     <SubTexture name="list-accessory-drill-down-icon" x="407" y="432" rotated="true" width="26" height="18"/>
     <SubTexture name="list-inset-item-first-selected-skin" x="345" y="325" rotated="true" width="88" height="28"/>
     <SubTexture name="list-inset-item-first-up-skin" x="345" y="357" rotated="true" width="88" height="28"/>
@@ -47,6 +45,8 @@
     <SubTexture name="list-inset-item-single-up-skin" x="251" y="417" rotated="true" width="88" height="28"/>
     <SubTexture name="list-item-selected-skin" x="501" y="351" width="8" height="88"/>
     <SubTexture name="list-item-up-skin" x="501" y="443" width="8" height="88"/>
+    <SubTexture name="overlay-play-pause-toggle-button-play-down-icon" x="263" y="3" rotated="true" width="246" height="226"/>
+    <SubTexture name="overlay-play-pause-toggle-button-play-up-icon" x="3" y="135" rotated="true" width="246" height="226"/>
     <SubTexture name="page-indicator-normal-skin" x="479" y="646" width="16" height="16"/>
     <SubTexture name="page-indicator-selected-skin" x="479" y="666" width="16" height="16"/>
     <SubTexture name="picker-list-icon-disabled" x="407" y="482" rotated="true" width="22" height="20"/>

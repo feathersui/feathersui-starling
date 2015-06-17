@@ -584,8 +584,8 @@ package feathers.themes
 		protected var playPauseButtonPlayDownIconTexture:Texture;
 		protected var playPauseButtonPauseUpIconTexture:Texture;
 		protected var playPauseButtonPauseDownIconTexture:Texture;
-		protected var largePlayPauseButtonPlayUpIconTexture:Texture;
-		protected var largePlayPauseButtonPlayDownIconTexture:Texture;
+		protected var overlayPlayPauseButtonPlayUpIconTexture:Texture;
+		protected var overlayPlayPauseButtonPlayDownIconTexture:Texture;
 		protected var fullScreenToggleButtonEnterUpIconTexture:Texture;
 		protected var fullScreenToggleButtonEnterDownIconTexture:Texture;
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
@@ -835,8 +835,8 @@ package feathers.themes
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon");
 			this.playPauseButtonPauseUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-up-icon");
 			this.playPauseButtonPauseDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-down-icon");
-			this.largePlayPauseButtonPlayUpIconTexture = this.atlas.getTexture("large-play-pause-toggle-button-play-up-icon");
-			this.largePlayPauseButtonPlayDownIconTexture = this.atlas.getTexture("large-play-pause-toggle-button-play-down-icon");
+			this.overlayPlayPauseButtonPlayUpIconTexture = this.atlas.getTexture("overlay-play-pause-toggle-button-play-up-icon");
+			this.overlayPlayPauseButtonPlayDownIconTexture = this.atlas.getTexture("overlay-play-pause-toggle-button-play-down-icon");
 			this.fullScreenToggleButtonEnterUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-up-icon");
 			this.fullScreenToggleButtonEnterDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-down-icon");
 			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon");
@@ -1001,7 +1001,7 @@ package feathers.themes
 			
 			//play/pause toggle button
 			this.getStyleProviderForClass(PlayPauseToggleButton).defaultStyleFunction = this.setPlayPauseToggleButtonStyles;
-			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_LARGE_PLAY_PAUSE_TOGGLE_BUTTON, this.setLargePlayPauseToggleButtonStyles);
+			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON, this.setOverlayPlayPauseToggleButtonStyles);
 
 			//full screen toggle button
 			this.getStyleProviderForClass(FullScreenToggleButton).defaultStyleFunction = this.setFullScreenToggleButtonStyles;
@@ -2366,12 +2366,12 @@ package feathers.themes
 			button.minTouchHeight = this.gridSize;
 		}
 
-		protected function setLargePlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
+		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.setValueForState(this.largePlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
-			iconSelector.setValueForState(this.largePlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
-			iconSelector.setValueForState(this.largePlayPauseButtonPlayDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayDownIconTexture, Button.STATE_DOWN, false);
 			iconSelector.displayObjectProperties =
 			{
 				scaleX: this.scale,
@@ -2460,29 +2460,33 @@ package feathers.themes
 			}
 		}
 
-		protected function setSeekSliderThumbStyles(button:Button):void
+		protected function setSeekSliderThumbStyles(thumb:Button):void
 		{
 			var thumbSize:Number = 6 * this.scale;
-			button.defaultSkin = new Quad(thumbSize, thumbSize);
-			button.hasLabelTextRenderer = false;
+			thumb.defaultSkin = new Quad(thumbSize, thumbSize);
+			thumb.hasLabelTextRenderer = false;
+			thumb.minTouchWidth = this.gridSize;
+			thumb.minTouchHeight = this.gridSize;
 		}
 
-		protected function setSeekSliderMinimumTrackStyles(button:Button):void
+		protected function setSeekSliderMinimumTrackStyles(track:Button):void
 		{
 			var defaultSkin:Scale9Image = new Scale9Image(this.buttonUpSkinTextures, this.scale);
 			defaultSkin.width = this.wideControlSize;
 			defaultSkin.height = this.smallControlSize;
-			button.defaultSkin = defaultSkin;
-			button.hasLabelTextRenderer = false;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
+			track.minTouchHeight = this.gridSize;
 		}
 
-		protected function setSeekSliderMaximumTrackStyles(button:Button):void
+		protected function setSeekSliderMaximumTrackStyles(track:Button):void
 		{
 			var defaultSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
 			defaultSkin.width = this.wideControlSize;
 			defaultSkin.height = this.smallControlSize;
-			button.defaultSkin = defaultSkin;
-			button.hasLabelTextRenderer = false;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
+			track.minTouchHeight = this.gridSize;
 		}
 		
 
