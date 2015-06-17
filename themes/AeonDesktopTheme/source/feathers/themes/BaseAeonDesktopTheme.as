@@ -1359,6 +1359,7 @@ package feathers.themes
 				layout.paddingRight = this.smallGutterSize;
 				layout.paddingLeft = this.smallGutterSize;
 				layout.gap = this.extraSmallGutterSize;
+				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 				group.layout = layout;
 			}
 
@@ -1836,6 +1837,7 @@ package feathers.themes
 				layout.paddingRight = this.smallGutterSize;
 				layout.paddingLeft = this.smallGutterSize;
 				layout.gap = this.extraSmallGutterSize;
+				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 				container.layout = layout;
 			}
 
