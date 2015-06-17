@@ -69,6 +69,12 @@ package feathers.themes
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.media.FullScreenToggleButton;
+	import feathers.media.MuteToggleButton;
+	import feathers.media.PlayPauseToggleButton;
+	import feathers.media.SeekSlider;
+	import feathers.media.VideoPlayer;
+	import feathers.media.VolumeSlider;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
@@ -151,6 +157,8 @@ package feathers.themes
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
 		protected static const MODAL_OVERLAY_COLOR:uint = 0xcccccc;
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.4;
+		protected static const VIDEO_OVERLAY_COLOR:uint = 0xcccccc;
+		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
 
 		/**
 		 * The screen density of an iPhone with Retina display. The textures
@@ -370,6 +378,17 @@ package feathers.themes
 		protected var pageIndicatorNormalSkinTexture:Texture;
 		protected var pageIndicatorSelectedSkinTexture:Texture;
 
+		//media textures
+		protected var playPauseButtonPlayUpIconTexture:Texture;
+		protected var playPauseButtonPauseUpIconTexture:Texture;
+		protected var overlayPlayPauseButtonPlayUpIconTexture:Texture;
+		protected var fullScreenToggleButtonEnterUpIconTexture:Texture;
+		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
+		protected var muteToggleButtonLoudUpIconTexture:Texture;
+		protected var muteToggleButtonMutedUpIconTexture:Texture;
+		protected var volumeSliderMinimumTrackSkinTexture:Texture;
+		protected var volumeSliderMaximumTrackSkinTexture:Texture;
+
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
@@ -531,7 +550,7 @@ package feathers.themes
 			this.smallGutterSize = Math.round(11 * this.scale);
 			this.gutterSize = Math.round(22 * this.scale);
 			this.controlSize = Math.round(58 * this.scale);
-			this.smallControlSize = Math.round(22 * this.scale);
+			this.smallControlSize = Math.round(32 * this.scale);
 			this.popUpFillSize = Math.round(552 * this.scale);
 			this.wideControlSize = this.gridSize * 3 + this.gutterSize * 2;
 			this.borderSize = Math.round(4 * this.scale);
@@ -604,6 +623,16 @@ package feathers.themes
 
 			this.pageIndicatorNormalSkinTexture = this.atlas.getTexture("page-indicator-normal-skin");
 			this.pageIndicatorSelectedSkinTexture = this.atlas.getTexture("page-indicator-selected-skin");
+
+			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon");
+			this.playPauseButtonPauseUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-up-icon");
+			this.overlayPlayPauseButtonPlayUpIconTexture = this.atlas.getTexture("overlay-play-pause-toggle-button-play-up-icon");
+			this.fullScreenToggleButtonEnterUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-up-icon");
+			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon");
+			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("mute-toggle-button-muted-up-icon");
+			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("mute-toggle-button-loud-up-icon");
+			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin");
+			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
 
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 		}
@@ -769,6 +798,31 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
+
+			//media controls
+			this.getStyleProviderForClass(VideoPlayer).defaultStyleFunction = this.setVideoPlayerStyles;
+
+			//play/pause toggle button
+			this.getStyleProviderForClass(PlayPauseToggleButton).defaultStyleFunction = this.setPlayPauseToggleButtonStyles;
+			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON, this.setOverlayPlayPauseToggleButtonStyles);
+
+			//full screen toggle button
+			this.getStyleProviderForClass(FullScreenToggleButton).defaultStyleFunction = this.setFullScreenToggleButtonStyles;
+
+			//mute toggle button
+			this.getStyleProviderForClass(MuteToggleButton).defaultStyleFunction = this.setMuteToggleButtonStyles;
+
+			//seek slider
+			this.getStyleProviderForClass(SeekSlider).defaultStyleFunction = this.setSeekSliderStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSliderThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
+
+			//volume slider
+			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setVolumeSliderStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setVolumeSliderThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVolumeSliderMinimumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setVolumeSliderMaximumTrackStyles);
+
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -1235,6 +1289,7 @@ package feathers.themes
 				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.padding = this.smallGutterSize;
 				layout.gap = this.smallGutterSize;
+				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 				group.layout = layout;
 			}
 
@@ -1720,11 +1775,13 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.wideControlSize,
-				height: this.controlSize,
+				height: this.smallControlSize,
 				textureScale: this.scale
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 
+			track.minTouchHeight = this.gridSize;
+			
 			track.hasLabelTextRenderer = false;
 		}
 
@@ -1735,11 +1792,13 @@ package feathers.themes
 			skinSelector.setValueForState(this.insetBackgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
-				width: this.controlSize,
+				width: this.smallControlSize,
 				height: this.wideControlSize,
 				textureScale: this.scale
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.minTouchWidth = this.gridSize;
 
 			track.hasLabelTextRenderer = false;
 		}
@@ -1751,8 +1810,8 @@ package feathers.themes
 			skinSelector.setValueForState(this.thumbDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
-				width: this.controlSize,
-				height: this.controlSize,
+				width: this.smallControlSize,
+				height: this.smallControlSize,
 				textureScale: this.scale
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
@@ -1965,6 +2024,213 @@ package feathers.themes
 			thumb.minTouchHeight = this.gridSize;
 
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// VideoPlayer
+	//-------------------------
+
+		protected function setVideoPlayerStyles(player:VideoPlayer):void
+		{
+			player.backgroundSkin = new Quad(1, 1, 0x000000);
+		}
+
+	//-------------------------
+	// PlayPauseToggleButton
+	//-------------------------
+
+		protected function setPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = null;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.controlSize,
+				height: this.controlSize,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.playPauseButtonPlayUpIconTexture;
+			iconSelector.defaultSelectedValue = this.playPauseButtonPauseUpIconTexture;
+			iconSelector.displayObjectProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale,
+				smoothing: TextureSmoothing.NONE,
+				snapToPixels: true
+			};
+			button.stateToIconFunction = iconSelector.updateValue;
+
+			button.hasLabelTextRenderer = false;
+
+			button.padding = this.smallGutterSize;
+			button.gap = this.smallGutterSize;
+			button.minGap = this.smallGutterSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
+		}
+
+		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
+		{
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
+			iconSelector.displayObjectProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale
+			};
+			button.stateToIconFunction = iconSelector.updateValue;
+
+			button.hasLabelTextRenderer = false;
+
+			var overlaySkin:Quad = new Quad(1, 1, VIDEO_OVERLAY_COLOR);
+			overlaySkin.alpha = VIDEO_OVERLAY_ALPHA;
+			button.upSkin = overlaySkin;
+			button.hoverSkin = overlaySkin;
+
+			//since the selected states don't have a skin, the minWidth and
+			//minHeight values will ensure that the button doesn't resize!
+			button.minWidth = this.overlayPlayPauseButtonPlayUpIconTexture.width;
+			button.minHeight = this.overlayPlayPauseButtonPlayUpIconTexture.height;
+		}
+
+	//-------------------------
+	// FullScreenToggleButton
+	//-------------------------
+
+		protected function setFullScreenToggleButtonStyles(button:FullScreenToggleButton):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = null;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.controlSize,
+				height: this.controlSize,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.fullScreenToggleButtonEnterUpIconTexture;
+			iconSelector.defaultSelectedValue = this.fullScreenToggleButtonExitUpIconTexture;
+			iconSelector.displayObjectProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale,
+				smoothing: TextureSmoothing.NONE,
+				snapToPixels: true
+			};
+			button.stateToIconFunction = iconSelector.updateValue;
+
+			button.hasLabelTextRenderer = false;
+
+			button.padding = this.smallGutterSize;
+			button.gap = this.smallGutterSize;
+			button.minGap = this.smallGutterSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
+		}
+
+	//-------------------------
+	// MuteToggleButton
+	//-------------------------
+
+		protected function setMuteToggleButtonStyles(button:MuteToggleButton):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = null;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.controlSize,
+				height: this.controlSize,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.muteToggleButtonLoudUpIconTexture;
+			iconSelector.defaultSelectedValue = this.muteToggleButtonMutedUpIconTexture;
+			iconSelector.displayObjectProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale,
+				smoothing: TextureSmoothing.NONE,
+				snapToPixels: true
+			};
+			button.stateToIconFunction = iconSelector.updateValue;
+
+			button.hasLabelTextRenderer = false;
+			button.showVolumeSliderOnHover = false;
+
+			button.padding = this.smallGutterSize;
+			button.gap = this.smallGutterSize;
+			button.minGap = this.smallGutterSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
+		}
+
+	//-------------------------
+	// SeekSlider
+	//-------------------------
+
+		protected function setSeekSliderStyles(slider:SeekSlider):void
+		{
+			slider.direction = SeekSlider.DIRECTION_HORIZONTAL;
+			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
+			slider.minWidth = this.controlSize;
+			slider.minHeight = this.smallControlSize;
+		}
+
+	//-------------------------
+	// VolumeSlider
+	//-------------------------
+
+		protected function setVolumeSliderStyles(slider:VolumeSlider):void
+		{
+			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
+			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.showThumb = false;
+			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width * this.scale;
+			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height * this.scale;
+		}
+
+		protected function setVolumeSliderThumbStyles(button:Button):void
+		{
+			var thumbSize:Number = 6 * this.scale;
+			button.defaultSkin = new Quad(thumbSize, thumbSize);
+			button.defaultSkin.width = 0;
+			button.hasLabelTextRenderer = false;
+		}
+
+		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
+			defaultSkin.textureScale = this.scale;
+			track.defaultSkin = defaultSkin;
+		}
+
+		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
+			defaultSkin.textureScale = this.scale;
+			track.defaultSkin = defaultSkin;
 		}
 	}
 }
