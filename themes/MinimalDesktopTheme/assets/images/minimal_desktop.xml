@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:b5b65222514e6abb60f15103ff50239d:a0aebb2d481f9c80a73c6c7a56ba1197:cbe717a3ef2ba1398ed1bd6e80b70b5e$ -->
+<!-- $TexturePacker:SmartUpdate:0738164ac749e967412c639a0e3ed8e4:ae8655c53c7dcefc59e52abae6002d03:cbe717a3ef2ba1398ed1bd6e80b70b5e$ -->
 <TextureAtlas imagePath="minimal_desktop.png">
     <SubTexture name="back-button-disabled-skin" x="317" y="75" width="28" height="40"/>
     <SubTexture name="back-button-down-skin" x="322" y="3" width="28" height="40"/>
@@ -35,13 +35,13 @@
     <SubTexture name="inset-background-focus-skin" x="241" y="120" width="5" height="5"/>
     <SubTexture name="inset-background-focused-skin" x="547" y="97" width="10" height="10"/>
     <SubTexture name="inset-background-skin" x="250" y="120" width="5" height="5"/>
-    <SubTexture name="large-play-pause-toggle-button-play-down-icon" x="3" y="3" width="100" height="120"/>
-    <SubTexture name="large-play-pause-toggle-button-play-up-icon" x="107" y="3" width="100" height="120"/>
     <SubTexture name="list-accessory-drill-down-icon" x="663" y="113" width="6" height="10"/>
     <SubTexture name="list-background-skin" x="501" y="97" width="12" height="12"/>
     <SubTexture name="list-inset-background-skin" x="509" y="113" width="12" height="12"/>
     <SubTexture name="mute-toggle-button-loud-up-icon" x="594" y="41" width="24" height="20" frameX="0" frameY="-2" frameWidth="24" frameHeight="24"/>
     <SubTexture name="mute-toggle-button-muted-up-icon" x="587" y="93" width="24" height="20" frameX="0" frameY="-2" frameWidth="24" frameHeight="24"/>
+    <SubTexture name="overlay-play-pause-toggle-button-play-down-icon" x="3" y="3" width="100" height="120"/>
+    <SubTexture name="overlay-play-pause-toggle-button-play-up-icon" x="107" y="3" width="100" height="120"/>
     <SubTexture name="page-indicator-selected-symbol" x="635" y="87" width="16" height="16"/>
     <SubTexture name="page-indicator-symbol" x="643" y="107" width="16" height="16"/>
     <SubTexture name="panel-background-skin" x="517" y="97" width="12" height="12"/>
