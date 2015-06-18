@@ -1910,8 +1910,6 @@ package feathers.themes
 			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			textArea.textEditorProperties.padding = this.smallGutterSize;
 
-			textArea.padding = this.smallGutterSize;
-
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
 			skinSelector.setValueForState(this.insetBackgroundDisabledSkinTextures, TextArea.STATE_DISABLED);
