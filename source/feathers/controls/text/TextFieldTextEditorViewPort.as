@@ -505,6 +505,17 @@ package feathers.controls.text
 			{
 				newHeight += 4;
 			}
+			if(this._visibleHeight === this._visibleHeight) //!isNaN
+			{
+				if(newHeight < this._visibleHeight)
+				{
+					newHeight = this._visibleHeight;
+				}
+			}
+			else if(newHeight < this._minVisibleHeight)
+			{
+				newHeight = this._minVisibleHeight;
+			}
 
 			result.x = newWidth;
 			result.y = newHeight;
