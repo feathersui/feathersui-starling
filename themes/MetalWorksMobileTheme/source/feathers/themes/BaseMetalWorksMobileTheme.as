@@ -2248,8 +2248,6 @@ package feathers.themes
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
 
-			textArea.padding = this.smallGutterSize;
-
 			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
 			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			textArea.textEditorProperties.padding = this.smallGutterSize;
