@@ -594,6 +594,8 @@ package feathers.themes
 		protected var muteToggleButtonLoudDownIconTexture:Texture;
 		protected var muteToggleButtonMutedUpIconTexture:Texture;
 		protected var muteToggleButtonMutedDownIconTexture:Texture;
+		protected var volumeSliderMinimumTrackSkinTexture:Texture;
+		protected var volumeSliderMaximumTrackSkinTexture:Texture;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -841,10 +843,12 @@ package feathers.themes
 			this.fullScreenToggleButtonEnterDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-down-icon");
 			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon");
 			this.fullScreenToggleButtonExitDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-down-icon");
-			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("volume-toggle-button-muted-up-icon");
-			this.muteToggleButtonMutedDownIconTexture = this.atlas.getTexture("volume-toggle-button-muted-down-icon");
-			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("volume-toggle-button-loud-up-icon");
-			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("volume-toggle-button-loud-down-icon");
+			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("mute-toggle-button-muted-up-icon");
+			this.muteToggleButtonMutedDownIconTexture = this.atlas.getTexture("mute-toggle-button-muted-down-icon");
+			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("mute-toggle-button-loud-up-icon");
+			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("mute-toggle-button-loud-down-icon");
+			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin");
+			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
 		}
 
 		/**
@@ -1016,10 +1020,10 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setSeekSliderMaximumTrackStyles);
 
 			//volume slider
-			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setSliderStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSimpleButtonStyles);
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setVerticalSliderMaximumTrackStyles);
+			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setVolumeSliderStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setVolumeSliderThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVolumeSliderMinimumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setVolumeSliderMaximumTrackStyles);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -2485,6 +2489,48 @@ package feathers.themes
 			track.defaultSkin = defaultSkin;
 			track.hasLabelTextRenderer = false;
 			track.minTouchHeight = this.gridSize;
+		}
+
+	//-------------------------
+	// VolumeSlider
+	//-------------------------
+
+		protected function setVolumeSliderStyles(slider:VolumeSlider):void
+		{
+			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
+			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.showThumb = false;
+			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;
+			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height;
+		}
+
+		protected function setVolumeSliderThumbStyles(thumb:Button):void
+		{
+			var thumbSize:Number = 6 * this.scale;
+			var defaultSkin:Quad = new Quad(thumbSize, thumbSize);
+			defaultSkin.width = 0;
+			defaultSkin.height = 0;
+			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
+		}
+
+		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
+		}
+
+		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
 		}
 		
 
