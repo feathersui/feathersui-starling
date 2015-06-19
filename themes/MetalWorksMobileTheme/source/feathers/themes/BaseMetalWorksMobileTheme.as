@@ -870,6 +870,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON, this.setDangerButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON, this.setBackButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON, this.setForwardButtonStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Button.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setButtonLabelStyles);
 
 			//button group
 			this.getStyleProviderForClass(ButtonGroup).defaultStyleFunction = this.setButtonGroupStyles;
@@ -905,6 +906,7 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
 			//the spinner list has a custom item renderer name defined by the theme
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 
@@ -1129,15 +1131,6 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
-			button.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
-			button.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			if(button is ToggleButton)
-			{
-				//for convenience, this function can style both a regular button
-				//and a toggle button
-				ToggleButton(button).selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			}
-
 			button.paddingTop = this.smallGutterSize;
 			button.paddingBottom = this.smallGutterSize;
 			button.paddingLeft = this.gutterSize;
@@ -1170,6 +1163,19 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
+		}
+		
+		protected function setButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.darkUIElementFormat;
+			textRenderer.setElementFormatForState(Button.STATE_DISABLED, this.darkUIDisabledElementFormat);
+			textRenderer.setElementFormatForState(Button.STATE_DOWN, this.lightUIElementFormat);
+			if(textRenderer.stateContext is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkUIDisabledElementFormat);
+			}
 		}
 
 		protected function setCallToActionButtonStyles(button:Button):void
@@ -1641,11 +1647,6 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
-			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.defaultSelectedLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
-
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1666,14 +1667,39 @@ package feathers.themes
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
-		protected function setItemRendererAccessoryLabelRendererStyles(renderer:TextBlockTextRenderer):void
+		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
-			renderer.elementFormat = this.lightElementFormat;
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.setElementFormatForState(ToggleButton.STATE_UP, this.largeLightElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER, this.largeLightElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED, this.largeDisabledElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.largeDarkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.largeDarkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.largeDarkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.largeDisabledElementFormat);
 		}
 
-		protected function setItemRendererIconLabelStyles(renderer:TextBlockTextRenderer):void
+		protected function setItemRendererAccessoryLabelRendererStyles(textRenderer:TextBlockTextRenderer):void
 		{
-			renderer.elementFormat = this.lightElementFormat;
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED, this.disabledElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.disabledElementFormat);
+		}
+
+		protected function setItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED, this.disabledElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.darkElementFormat);
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.disabledElementFormat);
 		}
 
 	//-------------------------
@@ -1861,10 +1887,6 @@ package feathers.themes
 			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
 			defaultIcon.alpha = 0;
 			renderer.defaultIcon = defaultIcon;
-
-			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
-			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
 
 			renderer.itemHasIcon = false;
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;

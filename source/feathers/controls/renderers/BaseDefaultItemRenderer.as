@@ -15,6 +15,7 @@ package feathers.controls.renderers
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -35,6 +36,14 @@ package feathers.controls.renderers
 	 */
 	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
 	{
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * primary label.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-item-renderer-label";
+		
 		/**
 		 * The default value added to the <code>styleNameList</code> of the icon
 		 * label, if it exists.
@@ -74,6 +83,78 @@ package feathers.controls.renderers
 		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
 		 */
 		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
+
+		/**
+		 * @copy feathers.controls.Button#STATE_UP
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP:String = "up";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN:String = "down";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER:String = "hover";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED:String = "disabled";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
 		/**
 		 * @copy feathers.controls.Button#ICON_POSITION_TOP
@@ -252,6 +333,8 @@ package feathers.controls.renderers
 		public function BaseDefaultItemRenderer()
 		{
 			super();
+			this._explicitIsEnabled = this._isEnabled;
+			this.labelStyleName = DEFAULT_CHILD_STYLE_NAME_LABEL;
 			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
 			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
@@ -957,7 +1040,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override protected function set currentState(value:String):void
+		override public function set currentState(value:String):void
 		{
 			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
 			{
@@ -2471,7 +2554,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _explicitIsEnabled:Boolean = false;
+		protected var _explicitIsEnabled:Boolean;
 
 		/**
 		 * @private
@@ -2485,7 +2568,6 @@ package feathers.controls.renderers
 			this._explicitIsEnabled = value;
 			super.isEnabled = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -3643,6 +3725,7 @@ package feathers.controls.renderers
 				this.touchable = true;
 			}
 			this.setInvalidationFlag(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 
 		/**
@@ -3867,6 +3950,10 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._iconLabelFactory != null ? this._iconLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.iconLabel = ITextRenderer(factory());
+				if(this.iconLabel is IStateObserver)
+				{
+					IStateObserver(this.iconLabel).stateContext = this;
+				}
 				this.iconLabel.styleNameList.add(this.iconLabelStyleName);
 			}
 			this.iconLabel.text = label;
@@ -3895,6 +3982,10 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.accessoryLabel = ITextRenderer(factory());
+				if(this.accessoryLabel is IStateObserver)
+				{
+					IStateObserver(this.accessoryLabel).stateContext = this;
+				}
 				this.accessoryLabel.styleNameList.add(this.accessoryLabelStyleName);
 			}
 			this.accessoryLabel.text = label;
