@@ -230,5 +230,14 @@ package feathers.events
 		 * has been made, but the task is incomplete.
 		 */
 		public static const PROGRESS:String = "progress";
+
+		/**
+		 * The <code>FeathersEventType.STATE_CHANGE</code> event type is used by
+		 * Feathers classes that implement the <code>IStateContext</code>
+		 * interface.
+		 * 
+		 * @see feathers.core.IStateContext
+		 */
+		public static const STATE_CHANGE:String = "stageChange";
 	}
 }

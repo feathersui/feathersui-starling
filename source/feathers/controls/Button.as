@@ -10,6 +10,8 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IStateContext;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -88,6 +90,28 @@ package feathers.controls
 	 * @see #longPressDuration
 	 */
 	[Event(name="longPress",type="starling.events.Event")]
+	
+	/**
+	 * Dispatched when the display object's state changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
+	 */
+	[Event(name="stateChange",type="starling.events.Event")]
 
 	/**
 	 * A push button control that may be triggered when pressed and released.
@@ -103,7 +127,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/button.html How to use the Feathers Button component
 	 */
-	public class Button extends FeathersControl implements IFocusDisplayObject
+	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext
 	{
 		/**
 		 * @private
@@ -567,11 +591,11 @@ package feathers.controls
 		protected var _currentState:String = STATE_UP;
 		
 		/**
-		 * The current touch state of the button.
-		 *
-		 * <p>For internal use in subclasses.</p>
+		 * The current state of the button.
+		 * 
+		 * @see #event:stateChange feathers.events.FeathersEventType.STATE_CHANGE
 		 */
-		protected function get currentState():String
+		public function get currentState():String
 		{
 			return this._currentState;
 		}
@@ -579,7 +603,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function set currentState(value:String):void
+		public function set currentState(value:String):void
 		{
 			if(this._currentState == value)
 			{
@@ -591,6 +615,7 @@ package feathers.controls
 			}
 			this._currentState = value;
 			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 		
 		/**
@@ -1583,6 +1608,52 @@ package feathers.controls
 			this._labelFactory = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _customLabelStyleName:String;
+
+		/**
+		 * A style name to add to the button's label text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different buttons.
+		 *
+		 * <p>In the following example, a custom label style name is passed to
+		 * the button:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.customLabelStyleName = "my-custom-button-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-button-label", setCustomButtonLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #labelFactory
+		 */
+		public function get customLabelStyleName():String
+		{
+			return this._customLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customLabelStyleName(value:String):void
+		{
+			if(this._customLabelStyleName == value)
+			{
+				return;
+			}
+			this._customLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
 		
 		/**
 		 * @private
@@ -2419,7 +2490,12 @@ package feathers.controls
 			{
 				var factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
 				this.labelTextRenderer = ITextRenderer(factory());
-				this.labelTextRenderer.styleNameList.add(this.labelName);
+				var labelStyleName:String = this._customLabelStyleName != null ? this._customLabelStyleName : this.labelStyleName;
+				this.labelTextRenderer.styleNameList.add(labelStyleName);
+				if(this.labelTextRenderer is IStateObserver)
+				{
+					IStateObserver(this.labelTextRenderer).stateContext = this;
+				}
 				this.addChild(DisplayObject(this.labelTextRenderer));
 			}
 		}
