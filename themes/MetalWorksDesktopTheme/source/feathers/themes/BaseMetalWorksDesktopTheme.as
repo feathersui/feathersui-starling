@@ -2531,12 +2531,14 @@ package feathers.themes
 			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height;
 		}
 
-		protected function setVolumeSliderThumbStyles(button:Button):void
+		protected function setVolumeSliderThumbStyles(thumb:Button):void
 		{
 			var thumbSize:Number = 6 * this.scale;
-			button.defaultSkin = new Quad(thumbSize, thumbSize);
-			button.defaultSkin.width = 0;
-			button.hasLabelTextRenderer = false;
+			var defaultSkin:Quad = new Quad(thumbSize, thumbSize);
+			defaultSkin.width = 0;
+			defaultSkin.height = 0;
+			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
@@ -2545,6 +2547,7 @@ package feathers.themes
 			defaultSkin.scaleContent = false;
 			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
 			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
@@ -2554,6 +2557,7 @@ package feathers.themes
 			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
 			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -2628,29 +2632,32 @@ package feathers.themes
 			}
 		}
 
-		protected function setSeekSliderThumbStyles(button:Button):void
+		protected function setSeekSliderThumbStyles(thumb:Button):void
 		{
 			var thumbSize:Number = 6 * this.scale;
-			button.defaultSkin = new Quad(thumbSize, thumbSize);
-			button.hasLabelTextRenderer = false;
+			var defaultSkin:Quad = new Quad(thumbSize, thumbSize);
+			defaultSkin.width = 0;
+			defaultSkin.height = 0;
+			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
 		}
 
-		protected function setSeekSliderMinimumTrackStyles(button:Button):void
+		protected function setSeekSliderMinimumTrackStyles(track:Button):void
 		{
 			var defaultSkin:Scale9Image = new Scale9Image(this.buttonUpSkinTextures, this.scale);
 			defaultSkin.width = this.wideControlSize;
 			defaultSkin.height = this.smallControlSize;
-			button.defaultSkin = defaultSkin;
-			button.hasLabelTextRenderer = false;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
 		}
 
-		protected function setSeekSliderMaximumTrackStyles(button:Button):void
+		protected function setSeekSliderMaximumTrackStyles(track:Button):void
 		{
 			var defaultSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
 			defaultSkin.width = this.wideControlSize;
 			defaultSkin.height = this.smallControlSize;
-			button.defaultSkin = defaultSkin;
-			button.hasLabelTextRenderer = false;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
 		}
 
 	}

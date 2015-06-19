@@ -801,7 +801,6 @@ package feathers.themes
 			this.getStyleProviderForClass(SeekSlider).defaultStyleFunction = this.setSliderStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSliderThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
-			//this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setSeekSliderMaximumTrackStyles);
 
 			//volume slider
 			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setVolumeSliderStyles;
@@ -2324,12 +2323,14 @@ package feathers.themes
 			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height * this.scale;
 		}
 
-		protected function setVolumeSliderThumbStyles(button:Button):void
+		protected function setVolumeSliderThumbStyles(thumb:Button):void
 		{
 			var thumbSize:Number = 6 * this.scale;
-			button.defaultSkin = new Quad(thumbSize, thumbSize);
-			button.defaultSkin.width = 0;
-			button.hasLabelTextRenderer = false;
+			var defaultSkin:Quad = new Quad(thumbSize, thumbSize);
+			defaultSkin.width = 0;
+			defaultSkin.height = 0;
+			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
@@ -2339,6 +2340,8 @@ package feathers.themes
 			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
 			defaultSkin.textureScale = this.scale;
 			track.defaultSkin = defaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
@@ -2349,6 +2352,8 @@ package feathers.themes
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
 			defaultSkin.textureScale = this.scale;
 			track.defaultSkin = defaultSkin;
+			
+			track.hasLabelTextRenderer = false;
 		}
 	}
 }
