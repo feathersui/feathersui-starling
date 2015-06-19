@@ -2204,12 +2204,14 @@ package feathers.themes
 			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height * this.scale;
 		}
 
-		protected function setVolumeSliderThumbStyles(button:Button):void
+		protected function setVolumeSliderThumbStyles(thumb:Button):void
 		{
 			var thumbSize:Number = 6 * this.scale;
-			button.defaultSkin = new Quad(thumbSize, thumbSize);
-			button.defaultSkin.width = 0;
-			button.hasLabelTextRenderer = false;
+			thumb.defaultSkin = new Quad(thumbSize, thumbSize);
+			thumb.defaultSkin.width = 0;
+			thumb.defaultSkin.height = 0;
+			
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
@@ -2219,6 +2221,8 @@ package feathers.themes
 			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
 			defaultSkin.textureScale = this.scale;
 			track.defaultSkin = defaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
@@ -2229,6 +2233,8 @@ package feathers.themes
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
 			defaultSkin.textureScale = this.scale;
 			track.defaultSkin = defaultSkin;
+			
+			track.hasLabelTextRenderer = false;
 		}
 	}
 }
