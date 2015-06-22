@@ -110,6 +110,8 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
+	 * 
+	 * @see #currentState
 	 */
 	[Event(name="stateChange",type="starling.events.Event")]
 
@@ -570,7 +572,7 @@ package feathers.controls
 			if(!this._isEnabled)
 			{
 				this.touchable = false;
-				this.currentState = STATE_DISABLED;
+				this.changeState(STATE_DISABLED);
 				this.touchPointID = -1;
 			}
 			else
@@ -579,7 +581,7 @@ package feathers.controls
 				//let's only change to up if needed
 				if(this.currentState == STATE_DISABLED)
 				{
-					this.currentState = STATE_UP;
+					this.changeState(STATE_UP);
 				}
 				this.touchable = true;
 			}
@@ -598,24 +600,6 @@ package feathers.controls
 		public function get currentState():String
 		{
 			return this._currentState;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set currentState(value:String):void
-		{
-			if(this._currentState == value)
-			{
-				return;
-			}
-			if(this.stateNames.indexOf(value) < 0)
-			{
-				throw new ArgumentError("Invalid state: " + value + ".");
-			}
-			this._currentState = value;
-			this.invalidate(INVALIDATION_FLAG_STATE);
-			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 		
 		/**
@@ -2503,6 +2487,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function changeState(state:String):void
+		{
+			if(this._currentState == state)
+			{
+				return;
+			}
+			if(this.stateNames.indexOf(state) < 0)
+			{
+				throw new ArgumentError("Invalid state: " + state + ".");
+			}
+			this._currentState = state;
+			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshLabel():void
 		{
 			if(!this.labelTextRenderer)
@@ -2908,11 +2910,11 @@ package feathers.controls
 			this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 			if(this._isEnabled)
 			{
-				this.currentState = STATE_UP;
+				this.changeState(STATE_UP);
 			}
 			else
 			{
-				this.currentState = STATE_DISABLED;
+				this.changeState(STATE_DISABLED);
 			}
 		}
 
@@ -2956,11 +2958,11 @@ package feathers.controls
 				this.touchPointID = -1;
 				if(this._isEnabled)
 				{
-					this.currentState = STATE_UP;
+					this.changeState(STATE_UP);
 				}
 				else
 				{
-					this.currentState = STATE_DISABLED;
+					this.changeState(STATE_DISABLED);
 				}
 			}
 		}
@@ -2999,11 +3001,11 @@ package feathers.controls
 				{
 					if(isInBounds || this.keepDownStateOnRollOut)
 					{
-						this.currentState = STATE_DOWN;
+						this.changeState(STATE_DOWN);
 					}
 					else
 					{
-						this.currentState = STATE_UP;
+						this.changeState(STATE_UP);
 					}
 				}
 				else if(touch.phase == TouchPhase.ENDED)
@@ -3023,7 +3025,7 @@ package feathers.controls
 				touch = event.getTouch(this, TouchPhase.BEGAN);
 				if(touch)
 				{
-					this.currentState = STATE_DOWN;
+					this.changeState(STATE_DOWN);
 					this.touchPointID = touch.id;
 					if(this._isLongPressEnabled)
 					{
@@ -3036,12 +3038,12 @@ package feathers.controls
 				touch = event.getTouch(this, TouchPhase.HOVER);
 				if(touch)
 				{
-					this.currentState = STATE_HOVER;
+					this.changeState(STATE_HOVER);
 					return;
 				}
 
 				//end of hover
-				this.currentState = STATE_UP;
+				this.changeState(STATE_UP);
 			}
 		}
 
@@ -3067,14 +3069,14 @@ package feathers.controls
 			if(event.keyCode == Keyboard.ESCAPE)
 			{
 				this.touchPointID = -1;
-				this.currentState = STATE_UP;
+				this.changeState(STATE_UP);
 			}
 			if(this.touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
 			{
 				return;
 			}
 			this.touchPointID = int.MAX_VALUE;
-			this.currentState = STATE_DOWN;
+			this.changeState(STATE_DOWN);
 		}
 
 		/**

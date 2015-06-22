@@ -1040,46 +1040,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override public function set currentState(value:String):void
-		{
-			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
-			{
-				value = STATE_UP;
-			}
-			if(this._useStateDelayTimer)
-			{
-				if(this._stateDelayTimer && this._stateDelayTimer.running)
-				{
-					this._delayedCurrentState = value;
-					return;
-				}
-
-				if(value == Button.STATE_DOWN)
-				{
-					if(this._currentState == value)
-					{
-						return;
-					}
-					this._delayedCurrentState = value;
-					if(this._stateDelayTimer)
-					{
-						this._stateDelayTimer.reset();
-					}
-					else
-					{
-						this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-						this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-					}
-					this._stateDelayTimer.start();
-					return;
-				}
-			}
-			super.currentState = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var accessoryTouchPointID:int = -1;
 
 		/**
@@ -3392,6 +3352,46 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function changeState(value:String):void
+		{
+			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
+			{
+				value = STATE_UP;
+			}
+			if(this._useStateDelayTimer)
+			{
+				if(this._stateDelayTimer && this._stateDelayTimer.running)
+				{
+					this._delayedCurrentState = value;
+					return;
+				}
+
+				if(value == Button.STATE_DOWN)
+				{
+					if(this._currentState == value)
+					{
+						return;
+					}
+					this._delayedCurrentState = value;
+					if(this._stateDelayTimer)
+					{
+						this._stateDelayTimer.reset();
+					}
+					else
+					{
+						this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+						this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+					}
+					this._stateDelayTimer.start();
+					return;
+				}
+			}
+			super.changeState(value);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function addIconWidth(width:Number):Number
 		{
 			if(!this.currentIcon)
@@ -4554,7 +4554,7 @@ package feathers.controls.renderers
 		 */
 		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
 		{
-			super.currentState = this._delayedCurrentState;
+			super.changeState(this._delayedCurrentState);
 			this._delayedCurrentState = null;
 		}
 
@@ -4570,7 +4570,7 @@ package feathers.controls.renderers
 				var touch:Touch = event.getTouch(this.accessory);
 				if(touch)
 				{
-					this.currentState = Button.STATE_UP;
+					this.changeState(Button.STATE_UP);
 					return;
 				}
 			}
