@@ -217,6 +217,17 @@ package feathers.controls
 		}
 
 		/**
+		 * The text renderer for the header's title.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #title
+		 * @see #titleFactory
+		 * @see #createTitle()
+		 */
+		protected var titleTextRenderer:ITextRenderer;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the header's
 		 * title text renderer. This variable is <code>protected</code> so that
 		 * sub-classes can customize the title text renderer style name in their
@@ -346,76 +357,6 @@ package feathers.controls
 			this._title = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _titleFactory:Function;
-
-		/**
-		 * A function used to instantiate the header's title text renderer
-		 * sub-component. By default, the header will use the global text
-		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
-		 * to create the title text renderer. The title text renderer must be an
-		 * instance of <code>ITextRenderer</code>. This factory can be used to
-		 * change properties on the title text renderer when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use this factory to style the title text
-		 * renderer.
-		 *
-		 * <p>If you are not using a theme, the title factory can be used to
-		 * provide skin the title with appropriate text styles.</p>
-		 *
-		 * <p>The factory should have the following function signature:</p>
-		 * <pre>function():ITextRenderer</pre>
-		 *
-		 * <p>In the following example, a custom title factory is passed to the
-		 * header:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.titleFactory = function():ITextRenderer
-		 * {
-		 *     var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-		 *     titleRenderer.textFormat = new TextFormat( "_sans", 12, 0xff0000 );
-		 *     return titleRenderer;
-		 * }</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #title
-		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
-		 */
-		public function get titleFactory():Function
-		{
-			return this._titleFactory;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set titleFactory(value:Function):void
-		{
-			if(this._titleFactory == value)
-			{
-				return;
-			}
-			this._titleFactory = value;
-			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
-		}
-
-		/**
-		 * The text renderer for the header's title.
-		 *
-		 * <p>For internal use in subclasses.</p>
-		 *
-		 * @see #title
-		 * @see #titleFactory
-		 * @see #createTitle()
-		 */
-		protected var titleTextRenderer:ITextRenderer;
 
 		/**
 		 * @private
@@ -1070,6 +1011,111 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _titleFactory:Function;
+
+		/**
+		 * A function used to instantiate the header's title text renderer
+		 * sub-component. By default, the header will use the global text
+		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
+		 * to create the title text renderer. The title text renderer must be an
+		 * instance of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties on the title text renderer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the title text
+		 * renderer.
+		 *
+		 * <p>If you are not using a theme, the title factory can be used to
+		 * provide skin the title with appropriate text styles.</p>
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, a custom title factory is passed to the
+		 * header:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.titleFactory = function():ITextRenderer
+		 * {
+		 *     var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *     titleRenderer.textFormat = new TextFormat( "_sans", 12, 0xff0000 );
+		 *     return titleRenderer;
+		 * }</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #title
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
+		 */
+		public function get titleFactory():Function
+		{
+			return this._titleFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set titleFactory(value:Function):void
+		{
+			if(this._titleFactory == value)
+			{
+				return;
+			}
+			this._titleFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customTitleStyleName:String;
+
+		/**
+		 * A style name to add to the header's title text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different headers.
+		 *
+		 * <p>In the following example, a custom title style name is passed to
+		 * the header:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.customTitleStyleName = "my-custom-header-title";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-title", setCustomHeaderTitleStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_TITLE
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #titleFactory
+		 */
+		public function get customTitleStyleName():String
+		{
+			return this._customTitleStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customTitleStyleName(value:String):void
+		{
+			if(this._customTitleStyleName == value)
+			{
+				return;
+			}
+			this._customTitleStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _titleProperties:PropertyProxy;
 
 		/**
@@ -1546,7 +1592,8 @@ package feathers.controls
 			var factory:Function = this._titleFactory != null ? this._titleFactory : FeathersControl.defaultTextRendererFactory;
 			this.titleTextRenderer = ITextRenderer(factory());
 			var uiTitleRenderer:IFeathersControl = IFeathersControl(this.titleTextRenderer);
-			uiTitleRenderer.styleNameList.add(this.titleStyleName);
+			var titleStyleName:String = this._customTitleStyleName != null ? this._customTitleStyleName : this.titleStyleName;
+			uiTitleRenderer.styleNameList.add(titleStyleName);
 			this.addChild(DisplayObject(uiTitleRenderer));
 		}
 
