@@ -47,6 +47,15 @@ package feathers.layout
 	 * where the column's height plus the item's height will result in the
 	 * smallest possible total height.
 	 *
+	 * <p><strong>Beta Layout:</strong> This is a new layout, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this layout. The
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
+	 *
 	 * @see ../../../help/waterfall-layout.html How to use WaterfallLayout with Feathers containers
 	 */
 	public class WaterfallLayout extends EventDispatcher implements IVariableVirtualLayout

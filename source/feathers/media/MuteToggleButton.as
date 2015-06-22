@@ -82,11 +82,6 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		private static const HELPER_POINT:Point = new Point();
-		
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_VOLUME_SLIDER_FACTORY:String = "volumeSliderFactory";
 		
 		/**
