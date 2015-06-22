@@ -11,6 +11,7 @@ package feathers.controls.text
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.text.TextInputNavigation;
 	import feathers.utils.text.TextInputRestrict;
 
@@ -169,6 +170,15 @@ package feathers.controls.text
 		public static const TEXT_ALIGN_RIGHT:String = "right";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>TextBlockTextEditor</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function TextBlockTextEditor()
@@ -180,6 +190,14 @@ package feathers.controls.text
 			this.isQuickHitAreaEnabled = true;
 			this.truncateToFit = false;
 			this.addEventListener(TouchEvent.TOUCH, textEditor_touchHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return globalStyleProvider;
 		}
 
 		/**
