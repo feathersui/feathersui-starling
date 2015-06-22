@@ -158,11 +158,6 @@ package feathers.core
 		function get isCreated():Boolean;
 
 		/**
-		 * @copy feathers.core.FeathersControl#nameList
-		 */
-		function get nameList():TokenList;
-
-		/**
 		 * @copy feathers.core.FeathersControl#styleNameList
 		 */
 		function get styleNameList():TokenList;
