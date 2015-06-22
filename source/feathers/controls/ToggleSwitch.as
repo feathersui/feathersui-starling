@@ -1066,6 +1066,52 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _customOnLabelStyleName:String;
+
+		/**
+		 * A style name to add to the toggle switch's on label text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different buttons.
+		 *
+		 * <p>In the following example, a custom on label style name is passed
+		 * to the toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.customOnLabelStyleName = "my-custom-toggle-on-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toggle-on-label", setCustomToggleSwitchOnLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ON_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #onLabelFactory
+		 */
+		public function get customOnLabelStyleName():String
+		{
+			return this._customOnLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customOnLabelStyleName(value:String):void
+		{
+			if(this._customOnLabelStyleName == value)
+			{
+				return;
+			}
+			this._customOnLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _offLabelFactory:Function;
 
 		/**
@@ -1114,6 +1160,52 @@ package feathers.controls
 				return;
 			}
 			this._offLabelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customOffLabelStyleName:String;
+
+		/**
+		 * A style name to add to the toggle switch's off label text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different toggle switches.
+		 *
+		 * <p>In the following example, a custom off label style name is passed
+		 * to the toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.customOffLabelStyleName = "my-custom-toggle-off-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toggle-off-label", setCustomToggleSwitchOffLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_OFF_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #offLabelFactory
+		 */
+		public function get customOffLabelStyleName():String
+		{
+			return this._customOffLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customOffLabelStyleName(value:String):void
+		{
+			if(this._customOffLabelStyleName == value)
+			{
+				return;
+			}
+			this._customOffLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
@@ -2253,7 +2345,8 @@ package feathers.controls
 				offLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
-			this.offTextRenderer.styleNameList.add(this.offLabelName);
+			var offLabelStyleName:String = this._customOffLabelStyleName != null ? this._customOffLabelStyleName : this.offLabelStyleName;
+			this.offTextRenderer.styleNameList.add(offLabelStyleName);
 			this.offTextRenderer.clipRect = new Rectangle();
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
@@ -2267,7 +2360,8 @@ package feathers.controls
 				onLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.onTextRenderer = ITextRenderer(onLabelFactory());
-			this.onTextRenderer.styleNameList.add(this.onLabelName);
+			var onLabelStyleName:String = this._customOnLabelStyleName != null ? this._customOnLabelStyleName : this.onLabelStyleName;
+			this.onTextRenderer.styleNameList.add(onLabelStyleName);
 			this.onTextRenderer.clipRect = new Rectangle();
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
