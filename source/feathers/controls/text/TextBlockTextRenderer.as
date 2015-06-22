@@ -1667,7 +1667,7 @@ package feathers.controls.text
 			{
 				elementFormat = this._disabledElementFormat;
 			}
-			else if(this._stateContext)
+			else if(this._stateContext && this._elementFormatForState)
 			{
 				var currentState:String = this._stateContext.currentState;
 				if(currentState in this._elementFormatForState)
