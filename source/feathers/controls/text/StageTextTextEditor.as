@@ -1157,13 +1157,7 @@ package feathers.controls.text
 
 			if(this.textSnapshot)
 			{
-				var desktopGutterPositionOffset:Number = 0;
-				if(this._stageTextIsTextField)
-				{
-					desktopGutterPositionOffset = 2;
-				}
-				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
-				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
+				this.positionSnapshot();
 			}
 
 			super.render(support, parentAlpha);
@@ -1852,6 +1846,21 @@ package feathers.controls.text
 			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = this.actualWidth + 4;
 			this._measureTextField.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionSnapshot():void
+		{
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var desktopGutterPositionOffset:Number = 0;
+			if(this._stageTextIsTextField)
+			{
+				desktopGutterPositionOffset = 2;
+			}
+			this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
+			this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
 		}
 
 		/**
