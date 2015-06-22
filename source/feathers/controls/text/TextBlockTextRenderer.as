@@ -11,6 +11,7 @@ package feathers.controls.text
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.stageToStarling;
@@ -436,6 +437,47 @@ package feathers.controls.text
 				return;
 			}
 			this._disabledElementFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedElementFormat:ElementFormat;
+
+		/**
+		 * The font and styles used to draw the text when the
+		 * <code>stateContext</code> implements the <code>IToggle</code>
+		 * interface and it is selected. This property will be ignored if the
+		 * content is not a <code>TextElement</code> instance.
+		 *
+		 * <p>In the following example, the selected element format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.selectedElementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #stateContext
+		 * @see feathers.core.IToggle
+		 * @see #elementFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html flash.text.engine.ElementFormat
+		 */
+		public function get selectedElementFormat():ElementFormat
+		{
+			return this._selectedElementFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedElementFormat(value:ElementFormat):void
+		{
+			if(this._selectedElementFormat == value)
+			{
+				return;
+			}
+			this._selectedElementFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1663,17 +1705,22 @@ package feathers.controls.text
 				return;
 			}
 			var elementFormat:ElementFormat;
-			if(!this._isEnabled && this._disabledElementFormat)
-			{
-				elementFormat = this._disabledElementFormat;
-			}
-			else if(this._stateContext && this._elementFormatForState)
+			if(this._stateContext && this._elementFormatForState)
 			{
 				var currentState:String = this._stateContext.currentState;
 				if(currentState in this._elementFormatForState)
 				{
 					elementFormat = ElementFormat(this._elementFormatForState[currentState]);
 				}
+			}
+			if(!elementFormat && !this._isEnabled && this._disabledElementFormat)
+			{
+				elementFormat = this._disabledElementFormat;
+			}
+			if(!elementFormat && this._selectedElementFormat &&
+				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+			{
+				elementFormat = this._selectedElementFormat;
 			}
 			if(!elementFormat)
 			{
