@@ -53,7 +53,7 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-button-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-radio-label";
 		
 		/**
 		 * @copy feathers.controls.Button#STATE_UP
