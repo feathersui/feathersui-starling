@@ -168,6 +168,24 @@ package feathers.themes
 		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(3, 9, 1, 70);
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
+		
+		/**
+		 * @private
+		 * The theme's custom style name for a "quiet" button's label text renderer.
+		 */
+		protected static const THEME_STYLE_NAME_QUIET_BUTTON_LABEL:String = "metal-works-mobile-quiet-button-label";
+
+		/**
+		 * @private
+		 * The theme's custom style name for a ButtonGroup button's label text renderer.
+		 */
+		protected static const THEME_STYLE_NAME_BUTTON_GROUP_BUTTON_LABEL:String = "metal-works-mobile-button-group-button-label";
+
+		/**
+		 * @private
+		 * The theme's custom style name for a GroupedList footer's label text renderer.
+		 */
+		protected static const THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL:String = "metal-works-mobile-grouped-list-footer-content-label";
 
 		/**
 		 * @private
@@ -177,9 +195,22 @@ package feathers.themes
 
 		/**
 		 * @private
+		 * The theme's custom style name for the label text renderer of an item
+		 * renderer in a PickerList.
+		 */
+		protected static const THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER_LABEL:String = "metal-works-mobile-picker-list-item-renderer-label";
+
+		/**
+		 * @private
 		 * The theme's custom style name for item renderers in a SpinnerList.
 		 */
 		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-spinner-list-item-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the SpinnerList's item renderer's label text renderer.
+		 */
+		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL:String = "metal-works-mobile-spinner-list-item-renderer-label";
 
 		/**
 		 * @private
@@ -871,17 +902,20 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON, this.setBackButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON, this.setForwardButtonStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Button.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setButtonLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_QUIET_BUTTON_LABEL, this.setQuietButtonLabelStyles);
 
 			//button group
 			this.getStyleProviderForClass(ButtonGroup).defaultStyleFunction = this.setButtonGroupStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonGroupButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonGroupButtonStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_BUTTON_GROUP_BUTTON_LABEL, this.setButtonGroupButtonLabelStyles);
 
 			//callout
 			this.getStyleProviderForClass(Callout).defaultStyleFunction = this.setCalloutStyles;
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Check.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setCheckLabelStyles);
 
 			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
@@ -889,6 +923,11 @@ package feathers.themes
 			//grouped list (see also: item renderers)
 			this.getStyleProviderForClass(GroupedList).defaultStyleFunction = this.setGroupedListStyles;
 			this.getStyleProviderForClass(GroupedList).setFunctionForStyleName(GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST, this.setInsetGroupedListStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListMiddleItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER, this.setInsetGroupedListFirstItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER, this.setInsetGroupedListLastItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER, this.setInsetGroupedListSingleItemRendererStyles);
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
@@ -898,22 +937,8 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER, this.setGroupedListFooterRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER, this.setInsetGroupedListHeaderRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER, this.setInsetGroupedListFooterRendererStyles);
-
-			//item renderers for lists
-			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-			//the picker list has a custom item renderer name defined by the theme
-			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
-			//the spinner list has a custom item renderer name defined by the theme
-			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
-
-			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListMiddleItemRendererStyles);
-			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER, this.setInsetGroupedListFirstItemRendererStyles);
-			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER, this.setInsetGroupedListLastItemRendererStyles);
-			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER, this.setInsetGroupedListSingleItemRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL, this.setGroupedListHeaderContentLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL, this.setGroupedListFooterContentLabelStyles);
 
 			//labels
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
@@ -925,6 +950,10 @@ package feathers.themes
 
 			//list (see also: item renderers)
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
@@ -947,12 +976,15 @@ package feathers.themes
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER_LABEL, this.setPickerListItemRendererLabelStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
 
 			//radio
 			this.getStyleProviderForClass(Radio).defaultStyleFunction = this.setRadioStyles;
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Radio.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setRadioLabelStyles);
 
 			//scroll container
 			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
@@ -979,6 +1011,8 @@ package feathers.themes
 
 			//spinner list
 			this.getStyleProviderForClass(SpinnerList).defaultStyleFunction = this.setSpinnerListStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL, this.setSpinnerListItemRendererLabelStyles);
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
@@ -1000,6 +1034,8 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSimpleButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSimpleButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_OFF_LABEL, this.setToggleSwitchOffLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_ON_LABEL, this.setToggleSwitchOnLabelStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
 			
@@ -1168,14 +1204,7 @@ package feathers.themes
 		protected function setButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.darkUIElementFormat;
-			textRenderer.setElementFormatForState(Button.STATE_DISABLED, this.darkUIDisabledElementFormat);
-			textRenderer.setElementFormatForState(Button.STATE_DOWN, this.lightUIElementFormat);
-			if(textRenderer.stateContext is ToggleButton)
-			{
-				//for convenience, this function can style both a regular button
-				//and a toggle button
-				textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkUIDisabledElementFormat);
-			}
+			textRenderer.disabledElementFormat = this.darkUIDisabledElementFormat;
 		}
 
 		protected function setCallToActionButtonStyles(button:Button):void
@@ -1212,16 +1241,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
-
-			button.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			button.downLabelProperties.elementFormat = this.darkUIElementFormat;
-			button.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-			if(button is ToggleButton)
-			{
-				var toggleButton:ToggleButton = ToggleButton(button);
-				toggleButton.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
-				toggleButton.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			}
+			
+			button.customLabelStyleName = THEME_STYLE_NAME_QUIET_BUTTON_LABEL;
 
 			button.paddingTop = button.paddingBottom = this.smallGutterSize;
 			button.paddingLeft = button.paddingRight = this.gutterSize;
@@ -1229,6 +1250,22 @@ package feathers.themes
 			button.minGap = this.smallGutterSize;
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = button.minTouchHeight = this.gridSize;
+		}
+		
+		protected function setQuietButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.setElementFormatForState(Button.STATE_DOWN, this.darkUIElementFormat);
+			textRenderer.setElementFormatForState(Button.STATE_DISABLED, this.lightUIDisabledElementFormat);
+			if(textRenderer.stateContext is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.darkUIElementFormat);
+				textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.darkUIElementFormat);
+				textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.darkUIElementFormat);
+				textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkUIDisabledElementFormat);
+			}
 		}
 
 		protected function setDangerButtonStyles(button:Button):void
@@ -1311,13 +1348,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
-
-			button.defaultLabelProperties.elementFormat = this.largeUIDarkElementFormat;
-			button.disabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
-			if(button is ToggleButton)
-			{
-				ToggleButton(button).selectedDisabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
-			}
+			
+			button.customLabelStyleName = THEME_STYLE_NAME_BUTTON_GROUP_BUTTON_LABEL;
 
 			button.paddingTop = this.smallGutterSize;
 			button.paddingBottom = this.smallGutterSize;
@@ -1329,6 +1361,12 @@ package feathers.themes
 			button.minHeight = this.gridSize;
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
+		}
+		
+		protected function setButtonGroupButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeUIDarkElementFormat;
+			textRenderer.disabledElementFormat = this.largeUIDarkDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1381,16 +1419,18 @@ package feathers.themes
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
-			check.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			check.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-
 			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
 			check.gap = this.smallGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
 			check.minTouchWidth = this.gridSize;
 			check.minTouchHeight = this.gridSize;
+		}
+
+		protected function setCheckLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1422,8 +1462,6 @@ package feathers.themes
 			renderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
-			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
-			renderer.contentLabelProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
@@ -1435,15 +1473,27 @@ package feathers.themes
 		protected function setGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			renderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_FOOTER_BACKGROUND_COLOR);
+			
+			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
-			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
-			renderer.contentLabelProperties.disabledElementFormat = this.disabledElementFormat;
 			renderer.paddingTop = renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
 
 			renderer.contentLoaderFactory = this.imageLoaderFactory;
+		}
+		
+		protected function setGroupedListHeaderContentLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
+		}
+
+		protected function setGroupedListFooterContentLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setInsetGroupedListStyles(list:GroupedList):void
@@ -1477,11 +1527,6 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
-
-			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
-			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.defaultSelectedLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
@@ -1528,8 +1573,6 @@ package feathers.themes
 			renderer.backgroundSkin = defaultSkin;
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
-			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
-			renderer.contentLabelProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1546,9 +1589,9 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			renderer.backgroundSkin = defaultSkin;
 
+			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
+
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
-			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
-			renderer.contentLabelProperties.disabledElementFormat = this.disabledElementFormat;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1887,6 +1930,8 @@ package feathers.themes
 			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
 			defaultIcon.alpha = 0;
 			renderer.defaultIcon = defaultIcon;
+			
+			renderer.customLabelStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER_LABEL;
 
 			renderer.itemHasIcon = false;
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
@@ -1904,6 +1949,13 @@ package feathers.themes
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
 			renderer.minTouchHeight = this.gridSize;
+		}
+
+		protected function setPickerListItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
 		}
 
 	//-------------------------
@@ -1985,16 +2037,18 @@ package feathers.themes
 			};
 			radio.stateToIconFunction = iconSelector.updateValue;
 
-			radio.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			radio.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-			radio.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-
 			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
 			radio.gap = this.smallGutterSize;
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;
 			radio.minTouchWidth = this.gridSize;
 			radio.minTouchHeight = this.gridSize;
+		}
+		
+		protected function setRadioLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -2189,9 +2243,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
-
-			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
+			
+			renderer.customLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
@@ -2211,6 +2264,12 @@ package feathers.themes
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
+		}
+		
+		protected function setSpinnerListItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -2238,11 +2297,6 @@ package feathers.themes
 
 			var selectedDisabledSkin:Scale9Image = new Scale9Image(this.tabSelectedDisabledSkinTextures, this.scale);
 			tab.selectedDisabledSkin = selectedDisabledSkin;
-
-			tab.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			tab.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
-			tab.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-			tab.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 
 			tab.paddingTop = this.smallGutterSize;
 			tab.paddingBottom = this.smallGutterSize;
@@ -2341,10 +2395,6 @@ package feathers.themes
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
-
-			toggle.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			toggle.onLabelProperties.elementFormat = this.selectedUIElementFormat;
-			toggle.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 		}
 
 		//see Shared section for thumb styles
@@ -2362,6 +2412,18 @@ package feathers.themes
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 			track.hasLabelTextRenderer = false;
+		}
+
+		protected function setToggleSwitchOffLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
+		}
+		
+		protected function setToggleSwitchOnLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.selectedUIElementFormat;
+			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
 	//-------------------------
