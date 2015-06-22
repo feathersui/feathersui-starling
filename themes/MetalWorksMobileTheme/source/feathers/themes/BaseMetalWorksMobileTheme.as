@@ -183,6 +183,12 @@ package feathers.themes
 
 		/**
 		 * @private
+		 * The theme's custom style name for a tab's label text renderer.
+		 */
+		protected static const THEME_STYLE_NAME_TAB_LABEL:String = "metal-works-mobile-tab-label";
+
+		/**
+		 * @private
 		 * The theme's custom style name for a GroupedList footer's label text renderer.
 		 */
 		protected static const THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL:String = "metal-works-mobile-grouped-list-footer-content-label";
@@ -1017,6 +1023,7 @@ package feathers.themes
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, this.setTabStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_TAB_LABEL, this.setTabLabelStyles);
 
 			//text input
 			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
@@ -1255,15 +1262,13 @@ package feathers.themes
 		protected function setQuietButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.selectedElementFormat = this.darkUIElementFormat;
 			textRenderer.setElementFormatForState(Button.STATE_DOWN, this.darkUIElementFormat);
 			textRenderer.setElementFormatForState(Button.STATE_DISABLED, this.lightUIDisabledElementFormat);
 			if(textRenderer.stateContext is ToggleButton)
 			{
 				//for convenience, this function can style both a regular button
 				//and a toggle button
-				textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.darkUIElementFormat);
-				textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.darkUIElementFormat);
-				textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.darkUIElementFormat);
 				textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkUIDisabledElementFormat);
 			}
 		}
@@ -1713,36 +1718,25 @@ package feathers.themes
 		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_UP, this.largeLightElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER, this.largeLightElementFormat);
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
+			textRenderer.selectedElementFormat = this.largeDarkElementFormat;
 			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED, this.largeDisabledElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.largeDarkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.largeDarkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.largeDarkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.largeDisabledElementFormat);
 		}
 
 		protected function setItemRendererAccessoryLabelRendererStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
+			textRenderer.selectedElementFormat = this.darkElementFormat;
 			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED, this.disabledElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.disabledElementFormat);
 		}
 
 		protected function setItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
+			textRenderer.selectedElementFormat = this.darkElementFormat;
 			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED, this.disabledElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_UP_AND_SELECTED, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_HOVER_AND_SELECTED, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN_AND_SELECTED, this.darkElementFormat);
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.disabledElementFormat);
 		}
 
 	//-------------------------
@@ -2297,6 +2291,8 @@ package feathers.themes
 
 			var selectedDisabledSkin:Scale9Image = new Scale9Image(this.tabSelectedDisabledSkinTextures, this.scale);
 			tab.selectedDisabledSkin = selectedDisabledSkin;
+			
+			tab.customLabelStyleName = THEME_STYLE_NAME_TAB_LABEL;
 
 			tab.paddingTop = this.smallGutterSize;
 			tab.paddingBottom = this.smallGutterSize;
@@ -2306,6 +2302,13 @@ package feathers.themes
 			tab.minGap = this.smallGutterSize;
 			tab.minWidth = tab.minHeight = this.gridSize;
 			tab.minTouchWidth = tab.minTouchHeight = this.gridSize;
+		}
+
+		protected function setTabLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightUIElementFormat;
+			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
+			textRenderer.selectedElementFormat = this.darkUIElementFormat;
 		}
 
 	//-------------------------
