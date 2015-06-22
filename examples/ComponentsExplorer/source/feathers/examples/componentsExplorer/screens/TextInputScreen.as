@@ -3,6 +3,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
@@ -26,6 +27,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _passwordInput:TextInput;
 		private var _notEditableInput:TextInput;
 		private var _searchInput:TextInput;
+		private var _textArea:TextArea;
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
@@ -62,6 +64,9 @@ package feathers.examples.componentsExplorer.screens
 			this._notEditableInput.text = "Not Editable";
 			this._notEditableInput.isEditable = false;
 			this.addChild(this._notEditableInput);
+
+			this._textArea = new TextArea();
+			this.addChild(this._textArea);
 
 			this.headerFactory = this.customHeaderFactory;
 
