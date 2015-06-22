@@ -175,6 +175,30 @@ package feathers.controls
 	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the display object's state changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
+	 * 
+	 * @see #currentState
+	 */
+	[Event(name="stateChange",type="starling.events.Event")]
+
+	/**
 	 * A text entry control that allows users to enter and edit a single line of
 	 * uniformly-formatted text.
 	 *
@@ -224,6 +248,22 @@ package feathers.controls
 		 * The <code>TextInput</code> is enabled and has focus.
 		 */
 		public static const STATE_FOCUSED:String = "focused";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the text
+		 * editor.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR:String = "feathers-text-input-text-editor";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * prompt text renderer.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_PROMPT:String = "feathers-text-input-prompt";
 
 		/**
 		 * An alternate style name to use with <code>TextInput</code> to allow a
@@ -340,6 +380,28 @@ package feathers.controls
 		protected var currentIcon:DisplayObject;
 
 		/**
+		 * The value added to the <code>styleNameList</code> of the text editor.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the text editor style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR</code>.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var textEditorStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the prompt text
+		 * renderer. This variable is <code>protected</code> so that sub-classes
+		 * can customize the prompt text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_PROMPT</code>.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var promptStyleName:String = DEFAULT_CHILD_STYLE_NAME_PROMPT;
+
+		/**
 		 * @private
 		 */
 		protected var _textEditorHasFocus:Boolean = false;
@@ -400,11 +462,11 @@ package feathers.controls
 			super.isEnabled = value;
 			if(this._isEnabled)
 			{
-				this.currentState = this.hasFocus ? STATE_FOCUSED : STATE_ENABLED;
+				this.changeState(this.hasFocus ? STATE_FOCUSED : STATE_ENABLED);
 			}
 			else
 			{
-				this.currentState = STATE_DISABLED;
+				this.changeState(STATE_DISABLED);
 			}
 		}
 
@@ -434,30 +496,13 @@ package feathers.controls
 		protected var _currentState:String = STATE_ENABLED;
 
 		/**
-		 * The current state of the input.
+		 * The current state of the text input.
 		 *
-		 * <p>For internal use in subclasses.</p>
+		 * @see #event:stateChange feathers.events.FeathersEventType.STATE_CHANGE
 		 */
-		protected function get currentState():String
+		public function get currentState():String
 		{
 			return this._currentState;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set currentState(value:String):void
-		{
-			if(this._currentState == value)
-			{
-				return;
-			}
-			if(this.stateNames.indexOf(value) < 0)
-			{
-				throw new ArgumentError("Invalid state: " + value + ".");
-			}
-			this._currentState = value;
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -774,6 +819,52 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _customTextEditorStyleName:String;
+
+		/**
+		 * A style name to add to the text input's text editor sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * text inputs.
+		 *
+		 * <p>In the following example, a custom text editor style name is
+		 * passed to the text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.customTextEditorStyleName = "my-custom-text-input-text-editor";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( StageTextTextEditor ).setFunctionForStyleName( "my-custom-text-input-text-editor", setCustomTextInputTextEditorStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #textEditorFactory
+		 */
+		public function get customTextEditorStyleName():String
+		{
+			return this._customTextEditorStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customTextEditorStyleName(value:String):void
+		{
+			if(this._customTextEditorStyleName == value)
+			{
+				return;
+			}
+			this._customTextEditorStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _promptFactory:Function;
 
 		/**
@@ -824,6 +915,52 @@ package feathers.controls
 			}
 			this._promptFactory = value;
 			this.invalidate(INVALIDATION_FLAG_PROMPT_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customPromptStyleName:String;
+
+		/**
+		 * A style name to add to the text input's prompt text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different text inputs.
+		 *
+		 * <p>In the following example, a custom prompt text renderer style name
+		 * is passed to the text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.customPromptStyleName = "my-custom-text-input-prompt";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-text-input-prompt", setCustomTextInputPromptStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_PROMPT
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #promptFactory
+		 */
+		public function get customPromptStyleName():String
+		{
+			return this._customPromptStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customPromptStyleName(value:String):void
+		{
+			if(this._customPromptStyleName == value)
+			{
+				return;
+			}
+			this._customPromptStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
 		/**
@@ -1937,6 +2074,8 @@ package feathers.controls
 
 			var factory:Function = this._textEditorFactory != null ? this._textEditorFactory : FeathersControl.defaultTextEditorFactory;
 			this.textEditor = ITextEditor(factory());
+			var textEditorStyleName:String = this._customTextEditorStyleName != null ? this._customTextEditorStyleName : this.textEditorStyleName;
+			this.textEditor.styleNameList.add(textEditorStyleName);
 			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
 			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
@@ -1962,7 +2101,26 @@ package feathers.controls
 
 			var factory:Function = this._promptFactory != null ? this._promptFactory : FeathersControl.defaultTextRendererFactory;
 			this.promptTextRenderer = ITextRenderer(factory());
+			var promptStyleName:String = this._customPromptStyleName != null ? this._customPromptStyleName : this.promptStyleName;
+			this.promptTextRenderer.styleNameList.add(promptStyleName);
 			this.addChild(DisplayObject(this.promptTextRenderer));
+		}
+
+		/**
+		 * @private
+		 */
+		protected function changeState(state:String):void
+		{
+			if(this._currentState == state)
+			{
+				return;
+			}
+			if(this.stateNames.indexOf(state) < 0)
+			{
+				throw new ArgumentError("Invalid state: " + state + ".");
+			}
+			this._currentState = state;
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -2413,7 +2571,7 @@ package feathers.controls
 				return;
 			}
 			this._textEditorHasFocus = true;
-			this.currentState = STATE_FOCUSED;
+			this.changeState(STATE_FOCUSED);
 			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
 			{
 				//if setFocus() was called manually, we need to notify the focus
@@ -2434,7 +2592,7 @@ package feathers.controls
 		protected function textEditor_focusOutHandler(event:Event):void
 		{
 			this._textEditorHasFocus = false;
-			this.currentState = this._isEnabled ? STATE_ENABLED : STATE_DISABLED;
+			this.changeState(this._isEnabled ? STATE_ENABLED : STATE_DISABLED);
 			if(this._focusManager && this._focusManager.focus === this)
 			{
 				//if clearFocus() was called manually, we need to notify the
