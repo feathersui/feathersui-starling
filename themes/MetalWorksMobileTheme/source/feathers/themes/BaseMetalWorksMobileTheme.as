@@ -62,6 +62,7 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.StageTextTextEditor;
+	import feathers.controls.text.StageTextTextEditorViewPort;
 	import feathers.controls.text.TextBlockTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.core.FeathersControl;
@@ -259,6 +260,12 @@ package feathers.themes
 		 * The theme's custom style name for the maximum track of a vertical slider.
 		 */
 		protected static const THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK:String = "metal-works-mobile-vertical-slider-maximum-track";
+		
+		/**
+		 * @private
+		 * The theme's custom style name for the text editor of the NumericStepper's TextInput.
+		 */
+		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR:String = "metal-works-mobile-numeric-stepper-text-input-editor";
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -276,6 +283,15 @@ package feathers.themes
 		protected static function textEditorFactory():StageTextTextEditor
 		{
 			return new StageTextTextEditor();
+		}
+
+		/**
+		 * The text editor factory for a TextArea creates a
+		 * StageTextTextEditorViewPort.
+		 */
+		protected static function textAreaTextEditorFactory():StageTextTextEditorViewPort
+		{
+			return new StageTextTextEditorViewPort();
 		}
 
 		/**
@@ -458,6 +474,11 @@ package feathers.themes
 		 * An ElementFormat used for Header components.
 		 */
 		protected var headerElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat used for Header components when disabled.
+		 */
+		protected var headerDisabledElementFormat:ElementFormat;
 
 		/**
 		 * An ElementFormat with a dark tint meant for UI controls.
@@ -759,6 +780,7 @@ package feathers.themes
 			this.boldFontDescription = new FontDescription(FONT_NAME, FontWeight.BOLD, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
 
 			this.headerElementFormat = new ElementFormat(this.boldFontDescription, this.extraLargeFontSize, LIGHT_TEXT_COLOR);
+			this.headerDisabledElementFormat = new ElementFormat(this.boldFontDescription, this.extraLargeFontSize, DISABLED_TEXT_COLOR);
 
 			this.darkUIElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, DARK_TEXT_COLOR);
 			this.lightUIElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, LIGHT_TEXT_COLOR);
@@ -937,6 +959,7 @@ package feathers.themes
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleProperties);
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
@@ -964,6 +987,7 @@ package feathers.themes
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT, this.setNumericStepperTextInputStyles);
+			this.getStyleProviderForClass(TextBlockTextEditor).setFunctionForStyleName(THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR, this.setNumericStepperTextInputEditorStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON, this.setNumericStepperButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON, this.setNumericStepperButtonStyles);
 
@@ -980,6 +1004,7 @@ package feathers.themes
 
 			//picker list (see also: list and item renderers)
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListPopUpListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
@@ -1028,9 +1053,12 @@ package feathers.themes
 			//text input
 			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_PROMPT, this.setTextInputPromptStyles);
+			this.getStyleProviderForClass(StageTextTextEditor).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextInputTextEditorStyles);
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
+			this.getStyleProviderForClass(StageTextTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -1623,7 +1651,12 @@ package feathers.themes
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
-			header.titleProperties.elementFormat = this.headerElementFormat;
+		}
+		
+		protected function setHeaderTitleProperties(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.headerElementFormat;
+			textRenderer.disabledElementFormat = this.headerDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1767,15 +1800,21 @@ package feathers.themes
 			backgroundFocusedSkin.height = this.controlSize;
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 
+			input.textEditorFactory = stepperTextEditorFactory;
+			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR;
+
 			input.minWidth = input.minHeight = this.controlSize;
 			input.minTouchWidth = input.minTouchHeight = this.gridSize;
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
-			input.textEditorFactory = stepperTextEditorFactory;
-			input.textEditorProperties.elementFormat = this.lightUIElementFormat;
-			input.textEditorProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
-			input.textEditorProperties.textAlign = TextBlockTextEditor.TEXT_ALIGN_CENTER;
+		}
+		
+		protected function setNumericStepperTextInputEditorStyles(textEditor:TextBlockTextEditor):void
+		{
+			textEditor.elementFormat = this.lightUIElementFormat;
+			textEditor.disabledElementFormat = this.lightUIDisabledElementFormat;
+			textEditor.textAlign = TextBlockTextEditor.TEXT_ALIGN_CENTER;
 		}
 
 		protected function setNumericStepperButtonStyles(button:Button):void
@@ -1821,8 +1860,6 @@ package feathers.themes
 			header.padding = this.smallGutterSize;
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
-
-			header.titleProperties.elementFormat = this.headerElementFormat;
 		}
 
 	//-------------------------
@@ -1857,31 +1894,34 @@ package feathers.themes
 					centerStage.marginLeft = this.gutterSize;
 				list.popUpContentManager = centerStage;
 			}
-
+		}
+		
+		protected function setPickerListPopUpListStyles(list:List):void
+		{
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 			layout.useVirtualLayout = true;
 			layout.gap = 0;
 			layout.padding = 0;
-			list.listProperties.layout = layout;
-			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
+			list.layout = layout;
+			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				list.listProperties.minWidth = this.popUpFillSize;
-				list.listProperties.maxHeight = this.popUpFillSize;
+				list.minWidth = this.popUpFillSize;
+				list.maxHeight = this.popUpFillSize;
 			}
 			else
 			{
 				var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
 				backgroundSkin.width = this.gridSize;
 				backgroundSkin.height = this.gridSize;
-				list.listProperties.backgroundSkin = backgroundSkin;
-				list.listProperties.padding = this.smallGutterSize;
+				list.backgroundSkin = backgroundSkin;
+				list.padding = this.smallGutterSize;
 			}
 
-			list.listProperties.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
+			list.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
@@ -2330,10 +2370,17 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
-
-			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
-			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
-			textArea.textEditorProperties.padding = this.smallGutterSize;
+			
+			textArea.textEditorFactory = textAreaTextEditorFactory;
+		}
+		
+		protected function setTextAreaTextEditorStyles(textEditor:StageTextTextEditorViewPort):void
+		{
+			textEditor.fontFamily = "Helvetica";
+			textEditor.fontSize = this.inputFontSize;
+			textEditor.color = LIGHT_TEXT_COLOR;
+			textEditor.disabledColor = DISABLED_TEXT_COLOR;
+			textEditor.padding = this.smallGutterSize;
 		}
 
 	//-------------------------
@@ -2360,19 +2407,25 @@ package feathers.themes
 			input.minTouchHeight = this.gridSize;
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
-
-			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = this.inputFontSize;
-			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
-			input.textEditorProperties.disabledColor = DISABLED_TEXT_COLOR;
-
-			input.promptProperties.elementFormat = this.lightElementFormat;
-			input.promptProperties.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
 		{
 			this.setBaseTextInputStyles(input);
+		}
+		
+		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
+		{
+			textEditor.fontFamily = "Helvetica";
+			textEditor.fontSize = this.inputFontSize;
+			textEditor.color = LIGHT_TEXT_COLOR;
+			textEditor.disabledColor = DISABLED_TEXT_COLOR;
+		}
+
+		protected function setTextInputPromptStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setSearchTextInputStyles(input:TextInput):void
