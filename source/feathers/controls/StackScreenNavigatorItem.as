@@ -34,15 +34,6 @@ package feathers.controls
 	 * item.addPopEvent( Event.COMPLETE );
 	 * navigator.addScreen( "settings", item );</listing>
 	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
-	 *
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see feathers.controls.StackScreenNavigator
 	 */
