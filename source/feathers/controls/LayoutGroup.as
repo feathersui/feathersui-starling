@@ -18,7 +18,6 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 

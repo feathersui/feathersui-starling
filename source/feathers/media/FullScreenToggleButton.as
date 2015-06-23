@@ -8,16 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.ToggleButton;
-	import feathers.core.ToggleGroup;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.display.Stage;
-
-	import flash.display.StageDisplayState;
-	import flash.events.FullScreenEvent;
-
-	import starling.core.Starling;
 	import starling.events.Event;
 
 	/**

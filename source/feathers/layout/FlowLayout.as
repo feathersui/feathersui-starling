@@ -10,7 +10,6 @@ package feathers.layout
 	import feathers.core.IValidating;
 
 	import flash.errors.IllegalOperationError;
-
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;

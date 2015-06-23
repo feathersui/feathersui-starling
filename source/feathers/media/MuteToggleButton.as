@@ -14,11 +14,7 @@ package feathers.media
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.geom.Point;
-
 	import flash.media.SoundTransform;
-
-	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;

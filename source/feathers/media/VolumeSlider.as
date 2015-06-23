@@ -9,7 +9,6 @@ package feathers.media
 {
 	import feathers.controls.Slider;
 	import feathers.events.MediaPlayerEventType;
-	import feathers.media.VolumeSlider;
 	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundTransform;

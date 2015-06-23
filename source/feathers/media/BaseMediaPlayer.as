@@ -13,7 +13,6 @@ package feathers.media
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.errors.AbstractClassError;
-
 	import starling.events.Event;
 
 	/**
