@@ -11,7 +11,6 @@ package feathers.media
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.media.SoundChannel;
 	import flash.media.SoundMixer;
 	import flash.utils.ByteArray;
 
