@@ -40,6 +40,7 @@ package feathers.controls.text
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -1127,6 +1128,12 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
+			//setting the editable property of a StageText to false seems to be
+			//ignored on Android, so this is the workaround
+			if(!this._isEditable && SystemUtil.platform === "AND")
+			{
+				return;
+			}
 			if(this.stage && !this.stageText.stage)
 			{
 				this.stageText.stage = Starling.current.nativeStage;
