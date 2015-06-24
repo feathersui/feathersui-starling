@@ -60,6 +60,18 @@
 		<property name="web" value=""/>
 		<property name="help.url.search" value=""/>
 		<delete dir="${output.path}"/>
+
+		<loadfile srcFile="${source.root}/feathers/FEATHERS_VERSION.as" property="version.test">
+			<filterchain>
+				<linecontains>
+					<contains value="public const FEATHERS_VERSION:String"/>
+				</linecontains>
+				<tokenfilter>
+					<containsstring contains="${feathers.version}"/>
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+		<fail unless="version.test" message="feathers.FEATHERS_VERSION contains incorrect version string."/>
 	</target>
 
 	<target name="-cleanup">
