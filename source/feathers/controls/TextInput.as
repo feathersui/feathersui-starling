@@ -22,7 +22,6 @@ package feathers.controls
 	import feathers.skins.StateValueSelector;
 
 	import flash.display.InteractiveObject;
-
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;

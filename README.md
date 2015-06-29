@@ -1,4 +1,4 @@
-# Feathers 2.2 PRERELEASE [![Build Status](https://travis-ci.org/joshtynjala/feathers.svg?branch=master)](https://travis-ci.org/joshtynjala/feathers)
+# Feathers 2.2.0-beta [![Build Status](https://travis-ci.org/joshtynjala/feathers.svg?branch=master)](https://travis-ci.org/joshtynjala/feathers)
 
 ---
 
@@ -11,8 +11,8 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Help](http://feathersui.com/help)
-* [API Reference](http://feathersui.com/api-reference/)
+* [Help](http://feathersui.com/beta/help/)
+* [Beta API Reference](http://feathersui.com/beta/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/joshtynjala/feathers)
 
@@ -24,10 +24,10 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 
 ## Minimum Requirements
 
-* Adobe AIR 17.0 or newer for mobile apps
+* Adobe AIR 18.0 or newer for mobile apps
 * Adobe AIR 3.5 or newer for desktop apps
 * Adobe Flash Player 11.5 or newer for web browser apps
-* Starling Framework from Github
+* Starling Framework 1.7
 
 ## Downloads
 

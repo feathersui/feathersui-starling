@@ -40,6 +40,7 @@ package feathers.controls.text
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -204,11 +205,6 @@ package feathers.controls.text
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * @private
-		 */
-		protected static const INVALIDATION_FLAG_POSITION:String = "position";
-
-		/**
 		 * Constructor.
 		 */
 		public function StageTextTextEditor()
@@ -216,36 +212,6 @@ package feathers.controls.text
 			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os);
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		override public function set x(value:Number):void
-		{
-			if(super.x == value)
-			{
-				return;
-			}
-			super.x = value;
-			//we need to know when the position changes to change the position
-			//of the StageText instance.
-			this.invalidate(INVALIDATION_FLAG_POSITION);
-		}
-
-		/**
-		 * @private
-		 */
-		override public function set y(value:Number):void
-		{
-			if(super.y == value)
-			{
-				return;
-			}
-			super.y = value;
-			//we need to know when the position changes to change the position
-			//of the StageText instance.
-			this.invalidate(INVALIDATION_FLAG_POSITION);
 		}
 
 		/**
@@ -1135,7 +1101,13 @@ package feathers.controls.text
 					this.validate();
 				}
 			}
-			this.refreshViewPortAndFontSize();
+			
+			//we'll skip this if the text field isn't visible to avoid running
+			//that code every frame.
+			if(this.stageText && this.stageText.visible)
+			{
+				this.refreshViewPortAndFontSize();
+			}
 
 			if(this.textSnapshot)
 			{
@@ -1156,6 +1128,12 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
+			//setting the editable property of a StageText to false seems to be
+			//ignored on Android, so this is the workaround
+			if(!this._isEditable && SystemUtil.platform === "AND")
+			{
+				return;
+			}
 			if(this.stage && !this.stageText.stage)
 			{
 				this.stageText.stage = Starling.current.nativeStage;
@@ -1450,10 +1428,9 @@ package feathers.controls.text
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			var positionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_POSITION);
 			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 
-			if(positionInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
+			if(sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.refreshViewPortAndFontSize();
 				this.refreshMeasureTextFieldDimensions()
@@ -1762,9 +1739,9 @@ package feathers.controls.text
 				desktopGutterPositionOffset = 2;
 				desktopGutterDimensionsOffset = 4;
 			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			if(this._stageTextHasFocus || this._updateSnapshotOnScaleChange)
 			{
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 				var smallerGlobalScale:Number = globalScaleX;

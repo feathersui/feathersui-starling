@@ -31,6 +31,9 @@ package feathers.examples.gallery
 
 		public function Main()
 		{
+			//set up the theme right away!
+			//this is an *extended* version of MetalWorksMobileTheme
+			new GalleryTheme();
 			super();
 		}
 

@@ -12,6 +12,7 @@ package feathers.media
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
@@ -55,7 +56,9 @@ package feathers.media
 
 	/**
 	 * Dispatched when the media player changes to the full-screen display mode
-	 * or back to the normal display mode.
+	 * or back to the normal display mode. The value of the
+	 * <code>isFullScreen</code> property indicates if the media player is
+	 * displayed in full screen mode or normally. 
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -160,10 +163,23 @@ package feathers.media
 	/**
 	 * Controls playback of video with a <code>flash.net.NetStream</code> object.
 	 *
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
+	 *
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
 	 */
 	public class VideoPlayer extends BaseTimedMediaPlayer implements IVideoPlayer
 	{
+		/**
+		 * @private
+		 */
+		protected static const PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:String = "NetStream.Play.Complete";
 		/**
 		 * @private
 		 */
@@ -381,6 +397,18 @@ package feathers.media
 				return;
 			}
 			this._videoSource = value;
+			//reset the current and total time if we were playing a different
+			//video previously
+			if(this._currentTime !== 0)
+			{
+				this._currentTime = 0;
+				this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
+			}
+			if(this._totalTime !== 0)
+			{
+				this._totalTime = 0;
+				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+			}
 			if(this._autoPlay)
 			{
 				this.play();
@@ -422,7 +450,11 @@ package feathers.media
 		protected var _isFullScreen:Boolean = false;
 
 		/**
-		 * Indicates if the video player is currently full screen or not.
+		 * Indicates if the video player is currently full screen or not. When
+		 * the player is full screen, it will be displayed as a modal pop-up
+		 * that fills the entire Starling stage. Depending on the value of
+		 * <code>fullScreenDisplayState</code>, it may also change the value of
+		 * the native stage's <code>displayState</code> property.
 		 * 
 		 * @see #toggleFullScreen()
 		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
@@ -435,12 +467,74 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _normalDisplayState:String = StageDisplayState.NORMAL;
+
+		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen,normal")]
+		/**
+		 * When the video player is displayed normally (in other words, when it
+		 * isn't full-screen), determines the value of the native stage's
+		 * <code>displayState</code> property.
+		 * 
+		 * <p>Using this property, it is possible to set the native stage's
+		 * <code>displayState</code> property to
+		 * <code>StageDisplayState.FULL_SCREEN_INTERACTIVE</code> or
+		 * <code>StageDisplayState.FULL_SCREEN</code> when the video player
+		 * is not in full screen mode. This might be useful for mobile apps that
+		 * should always display in full screen, while allowing a video player
+		 * to toggle between filling the entire stage and displaying at a
+		 * smaller size within its parent's layout.</p>
+		 *
+		 * <p>In the following example, the display state for normal mode
+		 * is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.fullScreenDisplayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;</listing>
+		 *
+		 * @default StageDisplayState.NORMAL
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN StageDisplayState.FULL_SCREEN
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#NORMAL StageDisplayState.NORMAL
+		 * @see #fullScreenDisplayState
+		 */
+		public function get normalDisplayState():String
+		{
+			return this._normalDisplayState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set normalDisplayState(value:String):void
+		{
+			if(this._normalDisplayState == value)
+			{
+				return;
+			}
+			this._normalDisplayState = value;
+			if(!this._isFullScreen && this.stage)
+			{
+				var starling:Starling = stageToStarling(this.stage);
+				var nativeStage:Stage = starling.nativeStage;
+				nativeStage.displayState = this._normalDisplayState;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _fullScreenDisplayState:String = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 
-		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen")]
+		[Inspectable(type="String",enumeration="fullScreenInteractive,fullScreen,normal")]
 		/**
 		 * When the video player is displayed full-screen, determines the value
 		 * of the native stage's <code>displayState</code> property.
+		 *
+		 * <p>Using this property, it is possible to set the native stage's
+		 * <code>displayState</code> property to
+		 * <code>StageDisplayState.NORMAL</code> when the video player is in
+		 * full screen mode. The video player will still be displayed as a modal
+		 * pop-up that fills the entire Starling stage, in this situation.</p>
 		 * 
 		 * <p>In the following example, the display state for full-screen mode
 		 * is changed:</p>
@@ -452,6 +546,8 @@ package feathers.media
 		 * 
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN StageDisplayState.FULL_SCREEN
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#NORMAL StageDisplayState.NORMAL
+		 * @see #normalDisplayState
 		 */
 		public function get fullScreenDisplayState():String
 		{
@@ -468,9 +564,10 @@ package feathers.media
 				return;
 			}
 			this._fullScreenDisplayState = value;
-			if(this._isFullScreen)
+			if(this._isFullScreen && this.stage)
 			{
-				var nativeStage:Stage = Starling.current.nativeStage;
+				var starling:Starling = stageToStarling(this.stage);
+				var nativeStage:Stage = starling.nativeStage;
 				nativeStage.displayState = this._fullScreenDisplayState;
 			}
 		}
@@ -531,6 +628,8 @@ package feathers.media
 			}
 			if(this._netStream)
 			{
+				this._netStream.removeEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
+				this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 				this._netStream.close();
 				this._netStream = null;
 				this._netConnection = null;
@@ -541,7 +640,18 @@ package feathers.media
 		/**
 		 * Goes to full screen or returns to normal display.
 		 * 
+		 * <p> When the player is full screen, it will be displayed as a modal
+		 * pop-up that fills the entire Starling stage. Depending on the value
+		 * of <code>fullScreenDisplayState</code>, it may also change the value
+		 * of the native stage's <code>displayState</code> property.</p>
+		 * 
+		 * <p>When the player is displaying normally (in other words, when it is
+		 * not full screen), it will be displayed in its parent's layout like
+		 * any other Feathers component.</p>
+		 * 
 		 * @see #isFullScreen
+		 * @see #fullScreenDisplayState
+		 * @see #normalDisplayState
 		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
 		public function toggleFullScreen():void
@@ -550,7 +660,8 @@ package feathers.media
 			{
 				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.")
 			}
-			var nativeStage:Stage = Starling.current.nativeStage;
+			var starling:Starling = stageToStarling(this.stage);
+			var nativeStage:Stage = starling.nativeStage;
 			var oldIgnoreDisplayListEvents:Boolean = this._ignoreDisplayListEvents;
 			this._ignoreDisplayListEvents = true;
 			if(this._isFullScreen)
@@ -563,7 +674,7 @@ package feathers.media
 					var child:DisplayObject = this._fullScreenContainer.getChildAt(0);
 					this.addChild(child);
 				}
-				nativeStage.displayState = StageDisplayState.NORMAL;
+				nativeStage.displayState = this._normalDisplayState;
 			}
 			else
 			{
@@ -601,7 +712,7 @@ package feathers.media
 				this._netConnection = new NetConnection();
 				this._netConnection.connect(null);
 				this._netStream = new NetStream(this._netConnection);
-				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData);
+				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData, this.netStream_onPlayStatus);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 				this._netStream.addEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			}
@@ -618,13 +729,13 @@ package feathers.media
 			{
 				this._isWaitingForTextureReady = true;
 				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, videoTexture_onComplete);
+				this._texture.root.onRestore = videoTexture_onRestore;
 				//don't call play() until after Texture.fromNetStream() because
 				//the texture needs to be created first.
 				//however, we need to call play() even though a video texture
 				//isn't ready to be rendered yet.
 				this._netStream.play(this._videoSource);
 			}
-			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 		}
 
 		/**
@@ -657,11 +768,41 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function videoTexture_onRestore():void
+		{
+			this.pauseMedia();
+			this._isWaitingForTextureReady = true;
+			this._texture.root.attachNetStream(this._netStream, videoTexture_onRestoreComplete);
+			//this will start playback from the beginning again, but we can seek
+			//back to the current time once the video texture is ready.
+			this._netStream.play(this._videoSource);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function videoTexture_onComplete():void
 		{
 			this._isWaitingForTextureReady = false;
-			//the texture is ready to be displayed.
+			//the texture is ready to be displayed
 			this.dispatchEventWith(Event.READY);
+			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function videoTexture_onRestoreComplete():void
+		{
+			//seek back to the video's current time from when the context was
+			//was lost. we couldn't seek when we started playing the video
+			//again. we had to wait until this callback.
+			this.seek(this._currentTime);
+			if(!this._isPlaying)
+			{
+				this.pauseMedia();
+			}
+			this.videoTexture_onComplete();
 		}
 
 		/**
@@ -672,6 +813,27 @@ package feathers.media
 			this.dispatchEventWith(MediaPlayerEventType.DIMENSIONS_CHANGE);
 			this._totalTime = metadata.duration;
 			this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function netStream_onPlayStatus(data:Object):void
+		{
+			var code:String = data.code as String;
+			switch(code)
+			{
+				case PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:
+				{
+					//the video has reached the end
+					if(this._isPlaying)
+					{
+						this.stop();
+						this.dispatchEventWith(Event.COMPLETE);
+					}
+					break;
+				}
+			}
 		}
 
 		/**
@@ -697,14 +859,24 @@ package feathers.media
 				}
 				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
 				{
-					if(this._isPlaying)
-					{
-						this.stop();
-					}
+					//on iOS when context is lost, the NetStream will stop
+					//automatically, and its time property will reset to 0.
+					//we want to seek to the correct time after the texture is
+					//restored, so we don't want _currentTime to get changed to
+					//0 when the Event.ENTER_FRAME listener is called one last
+					//time.
+					this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 					break;
 				}
 				case NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:
 				{
+					if(this._isWaitingForTextureReady)
+					{
+						//ignore until the texture is ready because we might
+						//be waiting to seek once the texture is ready, and this
+						//will screw up our current time.
+						return;
+					}
 					this._currentTime = this._netStream.time;
 					this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 					break;
@@ -740,9 +912,10 @@ package feathers.media
 
 dynamic class VideoPlayerNetStreamClient
 {
-	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function)
+	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function, onPlayStatusCallback:Function)
 	{
 		this.onMetaDataCallback = onMetaDataCallback;
+		this.onPlayStatusCallback = onPlayStatusCallback;
 	}
 	
 	public var onMetaDataCallback:Function;
@@ -750,5 +923,15 @@ dynamic class VideoPlayerNetStreamClient
 	public function onMetaData(metadata:Object):void
 	{
 		this.onMetaDataCallback(metadata);
+	}
+
+	public var onPlayStatusCallback:Function;
+
+	public function onPlayStatus(data:Object):void
+	{
+		if(this.onPlayStatusCallback !== null)
+		{
+			this.onPlayStatusCallback(data);
+		}
 	}
 }

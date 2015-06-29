@@ -584,8 +584,8 @@ package feathers.themes
 		protected var playPauseButtonPlayDownIconTexture:Texture;
 		protected var playPauseButtonPauseUpIconTexture:Texture;
 		protected var playPauseButtonPauseDownIconTexture:Texture;
-		protected var largePlayPauseButtonPlayUpIconTexture:Texture;
-		protected var largePlayPauseButtonPlayDownIconTexture:Texture;
+		protected var overlayPlayPauseButtonPlayUpIconTexture:Texture;
+		protected var overlayPlayPauseButtonPlayDownIconTexture:Texture;
 		protected var fullScreenToggleButtonEnterUpIconTexture:Texture;
 		protected var fullScreenToggleButtonEnterDownIconTexture:Texture;
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
@@ -594,6 +594,8 @@ package feathers.themes
 		protected var muteToggleButtonLoudDownIconTexture:Texture;
 		protected var muteToggleButtonMutedUpIconTexture:Texture;
 		protected var muteToggleButtonMutedDownIconTexture:Texture;
+		protected var volumeSliderMinimumTrackSkinTexture:Texture;
+		protected var volumeSliderMaximumTrackSkinTexture:Texture;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -835,16 +837,18 @@ package feathers.themes
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon");
 			this.playPauseButtonPauseUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-up-icon");
 			this.playPauseButtonPauseDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-down-icon");
-			this.largePlayPauseButtonPlayUpIconTexture = this.atlas.getTexture("large-play-pause-toggle-button-play-up-icon");
-			this.largePlayPauseButtonPlayDownIconTexture = this.atlas.getTexture("large-play-pause-toggle-button-play-down-icon");
+			this.overlayPlayPauseButtonPlayUpIconTexture = this.atlas.getTexture("overlay-play-pause-toggle-button-play-up-icon");
+			this.overlayPlayPauseButtonPlayDownIconTexture = this.atlas.getTexture("overlay-play-pause-toggle-button-play-down-icon");
 			this.fullScreenToggleButtonEnterUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-up-icon");
 			this.fullScreenToggleButtonEnterDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-enter-down-icon");
 			this.fullScreenToggleButtonExitUpIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-up-icon");
 			this.fullScreenToggleButtonExitDownIconTexture = this.atlas.getTexture("full-screen-toggle-button-exit-down-icon");
-			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("volume-toggle-button-muted-up-icon");
-			this.muteToggleButtonMutedDownIconTexture = this.atlas.getTexture("volume-toggle-button-muted-down-icon");
-			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("volume-toggle-button-loud-up-icon");
-			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("volume-toggle-button-loud-down-icon");
+			this.muteToggleButtonMutedUpIconTexture = this.atlas.getTexture("mute-toggle-button-muted-up-icon");
+			this.muteToggleButtonMutedDownIconTexture = this.atlas.getTexture("mute-toggle-button-muted-down-icon");
+			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("mute-toggle-button-loud-up-icon");
+			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("mute-toggle-button-loud-down-icon");
+			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin");
+			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
 		}
 
 		/**
@@ -1001,7 +1005,7 @@ package feathers.themes
 			
 			//play/pause toggle button
 			this.getStyleProviderForClass(PlayPauseToggleButton).defaultStyleFunction = this.setPlayPauseToggleButtonStyles;
-			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_LARGE_PLAY_PAUSE_TOGGLE_BUTTON, this.setLargePlayPauseToggleButtonStyles);
+			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON, this.setOverlayPlayPauseToggleButtonStyles);
 
 			//full screen toggle button
 			this.getStyleProviderForClass(FullScreenToggleButton).defaultStyleFunction = this.setFullScreenToggleButtonStyles;
@@ -1016,10 +1020,10 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(SeekSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setSeekSliderMaximumTrackStyles);
 
 			//volume slider
-			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setSliderStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSimpleButtonStyles);
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setVerticalSliderMaximumTrackStyles);
+			this.getStyleProviderForClass(VolumeSlider).defaultStyleFunction = this.setVolumeSliderStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setVolumeSliderThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, this.setVolumeSliderMinimumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(VolumeSlider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK, this.setVolumeSliderMaximumTrackStyles);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -2248,8 +2252,6 @@ package feathers.themes
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
 
-			textArea.padding = this.smallGutterSize;
-
 			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
 			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			textArea.textEditorProperties.padding = this.smallGutterSize;
@@ -2366,12 +2368,12 @@ package feathers.themes
 			button.minTouchHeight = this.gridSize;
 		}
 
-		protected function setLargePlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
+		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.setValueForState(this.largePlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
-			iconSelector.setValueForState(this.largePlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
-			iconSelector.setValueForState(this.largePlayPauseButtonPlayDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayDownIconTexture, Button.STATE_DOWN, false);
 			iconSelector.displayObjectProperties =
 			{
 				scaleX: this.scale,
@@ -2460,29 +2462,75 @@ package feathers.themes
 			}
 		}
 
-		protected function setSeekSliderThumbStyles(button:Button):void
+		protected function setSeekSliderThumbStyles(thumb:Button):void
 		{
 			var thumbSize:Number = 6 * this.scale;
-			button.defaultSkin = new Quad(thumbSize, thumbSize);
-			button.hasLabelTextRenderer = false;
+			thumb.defaultSkin = new Quad(thumbSize, thumbSize);
+			thumb.hasLabelTextRenderer = false;
+			thumb.minTouchWidth = this.gridSize;
+			thumb.minTouchHeight = this.gridSize;
 		}
 
-		protected function setSeekSliderMinimumTrackStyles(button:Button):void
+		protected function setSeekSliderMinimumTrackStyles(track:Button):void
 		{
 			var defaultSkin:Scale9Image = new Scale9Image(this.buttonUpSkinTextures, this.scale);
 			defaultSkin.width = this.wideControlSize;
 			defaultSkin.height = this.smallControlSize;
-			button.defaultSkin = defaultSkin;
-			button.hasLabelTextRenderer = false;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
+			track.minTouchHeight = this.gridSize;
 		}
 
-		protected function setSeekSliderMaximumTrackStyles(button:Button):void
+		protected function setSeekSliderMaximumTrackStyles(track:Button):void
 		{
 			var defaultSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
 			defaultSkin.width = this.wideControlSize;
 			defaultSkin.height = this.smallControlSize;
-			button.defaultSkin = defaultSkin;
-			button.hasLabelTextRenderer = false;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
+			track.minTouchHeight = this.gridSize;
+		}
+
+	//-------------------------
+	// VolumeSlider
+	//-------------------------
+
+		protected function setVolumeSliderStyles(slider:VolumeSlider):void
+		{
+			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
+			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.showThumb = false;
+			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;
+			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height;
+		}
+
+		protected function setVolumeSliderThumbStyles(thumb:Button):void
+		{
+			var thumbSize:Number = 6 * this.scale;
+			var defaultSkin:Quad = new Quad(thumbSize, thumbSize);
+			defaultSkin.width = 0;
+			defaultSkin.height = 0;
+			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
+		}
+
+		protected function setVolumeSliderMinimumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
+		}
+
+		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
+		{
+			var defaultSkin:ImageLoader = new ImageLoader();
+			defaultSkin.scaleContent = false;
+			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
+			track.defaultSkin = defaultSkin;
+			track.hasLabelTextRenderer = false;
 		}
 		
 

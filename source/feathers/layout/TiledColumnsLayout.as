@@ -723,47 +723,6 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _manageVisibility:Boolean = false;
-
-		[Bindable(event="change")]
-		/**
-		 * Determines if items will be set invisible if they are outside the
-		 * view port. If <code>true</code>, you will not be able to manually
-		 * change the <code>visible</code> property of any items in the layout.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.
-		 * Originally, the <code>manageVisibility</code> property could be used
-		 * to improve performance of non-virtual layouts by hiding items that
-		 * were outside the view port. However, other performance improvements
-		 * have made it so that setting <code>manageVisibility</code> can now
-		 * sometimes hurt performance instead of improving it.</p>
-		 *
-		 * @default false
-		 */
-		public function get manageVisibility():Boolean
-		{
-			return this._manageVisibility;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set manageVisibility(value:Boolean):void
-		{
-			if(this._manageVisibility == value)
-			{
-				return;
-			}
-			this._manageVisibility = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _useVirtualLayout:Boolean = true;
 
 		[Bindable(event="change")]
@@ -957,7 +916,7 @@ package feathers.layout
 		 */
 		public function get requiresLayoutOnScroll():Boolean
 		{
-			return this._manageVisibility || this._useVirtualLayout;
+			return this._useVirtualLayout;
 		}
 
 		/**
@@ -1176,11 +1135,6 @@ package feathers.layout
 						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (itemIndex - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
-						if(this._manageVisibility)
-						{
-							this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
-								boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
-						}
 						this._discoveredItemsCache.length = 0;
 						discoveredItemsCachePushIndex = 0;
 					}
@@ -1265,11 +1219,6 @@ package feathers.layout
 				discoveredItemsLastIndex = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (i - 1);
 				this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 				this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
-				if(this._manageVisibility)
-				{
-					this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
-						boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
-				}
 			}
 
 			var totalWidth:Number = positionX + tileWidth + this._paddingRight;
@@ -1314,11 +1263,6 @@ package feathers.layout
 				discoveredItemsLastIndex = discoveredItems.length - 1;
 				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
 				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
-				if(this._manageVisibility)
-				{
-					this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
-						boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
-				}
 			}
 			this._discoveredItemsCache.length = 0;
 
@@ -1604,25 +1548,6 @@ package feathers.layout
 			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			return this.calculateScrollPositionForIndex(index, items, x, y, width, height, result, false);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function applyVisible(items:Vector.<DisplayObject>, startIndex:int, endIndex:int, startX:Number, endX:Number, startY:Number, endY:Number):void
-		{
-			for(var i:int = startIndex; i <= endIndex; i++)
-			{
-				var item:DisplayObject = items[i];
-				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
-				{
-					continue;
-				}
-				var itemX:Number = item.x - item.pivotX;
-				var itemY:Number = item.y - item.pivotY;
-				item.visible = ((itemX + item.width) >= startX) && (itemX < endX) &&
-					((itemY + item.height) >= startY) && (itemY < endY);
-			}
 		}
 
 		/**

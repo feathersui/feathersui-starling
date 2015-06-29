@@ -19,9 +19,14 @@ package feathers.examples.youtube.screens
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.system.Capabilities;
+
+	import starling.core.Starling;
 
 	import starling.display.DisplayObject;
+	import starling.display.Stage;
 	import starling.events.Event;
 
 	[Event(name="complete",type="starling.events.Event")]
@@ -31,6 +36,8 @@ package feathers.examples.youtube.screens
 	public class ListVideosScreen extends PanelScreen
 	{
 		public static const SHOW_VIDEO_DETAILS:String = "showVideoDetails";
+		
+		private static const YOUTUBE_VIDEO_URL:String = "https://www.youtube.com/watch?v=";
 
 		public function ListVideosScreen()
 		{
@@ -66,7 +73,7 @@ package feathers.examples.youtube.screens
 		public var savedDataProvider:ListCollection;
 
 		private var _loader:URLLoader;
-		private var _savedLoaderData:*;
+		private var _savedResult:Object;
 
 		public function get selectedVideo():VideoDetails
 		{
@@ -162,6 +169,7 @@ package feathers.examples.youtube.screens
 					else
 					{
 						this._loader = new URLLoader();
+						this._loader.dataFormat = URLLoaderDataFormat.TEXT;
 						this._loader.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 						this._loader.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 						this._loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
@@ -186,24 +194,41 @@ package feathers.examples.youtube.screens
 			this._loader = null;
 		}
 
-		private function parseFeed(feed:XML):void
+		private function parseListVideosResult(result:Object):void
 		{
 			this._message.visible = false;
-
-			var atom:Namespace = feed.namespace();
-			var media:Namespace = feed.namespace("media");
-
+			
+			var stage:Stage = Starling.current.stage;
+			var useHighQualityThumbnail:Boolean = Math.min(stage.stageWidth, stage.stageHeight) > 350;
+			var useHTTP:Boolean = Capabilities.playerType !== "Desktop";
+			
 			var items:Vector.<VideoDetails> = new <VideoDetails>[];
-			var entries:XMLList = feed.atom::entry;
-			var entryCount:int = entries.length();
-			for(var i:int = 0; i < entryCount; i++)
+			var videos:Array = result.items as Array;
+			var videoCount:int = videos.length;
+			for(var i:int = 0; i < videoCount; i++)
 			{
-				var entry:XML = entries[i];
+				var video:Object = videos[i];
 				var item:VideoDetails = new VideoDetails();
-				item.title = entry.atom::title[0].toString();
-				item.author = entry.atom::author[0].atom::name[0].toString();
-				item.url = entry.media::group[0].media::player[0].@url.toString();
-				item.description = entry.media::group[0].media::description[0].toString();
+				item.title = video.snippet.title as String;
+				item.author = video.snippet.channelTitle as String;
+				item.url = YOUTUBE_VIDEO_URL + video.id as String;
+				item.description = video.snippet.description as String;
+				if("thumbnails" in video.snippet)
+				{
+					if(useHighQualityThumbnail)
+					{
+						item.thumbnailURL = video.snippet.thumbnails.high.url as String;
+					}
+					else
+					{
+						item.thumbnailURL = video.snippet.thumbnails.medium.url as String;
+					}
+					//switch from https to http if we're not running in AIR
+					if(useHTTP && item.thumbnailURL.indexOf("https") === 0)
+					{
+						item.thumbnailURL = "http" + item.thumbnailURL.substr(5);
+					}
+				}
 				items.push(item);
 			}
 			var collection:ListCollection = new ListCollection(items);
@@ -228,10 +253,10 @@ package feathers.examples.youtube.screens
 		{
 			this._isTransitioning = false;
 
-			if(this._savedLoaderData)
+			if(this._savedResult)
 			{
-				this.parseFeed(new XML(this._savedLoaderData));
-				this._savedLoaderData = null;
+				this.parseListVideosResult(this._savedResult);
+				this._savedResult = null;
 			}
 
 			this._list.selectedIndex = -1;
@@ -263,22 +288,35 @@ package feathers.examples.youtube.screens
 
 		private function loader_completeHandler(event:flash.events.Event):void
 		{
-			var loaderData:* = this._loader.data;
+			var loaderData:String = this._loader.data as String;
 			this.cleanUpLoader();
-			if(this._isTransitioning)
+			try
 			{
-				//if this screen is still transitioning in, the we'll save the
-				//feed until later to ensure that the animation isn't affected.
-				this._savedLoaderData = loaderData;
+				var result:Object = JSON.parse(loaderData);
+				if(this._isTransitioning)
+				{
+					//if this screen is still transitioning in, the we'll save
+					//the result until later to ensure that the animation isn't
+					//affected.
+					this._savedResult = result;
+					return;
+				}
+				this.parseListVideosResult(result);
+			}
+			catch(error:Error)
+			{
+				this._message.text = "Unable to read video list. Please try again later.";
+				this._message.visible = true;
+				this.invalidate(INVALIDATION_FLAG_STYLES);
+				trace(error.toString());
 				return;
 			}
-			this.parseFeed(new XML(loaderData));
 		}
 
 		private function loader_errorHandler(event:ErrorEvent):void
 		{
 			this.cleanUpLoader();
-			this._message.text = "Unable to load data. Please try again later.";
+			this._message.text = "Unable to load video list. Please try again later.";
 			this._message.visible = true;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 			trace(event.toString());

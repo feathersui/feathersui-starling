@@ -51,11 +51,13 @@ package feathers.examples.componentsExplorer.screens
 			this._headingLabel = new Label();
 			this._headingLabel.styleNameList.add(Label.ALTERNATE_STYLE_NAME_HEADING);
 			this._headingLabel.text = "A heading label is for larger, more important text.";
+			this._headingLabel.wordWrap = true;
 			this.addChild(this._headingLabel);
 
 			this._detailLabel = new Label();
 			this._detailLabel.styleNameList.add(Label.ALTERNATE_STYLE_NAME_DETAIL);
 			this._detailLabel.text = "While a detail label is for smaller, less important text.";
+			this._detailLabel.wordWrap = true;
 			this.addChild(this._detailLabel);
 
 			this.headerFactory = this.customHeaderFactory;

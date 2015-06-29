@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
@@ -27,15 +28,6 @@ package feathers.controls
 	 * this.addChild( navigator );
 	 * 
 	 * navigator.rootScreenID = "mainMenu";</listing>
-	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
 	 *
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
@@ -72,6 +64,7 @@ package feathers.controls
 		public function StackScreenNavigator()
 		{
 			super();
+			this.addEventListener(FeathersEventType.INITIALIZE, stackScreenNavigator_initializeHandler);
 		}
 
 		/**
@@ -350,9 +343,18 @@ package feathers.controls
 		{
 			if(this._isInitialized)
 			{
+				//we may have delayed showing the root screen until after
+				//initialization, but this property could be set between when
+				//_isInitialized is set to true and when the screen is actually
+				//shown, so we need to clear this variable, just in case. 
+				this._tempRootScreenID = null;
+				
+				//this clears the whole stack and starts fresh
 				this._stack.length = 0;
 				if(value !== null)
 				{
+					//show without a transition because we're not navigating.
+					//we're forcibly replacing the root screen.
 					this.showScreenInternal(value, null);
 				}
 				else
@@ -456,9 +458,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Displays a screen and returns a reference to it. If a previous
-		 * transition is running, the new screen will be queued, and no
-		 * reference will be returned.
+		 * Pushes a screen onto the top of the stack.
 		 *
 		 * <p>A set of key-value pairs representing properties on the previous
 		 * screen may be passed in. If the new screen is popped, these values
@@ -466,6 +466,10 @@ package feathers.controls
 		 *
 		 * <p>An optional transition may be specified. If <code>null</code> the
 		 * <code>pushTransition</code> property will be used instead.</p>
+		 *
+		 * <p>Returns a reference to the new screen, unless a transition is
+		 * currently active. In that case, the new screen will be queued until
+		 * the transition has completed, and no reference will be returned.</p>
 		 *
 		 * @see #pushTransition
 		 */
@@ -495,11 +499,15 @@ package feathers.controls
 		}
 
 		/**
-		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
-		 * empty.
+		 * Pops the current screen from the top of the stack, returning to the
+		 * previous screen.
 		 *
 		 * <p>An optional transition may be specified. If <code>null</code> the
 		 * <code>popTransition</code> property will be used instead.</p>
+		 *
+		 * <p>Returns a reference to the new screen, unless a transition is
+		 * currently active. In that case, the new screen will be queued until
+		 * the transition has completed, and no reference will be returned.</p>
 		 *
 		 * @see #popTransition
 		 */
@@ -526,12 +534,15 @@ package feathers.controls
 		}
 
 		/**
-		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
-		 * empty.
+		 * Returns to the root screen, at the bottom of the stack.
 		 *
-		 * <p>An optional transition may be specified. If <code>null</code> the
+		 * <p>An optional transition may be specified. If <code>null</code>, the
 		 * <code>popToRootTransition</code> or <code>popTransition</code>
 		 * property will be used instead.</p>
+		 *
+		 * <p>Returns a reference to the new screen, unless a transition is
+		 * currently active. In that case, the new screen will be queued until
+		 * the transition has completed, and no reference will be returned.</p>
 		 *
 		 * @see #popToRootTransition
 		 * @see #popTransition
@@ -553,21 +564,6 @@ package feathers.controls
 			var item:StackItem = this._stack[0];
 			this._stack.length = 0;
 			return this.showScreenInternal(item.id, transition, item.properties);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			super.initialize();
-			
-			if(this._tempRootScreenID !== null)
-			{
-				var screenID:String = this._tempRootScreenID;
-				this._tempRootScreenID = null;
-				this.showScreenInternal(screenID, null);
-			}
 		}
 
 		/**
@@ -806,6 +802,19 @@ package feathers.controls
 		protected function popToRootSignalListener(...rest:Array):void
 		{
 			this.popToRootScreen();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stackScreenNavigator_initializeHandler(event:Event):void
+		{
+			if(this._tempRootScreenID !== null)
+			{
+				var screenID:String = this._tempRootScreenID;
+				this._tempRootScreenID = null;
+				this.showScreenInternal(screenID, null);
+			}
 		}
 	}
 }

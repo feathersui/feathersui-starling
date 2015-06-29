@@ -109,6 +109,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`Slider`](slider.html)
 
+-   [`SoundPlayer`](sound-player.html)
+
 -   [`SpinnerList`](spinner-list.html)
 
 -   [`StackScreenNavigator`](stack-screen-navigator.html)
@@ -125,7 +127,19 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`WebView`](web-view.html)
 
+-   [`VideoPlayer`](video-player.html)
+
 A bit further down, you can find number of articles that go into detail about the Feathers component architecture and how to create [custom components](#custom-components).
+
+## Media Player Framework
+
+Feathers includes a number of components for building media players.
+
+-   [`SoundPlayer`](sound-player.html)
+
+-   [`VideoPlayer`](video-player.html)
+
+-   [Media player controls](media-player-controls.html)
 
 ## Display Objects
 

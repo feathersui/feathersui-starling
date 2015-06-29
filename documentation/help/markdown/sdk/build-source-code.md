@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Build the Feathers SDK from Source Code
 
-The document explains how to build the SDK from source code.
+The document explains how to build the Feathers SDK from source code.
 
 <aside class="warn">Most developers should use the [Feathers SDK Installer](http://feathersui.com/sdk/installer/) instead. This tutorial is meant for advanced developers who want to modify the Feathers SDK compiler source code to contribute or create a fork.</aside>
 
@@ -32,6 +32,6 @@ Note: When you prepare the Feathers SDK for use in an IDE as the final step, you
 
         ant main
 
-    When asked if you want to integrate with Adobe's embedded font support, type `n` and press the `Enter` key. We will do this in a later step.
+    When asked if you want to integrate with Adobe's embedded font support, type `y` and press the `Enter` key.
 
 1. Continue by following the instructions to [Build the Feathers SDK from a Binary Distribution](build-binary-distribution.html).

@@ -10,7 +10,6 @@ package feathers.media
 	import feathers.controls.Slider;
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
-	import feathers.media.SeekSlider;
 	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;

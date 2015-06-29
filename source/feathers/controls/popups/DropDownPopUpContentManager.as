@@ -32,12 +32,46 @@ package feathers.controls.popups
 	import starling.events.TouchPhase;
 
 	/**
-	 * @inheritDoc
+	 * Dispatched when the pop-up content opens.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.OPEN
 	 */
 	[Event(name="open",type="starling.events.Event")]
 
 	/**
-	 * @inheritDoc
+	 * Dispatched when the pop-up content closes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.CLOSE
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
@@ -88,6 +122,80 @@ package feathers.controls.popups
 		public function get isOpen():Boolean
 		{
 			return this.content !== null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isModal:Boolean = false;
+
+		/**
+		 * Determines if the pop-up will be modal or not.
+		 *
+		 * <p>Note: If you change this value while a pop-up is displayed, the
+		 * new value will not go into effect until the pop-up is removed and a
+		 * new pop-up is added.</p>
+		 *
+		 * <p>In the following example, the pop-up is modal:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.isModal = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get isModal():Boolean
+		{
+			return this._isModal;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isModal(value:Boolean):void
+		{
+			this._isModal = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _overlayFactory:Function;
+
+		/**
+		 * If <code>isModal</code> is <code>true</code>, this function may be
+		 * used to customize the modal overlay displayed by the pop-up manager.
+		 * If the value of <code>overlayFactory</code> is <code>null</code>, the
+		 * pop-up manager's default overlay factory will be used instead.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, the overlay is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.isModal = true;
+		 * manager.overlayFactory = function():DisplayObject
+		 * {
+		 *     var quad:Quad = new Quad(1, 1, 0xff00ff);
+		 *     quad.alpha = 0;
+		 *     return quad;
+		 * };</listing>
+		 *
+		 * @default null
+		 * 
+		 * @see feathers.core.PopUpManager#overlayFactory
+		 */
+		public function get overlayFactory():Function
+		{
+			return this._overlayFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set overlayFactory(value:Function):void
+		{
+			this._overlayFactory = value;
 		}
 
 		/**
@@ -184,7 +292,7 @@ package feathers.controls.popups
 
 			this.content = content;
 			this.source = source;
-			PopUpManager.addPopUp(this.content, false, false);
+			PopUpManager.addPopUp(this.content, this._isModal, false, this._overlayFactory);
 			if(this.content is IFeathersControl)
 			{
 				this.content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);

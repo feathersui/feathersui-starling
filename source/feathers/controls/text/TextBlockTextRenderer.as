@@ -10,6 +10,7 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -1624,8 +1625,14 @@ package feathers.controls.text
 				//clear the bitmap data and reuse it
 				bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
 			}
-			HELPER_MATRIX.tx = -textLinesX - this._textSnapshotScrollX - this._textSnapshotOffsetX;
-			HELPER_MATRIX.ty = -textLinesY - this._textSnapshotScrollY - this._textSnapshotOffsetY;
+			var nativeScaleFactor:Number = 1;
+			var starling:Starling = stageToStarling(this.stage);
+			if(starling && starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			HELPER_MATRIX.tx = -textLinesX - this._textSnapshotScrollX * nativeScaleFactor - this._textSnapshotOffsetX;
+			HELPER_MATRIX.ty = -textLinesY - this._textSnapshotScrollY * nativeScaleFactor - this._textSnapshotOffsetY;
 			HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
 			bitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
 			return bitmapData;

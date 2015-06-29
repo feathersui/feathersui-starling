@@ -24,26 +24,26 @@ package feathers.media
 	{
 		/**
 		 * An alternate style name to use with
-		 * <code>PlayPauseToggleButton</code> to allow a theme to give it a
-		 * larger appearance. If a theme does not provide a style for a large
-		 * play/pause button, the theme will automatically fall back to using
-		 * the default play/pause button style.
+		 * <code>PlayPauseToggleButton</code> to allow a theme to give it an
+		 * appearance of an overlay above video. If a theme does not provide a
+		 * style for an overlay play/pause button, the theme will automatically
+		 * fall back to using the default play/pause button style.
 		 *
 		 * <p>An alternate style name should always be added to a component's
 		 * <code>styleNameList</code> before the component is initialized. If
 		 * the style name is added later, it will be ignored.</p>
 		 *
-		 * <p>In the following example, the large play/pause style is applied to
-		 * a button:</p>
+		 * <p>In the following example, the overlay play/pause style is applied
+		 * to a button:</p>
 		 *
 		 * <listing version="3.0">
-		 * var button:PlayPauseButton = new PlayPauseButton();
-		 * button.styleNameList.add( PlayPauseButton.ALTERNATE_STYLE_NAME_LARGE_PLAY_PAUSE_TOGGLE_BUTTON );
-		 * this.addChild( button );</listing>
+		 * var overlayButton:PlayPauseButton = new PlayPauseButton();
+		 * overlayButton.styleNameList.add( PlayPauseButton.ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON );
+		 * player.addChild( overlayButton );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_STYLE_NAME_LARGE_PLAY_PAUSE_TOGGLE_BUTTON:String = "feathers-large-play-pause-toggle-button";
+		public static const ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON:String = "feathers-overlay-play-pause-toggle-button";
 		
 		/**
 		 * The default <code>IStyleProvider</code> for all

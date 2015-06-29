@@ -14,11 +14,7 @@ package feathers.media
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.geom.Point;
-
 	import flash.media.SoundTransform;
-
-	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
@@ -79,11 +75,6 @@ package feathers.media
 	 */
 	public class MuteToggleButton extends ToggleButton implements IMediaPlayerControl
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-		
 		/**
 		 * @private
 		 */

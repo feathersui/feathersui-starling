@@ -620,12 +620,6 @@ package feathers.controls.text
 				{
 					this.selectRange(newIndex, newIndex);
 				}
-				else
-				{
-					//the cursor may not have been positioned yet, so make sure
-					//that happens.
-					this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
-				}
 				this.focusIn();
 			}
 			else
@@ -693,8 +687,6 @@ package feathers.controls.text
 				this._cursorSkin.visible = false;
 				this._selectionSkin.visible = true;
 			}
-			this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
-			this.positionSelectionBackground();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -754,6 +746,18 @@ package feathers.controls.text
 				this.selectionSkin = new Quad(1, 1, 0x000000);
 			}
 			super.initialize();
+		}
+
+		override protected function draw():void
+		{
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			super.draw();
+			if(dataInvalid || selectionInvalid)
+			{
+				this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
+				this.positionSelectionBackground();
+			}
 		}
 
 		/**
@@ -1351,6 +1355,11 @@ package feathers.controls.text
 				return;
 			}
 			var pastedText:String = Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT) as String;
+			if(pastedText === null)
+			{
+				//the clipboard doesn't contain any text to paste
+				return;
+			}
 			if(this._restrict)
 			{
 				pastedText = this._restrict.filterText(pastedText);

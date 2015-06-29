@@ -9,10 +9,12 @@ package feathers.controls
 {
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
+	import feathers.core.INativeFocusOwner;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
+	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
@@ -72,7 +74,7 @@ package feathers.controls
 	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
 	 * @see feathers.controls.TextInput
 	 */
-	public class TextArea extends Scroller
+	public class TextArea extends Scroller implements INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -238,6 +240,22 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _textEditorHasFocus:Boolean = false;
+
+		/**
+		 * A text editor may be an <code>INativeFocusOwner</code>, so we need to
+		 * return the value of its <code>nativeFocus</code> property. If not,
+		 * then we return <code>null</code>.
+		 *
+		 * @see feathers.core.INativeFocusOwner
+		 */
+		public function get nativeFocus():InteractiveObject
+		{
+			if(this.textEditorViewPort is INativeFocusOwner)
+			{
+				return INativeFocusOwner(this.textEditorViewPort).nativeFocus;
+			}
+			return null;
+		}
 
 		/**
 		 * @private

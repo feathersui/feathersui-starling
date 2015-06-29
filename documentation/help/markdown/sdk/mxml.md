@@ -13,7 +13,7 @@ Data binding saves developers time by skipping the boilerplate code for setting 
 
 Let's create an MXML class that extends the [`LayoutGroup`](../layout-group.html) component:
 
-``` code
+``` xml
 <f:LayoutGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:f="library://ns.feathersui.com/mxml">
 </f:LayoutGroup>
@@ -23,7 +23,7 @@ The Feathers namespace must be included in your MXML document to add Feathers co
 
 Let's add a [`Button`](../button.html) as a child of the `LayoutGroup`:
 
-``` code
+``` xml
 <f:LayoutGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:f="library://ns.feathersui.com/mxml">
  
@@ -35,7 +35,7 @@ It's as simple as adding a `<f:Button/>` element as a child of the `<f:LayoutGro
 
 Now, let's add an event listener to the button:
 
-``` code
+``` xml
 <f:Button label="Click Me" triggered="button_triggeredHandler(event)"/>
  
 <fx:Script><![CDATA[
@@ -55,7 +55,7 @@ We need to define the listener in ActionScript. To add ActionScript code to an M
 
 Let's adjust the layout a bit to put the button in the center of the screen:
 
-``` code
+``` xml
 <f:layout>
     <f:AnchorLayout/>
 </f:layout>

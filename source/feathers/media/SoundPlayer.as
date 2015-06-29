@@ -147,6 +147,15 @@ package feathers.media
 
 	/**
 	 * Controls playback of audio with a <code>flash.media.Sound</code> object.
+	 *
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
 	 * 
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 */
@@ -242,6 +251,18 @@ package feathers.media
 				return;
 			}
 			this._soundSource = value;
+			//reset the current and total time if we were playing a different
+			//sound previously
+			if(this._currentTime !== 0)
+			{
+				this._currentTime = 0;
+				this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
+			}
+			if(this._totalTime !== 0)
+			{
+				this._totalTime = 0;
+				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+			}
 			this._isLoaded = false;
 			if(this._soundSource is String)
 			{
@@ -449,6 +470,7 @@ package feathers.media
 		{
 			//return to the beginning
 			this.stop();
+			this.dispatchEventWith(Event.COMPLETE);
 			if(this._loop)
 			{
 				this.play();

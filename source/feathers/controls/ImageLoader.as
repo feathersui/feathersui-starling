@@ -2005,7 +2005,7 @@ package feathers.controls
 
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.dispatchEventWith(feathers.events.FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
 			this.dispatchEventWith(starling.events.Event.IO_ERROR, false, event);
 		}
 
@@ -2021,7 +2021,7 @@ package feathers.controls
 
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.dispatchEventWith(feathers.events.FeathersEventType.ERROR, false, event);
+			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
 			this.dispatchEventWith(starling.events.Event.SECURITY_ERROR, false, event);
 		}
 

@@ -62,6 +62,8 @@ package feathers.examples.layoutExplorer
 
 		public function Main()
 		{
+			//set up the theme right away!
+			new MetalWorksMobileTheme();
 			super();
 		}
 
@@ -72,8 +74,6 @@ package feathers.examples.layoutExplorer
 		{
 			//never forget to call super.initialize()
 			super.initialize();
-
-			new MetalWorksMobileTheme();
 
 			this._navigator = new StackScreenNavigator();
 			//we're using Drawers because we want to display the menu on the

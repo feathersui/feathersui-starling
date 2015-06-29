@@ -141,7 +141,6 @@ import flash.geom.Point;
 
 import starling.animation.Tween;
 import starling.core.Starling;
-import starling.display.BlendMode;
 import starling.display.Canvas;
 import starling.display.DisplayObject;
 
