@@ -47,15 +47,35 @@ Next, we're going to import custom templates for new MXML files. The default tem
 
 4. Click the **Import...** button and choose the file templates that were downloaded in step 1.
 
-## Create a new Feathers SDK project
+## How to create a project for a mobile application
+
+Let's create a mobile application that uses Adobe AIR to target iOS or Android. If you need to create a web or desktop project, skip ahead to the next section.
+
+1. In Flash Builder, select the **File** menu → **New** → **Flex Mobile Project**. A new window will open to customize the project's settings.
+
+2. Enter your **Project name**. The default **Project location** is usually okay. Click **Next**.
+
+3. Under **Application Template**, choose **Blank**.
+	
+	<aside class="info">The other templates are too tightly coupled to Flex, and they will not work properly with the Feathers SDK.</aside>
+
+3. Click **Finish**.
+
+## How to create a new project for a web or desktop application
+
+Let's create a web or desktop application that can target Flash Player in a web browser or native desktop application. If you need to create a mobile project, take a look at the previous section.
 
 1. In Flash Builder, select the **File** menu → **New** → **Flex Project**. A new window will open to customize the project's settings.
 
 2. Enter your **Project name**. The default **Project location** is usually okay.
 
+3. Select either the **Web** or **Desktop** application type.
+
 3. Click **Finish**.
 
-Your project is ready. If you're unsure how to proceed, take a look at the [Getting Started with Feathers and MXML tutorial](getting-started-mxml.html).
+## Conclusion
+
+Flash Builder can now use the Feathers SDK, and your first project is ready. If you're unsure how to proceed, take a look at the [Getting Started with Feathers and MXML tutorial](getting-started-mxml.html).
 
 ## Known Issues
 
