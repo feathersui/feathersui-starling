@@ -1,15 +1,15 @@
 ---
-title: Setting up the Feathers SDK in IntelliJ IDEA  
+title: Set up the Feathers SDK in IntelliJ IDEA  
 author: Josh Tynjala
 
 ---
-# Setting up the Feathers SDK in IntelliJ IDEA
+# Set up the Feathers SDK in IntelliJ IDEA
 
 Let's get your [IntelliJ IDEA](http://www.jetbrains.com/idea/) development environment ready to use the Feathers SDK.
 
 <aside class="info">These instructions apply to IntelliJ IDEA 14. Minor variations may exist between different versions of IntelliJ IDEA.</aside>
 
-## Add the Feathers SDK
+## Add the Feathers SDK to IntelliJ IDEA
 
 1. Use the [Feathers SDK Installer](http://feathersui.com/sdk/installer/) to install the Feathers SDK.
 
@@ -77,4 +77,10 @@ params.wmode = "direct";
 
 ## Conclusion
 
-Your module is ready. If you're unsure how to proceed, take a look at the [Getting Started with Feathers and MXML tutorial](getting-started-mxml.html).
+Your module is ready. If you're unsure how to proceed, take a look at the [Getting started with MXML in the Feathers SDK](getting-started-mxml.html) tutorial.
+
+## Known Issues
+
+* Unless the **frameworks/libs** folder from the Feathers SDK is added to your module as a dependency, the editor will highlight all Feathers components in MXML files in red, as if they don't exist. The compiler will compile these same MXML files without errors. This is a bug in IntelliJ IDEA. Add the **frameworks/libs** folder as a dependency to your module to avoid this issue.
+
+* In an MXML file that is based on `<f:Application>`, the editor will highlight the `theme` property in red, as if it doesn't exist. However, the compiler will compile this file without error. This issue will be fixed in a future version of the Feathers SDK.
