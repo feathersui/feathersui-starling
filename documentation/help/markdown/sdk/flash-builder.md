@@ -1,9 +1,9 @@
 ---
-title: Setting up the Feathers SDK in Adobe Flash Builder  
+title: Set up the Feathers SDK in Adobe Flash Builder  
 author: Josh Tynjala
 
 ---
-# Setting up the Feathers SDK in Adobe Flash Builder
+# Set up the Feathers SDK in Adobe Flash Builder
 
 Let's get your [Flash Builder](http://www.adobe.com/products/flash-builder.html) development environment setup to use the Feathers SDK.
 
@@ -31,7 +31,7 @@ Next, we're going to import custom templates for new MXML files. The default tem
 
 4. Click the **Import...** button and choose the file templates that were downloaded in step 1.
 
-## Creating a new Feathers SDK project
+## Create a new Feathers SDK project
 
 1. In Flash Builder, select the **File** menu → **New** → **Flex Project**. A new window will open to customize the project's settings.
 
@@ -39,4 +39,4 @@ Next, we're going to import custom templates for new MXML files. The default tem
 
 3. Click **Finish**.
 
-Your project is ready. If you're unsure how to proceed, take a look at the [Getting Started with Feathers and MXML tutorial](getting-started-mxml.html).
+Your project is ready. If you're unsure how to proceed, take a look at the [Getting started with MXML in the Feathers SDK](getting-started-mxml.html) tutorial.
