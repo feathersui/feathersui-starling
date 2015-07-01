@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 The document explains how to build the Feathers SDK from a binary distribution. The build process downloads the Adobe AIR SDK, playerglobal.swc, and some font embedding utilities from the Adobe Flex SDK that are not open source. When finished, the Feathers SDK will be ready to use with a supported IDE.
 
-<aside class="warn">Most developers should use the [Feathers SDK Installer](http://feathersui.com/sdk/installer/) instead. This tutorial is meant for advanced developers who want to modify the Feathers SDK compiler source code to contribute or create a fork.</aside>
+<aside class="warn">Most developers should use the [Feathers SDK Manager](installation-instructions.html) instead. This tutorial is meant for advanced developers who want to modify the Feathers SDK compiler source code to contribute or to create a fork.</aside>
 
 ## Requirements
 

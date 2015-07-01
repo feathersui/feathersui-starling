@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Getting started with Feathers
 
-In the following beginner-level tutorial, we'll create our first [Feathers Button control](button.html). This is a very simple demonstration that sets a label, adds an event listener, and creates a theme that will apply a skin.
+In the following beginner-level tutorial, we'll use our first Feathers [`Button`](button.html) component. This is a very simple demonstration that sets a label, adds an event listener, and creates a theme that will apply a skin.
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ Let's start by initializing a [theme](themes.html). By default, the Feathers com
 new MetalWorksMobileTheme();
 ```
 
-The theme listens for certain events on the display list to detect when a new Feathers component is added. When a new component is added, the theme will create appropriate skins, including backgrounds, icons, text formats, and skins for sub-components, and pass them in automatically.
+When a new component initializes, the theme will create appropriate skins, including backgrounds, icons, text formats, and skins for sub-components, and pass them in automatically.
 
 <aside class="info">Most of the Feathers examples, including the Hello World example, use a class named `MetalWorksMobileTheme`. This is a sample [theme](themes.html) that provides pre-made skins for Feathers components. You can find it in the *themes* directory of the the Feathers ZIP file. Add `MetalWorksMobileTheme.swc` to your project's build settings the same way that you added `feathers.swc`.</aside>
 
@@ -87,13 +87,13 @@ Our listener function should look something like this:
 ``` code
 protected function button_triggeredHandler( event:Event ):void
 {
-    const label:Label = new Label();
+    var label:Label = new Label();
     label.text = "Hi, I'm Feathers!\nHave a nice day.";
     Callout.show( label, this.button );
 }
 ```
 
-This triggered listener displays a `Label`, a generic component for displaying text, in a `Callout` component. Like with our button, these two components are automatically skinned by the theme.
+The button's `Event.TRIGGERED` listener displays a `Label`, a generic component for displaying text, in a `Callout` component. Like with our button, these two components are automatically skinned by the theme.
 
 Finally, let's position the button in the middle of the stage. First, though, let's take note of one thing about how Feathers controls work. Feathers uses a system of *invalidation* that delays redraws until just immediately before Starling renders to the screen. This keeps Feathers from using too much CPU by redrawing over and over again when you need to change multiple properties all at once.
 
