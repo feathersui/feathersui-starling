@@ -369,7 +369,7 @@ package feathers.text
 			{
 				this._isComplete = false;
 			}
-			if(this._textField.stage && !this.viewPort.isEmpty())
+			if(this._textField.stage && !this._viewPort.isEmpty())
 			{
 				this._isComplete = true;
 				this.dispatchEvent(new Event(Event.COMPLETE));
