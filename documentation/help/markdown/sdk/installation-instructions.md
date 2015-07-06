@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to install the Feathers SDK
 
-1. Download the installer for the [Feathers SDK Manager](http://feathersui.com/sdk/feathers-sdk-manager/) for either Mac OS X or Windows.
+1. Download the installer for the [Feathers SDK Manager](http://feathersui.com/sdk/download/) for either Mac OS X or Windows.
 
 2. Run the installer and follow the steps in the wizard.
 

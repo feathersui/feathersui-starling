@@ -225,6 +225,12 @@
 				<include name="*.css"/>
 			</fileset>
 		</copy>
+		<mkdir dir="${help.output}/sdk/ide-file-templates"/>
+		<copy overwrite="true" todir="${help.output}/sdk/ide-file-templates">
+			<fileset dir="${help.root}/markdown/sdk/ide-file-templates">
+				<include name="feathers-file-templates-flash-builder.xml"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="-themes" depends="-feathers">
