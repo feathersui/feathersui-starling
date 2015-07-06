@@ -9,7 +9,7 @@ The Feathers SDK combines the application layout capabilities of MXML with the [
 
 ## Installation & Getting Started
 
--   [Install the Feathers SDK](installation-instructions.html) and its dependencies with the [Feathers SDK Manager](http://feathersui.com/sdk/feathers-sdk-manager/).
+-   [Install the Feathers SDK](installation-instructions.html) and its dependencies with the Feathers SDK Manager.
 
 -   Set up the Feathers SDK in your preferred development environment:
 

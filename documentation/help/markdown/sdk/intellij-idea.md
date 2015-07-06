@@ -41,6 +41,8 @@ Next, we're going to create a custom template for new Feathers MXML files. The d
 
 5. Click **OK** to save the new template.
 
+To use this template, choose the **File** menu → **New** → **MXML Component**. In the new window's **Template** drop-down, choose **Feathers Component**.
+
 ## How to create a new module for a Feathers SDK application
 
 1. Select the **File** menu → **New** → **Module...**. A new window will open to customize the module's settings.
