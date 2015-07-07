@@ -25,7 +25,7 @@ Let's get your [IntelliJ IDEA](http://www.jetbrains.com/idea/) development envir
 
 Next, we're going to create a custom template for new Feathers MXML files. The default **Flex 4 Component** template provided by IntelliJ IDEA works decently with Feathers components, but we can make a new one that works a bit better.
 
-1. Open the IntelliJ IDEA preferences on Mac OS X by going to the **IntelliJ IDEA** menu → **Preferences**. On Windows, select the **Window** menu → **Preferences...**.
+1. Open the IntelliJ IDEA preferences on Mac OS X by going to the **IntelliJ IDEA** menu → **Preferences**. On Windows, select the **File** menu → **Settings...**.
 
 2. Expand the **Editor** node on the list to the left of the preferences window, and select **File and Code Templates**.
 
