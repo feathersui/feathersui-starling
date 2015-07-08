@@ -113,4 +113,6 @@ Your module is ready. If you're unsure how to proceed, take a look at the [Getti
 
 * Unless the **frameworks/libs** folder from the Feathers SDK is added to your module as a dependency, the editor will highlight all Feathers components in MXML files in red, as if they don't exist. The compiler will compile these same MXML files without errors. This is a bug in IntelliJ IDEA. Add the **frameworks/libs** folder as a dependency to your module to avoid this issue.
 
-* In an MXML file that is based on `<f:Application>`, the editor will highlight the `theme` property in red, as if it doesn't exist. However, the compiler will compile this file without error. This issue will be fixed in a future version of the Feathers SDK.
+* In an MXML file that is based on `<f:Application>`, the editor will highlight the `theme` property in red, as if it doesn't exist. However, the compiler will compile this file without issues. This is not an error, and it may be ignored. This issue will be fixed in a future version of the Feathers SDK.
+
+* In an MXML file, the editor will highlight an `<fx:Component>` element used to create a sub-component factory in red, as if it were a syntax error. Additionally, the root element of the inline component will be highlighted in red. However, the compiler will compile this file without issues, and code hinting will work properly too. This is not an error, and it may be ignored.
