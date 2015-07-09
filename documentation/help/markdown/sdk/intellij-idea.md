@@ -41,7 +41,7 @@ Next, we're going to create a custom template for new Feathers MXML files. The d
 
 5. Click **OK** to save the new template.
 
-To use this template, choose the **File** menu → **New** → **MXML Component**. In the new window's **Template** drop-down, choose **Feathers Component**.
+To use this template at any time, choose the **File** menu → **New** → **MXML Component**. In the new window's **Template** drop-down, choose **Feathers Component**.
 
 ## How to create a new module for a Feathers SDK application
 
@@ -57,37 +57,55 @@ To use this template, choose the **File** menu → **New** → **MXML Component*
 
 	For **Output type**, select **Application**.
 
-	In the **Flex/AIR SDK** field, select the Feathers SDK that you installed.
+	In the **Flex/AIR SDK** drop-down, select the Feathers SDK that we installed earlier.
 
 	Uncheck **Create sample app**. The new module wizard in IntelliJ IDEA uses a template for Flex that we cannot customize. We'll create the main MXML application file in a later step.
 
 	Click **Next**.
 
-4. In the next section, enter your **Module name**. The default **Content root** and **Module file location** are usually okay. Click **Finish**.
+4. In the next section, enter the **Module name**. The default **Content root** and **Module file location** are usually okay. Click **Finish**.
 
-5. IntelliJ IDEA cannot automatically recognize certain components in MXML when using the Feathers SDK, which will cause the editor to incorrectly show errors. We can manually add the SDK SWC files to our module to work around this issue.
+5. Next, we will create the main application MXML file. Select the **src** directory in the new module. Then, select the **File** menu → **New** → **MXML Component**. A new window will open to customize the new component.
 
-	Select the **File** menu → **Project Structure**. A new window will open. Under **Project Settings** choose **Modules**. Expand your new module in the tree, and select the default build configuration with the module's name. Navigate to the **Dependencies** tab.
+6. Enter the **Name** of the main application class.
 
-	Press the button with the **+** (plus) symbol and select **New Library**. Navigate to the directory where you installed the Feathers SDK. Then, add the **frameworks/libs** directory as a new library. This will add the required SWC files to your module.
+	Leave the **Package** blank.
 
-6. Now, let's create the main MXML application file. Select the **src** directory in the new module. Then select the **File** menu → **New** → **MXML Component**. A new window will open to customize the new component.
+	In the **Template** drop-down, select the **Feathers Component** template that we added earlier.
 
-7. Enter the **Name** of your application. Leave the **Package** blank. In the **Template** field, select the **Feathers Component** template that we added earlier. For **Parent Component**, type `Application` and choose **feathers.core.Application**.
+	For **Parent Component**, start typing `Application` and choose **feathers.core.Application**.
 
-8. Follow this step if you are targeting **Adobe AIR**. Skip to the next step if you are targeting Adobe Flash Player instead.
+	<aside class="info">You may use one of the other Feathers application classes, like `StackScreenNavigatorApplication` or `DrawersApplication`, if you prefer.</aside>
 
-	Let's create the Adobe AIR *application descriptor* file. Select **Modules** in the same **Project Structure** window that should still be open from the previous step. Expand your new module in the tree and select the default build configuration with the module's name. For mobile AIR apps, you'll want to navigate to the **Android** tab. For desktop AIR apps, navigate to the **AIR Package** tab instead.
+	Click the **Create** button.
 
-	Under **Application descriptor**, choose **Custom template** and click **Create…**. The default values for the application descriptor are usually okay, so simply click **Create**. You can open the application descriptor file later to make changes, if needed. For mobile apps, if IDEA asks if you want to use the created application descriptor template for both Android and iOS, click **Yes**. Click **OK** in the **Project Structure** window.
+7. Now, we need to tell the module to use this new MXML file as its main class. Select the **File** menu → **Project Structure**. A new window will open. Under **Project Settings** choose **Modules**. Expand the new module in the tree, and select the default build configuration with the module's name. In the **Main class** field, type in the name of the MXML file that we just created.
 
-	Open your module's new **-app.xml** file. Inside the `<initialWindow>` section, add `<renderMode>direct</renderMode>` to enable Stage 3D.
+	Don't close the **Project Structure** window yet. We'll need it open in the next step.
 
-	You may skip the next step and proceed to the conclusion.
+8. IntelliJ IDEA has a bug where we can reference Feathers SDK components in ActionScript, but the editor shows errors in MXML. Thankfully, we can manually add the SWC files in the Feathers SDK to our module's dependencies as a workaround. With the module still selected in the **Project Structure** window, navigate to the **Dependencies** tab.
 
-9. Follow this step if you are targeting **Adobe Flash Player**. Skip to the conclusion if you are targeting Adobe AIR instead.
+	Press the button with the **+** (plus) symbol and select **New Library**. Navigate to the directory where we installed the Feathers SDK. Then, add the **frameworks/libs** directory as a new library. This will add the required SWC files to the module.
 
-	Open your modules **index.template.html** file in the **html-template** folder. Search for the following line of JavaScript:
+	If the module is an AIR application, don't close the **Project Structure** window yet. We'll need it open in the next step. If the module is a Flash Player application, click **OK** to save all of our changes. This will close the Project Structure window.
+
+9. Follow this step if the module targets **Adobe AIR**. Skip to the next step if the module targets Adobe Flash Player instead.
+
+	If the module is a mobile AIR application, navigate to the **Compiler Options** tab. In the **Additional compiler options** field, type `-preloader=`. We're clearing this compiler argument that IntelliJ IDEA sets for Flex, so it should be left blank on the right of the equals sign.
+
+	For all types of AIR applications, we must create the Adobe AIR *application descriptor* file. With the module still selected in the **Project Structure** window, navigate to the **Android** tab for a mobile AIR application, or navigate to the **AIR Package** tab for a desktop AIR application.
+
+	Under **Application descriptor**, choose **Custom template** and click **Create...**. The default values for the application descriptor are usually okay, so simply click **Create**. You can open the application descriptor file later to make changes, if needed. For mobile apps, if IntelliJ IDEA asks to use the created application descriptor template for both Android and iOS, click **Yes**.
+
+	Click **OK** to save all of our changes. This will close the **Project Structure** window.
+
+	Open the module's new **-app.xml** file. Inside the `<initialWindow>` section, add `<renderMode>direct</renderMode>` to enable Stage 3D.
+
+	Skip the next step and proceed to the conclusion.
+
+10. Follow this step if the module targets **Adobe Flash Player**. Skip to the conclusion if the module targets Adobe AIR instead.
+
+	Open the module's **index.template.html** file in the **html-template** folder. Search for the following line of JavaScript:
 
 	``` code
 	var params = {};
@@ -107,12 +125,19 @@ To use this template, choose the **File** menu → **New** → **MXML Component*
 
 ## Conclusion
 
-Your module is ready. If you're unsure how to proceed, take a look at the [Getting started with MXML in the Feathers SDK](getting-started-mxml.html) tutorial.
+The new module is ready. If you're unsure how to proceed, take a look at the [Getting started with MXML in the Feathers SDK](getting-started-mxml.html) tutorial.
 
 ## Known Issues
 
-* Unless the **frameworks/libs** folder from the Feathers SDK is added to your module as a dependency, the editor will highlight all Feathers components in MXML files in red, as if they don't exist. The compiler will compile these same MXML files without errors. This is a bug in IntelliJ IDEA. Add the **frameworks/libs** folder as a dependency to your module to avoid this issue.
+* Unless the **frameworks/libs** folder from the Feathers SDK is added to the module as a dependency, the editor will highlight all Feathers components in MXML files in red, as if they don't exist. The compiler will compile these same MXML files without errors. This is a bug in IntelliJ IDEA. Add the **frameworks/libs** folder as a dependency in the module's settings to avoid this issue.
 
 * In an MXML file that is based on `<f:Application>`, the editor will highlight the `theme` property in red, as if it doesn't exist. However, the compiler will compile this file without issues. This is not an error, and it may be ignored. This issue will be fixed in a future version of the Feathers SDK.
 
 * In an MXML file, the editor will highlight an `<fx:Component>` element used to create a sub-component factory in red, as if it were a syntax error. Additionally, the root element of the inline component will be highlighted in red. However, the compiler will compile this file without issues, and code hinting will work properly too. This is not an error, and it may be ignored.
+
+* With a module for a mobile AIR application, the compiler may report some errors:
+
+	> Error code 1120: Access to undefined property SplashScreen
+	> Error code: 1172: Definition spark.preloaders:SplashScreen could not be found.
+
+	In the module's **Compiler Options** tab, add `-preloader=` (leave the right side of the equals sign blank) to the **Additional compiler options**.
