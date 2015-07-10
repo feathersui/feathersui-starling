@@ -723,6 +723,7 @@ package feathers.media
 			this._netStream.soundTransform = this._soundTransform;
 			if(this._texture)
 			{
+				this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 				this._netStream.resume();
 			}
 			else
