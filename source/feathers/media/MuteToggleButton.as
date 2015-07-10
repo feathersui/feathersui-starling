@@ -387,10 +387,10 @@ package feathers.media
 		protected var _volumeSliderProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the button's pop-up
-		 * volume slider sub-component. The pop-up volume slider is a
-		 * <code>feathers.media.VolumeSlider</code> instance that is created by
-		 * <code>volumeSliderFactory</code>.
+		 * An object that stores properties for the button's pop-up volume
+		 * slider sub-component, and the properties will be passed down to the
+		 * volume slider when the button validates. For a list of available
+		 * properties, refer to <a href="VolumeSlider.html"><code>feathers.media.VolumeSlider</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

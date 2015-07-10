@@ -832,7 +832,13 @@ package feathers.controls.renderers
 		protected var _contentLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a content label.
+		 * An object that stores properties for the content label text renderer
+		 * sub-component, and the properties will be passed down to the
+		 * text renderer when this component validates. The available properties
+		 * depend on which <code>ITextRenderer</code> implementation is returned
+		 * by <code>contentLabelFactory</code>. Refer to
+		 * <a href="../../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

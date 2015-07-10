@@ -1162,22 +1162,30 @@ package feathers.controls
 		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the list's item
-		 * renderers. These values are shared by each item renderer, so values
-		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to the item renderers using the
-		 * <code>itemRendererFactory</code> or with a theme. The item renderers
-		 * are instances of <code>IGroupedListItemRenderer</code>. The available
-		 * properties depend on which <code>IGroupedListItemRenderer</code>
-		 * implementation is returned by <code>itemRendererFactory</code>.
+		 * An object that stores properties for all of the list's item
+		 * renderers, and the properties will be passed down to every item
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IGroupedListItemRenderer</code> implementation
+		 * is returned by <code>itemRendererFactory</code>.
+		 * 
+		 * <p>By default, the <code>itemRendererFactory</code> will return a
+		 * <code>DefaultGroupedListItemRenderer</code> instance. If you aren't
+		 * using a custom item renderer, you can refer to
+		 * <a href="renderers/DefaultGroupedListItemRenderer.html"><code>feathers.controls.renderers.DefaultGroupedListItemRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every item renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to item renderers using the
+		 * <code>itemRendererFactory</code> or in the theme.</p>
 		 *
 		 * <p>The following example customizes some item renderer properties
 		 * (this example assumes that the item renderer's label text renderer
 		 * is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.itemRendererProperties.padding = 20;</listing>
+		 * list.itemRendererProperties.labelField = "text";
+		 * list.itemRendererProperties.accessoryField = "control";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1908,21 +1916,28 @@ package feathers.controls
 		protected var _headerRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the grouped
-		 * list's header renderers. These values are shared by each header
-		 * renderer, so values that cannot be shared (such as display objects
-		 * that need to be added to the display list) should be passed to the
-		 * header renderers using the <code>headerRendererFactory</code> or in a
-		 * theme. The header renderers are instances of
-		 * <code>IGroupedListHeaderOrFooterRenderer</code>. The available
-		 * properties depend on which <code>IGroupedListItemRenderer</code>
+		 * An object that stores properties for all of the list's header
+		 * renderers, and the properties will be passed down to every header
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IGroupedListHeaderOrFooterRenderer</code>
 		 * implementation is returned by <code>headerRendererFactory</code>.
+		 *
+		 * <p>By default, the <code>headerRendererFactory</code> will return a
+		 * <code>DefaultGroupedListHeaderOrFooterRenderer</code> instance. If
+		 * you aren't using a custom header renderer, you can refer to
+		 * <a href="renderers/DefaultGroupedListHeaderOrFooterRenderer.html"><code>feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every header renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to header renderers using the
+		 * <code>headerRendererFactory</code> or in the theme.</p>
 		 *
 		 * <p>The following example customizes some header renderer properties:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.headerRendererProperties.&#64;contentLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.headerRendererProperties.padding = 20;</listing>
+		 * list.headerRendererProperties.contentLabelField = "headerText";
+		 * list.headerRendererProperties.contentLabelStyleName = "custom-header-renderer-content-label";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -2144,21 +2159,28 @@ package feathers.controls
 		protected var _footerRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the grouped
-		 * list's footer renderers. These values are shared by each footer
-		 * renderer, so values that cannot be shared (such as display objects
-		 * that need to be added to the display list) should be passed to the
-		 * footer renderers using a <code>footerRendererFactory</code> or with
-		 * a theme. The header renderers are instances of
-		 * <code>IGroupedListHeaderOrFooterRenderer</code>. The available
-		 * properties depend on which <code>IGroupedListItemRenderer</code>
-		 * implementation is returned by <code>headerRendererFactory</code>.
+		 * An object that stores properties for all of the list's footer
+		 * renderers, and the properties will be passed down to every footer
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IGroupedListHeaderOrFooterRenderer</code>
+		 * implementation is returned by <code>footerRendererFactory</code>.
 		 *
-		 * <p>The following example customizes some header renderer properties:</p>
+		 * <p>By default, the <code>footerRendererFactory</code> will return a
+		 * <code>DefaultGroupedListHeaderOrFooterRenderer</code> instance. If
+		 * you aren't using a custom footer renderer, you can refer to
+		 * <a href="renderers/DefaultGroupedListHeaderOrFooterRenderer.html"><code>feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every footer renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to footer renderers using the
+		 * <code>footerRendererFactory</code> or in the theme.</p>
+		 *
+		 * <p>The following example customizes some footer renderer properties:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.footerRendererProperties.&#64;contentLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.footerRendererProperties.padding = 20;</listing>
+		 * list.footerRendererProperties.contentLabelField = "footerText";
+		 * list.footerRendererProperties.contentLabelStyleName = "custom-footer-renderer-content-label";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
