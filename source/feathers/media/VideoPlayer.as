@@ -194,6 +194,21 @@ package feathers.media
 		 * @private
 		 */
 		protected static const NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:String = "NetStream.Seek.Notify";
+
+		/**
+		 * @private
+		 */
+		protected static const NO_VIDEO_SOURCE_PLAY_ERROR:String = "Cannot play media when videoSource property has not been set.";
+
+		/**
+		 * @private
+		 */
+		protected static const NO_VIDEO_SOURCE_PAUSE_ERROR:String = "Cannot pause media when videoSource property has not been set.";
+
+		/**
+		 * @private
+		 */
+		protected static const NO_VIDEO_SOURCE_SEEK_ERROR:String = "Cannot seek media when videoSource property has not been set.";
 		
 		/**
 		 * The default <code>IStyleProvider</code> for all
@@ -395,6 +410,22 @@ package feathers.media
 			if(this._videoSource === value)
 			{
 				return;
+			}
+			if(this._isPlaying)
+			{
+				this.stop();
+			}
+			if(this._texture)
+			{
+				this._texture.dispose();
+				this._texture = null;
+			}
+			if(!value)
+			{
+				//if we're not playing anything, we shouldn't keep the NetStream
+				//around in memory. if we're switching to something else, then
+				//the NetStream can be reused.
+				this.disposeNetStream();
 			}
 			this._videoSource = value;
 			//reset the current and total time if we were playing a different
@@ -626,14 +657,7 @@ package feathers.media
 				this._texture.dispose();
 				this._texture = null;
 			}
-			if(this._netStream)
-			{
-				this._netStream.removeEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
-				this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
-				this._netStream.close();
-				this._netStream = null;
-				this._netConnection = null;
-			}
+			this.disposeNetStream();
 			super.dispose();
 		}
 
@@ -707,6 +731,10 @@ package feathers.media
 		 */
 		override protected function playMedia():void
 		{
+			if(!this._videoSource)
+			{
+				throw new IllegalOperationError(NO_VIDEO_SOURCE_PLAY_ERROR);
+			}
 			if(!this._netStream)
 			{
 				this._netConnection = new NetConnection();
@@ -744,6 +772,10 @@ package feathers.media
 		 */
 		override protected function pauseMedia():void
 		{
+			if(!this._videoSource)
+			{
+				throw new IllegalOperationError(NO_VIDEO_SOURCE_PAUSE_ERROR);
+			}
 			this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 			this._netStream.pause();
 		}
@@ -753,8 +785,28 @@ package feathers.media
 		 */
 		override protected function seekMedia(seconds:Number):void
 		{
+			if(!this._videoSource)
+			{
+				throw new IllegalOperationError(NO_VIDEO_SOURCE_SEEK_ERROR);
+			}
 			this._currentTime = seconds;
 			this._netStream.seek(seconds);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function disposeNetStream():void
+		{
+			if(!this._netStream)
+			{
+				return;
+			}
+			this._netStream.removeEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
+			this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
+			this._netStream.close();
+			this._netStream = null;
+			this._netConnection = null;
 		}
 
 		/**
