@@ -145,7 +145,7 @@ package feathers.core
 	 * Handles the editing of text.
 	 *
 	 * @see feathers.controls.TextInput
-	 * @see ../../../help/text-editors Introduction to Feathers text editors
+	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
 	 */
 	public interface ITextEditor extends IFeathersControl, ITextBaselineControl
 	{

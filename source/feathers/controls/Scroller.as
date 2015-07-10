@@ -1011,12 +1011,13 @@ package feathers.controls
 		protected var _horizontalScrollBarProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroller's
-		 * horizontal scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> instance. The available properties depend on
-		 * which implementation of <code>IScrollBar</code> is returned by
-		 * <code>horizontalScrollBarFactory</code>. The most common
-		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
+		 * An object that stores properties for the container's horizontal
+		 * scroll bar, and the properties will be passed down to the horizontal
+		 * scroll bar when the container validates. The available properties
+		 * depend on which <code>IScrollBar</code> implementation is returned
+		 * by <code>horizontalScrollBarFactory</code>. Refer to
+		 * <a href="IScrollBar.html"><code>feathers.controls.IScrollBar</code></a>
+		 * for a list of available scroll bar implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1246,12 +1247,13 @@ package feathers.controls
 		protected var _verticalScrollBarProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroller's
-		 * vertical scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> instance. The available properties depend on
-		 * which implementation of <code>IScrollBar</code> is returned by
-		 * <code>verticalScrollBarFactory</code>. The most common
-		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
+		 * An object that stores properties for the container's vertical scroll
+		 * bar, and the properties will be passed down to the vertical scroll
+		 * bar when the container validates. The available properties depend on
+		 * which <code>IScrollBar</code> implementation is returned by
+		 * <code>verticalScrollBarFactory</code>. Refer to
+		 * <a href="IScrollBar.html"><code>feathers.controls.IScrollBar</code></a>
+		 * for a list of available scroll bar implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1264,7 +1266,7 @@ package feathers.controls
 		 * will result in better performance.</p>
 		 *
 		 * <p>In the following example, properties for the vertical scroll bar
-		 * are passed to the scroller:</p>
+		 * are passed to the container:</p>
 		 *
 		 * <listing version="3.0">
 		 * scroller.verticalScrollBarProperties.liveDragging = false;</listing>
@@ -1330,9 +1332,9 @@ package feathers.controls
 		protected var explicitHorizontalScrollStep:Number = NaN;
 
 		/**
-		 * The number of pixels the scroller can be stepped horizontally. Passed
-		 * to the horizontal scroll bar, if one exists. Touch scrolling is not
-		 * affected by the step value.
+		 * The number of pixels the horizontal scroll position can be adjusted
+		 * by a "step". Passed to the horizontal scroll bar, if one exists.
+		 * Touch scrolling is not affected by the step value.
 		 *
 		 * <p>In the following example, the horizontal scroll step is customized:</p>
 		 *
@@ -1370,7 +1372,7 @@ package feathers.controls
 		protected var _horizontalScrollPosition:Number = 0;
 
 		/**
-		 * The number of pixels the scroller has been scrolled horizontally (on
+		 * The number of pixels the container has been scrolled horizontally (on
 		 * the x-axis).
 		 *
 		 * <p>In the following example, the horizontal scroll position is customized:</p>
@@ -1582,9 +1584,9 @@ package feathers.controls
 		protected var explicitVerticalScrollStep:Number = NaN;
 
 		/**
-		 * The number of pixels the scroller can be stepped vertically. Passed
-		 * to the vertical scroll bar, if it exists, and used for scrolling with
-		 * the mouse wheel. Touch scrolling is not affected by the step value.
+		 * The number of pixels the vertical scroll position can be adjusted
+		 * by a "step". Passed to the vertical scroll bar, if one exists.
+		 * Touch scrolling is not affected by the step value.
 		 *
 		 * <p>In the following example, the vertical scroll step is customized:</p>
 		 *
@@ -1617,9 +1619,9 @@ package feathers.controls
 		protected var _verticalMouseWheelScrollStep:Number = NaN;
 
 		/**
-		 * The number of pixels the scroller can be stepped vertically when
-		 * using the mouse wheel. If this value is <code>NaN</code>, the mouse
-		 * wheel will use the same scroll step as the scroll bars.
+		 * The number of pixels the vertical scroll position can be adjusted by
+		 * a "step" when using the mouse wheel. If this value is
+		 * <code>NaN</code>, the mouse wheel will use the same scroll step as the scroll bars.
 		 *
 		 * <p>In the following example, the vertical mouse wheel scroll step is
 		 * customized:</p>
@@ -1658,7 +1660,7 @@ package feathers.controls
 		protected var _verticalScrollPosition:Number = 0;
 
 		/**
-		 * The number of pixels the scroller has been scrolled vertically (on
+		 * The number of pixels the container has been scrolled vertically (on
 		 * the y-axis).
 		 *
 		 * <p>In the following example, the vertical scroll position is customized:</p>

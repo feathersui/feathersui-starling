@@ -2596,10 +2596,14 @@ package feathers.controls.renderers
 		protected var _iconLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a label icon, if one
-		 * exists. The title is an <code>ITextRenderer</code> instance. The
+		 * An object that stores properties for the icon label text renderer
+		 * sub-component (if using <code>iconLabelField</code> or
+		 * <code>iconLabelFunction</code>), and the properties will be passed
+		 * down to the text renderer when this component validates. The
 		 * available properties depend on which <code>ITextRenderer</code>
-		 * implementation is used.
+		 * implementation is returned by <code>iconLabelFactory</code>. Refer to
+		 * <a href="../../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -2775,10 +2779,14 @@ package feathers.controls.renderers
 		protected var _accessoryLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a label accessory. The
-		 * title is an <code>ITextRenderer</code> instance. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is used.
+		 * An object that stores properties for the accessory label text
+		 * renderer sub-component (if using <code>accessoryLabelField</code> or
+		 * <code>accessoryLabelFunction</code>), and the properties will be
+		 * passed down to the text renderer when this component validates. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>accessoryLabelFactory</code>.
+		 * Refer to <a href="../../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

@@ -1198,10 +1198,10 @@ package feathers.controls
 		protected var _minimumTrackProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the slider's minimum
-		 * track sub-component. The minimum track is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>minimumTrackFactory</code>.
+		 * An object that stores properties for the slider's "minimum" track,
+		 * and the properties will be passed down to the "minimum" track when
+		 * the slider validates. For a list of available properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1395,10 +1395,10 @@ package feathers.controls
 		protected var _maximumTrackProperties:PropertyProxy;
 		
 		/**
-		 * A set of key/value pairs to be passed down to the slider's maximum
-		 * track sub-component. The maximum track is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>maximumTrackFactory</code>.
+		 * An object that stores properties for the slider's "maximum" track,
+		 * and the properties will be passed down to the "maximum" track when
+		 * the slider validates. For a list of available properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1591,9 +1591,10 @@ package feathers.controls
 		protected var _thumbProperties:PropertyProxy;
 		
 		/**
-		 * A set of key/value pairs to be passed down to the slider's thumb
-		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance that is created by <code>thumbFactory</code>.
+		 * An object that stores properties for the slider's thumb, and the
+		 * properties will be passed down to the thumb when the slider
+		 * validates. For a list of available properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

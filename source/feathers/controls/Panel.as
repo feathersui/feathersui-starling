@@ -575,12 +575,19 @@ package feathers.controls
 		protected var _headerProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * header sub-component. The header may be any
-		 * <code>feathers.core.IFeathersControl</code> instance, but the default
-		 * is a <code>feathers.controls.Header</code> instance. The available
-		 * properties depend on what type of component is returned by
-		 * <code>headerFactory</code>.
+		 * An object that stores properties for the container's header
+		 * sub-component, and the properties will be passed down to the header
+		 * when the container validates. Any Feathers component may be used as
+		 * the container's header, so the available properties depend on which
+		 * type of component is returned by <code>headerFactory</code>.
+		 *
+		 * <p>By default, the <code>headerFactory</code> will return a
+		 * <code>Header</code> instance. If you aren't using a different type of
+		 * component as the container's header, you can refer to
+		 * <a href="Header.html"><code>feathers.controls.Header</code></a>
+		 * for a list of available properties. Otherwise, refer to the
+		 * appropriate documentation for details about which properties are
+		 * available on the component that you're using as the header.</p>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -779,11 +786,13 @@ package feathers.controls
 		protected var _footerProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * footer sub-component. The footer may be any
-		 * <code>feathers.core.IFeathersControl</code> instance, but there is no
-		 * default. The available properties depend on what type of component is
-		 * returned by <code>footerFactory</code>.
+		 * An object that stores properties for the container's footer
+		 * sub-component, and the properties will be passed down to the footer
+		 * when the container validates. Any Feathers component may be used as
+		 * the container's footer, so the available properties depend on which
+		 * type of component is returned by <code>footerFactory</code>. Refer to
+		 * the appropriate documentation for details about which properties are
+		 * available on the component that you're using as the footer.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

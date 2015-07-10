@@ -669,9 +669,13 @@ package feathers.controls
 		protected var _textEditorProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the text area's text
-		 * editor view port. The text editor view port is an <code>ITextEditorViewPort</code>
-		 * instance that is created by <code>textEditorFactory</code>.
+		 * An object that stores properties for the text area's text editor
+		 * sub-component, and the properties will be passed down to the
+		 * text editor when the text area validates. The available properties
+		 * depend on which <code>ITextEditorViewPort</code> implementation is
+		 * returned by <code>textEditorFactory</code>. Refer to
+		 * <a href="text/ITextEditorViewPort.html"><code>feathers.controls.text.ITextEditorViewPort</code></a>
+		 * for a list of available text editor implementations for text area.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -695,7 +699,6 @@ package feathers.controls
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.controls.text.ITextEditorViewPort
-		 * @see feathers.controls.text.TextFieldTextEditorViewPort
 		 */
 		public function get textEditorProperties():Object
 		{

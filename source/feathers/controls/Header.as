@@ -385,8 +385,6 @@ package feathers.controls
 		 * @see #title
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get titleFactory():Function
 		{
@@ -1073,12 +1071,13 @@ package feathers.controls
 		protected var _titleProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the header's title. The
-		 * title is an <code>ITextRenderer</code> instance. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is returned by <code>titleFactory</code>. The most common
-		 * implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the header's title text renderer
+		 * sub-component, and the properties will be passed down to the text
+		 * renderer when the header validates. The available properties
+		 * depend on which <code>ITextRenderer</code> implementation is returned
+		 * by <code>textRendererFactory</code>. Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>In the following example, some properties are set for the header's
 		 * title text renderer (this example assumes that the title text renderer
@@ -1102,8 +1101,6 @@ package feathers.controls
 		 *
 		 * @see #titleFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get titleProperties():Object
 		{
