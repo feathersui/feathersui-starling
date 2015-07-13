@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="feathers-examples" default="web" basedir=".">
 
+	<target name="desktop" description="Builds desktop SWFs from all examples.">
+		<ant dir="${basedir}/Video" target="build-desktop" inheritAll="false" useNativeBasedir="true"/>
+	</target>
 	<target name="web" description="Builds web SWFs from all examples.">
 		<ant dir="${basedir}/ComponentsExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/DrawersExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
