@@ -5356,6 +5356,9 @@ package feathers.controls
 		protected function horizontalAutoScrollTween_onComplete():void
 		{
 			this._horizontalAutoScrollTween = null;
+			//the page index will not have updated during the animation, so we
+			//need to ensure that it is updated now.
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.finishScrollingHorizontally();
 		}
 
@@ -5365,6 +5368,9 @@ package feathers.controls
 		protected function verticalAutoScrollTween_onComplete():void
 		{
 			this._verticalAutoScrollTween = null;
+			//the page index will not have updated during the animation, so we
+			//need to ensure that it is updated now.
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.finishScrollingVertically();
 		}
 
