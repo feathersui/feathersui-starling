@@ -230,5 +230,12 @@ package feathers.events
 		 * has been made, but the task is incomplete.
 		 */
 		public static const PROGRESS:String = "progress";
+
+		/**
+		 * The <code>FeathersEventType.LOCATION_CHANGE</code> event type is used
+		 * by the Feathers <code>WebView</code> component to indicate that its
+		 * location has changed.
+		 */
+		public static const LOCATION_CHANGE:String = "locationChange";
 	}
 }
