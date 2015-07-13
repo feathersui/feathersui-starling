@@ -4,7 +4,7 @@ A very simple example that creates a Button control from the [Feathers](http://f
 
 ## Requirements
 
-In addition to Starling Framwork and Feathers, this example project requires the MetalWorksMobileTheme example theme. You can find the SWC file for this theme at the following location in the Feathers release build:
+In addition to Starling Framework and Feathers, this example project requires the `MetalWorksMobileTheme` example theme. You can find the SWC file for this theme at the following location in the Feathers release build:
 
 	themes/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc
 
