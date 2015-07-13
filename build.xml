@@ -442,6 +442,13 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/Video">
+			<fileset dir="${examples.root}/Video">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/YouTubeFeeds">
 			<fileset dir="${examples.root}/YouTubeFeeds">
 				<include name="README.md"/>
