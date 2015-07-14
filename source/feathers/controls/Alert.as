@@ -72,7 +72,7 @@ package feathers.controls
 	 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
 	 *     [
 	 *         { label: "OK" }
-	 *     ]);
+	 *     ]));
 	 * }</listing>
 	 *
 	 * @see ../../../help/alert.html How to use the Feathers Alert component
