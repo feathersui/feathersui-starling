@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.TransitionsExplorer</id>
 	<filename>Transitions</filename>
 	<name>Transitions</name>
-	<versionNumber>2.1.1</versionNumber>
+	<versionNumber>2.1.2</versionNumber>
 	<description>Transitions Explorer example application built with Feathers UI controls for Starling</description>
 	<copyright>2015 Josh Tynjala</copyright>
 

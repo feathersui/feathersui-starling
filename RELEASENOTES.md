@@ -2,6 +2,10 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.1.2
+
+* ScrollContainer: overrides addChild() to fix "RangeError: Invalid child index" issue when using Starling 1.7.
+
 ## 2.1.1
 
 * BitmapFontTextRenderer, ScrollContainer: added workarounds for compiler bugs in Adobe Flex SDK 4.6.

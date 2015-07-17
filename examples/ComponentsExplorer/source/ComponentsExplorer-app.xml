@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.ComponentsExplorer</id>
 	<filename>Components</filename>
 	<name>Components</name>
-	<versionNumber>2.1.1</versionNumber>
+	<versionNumber>2.1.2</versionNumber>
 	<description>Components Explorer example application built with Feathers UI controls for Starling</description>
 	<copyright>2015 Josh Tynjala</copyright>
 
