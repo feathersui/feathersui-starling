@@ -527,6 +527,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function addChild(child:DisplayObject):DisplayObject
+		{
+			return this.addChildAt(child, this.numChildren);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
 			if(!this.displayListBypassEnabled)
