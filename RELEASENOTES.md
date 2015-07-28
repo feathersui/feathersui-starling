@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
-## 2.2.0-beta
+## 2.2.0
 
 * New Component: SoundPlayer. Plays audio using a Sound object.
 * New Component: VideoPlayer. Plays video using a NetStream object.
@@ -11,6 +11,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * New Layout: HorizontalSpinnerLayout. Similar to VerticalSpinnerLayout, but displays items in a horizontal row.
 * New Transition: Iris. Scales a circular mask to animate between two screens.
 * New Transition: Wipe. Resizes a clipRect to animate between two screens.
+* New Example: Video. A desktop AIR app that can play videos from the file system.
 * AddOnFunctionStyleProvider: added callBeforeOriginalStyleProvider property to allow the add-on function to be called first.
 * Alert: added customMessageStyleName property.
 * BitmapFontTextEditor, TextBlockTextEditor: fixed an issue where they didn't accept non-Latin characters and ignored characters when Alt key was pressed.
@@ -75,6 +76,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * StackScreenNavigator: fixed issue where setting rootScreenID before screens were added could throw a runtime error.
 * StageTextTextEditor: fixed issue where text color wouldn't change when disabled while StageText didn't have focus.
 * StageTextTextEditor: fixed an issue where where the text editor would try to change the font size property every frame, but it wasn't rounding to an integer, causing the check to fail.
+* StageTextTextEditor, TextFieldTextEditor: improved positioning of StageText or TextField overlay when added to Sprite3D.
 * StyleNameFunctionTheme: added a createRegistry() function that can be overridden in a subclass to customize the style provider registry.
 * TabBar: now supports isEnabled in data provider, similar to ButtonGroup.
 * TextArea, TextInput: fixed issue where the backgroundFocusedSkin wasn't displayed when the FocusManager was disabled (thanks tcfraser!)
@@ -97,6 +99,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * ValidationQueue: skips components in queue that are no longer on the display list.
 * ValidationQueue: will not proceed if Starling's context is invalid. This may happen if a TouchEvent.TOUCH listener causes a lost context.
 * VerticalSpinnerLayout: fixed issue where item heights weren't forced to the same size, which could cause large gaps or overlapping items.
+* WebView: added missing FeathersEventType.LOCATION_CHANGE constant for event.
 * YouTubeFeeds: example updated to use newer YouTube API since the old one was shut down.
 * Transitions: changed some to use RenderDelegate to avoid removing screens from display list.
 * Examples: use Context3DProfile.BASELINE for mobile examples, since it is widely supported on mobile.
@@ -104,7 +107,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Themes: when disposing, unregisters bitmap fonts, clears texture onRestore function, and clears StandardIcons class.
 * Themes: desktop themes now use HiDPI textures.
 
-### 2.2.0-beta Deprecated APIs
+### 2.2.0 Deprecated APIs
 
 All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
@@ -124,7 +127,7 @@ The `List` and `GroupedList` components had some properties that didn't follow t
 
 All of the above renamed APIs were deprecated in Feathers 2.1.0, and they remain deprecated in Feathers 2.2.0.
 
-### 2.2.0-beta API Changes
+### 2.2.0 API Changes
 
 The `scrollToPageIndex()` function in the `Scroller` class, and its subclasses, no longer accepts `-1` as a valid way of specifying that the horizontal or vertical page index should not change. You must pass in the current value of the `horizontalPageIndex` or `verticalPageIndex` property instead. With the ability to have negative page indices, `-1` must now be available as a valid page index.
 
@@ -139,6 +142,10 @@ The code would need to be modified, like this:
 ```
 list.scrollToPageIndex( 2, list.verticalPageIndex );
 ```
+
+## 2.1.2
+
+* ScrollContainer: overrides addChild() to fix "RangeError: Invalid child index" issue when using Starling 1.7.
 
 ## 2.1.1
 
