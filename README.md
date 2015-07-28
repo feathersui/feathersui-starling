@@ -1,4 +1,4 @@
-# Feathers 2.2.0-beta [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
+# Feathers 2.3.0-prerelease [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
 
 ---
 
