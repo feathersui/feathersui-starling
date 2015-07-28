@@ -224,18 +224,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK:String = "feathers-slider-minimum-track";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Slider#DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK
-		 */
-		public static const DEFAULT_CHILD_NAME_MINIMUM_TRACK:String = DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * maximum track.
 		 *
@@ -244,35 +232,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK:String = "feathers-slider-maximum-track";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Slider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Slider#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK
-		 */
-		public static const DEFAULT_CHILD_NAME_MAXIMUM_TRACK:String = DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the thumb.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-slider-thumb";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Slider.DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Slider#DEFAULT_CHILD_STYLE_NAME_THUMB
-		 */
-		public static const DEFAULT_CHILD_NAME_THUMB:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Slider</code>
@@ -332,29 +296,6 @@ package feathers.controls
 		protected var minimumTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
 
 		/**
-		 * DEPRECATED: Replaced by <code>minimumTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #minimumTrackStyleName
-		 */
-		protected function get minimumTrackName():String
-		{
-			return this.minimumTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set minimumTrackName(value:String):void
-		{
-			this.minimumTrackStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the maximum
 		 * track. This variable is <code>protected</code> so that sub-classes
 		 * can customize the maximum track style name in their constructors
@@ -370,29 +311,6 @@ package feathers.controls
 		protected var maximumTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
 
 		/**
-		 * DEPRECATED: Replaced by <code>maximumTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #maximumTrackStyleName
-		 */
-		protected function get maximumTrackName():String
-		{
-			return this.maximumTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set maximumTrackName(value:String):void
-		{
-			this.maximumTrackStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the thumb. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the thumb style name in their constructors instead of using the
@@ -405,29 +323,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
-
-		/**
-		 * DEPRECATED: Replaced by <code>thumbStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #thumbStyleName
-		 */
-		protected function get thumbName():String
-		{
-			return this.thumbStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set thumbName(value:String):void
-		{
-			this.thumbStyleName = value;
-		}
 
 		/**
 		 * The thumb sub-component.
@@ -1170,29 +1065,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customMinimumTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customMinimumTrackStyleName
-		 */
-		public function get customMinimumTrackName():String
-		{
-			return this.customMinimumTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customMinimumTrackName(value:String):void
-		{
-			this.customMinimumTrackStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _minimumTrackProperties:PropertyProxy;
@@ -1364,29 +1236,6 @@ package feathers.controls
 			}
 			this._customMaximumTrackStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customMaximumTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customMaximumTrackStyleName
-		 */
-		public function get customMaximumTrackName():String
-		{
-			return this.customMaximumTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customMaximumTrackName(value:String):void
-		{
-			this.customMaximumTrackStyleName = value;
 		}
 		
 		/**
@@ -1560,29 +1409,6 @@ package feathers.controls
 			}
 			this._customThumbStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customThumbStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customThumbStyleName
-		 */
-		public function get customThumbName():String
-		{
-			return this.customThumbStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customThumbName(value:String):void
-		{
-			this.customThumbStyleName = value;
 		}
 		
 		/**

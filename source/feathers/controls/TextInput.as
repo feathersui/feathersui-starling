@@ -247,18 +247,6 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
 
 		/**
-		 * DEPRECATED: Replaced by <code>TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see TextInput#ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT
-		 */
-		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT;
-
-		/**
 		 * The text editor, icon, and prompt will be aligned vertically to the
 		 * top edge of the text input.
 		 *

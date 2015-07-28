@@ -118,18 +118,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-button-label";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Button.DEFAULT_CHILD_STYLE_NAME_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Button#DEFAULT_CHILD_STYLE_NAME_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_LABEL:String = DEFAULT_CHILD_STYLE_NAME_LABEL;
-
-		/**
 		 * An alternate style name to use with <code>Button</code> to allow a
 		 * theme to give it a more prominent, "call-to-action" style. If a theme
 		 * does not provide a style for a call-to-action button, the theme will
@@ -152,18 +140,6 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON:String = "feathers-call-to-action-button";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Button#ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON
-		 */
-		public static const ALTERNATE_NAME_CALL_TO_ACTION_BUTTON:String = ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON;
-
-		/**
 		 * An alternate style name to use with <code>Button</code> to allow a
 		 * theme to give it a less prominent, "quiet" style. If a theme does not
 		 * provide a style for a quiet button, the theme will automatically fall
@@ -184,18 +160,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_QUIET_BUTTON:String = "feathers-quiet-button";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Button#ALTERNATE_STYLE_NAME_QUIET_BUTTON
-		 */
-		public static const ALTERNATE_NAME_QUIET_BUTTON:String = ALTERNATE_STYLE_NAME_QUIET_BUTTON;
 
 		/**
 		 * An alternate style name to use with <code>Button</code> to allow a
@@ -222,18 +186,6 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_DANGER_BUTTON:String = "feathers-danger-button";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Button#ALTERNATE_STYLE_NAME_DANGER_BUTTON
-		 */
-		public static const ALTERNATE_NAME_DANGER_BUTTON:String = ALTERNATE_STYLE_NAME_DANGER_BUTTON;
-
-		/**
 		 * An alternate style name to use with <code>Button</code> to allow a
 		 * theme to give it a "back button" style, perhaps with an arrow
 		 * pointing backward. If a theme does not provide a style for a back
@@ -257,18 +209,6 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_BACK_BUTTON:String = "feathers-back-button";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_BACK_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Button#ALTERNATE_STYLE_NAME_BACK_BUTTON
-		 */
-		public static const ALTERNATE_NAME_BACK_BUTTON:String = ALTERNATE_STYLE_NAME_BACK_BUTTON;
-
-		/**
 		 * An alternate style name to use with <code>Button</code> to allow a
 		 * theme to give it a "forward" button style, perhaps with an arrow
 		 * pointing forward. If a theme does not provide a style for a forward
@@ -290,18 +230,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Button#ALTERNATE_STYLE_NAME_FORWARD_BUTTON
-		 */
-		public static const ALTERNATE_NAME_FORWARD_BUTTON:String = ALTERNATE_STYLE_NAME_FORWARD_BUTTON;
 		
 		/**
 		 * Identifier for the button's up state. Can be used for styling purposes.
@@ -466,29 +394,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var labelStyleName:String = DEFAULT_CHILD_STYLE_NAME_LABEL;
-
-		/**
-		 * DEPRECATED: Replaced by <code>labelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #labelStyleName
-		 */
-		protected function get labelName():String
-		{
-			return this.labelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set labelName(value:String):void
-		{
-			this.labelStyleName = value;
-		}
 		
 		/**
 		 * The text renderer for the button's label.
@@ -2418,7 +2323,7 @@ package feathers.controls
 			{
 				var factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
 				this.labelTextRenderer = ITextRenderer(factory());
-				this.labelTextRenderer.styleNameList.add(this.labelName);
+				this.labelTextRenderer.styleNameList.add(this.labelStyleName);
 				this.addChild(DisplayObject(this.labelTextRenderer));
 			}
 		}

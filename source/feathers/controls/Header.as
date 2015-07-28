@@ -160,36 +160,12 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_ITEM:String = "feathers-header-item";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Header.DEFAULT_CHILD_STYLE_NAME_ITEM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Header#DEFAULT_CHILD_STYLE_NAME_ITEM
-		 */
-		public static const DEFAULT_CHILD_NAME_ITEM:String = DEFAULT_CHILD_STYLE_NAME_ITEM;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the header's
 		 * title.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TITLE:String = "feathers-header-title";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Header.DEFAULT_CHILD_STYLE_NAME_TITLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Header#DEFAULT_CHILD_STYLE_NAME_TITLE
-		 */
-		public static const DEFAULT_CHILD_NAME_TITLE:String = DEFAULT_CHILD_STYLE_NAME_TITLE;
 
 		/**
 		 * @private
@@ -228,29 +204,6 @@ package feathers.controls
 		protected var titleStyleName:String = DEFAULT_CHILD_STYLE_NAME_TITLE;
 
 		/**
-		 * DEPRECATED: Replaced by <code>titleStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #titleStyleName
-		 */
-		protected function get titleName():String
-		{
-			return this.titleStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set titleName(value:String):void
-		{
-			this.titleStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of each of the
 		 * header's items. This variable is <code>protected</code> so that
 		 * sub-classes can customize the item style name in their constructors
@@ -260,29 +213,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var itemStyleName:String = DEFAULT_CHILD_STYLE_NAME_ITEM;
-
-		/**
-		 * DEPRECATED: Replaced by <code>itemStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #itemStyleName
-		 */
-		protected function get itemName():String
-		{
-			return this.itemStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set itemName(value:String):void
-		{
-			this.itemStyleName = value;
-		}
 
 		/**
 		 * @private
