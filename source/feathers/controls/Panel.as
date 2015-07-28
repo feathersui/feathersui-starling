@@ -54,35 +54,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_HEADER:String = "feathers-panel-header";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Panel.DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Panel#DEFAULT_CHILD_STYLE_NAME_HEADER
-		 */
-		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the footer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_FOOTER:String = "feathers-panel-footer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Panel#DEFAULT_CHILD_STYLE_NAME_FOOTER
-		 */
-		public static const DEFAULT_CHILD_NAME_FOOTER:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -277,29 +253,6 @@ package feathers.controls
 		protected var headerStyleName:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
 
 		/**
-		 * DEPRECATED: Replaced by <code>headerStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #headerStyleName
-		 */
-		protected function get headerName():String
-		{
-			return this.headerStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set headerName(value:String):void
-		{
-			this.headerStyleName = value;
-		}
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * footer. This variable is <code>protected</code> so that sub-classes
 		 * can customize the footer style name in their constructors instead of
@@ -313,29 +266,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var footerStyleName:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
-
-		/**
-		 * DEPRECATED: Replaced by <code>footerStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #footerStyleName
-		 */
-		protected function get footerName():String
-		{
-			return this.footerStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set footerName(value:String):void
-		{
-			this.footerStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -547,29 +477,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customHeaderStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customHeaderStyleName
-		 */
-		public function get customHeaderName():String
-		{
-			return this.customHeaderStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customHeaderName(value:String):void
-		{
-			this.customHeaderStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _headerProperties:PropertyProxy;
@@ -755,29 +662,6 @@ package feathers.controls
 			//hack because the super class doesn't know anything about the
 			//header factory
 			this.invalidate(INVALIDATION_FLAG_SIZE);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customFooterStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFooterStyleName
-		 */
-		public function get customFooterName():String
-		{
-			return this.customFooterStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customFooterName(value:String):void
-		{
-			this.customFooterStyleName = value;
 		}
 
 		/**

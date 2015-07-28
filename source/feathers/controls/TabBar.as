@@ -181,18 +181,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_TAB:String = "feathers-tab-bar-tab";
 
 		/**
-		 * DEPRECATED: Replaced by <code>TabBar.DEFAULT_CHILD_STYLE_NAME_TAB</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see TabBar#DEFAULT_CHILD_STYLE_NAME_TAB
-		 */
-		public static const DEFAULT_CHILD_NAME_TAB:String = DEFAULT_CHILD_STYLE_NAME_TAB;
-
-		/**
 		 * The default <code>IStyleProvider</code> for all <code>TabBar</code>
 		 * components.
 		 *
@@ -232,29 +220,6 @@ package feathers.controls
 		protected var tabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
-		 * DEPRECATED: Replaced by <code>tabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #tabStyleName
-		 */
-		protected function get tabName():String
-		{
-			return this.tabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set tabName(value:String):void
-		{
-			this.tabStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the first tab.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the first tab style name in their constructors instead of
@@ -270,29 +235,6 @@ package feathers.controls
 		protected var firstTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
-		 * DEPRECATED: Replaced by <code>firstTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #firstTabStyleName
-		 */
-		protected function get firstTabName():String
-		{
-			return this.firstTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set firstTabName(value:String):void
-		{
-			this.firstTabStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the last tab.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the last tab style name in their constructors instead of
@@ -306,29 +248,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var lastTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
-
-		/**
-		 * DEPRECATED: Replaced by <code>lastTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #lastTabStyleName
-		 */
-		protected function get lastTabName():String
-		{
-			return this.lastTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set lastTabName(value:String):void
-		{
-			this.lastTabStyleName = value;
-		}
 
 		/**
 		 * The toggle group.
@@ -1284,29 +1203,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customTabStyleName
-		 */
-		public function get customTabName():String
-		{
-			return this.customTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customTabName(value:String):void
-		{
-			this.customTabStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _customFirstTabStyleName:String;
@@ -1350,29 +1246,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customFirstTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFirstTabStyleName
-		 */
-		public function get customFirstTabName():String
-		{
-			return this.customFirstTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customFirstTabName(value:String):void
-		{
-			this.customFirstTabStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _customLastTabStyleName:String;
@@ -1413,29 +1286,6 @@ package feathers.controls
 			}
 			this._customLastTabStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customLastTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customLastTabStyleName
-		 */
-		public function get customLastTabName():String
-		{
-			return this.customLastTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customLastTabName(value:String):void
-		{
-			this.customLastTabStyleName = value;
 		}
 
 		/**

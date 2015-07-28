@@ -220,18 +220,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON:String = "feathers-button-group-button";
 
 		/**
-		 * DEPRECATED: Replaced by <code>ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ButtonGroup#DEFAULT_CHILD_STYLE_NAME_BUTTON
-		 */
-		public static const DEFAULT_CHILD_NAME_BUTTON:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
-
-		/**
 		 * @private
 		 */
 		protected static function defaultButtonFactory():Button
@@ -263,29 +251,6 @@ package feathers.controls
 		protected var buttonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
 
 		/**
-		 * DEPRECATED: Replaced by <code>buttonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #buttonStyleName
-		 */
-		protected function get buttonName():String
-		{
-			return this.buttonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set buttonName(value:String):void
-		{
-			this.buttonStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the first button.
 		 *
 		 * <p>To customize the first button name without subclassing, see
@@ -297,29 +262,6 @@ package feathers.controls
 		protected var firstButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
 
 		/**
-		 * DEPRECATED: Replaced by <code>firstButtonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #firstButtonStyleName
-		 */
-		protected function get firstButtonName():String
-		{
-			return this.firstButtonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set firstButtonName(value:String):void
-		{
-			this.firstButtonStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the last button.
 		 *
 		 * <p>To customize the last button style name without subclassing, see
@@ -329,29 +271,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var lastButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
-
-		/**
-		 * DEPRECATED: Replaced by <code>lastButtonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #lastButtonStyleName
-		 */
-		protected function get lastButtonName():String
-		{
-			return this.lastButtonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set lastButtonName(value:String):void
-		{
-			this.lastButtonStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -1192,29 +1111,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customButtonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customButtonStyleName
-		 */
-		public function get customButtonName():String
-		{
-			return this.customButtonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customButtonName(value:String):void
-		{
-			this.customButtonStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _customFirstButtonStyleName:String;
@@ -1258,29 +1154,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customFirstButtonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFirstButtonStyleName
-		 */
-		public function get customFirstButtonName():String
-		{
-			return this.customFirstButtonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customFirstButtonName(value:String):void
-		{
-			this.customFirstButtonStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _customLastButtonStyleName:String;
@@ -1321,29 +1194,6 @@ package feathers.controls
 			}
 			this._customLastButtonStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customLastButtonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customLastButtonStyleName
-		 */
-		public function get customLastButtonName():String
-		{
-			return this.customLastButtonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customLastButtonName(value:String):void
-		{
-			this.customLastButtonStyleName = value;
 		}
 
 		/**

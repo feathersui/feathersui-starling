@@ -87,18 +87,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_HEADER:String = "feathers-alert-header";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_HEADER
-		 */
-		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the button group.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
@@ -106,35 +94,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP:String = "feathers-alert-button-group";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP
-		 */
-		public static const DEFAULT_CHILD_NAME_BUTTON_GROUP:String = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the message.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_MESSAGE:String = "feathers-alert-message";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_MESSAGE
-		 */
-		public static const DEFAULT_CHILD_NAME_MESSAGE:String = DEFAULT_CHILD_STYLE_NAME_MESSAGE;
 
 		/**
 		 * Returns a new <code>Alert</code> instance when <code>Alert.show()</code>
@@ -279,29 +243,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var messageStyleName:String = DEFAULT_CHILD_STYLE_NAME_MESSAGE;
-
-		/**
-		 * DEPRECATED: Replaced by <code>messageStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #messageStyleName
-		 */
-		protected function get messageName():String
-		{
-			return this.messageStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set messageName(value:String):void
-		{
-			this.messageStyleName = value;
-		}
 
 		/**
 		 * The header sub-component.
@@ -702,29 +643,6 @@ package feathers.controls
 		public function set customButtonGroupStyleName(value:String):void
 		{
 			super.customFooterStyleName = value;
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customButtonGroupStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customButtonGroupStyleName
-		 */
-		public function get customButtonGroupName():String
-		{
-			return this.customButtonGroupStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customButtonGroupName(value:String):void
-		{
-			this.customButtonGroupStyleName = value;
 		}
 
 		/**

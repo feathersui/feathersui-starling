@@ -94,18 +94,6 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_TOOLBAR:String = "feathers-toolbar-scroll-container";
 
 		/**
-		 * DEPRECATED: Replaced by <code>ScrollContainer.ALTERNATE_STYLE_NAME_TOOLBAR</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ScrollContainer#ALTERNATE_STYLE_NAME_TOOLBAR
-		 */
-		public static const ALTERNATE_NAME_TOOLBAR:String = ALTERNATE_STYLE_NAME_TOOLBAR;
-
-		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
 		 *
 		 * @see feathers.controls.Scroller#horizontalScrollPolicy
