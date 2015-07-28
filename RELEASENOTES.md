@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
-## 2.2.0-beta
+## 2.2.0
 
 * New Component: SoundPlayer. Plays audio using a Sound object.
 * New Component: VideoPlayer. Plays video using a NetStream object.
@@ -104,7 +104,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Themes: when disposing, unregisters bitmap fonts, clears texture onRestore function, and clears StandardIcons class.
 * Themes: desktop themes now use HiDPI textures.
 
-### 2.2.0-beta Deprecated APIs
+### 2.2.0 Deprecated APIs
 
 All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
@@ -124,7 +124,7 @@ The `List` and `GroupedList` components had some properties that didn't follow t
 
 All of the above renamed APIs were deprecated in Feathers 2.1.0, and they remain deprecated in Feathers 2.2.0.
 
-### 2.2.0-beta API Changes
+### 2.2.0 API Changes
 
 The `scrollToPageIndex()` function in the `Scroller` class, and its subclasses, no longer accepts `-1` as a valid way of specifying that the horizontal or vertical page index should not change. You must pass in the current value of the `horizontalPageIndex` or `verticalPageIndex` property instead. With the ability to have negative page indices, `-1` must now be available as a valid page index.
 
