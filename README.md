@@ -1,4 +1,4 @@
-# Feathers 2.2.0-beta [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
+# Feathers 2.2.0
 
 ---
 
@@ -11,8 +11,8 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Help](http://feathersui.com/beta/help/)
-* [Beta API Reference](http://feathersui.com/beta/api-reference/)
+* [Help](http://feathersui.com/help/)
+* [API Reference](http://feathersui.com/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/BowlerHatLLC/feathers)
 
