@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1350,12 +1350,15 @@ package feathers.controls
 		protected var _buttonProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the button
-		 * group's buttons. These values are shared by each button, so values
-		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to buttons using the
-		 * <code>buttonFactory</code> or in a theme. The buttons in a button
-		 * group are instances of <code>feathers.controls.Button</code>.
+		 * An object that stores properties for all of the button group's
+		 * buttons, and the properties will be passed down to every button when
+		 * the button group validates. For a list of available properties,
+		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * 
+		 * <p>These properties are shared by every button, so anything that cannot
+		 * be shared (such as display objects, which cannot be added to multiple
+		 * parents) should be passed to buttons using the
+		 * <code>buttonFactory</code> or in the theme.</p>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

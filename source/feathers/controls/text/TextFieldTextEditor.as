@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -24,8 +24,10 @@ package feathers.controls.text
 	import flash.events.KeyboardEvent;
 	import flash.events.SoftKeyboardEvent;
 	import flash.geom.Matrix;
+	import flash.geom.Matrix3D;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.geom.Vector3D;
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;
@@ -197,6 +199,16 @@ package feathers.controls.text
 	 */
 	public class TextFieldTextEditor extends FeathersControl implements ITextEditor, INativeFocusOwner
 	{
+		/**
+		 * @private
+		 */
+		private static var HELPER_MATRIX3D:Matrix3D;
+
+		/**
+		 * @private
+		 */
+		private static var HELPER_POINT3D:Vector3D;
+		
 		/**
 		 * @private
 		 */
@@ -1809,7 +1821,16 @@ package feathers.controls.text
 			{
 				smallerGlobalScale = globalScaleY;
 			}
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			if(this.is3D)
+			{
+				HELPER_MATRIX3D = this.getTransformationMatrix3D(this.stage, HELPER_MATRIX3D);
+				HELPER_POINT3D = MatrixUtil.transformCoords3D(HELPER_MATRIX3D, 0, 0, 0, HELPER_POINT3D);
+				HELPER_POINT.setTo(HELPER_POINT3D.x, HELPER_POINT3D.y);
+			}
+			else
+			{
+				MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			}
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)

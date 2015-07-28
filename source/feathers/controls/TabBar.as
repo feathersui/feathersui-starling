@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1067,7 +1067,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.ToggleButton
 		 * @see #tabFactory
 		 * @see #firstTabFactory
 		 */
@@ -1441,13 +1441,15 @@ package feathers.controls
 		protected var _tabProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the tab bar's
-		 * tabs. These values are shared by each tabs, so values that cannot be
-		 * shared (such as display objects that need to be added to the display
-		 * list) should be passed to tabs using the <code>tabFactory</code> or
-		 * in a theme. The buttons in a tab bar are instances of
-		 * <code>feathers.controls.Button</code> that are created by
-		 * <code>tabFactory</code>.
+		 * An object that stores properties for all of the tab bar's tabs, and
+		 * the properties will be passed down to every tab when the tab bar
+		 * validates. For a list of available properties, refer to
+		 * <a href="ToggleButton.html"><code>feathers.controls.ToggleButton</code></a>.
+		 *
+		 * <p>These properties are shared by every tab, so anything that cannot
+		 * be shared (such as display objects, which cannot be added to multiple
+		 * parents) should be passed to tabs using the <code>tabFactory</code>
+		 * or in the theme.</p>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1467,7 +1469,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #tabFactory
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.ToggleButton
 		 */
 		public function get tabProperties():Object
 		{

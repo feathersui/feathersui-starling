@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1229,10 +1229,10 @@ package feathers.controls
 		protected var _minimumTrackProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroll bar's
-		 * minimum track sub-component. The minimum track is a
-		 * <code>feathers.controls.Button</code> instance. that is created by
-		 * <code>minimumTrackFactory</code>.
+		 * An object that stores properties for the scroll bar's "minimum"
+		 * track, and the properties will be passed down to the "minimum" track when
+		 * the scroll bar validates. For a list of available properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1426,10 +1426,10 @@ package feathers.controls
 		protected var _maximumTrackProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroll bar's
-		 * maximum track sub-component. The maximum track is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>maximumTrackFactory</code>.
+		 * An object that stores properties for the scroll bar's "maximum"
+		 * track, and the properties will be passed down to the "maximum" track when
+		 * the scroll bar validates. For a list of available properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1623,9 +1623,10 @@ package feathers.controls
 		protected var _thumbProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroll bar's thumb
-		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance that is created by <code>thumbFactory</code>.
+		 * An object that stores properties for the scroll bar's thumb, and the
+		 * properties will be passed down to the thumb when the scroll bar
+		 * validates. For a list of available properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1819,10 +1820,11 @@ package feathers.controls
 		protected var _decrementButtonProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroll bar's
-		 * decrement button sub-component. The decrement button is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>decrementButtonFactory</code>.
+		 * An object that stores properties for the scroll bar's decrement
+		 * button, and the properties will be passed down to the decrement
+		 * button when the scroll bar validates. For a list of available
+		 * properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -2016,10 +2018,11 @@ package feathers.controls
 		protected var _incrementButtonProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroll bar's
-		 * increment button sub-component. The increment button is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>incrementButtonFactory</code>.
+		 * An object that stores properties for the scroll bar's increment
+		 * button, and the properties will be passed down to the increment
+		 * button when the scroll bar validates. For a list of available
+		 * properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

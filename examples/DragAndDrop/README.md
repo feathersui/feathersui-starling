@@ -4,9 +4,9 @@ A very simple of drag and drop in [Feathers](http://feathersui.com/). Includes e
 
 ## Requirements
 
-In addition to Starling Framwork and Feathers, this example project requires the AeonDesktopTheme example theme. You can find the SWC file for this theme at the following location in the Feathers release build:
+In addition to Starling Framework and Feathers, this example project requires the `MetalWorksDesktopTheme` example theme. You can find the SWC file for this theme at the following location in the Feathers release build:
 
-	themes/AeonDesktopTheme/swc/AeonDesktopTheme.swc
+	themes/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc
 
 ## Web Demo
 

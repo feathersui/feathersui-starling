@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1076,22 +1076,30 @@ package feathers.controls
 		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the list's item
-		 * renderers. These values are shared by each item renderer, so values
-		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to the item renderers using an
-		 * <code>itemRendererFactory</code> or with a theme. The item renderers
-		 * are instances of <code>IListItemRenderer</code>. The available
-		 * properties depend on which <code>IListItemRenderer</code>
-		 * implementation is returned by <code>itemRendererFactory</code>.
+		 * An object that stores properties for all of the list's item
+		 * renderers, and the properties will be passed down to every item
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IListItemRenderer</code> implementation is
+		 * returned by <code>itemRendererFactory</code>.
+		 *
+		 * <p>By default, the <code>itemRendererFactory</code> will return a
+		 * <code>DefaultListItemRenderer</code> instance. If you aren't using a
+		 * custom item renderer, you can refer to
+		 * <a href="renderers/DefaultListItemRenderer.html"><code>feathers.controls.renderers.DefaultListItemRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every item renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to item renderers using the
+		 * <code>itemRendererFactory</code> or in the theme.</p>
 		 *
 		 * <p>The following example customizes some item renderer properties
 		 * (this example assumes that the item renderer's label text renderer
 		 * is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.itemRendererProperties.padding = 20;</listing>
+		 * list.itemRendererProperties.labelField = "text";
+		 * list.itemRendererProperties.accessoryField = "control";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

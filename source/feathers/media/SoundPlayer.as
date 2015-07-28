@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -9,6 +9,8 @@ package feathers.media
 {
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
+
+	import flash.errors.IllegalOperationError;
 
 	import flash.events.ErrorEvent;
 	import flash.events.IOErrorEvent;
@@ -162,6 +164,11 @@ package feathers.media
 	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer
 	{
 		/**
+		 * @private
+		 */
+		protected static const NO_SOUND_SOURCE_PLAY_ERROR:String = "Cannot play media when soundSource property has not been set.";
+		
+		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>SoundPlayer</code> components.
 		 *
@@ -250,6 +257,10 @@ package feathers.media
 			{
 				return;
 			}
+			if(this._isPlaying)
+			{
+				this.stop();
+			}
 			this._soundSource = value;
 			//reset the current and total time if we were playing a different
 			//sound previously
@@ -276,9 +287,17 @@ package feathers.media
 			{
 				this._sound = Sound(this._soundSource);
 			}
+			else if(this._soundSource === null)
+			{
+				this._sound = null;
+			}
 			else
 			{
-				throw new ArgumentError("Invalid source type for AudioPlayer. Expected a URL as a String, an URLRequest, or a Sound object.")
+				throw new ArgumentError("Invalid source type for AudioPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
+			}
+			if(this._autoPlay && this._sound)
+			{
+				this.play();
 			}
 		}
 
@@ -416,6 +435,10 @@ package feathers.media
 		 */
 		override protected function playMedia():void
 		{
+			if(!this._soundSource)
+			{
+				throw new IllegalOperationError(NO_SOUND_SOURCE_PLAY_ERROR);
+			}
 			if(!this._sound.isBuffering && this._currentTime == this._totalTime)
 			{
 				//flash.events.Event.SOUND_COMPLETE may not be dispatched (or
@@ -503,10 +526,6 @@ package feathers.media
 			this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
 			this._sound.addEventListener(Event.COMPLETE, sound_completeHandler);
 			this._sound.load(request);
-			if(this._autoPlay)
-			{
-				this.play();
-			}
 		}
 
 		/**

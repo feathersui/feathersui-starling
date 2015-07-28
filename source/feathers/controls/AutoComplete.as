@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -438,10 +438,11 @@ package feathers.controls
 		protected var _listProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the pop-up list
-		 * sub-component of the <code>AutoComplete</code>. The pop-up list is a
-		 * <code>feathers.controls.List</code> instance that is created by
-		 * <code>listFactory</code>.
+		 * An object that stores properties for the auto-complete's pop-up list
+		 * sub-component, and the properties will be passed down to the pop-up
+		 * list when the auto-complete validates. For a list of available
+		 * properties, refer to
+		 * <a href="List.html"><code>feathers.controls.List</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

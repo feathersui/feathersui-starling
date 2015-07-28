@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -926,10 +926,10 @@ package feathers.controls
 		protected var _decrementButtonProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the numeric stepper's
-		 * decrement button sub-component. The decrement button is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>decrementButtonFactory</code>.
+		 * An object that stores properties for the numeric stepper's decrement
+		 * button sub-component, and the properties will be passed down to the
+		 * decrement button when the numeric stepper validates. For a list of
+		 * available properties, refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1157,10 +1157,10 @@ package feathers.controls
 		protected var _incrementButtonProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the numeric stepper's
-		 * increment button sub-component. The increment button is a
-		 * <code>feathers.controls.Button</code> instance that is created by
-		 * <code>incrementButtonFactory</code>.
+		 * An object that stores properties for the numeric stepper's increment
+		 * button sub-component, and the properties will be passed down to the
+		 * increment button when the numeric stepper validates. For a list of
+		 * available properties, refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1387,10 +1387,10 @@ package feathers.controls
 		protected var _textInputProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the numeric stepper's
-		 * text input sub-component. The text input is a
-		 * <code>feathers.controls.TextInput</code> instance that is created by
-		 * <code>textInputFactory</code>.
+		 * An object that stores properties for the numeric stepper's text
+		 * input sub-component, and the properties will be passed down to the
+		 * text input when the numeric stepper validates. For a list of
+		 * available properties, refer to <a href="TextInput.html"><code>feathers.controls.TextInput</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
