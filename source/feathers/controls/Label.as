@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
 
@@ -97,6 +98,103 @@ package feathers.controls
 		 * @see Label#ALTERNATE_STYLE_NAME_DETAIL
 		 */
 		public static const ALTERNATE_NAME_DETAIL:String = ALTERNATE_STYLE_NAME_DETAIL;
+
+		/**
+		 * The icon will be positioned above the text.
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_TOP:String = "top";
+		
+		/**
+		 * The icon will be positioned to the right of the text.
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_RIGHT:String = "right";
+		
+		/**
+		 * The icon will be positioned below the text.
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_BOTTOM:String = "bottom";
+		
+		/**
+		 * The icon will be positioned to the left of the text.
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_LEFT:String = "left";
+
+		/**
+		 * The icon will be positioned manually with no relation to the position
+		 * of the text. Use <code>iconOffsetX</code> and <code>iconOffsetY</code>
+		 * to set the icon's position.
+		 *
+		 * @see #iconPosition
+		 * @see #iconOffsetX
+		 * @see #iconOffsetY
+		 */
+		public static const ICON_POSITION_MANUAL:String = "manual";
+		
+		/**
+		 * The icon will be positioned to the left the text, and the bottom of
+		 * the icon will be aligned to the baseline of the text.
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
+		
+		/**
+		 * The icon will be positioned to the right the label, and the bottom of
+		 * the icon will be aligned to the baseline of the text.
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
+		
+		/**
+		 * The icon and text will be aligned horizontally to the left edge of the label.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+		
+		/**
+		 * The icon and text will be aligned horizontally to the center of the label.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+		
+		/**
+		 * The icon and text will be aligned horizontally to the right edge of the label.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+		
+		/**
+		 * The icon and text will be aligned vertically to the top edge of the label.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+		
+		/**
+		 * The icon and text will be aligned vertically to the middle of the label.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+		
+		/**
+		 * The icon and text will be aligned vertically to the bottom edge of the label.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Label</code>
@@ -426,6 +524,296 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var currentIconSkin:DisplayObject;
+		
+		/**
+		 * @private
+		 */
+		protected var _iconSkin:DisplayObject;
+		
+		/**
+		 * An optional icon displayed with the label.
+		 *
+		 * <p>The following example gives the label an icon</p>
+		 *
+		 * <listing version="3.0">
+		 * label.iconSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get iconSkin():DisplayObject
+		{
+			return _iconSkin;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set iconSkin(value:DisplayObject):void
+		{
+			if(this._iconSkin == value)
+			{
+				return;
+			}
+			if(this._iconSkin && this.currentIconSkin == this._iconSkin)
+			{
+				this.removeChild(this._iconSkin);
+				this.currentIconSkin = null;
+			}
+			this._iconSkin = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _iconDisabledSkin:DisplayObject;
+		
+		/**
+		 * An optional disabled icon displayed with the label.
+		 * 
+		 * <p>The following example gives the label a disabled icon</p>
+		 *
+		 * <listing version="3.0">
+		 * label.iconDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get iconDisabledSkin():DisplayObject
+		{
+			return _iconDisabledSkin;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set iconDisabledSkin(value:DisplayObject):void
+		{
+			if(this._iconDisabledSkin == value)
+			{
+				return;
+			}
+			if(this._iconDisabledSkin && this.currentIconSkin == this._iconDisabledSkin)
+			{
+				this.removeChild(this._iconDisabledSkin);
+				this.currentIconSkin = null;
+			}
+			this._iconDisabledSkin = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _iconPosition:String = ICON_POSITION_LEFT;
+
+		[Inspectable(type="String",enumeration="top,right,bottom,left,rightBaseline,leftBaseline,manual")]
+		/**
+		 * The location of the icon, relative to the label.
+		 *
+		 * <p>The following example positions the icon to the right of the
+		 * label:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.text = "Hello World";
+		 * label.defaultIcon = new Image( texture );
+		 * label.iconPosition = Label.ICON_POSITION_RIGHT;</listing>
+		 *
+		 * @default Label.ICON_POSITION_LEFT
+		 *
+		 * @see #ICON_POSITION_TOP
+		 * @see #ICON_POSITION_RIGHT
+		 * @see #ICON_POSITION_BOTTOM
+		 * @see #ICON_POSITION_LEFT
+		 * @see #ICON_POSITION_RIGHT_BASELINE
+		 * @see #ICON_POSITION_LEFT_BASELINE
+		 * @see #ICON_POSITION_MANUAL
+		 */
+		public function get iconPosition():String
+		{
+			return this._iconPosition;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set iconPosition(value:String):void
+		{
+			if(this._iconPosition == value)
+			{
+				return;
+			}
+			this._iconPosition = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _gap:Number = 0;
+		
+		/**
+		 * The space, in pixels, between the icon and the label. Applies to
+		 * either horizontal or vertical spacing, depending on the value of
+		 * <code>iconPosition</code>.
+		 * 
+		 * <p>If <code>gap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
+		 * the label and icon will be positioned as far apart as possible. In
+		 * other words, they will be positioned at the edges of the label,
+		 * adjusted for padding.</p>
+		 *
+		 * <p>The following example creates a gap of 50 pixels between the label
+		 * and the icon:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.text = "Hello World";
+		 * label.iconSkin = new Image( texture );
+		 * label.gap = 50;</listing>
+		 *
+		 * @default 0
+		 * 
+		 * @see #iconPosition
+		 * @see #minGap
+		 */
+		public function get gap():Number
+		{
+			return this._gap;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set gap(value:Number):void
+		{
+			if(this._gap == value)
+			{
+				return;
+			}
+			this._gap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minGap:Number = 0;
+
+		/**
+		 * If the value of the <code>gap</code> property is
+		 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
+		 * fill as much space as possible, the final calculated value will not be
+		 * smaller than the value of the <code>minGap</code> property.
+		 *
+		 * <p>The following example ensures that the gap is never smaller than
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.gap = Number.POSITIVE_INFINITY;
+		 * label.minGap = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #gap
+		 */
+		public function get minGap():Number
+		{
+			return this._minGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minGap(value:Number):void
+		{
+			if(this._minGap == value)
+			{
+				return;
+			}
+			this._minGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * The location where the label's content is aligned horizontally (on
+		 * the x-axis).
+		 *
+		 * <p>The following example aligns the label's content to the center:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.horizontalAlign = Label.HORIZONTAL_ALIGN_CENTER;</listing>
+		 *
+		 * @default Label.HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * The location where the label's content is aligned vertically (on
+		 * the y-axis).
+		 *
+		 * <p>The following example aligns the label's content to the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.verticalAlign = Label.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default Label.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
@@ -598,6 +986,162 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _textOffsetX:Number = 0;
+
+		/**
+		 * Offsets the x position of the text by a certain number of pixels.
+		 * This does not affect the measurement of the label. The label will
+		 * measure itself as if the text were not offset from its original
+		 * position.
+		 *
+		 * <p>The following example offsets the x position of the label's text
+		 * by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.textOffsetX = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #labelOffsetY
+		 */
+		public function get textOffsetX():Number
+		{
+			return this._textOffsetX;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textOffsetX(value:Number):void
+		{
+			if(this._textOffsetX == value)
+			{
+				return;
+			}
+			this._textOffsetX = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _textOffsetY:Number = 0;
+
+		/**
+		 * Offsets the y position of the text by a certain number of pixels.
+		 * This does not affect the measurement of the label. The label will
+		 * measure itself as if the text were not offset from its original
+		 * position.
+		 *
+		 * <p>The following example offsets the y position of the label's text
+		 * by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.textOffsetY = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #labelOffsetX
+		 */
+		public function get textOffsetY():Number
+		{
+			return this._textOffsetY;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textOffsetY(value:Number):void
+		{
+			if(this._textOffsetY == value)
+			{
+				return;
+			}
+			this._textOffsetY = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconOffsetX:Number = 0;
+
+		/**
+		 * Offsets the x position of the icon by a certain number of pixels.
+		 * This does not affect the measurement of the label. The label will
+		 * measure itself as if the icon were not offset from its original
+		 * position.
+		 *
+		 * <p>The following example offsets the x position of the label's icon
+		 * by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.iconOffsetX = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #iconOffsetY
+		 */
+		public function get iconOffsetX():Number
+		{
+			return this._iconOffsetX;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconOffsetX(value:Number):void
+		{
+			if(this._iconOffsetX == value)
+			{
+				return;
+			}
+			this._iconOffsetX = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconOffsetY:Number = 0;
+
+		/**
+		 * Offsets the y position of the icon by a certain number of pixels.
+		 * This does not affect the measurement of the label. The label will
+		 * measure itself as if the icon were not offset from its original
+		 * position.
+		 *
+		 * <p>The following example offsets the y position of the label's icon
+		 * by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.iconOffsetY = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #iconOffsetX
+		 */
+		public function get iconOffsetY():Number
+		{
+			return this._iconOffsetY;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconOffsetY(value:Number):void
+		{
+			if(this._iconOffsetY == value)
+			{
+				return;
+			}
+			this._iconOffsetY = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -609,6 +1153,11 @@ package feathers.controls
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshBackgroundSkin();
+			}
+			
+			if(stylesInvalid || stateInvalid)
+			{
+				this.refreshIconSkin();
 			}
 
 			if(textRendererInvalid)
@@ -660,17 +1209,33 @@ package feathers.controls
 			{
 				return false;
 			}
-			this.textRenderer.minWidth = this._minWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.minHeight = this._minHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
+			this.refreshMaxLabelWidth(true);
 			this.textRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._text)
+				if(this.currentIconSkin && this.text)
+				{
+					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM &&
+						this._iconPosition != ICON_POSITION_MANUAL)
+					{
+						var adjustedGap:Number = this._gap;
+						if(adjustedGap == Number.POSITIVE_INFINITY)
+						{
+							adjustedGap = this._minGap;
+						}
+						newWidth = this.currentIconSkin.width + adjustedGap + HELPER_POINT.x;
+					}
+					else
+					{
+						newWidth = Math.max(this.currentIconSkin.width, HELPER_POINT.x);
+					}
+				}
+				else if(this.currentIconSkin)
+				{
+					newWidth = this.currentIconSkin.width;
+				}
+				else if(this.text)
 				{
 					newWidth = HELPER_POINT.x;
 				}
@@ -678,6 +1243,7 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
+				
 				if(this.originalBackgroundWidth === this.originalBackgroundWidth &&
 					this.originalBackgroundWidth > newWidth) //!isNaN
 				{
@@ -685,11 +1251,31 @@ package feathers.controls
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 			}
-
+			
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._text)
+				if(this.currentIconSkin && this.text)
+				{
+					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+					{
+						adjustedGap = this._gap;
+						if(adjustedGap == Number.POSITIVE_INFINITY)
+						{
+							adjustedGap = this._minGap;
+						}
+						newHeight = this.currentIconSkin.height + adjustedGap + HELPER_POINT.y;
+					}
+					else
+					{
+						newHeight = Math.max(this.currentIconSkin.height, HELPER_POINT.y);
+					}
+				}
+				else if(this.currentIconSkin)
+				{
+					newHeight = this.currentIconSkin.height;
+				}
+				else if(this.text)
 				{
 					newHeight = HELPER_POINT.y;
 				}
@@ -697,6 +1283,7 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
+				
 				if(this.originalBackgroundHeight === this.originalBackgroundHeight &&
 					this.originalBackgroundHeight > newHeight) //!isNaN
 				{
@@ -769,6 +1356,32 @@ package feathers.controls
 				}
 			}
 		}
+		
+		/**
+		 * Sets the <code>currentIconSkin</code> property.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 */
+		protected function refreshIconSkin():void
+		{
+			var newCurrentIconSkin:DisplayObject = this._iconSkin;
+			if(!this._isEnabled && this._iconDisabledSkin)
+			{
+				newCurrentIconSkin = this._iconDisabledSkin;
+			}
+			if(this.currentIconSkin != newCurrentIconSkin)
+			{
+				if(this.currentIconSkin)
+				{
+					this.removeChild(this.currentIconSkin);
+				}
+				this.currentIconSkin = newCurrentIconSkin;
+				if(this.currentIconSkin)
+				{
+					this.addChild(this.currentIconSkin);
+				}
+			}
+		}
 
 		/**
 		 * Positions and sizes children based on the actual width and height
@@ -783,11 +1396,195 @@ package feathers.controls
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;
 			}
-			this.textRenderer.x = this._paddingLeft;
-			this.textRenderer.y = this._paddingTop;
-			this.textRenderer.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.validate();
+			this.refreshMaxLabelWidth(false);
+			if(this._text && this.textRenderer && this.currentIconSkin)
+			{
+				this.textRenderer.validate();
+				this.positionSingleChild(DisplayObject(this.textRenderer));
+				if(this._iconPosition != ICON_POSITION_MANUAL)
+				{
+					this.positionLabelAndIcon();
+				}
+
+			}
+			else if(this._text && this.textRenderer && !this.currentIconSkin)
+			{
+				this.textRenderer.validate();
+				this.positionSingleChild(DisplayObject(this.textRenderer));
+			}
+			else if((!this._text || !this.textRenderer) && this.currentIconSkin && this._iconPosition != ICON_POSITION_MANUAL)
+			{
+				this.positionSingleChild(this.currentIconSkin);
+			}
+
+			if(this.currentIconSkin)
+			{
+				if(this._iconPosition == ICON_POSITION_MANUAL)
+				{
+					this.currentIconSkin.x = this._paddingLeft;
+					this.currentIconSkin.y = this._paddingTop;
+				}
+				this.currentIconSkin.x += this._iconOffsetX;
+				this.currentIconSkin.y += this._iconOffsetY;
+			}
+			if(this._text && this.textRenderer)
+			{
+				this.textRenderer.x += this._textOffsetX;
+				this.textRenderer.y += this._textOffsetY;
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function positionSingleChild(displayObject:DisplayObject):void
+		{
+			if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+			{
+				displayObject.x = this._paddingLeft;
+			}
+			else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+			{
+				displayObject.x = this.actualWidth - this._paddingRight - displayObject.width;
+			}
+			else //center
+			{
+				displayObject.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - displayObject.width) / 2);
+			}
+			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+			{
+				displayObject.y = this._paddingTop;
+			}
+			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+			{
+				displayObject.y = this.actualHeight - this._paddingBottom - displayObject.height;
+			}
+			else //middle
+			{
+				displayObject.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2);
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function positionLabelAndIcon():void
+		{
+			if(this._iconPosition == ICON_POSITION_TOP)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.currentIconSkin.y = this._paddingTop;
+					this.textRenderer.y = this.actualHeight - this._paddingBottom - this.textRenderer.height;
+				}
+				else
+				{
+					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+					{
+						this.textRenderer.y += this.currentIconSkin.height + this._gap;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						this.textRenderer.y += Math.round((this.currentIconSkin.height + this._gap) / 2);
+					}
+					this.currentIconSkin.y = this.textRenderer.y - this.currentIconSkin.height - this._gap;
+				}
+			}
+			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.textRenderer.x = this._paddingLeft;
+					this.currentIconSkin.x = this.actualWidth - this._paddingRight - this.currentIconSkin.width;
+				}
+				else
+				{
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						this.textRenderer.x -= this.currentIconSkin.width + this._gap;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						this.textRenderer.x -= Math.round((this.currentIconSkin.width + this._gap) / 2);
+					}
+					this.currentIconSkin.x = this.textRenderer.x + this.textRenderer.width + this._gap;
+				}
+			}
+			else if(this._iconPosition == ICON_POSITION_BOTTOM)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.textRenderer.y = this._paddingTop;
+					this.currentIconSkin.y = this.actualHeight - this._paddingBottom - this.currentIconSkin.height;
+				}
+				else
+				{
+					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						this.textRenderer.y -= this.currentIconSkin.height + this._gap;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						this.textRenderer.y -= Math.round((this.currentIconSkin.height + this._gap) / 2);
+					}
+					this.currentIconSkin.y = this.textRenderer.y + this.textRenderer.height + this._gap;
+				}
+			}
+			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.currentIconSkin.x = this._paddingLeft;
+					this.textRenderer.x = this.actualWidth - this._paddingRight - this.textRenderer.width;
+				}
+				else
+				{
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+					{
+						this.textRenderer.x += this._gap + this.currentIconSkin.width;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						this.textRenderer.x += Math.round((this._gap + this.currentIconSkin.width) / 2);
+					}
+					this.currentIconSkin.x = this.textRenderer.x - this._gap - this.currentIconSkin.width;
+				}
+			}
+			
+			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
+			{
+				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+				{
+					this.currentIconSkin.y = this._paddingTop;
+				}
+				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					this.currentIconSkin.y = this.actualHeight - this._paddingBottom - this.currentIconSkin.height;
+				}
+				else
+				{
+					this.currentIconSkin.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIconSkin.height) / 2);
+				}
+			}
+			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			{
+				this.currentIconSkin.y = this.textRenderer.y + (this.textRenderer.baseline) - this.currentIconSkin.height;
+			}
+			else //top or bottom
+			{
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				{
+					this.currentIconSkin.x = this._paddingLeft;
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					this.currentIconSkin.x = this.actualWidth - this._paddingRight - this.currentIconSkin.width;
+				}
+				else
+				{
+					this.currentIconSkin.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIconSkin.width) / 2);
+				}
+			}
 		}
 
 		/**
@@ -817,6 +1614,48 @@ package feathers.controls
 			{
 				var propertyValue:Object = this._textRendererProperties[propertyName];
 				this.textRenderer[propertyName] = propertyValue;
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
+		{
+			if(this.currentIconSkin is IValidating)
+			{
+				IValidating(this.currentIconSkin).validate();
+			}
+			var calculatedWidth:Number = this.actualWidth;
+			if(forMeasurement)
+			{
+				calculatedWidth = this.explicitWidth;
+				if(calculatedWidth !== calculatedWidth) //isNaN
+				{
+					calculatedWidth = this._maxWidth;
+				}
+			}
+			if(this._text && this.textRenderer && this.currentIconSkin)
+			{
+				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+				{
+					var adjustedGap:Number = this._gap;
+					if(adjustedGap == Number.POSITIVE_INFINITY)
+					{
+						adjustedGap = this._minGap;
+					}
+					this.textRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIconSkin.width - adjustedGap;
+				}
+				else
+				{
+					this.textRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+				}
+
+			}
+			else if(this._text && this.textRenderer && !this.currentIconSkin)
+			{
+				this.textRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 			}
 		}
 
