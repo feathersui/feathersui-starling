@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -53,36 +53,12 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
 
 		/**
-		 * DEPRECATED: Replaced by <code>BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_ICON_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * accessory label, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
-
-		/**
-		 * DEPRECATED: Replaced by <code>BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
 
 		/**
 		 * @copy feathers.controls.Button#STATE_UP
@@ -349,58 +325,12 @@ package feathers.controls.renderers
 		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
-		 * DEPRECATED: Replaced by <code>iconLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #iconLabelStyleName
-		 */
-		protected function get iconLabelName():String
-		{
-			return this.iconLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set iconLabelName(value:String):void
-		{
-			this.iconLabelStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
 		 * label text renderer, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
-
-		/**
-		 * DEPRECATED: Replaced by <code>accessoryLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #accessoryLabelStyleName
-		 */
-		protected function get accessoryLabelName():String
-		{
-			return this.accessoryLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set accessoryLabelName(value:String):void
-		{
-			this.accessoryLabelStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -2638,10 +2568,14 @@ package feathers.controls.renderers
 		protected var _iconLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a label icon, if one
-		 * exists. The title is an <code>ITextRenderer</code> instance. The
+		 * An object that stores properties for the icon label text renderer
+		 * sub-component (if using <code>iconLabelField</code> or
+		 * <code>iconLabelFunction</code>), and the properties will be passed
+		 * down to the text renderer when this component validates. The
 		 * available properties depend on which <code>ITextRenderer</code>
-		 * implementation is used.
+		 * implementation is returned by <code>iconLabelFactory</code>. Refer to
+		 * <a href="../../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -2817,10 +2751,14 @@ package feathers.controls.renderers
 		protected var _accessoryLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a label accessory. The
-		 * title is an <code>ITextRenderer</code> instance. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is used.
+		 * An object that stores properties for the accessory label text
+		 * renderer sub-component (if using <code>accessoryLabelField</code> or
+		 * <code>accessoryLabelFunction</code>), and the properties will be
+		 * passed down to the text renderer when this component validates. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>accessoryLabelFactory</code>.
+		 * Refer to <a href="../../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

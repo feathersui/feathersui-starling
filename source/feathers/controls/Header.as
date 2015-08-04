@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -160,36 +160,12 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_ITEM:String = "feathers-header-item";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Header.DEFAULT_CHILD_STYLE_NAME_ITEM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Header#DEFAULT_CHILD_STYLE_NAME_ITEM
-		 */
-		public static const DEFAULT_CHILD_NAME_ITEM:String = DEFAULT_CHILD_STYLE_NAME_ITEM;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the header's
 		 * title.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TITLE:String = "feathers-header-title";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Header.DEFAULT_CHILD_STYLE_NAME_TITLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Header#DEFAULT_CHILD_STYLE_NAME_TITLE
-		 */
-		public static const DEFAULT_CHILD_NAME_TITLE:String = DEFAULT_CHILD_STYLE_NAME_TITLE;
 
 		/**
 		 * @private
@@ -239,29 +215,6 @@ package feathers.controls
 		protected var titleStyleName:String = DEFAULT_CHILD_STYLE_NAME_TITLE;
 
 		/**
-		 * DEPRECATED: Replaced by <code>titleStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #titleStyleName
-		 */
-		protected function get titleName():String
-		{
-			return this.titleStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set titleName(value:String):void
-		{
-			this.titleStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of each of the
 		 * header's items. This variable is <code>protected</code> so that
 		 * sub-classes can customize the item style name in their constructors
@@ -271,29 +224,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var itemStyleName:String = DEFAULT_CHILD_STYLE_NAME_ITEM;
-
-		/**
-		 * DEPRECATED: Replaced by <code>itemStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #itemStyleName
-		 */
-		protected function get itemName():String
-		{
-			return this.itemStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set itemName(value:String):void
-		{
-			this.itemStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -356,6 +286,63 @@ package feathers.controls
 			}
 			this._title = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _titleFactory:Function;
+
+		/**
+		 * A function used to instantiate the header's title text renderer
+		 * sub-component. By default, the header will use the global text
+		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
+		 * to create the title text renderer. The title text renderer must be an
+		 * instance of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties on the title text renderer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the title text
+		 * renderer.
+		 *
+		 * <p>If you are not using a theme, the title factory can be used to
+		 * provide skin the title with appropriate text styles.</p>
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, a custom title factory is passed to the
+		 * header:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.titleFactory = function():ITextRenderer
+		 * {
+		 *     var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *     titleRenderer.textFormat = new TextFormat( "_sans", 12, 0xff0000 );
+		 *     return titleRenderer;
+		 * }</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #title
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 */
+		public function get titleFactory():Function
+		{
+			return this._titleFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set titleFactory(value:Function):void
+		{
+			if(this._titleFactory == value)
+			{
+				return;
+			}
+			this._titleFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
 		/**
@@ -1011,65 +998,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _titleFactory:Function;
-
-		/**
-		 * A function used to instantiate the header's title text renderer
-		 * sub-component. By default, the header will use the global text
-		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
-		 * to create the title text renderer. The title text renderer must be an
-		 * instance of <code>ITextRenderer</code>. This factory can be used to
-		 * change properties on the title text renderer when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use this factory to style the title text
-		 * renderer.
-		 *
-		 * <p>If you are not using a theme, the title factory can be used to
-		 * provide skin the title with appropriate text styles.</p>
-		 *
-		 * <p>The factory should have the following function signature:</p>
-		 * <pre>function():ITextRenderer</pre>
-		 *
-		 * <p>In the following example, a custom title factory is passed to the
-		 * header:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.titleFactory = function():ITextRenderer
-		 * {
-		 *     var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-		 *     titleRenderer.textFormat = new TextFormat( "_sans", 12, 0xff0000 );
-		 *     return titleRenderer;
-		 * }</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #title
-		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
-		 */
-		public function get titleFactory():Function
-		{
-			return this._titleFactory;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set titleFactory(value:Function):void
-		{
-			if(this._titleFactory == value)
-			{
-				return;
-			}
-			this._titleFactory = value;
-			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _customTitleStyleName:String;
 
 		/**
@@ -1119,12 +1047,13 @@ package feathers.controls
 		protected var _titleProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the header's title. The
-		 * title is an <code>ITextRenderer</code> instance. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is returned by <code>titleFactory</code>. The most common
-		 * implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the header's title text renderer
+		 * sub-component, and the properties will be passed down to the text
+		 * renderer when the header validates. The available properties
+		 * depend on which <code>ITextRenderer</code> implementation is returned
+		 * by <code>textRendererFactory</code>. Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>In the following example, some properties are set for the header's
 		 * title text renderer (this example assumes that the title text renderer
@@ -1148,8 +1077,6 @@ package feathers.controls
 		 *
 		 * @see #titleFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get titleProperties():Object
 		{

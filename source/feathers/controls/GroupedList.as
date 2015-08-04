@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -225,35 +225,11 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST:String = "feathers-inset-grouped-list";
 
 		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST
-		 */
-		public static const ALTERNATE_NAME_INSET_GROUPED_LIST:String = ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST;
-
-		/**
 		 * The default name to use with header renderers.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER:String = "feathers-grouped-list-header-renderer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER
-		 */
-		public static const DEFAULT_CHILD_NAME_HEADER_RENDERER:String = DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER;
 
 		/**
 		 * An alternate name to use with header renderers to give them an inset
@@ -270,35 +246,11 @@ package feathers.controls
 		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER:String = "feathers-grouped-list-inset-header-renderer";
 
 		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER
-		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
-
-		/**
 		 * The default name to use with footer renderers.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER:String = "feathers-grouped-list-footer-renderer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER
-		 */
-		public static const DEFAULT_CHILD_NAME_FOOTER_RENDERER:String = DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER;
 
 		/**
 		 * An alternate name to use with footer renderers to give them an inset
@@ -313,18 +265,6 @@ package feathers.controls
 		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER:String = "feathers-grouped-list-inset-footer-renderer";
 
 		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER
-		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
-
-		/**
 		 * An alternate name to use with item renderers to give them an inset
 		 * style. This name is usually only referenced inside themes.
 		 *
@@ -337,18 +277,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER:String = "feathers-grouped-list-inset-item-renderer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER
-		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER;
 
 		/**
 		 * An alternate name to use for item renderers to give them an inset
@@ -366,18 +294,6 @@ package feathers.controls
 		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER:String = "feathers-grouped-list-inset-first-item-renderer";
 
 		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER
-		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER;
-
-		/**
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of the last item
 		 * in a group. This name is usually only referenced inside themes.
@@ -391,18 +307,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER:String = "feathers-grouped-list-inset-last-item-renderer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER
-		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER;
 
 		/**
 		 * An alternate name to use for item renderers to give them an inset
@@ -419,18 +323,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER:String = "feathers-grouped-list-inset-single-item-renderer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER
-		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER;
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -1134,50 +1026,35 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customItemRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customItemRendererStyleName
-		 */
-		public function get itemRendererName():String
-		{
-			return this.customItemRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set itemRendererName(value:String):void
-		{
-			this.customItemRendererStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the list's item
-		 * renderers. These values are shared by each item renderer, so values
-		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to the item renderers using the
-		 * <code>itemRendererFactory</code> or with a theme. The item renderers
-		 * are instances of <code>IGroupedListItemRenderer</code>. The available
-		 * properties depend on which <code>IGroupedListItemRenderer</code>
-		 * implementation is returned by <code>itemRendererFactory</code>.
+		 * An object that stores properties for all of the list's item
+		 * renderers, and the properties will be passed down to every item
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IGroupedListItemRenderer</code> implementation
+		 * is returned by <code>itemRendererFactory</code>.
+		 * 
+		 * <p>By default, the <code>itemRendererFactory</code> will return a
+		 * <code>DefaultGroupedListItemRenderer</code> instance. If you aren't
+		 * using a custom item renderer, you can refer to
+		 * <a href="renderers/DefaultGroupedListItemRenderer.html"><code>feathers.controls.renderers.DefaultGroupedListItemRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every item renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to item renderers using the
+		 * <code>itemRendererFactory</code> or in the theme.</p>
 		 *
 		 * <p>The following example customizes some item renderer properties
 		 * (this example assumes that the item renderer's label text renderer
 		 * is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.itemRendererProperties.padding = 20;</listing>
+		 * list.itemRendererProperties.labelField = "text";
+		 * list.itemRendererProperties.accessoryField = "control";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1385,29 +1262,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customFirstItemRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFirstItemRendererStyleName
-		 */
-		public function get firstItemRendererName():String
-		{
-			return this.customFirstItemRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set firstItemRendererName(value:String):void
-		{
-			this.customFirstItemRendererStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _lastItemRendererType:Class;
@@ -1552,29 +1406,6 @@ package feathers.controls
 			}
 			this._customLastItemRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customLastItemRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customLastItemRendererStyleName
-		 */
-		public function get lastItemRendererName():String
-		{
-			return this.customLastItemRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set lastItemRendererName(value:String):void
-		{
-			this.customLastItemRendererStyleName = value;
 		}
 
 		/**
@@ -1725,29 +1556,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customLastItemRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customLastItemRendererStyleName
-		 */
-		public function get singleItemRendererName():String
-		{
-			return this.customSingleItemRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set singleItemRendererName(value:String):void
-		{
-			this.customSingleItemRendererStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _headerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
@@ -1880,49 +1688,33 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customHeaderRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customHeaderRendererStyleName
-		 */
-		public function get headerRendererName():String
-		{
-			return this.customHeaderRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set headerRendererName(value:String):void
-		{
-			this.customHeaderRendererStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _headerRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the grouped
-		 * list's header renderers. These values are shared by each header
-		 * renderer, so values that cannot be shared (such as display objects
-		 * that need to be added to the display list) should be passed to the
-		 * header renderers using the <code>headerRendererFactory</code> or in a
-		 * theme. The header renderers are instances of
-		 * <code>IGroupedListHeaderOrFooterRenderer</code>. The available
-		 * properties depend on which <code>IGroupedListItemRenderer</code>
+		 * An object that stores properties for all of the list's header
+		 * renderers, and the properties will be passed down to every header
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IGroupedListHeaderOrFooterRenderer</code>
 		 * implementation is returned by <code>headerRendererFactory</code>.
+		 *
+		 * <p>By default, the <code>headerRendererFactory</code> will return a
+		 * <code>DefaultGroupedListHeaderOrFooterRenderer</code> instance. If
+		 * you aren't using a custom header renderer, you can refer to
+		 * <a href="renderers/DefaultGroupedListHeaderOrFooterRenderer.html"><code>feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every header renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to header renderers using the
+		 * <code>headerRendererFactory</code> or in the theme.</p>
 		 *
 		 * <p>The following example customizes some header renderer properties:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.headerRendererProperties.&#64;contentLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.headerRendererProperties.padding = 20;</listing>
+		 * list.headerRendererProperties.contentLabelField = "headerText";
+		 * list.headerRendererProperties.contentLabelStyleName = "custom-header-renderer-content-label";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -2116,49 +1908,33 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customFooterRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFooterRendererStyleName
-		 */
-		public function get footerRendererName():String
-		{
-			return this.customFooterRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set footerRendererName(value:String):void
-		{
-			this.customFooterRendererStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _footerRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to all of the grouped
-		 * list's footer renderers. These values are shared by each footer
-		 * renderer, so values that cannot be shared (such as display objects
-		 * that need to be added to the display list) should be passed to the
-		 * footer renderers using a <code>footerRendererFactory</code> or with
-		 * a theme. The header renderers are instances of
-		 * <code>IGroupedListHeaderOrFooterRenderer</code>. The available
-		 * properties depend on which <code>IGroupedListItemRenderer</code>
-		 * implementation is returned by <code>headerRendererFactory</code>.
+		 * An object that stores properties for all of the list's footer
+		 * renderers, and the properties will be passed down to every footer
+		 * renderer when the list validates. The available properties
+		 * depend on which <code>IGroupedListHeaderOrFooterRenderer</code>
+		 * implementation is returned by <code>footerRendererFactory</code>.
 		 *
-		 * <p>The following example customizes some header renderer properties:</p>
+		 * <p>By default, the <code>footerRendererFactory</code> will return a
+		 * <code>DefaultGroupedListHeaderOrFooterRenderer</code> instance. If
+		 * you aren't using a custom footer renderer, you can refer to
+		 * <a href="renderers/DefaultGroupedListHeaderOrFooterRenderer.html"><code>feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer</code></a>
+		 * for a list of available properties.</p>
+		 *
+		 * <p>These properties are shared by every footer renderer, so anything
+		 * that cannot be shared (such as display objects, which cannot be added
+		 * to multiple parents) should be passed to footer renderers using the
+		 * <code>footerRendererFactory</code> or in the theme.</p>
+		 *
+		 * <p>The following example customizes some footer renderer properties:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.footerRendererProperties.&#64;contentLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * list.footerRendererProperties.padding = 20;</listing>
+		 * list.footerRendererProperties.contentLabelField = "footerText";
+		 * list.footerRendererProperties.contentLabelStyleName = "custom-footer-renderer-content-label";</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

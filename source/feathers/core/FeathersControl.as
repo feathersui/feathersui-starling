@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -319,22 +319,6 @@ package feathers.core
 		 * @see ../../../help/custom-themes.html Creating custom Feathers themes
 		 */
 		public function get styleNameList():TokenList
-		{
-			return this._styleNameList;
-		}
-
-		/**
-		 * DEPRECATED: Replaced by the <code>styleNameList</code>
-		 * property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #styleNameList
-		 */
-		public function get nameList():TokenList
 		{
 			return this._styleNameList;
 		}

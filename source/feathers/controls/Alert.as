@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -72,7 +72,7 @@ package feathers.controls
 	 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
 	 *     [
 	 *         { label: "OK" }
-	 *     ]);
+	 *     ]));
 	 * }</listing>
 	 *
 	 * @see ../../../help/alert.html How to use the Feathers Alert component
@@ -87,18 +87,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_HEADER:String = "feathers-alert-header";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_HEADER
-		 */
-		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the button group.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
@@ -106,35 +94,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP:String = "feathers-alert-button-group";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP
-		 */
-		public static const DEFAULT_CHILD_NAME_BUTTON_GROUP:String = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the message.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_MESSAGE:String = "feathers-alert-message";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_MESSAGE
-		 */
-		public static const DEFAULT_CHILD_NAME_MESSAGE:String = DEFAULT_CHILD_STYLE_NAME_MESSAGE;
 
 		/**
 		 * Returns a new <code>Alert</code> instance when <code>Alert.show()</code>
@@ -279,29 +243,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var messageStyleName:String = DEFAULT_CHILD_STYLE_NAME_MESSAGE;
-
-		/**
-		 * DEPRECATED: Replaced by <code>messageStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #messageStyleName
-		 */
-		protected function get messageName():String
-		{
-			return this.messageStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set messageName(value:String):void
-		{
-			this.messageStyleName = value;
-		}
 
 		/**
 		 * The header sub-component.
@@ -493,8 +434,6 @@ package feathers.controls
 		 * @see #message
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get messageFactory():Function
 		{
@@ -520,12 +459,13 @@ package feathers.controls
 		protected var _messageProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the alert's message
-		 * text renderer. The message text renderer is an <code>ITextRenderer</code>
-		 * instance. The available properties depend on which
-		 * <code>ITextRenderer</code> implementation is returned by
-		 * <code>messageFactory</code>. The most common implementations are
-		 * <code>BitmapFontTextRenderer</code> and <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the alert's message text
+		 * renderer sub-component, and the properties will be passed down to the
+		 * text renderer when the alert validates. The available properties
+		 * depend on which <code>ITextRenderer</code> implementation is returned
+		 * by <code>messageFactory</code>. Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>In the following example, some properties are set for the alert's
 		 * message text renderer (this example assumes that the message text
@@ -549,8 +489,6 @@ package feathers.controls
 		 *
 		 * @see #messageFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get messageProperties():Object
 		{
@@ -708,32 +646,10 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customButtonGroupStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customButtonGroupStyleName
-		 */
-		public function get customButtonGroupName():String
-		{
-			return this.customButtonGroupStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customButtonGroupName(value:String):void
-		{
-			this.customButtonGroupStyleName = value;
-		}
-
-		/**
-		 * A set of key/value pairs to be passed down to the alert's button
-		 * group sub-component. The button must be a
-		 * <code>feathers.core.ButtonGroup</code> instance.
+		 * An object that stores properties for the alert's button group
+		 * sub-component, and the properties will be passed down to the button
+		 * group when the alert validates. For a list of available properties,
+		 * refer to <a href="ButtonGroup.html"><code>feathers.controls.ButtonGroup</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

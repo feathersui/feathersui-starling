@@ -2,6 +2,151 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.2.0
+
+* New Component: SoundPlayer. Plays audio using a Sound object.
+* New Component: VideoPlayer. Plays video using a NetStream object.
+* New Layout: Flow. Displays items of differing dimensions in multiple rows.
+* New Layout: WaterfallLayout. Displays items optimally in columns of equal width.
+* New Layout: HorizontalSpinnerLayout. Similar to VerticalSpinnerLayout, but displays items in a horizontal row.
+* New Transition: Iris. Scales a circular mask to animate between two screens.
+* New Transition: Wipe. Resizes a clipRect to animate between two screens.
+* New Example: Video. A desktop AIR app that can play videos from the file system.
+* AddOnFunctionStyleProvider: added callBeforeOriginalStyleProvider property to allow the add-on function to be called first.
+* Alert: added customMessageStyleName property.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed an issue where they didn't accept non-Latin characters and ignored characters when Alt key was pressed.
+* BitmapFontTextEditor, TextBlockTextEditor: uses needsSoftKeyboard and requestSoftKeyboard() to show soft keyboard on Android. Vote on [Adobe Bug #3962712](https://bugbase.adobe.com/index.cfm?event=bug&id=3962712) to add iOS support.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed issue where the selection anchor index wasn't properly updated, making the keyboard selection change on the wrong side.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed issue where setting TextInput's parent visible property to false wouldn't clear focus.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed an issue where pasting something other than text would cause a runtime error.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed an issue where changing the text property in an Event.CHANGE listener could cause the cursorSkin to be positioned incorrectly.
+* Button: fixed issue where the label text renderer wasn't given an maxHeight that accounted for the button's height and padding.
+* ColorFade: fixed name of createBlackFadeTransition().
+* Default Item Renderers: fixed issue where children above or below label text renderer couldn't sometimes affect the label's width.
+* DropDownPopUpContentManager: fixed issue where pop-up wasn't repositioned if the source moved to a new location.
+* DropDownPopUpContentManager: added primaryDirection property to support trying to display the pop-up above the source first, instead of below.
+* DropDownPopUpContentManager: added fitContentMinWidthToOrigin property to allow the content to be smaller than the origin.
+* DropDownPopUpContentManager: fixed horizontal position of pop-up above origin.
+* DropDownPopUpContentManager: fixed issues caused by multiple Starling instances.
+* DropDownPopUpContentManager: added isModal and overlayFactory properties to affect how pop-up is displayed.
+* FeathersControl: fixed issue where initialize() could be called during initialization.
+* FocusManager: added support for new INativeFocusOwner interface, which allows components to be associated with a specific focusable native display object (like text editors!).
+* GroupedList: the itemIndex parameter on scrollToDisplayIndex() is now optional so that you can scroll to a group header.
+* Header: fixed issue where useExtraPaddingForOSStatusBar property didn't account for contentScaleFactor.
+* HorizontalLayout, VerticalLayout: fixed issue where a scrollToDisplayIndex() on a List wouldn't work.
+* HorizontalLayout, VerticalLayout: fixed issue where center/middle alignment wasn't properly ignored if total content size was larger than the container bounds (thanks kavolorn!)
+* HorizontalLayout, VerticalLayout: fixed issue with alignment when scrolling is required in perpendicular direction.
+* HorizontalLayout: fixed issue where items weren't measured correctly sometimes when using percentage dimensions.
+* ImageLoader: now accounts for minimum and maximum dimensions when maintaining aspect ratio.
+* ImageLoader: now dispatches separate Event.IO_ERROR and Event.SECURITY_ERROR constants instead of FeathersEventType.ERROR.
+* ImageLoader: fixed issue where appending variable to ATF URL would break the check for the file extension.
+* ImageLoader: added scaleContent, horizontalAlign, and verticalAlign properties.
+* ImageLoader: added scaleMode property that uses values from starling.utils.ScaleMode.
+* LayoutGroup: fixed issue where the background skin wasn't clipped by the clipRect.
+* MultiStarlingStyleNameFunctionTheme: a variation of StyleNameFunctionTheme that supports multiple Starling instances.
+* LayoutGroup, Scroller (and subclasses), ScreenNavigator, StackScreenNavigator: setting clipContent to false will clear the clipRect only once so that clipRect may be used externally.
+* LayoutGroupListItemRenderer, LayoutGroupGroupedListItemRenderer: fixed issue where changing the data would hurt performance because the item renderer would need to validate more than once.
+* List: sometimes keeps around an extra item renderer to avoid garbage collection and improve performance. When the typical item is from the data provider, the number of renderered items would fluctuate when scrolling.
+* NumericStepper: fixed issue where selection might be changed in TextInput when using arrow keys to step.
+* Panel: fixed issue where autoSizeMode property was ignored.
+* PopUpManager: fixed issue where adding a pop-up that already had a parent would cause the Event.REMOVED_FROM_STAGE listener to be called early.
+* ProgressBar, Slider: fixed issue where the layout would be broken if the minimum equals the maximum.
+* RenderDelegate: a display object that passes rendering to another display object that has its own transformations. Useful for custom transitions.
+* Scroller: fixed issue where scrollToPageIndex() would not accept negative page indicies.
+* Scroller: fixed issue where the container didn't detect major changes to the maximum scroll position, causing it to scroll far beyond the end of the content.
+* Scroller: added SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT to allow the scroll bar floats above the content, but it won't fade out.
+* Scroller: fixed issue where INTERACTION_MODE_TOUCH_AND_SCROLL_BARS didn't work in nested scrollers because scroll bars could overlap and stop touches even when scrolling was not possible.
+* Scroller: fixed issue where touching the scroll bar thumb wouldn't stop a throw.
+* Scroller: fixed issue where a floating scroll bar would be hidden after hover out instead of waiting for the throw animation to finish.
+* Scroller: fixed issue where clipping was no properly updated when using INTERACTION_MODE_MOUSE and the view port was resized small enough that scrolling was no longer needed.
+* Scroller: fixed issue where Scroller couldn't properly calculate its dimensions when it has a background skin but no view port content, causing an infinite loop.
+* Scroller: fixed issue where floating point errors sometimes caused it to snap to the wrong page.
+* Scroller: fixed issue where maximum page indices might be one larger than they should be if a floating point error occurs.
+* Scroller: snapScrollPositionToPixels now defaults to true.
+* Scroller: switched to a different throwEase that is more natural.
+* ScrollBar, SimpleScrollBar, Slider: on initialize, clamps value to minimum and maximum because value may not have been set, and it may be outside the range.
+* ScrollContainer: fixed issue where getRawChildIndex() didn't reset the displayListBypassEnabled flag before returning the result.
+* ScrollContainer: fixed issue where view port resizing wasn't ignored when using AUTO_SIZE_MODE_STAGE, potentially hurting performance.
+* ScrollText: uses cacheAsBitmap to improve scrolling performance. A property has been exposed to disable this, if desired.
+* ScreenDensityScaleFactorManager: manages the Starling view port and stage dimensions to automatically generate an appropriate contentScaleFactor value based on the screen DPI.
+* ScrollContainer: fixed issue where addChild() stopped working with Starling 1.7.
+* Slider: thumb position is now rounded to the nearest pixel.
+* Slider: added thumbOffset property to allow the thumb to be repositioned in the direction perpendicular to the track.
+* SpinnerList: by default, the scroll bar is hidden.
+* StackScreenNavigator: fixed issue where setting rootScreenID before screens were added could throw a runtime error.
+* StageTextTextEditor: fixed issue where text color wouldn't change when disabled while StageText didn't have focus.
+* StageTextTextEditor: fixed an issue where where the text editor would try to change the font size property every frame, but it wasn't rounding to an integer, causing the check to fail.
+* StageTextTextEditor, TextFieldTextEditor: improved positioning of StageText or TextField overlay when added to Sprite3D.
+* StyleNameFunctionTheme: added a createRegistry() function that can be overridden in a subclass to customize the style provider registry.
+* TabBar: now supports isEnabled in data provider, similar to ButtonGroup.
+* TextArea, TextInput: fixed issue where the backgroundFocusedSkin wasn't displayed when the FocusManager was disabled (thanks tcfraser!)
+* TextArea: fixed issue where setting the height of the TextArea larger than the text may result in the TextArea not receiving focus.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where the texture would sometimes restore with the wrong font size and clipping.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where snapshot dimensions were rounded down to the nearest pixel, which could cut off a small part of the text.
+* TextBlockTextRenderer, TextFieldTextRenderer: uses Texture.empty() and uploads BitmapData manually instead of Texture.fromBitmapData() to avoid the creation of an onRestore function that will be immediately replaced.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where the texture snapshot could be blurry when scaled up from 0.
+* Text Renderers: added updateSnapshotOnScaleChange property to allow the snapshot to always be crisp, even when scaled up or down. Use with caution as it needs to check the scale every frame.
+* TextBlockTextRenderer: fixed issue where texture snapshot remained visible when the text renderer's width or height was supposed to be 0.
+* TextBlockTextRenderer: fixed issue where the cursorSkin wasn't properly positioned and sized when calling setFocus() manually.
+* TextBlockTextEditor: fixed an issue where scrolling wasn't working properly on HiDPI displays.
+* TextFieldTextEditor: fixed issue where the font displayed at the wrong scale the first time that the text editor received focus on some mobile devices.
+* TextFieldTextEditor: fixed issue where accessing the baseline property might throw a runtime error because textSnapshot was null.
+* TextFieldTextEditor: exposed some more TextField property that control rendering.
+* TextFieldTextRenderer: added useSnapshotDelayWorkaround property and disabled this workaround by default.
+* Text Editors: detects changes in contentScaleFactor (such as when switching between HiDPI and normal screens) and recreates snapshots.
+* TextInput: can now receive focus when isEditable is false.
+* TiledRowsLayout, TiledColumnsCount: The requestedColumnCount property may now be used to calculate an ideal width for that number of columns, if the container doesn't have an explicitWidth. (TiledColumnsLayout uses the requestedRowCount property).
+* ValidationQueue: skips components in queue that are no longer on the display list.
+* ValidationQueue: will not proceed if Starling's context is invalid. This may happen if a TouchEvent.TOUCH listener causes a lost context.
+* VerticalSpinnerLayout: fixed issue where item heights weren't forced to the same size, which could cause large gaps or overlapping items.
+* WebView: added missing FeathersEventType.LOCATION_CHANGE constant for event.
+* YouTubeFeeds: example updated to use newer YouTube API since the old one was shut down.
+* Transitions: changed some to use RenderDelegate to avoid removing screens from display list.
+* Examples: use Context3DProfile.BASELINE for mobile examples, since it is widely supported on mobile.
+* Examples: enabled supportHighResolution flag for mobile apps so that they look better on HiDPI screens. This has no effect on a real mobile device. It just improves the development experience.
+* Themes: when disposing, unregisters bitmap fonts, clears texture onRestore function, and clears StandardIcons class.
+* Themes: desktop themes now use HiDPI textures.
+
+### 2.2.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `FeathersEventType.ERROR` constant is deprecated. The `ImageLoader` component used this constant, and it now dispatches separate `Event.IO_ERROR` and `Event.SECURITY_ERROR` events. Error events should always be specific.
+
+The `nameList` property on the `IFeathersControl` interface was originally deprecated in Feathers 2.0.0, and it has now been removed. It is replaced by the `styleNameList` property.
+
+The `manageVisibility` property on layouts was originally deprecated in Feathers 2.0.0, and it has now been removed. This property no longer provided the performance improvements that it was originally intended for.
+
+Properties such as `customThumbName` on the `Slider` component have have been renamed. In this case, `customThumbName` is deprecated and replaced by `customThumbStyleName`. Similarly, the static constant `Slider.DEFAULT_CHILD_NAME_THUMB` has been deprecated and renamed `Slider.DEFAULT_CHILD_STYLE_NAME_THUMB`. Similarly, the static constant `Button.ALTERNATE_NAME_BACK_BUTTON` has been deprecated and renamed `Button.ALTERNATE_STYLE_NAME_BACK_BUTTON`. On all components, APIs that refer to the *name* of sub-components have been deprecated and they have been replaced by a similar API that refers to the *style name* instead. For brevity, the list below shows the mapping between the old naming conventions and the new naming conventions instead of listing each renamed property individually.
+
+* `custom*Name` => `custom*StyleName`
+* `DEFAULT_CHILD_NAME_*` => `DEFAULT_CHILD_STYLE_NAME_*`
+* `ALTERNATE_NAME_*` => `ALTERNATE_STYLE_NAME_*`
+
+The `List` and `GroupedList` components had some properties that didn't follow the original `custom*Name` naming convention. In both classes, the `itemRendererName` property has been deprecated and replaced by `customItemRendererStyleName`. In `GroupedList`, `firstItemRendererName`, `lastItemRendererName` and `singleItemRendererName` have been deprecated and replaced by `customFirstItemRendererStyleName`, `customLastItemRendererStyleName`, and `customSingleItemRendererStyleName` respectively. Similarly, `headerRendererName` and `footerRendererName` have been deprecated and replaced by `customHeaderRendererStyleName` and `customFooterRendererStyleName` respectively. With this change, these properties no longer diverge from the naming convention used for similar properties on other components.
+
+All of the above renamed APIs were deprecated in Feathers 2.1.0, and they remain deprecated in Feathers 2.2.0.
+
+### 2.2.0 API Changes
+
+The `scrollToPageIndex()` function in the `Scroller` class, and its subclasses, no longer accepts `-1` as a valid way of specifying that the horizontal or vertical page index should not change. You must pass in the current value of the `horizontalPageIndex` or `verticalPageIndex` property instead. With the ability to have negative page indices, `-1` must now be available as a valid page index.
+
+In the following code, the vertical page index is not meant to be changed:
+
+```
+list.scrollToPageIndex( 2, -1 );
+```
+
+The code would need to be modified, like this:
+
+```
+list.scrollToPageIndex( 2, list.verticalPageIndex );
+```
+
+## 2.1.2
+
+* ScrollContainer: overrides addChild() to fix "RangeError: Invalid child index" issue when using Starling 1.7.
+
 ## 2.1.1
 
 * BitmapFontTextRenderer, ScrollContainer: added workarounds for compiler bugs in Adobe Flex SDK 4.6.
@@ -93,7 +238,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * TextFieldTextRenderer, TextBlockTextRenderer: fixed issue where texture snapshots could be clipped too small when using native filters.
 * VerticalLayout: added requestRowCount property for more control over height auto-measurement.
 
-### 2.1 BETA Deprecated APIs
+### 2.1.0 Deprecated APIs
 
 All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
@@ -109,7 +254,7 @@ Similar to how the `nameList` property was renamed `styleNameList` in Feathers 2
 
 The `List` and `GroupedList` components had some properties that didn't follow the original `custom*Name` naming convention. In both classes, the `itemRendererName` property has been deprecated and replaced by `customItemRendererStyleName`. In `GroupedList`, `firstItemRendererName`, `lastItemRendererName` and `singleItemRendererName` have been deprecated and replaced by `customFirstItemRendererStyleName`, `customLastItemRendererStyleName`, and `customSingleItemRendererStyleName` respectively. Similarly, `headerRendererName` and `footerRendererName` have been deprecated and replaced by `customHeaderRendererStyleName` and `customFooterRendererStyleName` respectively. With this change, these properties no longer diverge from the naming convention used for similar properties on other components.
 
-### 2.1 BETA API Changes
+### 2.1.0 API Changes
 
 #### ILayout
 

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -133,35 +133,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
 
 		/**
-		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_OFF_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = DEFAULT_CHILD_STYLE_NAME_OFF_LABEL;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the on label.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
-
-		/**
-		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_ON_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_ON_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ON_LABEL;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the off track.
@@ -171,18 +147,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_OFF_TRACK:String = "feathers-toggle-switch-off-track";
 
 		/**
-		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_OFF_TRACK
-		 */
-		public static const DEFAULT_CHILD_NAME_OFF_TRACK:String = DEFAULT_CHILD_STYLE_NAME_OFF_TRACK;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the on track.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
@@ -190,35 +154,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_ON_TRACK:String = "feathers-toggle-switch-on-track";
 
 		/**
-		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_ON_TRACK
-		 */
-		public static const DEFAULT_CHILD_NAME_ON_TRACK:String = DEFAULT_CHILD_STYLE_NAME_ON_TRACK;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the thumb.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-toggle-switch-thumb";
-
-		/**
-		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_THUMB
-		 */
-		public static const DEFAULT_CHILD_NAME_THUMB:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleSwitch</code>
@@ -275,29 +215,6 @@ package feathers.controls
 		protected var onLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ON_LABEL;
 
 		/**
-		 * DEPRECATED: Replaced by <code>onLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #onLabelStyleName
-		 */
-		protected function get onLabelName():String
-		{
-			return this.onLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set onLabelName(value:String):void
-		{
-			this.onLabelStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the off label
 		 * text renderer. This variable is <code>protected</code> so that
 		 * sub-classes can customize the off label text renderer style name in
@@ -307,29 +224,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var offLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_OFF_LABEL;
-
-		/**
-		 * DEPRECATED: Replaced by <code>offLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #offLabelStyleName
-		 */
-		protected function get offLabelName():String
-		{
-			return this.offLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set offLabelName(value:String):void
-		{
-			this.offLabelStyleName = value;
-		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the on track.
@@ -347,29 +241,6 @@ package feathers.controls
 		protected var onTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_ON_TRACK;
 
 		/**
-		 * DEPRECATED: Replaced by <code>onTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #onTrackStyleName
-		 */
-		protected function get onTrackName():String
-		{
-			return this.onTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set onTrackName(value:String):void
-		{
-			this.onTrackStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the off track.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the off track style name in their constructors instead of
@@ -385,29 +256,6 @@ package feathers.controls
 		protected var offTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_OFF_TRACK;
 
 		/**
-		 * DEPRECATED: Replaced by <code>offTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #offTrackStyleName
-		 */
-		protected function get offTrackName():String
-		{
-			return this.offTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set offTrackName(value:String):void
-		{
-			this.offTrackStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the thumb. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the thumb style name in their constructors instead of using the
@@ -420,29 +268,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
-
-		/**
-		 * DEPRECATED: Replaced by <code>tabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #tabStyleName
-		 */
-		protected function get thumbName():String
-		{
-			return this.thumbStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set thumbName(value:String):void
-		{
-			this.thumbStyleName = value;
-		}
 
 		/**
 		 * The thumb sub-component.
@@ -680,14 +505,15 @@ package feathers.controls
 		protected var _defaultLabelProperties:PropertyProxy;
 
 		/**
-		 * The default label properties are a set of key/value pairs to be
-		 * passed down to the toggle switch's label text renderers, and it is
-		 * used when no specific properties are defined for a specific label
-		 * text renderer's current state. The label text renderers are <code>ITextRenderer</code>
-		 * instances. The available properties depend on which <code>ITextRenderer</code>
-		 * implementation is returned by <code>labelFactory</code>. The most
-		 * common implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the toggle switch's label text
+		 * renderers when the toggle switch is enabled, and the properties will
+		 * be passed down to the text renderers when the toggle switch
+		 * validates. The available properties depend on which
+		 * <code>ITextRenderer</code> implementation is returned by
+		 * <code>labelFactory</code> (possibly <code>onLabelFactory</code> or
+		 * <code>offLabelFactory</code> instead). Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>In the following example, the toggle switch's default label
 		 * properties are updated (this example assumes that the label text
@@ -700,9 +526,9 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #labelFactory
+		 * @see #onLabelFactory
+		 * @see #offLabelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #onLabelProperties
 		 * @see #offLabelProperties
 		 * @see #disabledLabelProperties
@@ -743,13 +569,15 @@ package feathers.controls
 		protected var _disabledLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the toggle switch's
-		 * label text renderers when the toggle switch is disabled. The label
-		 * text renderers are <code>ITextRenderer</code> instances. The
-		 * available properties depend on which <code>ITextRenderer</code>
-		 * implementation is returned by <code>labelFactory</code>. The most
-		 * common implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the toggle switch's label text
+		 * renderers when the toggle switch is disabled, and the properties will
+		 * be passed down to the text renderers when the toggle switch
+		 * validates. The available properties depend on which
+		 * <code>ITextRenderer</code> implementation is returned by
+		 * <code>labelFactory</code> (possibly <code>onLabelFactory</code> or
+		 * <code>offLabelFactory</code> instead). Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>In the following example, the toggle switch's disabled label
 		 * properties are updated (this example assumes that the label text
@@ -762,9 +590,9 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #labelFactory
+		 * @see #onLabelFactory
+		 * @see #offLabelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get disabledLabelProperties():Object
@@ -803,14 +631,17 @@ package feathers.controls
 		protected var _onLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the toggle switch's
-		 * ON label text renderer. If <code>null</code>, then
-		 * <code>defaultLabelProperties</code> is used instead. The label text
-		 * renderers are <code>ITextRenderer</code> instances. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is returned by <code>labelFactory</code>. The most common
-		 * implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the toggle switch's "on" label
+		 * text renderer, and the properties will be passed down to the text
+		 * renderer when the toggle switch validates. If <code>null</code>, then
+		 * <code>defaultLabelProperties</code> is used instead.
+		 * 
+		 * <p>The available properties depend on which
+		 * <code>ITextRenderer</code> implementation is returned by
+		 * <code>labelFactory</code> (possibly <code>onLabelFactory</code>
+		 * instead). Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.</p>
 		 *
 		 * <p>In the following example, the toggle switch's on label properties
 		 * are updated (this example assumes that the on label text renderer is a
@@ -824,8 +655,6 @@ package feathers.controls
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get onLabelProperties():Object
@@ -864,14 +693,17 @@ package feathers.controls
 		protected var _offLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the toggle switch's
-		 * OFF label text renderer. If <code>null</code>, then
-		 * <code>defaultLabelProperties</code> is used instead. The label text
-		 * renderers are <code>ITextRenderer</code> instances. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is returned by <code>labelFactory</code>. The most common
-		 * implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the toggle switch's "off" label
+		 * text renderer, and the properties will be passed down to the text
+		 * renderer when the toggle switch validates. If <code>null</code>, then
+		 * <code>defaultLabelProperties</code> is used instead.
+		 * 
+		 * <p>The available properties depend on which
+		 * <code>ITextRenderer</code> implementation is returned by
+		 * <code>labelFactory</code> (possibly <code>offLabelFactory</code>
+		 * instead). Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.</p>
 		 *
 		 * <p>In the following example, the toggle switch's off label properties
 		 * are updated (this example assumes that the off label text renderer is a
@@ -885,8 +717,6 @@ package feathers.controls
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get offLabelProperties():Object
@@ -1480,12 +1310,12 @@ package feathers.controls
 		protected var _onTrackFactory:Function;
 
 		/**
-		 * A function used to generate the toggle switch's on track
-		 * sub-component. The on track must be an instance of <code>Button</code>.
-		 * This factory can be used to change properties on the on track when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the on track.
+		 * A function used to generate the toggle switch's "on" track
+		 * sub-component. The "on" track must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the "on" track when it is first created. For instance, if you are
+		 * skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the "on" track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
@@ -1572,37 +1402,15 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customOnTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customOnTrackStyleName
-		 */
-		public function get customOnTrackName():String
-		{
-			return this.customOnTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customOnTrackName(value:String):void
-		{
-			this.customOnTrackStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _onTrackProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the toggle switch's on
-		 * track sub-component. The on track is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * An object that stores properties for the toggle switch's "on" track,
+		 * and the properties will be passed down to the "on" track when the
+		 * toggle switch validates. For a list of available properties,
+		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1674,12 +1482,12 @@ package feathers.controls
 		protected var _offTrackFactory:Function;
 
 		/**
-		 * A function used to generate the toggle switch's off track
-		 * sub-component. The off track must be an instance of <code>Button</code>.
-		 * This factory can be used to change properties on the off track when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the off track.
+		 * A function used to generate the toggle switch's "off" track
+		 * sub-component. The "off" track must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the "off" track when it is first created. For instance, if you are
+		 * skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the "off" track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
@@ -1766,37 +1574,15 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customOffTrackStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customOffTrackStyleName
-		 */
-		public function get customOffTrackName():String
-		{
-			return this.customOffTrackStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customOffTrackName(value:String):void
-		{
-			this.customOffTrackStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _offTrackProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the toggle switch's off
-		 * track sub-component. The off track is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * An object that stores properties for the toggle switch's "off" track,
+		 * and the properties will be passed down to the "off" track when the
+		 * toggle switch validates. For a list of available properties,
+		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1958,37 +1744,15 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customThumbStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customThumbStyleName
-		 */
-		public function get customThumbName():String
-		{
-			return this.customThumbStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customThumbName(value:String):void
-		{
-			this.customThumbStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _thumbProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the toggle switch's
-		 * thumb sub-component. The thumb is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * An object that stores properties for the toggle switch's thumb
+		 * sub-component, and the properties will be passed down to the thumb
+		 * when the toggle switch validates. For a list of available properties,
+		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -2360,6 +2124,7 @@ package feathers.controls
 				onLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.onTextRenderer = ITextRenderer(onLabelFactory());
+
 			var onLabelStyleName:String = this._customOnLabelStyleName != null ? this._customOnLabelStyleName : this.onLabelStyleName;
 			this.onTextRenderer.styleNameList.add(onLabelStyleName);
 			this.onTextRenderer.clipRect = new Rectangle();

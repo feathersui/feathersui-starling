@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -141,7 +141,6 @@ import flash.geom.Point;
 
 import starling.animation.Tween;
 import starling.core.Starling;
-import starling.display.BlendMode;
 import starling.display.Canvas;
 import starling.display.DisplayObject;
 

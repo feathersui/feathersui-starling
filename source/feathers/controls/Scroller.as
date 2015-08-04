@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -450,36 +450,12 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR:String = "feathers-scroller-horizontal-scroll-bar";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR
-		 */
-		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the vertical
 		 * scroll bar.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR:String = "feathers-scroller-vertical-scroll-bar";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR
-		 */
-		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
 
 		/**
 		 * @private
@@ -530,29 +506,6 @@ package feathers.controls
 		protected var horizontalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
-		 * DEPRECATED: Replaced by <code>horizontalScrollBarStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #horizontalScrollBarStyleName
-		 */
-		protected function get horizontalScrollBarName():String
-		{
-			return this.horizontalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set horizontalScrollBarName(value:String):void
-		{
-			this.horizontalScrollBarStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the vertical
 		 * scroll bar. This variable is <code>protected</code> so that
 		 * sub-classes can customize the vertical scroll bar style name in their
@@ -566,29 +519,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var verticalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
-
-		/**
-		 * DEPRECATED: Replaced by <code>verticalScrollBarStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #verticalScrollBarStyleName
-		 */
-		protected function get verticalScrollBarName():String
-		{
-			return this.verticalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set verticalScrollBarName(value:String):void
-		{
-			this.verticalScrollBarStyleName = value;
-		}
 
 		/**
 		 * The horizontal scrollbar instance. May be null.
@@ -983,40 +913,18 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customHorizontalScrollBarName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customHorizontalScrollBarName
-		 */
-		public function get customHorizontalScrollBarName():String
-		{
-			return this.customHorizontalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customHorizontalScrollBarName(value:String):void
-		{
-			this.customHorizontalScrollBarStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _horizontalScrollBarProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroller's
-		 * horizontal scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> instance. The available properties depend on
-		 * which implementation of <code>IScrollBar</code> is returned by
-		 * <code>horizontalScrollBarFactory</code>. The most common
-		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
+		 * An object that stores properties for the container's horizontal
+		 * scroll bar, and the properties will be passed down to the horizontal
+		 * scroll bar when the container validates. The available properties
+		 * depend on which <code>IScrollBar</code> implementation is returned
+		 * by <code>horizontalScrollBarFactory</code>. Refer to
+		 * <a href="IScrollBar.html"><code>feathers.controls.IScrollBar</code></a>
+		 * for a list of available scroll bar implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1218,40 +1126,18 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customVerticalScrollBarStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customVerticalScrollBarStyleName
-		 */
-		public function get customVerticalScrollBarName():String
-		{
-			return this.customVerticalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customVerticalScrollBarName(value:String):void
-		{
-			this.customVerticalScrollBarStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _verticalScrollBarProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the scroller's
-		 * vertical scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> instance. The available properties depend on
-		 * which implementation of <code>IScrollBar</code> is returned by
-		 * <code>verticalScrollBarFactory</code>. The most common
-		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
+		 * An object that stores properties for the container's vertical scroll
+		 * bar, and the properties will be passed down to the vertical scroll
+		 * bar when the container validates. The available properties depend on
+		 * which <code>IScrollBar</code> implementation is returned by
+		 * <code>verticalScrollBarFactory</code>. Refer to
+		 * <a href="IScrollBar.html"><code>feathers.controls.IScrollBar</code></a>
+		 * for a list of available scroll bar implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1264,7 +1150,7 @@ package feathers.controls
 		 * will result in better performance.</p>
 		 *
 		 * <p>In the following example, properties for the vertical scroll bar
-		 * are passed to the scroller:</p>
+		 * are passed to the container:</p>
 		 *
 		 * <listing version="3.0">
 		 * scroller.verticalScrollBarProperties.liveDragging = false;</listing>
@@ -1330,9 +1216,9 @@ package feathers.controls
 		protected var explicitHorizontalScrollStep:Number = NaN;
 
 		/**
-		 * The number of pixels the scroller can be stepped horizontally. Passed
-		 * to the horizontal scroll bar, if one exists. Touch scrolling is not
-		 * affected by the step value.
+		 * The number of pixels the horizontal scroll position can be adjusted
+		 * by a "step". Passed to the horizontal scroll bar, if one exists.
+		 * Touch scrolling is not affected by the step value.
 		 *
 		 * <p>In the following example, the horizontal scroll step is customized:</p>
 		 *
@@ -1370,7 +1256,7 @@ package feathers.controls
 		protected var _horizontalScrollPosition:Number = 0;
 
 		/**
-		 * The number of pixels the scroller has been scrolled horizontally (on
+		 * The number of pixels the container has been scrolled horizontally (on
 		 * the x-axis).
 		 *
 		 * <p>In the following example, the horizontal scroll position is customized:</p>
@@ -1582,9 +1468,9 @@ package feathers.controls
 		protected var explicitVerticalScrollStep:Number = NaN;
 
 		/**
-		 * The number of pixels the scroller can be stepped vertically. Passed
-		 * to the vertical scroll bar, if it exists, and used for scrolling with
-		 * the mouse wheel. Touch scrolling is not affected by the step value.
+		 * The number of pixels the vertical scroll position can be adjusted
+		 * by a "step". Passed to the vertical scroll bar, if one exists.
+		 * Touch scrolling is not affected by the step value.
 		 *
 		 * <p>In the following example, the vertical scroll step is customized:</p>
 		 *
@@ -1617,9 +1503,9 @@ package feathers.controls
 		protected var _verticalMouseWheelScrollStep:Number = NaN;
 
 		/**
-		 * The number of pixels the scroller can be stepped vertically when
-		 * using the mouse wheel. If this value is <code>NaN</code>, the mouse
-		 * wheel will use the same scroll step as the scroll bars.
+		 * The number of pixels the vertical scroll position can be adjusted by
+		 * a "step" when using the mouse wheel. If this value is
+		 * <code>NaN</code>, the mouse wheel will use the same scroll step as the scroll bars.
 		 *
 		 * <p>In the following example, the vertical mouse wheel scroll step is
 		 * customized:</p>
@@ -1658,7 +1544,7 @@ package feathers.controls
 		protected var _verticalScrollPosition:Number = 0;
 
 		/**
-		 * The number of pixels the scroller has been scrolled vertically (on
+		 * The number of pixels the container has been scrolled vertically (on
 		 * the y-axis).
 		 *
 		 * <p>In the following example, the vertical scroll position is customized:</p>
@@ -5354,6 +5240,9 @@ package feathers.controls
 		protected function horizontalAutoScrollTween_onComplete():void
 		{
 			this._horizontalAutoScrollTween = null;
+			//the page index will not have updated during the animation, so we
+			//need to ensure that it is updated now.
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.finishScrollingHorizontally();
 		}
 
@@ -5363,6 +5252,9 @@ package feathers.controls
 		protected function verticalAutoScrollTween_onComplete():void
 		{
 			this._verticalAutoScrollTween = null;
+			//the page index will not have updated during the animation, so we
+			//need to ensure that it is updated now.
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.finishScrollingVertically();
 		}
 

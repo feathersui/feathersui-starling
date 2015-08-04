@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -12,7 +12,7 @@ package feathers.core
 	/**
 	 * Interface that handles common capabilities of rendering text.
 	 *
-	 * @see ../../../help/text-renderers Introduction to Feathers text renderers
+	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 	 */
 	public interface ITextRenderer extends IFeathersControl, ITextBaselineControl
 	{

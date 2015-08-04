@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -54,35 +54,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_HEADER:String = "feathers-panel-header";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Panel.DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Panel#DEFAULT_CHILD_STYLE_NAME_HEADER
-		 */
-		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the footer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_FOOTER:String = "feathers-panel-footer";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Panel#DEFAULT_CHILD_STYLE_NAME_FOOTER
-		 */
-		public static const DEFAULT_CHILD_NAME_FOOTER:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -277,29 +253,6 @@ package feathers.controls
 		protected var headerStyleName:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
 
 		/**
-		 * DEPRECATED: Replaced by <code>headerStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #headerStyleName
-		 */
-		protected function get headerName():String
-		{
-			return this.headerStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set headerName(value:String):void
-		{
-			this.headerStyleName = value;
-		}
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * footer. This variable is <code>protected</code> so that sub-classes
 		 * can customize the footer style name in their constructors instead of
@@ -313,29 +266,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var footerStyleName:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
-
-		/**
-		 * DEPRECATED: Replaced by <code>footerStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #footerStyleName
-		 */
-		protected function get footerName():String
-		{
-			return this.footerStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set footerName(value:String):void
-		{
-			this.footerStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -547,40 +477,24 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customHeaderStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customHeaderStyleName
-		 */
-		public function get customHeaderName():String
-		{
-			return this.customHeaderStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customHeaderName(value:String):void
-		{
-			this.customHeaderStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _headerProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * header sub-component. The header may be any
-		 * <code>feathers.core.IFeathersControl</code> instance, but the default
-		 * is a <code>feathers.controls.Header</code> instance. The available
-		 * properties depend on what type of component is returned by
-		 * <code>headerFactory</code>.
+		 * An object that stores properties for the container's header
+		 * sub-component, and the properties will be passed down to the header
+		 * when the container validates. Any Feathers component may be used as
+		 * the container's header, so the available properties depend on which
+		 * type of component is returned by <code>headerFactory</code>.
+		 *
+		 * <p>By default, the <code>headerFactory</code> will return a
+		 * <code>Header</code> instance. If you aren't using a different type of
+		 * component as the container's header, you can refer to
+		 * <a href="Header.html"><code>feathers.controls.Header</code></a>
+		 * for a list of available properties. Otherwise, refer to the
+		 * appropriate documentation for details about which properties are
+		 * available on the component that you're using as the header.</p>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -751,39 +665,18 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customFooterStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFooterStyleName
-		 */
-		public function get customFooterName():String
-		{
-			return this.customFooterStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customFooterName(value:String):void
-		{
-			this.customFooterStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _footerProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * footer sub-component. The footer may be any
-		 * <code>feathers.core.IFeathersControl</code> instance, but there is no
-		 * default. The available properties depend on what type of component is
-		 * returned by <code>footerFactory</code>.
+		 * An object that stores properties for the container's footer
+		 * sub-component, and the properties will be passed down to the footer
+		 * when the container validates. Any Feathers component may be used as
+		 * the container's footer, so the available properties depend on which
+		 * type of component is returned by <code>footerFactory</code>. Refer to
+		 * the appropriate documentation for details about which properties are
+		 * available on the component that you're using as the footer.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

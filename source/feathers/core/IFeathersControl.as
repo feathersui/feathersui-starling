@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -156,11 +156,6 @@ package feathers.core
 		 * @copy feathers.core.FeathersControl#isCreated
 		 */
 		function get isCreated():Boolean;
-
-		/**
-		 * @copy feathers.core.FeathersControl#nameList
-		 */
-		function get nameList():TokenList;
 
 		/**
 		 * @copy feathers.core.FeathersControl#styleNameList

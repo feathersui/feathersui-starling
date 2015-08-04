@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/17.0">
+<application xmlns="http://ns.adobe.com/air/application/18.0">
 	<id>com.feathersui.examples.HelloWorld</id>
 	<filename>Hello World</filename>
 	<name>Hello World</name>
-	<versionNumber>2.1.1</versionNumber>
+	<versionNumber>2.2.0</versionNumber>
 	<description>Hello World example application built with Feathers UI controls for Starling</description>
-	<copyright>2015 Josh Tynjala</copyright>
+	<copyright>2015 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>HelloWorld.swf</content>

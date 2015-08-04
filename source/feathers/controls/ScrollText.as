@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -75,7 +75,6 @@ package feathers.controls
 	 * this.addChild( scrollText );</listing>
 	 *
 	 * @see ../../../help/scroll-text.html How to use the Feathers ScrollText component
-	 * @see feathers.controls.text.TextFieldTextRenderer
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
 	public class ScrollText extends Scroller
