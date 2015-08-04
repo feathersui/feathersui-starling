@@ -60,6 +60,18 @@
 		<property name="web" value=""/>
 		<property name="help.url.search" value=""/>
 		<delete dir="${output.path}"/>
+
+		<loadfile srcFile="${source.root}/feathers/FEATHERS_VERSION.as" property="version.test">
+			<filterchain>
+				<linecontains>
+					<contains value="public const FEATHERS_VERSION:String"/>
+				</linecontains>
+				<tokenfilter>
+					<containsstring contains="${feathers.version}"/>
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+		<fail unless="version.test" message="feathers.FEATHERS_VERSION contains incorrect version string."/>
 	</target>
 
 	<target name="-cleanup">
@@ -211,6 +223,12 @@
 		<copy overwrite="true" todir="${help.output}/css">
 			<fileset dir="${help.root}/css">
 				<include name="*.css"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${help.output}/sdk/ide-file-templates"/>
+		<copy overwrite="true" todir="${help.output}/sdk/ide-file-templates">
+			<fileset dir="${help.root}/markdown/sdk/ide-file-templates">
+				<include name="feathers-file-templates-flash-builder.xml"/>
 			</fileset>
 		</copy>
 	</target>
@@ -421,6 +439,13 @@
 				<include name="source/**"/>
 				<include name="assets/**"/>
 				<exclude name="source/TransitionsExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Video">
+			<fileset dir="${examples.root}/Video">
+				<include name="README.md"/>
+				<include name="source/**"/>
 			</fileset>
 		</copy>
 

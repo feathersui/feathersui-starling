@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -22,7 +22,6 @@ package feathers.controls
 	import feathers.skins.StateValueSelector;
 
 	import flash.display.InteractiveObject;
-
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
@@ -286,18 +285,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
-
-		/**
-		 * DEPRECATED: Replaced by <code>TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see TextInput#ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT
-		 */
-		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT;
 
 		/**
 		 * The text editor, icon, and prompt will be aligned vertically to the
@@ -896,8 +883,6 @@ package feathers.controls
 		 * @see #prompt
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get promptFactory():Function
 		{
@@ -969,13 +954,13 @@ package feathers.controls
 		protected var _promptProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the text input's prompt
-		 * text renderer. The prompt text renderer is an <code>ITextRenderer</code>
-		 * instance that is created by <code>promptFactory</code>. The available
-		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is returned by <code>promptFactory</code>. The most common
-		 * implementations are <code>BitmapFontTextRenderer</code> and
-		 * <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the input's prompt text
+		 * renderer sub-component, and the properties will be passed down to the
+		 * text renderer when the input validates. The available properties
+		 * depend on which <code>ITextRenderer</code> implementation is returned
+		 * by <code>messageFactory</code>. Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1000,8 +985,6 @@ package feathers.controls
 		 * @see #prompt
 		 * @see #promptFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get promptProperties():Object
 		{
@@ -1665,9 +1648,13 @@ package feathers.controls
 		protected var _textEditorProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the text input's
-		 * text editor. The text editor is an <code>ITextEditor</code> instance
-		 * that is created by <code>textEditorFactory</code>.
+		 * An object that stores properties for the input's text editor
+		 * sub-component, and the properties will be passed down to the
+		 * text editor when the input validates. The available properties
+		 * depend on which <code>ITextEditor</code> implementation is returned
+		 * by <code>textEditorFactory</code>. Refer to
+		 * <a href="../core/ITextEditor.html"><code>feathers.core.ITextEditor</code></a>
+		 * for a list of available text editor implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

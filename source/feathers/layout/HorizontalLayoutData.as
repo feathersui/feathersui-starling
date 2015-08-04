@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -81,7 +81,14 @@ package feathers.layout
 		 *
 		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
 		 *
+		 * <p>Performance tip: If all items in your layout will have 100%
+		 * height, it's better to set the <code>verticalAlign</code> property of
+		 * the <code>HorizontalLayout</code> to
+		 * <code>HorizontalLayout.VERTICAL_ALIGN_JUSTIFY</code>.</p>
+		 *
 		 * @default NaN
+		 *
+		 * @see feathers.layout.HorizontalLayout.VERTICAL_ALIGN_JUSTIFY
 		 */
 		public function get percentHeight():Number
 		{

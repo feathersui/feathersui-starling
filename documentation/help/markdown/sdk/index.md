@@ -5,23 +5,23 @@ author: Josh Tynjala
 ---
 # Feathers SDK and MXML
 
-The Feathers SDK combines the application layout capabilities of MXML with the [Feathers](../) open source library of UI components [See an overview of Feathers SDK features.](features.html)
+The Feathers SDK combines the application layout capabilities of MXML with the [Feathers](../) open source library of UI components. The SDK includes its own compilers and everything else that you need to develop Feathers applications. [See an overview of Feathers SDK features.](features.html)
 
 ## Installation & Getting Started
 
--   [Install the Feathers SDK](http://feathersui.com/sdk/installer/)
+-   [Install the Feathers SDK](installation-instructions.html) and its dependencies with the Feathers SDK Manager.
 
--   Set up Starling and Feathers in your preferred development environment:
+-   Set up the Feathers SDK in your preferred development environment:
 
     -   [Flash Builder](flash-builder.html)
 
     -   [IntelliJ IDEA](intellij-idea.html)
 
--   Follow the instructions in [Getting Started with Feathers in MXML](getting-started-mxml.html) to create your first "Hello World" app using the Feathers SDK.
+-   Follow the instructions in [Getting started with MXML in the Feathers SDK](getting-started-mxml.html) to create your first "Hello World" app using the Feathers SDK.
 
 ## Core Concepts
 
--   [Introduction to MXML with Feathers](mxml.html)
+-   [The complete guide to MXML in the Feathers SDK](mxml.html)
 
 ## Advanced
 

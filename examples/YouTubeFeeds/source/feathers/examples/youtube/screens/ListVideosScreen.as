@@ -211,20 +211,23 @@ package feathers.examples.youtube.screens
 				var item:VideoDetails = new VideoDetails();
 				item.title = video.snippet.title as String;
 				item.author = video.snippet.channelTitle as String;
-				item.url = YOUTUBE_VIDEO_URL + video.id as String;;
+				item.url = YOUTUBE_VIDEO_URL + video.id as String;
 				item.description = video.snippet.description as String;
-				if(useHighQualityThumbnail)
+				if("thumbnails" in video.snippet)
 				{
-					item.thumbnailURL = video.snippet.thumbnails.high.url as String;
-				}
-				else
-				{
-					item.thumbnailURL = video.snippet.thumbnails.medium.url as String;
-				}
-				//switch from https to http if we're not running in AIR
-				if(useHTTP && item.thumbnailURL.indexOf("https") === 0)
-				{
-					item.thumbnailURL = "http" + item.thumbnailURL.substr(5);
+					if(useHighQualityThumbnail)
+					{
+						item.thumbnailURL = video.snippet.thumbnails.high.url as String;
+					}
+					else
+					{
+						item.thumbnailURL = video.snippet.thumbnails.medium.url as String;
+					}
+					//switch from https to http if we're not running in AIR
+					if(useHTTP && item.thumbnailURL.indexOf("https") === 0)
+					{
+						item.thumbnailURL = "http" + item.thumbnailURL.substr(5);
+					}
 				}
 				items.push(item);
 			}

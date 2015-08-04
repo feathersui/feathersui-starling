@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -150,36 +150,12 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON:String = "feathers-picker-list-button";
 
 		/**
-		 * DEPRECATED: Replaced by <code>PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see PickerList#DEFAULT_CHILD_STYLE_NAME_BUTTON
-		 */
-		public static const DEFAULT_CHILD_NAME_BUTTON:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the pop-up
 		 * list.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-picker-list-list";
-
-		/**
-		 * DEPRECATED: Replaced by <code>PickerList.DEFAULT_CHILD_STYLE_NAME_LIST</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see PickerList#DEFAULT_CHILD_STYLE_NAME_LIST
-		 */
-		public static const DEFAULT_CHILD_NAME_LIST:String = DEFAULT_CHILD_STYLE_NAME_LIST;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>PickerList</code>
@@ -230,29 +206,6 @@ package feathers.controls
 		protected var buttonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
 
 		/**
-		 * DEPRECATED: Replaced by <code>buttonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #buttonStyleName
-		 */
-		protected function get buttonName():String
-		{
-			return this.buttonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set buttonName(value:String):void
-		{
-			this.buttonStyleName = value;
-		}
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * pop-up list. This variable is <code>protected</code> so that
 		 * sub-classes can customize the list style name in their constructors
@@ -266,29 +219,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var listStyleName:String = DEFAULT_CHILD_STYLE_NAME_LIST;
-
-		/**
-		 * DEPRECATED: Replaced by <code>listStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #listStyleName
-		 */
-		protected function get listName():String
-		{
-			return this.listStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set listName(value:String):void
-		{
-			this.listStyleName = value;
-		}
 
 		/**
 		 * The button sub-component.
@@ -829,29 +759,6 @@ package feathers.controls
 			this._customButtonStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customButtonStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customButtonStyleName
-		 */
-		public function get customButtonName():String
-		{
-			return this.customButtonStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customButtonName(value:String):void
-		{
-			this.customButtonStyleName = value;
-		}
 		
 		/**
 		 * @private
@@ -859,9 +766,11 @@ package feathers.controls
 		protected var _buttonProperties:PropertyProxy;
 		
 		/**
-		 * A set of key/value pairs to be passed down to the picker's button
-		 * sub-component. It is a <code>feathers.controls.Button</code>
-		 * instance that is created by <code>buttonFactory</code>.
+		 * An object that stores properties for the picker's button
+		 * sub-component, and the properties will be passed down to the button
+		 * when the picker validates. For a list of available
+		 * properties, refer to
+		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1024,29 +933,6 @@ package feathers.controls
 			this._customListStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
 		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customListStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customListStyleName
-		 */
-		public function get customListName():String
-		{
-			return this.customListStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customListName(value:String):void
-		{
-			this.customListStyleName = value;
-		}
 		
 		/**
 		 * @private
@@ -1054,10 +940,11 @@ package feathers.controls
 		protected var _listProperties:PropertyProxy;
 		
 		/**
-		 * A set of key/value pairs to be passed down to the picker's pop-up
-		 * list sub-component. The pop-up list is a
-		 * <code>feathers.controls.List</code> instance that is created by
-		 * <code>listFactory</code>.
+		 * An object that stores properties for the picker's pop-up list
+		 * sub-component, and the properties will be passed down to the pop-up
+		 * list when the picker validates. For a list of available
+		 * properties, refer to
+		 * <a href="List.html"><code>feathers.controls.List</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

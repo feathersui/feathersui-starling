@@ -1,72 +1,128 @@
 ---
-title: Using MXML with Feathers  
+title: The complete guide to MXML in the Feathers SDK  
 author: Josh Tynjala
 
 ---
-# Using MXML with Feathers
+# The complete guide to MXML in the Feathers SDK
 
-The Feathers SDK supports using MXML to declaratively layout user interfaces at compile time. With only a quick glance at MXML code, developers can easily recognize the relationship between a components and their parent containers. Adding a child to a container is as simple as nesting an XML element inside another.
+The [Feathers SDK](http://feathersui.com/sdk/) supports using MXML to declaratively layout user interfaces at compile time. MXML provides a number of features to reduce boilerplate ActionScript code and make user interface code more readable.
 
-Data binding saves developers time by skipping the boilerplate code for setting up event listeners.
+## Add children to containers
 
-## The Basics
-
-Let's create an MXML class that extends the [`LayoutGroup`](../layout-group.html) component:
+With only a quick glance at MXML code, we can easily recognize the relationship between a component and its parent container. Adding a child to a container is as simple as nesting an XML element inside another.
 
 ``` xml
-<f:LayoutGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
-    xmlns:f="library://ns.feathersui.com/mxml">
+<f:LayoutGroup>
+    <f:Slider/>
 </f:LayoutGroup>
 ```
 
-The Feathers namespace must be included in your MXML document to add Feathers components. This identifier for this namespace is `library://ns.feathersui.com/mxml`. To reference a Feathers component, you must use the `f:` prefix before the name of the class. We're using the `LayoutGroup` component, so the XML element should be `<f:LayoutGroup/>`.
+## Set properties on components
 
-Let's add a [`Button`](../button.html) as a child of the `LayoutGroup`:
+A component's properties may be set in one of two ways. First, we can set properties using XML attributes:
 
 ``` xml
-<f:LayoutGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
-    xmlns:f="library://ns.feathersui.com/mxml">
- 
-    <f:Button label="Click Me"/>
+<f:Slider minimum="0" maximum="100" value="10"/>
+```
+
+Simple types like `Number`, `int`, `uint`,  `String`, and `Boolean` can be set this way.
+
+Alternatively, we can pass more complex values to a property by referencing it using a child XML element:
+
+``` xml
+<f:LayoutGroup>
+    <f:layout>
+        <f:HorizontalLayout padding="10"/>
+    </f:layout>
+
+    <f:Slider minimum="0" maximum="100" value="10"/>
 </f:LayoutGroup>
 ```
 
-It's as simple as adding a `<f:Button/>` element as a child of the `<f:LayoutGroup/>` element. As you can see, we've set the `label` property of the `Button` using an XML attribute.
+Here, we create a new instance of `HorizontalLayout`, set one of its properties, and then we pass it to the `layout` property.
 
-Now, let's add an event listener to the button:
+## Add event listeners
+
+Similar to setting properties, we can listen for events by referencing the event type as an XML attribute:
 
 ``` xml
-<f:Button label="Click Me" triggered="button_triggeredHandler(event)"/>
- 
+<f:Slider minimum="0" maximum="100" value="10"
+    change="slider_changeHandler(event)"/>
+```
+
+We've added an event listener for `Event.CHANGE` to the `Slider`. In the next section, we'll learn how to write the ActionScript code for this event listener.
+
+## Include ActionScript code inside an MXML component
+
+In the previous example, we listened for an event. Let's create the event listener function using ActionScript. We can add an `<fx:Script>` block to our MXML component to include ActionScript code:
+
+``` xml
 <fx:Script><![CDATA[
- 
+
     private function button_triggeredHandler(event:Event):void
     {
+        trace( "slider value changed!" );
     }
- 
+
 ]]></fx:Script>
 ```
 
-Similar to setting a property, we can add an event listener using an attribute with the string value of the event's type. The value of `Event.TRIGGERED` constant is `"triggered"`, so that's what we use in the MXML.
+## Reference MXML components in ActionScript
 
-We need to define the listener in ActionScript. To add ActionScript code to an MXML class, we need to create a `<fx:Script/>` element. Inside this element, we can add properties and methods just like we would in an ActionScript class.
-
-<aside class="info">Because ActionScript code may contain characters that are not valid XML, we must add `<![CDATA[` at the beginning of a script block and `]]>` at the end.</aside>
-
-Let's adjust the layout a bit to put the button in the center of the screen:
+If we want to access the `value` property of the `Slider` in our event listener, we can give the `Slider` an id.
 
 ``` xml
-<f:layout>
-    <f:AnchorLayout/>
-</f:layout>
- 
-<f:Button label="Click Me" triggered="button_triggeredHandler(event)">
-    <f:layoutData>
-        <f:AnchorLayoutData horizontalCenter="0" verticalCenter="0"/>
-    </f:layoutData>
-</f:Button>
+<f:Slider id="slider"
+    minimum="0" maximum="100" value="10"
+    change="slider_changeHandler(event)"/>
 ```
 
-Previously, we learned that there are two ways to set a property of a component. The first way to set a property was to add an attribute. We've set the `horizontalCenter` and `verticalCenter` properties on an `AnchorLayoutData` instance in the same way.
+Now, we can reference the `Slider` that we created in MXML like a member variable on an ActionScript class:
 
-Sometimes, it may be easier to set properties by adding child element with the property's name (prefixed by the namespace). In the code above, we set the `layout` property of the `LayoutGroup` to an [`AnchorLayout`](../anchor-layout.html) instance, and we set the `layoutData` property of the `Button` to an `AnchorLayoutData` instance.
+``` code
+private function button_triggeredHandler(event:Event):void
+{
+    trace( "slider value changed! " + this.slider.value );
+}
+```
+
+## Bind data to properties
+
+Data binding can save us time by skipping the boilerplate code for setting up event listeners and setting properties.
+
+``` xml
+<f:LayoutGroup>
+    <f:layout>
+        <f:HorizontalLayout/>
+    </f:layout>
+
+    <f:Slider id="slider" minimum="0" maximum="100" value="10"/>
+    <f:Label text="{slider.value}"/>
+</f:LayoutGroup>
+```
+
+Now, when the slider's `value` property changes, we display the value in a label.
+
+## Create inline sub-components with `<fx:Component>`
+
+When sub-components require a factory, we can define it in the MXML using `<fx:Component>` instead of writing the factory as a function in ActionScript code:
+
+``` xml
+<f:List>
+    <f:itemRendererFactory>
+        <fx:Component>
+            <f:DefaultListItemRenderer labelField="text"/>
+        </fx:Component>
+    </f:itemRendererFactory>
+    <f:dataProvider>
+        <f:ListCollection>
+            <fx:Object text="Milk"/>
+            <fx:Object text="Eggs"/>
+            <fx:Object text="Flour"/>
+            <fx:Object text="Sugar"/>
+        </f:ListCollection>
+    </f:dataProvider>
+</f:List>
+```
+
+In the MXML above, we create a `DefaultListItemRenderer` and set its `labelField` as an inline component.

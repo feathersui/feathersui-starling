@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1118,7 +1118,7 @@ package feathers.controls.text
 		 * may change its <code>ElementFormat</code> based on the current state
 		 * of that context. Typically, a relevant component will automatically
 		 * assign itself as the state context of a text renderer, so this
-		 * property is typically meant for internal use only.</p>
+		 * property is typically meant for internal use only.
 		 *
 		 * @default null
 		 *

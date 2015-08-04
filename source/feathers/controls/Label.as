@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -53,18 +53,6 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_HEADING:String = "feathers-heading-label";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Label.ALTERNATE_STYLE_NAME_HEADING</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Label#ALTERNATE_STYLE_NAME_HEADING
-		 */
-		public static const ALTERNATE_NAME_HEADING:String = ALTERNATE_STYLE_NAME_HEADING;
-
-		/**
 		 * An alternate style name to use with <code>Label</code> to allow a
 		 * theme to give it a smaller style meant for less-important details. If
 		 * a theme does not provide a style for a detail label, the theme will
@@ -85,18 +73,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_DETAIL:String = "feathers-detail-label";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Label.ALTERNATE_STYLE_NAME_DETAIL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Label#ALTERNATE_STYLE_NAME_DETAIL
-		 */
-		public static const ALTERNATE_NAME_DETAIL:String = ALTERNATE_STYLE_NAME_DETAIL;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Label</code>
@@ -267,12 +243,13 @@ package feathers.controls
 		protected var _textRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the text renderer. The
-		 * text renderer is an <code>ITextRenderer</code> instance. The
-		 * available properties depend on which <code>ITextRenderer</code>
-		 * implementation is returned by <code>textRendererFactory</code>. The
-		 * most common implementations are <code>BitmapFontTextRenderer</code>
-		 * and <code>TextFieldTextRenderer</code>.
+		 * An object that stores properties for the label's text renderer
+		 * sub-component, and the properties will be passed down to the text
+		 * renderer when the label validates. The available properties
+		 * depend on which <code>ITextRenderer</code> implementation is returned
+		 * by <code>textRendererFactory</code>. Refer to
+		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
+		 * for a list of available text renderer implementations.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -296,8 +273,6 @@ package feathers.controls
 		 *
 		 * @see #textRendererFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.controls.text.BitmapFontTextRenderer
-		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get textRendererProperties():Object
 		{

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -27,15 +27,6 @@ package feathers.controls
 	 * this.addChild( navigator );
 	 * 
 	 * navigator.rootScreenID = "mainMenu";</listing>
-	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
 	 *
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
@@ -538,6 +529,91 @@ package feathers.controls
 			var item:StackItem = this._stack[0];
 			this._stack.length = 0;
 			return this.showScreenInternal(item.id, transition, item.properties);
+		}
+
+		/**
+		 * Pops all screens from the stack, leaving the
+		 * <code>StackScreenNavigator</code> empty.
+		 *
+		 * <p>An optional transition may be specified. If <code>null</code>, the
+		 * <code>popTransition</code> property will be used instead.</p>
+		 *
+		 * @see #popTransition
+		 */
+		public function popAll(transition:Function = null):void
+		{
+			if(!this._activeScreen)
+			{
+				return;
+			}
+			if(transition == null)
+			{
+				transition = this.popTransition;
+			}
+			var item:StackItem = this._stack[0];
+			this._stack.length = 0;
+			this.clearScreenInternal(transition);
+		}
+
+		/**
+		 * Returns to the root screen, at the bottom of the stack, but replaces
+		 * it with a new root screen.
+		 *
+		 * <p>An optional transition may be specified. If <code>null</code>, the
+		 * <code>popToRootTransition</code> or <code>popTransition</code>
+		 * property will be used instead.</p>
+		 *
+		 * <p>Returns a reference to the new screen, unless a transition is
+		 * currently active. In that case, the new screen will be queued until
+		 * the transition has completed, and no reference will be returned.</p>
+		 *
+		 * @see #popToRootTransition
+		 * @see #popTransition
+		 */
+		public function popToRootScreenAndReplace(id:String, transition:Function = null):DisplayObject
+		{
+			if(transition == null)
+			{
+				transition = this.popToRootTransition;
+				if(transition == null)
+				{
+					transition = this.popTransition;
+				}
+			}
+			this._stack.length = 0;
+			return this.showScreenInternal(id, transition);
+		}
+
+		/**
+		 * Replaces the current screen on the top of the stack with a new
+		 * screen. May be used in the case where you want to navigate from
+		 * screen A to screen B and then to screen C, but when popping screen C,
+		 * you want to skip screen B and return to screen A.
+		 * 
+		 * <p>Returns a reference to the new screen, unless a transition is
+		 * currently active. In that case, the new screen will be queued until
+		 * the transition has completed, and no reference will be returned.</p>
+		 *
+		 * <p>An optional transition may be specified. If <code>null</code> the
+		 * <code>pushTransition</code> property will be used instead.</p>
+		 *
+		 * @see #pushTransition
+		 */
+		public function replaceScreen(id:String, transition:Function = null):DisplayObject
+		{
+			if(transition === null)
+			{
+				var item:StackScreenNavigatorItem = this.getScreen(id);
+				if(item && item.pushTransition !== null)
+				{
+					transition = item.pushTransition;
+				}
+				else
+				{
+					transition = this.pushTransition;
+				}
+			}
+			return this.showScreenInternal(id, transition);
 		}
 
 		/**

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -582,46 +582,6 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _manageVisibility:Boolean = false;
-
-		/**
-		 * Determines if items will be set invisible if they are outside the
-		 * view port. If <code>true</code>, you will not be able to manually
-		 * change the <code>visible</code> property of any items in the layout.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.
-		 * Originally, the <code>manageVisibility</code> property could be used
-		 * to improve performance of non-virtual layouts by hiding items that
-		 * were outside the view port. However, other performance improvements
-		 * have made it so that setting <code>manageVisibility</code> can now
-		 * sometimes hurt performance instead of improving it.</p>
-		 *
-		 * @default false
-		 */
-		public function get manageVisibility():Boolean
-		{
-			return this._manageVisibility;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set manageVisibility(value:Boolean):void
-		{
-			if(this._manageVisibility == value)
-			{
-				return;
-			}
-			this._manageVisibility = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
 
 		/**
@@ -867,7 +827,7 @@ package feathers.layout
 		 */
 		public function get requiresLayoutOnScroll():Boolean
 		{
-			return this._useVirtualLayout || this._manageVisibility;
+			return this._useVirtualLayout;
 		}
 
 		/**
@@ -1245,11 +1205,6 @@ package feathers.layout
 							item.y = item.pivotY + boundsY + this._paddingTop;
 						}
 					}
-				}
-
-				if(this._manageVisibility)
-				{
-					item.visible = ((item.x - item.pivotX + item.width) >= (boundsX + scrollX)) && ((item.x - item.pivotX) < (scrollX + availableWidth));
 				}
 			}
 			//we don't want to keep a reference to any of the items, so clear

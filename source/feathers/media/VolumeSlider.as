@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Joshua Tynjala. All Rights Reserved.
+Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -9,7 +9,6 @@ package feathers.media
 {
 	import feathers.controls.Slider;
 	import feathers.events.MediaPlayerEventType;
-	import feathers.media.VolumeSlider;
 	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundTransform;
