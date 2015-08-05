@@ -686,7 +686,7 @@ package feathers.layout
 				{
 					var item:DisplayObject = items[i];
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstGap && i == 0)
+					if(hasFirstGap && i === 0)
 					{
 						horizontalGap = this._firstGap;
 					}
@@ -778,6 +778,18 @@ package feathers.layout
 					}
 					if(supportsMultipleRows && rowItemCount > 0 && (positionX + itemWidth) > (availableRowWidth - this._paddingRight))
 					{
+						//we need to restore the previous gap because it will be
+						//subtracted from the x position to get the row width.
+						var previousIndex:int = i - 1;
+						horizontalGap = this._horizontalGap;
+						if(hasFirstGap && previousIndex === 0)
+						{
+							horizontalGap = this._firstGap;
+						}
+						else if(hasLastGap && previousIndex > 0 && previousIndex == secondToLastIndex)
+						{
+							horizontalGap = this._lastGap;
+						}
 						//we've reached the end of the row, so go to next
 						break;
 					}
@@ -799,7 +811,7 @@ package feathers.layout
 					}
 					rowItemCount++;
 				}
-	
+
 				//this is the total width of all items in the row
 				var totalRowWidth:Number = positionX - horizontalGap + this._paddingRight - boundsX;
 				rowItemCount = this._rowItems.length;
@@ -990,7 +1002,7 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstGap && i == 0)
+					if(hasFirstGap && i === 0)
 					{
 						horizontalGap = this._firstGap;
 					}
@@ -1244,7 +1256,7 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstGap && i == 0)
+					if(hasFirstGap && i === 0)
 					{
 						horizontalGap = this._firstGap;
 					}
