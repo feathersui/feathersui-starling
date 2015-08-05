@@ -583,6 +583,15 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.stateContext = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			var offsetX:Number = 0;
