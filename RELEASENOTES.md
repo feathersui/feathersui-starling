@@ -1,6 +1,6 @@
-# Feathers Release Notes
+# Feathers UI Release Notes
 
-Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
+Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
 ## 2.2.0
 
