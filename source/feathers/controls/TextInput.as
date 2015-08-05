@@ -12,6 +12,8 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.core.INativeFocusOwner;
+	import feathers.core.IStateContext;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
@@ -221,7 +223,7 @@ package feathers.controls
 	 * @see feathers.controls.AutoComplete
 	 * @see feathers.controls.TextArea
 	 */
-	public class TextInput extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl, INativeFocusOwner
+	public class TextInput extends FeathersControl implements ITextBaselineControl, INativeFocusOwner, IStateContext
 	{
 		/**
 		 * @private
@@ -2063,6 +2065,10 @@ package feathers.controls
 			this.textEditor = ITextEditor(factory());
 			var textEditorStyleName:String = this._customTextEditorStyleName != null ? this._customTextEditorStyleName : this.textEditorStyleName;
 			this.textEditor.styleNameList.add(textEditorStyleName);
+			if(this.textEditor is IStateObserver)
+			{
+				IStateObserver(this.textEditor).stateContext = this;
+			}
 			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
 			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
