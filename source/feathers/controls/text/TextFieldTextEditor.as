@@ -1354,6 +1354,8 @@ package feathers.controls.text
 			//ease major memory pressure from native filters
 			this.textField = null;
 			this.measureTextField = null;
+			
+			this.stateContext = null;
 
 			super.dispose();
 		}
