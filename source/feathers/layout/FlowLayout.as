@@ -200,6 +200,70 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _firstGap:Number = NaN;
+
+		/**
+		 * The space, in pixels, between the first and second items. If the
+		 * value of <code>firstGap</code> is <code>NaN</code>, the value of the
+		 * <code>gap</code> property will be used instead.
+		 *
+		 * @default NaN
+		 *
+		 * @see #gap
+		 */
+		public function get firstGap():Number
+		{
+			return this._firstGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set firstGap(value:Number):void
+		{
+			if(this._firstGap == value)
+			{
+				return;
+			}
+			this._firstGap = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _lastGap:Number = NaN;
+
+		/**
+		 * The space, in pixels, between the last and second to last items. If
+		 * the value of <code>lastGap</code> is <code>NaN</code>, the value of
+		 * the <code>gap</code> property will be used instead.
+		 *
+		 * @default NaN
+		 * 
+		 * @see #gap
+		 */
+		public function get lastGap():Number
+		{
+			return this._lastGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set lastGap(value:Number):void
+		{
+			if(this._lastGap == value)
+			{
+				return;
+			}
+			this._lastGap = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
@@ -599,8 +663,10 @@ package feathers.layout
 			var itemCount:int = items.length;
 			var positionY:Number = boundsY + this._paddingTop;
 			var maxItemHeight:Number = 0;
-			var horizontalGap:Number = this._horizontalGap;
 			var verticalGap:Number = this._verticalGap;
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var secondToLastIndex:int = itemCount - 2;
 			do
 			{
 				if(i > 0)
@@ -619,6 +685,15 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					var item:DisplayObject = items[i];
+					var horizontalGap:Number = this._horizontalGap;
+					if(hasFirstGap && i == 0)
+					{
+						horizontalGap = this._firstGap;
+					}
+					else if(hasLastGap && i > 0 && i == secondToLastIndex)
+					{
+						horizontalGap = this._lastGap;
+					}
 	
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
 					{
@@ -895,8 +970,10 @@ package feathers.layout
 			var i:int = 0;
 			var positionY:Number = boundsY + this._paddingTop;
 			var maxItemHeight:Number = 0;
-			var horizontalGap:Number = this._horizontalGap;
 			var verticalGap:Number = this._verticalGap;
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var secondToLastIndex:int = itemCount - 2;
 			do
 			{
 				if(i > 0)
@@ -912,6 +989,15 @@ package feathers.layout
 				//the total width of all items
 				for(; i < itemCount; i++)
 				{
+					var horizontalGap:Number = this._horizontalGap;
+					if(hasFirstGap && i == 0)
+					{
+						horizontalGap = this._firstGap;
+					}
+					else if(hasLastGap && i > 0 && i == secondToLastIndex)
+					{
+						horizontalGap = this._lastGap;
+					}
 					if(this._hasVariableItemDimensions)
 					{
 						var cachedWidth:Number = this._widthCache[i];
@@ -1132,9 +1218,11 @@ package feathers.layout
 			var i:int = 0;
 			var positionY:Number = this._paddingTop;
 			var maxItemHeight:Number = 0;
-			var horizontalGap:Number = this._horizontalGap;
 			var verticalGap:Number = this._verticalGap;
 			var maxPositionY:Number = scrollY + height;
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var secondToLastIndex:int = itemCount - 2;
 			do
 			{
 				if(i > 0)
@@ -1155,6 +1243,15 @@ package feathers.layout
 				//the total width of all items
 				for(; i < itemCount; i++)
 				{
+					var horizontalGap:Number = this._horizontalGap;
+					if(hasFirstGap && i == 0)
+					{
+						horizontalGap = this._firstGap;
+					}
+					else if(hasLastGap && i > 0 && i == secondToLastIndex)
+					{
+						horizontalGap = this._lastGap;
+					}
 					if(this._hasVariableItemDimensions)
 					{
 						var cachedWidth:Number = this._widthCache[i];
