@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
@@ -60,6 +61,78 @@ package feathers.controls
 	public class ToggleButton extends Button implements IToggle
 	{
 		/**
+		 * @copy feathers.controls.Button#STATE_UP
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP:String = "up";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN:String = "down";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER:String = "hover";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED:String = "disabled";
+
+		/**
+		 * Identifier for the button's up state when selected. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
+
+		/**
+		 * Identifier for the button's down state when selected. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
+
+		/**
+		 * Identifier for the button's hover state when selected. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
+
+		/**
+		 * Identifier for the button's disabled state. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
+		
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleButton</code>
 		 * components. If <code>null</code>, falls back to using
 		 * <code>Button.globalStyleProvider</code> instead.
@@ -88,6 +161,18 @@ package feathers.controls
 				return ToggleButton.globalStyleProvider;
 			}
 			return Button.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get currentState():String
+		{
+			if(this._isSelected)
+			{
+				return super.currentState + "AndSelected";
+			}
+			return super.currentState;
 		}
 
 		/**
@@ -168,6 +253,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 
 		/**

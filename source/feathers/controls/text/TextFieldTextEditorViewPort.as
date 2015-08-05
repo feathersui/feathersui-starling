@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.controls.Scroller;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -42,6 +43,15 @@ package feathers.controls.text
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>TextFieldTextEditorViewPort</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function TextFieldTextEditorViewPort()
@@ -50,6 +60,14 @@ package feathers.controls.text
 			this.multiline = true;
 			this.wordWrap = true;
 			this.resetScrollOnFocusOut = false;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return globalStyleProvider;
 		}
 
 		/**

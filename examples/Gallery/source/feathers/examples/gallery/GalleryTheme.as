@@ -27,6 +27,9 @@ package feathers.examples.gallery
 
 			//we're not displaying scroll bars
 			list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_NONE;
+			
+			//make a swipe scroll a shorter distance
+			list.decelerationRate = List.DECELERATION_RATE_FAST;
 		}
 	}
 }

@@ -49,6 +49,13 @@ package feathers.controls
 	public class Radio extends ToggleButton implements IGroupedToggle
 	{
 		/**
+		 * The default value added to the <code>styleNameList</code> of the label.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-radio-label";
+		
+		/**
 		 * @copy feathers.controls.Button#STATE_UP
 		 *
 		 * @see #stateToSkinFunction
@@ -83,6 +90,42 @@ package feathers.controls
 		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_DISABLED:String = "disabled";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
 		/**
 		 * @copy feathers.controls.Button#ICON_POSITION_TOP
@@ -201,6 +244,7 @@ package feathers.controls
 		{
 			super();
 			super.isToggle = true;
+			this.labelStyleName = DEFAULT_CHILD_STYLE_NAME_LABEL;
 			this.addEventListener(Event.ADDED_TO_STAGE, radio_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, radio_removedFromStageHandler);
 		}

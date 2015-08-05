@@ -160,36 +160,12 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_ITEM:String = "feathers-header-item";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Header.DEFAULT_CHILD_STYLE_NAME_ITEM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Header#DEFAULT_CHILD_STYLE_NAME_ITEM
-		 */
-		public static const DEFAULT_CHILD_NAME_ITEM:String = DEFAULT_CHILD_STYLE_NAME_ITEM;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the header's
 		 * title.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TITLE:String = "feathers-header-title";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Header.DEFAULT_CHILD_STYLE_NAME_TITLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Header#DEFAULT_CHILD_STYLE_NAME_TITLE
-		 */
-		public static const DEFAULT_CHILD_NAME_TITLE:String = DEFAULT_CHILD_STYLE_NAME_TITLE;
 
 		/**
 		 * @private
@@ -217,6 +193,17 @@ package feathers.controls
 		}
 
 		/**
+		 * The text renderer for the header's title.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #title
+		 * @see #titleFactory
+		 * @see #createTitle()
+		 */
+		protected var titleTextRenderer:ITextRenderer;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the header's
 		 * title text renderer. This variable is <code>protected</code> so that
 		 * sub-classes can customize the title text renderer style name in their
@@ -228,29 +215,6 @@ package feathers.controls
 		protected var titleStyleName:String = DEFAULT_CHILD_STYLE_NAME_TITLE;
 
 		/**
-		 * DEPRECATED: Replaced by <code>titleStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #titleStyleName
-		 */
-		protected function get titleName():String
-		{
-			return this.titleStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set titleName(value:String):void
-		{
-			this.titleStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of each of the
 		 * header's items. This variable is <code>protected</code> so that
 		 * sub-classes can customize the item style name in their constructors
@@ -260,29 +224,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var itemStyleName:String = DEFAULT_CHILD_STYLE_NAME_ITEM;
-
-		/**
-		 * DEPRECATED: Replaced by <code>itemStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #itemStyleName
-		 */
-		protected function get itemName():String
-		{
-			return this.itemStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set itemName(value:String):void
-		{
-			this.itemStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -403,17 +344,6 @@ package feathers.controls
 			this._titleFactory = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
-
-		/**
-		 * The text renderer for the header's title.
-		 *
-		 * <p>For internal use in subclasses.</p>
-		 *
-		 * @see #title
-		 * @see #titleFactory
-		 * @see #createTitle()
-		 */
-		protected var titleTextRenderer:ITextRenderer;
 
 		/**
 		 * @private
@@ -1068,6 +998,52 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _customTitleStyleName:String;
+
+		/**
+		 * A style name to add to the header's title text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different headers.
+		 *
+		 * <p>In the following example, a custom title style name is passed to
+		 * the header:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.customTitleStyleName = "my-custom-header-title";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-title", setCustomHeaderTitleStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_TITLE
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #titleFactory
+		 */
+		public function get customTitleStyleName():String
+		{
+			return this._customTitleStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customTitleStyleName(value:String):void
+		{
+			if(this._customTitleStyleName == value)
+			{
+				return;
+			}
+			this._customTitleStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _titleProperties:PropertyProxy;
 
 		/**
@@ -1543,7 +1519,8 @@ package feathers.controls
 			var factory:Function = this._titleFactory != null ? this._titleFactory : FeathersControl.defaultTextRendererFactory;
 			this.titleTextRenderer = ITextRenderer(factory());
 			var uiTitleRenderer:IFeathersControl = IFeathersControl(this.titleTextRenderer);
-			uiTitleRenderer.styleNameList.add(this.titleStyleName);
+			var titleStyleName:String = this._customTitleStyleName != null ? this._customTitleStyleName : this.titleStyleName;
+			uiTitleRenderer.styleNameList.add(titleStyleName);
 			this.addChild(DisplayObject(uiTitleRenderer));
 		}
 

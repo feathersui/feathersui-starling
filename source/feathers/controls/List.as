@@ -1048,29 +1048,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customItemRendererStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customItemRendererStyleName
-		 */
-		public function get itemRendererName():String
-		{
-			return this.customItemRendererStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set itemRendererName(value:String):void
-		{
-			this.customItemRendererStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _itemRendererProperties:PropertyProxy;

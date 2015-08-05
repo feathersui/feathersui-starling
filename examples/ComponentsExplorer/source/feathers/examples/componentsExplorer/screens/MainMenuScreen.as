@@ -98,7 +98,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Slider", event: SHOW_SLIDER},
 				{ label: "Spinner List", event: SHOW_SPINNER_LIST },
 				{ label: "Tab Bar", event: SHOW_TAB_BAR },
-				{ label: "Text Input", event: SHOW_TEXT_INPUT },
+				{ label: "Text Input and Text Area", event: SHOW_TEXT_INPUT },
 				{ label: "Toggles", event: SHOW_TOGGLES },
 			]);
 			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile

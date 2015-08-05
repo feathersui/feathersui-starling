@@ -10,6 +10,7 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.text.StageTextField;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -217,6 +218,15 @@ package feathers.controls.text
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>StageTextTextEditor</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function StageTextTextEditor()
@@ -226,6 +236,14 @@ package feathers.controls.text
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
 		}
 
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return globalStyleProvider;
+		}
+		
 		/**
 		 * The StageText instance. It's typed Object so that a replacement class
 		 * can be used in browser-based Flash Player.
@@ -1123,13 +1141,7 @@ package feathers.controls.text
 
 			if(this.textSnapshot)
 			{
-				var desktopGutterPositionOffset:Number = 0;
-				if(this._stageTextIsTextField)
-				{
-					desktopGutterPositionOffset = 2;
-				}
-				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
-				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
+				this.positionSnapshot();
 			}
 
 			super.render(support, parentAlpha);
@@ -1832,6 +1844,21 @@ package feathers.controls.text
 			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = this.actualWidth + 4;
 			this._measureTextField.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionSnapshot():void
+		{
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var desktopGutterPositionOffset:Number = 0;
+			if(this._stageTextIsTextField)
+			{
+				desktopGutterPositionOffset = 2;
+			}
+			this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
+			this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
 		}
 
 		/**

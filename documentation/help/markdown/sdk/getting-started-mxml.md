@@ -82,6 +82,13 @@ We need to define the listener in ActionScript. To add ActionScript code to an M
 
 <aside class="info">Because ActionScript code may contain characters that are not valid XML, we must add `<![CDATA[` at the beginning of a script block and `]]>` at the end.</aside>
 
+We will want to refer to our button as a variable in ActionScript, so we should add an `id` to it:
+
+``` xml
+<f:Button id="button" label="Click Me"
+    triggered="button_triggeredHandler(event)"/>
+```
+
 Our listener function should look something like this:
 
 ``` code
@@ -93,7 +100,7 @@ private function button_triggeredHandler( event:Event ):void
 }
 ```
 
-The button's `Event.TRIGGERED` listener displays a `Label`, a generic component for displaying text, in a `Callout` component. Like with our button, these two components are automatically skinned by the theme.
+The `Event.TRIGGERED` listener displays a message by displaying a `Label` component inside a `Callout` component. We've referenced the button that we created in MXML using the `button` variable name. The `Label` and `Callout` components are automatically skinned by the theme, just like the `Button`.
 
 ### Layouts
 
@@ -104,7 +111,8 @@ Finally, let's adjust the layout a bit to put the button in the center of the sc
     <f:AnchorLayout/>
 </f:layout>
  
-<f:Button label="Click Me" triggered="button_triggeredHandler(event)">
+<f:Button id="button" label="Click Me"
+    triggered="button_triggeredHandler(event)">
     <f:layoutData>
         <f:AnchorLayoutData horizontalCenter="0" verticalCenter="0"/>
     </f:layoutData>

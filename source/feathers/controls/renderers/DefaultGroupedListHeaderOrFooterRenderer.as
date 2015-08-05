@@ -93,18 +93,6 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL:String = "feathers-header-footer-renderer-content-label";
 
 		/**
-		 * DEPRECATED: Replaced by <code>DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see DefaultGroupedListHeaderOrFooterRenderer#DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL;
-
-		/**
 		 * The default <code>IStyleProvider</code> for all <code>DefaultGroupedListHeaderOrFooterRenderer</code>
 		 * components.
 		 *
@@ -136,29 +124,6 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var contentLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL;
-
-		/**
-		 * DEPRECATED: Replaced by <code>contentLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #contentLabelStyleName
-		 */
-		protected function get contentLabelName():String
-		{
-			return this.contentLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set contentLabelName(value:String):void
-		{
-			this.contentLabelStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -829,6 +794,52 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _customContentLabelStyleName:String;
+
+		/**
+		 * A style name to add to the renderer's label text renderer
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different renderers.
+		 *
+		 * <p>In the following example, a custom label style name is passed to
+		 * the renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.customContentLabelStyleName = "my-custom-header-or-footer-renderer-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-or-footer-label", setCustomHeaderOrFooterLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #contentLabelFactory
+		 */
+		public function get customContentLabelStyleName():String
+		{
+			return this._customContentLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customContentLabelStyleName(value:String):void
+		{
+			if(this._customContentLabelStyleName == value)
+			{
+				return;
+			}
+			this._customContentLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _contentLabelProperties:PropertyProxy;
 
 		/**
@@ -1480,7 +1491,8 @@ package feathers.controls.renderers
 				{
 					var factory:Function = this._contentLabelFactory != null ? this._contentLabelFactory : FeathersControl.defaultTextRendererFactory;
 					this.contentLabel = ITextRenderer(factory());
-					FeathersControl(this.contentLabel).styleNameList.add(this.contentLabelName);
+					var contentLabelStyleName:String = this._customContentLabelStyleName != null ? this._customContentLabelStyleName : this.contentLabelStyleName;
+					FeathersControl(this.contentLabel).styleNameList.add(contentLabelStyleName);
 				}
 				this.contentLabel.text = label;
 			}

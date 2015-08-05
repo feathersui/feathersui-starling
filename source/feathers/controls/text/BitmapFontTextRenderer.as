@@ -8,7 +8,11 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IStateContext;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IToggle;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.BitmapFontTextFormat;
 
@@ -20,6 +24,7 @@ package feathers.controls.text
 	import starling.core.RenderSupport;
 	import starling.display.Image;
 	import starling.display.QuadBatch;
+	import starling.events.Event;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
@@ -32,7 +37,7 @@ package feathers.controls.text
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
 	 */
-	public class BitmapFontTextRenderer extends FeathersControl implements ITextRenderer
+	public class BitmapFontTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
 	{
 		/**
 		 * @private
@@ -134,6 +139,11 @@ package feathers.controls.text
 		{
 			return BitmapFontTextRenderer.globalStyleProvider;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _textFormatForState:Object;
 		
 		/**
 		 * @private
@@ -149,6 +159,10 @@ package feathers.controls.text
 		 * textRenderer.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @default null
+		 *
+		 * @see #setTextFormatForState()
+		 * @see #disabledTextFormat
+		 * @see #selectedTextFormat
 		 */
 		public function get textFormat():BitmapFontTextFormat
 		{
@@ -179,9 +193,13 @@ package feathers.controls.text
 		 * <p>In the following example, the disabled text format is changed:</p>
 		 *
 		 * <listing version="3.0">
+		 * textRenderer.isEnabled = false;
 		 * textRenderer.disabledTextFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see #textFormat
+		 * @see #selectedTextFormat
 		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
@@ -198,6 +216,46 @@ package feathers.controls.text
 				return;
 			}
 			this._disabledTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedTextFormat:BitmapFontTextFormat;
+
+		/**
+		 * The font and styles used to draw the text when the
+		 * <code>stateContext</code> implements the <code>IToggle</code>
+		 * interface, and it is selected.
+		 *
+		 * <p>In the following example, the selected text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.selectedTextFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #stateContext
+		 * @see feathers.core.IToggle
+		 * @see #textFormat
+		 * @see #disabledTextFormat
+		 */
+		public function get selectedTextFormat():BitmapFontTextFormat
+		{
+			return this._selectedTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedTextFormat(value:BitmapFontTextFormat):void
+		{
+			if(this._selectedTextFormat == value)
+			{
+				return;
+			}
+			this._selectedTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -483,6 +541,57 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _stateContext:IStateContext;
+
+		/**
+		 * When the text renderer observes a state context, the text renderer
+		 * may change its <code>BitmapFontTextFormat</code> based on the current
+		 * state of that context. Typically, a relevant component will
+		 * automatically assign itself as the state context of a text renderer,
+		 * so this property is typically meant for internal use only.
+		 *
+		 * @default null
+		 *
+		 * @see #setTextFormatForState()
+		 */
+		public function get stateContext():IStateContext
+		{
+			return this._stateContext;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stateContext(value:IStateContext):void
+		{
+			if(this._stateContext === value)
+			{
+				return;
+			}
+			if(this._stateContext)
+			{
+				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
+			}
+			this._stateContext = value;
+			if(this._stateContext)
+			{
+				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
+			}
+			this.invalidate(INVALIDATION_FLAG_STATE);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.stateContext = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			var offsetX:Number = 0;
@@ -660,6 +769,44 @@ package feathers.controls.text
 		}
 
 		/**
+		 * Sets the <code>BitmapFontTextFormat</code> to be used by the text
+		 * renderer when the <code>currentState</code> property of the
+		 * <code>stateContext</code> matches the specified state value.
+		 *
+		 * <p>If an <code>BitmapFontTextFormat</code> is not defined for a
+		 * specific state, the value of the <code>textFormat</code> property
+		 * will be used instead.</p>
+		 *
+		 * <p>If the <code>disabledTextFormat</code> property is not
+		 * <code>null</code> and the <code>isEnabled</code> property is
+		 * <code>false</code>, all other text formats will be ignored.</p>
+		 *
+		 * @see #stateContext
+		 * @see #textFormat
+		 */
+		public function setTextFormatForState(state:String, textFormat:BitmapFontTextFormat):void
+		{
+			if(textFormat)
+			{
+				if(!this._textFormatForState)
+				{
+					this._textFormatForState = {};
+				}
+				this._textFormatForState[state] = textFormat;
+			}
+			else
+			{
+				delete this._textFormatForState[state];
+			}
+			//if the context's current state is the state that we're modifying,
+			//we need to use the new value immediately.
+			if(this._stateContext && this._stateContext.currentState === state)
+			{
+				this.invalidate(INVALIDATION_FLAG_STATE);
+			}
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
@@ -822,7 +969,10 @@ package feathers.controls.text
 						this.addBufferToBatch(0);
 					}
 
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
+					//floating point errors can cause unnecessary line breaks,
+					//so we're going to be a little bit fuzzy on the greater
+					//than check. such tiny numbers shouldn't break anything.
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + offsetX) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
 					{
 						if(isAligned)
 						{
@@ -1040,11 +1190,25 @@ package feathers.controls.text
 		 */
 		protected function refreshTextFormat():void
 		{
-			if(!this._isEnabled && this._disabledTextFormat)
+			var textFormat:BitmapFontTextFormat;
+			if(this._stateContext && this._textFormatForState)
 			{
-				this.currentTextFormat = this._disabledTextFormat;
+				var currentState:String = this._stateContext.currentState;
+				if(currentState in this._textFormatForState)
+				{
+					textFormat = BitmapFontTextFormat(this._textFormatForState[currentState]);
+				}
 			}
-			else
+			if(!textFormat && !this._isEnabled && this._disabledTextFormat)
+			{
+				textFormat = this._disabledTextFormat;
+			}
+			if(!textFormat && this._selectedTextFormat &&
+				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+			{
+				textFormat = this._selectedTextFormat;
+			}
+			if(!textFormat)
 			{
 				//let's fall back to using Starling's embedded mini font if no
 				//text format has been specified
@@ -1057,8 +1221,9 @@ package feathers.controls.text
 					}
 					this._textFormat = new BitmapFontTextFormat(BitmapFont.MINI, NaN, 0x000000);
 				}
-				this.currentTextFormat = this._textFormat;
+				textFormat = this._textFormat;
 			}
+			this.currentTextFormat = textFormat;
 		}
 
 		/**
@@ -1170,6 +1335,14 @@ package feathers.controls.text
 				return this._truncationText;
 			}
 			return this._text;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stateContext_stateChangeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**

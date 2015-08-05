@@ -15,6 +15,7 @@ package feathers.controls.renderers
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -36,24 +37,20 @@ package feathers.controls.renderers
 	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
 	{
 		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * primary label.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-item-renderer-label";
+		
+		/**
 		 * The default value added to the <code>styleNameList</code> of the icon
 		 * label, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
-
-		/**
-		 * DEPRECATED: Replaced by <code>BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
-		 */
-		public static const DEFAULT_CHILD_NAME_ICON_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
@@ -64,16 +61,76 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 
 		/**
-		 * DEPRECATED: Replaced by <code>BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL</code>.
+		 * @copy feathers.controls.Button#STATE_UP
 		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
 		 */
-		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
+		public static const STATE_UP:String = "up";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN:String = "down";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER:String = "hover";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED:String = "disabled";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
 		/**
 		 * @copy feathers.controls.Button#ICON_POSITION_TOP
@@ -252,6 +309,8 @@ package feathers.controls.renderers
 		public function BaseDefaultItemRenderer()
 		{
 			super();
+			this._explicitIsEnabled = this._isEnabled;
+			this.labelStyleName = DEFAULT_CHILD_STYLE_NAME_LABEL;
 			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
 			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
@@ -266,58 +325,12 @@ package feathers.controls.renderers
 		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
-		 * DEPRECATED: Replaced by <code>iconLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #iconLabelStyleName
-		 */
-		protected function get iconLabelName():String
-		{
-			return this.iconLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set iconLabelName(value:String):void
-		{
-			this.iconLabelStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
 		 * label text renderer, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
-
-		/**
-		 * DEPRECATED: Replaced by <code>accessoryLabelStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #accessoryLabelStyleName
-		 */
-		protected function get accessoryLabelName():String
-		{
-			return this.accessoryLabelStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set accessoryLabelName(value:String):void
-		{
-			this.accessoryLabelStyleName = value;
-		}
 
 		/**
 		 * @private
@@ -958,46 +971,6 @@ package feathers.controls.renderers
 			}
 			this._minAccessoryGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function set currentState(value:String):void
-		{
-			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
-			{
-				value = STATE_UP;
-			}
-			if(this._useStateDelayTimer)
-			{
-				if(this._stateDelayTimer && this._stateDelayTimer.running)
-				{
-					this._delayedCurrentState = value;
-					return;
-				}
-
-				if(value == Button.STATE_DOWN)
-				{
-					if(this._currentState == value)
-					{
-						return;
-					}
-					this._delayedCurrentState = value;
-					if(this._stateDelayTimer)
-					{
-						this._stateDelayTimer.reset();
-					}
-					else
-					{
-						this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-						this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-					}
-					this._stateDelayTimer.start();
-					return;
-				}
-			}
-			super.currentState = value;
 		}
 
 		/**
@@ -2477,7 +2450,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _explicitIsEnabled:Boolean = false;
+		protected var _explicitIsEnabled:Boolean;
 
 		/**
 		 * @private
@@ -2491,7 +2464,6 @@ package feathers.controls.renderers
 			this._explicitIsEnabled = value;
 			super.isEnabled = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -3324,6 +3296,46 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function changeState(value:String):void
+		{
+			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
+			{
+				value = STATE_UP;
+			}
+			if(this._useStateDelayTimer)
+			{
+				if(this._stateDelayTimer && this._stateDelayTimer.running)
+				{
+					this._delayedCurrentState = value;
+					return;
+				}
+
+				if(value == Button.STATE_DOWN)
+				{
+					if(this._currentState == value)
+					{
+						return;
+					}
+					this._delayedCurrentState = value;
+					if(this._stateDelayTimer)
+					{
+						this._stateDelayTimer.reset();
+					}
+					else
+					{
+						this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+						this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+					}
+					this._stateDelayTimer.start();
+					return;
+				}
+			}
+			super.changeState(value);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function addIconWidth(width:Number):Number
 		{
 			if(!this.currentIcon)
@@ -3657,6 +3669,7 @@ package feathers.controls.renderers
 				this.touchable = true;
 			}
 			this.setInvalidationFlag(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 
 		/**
@@ -3881,6 +3894,10 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._iconLabelFactory != null ? this._iconLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.iconLabel = ITextRenderer(factory());
+				if(this.iconLabel is IStateObserver)
+				{
+					IStateObserver(this.iconLabel).stateContext = this;
+				}
 				this.iconLabel.styleNameList.add(this.iconLabelStyleName);
 			}
 			this.iconLabel.text = label;
@@ -3909,6 +3926,10 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.accessoryLabel = ITextRenderer(factory());
+				if(this.accessoryLabel is IStateObserver)
+				{
+					IStateObserver(this.accessoryLabel).stateContext = this;
+				}
 				this.accessoryLabel.styleNameList.add(this.accessoryLabelStyleName);
 			}
 			this.accessoryLabel.text = label;
@@ -4477,7 +4498,7 @@ package feathers.controls.renderers
 		 */
 		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
 		{
-			super.currentState = this._delayedCurrentState;
+			super.changeState(this._delayedCurrentState);
 			this._delayedCurrentState = null;
 		}
 
@@ -4493,7 +4514,7 @@ package feathers.controls.renderers
 				var touch:Touch = event.getTouch(this.accessory);
 				if(touch)
 				{
-					this.currentState = Button.STATE_UP;
+					this.changeState(Button.STATE_UP);
 					return;
 				}
 			}

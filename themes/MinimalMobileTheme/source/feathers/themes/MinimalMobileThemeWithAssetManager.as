@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.themes
 {
+	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
@@ -42,7 +43,8 @@ package feathers.themes
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>data</code></td><td>The Starling instance that the theme
+	 *   is ready for.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
 	 *   <code>currentTarget</code> property to always access the Object
@@ -69,7 +71,7 @@ package feathers.themes
 	 *
 	 * @see http://feathersui.com/help/theme-assets.html
 	 */
-	public class MinimalMobileThemeWithAssetManager extends BaseMinimalMobileTheme
+	public class MinimalMobileThemeWithAssetManager extends BaseMinimalMobileTheme implements IThemeWithAssetManager
 	{
 		/**
 		 * @private
@@ -106,6 +108,11 @@ package feathers.themes
 		/**
 		 * @private
 		 */
+		protected var isComplete:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			super.dispose();
@@ -114,6 +121,14 @@ package feathers.themes
 				this.assetManager.removeTextureAtlas(ATLAS_NAME);
 				this.assetManager = null;
 			}
+		}
+
+		/**
+		 * @copy feathers.themes.IThemeWithAssetManager#isCompleteForStarling()
+		 */
+		public function isCompleteForStarling(starling:Starling):Boolean
+		{
+			return this.isComplete;
 		}
 
 		/**
@@ -154,7 +169,8 @@ package feathers.themes
 				return;
 			}
 			this.initialize();
-			this.dispatchEventWith(Event.COMPLETE);
+			this.isComplete = true;
+			this.dispatchEventWith(Event.COMPLETE, false, Starling.current);
 		}
 
 		/**

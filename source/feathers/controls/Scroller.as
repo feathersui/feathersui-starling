@@ -450,36 +450,12 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR:String = "feathers-scroller-horizontal-scroll-bar";
 
 		/**
-		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR
-		 */
-		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
-
-		/**
 		 * The default value added to the <code>styleNameList</code> of the vertical
 		 * scroll bar.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR:String = "feathers-scroller-vertical-scroll-bar";
-
-		/**
-		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR
-		 */
-		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
 
 		/**
 		 * @private
@@ -530,29 +506,6 @@ package feathers.controls
 		protected var horizontalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
-		 * DEPRECATED: Replaced by <code>horizontalScrollBarStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #horizontalScrollBarStyleName
-		 */
-		protected function get horizontalScrollBarName():String
-		{
-			return this.horizontalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set horizontalScrollBarName(value:String):void
-		{
-			this.horizontalScrollBarStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the vertical
 		 * scroll bar. This variable is <code>protected</code> so that
 		 * sub-classes can customize the vertical scroll bar style name in their
@@ -566,29 +519,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var verticalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
-
-		/**
-		 * DEPRECATED: Replaced by <code>verticalScrollBarStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #verticalScrollBarStyleName
-		 */
-		protected function get verticalScrollBarName():String
-		{
-			return this.verticalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set verticalScrollBarName(value:String):void
-		{
-			this.verticalScrollBarStyleName = value;
-		}
 
 		/**
 		 * The horizontal scrollbar instance. May be null.
@@ -983,29 +913,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customHorizontalScrollBarName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customHorizontalScrollBarName
-		 */
-		public function get customHorizontalScrollBarName():String
-		{
-			return this.customHorizontalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customHorizontalScrollBarName(value:String):void
-		{
-			this.customHorizontalScrollBarStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _horizontalScrollBarProperties:PropertyProxy;
@@ -1216,29 +1123,6 @@ package feathers.controls
 			}
 			this._customVerticalScrollBarStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customVerticalScrollBarStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customVerticalScrollBarStyleName
-		 */
-		public function get customVerticalScrollBarName():String
-		{
-			return this.customVerticalScrollBarStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customVerticalScrollBarName(value:String):void
-		{
-			this.customVerticalScrollBarStyleName = value;
 		}
 
 		/**

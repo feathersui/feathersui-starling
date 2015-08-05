@@ -22,6 +22,78 @@ package feathers.controls.renderers
 	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer
 	{
 		/**
+		 * @copy feathers.controls.Button#STATE_UP
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP:String = "up";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN:String = "down";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER:String = "hover";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED:String = "disabled";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
+		 */
+		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
+		
+		/**
 		 * @copy feathers.controls.Button#ICON_POSITION_TOP
 		 *
 		 * @see feathers.controls.Button#iconPosition

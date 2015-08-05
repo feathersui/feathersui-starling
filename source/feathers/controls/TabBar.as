@@ -8,18 +8,23 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 
+	import flash.ui.Keyboard;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the selected tab changes.
@@ -65,7 +70,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/tab-bar.html How to use the Feathers TabBar component
 	 */
-	public class TabBar extends FeathersControl
+	public class TabBar extends FeathersControl implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -177,18 +182,6 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_TAB:String = "feathers-tab-bar-tab";
 
 		/**
-		 * DEPRECATED: Replaced by <code>TabBar.DEFAULT_CHILD_STYLE_NAME_TAB</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see TabBar#DEFAULT_CHILD_STYLE_NAME_TAB
-		 */
-		public static const DEFAULT_CHILD_NAME_TAB:String = DEFAULT_CHILD_STYLE_NAME_TAB;
-
-		/**
 		 * The default <code>IStyleProvider</code> for all <code>TabBar</code>
 		 * components.
 		 *
@@ -228,29 +221,6 @@ package feathers.controls
 		protected var tabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
-		 * DEPRECATED: Replaced by <code>tabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #tabStyleName
-		 */
-		protected function get tabName():String
-		{
-			return this.tabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set tabName(value:String):void
-		{
-			this.tabStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the first tab.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the first tab style name in their constructors instead of
@@ -266,29 +236,6 @@ package feathers.controls
 		protected var firstTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
-		 * DEPRECATED: Replaced by <code>firstTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #firstTabStyleName
-		 */
-		protected function get firstTabName():String
-		{
-			return this.firstTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set firstTabName(value:String):void
-		{
-			this.firstTabStyleName = value;
-		}
-
-		/**
 		 * The value added to the <code>styleNameList</code> of the last tab.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the last tab style name in their constructors instead of
@@ -302,29 +249,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var lastTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
-
-		/**
-		 * DEPRECATED: Replaced by <code>lastTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #lastTabStyleName
-		 */
-		protected function get lastTabName():String
-		{
-			return this.lastTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function set lastTabName(value:String):void
-		{
-			this.lastTabStyleName = value;
-		}
 
 		/**
 		 * The toggle group.
@@ -1281,29 +1205,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customTabStyleName
-		 */
-		public function get customTabName():String
-		{
-			return this.customTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customTabName(value:String):void
-		{
-			this.customTabStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _customFirstTabStyleName:String;
@@ -1347,29 +1248,6 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Replaced by <code>customFirstTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customFirstTabStyleName
-		 */
-		public function get customFirstTabName():String
-		{
-			return this.customFirstTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customFirstTabName(value:String):void
-		{
-			this.customFirstTabStyleName = value;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _customLastTabStyleName:String;
@@ -1410,29 +1288,6 @@ package feathers.controls
 			}
 			this._customLastTabStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
-		}
-
-		/**
-		 * DEPRECATED: Replaced by <code>customLastTabStyleName</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 2.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #customLastTabStyleName
-		 */
-		public function get customLastTabName():String
-		{
-			return this.customLastTabStyleName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set customLastTabName(value:String):void
-		{
-			this.customLastTabStyleName = value;
 		}
 
 		/**
@@ -1931,9 +1786,182 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function showFocus():void
+		{
+			if(!this._hasFocus)
+			{
+				return;
+			}
+
+			this._showFocus = true;
+			this.showFocusedTab();
+			this.invalidate(INVALIDATION_FLAG_FOCUS);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hideFocus():void
+		{
+			if(!this._hasFocus)
+			{
+				return;
+			}
+			this._showFocus = false;
+			this.hideFocusedTab();
+			this.invalidate(INVALIDATION_FLAG_FOCUS);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hideFocusedTab():void
+		{
+			if(this._focusedTabIndex < 0)
+			{
+				return;
+			}
+			var focusedTab:ToggleButton = this.activeTabs[this._focusedTabIndex];
+			focusedTab.hideFocus();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function showFocusedTab():void
+		{
+			if(!this._showFocus || this._focusedTabIndex < 0)
+			{
+				return;
+			}
+			var tab:ToggleButton = this.activeTabs[this._focusedTabIndex];
+			tab.showFocus();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function focusedTabFocusIn():void
+		{
+			if(this._focusedTabIndex < 0)
+			{
+				return;
+			}
+			var tab:ToggleButton = this.activeTabs[this._focusedTabIndex];
+			tab.dispatchEventWith(FeathersEventType.FOCUS_IN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function focusedTabFocusOut():void
+		{
+			if(this._focusedTabIndex < 0)
+			{
+				return;
+			}
+			var tab:ToggleButton = this.activeTabs[this._focusedTabIndex];
+			tab.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusInHandler(event:Event):void
+		{
+			super.focusInHandler(event);
+			this._focusedTabIndex = this._selectedIndex;
+			this.focusedTabFocusIn();
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusOutHandler(event:Event):void
+		{
+			super.focusOutHandler(event);
+			this.hideFocusedTab();
+			this.focusedTabFocusOut();
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+		
+		protected var _focusedTabIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._isEnabled)
+			{
+				return;
+			}
+			if(!this._dataProvider || this._dataProvider.length === 0)
+			{
+				return;
+			}
+			var newFocusedTabIndex:int = this._focusedTabIndex;
+			var maxFocusedTabIndex:int = this._dataProvider.length - 1;
+			if(event.keyCode == Keyboard.HOME)
+			{
+				this.selectedIndex = newFocusedTabIndex = 0;
+			}
+			else if(event.keyCode == Keyboard.END)
+			{
+				this.selectedIndex = newFocusedTabIndex = maxFocusedTabIndex;
+			}
+			else if(event.keyCode == Keyboard.PAGE_UP)
+			{
+				newFocusedTabIndex--;
+				if(newFocusedTabIndex < 0)
+				{
+					newFocusedTabIndex = maxFocusedTabIndex;
+				}
+				this.selectedIndex = newFocusedTabIndex;
+			}
+			else if(event.keyCode == Keyboard.PAGE_DOWN)
+			{
+				newFocusedTabIndex++;
+				if(newFocusedTabIndex > maxFocusedTabIndex)
+				{
+					newFocusedTabIndex = 0;
+				}
+				this.selectedIndex = newFocusedTabIndex;
+			}
+			else if(event.keyCode === Keyboard.UP || event.keyCode === Keyboard.LEFT)
+			{
+				newFocusedTabIndex--;
+				if(newFocusedTabIndex < 0)
+				{
+					newFocusedTabIndex = maxFocusedTabIndex;
+				}
+			}
+			else if(event.keyCode === Keyboard.DOWN || event.keyCode === Keyboard.RIGHT)
+			{
+				newFocusedTabIndex++;
+				if(newFocusedTabIndex > maxFocusedTabIndex)
+				{
+					newFocusedTabIndex = 0;
+				}
+			}
+
+			if(newFocusedTabIndex >= 0 && newFocusedTabIndex !== this._focusedTabIndex)
+			{
+				this.hideFocusedTab();
+				this.focusedTabFocusOut();
+				this._focusedTabIndex = newFocusedTabIndex;
+				this.focusedTabFocusIn();
+				this.showFocusedTab();
+			}
 		}
 
 		/**
