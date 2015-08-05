@@ -10,6 +10,8 @@ package feathers.controls
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.INativeFocusOwner;
+	import feathers.core.IStateContext;
+	import feathers.core.IStateObserver;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -98,7 +100,7 @@ package feathers.controls
 	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
 	 * @see feathers.controls.TextInput
 	 */
-	public class TextArea extends Scroller implements INativeFocusOwner
+	public class TextArea extends Scroller implements INativeFocusOwner, IStateContext
 	{
 		/**
 		 * @private
@@ -969,6 +971,10 @@ package feathers.controls
 			}
 			var textEditorStyleName:String = this._customTextEditorStyleName != null ? this._customTextEditorStyleName : this.textEditorStyleName;
 			this.textEditorViewPort.styleNameList.add(textEditorStyleName);
+			if(this.textEditorViewPort is IStateObserver)
+			{
+				IStateObserver(this.textEditorViewPort).stateContext = this;
+			}
 			this.textEditorViewPort.addEventListener(Event.CHANGE, textEditor_changeHandler);
 			this.textEditorViewPort.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
 			this.textEditorViewPort.addEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
