@@ -135,6 +135,16 @@ The new module is ready. If you're unsure how to proceed, take a look at the [Ge
 
 * In an MXML file, the editor will highlight an `<fx:Component>` element used to create a sub-component factory in red, as if it were a syntax error. Additionally, the root element of the inline component will be highlighted in red. However, the compiler will compile this file without issues, and code hinting will work properly too. This is not an error, and it may be ignored.
 
+	In some cases, you may be able to instantiate a sub-component in the `<fx:Declarations>` element, and pass it to the factory using `factoryFromInstance()`.
+
+	``` xml
+	<f:Panel headerFactory="{factoryFromInstance(myHeader)}">
+		<fx:Declarations>
+			<f:Header id="myHeader"/>
+		</fx:Declarations>
+	</f:Panel>
+	```
+
 * With a module for a mobile AIR application, the compiler may report some errors:
 
 	> Error code 1120: Access to undefined property SplashScreen
