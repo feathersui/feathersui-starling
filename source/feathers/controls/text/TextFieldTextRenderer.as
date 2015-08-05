@@ -8,7 +8,11 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IStateContext;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IToggle;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -49,7 +53,7 @@ package feathers.controls.text
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
-	public class TextFieldTextRenderer extends FeathersControl implements ITextRenderer
+	public class TextFieldTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
 	{
 		/**
 		 * @private
@@ -240,6 +244,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var currentTextFormat:TextFormat;
+
+		/**
+		 * @private
+		 */
+		protected var _textFormatForState:Object;
+
+		/**
+		 * @private
+		 */
 		protected var _textFormat:TextFormat;
 
 		/**
@@ -252,7 +266,9 @@ package feathers.controls.text
 		 *
 		 * @default null
 		 *
+		 * @see #setTextFormatForState()
 		 * @see #disabledTextFormat
+		 * @see #selectedTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
@@ -279,7 +295,8 @@ package feathers.controls.text
 		protected var _disabledTextFormat:TextFormat;
 
 		/**
-		 * The font and styles used to draw the text when the component is disabled.
+		 * The font and styles used to draw the text when the component is
+		 * disabled.
 		 *
 		 * <p>In the following example, the disabled text format is changed:</p>
 		 *
@@ -290,6 +307,7 @@ package feathers.controls.text
 		 * @default null
 		 *
 		 * @see #textFormat
+		 * @see #selectedTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
 		public function get disabledTextFormat():TextFormat
@@ -307,6 +325,47 @@ package feathers.controls.text
 				return;
 			}
 			this._disabledTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedTextFormat:TextFormat;
+
+		/**
+		 * The font and styles used to draw the text when the
+		 * <code>stateContext</code> implements the <code>IToggle</code>
+		 * interface, and it is selected.
+		 *
+		 * <p>In the following example, the selected text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.selectedTextFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #stateContext
+		 * @see feathers.core.IToggle
+		 * @see #textFormat
+		 * @see #disabledTextFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
+		 */
+		public function get selectedTextFormat():TextFormat
+		{
+			return this._selectedTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedTextFormat(value:TextFormat):void
+		{
+			if(this._selectedTextFormat == value)
+			{
+				return;
+			}
+			this._selectedTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -987,6 +1046,48 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _stateContext:IStateContext;
+
+		/**
+		 * When the text renderer observes a state context, the text renderer
+		 * may change its <code>TextFormat</code> based on the current state of
+		 * that context. Typically, a relevant component will automatically
+		 * assign itself as the state context of a text renderer, so this
+		 * property is typically meant for internal use only.
+		 *
+		 * @default null
+		 *
+		 * @see #setTextFormatForState()
+		 */
+		public function get stateContext():IStateContext
+		{
+			return this._stateContext;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stateContext(value:IStateContext):void
+		{
+			if(this._stateContext === value)
+			{
+				return;
+			}
+			if(this._stateContext)
+			{
+				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
+			}
+			this._stateContext = value;
+			if(this._stateContext)
+			{
+				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
+			}
+			this.invalidate(INVALIDATION_FLAG_STATE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _lastGlobalScaleX:Number = 0;
 
 		/**
@@ -1232,6 +1333,44 @@ package feathers.controls.text
 		}
 
 		/**
+		 * Sets the <code>TextFormat</code> to be used by the text renderer when
+		 * the <code>currentState</code> property of the
+		 * <code>stateContext</code> matches the specified state value.
+		 *
+		 * <p>If an <code>TextFormat</code> is not defined for a specific
+		 * state, the value of the <code>textFormat</code> property will be
+		 * used instead.</p>
+		 *
+		 * <p>If the <code>disabledTextFormat</code> property is not
+		 * <code>null</code> and the <code>isEnabled</code> property is
+		 * <code>false</code>, all other text formats will be ignored.</p>
+		 *
+		 * @see #stateContext
+		 * @see #textFormat
+		 */
+		public function setTextFormatForState(state:String, textFormat:TextFormat):void
+		{
+			if(textFormat)
+			{
+				if(!this._textFormatForState)
+				{
+					this._textFormatForState = {};
+				}
+				this._textFormatForState[state] = textFormat;
+			}
+			else
+			{
+				delete this._textFormatForState[state];
+			}
+			//if the context's current state is the state that we're modifying,
+			//we need to use the new value immediately.
+			if(this._stateContext && this._stateContext.currentState === state)
+			{
+				this.invalidate(INVALIDATION_FLAG_STATE);
+			}
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
@@ -1271,6 +1410,11 @@ package feathers.controls.text
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			
+			if(stylesInvalid || stateInvalid)
+			{
+				this.refreshTextFormat();
+			}
 
 			if(stylesInvalid)
 			{
@@ -1298,14 +1442,7 @@ package feathers.controls.text
 				else
 				{
 					this.textField.styleSheet = null;
-					if(!this._isEnabled && this._disabledTextFormat)
-					{
-						this.textField.defaultTextFormat = this._disabledTextFormat;
-					}
-					else if(this._textFormat)
-					{
-						this.textField.defaultTextFormat = this._textFormat;
-					}
+					this.textField.defaultTextFormat = this.currentTextFormat;
 				}
 				if(this._isHTML)
 				{
@@ -1611,6 +1748,42 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function refreshTextFormat():void
+		{
+			var textFormat:TextFormat;
+			if(this._stateContext && this._textFormatForState)
+			{
+				var currentState:String = this._stateContext.currentState;
+				if(currentState in this._textFormatForState)
+				{
+					textFormat = TextFormat(this._textFormatForState[currentState]);
+				}
+			}
+			if(!textFormat && !this._isEnabled && this._disabledTextFormat)
+			{
+				textFormat = this._disabledTextFormat;
+			}
+			if(!textFormat && this._selectedTextFormat &&
+				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+			{
+				textFormat = this._selectedTextFormat;
+			}
+			if(!textFormat)
+			{
+				//let's fall back to using Starling's embedded mini font if no
+				//text format has been specified
+				if(!this._textFormat)
+				{
+					this._textFormat = new TextFormat();
+				}
+				textFormat = this._textFormat;
+			}
+			this.currentTextFormat = textFormat;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function createTextureOnRestoreCallback(snapshot:Image):void
 		{
 			var self:TextFieldTextRenderer = this;
@@ -1817,6 +1990,14 @@ package feathers.controls.text
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			this.refreshSnapshot();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stateContext_stateChangeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }
