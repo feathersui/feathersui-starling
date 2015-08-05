@@ -11,7 +11,10 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.ILayout;
+	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
@@ -404,12 +407,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var verticalLayout:VerticalLayout;
-
-		/**
-		 * @private
-		 */
-		protected var horizontalLayout:HorizontalLayout;
+		protected var layout:ILayout;
 
 		/**
 		 * @private
@@ -429,6 +427,12 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The button group layout is either vertical or horizontal.
+		 * 
+		 * <p>If the <code>direction</code> is
+		 * <code>ButtonGroup.DIRECTION_HORIZONTAL</code> and
+		 * <code>distributeButtonSizes</code> is <code>false</code>, the buttons
+		 * may be displayed in multiple rows, if they won't fit in one row
+		 * horizontally.</p>
 		 *
 		 * <p>The following example sets the layout direction of the buttons
 		 * to line them up horizontally:</p>
@@ -1356,47 +1360,63 @@ package feathers.controls
 		{
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				if(this.horizontalLayout)
+				var verticalLayout:VerticalLayout = this.layout as VerticalLayout;
+				if(!verticalLayout)
 				{
-					this.horizontalLayout = null;
+					this.layout = verticalLayout = new VerticalLayout();
 				}
-				if(!this.verticalLayout)
-				{
-					this.verticalLayout = new VerticalLayout();
-					this.verticalLayout.useVirtualLayout = false;
-				}
-				this.verticalLayout.distributeHeights = this._distributeButtonSizes;
-				this.verticalLayout.horizontalAlign = this._horizontalAlign;
-				this.verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
-				this.verticalLayout.gap = this._gap;
-				this.verticalLayout.firstGap = this._firstGap;
-				this.verticalLayout.lastGap = this._lastGap;
-				this.verticalLayout.paddingTop = this._paddingTop;
-				this.verticalLayout.paddingRight = this._paddingRight;
-				this.verticalLayout.paddingBottom = this._paddingBottom;
-				this.verticalLayout.paddingLeft = this._paddingLeft;
+				verticalLayout.distributeHeights = true;
+				verticalLayout.horizontalAlign = this._horizontalAlign;
+				verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
+				verticalLayout.gap = this._gap;
+				verticalLayout.firstGap = this._firstGap;
+				verticalLayout.lastGap = this._lastGap;
+				verticalLayout.paddingTop = this._paddingTop;
+				verticalLayout.paddingRight = this._paddingRight;
+				verticalLayout.paddingBottom = this._paddingBottom;
+				verticalLayout.paddingLeft = this._paddingLeft;
 			}
 			else //horizontal
 			{
-				if(this.verticalLayout)
+				if(this._distributeButtonSizes)
 				{
-					this.verticalLayout = null;
+					var horizontalLayout:HorizontalLayout = this.layout as HorizontalLayout;
+					if(!horizontalLayout)
+					{
+						this.layout = horizontalLayout = new HorizontalLayout();
+					}
+					horizontalLayout.distributeWidths = this._distributeButtonSizes;
+					horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
+					horizontalLayout.verticalAlign = this._verticalAlign;
+					horizontalLayout.gap = this._gap;
+					horizontalLayout.firstGap = this._firstGap;
+					horizontalLayout.lastGap = this._lastGap;
+					horizontalLayout.paddingTop = this._paddingTop;
+					horizontalLayout.paddingRight = this._paddingRight;
+					horizontalLayout.paddingBottom = this._paddingBottom;
+					horizontalLayout.paddingLeft = this._paddingLeft;
 				}
-				if(!this.horizontalLayout)
+				else
 				{
-					this.horizontalLayout = new HorizontalLayout();
-					this.horizontalLayout.useVirtualLayout = false;
+					var flowLayout:FlowLayout = this.layout as FlowLayout;
+					if(!flowLayout)
+					{
+						this.layout = flowLayout = new FlowLayout();
+					}
+					flowLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
+					flowLayout.verticalAlign = this._verticalAlign;
+					flowLayout.gap = this._gap;
+					flowLayout.firstGap = this._firstGap;
+					flowLayout.lastGap = this._lastGap;
+					flowLayout.paddingTop = this._paddingTop;
+					flowLayout.paddingRight = this._paddingRight;
+					flowLayout.paddingBottom = this._paddingBottom;
+					flowLayout.paddingLeft = this._paddingLeft;
 				}
-				this.horizontalLayout.distributeWidths = this._distributeButtonSizes;
-				this.horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
-				this.horizontalLayout.verticalAlign = this._verticalAlign;
-				this.horizontalLayout.gap = this._gap;
-				this.horizontalLayout.firstGap = this._firstGap;
-				this.horizontalLayout.lastGap = this._lastGap;
-				this.horizontalLayout.paddingTop = this._paddingTop;
-				this.horizontalLayout.paddingRight = this._paddingRight;
-				this.horizontalLayout.paddingBottom = this._paddingBottom;
-				this.horizontalLayout.paddingLeft = this._paddingLeft;
+			}
+			if(layout is IVirtualLayout)
+			{
+				IVirtualLayout(layout).useVirtualLayout = false;
 			}
 		}
 
@@ -1683,14 +1703,7 @@ package feathers.controls
 			this._viewPortBounds.minHeight = this._minHeight;
 			this._viewPortBounds.maxWidth = this._maxWidth;
 			this._viewPortBounds.maxHeight = this._maxHeight;
-			if(this.verticalLayout)
-			{
-				this.verticalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
-			}
-			else if(this.horizontalLayout)
-			{
-				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
-			}
+			this.layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
 			//final validation to avoid juggler next frame issues
 			for each(var button:Button in this.activeButtons)
