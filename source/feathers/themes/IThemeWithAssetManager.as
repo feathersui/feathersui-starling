@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.themes
 {
+	import feathers.core.IFeathersEventDispatcher;
+
 	import starling.core.Starling;
 
 	/**
@@ -38,7 +40,7 @@ package feathers.themes
 	 * A theme that uses an AssetManager to load textures and other assets.
 	 * Dispatches <code>Event.COMPLETE</code> when the assets are loaded.
 	 */
-	public interface IThemeWithAssetManager
+	public interface IThemeWithAssetManager extends IFeathersEventDispatcher
 	{
 		/**
 		 * Indicates if the assets have been loaded and the theme has been
