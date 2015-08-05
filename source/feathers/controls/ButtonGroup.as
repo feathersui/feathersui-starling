@@ -1406,8 +1406,8 @@ package feathers.controls
 					flowLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
 					flowLayout.verticalAlign = this._verticalAlign;
 					flowLayout.gap = this._gap;
-					flowLayout.firstGap = this._firstGap;
-					flowLayout.lastGap = this._lastGap;
+					flowLayout.firstHorizontalGap = this._firstGap;
+					flowLayout.lastHorizontalGap = this._lastGap;
 					flowLayout.paddingTop = this._paddingTop;
 					flowLayout.paddingRight = this._paddingRight;
 					flowLayout.paddingBottom = this._paddingBottom;

@@ -202,64 +202,65 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _firstGap:Number = NaN;
+		protected var _firstHorizontalGap:Number = NaN;
 
 		/**
 		 * The space, in pixels, between the first and second items. If the
-		 * value of <code>firstGap</code> is <code>NaN</code>, the value of the
-		 * <code>gap</code> property will be used instead.
+		 * value of <code>firstHorizontalGap</code> is <code>NaN</code>, the
+		 * value of the <code>horizontalGap</code> property will be used
+		 * instead.
 		 *
 		 * @default NaN
 		 *
 		 * @see #gap
 		 */
-		public function get firstGap():Number
+		public function get firstHorizontalGap():Number
 		{
-			return this._firstGap;
+			return this._firstHorizontalGap;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set firstGap(value:Number):void
+		public function set firstHorizontalGap(value:Number):void
 		{
-			if(this._firstGap == value)
+			if(this._firstHorizontalGap == value)
 			{
 				return;
 			}
-			this._firstGap = value;
+			this._firstHorizontalGap = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _lastGap:Number = NaN;
+		protected var _lastHorizontalGap:Number = NaN;
 
 		/**
 		 * The space, in pixels, between the last and second to last items. If
-		 * the value of <code>lastGap</code> is <code>NaN</code>, the value of
-		 * the <code>gap</code> property will be used instead.
+		 * the value of <code>lastHorizontalGap</code> is <code>NaN</code>, the
+		 * value of the <code>horizontalGap</code> property will be used instead.
 		 *
 		 * @default NaN
 		 * 
 		 * @see #gap
 		 */
-		public function get lastGap():Number
+		public function get lastHorizontalGap():Number
 		{
-			return this._lastGap;
+			return this._lastHorizontalGap;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set lastGap(value:Number):void
+		public function set lastHorizontalGap(value:Number):void
 		{
-			if(this._lastGap == value)
+			if(this._lastHorizontalGap == value)
 			{
 				return;
 			}
-			this._lastGap = value;
+			this._lastHorizontalGap = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -664,8 +665,8 @@ package feathers.layout
 			var positionY:Number = boundsY + this._paddingTop;
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
-			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
-			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
+			var hasLastHorizontalGap:Boolean = this._lastHorizontalGap === this._lastHorizontalGap; //!isNaN
 			var secondToLastIndex:int = itemCount - 2;
 			do
 			{
@@ -686,13 +687,13 @@ package feathers.layout
 				{
 					var item:DisplayObject = items[i];
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstGap && i === 0)
+					if(hasFirstHorizontalGap && i === 0)
 					{
-						horizontalGap = this._firstGap;
+						horizontalGap = this._firstHorizontalGap;
 					}
-					else if(hasLastGap && i > 0 && i == secondToLastIndex)
+					else if(hasLastHorizontalGap && i > 0 && i == secondToLastIndex)
 					{
-						horizontalGap = this._lastGap;
+						horizontalGap = this._lastHorizontalGap;
 					}
 	
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
@@ -782,13 +783,13 @@ package feathers.layout
 						//subtracted from the x position to get the row width.
 						var previousIndex:int = i - 1;
 						horizontalGap = this._horizontalGap;
-						if(hasFirstGap && previousIndex === 0)
+						if(hasFirstHorizontalGap && previousIndex === 0)
 						{
-							horizontalGap = this._firstGap;
+							horizontalGap = this._firstHorizontalGap;
 						}
-						else if(hasLastGap && previousIndex > 0 && previousIndex == secondToLastIndex)
+						else if(hasLastHorizontalGap && previousIndex > 0 && previousIndex == secondToLastIndex)
 						{
-							horizontalGap = this._lastGap;
+							horizontalGap = this._lastHorizontalGap;
 						}
 						//we've reached the end of the row, so go to next
 						break;
@@ -983,8 +984,8 @@ package feathers.layout
 			var positionY:Number = boundsY + this._paddingTop;
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
-			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
-			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
+			var hasLastHorizontalGap:Boolean = this._lastHorizontalGap === this._lastHorizontalGap; //!isNaN
 			var secondToLastIndex:int = itemCount - 2;
 			do
 			{
@@ -1002,13 +1003,13 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstGap && i === 0)
+					if(hasFirstHorizontalGap && i === 0)
 					{
-						horizontalGap = this._firstGap;
+						horizontalGap = this._firstHorizontalGap;
 					}
-					else if(hasLastGap && i > 0 && i == secondToLastIndex)
+					else if(hasLastHorizontalGap && i > 0 && i == secondToLastIndex)
 					{
-						horizontalGap = this._lastGap;
+						horizontalGap = this._lastHorizontalGap;
 					}
 					if(this._hasVariableItemDimensions)
 					{
@@ -1232,8 +1233,8 @@ package feathers.layout
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
 			var maxPositionY:Number = scrollY + height;
-			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
-			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
+			var hasLastHorizontalGap:Boolean = this._lastHorizontalGap === this._lastHorizontalGap; //!isNaN
 			var secondToLastIndex:int = itemCount - 2;
 			do
 			{
@@ -1256,13 +1257,13 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstGap && i === 0)
+					if(hasFirstHorizontalGap && i === 0)
 					{
-						horizontalGap = this._firstGap;
+						horizontalGap = this._firstHorizontalGap;
 					}
-					else if(hasLastGap && i > 0 && i == secondToLastIndex)
+					else if(hasLastHorizontalGap && i > 0 && i == secondToLastIndex)
 					{
-						horizontalGap = this._lastGap;
+						horizontalGap = this._lastHorizontalGap;
 					}
 					if(this._hasVariableItemDimensions)
 					{
