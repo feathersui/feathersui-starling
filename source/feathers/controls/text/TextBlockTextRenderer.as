@@ -381,6 +381,7 @@ package feathers.controls.text
 		 *
 		 * @see #setElementFormatForState()
 		 * @see #disabledElementFormat
+		 * @see #selectedElementFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html flash.text.engine.ElementFormat
 		 */
 		public function get elementFormat():ElementFormat
@@ -420,6 +421,7 @@ package feathers.controls.text
 		 * @default null
 		 *
 		 * @see #elementFormat
+		 * @see #selectedElementFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html flash.text.engine.ElementFormat
 		 */
 		public function get disabledElementFormat():ElementFormat
@@ -448,7 +450,7 @@ package feathers.controls.text
 		/**
 		 * The font and styles used to draw the text when the
 		 * <code>stateContext</code> implements the <code>IToggle</code>
-		 * interface and it is selected. This property will be ignored if the
+		 * interface, and it is selected. This property will be ignored if the
 		 * content is not a <code>TextElement</code> instance.
 		 *
 		 * <p>In the following example, the selected element format is changed:</p>
@@ -461,6 +463,7 @@ package feathers.controls.text
 		 * @see #stateContext
 		 * @see feathers.core.IToggle
 		 * @see #elementFormat
+		 * @see #disabledElementFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html flash.text.engine.ElementFormat
 		 */
 		public function get selectedElementFormat():ElementFormat
