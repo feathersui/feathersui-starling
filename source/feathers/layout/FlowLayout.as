@@ -878,6 +878,11 @@ package feathers.layout
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._rowItems.length = 0;
+			
+			if(!supportsMultipleRows)
+			{
+				availableRowWidth = totalRowWidth;
+			}
 
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
 			//the available height is the height of the viewport. if the explicit
@@ -1057,6 +1062,11 @@ package feathers.layout
 				}
 			}
 			while(i < itemCount)
+			
+			if(!supportsMultipleRows)
+			{
+				availableRowWidth = positionX - horizontalGap + this._paddingRight - boundsX;
+			}
 			
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
 			//the available height is the height of the viewport. if the explicit
