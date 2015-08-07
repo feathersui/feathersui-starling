@@ -731,7 +731,7 @@ package feathers.controls
 					IValidating(this._icon).validate();
 				}
 				this._icon.x = this._paddingLeft;
-				this._icon.y = this._topViewPortOffset + (this._viewPort.height - this._icon.height) / 2;
+				this._icon.y = this._topViewPortOffset + (this._viewPort.visibleHeight - this._icon.height) / 2;
 			}
 		}
 
