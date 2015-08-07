@@ -168,6 +168,10 @@ package feathers.controls
 		 */
 		override public function set dataProvider(value:ListCollection):void
 		{
+			if(this._dataProvider == value)
+			{
+				return;
+			}
 			super.dataProvider = value;
 			if(!this._dataProvider || this._dataProvider.length == 0)
 			{
