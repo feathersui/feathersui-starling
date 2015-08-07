@@ -1494,7 +1494,7 @@ package feathers.controls.text
 			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
 			if(needsWidth)
 			{
-				newWidth = this._measurementTextLineContainer.width;
+				newWidth = Math.ceil(this._measurementTextLineContainer.width);
 				if(newWidth > this._maxWidth)
 				{
 					newWidth = this._maxWidth;
@@ -1502,7 +1502,7 @@ package feathers.controls.text
 			}
 			if(needsHeight)
 			{
-				newHeight = this._measurementTextLineContainer.height;
+				newHeight = Math.ceil(this._measurementTextLineContainer.height);
 				if(newHeight <= 0 && this._elementFormat)
 				{
 					newHeight = this._elementFormat.fontSize;
@@ -1599,8 +1599,8 @@ package feathers.controls.text
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-				textureRoot.scale != scaleFactor ||
-				this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+					(textureRoot && (textureRoot.scale != scaleFactor ||
+					this._snapshotWidth != textureRoot.nativeWidth || this._snapshotHeight != textureRoot.nativeHeight));
 				this._snapshotVisibleWidth = rectangleSnapshotWidth;
 				this._snapshotVisibleHeight = rectangleSnapshotHeight;
 			}
