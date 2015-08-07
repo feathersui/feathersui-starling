@@ -256,6 +256,7 @@ package feathers.controls.supportClasses
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
@@ -265,7 +266,7 @@ package feathers.controls.supportClasses
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
-				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 			}
 			if(this._layout is IVariableVirtualLayout)
 			{
@@ -1217,6 +1218,20 @@ package feathers.controls.supportClasses
 			}
 			renderer.data = null;
 			renderer.data = item;
+		}
+
+		private function dataProvider_updateAllHandler(event:Event):void
+		{
+			for(var item:Object in this._rendererMap)
+			{
+				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+				if(!renderer)
+				{
+					return;
+				}
+				renderer.data = null;
+				renderer.data = item;
+			}
 		}
 
 		private function layout_changeHandler(event:Event):void

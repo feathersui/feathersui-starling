@@ -358,6 +358,7 @@ package feathers.controls
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			this._dataProvider = value;
@@ -367,6 +368,7 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			if(!this._dataProvider || this._dataProvider.length == 0)
@@ -2079,6 +2081,14 @@ package feathers.controls
 			//no need to dispatch a change event. the index and the item are the
 			//same. the item's properties have changed, but that doesn't require
 			//a change event.
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_updateAllHandler(event:Event):void
+		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 	}
