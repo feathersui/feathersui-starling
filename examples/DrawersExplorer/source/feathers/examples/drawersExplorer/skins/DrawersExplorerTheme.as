@@ -33,7 +33,8 @@ package feathers.examples.drawersExplorer.skins
 			
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.padding = 20 * this.scale;
+			layout.padding = this.gutterSize;
+			layout.gap = this.gutterSize;
 			view.layout = layout;
 		}
 

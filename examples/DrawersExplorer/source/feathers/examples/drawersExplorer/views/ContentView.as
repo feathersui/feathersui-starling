@@ -1,10 +1,16 @@
 package feathers.examples.drawersExplorer.views
 {
 	import feathers.controls.Button;
+	import feathers.controls.Check;
+	import feathers.controls.Drawers;
+	import feathers.controls.List;
 	import feathers.controls.Panel;
+	import feathers.controls.PickerList;
 	import feathers.controls.ScrollContainer;
+	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
@@ -17,6 +23,7 @@ package feathers.examples.drawersExplorer.views
 		public static const TOGGLE_RIGHT_DRAWER:String = "toggleRightDrawer";
 		public static const TOGGLE_BOTTOM_DRAWER:String = "toggleBottomDrawer";
 		public static const TOGGLE_LEFT_DRAWER:String = "toggleLeftDrawer";
+		public static const OPEN_MODE_CHANGE:String = "openModeChange";
 
 		public function ContentView()
 		{
@@ -27,10 +34,19 @@ package feathers.examples.drawersExplorer.views
 		private var _rightButton:Button;
 		private var _bottomButton:Button;
 		private var _leftButton:Button;
+		
+		private var _openModePicker:PickerList;
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ContentView.globalStyleProvider;
+		}
+		
+		private var _openMode:String = Drawers.OPEN_MODE_BELOW;
+		
+		public function get openMode():String
+		{
+			return this._openMode;
 		}
 
 		override protected function initialize():void
@@ -81,6 +97,26 @@ package feathers.examples.drawersExplorer.views
 			var horizontalOffset:Number = this._rightButton.width;
 			rightLayoutData.horizontalCenter = horizontalOffset;
 			leftLayoutData.horizontalCenter = -horizontalOffset;
+			
+			var optionsPanel:Panel = new Panel();
+			optionsPanel.headerProperties.title = "Options";
+			optionsPanel.layout = new VerticalLayout();
+			this.addChild(optionsPanel);
+			
+			this._openModePicker = new PickerList();
+			this._openModePicker.dataProvider = new ListCollection(
+			[
+				{ label: "Below", data: Drawers.OPEN_MODE_BELOW },
+				{ label: "Above", data: Drawers.OPEN_MODE_ABOVE },
+			]);
+			this._openModePicker.addEventListener(Event.CHANGE, openModePicker_changeHandler);
+
+			var optionsList:List = new List();
+			optionsList.dataProvider = new ListCollection(
+			[
+				{ label: "Open Mode", accessory: this._openModePicker },
+			]);
+			optionsPanel.addChild(optionsList);
 		}
 
 		private function topButton_triggeredHandler(event:Event):void
@@ -101,6 +137,12 @@ package feathers.examples.drawersExplorer.views
 		private function leftButton_triggeredHandler(event:Event):void
 		{
 			this.dispatchEventWith(TOGGLE_LEFT_DRAWER);
+		}
+		
+		private function openModePicker_changeHandler(event:Event):void
+		{
+			this._openMode = this._openModePicker.selectedItem.data as String;
+			this.dispatchEventWith(OPEN_MODE_CHANGE);
 		}
 	}
 }
