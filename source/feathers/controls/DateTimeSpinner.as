@@ -70,6 +70,11 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_EDITING_MODE:String = "editingMode";
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PENDING_SCROLL:String = "pendingScroll";
+
+		/**
 		 * Constructor.
 		 */
 		public function DateTimeSpinner()
@@ -325,6 +330,76 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scrollDuration:Number = 0.5;
+
+		/**
+		 * The duration, in seconds, of the animation when the
+		 * <code>scrollToDate()</code> function is called, or when an invalid
+		 * date is selected.
+		 *
+		 * <p>In the following example, the duration of the animation that
+		 * changes the page when thrown is set to 250 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.scrollDuration = 0.25;</listing>
+		 *
+		 * @default 0.5
+		 * 
+		 * @see #scrollToDate()
+		 */
+		public function get scrollDuration():Number
+		{
+			return this._scrollDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scrollDuration(value:Number):void
+		{
+			this._scrollDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var pendingScrollToDate:Date;
+
+		/**
+		 * @private
+		 */
+		protected var pendingScrollDuration:Number;
+
+		/**
+		 * After the next validation, animates the scroll positions of the lists
+		 * to a specific date. If the <code>animationDuration</code> argument is
+		 * <code>NaN</code> (the default value), the value of the
+		 * <code>scrollDuration</code> property is used instead. The duration is
+		 * measured in seconds.
+		 *
+		 * <p>In the following example, we scroll to a specific date with
+		 * animation of 1.5 seconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.scrollToDate( new Date(2016, 0, 1), 1.5 );</listing>
+		 * 
+		 * @see #scrollDuration
+		 */
+		public function scrollToDate(date:Date, animationDuration:Number = NaN):void
+		{
+			if(this.pendingScrollToDate && this.pendingScrollToDate.time === date.time &&
+				this.pendingScrollDuration === animationDuration)
+			{
+				return;
+			}
+			this.pendingScrollToDate = date;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this.listGroup)
@@ -346,6 +421,7 @@ package feathers.controls
 			var editingModeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_EDITING_MODE);
 			var localeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LOCALE);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
 			
 			if(localeInvalid || editingModeInvalid)
 			{
@@ -364,6 +440,11 @@ package feathers.controls
 			this.listGroup.width = this.actualWidth;
 			this.listGroup.height = this.actualHeight;
 			this.listGroup.validate();
+
+			if(pendingScrollInvalid)
+			{
+				this.handlePendingScroll();
+			}
 		}
 
 		/**
@@ -763,6 +844,75 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function handlePendingScroll():void
+		{
+			if(!this.pendingScrollToDate)
+			{
+				return;
+			}
+			var duration:Number = this.pendingScrollDuration;
+			if(duration !== duration) //isNaN
+			{
+				duration = this._scrollDuration;
+			}
+			if(this.yearsList)
+			{
+				var year:int = this.pendingScrollToDate.fullYear;
+				if(this.yearsList.selectedItem !== year)
+				{
+					var yearRange:IntegerRange = IntegerRange(this.yearsList.dataProvider.data);
+					this.yearsList.scrollToDisplayIndex(year - yearRange.minimum, duration);
+				}
+			}
+			if(this.monthsList)
+			{
+				var month:int = this.pendingScrollToDate.month;
+				if(this.monthsList.selectedItem !== month)
+				{
+					this.monthsList.scrollToDisplayIndex(month, duration);
+				}
+			}
+			if(this.datesList)
+			{
+				var date:int = this.pendingScrollToDate.date;
+				if(this.datesList.selectedItem !== date)
+				{
+					this.datesList.scrollToDisplayIndex(date - 1, duration);
+				}
+			}
+			if(this.hoursList)
+			{
+				var hours:int = this.pendingScrollToDate.hours;
+				if(this._ampm)
+				{
+					hours %= 12;
+				}
+				if(this.hoursList.selectedItem !== hours)
+				{
+					this.hoursList.scrollToDisplayIndex(hours, duration);
+				}
+			}
+			if(this.minutesList)
+			{
+				var minutes:int = this.pendingScrollToDate.minutes;
+				if(this.minutesList.selectedItem !== minutes)
+				{
+					this.minutesList.scrollToDisplayIndex(minutes, duration);
+				}
+			}
+			if(this.ampmList)
+			{
+				var index:int = (this.pendingScrollToDate.hours < 12) ? 0 : 1;
+				if(this.ampmList.selectedIndex !== index)
+				{
+					this.ampmList.scrollToDisplayIndex(index, duration);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function minutesListItemRendererFactory():DefaultListItemRenderer
 		{
 			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -921,66 +1071,20 @@ package feathers.controls
 			var currentTime:Number = this._value.time;
 			var minimumTime:Number = this._minimum.time;
 			var maximumTime:Number = this._maximum.time;
+			var needsToScroll:Boolean = false;
 			if(currentTime < minimumTime)
 			{
+				needsToScroll = true;
 				this._value.setTime(minimumTime);
 			}
 			else if(currentTime > maximumTime)
 			{
+				needsToScroll = true;
 				this._value.setTime(maximumTime);
 			}
-			if(this.yearsList)
+			if(needsToScroll)
 			{
-				var year:int = this._value.fullYear;
-				if(this.yearsList.selectedItem !== year)
-				{
-					var yearRange:IntegerRange = IntegerRange(this.yearsList.dataProvider.data);
-					this.yearsList.scrollToDisplayIndex(year - yearRange.minimum, this.yearsList.pageThrowDuration);
-				}
-			}
-			if(this.monthsList)
-			{
-				var month:int = this._value.month;
-				if(this.monthsList.selectedItem !== month)
-				{
-					this.monthsList.scrollToDisplayIndex(month, this.monthsList.pageThrowDuration);
-				}
-			}
-			if(this.datesList)
-			{
-				var date:int = this._value.date;
-				if(this.datesList.selectedItem !== date)
-				{
-					this.datesList.scrollToDisplayIndex(date - 1, this.datesList.pageThrowDuration);
-				}
-			}
-			if(this.hoursList)
-			{
-				var hours:int = this._value.hours;
-				if(this._ampm)
-				{
-					hours %= 12;
-				}
-				if(this.hoursList.selectedItem !== hours)
-				{
-					this.hoursList.scrollToDisplayIndex(hours, this.hoursList.pageThrowDuration);
-				}
-			}
-			if(this.minutesList)
-			{
-				var minutes:int = this._value.minutes;
-				if(this.minutesList.selectedItem !== minutes)
-				{
-					this.minutesList.scrollToDisplayIndex(minutes, this.minutesList.pageThrowDuration);
-				}
-			}
-			if(this.ampmList)
-			{
-				var index:int = (this._value.hours < 12) ? 0 : 1;
-				if(this.ampmList.selectedIndex !== index)
-				{
-					this.ampmList.scrollToDisplayIndex(index, this.minutesList.pageThrowDuration);
-				}
+				this.scrollToDate(this._value);
 			}
 		}
 
