@@ -7,62 +7,21 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.GroupedList;
-	import feathers.core.IFeathersControl;
-
+	[ExcludeClass]
 	/**
+	 * DEPRECATED: Replaced by separate <code>IGroupedListHeaderRenderer</code>
+	 * and <code>IGroupedListFooterRenderer</code> interfaces.
+	 *
+	 * <p><strong>DEPRECATION WARNING:</strong> This interface is deprecated
+	 * starting with Feathers 2.3. It will be removed in a future version of
+	 * Feathers according to the standard
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+	 * 
 	 * Interface to implement a renderer for a grouped list header or footer.
+	 * 
+	 * @see feathers.controls.GroupedList
 	 */
-	public interface IGroupedListHeaderOrFooterRenderer extends IFeathersControl
+	public interface IGroupedListHeaderOrFooterRenderer extends IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{
-		/**
-		 * Data for a header or footer from the grouped list's data provider.
-		 * The data may change if this renderer is reused for a new header or
-		 * footer because it's no longer needed for the original data.
-		 *
-		 * <p>This property is set by the list, and should not be set manually.</p>
-		 */
-		function get data():Object;
-
-		/**
-		 * @private
-		 */
-		function set data(value:Object):void;
-
-		/**
-		 * The index of the group within the data provider of the grouped list.
-		 *
-		 * <p>This property is set by the list, and should not be set manually.</p>
-		 */
-		function get groupIndex():int;
-
-		/**
-		 * @private
-		 */
-		function set groupIndex(value:int):void;
-
-		/**
-		 * The index of the item within the layout.
-		 *
-		 * <p>This property is set by the list, and should not be set manually.</p>
-		 */
-		function get layoutIndex():int;
-
-		/**
-		 * @private
-		 */
-		function set layoutIndex(value:int):void;
-
-		/**
-		 * The grouped list that contains this header or footer renderer.
-		 *
-		 * <p>This property is set by the list, and should not be set manually.</p>
-		 */
-		function get owner():GroupedList;
-
-		/**
-		 * @private
-		 */
-		function set owner(value:GroupedList):void;
 	}
 }

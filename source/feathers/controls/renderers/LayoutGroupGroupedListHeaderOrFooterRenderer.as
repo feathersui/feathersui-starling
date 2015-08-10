@@ -31,7 +31,7 @@ package feathers.controls.renderers
 	 *
 	 * @see feathers.controls.GroupedList
 	 */
-	public class LayoutGroupGroupedListHeaderOrFooterRenderer extends LayoutGroup implements IGroupedListHeaderOrFooterRenderer
+	public class LayoutGroupGroupedListHeaderOrFooterRenderer extends LayoutGroup implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>LayoutGroupGroupedListHeaderOrFooterRenderer</code>

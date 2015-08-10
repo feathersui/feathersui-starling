@@ -24,7 +24,7 @@ package feathers.controls.renderers
 	 *
 	 * @see feathers.controls.GroupedList
 	 */
-	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderOrFooterRenderer
+	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{
 		/**
 		 * The content will be aligned horizontally to the left edge of the renderer.
