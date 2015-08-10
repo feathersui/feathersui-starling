@@ -52,6 +52,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static const HELPER_DATE:Date = new Date();
+
+		/**
+		 * @private
+		 */
+		private static const DAYS_IN_MONTH:Vector.<int> = new <int>[];
+
+		/**
+		 * @private
+		 */
 		protected static const INVALIDATION_FLAG_LOCALE:String = "locale";
 
 		/**
@@ -60,11 +70,23 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_EDITING_MODE:String = "editingMode";
 
 		/**
-		 * @private
+		 * Constructor.
 		 */
 		public function DateTimeSpinner()
 		{
 			super();
+			if(DAYS_IN_MONTH.length === 0)
+			{
+				HELPER_DATE.setFullYear(DEFAULT_MAXIMUM_YEAR);
+				for(var i:int = 0; i < 12; i++)
+				{
+					//subtract one date from the 1st of next month to figure out
+					//the last date of the current month
+					HELPER_DATE.setMonth(i + 1, -1);
+					DAYS_IN_MONTH[i] = HELPER_DATE.date + 1;
+				}
+				DAYS_IN_MONTH.fixed = true;
+			}
 		}
 
 		protected var monthsList:SpinnerList;
@@ -665,7 +687,7 @@ package feathers.controls
 			{
 				this._maxMonth = 11;
 			}
-			if(currentYear === this._minYear && currentMonth === this._minMonth)
+			if(currentYear === this._minYear && currentMonth === this._minimum.month)
 			{
 				this._minDate = this._minimum.date;
 			}
@@ -673,13 +695,23 @@ package feathers.controls
 			{
 				this._minDate = 1;
 			}
-			if(currentYear === this._maxYear && currentMonth === this._maxMonth)
+			if(currentYear === this._maxYear && currentMonth === this._maximum.month)
 			{
 				this._maxDate = this._maximum.date;
 			}
 			else
 			{
-				this._maxDate = 31;
+				if(currentMonth === 1) //february has a variable number of days
+				{
+					//subtract one date from march 1st to figure out the last
+					//date of february for the specified year
+					HELPER_DATE.setFullYear(currentYear, currentMonth + 1, -1);
+					this._maxDate = HELPER_DATE.date + 1;
+				}
+				else //all other months have been pre-calculated
+				{
+					this._maxDate = DAYS_IN_MONTH[currentMonth];
+				}
 			}
 			this._minHour = this._minimum.hours;
 			this._maxHour = this._maximum.hours;
@@ -791,20 +823,7 @@ package feathers.controls
 		 */
 		protected function isMonthEnabled(month:int):Boolean
 		{
-			var currentYear:int = this._value.fullYear;
-			if(currentYear === this._minYear)
-			{
-				if(currentYear === this._maxYear)
-				{
-					return month >= this._minMonth && month <= this._maxMonth;
-				}
-				return month >= this._minMonth;
-			}
-			if(currentYear === this._maxYear)
-			{
-				return month <= this._maxMonth;
-			}
-			return true;
+			return month >= this._minMonth && month <= this._maxMonth;
 		}
 
 		/**
@@ -820,21 +839,7 @@ package feathers.controls
 		 */
 		protected function isDateEnabled(date:int):Boolean
 		{
-			var currentYear:int = this._value.fullYear;
-			var currentMonth:int = this._value.month;
-			if(currentYear === this._minYear && currentMonth === this._minMonth)
-			{
-				if(currentYear === this._maxYear && currentMonth === this._maxMonth)
-				{
-					return date >= this._minDate && date <= this._maxDate;
-				}
-				return date >= this._minDate;
-			}
-			if(currentYear === this._maxYear && currentMonth === this._maxMonth)
-			{
-				return date <= this._maxDate;
-			}
-			return true;
+			return date >= this._minDate && date <= this._maxDate;
 		}
 
 		/**
