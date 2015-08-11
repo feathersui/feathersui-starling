@@ -59,7 +59,7 @@ package feathers.tests
 			//the button.
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertTrue("TEvent.TRIGGERED was not dispatched", hasTriggered);
+			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
 		}
 
 		[Test]

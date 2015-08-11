@@ -2,12 +2,14 @@ package
 {
 	import feathers.tests.BitmapFontTextEditorFocusTests;
 	import feathers.tests.ButtonTests;
+	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListTests;
+	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerTests;
 	import feathers.tests.ProgressBarTests;
@@ -25,6 +27,7 @@ package
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
+	import feathers.tests.InvalidateTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -76,6 +79,12 @@ package
 			this._flexunit.addEventListener(FlexUnitCore.TESTS_COMPLETE, flexunit_testsCompleteHandler);
 			this._flexunit.run(
 			[
+				//general component tests
+				InvalidateTests,
+				MinAndMaxDimensionsTests,
+				ComponentLifecycleTests,
+				
+				//individual component tests
 				ButtonTests,
 				GroupedListTests,
 				LayoutGroupTests,
