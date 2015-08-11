@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
@@ -51,7 +52,7 @@ package feathers.controls
 	 * @see ../../../help/toggle-switch.html How to use the Feathers ToggleSwitch component
 	 * @see feathers.controls.Check
 	 */
-	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject
+	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -1816,6 +1817,18 @@ package feathers.controls
 				this._thumbProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.onTextRenderer)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.onTextRenderer.y + this.onTextRenderer.baseline);
 		}
 
 		/**

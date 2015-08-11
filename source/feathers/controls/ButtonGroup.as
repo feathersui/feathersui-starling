@@ -1285,6 +1285,19 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.activeButtons || this.activeButtons.length === 0)
+			{
+				return this.scaledActualHeight;
+			}
+			var firstButton:Button = this.activeButtons[0];
+			return this.scaleY * (firstButton.y + firstButton.baseline);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void

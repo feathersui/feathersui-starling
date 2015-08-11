@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.INativeFocusOwner;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -69,7 +70,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/numeric-stepper.html How to use the Feathers NumericStepper component
 	 */
-	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner
+	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -1279,6 +1280,18 @@ package feathers.controls
 				this._textInputProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.textInput)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.textInput.y + this.textInput.baseline);
 		}
 
 		/**

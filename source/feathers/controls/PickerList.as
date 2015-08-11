@@ -1062,6 +1062,18 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.button)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.button.y + this.button.baseline);
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _isOpenListPending:Boolean = false;

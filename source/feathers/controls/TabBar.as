@@ -1370,6 +1370,19 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.activeTabs || this.activeTabs.length === 0)
+			{
+				return this.scaledActualHeight;
+			}
+			var firstTab:ToggleButton = this.activeTabs[0];
+			return this.scaleY * (firstTab.y + firstTab.baseline);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void

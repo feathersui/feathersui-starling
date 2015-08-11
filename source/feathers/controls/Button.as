@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -129,7 +130,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/button.html How to use the Feathers Button component
 	 */
-	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext
+	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -2148,6 +2149,18 @@ package feathers.controls
 		public function set scaleWhenHovering(value:Number):void
 		{
 			this._scaleWhenHovering = value;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.labelTextRenderer)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.labelTextRenderer.y + this.labelTextRenderer.baseline);
 		}
 
 		/**
