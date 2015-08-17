@@ -56,8 +56,8 @@ package feathers.controls
 	 * Select a value between a minimum and a maximum by using increment and
 	 * decrement buttons or typing in a value in a text input.
 	 *
-	 * <p>The following example sets the stepper's values and listens for when
-	 * when the value changes:</p>
+	 * <p>The following example sets the stepper's range and listens for when
+	 * the value changes:</p>
 	 *
 	 * <listing version="3.0">
 	 * var stepper:NumericStepper = new NumericStepper();
