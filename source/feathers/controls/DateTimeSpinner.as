@@ -12,6 +12,8 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	import feathers.utils.math.clamp;
+	import feathers.utils.math.roundDownToNearest;
+	import feathers.utils.math.roundUpToNearest;
 
 	import flash.globalization.DateTimeFormatter;
 	import flash.globalization.DateTimeNameStyle;
@@ -20,19 +22,68 @@ package feathers.controls
 
 	import starling.events.Event;
 
+	/**
+	 * Dispatched when the spinner's value changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * A set of <code>SpinnerList</code> components that allow you to select the
+	 * date, the time, or the date and time.
+	 *
+	 * <p>The following example sets the date spinner's range and listens for
+	 * when the value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var spinner:DateTimeSpinner = new DateTimeSpinner();
+	 * spinner.editingMode = DateTimeSpinner.EDITING_MODE_DATE;
+	 * spinner.minimum = new Date(1970, 0, 1);
+	 * spinner.maximum = new Date(2050, 11, 31);
+	 * spinner.value = new Date();
+	 * spinner.addEventListener( Event.CHANGE, spinner_changeHandler );
+	 * this.addChild( spinner );</listing>
+	 *
+	 * @see ../../../help/date-time-spinner.html How to use the Feathers DateTimeSpinner component
+	 */
 	public class DateTimeSpinner extends FeathersControl
 	{
 		/**
+		 * The <code>DateTimeSpinner</code> will allow both the date and the
+		 * time to be edited.
+		 * 
 		 * @see #editingMode
 		 */
 		public static const EDITING_MODE_DATE_AND_TIME:String = "dateAndTime";
 
 		/**
+		 * The <code>DateTimeSpinner</code> will allow only the time to be
+		 * edited.
+		 * 
 		 * @see #editingMode
 		 */
 		public static const EDITING_MODE_TIME:String = "time";
 
 		/**
+		 * The <code>DateTimeSpinner</code> will allow only the date to be
+		 * edited.
+		 * 
 		 * @see #editingMode
 		 */
 		public static const EDITING_MODE_DATE:String = "date";
@@ -41,16 +92,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const MS_PER_DAY:int = 86400000;
-
-		/**
-		 * @private
-		 */
-		private static const DEFAULT_MINIMUM_YEAR:int = 1601;
-
-		/**
-		 * @private
-		 */
-		private static const DEFAULT_MAXIMUM_YEAR:int = 9999;
 
 		/**
 		 * @private
@@ -130,7 +171,7 @@ package feathers.controls
 			super();
 			if(DAYS_IN_MONTH.length === 0)
 			{
-				HELPER_DATE.setFullYear(DEFAULT_MAXIMUM_YEAR);
+				HELPER_DATE.setFullYear(2015); //this is pretty arbitrary
 				for(var i:int = MIN_MONTH_VALUE; i <= MAX_MONTH_VALUE; i++)
 				{
 					//subtract one date from the 1st of next month to figure out
@@ -142,14 +183,44 @@ package feathers.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected var monthsList:SpinnerList;
+
+		/**
+		 * @private
+		 */
 		protected var datesList:SpinnerList;
+
+		/**
+		 * @private
+		 */
 		protected var yearsList:SpinnerList;
-		
+
+		/**
+		 * @private
+		 */
 		protected var dateAndTimeDatesList:SpinnerList;
+
+		/**
+		 * @private
+		 */
 		protected var hoursList:SpinnerList;
+
+		/**
+		 * @private
+		 */
 		protected var minutesList:SpinnerList;
+
+		/**
+		 * @private
+		 */
 		protected var ampmList:SpinnerList;
+		
+		/**
+		 * @private
+		 */
 		protected var listGroup:LayoutGroup;
 
 		/**
@@ -157,6 +228,15 @@ package feathers.controls
 		 */
 		protected var _locale:String = LocaleID.DEFAULT;
 
+		/**
+		 * The locale used to display the date. Supports values defined by
+		 * Unicode Technical Standard #35, such as <code>"en_US"</code>,
+		 * <code>"fr_FR"</code> or <code>"ru_RU"</code>.
+		 * 
+		 * @default flash.globalization.LocaleID.DEFAULT
+		 * 
+		 * @see http://unicode.org/reports/tr35/ Unicode Technical Standard #35
+		 */
 		public function get locale():String
 		{
 			return this._locale;
@@ -181,6 +261,22 @@ package feathers.controls
 		 */
 		protected var _value:Date;
 
+		/**
+		 * The value of the date time spinner, between the minimum and maximum.
+		 *
+		 * <p>In the following example, the value is changed to a date:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.minimum = new Date(1970, 0, 1);
+		 * stepper.maximum = new Date(2050, 11, 31);
+		 * stepper.value = new Date(1995, 2, 7);</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #minimum
+		 * @see #maximum
+		 * @see #event:change
+		 */
 		public function get value():Date
 		{
 			return this._value;
@@ -205,6 +301,17 @@ package feathers.controls
 		 */
 		protected var _minimum:Date;
 
+		/**
+		 * The date time spinner's value will not go lower than the minimum.
+		 *
+		 * <p>In the following example, the minimum is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.minimum = new Date(1970, 0, 1);</listing>
+		 *
+		 * @see #value
+		 * @see #maximum
+		 */
 		public function get minimum():Date
 		{
 			return this._minimum;
@@ -228,6 +335,17 @@ package feathers.controls
 		 */
 		protected var _maximum:Date;
 
+		/**
+		 * The date time spinner's value will not go higher than the maximum.
+		 *
+		 * <p>In the following example, the maximum is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.maximum = new Date(2050, 11, 31);</listing>
+		 *
+		 * @see #value
+		 * @see #minimum
+		 */
 		public function get maximum():Date
 		{
 			return this._maximum;
@@ -261,6 +379,10 @@ package feathers.controls
 		 */
 		public function set minuteStep(value:int):void
 		{
+			if(60 % value !== 0)
+			{
+				throw new ArgumentError("minuteStep must evenly divide into 60.");
+			}
 			if(this._minuteStep == value)
 			{
 				return;
@@ -275,6 +397,9 @@ package feathers.controls
 		protected var _editingMode:String = EDITING_MODE_DATE_AND_TIME;
 
 		/**
+		 * Determines which parts of the <code>Date</code> value may be edited.
+		 * 
+		 * @default DateTimeSpinner.EDITING_MODE_DATE_AND_TIME
 		 * 
 		 * @see #EDITING_MODE_DATE_AND_TIME
 		 * @see #EDITING_MODE_DATE
@@ -332,6 +457,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _lastAmpmValue:int = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _listMinYear:int;
+
+		/**
+		 * @private
+		 */
+		protected var _listMaxYear:int;
 
 		/**
 		 * @private
@@ -533,6 +668,7 @@ package feathers.controls
 			if(localeInvalid || editingModeInvalid || dataInvalid)
 			{
 				this.refreshLists();
+				this.useDefaultsIfNeeded();
 				this.refreshValidRanges();
 				this.refreshSelection();
 			}
@@ -743,31 +879,21 @@ package feathers.controls
 			
 			if(this._editingMode === EDITING_MODE_DATE)
 			{
-				var listMinYear:int = this._minYear;
-				var listMaxYear:int = this._maxYear;
-				if(listMinYear > DEFAULT_MINIMUM_YEAR)
-				{
-					listMinYear = DEFAULT_MINIMUM_YEAR;
-				}
-				if(listMaxYear < DEFAULT_MAXIMUM_YEAR)
-				{
-					listMaxYear = DEFAULT_MAXIMUM_YEAR;
-				}
 				var yearsCollection:ListCollection = this.yearsList.dataProvider;
 				if(yearsCollection)
 				{
 					var yearRange:IntegerRange = IntegerRange(yearsCollection.data);
-					if(yearRange.minimum !== listMinYear || yearRange.minimum !== listMinYear)
+					if(yearRange.minimum !== this._listMinYear || yearRange.minimum !== this._listMinYear)
 					{
-						yearRange.minimum = listMinYear;
-						yearRange.maximum = listMinYear;
+						yearRange.minimum = this._listMinYear;
+						yearRange.maximum = this._listMinYear;
 						yearsCollection.data = null;
 						yearsCollection.data = yearRange;
 					}
 				}
 				else
 				{
-					yearRange = new IntegerRange(listMinYear, listMaxYear, 1);
+					yearRange = new IntegerRange(this._listMinYear, this._listMaxYear, 1);
 					yearsCollection = new ListCollection(yearRange);
 					yearsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 					this.yearsList.dataProvider = yearsCollection;
@@ -869,35 +995,6 @@ package feathers.controls
 		 */
 		protected function refreshValidRanges():void
 		{
-			if(!this._minimum)
-			{
-				this._minimum = new Date(DEFAULT_MINIMUM_YEAR, MIN_MONTH_VALUE, MIN_DATE_VALUE, MIN_HOURS_VALUE, MIN_MINUTES_VALUE);
-			}
-			if(!this._maximum)
-			{
-				//if the minimum is greater than the default maximum, we will
-				//make the maximum use the same year instead of the default
-				var maximumYear:int = this._minimum.fullYear;
-				if(maximumYear < DEFAULT_MAXIMUM_YEAR)
-				{
-					maximumYear = DEFAULT_MAXIMUM_YEAR;
-				}
-				this._maximum = new Date(maximumYear, MAX_MONTH_VALUE,
-					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
-					MAX_MINUTES_VALUE);
-			}
-			if(!this._value)
-			{
-				this._value = new Date();
-				if(this._value.time < this._minimum.time)
-				{
-					this._value.time = this._minimum.time;
-				}
-				else if(this._value.time > this._maximum.time)
-				{
-					this._value.time = this._maximum.time;
-				}
-			}
 			var oldMinYear:int = this._minYear;
 			var oldMaxYear:int = this._maxYear;
 			var oldMinMonth:int = this._minMonth;
@@ -1018,6 +1115,10 @@ package feathers.controls
 				}
 			}
 
+			//the item renderers in the lists may need to be enabled or disabled
+			//after the ranges change, so we need to call updateAll() on the
+			//collections
+			
 			var yearsCollection:ListCollection = this.yearsList ? this.yearsList.dataProvider : null;
 			if(yearsCollection && (oldMinYear !== this._minYear || oldMaxYear !== this._maxYear))
 			{
@@ -1056,6 +1157,99 @@ package feathers.controls
 			if(this._ampm)
 			{
 				this._lastAmpmValue = this.ampmList.selectedIndex;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function useDefaultsIfNeeded():void
+		{
+			if(!this._value)
+			{
+				//if we don't have a value, try to use today's date
+				this._value = new Date();
+				//but if there's an existing range, keep the value in there
+				if(this._minimum && this._value.time < this._minimum.time)
+				{
+					this._value.time = this._minimum.time;
+				}
+				else if(this._maximum && this._value.time > this._maximum.time)
+				{
+					this._value.time = this._maximum.time;
+				}
+			}
+			if(this._minimum)
+			{
+				//we want to be able to see years outside the range between
+				//minimum and maximum, even if we cannot select them. otherwise,
+				//it'll look weird to loop back to the beginning or end.
+				if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+				{
+					//in this editing mode, the date is only controlled by one
+					//spinner list, that increments by day. we shouldn't need to
+					//go back more than a year.
+					this._listMinYear = this._minimum.fullYear - 1;
+				}
+				else
+				{
+					//in this editing mode, the year, month, and date are
+					//selected separately, so we should have a bigger range
+					this._listMinYear = this._minimum.fullYear - 10;
+				}
+			}
+			//if there's no minimum, we need to generate something that is
+			//arbitrary, but acceptable for most needs
+			else if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+			{
+				//in this editing mode, the date is only controlled by one
+				//spinner list, that increments by day. we shouldn't need to
+				//go back more than a year.
+				HELPER_DATE.time = this._value.time;
+				this._listMinYear = HELPER_DATE.fullYear - 1;
+				this._minimum = new Date(this._listMinYear, MIN_MONTH_VALUE, MIN_DATE_VALUE,
+					MIN_HOURS_VALUE, MIN_MINUTES_VALUE);
+			}
+			else
+			{
+				//in this editing mode, the year, month, and date are
+				//selected separately, so we should have a bigger range
+				HELPER_DATE.time = this._value.time;
+				//goes back 100 years, rounded down to the nearest half century
+				//for 2015, this would give us 1900
+				//for 2065, this would give us 1950
+				this._listMinYear = roundDownToNearest(HELPER_DATE.fullYear - 100, 50);
+				this._minimum = new Date(this._listMinYear, MIN_MONTH_VALUE, MIN_DATE_VALUE,
+					MIN_HOURS_VALUE, MIN_MINUTES_VALUE);
+			}
+			if(this._maximum)
+			{
+				if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+				{
+					this._listMaxYear = this._maximum.fullYear + 1;
+				}
+				else
+				{
+					this._listMaxYear = this._maximum.fullYear + 10;
+				}
+			}
+			else if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+			{
+				HELPER_DATE.time = this._minimum.time;
+				this._listMaxYear = HELPER_DATE.fullYear + 1;
+				this._maximum = new Date(this._listMaxYear, MAX_MONTH_VALUE,
+					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
+					MAX_MINUTES_VALUE);
+			}
+			else // date
+			{
+				//for 2015, this would give us 2150
+				//for 2065, this would give us 2200
+				HELPER_DATE.time = this._value.time;
+				this._listMaxYear = roundUpToNearest(HELPER_DATE.fullYear + 100, 50);
+				this._maximum = new Date(this._listMaxYear, MAX_MONTH_VALUE,
+					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
+					MAX_MINUTES_VALUE);
 			}
 		}
 
@@ -1507,7 +1701,7 @@ class IntegerRangeDataDescriptor implements IListCollectionDataDescriptor
 	public function getLength(data:Object):int
 	{
 		var range:IntegerRange = IntegerRange(data);
-		return 1 + Math.ceil((range.maximum - range.minimum) / range.step);
+		return 1 + int((range.maximum - range.minimum) / range.step);
 	}
 
 	public function getItemAt(data:Object, index:int):Object
