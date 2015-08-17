@@ -7,18 +7,16 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.LayoutGroup;
-	import feathers.controls.SpinnerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
-	import feathers.layout.HorizontalLayoutData;
+	import feathers.utils.math.clamp;
 
 	import flash.globalization.DateTimeFormatter;
 	import flash.globalization.DateTimeNameStyle;
 	import flash.globalization.DateTimeStyle;
+	import flash.globalization.LocaleID;
 
 	import starling.events.Event;
 
@@ -42,12 +40,62 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static const MS_PER_DAY:int = 86400000;
+
+		/**
+		 * @private
+		 */
 		private static const DEFAULT_MINIMUM_YEAR:int = 1601;
 
 		/**
 		 * @private
 		 */
 		private static const DEFAULT_MAXIMUM_YEAR:int = 9999;
+
+		/**
+		 * @private
+		 */
+		private static const MIN_MONTH_VALUE:int = 0;
+
+		/**
+		 * @private
+		 */
+		private static const MAX_MONTH_VALUE:int = 11;
+
+		/**
+		 * @private
+		 */
+		private static const MIN_DATE_VALUE:int = 1;
+
+		/**
+		 * @private
+		 */
+		private static const MAX_DATE_VALUE:int = 31;
+
+		/**
+		 * @private
+		 */
+		private static const MIN_HOURS_VALUE:int = 0;
+
+		/**
+		 * @private
+		 */
+		private static const MAX_HOURS_VALUE_AMPM:int = 11;
+
+		/**
+		 * @private
+		 */
+		private static const MAX_HOURS_VALUE_24HOURS:int = 23;
+
+		/**
+		 * @private
+		 */
+		private static const MIN_MINUTES_VALUE:int = 0;
+
+		/**
+		 * @private
+		 */
+		private static const MAX_MINUTES_VALUE:int = 59;
 
 		/**
 		 * @private
@@ -83,7 +131,7 @@ package feathers.controls
 			if(DAYS_IN_MONTH.length === 0)
 			{
 				HELPER_DATE.setFullYear(DEFAULT_MAXIMUM_YEAR);
-				for(var i:int = 0; i < 12; i++)
+				for(var i:int = MIN_MONTH_VALUE; i <= MAX_MONTH_VALUE; i++)
 				{
 					//subtract one date from the 1st of next month to figure out
 					//the last date of the current month
@@ -97,6 +145,8 @@ package feathers.controls
 		protected var monthsList:SpinnerList;
 		protected var datesList:SpinnerList;
 		protected var yearsList:SpinnerList;
+		
+		protected var dateAndTimeDatesList:SpinnerList;
 		protected var hoursList:SpinnerList;
 		protected var minutesList:SpinnerList;
 		protected var ampmList:SpinnerList;
@@ -105,7 +155,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _locale:String = "en_US";
+		protected var _locale:String = LocaleID.DEFAULT;
 
 		public function get locale():String
 		{
@@ -129,7 +179,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _value:Date = new Date();
+		protected var _value:Date;
 
 		public function get value():Date
 		{
@@ -141,7 +191,8 @@ package feathers.controls
 		 */
 		public function set value(value:Date):void
 		{
-			if(this._value == value)
+			var time:Number = clamp(value.time, this._minimum.time, this._maximum.time);
+			if(this._value && this._value.time == time)
 			{
 				return;
 			}
@@ -221,7 +272,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _editingMode:String = EDITING_MODE_DATE;
+		protected var _editingMode:String = EDITING_MODE_DATE_AND_TIME;
 
 		/**
 		 * 
@@ -280,6 +331,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _lastAmpmValue:int = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _minYear:int;
 
 		/**
@@ -310,12 +366,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _minHour:int;
+		protected var _minHours:int;
 
 		/**
 		 * @private
 		 */
-		protected var _maxHour:int;
+		protected var _maxHours:int;
 
 		/**
 		 * @private
@@ -358,6 +414,47 @@ package feathers.controls
 		public function set scrollDuration(value:Number):void
 		{
 			this._scrollDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _lastValidate:Date;
+
+		/**
+		 * @private
+		 */
+		protected var _todayLabel:String = null;
+
+		/**
+		 * If not <code>null</code>, and the <code>editingMode</code> property
+		 * is set to <code>DateTimeSpinner.EDITING_MODE_DATE_AND_TIME</code> the
+		 * date matching today's current date will display this label instead
+		 * of the date.
+		 *
+		 * <p>In the following example, the label for today is set:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.todayLabel = "Today";</listing>
+		 *
+		 * @default null
+		 */
+		public function get todayLabel():String
+		{
+			return this._todayLabel;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set todayLabel(value:String):void
+		{
+			if(this._todayLabel == value)
+			{
+				return;
+			}
+			this._todayLabel = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -423,6 +520,11 @@ package feathers.controls
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
 			
+			if(this._todayLabel)
+			{
+				this._lastValidate = new Date();
+			}
+			
 			if(localeInvalid || editingModeInvalid)
 			{
 				this.refreshLocale();
@@ -473,6 +575,11 @@ package feathers.controls
 			if(this._editingMode == EDITING_MODE_DATE)
 			{
 				//first, get rid of lists that we don't need for this mode
+				if(this.dateAndTimeDatesList)
+				{
+					this.listGroup.removeChild(this.dateAndTimeDatesList, true);
+					this.dateAndTimeDatesList = null;
+				}
 				if(this.hoursList)
 				{
 					this.listGroup.removeChild(this.hoursList, true);
@@ -502,7 +609,7 @@ package feathers.controls
 				if(!this.datesList)
 				{
 					this.datesList = new SpinnerList();
-					var datesRange:IntegerRange = new IntegerRange(1, 31, 1);
+					var datesRange:IntegerRange = new IntegerRange(MIN_DATE_VALUE, MAX_DATE_VALUE, 1);
 					var datesCollection:ListCollection = new ListCollection(datesRange);
 					datesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 					this.datesList.dataProvider = datesCollection;
@@ -513,7 +620,7 @@ package feathers.controls
 				if(!this.monthsList)
 				{
 					this.monthsList = new SpinnerList();
-					var monthsRange:IntegerRange = new IntegerRange(0, 11, 1);
+					var monthsRange:IntegerRange = new IntegerRange(MIN_MONTH_VALUE, MAX_MONTH_VALUE, 1);
 					var monthsCollection:ListCollection = new ListCollection(monthsRange);
 					monthsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 					this.monthsList.dataProvider = monthsCollection;
@@ -532,7 +639,7 @@ package feathers.controls
 					this.listGroup.setChildIndex(this.datesList, 0);
 				}
 			}
-			else if(this._editingMode === EDITING_MODE_TIME)
+			else
 			{
 				if(this.monthsList)
 				{
@@ -549,7 +656,13 @@ package feathers.controls
 					this.listGroup.removeChild(this.yearsList, true);
 					this.yearsList = null;
 				}
-				
+				if(!this.dateAndTimeDatesList && this._editingMode === EDITING_MODE_DATE_AND_TIME)
+				{
+					this.dateAndTimeDatesList = new SpinnerList();
+					this.dateAndTimeDatesList.itemRendererFactory = this.dateAndTimeDatesListItemRendererFactory;
+					this.dateAndTimeDatesList.addEventListener(Event.CHANGE, dateAndTimeDatesList_changeHandler);
+					this.listGroup.addChildAt(this.dateAndTimeDatesList, 0);
+				}
 				if(!this.hoursList)
 				{
 					this.hoursList = new SpinnerList();
@@ -560,7 +673,7 @@ package feathers.controls
 				if(!this.minutesList)
 				{
 					this.minutesList = new SpinnerList();
-					var minutesRange:IntegerRange = new IntegerRange(0, 59, this._minuteStep);
+					var minutesRange:IntegerRange = new IntegerRange(MIN_MINUTES_VALUE, MAX_MINUTES_VALUE, this._minuteStep);
 					var minutesCollection:ListCollection = new ListCollection(minutesRange);
 					minutesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 					this.minutesList.dataProvider = minutesCollection;
@@ -611,7 +724,7 @@ package feathers.controls
 			else if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
 			{
 				this._localeMonthNames = this._formatter.getMonthNames(DateTimeNameStyle.SHORT_ABBREVIATION);
-				this._localeWeekdayNames = this._formatter.getWeekdayNames(DateTimeNameStyle.SHORT_ABBREVIATION);
+				this._localeWeekdayNames = this._formatter.getWeekdayNames(DateTimeNameStyle.LONG_ABBREVIATION);
 			}
 			else //time only
 			{
@@ -660,21 +773,53 @@ package feathers.controls
 					this.yearsList.dataProvider = yearsCollection;
 				}
 			}
-			else if(this._editingMode === EDITING_MODE_TIME)
+			else //time only or both date and time
 			{
-				if(this._ampm)
+				var totalMS:Number = this._maximum.time - this._minimum.time;
+				var totalDays:int = totalMS / MS_PER_DAY;
+
+				var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
+				if(dateAndTimeDatesCollection)
 				{
-					var hoursRange:IntegerRange = new IntegerRange(0, 11, 1);
+					var datesRange:IntegerRange = IntegerRange(dateAndTimeDatesCollection.data);
+					if(datesRange.maximum !== totalDays)
+					{
+						datesRange.maximum = totalDays;
+						dateAndTimeDatesCollection.data = null;
+						dateAndTimeDatesCollection.data = datesRange;
+					}
 				}
 				else
 				{
-					hoursRange = new IntegerRange(0, 23, 1);
+					datesRange = new IntegerRange(0, totalDays, 1);
+					dateAndTimeDatesCollection = new ListCollection(datesRange);
+					dateAndTimeDatesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
+					this.dateAndTimeDatesList.dataProvider = dateAndTimeDatesCollection;
 				}
-				var hoursCollection:ListCollection = new ListCollection(hoursRange);
-				hoursCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-				this.hoursList.dataProvider = hoursCollection;
+
+				var hoursMinimum:Number = MIN_HOURS_VALUE;
+				var hoursMaximum:Number = this._ampm ? MAX_HOURS_VALUE_AMPM : MAX_HOURS_VALUE_24HOURS;
+				var hoursCollection:ListCollection = this.hoursList.dataProvider;
+				if(hoursCollection)
+				{
+					var hoursRange:IntegerRange = IntegerRange(hoursCollection.data);
+					if(hoursRange.minimum !== hoursMinimum || hoursRange.maximum !== hoursMaximum)
+					{
+						hoursRange.minimum = hoursMinimum;
+						hoursRange.maximum = hoursMaximum;
+						hoursCollection.data = null;
+						hoursCollection.data = datesRange;
+					}
+				}
+				else
+				{
+					hoursRange = new IntegerRange(hoursMinimum, hoursMaximum, 1);
+					hoursCollection = new ListCollection(hoursRange);
+					hoursCollection.dataDescriptor = new IntegerRangeDataDescriptor();
+					this.hoursList.dataProvider = hoursCollection;
+				}
 				
-				if(this._ampm)
+				if(this._ampm && !this.ampmList.dataProvider)
 				{
 					this.ampmList.dataProvider = new ListCollection(new <String>["am", "pm"]);
 				}
@@ -693,6 +838,10 @@ package feathers.controls
 				this.yearsList.selectedItem = this._value.fullYear;
 			}
 
+			if(this.dateAndTimeDatesList)
+			{
+				this.dateAndTimeDatesList.selectedIndex = (this._value.time - this._minimum.time) / MS_PER_DAY;
+			}
 			if(this.hoursList)
 			{
 				if(this._ampm)
@@ -710,7 +859,7 @@ package feathers.controls
 			}
 			if(this.ampmList)
 			{
-				this.ampmList.selectedIndex = (this._value.hours < 12) ? 0 : 1;
+				this.ampmList.selectedIndex = (this._value.hours <= MAX_HOURS_VALUE_AMPM) ? 0 : 1;
 			}
 			this._ignoreListChanges = oldIgnoreListChanges;
 		}
@@ -722,34 +871,47 @@ package feathers.controls
 		{
 			if(!this._minimum)
 			{
-				this._minimum = new Date(DEFAULT_MINIMUM_YEAR, 0, 1, 0, 0);
+				this._minimum = new Date(DEFAULT_MINIMUM_YEAR, MIN_MONTH_VALUE, MIN_DATE_VALUE, MIN_HOURS_VALUE, MIN_MINUTES_VALUE);
 			}
 			if(!this._maximum)
 			{
-				var minimumYear:int = this._minimum.fullYear;
-				if(minimumYear > DEFAULT_MAXIMUM_YEAR)
+				//if the minimum is greater than the default maximum, we will
+				//make the maximum use the same year instead of the default
+				var maximumYear:int = this._minimum.fullYear;
+				if(maximumYear < DEFAULT_MAXIMUM_YEAR)
 				{
-					this._maximum = new Date(minimumYear, 11, 31, 11, 59);
+					maximumYear = DEFAULT_MAXIMUM_YEAR;
 				}
-				else
+				this._maximum = new Date(maximumYear, MAX_MONTH_VALUE,
+					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
+					MAX_MINUTES_VALUE);
+			}
+			if(!this._value)
+			{
+				this._value = new Date();
+				if(this._value.time < this._minimum.time)
 				{
-					this._maximum = new Date(DEFAULT_MAXIMUM_YEAR, 11, 31, 11, 59);
+					this._value.time = this._minimum.time;
+				}
+				else if(this._value.time > this._maximum.time)
+				{
+					this._value.time = this._maximum.time;
 				}
 			}
-			
 			var oldMinYear:int = this._minYear;
 			var oldMaxYear:int = this._maxYear;
 			var oldMinMonth:int = this._minMonth;
 			var oldMaxMonth:int = this._maxMonth;
 			var oldMinDate:int = this._minDate;
 			var oldMaxDate:int = this._maxDate;
-			var oldMinHour:int = this._minHour;
-			var oldMaxHour:int = this._maxHour;
-			var oldMinMinute:int = this._minMinute;
-			var oldMaxMinute:int = this._maxMinute;
+			var oldMinHours:int = this._minHours;
+			var oldMaxHours:int = this._maxHours;
+			var oldMinMinutes:int = this._minMinute;
+			var oldMaxMinutes:int = this._maxMinute;
 			var currentYear:int = this._value.fullYear;
 			var currentMonth:int = this._value.month;
-			var currentHour:int = this._value.hours;
+			var currentDate:int = this._value.date;
+			var currentHours:int = this._value.hours;
 			this._minYear = this._minimum.fullYear;
 			this._maxYear = this._maximum.fullYear;
 			if(currentYear === this._minYear)
@@ -758,7 +920,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._minMonth = 0;
+				this._minMonth = MIN_MONTH_VALUE;
 			}
 			if(currentYear === this._maxYear)
 			{
@@ -766,7 +928,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._maxMonth = 11;
+				this._maxMonth = MAX_MONTH_VALUE;
 			}
 			if(currentYear === this._minYear && currentMonth === this._minimum.month)
 			{
@@ -774,7 +936,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._minDate = 1;
+				this._minDate = MIN_DATE_VALUE;
 			}
 			if(currentYear === this._maxYear && currentMonth === this._maximum.month)
 			{
@@ -794,23 +956,66 @@ package feathers.controls
 					this._maxDate = DAYS_IN_MONTH[currentMonth];
 				}
 			}
-			this._minHour = this._minimum.hours;
-			this._maxHour = this._maximum.hours;
-			if(currentHour === this._minHour)
+			if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
 			{
-				this._minMinute = this._minimum.minutes;
+				if(currentYear === this._minYear && currentMonth === this._minimum.month &&
+					currentDate === this._minimum.date)
+				{
+					this._minHours = this._minimum.hours;
+				}
+				else
+				{
+					this._minHours = MIN_HOURS_VALUE;
+				}
+				if(currentYear === this._maxYear && currentMonth === this._maximum.month &&
+					currentDate === this._maximum.date)
+				{
+					this._maxHours = this._maximum.hours;
+				}
+				else
+				{
+					this._maxHours = MAX_HOURS_VALUE_24HOURS;
+				}
+
+				if(currentYear === this._minYear && currentMonth === this._minimum.month &&
+					currentDate === this._minimum.date && currentHours === this._minimum.hours)
+				{
+					this._minMinute = this._minimum.minutes;
+				}
+				else
+				{
+					this._minMinute = MIN_MINUTES_VALUE;
+				}
+				if(currentYear === this._maxYear && currentMonth === this._maximum.month &&
+					currentDate === this._maximum.date && currentHours === this._maximum.hours)
+				{
+					this._maxMinute = this._maximum.minutes;
+				}
+				else
+				{
+					this._maxMinute = MAX_MINUTES_VALUE;
+				}
 			}
-			else
+			else //time
 			{
-				this._minMinute = 0;
-			}
-			if(currentHour === this._maxHour)
-			{
-				this._maxMinute = this._maximum.minutes;
-			}
-			else
-			{
-				this._maxMinute = 59;
+				this._minHours = this._minimum.hours;
+				this._maxHours = this._maximum.hours;
+				if(currentHours === this._minHours)
+				{
+					this._minMinute = this._minimum.minutes;
+				}
+				else
+				{
+					this._minMinute = MIN_MINUTES_VALUE;
+				}
+				if(currentHours === this._maxHours)
+				{
+					this._maxMinute = this._maximum.minutes;
+				}
+				else
+				{
+					this._maxMinute = MAX_MINUTES_VALUE;
+				}
 			}
 
 			var yearsCollection:ListCollection = this.yearsList ? this.yearsList.dataProvider : null;
@@ -829,15 +1034,28 @@ package feathers.controls
 			{
 				datesCollection.updateAll();
 			}
+			var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList ? this.dateAndTimeDatesList.dataProvider : null;
+			if(dateAndTimeDatesCollection &&
+				(oldMinYear !== this._minYear || oldMaxYear !== this._maxYear ||
+				oldMinMonth !== this._minMonth || oldMaxMonth !== this._maxMonth ||
+				oldMinDate !== this._minDate || oldMaxDate !== this._maxDate))
+			{
+				dateAndTimeDatesCollection.updateAll();
+			}
 			var hoursCollection:ListCollection = this.hoursList ? this.hoursList.dataProvider : null;
-			if(hoursCollection && (oldMinHour !== this._minHour || oldMaxHour!== this._maxHour))
+			if(hoursCollection && (oldMinHours !== this._minHours || oldMaxHours !== this._maxHours ||
+				(this._ampm && this._lastAmpmValue !== this.ampmList.selectedIndex)))
 			{
 				hoursCollection.updateAll();
 			}
 			var minutesCollection:ListCollection = this.minutesList ? this.minutesList.dataProvider : null;
-			if(minutesCollection && (oldMinMinute !== this._minMinute || oldMaxMinute!== this._maxMinute))
+			if(minutesCollection && (oldMinMinutes !== this._minMinute || oldMaxMinutes!== this._maxMinute))
 			{
 				minutesCollection.updateAll();
+			}
+			if(this._ampm)
+			{
+				this._lastAmpmValue = this.ampmList.selectedIndex;
 			}
 		}
 
@@ -880,6 +1098,14 @@ package feathers.controls
 					this.datesList.scrollToDisplayIndex(date - 1, duration);
 				}
 			}
+			if(this.dateAndTimeDatesList)
+			{
+				var dateIndex:int = (this.pendingScrollToDate.time - this._minimum.time) / MS_PER_DAY;
+				if(this.dateAndTimeDatesList.selectedIndex !== dateIndex)
+				{
+					this.dateAndTimeDatesList.scrollToDisplayIndex(dateIndex, duration);
+				}
+			}
 			if(this.hoursList)
 			{
 				var hours:int = this.pendingScrollToDate.hours;
@@ -902,7 +1128,7 @@ package feathers.controls
 			}
 			if(this.ampmList)
 			{
-				var index:int = (this.pendingScrollToDate.hours < 12) ? 0 : 1;
+				var index:int = (this.pendingScrollToDate.hours < MAX_HOURS_VALUE_AMPM) ? 0 : 1;
 				if(this.ampmList.selectedIndex !== index)
 				{
 					this.ampmList.scrollToDisplayIndex(index, duration);
@@ -931,6 +1157,17 @@ package feathers.controls
 			itemRenderer.labelFunction = formatHours;
 			itemRenderer.enabledFunction = isHourEnabled;
 			itemRenderer.itemHasEnabled = true;
+			return itemRenderer;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dateAndTimeDatesListItemRendererFactory():DefaultListItemRenderer
+		{
+			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			itemRenderer.labelFunction = formatDateAndTimeDate;
+			itemRenderer.accessoryLabelFunction = formatDateAndTimeWeekday;
 			return itemRenderer;
 		}
 
@@ -997,7 +1234,11 @@ package feathers.controls
 		 */
 		protected function isHourEnabled(hour:int):Boolean
 		{
-			return hour >= this._minHour && hour <= this._maxHour;
+			if(this._ampm && this.ampmList.selectedIndex !== 0)
+			{
+				hour += 12;
+			}
+			return hour >= this._minHours && hour <= this._maxHours;
 		}
 
 		/**
@@ -1005,20 +1246,7 @@ package feathers.controls
 		 */
 		protected function isMinuteEnabled(minute:int):Boolean
 		{
-			var currentHour:int = this._value.hours;
-			if(currentHour === this._minHour)
-			{
-				if(currentHour === this._maxHour)
-				{
-					return minute >= this._minMinute && minute <= this._maxMinute;
-				}
-				return minute >= this._minMinute;
-			}
-			if(currentHour === this._maxHour)
-			{
-				return minute <= this._maxMinute;
-			}
-			return true;
+			return minute >= this._minMinute && minute <= this._maxMinute;
 		}
 
 		/**
@@ -1053,6 +1281,51 @@ package feathers.controls
 				minutes = "0" + minutes;
 			}
 			return minutes;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function formatDateAndTimeWeekday(item:int):String
+		{
+			HELPER_DATE.setTime(this._minimum.time);
+			HELPER_DATE.setDate(HELPER_DATE.date + item);
+			if(this._todayLabel)
+			{
+				//_lastValidate will be updated once per validation when
+				//scrolling, which is better than creating many duplicate Date
+				//objects in this function
+				if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
+					HELPER_DATE.month === this._lastValidate.month &&
+					HELPER_DATE.date === this._lastValidate.date)
+				{
+					return "";
+				}
+			}
+			return this._localeWeekdayNames[HELPER_DATE.day] as String;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function formatDateAndTimeDate(item:int):String
+		{
+			HELPER_DATE.setTime(this._minimum.time);
+			HELPER_DATE.setDate(HELPER_DATE.date + item);
+			if(this._todayLabel)
+			{
+				//_lastValidate will be updated once per validation when
+				//scrolling, which is better than creating many duplicate Date
+				//objects in this function
+				if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
+					HELPER_DATE.month === this._lastValidate.month &&
+					HELPER_DATE.date === this._lastValidate.date)
+				{
+					return this._todayLabel;
+				}
+			}
+			var monthName:String = this._localeMonthNames[HELPER_DATE.month] as String;
+			return monthName + " " + HELPER_DATE.date;
 		}
 
 		/**
@@ -1144,6 +1417,21 @@ package feathers.controls
 			}
 			var year:int = this.yearsList.selectedItem as int;
 			this._value.setFullYear(year);
+			this.validateNewValue();
+			this.refreshValidRanges();
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dateAndTimeDatesList_changeHandler(event:Event):void
+		{
+			if(this._ignoreListChanges)
+			{
+				return;
+			}
+			this._value.setFullYear(this._minimum.fullYear, this._minimum.month, this._minimum.date + this.dateAndTimeDatesList.selectedIndex);
 			this.validateNewValue();
 			this.refreshValidRanges();
 			this.dispatchEventWith(Event.CHANGE);
