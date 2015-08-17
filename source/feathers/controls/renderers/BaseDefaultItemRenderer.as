@@ -1566,6 +1566,52 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _customIconLabelStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's icon label text renderer
+		 * sub-component. Typically used by a theme to provide  different styles
+		 * to different item renderers.
+		 *
+		 * <p>In the following example, a custom icon label style name is passed
+		 * to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customIconLabelStyleName = "my-custom-icon-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-icon-label", setCustomIconLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #iconLabelFactory
+		 */
+		public function get customIconLabelStyleName():String
+		{
+			return this._customIconLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customIconLabelStyleName(value:String):void
+		{
+			if(this._customIconLabelStyleName == value)
+			{
+				return;
+			}
+			this._customIconLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _accessoryField:String = "accessory";
 
 		/**
@@ -1974,6 +2020,52 @@ package feathers.controls.renderers
 			}
 			this._accessoryLabelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customAccessoryLabelStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's accessory label text
+		 * renderer sub-component. Typically used by a theme to provide
+		 * different styles to different item renderers.
+		 *
+		 * <p>In the following example, a custom accessory label style name is
+		 * passed to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customAccessoryLabelStyleName = "my-custom-accessory-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-accessory-label", setCustomAccessoryLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #accessoryLabelFactory
+		 */
+		public function get customAccessoryLabelStyleName():String
+		{
+			return this._customAccessoryLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customAccessoryLabelStyleName(value:String):void
+		{
+			if(this._customAccessoryLabelStyleName == value)
+			{
+				return;
+			}
+			this._customAccessoryLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
 		/**
@@ -3892,7 +3984,8 @@ package feathers.controls.renderers
 				{
 					IStateObserver(this.iconLabel).stateContext = this;
 				}
-				this.iconLabel.styleNameList.add(this.iconLabelStyleName);
+				var iconLabelStyleName:String = this._customIconLabelStyleName != null ? this._customIconLabelStyleName : this.iconLabelStyleName;
+				this.iconLabel.styleNameList.add(iconLabelStyleName);
 			}
 			this.iconLabel.text = label;
 		}
@@ -3924,7 +4017,8 @@ package feathers.controls.renderers
 				{
 					IStateObserver(this.accessoryLabel).stateContext = this;
 				}
-				this.accessoryLabel.styleNameList.add(this.accessoryLabelStyleName);
+				var accessoryLabelStyleName:String = this._customAccessoryLabelStyleName != null ? this._customAccessoryLabelStyleName : this.accessoryLabelStyleName;
+				this.accessoryLabel.styleNameList.add(accessoryLabelStyleName);
 			}
 			this.accessoryLabel.text = label;
 		}
