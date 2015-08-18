@@ -5,6 +5,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
+	import feathers.controls.SpinnerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -63,7 +64,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list.listFactory = function():List
 			{
-				var list:List = new List();
+				var list:SpinnerList = new SpinnerList();
 				//notice that we're setting typicalItem on the list separately. we
 				//may want to have the list measure at a different width, so it
 				//might need a different typical item than the picker list's button.
