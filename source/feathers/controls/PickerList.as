@@ -8,7 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.popups.CalloutPopUpContentManager;
+	import feathers.controls.popups.IPersistentPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
+	import feathers.controls.popups.IPopUpContentManagerWithPrompt;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
@@ -1154,6 +1156,10 @@ package feathers.controls
 				return;
 			}
 			this._isOpenListPending = false;
+			if(this._popUpContentManager is IPopUpContentManagerWithPrompt)
+			{
+				IPopUpContentManagerWithPrompt(this._popUpContentManager).prompt = this._prompt;
+			}
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
@@ -1646,7 +1652,8 @@ package feathers.controls
 		 */
 		protected function list_changeHandler(event:Event):void
 		{
-			if(this._ignoreSelectionChanges)
+			if(this._ignoreSelectionChanges ||
+				this._popUpContentManager is IPersistentPopUpContentManager)
 			{
 				return;
 			}
@@ -1670,6 +1677,10 @@ package feathers.controls
 		 */
 		protected function popUpContentManager_closeHandler(event:Event):void
 		{
+			if(this._popUpContentManager is IPersistentPopUpContentManager)
+			{
+				this.selectedIndex = this.list.selectedIndex;
+			}
 			if(this._toggleButtonOnOpenAndClose && this.button is IToggle)
 			{
 				IToggle(this.button).isSelected = false;
@@ -1706,7 +1717,8 @@ package feathers.controls
 		 */
 		protected function list_triggeredHandler(event:Event):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled ||
+				this._popUpContentManager is IPersistentPopUpContentManager)
 			{
 				return;
 			}
