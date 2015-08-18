@@ -1929,13 +1929,23 @@ package feathers.themes
 				list.minWidth = this.popUpFillSize;
 				list.maxHeight = this.popUpFillSize;
 			}
-			else
+			else //phone
 			{
+				//the pop-up list should be a SpinnerList in this case, but we
+				//should provide a reasonable fallback skin if the listFactory
+				//on the PickerList returns a List instead. we don't want the
+				//List to be too big for the BottomDrawerPopUpContentManager
+				
 				var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
 				backgroundSkin.width = this.gridSize;
 				backgroundSkin.height = this.gridSize;
 				list.backgroundSkin = backgroundSkin;
 				list.padding = this.smallGutterSize;
+				
+				var layout:VerticalLayout = new VerticalLayout();
+				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.requestedRowCount = 4;
+				list.layout = layout;
 			}
 
 			list.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;

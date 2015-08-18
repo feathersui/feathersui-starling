@@ -1528,6 +1528,18 @@ package feathers.themes
 				list.minWidth = this.popUpFillSize;
 				list.maxHeight = this.popUpFillSize;
 			}
+			else //phone
+			{
+				//the pop-up list should be a SpinnerList in this case, but we
+				//should provide a reasonable fallback skin if the listFactory
+				//on the PickerList returns a List instead. we don't want the
+				//List to be too big for the BottomDrawerPopUpContentManager
+
+				var layout:VerticalLayout = new VerticalLayout();
+				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.requestedRowCount = 4;
+				list.layout = layout;
+			}
 		}
 
 		protected function setPickerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
