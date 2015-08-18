@@ -55,8 +55,8 @@ package feathers.themes
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
-	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
@@ -317,6 +317,14 @@ package feathers.themes
 			//suitable for mobile use if the TextInput needs to be editable
 			//because it can't use the soft keyboard or other mobile-friendly UI
 			return new TextBlockTextEditor();
+		}
+
+		/**
+		 * The pop-up factory for a PickerList creates a SpinnerList.
+		 */
+		protected static function pickerListSpinnerListFactory():SpinnerList
+		{
+			return new SpinnerList();
 		}
 
 		/**
@@ -631,8 +639,11 @@ package feathers.themes
 		protected var checkSelectedDisabledIconTexture:Texture;
 		protected var pageIndicatorNormalSkinTexture:Texture;
 		protected var pageIndicatorSelectedSkinTexture:Texture;
+		protected var spinnerListBackgroundSkinTextures:Scale9Textures;
 		protected var itemRendererUpSkinTextures:Scale9Textures;
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
+		protected var insetItemRendererUpSkinTextures:Scale9Textures;
+		protected var insetItemRendererSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererFirstUpSkinTextures:Scale9Textures;
 		protected var insetItemRendererFirstSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererLastUpSkinTextures:Scale9Textures;
@@ -861,6 +872,7 @@ package feathers.themes
 			this.pickerListButtonIconDisabledTexture = this.atlas.getTexture("picker-list-icon-disabled");
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
 
+			this.spinnerListBackgroundSkinTextures = new Scale9Textures(this.atlas.getTexture("spinner-list-background-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.spinnerListSelectionOverlaySkinTextures = new Scale9Textures(this.atlas.getTexture("spinner-list-selection-overlay-skin"), SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID);
 
 			this.radioUpIconTexture = backgroundSkinTexture;
@@ -885,6 +897,8 @@ package feathers.themes
 
 			this.itemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
+			this.insetItemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
+			this.insetItemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.insetItemRendererFirstUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-first-up-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
 			this.insetItemRendererFirstSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-first-selected-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
 			this.insetItemRendererLastUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-last-up-skin"), INSET_ITEM_RENDERER_LAST_SCALE9_GRID);
@@ -1595,7 +1609,7 @@ package feathers.themes
 
 		protected function setInsetGroupedListMiddleItemRendererStyles(renderer:DefaultGroupedListItemRenderer):void
 		{
-			this.setInsetGroupedListItemRendererStyles(renderer, this.itemRendererUpSkinTextures, this.itemRendererSelectedSkinTextures);
+			this.setInsetGroupedListItemRendererStyles(renderer, this.insetItemRendererUpSkinTextures, this.insetItemRendererSelectedSkinTextures);
 		}
 
 		protected function setInsetGroupedListFirstItemRendererStyles(renderer:DefaultGroupedListItemRenderer):void
@@ -1903,24 +1917,13 @@ package feathers.themes
 			}
 			else
 			{
-				var centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
-				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
-					centerStage.marginLeft = this.gutterSize;
-				list.popUpContentManager = centerStage;
+				list.listFactory = pickerListSpinnerListFactory;
+				list.popUpContentManager = new BottomDrawerPopUpContentManager();
 			}
 		}
 		
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.useVirtualLayout = true;
-			layout.gap = 0;
-			layout.padding = 0;
-			list.layout = layout;
-			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				list.minWidth = this.popUpFillSize;
@@ -2275,22 +2278,17 @@ package feathers.themes
 
 		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
-			this.setListStyles(list);
+			this.setScrollerStyles(list);
+			list.backgroundSkin = new Scale9Image(this.spinnerListBackgroundSkinTextures, this.scale);
 			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
 			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures, this.scale);
 		}
 
 		protected function setSpinnerListItemRendererStyles(renderer:DefaultListItemRenderer):void
 		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.displayObjectProperties =
-			{
-				width: this.gridSize,
-				height: this.gridSize,
-				textureScale: this.scale
-			};
-			renderer.stateToSkinFunction = skinSelector.updateValue;
+			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
+			defaultSkin.alpha = 0;
+			renderer.defaultSkin = defaultSkin;
 			
 			renderer.customLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL;
 			renderer.customIconLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL;
