@@ -1156,7 +1156,7 @@ package feathers.controls
 			}
 			if(this._ampm)
 			{
-				this._lastAmpmValue = this.ampmList.selectedIndex;
+				this._lastAmpmValue = (this._value.hours <= MAX_HOURS_VALUE_AMPM) ? 0 : 1;
 			}
 		}
 
