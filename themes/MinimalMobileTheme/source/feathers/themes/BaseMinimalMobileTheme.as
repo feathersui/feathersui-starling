@@ -55,6 +55,7 @@ package feathers.themes
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
@@ -224,6 +225,11 @@ package feathers.themes
 			//since it's a pixel font, we don't want to smooth it.
 			editor.smoothing = TextureSmoothing.NONE;
 			return editor;
+		}
+		
+		protected static function pickerListSpinnerListFactory():SpinnerList
+		{
+			return new SpinnerList();
 		}
 
 		protected static function popUpOverlayFactory():DisplayObject
@@ -770,7 +776,7 @@ package feathers.themes
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
-			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setNoStyles);
+			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListPopUpListStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -1508,36 +1514,20 @@ package feathers.themes
 			}
 			else
 			{
-				var centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
-				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
-					centerStage.marginLeft = this.gutterSize;
-				list.popUpContentManager = centerStage;
-			}
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.useVirtualLayout = true;
-			layout.gap = 0;
-			layout.padding = 0;
-			list.listProperties.layout = layout;
-			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				list.listProperties.minWidth = this.popUpFillSize;
-				list.listProperties.maxHeight = this.popUpFillSize;
-			}
-			else
-			{
-				var backgroundSkin:Scale9Image = new Scale9Image(popUpBackgroundSkinTextures, this.scale);
-				backgroundSkin.width = this.gridSize;
-				backgroundSkin.height = this.gridSize;
-				list.listProperties.backgroundSkin = backgroundSkin;
-				list.listProperties.padding = this.borderSize;
+				list.listFactory = pickerListSpinnerListFactory;
+				list.popUpContentManager = new BottomDrawerPopUpContentManager();
 			}
 
 			list.listProperties.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setPickerListPopUpListStyles(list:List):void
+		{
+			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			{
+				list.minWidth = this.popUpFillSize;
+				list.maxHeight = this.popUpFillSize;
+			}
 		}
 
 		protected function setPickerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
