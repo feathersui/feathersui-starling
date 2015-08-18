@@ -904,23 +904,26 @@ package feathers.controls
 				var totalMS:Number = this._maximum.time - this._minimum.time;
 				var totalDays:int = totalMS / MS_PER_DAY;
 
-				var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
-				if(dateAndTimeDatesCollection)
+				if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
 				{
-					var datesRange:IntegerRange = IntegerRange(dateAndTimeDatesCollection.data);
-					if(datesRange.maximum !== totalDays)
+					var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
+					if(dateAndTimeDatesCollection)
 					{
-						datesRange.maximum = totalDays;
-						dateAndTimeDatesCollection.data = null;
-						dateAndTimeDatesCollection.data = datesRange;
+						var datesRange:IntegerRange = IntegerRange(dateAndTimeDatesCollection.data);
+						if(datesRange.maximum !== totalDays)
+						{
+							datesRange.maximum = totalDays;
+							dateAndTimeDatesCollection.data = null;
+							dateAndTimeDatesCollection.data = datesRange;
+						}
 					}
-				}
-				else
-				{
-					datesRange = new IntegerRange(0, totalDays, 1);
-					dateAndTimeDatesCollection = new ListCollection(datesRange);
-					dateAndTimeDatesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-					this.dateAndTimeDatesList.dataProvider = dateAndTimeDatesCollection;
+					else
+					{
+						datesRange = new IntegerRange(0, totalDays, 1);
+						dateAndTimeDatesCollection = new ListCollection(datesRange);
+						dateAndTimeDatesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
+						this.dateAndTimeDatesList.dataProvider = dateAndTimeDatesCollection;
+					}
 				}
 
 				var hoursMinimum:Number = MIN_HOURS_VALUE;
