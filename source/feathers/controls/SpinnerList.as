@@ -252,7 +252,7 @@ package feathers.controls
 				layout.padding = 0;
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalSpinnerLayout.HORIZONTAL_ALIGN_JUSTIFY;
-				layout.requestedRowCount = 5;
+				layout.requestedRowCount = 4;
 				this.layout = layout;
 			}
 
