@@ -7,6 +7,7 @@ package feathers.examples.componentsExplorer.themes
 	import feathers.examples.componentsExplorer.screens.AutoCompleteScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
+	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerScreen;
 	import feathers.examples.componentsExplorer.screens.ItemRendererScreen;
 	import feathers.examples.componentsExplorer.screens.LabelScreen;
 	import feathers.examples.componentsExplorer.screens.ProgressBarScreen;
@@ -33,6 +34,7 @@ package feathers.examples.componentsExplorer.themes
 
 			this.getStyleProviderForClass(AutoCompleteScreen).defaultStyleFunction = this.setAutoCompleteScreenStyles;
 			this.getStyleProviderForClass(CalloutScreen).defaultStyleFunction = this.setCalloutScreenStyles;
+			this.getStyleProviderForClass(DateTimeSpinnerScreen).defaultStyleFunction = this.setDateTimeSpinnerScreenStyles;
 			this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;
 			this.getStyleProviderForClass(ItemRendererScreen).defaultStyleFunction = this.setItemRendererScreenStyles;
 			this.getStyleProviderForClass(ProgressBarScreen).defaultStyleFunction = this.setProgressBarScreenStyles;
@@ -91,6 +93,21 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			screen.layoutPadding = this.gutterSize;
+		}
+
+		protected function setDateTimeSpinnerScreenStyles(screen:DateTimeSpinnerScreen):void
+		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
+			screen.layout = verticalLayout;
+
+			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
 		}
 
 		protected function setItemRendererScreenStyles(screen:ItemRendererScreen):void

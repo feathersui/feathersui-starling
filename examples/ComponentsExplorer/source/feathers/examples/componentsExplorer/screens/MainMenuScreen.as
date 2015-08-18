@@ -22,6 +22,7 @@ package feathers.examples.componentsExplorer.screens
 	[Event(name="showButton",type="starling.events.Event")]
 	[Event(name="showButtonGroup",type="starling.events.Event")]
 	[Event(name="showCallout",type="starling.events.Event")]
+	[Event(name="showDateTimeSpinner",type="starling.events.Event")]
 	[Event(name="showGroupedList",type="starling.events.Event")]
 	[Event(name="showItemRenderer",type="starling.events.Event")]
 	[Event(name="showList",type="starling.events.Event")]
@@ -43,6 +44,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_BUTTON:String = "showButton";
 		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
 		public static const SHOW_CALLOUT:String = "showCallout";
+		public static const SHOW_DATE_TIME_SPINNER:String = "showDateTimeSpinner";
 		public static const SHOW_GROUPED_LIST:String = "showGroupedList";
 		public static const SHOW_ITEM_RENDERER:String = "showItemRenderer";
 		public static const SHOW_LABEL:String = "showLabel";
@@ -86,6 +88,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Button", event: SHOW_BUTTON },
 				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
 				{ label: "Callout", event: SHOW_CALLOUT },
+				{ label: "Date Time Spinner", event: SHOW_DATE_TIME_SPINNER },
 				{ label: "Grouped List", event: SHOW_GROUPED_LIST },
 				{ label: "Item Renderer", event: SHOW_ITEM_RENDERER },
 				{ label: "Label", event: SHOW_LABEL },
