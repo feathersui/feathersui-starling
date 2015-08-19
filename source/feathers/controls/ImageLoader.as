@@ -322,17 +322,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isRestoringTexture:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _texture:Texture;
-
-		/**
-		 * @private
-		 */
-		protected var _textureBitmapData:BitmapData;
-
-		/**
-		 * @private
-		 */
-		protected var _textureRawData:ByteArray;
 
 		/**
 		 * @private
@@ -389,12 +384,17 @@ package feathers.controls
 			{
 				return;
 			}
+			this._isRestoringTexture = false;
 			if(this._isInTextureQueue)
 			{
 				this.removeFromTextureQueue();
 			}
 			this._source = value;
+			//we should try to reuse the existing texture, if possible.
+			var oldTexture:Texture = this._isTextureOwner ? this._texture : null;
+			this._isTextureOwner = false;
 			this.cleanupTexture();
+			this._texture = oldTexture;
 			if(this.image)
 			{
 				this.image.visible = false;
@@ -542,6 +542,41 @@ package feathers.controls
 				return;
 			}
 			this._textureScale = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _scaleFactor:Number = 1;
+
+		/**
+		 * The scale factor value to pass to <code>Texture.fromBitmapData()</code>
+		 * when creating a texture loaded from a URL.
+		 *
+		 * <p>In the following example, the image loader's scale factor is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.scaleFactor = 2;</listing>
+		 *
+		 * @default 1
+		 */
+		public function get scaleFactor():Number
+		{
+			return this._textureScale;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleFactor(value:Number):void
+		{
+			if(this._scaleFactor == value)
+			{
+				return;
+			}
+			this._scaleFactor = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -1283,6 +1318,7 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			this._isRestoringTexture = false;
 			if(this.loader)
 			{
 				this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
@@ -1631,10 +1667,10 @@ package feathers.controls
 		 */
 		protected function refreshCurrentTexture():void
 		{
-			var newTexture:Texture = this._texture;
+			var newTexture:Texture = this._isLoaded ? this._texture : null;
 			if(!newTexture)
 			{
-				if(this.loader)
+				if(this.loader || this.urlLoader)
 				{
 					newTexture = this._loadingTexture;
 				}
@@ -1691,20 +1727,9 @@ package feathers.controls
 		 */
 		protected function cleanupTexture():void
 		{
-			if(this._isTextureOwner)
+			if(this._isTextureOwner && this._texture)
 			{
-				if(this._textureBitmapData)
-				{
-					this._textureBitmapData.dispose();
-				}
-				if(this._textureRawData)
-				{
-					this._textureRawData.clear();
-				}
-				if(this._texture)
-				{
-					this._texture.dispose();
-				}
+				this._texture.dispose();
 			}
 			if(this._pendingBitmapDataTexture)
 			{
@@ -1719,8 +1744,6 @@ package feathers.controls
 			this._currentTextureHeight = NaN;
 			this._pendingBitmapDataTexture = null;
 			this._pendingRawTextureData = null;
-			this._textureBitmapData = null;
-			this._textureRawData = null;
 			this._texture = null;
 			this._isTextureOwner = false;
 		}
@@ -1757,20 +1780,21 @@ package feathers.controls
 				return;
 			}
 			this.verifyCurrentStarling();
-			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
-			if(Starling.handleLostContext)
+			
+			if(!this._texture)
 			{
-				//we're saving it so that we can dispose it when we get a new
-				//texture or when we're disposed
-				this._textureBitmapData = bitmapData;
+				//skip Texture.fromBitmapData() because we don't want
+				//it to create an onRestore function that will be
+				//immediately discarded for garbage collection. 
+				this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
+					bitmapData.height / this._scaleFactor, true, false, false,
+					this._scaleFactor, this._textureFormat);
+				this._texture.root.onRestore = texture_onRestore;
 			}
-			else
-			{
-				//since Starling isn't handling the lost context, we don't need
-				//to save the texture bitmap data.
-				bitmapData.dispose();
-			}
+			this._texture.root.uploadBitmapData(bitmapData);
+			bitmapData.dispose();
 			this._isTextureOwner = true;
+			this._isRestoringTexture = false;
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
@@ -1795,20 +1819,19 @@ package feathers.controls
 				return;
 			}
 			this.verifyCurrentStarling();
-			this._texture = Texture.fromAtfData(rawData);
-			if(Starling.handleLostContext)
+			
+			if(this._texture)
 			{
-				//we're saving it so that we can clear it when we get a new
-				//texture or when we're disposed
-				this._textureRawData = rawData;
+				this._texture.root.uploadAtfData(rawData);
 			}
 			else
 			{
-				//since Starling isn't handling the lost context, we don't need
-				//to save the raw texture data.
-				rawData.clear();
+				this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
+				this._texture.root.onRestore = texture_onRestore;
 			}
+			rawData.clear();
 			this._isTextureOwner = true;
+			this._isRestoringTexture = false;
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
@@ -1937,6 +1960,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			//reload the texture from the URL
+			this._isRestoringTexture = true;
+			this._lastURL = null;
+			this._isLoaded = false;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function processTextureQueue_enterFrameHandler(event:EnterFrameEvent):void
 		{
 			this._accumulatedPrepareTextureTime += event.passedTime;
@@ -1969,9 +2004,20 @@ package feathers.controls
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 			this.loader = null;
 
-			this.cleanupTexture();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			if(this._delayTextureCreation)
+			
+			//attempt to reuse the existing texture so that we don't need to
+			//create a new one.
+			var canReuseTexture:Boolean = this._texture &&
+				this._texture.nativeWidth === bitmapData.width &&
+				this._texture.nativeHeight === bitmapData.height &&
+				this._texture.scale === this._scaleFactor &&
+				this._texture.format === this._textureFormat;
+			if(!canReuseTexture)
+			{
+				this.cleanupTexture();
+			}
+			if(this._delayTextureCreation && !this._isRestoringTexture)
 			{
 				this._pendingBitmapDataTexture = bitmapData;
 				if(this._textureQueueDuration < Number.POSITIVE_INFINITY)
@@ -2037,8 +2083,12 @@ package feathers.controls
 			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
 			this.urlLoader = null;
 
-			this.cleanupTexture();
-			if(this._delayTextureCreation)
+			//only clear the texture if we're not restoring
+			if(!this._isRestoringTexture)
+			{
+				this.cleanupTexture();
+			}
+			if(this._delayTextureCreation && !this._isRestoringTexture)
 			{
 				this._pendingRawTextureData = rawData;
 				if(this._textureQueueDuration < Number.POSITIVE_INFINITY)
