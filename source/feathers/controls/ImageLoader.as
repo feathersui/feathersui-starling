@@ -391,11 +391,19 @@ package feathers.controls
 				this.removeFromTextureQueue();
 			}
 			this._source = value;
+			
+			var oldTexture:Texture;
 			//we should try to reuse the existing texture, if possible.
-			var oldTexture:Texture = this._isTextureOwner ? this._texture : null;
-			this._isTextureOwner = false;
+			if(this._isTextureOwner && !(value is Texture))
+			{
+				oldTexture = this._texture;
+				this._isTextureOwner = false;
+			}
 			this.cleanupTexture();
-			this._texture = oldTexture;
+			if(oldTexture)
+			{
+				this._texture = oldTexture;
+			}
 			if(this.image)
 			{
 				this.image.visible = false;
