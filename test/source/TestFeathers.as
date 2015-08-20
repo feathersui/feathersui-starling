@@ -24,6 +24,7 @@ package
 	import feathers.tests.TextBlockTextEditorFocusTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
 	import feathers.tests.TextInputFocusTests;
+	import feathers.tests.TextureCacheTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
@@ -116,6 +117,7 @@ package
 				
 				//misc
 				PopUpManagerTests,
+				TextureCacheTests,
 			]);
 		}
 

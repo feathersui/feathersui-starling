@@ -1551,19 +1551,15 @@ package feathers.controls
 						}
 					}
 
-					if(this._textureCache && !this._isRestoringTexture)
+					if(this._textureCache && !this._isRestoringTexture && this._textureCache.hasTexture(sourceURL))
 					{
-						var cachedTexture:Texture = this._textureCache.getTexture(sourceURL);
-						if(cachedTexture)
-						{
-							this._texture = cachedTexture;
-							this._isTextureOwner = false;
-							this._isRestoringTexture = false;
-							this._isLoaded = true;
-							this.refreshCurrentTexture();
-							this.dispatchEventWith(starling.events.Event.COMPLETE);
-							return;
-						}
+						this._texture = this._textureCache.retainTexture(sourceURL);
+						this._isTextureOwner = false;
+						this._isRestoringTexture = false;
+						this._isLoaded = true;
+						this.refreshCurrentTexture();
+						this.dispatchEventWith(starling.events.Event.COMPLETE);
+						return;
 					}
 
 					if(isATFURL(sourceURL))
@@ -1779,9 +1775,16 @@ package feathers.controls
 		 */
 		protected function cleanupTexture():void
 		{
-			if(this._isTextureOwner && this._texture)
+			if(this._texture)
 			{
-				this._texture.dispose();
+				if(this._isTextureOwner)
+				{
+					this._texture.dispose();
+				}
+				else if(this._textureCache && this._source is String)
+				{
+					this._textureCache.releaseTexture(this._source as String);
+				}
 			}
 			if(this._pendingBitmapDataTexture)
 			{
@@ -1841,15 +1844,17 @@ package feathers.controls
 				this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
 					bitmapData.height / this._scaleFactor, true, false, false,
 					this._scaleFactor, this._textureFormat);
+				var sourceURL:String = this._source as String;
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
-					this._source as String, this._textureFormat, this._scaleFactor);
+					sourceURL, this._textureFormat, this._scaleFactor);
+				if(this._textureCache)
+				{
+					this._textureCache.addTexture(sourceURL, this._texture, true);
+				}
 			}
 			this._texture.root.uploadBitmapData(bitmapData);
 			bitmapData.dispose();
-			if(this._textureCache)
-			{
-				this._textureCache.setTexture(this._source as String, this._texture);
-			}
+			
 			//if we have a cache for the textures, then the cache is the owner
 			//because other ImageLoaders may use the same texture.
 			this._isTextureOwner = this._textureCache === null;
@@ -1886,14 +1891,15 @@ package feathers.controls
 			else
 			{
 				this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
+				var sourceURL:String = this._source as String;
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
-					this._source as String, this._textureFormat, this._scaleFactor);
+					sourceURL, this._textureFormat, this._scaleFactor);
+				if(this._textureCache)
+				{
+					this._textureCache.addTexture(sourceURL, this._texture, true);
+				}
 			}
 			rawData.clear();
-			if(this._textureCache)
-			{
-				this._textureCache.setTexture(this._source as String, this._texture);
-			}
 			//if we have a cache for the textures, then the cache is the owner
 			//because other ImageLoaders may use the same texture.
 			this._isTextureOwner = this._textureCache === null;
