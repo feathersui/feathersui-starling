@@ -1549,7 +1549,7 @@ package feathers.controls
 						if(cachedTexture)
 						{
 							this._texture = cachedTexture;
-							this._isTextureOwner = true;
+							this._isTextureOwner = false;
 							this._isRestoringTexture = false;
 							this._isLoaded = true;
 							this.refreshCurrentTexture();
@@ -1842,7 +1842,9 @@ package feathers.controls
 			{
 				this._textureCache.setTexture(this._source as String, this._texture);
 			}
-			this._isTextureOwner = true;
+			//if we have a cache for the textures, then the cache is the owner
+			//because other ImageLoaders may use the same texture.
+			this._isTextureOwner = this._textureCache === null;
 			this._isRestoringTexture = false;
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1884,7 +1886,9 @@ package feathers.controls
 			{
 				this._textureCache.setTexture(this._source as String, this._texture);
 			}
-			this._isTextureOwner = true;
+			//if we have a cache for the textures, then the cache is the owner
+			//because other ImageLoaders may use the same texture.
+			this._isTextureOwner = this._textureCache === null;
 			this._isRestoringTexture = false;
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -2036,7 +2040,10 @@ package feathers.controls
 				otherLoader.addEventListener(starling.events.Event.COMPLETE, onRestore_onComplete);
 			};
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function onRestore_onComplete(event:starling.events.Event):void
 		{
 			var otherLoader:ImageLoader = ImageLoader(event.currentTarget);
