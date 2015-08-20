@@ -72,5 +72,11 @@
 		<package name="feathers.utils.text"> 
 			<shortDescription><![CDATA[Utilities for text components.]]></shortDescription>
 		</package>
+		<package name="feathers.utils.textures"> 
+			<shortDescription><![CDATA[Utilities for working with textures.]]></shortDescription>
+		</package>
+		<package name="feathers.utils.touch"> 
+			<shortDescription><![CDATA[Utilities for working with touches.]]></shortDescription>
+		</package>
 	</packages>
 </overviews>
