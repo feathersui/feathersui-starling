@@ -713,7 +713,10 @@ package feathers.controls.supportClasses
 		 */
 		protected function transitionComplete(cancelTransition:Boolean = false):void
 		{
-			this._isTransitionActive = false;
+			//consider the transition still active if something is already
+			//queued up to happen next. if an event listener asks to show a new
+			//screen, it needs to replace what is queued up.
+			this._isTransitionActive = this._clearAfterTransition || this._nextScreenID;
 			if(cancelTransition)
 			{
 				if(this._activeScreen)
@@ -731,31 +734,42 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				if(this._previousScreenInTransition)
+				//we need to save these in local variables because a new
+				//transition may be started in the listeners for the transition
+				//complete events, and that will overwrite them.
+				var activeScreen:DisplayObject = this._activeScreen;
+				var previousScreen:DisplayObject = this._previousScreenInTransition;
+				var previousScreenID:String = this._previousScreenInTransitionID;
+				this._previousScreenInTransition = null;
+				this._previousScreenInTransitionID = null;
+				if(previousScreen)
 				{
-					this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_COMPLETE)
+					previousScreen.dispatchEventWith(FeathersEventType.TRANSITION_OUT_COMPLETE)
 				}
-				if(this._activeScreen)
+				if(activeScreen)
 				{
-					this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_COMPLETE)
+					activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_COMPLETE)
 				}
+				//we need to dispatch this event before the previous screen's
+				//owner property is set to null because legacy code that was
+				//written before TRANSITION_OUT_COMPLETE existed may be using
+				//this event for the same purpose.
 				this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
-				if(this._previousScreenInTransition)
+				if(previousScreen)
 				{
-					item = IScreenNavigatorItem(this._screens[this._previousScreenInTransitionID]);
-					if(this._previousScreenInTransition is IScreen)
+					item = IScreenNavigatorItem(this._screens[previousScreenID]);
+					if(previousScreen is IScreen)
 					{
-						var screen:IScreen = IScreen(this._previousScreenInTransition);
+						var screen:IScreen = IScreen(previousScreen);
 						screen.screenID = null;
 						screen.owner = null;
 					}
-					this._previousScreenInTransition.removeEventListener(Event.RESIZE, activeScreen_resizeHandler);
-					this.removeChild(this._previousScreenInTransition, item.canDispose);
-					this._previousScreenInTransition = null;
-					this._previousScreenInTransitionID = null;
+					previousScreen.removeEventListener(Event.RESIZE, activeScreen_resizeHandler);
+					this.removeChild(previousScreen, item.canDispose);
 				}
 			}
 
+			this._isTransitionActive = false;
 			if(this._clearAfterTransition)
 			{
 				this.clearScreenInternal(this._nextScreenTransition);
