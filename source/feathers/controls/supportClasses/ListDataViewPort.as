@@ -12,6 +12,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
@@ -200,8 +201,8 @@ package feathers.controls.supportClasses
 		private var _typicalItemRenderer:IListItemRenderer;
 		private var _unrenderedData:Array = [];
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
-		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
-		private var _activeRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
+		private var _defaultStorage:ItemRendererFactoryStorage = new ItemRendererFactoryStorage();
+		private var _storageMap:Object;
 		private var _rendererMap:Dictionary = new Dictionary(true);
 		private var _minimumItemCount:int;
 
@@ -312,6 +313,52 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
+		private var _itemRendererFactories:Object;
+
+		public function get itemRendererFactories():Object
+		{
+			return this._itemRendererFactories;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererFactories(value:Object):void
+		{
+			if(this._itemRendererFactories === value)
+			{
+				return;
+			}
+
+			this._itemRendererFactories = value;
+			if(value !== null)
+			{
+				this._storageMap = {};
+			}
+			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
+		}
+		
+		private var _factoryIDFunction:Function;
+		
+		public function get factoryIDFunction():Function
+		{
+			return this._factoryIDFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryIDFunction(value:Function):void
+		{
+			if(this._factoryIDFunction === value)
+			{
+				return;
+			}
+
+			this._factoryIDFunction = value;
+			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
+		}
+
 		private var _customItemRendererStyleName:String;
 
 		public function get customItemRendererStyleName():String
@@ -405,13 +452,12 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			if(this._activeRenderers.length == 0)
+			if(this._typicalItemRenderer === null)
 			{
 				return 0;
 			}
-			var itemRenderer:IListItemRenderer = this._activeRenderers[0];
-			var itemRendererWidth:Number = itemRenderer.width;
-			var itemRendererHeight:Number = itemRenderer.height;
+			var itemRendererWidth:Number = this._typicalItemRenderer.width;
+			var itemRendererHeight:Number = this._typicalItemRenderer.height;
 			if(itemRendererWidth < itemRendererHeight)
 			{
 				return itemRendererWidth;
@@ -421,13 +467,12 @@ package feathers.controls.supportClasses
 
 		public function get verticalScrollStep():Number
 		{
-			if(this._activeRenderers.length == 0)
+			if(this._typicalItemRenderer === null)
 			{
 				return 0;
 			}
-			var itemRenderer:IListItemRenderer = this._activeRenderers[0];
-			var itemRendererWidth:Number = itemRenderer.width;
-			var itemRendererHeight:Number = itemRenderer.height;
+			var itemRendererWidth:Number = this._typicalItemRenderer.width;
+			var itemRendererHeight:Number = this._typicalItemRenderer.height;
 			if(itemRendererWidth < itemRendererHeight)
 			{
 				return itemRendererWidth;
@@ -587,7 +632,15 @@ package feathers.controls.supportClasses
 			}
 			if(basicsInvalid)
 			{
-				this.refreshInactiveRenderers(itemRendererInvalid);
+				this.refreshInactiveRenderers(this._defaultStorage, itemRendererInvalid);
+				if(this._storageMap)
+				{
+					for(var factoryID:String in this._storageMap)
+					{
+						var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
+						this.refreshInactiveRenderers(storage, itemRendererInvalid);
+					}
+				}
 			}
 			if(dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
@@ -642,11 +695,14 @@ package feathers.controls.supportClasses
 
 		private function validateItemRenderers():void
 		{
-			var rendererCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
+			var itemCount:int = this._layoutItems.length;
+			for(var i:int = 0; i < itemCount; i++)
 			{
-				var renderer:IListItemRenderer = this._activeRenderers[i];
-				renderer.validate();
+				var item:IValidating = this._layoutItems[i] as IValidating;
+				if(item)
+				{
+					item.validate();
+				}
 			}
 		}
 
@@ -757,9 +813,13 @@ package feathers.controls.supportClasses
 
 		private function refreshItemRendererStyles():void
 		{
-			for each(var renderer:IListItemRenderer in this._activeRenderers)
+			for each(var item:DisplayObject in this._layoutItems)
 			{
-				this.refreshOneItemRendererStyles(renderer);
+				var itemRenderer:IListItemRenderer = item as IListItemRenderer;
+				if(itemRenderer)
+				{
+					this.refreshOneItemRendererStyles(itemRenderer);
+				}
 			}
 		}
 
@@ -775,21 +835,25 @@ package feathers.controls.supportClasses
 
 		private function refreshSelection():void
 		{
-			var rendererCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
+			for each(var item:DisplayObject in this._layoutItems)
 			{
-				var renderer:IListItemRenderer = this._activeRenderers[i];
-				renderer.isSelected = this._selectedIndices.getItemIndex(renderer.index) >= 0;
+				var itemRenderer:IListItemRenderer = item as IListItemRenderer;
+				if(itemRenderer)
+				{
+					itemRenderer.isSelected = this._selectedIndices.getItemIndex(itemRenderer.index) >= 0;
+				}
 			}
 		}
 
 		private function refreshEnabled():void
 		{
-			var rendererCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
+			for each(var item:DisplayObject in this._layoutItems)
 			{
-				var itemRenderer:IFeathersControl = IFeathersControl(this._activeRenderers[i]);
-				itemRenderer.isEnabled = this._isEnabled;
+				var itemRenderer:IListItemRenderer = item as IListItemRenderer;
+				if(itemRenderer)
+				{
+					itemRenderer.isSelected = this._selectedIndices.getItemIndex(itemRenderer.index) >= 0;
+				}
 			}
 		}
 
@@ -806,19 +870,19 @@ package feathers.controls.supportClasses
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
 
-		private function refreshInactiveRenderers(itemRendererTypeIsInvalid:Boolean):void
+		private function refreshInactiveRenderers(storage:ItemRendererFactoryStorage, itemRendererTypeIsInvalid:Boolean):void
 		{
-			var temp:Vector.<IListItemRenderer> = this._inactiveRenderers;
-			this._inactiveRenderers = this._activeRenderers;
-			this._activeRenderers = temp;
-			if(this._activeRenderers.length > 0)
+			var temp:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
+			storage.inactiveItemRenderers = storage.activeItemRenderers;
+			storage.activeItemRenderers = temp;
+			if(storage.activeItemRenderers.length > 0)
 			{
 				throw new IllegalOperationError("ListDataViewPort: active renderers should be empty.");
 			}
 			if(itemRendererTypeIsInvalid)
 			{
-				this.recoverInactiveRenderers();
-				this.freeInactiveRenderers(false);
+				this.recoverInactiveRenderers(storage);
+				this.freeInactiveRenderers(storage, false);
 				if(this._typicalItemRenderer)
 				{
 					if(this._typicalItemIsInDataProvider)
@@ -840,20 +904,23 @@ package feathers.controls.supportClasses
 			{
 				if(this._typicalItemIsInDataProvider)
 				{
+					var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(this._typicalItemRenderer.factoryID);
+					var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
+					var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
 					//this renderer is already is use by the typical item, so we
 					//don't want to allow it to be used by other items.
-					var inactiveIndex:int = this._inactiveRenderers.indexOf(this._typicalItemRenderer);
+					var inactiveIndex:int = inactiveItemRenderers.indexOf(this._typicalItemRenderer);
 					if(inactiveIndex >= 0)
 					{
-						this._inactiveRenderers[inactiveIndex] = null;
+						inactiveItemRenderers[inactiveIndex] = null;
 					}
 					//if refreshLayoutTypicalItem() was called, it will have already
 					//added the typical item renderer to the active renderers. if
 					//not, we need to do it here.
-					var activeRendererCount:int = this._activeRenderers.length;
-					if(activeRendererCount == 0)
+					var activeRendererCount:int = activeItemRenderers.length;
+					if(activeRendererCount === 0)
 					{
-						this._activeRenderers[activeRendererCount] = this._typicalItemRenderer;
+						activeItemRenderers[activeRendererCount] = this._typicalItemRenderer;
 					}
 				}
 				//we need to set the typical item renderer's properties here
@@ -863,9 +930,25 @@ package feathers.controls.supportClasses
 			}
 
 			this.findUnrenderedData();
-			this.recoverInactiveRenderers();
+			this.recoverInactiveRenderers(this._defaultStorage);
+			if(this._storageMap)
+			{
+				for(var factoryID:String in this._storageMap)
+				{
+					storage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
+					this.recoverInactiveRenderers(storage);
+				}
+			}
 			this.renderUnrenderedData();
-			this.freeInactiveRenderers(true);
+			this.freeInactiveRenderers(this._defaultStorage, true);
+			if(this._storageMap)
+			{
+				for(factoryID in this._storageMap)
+				{
+					storage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
+					this.freeInactiveRenderers(storage, false);
+				}
+			}
 			this._updateForDataReset = false;
 		}
 
@@ -930,7 +1013,6 @@ package feathers.controls.supportClasses
 				this._layoutItems.length = itemCount;
 			}
 
-			var activeRenderersLastIndex:int = this._activeRenderers.length;
 			var unrenderedDataLastIndex:int = this._unrenderedData.length;
 			for(i = 0; i < unrenderedItemCount; i++)
 			{
@@ -940,15 +1022,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				var item:Object = this._dataProvider.getItemAt(index);
-				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(renderer)
+				var itemRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+				if(itemRenderer)
 				{
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
-					renderer.index = index;
+					itemRenderer.index = index;
 					//if this item renderer used to be the typical item
 					//renderer, but it isn't anymore, it may have been set invisible!
-					renderer.visible = true;
+					itemRenderer.visible = true;
 					if(this._updateForDataReset)
 					{
 						//similar to calling updateItemAt(), replacing the data
@@ -960,28 +1042,30 @@ package feathers.controls.supportClasses
 						//somewhat optimized since the same item renderer will
 						//receive the same data, and the children generally
 						//won't have changed much, if at all.
-						renderer.data = null;
-						renderer.data = item;
+						itemRenderer.data = null;
+						itemRenderer.data = item;
 					}
 
 					//the typical item renderer is a special case, and we will
 					//have already put it into the active renderers, so we don't
 					//want to do it again!
-					if(this._typicalItemRenderer != renderer)
+					if(this._typicalItemRenderer != itemRenderer)
 					{
-						this._activeRenderers[activeRenderersLastIndex] = renderer;
-						activeRenderersLastIndex++;
-						var inactiveIndex:int = this._inactiveRenderers.indexOf(renderer);
+						var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(itemRenderer.factoryID);
+						var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
+						var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
+						activeItemRenderers[activeItemRenderers.length] = itemRenderer;
+						var inactiveIndex:int = inactiveItemRenderers.indexOf(itemRenderer);
 						if(inactiveIndex >= 0)
 						{
-							this._inactiveRenderers[inactiveIndex] = null;
+							inactiveItemRenderers[inactiveIndex] = null;
 						}
 						else
 						{
 							throw new IllegalOperationError("ListDataViewPort: renderer map contains bad data.");
 						}
 					}
-					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
+					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(itemRenderer);
 				}
 				else
 				{
@@ -1031,29 +1115,34 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function recoverInactiveRenderers():void
+		private function recoverInactiveRenderers(storage:ItemRendererFactoryStorage):void
 		{
-			var itemCount:int = this._inactiveRenderers.length;
+			var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
+			
+			var itemCount:int = inactiveItemRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var renderer:IListItemRenderer = this._inactiveRenderers[i];
-				if(!renderer)
+				var itemRenderer:IListItemRenderer = inactiveItemRenderers[i];
+				if(!itemRenderer)
 				{
 					continue;
 				}
-				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, renderer);
-				delete this._rendererMap[renderer.data];
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
+				delete this._rendererMap[itemRenderer.data];
 			}
 		}
 
-		private function freeInactiveRenderers(allowKeep:Boolean):void
+		private function freeInactiveRenderers(storage:ItemRendererFactoryStorage, allowKeep:Boolean):void
 		{
+			var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
+			var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
+			
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
-			var itemCount:int = this._inactiveRenderers.length;
+			var itemCount:int = inactiveItemRenderers.length;
 			if(allowKeep)
 			{
-				var keepCount:int = this._minimumItemCount - this._activeRenderers.length;
+				var keepCount:int = this._minimumItemCount - activeItemRenderers.length;
 			}
 			else
 			{
@@ -1065,8 +1154,8 @@ package feathers.controls.supportClasses
 			}
 			for(var i:int = 0; i < keepCount; i++)
 			{
-				var renderer:IListItemRenderer = this._inactiveRenderers.shift();
-				if(!renderer)
+				var itemRenderer:IListItemRenderer = inactiveItemRenderers.shift();
+				if(!itemRenderer)
 				{
 					keepCount++;
 					if(itemCount < keepCount)
@@ -1075,70 +1164,86 @@ package feathers.controls.supportClasses
 					}
 					continue;
 				}
-				renderer.data = null;
-				renderer.index = -1;
-				renderer.visible = false;
-				this._activeRenderers.push(renderer);
+				itemRenderer.data = null;
+				itemRenderer.index = -1;
+				itemRenderer.visible = false;
+				activeItemRenderers[activeItemRenderers.length] = itemRenderer;
 			}
 			itemCount -= keepCount;
 			for(i = 0; i < itemCount; i++)
 			{
-				renderer = this._inactiveRenderers.shift();
-				if(!renderer)
+				itemRenderer = inactiveItemRenderers.shift();
+				if(!itemRenderer)
 				{
 					continue;
 				}
-				this.destroyRenderer(renderer);
+				this.destroyRenderer(itemRenderer);
 			}
 		}
 
 		private function createRenderer(item:Object, index:int, useCache:Boolean, isTemporary:Boolean):IListItemRenderer
 		{
-			var renderer:IListItemRenderer;
-			do
+			var factoryID:String = null;
+			if(this._factoryIDFunction !== null)
 			{
-				if(!useCache || isTemporary || this._inactiveRenderers.length == 0)
+				if(this._factoryIDFunction.length === 1)
 				{
-					if(this._itemRendererFactory != null)
-					{
-						renderer = IListItemRenderer(this._itemRendererFactory());
-					}
-					else
-					{
-						renderer = new this._itemRendererType();
-					}
-					var uiRenderer:IFeathersControl = IFeathersControl(renderer);
-					if(this._customItemRendererStyleName && this._customItemRendererStyleName.length > 0)
-					{
-						uiRenderer.styleNameList.add(this._customItemRendererStyleName);
-					}
-					this.addChild(DisplayObject(renderer));
+					factoryID = this._factoryIDFunction(item);
 				}
 				else
 				{
-					renderer = this._inactiveRenderers.shift();
+					factoryID = this._factoryIDFunction(item, index);
+				}
+			}
+			var itemRendererFactory:Function = this.factoryIDToFactory(factoryID);
+			var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(factoryID);
+			var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
+			var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
+			var itemRenderer:IListItemRenderer;
+			do
+			{
+				if(!useCache || isTemporary || inactiveItemRenderers.length == 0)
+				{
+					if(itemRendererFactory != null)
+					{
+						itemRenderer = IListItemRenderer(itemRendererFactory());
+					}
+					else
+					{
+						itemRenderer = new this._itemRendererType();
+					}
+					if(this._customItemRendererStyleName && this._customItemRendererStyleName.length > 0)
+					{
+						itemRenderer.styleNameList.add(this._customItemRendererStyleName);
+					}
+					this.addChild(DisplayObject(itemRenderer));
+				}
+				else
+				{
+					itemRenderer = inactiveItemRenderers.shift();
 				}
 				//wondering why this all is in a loop?
 				//_inactiveRenderers.shift() may return null because we're
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(!renderer)
-			renderer.data = item;
-			renderer.index = index;
-			renderer.owner = this._owner;
+			while(!itemRenderer)
+			itemRenderer.data = item;
+			itemRenderer.index = index;
+			itemRenderer.owner = this._owner;
+			itemRenderer.factoryID = factoryID;
 
 			if(!isTemporary)
 			{
-				this._rendererMap[item] = renderer;
-				this._activeRenderers[this._activeRenderers.length] = renderer;
-				renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
-				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
-				renderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
-				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
+				this._rendererMap[item] = itemRenderer;
+				activeItemRenderers[activeItemRenderers.length] = itemRenderer;
+				itemRenderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
+				itemRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
+				itemRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, itemRenderer);
 			}
 
-			return renderer;
+			return itemRenderer;
 		}
 
 		private function destroyRenderer(renderer:IListItemRenderer):void
@@ -1148,7 +1253,39 @@ package feathers.controls.supportClasses
 			renderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 			renderer.owner = null;
 			renderer.data = null;
+			renderer.factoryID = null;
 			this.removeChild(DisplayObject(renderer), true);
+		}
+		
+		private function factoryIDToFactory(id:String):Function
+		{
+			if(id !== null)
+			{
+				if(id in this._itemRendererFactories)
+				{
+					return this._itemRendererFactories[id] as Function;
+				}
+				else
+				{
+					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".")
+				}
+			}
+			return this._itemRendererFactory;
+		}
+
+		private function factoryIDToStorage(id:String):ItemRendererFactoryStorage
+		{
+			if(id !== null)
+			{
+				if(id in this._storageMap)
+				{
+					return ItemRendererFactoryStorage(this._storageMap[id])
+				}
+				var storage:ItemRendererFactoryStorage = new ItemRendererFactoryStorage();
+				this._storageMap[id] = storage;
+				return storage;
+			}
+			return this._defaultStorage;
 		}
 
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
@@ -1346,4 +1483,12 @@ package feathers.controls.supportClasses
 			}
 		}
 	}
+}
+
+import feathers.controls.renderers.IListItemRenderer;
+
+class ItemRendererFactoryStorage
+{
+	public var activeItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
+	public var inactiveItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 }

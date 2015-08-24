@@ -909,6 +909,11 @@ package feathers.controls
 			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemRendererFactories:Object;
 		
 		/**
 		 * @private
@@ -940,6 +945,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IListItemRenderer
 		 * @see #itemRendererType
+		 * @see #setItemRendererFactoryWithID()
 		 */
 		public function get itemRendererFactory():Function
 		{
@@ -957,6 +963,75 @@ package feathers.controls
 			}
 			
 			this._itemRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _factoryIDFunction:Function;
+
+		/**
+		 * When a list requires multiple item renderer types, this function is
+		 * used to determine which type of item renderer is required for a
+		 * specific item (or index). Returns the ID of the item renderer type
+		 * to use for the item, or <code>null</code> if the default
+		 * <code>itemRendererFactory</code> should be used.
+		 *
+		 * <p>The function is expected to have one of the following
+		 * signatures:</p>
+		 *
+		 * <pre>function(item:Object):String</pre>
+		 *
+		 * <pre>function(item:Object, index:int):String</pre>
+		 *
+		 * <p>The following example provides a <code>factoryIDFunction</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * function regularItemFactory():IListItemRenderer
+		 * {
+		 *     return new DefaultListItemRenderer();
+		 * }
+		 * function headerItemFactory():IListItemRenderer
+		 * {
+		 *     return new CustomItemRenderer();
+		 * }
+		 * list.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
+		 * list.setItemRendererFactoryWithID( "header-item", listHeaderFactory );
+		 * 
+		 * list.factoryIDFunction = function( item:Object, index:int ):String
+		 * {
+		 *     if(index === 0)
+		 *     {
+		 *         return "list-header";
+		 *     }
+		 *     return "regular-item";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #setItemRendererFactoryWithID()
+		 * @see #itemRendererFactory
+		 */
+		public function get factoryIDFunction():Function
+		{
+			return this._factoryIDFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryIDFunction(value:Function):void
+		{
+			if(this._factoryIDFunction === value)
+			{
+				return;
+			}
+			this._factoryIDFunction = value;
+			if(value !== null && this._itemRendererFactories === null)
+			{
+				this._itemRendererFactories = {};
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -1229,6 +1304,52 @@ package feathers.controls
 		}
 
 		/**
+		 * Returns the item renderer factory associated with a specific ID.
+		 * Returns <code>null</code> if no item renderer is associated with the
+		 * ID.
+		 *
+		 * @see #setItemRendererFactoryWithID()
+		 */
+		public function getItemRendererFactoryWithID(id:String):Function
+		{
+			if(this._itemRendererFactories && (id in this._itemRendererFactories))
+			{
+				return this._itemRendererFactories[id] as Function;
+			}
+			return null;
+		}
+
+		/**
+		 * Associates an item renderer factory with an ID that that multiple
+		 * kinds of item renderers may be displayed in the list. A custom
+		 * <code>factoryIDFunction</code> may be specified to return the ID of
+		 * the item renderer kind to use for a specific item.
+		 * 
+		 * @see #factoryIDFunction
+		 * @see #getItemRendererFactoryWithID()
+		 */
+		public function setItemRendererFactoryWithID(id:String, factory:Function):void
+		{
+			if(id === null)
+			{
+				this.itemRendererFactory = factory;
+				return;
+			}
+			if(this._itemRendererFactories === null)
+			{
+				this._itemRendererFactories = {};
+			}
+			if(factory !== null)
+			{
+				this._itemRendererFactories[id] = factory;
+			}
+			else
+			{
+				delete this._itemRendererFactories[id];
+			}
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void
@@ -1299,6 +1420,8 @@ package feathers.controls
 			this.dataViewPort.dataProvider = this._dataProvider;
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
+			this.dataViewPort.itemRendererFactories = this._itemRendererFactories;
+			this.dataViewPort.factoryIDFunction = this._factoryIDFunction;
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
 			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 			this.dataViewPort.typicalItem = this._typicalItem;
