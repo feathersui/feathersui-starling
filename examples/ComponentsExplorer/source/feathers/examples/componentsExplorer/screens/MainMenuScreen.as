@@ -8,7 +8,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.system.Capabilities;
@@ -113,25 +112,9 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 
+			this._list.itemRendererFactory = this.createItemRenderer;
+
 			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
-			var itemRendererAccessorySourceFunction:Function = null;
-			if(!isTablet)
-			{
-				itemRendererAccessorySourceFunction = this.accessorySourceFunction;
-			}
-			this._list.itemRendererFactory = function():IListItemRenderer
-			{
-				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-
-				//enable the quick hit area to optimize hit tests when an item
-				//is only selectable and doesn't have interactive children.
-				renderer.isQuickHitAreaEnabled = true;
-
-				renderer.labelField = "label";
-				renderer.accessorySourceFunction = itemRendererAccessorySourceFunction;
-				return renderer;
-			};
-
 			if(isTablet)
 			{
 				this._list.addEventListener(Event.CHANGE, list_changeHandler);
@@ -145,10 +128,23 @@ package feathers.examples.componentsExplorer.screens
 			}
 			this.addChild(this._list);
 		}
-
-		private function accessorySourceFunction(item:Object):Texture
+		
+		private function createItemRenderer():IListItemRenderer
 		{
-			return StandardIcons.listDrillDownAccessoryTexture;
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+			
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(!isTablet)
+			{
+				renderer.styleNameList.add(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN);
+			}
+
+			//enable the quick hit area to optimize hit tests when an item
+			//is only selectable and doesn't have interactive children.
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.labelField = "label";
+			return renderer;
 		}
 		
 		private function transitionInCompleteHandler(event:Event):void

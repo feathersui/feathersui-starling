@@ -10,7 +10,6 @@ package feathers.examples.youtube.screens
 	import feathers.examples.youtube.models.VideoFeed;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.skins.StandardIcons;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -72,18 +71,7 @@ package feathers.examples.youtube.screens
 
 			this._list = new List();
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this._list.itemRendererFactory = function():IListItemRenderer
-			{
-				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-
-				//enable the quick hit area to optimize hit tests when an item
-				//is only selectable and doesn't have interactive children.
-				renderer.isQuickHitAreaEnabled = true;
-
-				renderer.labelField = "name";
-				renderer.accessorySourceFunction = accessorySourceFunction;
-				return renderer;
-			}
+			this._list.itemRendererFactory = this.createItemRenderer;
 			//when navigating to video results, we save this information to
 			//restore the list when later navigating back to this screen.
 			if(this.savedDataProvider)
@@ -169,9 +157,17 @@ package feathers.examples.youtube.screens
 			this._list.revealScrollBars();
 		}
 
-		private function accessorySourceFunction(item:Object):Texture
+		private function createItemRenderer():IListItemRenderer
 		{
-			return StandardIcons.listDrillDownAccessoryTexture;
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			renderer.styleNameList.add(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN);
+
+			//enable the quick hit area to optimize hit tests when an item
+			//is only selectable and doesn't have interactive children.
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.labelField = "name";
+			return renderer;
 		}
 
 		private function removedFromStageHandler(event:starling.events.Event):void

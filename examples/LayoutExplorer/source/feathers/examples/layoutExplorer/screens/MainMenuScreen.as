@@ -8,7 +8,6 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -74,23 +73,7 @@ package feathers.examples.layoutExplorer.screens
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 
-			var itemRendererAccessorySourceFunction:Function = null;
-			if(!isTablet)
-			{
-				itemRendererAccessorySourceFunction = this.accessorySourceFunction;
-			}
-			this._list.itemRendererFactory = function():IListItemRenderer
-			{
-				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-
-				//enable the quick hit area to optimize hit tests when an item
-				//is only selectable and doesn't have interactive children.
-				renderer.isQuickHitAreaEnabled = true;
-
-				renderer.labelField = "text";
-				renderer.accessorySourceFunction = itemRendererAccessorySourceFunction;
-				return renderer;
-			};
+			this._list.itemRendererFactory = this.createItemRenderer;
 
 			if(isTablet)
 			{
@@ -106,9 +89,22 @@ package feathers.examples.layoutExplorer.screens
 			this.addChild(this._list);
 		}
 
-		private function accessorySourceFunction(item:Object):Texture
+		private function createItemRenderer():IListItemRenderer
 		{
-			return StandardIcons.listDrillDownAccessoryTexture;
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+			
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(!isTablet)
+			{
+				renderer.styleNameList.add(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN);
+			}
+
+			//enable the quick hit area to optimize hit tests when an item
+			//is only selectable and doesn't have interactive children.
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.labelField = "text";
+			return renderer;
 		}
 
 		private function transitionInCompleteHandler(event:Event):void
