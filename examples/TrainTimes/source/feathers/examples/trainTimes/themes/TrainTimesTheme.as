@@ -159,7 +159,14 @@ package feathers.examples.trainTimes.themes
 
 		protected function initializeScale():void
 		{
-			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
+			var starling:Starling = Starling.current;
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			
+			var scaledDPI:int = DeviceCapabilities.dpi / (Starling.contentScaleFactor / nativeScaleFactor);
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				var originalDPI:int = ORIGINAL_DPI_IPAD_RETINA;
@@ -239,7 +246,9 @@ package feathers.examples.trainTimes.themes
 			this.getStyleProviderForClass(List).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST, setStationListStyles);
 			this.getStyleProviderForClass(List).setFunctionForStyleName(TimesScreen.CHILD_STYLE_NAME_TIMES_LIST, setTimesListStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(TIMES_LIST_ITEM_RENDERER_NAME, setTimesListItemRendererStyles);
-			this.getStyleProviderForClass(StationListItemRenderer).defaultStyleFunction = setStationListItemRendererStyles;
+			this.getStyleProviderForClass(StationListItemRenderer).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST_ITEM_RENDERER, setStationListItemRendererStyles);
+			this.getStyleProviderForClass(StationListItemRenderer).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST_FIRST_ITEM_RENDERER, setStationListFirstItemRendererStyles);
+			this.getStyleProviderForClass(StationListItemRenderer).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST_LAST_ITEM_RENDERER, setStationListLastItemRendererStyles);
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER, setActionContainerStyles);
 		}
 
@@ -341,8 +350,6 @@ package feathers.examples.trainTimes.themes
 		{
 			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
-
-			list.itemRendererType = StationListItemRenderer;
 		}
 
 		protected function setTimesListStyles(list:List):void
@@ -368,14 +375,28 @@ package feathers.examples.trainTimes.themes
 		protected function setStationListItemRendererStyles(renderer:StationListItemRenderer):void
 		{
 			renderer.paddingLeft = 44 * this.scale;
-			renderer.paddingRight = 32 * this.scale
+			renderer.paddingRight = 32 * this.scale;
 			renderer.iconLoaderFactory = imageLoaderFactory;
 			renderer.normalIconTexture = this.stationListNormalIconTexture;
-			renderer.firstNormalIconTexture = this.stationListFirstNormalIconTexture;
-			renderer.lastNormalIconTexture = this.stationListLastNormalIconTexture;
 			renderer.selectedIconTexture = this.stationListSelectedIconTexture;
-			renderer.firstSelectedIconTexture = this.stationListFirstSelectedIconTexture;
-			renderer.lastSelectedIconTexture = this.stationListLastSelectedIconTexture;
+		}
+
+		protected function setStationListFirstItemRendererStyles(renderer:StationListItemRenderer):void
+		{
+			renderer.paddingLeft = 44 * this.scale;
+			renderer.paddingRight = 32 * this.scale;
+			renderer.iconLoaderFactory = imageLoaderFactory;
+			renderer.normalIconTexture = this.stationListFirstNormalIconTexture;
+			renderer.selectedIconTexture = this.stationListFirstSelectedIconTexture;
+		}
+
+		protected function setStationListLastItemRendererStyles(renderer:StationListItemRenderer):void
+		{
+			renderer.paddingLeft = 44 * this.scale;
+			renderer.paddingRight = 32 * this.scale;
+			renderer.iconLoaderFactory = imageLoaderFactory;
+			renderer.normalIconTexture = this.stationListLastNormalIconTexture;
+			renderer.selectedIconTexture = this.stationListLastSelectedIconTexture;
 		}
 
 		protected function setActionContainerStyles(container:ScrollContainer):void

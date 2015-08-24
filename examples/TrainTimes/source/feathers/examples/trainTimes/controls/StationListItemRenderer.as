@@ -93,45 +93,27 @@ package feathers.examples.trainTimes.controls
 		public function set index(value:int):void
 		{
 			this._index = value;
-			if(this._owner && this._owner.dataProvider)
-			{
-				this.isLastItem = this._index == this._owner.dataProvider.length - 1;
-			}
-			this.isFirstItem = this._index == 0;
 		}
 
-		protected var _isFirstItem:Boolean = false;
+		/**
+		 * @private
+		 */
+		private var _factoryID:String;
 
-		public function get isFirstItem():Boolean
+		/**
+		 * @inheritDoc
+		 */
+		public function get factoryID():String
 		{
-			return this._isFirstItem;
+			return this._factoryID;
 		}
 
-		public function set isFirstItem(value:Boolean):void
+		/**
+		 * @private
+		 */
+		public function set factoryID(value:String):void
 		{
-			if(this._isFirstItem == value)
-			{
-				return;
-			}
-			this._isFirstItem = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
-		}
-
-		protected var _isLastItem:Boolean = false;
-
-		public function get isLastItem():Boolean
-		{
-			return this._isLastItem;
-		}
-
-		public function set isLastItem(value:Boolean):void
-		{
-			if(this._isLastItem == value)
-			{
-				return;
-			}
-			this._isLastItem = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this._factoryID = value;
 		}
 
 		protected var _isInDestinationPhase:Boolean = false;
@@ -172,10 +154,6 @@ package feathers.examples.trainTimes.controls
 			if(this._owner)
 			{
 				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
-			}
-			if(this._owner && this._owner.dataProvider)
-			{
-				this.isLastItem = this._index == this._owner.dataProvider.length - 1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -223,40 +201,6 @@ package feathers.examples.trainTimes.controls
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
-		protected var _firstNormalIconTexture:Texture;
-
-		public function get firstNormalIconTexture():Texture
-		{
-			return this._firstNormalIconTexture;
-		}
-
-		public function set firstNormalIconTexture(value:Texture):void
-		{
-			if(this._firstNormalIconTexture == value)
-			{
-				return;
-			}
-			this._firstNormalIconTexture = value;
-			this.invalidate(INVALIDATION_FLAG_SKIN);
-		}
-
-		protected var _lastNormalIconTexture:Texture;
-
-		public function get lastNormalIconTexture():Texture
-		{
-			return this._lastNormalIconTexture;
-		}
-
-		public function set lastNormalIconTexture(value:Texture):void
-		{
-			if(this._lastNormalIconTexture == value)
-			{
-				return;
-			}
-			this._lastNormalIconTexture = value;
-			this.invalidate(INVALIDATION_FLAG_SKIN);
-		}
-
 		protected var _selectedIconTexture:Texture;
 
 		public function get selectedIconTexture():Texture
@@ -271,40 +215,6 @@ package feathers.examples.trainTimes.controls
 				return;
 			}
 			this._selectedIconTexture = value;
-			this.invalidate(INVALIDATION_FLAG_SKIN);
-		}
-
-		protected var _firstSelectedIconTexture:Texture;
-
-		public function get firstSelectedIconTexture():Texture
-		{
-			return this._firstSelectedIconTexture;
-		}
-
-		public function set firstSelectedIconTexture(value:Texture):void
-		{
-			if(this._firstSelectedIconTexture == value)
-			{
-				return;
-			}
-			this._firstSelectedIconTexture = value;
-			this.invalidate(INVALIDATION_FLAG_SKIN);
-		}
-
-		protected var _lastSelectedIconTexture:Texture;
-
-		public function get lastSelectedIconTexture():Texture
-		{
-			return this._lastSelectedIconTexture;
-		}
-
-		public function set lastSelectedIconTexture(value:Texture):void
-		{
-			if(this._lastSelectedIconTexture == value)
-			{
-				return;
-			}
-			this._lastSelectedIconTexture = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
@@ -491,6 +401,7 @@ package feathers.examples.trainTimes.controls
 			{
 				newHeight = this.icon.height;
 			}
+			trace(newWidth, newHeight);
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -517,18 +428,7 @@ package feathers.examples.trainTimes.controls
 				this.nameLabel.text = nameLabelText;
 
 				var displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
-				if(this.isFirstItem)
-				{
-					this.icon.source = displayAsSelected ? this._firstSelectedIconTexture : this._firstNormalIconTexture;
-				}
-				else if(this.isLastItem)
-				{
-					this.icon.source = displayAsSelected ? this._lastSelectedIconTexture : this._lastNormalIconTexture;
-				}
-				else
-				{
-					this.icon.source = displayAsSelected ? this._selectedIconTexture : this._normalIconTexture;
-				}
+				this.icon.source = displayAsSelected ? this._selectedIconTexture : this._normalIconTexture;
 
 				if(this._data.isDepartingFromHere)
 				{

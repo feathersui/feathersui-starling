@@ -13,6 +13,7 @@
 		<fullScreen>false</fullScreen>
 		<visible>true</visible>
 		<renderMode>direct</renderMode>
+		<requestedDisplayResolution>high</requestedDisplayResolution>
 	</initialWindow>
 
 	<supportedLanguages>en</supportedLanguages>
