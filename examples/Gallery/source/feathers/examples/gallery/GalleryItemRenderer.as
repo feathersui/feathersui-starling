@@ -90,6 +90,27 @@ package feathers.examples.gallery
 		/**
 		 * @private
 		 */
+		private var _factoryID:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get factoryID():String
+		{
+			return this._factoryID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryID(value:String):void
+		{
+			this._factoryID = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _owner:List;
 
 		/**
