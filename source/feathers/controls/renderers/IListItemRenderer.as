@@ -79,5 +79,17 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set owner(value:List):void;
+
+		/**
+		 * The ID of the factory used to create this item renderer.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
+		 */
+		function get factoryID():String;
+
+		/**
+		 * @private
+		 */
+		function set factoryID(value:String):void;
 	}
 }
