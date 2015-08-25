@@ -203,6 +203,20 @@ package feathers.themes
 
 		/**
 		 * @private
+		 * The theme's custom style name for the icon label text renderer of an
+		 * item renderer with the "check" style.
+		 */
+		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL:String = "metal-works-mobile-check-item-renderer-icon-label";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the accessory label text renderer
+		 * of an item renderer with the "check" style.
+		 */
+		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL:String = "metal-works-mobile-check-item-renderer-accessory-label";
+
+		/**
+		 * @private
 		 * The theme's custom style name for item renderers in a SpinnerList.
 		 */
 		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-spinner-list-item-renderer";
@@ -1015,6 +1029,8 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL, this.setCheckItemRendererLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL, this.setCheckItemRendererIconLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL, this.setCheckItemRendererAccessoryLabelStyles);
 
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
@@ -1593,7 +1609,7 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = DefaultGroupedListItemRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1603,7 +1619,7 @@ package feathers.themes
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.accessoryPosition = DefaultGroupedListItemRenderer.ACCESSORY_POSITION_RIGHT;
 			renderer.minWidth = renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = renderer.minTouchHeight = this.gridSize;
 
@@ -1760,7 +1776,7 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -1822,6 +1838,8 @@ package feathers.themes
 			renderer.defaultIcon = defaultIcon;
 
 			renderer.customLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL;
+			renderer.customIconLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL;
+			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL;
 
 			renderer.itemHasIcon = false;
 			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
@@ -1831,21 +1849,15 @@ package feathers.themes
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = Number.POSITIVE_INFINITY;
 			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_RIGHT;
+			renderer.accessoryGap = this.smallGutterSize;
+			renderer.minAccessoryGap = this.smallGutterSize;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;
+			renderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
 			renderer.minTouchHeight = this.gridSize;
-		}
-
-		protected function setCheckItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
 		}
 
 		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
@@ -1870,6 +1882,25 @@ package feathers.themes
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
 			textRenderer.selectedElementFormat = this.darkElementFormat;
 			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
+		}
+
+		protected function setCheckItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
+			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
+		}
+
+		protected function setCheckItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
+		}
+
+		protected function setCheckItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 	//-------------------------
@@ -2328,7 +2359,7 @@ package feathers.themes
 			renderer.customIconLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL;
 			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL;
 
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = DefaultListItemRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -2338,7 +2369,7 @@ package feathers.themes
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
