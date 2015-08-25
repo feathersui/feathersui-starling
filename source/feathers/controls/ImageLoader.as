@@ -394,7 +394,7 @@ package feathers.controls
 			
 			var oldTexture:Texture;
 			//we should try to reuse the existing texture, if possible.
-			if(this._isTextureOwner && !(value is Texture))
+			if(this._isTextureOwner && value && !(value is Texture))
 			{
 				oldTexture = this._texture;
 				this._isTextureOwner = false;
@@ -2154,6 +2154,7 @@ package feathers.controls
 		protected function loader_ioErrorHandler(event:IOErrorEvent):void
 		{
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+			this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 			this.loader = null;
@@ -2170,6 +2171,7 @@ package feathers.controls
 		protected function loader_securityErrorHandler(event:SecurityErrorEvent):void
 		{
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+			this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 			this.loader = null;
