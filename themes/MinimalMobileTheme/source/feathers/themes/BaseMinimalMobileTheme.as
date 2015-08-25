@@ -1426,6 +1426,8 @@ package feathers.themes
 			var defaultIcon:Quad = new Quad(iconWidth, iconHeight, 0xff00ff);
 			defaultIcon.alpha = 0;
 			itemRenderer.defaultIcon = defaultIcon;
+			
+			itemRenderer.itemHasIcon = false;
 
 			itemRenderer.paddingTop = this.smallGutterSize;
 			itemRenderer.paddingBottom = this.smallGutterSize;
