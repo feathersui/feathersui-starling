@@ -278,6 +278,21 @@ package feathers.themes
 		/**
 		 * @private
 		 */
+		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL:String = "metalworks-desktop-check-item-renderer-label";
+
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL:String = "metalworks-desktop-check-item-renderer-icon-label";
+
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL:String = "metalworks-desktop-check-item-renderer-accessory-label";
+
+		/**
+		 * @private
+		 */
 		protected static const THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL:String = "metalworks-desktop-grouped-list-footer-content-label";
 
 		/**
@@ -601,6 +616,8 @@ package feathers.themes
 		protected var verticalScrollBarIncrementButtonDisabledSkinTextures:Scale9Textures;
 		protected var searchIconTexture:Texture;
 		protected var searchIconDisabledTexture:Texture;
+		protected var listDrillDownAccessoryTexture:Texture;
+		protected var listDrillDownAccessorySelectedTexture:Texture;
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -859,7 +876,12 @@ package feathers.themes
 			this.verticalScrollBarIncrementButtonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-increment-button-down-skin0000"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
 			this.verticalScrollBarIncrementButtonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-increment-button-disabled-skin0000"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
 
-			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
+			this.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
+			this.listDrillDownAccessorySelectedTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-selected-icon0000");
+			
+			//in a future version of Feathers, the StandardIcons class will be
+			//removed. it's still used here to support legacy code.
+			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
 
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -934,10 +956,17 @@ package feathers.themes
 
 			//item renderers for lists
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL, this.setCheckItemRendererLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL, this.setCheckItemRendererIconLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL, this.setCheckItemRendererAccessoryLabelStyles);
 
 			//labels
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
@@ -1598,14 +1627,14 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.smallGutterSize;
 			renderer.minGap = this.smallGutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
@@ -1618,16 +1647,68 @@ package feathers.themes
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
-		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
+		protected function setDrillDownItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
-			textRenderer.selectedElementFormat = this.darkElementFormat;
-			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_DOWN, this.darkElementFormat);
-			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_HOVER, this.darkElementFormat);
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.itemHasAccessory = false;
+
+			var accessorySelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			accessorySelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			accessorySelector.defaultValue = this.listDrillDownAccessoryTexture;
+			accessorySelector.defaultSelectedValue = this.listDrillDownAccessorySelectedTexture;
+			accessorySelector.setValueForState(this.listDrillDownAccessorySelectedTexture, Button.STATE_HOVER, false);
+			accessorySelector.setValueForState(this.listDrillDownAccessorySelectedTexture, Button.STATE_DOWN, false);
+			accessorySelector.displayObjectProperties =
+			{
+				textureScale: this.scale
+			};
+			itemRenderer.stateToAccessoryFunction = accessorySelector.updateValue;
 		}
 
-		protected function setItemRendererAccessoryLabelRendererStyles(textRenderer:TextBlockTextRenderer):void
+		protected function setCheckItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
+		{
+			itemRenderer.defaultSkin = new Image(this.itemRendererUpSkinTexture);
+
+			itemRenderer.itemHasIcon = false;
+
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.checkUpIconTexture;
+			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.displayObjectProperties =
+			{
+				textureScale: this.scale
+			};
+			itemRenderer.stateToIconFunction = iconSelector.updateValue;
+			
+			itemRenderer.customLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL;
+			itemRenderer.customIconLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL;
+			itemRenderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL;
+
+			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = this.smallGutterSize;
+			itemRenderer.minGap = this.smallGutterSize;
+			itemRenderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+			itemRenderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			itemRenderer.minWidth = this.controlSize;
+			itemRenderer.minHeight = this.controlSize;
+
+			itemRenderer.useStateDelayTimer = false;
+
+			itemRenderer.accessoryLoaderFactory = this.imageLoaderFactory;
+			itemRenderer.iconLoaderFactory = this.imageLoaderFactory;
+		}
+
+		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
@@ -1643,6 +1724,33 @@ package feathers.themes
 			textRenderer.selectedElementFormat = this.darkElementFormat;
 			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_DOWN, this.darkElementFormat);
 			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_HOVER, this.darkElementFormat);
+		}
+
+		protected function setItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
+			textRenderer.selectedElementFormat = this.darkElementFormat;
+			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_DOWN, this.darkElementFormat);
+			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_HOVER, this.darkElementFormat);
+		}
+
+		protected function setCheckItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
+		}
+
+		protected function setCheckItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
+		}
+
+		protected function setCheckItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 	//-------------------------
