@@ -2,6 +2,30 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 2.3.0
+
+### 2.3.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `StandardIcons` class is deprecated. It was used to provide a drill-down icon for item renderers, but since lists now support multiple item renderer types, it is no longer needed. Additionally, the `StandardIcons` didn't work properly with multiple Starling instances.
+
+The `IGroupedListHeaderOrFooterRenderer` interface is deprecated. The `GroupedList` component used this interface, but it now supports separate `IGroupedListHeaderRenderer` and `IGroupedListFooterRenderer` interfaces.
+
+The `FeathersEventType.ERROR` constant was originally deprecated in Feathers 2.2.0 and remains deprecated in Feathers 2.3. The `ImageLoader` component used this constant, and it now dispatches separate `Event.IO_ERROR` and `Event.SECURITY_ERROR` events.
+
+All properties and constants where "name" was replaced by "style name" were originally deprecated in Feathers 2.1.0, and they have now been removed. 
+
+* `custom*Name` => `custom*StyleName`
+* `DEFAULT_CHILD_NAME_*` => `DEFAULT_CHILD_STYLE_NAME_*`
+* `ALTERNATE_NAME_*` => `ALTERNATE_STYLE_NAME_*`
+* `itemRendererName` => `customItemRendererStyleName`
+* `firstItemRendererName` => `customFirstItemRendererStyleName`
+* `lastItemRendererName` => `customFirstItemRendererStyleName`
+* `singleItemRendererName` => `customSingleItemRendererStyleName`
+* `headerRendererName` => `customHeaderRendererStyleName`
+* `footerRendererName` => `customFooterRendererStyleName`
+
 ## 2.2.0
 
 * New Component: SoundPlayer. Plays audio using a Sound object.
