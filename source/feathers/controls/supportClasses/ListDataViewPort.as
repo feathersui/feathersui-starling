@@ -849,10 +849,10 @@ package feathers.controls.supportClasses
 		{
 			for each(var item:DisplayObject in this._layoutItems)
 			{
-				var itemRenderer:IListItemRenderer = item as IListItemRenderer;
-				if(itemRenderer)
+				var control:IFeathersControl = item as IFeathersControl;
+				if(control)
 				{
-					itemRenderer.isSelected = this._selectedIndices.getItemIndex(itemRenderer.index) >= 0;
+					control.isEnabled = this._isEnabled;
 				}
 			}
 		}
@@ -882,7 +882,7 @@ package feathers.controls.supportClasses
 			if(itemRendererTypeIsInvalid)
 			{
 				this.recoverInactiveRenderers(storage);
-				this.freeInactiveRenderers(storage, false);
+				this.freeInactiveRenderers(storage, 0);
 				if(this._typicalItemRenderer)
 				{
 					if(this._typicalItemIsInDataProvider)
@@ -940,13 +940,13 @@ package feathers.controls.supportClasses
 				}
 			}
 			this.renderUnrenderedData();
-			this.freeInactiveRenderers(this._defaultStorage, true);
+			this.freeInactiveRenderers(this._defaultStorage, this._minimumItemCount);
 			if(this._storageMap)
 			{
 				for(factoryID in this._storageMap)
 				{
 					storage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
-					this.freeInactiveRenderers(storage, false);
+					this.freeInactiveRenderers(storage, 1);
 				}
 			}
 			this._updateForDataReset = false;
@@ -1132,23 +1132,17 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function freeInactiveRenderers(storage:ItemRendererFactoryStorage, allowKeep:Boolean):void
+		private function freeInactiveRenderers(storage:ItemRendererFactoryStorage, minimumItemCount:int):void
 		{
 			var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
 			var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
+			var activeItemRenderersCount:int = activeItemRenderers.length;
 			
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
 			var itemCount:int = inactiveItemRenderers.length;
-			if(allowKeep)
-			{
-				var keepCount:int = this._minimumItemCount - activeItemRenderers.length;
-			}
-			else
-			{
-				keepCount = 0;
-			}
-			if(itemCount < keepCount)
+			var keepCount:int = minimumItemCount - activeItemRenderersCount;
+			if(keepCount > itemCount)
 			{
 				keepCount = itemCount;
 			}
@@ -1167,7 +1161,8 @@ package feathers.controls.supportClasses
 				itemRenderer.data = null;
 				itemRenderer.index = -1;
 				itemRenderer.visible = false;
-				activeItemRenderers[activeItemRenderers.length] = itemRenderer;
+				activeItemRenderers[activeItemRenderersCount] = itemRenderer;
+				activeItemRenderersCount++;
 			}
 			itemCount -= keepCount;
 			for(i = 0; i < itemCount; i++)
@@ -1202,15 +1197,15 @@ package feathers.controls.supportClasses
 			var itemRenderer:IListItemRenderer;
 			do
 			{
-				if(!useCache || isTemporary || inactiveItemRenderers.length == 0)
+				if(!useCache || isTemporary || inactiveItemRenderers.length === 0)
 				{
-					if(itemRendererFactory != null)
+					if(itemRendererFactory !== null)
 					{
 						itemRenderer = IListItemRenderer(itemRendererFactory());
 					}
 					else
 					{
-						itemRenderer = new this._itemRendererType();
+						itemRenderer = IListItemRenderer(new this._itemRendererType());
 					}
 					if(this._customItemRendererStyleName && this._customItemRendererStyleName.length > 0)
 					{
@@ -1279,7 +1274,7 @@ package feathers.controls.supportClasses
 			{
 				if(id in this._storageMap)
 				{
-					return ItemRendererFactoryStorage(this._storageMap[id])
+					return ItemRendererFactoryStorage(this._storageMap[id]);
 				}
 				var storage:ItemRendererFactoryStorage = new ItemRendererFactoryStorage();
 				this._storageMap[id] = storage;

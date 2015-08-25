@@ -1003,7 +1003,7 @@ package feathers.controls
 		 * {
 		 *     if(index === 0)
 		 *     {
-		 *         return "list-header";
+		 *         return "header-item";
 		 *     }
 		 *     return "regular-item";
 		 * };</listing>
@@ -1305,8 +1305,7 @@ package feathers.controls
 
 		/**
 		 * Returns the item renderer factory associated with a specific ID.
-		 * Returns <code>null</code> if no item renderer is associated with the
-		 * ID.
+		 * Returns <code>null</code> if no factory is associated with the ID.
 		 *
 		 * @see #setItemRendererFactoryWithID()
 		 */
@@ -1320,10 +1319,10 @@ package feathers.controls
 		}
 
 		/**
-		 * Associates an item renderer factory with an ID that that multiple
-		 * kinds of item renderers may be displayed in the list. A custom
+		 * Associates an item renderer factory with an ID to allow multiple
+		 * types of item renderers may be displayed in the list. A custom
 		 * <code>factoryIDFunction</code> may be specified to return the ID of
-		 * the item renderer kind to use for a specific item.
+		 * the factory to use for a specific item in the data provider.
 		 * 
 		 * @see #factoryIDFunction
 		 * @see #getItemRendererFactoryWithID()
