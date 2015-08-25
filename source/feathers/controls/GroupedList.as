@@ -884,6 +884,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _itemRendererFactories:Object;
+
+		/**
+		 * @private
+		 */
 		protected var _itemRendererFactory:Function;
 
 		/**
@@ -917,9 +922,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #itemRendererType
-		 * @see #firstItemRendererFactory
-		 * @see #lastItemRendererFactory
-		 * @see #singleItemRendererFactory
+		 * @see #setItemRendererFactoryWithID()
 		 */
 		public function get itemRendererFactory():Function
 		{
@@ -937,6 +940,75 @@ package feathers.controls
 			}
 
 			this._itemRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _factoryIDFunction:Function;
+
+		/**
+		 * When a list requires multiple item renderer types, this function is
+		 * used to determine which type of item renderer is required for a
+		 * specific item (or index). Returns the ID of the item renderer type
+		 * to use for the item, or <code>null</code> if the default
+		 * <code>itemRendererFactory</code> should be used.
+		 *
+		 * <p>The function is expected to have one of the following
+		 * signatures:</p>
+		 *
+		 * <pre>function(item:Object):String</pre>
+		 *
+		 * <pre>function(item:Object, groupIndex:int, itemIndex:int):String</pre>
+		 *
+		 * <p>The following example provides a <code>factoryIDFunction</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * function regularItemFactory():IGroupedListItemRenderer
+		 * {
+		 *     return new DefaultGroupedListItemRenderer();
+		 * }
+		 * function firstItemFactory():IGroupedListItemRenderer
+		 * {
+		 *     return new CustomItemRenderer();
+		 * }
+		 * list.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
+		 * list.setItemRendererFactoryWithID( "first-item", firstItemFactory );
+		 *
+		 * list.factoryIDFunction = function( item:Object, groupIndex:int, itemIndex:int ):String
+		 * {
+		 *     if(index === 0)
+		 *     {
+		 *         return "first-item";
+		 *     }
+		 *     return "regular-item";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #setItemRendererFactoryWithID()
+		 * @see #itemRendererFactory
+		 */
+		public function get factoryIDFunction():Function
+		{
+			return this._factoryIDFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryIDFunction(value:Function):void
+		{
+			if(this._factoryIDFunction === value)
+			{
+				return;
+			}
+			this._factoryIDFunction = value;
+			if(value !== null && this._itemRendererFactories === null)
+			{
+				this._itemRendererFactories = {};
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1596,6 +1668,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _headerRendererFactories:Object;
+
+		/**
+		 * @private
+		 */
 		protected var _headerRendererFactory:Function;
 
 		/**
@@ -1624,6 +1701,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #headerRendererType
+		 * @see #setHeaderRendererFactoryWithID()
 		 */
 		public function get headerRendererFactory():Function
 		{
@@ -1641,6 +1719,76 @@ package feathers.controls
 			}
 
 			this._headerRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerFactoryIDFunction:Function;
+
+		/**
+		 * When a list requires multiple header renderer types, this function is
+		 * used to determine which type of header renderer is required for a
+		 * specific header (or group index). Returns the ID of the factory
+		 * to use for the header, or <code>null</code> if the default
+		 * <code>headerRendererFactory</code> should be used.
+		 *
+		 * <p>The function is expected to have one of the following
+		 * signatures:</p>
+		 *
+		 * <pre>function(header:Object):String</pre>
+		 *
+		 * <pre>function(header:Object, groupIndex:int):String</pre>
+		 *
+		 * <p>The following example provides a <code>headerFactoryIDFunction</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * function regularHeaderFactory():IGroupedListHeaderRenderer
+		 * {
+		 *     return new DefaultGroupedListHeaderOrFooterRenderer();
+		 * }
+		 * function customHeaderFactory():IGroupedListHeaderRenderer
+		 * {
+		 *     return new CustomHeaderRenderer();
+		 * }
+		 * list.setHeaderRendererFactoryWithID( "regular-header", regularHeaderFactory );
+		 * list.setHeaderRendererFactoryWithID( "custom-header", customHeaderFactory );
+		 *
+		 * list.headerFactoryIDFunction = function( header:Object, groupIndex:int ):String
+		 * {
+		 *     //check if the subTitle property exists in the header data
+		 *     if( "subTitle" in header )
+		 *     {
+		 *         return "custom-header";
+		 *     }
+		 *     return "regular-header";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #setHeaderRendererFactoryWithID()
+		 * @see #headerRendererFactory
+		 */
+		public function get headerFactoryIDFunction():Function
+		{
+			return this._headerFactoryIDFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerFactoryIDFunction(value:Function):void
+		{
+			if(this._headerFactoryIDFunction === value)
+			{
+				return;
+			}
+			this._headerFactoryIDFunction = value;
+			if(value !== null && this._headerRendererFactories === null)
+			{
+				this._headerRendererFactories = {};
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1816,6 +1964,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _footerRendererFactories:Object;
+
+		/**
+		 * @private
+		 */
 		protected var _footerRendererFactory:Function;
 
 		/**
@@ -1844,6 +1997,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #footerRendererType
+		 * @see #setFooterRendererFactoryWithID()
 		 */
 		public function get footerRendererFactory():Function
 		{
@@ -1861,6 +2015,76 @@ package feathers.controls
 			}
 
 			this._footerRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _footerFactoryIDFunction:Function;
+
+		/**
+		 * When a list requires multiple footer renderer types, this function is
+		 * used to determine which type of footer renderer is required for a
+		 * specific footer (or group index). Returns the ID of the factory
+		 * to use for the footer, or <code>null</code> if the default
+		 * <code>footerRendererFactory</code> should be used.
+		 *
+		 * <p>The function is expected to have one of the following
+		 * signatures:</p>
+		 *
+		 * <pre>function(footer:Object):String</pre>
+		 *
+		 * <pre>function(footer:Object, groupIndex:int):String</pre>
+		 *
+		 * <p>The following example provides a <code>footerFactoryIDFunction</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * function regularFooterFactory():IGroupedListFooterRenderer
+		 * {
+		 *     return new DefaultGroupedListHeaderOrFooterRenderer();
+		 * }
+		 * function customFooterFactory():IGroupedListFooterRenderer
+		 * {
+		 *     return new CustomFooterRenderer();
+		 * }
+		 * list.setFooterRendererFactoryWithID( "regular-footer", regularFooterFactory );
+		 * list.setFooterRendererFactoryWithID( "custom-footer", customFooterFactory );
+		 *
+		 * list.footerFactoryIDFunction = function( footer:Object, groupIndex:int ):String
+		 * {
+		 *     //check if the footerAccessory property exists in the footer data
+		 *     if( "footerAccessory" in footer )
+		 *     {
+		 *         return "custom-footer";
+		 *     }
+		 *     return "regular-footer";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #setFooterRendererFactoryWithID()
+		 * @see #footerRendererFactory
+		 */
+		public function get footerFactoryIDFunction():Function
+		{
+			return this._footerFactoryIDFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerFactoryIDFunction(value:Function):void
+		{
+			if(this._footerFactoryIDFunction === value)
+			{
+				return;
+			}
+			this._footerFactoryIDFunction = value;
+			if(value !== null && this._footerRendererFactories === null)
+			{
+				this._footerRendererFactories = {};
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -2335,6 +2559,141 @@ package feathers.controls
 		}
 
 		/**
+		 * Returns the item renderer factory associated with a specific ID.
+		 * Returns <code>null</code> if no factory is associated with the ID.
+		 *
+		 * @see #setItemRendererFactoryWithID()
+		 */
+		public function getItemRendererFactoryWithID(id:String):Function
+		{
+			if(this._itemRendererFactories && (id in this._itemRendererFactories))
+			{
+				return this._itemRendererFactories[id] as Function;
+			}
+			return null;
+		}
+
+		/**
+		 * Associates an item renderer factory with an ID to allow multiple
+		 * types of item renderers may be displayed in the list. A custom
+		 * <code>factoryIDFunction</code> may be specified to return the ID of
+		 * the factory to use for a specific item in the data provider.
+		 *
+		 * @see #factoryIDFunction
+		 * @see #getItemRendererFactoryWithID()
+		 */
+		public function setItemRendererFactoryWithID(id:String, factory:Function):void
+		{
+			if(id === null)
+			{
+				this.itemRendererFactory = factory;
+				return;
+			}
+			if(this._itemRendererFactories === null)
+			{
+				this._itemRendererFactories = {};
+			}
+			if(factory !== null)
+			{
+				this._itemRendererFactories[id] = factory;
+			}
+			else
+			{
+				delete this._itemRendererFactories[id];
+			}
+		}
+
+		/**
+		 * Returns the header renderer factory associated with a specific ID.
+		 * Returns <code>null</code> if no factory is associated with the ID.
+		 *
+		 * @see #setHeaderRendererFactoryWithID()
+		 */
+		public function getHeaderRendererFactoryWithID(id:String):Function
+		{
+			if(this._headerRendererFactories && (id in this._headerRendererFactories))
+			{
+				return this._headerRendererFactories[id] as Function;
+			}
+			return null;
+		}
+
+		/**
+		 * Associates a header renderer factory with an ID to allow multiple
+		 * types of header renderers may be displayed in the list. A custom
+		 * <code>headerFactoryIDFunction</code> may be specified to return the
+		 * ID of the factory to use for a specific header in the data provider.
+		 *
+		 * @see #headerFactoryIDFunction
+		 * @see #getHeaderRendererFactoryWithID()
+		 */
+		public function setHeaderRendererFactoryWithID(id:String, factory:Function):void
+		{
+			if(id === null)
+			{
+				this.headerRendererFactory = factory;
+				return;
+			}
+			if(this._headerRendererFactories === null)
+			{
+				this._headerRendererFactories = {};
+			}
+			if(factory !== null)
+			{
+				this._headerRendererFactories[id] = factory;
+			}
+			else
+			{
+				delete this._headerRendererFactories[id];
+			}
+		}
+
+		/**
+		 * Returns the footer renderer factory associated with a specific ID.
+		 * Returns <code>null</code> if no factory is associated with the ID.
+		 *
+		 * @see #setFooterRendererFactoryWithID()
+		 */
+		public function getFooterRendererFactoryWithID(id:String):Function
+		{
+			if(this._footerRendererFactories && (id in this._footerRendererFactories))
+			{
+				return this._footerRendererFactories[id] as Function;
+			}
+			return null;
+		}
+
+		/**
+		 * Associates a footer renderer factory with an ID to allow multiple
+		 * types of footer renderers may be displayed in the list. A custom
+		 * <code>footerFactoryIDFunction</code> may be specified to return the
+		 * ID of the factory to use for a specific footer in the data provider.
+		 *
+		 * @see #footerFactoryIDFunction
+		 * @see #getFooterRendererFactoryWithID()
+		 */
+		public function setFooterRendererFactoryWithID(id:String, factory:Function):void
+		{
+			if(id === null)
+			{
+				this.footerRendererFactory = factory;
+				return;
+			}
+			if(this._footerRendererFactories === null)
+			{
+				this._footerRendererFactories = {};
+			}
+			if(factory !== null)
+			{
+				this._footerRendererFactories[id] = factory;
+			}
+			else
+			{
+				delete this._footerRendererFactories[id];
+			}
+		}
+
+		/**
 		 * Extracts header data from a group object.
 		 */
 		public function groupToHeaderData(group:Object):Object
@@ -2427,6 +2786,8 @@ package feathers.controls
 
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
+			this.dataViewPort.itemRendererFactories = this._itemRendererFactories;
+			this.dataViewPort.factoryIDFunction = this._factoryIDFunction;
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
 			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 
@@ -2444,11 +2805,15 @@ package feathers.controls
 
 			this.dataViewPort.headerRendererType = this._headerRendererType;
 			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
+			this.dataViewPort.headerRendererFactories = this._headerRendererFactories;
+			this.dataViewPort.headerFactoryIDFunction = this._headerFactoryIDFunction;
 			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
 			this.dataViewPort.customHeaderRendererStyleName = this._customHeaderRendererStyleName;
 
 			this.dataViewPort.footerRendererType = this._footerRendererType;
 			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
+			this.dataViewPort.footerRendererFactories = this._footerRendererFactories;
+			this.dataViewPort.footerFactoryIDFunction = this._footerFactoryIDFunction;
 			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
 			this.dataViewPort.customFooterRendererStyleName = this._customFooterRendererStyleName;
 
