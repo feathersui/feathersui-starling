@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.popups.CalloutPopUpContentManager;
+	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.IPersistentPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManagerWithPrompt;
@@ -31,6 +32,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Dispatched when the pop-up list is opened.
@@ -1249,7 +1251,11 @@ package feathers.controls
 		{
 			if(!this._popUpContentManager)
 			{
-				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+				if(SystemUtil.isDesktop)
+				{
+					this.popUpContentManager = new DropDownPopUpContentManager();
+				}
+				else if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 				{
 					this.popUpContentManager = new CalloutPopUpContentManager();
 				}
