@@ -64,7 +64,15 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list.listFactory = function():List
 			{
-				var list:SpinnerList = new SpinnerList();
+				var list:List;
+				if(DeviceCapabilities.isPhone(Starling.current.nativeStage))
+				{
+					list = new SpinnerList();
+				}
+				else
+				{
+					list = new List();
+				}
 				//notice that we're setting typicalItem on the list separately. we
 				//may want to have the list measure at a different width, so it
 				//might need a different typical item than the picker list's button.
