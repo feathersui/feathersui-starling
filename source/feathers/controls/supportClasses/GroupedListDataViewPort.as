@@ -1560,7 +1560,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._itemStorageMap)
 			{
-				for(var factoryID:String in this._itemStorageMap)
+				for(factoryID in this._itemStorageMap)
 				{
 					itemStorage = ItemRendererFactoryStorage(this._itemStorageMap[factoryID]);
 					this.freeInactiveItemRenderers(itemStorage, 1);
