@@ -915,6 +915,10 @@ package feathers.layout
 			this._discoveredItemsCache.length = 0;
 			var discoveredItemsCacheLastIndex:int = 0;
 
+			//if there are no items in layout, then we don't want to subtract
+			//any gap when calculating the total width, so default to 0.
+			var gap:Number = 0;
+
 			//this first loop sets the x position of items, and it calculates
 			//the total width of all items
 			for(var i:int = 0; i < itemCount; i++)
@@ -926,7 +930,7 @@ package feathers.layout
 
 				//pick the gap that will follow this item. the first and second
 				//to last items may have different gaps.
-				var gap:Number = this._gap;
+				gap = this._gap;
 				if(hasFirstGap && iNormalized == 0)
 				{
 					gap = this._firstGap;
@@ -1069,7 +1073,7 @@ package feathers.layout
 			}
 
 			//this is the total width of all items
-			var totalWidth:Number = positionX - this._gap + this._paddingRight - boundsX;
+			var totalWidth:Number = positionX - gap + this._paddingRight - boundsX;
 			//the available width is the width of the viewport. if the explicit
 			//width is NaN, we need to calculate the viewport width ourselves
 			//based on the total width of all items.

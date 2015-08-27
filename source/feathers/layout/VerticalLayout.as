@@ -917,6 +917,10 @@ package feathers.layout
 			this._discoveredItemsCache.length = 0;
 			var discoveredItemsCacheLastIndex:int = 0;
 
+			//if there are no items in layout, then we don't want to subtract
+			//any gap when calculating the total height, so default to 0.
+			var gap:Number = 0;
+			
 			//this first loop sets the y position of items, and it calculates
 			//the total height of all items
 			for(var i:int = 0; i < itemCount; i++)
@@ -928,7 +932,7 @@ package feathers.layout
 
 				//pick the gap that will follow this item. the first and second
 				//to last items may have different gaps.
-				var gap:Number = this._gap;
+				gap = this._gap;
 				if(hasFirstGap && iNormalized == 0)
 				{
 					gap = this._firstGap;
@@ -1071,7 +1075,7 @@ package feathers.layout
 			}
 
 			//this is the total height of all items
-			var totalHeight:Number = positionY - this._gap + this._paddingBottom - boundsY;
+			var totalHeight:Number = positionY - gap + this._paddingBottom - boundsY;
 			//the available height is the height of the viewport. if the explicit
 			//height is NaN, we need to calculate the viewport height ourselves
 			//based on the total height of all items.
