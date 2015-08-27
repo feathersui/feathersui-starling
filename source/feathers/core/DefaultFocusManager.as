@@ -116,6 +116,10 @@ package feathers.core
 				this._root.addEventListener(TouchEvent.TOUCH, topLevelContainer_touchHandler);
 				this._starling.nativeStage.addEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler, false, 0, true);
 				this._starling.nativeStage.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler, false, 0, true);
+				if(this._savedFocus && !this._savedFocus.stage)
+				{
+					this._savedFocus = null;
+				}
 				this.focus = this._savedFocus;
 				this._savedFocus = null;
 			}
