@@ -1,6 +1,7 @@
 package
 {
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.ButtonDisposeTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.FocusManagerEnabledTests;
@@ -28,6 +29,7 @@ package
 	import feathers.tests.TextFieldTextEditorFocusTests;
 	import feathers.tests.TextInputFocusTests;
 	import feathers.tests.TextureCacheTests;
+	import feathers.tests.ToggleButtonDisposeTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
@@ -90,6 +92,7 @@ package
 				
 				//individual component tests
 				ButtonTests,
+				ButtonDisposeTests,
 				GroupedListTests,
 				LayoutGroupTests,
 				ListTests,
@@ -100,6 +103,7 @@ package
 				ScrollContainerTests,
 				SliderHorizontalTests,
 				ToggleButtonTests,
+				ToggleButtonDisposeTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				TabBarTests,

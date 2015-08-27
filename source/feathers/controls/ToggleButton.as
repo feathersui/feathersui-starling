@@ -933,6 +933,40 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			var skin:DisplayObject = this._skinSelector.defaultSelectedValue as DisplayObject;
+			if(skin)
+			{
+				skin.dispose();
+			}
+			for each(var state:String in this.stateNames)
+			{
+				skin = this._skinSelector.getValueForState(state, true) as DisplayObject;
+				if(skin)
+				{
+					skin.dispose();
+				}
+			}
+			skin = this._iconSelector.defaultSelectedValue as DisplayObject;
+			if(skin)
+			{
+				skin.dispose();
+			}
+			for each(state in this.stateNames)
+			{
+				skin = this._iconSelector.getValueForState(state, true) as DisplayObject;
+				if(skin)
+				{
+					skin.dispose();
+				}
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function trigger():void
 		{
 			super.trigger();

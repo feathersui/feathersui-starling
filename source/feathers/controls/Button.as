@@ -2190,6 +2190,40 @@ package feathers.controls
 			}
 			super.render(support, parentAlpha);
 		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
+			if(skin)
+			{
+				skin.dispose();
+			}
+			for each(var state:String in this.stateNames)
+			{
+				skin = this._skinSelector.getValueForState(state, false) as DisplayObject;
+				if(skin)
+				{
+					skin.dispose();
+				}
+			}
+			skin = this._iconSelector.defaultValue as DisplayObject;
+			if(skin)
+			{
+				skin.dispose();
+			}
+			for each(state in this.stateNames)
+			{
+				skin = this._iconSelector.getValueForState(state, false) as DisplayObject;
+				if(skin)
+				{
+					skin.dispose();
+				}
+			}
+			super.dispose();
+		}
 		
 		/**
 		 * @private
