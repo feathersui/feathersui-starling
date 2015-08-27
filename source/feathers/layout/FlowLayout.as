@@ -663,7 +663,7 @@ package feathers.layout
 			var i:int = 0;
 			var itemCount:int = items.length;
 			var positionY:Number = boundsY + this._paddingTop;
-			var totalRowWidth:Number = 0;
+			var maxRowWidth:Number = 0;
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
 			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
@@ -820,7 +820,11 @@ package feathers.layout
 				}
 
 				//this is the total width of all items in the row
-				totalRowWidth = positionX - horizontalGap + this._paddingRight - boundsX;
+				var totalRowWidth:Number = positionX - horizontalGap + this._paddingRight - boundsX;
+				if(totalRowWidth > maxRowWidth)
+				{
+					maxRowWidth = totalRowWidth;
+				}
 				rowItemCount = this._rowItems.length;
 	
 				if(supportsMultipleRows)
@@ -885,9 +889,24 @@ package feathers.layout
 			//this cache
 			this._rowItems.length = 0;
 			
-			if(!supportsMultipleRows)
+			if(supportsMultipleRows)
 			{
-				availableRowWidth = totalRowWidth;
+				if(explicitWidth !== explicitWidth) //isNaN
+				{
+					availableRowWidth = maxRowWidth;
+					if(availableRowWidth < minWidth)
+					{
+						availableRowWidth = minWidth;
+					}
+					else if(availableRowWidth > maxWidth)
+					{
+						availableRowWidth = maxWidth;
+					}
+				}
+			}
+			else
+			{
+				availableRowWidth = maxRowWidth;
 			}
 
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
