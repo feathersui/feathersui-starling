@@ -943,7 +943,8 @@ package feathers.controls
 			for each(var state:String in this.stateNames)
 			{
 				skin = this._skinSelector.getValueForState(state, true) as DisplayObject;
-				if(skin)
+				//it'll get disposed in super.dispose() if it's a child
+				if(skin && skin.parent !== this)
 				{
 					skin.dispose();
 				}
@@ -956,7 +957,8 @@ package feathers.controls
 			for each(state in this.stateNames)
 			{
 				skin = this._iconSelector.getValueForState(state, true) as DisplayObject;
-				if(skin)
+				//it'll get disposed in super.dispose() if it's a child
+				if(skin && skin.parent !== this)
 				{
 					skin.dispose();
 				}
