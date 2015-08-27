@@ -663,6 +663,7 @@ package feathers.layout
 			var i:int = 0;
 			var itemCount:int = items.length;
 			var positionY:Number = boundsY + this._paddingTop;
+			var totalRowWidth:Number = 0;
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
 			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
@@ -680,13 +681,18 @@ package feathers.layout
 				//we save the items in this row to align them later.
 				this._rowItems.length = 0;
 				var rowItemCount:int = 0;
-	
+
+				//if there are no items in the row (such as when there are no
+				//items in the container!), then we don't want to subtract the
+				//gap when calculating the row width, so default to 0.
+				var horizontalGap:Number = 0;
+				
 				//this first loop sets the x position of items, and it calculates
 				//the total width of all items
 				for(; i < itemCount; i++)
 				{
 					var item:DisplayObject = items[i];
-					var horizontalGap:Number = this._horizontalGap;
+					horizontalGap = this._horizontalGap;
 					if(hasFirstHorizontalGap && i === 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
@@ -814,7 +820,7 @@ package feathers.layout
 				}
 
 				//this is the total width of all items in the row
-				var totalRowWidth:Number = positionX - horizontalGap + this._paddingRight - boundsX;
+				totalRowWidth = positionX - horizontalGap + this._paddingRight - boundsX;
 				rowItemCount = this._rowItems.length;
 	
 				if(supportsMultipleRows)
@@ -1003,11 +1009,16 @@ package feathers.layout
 				var positionX:Number = boundsX + this._paddingLeft;
 				var rowItemCount:int = 0;
 
+				//if there are no items in the row (such as when there are no
+				//items in the container!), then we don't want to subtract the
+				//gap when calculating the row width, so default to 0.
+				var horizontalGap:Number = 0;
+
 				//this first loop sets the x position of items, and it calculates
 				//the total width of all items
 				for(; i < itemCount; i++)
 				{
-					var horizontalGap:Number = this._horizontalGap;
+					horizontalGap = this._horizontalGap;
 					if(hasFirstHorizontalGap && i === 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
