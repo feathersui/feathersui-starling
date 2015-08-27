@@ -6,7 +6,10 @@ package
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.LayoutGroupFlowLayoutTests;
+	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupTests;
+	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
@@ -101,6 +104,11 @@ package
 				ToggleSwitchTests,
 				TabBarTests,
 				TabBarEmptyDataProviderTests,
+				
+				//layout tests
+				LayoutGroupFlowLayoutTests,
+				LayoutGroupHorizontalLayoutTests,
+				LayoutGroupVerticalLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,
