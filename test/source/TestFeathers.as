@@ -15,6 +15,7 @@ package
 	import feathers.tests.ListTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.PickerListTests;
+	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.ScrollBarHorizontalTests;
@@ -120,6 +121,7 @@ package
 				//focus tests
 				FocusManagerEnabledTests,
 				FocusManagerTests,
+				PopUpManagerFocusManagerTests,
 				TextInputFocusTests,
 				TextAreaFocusTests,
 				StageTextTextEditorFocusTests,
