@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
 
@@ -198,6 +199,19 @@ package feathers.tests
 				originalWidth === this._group.width);
 			Assert.assertFalse("The height of the layout group was not changed.",
 				originalHeight === this._group.height);
+		}
+
+		[Test]
+		public function testSkinsDisposed():void
+		{
+			var backgroundSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._group.backgroundSkin = backgroundSkin;
+			var backgroundDisabledSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._group.backgroundDisabledSkin = backgroundDisabledSkin;
+			this._group.validate();
+			this._group.dispose();
+			Assert.assertTrue("backgroundSkin not disposed when LayoutGroup disposed.", backgroundSkin.isDisposed);
+			Assert.assertTrue("backgroundDisabledSkin not disposed when LayoutGroup disposed.", backgroundDisabledSkin.isDisposed);
 		}
 	}
 }

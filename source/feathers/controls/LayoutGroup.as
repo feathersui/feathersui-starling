@@ -545,6 +545,14 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
+			{
+				this._backgroundSkin.dispose();
+			}
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent !== this)
+			{
+				this._backgroundDisabledSkin.dispose();
+			}
 			this.layout = null;
 			super.dispose();
 		}

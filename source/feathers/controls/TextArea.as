@@ -901,6 +901,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent !== this)
+			{
+				this._backgroundFocusedSkin.dispose();
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);

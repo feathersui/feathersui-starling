@@ -2197,28 +2197,28 @@ package feathers.controls
 		override public function dispose():void
 		{
 			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
-			if(skin)
+			//we don't dispose it if the button is the parent because it'll
+			//already get disposed in super.dispose()
+			if(skin && skin.parent !== this)
 			{
 				skin.dispose();
 			}
 			for each(var state:String in this.stateNames)
 			{
 				skin = this._skinSelector.getValueForState(state, false) as DisplayObject;
-				//it'll get disposed in super.dispose() if it's a child
 				if(skin && skin.parent !== this)
 				{
 					skin.dispose();
 				}
 			}
 			skin = this._iconSelector.defaultValue as DisplayObject;
-			if(skin)
+			if(skin && skin.parent !== this)
 			{
 				skin.dispose();
 			}
 			for each(state in this.stateNames)
 			{
 				skin = this._iconSelector.getValueForState(state, false) as DisplayObject;
-				//it'll get disposed in super.dispose() if it's a child
 				if(skin && skin.parent !== this)
 				{
 					skin.dispose();

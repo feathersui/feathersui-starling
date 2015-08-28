@@ -1878,6 +1878,42 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
+			//we don't dispose it if the text input is the parent because it'll
+			//already get disposed in super.dispose()
+			if(skin && skin.parent !== this)
+			{
+				skin.dispose();
+			}
+			for each(var state:String in this.stateNames)
+			{
+				skin = this._skinSelector.getValueForState(state) as DisplayObject;
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			skin = this._iconSelector.defaultValue as DisplayObject;
+			if(skin && skin.parent !== this)
+			{
+				skin.dispose();
+			}
+			for each(state in this.stateNames)
+			{
+				skin = this._iconSelector.getValueForState(state) as DisplayObject;
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);

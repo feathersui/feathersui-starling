@@ -2933,6 +2933,17 @@ package feathers.controls
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
+			
+			//we don't dispose it if the text input is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
+			{
+				this._backgroundSkin.dispose();
+			}
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent !== this)
+			{
+				this._backgroundDisabledSkin.dispose();
+			}
 			super.dispose();
 		}
 
