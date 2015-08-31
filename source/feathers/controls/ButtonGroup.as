@@ -366,7 +366,7 @@ package feathers.controls
 		 *     <li>Event.CHANGE (only supported by <code>ToggleButton</code>)</li>
 		 * </ul>
 		 * 
-		 * <p>Event listeners may have one of the following signatures:</pre>
+		 * <p>Event listeners may have one of the following signatures:</p>
 		 * <pre>function(event:Event):void</pre>
 		 * <pre>function(event:Event, eventData:Object):void</pre>
 		 * <pre>function(event:Event, eventData:Object, dataProviderItem:Object):void</pre>
