@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
@@ -124,6 +125,7 @@ package feathers.controls
 			"selectedDisabledIcon",
 			"isSelected",
 			"isToggle",
+			"isLongPressEnabled",
 		];
 
 		/**
@@ -133,6 +135,7 @@ package feathers.controls
 		[
 			Event.TRIGGERED,
 			Event.CHANGE,
+			FeathersEventType.LONG_PRESS,
 		];
 
 		/**

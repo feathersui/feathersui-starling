@@ -8,6 +8,7 @@ package feathers.tests
 	import flash.geom.Point;
 
 	import org.flexunit.Assert;
+	import org.flexunit.async.Async;
 
 	import starling.display.DisplayObject;
 
@@ -120,6 +121,47 @@ package feathers.tests
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Assert.assertTrue("Event.CHANGE was not dispatched to listener in data provider", hasChanged);
 			Assert.assertStrictlyEquals("Event.CHANGE was not dispatched with correct item to listener in data provider", this._group.dataProvider.getItemAt(1), changedItem);
+		}
+
+		[Test(async)]
+		public function testLongPressEventInDataProvider():void
+		{
+			var longPressItem:Object;
+			var hasLongPressed:Boolean = false;
+			function longPressListener(event:Event, data:Object, item:Object):void
+			{
+				hasLongPressed = true;
+				longPressItem = item;
+			}
+
+			this._group.dataProvider = new ListCollection(
+			[
+				{ label: "One" },
+				{ label: "Two", isLongPressEnabled: true, longPress: longPressListener },
+				{ label: "Three" },
+			]);
+			this._group.buttonFactory = function():ToggleButton
+			{
+				var button:ToggleButton = new ToggleButton();
+				button.defaultSkin = new Quad(200, 200);
+				return button;
+			}
+			this._group.validate();
+
+			var position:Point = new Point(10, 210);
+			var target:DisplayObject = this._group.stage.hitTest(position, true);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 10;
+			touch.globalY = 210;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Async.delayCall(this, function():void
+			{
+				Assert.assertTrue("FeathersEventType.LONG_PRESS was not dispatched to listener in data provider", hasLongPressed);
+				Assert.assertStrictlyEquals("Event.CHANGE was not dispatched with correct item to listener in data provider", _group.dataProvider.getItemAt(1), longPressItem);
+			}, 600);
 		}
 	}
 }
