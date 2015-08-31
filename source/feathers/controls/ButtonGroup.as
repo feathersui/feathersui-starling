@@ -362,6 +362,11 @@ package feathers.controls
 		 *     <li>Event.TRIGGERED</li>
 		 *     <li>Event.CHANGE (only supported by <code>ToggleButton</code>)</li>
 		 * </ul>
+		 * 
+		 * <p>Event listeners may have one of the following signatures:</pre>
+		 * <pre>function(event:Event):void</pre>
+		 * <pre>function(event:Event, eventData:Object):void</pre>
+		 * <pre>function(event:Event, eventData:Object, dataProviderItem:Object):void</pre>
 		 *
 		 * <p>To use properties and events that are only supported by
 		 * <code>ToggleButton</code>, you must provide a <code>buttonFactory</code>
@@ -369,7 +374,8 @@ package feathers.controls
 		 *
 		 * <p>You can pass a function to the <code>buttonInitializer</code>
 		 * property that can provide custom logic to interpret each item in the
-		 * data provider differently.</p>
+		 * data provider differently. For example, you could use it to support
+		 * additional properties or events.</p>
 		 *
 		 * @default null
 		 *
@@ -1792,17 +1798,27 @@ package feathers.controls
 					return;
 				}
 				var argCount:int = listener.length;
-				if(argCount == 1)
+				switch(argCount)
 				{
-					listener(event);
-				}
-				else if(argCount == 2)
-				{
-					listener(event, event.data);
-				}
-				else
-				{
-					listener();
+					case 3:
+					{
+						listener(event, event.data, item);
+						break;
+					}
+					case 2:
+					{
+						listener(event, event.data);
+						break;
+					}
+					case 1:
+					{
+						listener(event);
+						break;
+					}
+					default:
+					{
+						listener();
+					}
 				}
 			}
 		}

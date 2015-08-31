@@ -1,6 +1,8 @@
 package
 {
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.ButtonGroupTests;
+	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.FocusManagerEnabledTests;
@@ -94,6 +96,8 @@ package
 				
 				//individual component tests
 				ButtonTests,
+				ButtonGroupTests,
+				ButtonGroupDataProviderEventsTests,
 				GroupedListTests,
 				LayoutGroupTests,
 				ListTests,
