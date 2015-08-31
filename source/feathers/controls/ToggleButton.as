@@ -7,8 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.core.IGroupedToggle;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.core.ToggleGroup;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
@@ -58,7 +60,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/toggle-button.html How to use the Feathers ToggleButton component
 	 */
-	public class ToggleButton extends Button implements IToggle
+	public class ToggleButton extends Button implements IGroupedToggle
 	{
 		/**
 		 * @copy feathers.controls.Button#STATE_UP
@@ -253,6 +255,39 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _toggleGroup:ToggleGroup;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get toggleGroup():ToggleGroup
+		{
+			return this._toggleGroup;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleGroup(value:ToggleGroup):void
+		{
+			if(this._toggleGroup == value)
+			{
+				return;
+			}
+			if(this._toggleGroup && this._toggleGroup.hasItem(this))
+			{
+				this._toggleGroup.removeItem(this);
+			}
+			this._toggleGroup = value;
+			if(this._toggleGroup && !this._toggleGroup.hasItem(this))
+			{
+				this._toggleGroup.addItem(this);
+			}
 		}
 
 		/**

@@ -18,6 +18,7 @@ package
 	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
 	import feathers.tests.ProgressBarTests;
+	import feathers.tests.RadioTests;
 	import feathers.tests.ScrollBarHorizontalTests;
 	import feathers.tests.ScrollContainerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
@@ -98,6 +99,7 @@ package
 				ListTests,
 				PickerListTests,
 				ProgressBarTests,
+				RadioTests,
 				SimpleScrollBarHorizontalTests,
 				ScrollBarHorizontalTests,
 				ScrollContainerTests,

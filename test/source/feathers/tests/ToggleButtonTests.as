@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.ToggleButton;
+	import feathers.core.ToggleGroup;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import flash.geom.Point;
@@ -178,6 +179,23 @@ package feathers.tests
 			Assert.assertTrue("selectedDownIcon not disposed when ToggleButton disposed.", selectedDownIcon.isDisposed);
 			Assert.assertTrue("selectedHoverIcon not disposed when ToggleButton disposed.", selectedHoverIcon.isDisposed);
 			Assert.assertTrue("selectedDisabledIcon not disposed when ToggleButton disposed.", selectedDisabledIcon.isDisposed);
+		}
+
+		[Test]
+		public function testToggleGroupPropertyAfterAddingExternally():void
+		{
+			var group:ToggleGroup = new ToggleGroup();
+			group.addItem(this._button);
+			Assert.assertNotNull("toggleGroup property must not be null after adding a ToggleButton to a ToggleGroup.", this._button.toggleGroup);
+		}
+
+		[Test]
+		public function testToggleGroupPropertyAfterRemovingExternally():void
+		{
+			var group:ToggleGroup = new ToggleGroup();
+			group.addItem(this._button);
+			group.removeItem(this._button);
+			Assert.assertNull("toggleGroup property must be null after removing a ToggleButton to a ToggleGroup.", this._button.toggleGroup);
 		}
 	}
 }

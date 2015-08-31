@@ -268,44 +268,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _toggleGroup:ToggleGroup;
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get toggleGroup():ToggleGroup
+		override public function set toggleGroup(value:ToggleGroup):void
 		{
-			return this._toggleGroup;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set toggleGroup(value:ToggleGroup):void
-		{
-			if(this._toggleGroup == value)
+			if(this._toggleGroup === value)
 			{
 				return;
 			}
 			//a null toggle group will automatically add it to
 			//defaultRadioGroup. however, if toggleGroup is already
-			// defaultRadioGroup, then we really want to use null because
+			//defaultRadioGroup, then we really want to use null because
 			//otherwise we'd remove the radio from defaultRadioGroup and then
 			//immediately add it back because ToggleGroup sets the toggleGroup
 			//property to null when removing an item.
-			if(!value && this._toggleGroup != defaultRadioGroup && this.stage)
+			if(!value && this._toggleGroup !== defaultRadioGroup && this.stage)
 			{
 				value = defaultRadioGroup;
 			}
-			if(this._toggleGroup && this._toggleGroup.hasItem(this))
-			{
-				this._toggleGroup.removeItem(this);
-			}
-			this._toggleGroup = value;
-			if(this._toggleGroup && !this._toggleGroup.hasItem(this))
-			{
-				this._toggleGroup.addItem(this);
-			}
+			super.toggleGroup = value;
 		}
 
 		/**
