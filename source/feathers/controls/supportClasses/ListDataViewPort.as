@@ -1123,7 +1123,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var itemRenderer:IListItemRenderer = inactiveItemRenderers[i];
-				if(!itemRenderer)
+				if(!itemRenderer || itemRenderer.index < 0)
 				{
 					continue;
 				}
