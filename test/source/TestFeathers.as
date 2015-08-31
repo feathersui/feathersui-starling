@@ -14,6 +14,7 @@ package
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
+	import feathers.tests.ListRendererAddRemoveTests;
 	import feathers.tests.ListTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.PickerListTests;
@@ -101,6 +102,7 @@ package
 				GroupedListTests,
 				LayoutGroupTests,
 				ListTests,
+				ListRendererAddRemoveTests,
 				PickerListTests,
 				ProgressBarTests,
 				RadioTests,

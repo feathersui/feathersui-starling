@@ -596,6 +596,15 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
+			this.refreshInactiveRenderers(this._defaultStorage, true);
+			if(this._storageMap)
+			{
+				for(var factoryID:String in this._storageMap)
+				{
+					var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
+					this.refreshInactiveRenderers(storage, true);
+				}
+			}
 			this.owner = null;
 			this.layout = null;
 			this.dataProvider = null;
