@@ -1023,6 +1023,7 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
+			this.refreshInactiveRenderers(true);
 			this.owner = null;
 			this.dataProvider = null;
 			this.layout = null;
