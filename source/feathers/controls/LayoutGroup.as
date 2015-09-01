@@ -681,7 +681,7 @@ package feathers.controls
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
 				this.explicitWidth !== this.explicitWidth)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
@@ -690,7 +690,7 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitWidth = this.explicitWidth;
 			}
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
 					this.explicitHeight !== this.explicitHeight)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
@@ -699,8 +699,20 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitHeight = this.explicitHeight;
 			}
-			this.viewPortBounds.minWidth = this._minWidth;
-			this.viewPortBounds.minHeight = this._minHeight;
+			var minWidth:Number = this._minWidth;
+			var minHeight:Number = this._minHeight;
+			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
+				this.originalBackgroundWidth > minWidth)
+			{
+				minWidth = this.originalBackgroundWidth;
+			}
+			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
+				this.originalBackgroundHeight > minHeight)
+			{
+				minHeight = this.originalBackgroundHeight;
+			}
+			this.viewPortBounds.minWidth = minWidth;
+			this.viewPortBounds.minHeight = minHeight;
 			this.viewPortBounds.maxWidth = this._maxWidth;
 			this.viewPortBounds.maxHeight = this._maxHeight;
 		}

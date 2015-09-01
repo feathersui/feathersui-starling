@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+	import feathers.layout.VerticalLayout;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
@@ -15,6 +16,9 @@ package feathers.tests
 		private static const BACKGROUND_WIDTH:Number = 200;
 		//note: the background height is purposefully larger than the item height
 		private static const BACKGROUND_HEIGHT:Number = 250;
+		
+		private static const LARGE_BACKGROUND_WIDTH:Number = 400;
+		private static const LARGE_BACKGROUND_HEIGHT:Number = 400;
 
 		//note: the item width is purposefully larger than the background width
 		private static const ITEM_WIDTH:Number = 210;
@@ -132,6 +136,23 @@ package feathers.tests
 				ITEM_WIDTH, this._group.width);
 			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._group.height);
+		}
+
+		[Test]
+		public function testChildPositionWithLargerBackground():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._group.addChild(child);
+			this._group.backgroundSkin = new Quad(LARGE_BACKGROUND_WIDTH, LARGE_BACKGROUND_HEIGHT);
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			this._group.layout = layout;
+			this._group.validate();
+			Assert.assertTrue("The layout group does not account for the background skin width when passing bounds to the layout.",
+				child.x > 0);
+			Assert.assertTrue("The layout group does not account for the background skin width when passing bounds to the layout.",
+				child.y > 0);
 		}
 
 		[Test]
