@@ -49,21 +49,60 @@ That's it! When we pass the button to `addChild()`, the theme will detect the bu
 
 Most of the samples and apps included with the Feathers library use themes. Take a look in the *examples* directory to see the source code for these projects to see how they initialize their themes in the context of a larger app. Check out the *themes* directory for several example themes.
 
-## When does a theme apply skins to a component?
-
-A theme applies skins after a component initializes. This happens automatically when a component is added to the display list and it gains access to the stage. In other words, a component won't be skinned immediately when its constructor is called. The skinning happens when you pass a component to the `addChild()` function and the component gains access to the stage.
-
-Any skin-related properties that you set before adding a component to the display list may be replaced by the theme. You should [extend the theme](extending-themes.html) to customize individual component skins.
-
 ## Customizing a specific component instance
 
-If you've chosen to use a theme, it's best to stay within the theme architecture when you want to customize a specific component instance's skins. See the [Extending a Feathers Theme](extending-themes.html) documentation for way to customize an individual component instance to look different than the default. It's very easy, and it helps you keep all of your skinning code in one place.
+If you've chosen to use a theme, it's best to stay within the theme architecture when you want to customize a specific component instance's skins. If you try to set skin/style properties in the same place that you create a component, you may discover that the theme replaces your choices. Something like this might not work:
 
-It's not recommended when using themes, but you can also change skin and style properties directly on a particular component when you create it. You simply need to do this *after* it has been added to the stage. As noted above, any style properties that you set before adding the component to the stage may be replaced by the theme. For best results, you should always stay within the theming architecture when you choose to use a theme. This means extending the theme when you want to make changes. Otherwise, you may find yourself fighting the theme code and getting frustrated.
+``` code
+var button:Button = new Button();
+button.iconPosition = Button.ICON_POSITION_TOP;
+button.defaultIcon = new Image(texture);
+this.addChild(button);
+```
 
-Theming is a powerful, but (ultimately) optional, part of Feathers. You can always skin your components without themes. Many Feathers developers do, and you're encouraged to use Feathers in whatever way best fits your preferred workflow.
+The theme doesn't set skins right away after the constructor is called. It waits until the component initializes. Usually, that happens when the component is added to the stage. In the code above, our `iconPosition` and `defaultIcon` properties may be changed by the theme because we're setting them too early!
 
-## Alternate Style Names
+There are a few ways to work within the theme architecture.
+
+### Set the style provider to `null` to skin manually
+
+The most drastic thing we can do is tell a component not to use the theme at all, by setting its `styleProvider` property to `null`:
+
+``` code
+var button:Button = new Button();
+button.styleProvider = null;
+button.iconPosition = Button.ICON_POSITION_TOP;
+button.defaultIcon = new Image(texture);
+this.addChild(button);
+```
+
+When we remove the style provider, we can be sure that the theme won't make any changes. However, without a style provider, things like padding, layouts, and fonts will need to be set manually as well. This option is all or nothing.
+
+### Use `AddOnFunctionStyleProvider` to make changes after the theme is applied
+
+Completely removing the theme from a component may undesireable. Maybe we want to keep some of the theme's styles, but tweak others. We can do that using the [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) class:
+
+``` code
+function setExtraStyles( button ):void
+{
+    button.iconPosition = Button.ICON_POSITION_TOP;
+    button.defaultIcon = new Image( texture );
+}
+ 
+var button:Button = new Button();
+button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );
+this.addChild( button );
+```
+
+An `AddOnFunctionStyleProvider` will apply the theme's style first, and then it will call an extra function that allows us to safely make changes to a component's styles without worrying that the theme will replace anything.
+
+We pass two things to the `AddOnFunctionStyleProvider`. First, the button's original style provider that sets the theme's styles. Then, our extra function to call after the theme's styles are applied.
+
+### Extend the theme with a custom style name
+
+Finally, the best practice is to [extend the theme](extending-themes.html). This usually involves subclassing the existing theme so that you can add a new *style name* for the component that you want to customize. Putting all of your skinning code in the theme keeps things more organized, and you'll avoid cluttering up every corner of your app with random styling code.
+
+## Built-in alternate style names
 
 Some components provide a set of alternate skin "style names" that may be added to a component instance's `styleNameList` to tell the theme that a particular instance should be skinned slightly differently than the default. These alternate skins provide a way to differentiate components visually without changing their functionality. For instance, you might want certain buttons to be a little more prominent than others, so you might give them a special "call-to-action" style name that a theme might use to provide a more colorful skin.
 
