@@ -1710,12 +1710,24 @@ package feathers.layout
 			{
 				this._typicalItem.width = this._typicalItemWidth;
 			}
+			var hasSetHeight:Boolean = false;
 			if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY &&
 				justifyHeight === justifyHeight) //!isNaN
 			{
+				hasSetHeight = true;
 				this._typicalItem.height = justifyHeight;
 			}
-			else if(this._resetTypicalItemDimensionsOnMeasure)
+			else if(this._typicalItem is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(this._typicalItem);
+				var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
+				if(layoutData && layoutData.percentHeight === layoutData.percentHeight)
+				{
+					hasSetHeight = true;
+					this._typicalItem.height = justifyHeight * layoutData.percentHeight / 100;
+				}
+			}
+			if(!hasSetHeight && this._resetTypicalItemDimensionsOnMeasure)
 			{
 				this._typicalItem.height = this._typicalItemHeight;
 			}

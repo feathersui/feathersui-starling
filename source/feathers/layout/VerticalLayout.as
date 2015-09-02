@@ -9,6 +9,7 @@ package feathers.layout
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.ILayoutDisplayObject;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -1719,12 +1720,24 @@ package feathers.layout
 			{
 				return;
 			}
+			var hasSetWidth:Boolean = false;
 			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY &&
 				justifyWidth === justifyWidth) //!isNaN
 			{
+				hasSetWidth = true;
 				this._typicalItem.width = justifyWidth;
 			}
-			else if(this._resetTypicalItemDimensionsOnMeasure)
+			else if(this._typicalItem is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(this._typicalItem);
+				var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
+				if(layoutData && layoutData.percentWidth === layoutData.percentWidth)
+				{
+					hasSetWidth = true;
+					this._typicalItem.width = justifyWidth * layoutData.percentWidth / 100;
+				}
+			}
+			if(!hasSetWidth && this._resetTypicalItemDimensionsOnMeasure)
 			{
 				this._typicalItem.width = this._typicalItemWidth;
 			}
