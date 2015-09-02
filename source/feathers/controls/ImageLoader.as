@@ -408,6 +408,7 @@ package feathers.controls
 			{
 				this.image.visible = false;
 			}
+			this.cleanupLoaders(true);
 			this._lastURL = null;
 			if(this._source is Texture)
 			{
@@ -1520,36 +1521,6 @@ package feathers.controls
 				else if(sourceURL != this._lastURL)
 				{
 					this._lastURL = sourceURL;
-					
-					if(this.urlLoader)
-					{
-						this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-						this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-						this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-						try
-						{
-							this.urlLoader.close();
-						}
-						catch(error:Error)
-						{
-							//no need to do anything in response
-						}
-					}
-
-					if(this.loader)
-					{
-						this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-						this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-						this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-						try
-						{
-							this.loader.close();
-						}
-						catch(error:Error)
-						{
-							//no need to do anything in response
-						}
-					}
 
 					if(this._textureCache && !this._isRestoringTexture && this._textureCache.hasTexture(sourceURL))
 					{
@@ -1801,6 +1772,52 @@ package feathers.controls
 			this._pendingRawTextureData = null;
 			this._texture = null;
 			this._isTextureOwner = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function cleanupLoaders(close:Boolean):void
+		{
+			if(this.urlLoader)
+			{
+				this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+				this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
+				this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
+				this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
+				if(close)
+				{
+					try
+					{
+						this.urlLoader.close();
+					}
+					catch(error:Error)
+					{
+						//no need to do anything in response
+					}
+				}
+				this.urlLoader = null;
+			}
+
+			if(this.loader)
+			{
+				this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+				this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
+				this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
+				this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
+				if(close)
+				{
+					try
+					{
+						this.loader.close();
+					}
+					catch(error:Error)
+					{
+						//no need to do anything in response
+					}
+				}
+				this.loader = null;
+			}
 		}
 
 		/**
@@ -2108,10 +2125,7 @@ package feathers.controls
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
 			var bitmap:Bitmap = Bitmap(this.loader.content);
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-			this.loader = null;
+			this.cleanupLoaders(false);
 
 			var bitmapData:BitmapData = bitmap.bitmapData;
 			
@@ -2153,12 +2167,7 @@ package feathers.controls
 		 */
 		protected function loader_ioErrorHandler(event:IOErrorEvent):void
 		{
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-			this.loader = null;
-
+			this.cleanupLoaders(false);
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
@@ -2170,12 +2179,7 @@ package feathers.controls
 		 */
 		protected function loader_securityErrorHandler(event:SecurityErrorEvent):void
 		{
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-			this.loader = null;
-
+			this.cleanupLoaders(false);
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
@@ -2188,11 +2192,7 @@ package feathers.controls
 		protected function rawDataLoader_completeHandler(event:flash.events.Event):void
 		{
 			var rawData:ByteArray = ByteArray(this.urlLoader.data);
-			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-			this.urlLoader = null;
+			this.cleanupLoaders(false);
 
 			//only clear the texture if we're not restoring
 			if(!this._isRestoringTexture)
@@ -2226,12 +2226,7 @@ package feathers.controls
 		 */
 		protected function rawDataLoader_ioErrorHandler(event:ErrorEvent):void
 		{
-			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-			this.urlLoader = null;
-
+			this.cleanupLoaders(false);
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
@@ -2243,12 +2238,7 @@ package feathers.controls
 		 */
 		protected function rawDataLoader_securityErrorHandler(event:ErrorEvent):void
 		{
-			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-			this.urlLoader = null;
-
+			this.cleanupLoaders(false);
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
