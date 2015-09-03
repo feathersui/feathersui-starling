@@ -98,7 +98,7 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-		protected var mAssetManager:AssetManager;
+		protected var assetManager:AssetManager;
 
 		/**
 		 * @private
@@ -106,10 +106,10 @@ package feathers.themes
 		override public function dispose():void
 		{
 			super.dispose();
-			if(this.mAssetManager)
+			if(this.assetManager)
 			{
-				this.mAssetManager.removeTextureAtlas(ATLAS_NAME);
-				this.mAssetManager = null;
+				this.assetManager.removeTextureAtlas(ATLAS_NAME);
+				this.assetManager = null;
 			}
 		}
 
@@ -127,7 +127,7 @@ package feathers.themes
 		 */
 		protected function initializeTextureAtlas():void
 		{
-			this.mAtlas = this.mAssetManager.getTextureAtlas( ATLAS_NAME );
+			this.atlas = this.assetManager.getTextureAtlas( ATLAS_NAME );
 		}
 
 		/**
@@ -158,7 +158,7 @@ package feathers.themes
 			{
 				assetManager = new AssetManager();
 			}
-			this.mAssetManager = assetManager;
+			this.assetManager = assetManager;
 			//add a trailing slash, if needed
 			if(assetsBasePath.lastIndexOf("/") != assetsBasePath.length - 1)
 			{
@@ -169,14 +169,14 @@ package feathers.themes
 			for(var i:int = 0; i < assetCount; i++)
 			{
 				var asset:String = assetPaths[i];
-				this.mAssetManager.enqueue(assetsBasePath + asset);
+				this.assetManager.enqueue(assetsBasePath + asset);
 			}
 			if(oldScaleFactor != -1)
 			{
 				//restore the old scale factor, just in case
-				this.mAssetManager.scaleFactor = oldScaleFactor;
+				this.assetManager.scaleFactor = oldScaleFactor;
 			}
-			this.mAssetManager.loadQueue(assetManager_onProgress);
+			this.assetManager.loadQueue(assetManager_onProgress);
 		}
 	}
 }

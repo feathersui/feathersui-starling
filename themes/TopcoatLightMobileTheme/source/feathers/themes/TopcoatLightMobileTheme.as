@@ -67,13 +67,13 @@ package feathers.themes
 			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
 			atlasTexture.root.onRestore = onAtlasTextureRestore;
 			atlasBitmapData.dispose();
-			this.mAtlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
+			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
 		}
 
 		private function onAtlasTextureRestore():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			this.mAtlas.texture.root.uploadBitmapData(atlasBitmapData);
+			this.atlas.texture.root.uploadBitmapData(atlasBitmapData);
 			atlasBitmapData.dispose();
 		}
 
