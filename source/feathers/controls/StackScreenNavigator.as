@@ -290,6 +290,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		public function get stackCount():int
+		{
+			var stackLength:int = this._stack.length;
+			if(stackLength > 0)
+			{
+				return this._stack.length + 1;
+			}
+			if(this._activeScreen)
+			{
+				return 1;
+			}
+			return 0;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _pushScreenEvents:Object = {};
 
 		/**
