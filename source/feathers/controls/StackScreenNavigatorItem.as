@@ -455,6 +455,10 @@ package feathers.controls
 		 */
 		public function setScreenIDForReplaceEvent(eventType:String, screenID:String):void
 		{
+			if(!this._replaceEvents)
+			{
+				this._replaceEvents = {};
+			}
 			this._replaceEvents[eventType] = screenID;
 		}
 
@@ -466,6 +470,10 @@ package feathers.controls
 		 */
 		public function clearReplaceEvent(eventType:String):void
 		{
+			if(!this._replaceEvents)
+			{
+				return;
+			}
 			delete this._replaceEvents[eventType];
 		}
 
