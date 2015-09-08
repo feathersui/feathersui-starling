@@ -140,6 +140,38 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _replaceEvents:Object;
+
+		/**
+		 * A set of key-value pairs representing actions that should be
+		 * triggered when events are dispatched by the screen when it is shown.
+		 * A pair's key is the event type to listen for (or the property name of
+		 * an <code>ISignal</code> instance), and a pair's value is a
+		 * <code>String</code> that is the ID of another screen that will
+		 * replace the currently active screen.
+		 *
+		 * @see #setScreenIDForReplaceEvent()
+		 */
+		public function get replaceEvents():Object
+		{
+			return this._replaceEvents;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set replaceEvents(value:Object):void
+		{
+			if(!value)
+			{
+				value = {};
+			}
+			this._replaceEvents = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _popEvents:Vector.<String>;
 
 		/**
@@ -396,14 +428,45 @@ package feathers.controls
 		}
 
 		/**
-		 * Cancels the action previously registered to be triggered when the
-		 * screen dispatches an event.
+		 * Cancels the "push" action previously registered to be triggered when
+		 * the screen dispatches an event.
 		 *
 		 * @see #pushEvents
 		 */
 		public function clearPushEvent(eventType:String):void
 		{
 			delete this._pushEvents[eventType];
+		}
+
+		/**
+		 * Specifies another screen to replace this screen on the top of the
+		 * stack when an event is dispatched by this screen. The other screen
+		 * should be specified by its ID that was registered with a call to
+		 * <code>addScreen()</code> on the <code>StackScreenNavigator</code>.
+		 *
+		 * <p>If the screen is currently being displayed by a
+		 * <code>StackScreenNavigator</code>, and you call
+		 * <code>setScreenIDForPushEvent()</code> on the <code>StackScreenNavigatorItem</code>,
+		 * the <code>StackScreenNavigator</code> won't listen for the event
+		 * until the next time that the screen is shown.</p>
+		 *
+		 * @see #clearReplaceEvent()
+		 * @see #replaceEvents
+		 */
+		public function setScreenIDForReplaceEvent(eventType:String, screenID:String):void
+		{
+			this._replaceEvents[eventType] = screenID;
+		}
+
+		/**
+		 * Cancels the "replace" action previously registered to be triggered
+		 * when the screen dispatches an event.
+		 *
+		 * @see #replaceEvents
+		 */
+		public function clearReplaceEvent(eventType:String):void
+		{
+			delete this._replaceEvents[eventType];
 		}
 
 		/**
@@ -539,7 +602,7 @@ package feathers.controls
 			}
 			if(!(screenInstance is DisplayObject))
 			{
-				throw new ArgumentError("ScreenNavigatorItem \"getScreen()\" must return a Starling display object.");
+				throw new ArgumentError("StackScreenNavigatorItem \"getScreen()\" must return a Starling display object.");
 			}
 			if(this._properties)
 			{
