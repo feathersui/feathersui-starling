@@ -99,7 +99,8 @@ package feathers.controls
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
-		 * Identifier for the button's up state when selected. Can be used for styling purposes.
+		 * Identifier for the toggle button's up state when selected. Can be
+		 * used for styling purposes.
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
@@ -108,7 +109,8 @@ package feathers.controls
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
-		 * Identifier for the button's down state when selected. Can be used for styling purposes.
+		 * Identifier for the toggle button's down state when selected. Can be
+		 * used for styling purposes.
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
@@ -117,7 +119,8 @@ package feathers.controls
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
-		 * Identifier for the button's hover state when selected. Can be used for styling purposes.
+		 * Identifier for the toggle button's hover state when selected. Can be
+		 * used for styling purposes.
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
@@ -126,13 +129,107 @@ package feathers.controls
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
-		 * Identifier for the button's disabled state. Can be used for styling purposes.
+		 * Identifier for the toggle button's disabled state when selected. Can
+		 * be used for styling purposes.
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
 		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_TOP
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_TOP:String = "top";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_RIGHT:String = "right";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_BOTTOM
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_BOTTOM:String = "bottom";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_LEFT
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_LEFT:String = "left";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_MANUAL
+		 *
+		 * @see #iconPosition
+		 * @see #iconOffsetX
+		 * @see #iconOffsetY
+		 */
+		public static const ICON_POSITION_MANUAL:String = "manual";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_LEFT_BASELINE
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT_BASELINE
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
+
+		/**
+		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_RIGHT
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * @copy feathers.controls.Button#VERTICAL_ALIGN_TOP
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * @copy feathers.controls.Button#VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * @copy feathers.controls.Button#VERTICAL_ALIGN_BOTTOM
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleButton</code>
