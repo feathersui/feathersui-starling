@@ -4099,6 +4099,10 @@ package feathers.controls.renderers
 			{
 				if(oldAccessory)
 				{
+					if(oldAccessory is IStateObserver)
+					{
+						IStateObserver(oldAccessory).stateContext = null;
+					}
 					if(oldAccessory is IFeathersControl)
 					{
 						IFeathersControl(oldAccessory).removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
@@ -4108,6 +4112,10 @@ package feathers.controls.renderers
 				}
 				if(this.currentAccessory)
 				{
+					if(this.currentAccessory is IStateObserver)
+					{
+						IStateObserver(this.currentAccessory).stateContext = this;
+					}
 					this.addChild(this.currentAccessory);
 					if(this.currentAccessory is IFeathersControl)
 					{

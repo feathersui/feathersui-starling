@@ -2489,10 +2489,18 @@ package feathers.controls
 			{
 				if(oldSkin)
 				{
+					if(oldSkin is IStateObserver)
+					{
+						IStateObserver(oldSkin).stateContext = null;
+					}
 					this.removeChild(oldSkin, false);
 				}
 				if(this.currentSkin)
 				{
+					if(this.currentSkin is IStateObserver)
+					{
+						IStateObserver(this.currentSkin).stateContext = this;
+					}
 					this.addChildAt(this.currentSkin, 0);
 				}
 			}
@@ -2537,10 +2545,18 @@ package feathers.controls
 					{
 						IFeathersControl(oldIcon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
 					}
+					if(oldIcon is IStateObserver)
+					{
+						IStateObserver(oldIcon).stateContext = null;
+					}
 					this.removeChild(oldIcon, false);
 				}
 				if(this.currentIcon)
 				{
+					if(this.currentIcon is IStateObserver)
+					{
+						IStateObserver(this.currentIcon).stateContext = this;
+					}
 					//we want the icon to appear below the label text renderer
 					var index:int = this.numChildren;
 					if(this.labelTextRenderer)
