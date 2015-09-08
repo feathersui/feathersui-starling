@@ -122,10 +122,7 @@ package feathers.controls
 	 */
 	[Event(name="rendererRemove",type="starling.events.Event")]
 
-<<<<<<< HEAD
 	[DefaultProperty("dataProvider")]
-=======
->>>>>>> master
 	/**
 	 * Displays a list of items divided into groups or sections. Takes a
 	 * hierarchical provider limited to two levels of hierarchy. This component
@@ -719,10 +716,7 @@ package feathers.controls
 		 */
 		protected var _selectedGroupIndex:int = -1;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The group index of the currently selected item. Returns <code>-1</code>
 		 * if no item is selected.
@@ -759,10 +753,7 @@ package feathers.controls
 		 */
 		protected var _selectedItemIndex:int = -1;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The item index of the currently selected item. Returns <code>-1</code>
 		 * if no item is selected.
@@ -794,10 +785,7 @@ package feathers.controls
 			return this._selectedItemIndex;
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.
@@ -900,14 +888,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _itemRendererFactories:Object;
 
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _itemRendererFactory:Function;
 
 		/**
@@ -941,13 +926,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #itemRendererType
-<<<<<<< HEAD
-		 * @see #firstItemRendererFactory
-		 * @see #lastItemRendererFactory
-		 * @see #singleItemRendererFactory
-=======
 		 * @see #setItemRendererFactoryWithID()
->>>>>>> master
 		 */
 		public function get itemRendererFactory():Function
 		{
@@ -971,8 +950,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _factoryIDFunction:Function;
 
 		/**
@@ -1042,7 +1019,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _typicalItem:Object = null;
 
 		/**
@@ -1696,14 +1672,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _headerRendererFactories:Object;
 
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _headerRendererFactory:Function;
 
 		/**
@@ -1732,10 +1705,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #headerRendererType
-<<<<<<< HEAD
-=======
 		 * @see #setHeaderRendererFactoryWithID()
->>>>>>> master
 		 */
 		public function get headerRendererFactory():Function
 		{
@@ -1759,8 +1729,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _headerFactoryIDFunction:Function;
 
 		/**
@@ -1831,7 +1799,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _customHeaderRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER;
 
 		/**
@@ -2001,14 +1968,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _footerRendererFactories:Object;
 
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _footerRendererFactory:Function;
 
 		/**
@@ -2037,10 +2001,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #footerRendererType
-<<<<<<< HEAD
-=======
 		 * @see #setFooterRendererFactoryWithID()
->>>>>>> master
 		 */
 		public function get footerRendererFactory():Function
 		{
@@ -2064,8 +2025,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _footerFactoryIDFunction:Function;
 
 		/**
@@ -2136,7 +2095,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _customFooterRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER;
 
 		/**
@@ -2605,8 +2563,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * Returns the item renderer factory associated with a specific ID.
 		 * Returns <code>null</code> if no factory is associated with the ID.
 		 *
@@ -2742,7 +2698,6 @@ package feathers.controls
 		}
 
 		/**
->>>>>>> master
 		 * Extracts header data from a group object.
 		 */
 		public function groupToHeaderData(group:Object):Object
@@ -2835,11 +2790,8 @@ package feathers.controls
 
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
-<<<<<<< HEAD
-=======
 			this.dataViewPort.itemRendererFactories = this._itemRendererFactories;
 			this.dataViewPort.factoryIDFunction = this._factoryIDFunction;
->>>>>>> master
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
 			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 
@@ -2857,21 +2809,15 @@ package feathers.controls
 
 			this.dataViewPort.headerRendererType = this._headerRendererType;
 			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
-<<<<<<< HEAD
-=======
 			this.dataViewPort.headerRendererFactories = this._headerRendererFactories;
 			this.dataViewPort.headerFactoryIDFunction = this._headerFactoryIDFunction;
->>>>>>> master
 			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
 			this.dataViewPort.customHeaderRendererStyleName = this._customHeaderRendererStyleName;
 
 			this.dataViewPort.footerRendererType = this._footerRendererType;
 			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
-<<<<<<< HEAD
-=======
 			this.dataViewPort.footerRendererFactories = this._footerRendererFactories;
 			this.dataViewPort.footerFactoryIDFunction = this._footerFactoryIDFunction;
->>>>>>> master
 			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
 			this.dataViewPort.customFooterRendererStyleName = this._customFooterRendererStyleName;
 

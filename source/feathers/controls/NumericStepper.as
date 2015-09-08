@@ -9,10 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.INativeFocusOwner;
-<<<<<<< HEAD
-=======
 	import feathers.core.ITextBaselineControl;
->>>>>>> master
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -59,13 +56,8 @@ package feathers.controls
 	 * Select a value between a minimum and a maximum by using increment and
 	 * decrement buttons or typing in a value in a text input.
 	 *
-<<<<<<< HEAD
-	 * <p>The following example sets the stepper's values and listens for when
-	 * when the value changes:</p>
-=======
 	 * <p>The following example sets the stepper's range and listens for when
 	 * the value changes:</p>
->>>>>>> master
 	 *
 	 * <listing version="3.0">
 	 * var stepper:NumericStepper = new NumericStepper();
@@ -78,11 +70,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/numeric-stepper.html How to use the Feathers NumericStepper component
 	 */
-<<<<<<< HEAD
-	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner
-=======
 	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner, ITextBaselineControl
->>>>>>> master
 	{
 		/**
 		 * @private
@@ -297,10 +285,7 @@ package feathers.controls
 		 */
 		protected var _value:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The value of the numeric stepper, between the minimum and maximum.
 		 *
@@ -1299,8 +1284,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * @inheritDoc
 		 */
 		public function get baseline():Number
@@ -1313,7 +1296,6 @@ package feathers.controls
 		}
 
 		/**
->>>>>>> master
 		 * @private
 		 */
 		override protected function draw():void

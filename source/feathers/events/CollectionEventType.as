@@ -48,14 +48,11 @@ package feathers.events
 		 * Dispatched when an item in the collection has changed.
 		 */
 		public static const UPDATE_ITEM:String = "updateItem";
-<<<<<<< HEAD
-=======
 
 		/**
 		 * Dispatched when all existing items in the collection have changed
 		 * (but they have not been replaced by different items).
 		 */
 		public static const UPDATE_ALL:String = "updateAll";
->>>>>>> master
 	}
 }

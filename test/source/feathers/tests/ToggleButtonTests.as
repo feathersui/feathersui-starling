@@ -1,11 +1,8 @@
 package feathers.tests
 {
 	import feathers.controls.ToggleButton;
-<<<<<<< HEAD
-=======
 	import feathers.core.ToggleGroup;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
->>>>>>> master
 
 	import flash.geom.Point;
 
@@ -109,8 +106,6 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The isSelected property was incorrectly changed",
 				beforeIsSelected, this._button.isSelected);
 		}
-<<<<<<< HEAD
-=======
 
 		[Test]
 		public function testSkinsDisposed():void
@@ -202,6 +197,5 @@ package feathers.tests
 			group.removeItem(this._button);
 			Assert.assertNull("toggleGroup property must be null after removing a ToggleButton to a ToggleGroup.", this._button.toggleGroup);
 		}
->>>>>>> master
 	}
 }

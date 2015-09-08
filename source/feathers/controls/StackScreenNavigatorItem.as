@@ -9,16 +9,11 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IScreenNavigatorItem;
 
-<<<<<<< HEAD
 	import mx.core.IMXMLObject;
 
 	import starling.display.DisplayObject;
 
 	[DefaultProperty("screen")]
-=======
-	import starling.display.DisplayObject;
-
->>>>>>> master
 	/**
 	 * Data for an individual screen that will be displayed by a
 	 * <code>StackScreenNavigator</code> component.
@@ -45,11 +40,7 @@ package feathers.controls
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see feathers.controls.StackScreenNavigator
 	 */
-<<<<<<< HEAD
 	public class StackScreenNavigatorItem implements IScreenNavigatorItem, IMXMLObject
-=======
-	public class StackScreenNavigatorItem implements IScreenNavigatorItem
->>>>>>> master
 	{
 		/**
 		 * Constructor.
@@ -59,11 +50,7 @@ package feathers.controls
 		 * @param popEvent An event that pops the screen from the top of the stack.
 		 * @param properties A set of key-value pairs to pass to the screen when it is shown.
 		 */
-<<<<<<< HEAD
-		public function StackScreenNavigatorItem(screen:Object = null, pushEvents:Object = null, popEvent:String = null, properties:Object = null)
-=======
 		public function StackScreenNavigatorItem(screen:Object, pushEvents:Object = null, popEvent:String = null, properties:Object = null)
->>>>>>> master
 		{
 			this._screen = screen;
 			this._pushEvents = pushEvents ? pushEvents : {};
@@ -156,8 +143,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _replaceEvents:Object;
 
 		/**
@@ -190,7 +175,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _popEvents:Vector.<String>;
 
 		/**
@@ -407,7 +391,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
 		 * @private
 		 */
 		private var _mxmlID:String;
@@ -429,8 +412,6 @@ package feathers.controls
 		}
 
 		/**
-=======
->>>>>>> master
 		 * Specifies a function to call when an event is dispatched by the
 		 * screen.
 		 *
@@ -471,13 +452,8 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-		 * Cancels the action previously registered to be triggered when the
-		 * screen dispatches an event.
-=======
 		 * Cancels the "push" action previously registered to be triggered when
 		 * the screen dispatches an event.
->>>>>>> master
 		 *
 		 * @see #pushEvents
 		 */
@@ -487,8 +463,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * Specifies another screen to replace this screen on the top of the
 		 * stack when an event is dispatched by this screen. The other screen
 		 * should be specified by its ID that was registered with a call to
@@ -528,7 +502,6 @@ package feathers.controls
 		}
 
 		/**
->>>>>>> master
 		 * Specifies an event dispatched by the screen that will cause the
 		 * <code>StackScreenNavigator</code> to pop the screen off the top of
 		 * the stack and return to the previous screen.
@@ -661,11 +634,7 @@ package feathers.controls
 			}
 			if(!(screenInstance is DisplayObject))
 			{
-<<<<<<< HEAD
-				throw new ArgumentError("ScreenNavigatorItem \"getScreen()\" must return a Starling display object.");
-=======
 				throw new ArgumentError("StackScreenNavigatorItem \"getScreen()\" must return a Starling display object.");
->>>>>>> master
 			}
 			if(this._properties)
 			{

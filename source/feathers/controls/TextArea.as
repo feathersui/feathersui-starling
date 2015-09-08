@@ -423,10 +423,7 @@ package feathers.controls
 		 */
 		protected var _text:String = "";
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The text displayed by the text area. The text area dispatches
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
@@ -905,8 +902,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		override public function dispose():void
 		{
 			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent !== this)
@@ -919,7 +914,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		override protected function draw():void
 		{
 			var textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);

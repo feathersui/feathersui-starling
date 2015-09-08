@@ -507,11 +507,7 @@ package feathers.display
 					var scaledOppositeEdgeSize:Number = this._width;
 					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._frame.width;
 					var scaledFirstRegionSize:Number = this._textures.firstRegionSize * oppositeEdgeScale;
-<<<<<<< HEAD
-					var scaledThirdRegionSize:Number = (this._frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
-=======
 					var scaledThirdRegionSize:Number = (this._frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
->>>>>>> master
 					var sumFirstAndThird:Number = scaledFirstRegionSize + scaledThirdRegionSize;
 					if(sumFirstAndThird > this._height)
 					{
@@ -563,11 +559,7 @@ package feathers.display
 					scaledOppositeEdgeSize = this._height;
 					oppositeEdgeScale = scaledOppositeEdgeSize / this._frame.height;
 					scaledFirstRegionSize = this._textures.firstRegionSize * oppositeEdgeScale;
-<<<<<<< HEAD
-					scaledThirdRegionSize = (this._frame.width - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
-=======
 					scaledThirdRegionSize = (this._frame.width - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
->>>>>>> master
 					sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
 					if(sumFirstAndThird > this._width)
 					{

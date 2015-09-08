@@ -122,10 +122,7 @@ package feathers.controls
 	 */
 	[Event(name="rendererRemove",type="starling.events.Event")]
 
-<<<<<<< HEAD
 	[DefaultProperty("dataProvider")]
-=======
->>>>>>> master
 	/**
 	 * Displays a one-dimensional list of items. Supports scrolling, custom
 	 * item renderers, and custom layouts.
@@ -552,12 +549,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _selectedIndex:int = -1;
-<<<<<<< HEAD
 
 		[Bindable(event="change")]
-=======
-		
->>>>>>> master
 		/**
 		 * The index of the currently selected item. Returns <code>-1</code> if
 		 * no item is selected.
@@ -616,10 +609,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.
@@ -716,10 +706,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @private
 		 */
@@ -791,10 +778,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The currently selected item. The getter returns an empty
 		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
@@ -858,10 +842,7 @@ package feathers.controls
 			this.selectedIndices = indices;
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Returns the selected items, with the ability to pass in an optional
 		 * result vector. Better for performance than the <code>selectedItems</code>
@@ -934,14 +915,11 @@ package feathers.controls
 			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-<<<<<<< HEAD
-=======
 
 		/**
 		 * @private
 		 */
 		protected var _itemRendererFactories:Object;
->>>>>>> master
 		
 		/**
 		 * @private
@@ -973,10 +951,7 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.renderers.IListItemRenderer
 		 * @see #itemRendererType
-<<<<<<< HEAD
-=======
 		 * @see #setItemRendererFactoryWithID()
->>>>>>> master
 		 */
 		public function get itemRendererFactory():Function
 		{
@@ -996,8 +971,6 @@ package feathers.controls
 			this._itemRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-<<<<<<< HEAD
-=======
 
 		/**
 		 * @private
@@ -1067,7 +1040,6 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
->>>>>>> master
 		
 		/**
 		 * @private
@@ -1338,8 +1310,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * Returns the item renderer factory associated with a specific ID.
 		 * Returns <code>null</code> if no factory is associated with the ID.
 		 *
@@ -1385,7 +1355,6 @@ package feathers.controls
 		}
 
 		/**
->>>>>>> master
 		 * @private
 		 */
 		override public function dispose():void
@@ -1456,11 +1425,8 @@ package feathers.controls
 			this.dataViewPort.dataProvider = this._dataProvider;
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
-<<<<<<< HEAD
-=======
 			this.dataViewPort.itemRendererFactories = this._itemRendererFactories;
 			this.dataViewPort.factoryIDFunction = this._factoryIDFunction;
->>>>>>> master
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
 			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 			this.dataViewPort.typicalItem = this._typicalItem;

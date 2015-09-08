@@ -25,10 +25,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-<<<<<<< HEAD
 	[DefaultProperty("mxmlContent")]
-=======
->>>>>>> master
 	/**
 	 * A generic container that supports layout. For a container that supports
 	 * scrolling and more robust skinning options, see <code>ScrollContainer</code>.
@@ -63,14 +60,11 @@ package feathers.controls
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
-<<<<<<< HEAD
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
 
 		/**
-=======
->>>>>>> master
 		 * Flag to indicate that the clipping has changed.
 		 */
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
@@ -207,7 +201,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
 		protected var _mxmlContentIsReady:Boolean = false;
 
 		/**
@@ -250,8 +243,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-=======
->>>>>>> master
 		protected var _clipContent:Boolean = false;
 
 		/**
@@ -602,8 +593,6 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
-<<<<<<< HEAD
-=======
 			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
@@ -612,7 +601,6 @@ package feathers.controls
 			{
 				this._backgroundDisabledSkin.dispose();
 			}
->>>>>>> master
 			this.layout = null;
 			super.dispose();
 		}
@@ -629,7 +617,6 @@ package feathers.controls
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
-<<<<<<< HEAD
 		
 		/**
 		 * @private
@@ -638,8 +625,6 @@ package feathers.controls
 		{
 			this.refreshMXMLContent();
 		}
-=======
->>>>>>> master
 
 		/**
 		 * @private
@@ -653,15 +638,12 @@ package feathers.controls
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-<<<<<<< HEAD
 			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
 
 			if(mxmlContentInvalid)
 			{
 				this.refreshMXMLContent();
 			}
-=======
->>>>>>> master
 
 			//scrolling only affects the layout is requiresLayoutOnScroll is true
 			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
@@ -761,11 +743,7 @@ package feathers.controls
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
-<<<<<<< HEAD
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
-=======
 			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
->>>>>>> master
 				this.explicitWidth !== this.explicitWidth)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
@@ -774,11 +752,7 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitWidth = this.explicitWidth;
 			}
-<<<<<<< HEAD
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
-=======
 			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
->>>>>>> master
 					this.explicitHeight !== this.explicitHeight)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
@@ -787,9 +761,20 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitHeight = this.explicitHeight;
 			}
-<<<<<<< HEAD
-			this.viewPortBounds.minWidth = this._minWidth;
-			this.viewPortBounds.minHeight = this._minHeight;
+			var minWidth:Number = this._minWidth;
+			var minHeight:Number = this._minHeight;
+			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
+				this.originalBackgroundWidth > minWidth)
+			{
+				minWidth = this.originalBackgroundWidth;
+			}
+			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
+				this.originalBackgroundHeight > minHeight)
+			{
+				minHeight = this.originalBackgroundHeight;
+			}
+			this.viewPortBounds.minWidth = minWidth;
+			this.viewPortBounds.minHeight = minHeight;
 			this.viewPortBounds.maxWidth = this._maxWidth;
 			this.viewPortBounds.maxHeight = this._maxHeight;
 		}
@@ -810,24 +795,6 @@ package feathers.controls
 				this.addChild(child);
 			}
 			this._mxmlContentIsReady = true;
-=======
-			var minWidth:Number = this._minWidth;
-			var minHeight:Number = this._minHeight;
-			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-				this.originalBackgroundWidth > minWidth)
-			{
-				minWidth = this.originalBackgroundWidth;
-			}
-			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-				this.originalBackgroundHeight > minHeight)
-			{
-				minHeight = this.originalBackgroundHeight;
-			}
-			this.viewPortBounds.minWidth = minWidth;
-			this.viewPortBounds.minHeight = minHeight;
-			this.viewPortBounds.maxWidth = this._maxWidth;
-			this.viewPortBounds.maxHeight = this._maxHeight;
->>>>>>> master
 		}
 
 		/**

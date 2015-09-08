@@ -2,10 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.events.FeathersEventType;
-<<<<<<< HEAD
-=======
 	import feathers.tests.supportClasses.DisposeFlagQuad;
->>>>>>> master
 
 	import flash.geom.Point;
 
@@ -63,11 +60,7 @@ package feathers.tests
 			//the button.
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-<<<<<<< HEAD
-			Assert.assertTrue("TEvent.TRIGGERED was not dispatched", hasTriggered);
-=======
 			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
->>>>>>> master
 		}
 
 		[Test]
@@ -117,8 +110,6 @@ package feathers.tests
 			}, 600);
 		}
 
-<<<<<<< HEAD
-=======
 		[Test]
 		public function testSkinsDisposed():void
 		{
@@ -163,6 +154,5 @@ package feathers.tests
 			Assert.assertTrue("disabledIcon not disposed when Button disposed.", disabledIcon.isDisposed);
 		}
 
->>>>>>> master
 	}
 }

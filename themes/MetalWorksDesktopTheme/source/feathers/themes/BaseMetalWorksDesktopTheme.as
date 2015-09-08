@@ -278,8 +278,6 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL:String = "metalworks-desktop-check-item-renderer-label";
 
 		/**
@@ -295,7 +293,6 @@ package feathers.themes
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected static const THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL:String = "metalworks-desktop-grouped-list-footer-content-label";
 
 		/**
@@ -619,11 +616,8 @@ package feathers.themes
 		protected var verticalScrollBarIncrementButtonDisabledSkinTextures:Scale9Textures;
 		protected var searchIconTexture:Texture;
 		protected var searchIconDisabledTexture:Texture;
-<<<<<<< HEAD
-=======
 		protected var listDrillDownAccessoryTexture:Texture;
 		protected var listDrillDownAccessorySelectedTexture:Texture;
->>>>>>> master
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -881,17 +875,13 @@ package feathers.themes
 			this.verticalScrollBarIncrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-increment-button-up-skin0000"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
 			this.verticalScrollBarIncrementButtonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-increment-button-down-skin0000"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
 			this.verticalScrollBarIncrementButtonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-increment-button-disabled-skin0000"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
-
-<<<<<<< HEAD
-			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
-=======
+			
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
 			this.listDrillDownAccessorySelectedTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-selected-icon0000");
 			
 			//in a future version of Feathers, the StandardIcons class will be
 			//removed. it's still used here to support legacy code.
 			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
->>>>>>> master
 
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -966,12 +956,6 @@ package feathers.themes
 
 			//item renderers for lists
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-<<<<<<< HEAD
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
-=======
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
@@ -983,7 +967,6 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL, this.setCheckItemRendererLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL, this.setCheckItemRendererIconLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL, this.setCheckItemRendererAccessoryLabelStyles);
->>>>>>> master
 
 			//labels
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
@@ -1644,22 +1627,14 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-<<<<<<< HEAD
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-=======
 			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
->>>>>>> master
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.smallGutterSize;
 			renderer.minGap = this.smallGutterSize;
-<<<<<<< HEAD
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
-=======
 			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
->>>>>>> master
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
@@ -1672,8 +1647,6 @@ package feathers.themes
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
-<<<<<<< HEAD
-=======
 		protected function setDrillDownItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
 			this.setItemRendererStyles(itemRenderer);
@@ -1735,7 +1708,6 @@ package feathers.themes
 			itemRenderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
->>>>>>> master
 		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
@@ -1745,11 +1717,7 @@ package feathers.themes
 			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_HOVER, this.darkElementFormat);
 		}
 
-<<<<<<< HEAD
-		protected function setItemRendererAccessoryLabelRendererStyles(textRenderer:TextBlockTextRenderer):void
-=======
 		protected function setItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
->>>>>>> master
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
@@ -1758,11 +1726,7 @@ package feathers.themes
 			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_HOVER, this.darkElementFormat);
 		}
 
-<<<<<<< HEAD
-		protected function setItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
-=======
 		protected function setItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
->>>>>>> master
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
@@ -1771,8 +1735,6 @@ package feathers.themes
 			textRenderer.setElementFormatForState(BaseDefaultItemRenderer.STATE_HOVER, this.darkElementFormat);
 		}
 
-<<<<<<< HEAD
-=======
 		protected function setCheckItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
@@ -1791,7 +1753,6 @@ package feathers.themes
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
->>>>>>> master
 	//-------------------------
 	// NumericStepper
 	//-------------------------

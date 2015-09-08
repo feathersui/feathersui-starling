@@ -48,10 +48,6 @@ package feathers.core
 			}
 			this._root = root;
 			this._starling = stageToStarling(root.stage);
-<<<<<<< HEAD
-			this.setFocusManager(this._root);
-=======
->>>>>>> master
 		}
 
 		/**
@@ -114,25 +110,19 @@ package feathers.core
 				{
 					this._nativeFocusTarget.referenceCount++;
 				}
-<<<<<<< HEAD
-=======
 				//since we weren't listening for objects being added while the
 				//focus manager was disabled, we need to do it now in case there
 				//are new ones.
 				this.setFocusManager(this._root);
->>>>>>> master
 				this._root.addEventListener(Event.ADDED, topLevelContainer_addedHandler);
 				this._root.addEventListener(Event.REMOVED, topLevelContainer_removedHandler);
 				this._root.addEventListener(TouchEvent.TOUCH, topLevelContainer_touchHandler);
 				this._starling.nativeStage.addEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler, false, 0, true);
 				this._starling.nativeStage.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler, false, 0, true);
-<<<<<<< HEAD
-=======
 				if(this._savedFocus && !this._savedFocus.stage)
 				{
 					this._savedFocus = null;
 				}
->>>>>>> master
 				this.focus = this._savedFocus;
 				this._savedFocus = null;
 			}

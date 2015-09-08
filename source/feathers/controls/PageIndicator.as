@@ -252,10 +252,7 @@ package feathers.controls
 		 */
 		protected var _selectedIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The currently selected index.
 		 *

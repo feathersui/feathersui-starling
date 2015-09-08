@@ -62,10 +62,6 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
-<<<<<<< HEAD
-=======
-	import feathers.controls.renderers.DefaultListItemRenderer;
->>>>>>> master
 	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
@@ -410,11 +406,8 @@ package feathers.themes
 
 		protected var listBackgroundSkinTextures:Scale9Textures;
 		protected var listInsetBackgroundSkinTextures:Scale9Textures;
-<<<<<<< HEAD
-=======
 		
 		protected var listDrillDownAccessoryTexture:Texture;
->>>>>>> master
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -627,15 +620,11 @@ package feathers.themes
 			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
 			this.popUpVolumeSliderTrackSkinTextures = new Scale9Textures(this.atlas.getTexture("pop-up-volume-slider-track-skin"), VOLUME_SLIDER_TRACK_SCALE9_GRID);
 
-<<<<<<< HEAD
-			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
-=======
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 
 			//in a future version of Feathers, the StandardIcons class will be
 			//removed. it's still used here to support legacy code.
 			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
->>>>>>> master
 		}
 
 		/**
@@ -709,15 +698,11 @@ package feathers.themes
 
 			//item renderers for lists
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-<<<<<<< HEAD
-			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-=======
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
->>>>>>> master
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
@@ -1413,22 +1398,14 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-<<<<<<< HEAD
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-=======
 			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
->>>>>>> master
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.smallGutterSize;
 			renderer.minGap = this.smallGutterSize;
-<<<<<<< HEAD
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
-=======
 			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
->>>>>>> master
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
@@ -1441,8 +1418,6 @@ package feathers.themes
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
-<<<<<<< HEAD
-=======
 		protected function setDrillDownItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
 			this.setItemRendererStyles(itemRenderer);
@@ -1490,7 +1465,6 @@ package feathers.themes
 			itemRenderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
->>>>>>> master
 		protected function setItemRendererLabelStyles(textRenderer:BitmapFontTextRenderer):void
 		{
 			textRenderer.textFormat = this.primaryTextFormat;

@@ -118,10 +118,7 @@ package feathers.layout
 		 */
 		protected var _rowItems:Vector.<DisplayObject> = new <DisplayObject>[];
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
 		 * to the same value. The <code>gap</code> getter always returns the
@@ -152,10 +149,7 @@ package feathers.layout
 		 */
 		protected var _horizontalGap:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The horizontal space, in pixels, between items.
 		 *
@@ -184,10 +178,7 @@ package feathers.layout
 		 */
 		protected var _verticalGap:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The vertical space, in pixels, between items.
 		 *
@@ -211,10 +202,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @private
 		 */
@@ -314,10 +302,7 @@ package feathers.layout
 		 */
 		protected var _paddingTop:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The space, in pixels, above of items.
 		 *
@@ -346,10 +331,7 @@ package feathers.layout
 		 */
 		protected var _paddingRight:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The space, in pixels, to the right of the items.
 		 *
@@ -378,10 +360,7 @@ package feathers.layout
 		 */
 		protected var _paddingBottom:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The space, in pixels, below the items.
 		 *
@@ -410,10 +389,7 @@ package feathers.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The space, in pixels, to the left of the items.
 		 *
@@ -442,10 +418,7 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * If the total row width is less than the bounds, the items in the row
@@ -482,10 +455,7 @@ package feathers.layout
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the total height of the content is less than the bounds, the
@@ -522,10 +492,7 @@ package feathers.layout
 		 */
 		protected var _rowVerticalAlign:String = VERTICAL_ALIGN_TOP;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the height of an item is less than the height of a row, it can be
@@ -562,10 +529,7 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 *
@@ -594,10 +558,7 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -624,10 +585,7 @@ package feathers.layout
 		 */
 		protected var _hasVariableItemDimensions:Boolean = true;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * When the layout is virtualized, and this value is true, the items may
 		 * have variable width and height values. If false, the items will all
@@ -653,10 +611,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -723,10 +678,7 @@ package feathers.layout
 			var i:int = 0;
 			var itemCount:int = items.length;
 			var positionY:Number = boundsY + this._paddingTop;
-<<<<<<< HEAD
-=======
 			var maxRowWidth:Number = 0;
->>>>>>> master
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
 			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
@@ -744,26 +696,18 @@ package feathers.layout
 				//we save the items in this row to align them later.
 				this._rowItems.length = 0;
 				var rowItemCount:int = 0;
-<<<<<<< HEAD
-	
-=======
 
 				//if there are no items in the row (such as when there are no
 				//items in the container!), then we don't want to subtract the
 				//gap when calculating the row width, so default to 0.
 				var horizontalGap:Number = 0;
 				
->>>>>>> master
 				//this first loop sets the x position of items, and it calculates
 				//the total width of all items
 				for(; i < itemCount; i++)
 				{
 					var item:DisplayObject = items[i];
-<<<<<<< HEAD
-					var horizontalGap:Number = this._horizontalGap;
-=======
 					horizontalGap = this._horizontalGap;
->>>>>>> master
 					if(hasFirstHorizontalGap && i === 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
@@ -892,13 +836,10 @@ package feathers.layout
 
 				//this is the total width of all items in the row
 				var totalRowWidth:Number = positionX - horizontalGap + this._paddingRight - boundsX;
-<<<<<<< HEAD
-=======
 				if(totalRowWidth > maxRowWidth)
 				{
 					maxRowWidth = totalRowWidth;
 				}
->>>>>>> master
 				rowItemCount = this._rowItems.length;
 	
 				if(supportsMultipleRows)
@@ -962,8 +903,6 @@ package feathers.layout
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._rowItems.length = 0;
-<<<<<<< HEAD
-=======
 			
 			if(supportsMultipleRows)
 			{
@@ -984,7 +923,6 @@ package feathers.layout
 			{
 				availableRowWidth = maxRowWidth;
 			}
->>>>>>> master
 
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
 			//the available height is the height of the viewport. if the explicit
@@ -1105,23 +1043,16 @@ package feathers.layout
 				var positionX:Number = boundsX + this._paddingLeft;
 				var rowItemCount:int = 0;
 
-<<<<<<< HEAD
-=======
 				//if there are no items in the row (such as when there are no
 				//items in the container!), then we don't want to subtract the
 				//gap when calculating the row width, so default to 0.
 				var horizontalGap:Number = 0;
 
->>>>>>> master
 				//this first loop sets the x position of items, and it calculates
 				//the total width of all items
 				for(; i < itemCount; i++)
 				{
-<<<<<<< HEAD
-					var horizontalGap:Number = this._horizontalGap;
-=======
 					horizontalGap = this._horizontalGap;
->>>>>>> master
 					if(hasFirstHorizontalGap && i === 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
@@ -1177,14 +1108,11 @@ package feathers.layout
 			}
 			while(i < itemCount)
 			
-<<<<<<< HEAD
-=======
 			if(!supportsMultipleRows)
 			{
 				availableRowWidth = positionX - horizontalGap + this._paddingRight - boundsX;
 			}
 			
->>>>>>> master
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
 			//the available height is the height of the viewport. if the explicit
 			//height is NaN, we need to calculate the viewport height ourselves

@@ -152,10 +152,7 @@ package feathers.controls.renderers
 		 */
 		protected var _data:Object;
 
-<<<<<<< HEAD
 		[Bindable(event="dataChange")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -178,14 +175,11 @@ package feathers.controls.renderers
 			//LayoutGroup doesn't know about INVALIDATION_FLAG_DATA, so we need
 			//set set another flag that it understands.
 			this.invalidate(INVALIDATION_FLAG_SIZE);
-<<<<<<< HEAD
 			
 			//developers expect to set up bindings with the item's properties,
 			//so even though the data property doesn't change with user
 			//interaction, it needs to be bindable.
 			this.dispatchEventWith("dataChange");
-=======
->>>>>>> master
 		}
 
 		/**
@@ -193,10 +187,7 @@ package feathers.controls.renderers
 		 */
 		protected var _isSelected:Boolean;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -222,8 +213,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _factoryID:String;
 
 		/**
@@ -245,7 +234,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
->>>>>>> master
 		override public function dispose():void
 		{
 			this.owner = null;

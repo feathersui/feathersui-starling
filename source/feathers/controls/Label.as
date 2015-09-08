@@ -182,15 +182,9 @@ package feathers.controls
 		{
 			if(!this.textRenderer)
 			{
-<<<<<<< HEAD
-				return 0;
-			}
-			return this.textRenderer.y + this.textRenderer.baseline;
-=======
 				return this.scaledActualHeight;
 			}
 			return this.scaleY * (this.textRenderer.y + this.textRenderer.baseline);
->>>>>>> master
 		}
 
 		/**

@@ -156,10 +156,7 @@ package feathers.data
 	 */
 	[Event(name="updateItem",type="starling.events.Event")]
 
-<<<<<<< HEAD
 	[DefaultProperty("data")]
-=======
->>>>>>> master
 	/**
 	 * Wraps a data source with a common API for use with UI controls, like
 	 * lists, that support one dimensional collections of data. Supports custom
@@ -294,20 +291,14 @@ package feathers.data
 		 * has changed, you can manually tell the collection about the change,
 		 * and the collection will dispatch the <code>CollectionEventType.UPDATE_ITEM</code>
 		 * event to manually notify the component that renders the data.
-<<<<<<< HEAD
-=======
 		 * 
 		 * @see #updateAll()
->>>>>>> master
 		 */
 		public function updateItemAt(index:int):void
 		{
 			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
 		}
 
-<<<<<<< HEAD
-		[Bindable(event="change")]
-=======
 		/**
 		 * Dispatches <code>CollectionEventType.UPDATE_ALL</code> to inform any
 		 * component that renders this data to update all visible data.
@@ -318,8 +309,8 @@ package feathers.data
 		{
 			this.dispatchEventWith(CollectionEventType.UPDATE_ALL);
 		}
-		
->>>>>>> master
+
+		[Bindable(event="change")]
 		/**
 		 * Returns the item at the specified index in the collection.
 		 */
@@ -327,12 +318,8 @@ package feathers.data
 		{
 			return this._dataDescriptor.getItemAt(this._data, index);
 		}
-<<<<<<< HEAD
 
 		[Bindable(event="change")]
-=======
-		
->>>>>>> master
 		/**
 		 * Determines which index the item appears at within the collection. If
 		 * the item isn't in the collection, returns <code>-1</code>.
@@ -469,10 +456,7 @@ package feathers.data
 			return this.removeItemAt(0);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Determines if the specified item is in the collection.
 		 */

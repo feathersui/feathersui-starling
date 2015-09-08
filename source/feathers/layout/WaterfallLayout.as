@@ -87,10 +87,7 @@ package feathers.layout
 		{
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
 		 * to the same value. The <code>gap</code> getter always returns the
@@ -121,10 +118,7 @@ package feathers.layout
 		 */
 		protected var _horizontalGap:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The horizontal space, in pixels, between columns.
 		 *
@@ -153,10 +147,7 @@ package feathers.layout
 		 */
 		protected var _verticalGap:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The vertical space, in pixels, between items in a column.
 		 *
@@ -180,10 +171,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
@@ -218,10 +206,7 @@ package feathers.layout
 		 */
 		protected var _paddingTop:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The space, in pixels, that appears on top, above the items.
 		 *
@@ -250,10 +235,7 @@ package feathers.layout
 		 */
 		protected var _paddingRight:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The minimum space, in pixels, to the right of the items.
 		 *
@@ -282,10 +264,7 @@ package feathers.layout
 		 */
 		protected var _paddingBottom:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The space, in pixels, that appears on the bottom, below the items.
 		 *
@@ -314,10 +293,7 @@ package feathers.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The minimum space, in pixels, to the left of the items.
 		 *
@@ -346,10 +322,7 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
@@ -383,10 +356,7 @@ package feathers.layout
 		 */
 		protected var _requestedColumnCount:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Requests that the layout uses a specific number of columns, if
 		 * possible. Set to <code>0</code> to calculate the maximum of columns
@@ -428,10 +398,7 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 *
@@ -460,10 +427,7 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -490,10 +454,7 @@ package feathers.layout
 		 */
 		protected var _hasVariableItemDimensions:Boolean = true;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * When the layout is virtualized, and this value is true, the items may
 		 * have variable height values. If false, the items will all share the
@@ -519,10 +480,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 */

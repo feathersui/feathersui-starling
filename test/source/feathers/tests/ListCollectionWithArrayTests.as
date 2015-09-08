@@ -225,8 +225,6 @@ package feathers.tests
 			Assert.assertStrictlyEquals("getItemIndex() returned the incorrect value",
 				-1, this._collection.getItemIndex(item));
 		}
-<<<<<<< HEAD
-=======
 
 		[Test]
 		public function testDispose():void
@@ -246,6 +244,5 @@ package feathers.tests
 				Assert.assertTrue("Item was not included when calling dispose() on ListCollection", item.isDisposed);
 			}
 		}
->>>>>>> master
 	}
 }

@@ -14,10 +14,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-<<<<<<< HEAD
 	[DefaultProperty("mxmlContent")]
-=======
->>>>>>> master
 	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
@@ -294,8 +291,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		public function get stackCount():int
 		{
 			var stackLength:int = this._stack.length;
@@ -313,20 +308,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _pushScreenEvents:Object = {};
 
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _replaceScreenEvents:Object;
 
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _popScreenEvents:Vector.<String>;
 
 		/**
@@ -400,7 +391,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
 		 * @private
 		 */
 		protected var _mxmlContent:Array;
@@ -435,8 +425,6 @@ package feathers.controls
 		}
 
 		/**
-=======
->>>>>>> master
 		 * Registers a new screen with a string identifier that can be used
 		 * to reference the screen in other calls, like <code>removeScreen()</code>
 		 * or <code>pushScreen()</code>.
@@ -691,8 +679,6 @@ package feathers.controls
 		override protected function prepareActiveScreen():void
 		{
 			var item:StackScreenNavigatorItem = StackScreenNavigatorItem(this._screens[this._activeScreenID]);
-<<<<<<< HEAD
-=======
 			this.addPushEventsToActiveScreen(item);
 			this.addReplaceEventsToActiveScreen(item);
 			this.addPopEventsToActiveScreen(item);
@@ -716,7 +702,6 @@ package feathers.controls
 		 */
 		protected function addPushEventsToActiveScreen(item:StackScreenNavigatorItem):void
 		{
->>>>>>> master
 			var events:Object = item.pushEvents;
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
@@ -750,72 +735,17 @@ package feathers.controls
 				}
 				else
 				{
-<<<<<<< HEAD
-					throw new TypeError("Unknown event action defined for screen:", eventAction.toString());
-				}
-			}
-			this._pushScreenEvents[this._activeScreenID] = savedScreenEvents;
-			if(item.popEvents)
-			{
-				//creating a copy because this array could change before the screen
-				//is removed.
-				var popEvents:Vector.<String> = item.popEvents.slice();
-				var eventCount:int = popEvents.length;
-				for(var i:int = 0; i < eventCount; i++)
-				{
-					eventName = popEvents[i];
-					signal = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
-					if(signal)
-					{
-						signal.add(popSignalListener);
-					}
-					else
-					{
-						this._activeScreen.addEventListener(eventName, popEventListener);
-					}
-				}
-				this._popScreenEvents = popEvents;
-			}
-			if(item.popToRootEvents)
-			{
-				//creating a copy because this array could change before the screen
-				//is removed.
-				var popToRootEvents:Vector.<String> = item.popToRootEvents.slice();
-				eventCount = popToRootEvents.length;
-				for(i = 0; i < eventCount; i++)
-				{
-					eventName = popToRootEvents[i];
-					signal = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
-					if(signal)
-					{
-						signal.add(popToRootSignalListener);
-					}
-					else
-					{
-						this._activeScreen.addEventListener(eventName, popToRootEventListener);
-					}
-				}
-				this._popToRootScreenEvents = popEvents;
-			}
-=======
 					throw new TypeError("Unknown push event action defined for screen:", eventAction.toString());
 				}
 			}
 			this._pushScreenEvents[this._activeScreenID] = savedScreenEvents;
->>>>>>> master
 		}
 
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-		override protected function cleanupActiveScreen():void
-		{
-			var item:StackScreenNavigatorItem = StackScreenNavigatorItem(this._screens[this._activeScreenID]);
-=======
 		protected function removePushEventsFromActiveScreen(item:StackScreenNavigatorItem):void
 		{
->>>>>>> master
 			var pushEvents:Object = item.pushEvents;
 			var savedScreenEvents:Object = this._pushScreenEvents[this._activeScreenID];
 			for(var eventName:String in pushEvents)
@@ -847,44 +777,6 @@ package feathers.controls
 				}
 			}
 			this._pushScreenEvents[this._activeScreenID] = null;
-<<<<<<< HEAD
-			if(this._popScreenEvents)
-			{
-				var eventCount:int = this._popScreenEvents.length;
-				for(var i:int = 0; i < eventCount; i++)
-				{
-					eventName = this._popScreenEvents[i];
-					signal = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
-					if(signal)
-					{
-						signal.remove(popSignalListener);
-					}
-					else
-					{
-						this._activeScreen.removeEventListener(eventName, popEventListener);
-					}
-				}
-				this._popScreenEvents = null;
-			}
-			if(this._popToRootScreenEvents)
-			{
-				eventCount = this._popToRootScreenEvents.length;
-				for(i = 0; i < eventCount; i++)
-				{
-					eventName = this._popToRootScreenEvents[i];
-					signal = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
-					if(signal)
-					{
-						signal.remove(popToRootSignalListener);
-					}
-					else
-					{
-						this._activeScreen.removeEventListener(eventName, popToRootEventListener);
-					}
-				}
-				this._popToRootScreenEvents = null;
-			}
-=======
 		}
 
 		/**
@@ -1067,7 +959,6 @@ package feathers.controls
 				}
 			}
 			this._popToRootScreenEvents = popToRootEvents;
->>>>>>> master
 		}
 
 		/**
@@ -1117,8 +1008,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected function createReplaceScreenEventListener(screenID:String):Function
 		{
 			var self:StackScreenNavigator = this;
@@ -1158,7 +1047,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected function popEventListener(event:Event):void
 		{
 			this.popScreen();

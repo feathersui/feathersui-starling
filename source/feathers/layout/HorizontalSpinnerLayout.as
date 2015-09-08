@@ -968,9 +968,6 @@ package feathers.layout
 				}
 				else if(i >= itemCount)
 				{
-<<<<<<< HEAD
-					result[resultLastIndex] = i - itemCount;
-=======
 					var loopedI:int = i - itemCount;
 					if(loopedI === minimum)
 					{
@@ -978,7 +975,6 @@ package feathers.layout
 						break;
 					}
 					result[resultLastIndex] = loopedI;
->>>>>>> master
 				}
 				resultLastIndex++;
 			}

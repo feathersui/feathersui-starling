@@ -52,10 +52,7 @@ package feathers.core
 		 */
 		protected var names:Vector.<String> = new <String>[];
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The tokens formatted with space delimiters.
 		 *
@@ -80,10 +77,7 @@ package feathers.core
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The number of tokens in the list.
 		 */
@@ -92,10 +86,7 @@ package feathers.core
 			return this.names.length;
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Returns the token at the specified index, or null, if there is no
 		 * token at that index.
@@ -152,10 +143,7 @@ package feathers.core
 			}
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Determines if the specified token is in the list.
 		 */

@@ -20,10 +20,7 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
-<<<<<<< HEAD
-=======
 	import feathers.skins.StateValueSelector;
->>>>>>> master
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -41,8 +38,6 @@ package feathers.controls.renderers
 	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
 	{
 		/**
-<<<<<<< HEAD
-=======
 		 * An alternate style name to use with the default item renderer to
 		 * allow a theme to give it a "drill-down" style. If a theme
 		 * does not provide a style for a drill-down item renderer, the theme
@@ -94,7 +89,6 @@ package feathers.controls.renderers
 		public static const ALTERNATE_STYLE_NAME_CHECK:String = "feathers-check-item-renderer";
 		
 		/**
->>>>>>> master
 		 * The default value added to the <code>styleNameList</code> of the
 		 * primary label.
 		 *
@@ -443,11 +437,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-		protected var accessory:DisplayObject;
-=======
 		protected var currentAccessory:DisplayObject;
->>>>>>> master
 
 		/**
 		 * @private
@@ -497,10 +487,7 @@ package feathers.controls.renderers
 		 */
 		protected var _data:Object;
 
-<<<<<<< HEAD
 		[Bindable(event="dataChange")]
-=======
->>>>>>> master
 		/**
 		 * The item displayed by this renderer. This property is set by the
 		 * list, and should not be set manually.
@@ -523,14 +510,11 @@ package feathers.controls.renderers
 			}
 			this._data = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
-<<<<<<< HEAD
 
 			//developers expect to set up bindings with the item's properties,
 			//so even though the data property doesn't change with user
 			//interaction, it needs to be bindable.
 			this.dispatchEventWith("dataChange");
-=======
->>>>>>> master
 		}
 
 		/**
@@ -541,8 +525,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _factoryID:String;
 
 		/**
@@ -564,7 +546,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _delayedCurrentState:String;
 
 		/**
@@ -1068,8 +1049,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _accessorySelector:StateValueSelector = new StateValueSelector();
 
 		/**
@@ -1147,7 +1126,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var accessoryTouchPointID:int = -1;
 
 		/**
@@ -1744,8 +1722,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _customIconLabelStyleName:String;
 
 		/**
@@ -1792,7 +1768,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _accessoryField:String = "accessory";
 
 		/**
@@ -2206,8 +2181,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _customAccessoryLabelStyleName:String;
 
 		/**
@@ -2254,7 +2227,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _skinField:String = "skin";
 
 		/**
@@ -3649,19 +3621,11 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryWidth(width:Number):Number
 		{
-<<<<<<< HEAD
-			if(!this.accessory)
-			{
-				return width;
-			}
-			var accessoryWidth:Number = this.accessory.width;
-=======
 			if(!this.currentAccessory)
 			{
 				return width;
 			}
 			var accessoryWidth:Number = this.currentAccessory.width;
->>>>>>> master
 			if(accessoryWidth !== accessoryWidth) //isNaN
 			{
 				return width;
@@ -3758,19 +3722,11 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryHeight(height:Number):Number
 		{
-<<<<<<< HEAD
-			if(!this.accessory)
-			{
-				return height;
-			}
-			var accessoryHeight:Number = this.accessory.height;
-=======
 			if(!this.currentAccessory)
 			{
 				return height;
 			}
 			var accessoryHeight:Number = this.currentAccessory.height;
->>>>>>> master
 			if(accessoryHeight !== accessoryHeight) //isNaN
 			{
 				return height;
@@ -4016,33 +3972,12 @@ package feathers.controls.renderers
 		 */
 		protected function replaceAccessory(newAccessory:DisplayObject):void
 		{
-<<<<<<< HEAD
-			if(this.accessory == newAccessory)
-			{
-				return;
-			}
-
-			if(this.accessory)
-			{
-				this.accessory.removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
-				this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
-
-				if(this.accessory.parent == this)
-				{
-					//the accessory may have come from outside of this class. it's
-					//up to that code to dispose of the accessory. in fact, if we
-					//disposed of it here, we will probably screw something up, so
-					//let's just remove it.
-					this.accessory.removeFromParent(false);
-				}
-=======
 			if(this.accessoryLoader && this.accessoryLoader != newAccessory)
 			{
 				this.accessoryLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
 				this.accessoryLoader.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
 				this.accessoryLoader.dispose();
 				this.accessoryLoader = null;
->>>>>>> master
 			}
 
 			if(this.accessoryLabel && this.accessoryLabel != newAccessory)
@@ -4051,34 +3986,7 @@ package feathers.controls.renderers
 				this.accessoryLabel.dispose();
 				this.accessoryLabel = null;
 			}
-
-<<<<<<< HEAD
-			if(this.accessoryLoader && this.accessoryLoader != newAccessory)
-			{
-				this.accessoryLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.accessoryLoader.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
-
-				//same ability to dispose here
-				this.accessoryLoader.dispose();
-				this.accessoryLoader = null;
-			}
-
-			this.accessory = newAccessory;
-
-			if(this.accessory)
-			{
-				if(this.accessory is IFeathersControl)
-				{
-					if(!(this.accessory is BitmapFontTextRenderer))
-					{
-						this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
-					}
-					this.accessory.addEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
-				}
-				this.addChild(this.accessory);
-			}
 			
-=======
 			if(this._itemHasAccessory && this.currentAccessory && this.currentAccessory != newAccessory && this.currentAccessory.parent == this)
 			{
 				//the icon is created using the data provider, and it is not
@@ -4106,7 +4014,6 @@ package feathers.controls.renderers
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
 			}
 
->>>>>>> master
 			if(this.accessoryLoader)
 			{
 				this.accessoryLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
@@ -4181,11 +4088,6 @@ package feathers.controls.renderers
 		 */
 		protected function refreshAccessory():void
 		{
-<<<<<<< HEAD
-			if(this.accessory is IFeathersControl)
-			{
-				IFeathersControl(this.accessory).isEnabled = this._isEnabled;
-=======
 			var oldAccessory:DisplayObject = this.currentAccessory;
 			if(this._stateToAccessoryFunction != null)
 			{
@@ -4227,7 +4129,6 @@ package feathers.controls.renderers
 						IFeathersControl(this.currentAccessory).addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 					}
 				}
->>>>>>> master
 			}
 			if(this.accessoryLabel)
 			{
@@ -4267,12 +4168,8 @@ package feathers.controls.renderers
 				{
 					IStateObserver(this.iconLabel).stateContext = this;
 				}
-<<<<<<< HEAD
-				this.iconLabel.styleNameList.add(this.iconLabelStyleName);
-=======
 				var iconLabelStyleName:String = this._customIconLabelStyleName != null ? this._customIconLabelStyleName : this.iconLabelStyleName;
 				this.iconLabel.styleNameList.add(iconLabelStyleName);
->>>>>>> master
 			}
 			this.iconLabel.text = label;
 		}
@@ -4304,12 +4201,8 @@ package feathers.controls.renderers
 				{
 					IStateObserver(this.accessoryLabel).stateContext = this;
 				}
-<<<<<<< HEAD
-				this.accessoryLabel.styleNameList.add(this.accessoryLabelStyleName);
-=======
 				var accessoryLabelStyleName:String = this._customAccessoryLabelStyleName != null ? this._customAccessoryLabelStyleName : this.accessoryLabelStyleName;
 				this.accessoryLabel.styleNameList.add(accessoryLabelStyleName);
->>>>>>> master
 			}
 			this.accessoryLabel.text = label;
 		}
@@ -4344,11 +4237,7 @@ package feathers.controls.renderers
 				var labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
 			}
 			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
-<<<<<<< HEAD
-			var accessoryIsInLayout:Boolean = this.accessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
-=======
 			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
->>>>>>> master
 			var accessoryGap:Number = this._accessoryGap;
 			if(accessoryGap !== accessoryGap) //isNaN
 			{
@@ -4359,11 +4248,7 @@ package feathers.controls.renderers
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-<<<<<<< HEAD
-					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
-=======
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
->>>>>>> master
 					var iconPosition:String = this._iconPosition;
 					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
 					{
@@ -4373,20 +4258,12 @@ package feathers.controls.renderers
 					{
 						iconPosition = ICON_POSITION_RIGHT;
 					}
-<<<<<<< HEAD
-					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
-=======
 					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.currentAccessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
->>>>>>> master
 				}
 				else
 				{
 					this.positionLabelAndIcon();
-<<<<<<< HEAD
-					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
-=======
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
->>>>>>> master
 				}
 			}
 			else if(this._label && this.labelTextRenderer)
@@ -4400,11 +4277,7 @@ package feathers.controls.renderers
 				}
 				else if(accessoryIsInLayout)
 				{
-<<<<<<< HEAD
-					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
-=======
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
->>>>>>> master
 				}
 			}
 			else if(iconIsInLayout)
@@ -4412,29 +4285,11 @@ package feathers.controls.renderers
 				this.positionSingleChild(this.currentIcon);
 				if(accessoryIsInLayout)
 				{
-<<<<<<< HEAD
-					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap, null, 0);
-=======
 					this.positionRelativeToOthers(this.currentAccessory, this.currentIcon, null, this._accessoryPosition, accessoryGap, null, 0);
->>>>>>> master
 				}
 			}
 			else if(accessoryIsInLayout)
 			{
-<<<<<<< HEAD
-				this.positionSingleChild(this.accessory);
-			}
-
-			if(this.accessory)
-			{
-				if(!accessoryIsInLayout)
-				{
-					this.accessory.x = this._paddingLeft;
-					this.accessory.y = this._paddingTop;
-				}
-				this.accessory.x += this._accessoryOffsetX;
-				this.accessory.y += this._accessoryOffsetY;
-=======
 				this.positionSingleChild(this.currentAccessory);
 			}
 
@@ -4447,7 +4302,6 @@ package feathers.controls.renderers
 				}
 				this.currentAccessory.x += this._accessoryOffsetX;
 				this.currentAccessory.y += this._accessoryOffsetY;
->>>>>>> master
 			}
 			if(this.currentIcon)
 			{
@@ -4516,13 +4370,8 @@ package feathers.controls.renderers
 			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
 			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM);
-<<<<<<< HEAD
-			var hasAccessoryToLeftOrRight:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
-			var hasAccessoryToTopOrBottom:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
-=======
 			var hasAccessoryToLeftOrRight:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
 			var hasAccessoryToTopOrBottom:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
->>>>>>> master
 
 			if(this.accessoryLabel)
 			{
@@ -4553,19 +4402,6 @@ package feathers.controls.renderers
 				{
 					calculatedWidth -= (this.currentIcon.width + adjustedGap);
 				}
-<<<<<<< HEAD
-				if(this.accessory is IValidating)
-				{
-					IValidating(this.accessory).validate();
-				}
-				if(hasAccessoryToLeftOrRight)
-				{
-					calculatedWidth -= (this.accessory.width + adjustedAccessoryGap);
-				}
-				if(hasAccessoryToTopOrBottom)
-				{
-					calculatedHeight -= (this.accessory.height + adjustedAccessoryGap);
-=======
 				if(this.currentAccessory is IValidating)
 				{
 					IValidating(this.currentAccessory).validate();
@@ -4577,21 +4413,11 @@ package feathers.controls.renderers
 				if(hasAccessoryToTopOrBottom)
 				{
 					calculatedHeight -= (this.currentAccessory.height + adjustedAccessoryGap);
->>>>>>> master
 				}
 			}
 			else if(this.iconLabel)
 			{
 				var accessoryAffectsIconLabelMaxWidth:Boolean = hasAccessoryToLeftOrRight && (hasIconToLeftOrRight || this._layoutOrder == LAYOUT_ORDER_LABEL_ICON_ACCESSORY);
-<<<<<<< HEAD
-				if(this.accessory is IValidating)
-				{
-					IValidating(this.accessory).validate();
-				}
-				if(accessoryAffectsIconLabelMaxWidth)
-				{
-					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
-=======
 				if(this.currentAccessory is IValidating)
 				{
 					IValidating(this.currentAccessory).validate();
@@ -4599,7 +4425,6 @@ package feathers.controls.renderers
 				if(accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.currentAccessory.width);
->>>>>>> master
 				}
 				if(calculatedWidth < 0)
 				{
@@ -4607,15 +4432,9 @@ package feathers.controls.renderers
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
 				this.iconLabel.maxHeight = calculatedHeight;
-<<<<<<< HEAD
-				if(hasAccessoryToLeftOrRight && this.accessory && !accessoryAffectsIconLabelMaxWidth)
-				{
-					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
-=======
 				if(hasAccessoryToLeftOrRight && this.currentAccessory && !accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.currentAccessory.width);
->>>>>>> master
 				}
 				if(this.currentIcon is IValidating)
 				{
@@ -4644,19 +4463,6 @@ package feathers.controls.renderers
 				{
 					calculatedHeight -= (adjustedGap + this.currentIcon.height);
 				}
-<<<<<<< HEAD
-				if(this.accessory is IValidating)
-				{
-					IValidating(this.accessory).validate();
-				}
-				if(hasAccessoryToLeftOrRight)
-				{
-					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
-				}
-				if(hasAccessoryToTopOrBottom)
-				{
-					calculatedHeight -= (adjustedAccessoryGap + this.accessory.height);
-=======
 				if(this.currentAccessory is IValidating)
 				{
 					IValidating(this.currentAccessory).validate();
@@ -4668,7 +4474,6 @@ package feathers.controls.renderers
 				if(hasAccessoryToTopOrBottom)
 				{
 					calculatedHeight -= (adjustedAccessoryGap + this.currentAccessory.height);
->>>>>>> master
 				}
 			}
 			if(calculatedWidth < 0)
@@ -4974,19 +4779,11 @@ package feathers.controls.renderers
 		 */
 		override protected function button_touchHandler(event:TouchEvent):void
 		{
-<<<<<<< HEAD
-			if(this.accessory && !this._isSelectableOnAccessoryTouch && this.accessory != this.accessoryLabel && this.accessory != this.accessoryLoader && this.touchPointID < 0)
-			{
-				//ignore all touches on accessories that are not labels or
-				//loaders. return to up state.
-				var touch:Touch = event.getTouch(this.accessory);
-=======
 			if(this.currentAccessory && !this._isSelectableOnAccessoryTouch && this.currentAccessory != this.accessoryLabel && this.currentAccessory != this.accessoryLoader && this.touchPointID < 0)
 			{
 				//ignore all touches on accessories that are not labels or
 				//loaders. return to up state.
 				var touch:Touch = event.getTouch(this.currentAccessory);
->>>>>>> master
 				if(touch)
 				{
 					this.changeState(Button.STATE_UP);
@@ -5007,13 +4804,8 @@ package feathers.controls.renderers
 				return;
 			}
 			if(!this._stopScrollingOnAccessoryTouch ||
-<<<<<<< HEAD
-				this.accessory == this.accessoryLabel ||
-				this.accessory == this.accessoryLoader)
-=======
 				this.currentAccessory === this.accessoryLabel ||
 				this.currentAccessory === this.accessoryLoader)
->>>>>>> master
 			{
 				//do nothing
 				return;
@@ -5021,11 +4813,7 @@ package feathers.controls.renderers
 
 			if(this.accessoryTouchPointID >= 0)
 			{
-<<<<<<< HEAD
-				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this.accessoryTouchPointID);
-=======
 				var touch:Touch = event.getTouch(this.currentAccessory, TouchPhase.ENDED, this.accessoryTouchPointID);
->>>>>>> master
 				if(!touch)
 				{
 					return;
@@ -5034,11 +4822,7 @@ package feathers.controls.renderers
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-<<<<<<< HEAD
-				touch = event.getTouch(this.accessory, TouchPhase.BEGAN);
-=======
 				touch = event.getTouch(this.currentAccessory, TouchPhase.BEGAN);
->>>>>>> master
 				if(!touch)
 				{
 					return;

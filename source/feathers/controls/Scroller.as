@@ -1255,10 +1255,7 @@ package feathers.controls
 		 */
 		protected var _horizontalScrollPosition:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of pixels the container has been scrolled horizontally (on
 		 * the x-axis).
@@ -1303,10 +1300,7 @@ package feathers.controls
 		 */
 		protected var _minHorizontalScrollPosition:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of pixels the scroller may be scrolled horizontally to the
 		 * left. This value is automatically calculated based on the bounds of
@@ -1328,10 +1322,7 @@ package feathers.controls
 		 */
 		protected var _maxHorizontalScrollPosition:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of pixels the scroller may be scrolled horizontally to the
 		 * right. This value is automatically calculated based on the bounds of
@@ -1353,10 +1344,7 @@ package feathers.controls
 		 */
 		protected var _horizontalPageIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The index of the horizontal page, if snapping is enabled. If snapping
 		 * is disabled, the index will always be <code>0</code>.
@@ -1379,10 +1367,7 @@ package feathers.controls
 		 */
 		protected var _minHorizontalPageIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The minimum horizontal page index that may be displayed by this
 		 * container, if page snapping is enabled.
@@ -1401,10 +1386,7 @@ package feathers.controls
 		 */
 		protected var _maxHorizontalPageIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The maximum horizontal page index that may be displayed by this
 		 * container, if page snapping is enabled.
@@ -1418,10 +1400,7 @@ package feathers.controls
 			return this._maxHorizontalPageIndex;
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of horizontal pages, if snapping is enabled. If snapping
 		 * is disabled, the page count will always be <code>1</code>.
@@ -1571,10 +1550,7 @@ package feathers.controls
 		 */
 		protected var _verticalScrollPosition:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of pixels the container has been scrolled vertically (on
 		 * the y-axis).
@@ -1619,10 +1595,7 @@ package feathers.controls
 		 */
 		protected var _minVerticalScrollPosition:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of pixels the scroller may be scrolled vertically beyond
 		 * the top edge. This value is automatically calculated based on the
@@ -1644,10 +1617,7 @@ package feathers.controls
 		 */
 		protected var _maxVerticalScrollPosition:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of pixels the scroller may be scrolled vertically beyond
 		 * the bottom edge. This value is automatically calculated based on the
@@ -1669,10 +1639,7 @@ package feathers.controls
 		 */
 		protected var _verticalPageIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The index of the vertical page, if snapping is enabled. If snapping
 		 * is disabled, the index will always be <code>0</code>.
@@ -1695,10 +1662,7 @@ package feathers.controls
 		 */
 		protected var _minVerticalPageIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The minimum vertical page index that may be displayed by this
 		 * container, if page snapping is enabled.
@@ -1717,10 +1681,7 @@ package feathers.controls
 		 */
 		protected var _maxVerticalPageIndex:int = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The maximum vertical page index that may be displayed by this
 		 * container, if page snapping is enabled.
@@ -1734,10 +1695,7 @@ package feathers.controls
 			return this._maxVerticalPageIndex;
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="scroll")]
-=======
->>>>>>> master
 		/**
 		 * The number of vertical pages, if snapping is enabled. If snapping
 		 * is disabled, the page count will always be <code>1</code>.
@@ -2989,8 +2947,6 @@ package feathers.controls
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
-<<<<<<< HEAD
-=======
 			
 			//we don't dispose it if the text input is the parent because it'll
 			//already get disposed in super.dispose()
@@ -3002,7 +2958,6 @@ package feathers.controls
 			{
 				this._backgroundDisabledSkin.dispose();
 			}
->>>>>>> master
 			super.dispose();
 		}
 

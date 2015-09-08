@@ -499,10 +499,7 @@ package feathers.controls
 		 */
 		protected var _text:String = "";
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The text displayed by the text input. The text input dispatches
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
@@ -1882,8 +1879,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		override public function dispose():void
 		{
 			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
@@ -1920,7 +1915,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		override protected function draw():void
 		{
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);

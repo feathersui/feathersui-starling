@@ -11,8 +11,6 @@ package feathers.controls.renderers
 	import feathers.core.IToggle;
 
 	/**
-<<<<<<< HEAD
-=======
 	 * Dispatched when the the user taps or clicks the item renderer. The touch
 	 * must remain within the bounds of the item renderer on release to register
 	 * as a tap or a click.
@@ -37,7 +35,6 @@ package feathers.controls.renderers
 	[Event(name="triggered",type="starling.events.Event")]
 
 	/**
->>>>>>> master
 	 * Interface to implement a renderer for a grouped list item.
 	 */
 	public interface IGroupedListItemRenderer extends IToggle
@@ -104,8 +101,6 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set owner(value:GroupedList):void;
-<<<<<<< HEAD
-=======
 
 		/**
 		 * The ID of the factory used to create this item renderer.
@@ -118,6 +113,5 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set factoryID(value:String):void;
->>>>>>> master
 	}
 }

@@ -55,13 +55,8 @@ package feathers.themes
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
-<<<<<<< HEAD
-	import feathers.controls.popups.CalloutPopUpContentManager;
-	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
-=======
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
->>>>>>> master
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
@@ -201,18 +196,6 @@ package feathers.themes
 
 		/**
 		 * @private
-<<<<<<< HEAD
-		 * The theme's custom style name for item renderers in a PickerList.
-		 */
-		protected static const THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-picker-list-item-renderer";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the label text renderer of an item
-		 * renderer in a PickerList.
-		 */
-		protected static const THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER_LABEL:String = "metal-works-mobile-picker-list-item-renderer-label";
-=======
 		 * The theme's custom style name for the label text renderer of an item
 		 * renderer with the "check" style.
 		 */
@@ -231,7 +214,6 @@ package feathers.themes
 		 * of an item renderer with the "check" style.
 		 */
 		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL:String = "metal-works-mobile-check-item-renderer-accessory-label";
->>>>>>> master
 
 		/**
 		 * @private
@@ -247,8 +229,6 @@ package feathers.themes
 
 		/**
 		 * @private
-<<<<<<< HEAD
-=======
 		 * The theme's custom style name for the SpinnerList's item renderer's icon label text renderer.
 		 */
 		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL:String = "metal-works-mobile-spinner-list-item-renderer-icon-label";
@@ -261,7 +241,6 @@ package feathers.themes
 
 		/**
 		 * @private
->>>>>>> master
 		 * The theme's custom style name for buttons in an Alert's button group.
 		 */
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metal-works-mobile-alert-button-group-button";
@@ -349,8 +328,6 @@ package feathers.themes
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * The pop-up factory for a PickerList creates a SpinnerList.
 		 */
 		protected static function pickerListSpinnerListFactory():SpinnerList
@@ -359,7 +336,6 @@ package feathers.themes
 		}
 
 		/**
->>>>>>> master
 		 * This theme's scroll bar type is SimpleScrollBar.
 		 */
 		protected static function scrollBarFactory():SimpleScrollBar
@@ -671,16 +647,11 @@ package feathers.themes
 		protected var checkSelectedDisabledIconTexture:Texture;
 		protected var pageIndicatorNormalSkinTexture:Texture;
 		protected var pageIndicatorSelectedSkinTexture:Texture;
-<<<<<<< HEAD
-		protected var itemRendererUpSkinTextures:Scale9Textures;
-		protected var itemRendererSelectedSkinTextures:Scale9Textures;
-=======
 		protected var spinnerListBackgroundSkinTextures:Scale9Textures;
 		protected var itemRendererUpSkinTextures:Scale9Textures;
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererUpSkinTextures:Scale9Textures;
 		protected var insetItemRendererSelectedSkinTextures:Scale9Textures;
->>>>>>> master
 		protected var insetItemRendererFirstUpSkinTextures:Scale9Textures;
 		protected var insetItemRendererFirstSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererLastUpSkinTextures:Scale9Textures;
@@ -696,11 +667,8 @@ package feathers.themes
 		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
 		protected var searchIconTexture:Texture;
 		protected var searchIconDisabledTexture:Texture;
-<<<<<<< HEAD
-=======
 		protected var listDrillDownAccessoryTexture:Texture;
 		protected var listDrillDownAccessorySelectedTexture:Texture;
->>>>>>> master
 		
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -914,10 +882,7 @@ package feathers.themes
 			this.pickerListButtonIconDisabledTexture = this.atlas.getTexture("picker-list-icon-disabled");
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
 
-<<<<<<< HEAD
-=======
 			this.spinnerListBackgroundSkinTextures = new Scale9Textures(this.atlas.getTexture("spinner-list-background-skin"), ITEM_RENDERER_SCALE9_GRID);
->>>>>>> master
 			this.spinnerListSelectionOverlaySkinTextures = new Scale9Textures(this.atlas.getTexture("spinner-list-selection-overlay-skin"), SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID);
 
 			this.radioUpIconTexture = backgroundSkinTexture;
@@ -942,11 +907,8 @@ package feathers.themes
 
 			this.itemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
-<<<<<<< HEAD
-=======
 			this.insetItemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.insetItemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
->>>>>>> master
 			this.insetItemRendererFirstUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-first-up-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
 			this.insetItemRendererFirstSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-first-selected-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
 			this.insetItemRendererLastUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-last-up-skin"), INSET_ITEM_RENDERER_LAST_SCALE9_GRID);
@@ -964,16 +926,12 @@ package feathers.themes
 			this.horizontalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("horizontal-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_HORIZONTAL);
 			this.verticalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_VERTICAL);
 
-<<<<<<< HEAD
-			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
-=======
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 			this.listDrillDownAccessorySelectedTexture = this.atlas.getTexture("list-accessory-drill-down-selected-icon");
 
 			//in a future version of Feathers, the StandardIcons class will be
 			//removed. it's still used here to support legacy code.
 			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
->>>>>>> master
 			
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon");
@@ -1039,11 +997,8 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER, this.setInsetGroupedListFirstItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER, this.setInsetGroupedListLastItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER, this.setInsetGroupedListSingleItemRendererStyles);
-<<<<<<< HEAD
-=======
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
->>>>>>> master
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
@@ -1068,11 +1023,6 @@ package feathers.themes
 			//list (see also: item renderers)
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
-<<<<<<< HEAD
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
-=======
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
@@ -1081,7 +1031,6 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL, this.setCheckItemRendererLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL, this.setCheckItemRendererIconLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL, this.setCheckItemRendererAccessoryLabelStyles);
->>>>>>> master
 
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
@@ -1106,11 +1055,6 @@ package feathers.themes
 			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListPopUpListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
-<<<<<<< HEAD
-			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER_LABEL, this.setPickerListItemRendererLabelStyles);
-=======
->>>>>>> master
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -1146,11 +1090,8 @@ package feathers.themes
 			this.getStyleProviderForClass(SpinnerList).defaultStyleFunction = this.setSpinnerListStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL, this.setSpinnerListItemRendererLabelStyles);
-<<<<<<< HEAD
-=======
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL, this.setSpinnerListItemRendererIconLabelStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL, this.setSpinnerListItemRendererAccessoryLabelStyles);
->>>>>>> master
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
@@ -1668,11 +1609,7 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-<<<<<<< HEAD
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-=======
 			renderer.horizontalAlign = DefaultGroupedListItemRenderer.HORIZONTAL_ALIGN_LEFT;
->>>>>>> master
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1682,11 +1619,7 @@ package feathers.themes
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-<<<<<<< HEAD
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-=======
 			renderer.accessoryPosition = DefaultGroupedListItemRenderer.ACCESSORY_POSITION_RIGHT;
->>>>>>> master
 			renderer.minWidth = renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = renderer.minTouchHeight = this.gridSize;
 
@@ -1696,11 +1629,7 @@ package feathers.themes
 
 		protected function setInsetGroupedListMiddleItemRendererStyles(renderer:DefaultGroupedListItemRenderer):void
 		{
-<<<<<<< HEAD
-			this.setInsetGroupedListItemRendererStyles(renderer, this.itemRendererUpSkinTextures, this.itemRendererSelectedSkinTextures);
-=======
 			this.setInsetGroupedListItemRendererStyles(renderer, this.insetItemRendererUpSkinTextures, this.insetItemRendererSelectedSkinTextures);
->>>>>>> master
 		}
 
 		protected function setInsetGroupedListFirstItemRendererStyles(renderer:DefaultGroupedListItemRenderer):void
@@ -1847,11 +1776,7 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-<<<<<<< HEAD
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-=======
 			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
->>>>>>> master
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -1870,8 +1795,6 @@ package feathers.themes
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
-<<<<<<< HEAD
-=======
 		
 		protected function setDrillDownItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
@@ -1936,7 +1859,6 @@ package feathers.themes
 			renderer.minTouchWidth = this.gridSize;
 			renderer.minTouchHeight = this.gridSize;
 		}
->>>>>>> master
 
 		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
@@ -1962,8 +1884,6 @@ package feathers.themes
 			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
 		}
 
-<<<<<<< HEAD
-=======
 		protected function setCheckItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.largeLightElementFormat;
@@ -1983,7 +1903,6 @@ package feathers.themes
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
->>>>>>> master
 	//-------------------------
 	// NumericStepper
 	//-------------------------
@@ -2101,41 +2020,18 @@ package feathers.themes
 			}
 			else
 			{
-<<<<<<< HEAD
-				var centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
-				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
-					centerStage.marginLeft = this.gutterSize;
-				list.popUpContentManager = centerStage;
-=======
 				list.listFactory = pickerListSpinnerListFactory;
 				list.popUpContentManager = new BottomDrawerPopUpContentManager();
->>>>>>> master
 			}
 		}
 		
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-<<<<<<< HEAD
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.useVirtualLayout = true;
-			layout.gap = 0;
-			layout.padding = 0;
-			list.layout = layout;
-			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-
-=======
->>>>>>> master
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				list.minWidth = this.popUpFillSize;
 				list.maxHeight = this.popUpFillSize;
 			}
-<<<<<<< HEAD
-			else
-			{
-=======
 			else //phone
 			{
 				//the pop-up list should be a SpinnerList in this case, but we
@@ -2143,17 +2039,11 @@ package feathers.themes
 				//on the PickerList returns a List instead. we don't want the
 				//List to be too big for the BottomDrawerPopUpContentManager
 				
->>>>>>> master
 				var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
 				backgroundSkin.width = this.gridSize;
 				backgroundSkin.height = this.gridSize;
 				list.backgroundSkin = backgroundSkin;
 				list.padding = this.smallGutterSize;
-<<<<<<< HEAD
-			}
-
-			list.customItemRendererStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER;
-=======
 				
 				var layout:VerticalLayout = new VerticalLayout();
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
@@ -2162,7 +2052,6 @@ package feathers.themes
 			}
 
 			list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK;
->>>>>>> master
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
@@ -2184,58 +2073,7 @@ package feathers.themes
 			button.minGap = this.gutterSize;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
 		}
-
-<<<<<<< HEAD
-		protected function setPickerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.displayObjectProperties =
-			{
-				width: this.gridSize,
-				height: this.gridSize,
-				textureScale: this.scale
-			};
-			renderer.stateToSkinFunction = skinSelector.updateValue;
-
-			var defaultSelectedIcon:Image = new Image(this.pickerListItemSelectedIconTexture);
-			defaultSelectedIcon.scaleX = defaultSelectedIcon.scaleY = this.scale;
-			renderer.defaultSelectedIcon = defaultSelectedIcon;
-
-			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
-			defaultIcon.alpha = 0;
-			renderer.defaultIcon = defaultIcon;
-			
-			renderer.customLabelStyleName = THEME_STYLE_NAME_PICKER_LIST_ITEM_RENDERER_LABEL;
-
-			renderer.itemHasIcon = false;
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.gap = Number.POSITIVE_INFINITY;
-			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = this.gridSize;
-			renderer.minHeight = this.gridSize;
-			renderer.minTouchWidth = this.gridSize;
-			renderer.minTouchHeight = this.gridSize;
-		}
-
-		protected function setPickerListItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
-		}
-
-=======
->>>>>>> master
+		
 	//-------------------------
 	// ProgressBar
 	//-------------------------
@@ -2505,33 +2343,14 @@ package feathers.themes
 
 		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
-<<<<<<< HEAD
-			this.setListStyles(list);
-=======
 			this.setScrollerStyles(list);
 			list.backgroundSkin = new Scale9Image(this.spinnerListBackgroundSkinTextures, this.scale);
->>>>>>> master
 			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
 			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlaySkinTextures, this.scale);
 		}
 
 		protected function setSpinnerListItemRendererStyles(renderer:DefaultListItemRenderer):void
 		{
-<<<<<<< HEAD
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.displayObjectProperties =
-			{
-				width: this.gridSize,
-				height: this.gridSize,
-				textureScale: this.scale
-			};
-			renderer.stateToSkinFunction = skinSelector.updateValue;
-			
-			renderer.customLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL;
-
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-=======
 			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
 			defaultSkin.alpha = 0;
 			renderer.defaultSkin = defaultSkin;
@@ -2541,7 +2360,6 @@ package feathers.themes
 			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL;
 
 			renderer.horizontalAlign = DefaultListItemRenderer.HORIZONTAL_ALIGN_LEFT;
->>>>>>> master
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -2551,11 +2369,7 @@ package feathers.themes
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-<<<<<<< HEAD
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-=======
 			renderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
->>>>>>> master
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
@@ -2571,8 +2385,6 @@ package feathers.themes
 			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
 		}
 
-<<<<<<< HEAD
-=======
 		protected function setSpinnerListItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
@@ -2585,7 +2397,6 @@ package feathers.themes
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
->>>>>>> master
 	//-------------------------
 	// TabBar
 	//-------------------------

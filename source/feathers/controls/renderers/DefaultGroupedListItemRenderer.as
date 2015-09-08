@@ -22,8 +22,6 @@ package feathers.controls.renderers
 	public class DefaultGroupedListItemRenderer extends BaseDefaultItemRenderer implements IGroupedListItemRenderer
 	{
 		/**
-<<<<<<< HEAD
-=======
 		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_DRILL_DOWN
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
@@ -59,7 +57,6 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 		
 		/**
->>>>>>> master
 		 * @copy feathers.controls.Button#STATE_UP
 		 *
 		 * @see #stateToSkinFunction

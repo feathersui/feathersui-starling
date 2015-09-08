@@ -12,10 +12,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
-<<<<<<< HEAD
-=======
 	import feathers.core.ITextBaselineControl;
->>>>>>> master
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -133,11 +130,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/button.html How to use the Feathers Button component
 	 */
-<<<<<<< HEAD
-	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext
-=======
 	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext, ITextBaselineControl
->>>>>>> master
 	{
 		/**
 		 * @private
@@ -2159,8 +2152,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * @inheritDoc
 		 */
 		public function get baseline():Number
@@ -2173,7 +2164,6 @@ package feathers.controls
 		}
 
 		/**
->>>>>>> master
 		 * @private
 		 */
 		protected var _ignoreIconResizes:Boolean = false;
@@ -2200,8 +2190,6 @@ package feathers.controls
 			}
 			super.render(support, parentAlpha);
 		}
-<<<<<<< HEAD
-=======
 
 		/**
 		 * @private
@@ -2238,7 +2226,6 @@ package feathers.controls
 			}
 			super.dispose();
 		}
->>>>>>> master
 		
 		/**
 		 * @private
@@ -2502,24 +2489,18 @@ package feathers.controls
 			{
 				if(oldSkin)
 				{
-<<<<<<< HEAD
-=======
 					if(oldSkin is IStateObserver)
 					{
 						IStateObserver(oldSkin).stateContext = null;
 					}
->>>>>>> master
 					this.removeChild(oldSkin, false);
 				}
 				if(this.currentSkin)
 				{
-<<<<<<< HEAD
-=======
 					if(this.currentSkin is IStateObserver)
 					{
 						IStateObserver(this.currentSkin).stateContext = this;
 					}
->>>>>>> master
 					this.addChildAt(this.currentSkin, 0);
 				}
 			}
@@ -2564,24 +2545,18 @@ package feathers.controls
 					{
 						IFeathersControl(oldIcon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
 					}
-<<<<<<< HEAD
-=======
 					if(oldIcon is IStateObserver)
 					{
 						IStateObserver(oldIcon).stateContext = null;
 					}
->>>>>>> master
 					this.removeChild(oldIcon, false);
 				}
 				if(this.currentIcon)
 				{
-<<<<<<< HEAD
-=======
 					if(this.currentIcon is IStateObserver)
 					{
 						IStateObserver(this.currentIcon).stateContext = this;
 					}
->>>>>>> master
 					//we want the icon to appear below the label text renderer
 					var index:int = this.numChildren;
 					if(this.labelTextRenderer)

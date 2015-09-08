@@ -11,10 +11,7 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.stageToStarling;
-<<<<<<< HEAD
-=======
 	import feathers.utils.textures.TextureCache;
->>>>>>> master
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -326,25 +323,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-		protected var _texture:Texture;
-
-		/**
-		 * @private
-		 */
-		protected var _textureBitmapData:BitmapData;
-=======
 		protected var _isRestoringTexture:Boolean = false;
->>>>>>> master
 
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-		protected var _textureRawData:ByteArray;
-=======
 		protected var _texture:Texture;
->>>>>>> master
 
 		/**
 		 * @private
@@ -401,18 +385,12 @@ package feathers.controls
 			{
 				return;
 			}
-<<<<<<< HEAD
-=======
 			this._isRestoringTexture = false;
->>>>>>> master
 			if(this._isInTextureQueue)
 			{
 				this.removeFromTextureQueue();
 			}
 			this._source = value;
-<<<<<<< HEAD
-			this.cleanupTexture();
-=======
 			
 			var oldTexture:Texture;
 			//we should try to reuse the existing texture, if possible.
@@ -426,15 +404,11 @@ package feathers.controls
 			{
 				this._texture = oldTexture;
 			}
->>>>>>> master
 			if(this.image)
 			{
 				this.image.visible = false;
 			}
-<<<<<<< HEAD
-=======
 			this.cleanupLoaders(true);
->>>>>>> master
 			this._lastURL = null;
 			if(this._source is Texture)
 			{
@@ -451,8 +425,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected var _textureCache:TextureCache;
 
 		/**
@@ -481,7 +453,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected var _loadingTexture:Texture;
 
 		/**
@@ -615,8 +586,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		private var _scaleFactor:Number = 1;
 
 		/**
@@ -652,7 +621,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
 
 		/**
@@ -1388,10 +1356,7 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
-<<<<<<< HEAD
-=======
 			this._isRestoringTexture = false;
->>>>>>> master
 			if(this.loader)
 			{
 				this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
@@ -1557,36 +1522,6 @@ package feathers.controls
 				{
 					this._lastURL = sourceURL;
 
-<<<<<<< HEAD
-					if(this.urlLoader)
-					{
-						this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-						this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-						this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-						try
-						{
-							this.urlLoader.close();
-						}
-						catch(error:Error)
-						{
-							//no need to do anything in response
-						}
-					}
-
-					if(this.loader)
-					{
-						this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-						this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-						this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-						try
-						{
-							this.loader.close();
-						}
-						catch(error:Error)
-						{
-							//no need to do anything in response
-						}
-=======
 					if(this._textureCache && !this._isRestoringTexture && this._textureCache.hasTexture(sourceURL))
 					{
 						this._texture = this._textureCache.retainTexture(sourceURL);
@@ -1596,7 +1531,6 @@ package feathers.controls
 						this.refreshCurrentTexture();
 						this.dispatchEventWith(starling.events.Event.COMPLETE);
 						return;
->>>>>>> master
 					}
 
 					if(isATFURL(sourceURL))
@@ -1752,17 +1686,10 @@ package feathers.controls
 		 */
 		protected function refreshCurrentTexture():void
 		{
-<<<<<<< HEAD
-			var newTexture:Texture = this._texture;
-			if(!newTexture)
-			{
-				if(this.loader)
-=======
 			var newTexture:Texture = this._isLoaded ? this._texture : null;
 			if(!newTexture)
 			{
 				if(this.loader || this.urlLoader)
->>>>>>> master
 				{
 					newTexture = this._loadingTexture;
 				}
@@ -1819,21 +1746,6 @@ package feathers.controls
 		 */
 		protected function cleanupTexture():void
 		{
-<<<<<<< HEAD
-			if(this._isTextureOwner)
-			{
-				if(this._textureBitmapData)
-				{
-					this._textureBitmapData.dispose();
-				}
-				if(this._textureRawData)
-				{
-					this._textureRawData.clear();
-				}
-				if(this._texture)
-				{
-					this._texture.dispose();
-=======
 			if(this._texture)
 			{
 				if(this._isTextureOwner)
@@ -1843,7 +1755,6 @@ package feathers.controls
 				else if(this._textureCache && this._source is String)
 				{
 					this._textureCache.releaseTexture(this._source as String);
->>>>>>> master
 				}
 			}
 			if(this._pendingBitmapDataTexture)
@@ -1859,11 +1770,6 @@ package feathers.controls
 			this._currentTextureHeight = NaN;
 			this._pendingBitmapDataTexture = null;
 			this._pendingRawTextureData = null;
-<<<<<<< HEAD
-			this._textureBitmapData = null;
-			this._textureRawData = null;
-=======
->>>>>>> master
 			this._texture = null;
 			this._isTextureOwner = false;
 		}
@@ -1871,8 +1777,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected function cleanupLoaders(close:Boolean):void
 		{
 			if(this.urlLoader)
@@ -1919,7 +1823,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected function verifyCurrentStarling():void
 		{
 			if(!this.stage || Starling.current.stage === this.stage)
@@ -1949,22 +1852,6 @@ package feathers.controls
 				return;
 			}
 			this.verifyCurrentStarling();
-<<<<<<< HEAD
-			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
-			if(Starling.handleLostContext)
-			{
-				//we're saving it so that we can dispose it when we get a new
-				//texture or when we're disposed
-				this._textureBitmapData = bitmapData;
-			}
-			else
-			{
-				//since Starling isn't handling the lost context, we don't need
-				//to save the texture bitmap data.
-				bitmapData.dispose();
-			}
-			this._isTextureOwner = true;
-=======
 			
 			if(!this._texture)
 			{
@@ -1989,7 +1876,6 @@ package feathers.controls
 			//because other ImageLoaders may use the same texture.
 			this._isTextureOwner = this._textureCache === null;
 			this._isRestoringTexture = false;
->>>>>>> master
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
@@ -2014,22 +1900,6 @@ package feathers.controls
 				return;
 			}
 			this.verifyCurrentStarling();
-<<<<<<< HEAD
-			this._texture = Texture.fromAtfData(rawData);
-			if(Starling.handleLostContext)
-			{
-				//we're saving it so that we can clear it when we get a new
-				//texture or when we're disposed
-				this._textureRawData = rawData;
-			}
-			else
-			{
-				//since Starling isn't handling the lost context, we don't need
-				//to save the raw texture data.
-				rawData.clear();
-			}
-			this._isTextureOwner = true;
-=======
 			
 			if(this._texture)
 			{
@@ -2051,7 +1921,6 @@ package feathers.controls
 			//because other ImageLoaders may use the same texture.
 			this._isTextureOwner = this._textureCache === null;
 			this._isRestoringTexture = false;
->>>>>>> master
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
@@ -2180,8 +2049,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-<<<<<<< HEAD
-=======
 		protected function createTextureOnRestore(texture:Texture, source:String,
 			format:String, scaleFactor:Number):Function
 		{
@@ -2231,7 +2098,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
->>>>>>> master
 		protected function processTextureQueue_enterFrameHandler(event:EnterFrameEvent):void
 		{
 			this._accumulatedPrepareTextureTime += event.passedTime;
@@ -2259,16 +2125,6 @@ package feathers.controls
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
 			var bitmap:Bitmap = Bitmap(this.loader.content);
-<<<<<<< HEAD
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-			this.loader = null;
-
-			this.cleanupTexture();
-			var bitmapData:BitmapData = bitmap.bitmapData;
-			if(this._delayTextureCreation)
-=======
 			this.cleanupLoaders(false);
 
 			var bitmapData:BitmapData = bitmap.bitmapData;
@@ -2285,7 +2141,6 @@ package feathers.controls
 				this.cleanupTexture();
 			}
 			if(this._delayTextureCreation && !this._isRestoringTexture)
->>>>>>> master
 			{
 				this._pendingBitmapDataTexture = bitmapData;
 				if(this._textureQueueDuration < Number.POSITIVE_INFINITY)
@@ -2312,15 +2167,7 @@ package feathers.controls
 		 */
 		protected function loader_ioErrorHandler(event:IOErrorEvent):void
 		{
-<<<<<<< HEAD
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-			this.loader = null;
-
-=======
 			this.cleanupLoaders(false);
->>>>>>> master
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
@@ -2332,15 +2179,7 @@ package feathers.controls
 		 */
 		protected function loader_securityErrorHandler(event:SecurityErrorEvent):void
 		{
-<<<<<<< HEAD
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-			this.loader = null;
-
-=======
 			this.cleanupLoaders(false);
->>>>>>> master
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
@@ -2353,16 +2192,6 @@ package feathers.controls
 		protected function rawDataLoader_completeHandler(event:flash.events.Event):void
 		{
 			var rawData:ByteArray = ByteArray(this.urlLoader.data);
-<<<<<<< HEAD
-			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-			this.urlLoader = null;
-
-			this.cleanupTexture();
-			if(this._delayTextureCreation)
-=======
 			this.cleanupLoaders(false);
 
 			//only clear the texture if we're not restoring
@@ -2371,7 +2200,6 @@ package feathers.controls
 				this.cleanupTexture();
 			}
 			if(this._delayTextureCreation && !this._isRestoringTexture)
->>>>>>> master
 			{
 				this._pendingRawTextureData = rawData;
 				if(this._textureQueueDuration < Number.POSITIVE_INFINITY)
@@ -2398,16 +2226,7 @@ package feathers.controls
 		 */
 		protected function rawDataLoader_ioErrorHandler(event:ErrorEvent):void
 		{
-<<<<<<< HEAD
-			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-			this.urlLoader = null;
-
-=======
 			this.cleanupLoaders(false);
->>>>>>> master
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
@@ -2419,24 +2238,11 @@ package feathers.controls
 		 */
 		protected function rawDataLoader_securityErrorHandler(event:ErrorEvent):void
 		{
-<<<<<<< HEAD
-			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
-			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, rawDataLoader_progressHandler);
-			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_ioErrorHandler);
-			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_securityErrorHandler);
-			this.urlLoader = null;
-
-=======
 			this.cleanupLoaders(false);
->>>>>>> master
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
 			this.dispatchEventWith(starling.events.Event.SECURITY_ERROR, false, event);
 		}
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

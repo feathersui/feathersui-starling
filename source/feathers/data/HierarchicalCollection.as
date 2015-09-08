@@ -159,12 +159,8 @@ package feathers.data
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ITEM
 	 */
 	[Event(name="updateItem",type="starling.events.Event")]
-<<<<<<< HEAD
 
 	[DefaultProperty("data")]
-=======
-	
->>>>>>> master
 	/**
 	 * Wraps a two-dimensional data source with a common API for use with UI
 	 * controls that support this type of data.
@@ -238,10 +234,7 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Determines if a node from the data source is a branch.
 		 */
@@ -250,10 +243,7 @@ package feathers.data
 			return this._dataDescriptor.isBranch(node);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The number of items at the specified location in the collection.
 		 */
@@ -275,10 +265,7 @@ package feathers.data
 			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, rest);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Returns the item at the specified location in the collection.
 		 */
@@ -289,10 +276,7 @@ package feathers.data
 			return this._dataDescriptor.getItemAt.apply(null, rest);
 		}
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * Determines which location the item appears at within the collection. If
 		 * the item isn't in the collection, returns <code>null</code>.

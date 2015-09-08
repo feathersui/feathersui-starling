@@ -282,10 +282,7 @@ package feathers.controls
 		 */
 		protected var _value:Number = 0;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * @inheritDoc
 		 *

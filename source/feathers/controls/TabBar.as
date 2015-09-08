@@ -48,10 +48,7 @@ package feathers.controls
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
-<<<<<<< HEAD
 	[DefaultProperty("dataProvider")]
-=======
->>>>>>> master
 	/**
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
 	 * time.
@@ -362,10 +359,7 @@ package feathers.controls
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
-<<<<<<< HEAD
-=======
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
->>>>>>> master
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			this._dataProvider = value;
@@ -375,10 +369,7 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
-<<<<<<< HEAD
-=======
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
->>>>>>> master
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			if(!this._dataProvider || this._dataProvider.length == 0)
@@ -1078,10 +1069,7 @@ package feathers.controls
 		 */
 		protected var _selectedIndex:int = -1;
 
-<<<<<<< HEAD
 		[Bindable(event="change")]
-=======
->>>>>>> master
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
 		 * selected.
@@ -1384,8 +1372,6 @@ package feathers.controls
 		}
 
 		/**
-<<<<<<< HEAD
-=======
 		 * @inheritDoc
 		 */
 		public function get baseline():Number
@@ -1399,7 +1385,6 @@ package feathers.controls
 		}
 
 		/**
->>>>>>> master
 		 * @private
 		 */
 		override public function dispose():void
@@ -2113,8 +2098,6 @@ package feathers.controls
 			//a change event.
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-<<<<<<< HEAD
-=======
 
 		/**
 		 * @private
@@ -2123,6 +2106,5 @@ package feathers.controls
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
->>>>>>> master
 	}
 }
