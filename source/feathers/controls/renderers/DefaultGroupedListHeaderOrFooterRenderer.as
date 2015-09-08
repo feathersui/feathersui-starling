@@ -24,7 +24,11 @@ package feathers.controls.renderers
 	 *
 	 * @see feathers.controls.GroupedList
 	 */
+<<<<<<< HEAD
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderOrFooterRenderer
+=======
+	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
+>>>>>>> master
 	{
 		/**
 		 * The content will be aligned horizontally to the left edge of the renderer.
@@ -245,6 +249,30 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _factoryID:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get factoryID():String
+		{
+			return this._factoryID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryID(value:String):void
+		{
+			this._factoryID = value;
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]

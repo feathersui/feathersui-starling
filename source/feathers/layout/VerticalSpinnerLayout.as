@@ -93,7 +93,10 @@ package feathers.layout
 		 */
 		protected var _gap:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The space, in pixels, between items.
 		 *
@@ -117,7 +120,10 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
@@ -148,7 +154,10 @@ package feathers.layout
 		 */
 		protected var _paddingRight:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The minimum space, in pixels, to the right of the items.
 		 *
@@ -177,7 +186,10 @@ package feathers.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The minimum space, in pixels, to the left of the items.
 		 *
@@ -206,7 +218,10 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
@@ -241,7 +256,10 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 *
@@ -270,7 +288,10 @@ package feathers.layout
 		 */
 		protected var _requestedRowCount:int = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Requests that the layout set the view port dimensions to display a
 		 * specific number of rows (plus gaps and padding), if possible. If the
@@ -309,7 +330,10 @@ package feathers.layout
 		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -336,7 +360,10 @@ package feathers.layout
 		 */
 		protected var _afterVirtualizedItemCount:int = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -363,7 +390,10 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 *
@@ -394,7 +424,10 @@ package feathers.layout
 		 */
 		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * If set to <code>true</code>, the width and height of the
 		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
@@ -433,7 +466,10 @@ package feathers.layout
 		 */
 		protected var _typicalItemWidth:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -481,7 +517,10 @@ package feathers.layout
 		 */
 		protected var _typicalItemHeight:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -532,7 +571,10 @@ package feathers.layout
 			return this._typicalItem.height + this._gap;
 		}
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -973,7 +1015,17 @@ package feathers.layout
 				}
 				else if(i >= itemCount)
 				{
+<<<<<<< HEAD
 					result[resultLastIndex] = i - itemCount;
+=======
+					var loopedI:int = i - itemCount;
+					if(loopedI === minimum)
+					{
+						//we don't want to repeat items!
+						break;
+					}
+					result[resultLastIndex] = loopedI;
+>>>>>>> master
 				}
 				resultLastIndex++;
 			}

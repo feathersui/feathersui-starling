@@ -8,7 +8,10 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+<<<<<<< HEAD
 	import feathers.skins.StandardIcons;
+=======
+>>>>>>> master
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -74,6 +77,7 @@ package feathers.examples.layoutExplorer.screens
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 
+<<<<<<< HEAD
 			var itemRendererAccessorySourceFunction:Function = null;
 			if(!isTablet)
 			{
@@ -91,6 +95,9 @@ package feathers.examples.layoutExplorer.screens
 				renderer.accessorySourceFunction = itemRendererAccessorySourceFunction;
 				return renderer;
 			};
+=======
+			this._list.itemRendererFactory = this.createItemRenderer;
+>>>>>>> master
 
 			if(isTablet)
 			{
@@ -106,9 +113,28 @@ package feathers.examples.layoutExplorer.screens
 			this.addChild(this._list);
 		}
 
+<<<<<<< HEAD
 		private function accessorySourceFunction(item:Object):Texture
 		{
 			return StandardIcons.listDrillDownAccessoryTexture;
+=======
+		private function createItemRenderer():IListItemRenderer
+		{
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+			
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(!isTablet)
+			{
+				renderer.styleNameList.add(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN);
+			}
+
+			//enable the quick hit area to optimize hit tests when an item
+			//is only selectable and doesn't have interactive children.
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.labelField = "text";
+			return renderer;
+>>>>>>> master
 		}
 
 		private function transitionInCompleteHandler(event:Event):void

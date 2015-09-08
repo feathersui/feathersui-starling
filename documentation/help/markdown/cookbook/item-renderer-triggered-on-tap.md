@@ -5,6 +5,7 @@ author: Josh Tynjala
 ---
 # How to dispatch a triggered event from a custom item renderer
 
+<<<<<<< HEAD
 Sometimes, you want a [custom item renderer](../item-renderers.html) to dispatch [`Event.TRIGGERED`](http://doc.starling-framework.org/core/starling/events/Event.html#TRIGGERED), similar to a [`Button`](../button.html). Additionally, item renderers in a [`PickerList`](../picker-list.html) must dispatch `Event.TRIGGERED` to properly close the pop-up list when tapping an item that is already selected.
 
 First, let's make sure that we're only tracking a single touch ID:
@@ -110,6 +111,28 @@ private function removedFromStageHandler( event:Event ):void
 ```
 
 This ensures that if a component is removed and then reused later, it won't remember a touch that doesn't exist anymore.
+=======
+A [custom item renderer](../item-renderers.html) should dispatch [`Event.TRIGGERED`](http://doc.starling-framework.org/core/starling/events/Event.html#TRIGGERED) when it is tapped or clicked, similar to a [`Button`](../button.html). 
+
+Using the [`TapToTrigger`](../../api-reference/feathers/utils/touch/TapToTrigger.html) class, it's easy to dispatch `Event.TRIGGERED` on tap or click:
+
+``` code
+public class CustomItemRenderer extends LayoutGroupListItemRenderer
+{
+    public function CustomItemRenderer()
+    {
+        super();
+        this._trigger = new TapToTrigger(this);
+    }
+
+    private var _trigger:TapToTrigger;
+}
+```
+
+That's it! The `TouchEvent.TOUCH` listeners will be added automatically, and your item renderer will dispatch `Event.TRIGGERED` like a button.
+
+You should also [learn how to use `TapToSelect`](item-renderer-select-on-tap.html) to change `isSelected` and dispatch `Event.CHANGE` when tapped or clicked.
+>>>>>>> master
 
 ## Related Links
 

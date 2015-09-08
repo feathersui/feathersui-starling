@@ -3,6 +3,10 @@ package feathers.examples.componentsExplorer
 	import feathers.controls.Drawers;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
+<<<<<<< HEAD
+=======
+	import feathers.examples.componentsExplorer.data.DateTimeSpinnerSettings;
+>>>>>>> master
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -14,6 +18,11 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
+<<<<<<< HEAD
+=======
+	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerScreen;
+	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerSettingsScreen;
+>>>>>>> master
 	import feathers.examples.componentsExplorer.screens.GroupedListScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.ItemRendererScreen;
@@ -52,9 +61,16 @@ package feathers.examples.componentsExplorer
 		private static const ALERT:String = "alert";
 		private static const AUTO_COMPLETE:String = "autoComplete";
 		private static const BUTTON:String = "button";
+<<<<<<< HEAD
 		private static const BUTTON_SETTINGS:String = "buttonSettings";
 		private static const BUTTON_GROUP:String = "buttonGroup";
 		private static const CALLOUT:String = "callout";
+=======
+		private static const BUTTON_GROUP:String = "buttonGroup";
+		private static const CALLOUT:String = "callout";
+		private static const DATE_TIME_SPINNER:String = "dateTimeSpinner";
+		private static const DATE_TIME_SPINNER_SETTINGS:String = "dateTimeSpinnerSettings";
+>>>>>>> master
 		private static const GROUPED_LIST:String = "groupedList";
 		private static const GROUPED_LIST_SETTINGS:String = "groupedListSettings";
 		private static const ITEM_RENDERER:String = "itemRenderer";
@@ -83,6 +99,10 @@ package feathers.examples.componentsExplorer
 			showButton: BUTTON,
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
+<<<<<<< HEAD
+=======
+			showDateTimeSpinner: DATE_TIME_SPINNER,
+>>>>>>> master
 			showGroupedList: GROUPED_LIST,
 			showItemRenderer: ITEM_RENDERER,
 			showLabel: LABEL,
@@ -140,6 +160,24 @@ package feathers.examples.componentsExplorer
 			calloutItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(CALLOUT, calloutItem);
 
+<<<<<<< HEAD
+=======
+			var dateTimeSpinnerSettings:DateTimeSpinnerSettings = new DateTimeSpinnerSettings();
+			var dateTimeSpinnerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerScreen);
+			dateTimeSpinnerItem.setScreenIDForPushEvent(DateTimeSpinnerScreen.SHOW_SETTINGS, DATE_TIME_SPINNER_SETTINGS);
+			dateTimeSpinnerItem.addPopEvent(Event.COMPLETE);
+			dateTimeSpinnerItem.properties.settings = dateTimeSpinnerSettings;
+			this._navigator.addScreen(DATE_TIME_SPINNER, dateTimeSpinnerItem);
+
+			var dateTimeSpinnerSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerSettingsScreen);
+			dateTimeSpinnerSettingsItem.addPopEvent(Event.COMPLETE);
+			dateTimeSpinnerSettingsItem.properties.settings = dateTimeSpinnerSettings;
+			//custom push and pop transitions for this settings screen
+			dateTimeSpinnerSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			dateTimeSpinnerSettingsItem.popTransition = Reveal.createRevealDownTransition();
+			this._navigator.addScreen(DATE_TIME_SPINNER_SETTINGS, dateTimeSpinnerSettingsItem);
+
+>>>>>>> master
 			var groupedListSettings:GroupedListSettings = new GroupedListSettings();
 			var groupedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(GroupedListScreen);
 			groupedListItem.setScreenIDForPushEvent(GroupedListScreen.SHOW_SETTINGS, GROUPED_LIST_SETTINGS);

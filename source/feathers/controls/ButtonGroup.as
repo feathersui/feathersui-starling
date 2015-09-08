@@ -11,6 +11,10 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+<<<<<<< HEAD
+=======
+	import feathers.events.FeathersEventType;
+>>>>>>> master
 	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
@@ -63,7 +67,10 @@ package feathers.controls
 	 */
 	[Event(name="triggered", type="starling.events.Event")]
 
+<<<<<<< HEAD
 	[DefaultProperty("dataProvider")]
+=======
+>>>>>>> master
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
 	 *
@@ -125,6 +132,10 @@ package feathers.controls
 			"selectedDisabledIcon",
 			"isSelected",
 			"isToggle",
+<<<<<<< HEAD
+=======
+			"isLongPressEnabled",
+>>>>>>> master
 		];
 
 		/**
@@ -134,6 +145,10 @@ package feathers.controls
 		[
 			Event.TRIGGERED,
 			Event.CHANGE,
+<<<<<<< HEAD
+=======
+			FeathersEventType.LONG_PRESS,
+>>>>>>> master
 		];
 
 		/**
@@ -363,6 +378,14 @@ package feathers.controls
 		 *     <li>Event.TRIGGERED</li>
 		 *     <li>Event.CHANGE (only supported by <code>ToggleButton</code>)</li>
 		 * </ul>
+<<<<<<< HEAD
+=======
+		 * 
+		 * <p>Event listeners may have one of the following signatures:</p>
+		 * <pre>function(event:Event):void</pre>
+		 * <pre>function(event:Event, eventData:Object):void</pre>
+		 * <pre>function(event:Event, eventData:Object, dataProviderItem:Object):void</pre>
+>>>>>>> master
 		 *
 		 * <p>To use properties and events that are only supported by
 		 * <code>ToggleButton</code>, you must provide a <code>buttonFactory</code>
@@ -370,7 +393,12 @@ package feathers.controls
 		 *
 		 * <p>You can pass a function to the <code>buttonInitializer</code>
 		 * property that can provide custom logic to interpret each item in the
+<<<<<<< HEAD
 		 * data provider differently.</p>
+=======
+		 * data provider differently. For example, you could use it to support
+		 * additional properties or events.</p>
+>>>>>>> master
 		 *
 		 * @default null
 		 *
@@ -393,12 +421,20 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+<<<<<<< HEAD
+=======
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
+>>>>>>> master
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+<<<<<<< HEAD
+=======
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
+>>>>>>> master
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
@@ -1284,6 +1320,22 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
+=======
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.activeButtons || this.activeButtons.length === 0)
+			{
+				return this.scaledActualHeight;
+			}
+			var firstButton:Button = this.activeButtons[0];
+			return this.scaleY * (firstButton.y + firstButton.baseline);
+		}
+
+		/**
+>>>>>>> master
 		 * @private
 		 */
 		override public function dispose():void
@@ -1732,6 +1784,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected function dataProvider_updateAllHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected function dataProvider_updateItemHandler(event:Event, index:int):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1770,6 +1833,7 @@ package feathers.controls
 					return;
 				}
 				var argCount:int = listener.length;
+<<<<<<< HEAD
 				if(argCount == 1)
 				{
 					listener(event);
@@ -1781,6 +1845,29 @@ package feathers.controls
 				else
 				{
 					listener();
+=======
+				switch(argCount)
+				{
+					case 3:
+					{
+						listener(event, event.data, item);
+						break;
+					}
+					case 2:
+					{
+						listener(event, event.data);
+						break;
+					}
+					case 1:
+					{
+						listener(event);
+						break;
+					}
+					default:
+					{
+						listener();
+					}
+>>>>>>> master
 				}
 			}
 		}

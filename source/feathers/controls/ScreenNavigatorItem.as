@@ -9,11 +9,16 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IScreenNavigatorItem;
 
+<<<<<<< HEAD
 	import mx.core.IMXMLObject;
 
 	import starling.display.DisplayObject;
 
 	[DefaultProperty("screen")]
+=======
+	import starling.display.DisplayObject;
+
+>>>>>>> master
 	/**
 	 * Data for an individual screen that will be displayed by a
 	 * <code>ScreenNavigator</code> component.
@@ -35,7 +40,11 @@ package feathers.controls
 	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component
 	 * @see feathers.controls.ScreenNavigator
 	 */
+<<<<<<< HEAD
 	public class ScreenNavigatorItem implements IScreenNavigatorItem, IMXMLObject
+=======
+	public class ScreenNavigatorItem implements IScreenNavigatorItem
+>>>>>>> master
 	{
 		/**
 		 * Constructor.
@@ -163,6 +172,7 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
 		 * @private
 		 */
 		private var _mxmlID:String;
@@ -184,6 +194,8 @@ package feathers.controls
 		}
 
 		/**
+=======
+>>>>>>> master
 		 * Specifies a function to call when an event is dispatched by the
 		 * screen.
 		 *

@@ -8,7 +8,14 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.popups.CalloutPopUpContentManager;
+<<<<<<< HEAD
 	import feathers.controls.popups.IPopUpContentManager;
+=======
+	import feathers.controls.popups.DropDownPopUpContentManager;
+	import feathers.controls.popups.IPersistentPopUpContentManager;
+	import feathers.controls.popups.IPopUpContentManager;
+	import feathers.controls.popups.IPopUpContentManagerWithPrompt;
+>>>>>>> master
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
@@ -29,6 +36,10 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+<<<<<<< HEAD
+=======
+	import starling.utils.SystemUtil;
+>>>>>>> master
 
 	/**
 	 * Dispatched when the pop-up list is opened.
@@ -96,7 +107,10 @@ package feathers.controls
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
+<<<<<<< HEAD
 	[DefaultProperty("dataProvider")]
+=======
+>>>>>>> master
 	/**
 	 * Displays a button that may be triggered to display a pop-up list.
 	 * The list may be customized to display in different ways, such as a
@@ -336,8 +350,12 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _selectedIndex:int = -1;
+<<<<<<< HEAD
 
 		[Bindable(event="change")]
+=======
+		
+>>>>>>> master
 		/**
 		 * The index of the currently selected item. Returns <code>-1</code> if
 		 * no item is selected.
@@ -386,8 +404,12 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
+<<<<<<< HEAD
 
 		[Bindable(event="change")]
+=======
+		
+>>>>>>> master
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.
@@ -1065,6 +1087,21 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
+=======
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.button)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.button.y + this.button.baseline);
+		}
+
+		/**
+>>>>>>> master
 		 * @private
 		 */
 		protected var _isOpenListPending:Boolean = false;
@@ -1145,6 +1182,13 @@ package feathers.controls
 				return;
 			}
 			this._isOpenListPending = false;
+<<<<<<< HEAD
+=======
+			if(this._popUpContentManager is IPopUpContentManagerWithPrompt)
+			{
+				IPopUpContentManagerWithPrompt(this._popUpContentManager).prompt = this._prompt;
+			}
+>>>>>>> master
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
@@ -1234,7 +1278,15 @@ package feathers.controls
 		{
 			if(!this._popUpContentManager)
 			{
+<<<<<<< HEAD
 				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+=======
+				if(SystemUtil.isDesktop)
+				{
+					this.popUpContentManager = new DropDownPopUpContentManager();
+				}
+				else if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+>>>>>>> master
 				{
 					this.popUpContentManager = new CalloutPopUpContentManager();
 				}
@@ -1637,7 +1689,12 @@ package feathers.controls
 		 */
 		protected function list_changeHandler(event:Event):void
 		{
+<<<<<<< HEAD
 			if(this._ignoreSelectionChanges)
+=======
+			if(this._ignoreSelectionChanges ||
+				this._popUpContentManager is IPersistentPopUpContentManager)
+>>>>>>> master
 			{
 				return;
 			}
@@ -1661,6 +1718,13 @@ package feathers.controls
 		 */
 		protected function popUpContentManager_closeHandler(event:Event):void
 		{
+<<<<<<< HEAD
+=======
+			if(this._popUpContentManager is IPersistentPopUpContentManager)
+			{
+				this.selectedIndex = this.list.selectedIndex;
+			}
+>>>>>>> master
 			if(this._toggleButtonOnOpenAndClose && this.button is IToggle)
 			{
 				IToggle(this.button).isSelected = false;
@@ -1697,7 +1761,12 @@ package feathers.controls
 		 */
 		protected function list_triggeredHandler(event:Event):void
 		{
+<<<<<<< HEAD
 			if(!this._isEnabled)
+=======
+			if(!this._isEnabled ||
+				this._popUpContentManager is IPersistentPopUpContentManager)
+>>>>>>> master
 			{
 				return;
 			}

@@ -31,7 +31,11 @@ package feathers.controls.renderers
 	 *
 	 * @see feathers.controls.GroupedList
 	 */
+<<<<<<< HEAD
 	public class LayoutGroupGroupedListHeaderOrFooterRenderer extends LayoutGroup implements IGroupedListHeaderOrFooterRenderer
+=======
+	public class LayoutGroupGroupedListHeaderOrFooterRenderer extends LayoutGroup implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
+>>>>>>> master
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>LayoutGroupGroupedListHeaderOrFooterRenderer</code>
@@ -129,9 +133,35 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected var _data:Object;
 
 		[Bindable(event="dataChange")]
+=======
+		protected var _factoryID:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get factoryID():String
+		{
+			return this._factoryID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryID(value:String):void
+		{
+			this._factoryID = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _data:Object;
+
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -154,11 +184,14 @@ package feathers.controls.renderers
 			//LayoutGroup doesn't know about INVALIDATION_FLAG_DATA, so we need
 			//set set another flag that it understands.
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+<<<<<<< HEAD
 
 			//developers expect to set up bindings with the item's properties,
 			//so even though the data property doesn't change with user
 			//interaction, it needs to be bindable.
 			this.dispatchEventWith("dataChange");
+=======
+>>>>>>> master
 		}
 
 		/**

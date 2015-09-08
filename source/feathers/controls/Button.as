@@ -12,6 +12,10 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
+<<<<<<< HEAD
+=======
+	import feathers.core.ITextBaselineControl;
+>>>>>>> master
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -129,7 +133,11 @@ package feathers.controls
 	 *
 	 * @see ../../../help/button.html How to use the Feathers Button component
 	 */
+<<<<<<< HEAD
 	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext
+=======
+	public class Button extends FeathersControl implements IFocusDisplayObject, IStateContext, ITextBaselineControl
+>>>>>>> master
 	{
 		/**
 		 * @private
@@ -2151,6 +2159,21 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
+=======
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.labelTextRenderer)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.labelTextRenderer.y + this.labelTextRenderer.baseline);
+		}
+
+		/**
+>>>>>>> master
 		 * @private
 		 */
 		protected var _ignoreIconResizes:Boolean = false;
@@ -2177,6 +2200,45 @@ package feathers.controls
 			}
 			super.render(support, parentAlpha);
 		}
+<<<<<<< HEAD
+=======
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
+			//we don't dispose it if the button is the parent because it'll
+			//already get disposed in super.dispose()
+			if(skin && skin.parent !== this)
+			{
+				skin.dispose();
+			}
+			for each(var state:String in this.stateNames)
+			{
+				skin = this._skinSelector.getValueForState(state, false) as DisplayObject;
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			skin = this._iconSelector.defaultValue as DisplayObject;
+			if(skin && skin.parent !== this)
+			{
+				skin.dispose();
+			}
+			for each(state in this.stateNames)
+			{
+				skin = this._iconSelector.getValueForState(state, false) as DisplayObject;
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			super.dispose();
+		}
+>>>>>>> master
 		
 		/**
 		 * @private
@@ -2440,10 +2502,24 @@ package feathers.controls
 			{
 				if(oldSkin)
 				{
+<<<<<<< HEAD
+=======
+					if(oldSkin is IStateObserver)
+					{
+						IStateObserver(oldSkin).stateContext = null;
+					}
+>>>>>>> master
 					this.removeChild(oldSkin, false);
 				}
 				if(this.currentSkin)
 				{
+<<<<<<< HEAD
+=======
+					if(this.currentSkin is IStateObserver)
+					{
+						IStateObserver(this.currentSkin).stateContext = this;
+					}
+>>>>>>> master
 					this.addChildAt(this.currentSkin, 0);
 				}
 			}
@@ -2488,10 +2564,24 @@ package feathers.controls
 					{
 						IFeathersControl(oldIcon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
 					}
+<<<<<<< HEAD
+=======
+					if(oldIcon is IStateObserver)
+					{
+						IStateObserver(oldIcon).stateContext = null;
+					}
+>>>>>>> master
 					this.removeChild(oldIcon, false);
 				}
 				if(this.currentIcon)
 				{
+<<<<<<< HEAD
+=======
+					if(this.currentIcon is IStateObserver)
+					{
+						IStateObserver(this.currentIcon).stateContext = this;
+					}
+>>>>>>> master
 					//we want the icon to appear below the label text renderer
 					var index:int = this.numChildren;
 					if(this.labelTextRenderer)

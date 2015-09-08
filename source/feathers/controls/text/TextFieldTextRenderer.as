@@ -1640,7 +1640,13 @@ package feathers.controls.text
 					}
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+<<<<<<< HEAD
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+=======
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
+					(textureRoot && (textureRoot.scale != scaleFactor ||
+					this._snapshotWidth != textureRoot.nativeWidth || this._snapshotHeight != textureRoot.nativeHeight));
+>>>>>>> master
 				this._snapshotVisibleWidth = rectangleSnapshotWidth;
 				this._snapshotVisibleHeight = rectangleSnapshotHeight;
 			}
@@ -1878,7 +1884,12 @@ package feathers.controls.text
 					{
 						currentBitmapHeight = this._maxTextureDimensions;
 					}
+<<<<<<< HEAD
 					bitmapData = this.drawTextFieldRegionToBitmapData(xPosition, yPosition, currentBitmapWidth, currentBitmapHeight, bitmapData);
+=======
+					bitmapData = this.drawTextFieldRegionToBitmapData(xPosition, yPosition,
+						currentBitmapWidth, currentBitmapHeight, bitmapData);
+>>>>>>> master
 					var newTexture:Texture;
 					if(!this.textSnapshot || this._needsNewTexture)
 					{

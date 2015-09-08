@@ -2,6 +2,11 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+<<<<<<< HEAD
+=======
+	import feathers.layout.VerticalLayout;
+	import feathers.tests.supportClasses.DisposeFlagQuad;
+>>>>>>> master
 
 	import org.flexunit.Assert;
 
@@ -14,6 +19,12 @@ package feathers.tests
 		private static const BACKGROUND_WIDTH:Number = 200;
 		//note: the background height is purposefully larger than the item height
 		private static const BACKGROUND_HEIGHT:Number = 250;
+<<<<<<< HEAD
+=======
+		
+		private static const LARGE_BACKGROUND_WIDTH:Number = 400;
+		private static const LARGE_BACKGROUND_HEIGHT:Number = 400;
+>>>>>>> master
 
 		//note: the item width is purposefully larger than the background width
 		private static const ITEM_WIDTH:Number = 210;
@@ -134,6 +145,26 @@ package feathers.tests
 		}
 
 		[Test]
+<<<<<<< HEAD
+=======
+		public function testChildPositionWithLargerBackground():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._group.addChild(child);
+			this._group.backgroundSkin = new Quad(LARGE_BACKGROUND_WIDTH, LARGE_BACKGROUND_HEIGHT);
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			this._group.layout = layout;
+			this._group.validate();
+			Assert.assertTrue("The layout group does not account for the background skin width when passing bounds to the layout.",
+				child.x > 0);
+			Assert.assertTrue("The layout group does not account for the background skin width when passing bounds to the layout.",
+				child.y > 0);
+		}
+
+		[Test]
+>>>>>>> master
 		public function testResizeWhenAddingChild():void
 		{
 			var originalWidth:Number = this._group.width;
@@ -199,5 +230,21 @@ package feathers.tests
 			Assert.assertFalse("The height of the layout group was not changed.",
 				originalHeight === this._group.height);
 		}
+<<<<<<< HEAD
+=======
+
+		[Test]
+		public function testSkinsDisposed():void
+		{
+			var backgroundSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._group.backgroundSkin = backgroundSkin;
+			var backgroundDisabledSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._group.backgroundDisabledSkin = backgroundDisabledSkin;
+			this._group.validate();
+			this._group.dispose();
+			Assert.assertTrue("backgroundSkin not disposed when LayoutGroup disposed.", backgroundSkin.isDisposed);
+			Assert.assertTrue("backgroundDisabledSkin not disposed when LayoutGroup disposed.", backgroundDisabledSkin.isDisposed);
+		}
+>>>>>>> master
 	}
 }

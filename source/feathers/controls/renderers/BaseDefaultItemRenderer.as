@@ -20,6 +20,10 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+<<<<<<< HEAD
+=======
+	import feathers.skins.StateValueSelector;
+>>>>>>> master
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -37,6 +41,60 @@ package feathers.controls.renderers
 	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
 	{
 		/**
+<<<<<<< HEAD
+=======
+		 * An alternate style name to use with the default item renderer to
+		 * allow a theme to give it a "drill-down" style. If a theme
+		 * does not provide a style for a drill-down item renderer, the theme
+		 * will automatically fall back to using the default item renderer
+		 * style.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
+		 *
+		 * <p>In the following example, the drill-down style is applied to
+		 * a list's item renderers:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+		 *     itemRenderer.styleNameList.add( DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN );
+		 *     return itemRenderer;
+		 * };</listing>
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_DRILL_DOWN:String = "feathers-drill-down-item-renderer";
+		
+		/**
+		 * An alternate style name to use with the default item renderer to
+		 * allow a theme to give it a "check" style. If a theme does not provide
+		 * a style for a check item renderer, the theme will automatically fall
+		 * back to using the default item renderer style.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
+		 *
+		 * <p>In the following example, the check item renderer style is applied
+		 * to a list's item renderers:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+		 *     itemRenderer.styleNameList.add( DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK );
+		 *     return itemRenderer;
+		 * };</listing>
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_CHECK:String = "feathers-check-item-renderer";
+		
+		/**
+>>>>>>> master
 		 * The default value added to the <code>styleNameList</code> of the
 		 * primary label.
 		 *
@@ -385,7 +443,11 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected var accessory:DisplayObject;
+=======
+		protected var currentAccessory:DisplayObject;
+>>>>>>> master
 
 		/**
 		 * @private
@@ -435,7 +497,10 @@ package feathers.controls.renderers
 		 */
 		protected var _data:Object;
 
+<<<<<<< HEAD
 		[Bindable(event="dataChange")]
+=======
+>>>>>>> master
 		/**
 		 * The item displayed by this renderer. This property is set by the
 		 * list, and should not be set manually.
@@ -458,11 +523,14 @@ package feathers.controls.renderers
 			}
 			this._data = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+<<<<<<< HEAD
 
 			//developers expect to set up bindings with the item's properties,
 			//so even though the data property doesn't change with user
 			//interaction, it needs to be bindable.
 			this.dispatchEventWith("dataChange");
+=======
+>>>>>>> master
 		}
 
 		/**
@@ -473,6 +541,30 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _factoryID:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get factoryID():String
+		{
+			return this._factoryID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryID(value:String):void
+		{
+			this._factoryID = value;
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _delayedCurrentState:String;
 
 		/**
@@ -976,6 +1068,86 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _accessorySelector:StateValueSelector = new StateValueSelector();
+
+		/**
+		 * The accessory used when no other accessory is defined for the current
+		 * state. Intended to be used when multiple states should share the same
+		 * accessory.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
+		 *
+		 * <p>The following example gives the button a default icon to use for
+		 * all states when no specific icon is available:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.defaultAccessory = new Image( texture );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #stateToAccessoryFunction
+		 * @see #itemHasAccessory
+		 */
+		public function get defaultAccessory():DisplayObject
+		{
+			return DisplayObject(this._accessorySelector.defaultValue);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set defaultAccessory(value:DisplayObject):void
+		{
+			if(this._accessorySelector.defaultValue === value)
+			{
+				return;
+			}
+			this.replaceAccessory(null);
+			this._accessoryIsFromItem = false;
+			this._accessorySelector.defaultValue = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToAccessoryFunction:Function;
+
+		/**
+		 * Returns an accessory for the current state.
+		 *
+		 * <p>The following function signature is expected:</p>
+		 * <pre>function(target:BaseDefaultItemRenderer, state:Object, oldAccessory:DisplayObject = null):DisplayObject</pre>
+		 *
+		 * @default null
+		 * 
+		 * @see #itemHasAccessory
+		 */
+		public function get stateToAccessoryFunction():Function
+		{
+			return this._stateToAccessoryFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stateToAccessoryFunction(value:Function):void
+		{
+			if(this._stateToAccessoryFunction == value)
+			{
+				return;
+			}
+			this._stateToAccessoryFunction = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var accessoryTouchPointID:int = -1;
 
 		/**
@@ -1572,6 +1744,55 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _customIconLabelStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's icon label text renderer
+		 * sub-component. Typically used by a theme to provide  different styles
+		 * to different item renderers.
+		 *
+		 * <p>In the following example, a custom icon label style name is passed
+		 * to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customIconLabelStyleName = "my-custom-icon-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-icon-label", setCustomIconLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #iconLabelFactory
+		 */
+		public function get customIconLabelStyleName():String
+		{
+			return this._customIconLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customIconLabelStyleName(value:String):void
+		{
+			if(this._customIconLabelStyleName == value)
+			{
+				return;
+			}
+			this._customIconLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _accessoryField:String = "accessory";
 
 		/**
@@ -1985,6 +2206,55 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _customAccessoryLabelStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's accessory label text
+		 * renderer sub-component. Typically used by a theme to provide
+		 * different styles to different item renderers.
+		 *
+		 * <p>In the following example, a custom accessory label style name is
+		 * passed to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customAccessoryLabelStyleName = "my-custom-accessory-label";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-accessory-label", setCustomAccessoryLabelStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #accessoryLabelFactory
+		 */
+		public function get customAccessoryLabelStyleName():String
+		{
+			return this._customAccessoryLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customAccessoryLabelStyleName(value:String):void
+		{
+			if(this._customAccessoryLabelStyleName == value)
+			{
+				return;
+			}
+			this._customAccessoryLabelStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _skinField:String = "skin";
 
 		/**
@@ -3379,11 +3649,19 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryWidth(width:Number):Number
 		{
+<<<<<<< HEAD
 			if(!this.accessory)
 			{
 				return width;
 			}
 			var accessoryWidth:Number = this.accessory.width;
+=======
+			if(!this.currentAccessory)
+			{
+				return width;
+			}
+			var accessoryWidth:Number = this.currentAccessory.width;
+>>>>>>> master
 			if(accessoryWidth !== accessoryWidth) //isNaN
 			{
 				return width;
@@ -3480,11 +3758,19 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryHeight(height:Number):Number
 		{
+<<<<<<< HEAD
 			if(!this.accessory)
 			{
 				return height;
 			}
 			var accessoryHeight:Number = this.accessory.height;
+=======
+			if(!this.currentAccessory)
+			{
+				return height;
+			}
+			var accessoryHeight:Number = this.currentAccessory.height;
+>>>>>>> master
 			if(accessoryHeight !== accessoryHeight) //isNaN
 			{
 				return height;
@@ -3730,6 +4016,7 @@ package feathers.controls.renderers
 		 */
 		protected function replaceAccessory(newAccessory:DisplayObject):void
 		{
+<<<<<<< HEAD
 			if(this.accessory == newAccessory)
 			{
 				return;
@@ -3748,6 +4035,14 @@ package feathers.controls.renderers
 					//let's just remove it.
 					this.accessory.removeFromParent(false);
 				}
+=======
+			if(this.accessoryLoader && this.accessoryLoader != newAccessory)
+			{
+				this.accessoryLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.accessoryLoader.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.accessoryLoader.dispose();
+				this.accessoryLoader = null;
+>>>>>>> master
 			}
 
 			if(this.accessoryLabel && this.accessoryLabel != newAccessory)
@@ -3757,6 +4052,7 @@ package feathers.controls.renderers
 				this.accessoryLabel = null;
 			}
 
+<<<<<<< HEAD
 			if(this.accessoryLoader && this.accessoryLoader != newAccessory)
 			{
 				this.accessoryLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
@@ -3782,6 +4078,35 @@ package feathers.controls.renderers
 				this.addChild(this.accessory);
 			}
 			
+=======
+			if(this._itemHasAccessory && this.currentAccessory && this.currentAccessory != newAccessory && this.currentAccessory.parent == this)
+			{
+				//the icon is created using the data provider, and it is not
+				//created inside this class, so it is not our responsibility to
+				//dispose the icon. if we dispose it, it may break something.
+				this.currentAccessory.removeFromParent(false);
+				this.currentAccessory = null;
+			}
+			//we're using currentIcon above, but we're emulating calling the
+			//defaultIcon setter here. the Button class sets the currentIcon
+			//elsewhere, so we want to take advantage of that exisiting code.
+
+			//we're not calling the defaultIcon setter directly because we're in
+			//the middle of validating, and it will just invalidate, which will
+			//require another validation later. we want the Button class to
+			//process the new icon immediately when we call super.draw().
+			if(this._accessorySelector.defaultValue != newAccessory)
+			{
+				this._accessorySelector.defaultValue = newAccessory;
+				//we don't want this taking precedence over our icon from the
+				//data provider.
+				this._stateToAccessoryFunction = null;
+				//we don't need to do a full invalidation. the superclass will
+				//correctly see this flag when we call super.draw().
+				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
+			}
+
+>>>>>>> master
 			if(this.accessoryLoader)
 			{
 				this.accessoryLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
@@ -3856,9 +4181,53 @@ package feathers.controls.renderers
 		 */
 		protected function refreshAccessory():void
 		{
+<<<<<<< HEAD
 			if(this.accessory is IFeathersControl)
 			{
 				IFeathersControl(this.accessory).isEnabled = this._isEnabled;
+=======
+			var oldAccessory:DisplayObject = this.currentAccessory;
+			if(this._stateToAccessoryFunction != null)
+			{
+				this.currentAccessory = DisplayObject(this._stateToAccessoryFunction(this, this._currentState, oldAccessory));
+			}
+			else
+			{
+				this.currentAccessory = DisplayObject(this._accessorySelector.updateValue(this, this._currentState, this.currentAccessory));
+			}
+			if(this.currentAccessory is IFeathersControl)
+			{
+				IFeathersControl(this.currentAccessory).isEnabled = this._isEnabled;
+			}
+			if(this.currentAccessory != oldAccessory)
+			{
+				if(oldAccessory)
+				{
+					if(oldAccessory is IStateObserver)
+					{
+						IStateObserver(oldAccessory).stateContext = null;
+					}
+					if(oldAccessory is IFeathersControl)
+					{
+						IFeathersControl(oldAccessory).removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
+						IFeathersControl(oldAccessory).removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+					}
+					this.removeChild(oldAccessory, false);
+				}
+				if(this.currentAccessory)
+				{
+					if(this.currentAccessory is IStateObserver)
+					{
+						IStateObserver(this.currentAccessory).stateContext = this;
+					}
+					this.addChild(this.currentAccessory);
+					if(this.currentAccessory is IFeathersControl)
+					{
+						IFeathersControl(this.currentAccessory).addEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
+						IFeathersControl(this.currentAccessory).addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+					}
+				}
+>>>>>>> master
 			}
 			if(this.accessoryLabel)
 			{
@@ -3898,7 +4267,12 @@ package feathers.controls.renderers
 				{
 					IStateObserver(this.iconLabel).stateContext = this;
 				}
+<<<<<<< HEAD
 				this.iconLabel.styleNameList.add(this.iconLabelStyleName);
+=======
+				var iconLabelStyleName:String = this._customIconLabelStyleName != null ? this._customIconLabelStyleName : this.iconLabelStyleName;
+				this.iconLabel.styleNameList.add(iconLabelStyleName);
+>>>>>>> master
 			}
 			this.iconLabel.text = label;
 		}
@@ -3930,7 +4304,12 @@ package feathers.controls.renderers
 				{
 					IStateObserver(this.accessoryLabel).stateContext = this;
 				}
+<<<<<<< HEAD
 				this.accessoryLabel.styleNameList.add(this.accessoryLabelStyleName);
+=======
+				var accessoryLabelStyleName:String = this._customAccessoryLabelStyleName != null ? this._customAccessoryLabelStyleName : this.accessoryLabelStyleName;
+				this.accessoryLabel.styleNameList.add(accessoryLabelStyleName);
+>>>>>>> master
 			}
 			this.accessoryLabel.text = label;
 		}
@@ -3965,7 +4344,11 @@ package feathers.controls.renderers
 				var labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
 			}
 			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
+<<<<<<< HEAD
 			var accessoryIsInLayout:Boolean = this.accessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
+=======
+			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
+>>>>>>> master
 			var accessoryGap:Number = this._accessoryGap;
 			if(accessoryGap !== accessoryGap) //isNaN
 			{
@@ -3976,7 +4359,11 @@ package feathers.controls.renderers
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
+<<<<<<< HEAD
 					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
+=======
+					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
+>>>>>>> master
 					var iconPosition:String = this._iconPosition;
 					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
 					{
@@ -3986,12 +4373,20 @@ package feathers.controls.renderers
 					{
 						iconPosition = ICON_POSITION_RIGHT;
 					}
+<<<<<<< HEAD
 					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
+=======
+					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.currentAccessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
+>>>>>>> master
 				}
 				else
 				{
 					this.positionLabelAndIcon();
+<<<<<<< HEAD
 					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
+=======
+					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
+>>>>>>> master
 				}
 			}
 			else if(this._label && this.labelTextRenderer)
@@ -4005,7 +4400,11 @@ package feathers.controls.renderers
 				}
 				else if(accessoryIsInLayout)
 				{
+<<<<<<< HEAD
 					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
+=======
+					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
+>>>>>>> master
 				}
 			}
 			else if(iconIsInLayout)
@@ -4013,11 +4412,16 @@ package feathers.controls.renderers
 				this.positionSingleChild(this.currentIcon);
 				if(accessoryIsInLayout)
 				{
+<<<<<<< HEAD
 					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap, null, 0);
+=======
+					this.positionRelativeToOthers(this.currentAccessory, this.currentIcon, null, this._accessoryPosition, accessoryGap, null, 0);
+>>>>>>> master
 				}
 			}
 			else if(accessoryIsInLayout)
 			{
+<<<<<<< HEAD
 				this.positionSingleChild(this.accessory);
 			}
 
@@ -4030,6 +4434,20 @@ package feathers.controls.renderers
 				}
 				this.accessory.x += this._accessoryOffsetX;
 				this.accessory.y += this._accessoryOffsetY;
+=======
+				this.positionSingleChild(this.currentAccessory);
+			}
+
+			if(this.currentAccessory)
+			{
+				if(!accessoryIsInLayout)
+				{
+					this.currentAccessory.x = this._paddingLeft;
+					this.currentAccessory.y = this._paddingTop;
+				}
+				this.currentAccessory.x += this._accessoryOffsetX;
+				this.currentAccessory.y += this._accessoryOffsetY;
+>>>>>>> master
 			}
 			if(this.currentIcon)
 			{
@@ -4098,8 +4516,13 @@ package feathers.controls.renderers
 			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
 			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM);
+<<<<<<< HEAD
 			var hasAccessoryToLeftOrRight:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
 			var hasAccessoryToTopOrBottom:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
+=======
+			var hasAccessoryToLeftOrRight:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
+			var hasAccessoryToTopOrBottom:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
+>>>>>>> master
 
 			if(this.accessoryLabel)
 			{
@@ -4130,6 +4553,7 @@ package feathers.controls.renderers
 				{
 					calculatedWidth -= (this.currentIcon.width + adjustedGap);
 				}
+<<<<<<< HEAD
 				if(this.accessory is IValidating)
 				{
 					IValidating(this.accessory).validate();
@@ -4141,11 +4565,25 @@ package feathers.controls.renderers
 				if(hasAccessoryToTopOrBottom)
 				{
 					calculatedHeight -= (this.accessory.height + adjustedAccessoryGap);
+=======
+				if(this.currentAccessory is IValidating)
+				{
+					IValidating(this.currentAccessory).validate();
+				}
+				if(hasAccessoryToLeftOrRight)
+				{
+					calculatedWidth -= (this.currentAccessory.width + adjustedAccessoryGap);
+				}
+				if(hasAccessoryToTopOrBottom)
+				{
+					calculatedHeight -= (this.currentAccessory.height + adjustedAccessoryGap);
+>>>>>>> master
 				}
 			}
 			else if(this.iconLabel)
 			{
 				var accessoryAffectsIconLabelMaxWidth:Boolean = hasAccessoryToLeftOrRight && (hasIconToLeftOrRight || this._layoutOrder == LAYOUT_ORDER_LABEL_ICON_ACCESSORY);
+<<<<<<< HEAD
 				if(this.accessory is IValidating)
 				{
 					IValidating(this.accessory).validate();
@@ -4153,6 +4591,15 @@ package feathers.controls.renderers
 				if(accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
+=======
+				if(this.currentAccessory is IValidating)
+				{
+					IValidating(this.currentAccessory).validate();
+				}
+				if(accessoryAffectsIconLabelMaxWidth)
+				{
+					calculatedWidth -= (adjustedAccessoryGap + this.currentAccessory.width);
+>>>>>>> master
 				}
 				if(calculatedWidth < 0)
 				{
@@ -4160,9 +4607,15 @@ package feathers.controls.renderers
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
 				this.iconLabel.maxHeight = calculatedHeight;
+<<<<<<< HEAD
 				if(hasAccessoryToLeftOrRight && this.accessory && !accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
+=======
+				if(hasAccessoryToLeftOrRight && this.currentAccessory && !accessoryAffectsIconLabelMaxWidth)
+				{
+					calculatedWidth -= (adjustedAccessoryGap + this.currentAccessory.width);
+>>>>>>> master
 				}
 				if(this.currentIcon is IValidating)
 				{
@@ -4191,6 +4644,7 @@ package feathers.controls.renderers
 				{
 					calculatedHeight -= (adjustedGap + this.currentIcon.height);
 				}
+<<<<<<< HEAD
 				if(this.accessory is IValidating)
 				{
 					IValidating(this.accessory).validate();
@@ -4202,6 +4656,19 @@ package feathers.controls.renderers
 				if(hasAccessoryToTopOrBottom)
 				{
 					calculatedHeight -= (adjustedAccessoryGap + this.accessory.height);
+=======
+				if(this.currentAccessory is IValidating)
+				{
+					IValidating(this.currentAccessory).validate();
+				}
+				if(hasAccessoryToLeftOrRight)
+				{
+					calculatedWidth -= (adjustedAccessoryGap + this.currentAccessory.width);
+				}
+				if(hasAccessoryToTopOrBottom)
+				{
+					calculatedHeight -= (adjustedAccessoryGap + this.currentAccessory.height);
+>>>>>>> master
 				}
 			}
 			if(calculatedWidth < 0)
@@ -4507,11 +4974,19 @@ package feathers.controls.renderers
 		 */
 		override protected function button_touchHandler(event:TouchEvent):void
 		{
+<<<<<<< HEAD
 			if(this.accessory && !this._isSelectableOnAccessoryTouch && this.accessory != this.accessoryLabel && this.accessory != this.accessoryLoader && this.touchPointID < 0)
 			{
 				//ignore all touches on accessories that are not labels or
 				//loaders. return to up state.
 				var touch:Touch = event.getTouch(this.accessory);
+=======
+			if(this.currentAccessory && !this._isSelectableOnAccessoryTouch && this.currentAccessory != this.accessoryLabel && this.currentAccessory != this.accessoryLoader && this.touchPointID < 0)
+			{
+				//ignore all touches on accessories that are not labels or
+				//loaders. return to up state.
+				var touch:Touch = event.getTouch(this.currentAccessory);
+>>>>>>> master
 				if(touch)
 				{
 					this.changeState(Button.STATE_UP);
@@ -4532,8 +5007,13 @@ package feathers.controls.renderers
 				return;
 			}
 			if(!this._stopScrollingOnAccessoryTouch ||
+<<<<<<< HEAD
 				this.accessory == this.accessoryLabel ||
 				this.accessory == this.accessoryLoader)
+=======
+				this.currentAccessory === this.accessoryLabel ||
+				this.currentAccessory === this.accessoryLoader)
+>>>>>>> master
 			{
 				//do nothing
 				return;
@@ -4541,7 +5021,11 @@ package feathers.controls.renderers
 
 			if(this.accessoryTouchPointID >= 0)
 			{
+<<<<<<< HEAD
 				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this.accessoryTouchPointID);
+=======
+				var touch:Touch = event.getTouch(this.currentAccessory, TouchPhase.ENDED, this.accessoryTouchPointID);
+>>>>>>> master
 				if(!touch)
 				{
 					return;
@@ -4550,7 +5034,11 @@ package feathers.controls.renderers
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
+<<<<<<< HEAD
 				touch = event.getTouch(this.accessory, TouchPhase.BEGAN);
+=======
+				touch = event.getTouch(this.currentAccessory, TouchPhase.BEGAN);
+>>>>>>> master
 				if(!touch)
 				{
 					return;

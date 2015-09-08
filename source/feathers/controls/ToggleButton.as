@@ -7,8 +7,15 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+<<<<<<< HEAD
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+=======
+	import feathers.core.IGroupedToggle;
+	import feathers.core.IToggle;
+	import feathers.core.PropertyProxy;
+	import feathers.core.ToggleGroup;
+>>>>>>> master
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
@@ -58,7 +65,11 @@ package feathers.controls
 	 *
 	 * @see ../../../help/toggle-button.html How to use the Feathers ToggleButton component
 	 */
+<<<<<<< HEAD
 	public class ToggleButton extends Button implements IToggle
+=======
+	public class ToggleButton extends Button implements IGroupedToggle
+>>>>>>> master
 	{
 		/**
 		 * @copy feathers.controls.Button#STATE_UP
@@ -97,7 +108,12 @@ package feathers.controls
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
+<<<<<<< HEAD
 		 * Identifier for the button's up state when selected. Can be used for styling purposes.
+=======
+		 * Identifier for the toggle button's up state when selected. Can be
+		 * used for styling purposes.
+>>>>>>> master
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
@@ -106,7 +122,12 @@ package feathers.controls
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
+<<<<<<< HEAD
 		 * Identifier for the button's down state when selected. Can be used for styling purposes.
+=======
+		 * Identifier for the toggle button's down state when selected. Can be
+		 * used for styling purposes.
+>>>>>>> master
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
@@ -115,7 +136,12 @@ package feathers.controls
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
+<<<<<<< HEAD
 		 * Identifier for the button's hover state when selected. Can be used for styling purposes.
+=======
+		 * Identifier for the toggle button's hover state when selected. Can be
+		 * used for styling purposes.
+>>>>>>> master
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
@@ -124,13 +150,114 @@ package feathers.controls
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
+<<<<<<< HEAD
 		 * Identifier for the button's disabled state. Can be used for styling purposes.
+=======
+		 * Identifier for the toggle button's disabled state when selected. Can
+		 * be used for styling purposes.
+>>>>>>> master
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #stateToIconFunction
 		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
+<<<<<<< HEAD
+=======
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_TOP
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_TOP:String = "top";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_RIGHT:String = "right";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_BOTTOM
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_BOTTOM:String = "bottom";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_LEFT
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_LEFT:String = "left";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_MANUAL
+		 *
+		 * @see #iconPosition
+		 * @see #iconOffsetX
+		 * @see #iconOffsetY
+		 */
+		public static const ICON_POSITION_MANUAL:String = "manual";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_LEFT_BASELINE
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
+
+		/**
+		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT_BASELINE
+		 *
+		 * @see #iconPosition
+		 */
+		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
+
+		/**
+		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_RIGHT
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * @copy feathers.controls.Button#VERTICAL_ALIGN_TOP
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * @copy feathers.controls.Button#VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * @copy feathers.controls.Button#VERTICAL_ALIGN_BOTTOM
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+>>>>>>> master
 		
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleButton</code>
@@ -214,7 +341,10 @@ package feathers.controls
 		 */
 		protected var _isSelected:Boolean = false;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Indicates if the button is selected or not. The button may be
 		 * selected programmatically, even if <code>isToggle</code> is <code>false</code>,
@@ -257,6 +387,42 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
+=======
+		 * @private
+		 */
+		protected var _toggleGroup:ToggleGroup;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get toggleGroup():ToggleGroup
+		{
+			return this._toggleGroup;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleGroup(value:ToggleGroup):void
+		{
+			if(this._toggleGroup == value)
+			{
+				return;
+			}
+			if(this._toggleGroup && this._toggleGroup.hasItem(this))
+			{
+				this._toggleGroup.removeItem(this);
+			}
+			this._toggleGroup = value;
+			if(this._toggleGroup && !this._toggleGroup.hasItem(this))
+			{
+				this._toggleGroup.addItem(this);
+			}
+		}
+
+		/**
+>>>>>>> master
 		 * The skin used when no other skin is defined for the current state
 		 * when the button is selected. Has a higher priority than
 		 * <code>defaultSkin</code>, but a lower priority than other selected
@@ -934,6 +1100,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		override public function dispose():void
+		{
+			var skin:DisplayObject = this._skinSelector.defaultSelectedValue as DisplayObject;
+			if(skin)
+			{
+				skin.dispose();
+			}
+			for each(var state:String in this.stateNames)
+			{
+				skin = this._skinSelector.getValueForState(state, true) as DisplayObject;
+				//it'll get disposed in super.dispose() if it's a child
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			skin = this._iconSelector.defaultSelectedValue as DisplayObject;
+			if(skin)
+			{
+				skin.dispose();
+			}
+			for each(state in this.stateNames)
+			{
+				skin = this._iconSelector.getValueForState(state, true) as DisplayObject;
+				//it'll get disposed in super.dispose() if it's a child
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		override protected function trigger():void
 		{
 			super.trigger();

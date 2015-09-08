@@ -93,6 +93,7 @@ package feathers.examples.trainTimes.controls
 		public function set index(value:int):void
 		{
 			this._index = value;
+<<<<<<< HEAD
 			if(this._owner && this._owner.dataProvider)
 			{
 				this.isLastItem = this._index == this._owner.dataProvider.length - 1;
@@ -132,6 +133,29 @@ package feathers.examples.trainTimes.controls
 			}
 			this._isLastItem = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
+=======
+		}
+
+		/**
+		 * @private
+		 */
+		private var _factoryID:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get factoryID():String
+		{
+			return this._factoryID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set factoryID(value:String):void
+		{
+			this._factoryID = value;
+>>>>>>> master
 		}
 
 		protected var _isInDestinationPhase:Boolean = false;
@@ -173,10 +197,13 @@ package feathers.examples.trainTimes.controls
 			{
 				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
 			}
+<<<<<<< HEAD
 			if(this._owner && this._owner.dataProvider)
 			{
 				this.isLastItem = this._index == this._owner.dataProvider.length - 1;
 			}
+=======
+>>>>>>> master
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -223,6 +250,7 @@ package feathers.examples.trainTimes.controls
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
+<<<<<<< HEAD
 		protected var _firstNormalIconTexture:Texture;
 
 		public function get firstNormalIconTexture():Texture
@@ -257,6 +285,8 @@ package feathers.examples.trainTimes.controls
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
+=======
+>>>>>>> master
 		protected var _selectedIconTexture:Texture;
 
 		public function get selectedIconTexture():Texture
@@ -274,6 +304,7 @@ package feathers.examples.trainTimes.controls
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
+<<<<<<< HEAD
 		protected var _firstSelectedIconTexture:Texture;
 
 		public function get firstSelectedIconTexture():Texture
@@ -308,6 +339,8 @@ package feathers.examples.trainTimes.controls
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
+=======
+>>>>>>> master
 		protected var _iconLoaderFactory:Function = defaultLoaderFactory;
 
 		public function get iconLoaderFactory():Function
@@ -491,6 +524,10 @@ package feathers.examples.trainTimes.controls
 			{
 				newHeight = this.icon.height;
 			}
+<<<<<<< HEAD
+=======
+			trace(newWidth, newHeight);
+>>>>>>> master
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -517,6 +554,7 @@ package feathers.examples.trainTimes.controls
 				this.nameLabel.text = nameLabelText;
 
 				var displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
+<<<<<<< HEAD
 				if(this.isFirstItem)
 				{
 					this.icon.source = displayAsSelected ? this._firstSelectedIconTexture : this._firstNormalIconTexture;
@@ -529,6 +567,9 @@ package feathers.examples.trainTimes.controls
 				{
 					this.icon.source = displayAsSelected ? this._selectedIconTexture : this._normalIconTexture;
 				}
+=======
+				this.icon.source = displayAsSelected ? this._selectedIconTexture : this._normalIconTexture;
+>>>>>>> master
 
 				if(this._data.isDepartingFromHere)
 				{

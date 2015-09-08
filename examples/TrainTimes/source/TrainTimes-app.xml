@@ -13,6 +13,10 @@
 		<fullScreen>false</fullScreen>
 		<visible>true</visible>
 		<renderMode>direct</renderMode>
+<<<<<<< HEAD
+=======
+		<requestedDisplayResolution>high</requestedDisplayResolution>
+>>>>>>> master
 	</initialWindow>
 
 	<supportedLanguages>en</supportedLanguages>

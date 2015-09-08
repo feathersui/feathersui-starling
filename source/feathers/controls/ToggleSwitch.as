@@ -9,6 +9,10 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+<<<<<<< HEAD
+=======
+	import feathers.core.ITextBaselineControl;
+>>>>>>> master
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
@@ -51,7 +55,11 @@ package feathers.controls
 	 * @see ../../../help/toggle-switch.html How to use the Feathers ToggleSwitch component
 	 * @see feathers.controls.Check
 	 */
+<<<<<<< HEAD
 	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject
+=======
+	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl
+>>>>>>> master
 	{
 		/**
 		 * @private
@@ -1064,7 +1072,10 @@ package feathers.controls
 		 */
 		protected var _isSelected:Boolean = false;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Indicates if the toggle switch is selected (ON) or not (OFF).
 		 *
@@ -1820,6 +1831,21 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
+=======
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.onTextRenderer)
+			{
+				return this.scaledActualHeight;
+			}
+			return this.scaleY * (this.onTextRenderer.y + this.onTextRenderer.baseline);
+		}
+
+		/**
+>>>>>>> master
 		 * Changes the <code>isSelected</code> property, but animates the thumb
 		 * to the new position, as if the user tapped the toggle switch.
 		 *

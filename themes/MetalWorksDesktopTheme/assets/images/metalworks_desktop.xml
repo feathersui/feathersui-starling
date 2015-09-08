@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="metalworks_desktop.png">
+<<<<<<< HEAD
 	<!-- Created with Adobe Flash Professional version 15.0.0.173 -->
 	<!-- http://www.adobe.com/products/flash.html -->
 	<SubTexture name="back-button-disabled-skin0000" x="468" y="259" width="37" height="45" pivotX="0.1" pivotY="0"/>
@@ -13,11 +14,27 @@
 	<SubTexture name="button-down-skin0000" x="1" y="364" width="14" height="44" pivotX="0" pivotY="0"/>
 	<SubTexture name="button-up-skin0000" x="16" y="364" width="14" height="44" pivotX="0" pivotY="0"/>
 	<SubTexture name="call-to-action-button-down-skin0000" x="31" y="378" width="14" height="44" pivotX="0" pivotY="0"/>
+=======
+	<!-- Created with Adobe Flash Professional version 15.0.1.179 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<SubTexture name="back-button-disabled-skin0000" x="129" y="301" width="37" height="45" pivotX="0.1" pivotY="0"/>
+	<SubTexture name="back-button-down-skin0000" x="468" y="259" width="37" height="45" pivotX="0.1" pivotY="0"/>
+	<SubTexture name="back-button-up-skin0000" x="91" y="301" width="37" height="45" pivotX="0.1" pivotY="0"/>
+	<SubTexture name="background-disabled-skin0000" x="135" y="405" width="16" height="16" pivotX="0" pivotY="0"/>
+	<SubTexture name="background-focused-skin0000" x="118" y="405" width="16" height="16" pivotX="0" pivotY="0"/>
+	<SubTexture name="background-popup-skin0000" x="243" y="323" width="13" height="12" pivotX="1" pivotY="1"/>
+	<SubTexture name="background-skin0000" x="481" y="42" width="16" height="16" pivotX="0" pivotY="0"/>
+	<SubTexture name="button-disabled-skin0000" x="67" y="357" width="14" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="button-down-skin0000" x="16" y="364" width="14" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="button-up-skin0000" x="31" y="378" width="14" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="call-to-action-button-down-skin0000" x="46" y="378" width="14" height="44" pivotX="0" pivotY="0"/>
+>>>>>>> master
 	<SubTexture name="call-to-action-button-up-skin0000" x="243" y="259" width="14" height="45" pivotX="0" pivotY="0"/>
 	<SubTexture name="callout-arrow-bottom-skin0000" x="1" y="304" width="40" height="26" pivotX="0" pivotY="0"/>
 	<SubTexture name="callout-arrow-left-skin0000" x="481" y="1" width="26" height="40" pivotX="0" pivotY="0"/>
 	<SubTexture name="callout-arrow-right-skin0000" x="42" y="304" width="26" height="40" pivotX="0" pivotY="0"/>
 	<SubTexture name="callout-arrow-top-skin0000" x="458" y="305" width="40" height="26" pivotX="0" pivotY="0"/>
+<<<<<<< HEAD
 	<SubTexture name="check-disabled-icon0000" x="34" y="345" width="32" height="32" pivotX="0" pivotY="0"/>
 	<SubTexture name="check-down-icon0000" x="90" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
 	<SubTexture name="check-selected-disabled-icon0000" x="123" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
@@ -25,15 +42,31 @@
 	<SubTexture name="check-selected-up-icon0000" x="189" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
 	<SubTexture name="check-up-icon0000" x="222" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
 	<SubTexture name="danger-button-down-skin0000" x="46" y="378" width="14" height="44" pivotX="0" pivotY="0"/>
+=======
+	<SubTexture name="check-disabled-icon0000" x="123" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="check-down-icon0000" x="156" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="check-selected-disabled-icon0000" x="189" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="check-selected-down-icon0000" x="222" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="check-selected-up-icon0000" x="420" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="check-up-icon0000" x="453" y="353" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="danger-button-down-skin0000" x="82" y="380" width="14" height="44" pivotX="0" pivotY="0"/>
+>>>>>>> master
 	<SubTexture name="danger-button-up-skin0000" x="393" y="355" width="14" height="45" pivotX="0" pivotY="0"/>
 	<SubTexture name="focus-indicator-skin0000" x="297" y="396" width="22" height="22" pivotX="0" pivotY="0"/>
 	<SubTexture name="forward-button-disabled-skin0000" x="167" y="301" width="37" height="45" pivotX="0" pivotY="0"/>
 	<SubTexture name="forward-button-down-skin0000" x="205" y="301" width="37" height="45" pivotX="0" pivotY="0"/>
 	<SubTexture name="forward-button-up-skin0000" x="420" y="301" width="37" height="45" pivotX="0" pivotY="0"/>
+<<<<<<< HEAD
 	<SubTexture name="full-screen-toggle-button-enter-down-icon0000" x="420" y="124" width="44" height="44" pivotX="0" pivotY="0"/>
 	<SubTexture name="full-screen-toggle-button-enter-up-icon0000" x="465" y="124" width="44" height="44" pivotX="0" pivotY="0"/>
 	<SubTexture name="full-screen-toggle-button-exit-down-icon0000" x="420" y="169" width="44" height="44" pivotX="0" pivotY="0"/>
 	<SubTexture name="full-screen-toggle-button-exit-up-icon0000" x="465" y="169" width="44" height="44" pivotX="0" pivotY="0"/>
+=======
+	<SubTexture name="full-screen-toggle-button-enter-down-icon0000" x="420" y="214" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="full-screen-toggle-button-enter-up-icon0000" x="465" y="214" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="full-screen-toggle-button-exit-down-icon0000" x="1" y="259" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="full-screen-toggle-button-exit-up-icon0000" x="46" y="259" width="44" height="44" pivotX="0" pivotY="0"/>
+>>>>>>> master
 	<SubTexture name="header-background-skin0000" x="1" y="1" width="256" height="128" pivotX="0" pivotY="0"/>
 	<SubTexture name="header-popup-background-skin0000" x="1" y="130" width="256" height="128" pivotX="0" pivotY="0"/>
 	<SubTexture name="horizontal-scroll-bar-decrement-button-disabled-icon0000" x="501" y="91" width="6" height="8" pivotX="0" pivotY="0"/>
@@ -48,6 +81,10 @@
 	<SubTexture name="horizontal-scroll-bar-increment-button-up-skin0000" x="222" y="380" width="24" height="24" pivotX="0" pivotY="0"/>
 	<SubTexture name="horizontal-simple-scroll-bar-thumb-skin0000" x="458" y="332" width="52" height="20" pivotX="0" pivotY="0"/>
 	<SubTexture name="item-renderer-drill-down-accessory-icon0000" x="243" y="305" width="12" height="17" pivotX="0" pivotY="0"/>
+<<<<<<< HEAD
+=======
+	<SubTexture name="item-renderer-drill-down-accessory-selected-icon0000" x="499" y="305" width="12" height="17" pivotX="0" pivotY="0"/>
+>>>>>>> master
 	<SubTexture name="item-renderer-hover-skin0000" x="235" y="268" width="6" height="6" pivotX="0" pivotY="0"/>
 	<SubTexture name="item-renderer-selected-up-skin0000" x="501" y="42" width="6" height="48" pivotX="0" pivotY="0"/>
 	<SubTexture name="item-renderer-up-skin0000" x="235" y="275" width="6" height="6" pivotX="0" pivotY="0"/>
@@ -58,6 +95,7 @@
 	<SubTexture name="mute-toggle-button-muted-up-icon0000" x="420" y="259" width="47" height="41" pivotX="0" pivotY="0"/>
 	<SubTexture name="overlay-play-pause-toggle-button-play-down-icon0000" x="258" y="1" width="161" height="176" pivotX="0" pivotY="0"/>
 	<SubTexture name="overlay-play-pause-toggle-button-play-up-icon0000" x="258" y="178" width="161" height="176" pivotX="0" pivotY="0"/>
+<<<<<<< HEAD
 	<SubTexture name="page-indicator-disabled-symbol0000" x="362" y="401" width="20" height="20" pivotX="0" pivotY="0"/>
 	<SubTexture name="page-indicator-selected-disabled-symbol0000" x="383" y="401" width="20" height="20" pivotX="0" pivotY="0"/>
 	<SubTexture name="page-indicator-selected-symbol0000" x="61" y="402" width="20" height="20" pivotX="0" pivotY="0"/>
@@ -76,6 +114,26 @@
 	<SubTexture name="radio-selected-up-icon0000" x="1" y="331" width="32" height="32" pivotX="0" pivotY="0"/>
 	<SubTexture name="search-disabled-icon0000" x="320" y="396" width="20" height="20" pivotX="0" pivotY="0"/>
 	<SubTexture name="search-icon0000" x="341" y="401" width="20" height="20" pivotX="0" pivotY="0"/>
+=======
+	<SubTexture name="page-indicator-disabled-symbol0000" x="320" y="396" width="20" height="20" pivotX="0" pivotY="0"/>
+	<SubTexture name="page-indicator-selected-disabled-symbol0000" x="341" y="401" width="20" height="20" pivotX="0" pivotY="0"/>
+	<SubTexture name="page-indicator-selected-symbol0000" x="362" y="401" width="20" height="20" pivotX="0" pivotY="0"/>
+	<SubTexture name="page-indicator-symbol0000" x="383" y="401" width="20" height="20" pivotX="0" pivotY="0"/>
+	<SubTexture name="picker-list-disabled-icon0000" x="169" y="405" width="16" height="16" pivotX="0" pivotY="0"/>
+	<SubTexture name="picker-list-icon0000" x="186" y="405" width="16" height="16" pivotX="0" pivotY="0"/>
+	<SubTexture name="picker-list-selected-icon0000" x="203" y="405" width="16" height="16" pivotX="0" pivotY="0"/>
+	<SubTexture name="play-pause-toggle-button-pause-down-icon0000" x="420" y="124" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="play-pause-toggle-button-pause-up-icon0000" x="465" y="124" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="play-pause-toggle-button-play-down-icon0000" x="420" y="169" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="play-pause-toggle-button-play-up-icon0000" x="465" y="169" width="44" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="pop-up-volume-slider-track-skin0000" x="420" y="1" width="60" height="60" pivotX="0" pivotY="0"/>
+	<SubTexture name="quiet-button-hover-skin0000" x="1" y="364" width="14" height="44" pivotX="0" pivotY="0"/>
+	<SubTexture name="radio-selected-disabled-icon0000" x="1" y="331" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="radio-selected-down-icon0000" x="34" y="345" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="radio-selected-up-icon0000" x="90" y="347" width="32" height="32" pivotX="0" pivotY="0"/>
+	<SubTexture name="search-disabled-icon0000" x="61" y="402" width="20" height="20" pivotX="0" pivotY="0"/>
+	<SubTexture name="search-icon0000" x="97" y="405" width="20" height="20" pivotX="0" pivotY="0"/>
+>>>>>>> master
 	<SubTexture name="tab-disabled-skin0000" x="255" y="355" width="24" height="40" pivotX="0" pivotY="0"/>
 	<SubTexture name="tab-down-skin0000" x="280" y="355" width="24" height="40" pivotX="0" pivotY="0"/>
 	<SubTexture name="tab-selected-disabled-skin0000" x="305" y="355" width="24" height="40" pivotX="0" pivotY="0"/>
@@ -83,6 +141,7 @@
 	<SubTexture name="tab-up-skin0000" x="330" y="355" width="24" height="40" pivotX="0" pivotY="0"/>
 	<SubTexture name="toggle-button-selected-disabled-skin0000" x="374" y="355" width="18" height="44" pivotX="0" pivotY="0"/>
 	<SubTexture name="toggle-button-selected-up-skin0000" x="355" y="355" width="18" height="45" pivotX="0" pivotY="0"/>
+<<<<<<< HEAD
 	<SubTexture name="vertical-scroll-bar-decrement-button-disabled-icon0000" x="499" y="305" width="8" height="6" pivotX="0" pivotY="0"/>
 	<SubTexture name="vertical-scroll-bar-decrement-button-disabled-skin0000" x="408" y="380" width="24" height="24" pivotX="0" pivotY="0"/>
 	<SubTexture name="vertical-scroll-bar-decrement-button-down-skin0000" x="433" y="386" width="24" height="24" pivotX="0" pivotY="0"/>
@@ -92,6 +151,17 @@
 	<SubTexture name="vertical-scroll-bar-increment-button-disabled-skin0000" x="483" y="395" width="24" height="24" pivotX="0" pivotY="0"/>
 	<SubTexture name="vertical-scroll-bar-increment-button-down-skin0000" x="247" y="396" width="24" height="24" pivotX="0" pivotY="0"/>
 	<SubTexture name="vertical-scroll-bar-increment-button-icon0000" x="243" y="336" width="8" height="6" pivotX="0" pivotY="0"/>
+=======
+	<SubTexture name="vertical-scroll-bar-decrement-button-disabled-icon0000" x="499" y="323" width="8" height="6" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-decrement-button-disabled-skin0000" x="408" y="380" width="24" height="24" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-decrement-button-down-skin0000" x="433" y="386" width="24" height="24" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-decrement-button-icon0000" x="243" y="336" width="8" height="6" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-decrement-button-up-skin0000" x="458" y="386" width="24" height="24" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-increment-button-disabled-icon0000" x="408" y="355" width="8" height="6" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-increment-button-disabled-skin0000" x="483" y="395" width="24" height="24" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-increment-button-down-skin0000" x="247" y="396" width="24" height="24" pivotX="0" pivotY="0"/>
+	<SubTexture name="vertical-scroll-bar-increment-button-icon0000" x="408" y="362" width="8" height="6" pivotX="0" pivotY="0"/>
+>>>>>>> master
 	<SubTexture name="vertical-scroll-bar-increment-button-up-skin0000" x="272" y="396" width="24" height="24" pivotX="0" pivotY="0"/>
 	<SubTexture name="vertical-simple-scroll-bar-thumb-skin0000" x="69" y="304" width="20" height="52" pivotX="0" pivotY="0"/>
 	<SubTexture name="volume-slider-maximum-track-skin0000" x="420" y="62" width="80" height="30" pivotX="0" pivotY="0"/>

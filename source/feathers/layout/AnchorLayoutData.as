@@ -45,7 +45,10 @@ package feathers.layout
 		 */
 		protected var _percentWidth:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The width of the layout object, as a percentage of the container's
 		 * width.
@@ -77,7 +80,10 @@ package feathers.layout
 		 */
 		protected var _percentHeight:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The height of the layout object, as a percentage of the container's
 		 * height.
@@ -109,7 +115,10 @@ package feathers.layout
 		 */
 		protected var _topAnchorDisplayObject:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The top edge of the layout object will be relative to this anchor.
 		 * If there is no anchor, the top edge of the parent container will be
@@ -142,7 +151,10 @@ package feathers.layout
 		 */
 		protected var _top:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The position, in pixels, of the top edge relative to the top
 		 * anchor, or, if there is no top anchor, then the position is relative
@@ -176,7 +188,10 @@ package feathers.layout
 		 */
 		protected var _rightAnchorDisplayObject:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The right edge of the layout object will be relative to this anchor.
 		 * If there is no anchor, the right edge of the parent container will be
@@ -209,7 +224,10 @@ package feathers.layout
 		 */
 		protected var _right:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The position, in pixels, of the right edge relative to the right
 		 * anchor, or, if there is no right anchor, then the position is relative
@@ -243,7 +261,10 @@ package feathers.layout
 		 */
 		protected var _bottomAnchorDisplayObject:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The bottom edge of the layout object will be relative to this anchor.
 		 * If there is no anchor, the bottom edge of the parent container will be
@@ -276,7 +297,10 @@ package feathers.layout
 		 */
 		protected var _bottom:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The position, in pixels, of the bottom edge relative to the bottom
 		 * anchor, or, if there is no bottom anchor, then the position is relative
@@ -310,7 +334,10 @@ package feathers.layout
 		 */
 		protected var _leftAnchorDisplayObject:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The left edge of the layout object will be relative to this anchor.
 		 * If there is no anchor, the left edge of the parent container will be
@@ -343,7 +370,10 @@ package feathers.layout
 		 */
 		protected var _left:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The position, in pixels, of the left edge relative to the left
 		 * anchor, or, if there is no left anchor, then the position is relative
@@ -377,7 +407,10 @@ package feathers.layout
 		 */
 		protected var _horizontalCenterAnchorDisplayObject:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The horizontal center of the layout object will be relative to this
 		 * anchor. If there is no anchor, the horizontal center of the parent
@@ -410,7 +443,10 @@ package feathers.layout
 		 */
 		protected var _horizontalCenter:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The position, in pixels, of the horizontal center relative to the
 		 * horizontal center anchor, or, if there is no horizontal center
@@ -445,7 +481,10 @@ package feathers.layout
 		 */
 		protected var _verticalCenterAnchorDisplayObject:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The vertical center of the layout object will be relative to this
 		 * anchor. If there is no anchor, the vertical center of the parent
@@ -478,7 +517,10 @@ package feathers.layout
 		 */
 		protected var _verticalCenter:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The position, in pixels, of the vertical center relative to the
 		 * vertical center anchor, or, if there is no vertical center anchor,

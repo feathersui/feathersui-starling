@@ -22,6 +22,44 @@ package feathers.controls.renderers
 	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer
 	{
 		/**
+<<<<<<< HEAD
+=======
+		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_DRILL_DOWN
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_DRILL_DOWN:String = "feathers-drill-down-item-renderer";
+		
+		/**
+		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_CHECK
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_CHECK:String = "feathers-check-item-renderer";
+		
+		/**
+		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_LABEL
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-item-renderer-label";
+
+		/**
+		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
+
+		/**
+		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
+		
+		/**
+>>>>>>> master
 		 * @copy feathers.controls.Button#STATE_UP
 		 *
 		 * @see #stateToSkinFunction

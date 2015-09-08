@@ -99,8 +99,13 @@ package feathers.controls
 	 * the bounds of a track. The slider's track is divided into two parts split
 	 * by the thumb.
 	 *
+<<<<<<< HEAD
 	 * <p>The following example sets the slider's values and listens for when
 	 * when the value changes:</p>
+=======
+	 * <p>The following example sets the slider's range and listens for when the
+	 * value changes:</p>
+>>>>>>> master
 	 *
 	 * <listing version="3.0">
 	 * var slider:Slider = new Slider();
@@ -428,8 +433,12 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _value:Number = 0;
+<<<<<<< HEAD
 
 		[Bindable(event="change")]
+=======
+		
+>>>>>>> master
 		/**
 		 * The value of the slider, between the minimum and maximum.
 		 *

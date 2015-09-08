@@ -134,7 +134,10 @@ package feathers.controls
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
+<<<<<<< HEAD
 	[DefaultProperty("content")]
+=======
+>>>>>>> master
 	/**
 	 * A container that displays primary content in the center surrounded by
 	 * optional "drawers" that can open and close on the edges. Useful for
@@ -239,6 +242,23 @@ package feathers.controls
 		public static const DOCK_MODE_NONE:String = "none";
 
 		/**
+<<<<<<< HEAD
+=======
+		 * The drawer will be displayed above the content.
+		 *
+		 * @see #openMode
+		 */
+		public static const OPEN_MODE_ABOVE:String = "overlay";
+
+		/**
+		 * The drawer will be displayed below the content.
+		 *
+		 * @see #openMode
+		 */
+		public static const OPEN_MODE_BELOW:String = "below";
+
+		/**
+>>>>>>> master
 		 * The drawers container  will auto size itself to fill the entire stage.
 		 *
 		 * @see #autoSizeMode
@@ -420,6 +440,7 @@ package feathers.controls
 				{
 					this._content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				}
+<<<<<<< HEAD
 				//the content should appear under the overlay skin, if it exists
 				if(this._overlaySkin)
 				{
@@ -428,6 +449,23 @@ package feathers.controls
 				else
 				{
 					this.addChild(this._content);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this.addChildAt(this._content, 0);
+				}
+				else //below
+				{
+					//the content should appear under the overlay skin, if it exists
+					if(this._overlaySkin)
+					{
+						this.addChildAt(this._content, this.getChildIndex(this._overlaySkin));
+					}
+					else
+					{
+						this.addChild(this._content);
+					}
+>>>>>>> master
 				}
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -529,7 +567,18 @@ package feathers.controls
 			{
 				this._topDrawer.visible = false;
 				this._topDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
+<<<<<<< HEAD
 				this.addChildAt(this._topDrawer, 0);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this.addChild(this._topDrawer);
+				}
+				else //below
+				{
+					this.addChildAt(this._topDrawer, 0);
+				}
+>>>>>>> master
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -749,7 +798,18 @@ package feathers.controls
 			{
 				this._rightDrawer.visible = false;
 				this._rightDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
+<<<<<<< HEAD
 				this.addChildAt(this._rightDrawer, 0);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this.addChild(this._rightDrawer);
+				}
+				else //below
+				{
+					this.addChildAt(this._rightDrawer, 0);
+				}
+>>>>>>> master
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -969,7 +1029,18 @@ package feathers.controls
 			{
 				this._bottomDrawer.visible = false;
 				this._bottomDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
+<<<<<<< HEAD
 				this.addChildAt(this._bottomDrawer, 0);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this.addChild(this._bottomDrawer);
+				}
+				else //below
+				{
+					this.addChildAt(this._bottomDrawer, 0);
+				}
+>>>>>>> master
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1189,7 +1260,18 @@ package feathers.controls
 			{
 				this._leftDrawer.visible = false;
 				this._leftDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
+<<<<<<< HEAD
 				this.addChildAt(this._leftDrawer, 0);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this.addChild(this._leftDrawer);
+				}
+				else //below
+				{
+					this.addChildAt(this._leftDrawer, 0);
+				}
+>>>>>>> master
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1461,6 +1543,67 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _openMode:String = OPEN_MODE_BELOW;
+
+		[Inspectable(type="String",enumeration="above,below")]
+		/**
+		 * Determines whether the drawer opens above the content or below it.
+		 *
+		 * <p>In the following example, the drawers are opened above the
+		 * content:</p>
+		 *
+		 * <listing version="3.0">
+		 * drawers.openMode = Drawers.OPEN_MODE_ABOVE;</listing>
+		 *
+		 * @default Drawers.OPEN_MODE_BELOW
+		 *
+		 * @see #OPEN_MODE_ABOVE
+		 * @see #OPEN_MODE_BELOW
+		 */
+		public function get openMode():String
+		{
+			return this._openMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set openMode(value:String):void
+		{
+			if(this._openMode == value)
+			{
+				return;
+			}
+			this._openMode = value;
+			if(this._content)
+			{
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this.setChildIndex(this._content, 0);
+				}
+				else //below
+				{
+					if(this._overlaySkin)
+					{
+						//the content should below the overlay skin
+						this.setChildIndex(this._content, this.numChildren - 1);
+						this.setChildIndex(this._overlaySkin, this.numChildren - 1);
+					}
+					else
+					{
+						this.setChildIndex(this._content, this.numChildren - 1);
+					}
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _openGesture:String = OPEN_GESTURE_DRAG_CONTENT_EDGE;
 
 		[Inspectable(type="String",enumeration="dragContentEdge,dragContent,none")]
@@ -2255,7 +2398,11 @@ package feathers.controls
 				contentHeight -= bottomDrawerHeight;
 			}
 
+<<<<<<< HEAD
 			if(isRightDrawerOpen)
+=======
+			if(isRightDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 			{
 				var contentX:Number = -rightDrawerWidth;
 				if(isLeftDrawerDocked)
@@ -2264,7 +2411,11 @@ package feathers.controls
 				}
 				this._content.x = contentX;
 			}
+<<<<<<< HEAD
 			else if(isLeftDrawerOpen || isLeftDrawerDocked)
+=======
+			else if((isLeftDrawerOpen && this._openMode === OPEN_MODE_BELOW) || isLeftDrawerDocked)
+>>>>>>> master
 			{
 				this._content.x = leftDrawerWidth;
 			}
@@ -2272,7 +2423,11 @@ package feathers.controls
 			{
 				this._content.x = 0;
 			}
+<<<<<<< HEAD
 			if(isBottomDrawerOpen)
+=======
+			if(isBottomDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 			{
 				var contentY:Number = -bottomDrawerHeight;
 				if(isTopDrawerDocked)
@@ -2281,7 +2436,11 @@ package feathers.controls
 				}
 				this._content.y = contentY;
 			}
+<<<<<<< HEAD
 			else if(isTopDrawerOpen || isTopDrawerDocked)
+=======
+			else if((isTopDrawerOpen && this._openMode === OPEN_MODE_BELOW) || isTopDrawerDocked)
+>>>>>>> master
 			{
 				this._content.y = topDrawerHeight;
 			}
@@ -2307,7 +2466,11 @@ package feathers.controls
 				var topDrawerY:Number = 0;
 				if(isTopDrawerDocked)
 				{
+<<<<<<< HEAD
 					if(isBottomDrawerOpen)
+=======
+					if(isBottomDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 					{
 						topDrawerY -= bottomDrawerHeight;
 					}
@@ -2316,6 +2479,13 @@ package feathers.controls
 						topDrawerX = this._content.x;
 					}
 				}
+<<<<<<< HEAD
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					topDrawerY -= topDrawerHeight;
+				}
+>>>>>>> master
 				this._topDrawer.x = topDrawerX;
 				this._topDrawer.y = topDrawerY;
 				this._topDrawer.width = this.actualWidth;
@@ -2346,6 +2516,13 @@ package feathers.controls
 					}
 					rightDrawerY = this._content.y;
 				}
+<<<<<<< HEAD
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					rightDrawerX += rightDrawerWidth;
+				}
+>>>>>>> master
 				this._rightDrawer.x = rightDrawerX;
 				this._rightDrawer.y = rightDrawerY;
 				this._rightDrawer.height = rightDrawerHeight;
@@ -2370,6 +2547,13 @@ package feathers.controls
 					}
 					bottomDrawerY = this._content.y + this._content.height;
 				}
+<<<<<<< HEAD
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					bottomDrawerY += bottomDrawerHeight;
+				}
+>>>>>>> master
 				this._bottomDrawer.x = bottomDrawerX;
 				this._bottomDrawer.y = bottomDrawerY;
 				this._bottomDrawer.width = this.actualWidth;
@@ -2389,7 +2573,11 @@ package feathers.controls
 				var leftDrawerHeight:Number = this.actualHeight;
 				if(isLeftDrawerDocked)
 				{
+<<<<<<< HEAD
 					if(isRightDrawerOpen)
+=======
+					if(isRightDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 					{
 						leftDrawerX -= rightDrawerWidth;
 					}
@@ -2403,6 +2591,13 @@ package feathers.controls
 					}
 					leftDrawerY = this._content.y;
 				}
+<<<<<<< HEAD
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					leftDrawerX -= leftDrawerWidth;
+				}
+>>>>>>> master
 				this._leftDrawer.x = leftDrawerX;
 				this._leftDrawer.y = leftDrawerY;
 				this._leftDrawer.height = leftDrawerHeight;
@@ -2475,7 +2670,11 @@ package feathers.controls
 				Starling.juggler.remove(this._openOrCloseTween);
 				this._openOrCloseTween = null;
 			}
+<<<<<<< HEAD
 			this.applyTopClipRect();
+=======
+			this.prepareTopDrawer();
+>>>>>>> master
 			if(this._overlaySkin)
 			{
 				this._overlaySkin.visible = true;
@@ -2488,7 +2687,10 @@ package feathers.controls
 					this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 				}
 			}
+<<<<<<< HEAD
 			this._topDrawer.visible = true;
+=======
+>>>>>>> master
 			var targetPosition:Number = this._isTopDrawerOpen ? this._topDrawer.height : 0;
 			var duration:Number = this.pendingToggleDuration;
 			if(duration !== duration) //isNaN
@@ -2496,7 +2698,19 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
+<<<<<<< HEAD
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+=======
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				targetPosition = targetPosition === 0 ? -this._topDrawer.height : 0;
+				this._openOrCloseTween = new Tween(this._topDrawer, duration, this._openOrCloseEase);
+			}
+			else //below
+			{
+				this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+			}
+>>>>>>> master
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = topDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = topDrawerOpenOrCloseTween_onComplete;
@@ -2518,7 +2732,11 @@ package feathers.controls
 				Starling.juggler.remove(this._openOrCloseTween);
 				this._openOrCloseTween = null;
 			}
+<<<<<<< HEAD
 			this.applyRightClipRect();
+=======
+			this.prepareRightDrawer();
+>>>>>>> master
 			if(this._overlaySkin)
 			{
 				this._overlaySkin.visible = true;
@@ -2531,6 +2749,7 @@ package feathers.controls
 					this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 				}
 			}
+<<<<<<< HEAD
 			this._rightDrawer.visible = true;
 			var targetPosition:Number = 0;
 			if(this._isRightDrawerOpen)
@@ -2538,6 +2757,14 @@ package feathers.controls
 				targetPosition = -this._rightDrawer.width
 			}
 			if(this.isLeftDrawerDocked)
+=======
+			var targetPosition:Number = 0;
+			if(this._isRightDrawerOpen)
+			{
+				targetPosition = -this._rightDrawer.width;
+			}
+			if(this.isLeftDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 			{
 				targetPosition += this._leftDrawer.width;
 			}
@@ -2547,7 +2774,19 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
+<<<<<<< HEAD
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+=======
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				this._openOrCloseTween = new Tween(this._rightDrawer, duration, this._openOrCloseEase);
+				targetPosition += this.actualWidth;
+			}
+			else //below
+			{
+				this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+			}
+>>>>>>> master
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = rightDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = rightDrawerOpenOrCloseTween_onComplete;
@@ -2569,7 +2808,11 @@ package feathers.controls
 				Starling.juggler.remove(this._openOrCloseTween);
 				this._openOrCloseTween = null;
 			}
+<<<<<<< HEAD
 			this.applyBottomClipRect();
+=======
+			this.prepareBottomDrawer();
+>>>>>>> master
 			if(this._overlaySkin)
 			{
 				this._overlaySkin.visible = true;
@@ -2582,13 +2825,20 @@ package feathers.controls
 					this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 				}
 			}
+<<<<<<< HEAD
 			this._bottomDrawer.visible = true;
+=======
+>>>>>>> master
 			var targetPosition:Number = 0;
 			if(this._isBottomDrawerOpen)
 			{
 				targetPosition = -this._bottomDrawer.height;
 			}
+<<<<<<< HEAD
 			if(this.isTopDrawerDocked)
+=======
+			if(this.isTopDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 			{
 				targetPosition += this._topDrawer.height;
 			}
@@ -2598,7 +2848,19 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
+<<<<<<< HEAD
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+=======
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				targetPosition += this.actualHeight;
+				this._openOrCloseTween = new Tween(this._bottomDrawer, duration, this._openOrCloseEase);
+			}
+			else //below
+			{
+				this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+			}
+>>>>>>> master
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = bottomDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = bottomDrawerOpenOrCloseTween_onComplete;
@@ -2620,7 +2882,11 @@ package feathers.controls
 				Starling.juggler.remove(this._openOrCloseTween);
 				this._openOrCloseTween = null;
 			}
+<<<<<<< HEAD
 			this.applyLeftClipRect();
+=======
+			this.prepareLeftDrawer();
+>>>>>>> master
 			if(this._overlaySkin)
 			{
 				this._overlaySkin.visible = true;
@@ -2633,7 +2899,10 @@ package feathers.controls
 					this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 				}
 			}
+<<<<<<< HEAD
 			this._leftDrawer.visible = true;
+=======
+>>>>>>> master
 			var targetPosition:Number = this._isLeftDrawerOpen ? this._leftDrawer.width : 0;
 			var duration:Number = this.pendingToggleDuration;
 			if(duration !== duration) //isNaN
@@ -2641,7 +2910,19 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
+<<<<<<< HEAD
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+=======
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				targetPosition = targetPosition === 0 ? -this._leftDrawer.width : 0;
+				this._openOrCloseTween = new Tween(this._leftDrawer, duration, this._openOrCloseEase);
+			}
+			else //below
+			{
+				this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
+			}
+>>>>>>> master
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = leftDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = leftDrawerOpenOrCloseTween_onComplete;
@@ -2651,9 +2932,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected function applyTopClipRect():void
 		{
 			if(!this._clipDrawers || !(this._topDrawer is Sprite))
+=======
+		protected function prepareTopDrawer():void
+		{
+			this._topDrawer.visible = true;
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				if(this._overlaySkin)
+				{
+					this.setChildIndex(this._overlaySkin, this.numChildren - 1);
+				}
+				this.setChildIndex(this._topDrawer, this.numChildren - 1);
+			}
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._topDrawer is Sprite))
+>>>>>>> master
 			{
 				return;
 			}
@@ -2667,9 +2963,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected function applyRightClipRect():void
 		{
 			if(!this._clipDrawers || !(this._rightDrawer is Sprite))
+=======
+		protected function prepareRightDrawer():void
+		{
+			this._rightDrawer.visible = true;
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				if(this._overlaySkin)
+				{
+					this.setChildIndex(this._overlaySkin, this.numChildren - 1);
+				}
+				this.setChildIndex(this._rightDrawer, this.numChildren - 1);
+			}
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._rightDrawer is Sprite))
+>>>>>>> master
 			{
 				return;
 			}
@@ -2683,9 +2994,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected function applyBottomClipRect():void
 		{
 			if(!this._clipDrawers || !(this._bottomDrawer is Sprite))
+=======
+		protected function prepareBottomDrawer():void
+		{
+			this._bottomDrawer.visible = true;
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				if(this._overlaySkin)
+				{
+					this.setChildIndex(this._overlaySkin, this.numChildren - 1);
+				}
+				this.setChildIndex(this._bottomDrawer, this.numChildren - 1);
+			}
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._bottomDrawer is Sprite))
+>>>>>>> master
 			{
 				return;
 			}
@@ -2699,9 +3025,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected function applyLeftClipRect():void
 		{
 			if(!this._clipDrawers || !(this._leftDrawer is Sprite))
+=======
+		protected function prepareLeftDrawer():void
+		{
+			this._leftDrawer.visible = true;
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				if(this._overlaySkin)
+				{
+					this.setChildIndex(this._overlaySkin, this.numChildren - 1);
+				}
+				this.setChildIndex(this._leftDrawer, this.numChildren - 1);
+			}
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._leftDrawer is Sprite))
+>>>>>>> master
 			{
 				return;
 			}
@@ -3023,7 +3364,15 @@ package feathers.controls
 				{
 					this._isTopDrawerOpen = false;
 				}
+<<<<<<< HEAD
 				else
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this._isTopDrawerOpen = roundToNearest(this._topDrawer.y, this._topDrawer.height) == 0;
+				}
+				else //below
+>>>>>>> master
 				{
 					this._isTopDrawerOpen = roundToNearest(this._content.y, this._topDrawer.height) != 0;
 				}
@@ -3040,6 +3389,7 @@ package feathers.controls
 				{
 					this._isRightDrawerOpen = false;
 				}
+<<<<<<< HEAD
 				else
 				{
 					var positionToCheck:Number = 0;
@@ -3048,6 +3398,20 @@ package feathers.controls
 						positionToCheck = this._leftDrawer.width;
 					}
 					this._isRightDrawerOpen = roundToNearest(this._content.x, this._rightDrawer.width) != positionToCheck;
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this._isRightDrawerOpen = roundToNearest(this.actualWidth - this._rightDrawer.x, this._rightDrawer.width) != 0;
+				}
+				else //bottom
+				{
+					var positionToCheck:Number = this._content.x;
+					if(this.isLeftDrawerDocked)
+					{
+						positionToCheck -= this._leftDrawer.width;
+					}
+					this._isRightDrawerOpen = roundToNearest(positionToCheck, this._rightDrawer.width) != 0;
+>>>>>>> master
 				}
 				this.openOrCloseRightDrawer();
 			}
@@ -3062,6 +3426,7 @@ package feathers.controls
 				{
 					this._isBottomDrawerOpen = false;
 				}
+<<<<<<< HEAD
 				else
 				{
 					positionToCheck = 0;
@@ -3070,6 +3435,20 @@ package feathers.controls
 						positionToCheck = this._topDrawer.height;
 					}
 					this._isBottomDrawerOpen = roundToNearest(this._content.y, this._bottomDrawer.height) != positionToCheck;
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this._isBottomDrawerOpen = roundToNearest(this.actualHeight - this._bottomDrawer.y, this._bottomDrawer.height) != 0;
+				}
+				else //below
+				{
+					positionToCheck = this._content.y;
+					if(this.isTopDrawerDocked)
+					{
+						positionToCheck -= this._topDrawer.height;
+					}
+					this._isBottomDrawerOpen = roundToNearest(positionToCheck, this._bottomDrawer.height) != 0;
+>>>>>>> master
 				}
 				this.openOrCloseBottomDrawer();
 			}
@@ -3084,7 +3463,15 @@ package feathers.controls
 				{
 					this._isLeftDrawerOpen = false;
 				}
+<<<<<<< HEAD
 				else
+=======
+				else if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					this._isLeftDrawerOpen = roundToNearest(this._leftDrawer.x, this._leftDrawer.width) == 0;
+				}
+				else //below
+>>>>>>> master
 				{
 					this._isLeftDrawerOpen = roundToNearest(this._content.x, this._leftDrawer.width) != 0;
 				}
@@ -3146,7 +3533,11 @@ package feathers.controls
 				{
 					contentX = 0;
 				}
+<<<<<<< HEAD
 				if(this.isLeftDrawerDocked)
+=======
+				if(this.isLeftDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 				{
 					contentX += this._leftDrawer.width;
 				}
@@ -3170,7 +3561,10 @@ package feathers.controls
 				{
 					contentY = topDrawerHeight;
 				}
+<<<<<<< HEAD
 				this._content.y = contentY;
+=======
+>>>>>>> master
 			}
 			else if(this._isDraggingBottomDrawer)
 			{
@@ -3191,13 +3585,44 @@ package feathers.controls
 				{
 					contentY = 0;
 				}
+<<<<<<< HEAD
 				if(this.isTopDrawerDocked)
+=======
+				if(this.isTopDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 				{
 					contentY += this._topDrawer.height;
 				}
 			}
+<<<<<<< HEAD
 			this._content.x = contentX;
 			this._content.y = contentY;
+=======
+			if(this._openMode === OPEN_MODE_ABOVE)
+			{
+				if(this._isDraggingTopDrawer)
+				{
+					this._topDrawer.y = contentY - this._topDrawer.height;
+				}
+				else if(this._isDraggingRightDrawer)
+				{
+					this._rightDrawer.x = this.actualWidth + contentX;
+				}
+				else if(this._isDraggingBottomDrawer)
+				{
+					this._bottomDrawer.y = this.actualHeight + contentY;
+				}
+				else if(this._isDraggingLeftDrawer)
+				{
+					this._leftDrawer.x = contentX - this._leftDrawer.width;
+				}
+			}
+			else //below
+			{
+				this._content.x = contentX;
+				this._content.y = contentY;
+			}
+>>>>>>> master
 			if(this._isDraggingTopDrawer)
 			{
 				this.topDrawerOpenOrCloseTween_onUpdate();
@@ -3227,25 +3652,41 @@ package feathers.controls
 			{
 				this._isDragging = true;
 				this._isDraggingLeftDrawer = true;
+<<<<<<< HEAD
 				this.applyLeftClipRect();
+=======
+				this.prepareLeftDrawer();
+>>>>>>> master
 			}
 			else if(this.isRightDrawerOpen && horizontalInchesMoved >= this._minimumDragDistance)
 			{
 				this._isDragging = true;
 				this._isDraggingRightDrawer = true;
+<<<<<<< HEAD
 				this.applyRightClipRect();
+=======
+				this.prepareRightDrawer();
+>>>>>>> master
 			}
 			else if(this.isTopDrawerOpen && verticalInchesMoved <= -this._minimumDragDistance)
 			{
 				this._isDragging = true;
 				this._isDraggingTopDrawer = true;
+<<<<<<< HEAD
 				this.applyTopClipRect();
+=======
+				this.prepareTopDrawer();
+>>>>>>> master
 			}
 			else if(this.isBottomDrawerOpen && verticalInchesMoved >= this._minimumDragDistance)
 			{
 				this._isDragging = true;
 				this._isDraggingBottomDrawer = true;
+<<<<<<< HEAD
 				this.applyBottomClipRect();
+=======
+				this.prepareBottomDrawer();
+>>>>>>> master
 			}
 
 			if(this._isDragging)
@@ -3274,29 +3715,45 @@ package feathers.controls
 			{
 				this._isDragging = true;
 				this._isDraggingLeftDrawer = true;
+<<<<<<< HEAD
 				this._leftDrawer.visible = true;
 				this.applyLeftClipRect();
+=======
+				this.prepareLeftDrawer();
+>>>>>>> master
 			}
 			else if(this._rightDrawer && !this.isRightDrawerDocked && horizontalInchesMoved <= -this._minimumDragDistance)
 			{
 				this._isDragging = true;
 				this._isDraggingRightDrawer = true;
+<<<<<<< HEAD
 				this._rightDrawer.visible = true;
 				this.applyRightClipRect();
+=======
+				this.prepareRightDrawer();
+>>>>>>> master
 			}
 			else if(this._topDrawer && !this.isTopDrawerDocked && verticalInchesMoved >= this._minimumDragDistance)
 			{
 				this._isDragging = true;
 				this._isDraggingTopDrawer = true;
+<<<<<<< HEAD
 				this._topDrawer.visible = true;
 				this.applyTopClipRect();
+=======
+				this.prepareTopDrawer();
+>>>>>>> master
 			}
 			else if(this._bottomDrawer && !this.isBottomDrawerDocked && verticalInchesMoved <= -this._minimumDragDistance)
 			{
 				this._isDragging = true;
 				this._isDraggingBottomDrawer = true;
+<<<<<<< HEAD
 				this._bottomDrawer.visible = true;
 				this.applyBottomClipRect();
+=======
+				this.prepareBottomDrawer();
+>>>>>>> master
 			}
 
 			if(this._isDragging)
@@ -3319,6 +3776,7 @@ package feathers.controls
 		 */
 		protected function positionOverlaySkin():void
 		{
+<<<<<<< HEAD
 			if(this._overlaySkin)
 			{
 				if(this.isLeftDrawerDocked)
@@ -3337,6 +3795,37 @@ package feathers.controls
 				{
 					this._overlaySkin.y = this._content.y;
 				}
+=======
+			if(!this._overlaySkin)
+			{
+				return;
+			}
+			
+			if(this.isLeftDrawerDocked)
+			{
+				this._overlaySkin.x = this._leftDrawer.x;
+			}
+			else if(this._openMode === OPEN_MODE_ABOVE && this._leftDrawer)
+			{
+				this._overlaySkin.x = this._leftDrawer.x + this._leftDrawer.width;
+			}
+			else //below or no left drawer
+			{
+				this._overlaySkin.x = this._content.x;
+			}
+			
+			if(this.isTopDrawerDocked)
+			{
+				this._overlaySkin.y = this._topDrawer.y;
+			}
+			else if(this._openMode === OPEN_MODE_ABOVE && this._topDrawer)
+			{
+				this._overlaySkin.y = this._topDrawer.y + this._topDrawer.height;
+			}
+			else //below or now top drawer
+			{
+				this._overlaySkin.y = this._content.y;
+>>>>>>> master
 			}
 		}
 
@@ -3347,7 +3836,19 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
+<<<<<<< HEAD
 				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * (this._content.y / this._topDrawer.height);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					var ratio:Number = 1 + this._topDrawer.y / this._topDrawer.height;
+				}
+				else //below
+				{
+					ratio = this._content.y / this._topDrawer.height;
+				}
+				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * ratio;
+>>>>>>> master
 			}
 			this.openOrCloseTween_onUpdate();
 		}
@@ -3359,7 +3860,19 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
+<<<<<<< HEAD
 				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * (this.actualWidth - this._content.x - this._content.width) / this._rightDrawer.width;
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					var ratio:Number = -(this._rightDrawer.x - this.actualWidth) / this._rightDrawer.width;
+				}
+				else //below
+				{
+					ratio = (this.actualWidth - this._content.x - this._content.width) / this._rightDrawer.width;
+				}
+				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * ratio;
+>>>>>>> master
 			}
 			this.openOrCloseTween_onUpdate();
 		}
@@ -3371,7 +3884,19 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
+<<<<<<< HEAD
 				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * (this.actualHeight - this._content.y - this._content.height) / this._bottomDrawer.height;
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					var ratio:Number = -(this._bottomDrawer.y - this.actualHeight) / this._bottomDrawer.height;
+				}
+				else //below
+				{
+					ratio = (this.actualHeight - this._content.y - this._content.height) / this._bottomDrawer.height;
+				}
+				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * ratio;
+>>>>>>> master
 			}
 			this.openOrCloseTween_onUpdate();
 		}
@@ -3383,7 +3908,19 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
+<<<<<<< HEAD
 				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * (this._content.x / this._leftDrawer.width);
+=======
+				if(this._openMode === OPEN_MODE_ABOVE)
+				{
+					var ratio:Number = 1 + this._leftDrawer.x / this._leftDrawer.width;
+				}
+				else //below
+				{
+					ratio = this._content.x / this._leftDrawer.width;
+				}
+				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha * ratio;
+>>>>>>> master
 			}
 			this.openOrCloseTween_onUpdate();
 		}
@@ -3393,7 +3930,11 @@ package feathers.controls
 		 */
 		protected function openOrCloseTween_onUpdate():void
 		{
+<<<<<<< HEAD
 			if(this._clipDrawers)
+=======
+			if(this._clipDrawers && this._openMode === OPEN_MODE_BELOW)
+>>>>>>> master
 			{
 				var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;

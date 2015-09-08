@@ -5,6 +5,7 @@ author: Josh Tynjala
 ---
 # How to dispatch a long press event from a custom item renderer
 
+<<<<<<< HEAD
 A long press event isn't built into Starling or Feathers. Starling provides only low-level touch events, and Feathers implements long press only on [buttons](../button.html). Let's take a look at how to implement long press using low-level touch events to provide the same functionality as a button in an item renderer.
 
 First, let's make sure that we're only tracking a single touch ID:
@@ -176,6 +177,44 @@ if( !this.hasLongPressed && isInBounds )
     this.dispatchEventWith( Event.TRIGGERED );
     this.isSelected = true;
 }
+=======
+A [custom item renderer](../item-renderers.html) may optionally dispatch [`FeathersEventType.LONG_PRESS`](../../api-reference/feathers/events/FeathersEventType.html#LONG_PRESS), similar to a [`Button`](../button.html). 
+
+Using the [`LongPress`](../../api-reference/feathers/utils/touch/LongPress.html) class, it's easy to dispatch `FeathersEventType.LONG_PRESS`:
+
+``` code
+public class CustomItemRenderer extends LayoutGroupListItemRenderer
+{
+    public function CustomItemRenderer()
+    {
+        super();
+        this._longPress = new LongPress(this);
+    }
+
+    private var _longPress:LongPress;
+}
+```
+
+That's it! The `TouchEvent.TOUCH` listeners will be added automatically, and your item renderer will dispatch `FeathersEventType.LONG_PRESS` like a button.
+
+## Combined with Event.TRIGGERED or Event.CHANGE
+
+If you plan to combine, `LongPress` with [`TapToTrigger`](../../api-reference/feathers/utils/touch/TapToTrigger.html) or [`TapToSelect`](../../api-reference/feathers/utils/touch/LongPress.html), you should ensure that the other two events aren't dispatched after a long press.
+
+First, always create the `LongPress` instance before the `TapToTrigger` and `TapToSelect` instances. This ensures that the `TouchEvent.TOUCH` listener in `LongPress` gets a higher priority.
+
+``` code
+this._longPress = new LongPress(this);
+this._trigger = new TapToTrigger(this);
+this._select = new TapToSelect(this);
+```
+
+Then, pass the `TapToTrigger` and `TapToSelect` instances to the `LongPress` so that it can disable them temporarily after a long press.
+
+``` code
+this._longPress.tapToTrigger = this._trigger;
+this._longPress.tapToSelect = this._select;
+>>>>>>> master
 ```
 
 ## Related Links

@@ -551,6 +551,11 @@ package feathers.themes
 		protected var alertBorderBackgroundSkinTextures:Scale9Textures;
 
 		protected var progressBarFillSkinTexture:Texture;
+<<<<<<< HEAD
+=======
+		
+		protected var listDrillDownAccessoryTexture:Texture;
+>>>>>>> master
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -822,7 +827,15 @@ package feathers.themes
 			this.seekSliderMinimumTrackSkinTextures = new Scale3Textures(this.atlas.getTexture("seek-slider-minimum-track-skin0000"), SEEK_SLIDER_MINIMUM_TRACK_FIRST_REGION, SEEK_SLIDER_MINIMUM_TRACK_SECOND_REGION, Scale3Textures.DIRECTION_HORIZONTAL);
 			this.seekSliderMaximumTrackSkinTextures = new Scale3Textures(this.atlas.getTexture("seek-slider-maximum-track-skin0000"), SEEK_SLIDER_MAXIMUM_TRACK_FIRST_REGION, SEEK_SLIDER_MAXIMUM_TRACK_SECOND_REGION, Scale3Textures.DIRECTION_HORIZONTAL);
 
+<<<<<<< HEAD
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon0000");
+=======
+			this.listDrillDownAccessoryTexture = this.atlas.getTexture("drill-down-icon0000");
+
+			//in a future version of Feathers, the StandardIcons class will be
+			//removed. it's still used here to support legacy code.
+			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
+>>>>>>> master
 		}
 
 		/**
@@ -872,7 +885,15 @@ package feathers.themes
 
 			//item renderers for lists
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+<<<<<<< HEAD
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+=======
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
+>>>>>>> master
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListItemRendererStyles);
 			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
 			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
@@ -1385,9 +1406,15 @@ package feathers.themes
 			skinSelector.setValueForState(this.itemRendererSelectedUpSkinTexture, Button.STATE_DOWN, false);
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
+<<<<<<< HEAD
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+=======
+			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+
+			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+>>>>>>> master
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
 
 			renderer.paddingTop = this.extraSmallGutterSize;
@@ -1520,7 +1547,11 @@ package feathers.themes
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 
+<<<<<<< HEAD
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+=======
+			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+>>>>>>> master
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
 
 			renderer.paddingTop = this.extraSmallGutterSize;
@@ -1537,6 +1568,62 @@ package feathers.themes
 			renderer.useStateDelayTimer = false;
 		}
 
+<<<<<<< HEAD
+=======
+		protected function setDrillDownItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.itemHasAccessory = false;
+			var defaultAccessory:ImageLoader = new ImageLoader();
+			defaultAccessory.source = this.listDrillDownAccessoryTexture;
+			defaultAccessory.textureScale = this.scale;
+			itemRenderer.defaultAccessory = defaultAccessory;
+		}
+
+		protected function setCheckItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
+		{
+			itemRenderer.defaultSkin = new Image(this.itemRendererUpSkinTexture);
+			
+			itemRenderer.itemHasIcon = false;
+			
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.checkUpIconTexture;
+			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
+			iconSelector.setValueForState(this.checkHoverIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkSelectedHoverIconTexture, Button.STATE_HOVER, true);
+			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.displayObjectProperties =
+			{
+				snapToPixels: true,
+				textureScale: this.scale
+			};
+			itemRenderer.stateToIconFunction = iconSelector.updateValue;
+
+			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+
+			itemRenderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+			itemRenderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+
+			itemRenderer.paddingTop = this.extraSmallGutterSize;
+			itemRenderer.paddingBottom = this.extraSmallGutterSize;
+			itemRenderer.paddingRight = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.smallGutterSize;
+			itemRenderer.gap = this.smallGutterSize;
+			itemRenderer.minGap = this.smallGutterSize;
+			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+			itemRenderer.minWidth = this.controlSize;
+			itemRenderer.minHeight = this.controlSize;
+
+			itemRenderer.useStateDelayTimer = false;
+		}
+
+>>>>>>> master
 		protected function setItemRendererLabelStyles(textRenderer:TextFieldTextRenderer):void
 		{
 			textRenderer.textFormat = this.defaultTextFormat;

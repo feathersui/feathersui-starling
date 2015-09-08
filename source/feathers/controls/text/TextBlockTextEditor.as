@@ -970,6 +970,13 @@ package feathers.controls.text
 			{
 				endX = 0;
 			}
+<<<<<<< HEAD
+=======
+			else if(endX > this.actualWidth)
+			{
+				endX = this.actualWidth;
+			}
+>>>>>>> master
 			this._selectionSkin.x = startX;
 			this._selectionSkin.width = endX - startX;
 			this._selectionSkin.y = 0;

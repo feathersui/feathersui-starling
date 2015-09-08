@@ -14,7 +14,10 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+<<<<<<< HEAD
 	[DefaultProperty("mxmlContent")]
+=======
+>>>>>>> master
 	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
@@ -291,11 +294,39 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		public function get stackCount():int
+		{
+			var stackLength:int = this._stack.length;
+			if(stackLength > 0)
+			{
+				return this._stack.length + 1;
+			}
+			if(this._activeScreen)
+			{
+				return 1;
+			}
+			return 0;
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _pushScreenEvents:Object = {};
 
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected var _replaceScreenEvents:Object;
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected var _popScreenEvents:Vector.<String>;
 
 		/**
@@ -369,6 +400,7 @@ package feathers.controls
 		}
 
 		/**
+<<<<<<< HEAD
 		 * @private
 		 */
 		protected var _mxmlContent:Array;
@@ -403,6 +435,8 @@ package feathers.controls
 		}
 
 		/**
+=======
+>>>>>>> master
 		 * Registers a new screen with a string identifier that can be used
 		 * to reference the screen in other calls, like <code>removeScreen()</code>
 		 * or <code>pushScreen()</code>.
@@ -657,6 +691,32 @@ package feathers.controls
 		override protected function prepareActiveScreen():void
 		{
 			var item:StackScreenNavigatorItem = StackScreenNavigatorItem(this._screens[this._activeScreenID]);
+<<<<<<< HEAD
+=======
+			this.addPushEventsToActiveScreen(item);
+			this.addReplaceEventsToActiveScreen(item);
+			this.addPopEventsToActiveScreen(item);
+			this.addPopToRootEventsToActiveScreen(item);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function cleanupActiveScreen():void
+		{
+			var item:StackScreenNavigatorItem = StackScreenNavigatorItem(this._screens[this._activeScreenID]);
+			this.removePushEventsFromActiveScreen(item);
+			this.removeReplaceEventsFromActiveScreen(item);
+			this.removePopEventsFromActiveScreen(item);
+			this.removePopToRootEventsFromActiveScreen(item);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addPushEventsToActiveScreen(item:StackScreenNavigatorItem):void
+		{
+>>>>>>> master
 			var events:Object = item.pushEvents;
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
@@ -690,6 +750,7 @@ package feathers.controls
 				}
 				else
 				{
+<<<<<<< HEAD
 					throw new TypeError("Unknown event action defined for screen:", eventAction.toString());
 				}
 			}
@@ -736,14 +797,25 @@ package feathers.controls
 				}
 				this._popToRootScreenEvents = popEvents;
 			}
+=======
+					throw new TypeError("Unknown push event action defined for screen:", eventAction.toString());
+				}
+			}
+			this._pushScreenEvents[this._activeScreenID] = savedScreenEvents;
+>>>>>>> master
 		}
 
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		override protected function cleanupActiveScreen():void
 		{
 			var item:StackScreenNavigatorItem = StackScreenNavigatorItem(this._screens[this._activeScreenID]);
+=======
+		protected function removePushEventsFromActiveScreen(item:StackScreenNavigatorItem):void
+		{
+>>>>>>> master
 			var pushEvents:Object = item.pushEvents;
 			var savedScreenEvents:Object = this._pushScreenEvents[this._activeScreenID];
 			for(var eventName:String in pushEvents)
@@ -775,6 +847,7 @@ package feathers.controls
 				}
 			}
 			this._pushScreenEvents[this._activeScreenID] = null;
+<<<<<<< HEAD
 			if(this._popScreenEvents)
 			{
 				var eventCount:int = this._popScreenEvents.length;
@@ -811,6 +884,190 @@ package feathers.controls
 				}
 				this._popToRootScreenEvents = null;
 			}
+=======
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addReplaceEventsToActiveScreen(item:StackScreenNavigatorItem):void
+		{
+			var events:Object = item.replaceEvents;
+			if(!events)
+			{
+				return;
+			}
+			var savedScreenEvents:Object = {};
+			for(var eventName:String in events)
+			{
+				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var eventAction:Object = events[eventName];
+				if(eventAction is String)
+				{
+					if(signal)
+					{
+						var eventListener:Function = this.createReplaceScreenSignalListener(eventAction as String, signal);
+						signal.add(eventListener);
+					}
+					else
+					{
+						eventListener = this.createReplaceScreenEventListener(eventAction as String);
+						this._activeScreen.addEventListener(eventName, eventListener);
+					}
+					savedScreenEvents[eventName] = eventListener;
+				}
+				else
+				{
+					throw new TypeError("Unknown replace event action defined for screen:", eventAction.toString());
+				}
+			}
+			if(!this._replaceScreenEvents)
+			{
+				this._replaceScreenEvents = {};
+			}
+			this._replaceScreenEvents[this._activeScreenID] = savedScreenEvents;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeReplaceEventsFromActiveScreen(item:StackScreenNavigatorItem):void
+		{
+			var replaceEvents:Object = item.replaceEvents;
+			if(!replaceEvents)
+			{
+				return;
+			}
+			var savedScreenEvents:Object = this._replaceScreenEvents[this._activeScreenID];
+			for(var eventName:String in replaceEvents)
+			{
+				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var eventAction:Object = replaceEvents[eventName];
+				if(eventAction is String)
+				{
+					var eventListener:Function = savedScreenEvents[eventName] as Function;
+					if(signal)
+					{
+						signal.remove(eventListener);
+					}
+					else
+					{
+						this._activeScreen.removeEventListener(eventName, eventListener);
+					}
+				}
+			}
+			this._replaceScreenEvents[this._activeScreenID] = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addPopEventsToActiveScreen(item:StackScreenNavigatorItem):void
+		{
+			if(!item.popEvents)
+			{
+				return;
+			}
+			//creating a copy because this array could change before the screen
+			//is removed.
+			var popEvents:Vector.<String> = item.popEvents.slice();
+			var eventCount:int = popEvents.length;
+			for(var i:int = 0; i < eventCount; i++)
+			{
+				var eventName:String = popEvents[i];
+				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				if(signal)
+				{
+					signal.add(popSignalListener);
+				}
+				else
+				{
+					this._activeScreen.addEventListener(eventName, popEventListener);
+				}
+			}
+			this._popScreenEvents = popEvents;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removePopEventsFromActiveScreen(item:StackScreenNavigatorItem):void
+		{
+			if(!this._popScreenEvents)
+			{
+				return;
+			}
+			var eventCount:int = this._popScreenEvents.length;
+			for(var i:int = 0; i < eventCount; i++)
+			{
+				var eventName:String = this._popScreenEvents[i];
+				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				if(signal)
+				{
+					signal.remove(popSignalListener);
+				}
+				else
+				{
+					this._activeScreen.removeEventListener(eventName, popEventListener);
+				}
+			}
+			this._popScreenEvents = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removePopToRootEventsFromActiveScreen(item:StackScreenNavigatorItem):void
+		{
+			if(!this._popToRootScreenEvents)
+			{
+				return;
+			}
+			var eventCount:int = this._popToRootScreenEvents.length;
+			for(var i:int = 0; i < eventCount; i++)
+			{
+				var eventName:String = this._popToRootScreenEvents[i];
+				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				if(signal)
+				{
+					signal.remove(popToRootSignalListener);
+				}
+				else
+				{
+					this._activeScreen.removeEventListener(eventName, popToRootEventListener);
+				}
+			}
+			this._popToRootScreenEvents = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addPopToRootEventsToActiveScreen(item:StackScreenNavigatorItem):void
+		{
+			if(!item.popToRootEvents)
+			{
+				return;
+			}
+			//creating a copy because this array could change before the screen
+			//is removed.
+			var popToRootEvents:Vector.<String> = item.popToRootEvents.slice();
+			var eventCount:int = popToRootEvents.length;
+			for(var i:int = 0; i < eventCount; i++)
+			{
+				var eventName:String = popToRootEvents[i];
+				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				if(signal)
+				{
+					signal.add(popToRootSignalListener);
+				}
+				else
+				{
+					this._activeScreen.addEventListener(eventName, popToRootEventListener);
+				}
+			}
+			this._popToRootScreenEvents = popToRootEvents;
+>>>>>>> master
 		}
 
 		/**
@@ -860,6 +1117,48 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		protected function createReplaceScreenEventListener(screenID:String):Function
+		{
+			var self:StackScreenNavigator = this;
+			var eventListener:Function = function(event:Event):void
+			{
+				self.replaceScreen(screenID);
+			};
+
+			return eventListener;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createReplaceScreenSignalListener(screenID:String, signal:Object):Function
+		{
+			var self:StackScreenNavigator = this;
+			if(signal.valueClasses.length == 0)
+			{
+				//shortcut to avoid the allocation of the rest array
+				var signalListener:Function = function():void
+				{
+					self.replaceScreen(screenID);
+				};
+			}
+			else
+			{
+				signalListener = function(...rest:Array):void
+				{
+					self.replaceScreen(screenID);
+				};
+			}
+
+			return signalListener;
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		protected function popEventListener(event:Event):void
 		{
 			this.popScreen();

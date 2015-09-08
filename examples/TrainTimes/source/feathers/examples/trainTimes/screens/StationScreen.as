@@ -4,8 +4,16 @@ package feathers.examples.trainTimes.screens
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
+<<<<<<< HEAD
 	import feathers.data.ListCollection;
 	import feathers.examples.trainTimes.model.StationData;
+=======
+	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ListCollection;
+	import feathers.examples.trainTimes.controls.StationListItemRenderer;
+	import feathers.examples.trainTimes.model.StationData;
+	import feathers.examples.trainTimes.themes.TrainTimesTheme;
+>>>>>>> master
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -21,6 +29,15 @@ package feathers.examples.trainTimes.screens
 	public class StationScreen extends Screen
 	{
 		public static const CHILD_STYLE_NAME_STATION_LIST:String = "stationList";
+<<<<<<< HEAD
+=======
+		public static const CHILD_STYLE_NAME_STATION_LIST_ITEM_RENDERER:String = "stationListItemRenderer";
+		public static const CHILD_STYLE_NAME_STATION_LIST_FIRST_ITEM_RENDERER:String = "stationListFirstItemRenderer";
+		public static const CHILD_STYLE_NAME_STATION_LIST_LAST_ITEM_RENDERER:String = "stationListLastItemRenderer";
+		
+		private static const FIRST_ITEM_RENDERER_ID:String = "station-list-first-item-renderer";
+		private static const LAST_ITEM_RENDERER_ID:String = "station-list-last-item-renderer";
+>>>>>>> master
 
 		public function StationScreen()
 		{
@@ -52,8 +69,15 @@ package feathers.examples.trainTimes.screens
 				new StationData("Old Mine Heights"),
 				new StationData("Granite Estates"),
 			])
+<<<<<<< HEAD
 			this._stationList.itemRendererProperties.confirmCallback = stationList_onConfirm;
 			this._stationList.itemRendererProperties.isInDestinationPhase = false;
+=======
+			this._stationList.itemRendererFactory = this.createItemRenderer;
+			this._stationList.setItemRendererFactoryWithID(FIRST_ITEM_RENDERER_ID, this.createFirstItemRenderer);
+			this._stationList.setItemRendererFactoryWithID(LAST_ITEM_RENDERER_ID, this.createLastItemRenderer);
+			this._stationList.factoryIDFunction = this.factoryIDFunction;
+>>>>>>> master
 			this.addChild(this._stationList);
 
 			this._backButton = new Button();
@@ -102,6 +126,49 @@ package feathers.examples.trainTimes.screens
 			this._stationList.height = this.actualHeight - this._stationList.y;
 		}
 
+<<<<<<< HEAD
+=======
+		private function factoryIDFunction(item:Object, index:int):String
+		{
+			if(index === 0)
+			{
+				return FIRST_ITEM_RENDERER_ID;
+			}
+			else if(index === this._stationList.dataProvider.length - 1)
+			{
+				return LAST_ITEM_RENDERER_ID;
+			}
+			return null;
+		}
+		
+		private function createItemRenderer():StationListItemRenderer
+		{
+			var itemRenderer:StationListItemRenderer = new StationListItemRenderer();
+			itemRenderer.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST_ITEM_RENDERER);
+			itemRenderer.confirmCallback = this.stationList_onConfirm;
+			itemRenderer.isInDestinationPhase = false;
+			return itemRenderer;
+		}
+
+		private function createFirstItemRenderer():StationListItemRenderer
+		{
+			var itemRenderer:StationListItemRenderer = new StationListItemRenderer();
+			itemRenderer.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST_FIRST_ITEM_RENDERER);
+			itemRenderer.confirmCallback = this.stationList_onConfirm;
+			itemRenderer.isInDestinationPhase = false;
+			return itemRenderer;
+		}
+
+		private function createLastItemRenderer():StationListItemRenderer
+		{
+			var itemRenderer:StationListItemRenderer = new StationListItemRenderer();
+			itemRenderer.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST_LAST_ITEM_RENDERER);
+			itemRenderer.confirmCallback = this.stationList_onConfirm;
+			itemRenderer.isInDestinationPhase = false;
+			return itemRenderer;
+		}
+
+>>>>>>> master
 		private function onBackButton():void
 		{
 			this.selectedDepartureStation.isDepartingFromHere = false;

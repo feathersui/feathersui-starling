@@ -225,5 +225,27 @@ package feathers.tests
 			Assert.assertStrictlyEquals("getItemIndex() returned the incorrect value",
 				-1, this._collection.getItemIndex(item));
 		}
+<<<<<<< HEAD
+=======
+
+		[Test]
+		public function testDispose():void
+		{
+			var itemCount:int = this._collection.length;
+			var disposedCount:int = 0;
+			this._collection.dispose(function(item:Object):void
+			{
+				item.isDisposed = true;
+				disposedCount++;
+			});
+			Assert.assertStrictlyEquals("Incorrect number of items disposed when calling dispose() on ListCollection",
+				itemCount, disposedCount);
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:Object = this._collection.getItemAt(i);
+				Assert.assertTrue("Item was not included when calling dispose() on ListCollection", item.isDisposed);
+			}
+		}
+>>>>>>> master
 	}
 }

@@ -14,7 +14,10 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+<<<<<<< HEAD
 	[DefaultProperty("mxmlContent")]
+=======
+>>>>>>> master
 	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
@@ -147,6 +150,7 @@ package feathers.controls
 		protected var _screenEvents:Object = {};
 
 		/**
+<<<<<<< HEAD
 		 * @private
 		 */
 		protected var _mxmlContent:Array;
@@ -181,6 +185,8 @@ package feathers.controls
 		}
 
 		/**
+=======
+>>>>>>> master
 		 * Registers a new screen with a string identifier that can be used
 		 * to reference the screen in other calls, like <code>removeScreen()</code>
 		 * or <code>showScreen()</code>.

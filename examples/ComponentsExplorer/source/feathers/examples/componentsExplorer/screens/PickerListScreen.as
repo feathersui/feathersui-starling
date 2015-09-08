@@ -5,6 +5,10 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
+<<<<<<< HEAD
+=======
+	import feathers.controls.SpinnerList;
+>>>>>>> master
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -63,7 +67,19 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list.listFactory = function():List
 			{
+<<<<<<< HEAD
 				var list:List = new List();
+=======
+				var list:List;
+				if(DeviceCapabilities.isPhone(Starling.current.nativeStage))
+				{
+					list = new SpinnerList();
+				}
+				else
+				{
+					list = new List();
+				}
+>>>>>>> master
 				//notice that we're setting typicalItem on the list separately. we
 				//may want to have the list measure at a different width, so it
 				//might need a different typical item than the picker list's button.

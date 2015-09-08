@@ -168,6 +168,13 @@ package feathers.controls
 		 */
 		override public function set dataProvider(value:ListCollection):void
 		{
+<<<<<<< HEAD
+=======
+			if(this._dataProvider == value)
+			{
+				return;
+			}
+>>>>>>> master
 			super.dataProvider = value;
 			if(!this._dataProvider || this._dataProvider.length == 0)
 			{
@@ -248,7 +255,11 @@ package feathers.controls
 				layout.padding = 0;
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalSpinnerLayout.HORIZONTAL_ALIGN_JUSTIFY;
+<<<<<<< HEAD
 				layout.requestedRowCount = 5;
+=======
+				layout.requestedRowCount = 4;
+>>>>>>> master
 				this.layout = layout;
 			}
 

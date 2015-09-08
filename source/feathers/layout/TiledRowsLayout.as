@@ -193,7 +193,10 @@ package feathers.layout
 		 */
 		protected var _discoveredItemsCache:Vector.<DisplayObject> = new <DisplayObject>[];
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
 		 * to the same value. The <code>gap</code> getter always returns the
@@ -224,7 +227,10 @@ package feathers.layout
 		 */
 		protected var _horizontalGap:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The horizontal space, in pixels, between tiles.
 		 *
@@ -253,7 +259,10 @@ package feathers.layout
 		 */
 		protected var _verticalGap:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The vertical space, in pixels, between tiles.
 		 *
@@ -277,7 +286,10 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
@@ -312,7 +324,10 @@ package feathers.layout
 		 */
 		protected var _paddingTop:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The space, in pixels, above of items.
 		 *
@@ -341,7 +356,10 @@ package feathers.layout
 		 */
 		protected var _paddingRight:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The space, in pixels, to the right of the items.
 		 *
@@ -370,7 +388,10 @@ package feathers.layout
 		 */
 		protected var _paddingBottom:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The space, in pixels, below the items.
 		 *
@@ -399,7 +420,10 @@ package feathers.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The space, in pixels, to the left of the items.
 		 *
@@ -428,7 +452,10 @@ package feathers.layout
 		 */
 		protected var _requestedColumnCount:int = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Requests that the layout uses a specific number of columns in a row,
 		 * if possible. Set to <code>0</code> to calculate the maximum of
@@ -475,7 +502,10 @@ package feathers.layout
 		 */
 		protected var _requestedRowCount:int = 0;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Requests that the layout uses a specific number of rows, if possible.
 		 * If the view port's explicit or maximum height is not large enough to
@@ -517,7 +547,10 @@ package feathers.layout
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the total column height is less than the bounds, the items in the
@@ -552,7 +585,10 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * If the total row width is less than the bounds, the items in the row
@@ -587,7 +623,10 @@ package feathers.layout
 		 */
 		protected var _tileVerticalAlign:String = TILE_VERTICAL_ALIGN_MIDDLE;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * If an item's height is less than the tile bounds, the position of the
@@ -623,7 +662,10 @@ package feathers.layout
 		 */
 		protected var _tileHorizontalAlign:String = TILE_HORIZONTAL_ALIGN_CENTER;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * If the item's width is less than the tile bounds, the position of the
@@ -659,7 +701,10 @@ package feathers.layout
 		 */
 		protected var _paging:String = PAGING_NONE;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * If the total combined height of the rows is larger than the height
 		 * of the view port, the layout will be split into pages where each
@@ -695,7 +740,10 @@ package feathers.layout
 		 */
 		protected var _useSquareTiles:Boolean = true;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Determines if the tiles must be square or if their width and height
 		 * may have different values.
@@ -725,7 +773,10 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 *
@@ -754,7 +805,10 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 */
@@ -781,7 +835,10 @@ package feathers.layout
 		 */
 		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * If set to <code>true</code>, the width and height of the
 		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
@@ -820,7 +877,10 @@ package feathers.layout
 		 */
 		protected var _typicalItemWidth:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -868,7 +928,10 @@ package feathers.layout
 		 */
 		protected var _typicalItemHeight:Number = NaN;
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -911,7 +974,10 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * @inheritDoc
 		 */

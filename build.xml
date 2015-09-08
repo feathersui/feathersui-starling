@@ -37,12 +37,12 @@
 	</target>
 
 	<target name="package" depends="full" description="builds everything and creates a zip file for distribution">
-		<zip destfile="${output.path}/feathers.zip">
+		<zip destfile="${output.path}/feathers-ui-${feathers.version}.zip">
 			<zipfileset dir="${output.path}"/>
 		</zip>
 
 		<delete includeemptydirs="true">
-			<fileset dir="${output.path}" excludes="feathers.zip"/>
+			<fileset dir="${output.path}" excludes="feathers-ui-${feathers.version}.zip"/>
 		</delete>
 	</target>
 
@@ -288,6 +288,17 @@
 			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
 			<arg value="-output=${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"/>
 		</java>
+
+		<echo message="Building TopcoatLightMobileTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/TopcoatLightMobileTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/TopcoatLightMobileTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/TopcoatLightMobileTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-output=${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"/>
+		</java>
 	</target>
 
 	<target name="-includes">
@@ -341,6 +352,13 @@
 
 		<copy overwrite="true" todir="${themes.output}/MinimalMobileTheme">
 			<fileset dir="${themes.root}/MinimalMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${themes.output}/TopcoatLightMobileTheme">
+			<fileset dir="${themes.root}/TopcoatLightMobileTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>

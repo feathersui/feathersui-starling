@@ -8,7 +8,10 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+<<<<<<< HEAD
 	import feathers.skins.StandardIcons;
+=======
+>>>>>>> master
 
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -62,6 +65,7 @@ package feathers.examples.transitionsExplorer.screens
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 			this._list.selectedIndex = this.savedSelectedIndex;
 
+<<<<<<< HEAD
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -74,17 +78,36 @@ package feathers.examples.transitionsExplorer.screens
 				renderer.accessorySourceFunction = accessorySourceFunction;
 				return renderer;
 			};
+=======
+			this._list.itemRendererFactory = this.createItemRenderer;
+>>>>>>> master
 
 			this._list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
 			this.addChild(this._list);
 
 			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
+<<<<<<< HEAD
 
 		private function accessorySourceFunction(item:Object):Texture
 		{
 			return StandardIcons.listDrillDownAccessoryTexture;
 		}
+=======
+		
+		private function createItemRenderer():IListItemRenderer
+		{
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			renderer.styleNameList.add(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN);
+
+			//enable the quick hit area to optimize hit tests when an item
+			//is only selectable and doesn't have interactive children.
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.labelField = "label";
+			return renderer;
+		};
+>>>>>>> master
 
 		private function transitionInCompleteHandler(event:Event):void
 		{

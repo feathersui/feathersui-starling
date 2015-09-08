@@ -8,7 +8,10 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+<<<<<<< HEAD
 	import feathers.skins.StandardIcons;
+=======
+>>>>>>> master
 	import feathers.system.DeviceCapabilities;
 
 	import flash.system.Capabilities;
@@ -22,6 +25,10 @@ package feathers.examples.componentsExplorer.screens
 	[Event(name="showButton",type="starling.events.Event")]
 	[Event(name="showButtonGroup",type="starling.events.Event")]
 	[Event(name="showCallout",type="starling.events.Event")]
+<<<<<<< HEAD
+=======
+	[Event(name="showDateTimeSpinner",type="starling.events.Event")]
+>>>>>>> master
 	[Event(name="showGroupedList",type="starling.events.Event")]
 	[Event(name="showItemRenderer",type="starling.events.Event")]
 	[Event(name="showList",type="starling.events.Event")]
@@ -43,6 +50,10 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_BUTTON:String = "showButton";
 		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
 		public static const SHOW_CALLOUT:String = "showCallout";
+<<<<<<< HEAD
+=======
+		public static const SHOW_DATE_TIME_SPINNER:String = "showDateTimeSpinner";
+>>>>>>> master
 		public static const SHOW_GROUPED_LIST:String = "showGroupedList";
 		public static const SHOW_ITEM_RENDERER:String = "showItemRenderer";
 		public static const SHOW_LABEL:String = "showLabel";
@@ -86,6 +97,10 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Button", event: SHOW_BUTTON },
 				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
 				{ label: "Callout", event: SHOW_CALLOUT },
+<<<<<<< HEAD
+=======
+				{ label: "Date Time Spinner", event: SHOW_DATE_TIME_SPINNER },
+>>>>>>> master
 				{ label: "Grouped List", event: SHOW_GROUPED_LIST },
 				{ label: "Item Renderer", event: SHOW_ITEM_RENDERER },
 				{ label: "Label", event: SHOW_LABEL },
@@ -110,6 +125,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.autoHideBackground = true;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 
+<<<<<<< HEAD
 			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 			var itemRendererAccessorySourceFunction:Function = null;
 			if(!isTablet)
@@ -129,6 +145,11 @@ package feathers.examples.componentsExplorer.screens
 				return renderer;
 			};
 
+=======
+			this._list.itemRendererFactory = this.createItemRenderer;
+
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+>>>>>>> master
 			if(isTablet)
 			{
 				this._list.addEventListener(Event.CHANGE, list_changeHandler);
@@ -142,10 +163,30 @@ package feathers.examples.componentsExplorer.screens
 			}
 			this.addChild(this._list);
 		}
+<<<<<<< HEAD
 
 		private function accessorySourceFunction(item:Object):Texture
 		{
 			return StandardIcons.listDrillDownAccessoryTexture;
+=======
+		
+		private function createItemRenderer():IListItemRenderer
+		{
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+			
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(!isTablet)
+			{
+				renderer.styleNameList.add(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN);
+			}
+
+			//enable the quick hit area to optimize hit tests when an item
+			//is only selectable and doesn't have interactive children.
+			renderer.isQuickHitAreaEnabled = true;
+
+			renderer.labelField = "label";
+			return renderer;
+>>>>>>> master
 		}
 		
 		private function transitionInCompleteHandler(event:Event):void

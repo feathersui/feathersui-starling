@@ -499,7 +499,10 @@ package feathers.controls
 		 */
 		protected var _text:String = "";
 
+<<<<<<< HEAD
 		[Bindable(event="change")]
+=======
+>>>>>>> master
 		/**
 		 * The text displayed by the text input. The text input dispatches
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
@@ -1879,6 +1882,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
+=======
+		override public function dispose():void
+		{
+			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
+			//we don't dispose it if the text input is the parent because it'll
+			//already get disposed in super.dispose()
+			if(skin && skin.parent !== this)
+			{
+				skin.dispose();
+			}
+			for each(var state:String in this.stateNames)
+			{
+				skin = this._skinSelector.getValueForState(state) as DisplayObject;
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			skin = this._iconSelector.defaultValue as DisplayObject;
+			if(skin && skin.parent !== this)
+			{
+				skin.dispose();
+			}
+			for each(state in this.stateNames)
+			{
+				skin = this._iconSelector.getValueForState(state) as DisplayObject;
+				if(skin && skin.parent !== this)
+				{
+					skin.dispose();
+				}
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+>>>>>>> master
 		override protected function draw():void
 		{
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);

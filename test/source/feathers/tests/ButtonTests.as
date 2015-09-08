@@ -2,6 +2,10 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.events.FeathersEventType;
+<<<<<<< HEAD
+=======
+	import feathers.tests.supportClasses.DisposeFlagQuad;
+>>>>>>> master
 
 	import flash.geom.Point;
 
@@ -59,7 +63,11 @@ package feathers.tests
 			//the button.
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+<<<<<<< HEAD
 			Assert.assertTrue("TEvent.TRIGGERED was not dispatched", hasTriggered);
+=======
+			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
+>>>>>>> master
 		}
 
 		[Test]
@@ -109,5 +117,52 @@ package feathers.tests
 			}, 600);
 		}
 
+<<<<<<< HEAD
+=======
+		[Test]
+		public function testSkinsDisposed():void
+		{
+			var defaultSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.defaultSkin = defaultSkin;
+			var upSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.upSkin = upSkin;
+			var downSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.downSkin = downSkin;
+			var hoverSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.hoverSkin = hoverSkin;
+			var disabledSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.disabledSkin = disabledSkin;
+			this._button.validate();
+			this._button.dispose();
+			Assert.assertTrue("defaultSkin not disposed when Button disposed.", defaultSkin.isDisposed);
+			Assert.assertTrue("upSkin not disposed when Button disposed.", upSkin.isDisposed);
+			Assert.assertTrue("downSkin not disposed when Button disposed.", downSkin.isDisposed);
+			Assert.assertTrue("hoverSkin not disposed when Button disposed.", hoverSkin.isDisposed);
+			Assert.assertTrue("disabledSkin not disposed when Button disposed.", disabledSkin.isDisposed);
+		}
+
+		[Test]
+		public function testIconsDisposed():void
+		{
+			var defaultIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.defaultIcon = defaultIcon;
+			var upIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.upIcon = upIcon;
+			var downIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.downSkin = downIcon;
+			var hoverIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.hoverIcon = hoverIcon;
+			var disabledIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.disabledIcon = disabledIcon;
+			this._button.validate();
+			this._button.dispose();
+			Assert.assertTrue("defaultIcon not disposed when Button disposed.", defaultIcon.isDisposed);
+			Assert.assertTrue("upIcon not disposed when Button disposed.", upIcon.isDisposed);
+			Assert.assertTrue("downIcon not disposed when Button disposed.", downIcon.isDisposed);
+			Assert.assertTrue("hoverIcon not disposed when Button disposed.", hoverIcon.isDisposed);
+			Assert.assertTrue("disabledIcon not disposed when Button disposed.", disabledIcon.isDisposed);
+		}
+
+>>>>>>> master
 	}
 }

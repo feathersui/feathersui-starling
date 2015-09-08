@@ -42,7 +42,10 @@ package feathers.controls
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
+<<<<<<< HEAD
 	[DefaultProperty("mxmlContent")]
+=======
+>>>>>>> master
 	/**
 	 * A generic container that supports layout, scrolling, and a background
 	 * skin. For a lighter container, see <code>LayoutGroup</code>, which
@@ -73,11 +76,14 @@ package feathers.controls
 	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer
 	{
 		/**
+<<<<<<< HEAD
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
 		
 		/**
+=======
+>>>>>>> master
 		 * An alternate style name to use with <code>ScrollContainer</code> to
 		 * allow a theme to give it a toolbar style. If a theme does not provide
 		 * a style for the toolbar container, the theme will automatically fall
@@ -334,6 +340,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+<<<<<<< HEAD
 		protected var _mxmlContentIsReady:Boolean = false;
 
 		/**
@@ -376,6 +383,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+=======
+>>>>>>> master
 		protected var _autoSizeMode:String = AUTO_SIZE_MODE_CONTENT;
 
 		[Inspectable(type="String",enumeration="stage,content")]
@@ -738,6 +747,7 @@ package feathers.controls
 			this.layoutViewPort.readjustLayout();
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
+<<<<<<< HEAD
 		
 		/**
 		 * @private
@@ -747,6 +757,8 @@ package feathers.controls
 			super.initialize();
 			this.refreshMXMLContent();
 		}
+=======
+>>>>>>> master
 
 		/**
 		 * @private
@@ -754,12 +766,15 @@ package feathers.controls
 		override protected function draw():void
 		{
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+<<<<<<< HEAD
 			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
 
 			if(mxmlContentInvalid)
 			{
 				this.refreshMXMLContent();
 			}
+=======
+>>>>>>> master
 
 			if(layoutInvalid)
 			{
@@ -793,6 +808,7 @@ package feathers.controls
 			}
 			return super.autoSizeIfNeeded();
 		}
+<<<<<<< HEAD
 		
 		/**
 		 * @private
@@ -811,6 +827,8 @@ package feathers.controls
 			}
 			this._mxmlContentIsReady = true;
 		}
+=======
+>>>>>>> master
 
 		/**
 		 * @private

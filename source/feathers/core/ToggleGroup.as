@@ -102,8 +102,12 @@ package feathers.core
 				this.selectedIndex = 0;
 			}
 		}
+<<<<<<< HEAD
 
 		[Bindable(event="change")]
+=======
+		
+>>>>>>> master
 		/**
 		 * The currently selected toggle.
 		 *
@@ -135,8 +139,12 @@ package feathers.core
 		 * @private
 		 */
 		protected var _selectedIndex:int = -1;
+<<<<<<< HEAD
 
 		[Bindable(event="change")]
+=======
+		
+>>>>>>> master
 		/**
 		 * The index of the currently selected toggle.
 		 *
