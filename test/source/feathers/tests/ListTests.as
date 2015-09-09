@@ -69,7 +69,7 @@ package feathers.tests
 		[Test]
 		public function testInteractiveSelectionChange():void
 		{
-			var beforeSelectedIndex:Boolean = this._list.selectedIndex;
+			var beforeSelectedIndex:int = this._list.selectedIndex;
 			var hasChanged:Boolean = false;
 			this._list.addEventListener(Event.CHANGE, function(event:Event):void
 			{
