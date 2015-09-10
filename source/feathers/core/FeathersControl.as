@@ -260,6 +260,29 @@ package feathers.core
 		protected var _validationQueue:ValidationQueue;
 
 		/**
+		 * @private
+		 */
+		protected var _id:String;
+
+		/**
+		 * ID of the component in an MXML document. This value becomes the
+		 * instance name of the object and should not contain any white space or
+		 * special characters.
+		 */
+		public function get id():String
+		{
+			return this._id;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set id(value:String):void
+		{
+			this._id = value;
+		}
+
+		/**
 		 * The concatenated <code>styleNameList</code>, with values separated
 		 * by spaces. Style names are somewhat similar to classes in CSS
 		 * selectors. In Feathers, they are a non-unique identifier that can
