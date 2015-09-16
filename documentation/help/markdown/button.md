@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Button` component
 
-The [`Button`](../api-reference/feathers/controls/Button.html) class displays a touchable button. It can display an optional label and an optional icon with a variety of layout options. Buttons have states for each of the different touch phases and the skin, label, and icon can all be customized for each state.
+The [`Button`](../api-reference/feathers/controls/Button.html) class displays a button that may be triggered by pressing and releasing. It can display an optional label and an optional icon with a variety of layout options. Buttons have separate states for each of the different touch phases. The skin and icon can be customized for each state, and the label [text renderer](text-renderers.html) may display different font styles for each state too.
 
 ## The Basics
 
@@ -34,86 +34,94 @@ function button_triggeredHandler( event:Event ):void
 }
 ```
 
-## Skinning a `Button`
+## Styling a `Button`
 
-A number of skins and styles may be customized on a button, including the background skin, the label text format, and the icon. For full details about what skin and style properties are available, see the [`Button` API reference](../api-reference/feathers/controls/Button.html). We'll look at a few of the most common properties below.
+A number of styling properties may be customized on a button, including the background skin, the label text renderer's font styles, and the icon. For full details about which properties are available, see the [`Button` API reference](../api-reference/feathers/controls/Button.html). We'll look at a few of the most common styling scenarios below.
+
+<aside class="warn"><strong>Important:</strong> If you're using a theme, and you want to customize a specific button's styles, you must either [extend the theme with a new *style name*](extending-themes.html), or you may use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) to set properties outside of the theme.</aside>
 
 ### Background Skins
 
-We'll start the skinning process by giving our button appropriate background skins.
+We'll start the skinning process by giving our button its background skin.
 
 ``` code
 button.defaultSkin = new Image( myUpTexture );
-button.downSkin = new Image( myDownTexture );
+button.setSkinForState( Button.STATE_DOWN, new Image( myDownTexture ) );
 ```
 
-Above, we add background skins for a couple of different states. The [`defaultSkin`](../api-reference/feathers/controls/Button.html#defaultSkin) is a skin that is used for any state where a specific skin isn't provided. We provided a skin for the down state, using the [`downSkin`](../api-reference/feathers/controls/Button.html#downSkin) property, and that will take precedence over the default skin when the button is pressed down. However, other states like up and hover don't have skins, so they'll use the default skin. If we wanted to, we could provide an [`upSkin`](../api-reference/feathers/controls/Button.html#upSkin) and a [`hoverSkin`](../api-reference/feathers/controls/Button.html#hoverSkin) for these states. The skin for the up state of a button almost always makes a good `defaultSkin`.
+Above, we add background skins for a couple of different states. The [`defaultSkin`](../api-reference/feathers/controls/Button.html#defaultSkin) is a used for any state where a specific skin isn't provided. We provided a skin specfically for the down state, using the [`setSkinForState()`](../api-reference/feathers/controls/Button.html#setSkinForState()) method, and that will take precedence over the default skin when the button is pressed down. However, other states (like up, hover, and disabled) don't have skins in our example code, so the button will use the default skin for these states.
 
-For a button that can be disabled, we can provide a [`disabledSkin`](../api-reference/feathers/controls/Button.html#disabledSkin) too.
+Buttons may display separate skins for the following states:
+
+* [`Button.STATE_UP`](../api-reference/feathers/controls/Button.html#STATE_UP)
+* [`Button.STATE_DOWN`](../api-reference/feathers/controls/Button.html#STATE_DOWN)
+* [`Button.STATE_HOVER`](../api-reference/feathers/controls/Button.html#STATE_HOVER)
+* [`Button.STATE_DISABLED`](../api-reference/feathers/controls/Button.html#STATE_DISABLED)
+
+<aside class="info">In general, it's better to pass the skin for the up state to the `defaultSkin` property instead of calling `setSkinForState()` with `Button.STATE_UP`. The up skin often makes the best default for any other states that don't have a specific skin.</aside>
 
 See the [Advanced Skinning](#advanced-skinning) section below for additional button skinning techniques that can be used for optimized performance.
 
-### Labels
+### Label font styles
 
-Next, let's ensure that the text is displayed. By default, Feathers uses Starling's [bitmap font capabilities](http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts).
+Next, let's customize the font styles of the button's label [text renderer](text-renderers.html).
 
-To style the text, we pass in a [`BitmapFontTextFormat`](../api-reference/feathers/text/BitmapFontTextFormat.html) which allows us to pass in a [`BitmapFont`](http://doc.starling-framework.org/core/starling/text/BitmapFont.html) instance or a String name for a BitmapFont that has been registered with [`TextField.registerBitmapFont()`](http://doc.starling-framework.org/core/starling/text/TextField.html#registerBitmapFont()).
+<aside class="info">In the example code below, we'll display the button's label text using [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html), which draws text using [Flash Text Engine](http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html). Different text renderers may not use the same properties names to customize their font styles. Please read [Introduction to Feathers text renderers](text-renderers.html) for more information about the different text renderers that Feathers supports, and how to use each of them.</aside>
+
+Let's customize the font styles in the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory):
 
 ``` code
-button.defaultLabelProperties.textFormat = new BitmapFontTextFormat( myBitmapFont );
+button.labelFactory = function():ITextRenderer
+{
+	var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
+	textRenderer.styleProvider = null;
+	var font:FontDescription = new FontDescription( "_sans" );
+	textRenderer.elementFormat = new ElementFormat( font, 20, 0x444444 );
+	return textRenderer;
+}
 ```
 
-Notice that we refer to [`defaultLabelProperties`](../api-reference/feathers/controls/Button.html#defaultLabelProperties) in much the same way that we refer to `defaultSkin` above. Just like with skins, labels may be styled differently depending on which state the button is in. If you want all states to use the same label styles, then you only need to pass your properties to `defaultLabelProperties`. Label styles for other states, like [`downLabelProperties`](../api-reference/feathers/controls/Button.html#downLabelProperties) exist too. See the [`Button`](../api-reference/feathers/controls/Button.html) documentation for full details.
+After we create the `TextBlockTextRenderer`, we set its `styleProvider` property to `null`. This ensures that our font styles cannot be replaced by a theme.
 
-If you don't want to use bitmap font rendering, and you'd prefer to use Flash's traditional font rendering for device or embedded fonts, you can tell Feathers to use the [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) instead. This renderer can use the classic `flash.text.TextFormat`. For more information about using device or embedded fonts, see the [Text Renderers](text-renderers.html) tutorial.
+Then, we set the [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#elementFormat) property. This is how the font styles of a `TextBlockTextRenderer` may be customized.
+
+Often, the color of a button's label, or other font styles, should change when the button's state changes. We can pass different font styles to the `TextBlockTextRenderer` for each state, if needed:
+
+```code
+var downFormat:ElementFormat = new ElementFormat( font, 20, 0x343434 );
+textRenderer.setElementFormatForState( Button.STATE_DOWN, downFormat );
+
+var disabledFormat:ElementFormat = new ElementFormat( font, 20, 0x969696 );
+textRenderer.setElementFormatForState( Button.STATE_DISABLED, disabledFormat );
+```
 
 ### Icons
 
-Finally, let's add an icon to the `Button`. Icons may be customized for all states, but let's simply use one icon.
+Finally, let's add an icon to the `Button`. Icons may be customized for each of the button's states (just like the background skin), but let's simply use one icon.
 
 ``` code
 button.defaultIcon = new Image( myIcon );
 button.iconPosition = Button.ICON_POSITION_TOP;
 ```
 
-Again, the `Button` class provides a default option to supply an icon for all of the button's states, the [`defaultIcon`](../api-reference/feathers/controls/Button.html#defaultIcon) property. Icons for all other states, like [`downIcon`](../api-reference/feathers/controls/Button.html#downIcon) and [`hoverIcon`](../api-reference/feathers/controls/Button.html#hoverIcon) are available too.
+Again, the `Button` class provides a default option to supply an icon for all of the button's states, the [`defaultIcon`](../api-reference/feathers/controls/Button.html#defaultIcon) property. Icons for all other states may be defined by calling [`setIconForState()`](../api-reference/feathers/controls/Button.html#setIconForState()).
 
-We also set the [`iconPosition`](../api-reference/feathers/controls/Button.html#iconPosition) property so that the icon appears above the label. We can position the icon to the top, right, bottom, or left of the label. There are various other useful layout options too:
+We also set the [`iconPosition`](../api-reference/feathers/controls/Button.html#iconPosition) property so that the icon appears above the label. We can position the icon to the top, right, bottom, or left of the label. There are various other useful layout options too.
+
+The [`gap`](../api-reference/feathers/controls/Button.html#gap) refers to the space, measured in pixels, between the icon and the label:
 
 ``` code
 button.gap = 10;
+```
+
+The [`horizontalAlign`](../api-reference/feathers/controls/Button.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/Button.html#verticalAlign) properties will adjust the alignment of the icon and label inside the button, allowing you to anchor them at the edges or in the center.
+
+``` code
 button.horizontalAlign = Button.HORIZONTAL_ALIGN_CENTER;
 button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 ```
 
-The [`gap`](../api-reference/feathers/controls/Button.html#gap) refers to the space, measured in pixels, between the icon and the label. The [`horizontalAlign`](../api-reference/feathers/controls/Button.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/Button.html#verticalAlign) properties will adjust the alignment of the icon and label inside the button, allowing you to anchor them at the edges or in the center.
-
-See the [Advanced Skinning](#advanced-skinning) section below for additional techniques to optimize performance when providing multiple icons to a button.
-
-### Targeting a `Button` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( Button ).defaultStyleFunction = setButtonStyles;
-```
-
-If you want to customize a specific button to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-button.styleNameList.add( "custom-button" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Button )
-    .setFunctionForStyleName( "custom-button", setCustomButtonStyles );
-```
-
-Trying to change the button's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the button's properties directly.
+See the [Advanced Skinning](#advanced-skinning) section below for additional techniques to optimize performance when providing icons for multiple button states.
 
 ## Advanced Skinning
 
