@@ -1287,11 +1287,8 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #setSkinForState()
 		 * @see #stateToSkinFunction
-		 * @see #upSkin
-		 * @see #downSkin
-		 * @see #hoverSkin
-		 * @see #disabledSkin
 		 */
 		public function get defaultSkin():DisplayObject
 		{
@@ -1849,11 +1846,8 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #setIconForState()
 		 * @see #stateToIconFunction
-		 * @see #upIcon
-		 * @see #downIcon
-		 * @see #hoverIcon
-		 * @see #disabledIcon
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -2225,6 +2219,50 @@ package feathers.controls
 				}
 			}
 			super.dispose();
+		}
+
+		/**
+		 * Sets the skin to be used by the button when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a skin is not defined for a specific state, the value of the
+		 * <code>defaultSkin</code> property will be used instead.</p>
+		 * 
+		 * @see #defaultSkin
+		 */
+		public function setSkinForState(state:String, skin:DisplayObject):void
+		{
+			if(skin)
+			{
+				this._skinSelector.setValueForState(skin, state);
+			}
+			else
+			{
+				this._skinSelector.clearValueForState(state);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Sets the icon to be used by the button when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If an icon is not defined for a specific state, the value of the
+		 * <code>defaultIcon</code> property will be used instead.</p>
+		 *
+		 * @see #defaultIcon
+		 */
+		public function setIconForState(state:String, icon:DisplayObject):void
+		{
+			if(icon)
+			{
+				this._iconSelector.setValueForState(icon, state);
+			}
+			else
+			{
+				this._iconSelector.clearValueForState(state);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
