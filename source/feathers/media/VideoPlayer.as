@@ -218,6 +218,16 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
+
+		/**
+		 * @private
+		 */
+		protected static function defaultNetConnectionFactory():NetConnection
+		{
+			var connection:NetConnection = new NetConnection();
+			connection.connect(null);
+			return connection;
+		}
 		
 		/**
 		 * Constructor.
@@ -638,6 +648,53 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _netConnectionFactory:Function = defaultNetConnectionFactory;
+
+		/**
+		 * Creates the <code>flash.net.NetConnection</code> object used to play
+		 * the video, and calls the <code>connect()</code> method. By default, a
+		 * value of <code>null</code> is passed to the <code>connect()</code>
+		 * method. To pass different parameters, you may use a custom
+		 * <code>netConnectionFactory</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function():NetConnection</pre>
+		 *
+		 * <p>In the following example, a custom factory for the
+		 * <code>NetConnection</code> is passed to the video player:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.netConnectionFactory = function():NetConnection
+		 * {
+		 *     var connection:NetConnection = new NetConnection();
+		 *     connection.connect( command );
+		 *     return connection;
+		 * };</listing>
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetConnection.html flash.net.NetConnection
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetConnection.html#connect() flash.net.NetConnection.connect()
+		 */
+		public function get netConnectionFactory():Function
+		{
+			return this._netConnectionFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set netConnectionFactory(value:Function):void
+		{
+			if(this._netConnectionFactory === value)
+			{
+				return;
+			}
+			this._netConnectionFactory = value;
+			this.stop();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function get hasVisibleArea():Boolean
 		{
 			if(this._isFullScreen)
@@ -737,8 +794,8 @@ package feathers.media
 			}
 			if(!this._netStream)
 			{
-				this._netConnection = new NetConnection();
-				this._netConnection.connect(null);
+				var netConnectionFactory:Function = this._netConnectionFactory !== null ? this._netConnectionFactory : defaultNetConnectionFactory;
+				this._netConnection = netConnectionFactory();
 				this._netStream = new NetStream(this._netConnection);
 				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData, this.netStream_onPlayStatus);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
