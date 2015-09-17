@@ -485,7 +485,7 @@ package feathers.controls
 			{
 				//might be in another state for some reason
 				//let's only change to up if needed
-				if(this.currentState == STATE_DISABLED)
+				if(this._currentState == STATE_DISABLED)
 				{
 					this.changeState(STATE_UP);
 				}
