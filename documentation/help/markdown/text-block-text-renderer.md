@@ -47,8 +47,8 @@ The first parameter to the `ElementFormat` constructor is a [`FontDescription`](
 The `ElementFormat` allows you to customize font size, color, alpha, and a huge variety of more advanced options.
 
 ``` code
-var format:ElementFormat = new ElementFormat( "Helvetica" );
-format.size = 20;
+var format:ElementFormat = new ElementFormat( fontDescription );
+format.fontSize = 20;
 format.color = 0xc4c4c4;
 format.alpha = 0.5;
 ```
@@ -62,6 +62,22 @@ textRenderer.textAlign = TextBlockTextRenderer.TEXT_ALIGN_CENTER;
 The `TextBlockTextRenderer` defines [`TEXT_ALIGN_CENTER`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#TEXT_ALIGN_CENTER) and some other constants that the `textAlign` property accepts.
 
 `TextBlockTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`TextBlockTextRenderer` API reference](../api-reference/feathers/controls/text/TextBlockTextRenderer.html).
+
+### How to change font styles when a parent component has multiple states
+
+Some components, like [`Button`](button.html) and [`TextInput`](text-input.html), have multiple states. It's possible to pass more than one `ElementFormat` to the `TextBlockTextRenderer` so that the font styles change when the parent component's state changes.
+
+For instance, we can provide a different font style for the down state of a `Button` by calling [`setElementFormatForState()`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#setElementFormatForState())
+
+```code
+var defaultFormat:ElementFormat = new ElementFormat( fontDescription, 20, 0xc4c4c4 );
+textRenderer.elementFormat = defaultFormat;
+
+var downFormat:ElementFormat = new ElementFormat( fontDescription, 20, 0x343434 );
+textRenderer.setElementFormatForState( Button.STATE_DOWN, downFormat );
+```
+
+We didn't provide separate font styles for other states, like `Button.STATE_HOVER` or `Button.STATE_DISABLED`. When the `Button` is in one of these states, the `TextBlockTextRenderer` will fall back to using the value we passed to the `elementFormat` property.
 
 ### Using embedded fonts
 

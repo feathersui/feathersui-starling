@@ -68,6 +68,22 @@ In most cases, it's not necessary to set the `size` property. The primary font s
 
 `BitmapFontTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`BitmapFontTextRenderer` API reference](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html).
 
+### How to change font styles when a parent component has multiple states
+
+Some components, like [`Button`](button.html) and [`TextInput`](text-input.html), have multiple states. It's possible to pass more than one `BitmapFontTextFormat` to the `BitmapFontTextRenderer` so that the font styles change when the parent component's state changes.
+
+For instance, we can provide a different font style for the down state of a `Button` by calling [`setTextFormatForState()`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html#setTextFormatForState()):
+
+```code
+var defaultFormat:BitmapFontTextFormat = new BitmapFontTextFormat( "FontName", 20, 0xc4c4c4 );
+textRenderer.textFormat = defaultFormat;
+
+var downFormat:BitmapFontTextFormat = new BitmapFontTextFormat( "FontName", 20, 0x343434 );
+textRenderer.setTextFormatForState( Button.STATE_DOWN, downFormat );
+```
+
+We didn't provide separate font styles for other states, like `Button.STATE_HOVER` or `Button.STATE_DISABLED`. When the `Button` is in one of these states, the `BitmapFontTextRenderer` will fall back to using the value we passed to the `textFormat` property.
+
 ## Related Links
 
 -   [`feathers.controls.text.BitmapFontTextRenderer` API Documentation](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html)

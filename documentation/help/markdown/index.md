@@ -131,6 +131,14 @@ A more detailed look at each of the components that Feathers provides.
 
 A bit further down, you can find number of articles that go into detail about the Feathers component architecture and how to create [custom components](#custom-components).
 
+## Text Renderers
+
+-   [`TextBlockTextRenderer`](text-block-text-renderer.html)
+
+-   [`BitmapFontTextRenderer`](bitmap-font-text-renderer.html)
+
+-   [`TextFieldTextRenderer`](text-field-text-renderer.html)
+
 ## Media Player Framework
 
 Feathers includes a number of components for building media players.

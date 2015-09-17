@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `TextFieldTextRenderer` component
 
-The [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) class renders text using the classic [flash.text.TextField](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html).
+The [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) class renders text using the classic [flash.text.TextField](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html).
 
 <aside class="info">`TextFieldTextRenderer` is one of many different [text renderers](text-renderers.html) supported by Feathers. Since no method of rendering text on the GPU is considered definitively better than the others, Feathers allows you to choose the best text renderer for your project's requirements. See [Introduction to Feathers text renderers](text-renderers.html) for complete details about all of the text rendering options supported by Feathers.</aside>
 
@@ -45,7 +45,7 @@ textRenderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0xcccccc );
 The `TextFormat` allows you to customize font size, color, alignment, and a huge variety of more advanced options.
 
 ``` code
-var format:ElementFormat = new ElementFormat( "Helvetica" );
+var format:TextFormat = new TextFormat( "Helvetica" );
 format.size = 20;
 format.color = 0xc4c4c4;
 format.align = TextFormatAlign.CENTER;
@@ -59,6 +59,22 @@ textRenderer.isHTML = true;
 ```
 
 `TextFieldTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`TextFieldTextRenderer` API reference](../api-reference/feathers/controls/text/TextFieldTextRenderer.html).
+
+### How to change font styles when a parent component has multiple states
+
+Some components, like [`Button`](button.html) and [`TextInput`](text-input.html), have multiple states. It's possible topass more than one `TextFormat` to the `TextFieldTextRenderer` so that the font styles change when the parent component's state changes.
+
+For instance, we can provide a different font style for the down state of a `Button` by calling [`setTextFormatForState()`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#setTextFormatForState()):
+
+```code
+var defaultFormat:TextFormat = new TextFormat( "Helvetica", 20, 0xc4c4c4 );
+textRenderer.textFormat = defaultFormat;
+
+var downFormat:TextFormat = new TextFormat( "Helvetica", 20, 0x343434 );
+textRenderer.setTextFormatForState( Button.STATE_DOWN, downFormat );
+```
+
+We didn't provide separate font styles for other states, like `Button.STATE_HOVER` or `Button.STATE_DISABLED`. When the `Button` is in one of these states, the `TextFieldTextRenderer` will fall back to using the value we passed to the `textFormat` property.
 
 ### Using embedded fonts
 
