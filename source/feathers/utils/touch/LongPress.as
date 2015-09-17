@@ -13,6 +13,8 @@ package feathers.utils.touch
 	import flash.utils.getTimer;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -132,6 +134,11 @@ package feathers.utils.touch
 		/**
 		 * @private
 		 */
+		protected var _touchLastGlobalPosition:Point = new Point();
+
+		/**
+		 * @private
+		 */
 		protected var _touchBeginTime:int;
 
 		/**
@@ -225,7 +232,12 @@ package feathers.utils.touch
 					return;
 				}
 
-				if(touch.phase == TouchPhase.ENDED)
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					this._touchLastGlobalPosition.x = touch.globalX;
+					this._touchLastGlobalPosition.y = touch.globalY;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
 				{
 					this._target.removeEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
 					
@@ -258,6 +270,10 @@ package feathers.utils.touch
 
 				//save the touch ID so that we can track this touch's phases.
 				this._touchPointID = touch.id;
+
+				//save the position so that we can do a final hit test
+				this._touchLastGlobalPosition.x = touch.globalX;
+				this._touchLastGlobalPosition.y = touch.globalY;
 				
 				this._touchBeginTime = getTimer();
 				this._target.addEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
@@ -273,18 +289,30 @@ package feathers.utils.touch
 			if(accumulatedTime >= this._longPressDuration)
 			{
 				this._target.removeEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
-				
-				//disable the other events
-				if(this._tapToTrigger)
+
+				var stage:Stage = this._target.stage;
+				if(this._target is DisplayObjectContainer)
 				{
-					this._tapToTrigger.isEnabled = false;
+					var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(this._touchLastGlobalPosition, true));
 				}
-				if(this._tapToSelect)
+				else
 				{
-					this._tapToSelect.isEnabled = false;
+					isInBounds = this._target === stage.hitTest(this._touchLastGlobalPosition, true);
 				}
-				
-				this._target.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				if(isInBounds)
+				{
+					//disable the other events
+					if(this._tapToTrigger)
+					{
+						this._tapToTrigger.isEnabled = false;
+					}
+					if(this._tapToSelect)
+					{
+						this._tapToSelect.isEnabled = false;
+					}
+
+					this._target.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				}
 			}
 		}
 	}

@@ -2016,6 +2016,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _longPressGlobalPosition:Point;
+
+		/**
+		 * @private
+		 */
 		protected var _hasLongPressed:Boolean = false;
 
 		/**
@@ -3006,6 +3011,11 @@ package feathers.controls
 				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 				if(touch.phase == TouchPhase.MOVED)
 				{
+					if(this._isLongPressEnabled)
+					{
+						this._longPressGlobalPosition.x = touch.globalX;
+						this._longPressGlobalPosition.y = touch.globalY;
+					}
 					if(isInBounds || this.keepDownStateOnRollOut)
 					{
 						this.changeState(STATE_DOWN);
@@ -3037,6 +3047,15 @@ package feathers.controls
 					if(this._isLongPressEnabled)
 					{
 						this._touchBeginTime = getTimer();
+						if(this._longPressGlobalPosition)
+						{
+							this._longPressGlobalPosition.x = touch.globalX;
+							this._longPressGlobalPosition.y = touch.globalY;
+						}
+						else
+						{
+							this._longPressGlobalPosition = new Point(touch.globalX, touch.globalY);
+						}
 						this._hasLongPressed = false;
 						this.addEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 					}
@@ -3063,8 +3082,12 @@ package feathers.controls
 			if(accumulatedTime >= this._longPressDuration)
 			{
 				this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
-				this._hasLongPressed = true;
-				this.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(this._longPressGlobalPosition, true));
+				if(isInBounds)
+				{
+					this._hasLongPressed = true;
+					this.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				}
 			}
 		}
 
