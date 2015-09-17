@@ -18,6 +18,7 @@ package feathers.tests
 	public class ToggleButtonTests
 	{
 		private var _button:ToggleButton;
+		private var _blocker:Quad;
 
 		[Before]
 		public function prepare():void
@@ -35,6 +36,12 @@ package feathers.tests
 		{
 			this._button.removeFromParent(true);
 			this._button = null;
+
+			if(this._blocker)
+			{
+				this._blocker.removeFromParent(true);
+				this._blocker = null;
+			}
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -102,6 +109,36 @@ package feathers.tests
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The isSelected property was incorrectly changed",
+				beforeIsSelected, this._button.isSelected);
+		}
+
+		[Test]
+		public function testOtherDisplayObjectBlockingChangeEvent():void
+		{
+			var beforeIsSelected:Boolean = this._button.isSelected;
+			var hasChanged:Boolean = false;
+			this._button.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position, true);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			this._blocker = new Quad(200, 200, 0xff0000);
+			TestFeathers.starlingRoot.addChild(this._blocker);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
 			Assert.assertStrictlyEquals("The isSelected property was incorrectly changed",
 				beforeIsSelected, this._button.isSelected);

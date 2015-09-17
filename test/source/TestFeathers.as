@@ -17,6 +17,7 @@ package
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListRendererAddRemoveTests;
 	import feathers.tests.ListTests;
+	import feathers.tests.LongPressTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
@@ -32,6 +33,8 @@ package
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
 	import feathers.tests.TabBarTests;
+	import feathers.tests.TapToSelectTests;
+	import feathers.tests.TapToTriggerTests;
 	import feathers.tests.TextAreaFocusTests;
 	import feathers.tests.TextAreaTests;
 	import feathers.tests.TextBlockTextEditorFocusTests;
@@ -146,6 +149,9 @@ package
 				//misc
 				PopUpManagerTests,
 				TextureCacheTests,
+				TapToTriggerTests,
+				TapToSelectTests,
+				LongPressTests,
 			]);
 		}
 
