@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -325,11 +326,13 @@ package feathers.controls
 			this.displayListBypassEnabled = false;
 			if(this._icon)
 			{
+				this._icon.removeEventListener(FeathersEventType.RESIZE, icon_resizeHandler);
 				this.removeChild(this._icon);
 			}
 			this._icon = value;
 			if(this._icon)
 			{
+				this._icon.addEventListener(FeathersEventType.RESIZE, icon_resizeHandler);
 				this.addChild(this._icon);
 			}
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
@@ -954,6 +957,14 @@ package feathers.controls
 			this.removeFromParent();
 			this.dispatchEventWith(Event.CLOSE, false, data);
 			this.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function icon_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 	}
