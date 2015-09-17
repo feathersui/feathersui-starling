@@ -166,5 +166,48 @@ package feathers.tests
 			Assert.assertTrue("The result of hasTexture() on a TextureCache with maxUnretainedTextures is incorrect after releasing.",
 				this._cache.hasTexture(KEY_TWO));
 		}
+
+		[Test]
+		public function testRemoveTextureThatWasNotAdded():void
+		{
+			//no errors should be thrown
+			this._cache.removeTexture(KEY_ONE);
+		}
+
+		[Test(expects="flash.errors.IllegalOperationError")]
+		public function testAddTextureAfterDispose():void
+		{
+			this._cache.dispose();
+			this._cache.addTexture(KEY_ONE, this._texture1, true);
+		}
+
+		[Test(expects="flash.errors.IllegalOperationError")]
+		public function testRetainTextureAfterDispose():void
+		{
+			//in the case where the cache is disposed before a display object
+			//is disposed, it's better not to throw a strange runtime error.
+			this._cache.addTexture(KEY_ONE, this._texture1, true);
+			this._cache.dispose();
+			this._cache.retainTexture(KEY_ONE);
+		}
+
+		[Test]
+		public function testReleaseTextureAfterDispose():void
+		{
+			//in the case where the cache is disposed before a display object
+			//is disposed, it's better not to throw a strange runtime error.
+			this._cache.addTexture(KEY_ONE, this._texture1, true);
+			this._cache.dispose();
+			this._cache.releaseTexture(KEY_ONE);
+		}
+
+		[Test]
+		public function testRemoveTextureAfterDispose():void
+		{
+			this._cache.addTexture(KEY_ONE, this._texture1, true);
+			this._cache.dispose();
+			//removal shouldn't throw any errors if the texture doesn't exist
+			this._cache.removeTexture(KEY_ONE);
+		}
 	}
 }
