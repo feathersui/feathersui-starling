@@ -1522,14 +1522,8 @@ package feathers.controls
 				{
 					this._lastURL = sourceURL;
 
-					if(this._textureCache && !this._isRestoringTexture && this._textureCache.hasTexture(sourceURL))
+					if(this.findSourceInCache())
 					{
-						this._texture = this._textureCache.retainTexture(sourceURL);
-						this._isTextureOwner = false;
-						this._isRestoringTexture = false;
-						this._isLoaded = true;
-						this.refreshCurrentTexture();
-						this.dispatchEventWith(starling.events.Event.COMPLETE);
 						return;
 					}
 
@@ -1823,6 +1817,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function findSourceInCache():Boolean
+		{
+			var sourceURL:String = this._source as String;
+			if(this._textureCache && !this._isRestoringTexture && this._textureCache.hasTexture(sourceURL))
+			{
+				this._texture = this._textureCache.retainTexture(sourceURL);
+				this._isTextureOwner = false;
+				this._isRestoringTexture = false;
+				this._isLoaded = true;
+				this.refreshCurrentTexture();
+				this.dispatchEventWith(starling.events.Event.COMPLETE);
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function verifyCurrentStarling():void
 		{
 			if(!this.stage || Starling.current.stage === this.stage)
@@ -1852,6 +1865,16 @@ package feathers.controls
 				return;
 			}
 			this.verifyCurrentStarling();
+
+			if(this.findSourceInCache())
+			{
+				//someone else added this URL to the cache while we were in the
+				//middle of loading it. we can reuse the texture from the cache!
+				
+				//don't forget to dispose the BitmapData, though...
+				bitmapData.dispose();
+				return;
+			}
 			
 			if(!this._texture)
 			{
@@ -1900,6 +1923,16 @@ package feathers.controls
 				return;
 			}
 			this.verifyCurrentStarling();
+
+			if(this.findSourceInCache())
+			{
+				//someone else added this URL to the cache while we were in the
+				//middle of loading it. we can reuse the texture from the cache!
+
+				//don't forget to clear the ByteArray, though...
+				rawData.clear();
+				return;
+			}
 			
 			if(this._texture)
 			{
