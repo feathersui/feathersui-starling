@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 2.3.0
+## 2.3.0 - In Development
 
 ### 2.3.0 Deprecated APIs
 
@@ -26,7 +26,7 @@ All properties and constants where "name" was replaced by "style name" were orig
 * `headerRendererName` => `customHeaderRendererStyleName`
 * `footerRendererName` => `customFooterRendererStyleName`
 
-## 2.2.0
+## 2.2.0 - August 2015
 
 * New Component: SoundPlayer. Plays audio using a Sound object.
 * New Component: VideoPlayer. Plays video using a NetStream object.
@@ -167,11 +167,11 @@ The code would need to be modified, like this:
 list.scrollToPageIndex( 2, list.verticalPageIndex );
 ```
 
-## 2.1.2
+## 2.1.2 - July 2015
 
 * ScrollContainer: overrides addChild() to fix "RangeError: Invalid child index" issue when using Starling 1.7.
 
-## 2.1.1
+## 2.1.1 - March 2015
 
 * BitmapFontTextRenderer, ScrollContainer: added workarounds for compiler bugs in Adobe Flex SDK 4.6.
 * ButtonGroup, TabBar: fixed issue where buttons or tabs would flicker and resize for a frame when the container resizes.
@@ -180,7 +180,7 @@ list.scrollToPageIndex( 2, list.verticalPageIndex );
 * SpinnerList: fixed issue where setting the selected index programmatically didn't always update the scroll position.
 * TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where text would appear blurry because snapToPixels incorrectly snapped on the y-axis.
 
-## 2.1.0
+## 2.1.0 - February 2015
 
 * New Component: AutoComplete, a TextInput that provides a pop-up list of suggestions.
 * New Component: SpinnerList, a list that changes selection when scrolling to an item.
@@ -316,7 +316,7 @@ Subclasses of `Scroller` that need to support passing focus to children must now
 		this._isChildFocusEnabled = value;
 	}
 
-## 2.0.1
+## 2.0.1 - November 2014
 
 * AddOnFunctionStyleProvider: fixed issue where function passed into constructor would be ignored.
 * LayoutGroup: fixed issue where background skin would not validate after setting its dimensions.
@@ -330,7 +330,7 @@ Subclasses of `Scroller` that need to support passing focus to children must now
 * Themes: fixed issue where wrong arguments were passed to Texture.fromBitmap().
 * Added workarounds for stack overflow runtime errors when compiling with legacy Flex 4.6 compiler.
 
-## 2.0.0
+## 2.0.0 - October 2014
 
 * New style provider architecture for skinning and themes.
 * Components may always be validated, even if they are not on the display list yet.
@@ -502,7 +502,7 @@ The increment button and decrement button sub-components of a `ScrollBar` are no
 
 When replacing the `dataProvider` of a `List` or `GroupedList` (or replacing the `data` property of a `ListCollection` or `HierarchicalCollection`), it is no longer necessary to call `updateItemAt()` on the new collection if it contains some of the same items as the previous collection. This behavior will happen automatically.
 
-## 1.3.1
+## 1.3.1 - July 2014
 
 * NumericStepper: fixed issue where using step to calculate a new value didn't account for the minimum value.
 * NumericStepper: fixed issue where only some text was selected after changing value.
@@ -522,7 +522,7 @@ When replacing the `dataProvider` of a `List` or `GroupedList` (or replacing the
 * Gallery Example: updated to use HTTPS URLs since Flickr will soon require it.
 * YouTubeFeeds Example: switched to category feeds since the older feeds were deprecated and displayed the wrong data.
 
-## 1.3.0
+## 1.3.0 - April 2014
 
 * New Component: ScrollScreen is new base class for ScreenNavigator screens that supports scrolling similar to ScrollContainer.
 * New Component: TextBlockTextRenderer is a new text renderer that renders text with flash.text.engine.TextBlock, with a texture snapshot similar to TextFieldTextRenderer.
@@ -618,7 +618,7 @@ The property `requiresLayoutOnScroll` has been added to `ILayout` to provide imp
 		return true;
 	}
 
-## 1.2.0
+## 1.2.0 - November 2013
 
 * New Component: Alert
 * New Component: Drawers
@@ -781,7 +781,7 @@ Note: The built-in layout classes repurpose the `typicalItemWidth` and `typicalI
 
 The `typicalHeader` and `typicalFooter` properties have been removed from `GroupedList` to support the better handling of typical items in virtual layouts, as discussed above. From now on, the `typicalItem` on a `GroupedList` is the only way to provide hints to the layout used by a `GroupedList`.
 
-## 1.1.1
+## 1.1.1 - September 2013
 
 This release includes minor updates to support Starling Framework 1.4 and a number of minor bug fixes.
 
@@ -814,7 +814,7 @@ This release includes minor updates to support Starling Framework 1.4 and a numb
 * TiledRowsLayout, TiledColumnsLayout: fixed manageVisibility implementation.
 * TiledRowsLayout, TiledColumnsLayout: fixed bad positioning when useSquareTiles is true.
 
-## 1.1.0
+## 1.1.0 - June 2013
 
 * New Beta Component: NumericStepper. Add and subtract from a numeric value with buttons. Optional text editing.
 * New Beta Component: TextArea. A multiline text input. Recommended for desktop only. Not recommended for mobile.
@@ -915,7 +915,7 @@ The functions `addToVariableVirtualCacheAtIndex()` and `removeFromVariableVirtua
 		this.resetVariableVirtualCache();
 	}
 
-## 1.0.1
+## 1.0.1 - February 2013
 
 This release includes a number of bug fixes.
 
@@ -935,7 +935,7 @@ This release includes a number of bug fixes.
 * ImageLoader: no runtime errors if content loads after dispose.
 * ScrollContainer, List, GroupedList, ScrollText: fix for detecting changes in scrollToPageIndex().
 
-## 1.0.0
+## 1.0.0 - January 2013
 
 No major API changes since 1.0.0 BETA. Mostly bug fixes and minor improvements.
 
@@ -945,7 +945,7 @@ No major API changes since 1.0.0 BETA. Mostly bug fixes and minor improvements.
 * Header: fix for "middle" vertical alignment
 * Updated for Starling Framework 1.3
 
-## 1.0.0 BETA
+## 1.0.0 BETA - December 2012
 
 Initial release. The following major changes happened in the last month or two leading to the beta.
 
