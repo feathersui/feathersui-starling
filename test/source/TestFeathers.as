@@ -13,6 +13,8 @@ package
 	import feathers.tests.LayoutGroupFlowLayoutTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupTests;
+	import feathers.tests.LayoutGroupTiledColumnsLayoutTests;
+	import feathers.tests.LayoutGroupTiledRowsLayoutTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListRendererAddRemoveTests;
@@ -97,7 +99,7 @@ package
 			this._flexunit.run(
 			[
 				//general component tests
-				InvalidateTests,
+				/*InvalidateTests,
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
 				
@@ -130,10 +132,12 @@ package
 				//layout tests
 				LayoutGroupFlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
-				LayoutGroupVerticalLayoutTests,
+				LayoutGroupVerticalLayoutTests,*/
+				LayoutGroupTiledRowsLayoutTests,
+				LayoutGroupTiledColumnsLayoutTests,
 
 				//collections tests
-				ListCollectionWithArrayTests,
+				/*ListCollectionWithArrayTests,
 
 				//focus tests
 				FocusManagerEnabledTests,
@@ -151,7 +155,7 @@ package
 				TextureCacheTests,
 				TapToTriggerTests,
 				TapToSelectTests,
-				LongPressTests,
+				LongPressTests,*/
 			]);
 		}
 
