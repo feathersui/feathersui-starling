@@ -1,8 +1,8 @@
 package
 {
 	import feathers.tests.BitmapFontTextEditorFocusTests;
-	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
+	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.FocusManagerEnabledTests;
@@ -19,8 +19,6 @@ package
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListRendererAddRemoveTests;
 	import feathers.tests.ListTests;
-	import feathers.tests.ListTiledColumnsLayoutTests;
-	import feathers.tests.ListTiledRowsLayoutTests;
 	import feathers.tests.LongPressTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.PickerListTests;
