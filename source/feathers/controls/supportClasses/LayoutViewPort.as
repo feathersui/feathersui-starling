@@ -226,26 +226,6 @@ package feathers.controls.supportClasses
 			super.dispose();
 		}
 
-		override protected function draw():void
-		{
-			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-
-			super.draw();
-
-			if(scrollInvalid || sizeInvalid || layoutInvalid)
-			{
-				if(this._layout)
-				{
-					this._contentX = this._layoutResult.contentX;
-					this._contentY = this._layoutResult.contentY;
-					this._actualVisibleWidth = this._layoutResult.viewPortWidth;
-					this._actualVisibleHeight = this._layoutResult.viewPortHeight;
-				}
-			}
-		}
-
 		override protected function refreshViewPortBounds():void
 		{
 			this.viewPortBounds.x = 0;
@@ -274,6 +254,16 @@ package feathers.controls.supportClasses
 			this.viewPortBounds.minHeight = this._minVisibleHeight;
 			this.viewPortBounds.maxWidth = this._maxVisibleWidth;
 			this.viewPortBounds.maxHeight = this._maxVisibleHeight;
+		}
+
+		override protected function handleLayoutResult():void
+		{
+			this.setSizeInternal(this._layoutResult.contentWidth,
+				this._layoutResult.contentHeight, false);
+			this._contentX = this._layoutResult.contentX;
+			this._contentY = this._layoutResult.contentY;
+			this._actualVisibleWidth = this._layoutResult.viewPortWidth;
+			this._actualVisibleHeight = this._layoutResult.viewPortHeight;
 		}
 
 		override protected function handleManualLayout():void
@@ -380,8 +370,8 @@ package feathers.controls.supportClasses
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = calculatedWidth;
 			this._layoutResult.contentHeight = calculatedHeight;
-			this._layoutResult.viewPortWidth = this._actualVisibleWidth;
-			this._layoutResult.viewPortHeight = this._actualVisibleHeight;
+			this._layoutResult.viewPortWidth = calculatedWidth;//this._actualVisibleWidth;
+			this._layoutResult.viewPortHeight = calculatedHeight;//this._actualVisibleHeight;
 		}
 
 		/**

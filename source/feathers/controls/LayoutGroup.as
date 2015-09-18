@@ -608,17 +608,8 @@ package feathers.controls
 				{
 					this.handleManualLayout();
 				}
-				if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE)
-				{
-					var width:Number = this.stage.stageWidth;
-					var height:Number = this.stage.stageHeight;
-				}
-				else
-				{
-					width = this._layoutResult.viewPortWidth;
-					height = this._layoutResult.viewPortHeight;
-				}
-				sizeInvalid = this.setSizeInternal(width, height, false) || sizeInvalid;
+				this.handleLayoutResult();
+				
 				if(this.currentBackgroundSkin)
 				{
 					this.currentBackgroundSkin.width = this.actualWidth;
@@ -708,6 +699,15 @@ package feathers.controls
 			this.viewPortBounds.minHeight = minHeight;
 			this.viewPortBounds.maxWidth = this._maxWidth;
 			this.viewPortBounds.maxHeight = this._maxHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleLayoutResult():void
+		{
+			this.setSizeInternal(this._layoutResult.viewPortWidth,
+					this._layoutResult.viewPortHeight, false);
 		}
 
 		/**
