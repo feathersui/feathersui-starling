@@ -44,10 +44,11 @@ package feathers.layout
 		 * with explicit pixel widths, and then the remaining space will be
 		 * distributed to children with percent widths.
 		 *
-		 * <p>The <code>percentWidth</code> property is ignored when its value
-		 * is <code>NaN</code> or when the <code>useVirtualLayout</code>
-		 * property of the <code>HorizontalLayout</code> is set to
-		 * <code>false</code>.</p>
+		 * <p>A percentage may be specified in the range from <code>0</code>
+		 * to <code>100</code>. If the value is set to <code>NaN</code>, this
+		 * property is ignored. It will also be ignored when the
+		 * <code>useVirtualLayout</code> property of the
+		 * <code>HorizontalLayout</code> is set to <code>false</code>.</p>
 		 *
 		 * @default NaN
 		 */
@@ -79,7 +80,9 @@ package feathers.layout
 		 * The height of the layout object, as a percentage of the container's
 		 * height.
 		 *
-		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
+		 * <p>A percentage may be specified in the range from <code>0</code>
+		 * to <code>100</code>. If the value is set to <code>NaN</code>, this
+		 * property is ignored.</p>
 		 *
 		 * <p>Performance tip: If all items in your layout will have 100%
 		 * height, it's better to set the <code>verticalAlign</code> property of
