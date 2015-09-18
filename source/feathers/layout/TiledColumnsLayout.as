@@ -1000,11 +1000,15 @@ package feathers.layout
 			else if(maxHeight === maxHeight && //!isNaN
 				maxHeight < Number.POSITIVE_INFINITY)
 			{
-				availableHeight = maxHeight;
 				verticalTileCount = (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 				if(verticalTileCount > itemCount)
 				{
 					verticalTileCount = itemCount;
+					availableHeight = this._paddingTop + this._paddingBottom + ((tileHeight + this._verticalGap) * verticalTileCount) - this._verticalGap;
+				}
+				else
+				{
+					availableHeight = maxHeight;
 				}
 			}
 			else if(this._requestedRowCount > 0)
@@ -1043,8 +1047,17 @@ package feathers.layout
 			else if(maxWidth === maxWidth && //!isNaN
 				maxWidth < Number.POSITIVE_INFINITY)
 			{
-				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+				var maxHorizontalTileCount:int = Math.ceil(itemCount / verticalTileCount);
+				if(horizontalTileCount > maxHorizontalTileCount)
+				{
+					horizontalTileCount = maxHorizontalTileCount;
+					availableWidth = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap - this._paddingLeft - this._paddingRight;
+				}
+				else
+				{
+					availableWidth = maxWidth;
+				}
 			}
 			else
 			{
@@ -1330,11 +1343,15 @@ package feathers.layout
 			else if(maxHeight === maxHeight && //!isNaN
 				maxHeight < Number.POSITIVE_INFINITY)
 			{
-				availableHeight = maxHeight;
 				verticalTileCount = (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 				if(verticalTileCount > itemCount)
 				{
 					verticalTileCount = itemCount;
+					availableHeight = this._paddingTop + this._paddingBottom + ((tileHeight + this._verticalGap) * verticalTileCount) - this._verticalGap;
+				}
+				else
+				{
+					availableHeight = maxHeight;
 				}
 			}
 			else if(this._requestedRowCount > 0)
@@ -1371,8 +1388,17 @@ package feathers.layout
 			else if(maxWidth === maxWidth && //!isNaN
 				maxWidth < Number.POSITIVE_INFINITY)
 			{
-				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+				var maxHorizontalTileCount:int = Math.ceil(itemCount / verticalTileCount);
+				if(horizontalTileCount > maxHorizontalTileCount)
+				{
+					horizontalTileCount = maxHorizontalTileCount;
+					availableWidth = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap - this._paddingLeft - this._paddingRight;
+				}
+				else
+				{
+					availableWidth = maxWidth;
+				}
 			}
 			else
 			{
