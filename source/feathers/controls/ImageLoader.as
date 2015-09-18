@@ -1873,6 +1873,9 @@ package feathers.controls
 				
 				//don't forget to dispose the BitmapData, though...
 				bitmapData.dispose();
+				
+				//then invalidate so that everything is resized correctly
+				this.invalidate(INVALIDATION_FLAG_DATA);
 				return;
 			}
 			
@@ -1931,6 +1934,9 @@ package feathers.controls
 
 				//don't forget to clear the ByteArray, though...
 				rawData.clear();
+
+				//then invalidate so that everything is resized correctly
+				this.invalidate(INVALIDATION_FLAG_DATA);
 				return;
 			}
 			
