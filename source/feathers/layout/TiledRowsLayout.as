@@ -1003,6 +1003,10 @@ package feathers.layout
 			{
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+				if(horizontalTileCount > itemCount)
+				{
+					horizontalTileCount = itemCount;
+				}
 			}
 			else if(this._requestedColumnCount > 0)
 			{
@@ -1325,6 +1329,10 @@ package feathers.layout
 			{
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+				if(horizontalTileCount > itemCount)
+				{
+					horizontalTileCount = itemCount;
+				}
 			}
 			else if(this._requestedColumnCount > 0)
 			{
