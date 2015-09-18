@@ -97,7 +97,7 @@ package feathers.tests
 			this._group.validate();
 			var maxChildWidth:Number = Math.max(CHILD1_WIDTH, CHILD2_WIDTH);
 			Assert.assertStrictlyEquals("VerticalLayout width not equal to max width of children.", maxChildWidth, this._group.width);
-			Assert.assertStrictlyEquals("VerticalLayout height not equal to sum of child widths.", CHILD1_HEIGHT + CHILD2_HEIGHT, this._group.height);
+			Assert.assertStrictlyEquals("VerticalLayout height not equal to sum of child heights.", CHILD1_HEIGHT + CHILD2_HEIGHT, this._group.height);
 		}
 
 		[Test]
