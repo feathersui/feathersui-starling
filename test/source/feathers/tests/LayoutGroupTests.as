@@ -45,13 +45,63 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testAutoSizeWithBackground():void
+		public function testResizeBackgroundWithSmallerMaxDimensions():void
+		{
+			this._group.maxWidth = BACKGROUND_WIDTH / 3;
+			this._group.maxHeight = BACKGROUND_HEIGHT / 3;
+			var backgroundSkin:Quad = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+			this._group.backgroundSkin = backgroundSkin;
+			this._group.validate();
+			Assert.assertStrictlyEquals("The LayoutGroup with smaller maxWidth did not set the width of the background skin.",
+				this._group.maxWidth, backgroundSkin.width);
+			Assert.assertStrictlyEquals("The LayoutGroup with smaller maxHeight did not set the height of the background skin.",
+				this._group.maxHeight, backgroundSkin.height);
+		}
+
+		[Test]
+		public function testResizeBackgroundWithLargerMinDimensions():void
+		{
+			this._group.minWidth = 3 * BACKGROUND_WIDTH;
+			this._group.minHeight = 3 * BACKGROUND_HEIGHT;
+			var backgroundSkin:Quad = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+			this._group.backgroundSkin = backgroundSkin;
+			this._group.validate();
+			Assert.assertStrictlyEquals("The LayoutGroup with larger minWidth did not set the width of the background skin.",
+				this._group.minWidth, backgroundSkin.width);
+			Assert.assertStrictlyEquals("The LayoutGroup with larger minHeight did not set the height of the background skin.",
+				this._group.minHeight, backgroundSkin.height);
+		}
+
+		[Test]
+		public function testAutoSizeNoChildrenNoBackgroundAndNoLayout():void
+		{
+			this._group.validate();
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly when empty.",
+				0, this._group.width);
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly when empty.",
+				0, this._group.height);
+		}
+
+		[Test]
+		public function testAutoSizeMinDimensionsNoChildrenNoBackgroundAndNoLayout():void
+		{
+			this._group.minWidth = BACKGROUND_WIDTH;
+			this._group.minHeight = BACKGROUND_HEIGHT;
+			this._group.validate();
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly when empty.",
+				BACKGROUND_WIDTH, this._group.width);
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly when empty.",
+				BACKGROUND_HEIGHT, this._group.height);
+		}
+
+		[Test]
+		public function testAutoSizeWithBackgroundAndNoChildren():void
 		{
 			this._group.backgroundSkin = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with background skin and no children.",
 				BACKGROUND_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with background skin and no children.",
 				BACKGROUND_HEIGHT, this._group.height);
 		}
 

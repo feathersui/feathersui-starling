@@ -117,6 +117,24 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testHeightWithMaxHeightLargerThanChild():void
+		{
+			this._group.maxHeight = CHILD1_HEIGHT + 100;
+			this._group.addChild(new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff));
+			this._group.validate();
+			Assert.assertStrictlyEquals("HorizontalLayout height not equal to child height when maxHeight is larger than child height.", CHILD1_HEIGHT, this._group.height);
+		}
+
+		[Test]
+		public function testHeightWithMaxHeightSmallerThanChild():void
+		{
+			this._group.maxHeight = CHILD1_HEIGHT / 2;
+			this._group.addChild(new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff));
+			this._group.validate();
+			Assert.assertStrictlyEquals("HorizontalLayout height not equal to maxHeight when maxHeight is smaller than child height.", this._group.maxHeight, this._group.height);
+		}
+
+		[Test]
 		public function testWidthWithGapAndTwoChildren():void
 		{
 			this._layout.gap = GAP;
