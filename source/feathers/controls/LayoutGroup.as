@@ -608,22 +608,15 @@ package feathers.controls
 				{
 					this.handleManualLayout();
 				}
-				var width:Number = this._layoutResult.contentWidth;
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-					this.originalBackgroundWidth > width)
+				if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE)
 				{
-					width = this.originalBackgroundWidth;
+					var width:Number = this.stage.stageWidth;
+					var height:Number = this.stage.stageHeight;
 				}
-				var height:Number = this._layoutResult.contentHeight;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-					this.originalBackgroundHeight > height)
+				else
 				{
-					height = this.originalBackgroundHeight;
-				}
-				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
-				{
-					width = this.stage.stageWidth;
-					height = this.stage.stageHeight;
+					width = this._layoutResult.viewPortWidth;
+					height = this._layoutResult.viewPortHeight;
 				}
 				sizeInvalid = this.setSizeInternal(width, height, false) || sizeInvalid;
 				if(this.currentBackgroundSkin)
@@ -764,6 +757,26 @@ package feathers.controls
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = maxX;
 			this._layoutResult.contentHeight = maxY;
+			var minWidth:Number = this.viewPortBounds.minWidth;
+			var minHeight:Number = this.viewPortBounds.minHeight;
+			if(maxX < minWidth)
+			{
+				maxX = minWidth;
+			}
+			if(maxY < minHeight)
+			{
+				maxY = minHeight;
+			}
+			var maxWidth:Number = this.viewPortBounds.maxWidth;
+			var maxHeight:Number = this.viewPortBounds.maxHeight;
+			if(maxX > maxWidth)
+			{
+				maxX = maxWidth;
+			}
+			if(maxY > maxHeight)
+			{
+				maxY = maxHeight;
+			}
 			this._layoutResult.viewPortWidth = maxX;
 			this._layoutResult.viewPortHeight = maxY;
 		}
