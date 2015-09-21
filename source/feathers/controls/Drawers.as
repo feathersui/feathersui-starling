@@ -540,6 +540,10 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isTopDrawerOpen && value === null)
+			{
+				this.isTopDrawerOpen = false;
+			}
 			if(this._topDrawer && this._topDrawer.parent == this)
 			{
 				this.removeChild(this._topDrawer, false);
@@ -766,6 +770,10 @@ package feathers.controls
 			if(this._rightDrawer == value)
 			{
 				return;
+			}
+			if(this.isRightDrawerOpen && value === null)
+			{
+				this.isRightDrawerOpen = false;
 			}
 			if(this._rightDrawer && this._rightDrawer.parent == this)
 			{
@@ -994,6 +1002,10 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isBottomDrawerOpen && value === null)
+			{
+				this.isBottomDrawerOpen = false;
+			}
 			if(this._bottomDrawer && this._bottomDrawer.parent == this)
 			{
 				this.removeChild(this._bottomDrawer, false);
@@ -1220,6 +1232,10 @@ package feathers.controls
 			if(this._leftDrawer == value)
 			{
 				return;
+			}
+			if(this.isLeftDrawerOpen && value === null)
+			{
+				this.isLeftDrawerOpen = false;
 			}
 			if(this._leftDrawer && this._leftDrawer.parent == this)
 			{
@@ -2194,6 +2210,7 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var selectedInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 
 			if(dataInvalid)
 			{
@@ -2203,6 +2220,10 @@ package feathers.controls
 			if(sizeInvalid || layoutInvalid)
 			{
 				this.refreshDrawerStates();
+			}
+			if(layoutInvalid || selectedInvalid)
+			{
+				this.refreshOverlayState();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -2429,7 +2450,7 @@ package feathers.controls
 				this._topDrawer.x = topDrawerX;
 				this._topDrawer.y = topDrawerY;
 				this._topDrawer.width = this.actualWidth;
-				this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked;
+				this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked || this._isDraggingTopDrawer;
 
 				//final validation to avoid juggler next frame issues
 				if(this._topDrawer is IValidating)
@@ -2463,7 +2484,7 @@ package feathers.controls
 				this._rightDrawer.x = rightDrawerX;
 				this._rightDrawer.y = rightDrawerY;
 				this._rightDrawer.height = rightDrawerHeight;
-				this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked;
+				this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked || this._isDraggingRightDrawer;
 
 				//final validation to avoid juggler next frame issues
 				if(this._rightDrawer is IValidating)
@@ -2491,7 +2512,7 @@ package feathers.controls
 				this._bottomDrawer.x = bottomDrawerX;
 				this._bottomDrawer.y = bottomDrawerY;
 				this._bottomDrawer.width = this.actualWidth;
-				this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked;
+				this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked || this._isDraggingBottomDrawer;
 
 				//final validation to avoid juggler next frame issues
 				if(this._bottomDrawer is IValidating)
@@ -2528,7 +2549,7 @@ package feathers.controls
 				this._leftDrawer.x = leftDrawerX;
 				this._leftDrawer.y = leftDrawerY;
 				this._leftDrawer.height = leftDrawerHeight;
-				this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked;
+				this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked || this._isDraggingLeftDrawer;
 
 				//final validation to avoid juggler next frame issues
 				if(this._leftDrawer is IValidating)
@@ -2978,31 +2999,41 @@ package feathers.controls
 		 */
 		protected function refreshDrawerStates():void
 		{
-			var needsToHideOverlay:Boolean = false;
 			if(this.isTopDrawerDocked && this._isTopDrawerOpen)
 			{
 				this._isTopDrawerOpen = false;
-				needsToHideOverlay = true;
 			}
 			if(this.isRightDrawerDocked && this._isRightDrawerOpen)
 			{
 				this._isRightDrawerOpen = false;
-				needsToHideOverlay = true;
 			}
 			if(this.isBottomDrawerDocked && this._isBottomDrawerOpen)
 			{
 				this._isBottomDrawerOpen = false;
-				needsToHideOverlay = true;
 			}
 			if(this.isLeftDrawerDocked && this._isLeftDrawerOpen)
 			{
 				this._isLeftDrawerOpen = false;
-				needsToHideOverlay = true;
 			}
-			if(needsToHideOverlay && this._overlaySkin)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshOverlayState():void
+		{
+			if(!this._overlaySkin || this._isDragging)
 			{
-				this._overlaySkin.alpha = 0;
-				this._overlaySkin.visible = false;
+				return;
+			}
+			var showOverlay:Boolean = this._isTopDrawerOpen ||
+				this._isRightDrawerOpen ||
+				this._isBottomDrawerOpen ||
+				this._isLeftDrawerOpen;
+			if(showOverlay !== this._overlaySkin.visible)
+			{
+				this._overlaySkin.visible = showOverlay;
+				this._overlaySkin.alpha = showOverlay ? this._overlaySkinOriginalAlpha : 0;
 			}
 		}
 
