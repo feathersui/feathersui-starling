@@ -45,7 +45,20 @@ package feathers.core
 		public function ValidationQueue(starling:Starling)
 		{
 			this._starling = starling;
+			try
+			{
+				//strangely hasOwnProperty() and "insertAt" in this._queue don't
+				//work in this case. it will throw a runtime error in versions
+				//of the runtime before 19, though.
+				this._queue["insertAt"];
+			}
+			catch(error:ReferenceError)
+			{
+				this._hasInsertAt = false;
+			}
 		}
+		
+		private var _hasInsertAt:Boolean = true;
 
 		private var _starling:Starling;
 
@@ -126,6 +139,10 @@ package feathers.core
 				if(i == queueLength)
 				{
 					currentQueue[queueLength] = control;
+				}
+				else if(this._hasInsertAt)
+				{
+					currentQueue["insertAt"](0, control);
 				}
 				else
 				{
