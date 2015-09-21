@@ -5,6 +5,7 @@ package
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.ComponentLifecycleTests;
+	import feathers.tests.DrawersTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
@@ -107,6 +108,7 @@ package
 				ButtonTests,
 				ButtonGroupTests,
 				ButtonGroupDataProviderEventsTests,
+				DrawersTests,
 				GroupedListTests,
 				GroupedListRendererAddRemoveTests,
 				LayoutGroupTests,
