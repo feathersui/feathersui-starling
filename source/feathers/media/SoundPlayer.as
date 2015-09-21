@@ -286,6 +286,18 @@ package feathers.media
 			else if(this._soundSource is Sound)
 			{
 				this._sound = Sound(this._soundSource);
+				var newTotalTime:Number = this._sound.length / 1000;
+				if(this._totalTime !== newTotalTime)
+				{
+					this._totalTime = newTotalTime;
+					this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+				}
+				if(this._sound.isBuffering)
+				{
+					this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
+					this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
+					this._sound.addEventListener(Event.COMPLETE, sound_completeHandler);
+				}
 			}
 			else if(this._soundSource === null)
 			{
@@ -293,7 +305,7 @@ package feathers.media
 			}
 			else
 			{
-				throw new ArgumentError("Invalid source type for AudioPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
+				throw new ArgumentError("Invalid source type for SoundPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
 			}
 			if(this._autoPlay && this._sound)
 			{
