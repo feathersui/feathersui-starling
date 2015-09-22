@@ -16,153 +16,194 @@ This custom layout will be similar to [`VerticalLayout`](vertical-layout.html), 
 ``` code
 package feathersx.layout
 {
-    import feathers.core.IFeathersControl;
-    import feathers.layout.ILayout;
-    import feathers.layout.LayoutBoundsResult;
-    import feathers.layout.ViewPortBounds;
+	import feathers.core.IFeathersControl;
+	import feathers.layout.ILayout;
+	import feathers.layout.ILayoutDisplayObject;
+	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.ViewPortBounds;
  
-    import flash.geom.Point;
+	import flash.geom.Point;
  
-    import starling.display.DisplayObject;
-    import starling.events.Event;
-    import starling.events.EventDispatcher;
+	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
  
-    public class SimpleVerticalLayout extends EventDispatcher implements ILayout
-    {
-        public function SimpleVerticalLayout()
-        {
-        }
+	public class SimpleVerticalLayout extends EventDispatcher implements ILayout
+	{
+		public function SimpleVerticalLayout()
+		{
+		}
  
-        protected var _gap:Number = 0;
+		protected var _gap:Number = 0;
  
-        public function get gap():Number
-        {
-            return this._gap;
-        }
+		public function get gap():Number
+		{
+			return this._gap;
+		}
  
-        public function set gap(value:Number):void
-        {
-            if(this._gap == value)
-            {
-                return;
-            }
-            this._gap = value;
-            this.dispatchEventWith(Event.CHANGE);
-        }
+		public function set gap(value:Number):void
+		{
+			if(this._gap == value)
+			{
+				return;
+			}
+			this._gap = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		public function get requiresLayoutOnScroll():Boolean
+		{
+			return false;
+		}
  
-        public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
-        {
-            // initialize the view port's position and dimensions
-            var startX:Number = 0;
-            var startY:Number = 0;
-            var explicitWidth:Number = NaN;
-            var explicitHeight:Number = NaN;
-            var minWidth:Number = 0;
-            var minHeight:Number = 0;
-            var maxWidth:Number = Number.POSITIVE_INFINITY;
-            var maxHeight:Number = Number.POSITIVE_INFINITY;
-            if(viewPortBounds)
-            {
-                startX = viewPortBounds.x;
-                startY = viewPortBounds.y;
-                explicitWidth = viewPortBounds.explicitWidth;
-                explicitHeight = viewPortBounds.explicitHeight;
-                minWidth = viewPortBounds.minWidth;
-                minHeight = viewPortBounds.minHeight;
-                maxWidth = viewPortBounds.maxWidth;
-                maxHeight = viewPortBounds.maxHeight;
-            }
+		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
+		{
+			// initialize the view port's position and dimensions
+			var startX:Number = 0;
+			var startY:Number = 0;
+			var explicitWidth:Number = NaN;
+			var explicitHeight:Number = NaN;
+			var minWidth:Number = 0;
+			var minHeight:Number = 0;
+			var maxWidth:Number = Number.POSITIVE_INFINITY;
+			var maxHeight:Number = Number.POSITIVE_INFINITY;
+			if(viewPortBounds)
+			{
+				startX = viewPortBounds.x;
+				startY = viewPortBounds.y;
+				explicitWidth = viewPortBounds.explicitWidth;
+				explicitHeight = viewPortBounds.explicitHeight;
+				minWidth = viewPortBounds.minWidth;
+				minHeight = viewPortBounds.minHeight;
+				maxWidth = viewPortBounds.maxWidth;
+				maxHeight = viewPortBounds.maxHeight;
+			}
  
-            // loop through the items and position them
-            var positionY:Number = startY;
-            var maxItemWidth:Number = 0;
-            var itemCount:int = items.length;
-            for(var i:int = 0; i < itemCount; i++)
-            {
-                var item:DisplayObject = items[i];
-                // skip items that aren't included in the layout
-                var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
-                if(layoutItem && !layoutItem.includeInLayout)
-                {
-                    continue;
-                }
-                // special case for Feathers components
-                if(item is IFeathersControl)
-                {
-                    IFeathersControl(item).validate();
-                }
-                item.x = startX;
-                item.y = positionY;
-                positionY += item.height + this._gap;
+			// loop through the items and position them
+			var positionY:Number = startY;
+			var maxItemWidth:Number = 0;
+			var itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				// skip items that aren't included in the layout
+				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+				if(layoutItem && !layoutItem.includeInLayout)
+				{
+					continue;
+				}
+				// special case for Feathers components
+				if(item is IFeathersControl)
+				{
+					IFeathersControl(item).validate();
+				}
+				item.x = startX;
+				item.y = positionY;
+				positionY += item.height + this._gap;
  
-                // used for the final content width below
-                maxItemWidth = Math.max(maxItemWidth, item.width);
-            }
+				// used for the final content width below
+				maxItemWidth = Math.max(maxItemWidth, item.width);
+			}
  
-            // used for the final content height below
-            positionY -= (startY + this._gap);
+			// used for the final content height below
+			positionY -= (startY + this._gap);
  
-            // prepare the result object and return it
-            if(!result)
-            {
-                result = new LayoutBoundsResult();
-            }
-            var viewPortWidth:Number = explicitWidth;
-            var viewPortHeight:Number = explicitHeight;
-            if(isNaN(viewPortWidth))
-            {
-                viewPortWidth = Math.max(minWidth, Math.min(maxWidth, maxItemWidth));
-            }
-            if(isNaN(explicitHeight))
-            {
-                viewPortHeight = Math.max(minHeight, Math.min(maxHeight, positionY));
-            }
-            var contentWidth:Number = Math.max(maxItemWidth, viewPortWidth);
-            var contentHeight:Number = Math.max(positionY, viewPortHeight);
-            result.viewPortWidth = viewPortWidth;
-            result.viewPortHeight = viewPortHeight;
-            result.contentWidth = contentWidth;
-            result.contentHeight = contentHeight;
-            return result;
-        }
+			// prepare the result object and return it
+			if(!result)
+			{
+				result = new LayoutBoundsResult();
+			}
+			var viewPortWidth:Number = explicitWidth;
+			var viewPortHeight:Number = explicitHeight;
+			if(isNaN(viewPortWidth))
+			{
+				viewPortWidth = Math.max(minWidth, Math.min(maxWidth, maxItemWidth));
+			}
+			if(isNaN(explicitHeight))
+			{
+				viewPortHeight = Math.max(minHeight, Math.min(maxHeight, positionY));
+			}
+			var contentWidth:Number = Math.max(maxItemWidth, viewPortWidth);
+			var contentHeight:Number = Math.max(positionY, viewPortHeight);
+			result.viewPortWidth = viewPortWidth;
+			result.viewPortHeight = viewPortHeight;
+			result.contentWidth = contentWidth;
+			result.contentHeight = contentHeight;
+			return result;
+		}
  
-        public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
-        {
-            // loop through the items to calculate the scroll position
-            var positionY:Number = 0;
-            for(var i:int = 0; i < index; i++)
-            {
-                var item:DisplayObject = items[i];
-                var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
-                if(layoutItem && !layoutItem.includeInLayout)
-                {
-                    continue;
-                }
-                if(item is IFeathersControl)
-                {
-                    IFeathersControl(item).validate();
-                }
-                positionY += item.height + this._gap;
-            }
+		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
+		{
+			// loop through the items to calculate the scroll position
+			var positionY:Number = 0;
+			for(var i:int = 0; i < index; i++)
+			{
+				var item:DisplayObject = items[i];
+				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+				if(layoutItem && !layoutItem.includeInLayout)
+				{
+					continue;
+				}
+				if(item is IFeathersControl)
+				{
+					IFeathersControl(item).validate();
+				}
+				positionY += item.height + this._gap;
+			}
  
-            // prepare the result object and return it
-            if(!result)
-            {
-                result = new Point();
-            }
-            result.x = 0;
-            result.y = positionY;
-            return result;
-        }
-    }
+			// prepare the result object and return it
+			if(!result)
+			{
+				result = new Point();
+			}
+			result.x = 0;
+			result.y = positionY;
+			return result;
+		}
+
+		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>, x:Number, y:Number, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
+		{
+			result = this.getScrollPositionForIndex(index, items, x, y, viewPortWidth, viewPortHeight, result);
+			
+			var item:DisplayObject = items[index];
+			var maxPositionY:Number = result.y;
+			var minPositionY:Number = maxPositionY - viewPortHeight + item.height;
+			if(scrollY < minPositionY)
+			{
+				result.y = minPositionY;
+			}
+			else if(scrollY > maxPositionY)
+			{
+				result.y = maxPositionY;
+			}
+			else
+			{
+				result.y = scrollY;
+			}
+			return result;
+		}
+	}
 }
 ```
 
 We'll go into the low-level details in a moment, but let's look at a couple of important parts of the `SimpleVerticalLayout` class first.
 
--   The class implements [`feathers.layout.ILayout`](../api-reference/feathers/layout/ILayout.html). This interface defines two functions that all layouts need, which we'll be digging into next. There are some other interfaces for more advanced layout capabilities, but `ILayout` is the bare minimum.
+-   The class implements [`feathers.layout.ILayout`](../api-reference/feathers/layout/ILayout.html). This interface defines some properties and methods that all layouts need, which we'll be digging into next. There are some other interfaces for more advanced layout capabilities, but `ILayout` is the bare minimum.
 
 -   The class extends the standard Starling [`starling.events.EventDispatcher`](http://doc.starling-framework.org/core/starling/events/EventDispatcher.html) because `ILayout` specifies that layouts should dispatch `Event.CHANGE` when their properties change. This will allow components that use layouts to properly invalidate when they need to call the [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()) function again.
+
+## The `requiresLayoutOnScroll` property
+
+This property informs the container if the layout code should be updated when the container scrolls.
+
+``` code
+public function get requiresLayoutOnScroll():Boolean
+{
+	return false;
+}
+```
+
+For our layout, we don't need to change the position or size of anything after scrolling, so we can simply return `false`.
 
 ## The `layout()` function
 
@@ -180,20 +221,20 @@ The first argument is a `Vector.<DisplayObject>` of the items to layout. A layou
 var itemCount:int = items.length;
 for(var i:int = 0; i < itemCount; i++)
 {
-    var item:DisplayObject = items[i];
-    // skip items that aren't included in the layout
-    if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
-    {
-        continue;
-    }
-    if(item is IFeathersControl)
-    {
-        IFeathersControl(item).validate();
-    }
-    item.x = startX;
-    item.y = positionY;
-    positionY += item.height + this._gap;
-    maxItemWidth = Math.max(maxItemWidth, item.width);
+	var item:DisplayObject = items[i];
+	// skip items that aren't included in the layout
+	if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+	{
+		continue;
+	}
+	if(item is IFeathersControl)
+	{
+		IFeathersControl(item).validate();
+	}
+	item.x = startX;
+	item.y = positionY;
+	positionY += item.height + this._gap;
+	maxItemWidth = Math.max(maxItemWidth, item.width);
 }
 ```
 
@@ -220,14 +261,14 @@ var maxWidth:Number = Number.POSITIVE_INFINITY;
 var maxHeight:Number = Number.POSITIVE_INFINITY;
 if(viewPortBounds)
 {
-    startX = viewPortBounds.x;
-    startY = viewPortBounds.y;
-    explicitWidth = viewPortBounds.explicitWidth;
-    explicitHeight = viewPortBounds.explicitHeight;
-    minWidth = viewPortBounds.minWidth;
-    minHeight = viewPortBounds.minHeight;
-    maxWidth = viewPortBounds.maxWidth;
-    maxHeight = viewPortBounds.maxHeight;
+	startX = viewPortBounds.x;
+	startY = viewPortBounds.y;
+	explicitWidth = viewPortBounds.explicitWidth;
+	explicitHeight = viewPortBounds.explicitHeight;
+	minWidth = viewPortBounds.minWidth;
+	minHeight = viewPortBounds.minHeight;
+	maxWidth = viewPortBounds.maxWidth;
+	maxHeight = viewPortBounds.maxHeight;
 }
 ```
 
@@ -242,17 +283,17 @@ Below, we see how the dimensions of the content and some of the values from `Vie
 ``` code
 if(!result)
 {
-    result = new LayoutBoundsResult();
+	result = new LayoutBoundsResult();
 }
 var viewPortWidth:Number = explicitWidth;
 var viewPortHeight:Number = explicitHeight;
 if(isNaN(viewPortWidth))
 {
-    viewPortWidth = Math.max(minWidth, Math.min(maxWidth, maxItemWidth));
+	viewPortWidth = Math.max(minWidth, Math.min(maxWidth, maxItemWidth));
 }
 if(isNaN(explicitHeight))
 {
-    viewPortHeight = Math.max(minHeight, Math.min(maxHeight, positionY));
+	viewPortHeight = Math.max(minHeight, Math.min(maxHeight, positionY));
 }
 var contentWidth:Number = Math.max(maxItemWidth, viewPortWidth);
 var contentHeight:Number = Math.max(positionY, viewPortHeight);
@@ -309,7 +350,7 @@ The [`contentWidth`](../api-reference/feathers/layout/LayoutBoundsResult.html#co
 
 The [`contentX`](../api-reference/feathers/layout/LayoutBoundsResult.html#contentX) and [`contentY`](../api-reference/feathers/layout/LayoutBoundsResult.html#contentY) properties specify where the content begins for scrolling containers to set the minimum scroll positions. These values are typically set to `0` (zero), but they may also be negative.
 
-## The getScrollPositionForIndex() function
+## The `getScrollPositionForIndex()` function
 
 The second function defined by [`ILayout`](../api-reference/feathers/layout/ILayout.html) is [`getScrollPositionForIndex()`](../api-reference/feathers/layout/ILayout.html#getScrollPositionForIndex()). Please take a moment to review its signature below:
 
@@ -333,16 +374,16 @@ Next, the full list of items are passed in. In the code below, we loop through t
 var positionY:Number = 0;
 for(var i:int = 0; i < index; i++)
 {
-    var item:DisplayObject = items[i];
-    if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
-    {
-        continue;
-    }
-    if(item is IFeathersControl)
-    {
-        IFeathersControl(item).validate();
-    }
-    positionY += item.height + this._gap;
+	var item:DisplayObject = items[i];
+	if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+	{
+		continue;
+	}
+	if(item is IFeathersControl)
+	{
+		IFeathersControl(item).validate();
+	}
+	positionY += item.height + this._gap;
 }
 ```
 
@@ -363,12 +404,53 @@ Below, we can see how we check if the result is `null` or not, and the final scr
 ``` code
 if(!result)
 {
-    result = new Point();
+	result = new Point();
 }
 result.x = 0;
 result.y = positionY;
 return result;
 ```
+
+## The `getNearestScrollPositionForIndex()` function
+
+The `getNearestScrollPositionForIndex()` function is very similar to the `getScrollPositionForIndex()` function. The main difference is that `getNearestScrollPositionForIndex()` tries to scroll the minimum amount possible to fully show an item in the view port, while `getScrollPositionForIndex()` may try to center it or display it in some kind of ideal position. `getNearestScrollPositionForIndex()` is called when using the keyboard arrow keys to navigate in a List.
+
+First, we're going to take advantage of the fact that our implementation of `getScrollPositionForIndex()` will position the item at the top of the view port.
+
+``` code
+result = this.getScrollPositionForIndex(index, items, x, y, viewPortWidth, viewPortHeight, result);
+```
+
+The `y` value of the result will become the maximum possible position that we'll scroll to where the item is completely visible:
+
+``` code
+var maxPositionY:Number = result.y;
+```
+
+Next, we want to know the minimum possible position. We can calculate that with some simple arithmetic:
+
+``` code
+var minPositionY:Number = maxPositionY - viewPortHeight + item.height;
+```
+
+Now that we know the range of possible scroll positions, we can simply ensure that the value of scrollY is within that range:
+
+``` code
+if(scrollY < minPositionY)
+{
+	result.y = minPositionY;
+}
+else if(scrollY > maxPositionY)
+{
+	result.y = maxPositionY;
+}
+else
+{
+	result.y = scrollY;
+}
+```
+
+If the vertical scroll position is less than `minPositionY`, we'll set it to `minPositionY`. If it's greater than `maxPositionY`, we'll set it to `maxPositionY`. Otherwise, we know that the item is fully visible already, so we'll return the `scrollY` value that was passed into the function.
 
 ## Related Links
 
