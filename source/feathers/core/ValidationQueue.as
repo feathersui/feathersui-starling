@@ -142,7 +142,7 @@ package feathers.core
 				}
 				else if(this._hasInsertAt)
 				{
-					currentQueue["insertAt"](0, control);
+					currentQueue["insertAt"](i, control);
 				}
 				else
 				{
