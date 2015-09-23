@@ -301,6 +301,13 @@ package feathers.controls
 		 *     //set properties here!
 		 *     return callout;
 		 * };</listing>
+		 * 
+		 * <p>Note: the default callout factory sets the following properties:</p>
+		 *
+		 * <listing version="3.0">
+		 * callout.closeOnTouchBeganOutside = true;
+		 * callout.closeOnTouchEndedOutside = true;
+		 * callout.closeOnKeys = new &lt;uint&gt;[Keyboard.BACK, Keyboard.ESCAPE];</listing>
 		 *
 		 * @see #show()
 		 */
