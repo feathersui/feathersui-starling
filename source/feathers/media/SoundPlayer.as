@@ -23,6 +23,33 @@ package feathers.media
 	import starling.events.Event;
 
 	/**
+	 * Dispatched when the MP3 ID3 metadata becomes available on the
+	 * <code>Sound</code> instance.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.media.ID3Info</code>
+	 *   instance returned by the <code>id3</code> property of the
+	 *   <code>Sound</code> instance.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 * 
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html#id3 flash.media.Sound.id3
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.METADATA_RECEIVED
+	 */
+	[Event(name="metadataReceived",type="starling.events.Event")]
+
+	/**
 	 * Dispatched periodically when a media player's content is loading to
 	 * indicate the current progress.
 	 *
@@ -296,7 +323,8 @@ package feathers.media
 				{
 					this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 					this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
-					this._sound.addEventListener(Event.COMPLETE, sound_completeHandler);
+					this._sound.addEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+					this._sound.addEventListener(flash.events.Event.ID3, sound_id3Handler);
 				}
 			}
 			else if(this._soundSource === null)
@@ -505,7 +533,7 @@ package feathers.media
 		{
 			//return to the beginning
 			this.stop();
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(starling.events.Event.COMPLETE);
 			if(this._loop)
 			{
 				this.play();
@@ -530,13 +558,15 @@ package feathers.media
 			{
 				this._sound.removeEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 				this._sound.removeEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
-				this._sound.removeEventListener(Event.COMPLETE, sound_completeHandler);
+				this._sound.removeEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+				this._sound.removeEventListener(flash.events.Event.ID3, sound_id3Handler);
 				this._sound = null;
 			}
 			this._sound = new Sound();
 			this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 			this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
-			this._sound.addEventListener(Event.COMPLETE, sound_completeHandler);
+			this._sound.addEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+			this._sound.addEventListener(flash.events.Event.ID3, sound_id3Handler);
 			this._sound.load(request);
 		}
 
@@ -561,6 +591,14 @@ package feathers.media
 			this._isLoading = false;
 			this._isLoaded = true;
 			this.dispatchEventWith(MediaPlayerEventType.LOAD_COMPLETE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function sound_id3Handler(event:flash.events.Event):void
+		{
+			this.dispatchEventWith(MediaPlayerEventType.METADATA_RECEIVED, false, this._sound.id3);
 		}
 
 		/**

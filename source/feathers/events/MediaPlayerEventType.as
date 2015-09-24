@@ -58,6 +58,11 @@ package feathers.events
 		public static const SOUND_TRANSFORM_CHANGE:String = "soundTransformChange";
 
 		/**
+		 * Dispatched when the media's metadata becomes available.
+		 */
+		public static const METADATA_RECEIVED:String = "metadataReceived";
+
+		/**
 		 * Dispatched periodically when a media player's content is loading to
 		 * indicate the current progress.
 		 */
