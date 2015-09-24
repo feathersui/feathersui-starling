@@ -595,6 +595,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _amString:String;
+
+		/**
+		 * @private
+		 */
+		protected var _pmString:String;
+
+		/**
+		 * @private
+		 */
 		protected var pendingScrollToDate:Date;
 
 		/**
@@ -851,6 +861,17 @@ package feathers.controls
 				this._monthFirst = monthIndex < dateIndex;
 				//figure out if this locale uses am/pm or 24-hour format
 				this._ampm = dateTimePattern.indexOf("a") >= 0;
+				if(this._ampm)
+				{
+					this._formatter.setDateTimePattern("a");
+					HELPER_DATE.setHours(1);
+					//different locales have different names for am and pm
+					//as an example, see zh_CN
+					this._amString = this._formatter.format(HELPER_DATE);
+					HELPER_DATE.setHours(13);
+					this._pmString = this._formatter.format(HELPER_DATE);
+					this._formatter.setDateTimePattern(dateTimePattern);
+				}
 			}
 			if(this._editingMode === EDITING_MODE_DATE)
 			{
@@ -950,7 +971,7 @@ package feathers.controls
 				
 				if(this._ampm && !this.ampmList.dataProvider)
 				{
-					this.ampmList.dataProvider = new ListCollection(new <String>["am", "pm"]);
+					this.ampmList.dataProvider = new ListCollection(new <String>[this._amString, this._pmString]);
 				}
 			}
 			
