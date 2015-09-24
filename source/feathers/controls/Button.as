@@ -2183,9 +2183,9 @@ package feathers.controls
 			}
 			if(scale !== 1)
 			{
-				support.scaleMatrix(scale, scale);
 				support.translateMatrix(Math.round((1 - scale) / 2 * this.actualWidth),
 					Math.round((1 - scale) / 2 * this.actualHeight));
+				support.scaleMatrix(scale, scale);
 			}
 			super.render(support, parentAlpha);
 		}
