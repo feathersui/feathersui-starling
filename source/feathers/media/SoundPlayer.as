@@ -51,7 +51,9 @@ package feathers.media
 
 	/**
 	 * Dispatched periodically when a media player's content is loading to
-	 * indicate the current progress.
+	 * indicate the current progress. The <code>bytesLoaded</code> and
+	 * <code>bytesTotal</code> properties may be accessed to determine the
+	 * exact number of bytes loaded.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -68,6 +70,9 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #bytesLoaded
+	 * @see #bytesTotal
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 	 */
@@ -188,7 +193,7 @@ package feathers.media
 	 * 
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 */
-	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer
+	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer, IProgressiveMediaPlayer
 	{
 		/**
 		 * @private
@@ -370,6 +375,36 @@ package feathers.media
 		public function get isLoaded():Boolean
 		{
 			return this._isLoaded;
+		}
+
+		/**
+		 * @copy feathers.media.IProgressiveMediaPlayer#bytesLoaded
+		 * 
+		 * @see #bytesTotal
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 */
+		public function get bytesLoaded():uint
+		{
+			if(!this._sound)
+			{
+				return 0;
+			}
+			return this._sound.bytesLoaded;
+		}
+
+		/**
+		 * @copy feathers.media.IProgressiveMediaPlayer#bytesTotal
+		 *
+		 * @see #bytesLoaded
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 */
+		public function get bytesTotal():uint
+		{
+			if(!this._sound)
+			{
+				return 0;
+			}
+			return this._sound.bytesTotal;
 		}
 
 		/**
