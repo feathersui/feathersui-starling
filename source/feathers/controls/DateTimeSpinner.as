@@ -288,11 +288,11 @@ package feathers.controls
 		public function set value(value:Date):void
 		{
 			var time:Number = clamp(value.time, this._minimum.time, this._maximum.time);
-			if(this._value && this._value.time == time)
+			if(this._value && this._value.time === time)
 			{
 				return;
 			}
-			this._value = value;
+			this._value = new Date(value.time);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
