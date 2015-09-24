@@ -1522,7 +1522,11 @@ package feathers.controls
 				}
 			}
 			var monthName:String = this._localeMonthNames[HELPER_DATE.month] as String;
-			return monthName + " " + HELPER_DATE.date;
+			if(this._monthFirst)
+			{
+				return monthName + " " + HELPER_DATE.date;
+			}
+			return HELPER_DATE.date + " " + monthName;
 		}
 
 		/**
