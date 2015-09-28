@@ -570,6 +570,7 @@ package feathers.themes
 		protected var popUpVolumeSliderMaximumTrackSkinTexture:Texture;
 		protected var seekSliderMinimumTrackSkinTextures:Scale3Textures;
 		protected var seekSliderMaximumTrackSkinTextures:Scale3Textures;
+		protected var seekSliderProgressSkinTextures:Scale3Textures;
 
 		/**
 		 * Disposes the texture atlas before calling super.dispose()
@@ -823,6 +824,7 @@ package feathers.themes
 			this.popUpVolumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("pop-up-volume-slider-maximum-track-skin0000");
 			this.seekSliderMinimumTrackSkinTextures = new Scale3Textures(this.atlas.getTexture("seek-slider-minimum-track-skin0000"), SEEK_SLIDER_MINIMUM_TRACK_FIRST_REGION, SEEK_SLIDER_MINIMUM_TRACK_SECOND_REGION, Scale3Textures.DIRECTION_HORIZONTAL);
 			this.seekSliderMaximumTrackSkinTextures = new Scale3Textures(this.atlas.getTexture("seek-slider-maximum-track-skin0000"), SEEK_SLIDER_MAXIMUM_TRACK_FIRST_REGION, SEEK_SLIDER_MAXIMUM_TRACK_SECOND_REGION, Scale3Textures.DIRECTION_HORIZONTAL);
+			this.seekSliderProgressSkinTextures = new Scale3Textures(this.atlas.getTexture("seek-slider-progress-skin0000"), SEEK_SLIDER_MAXIMUM_TRACK_FIRST_REGION, SEEK_SLIDER_MAXIMUM_TRACK_SECOND_REGION, Scale3Textures.DIRECTION_HORIZONTAL);
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("drill-down-icon0000");
 
@@ -2664,6 +2666,10 @@ package feathers.themes
 			
 			slider.minWidth = this.wideControlSize;
 			slider.minHeight = this.smallControlSize;
+
+			var progressSkin:Scale3Image = new Scale3Image(this.seekSliderProgressSkinTextures, this.scale);
+			progressSkin.width = this.smallControlSize;
+			slider.progressSkin = progressSkin;
 		}
 
 		protected function setSeekSliderMinimumTrackStyles(track:Button):void

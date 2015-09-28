@@ -637,6 +637,7 @@ package feathers.themes
 		protected var volumeSliderMinimumTrackSkinTexture:Texture;
 		protected var volumeSliderMaximumTrackSkinTexture:Texture;
 		protected var popUpVolumeSliderTrackSkinTextures:Scale9Textures;
+		protected var seekSliderProgressSkinTextures:Scale9Textures;
 
 		/**
 		 * Disposes the texture atlas before calling super.dispose()
@@ -900,6 +901,7 @@ package feathers.themes
 			this.popUpVolumeSliderTrackSkinTextures = new Scale9Textures(this.atlas.getTexture("pop-up-volume-slider-track-skin0000"), VOLUME_SLIDER_TRACK_SCALE9_GRID);
 			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin0000");
 			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin0000");
+			this.seekSliderProgressSkinTextures = new Scale9Textures(this.atlas.getTexture("seek-slider-progress-skin0000"), DEFAULT_SCALE9_GRID);
 		}
 
 		/**
@@ -2849,6 +2851,10 @@ package feathers.themes
 				slider.minWidth = this.wideControlSize;
 				slider.minHeight = this.smallControlSize;
 			}
+			var progressSkin:Scale9Image = new Scale9Image(this.seekSliderProgressSkinTextures, this.scale);
+			progressSkin.width = this.smallControlSize;
+			progressSkin.height = this.smallControlSize;
+			slider.progressSkin = progressSkin;
 		}
 
 		protected function setSeekSliderThumbStyles(thumb:Button):void
