@@ -8,9 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.media
 {
 	import feathers.controls.Slider;
+	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
+
+	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 
@@ -179,6 +182,7 @@ package feathers.media
 			}
 			if(this._mediaPlayer)
 			{
+				this._mediaPlayer.removeEventListener(MediaPlayerEventType.LOAD_PROGRESS, mediaPlayer_loadProgressHandler);
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.CURRENT_TIME_CHANGE, mediaPlayer_currentTimeChangeHandler);
 				this._mediaPlayer.removeEventListener(MediaPlayerEventType.TOTAL_TIME_CHANGE, mediaPlayer_totalTimeChangeHandler);
 			}
@@ -187,6 +191,24 @@ package feathers.media
 			{
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.CURRENT_TIME_CHANGE, mediaPlayer_currentTimeChangeHandler);
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.TOTAL_TIME_CHANGE, mediaPlayer_totalTimeChangeHandler);
+				if(this._mediaPlayer is IProgressiveMediaPlayer)
+				{
+					var progressivePlayer:IProgressiveMediaPlayer = IProgressiveMediaPlayer(this._mediaPlayer);
+					progressivePlayer.addEventListener(MediaPlayerEventType.LOAD_PROGRESS, mediaPlayer_loadProgressHandler);
+					if(progressivePlayer.bytesTotal > 0)
+					{
+						this._progress = progressivePlayer.bytesLoaded / progressivePlayer.bytesTotal;
+					}
+					else
+					{
+						this._progress = 0;
+					}
+					trace(this._progress);
+				}
+				else
+				{
+					this._progress = 0;
+				}
 				this.minimum = 0;
 				this.maximum = this._mediaPlayer.totalTime;
 				this.value = this._mediaPlayer.currentTime;
@@ -196,6 +218,132 @@ package feathers.media
 				this.minimum = 0;
 				this.maximum = 0;
 				this.value = 0;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _progress:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _progressSkin:DisplayObject;
+
+		/**
+		 * 
+		 */
+		public function get progressSkin():DisplayObject
+		{
+			return this._progressSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set progressSkin(value:DisplayObject):void
+		{
+			if(this._progressSkin == value)
+			{
+				return;
+			}
+			if(this._progressSkin)
+			{
+				this.removeChild(this._progressSkin);
+			}
+			this._progressSkin = value;
+			if(this._progressSkin && this._progressSkin.parent != this)
+			{
+				this._progressSkin.visible = false;
+				this.addChild(this._progressSkin);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutChildren():void
+		{
+			super.layoutChildren();
+			this.layoutProgressSkin();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutProgressSkin():void
+		{
+			if(this._progressSkin === null)
+			{
+				return;
+			}
+
+			if(this._minimum === this._maximum)
+			{
+				var percentage:Number = 1;
+			}
+			else
+			{
+				percentage = (this._value - this._minimum) / (this._maximum - this._minimum);
+				if(percentage < 0)
+				{
+					percentage = 0;
+				}
+				else if(percentage > 1)
+				{
+					percentage = 1;
+				}
+			}
+			if(this._progress === 0 || this._progress <= percentage)
+			{
+				this._progressSkin.visible = false;
+				return;
+			}
+
+			this._progressSkin.visible = true;
+			if(this._progressSkin is IValidating)
+			{
+				IValidating(this._progressSkin).validate();
+			}
+			
+			if(this._direction === DIRECTION_VERTICAL)
+			{
+				var trackScrollableHeight:Number = this.actualHeight - this._minimumPadding - this._maximumPadding;
+				this._progressSkin.x = Math.round((this.actualWidth - this._progressSkin.width) / 2);
+				var progressHeight:Number = (trackScrollableHeight * this._progress);
+				var maxProgressHeight:Number = this.thumb.y + this.thumb.height / 2;
+				if(progressHeight < 0)
+				{
+					progressHeight = 0;
+				}
+				else if(progressHeight > maxProgressHeight)
+				{
+					progressHeight = maxProgressHeight;
+				}
+				this._progressSkin.height = progressHeight;
+				this._progressSkin.y = maxProgressHeight - progressHeight;
+			}
+			else //horizontal
+			{
+				var trackScrollableWidth:Number = this.actualWidth - this._minimumPadding - this._maximumPadding;
+				this._progressSkin.x = Math.round(this._minimumPadding + trackScrollableWidth * percentage);
+				this._progressSkin.y = Math.round((this.actualHeight - this._progressSkin.height) / 2);
+				var progressWidth:Number = (trackScrollableWidth * this._progress) - this._progressSkin.x;
+				if(progressWidth < 0)
+				{
+					progressWidth = 0;
+				}
+				else
+				{
+					var maxProgressWidth:Number = this.actualWidth - this._progressSkin.x;
+					if(progressWidth > maxProgressWidth)
+					{
+						progressWidth = maxProgressWidth;
+					}
+				}
+				this._progressSkin.width = progressWidth;
 			}
 		}
 
@@ -249,6 +397,19 @@ package feathers.media
 		protected function mediaPlayer_totalTimeChangeHandler(event:Event):void
 		{
 			this.maximum = this._mediaPlayer.totalTime;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function mediaPlayer_loadProgressHandler(event:Event, progress:Number):void
+		{
+			if(this._progress === progress)
+			{
+				return;
+			}
+			this._progress = progress;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
 	}
