@@ -13,6 +13,7 @@ package
 	import feathers.tests.InvalidateTests;
 	import feathers.tests.LayoutGroupFlowLayoutTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
+	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupTiledColumnsLayoutTests;
 	import feathers.tests.LayoutGroupTiledRowsLayoutTests;
@@ -112,6 +113,7 @@ package
 				GroupedListTests,
 				GroupedListRendererAddRemoveTests,
 				LayoutGroupTests,
+				LayoutGroupInternalStateTests,
 				ListTests,
 				ListRendererAddRemoveTests,
 				PickerListTests,

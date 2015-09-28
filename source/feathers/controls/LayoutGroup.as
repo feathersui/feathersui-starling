@@ -423,6 +423,10 @@ package feathers.controls
 		 */
 		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
 		{
+			if(index >= 0 && index < this.items.length)
+			{
+				this.items.splice(index, 1);
+			}
 			var child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
 			{
@@ -432,7 +436,6 @@ package feathers.controls
 			{
 				child.removeEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
 			}
-			this.items.splice(index, 1);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			return child;
 		}
