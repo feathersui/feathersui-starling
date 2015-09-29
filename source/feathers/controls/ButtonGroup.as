@@ -1389,7 +1389,7 @@ package feathers.controls
 				{
 					this.layout = verticalLayout = new VerticalLayout();
 				}
-				verticalLayout.distributeHeights = true;
+				verticalLayout.distributeHeights = this._distributeButtonSizes;
 				verticalLayout.horizontalAlign = this._horizontalAlign;
 				verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
 				verticalLayout.gap = this._gap;
@@ -1409,7 +1409,7 @@ package feathers.controls
 					{
 						this.layout = horizontalLayout = new HorizontalLayout();
 					}
-					horizontalLayout.distributeWidths = this._distributeButtonSizes;
+					horizontalLayout.distributeWidths = true;
 					horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
 					horizontalLayout.verticalAlign = this._verticalAlign;
 					horizontalLayout.gap = this._gap;
