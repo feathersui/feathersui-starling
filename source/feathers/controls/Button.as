@@ -485,7 +485,7 @@ package feathers.controls
 			{
 				//might be in another state for some reason
 				//let's only change to up if needed
-				if(this.currentState == STATE_DISABLED)
+				if(this._currentState == STATE_DISABLED)
 				{
 					this.changeState(STATE_UP);
 				}
@@ -1287,11 +1287,8 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #setSkinForState()
 		 * @see #stateToSkinFunction
-		 * @see #upSkin
-		 * @see #downSkin
-		 * @see #hoverSkin
-		 * @see #disabledSkin
 		 */
 		public function get defaultSkin():DisplayObject
 		{
@@ -1849,11 +1846,8 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #setIconForState()
 		 * @see #stateToIconFunction
-		 * @see #upIcon
-		 * @see #downIcon
-		 * @see #hoverIcon
-		 * @see #disabledIcon
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -2022,6 +2016,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _longPressGlobalPosition:Point;
+
+		/**
+		 * @private
+		 */
 		protected var _hasLongPressed:Boolean = false;
 
 		/**
@@ -2184,9 +2183,9 @@ package feathers.controls
 			}
 			if(scale !== 1)
 			{
-				support.scaleMatrix(scale, scale);
 				support.translateMatrix(Math.round((1 - scale) / 2 * this.actualWidth),
 					Math.round((1 - scale) / 2 * this.actualHeight));
+				support.scaleMatrix(scale, scale);
 			}
 			super.render(support, parentAlpha);
 		}
@@ -2225,6 +2224,50 @@ package feathers.controls
 				}
 			}
 			super.dispose();
+		}
+
+		/**
+		 * Sets the skin to be used by the button when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a skin is not defined for a specific state, the value of the
+		 * <code>defaultSkin</code> property will be used instead.</p>
+		 * 
+		 * @see #defaultSkin
+		 */
+		public function setSkinForState(state:String, skin:DisplayObject):void
+		{
+			if(skin)
+			{
+				this._skinSelector.setValueForState(skin, state);
+			}
+			else
+			{
+				this._skinSelector.clearValueForState(state);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Sets the icon to be used by the button when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If an icon is not defined for a specific state, the value of the
+		 * <code>defaultIcon</code> property will be used instead.</p>
+		 *
+		 * @see #defaultIcon
+		 */
+		public function setIconForState(state:String, icon:DisplayObject):void
+		{
+			if(icon)
+			{
+				this._iconSelector.setValueForState(icon, state);
+			}
+			else
+			{
+				this._iconSelector.clearValueForState(state);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
@@ -2968,6 +3011,11 @@ package feathers.controls
 				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 				if(touch.phase == TouchPhase.MOVED)
 				{
+					if(this._isLongPressEnabled)
+					{
+						this._longPressGlobalPosition.x = touch.globalX;
+						this._longPressGlobalPosition.y = touch.globalY;
+					}
 					if(isInBounds || this.keepDownStateOnRollOut)
 					{
 						this.changeState(STATE_DOWN);
@@ -2999,6 +3047,15 @@ package feathers.controls
 					if(this._isLongPressEnabled)
 					{
 						this._touchBeginTime = getTimer();
+						if(this._longPressGlobalPosition)
+						{
+							this._longPressGlobalPosition.x = touch.globalX;
+							this._longPressGlobalPosition.y = touch.globalY;
+						}
+						else
+						{
+							this._longPressGlobalPosition = new Point(touch.globalX, touch.globalY);
+						}
 						this._hasLongPressed = false;
 						this.addEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 					}
@@ -3025,8 +3082,12 @@ package feathers.controls
 			if(accumulatedTime >= this._longPressDuration)
 			{
 				this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
-				this._hasLongPressed = true;
-				this.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(this._longPressGlobalPosition, true));
+				if(isInBounds)
+				{
+					this._hasLongPressed = true;
+					this.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				}
 			}
 		}
 

@@ -687,6 +687,7 @@ package feathers.themes
 		protected var muteToggleButtonMutedDownIconTexture:Texture;
 		protected var volumeSliderMinimumTrackSkinTexture:Texture;
 		protected var volumeSliderMaximumTrackSkinTexture:Texture;
+		protected var seekSliderProgressSkinTextures:Scale9Textures;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -949,6 +950,7 @@ package feathers.themes
 			this.muteToggleButtonLoudDownIconTexture = this.atlas.getTexture("mute-toggle-button-loud-down-icon");
 			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin");
 			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
+			this.seekSliderProgressSkinTextures = new Scale9Textures(this.atlas.getTexture("seek-slider-progress-skin"), DEFAULT_SCALE9_GRID);
 		}
 
 		/**
@@ -2691,6 +2693,10 @@ package feathers.themes
 				slider.minWidth = this.controlSize;
 				slider.minHeight = this.smallControlSize;
 			}
+			var progressSkin:Scale9Image = new Scale9Image(this.seekSliderProgressSkinTextures, this.scale);
+			progressSkin.width = this.smallControlSize;
+			progressSkin.height = this.smallControlSize;
+			slider.progressSkin = progressSkin;
 		}
 
 		protected function setSeekSliderThumbStyles(thumb:Button):void

@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.textures
 {
+	import flash.errors.IllegalOperationError;
+
 	import starling.textures.Texture;
 
 	/**
@@ -107,6 +109,10 @@ package feathers.utils.textures
 		 */
 		public function addTexture(key:String, texture:Texture, retainTexture:Boolean = true):void
 		{
+			if(!this._retainedTextures)
+			{
+				throw new IllegalOperationError("Cannot add a texture after the cache has been disposed.")
+			}
 			if(key in this._unretainedTextures || key in this._retainedTextures)
 			{
 				throw new ArgumentError("Key \"" + key + "\" already exists in the cache.");
@@ -133,6 +139,10 @@ package feathers.utils.textures
 		 */
 		public function removeTexture(key:String, dispose:Boolean = false):void
 		{
+			if(!this._unretainedTextures)
+			{
+				return;
+			}
 			var texture:Texture = this._unretainedTextures[key] as Texture;
 			if(texture)
 			{
@@ -184,6 +194,10 @@ package feathers.utils.textures
 		 */
 		public function retainTexture(key:String):Texture
 		{
+			if(!this._retainedTextures)
+			{
+				throw new IllegalOperationError("Cannot retain a texture after the cache has been disposed.")
+			}
 			if(key in this._retainedTextures)
 			{
 				var count:int = this._retainCounts[key] as int;
@@ -210,7 +224,7 @@ package feathers.utils.textures
 		 */
 		public function releaseTexture(key:String):void
 		{
-			if(!(key in this._retainedTextures))
+			if(!this._retainedTextures || !(key in this._retainedTextures))
 			{
 				return;
 			}

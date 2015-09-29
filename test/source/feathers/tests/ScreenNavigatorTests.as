@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.events.FeathersEventType;
 
 	import flexunit.framework.Assert;
 
@@ -109,6 +110,16 @@ package feathers.tests
 			this._navigator.activeScreen.dispatchEventWith(EVENT_CALL_FUNCTION);
 			Assert.assertTrue("Function passed to setFunctionForEvent() was not called after dispatching the event.", this._functionWasCalled);
 		}
+
+		[Test]
+		public function testRemoveScreenOnTransitionCompleteEvent():void
+		{
+			this.addScreenA();
+			this.addScreenB();
+			this._navigator.showScreen(SCREEN_A_ID);
+			this._navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, removeScreenA);
+			this._navigator.showScreen(SCREEN_B_ID);
+		}
 		
 		private function addScreenA():void
 		{
@@ -129,6 +140,11 @@ package feathers.tests
 		private function eventFunction():void
 		{
 			this._functionWasCalled = true;
+		}
+
+		private function removeScreenA():void
+		{
+			this._navigator.removeScreen(SCREEN_A_ID);
 		}
 	}
 }

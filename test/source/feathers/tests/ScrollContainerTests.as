@@ -40,7 +40,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testAutoSizeWithBackground():void
+		public function testAutoSizeWithBackgroundAndNoChildren():void
 		{
 			this._container.backgroundSkin = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 			this._container.validate();
@@ -48,6 +48,17 @@ package feathers.tests
 				BACKGROUND_WIDTH, this._container.width);
 			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._container.height);
+		}
+
+		[Test]
+		public function testAutoSizeModeStage():void
+		{
+			this._container.autoSizeMode = ScrollContainer.AUTO_SIZE_MODE_STAGE;
+			this._container.validate();
+			Assert.assertStrictlyEquals("The width of the scroll container was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+				this._container.stage.stageWidth, this._container.width);
+			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+				this._container.stage.stageHeight, this._container.height);
 		}
 
 		[Test]
@@ -170,6 +181,44 @@ package feathers.tests
 				originalWidth === this._container.width);
 			Assert.assertFalse("The height of the layout group was not changed.",
 				originalHeight === this._container.height);
+		}
+
+		[Test]
+		public function testMaxScrollPositionWithOneChildAndSameDimensions():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._container.addChild(child);
+			this._container.validate();
+			Assert.assertStrictlyEquals("The maxHorizontalScrollPosition of the scroll container was not calculated correctly.",
+				0, this._container.maxHorizontalScrollPosition);
+			Assert.assertStrictlyEquals("The maxVerticalScrollPosition of the scroll container was not calculated correctly.",
+				0, this._container.maxVerticalScrollPosition);
+		}
+
+		[Test]
+		public function testMaxScrollPositionWithSmallerChild():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._container.addChild(child);
+			this._container.setSize(ITEM_WIDTH * 3, ITEM_HEIGHT * 3);
+			this._container.validate();
+			Assert.assertStrictlyEquals("The maxHorizontalScrollPosition of the scroll container was not calculated correctly.",
+				0, this._container.maxHorizontalScrollPosition);
+			Assert.assertStrictlyEquals("The maxVerticalScrollPosition of the scroll container was not calculated correctly.",
+				0, this._container.maxVerticalScrollPosition);
+		}
+
+		[Test]
+		public function testMaxScrollPositionWithLargerChild():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._container.addChild(child);
+			this._container.setSize(ITEM_WIDTH - 10, ITEM_HEIGHT - 10);
+			this._container.validate();
+			Assert.assertStrictlyEquals("The maxHorizontalScrollPosition of the scroll container was not calculated correctly when scrolling is required.",
+				child.width - this._container.width, this._container.maxHorizontalScrollPosition);
+			Assert.assertStrictlyEquals("The maxVerticalScrollPosition of the scroll container was not calculated correctly when scrolling is required.",
+				child.height - this._container.height, this._container.maxVerticalScrollPosition);
 		}
 	}
 }

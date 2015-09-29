@@ -97,7 +97,7 @@ package feathers.tests
 			this._group.validate();
 			var maxChildWidth:Number = Math.max(CHILD1_WIDTH, CHILD2_WIDTH);
 			Assert.assertStrictlyEquals("VerticalLayout width not equal to max width of children.", maxChildWidth, this._group.width);
-			Assert.assertStrictlyEquals("VerticalLayout height not equal to sum of child widths.", CHILD1_HEIGHT + CHILD2_HEIGHT, this._group.height);
+			Assert.assertStrictlyEquals("VerticalLayout height not equal to sum of child heights.", CHILD1_HEIGHT + CHILD2_HEIGHT, this._group.height);
 		}
 
 		[Test]
@@ -114,6 +114,24 @@ package feathers.tests
 			var maxChildWidth:Number = Math.max(CHILD1_WIDTH, CHILD2_WIDTH);
 			Assert.assertStrictlyEquals("VerticalLayout width not equal to sum of left and right padding and max width of children.", maxChildWidth + PADDING_LEFT + PADDING_RIGHT, this._group.width);
 			Assert.assertStrictlyEquals("VerticalLayout height not equal to sum of top and bottom padding, gap, and sum of child heights.", CHILD1_HEIGHT + CHILD2_HEIGHT + GAP + PADDING_TOP + PADDING_BOTTOM, this._group.height);
+		}
+
+		[Test]
+		public function testWidthWithMaxWidthLargerThanChild():void
+		{
+			this._group.maxWidth = CHILD1_WIDTH + 100;
+			this._group.addChild(new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff));
+			this._group.validate();
+			Assert.assertStrictlyEquals("VerticalLayout width not equal to child width when maxWidth is larger than child width.", CHILD1_WIDTH, this._group.width);
+		}
+
+		[Test]
+		public function testWidthWithMaxWidthSmallerThanChild():void
+		{
+			this._group.maxWidth = CHILD1_WIDTH / 2;
+			this._group.addChild(new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff));
+			this._group.validate();
+			Assert.assertStrictlyEquals("VerticalLayout width not equal to maxWidth when maxWidth is smaller than child width.", this._group.maxWidth, this._group.width);
 		}
 
 		[Test]
@@ -141,7 +159,7 @@ package feathers.tests
 			this._group.maxHeight = CHILD1_HEIGHT / 2;
 			this._group.addChild(new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff));
 			this._group.validate();
-			Assert.assertStrictlyEquals("VerticalLayout height not equal to maxHeight of child when maxHeight is smaller than child width.", this._group.maxHeight, this._group.height);
+			Assert.assertStrictlyEquals("VerticalLayout height not equal to maxHeight when maxHeight is smaller than child height.", this._group.maxHeight, this._group.height);
 		}
 
 		[Test]

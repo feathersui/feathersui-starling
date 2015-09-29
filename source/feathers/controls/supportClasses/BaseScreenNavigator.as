@@ -742,6 +742,7 @@ package feathers.controls.supportClasses
 				var activeScreen:DisplayObject = this._activeScreen;
 				var previousScreen:DisplayObject = this._previousScreenInTransition;
 				var previousScreenID:String = this._previousScreenInTransitionID;
+				item = IScreenNavigatorItem(this._screens[previousScreenID]);
 				this._previousScreenInTransition = null;
 				this._previousScreenInTransitionID = null;
 				if(previousScreen)
@@ -759,7 +760,6 @@ package feathers.controls.supportClasses
 				this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 				if(previousScreen)
 				{
-					item = IScreenNavigatorItem(this._screens[previousScreenID]);
 					if(previousScreen is IScreen)
 					{
 						var screen:IScreen = IScreen(previousScreen);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:54878951a384ec73fae4f96a3fdc95f3:2eca4b1bf528c8cf49e31f9357c708cb:bd4b57f46e4d0b4891de5debabaa5c30$ -->
+<!-- $TexturePacker:SmartUpdate:60838bf78c71389e339cc4976737fa25:75770cf18f6a9e37053c3c15926aafb7:bd4b57f46e4d0b4891de5debabaa5c30$ -->
 <TextureAtlas imagePath="metalworks_mobile.png">
     <SubTexture name="background-disabled-skin" x="471" y="605" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="129" y="636" width="32" height="32"/>
@@ -68,6 +68,7 @@
     <SubTexture name="radio-selected-up-icon" x="393" y="658" width="32" height="32"/>
     <SubTexture name="search-icon-disabled" x="67" y="441" rotated="true" width="19" height="18"/>
     <SubTexture name="search-icon" x="409" y="459" rotated="true" width="19" height="18"/>
+    <SubTexture name="seek-slider-progress-skin" x="429" y="658" width="32" height="32"/>
     <SubTexture name="spinner-list-background-skin" x="3" y="429" rotated="true" width="88" height="8"/>
     <SubTexture name="spinner-list-selection-overlay-skin" x="95" y="433" rotated="true" width="88" height="7"/>
     <SubTexture name="tab-down-skin" x="253" y="271" width="88" height="88"/>

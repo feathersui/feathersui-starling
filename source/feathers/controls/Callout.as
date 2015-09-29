@@ -301,6 +301,13 @@ package feathers.controls
 		 *     //set properties here!
 		 *     return callout;
 		 * };</listing>
+		 * 
+		 * <p>Note: the default callout factory sets the following properties:</p>
+		 *
+		 * <listing version="3.0">
+		 * callout.closeOnTouchBeganOutside = true;
+		 * callout.closeOnTouchEndedOutside = true;
+		 * callout.closeOnKeys = new &lt;uint&gt;[Keyboard.BACK, Keyboard.ESCAPE];</listing>
 		 *
 		 * @see #show()
 		 */
@@ -1725,6 +1732,33 @@ package feathers.controls
 				return result;
 			}
 
+			if(this._content is IFeathersControl)
+			{
+				//we only adjust the minimum and maximum dimensions of the
+				//content when it won't fit into the callout's minimum or
+				//maximum dimensions
+				var minWidth:Number = this._minWidth - this._paddingLeft - this._paddingRight;
+				var maxWidth:Number = this._maxWidth - this._paddingLeft - this._paddingRight;
+				var minHeight:Number = this._minHeight - this._paddingTop - this._paddingBottom;
+				var maxHeight:Number = this._maxHeight - this._paddingTop - this._paddingBottom;
+				var feathersContent:IFeathersControl = IFeathersControl(this._content);
+				if(feathersContent.minWidth < minWidth)
+				{
+					feathersContent.minWidth = minWidth;
+				}
+				if(feathersContent.maxWidth > maxWidth)
+				{
+					feathersContent.maxWidth = maxWidth;
+				}
+				if(feathersContent.minHeight < minHeight)
+				{
+					feathersContent.minHeight = minHeight;
+				}
+				if(feathersContent.maxHeight > maxHeight)
+				{
+					feathersContent.maxHeight = maxHeight;
+				}
+			}
 			if(this._content is IValidating)
 			{
 				IValidating(this._content).validate();
@@ -1788,8 +1822,24 @@ package feathers.controls
 					newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
 				}
 			}
-			result.x = Math.max(this._minWidth, Math.min(this._maxWidth, newWidth));
-			result.y = Math.max(this._minHeight,  Math.min(this._maxHeight, newHeight));
+			if(newWidth < this._minWidth)
+			{
+				newWidth = this._minWidth;
+			}
+			else if(newWidth > this._maxWidth)
+			{
+				newWidth = this._maxWidth;
+			}
+			if(newHeight < this._minHeight)
+			{
+				newHeight = this._minHeight;
+			}
+			else if(newHeight > this._maxHeight)
+			{
+				newHeight = this._maxHeight;
+			}
+			result.x = newWidth;
+			result.y = newHeight;
 			return result;
 		}
 
@@ -1896,6 +1946,9 @@ package feathers.controls
 				//floating point errors.
 				if(difference > FUZZY_CONTENT_DIMENSIONS_PADDING)
 				{
+					//we prefer not to set the width property of the content
+					//because that stops it from being able to resize, but
+					//sometimes, it's required.
 					this._content.width = contentWidth;
 				}
 				var contentHeight:Number = backgroundHeight - this._paddingTop - this._paddingBottom;

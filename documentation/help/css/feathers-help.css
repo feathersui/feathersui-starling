@@ -195,6 +195,21 @@ aside.question
 	background: #f4faec url(../images/warning.png) 16px 28px no-repeat;
 }
 
+aside.info pre.code, aside.info pre.sourceCode
+{
+	background: #dce4ea;
+}
+
+aside.warn pre.code, aside.warn pre.sourceCode
+{
+	background: #eae4dc;
+}
+
+aside.question pre.code, aside.question pre.sourceCode
+{
+	background: #e4eadc;
+}
+
 article img
 {
 	max-width: 100%;

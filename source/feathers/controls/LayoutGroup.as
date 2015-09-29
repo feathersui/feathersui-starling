@@ -471,6 +471,10 @@ package feathers.controls
 		 */
 		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
 		{
+			if(index >= 0 && index < this.items.length)
+			{
+				this.items.splice(index, 1);
+			}
 			var child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
 			{
@@ -480,7 +484,6 @@ package feathers.controls
 			{
 				child.removeEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
 			}
-			this.items.splice(index, 1);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			return child;
 		}
@@ -670,24 +673,8 @@ package feathers.controls
 				{
 					this.handleManualLayout();
 				}
-				var width:Number = this._layoutResult.contentWidth;
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-					this.originalBackgroundWidth > width)
-				{
-					width = this.originalBackgroundWidth;
-				}
-				var height:Number = this._layoutResult.contentHeight;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-					this.originalBackgroundHeight > height)
-				{
-					height = this.originalBackgroundHeight;
-				}
-				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
-				{
-					width = this.stage.stageWidth;
-					height = this.stage.stageHeight;
-				}
-				sizeInvalid = this.setSizeInternal(width, height, false) || sizeInvalid;
+				this.handleLayoutResult();
+				
 				if(this.currentBackgroundSkin)
 				{
 					this.currentBackgroundSkin.width = this.actualWidth;
@@ -800,6 +787,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function handleLayoutResult():void
+		{
+			this.setSizeInternal(this._layoutResult.viewPortWidth,
+					this._layoutResult.viewPortHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function handleManualLayout():void
 		{
 			var maxX:Number = this.viewPortBounds.explicitWidth;
@@ -844,6 +840,26 @@ package feathers.controls
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = maxX;
 			this._layoutResult.contentHeight = maxY;
+			var minWidth:Number = this.viewPortBounds.minWidth;
+			var minHeight:Number = this.viewPortBounds.minHeight;
+			if(maxX < minWidth)
+			{
+				maxX = minWidth;
+			}
+			if(maxY < minHeight)
+			{
+				maxY = minHeight;
+			}
+			var maxWidth:Number = this.viewPortBounds.maxWidth;
+			var maxHeight:Number = this.viewPortBounds.maxHeight;
+			if(maxX > maxWidth)
+			{
+				maxX = maxWidth;
+			}
+			if(maxY > maxHeight)
+			{
+				maxY = maxHeight;
+			}
 			this._layoutResult.viewPortWidth = maxX;
 			this._layoutResult.viewPortHeight = maxY;
 		}

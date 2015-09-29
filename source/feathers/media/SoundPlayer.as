@@ -23,8 +23,37 @@ package feathers.media
 	import starling.events.Event;
 
 	/**
+	 * Dispatched when the MP3 ID3 metadata becomes available on the
+	 * <code>Sound</code> instance.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.media.ID3Info</code>
+	 *   instance returned by the <code>id3</code> property of the
+	 *   <code>Sound</code> instance.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 * 
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html#id3 flash.media.Sound.id3
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.METADATA_RECEIVED
+	 */
+	[Event(name="metadataReceived",type="starling.events.Event")]
+
+	/**
 	 * Dispatched periodically when a media player's content is loading to
-	 * indicate the current progress.
+	 * indicate the current progress. The <code>bytesLoaded</code> and
+	 * <code>bytesTotal</code> properties may be accessed to determine the
+	 * exact number of bytes loaded.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -41,6 +70,9 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #bytesLoaded
+	 * @see #bytesTotal
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 	 */
@@ -161,7 +193,7 @@ package feathers.media
 	 * 
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 */
-	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer
+	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer, IProgressiveMediaPlayer
 	{
 		/**
 		 * @private
@@ -286,6 +318,19 @@ package feathers.media
 			else if(this._soundSource is Sound)
 			{
 				this._sound = Sound(this._soundSource);
+				var newTotalTime:Number = this._sound.length / 1000;
+				if(this._totalTime !== newTotalTime)
+				{
+					this._totalTime = newTotalTime;
+					this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+				}
+				if(this._sound.isBuffering)
+				{
+					this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
+					this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
+					this._sound.addEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+					this._sound.addEventListener(flash.events.Event.ID3, sound_id3Handler);
+				}
 			}
 			else if(this._soundSource === null)
 			{
@@ -293,7 +338,7 @@ package feathers.media
 			}
 			else
 			{
-				throw new ArgumentError("Invalid source type for AudioPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
+				throw new ArgumentError("Invalid source type for SoundPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
 			}
 			if(this._autoPlay && this._sound)
 			{
@@ -330,6 +375,36 @@ package feathers.media
 		public function get isLoaded():Boolean
 		{
 			return this._isLoaded;
+		}
+
+		/**
+		 * @copy feathers.media.IProgressiveMediaPlayer#bytesLoaded
+		 * 
+		 * @see #bytesTotal
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 */
+		public function get bytesLoaded():uint
+		{
+			if(!this._sound)
+			{
+				return 0;
+			}
+			return this._sound.bytesLoaded;
+		}
+
+		/**
+		 * @copy feathers.media.IProgressiveMediaPlayer#bytesTotal
+		 *
+		 * @see #bytesLoaded
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 */
+		public function get bytesTotal():uint
+		{
+			if(!this._sound)
+			{
+				return 0;
+			}
+			return this._sound.bytesTotal;
 		}
 
 		/**
@@ -493,7 +568,7 @@ package feathers.media
 		{
 			//return to the beginning
 			this.stop();
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(starling.events.Event.COMPLETE);
 			if(this._loop)
 			{
 				this.play();
@@ -518,13 +593,15 @@ package feathers.media
 			{
 				this._sound.removeEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 				this._sound.removeEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
-				this._sound.removeEventListener(Event.COMPLETE, sound_completeHandler);
+				this._sound.removeEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+				this._sound.removeEventListener(flash.events.Event.ID3, sound_id3Handler);
 				this._sound = null;
 			}
 			this._sound = new Sound();
 			this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
 			this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
-			this._sound.addEventListener(Event.COMPLETE, sound_completeHandler);
+			this._sound.addEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+			this._sound.addEventListener(flash.events.Event.ID3, sound_id3Handler);
 			this._sound.load(request);
 		}
 
@@ -549,6 +626,14 @@ package feathers.media
 			this._isLoading = false;
 			this._isLoaded = true;
 			this.dispatchEventWith(MediaPlayerEventType.LOAD_COMPLETE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function sound_id3Handler(event:flash.events.Event):void
+		{
+			this.dispatchEventWith(MediaPlayerEventType.METADATA_RECEIVED, false, this._sound.id3);
 		}
 
 		/**

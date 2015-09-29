@@ -69,7 +69,7 @@ package feathers.tests
 		[Test]
 		public function testInteractiveSelectionChange():void
 		{
-			var beforeSelectedIndex:Boolean = this._tabBar.selectedIndex;
+			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
 			var hasChanged:Boolean = false;
 			this._tabBar.addEventListener(Event.CHANGE, function(event:Event):void
 			{

@@ -107,6 +107,32 @@ package feathers.media
 	[Event(name="soundTransformChange",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the video metadata becomes available with the
+	 * <code>onMetaData</code> callback from the <code>NetStream</code> instance.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The metadata object passed with the
+	 *   <code>onMetaData</code> callback from the <code>NetStream</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 * 
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#event:onMetaData flash.net.NetStream onMetaData callback
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.METADATA_RECEIVED
+	 */
+	[Event(name="metadataReceived",type="starling.events.Event")]
+
+	/**
 	 * Dispatched when the video texture is ready to be rendered. Indicates that
 	 * the <code>texture</code> property will return a
 	 * <code>starling.textures.Texture</code> that may be displayed in an
@@ -133,6 +159,35 @@ package feathers.media
 	 * @eventType starling.events.Event.READY
 	 */
 	[Event(name="ready",type="starling.events.Event")]
+
+	/**
+	 * Dispatched periodically when a media player's content is loading to
+	 * indicate the current progress. The <code>bytesLoaded</code> and
+	 * <code>bytesTotal</code> properties may be accessed to determine the
+	 * exact number of bytes loaded.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>A numeric value between <code>0</code>
+	 *   and <code>1</code> that indicates how much of the media has loaded so far.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #bytesLoaded
+	 * @see #bytesTotal
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+	 */
+	[Event(name="loadProgress",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the <code>flash.net.NetStream</code> object dispatches
@@ -174,7 +229,7 @@ package feathers.media
 	 *
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
 	 */
-	public class VideoPlayer extends BaseTimedMediaPlayer implements IVideoPlayer
+	public class VideoPlayer extends BaseTimedMediaPlayer implements IVideoPlayer, IProgressiveMediaPlayer
 	{
 		/**
 		 * @private
@@ -218,6 +273,16 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
+
+		/**
+		 * @private
+		 */
+		protected static function defaultNetConnectionFactory():NetConnection
+		{
+			var connection:NetConnection = new NetConnection();
+			connection.connect(null);
+			return connection;
+		}
 		
 		/**
 		 * Constructor.
@@ -420,6 +485,7 @@ package feathers.media
 				this._texture.dispose();
 				this._texture = null;
 			}
+			this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 			if(!value)
 			{
 				//if we're not playing anything, we shouldn't keep the NetStream
@@ -440,6 +506,9 @@ package feathers.media
 				this._totalTime = 0;
 				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
 			}
+			//same with the bytes loaded and total
+			this._bytesLoaded = 0;
+			this._bytesTotal = 0;
 			if(this._autoPlay)
 			{
 				this.play();
@@ -638,6 +707,85 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _netConnectionFactory:Function = defaultNetConnectionFactory;
+
+		/**
+		 * Creates the <code>flash.net.NetConnection</code> object used to play
+		 * the video, and calls the <code>connect()</code> method. By default, a
+		 * value of <code>null</code> is passed to the <code>connect()</code>
+		 * method. To pass different parameters, you may use a custom
+		 * <code>netConnectionFactory</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function():NetConnection</pre>
+		 *
+		 * <p>In the following example, a custom factory for the
+		 * <code>NetConnection</code> is passed to the video player:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.netConnectionFactory = function():NetConnection
+		 * {
+		 *     var connection:NetConnection = new NetConnection();
+		 *     connection.connect( command );
+		 *     return connection;
+		 * };</listing>
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetConnection.html flash.net.NetConnection
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetConnection.html#connect() flash.net.NetConnection.connect()
+		 */
+		public function get netConnectionFactory():Function
+		{
+			return this._netConnectionFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set netConnectionFactory(value:Function):void
+		{
+			if(this._netConnectionFactory === value)
+			{
+				return;
+			}
+			this._netConnectionFactory = value;
+			this.stop();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _bytesLoaded:uint = 0;
+
+		/**
+		 * @copy feathers.media.IProgressiveMediaPlayer#bytesLoaded
+		 *
+		 * @see #bytesTotal
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 */
+		public function get bytesLoaded():uint
+		{
+			return this._bytesLoaded;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _bytesTotal:uint = 0;
+
+		/**
+		 * @copy feathers.media.IProgressiveMediaPlayer#bytesTotal
+		 *
+		 * @see #bytesLoaded
+		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
+		 */
+		public function get bytesTotal():uint
+		{
+			return this._bytesTotal;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function get hasVisibleArea():Boolean
 		{
 			if(this._isFullScreen)
@@ -737,8 +885,8 @@ package feathers.media
 			}
 			if(!this._netStream)
 			{
-				this._netConnection = new NetConnection();
-				this._netConnection.connect(null);
+				var netConnectionFactory:Function = this._netConnectionFactory !== null ? this._netConnectionFactory : defaultNetConnectionFactory;
+				this._netConnection = netConnectionFactory();
 				this._netStream = new NetStream(this._netConnection);
 				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData, this.netStream_onPlayStatus);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
@@ -751,7 +899,7 @@ package feathers.media
 			this._netStream.soundTransform = this._soundTransform;
 			if(this._texture)
 			{
-				this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 				this._netStream.resume();
 			}
 			else
@@ -776,7 +924,7 @@ package feathers.media
 			{
 				throw new IllegalOperationError(NO_VIDEO_SOURCE_PAUSE_ERROR);
 			}
-			this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+			this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 			this._netStream.pause();
 		}
 
@@ -812,10 +960,41 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function videoPlayer_enterFrameHandler(event:Event):void
+		protected function videoPlayer_enterFrameHandler(event:starling.events.Event):void
 		{
 			this._currentTime = this._netStream.time;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function videoPlayer_progress_enterFrameHandler(event:starling.events.Event):void
+		{
+			var newBytesTotal:Number = this._netStream.bytesTotal;
+			if(newBytesTotal > 0)
+			{
+				var needsDispatch:Boolean = false;
+				var newBytesLoaded:Number = this._netStream.bytesLoaded;
+				if(this._bytesTotal !== newBytesTotal)
+				{
+					this._bytesTotal = newBytesTotal;
+					needsDispatch = true;
+				}
+				if(this._bytesLoaded !== newBytesLoaded)
+				{
+					this._bytesLoaded = newBytesLoaded;
+					needsDispatch = true;
+				}
+				if(needsDispatch)
+				{
+					this.dispatchEventWith(MediaPlayerEventType.LOAD_PROGRESS, false, newBytesLoaded / newBytesTotal);
+				}
+				if(newBytesLoaded === newBytesTotal)
+				{
+					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+				}
+			}
 		}
 
 		/**
@@ -838,8 +1017,19 @@ package feathers.media
 		{
 			this._isWaitingForTextureReady = false;
 			//the texture is ready to be displayed
-			this.dispatchEventWith(Event.READY);
-			this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+			this.dispatchEventWith(starling.events.Event.READY);
+			this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+			var bytesTotal:Number = this._netStream.bytesTotal;
+			if(this._bytesTotal === 0 && bytesTotal > 0)
+			{
+				this._bytesLoaded = this._netStream.bytesLoaded;
+				this._bytesTotal = bytesTotal;
+				this.dispatchEventWith(MediaPlayerEventType.LOAD_PROGRESS, false, this._bytesLoaded / bytesTotal);
+				if(this._bytesLoaded !== this._bytesTotal)
+				{
+					this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+				}
+			}
 		}
 
 		/**
@@ -866,6 +1056,7 @@ package feathers.media
 			this.dispatchEventWith(MediaPlayerEventType.DIMENSIONS_CHANGE);
 			this._totalTime = metadata.duration;
 			this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
+			this.dispatchEventWith(MediaPlayerEventType.METADATA_RECEIVED, false, metadata);
 		}
 
 		/**
@@ -882,7 +1073,7 @@ package feathers.media
 					if(this._isPlaying)
 					{
 						this.stop();
-						this.dispatchEventWith(Event.COMPLETE);
+						this.dispatchEventWith(starling.events.Event.COMPLETE);
 					}
 					break;
 				}
@@ -918,7 +1109,7 @@ package feathers.media
 					//restored, so we don't want _currentTime to get changed to
 					//0 when the Event.ENTER_FRAME listener is called one last
 					//time.
-					this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 					break;
 				}
 				case NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:
@@ -940,7 +1131,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		override protected function mediaPlayer_addedHandler(event:Event):void
+		override protected function mediaPlayer_addedHandler(event:starling.events.Event):void
 		{
 			if(this._ignoreDisplayListEvents)
 			{
@@ -952,7 +1143,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		override protected function mediaPlayer_removedHandler(event:Event):void
+		override protected function mediaPlayer_removedHandler(event:starling.events.Event):void
 		{
 			if(this._ignoreDisplayListEvents)
 			{
