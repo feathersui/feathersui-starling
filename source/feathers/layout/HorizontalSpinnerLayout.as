@@ -102,6 +102,7 @@ package feathers.layout
 		 */
 		protected var _gap:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The space, in pixels, between items.
 		 *
@@ -125,6 +126,7 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
@@ -155,6 +157,7 @@ package feathers.layout
 		 */
 		protected var _paddingTop:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The minimum space, in pixels, above the items.
 		 *
@@ -183,6 +186,7 @@ package feathers.layout
 		 */
 		protected var _paddingBottom:Number = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * The minimum space, in pixels, above the items.
 		 *
@@ -211,6 +215,7 @@ package feathers.layout
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
@@ -245,6 +250,7 @@ package feathers.layout
 		 */
 		protected var _useVirtualLayout:Boolean = true;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 *
@@ -273,6 +279,7 @@ package feathers.layout
 		 */
 		protected var _requestedColumnCount:int = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * Requests that the layout set the view port dimensions to display a
 		 * specific number of columns (plus gaps and padding), if possible. If
@@ -311,6 +318,7 @@ package feathers.layout
 		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
@@ -337,6 +345,7 @@ package feathers.layout
 		 */
 		protected var _afterVirtualizedItemCount:int = 0;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
@@ -363,6 +372,7 @@ package feathers.layout
 		 */
 		protected var _typicalItem:DisplayObject;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 *
@@ -393,6 +403,7 @@ package feathers.layout
 		 */
 		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
 
+		[Bindable(event="change")]
 		/**
 		 * If set to <code>true</code>, the width and height of the
 		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
@@ -431,6 +442,7 @@ package feathers.layout
 		 */
 		protected var _typicalItemWidth:Number = NaN;
 
+		[Bindable(event="change")]
 		/**
 		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
@@ -478,6 +490,7 @@ package feathers.layout
 		 */
 		protected var _typicalItemHeight:Number = NaN;
 
+		[Bindable(event="change")]
 		/**
 		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
 		 * for measurement. The measured dimensions of the typical item are used
