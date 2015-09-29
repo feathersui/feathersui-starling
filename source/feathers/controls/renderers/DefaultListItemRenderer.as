@@ -321,15 +321,16 @@ package feathers.controls.renderers
 		/**
 		 * @inheritDoc
 		 */
-		public function get owner():List
+		 // changed List to use full package to avoid haxe swc conflicts
+		public function get owner():feathers.controls.List
 		{
-			return List(this._owner);
+			return feathers.controls.List(this._owner);
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set owner(value:List):void
+		public function set owner(value:feathers.controls.List):void
 		{
 			if(this._owner == value)
 			{
@@ -343,7 +344,7 @@ package feathers.controls.renderers
 			this._owner = value;
 			if(this._owner)
 			{
-				var list:List = List(this._owner);
+				var list:feathers.controls.List = feathers.controls.List(this._owner);
 				this.isSelectableWithoutToggle = list.isSelectable;
 				if(list.allowMultipleSelection)
 				{
