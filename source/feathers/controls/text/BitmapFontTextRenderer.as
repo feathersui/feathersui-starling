@@ -32,10 +32,24 @@ package feathers.controls.text
 	import starling.textures.TextureSmoothing;
 
 	/**
-	 * Renders text using <code>starling.text.BitmapFont</code>.
+	 * Renders text using
+	 * <a href="http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts" target="_top">bitmap fonts</a>.
 	 *
-	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
-	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
+	 * <p>The following example shows how to use
+	 * <code>BitmapFontTextRenderer</code> with a <code>Label</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * var label:Label = new Label();
+	 * label.text = "I am the very model of a modern Major General";
+	 * label.textRendererFactory = function():ITextRenderer
+	 * {
+	 *     return new BitmapFontTextRenderer();
+	 * };
+	 * this.addChild( label );</listing>
+	 *
+	 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
+	 * @see ../../../../help/bitmap-font-text-renderer.html How to use the Feathers BitmapFontTextRenderer component
+	 * @see http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts Starling Wiki: Displaying Text with Bitmap Fonts
 	 */
 	public class BitmapFontTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
 	{

@@ -128,17 +128,33 @@ package feathers.controls.text
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
-	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
-	 * Flash Text Engine (FTE) that may be edited at runtime by the user. Draws
-	 * the text to <code>BitmapData</code> to convert to Starling textures.
-	 * Textures are completely managed by this component, and they will be
-	 * automatically disposed when the component is disposed from the stage.
+	 * Text that may be edited at runtime by the user with the
+	 * <code>TextInput</code> component, rendered with a native
+	 * <code>flash.text.engine.TextBlock</code> from
+	 * <a href="http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html" target="_top">Flash Text Engine</a>
+	 * (sometimes abbreviated as FTE). Draws the text to <code>BitmapData</code>
+	 * to convert to Starling textures. Textures are managed internally by this
+	 * component, and they will be automatically disposed when the component is
+	 * disposed.
 	 *
 	 * <p><strong>Warning:</strong> This text editor is intended for use in
 	 * desktop applications only, and it does not provide support for software
 	 * keyboards on mobile devices.</p>
 	 *
-	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
+	 * <p>The following example shows how to use
+	 * <code>TextBlockTextEditor</code> with a <code>TextInput</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * var input:TextInput = new TextInput();
+	 * input.textEditorFactory = function():ITextEditor
+	 * {
+	 *     return new TextBlockTextEditor();
+	 * };
+	 * this.addChild( input );</listing>
+	 *
+	 * @see feathers.controls.TextInput
+	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
+	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
 	public class TextBlockTextEditor extends TextBlockTextRenderer implements ITextEditor, INativeFocusOwner
@@ -206,7 +222,7 @@ package feathers.controls.text
 		protected var _selectionSkin:DisplayObject;
 
 		/**
-		 *
+		 * The skin that indicates the currently selected range of text.
 		 */
 		public function get selectionSkin():DisplayObject
 		{
@@ -241,7 +257,8 @@ package feathers.controls.text
 		protected var _cursorSkin:DisplayObject;
 
 		/**
-		 *
+		 * The skin that indicates the current position where text may be
+		 * entered.
 		 */
 		public function get cursorSkin():DisplayObject
 		{

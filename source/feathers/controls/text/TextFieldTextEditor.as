@@ -185,19 +185,33 @@ package feathers.controls.text
 	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
 
 	/**
-	 * A Feathers text editor that uses the native <code>flash.text.TextField</code>
-	 * class with its <code>type</code> property set to
-	 * <code>flash.text.TextInputType.INPUT</code>. Textures are completely
-	 * managed by this component, and they will be automatically disposed when
-	 * the component is disposed.
+	 * Text that may be edited at runtime by the user with the
+	 * <code>TextInput</code> component, using the native
+	 * <code>flash.text.TextField</code> class with its <code>type</code>
+	 * property set to <code>flash.text.TextInputType.INPUT</code>. When not in
+	 * focus, the <code>TextField</code> is drawn to <code>BitmapData</code> and
+	 * uploaded to a texture on the GPU. Textures are managed internally by this
+	 * component, and they will be automatically disposed when the component is
+	 * disposed.
 	 *
 	 * <p>For desktop apps, <code>TextFieldTextEditor</code> is recommended
 	 * instead of <code>StageTextTextEditor</code>. <code>StageTextTextEditor</code>
 	 * will still work in desktop apps, but it is more appropriate for mobile
 	 * apps.</p>
 	 *
-	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
+	 * <p>The following example shows how to use
+	 * <code>TextFieldTextEditor</code> with a <code>TextInput</code>:</p>
 	 *
+	 * <listing version="3.0">
+	 * var input:TextInput = new TextInput();
+	 * input.textEditorFactory = function():ITextEditor
+	 * {
+	 *     return new TextFieldTextEditor();
+	 * };
+	 * this.addChild( input );</listing>
+	 *
+	 * @see feathers.controls.TextInput
+	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
 	public class TextFieldTextEditor extends FeathersControl implements ITextEditor, INativeFocusOwner, IStateObserver

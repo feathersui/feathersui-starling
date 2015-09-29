@@ -182,16 +182,34 @@ package feathers.controls.text
 	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
 
 	/**
-	 * A Feathers text editor that uses the native <code>flash.text.StageText</code>
-	 * class in Adobe AIR, and the custom <code>feathers.text.StageTextField</code>
-	 * class (that simulates <code>StageText</code> using
-	 * <code>flash.text.TextField</code>) in Adobe Flash Player.
+	 * Text that may be edited at runtime by the user with the
+	 * <code>TextInput</code> component, rendered with the native
+	 * <code>flash.text.StageText</code> class in Adobe AIR and the custom
+	 * <code>feathers.text.StageTextField</code> class in Adobe Flash Player
+	 * (<code>StageTextField</code> simulates <code>StageText</code> using
+	 * <code>flash.text.TextField</code>). When not in focus, the
+	 * <code>StageText</code> (or <code>StageTextField</code>) is drawn to
+	 * <code>BitmapData</code> and uploaded to a texture on the GPU. Textures
+	 * are managed internally by this component, and they will be automatically
+	 * disposed when the component is disposed.
 	 *
 	 * <p>Note: Due to quirks with how the runtime manages focus with
 	 * <code>StageText</code>, <code>StageTextTextEditor</code> is not
 	 * compatible with the Feathers <code>FocusManager</code>.</p>
 	 *
-	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
+	 * <p>The following example shows how to use
+	 * <code>StageTextTextEditor</code> with a <code>TextInput</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * var input:TextInput = new TextInput();
+	 * input.textEditorFactory = function():ITextEditor
+	 * {
+	 *     return new StageTextTextEditor();
+	 * };
+	 * this.addChild( input );</listing>
+	 *
+	 * @see feathers.controls.TextInput
+	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
 	 */
