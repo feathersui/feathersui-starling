@@ -14,7 +14,7 @@ package feathers.controls
 	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.VerticalSpinnerLayout;
 	import feathers.skins.IStyleProvider;
-
+	import feathers.controls.List;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -54,7 +54,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/spinner-list.html How to use the Feathers SpinnerList component
 	 */
-	public class SpinnerList extends List
+	public class SpinnerList extends feathers.controls.List
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>SpinnerList</code>
