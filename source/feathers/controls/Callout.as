@@ -1732,31 +1732,119 @@ package feathers.controls
 				return result;
 			}
 
+			var minWidth:Number = this._minWidth;
+			var maxWidth:Number = this._maxWidth;
+			var minHeight:Number = this._minHeight;
+			var maxHeight:Number = this._maxHeight;
+			//the background skin dimensions affect the minimum width
+			if(this._originalBackgroundWidth === this._originalBackgroundWidth && //!isNaN
+				minWidth < this._originalBackgroundWidth)
+			{
+				minWidth = this._originalBackgroundWidth;
+			}
+			if(this._originalBackgroundHeight === this._originalBackgroundHeight && //!isNaN
+				minHeight < this._originalBackgroundHeight)
+			{
+				minHeight = this._originalBackgroundHeight;
+			}
+			//the width of top or bottom arrow (plus padding) affect the minimum
+			//width too
+			if(arrowPosition === ARROW_POSITION_TOP && this._topArrowSkin)
+			{
+				var minWidthWithTopArrow:Number = this._topArrowSkin.width + this._paddingLeft + this._paddingRight;
+				if(minWidth < minWidthWithTopArrow)
+				{
+					minWidth = minWidthWithTopArrow;
+				}
+			}
+			if(arrowPosition === ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
+			{
+				var minWidthWithBottomArrow:Number = this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight;
+				if(minWidth < minWidthWithBottomArrow)
+				{
+					minWidth = minWidthWithBottomArrow;
+				}
+			}
+			//the height of left or right arrow (plus padding) affect the
+			//minimum height too
+			if(arrowPosition === ARROW_POSITION_LEFT && this._leftArrowSkin)
+			{
+				var minHeightWithLeftArrow:Number = this._leftArrowSkin.height + this._paddingTop + this._paddingBottom;
+				if(minHeight < minHeightWithLeftArrow)
+				{
+					minHeight = minHeightWithLeftArrow;
+				}
+			}
+			if(arrowPosition === ARROW_POSITION_RIGHT && this._rightArrowSkin)
+			{
+				var minHeightWithRightArrow:Number = this._rightArrowSkin.height + this._paddingTop + this._paddingBottom;
+				if(minHeight < minHeightWithRightArrow)
+				{
+					minHeight = minHeightWithRightArrow;
+				}
+			}
+			//the dimensions of the stage (plus stage padding) affect the
+			//maximum width and height
+			if(this.stage)
+			{
+				var stageMaxWidth:Number = this.stage.stageWidth - stagePaddingLeft - stagePaddingRight;
+				var stageMaxHeight:Number = this.stage.stageHeight - stagePaddingTop - stagePaddingBottom;
+				if(maxWidth > stageMaxWidth)
+				{
+					maxWidth = stageMaxWidth;
+				}
+				if(maxHeight > stageMaxHeight)
+				{
+					maxHeight = stageMaxHeight;
+				}
+			}
+			//the width of the left or right arrow skin affects the minimum and
+			//maximum width of the content
+			var leftOrRightArrowWidth:Number = 0;
+			if(arrowPosition === ARROW_POSITION_LEFT && this._leftArrowSkin)
+			{
+				leftOrRightArrowWidth += this._leftArrowSkin.width + this._leftArrowGap;
+			}
+			else if(arrowPosition === ARROW_POSITION_RIGHT && this._rightArrowSkin)
+			{
+				leftOrRightArrowWidth += this._rightArrowSkin.width + this._rightArrowGap;
+			}
+			//the height of the top or bottom arrow skin affects the minimum and
+			//maximum height of the content
+			var topOrBottomArrowHeight:Number = 0;
+			if(arrowPosition === ARROW_POSITION_TOP && this._topArrowSkin)
+			{
+				topOrBottomArrowHeight += this._topArrowSkin.height + this._topArrowGap;
+			}
+			else if(arrowPosition === ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
+			{
+				topOrBottomArrowHeight += this._bottomArrowSkin.height + this._bottomArrowGap;
+			}
 			if(this._content is IFeathersControl)
 			{
+				var minContentWidth:Number = minWidth - leftOrRightArrowWidth - this._paddingLeft - this._paddingRight;
+				var maxContentWidth:Number = maxWidth - leftOrRightArrowWidth - this._paddingLeft - this._paddingRight;
+				var minContentHeight:Number = minHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom;
+				var maxContentHeight:Number = maxHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom;
 				//we only adjust the minimum and maximum dimensions of the
 				//content when it won't fit into the callout's minimum or
 				//maximum dimensions
-				var minWidth:Number = this._minWidth - this._paddingLeft - this._paddingRight;
-				var maxWidth:Number = this._maxWidth - this._paddingLeft - this._paddingRight;
-				var minHeight:Number = this._minHeight - this._paddingTop - this._paddingBottom;
-				var maxHeight:Number = this._maxHeight - this._paddingTop - this._paddingBottom;
 				var feathersContent:IFeathersControl = IFeathersControl(this._content);
-				if(feathersContent.minWidth < minWidth)
+				if(feathersContent.minWidth < minContentWidth)
 				{
-					feathersContent.minWidth = minWidth;
+					feathersContent.minWidth = minContentWidth;
 				}
-				if(feathersContent.maxWidth > maxWidth)
+				if(feathersContent.maxWidth > maxContentWidth)
 				{
-					feathersContent.maxWidth = maxWidth;
+					feathersContent.maxWidth = maxContentWidth;
 				}
-				if(feathersContent.minHeight < minHeight)
+				if(feathersContent.minHeight < minContentHeight)
 				{
-					feathersContent.minHeight = minHeight;
+					feathersContent.minHeight = minContentHeight;
 				}
-				if(feathersContent.maxHeight > maxHeight)
+				if(feathersContent.maxHeight > maxContentHeight)
 				{
-					feathersContent.maxHeight = maxHeight;
+					feathersContent.maxHeight = maxContentHeight;
 				}
 			}
 			if(this._content is IValidating)
@@ -1768,75 +1856,27 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._content.width + this._paddingLeft + this._paddingRight;
-				if(this._originalBackgroundWidth === this._originalBackgroundWidth) //!isNaN
+				newWidth = this._content.width + leftOrRightArrowWidth + this._paddingLeft + this._paddingRight;
+				if(newWidth < minWidth)
 				{
-					newWidth = Math.max(this._originalBackgroundWidth, newWidth);
+					newWidth = minWidth;
 				}
-				if(arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
+				else if(newWidth > maxWidth)
 				{
-					newWidth += this._leftArrowSkin.width + this._leftArrowGap;
-				}
-				if(arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
-				{
-					newWidth += this._rightArrowSkin.width + this._rightArrowGap;
-				}
-				if(arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
-				{
-					newWidth = Math.max(newWidth, this._topArrowSkin.width + this._paddingLeft + this._paddingRight);
-				}
-				if(arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
-				{
-					newWidth = Math.max(newWidth, this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight);
-				}
-				if(this.stage)
-				{
-					newWidth = Math.min(newWidth, this.stage.stageWidth - stagePaddingLeft - stagePaddingRight);
+					newWidth = maxWidth;
 				}
 			}
 			if(needsHeight)
 			{
-				newHeight = this._content.height + this._paddingTop + this._paddingBottom;
-				if(this._originalBackgroundHeight === this._originalBackgroundHeight) //!isNaN
+				newHeight = this._content.height + topOrBottomArrowHeight + this._paddingTop + this._paddingBottom;
+				if(newHeight < minHeight)
 				{
-					newHeight = Math.max(this._originalBackgroundHeight, newHeight);
+					newHeight = minHeight;
 				}
-				if(arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
+				else if(newHeight > maxHeight)
 				{
-					newHeight += this._topArrowSkin.height + this._topArrowGap;
+					newHeight = maxHeight;
 				}
-				if(arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
-				{
-					newHeight += this._bottomArrowSkin.height + this._bottomArrowGap;
-				}
-				if(arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
-				{
-					newHeight = Math.max(newHeight, this._leftArrowSkin.height + this._paddingTop + this._paddingBottom);
-				}
-				if(arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
-				{
-					newHeight = Math.max(newHeight, this._rightArrowSkin.height + this._paddingTop + this._paddingBottom);
-				}
-				if(this.stage)
-				{
-					newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
-				}
-			}
-			if(newWidth < this._minWidth)
-			{
-				newWidth = this._minWidth;
-			}
-			else if(newWidth > this._maxWidth)
-			{
-				newWidth = this._maxWidth;
-			}
-			if(newHeight < this._minHeight)
-			{
-				newHeight = this._minHeight;
-			}
-			else if(newHeight > this._maxHeight)
-			{
-				newHeight = this._maxHeight;
 			}
 			result.x = newWidth;
 			result.y = newHeight;
