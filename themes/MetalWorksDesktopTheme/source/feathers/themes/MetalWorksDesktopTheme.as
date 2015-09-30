@@ -65,7 +65,6 @@ package feathers.themes
 		{
 			super();
 			this.initialize();
-			this.dispatchEventWith(Event.COMPLETE);
 		}
 
 		/**

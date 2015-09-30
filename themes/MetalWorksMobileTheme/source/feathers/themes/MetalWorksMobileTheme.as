@@ -60,7 +60,6 @@ package feathers.themes
 		{
 			super(scaleToDPI);
 			this.initialize();
-			this.dispatchEventWith(Event.COMPLETE);
 		}
 
 		/**

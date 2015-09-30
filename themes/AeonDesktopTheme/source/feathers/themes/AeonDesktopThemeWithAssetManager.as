@@ -29,25 +29,7 @@ package feathers.themes
 	import starling.utils.AssetManager;
 
 	/**
-	 * Dispatched when the theme's assets are loaded, and the theme has
-	 * initialized. Feathers component will not be skinned automatically by the
-	 * theme until this event is dispatched.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The Starling instance that the theme
-	 *   is ready for.</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
+	 * @copy feathers.themes.IAsyncTheme#event:complete
 	 *
 	 * @eventType starling.events.Event.COMPLETE
 	 */
@@ -68,7 +50,7 @@ package feathers.themes
 	 *
 	 * @see http://feathersui.com/help/theme-assets.html
 	 */
-	public class AeonDesktopThemeWithAssetManager extends BaseAeonDesktopTheme implements IThemeWithAssetManager
+	public class AeonDesktopThemeWithAssetManager extends BaseAeonDesktopTheme implements IAsyncTheme
 	{
 		/**
 		 * @private
@@ -125,7 +107,7 @@ package feathers.themes
 		}
 
 		/**
-		 * @copy feathers.themes.IThemeWithAssetManager#isCompleteForStarling()
+		 * @copy feathers.themes.IAsyncTheme#isCompleteForStarling()
 		 */
 		public function isCompleteForStarling(starling:Starling):Boolean
 		{
