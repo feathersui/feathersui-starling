@@ -49,10 +49,11 @@ package feathers.controls.text
 
 	/**
 	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
-	 * Flash Text Engine (FTE), and draws it to <code>BitmapData</code> to
-	 * convert to Starling textures. Textures are completely managed by this
-	 * component, and they will be automatically disposed when the component is
-	 * disposed.
+	 * <a href="http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html" target="_top">Flash Text Engine</a>
+	 * (sometimes abbreviated as FTE), and draws it to <code>BitmapData</code>
+	 * before uploading it to a texture on the GPU. Textures are managed
+	 * internally by this component, and they will be automatically disposed
+	 * when the component is disposed.
 	 *
 	 * <p>For longer passages of text, this component will stitch together
 	 * multiple individual textures both horizontally and vertically, as a grid,
@@ -60,7 +61,21 @@ package feathers.controls.text
 	 * exceeding the limits of some mobile devices, so use this component with
 	 * caution when displaying a lot of text.</p>
 	 *
-	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
+	 * <p>The following example shows how to use
+	 * <code>TextBlockTextRenderer</code> with a <code>Label</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * var label:Label = new Label();
+	 * label.text = "I am the very model of a modern Major General";
+	 * label.textRendererFactory = function():ITextRenderer
+	 * {
+	 *     return new TextBlockTextRenderer();
+	 * };
+	 * this.addChild( label );</listing>
+	 *
+	 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
+	 * @see ../../../../help/text-block-text-renderer.html How to use the Feathers TextBlockTextRenderer component
+	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
 	public class TextBlockTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver

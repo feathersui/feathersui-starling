@@ -13,7 +13,7 @@ package feathers.themes
 
 	/**
 	 * Dispatched when the theme's assets are loaded, and the theme has
-	 * initialized. Feathers component will not be skinned automatically by the
+	 * initialized. Feathers component cannot be skinned automatically by the
 	 * theme until this event is dispatched.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -24,27 +24,36 @@ package feathers.themes
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The Starling instance that the theme
-	 *   is ready for.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>Starling</code> instance that
+	 *   is associated with the assets that have finished loading.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #isCompleteForStarling()
 	 *
 	 * @eventType starling.events.Event.COMPLETE
 	 */
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
-	 * A theme that uses an AssetManager to load textures and other assets.
-	 * Dispatches <code>Event.COMPLETE</code> when the assets are loaded.
+	 * A theme that uses an asynchronous loading mechanism (such as the Starling
+	 * <code>AssetManager</code>), during initialization to load textures and
+	 * other assets. This type of theme may not be ready to style components
+	 * immediately, and it will dispatch <code>Event.COMPLETE</code> once the
+	 * it has fully initialized. Attempting to create Feathers components before
+	 * the theme has dispatched <code>Event.COMPLETE</code> may result in no
+	 * skins or even runtime errors.
 	 */
-	public interface IThemeWithAssetManager extends IFeathersEventDispatcher
+	public interface IAsyncTheme extends IFeathersEventDispatcher
 	{
 		/**
 		 * Indicates if the assets have been loaded and the theme has been
 		 * initialized for a specific Starling instance.
+		 * 
+		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
 		function isCompleteForStarling(starling:Starling):Boolean;
 	}

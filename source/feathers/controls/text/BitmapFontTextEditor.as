@@ -127,15 +127,28 @@ package feathers.controls.text
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
-	 * Renders text using <code>starling.text.BitmapFont</code> that may be
-	 * edited at runtime by the user.
+	 * Text that may be edited at runtime by the user with the
+	 * <code>TextInput</code> component, rendered with
+	 * <a href="http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts" target="_top">bitmap fonts</a>.
+	 * 
+	 * <p>The following example shows how to use
+	 * <code>BitmapFontTextEditor</code> with a <code>TextInput</code>:</p>
+	 * 
+	 * <listing version="3.0">
+	 * var input:TextInput = new TextInput();
+	 * input.textEditorFactory = function():ITextEditor
+	 * {
+	 *     return new BitmapFontTextEditor();
+	 * };
+	 * this.addChild( input );</listing>
 	 *
 	 * <p><strong>Warning:</strong> This text editor is intended for use in
 	 * desktop applications only, and it does not provide support for software
 	 * keyboards on mobile devices.</p>
 	 *
-	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
-	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
+	 * @see feathers.controls.TextInput
+	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
+	 * @see http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts Starling Wiki: Displaying Text with Bitmap Fonts
 	 */
 	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor, INativeFocusOwner
 	{
@@ -189,7 +202,7 @@ package feathers.controls.text
 		protected var _selectionSkin:DisplayObject;
 
 		/**
-		 *
+		 * The skin that indicates the currently selected range of text.
 		 */
 		public function get selectionSkin():DisplayObject
 		{
@@ -224,7 +237,8 @@ package feathers.controls.text
 		protected var _cursorSkin:DisplayObject;
 
 		/**
-		 *
+		 * The skin that indicates the current position where text may be
+		 * entered.
 		 */
 		public function get cursorSkin():DisplayObject
 		{

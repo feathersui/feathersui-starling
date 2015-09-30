@@ -40,9 +40,9 @@ package feathers.controls.text
 
 	/**
 	 * Renders text with a native <code>flash.text.TextField</code> and draws
-	 * it to <code>BitmapData</code> to convert to Starling textures. Textures
-	 * are completely managed by this component, and they will be automatically
-	 * disposed when the component is disposed.
+	 * it to <code>BitmapData</code> before uploading it to a texture on the
+	 * GPU. Textures are managed internally by this component, and they will be
+	 * automatically disposed when the component is disposed.
 	 *
 	 * <p>For longer passages of text, this component will stitch together
 	 * multiple individual textures both horizontally and vertically, as a grid,
@@ -50,7 +50,20 @@ package feathers.controls.text
 	 * exceeding the limits of some mobile devices, so use this component with
 	 * caution when displaying a lot of text.</p>
 	 *
-	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
+	 * <p>The following example shows how to use
+	 * <code>TextFieldTextRenderer</code> with a <code>Label</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * var label:Label = new Label();
+	 * label.text = "I am the very model of a modern Major General";
+	 * label.textRendererFactory = function():ITextRenderer
+	 * {
+	 *     return new TextFieldTextRenderer();
+	 * };
+	 * this.addChild( label );</listing>
+	 *
+	 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
+	 * @see ../../../../help/text-field-text-renderer.html How to use the Feathers TextFieldTextRenderer component
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
 	public class TextFieldTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver

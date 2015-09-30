@@ -25,28 +25,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.themes
 {
 
+	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.utils.AssetManager;
 
 	/**
-	 * Dispatched when the theme's assets are loaded, and the theme has
-	 * initialized. Feathers component will not be skinned automatically by the
-	 * theme until this event is dispatched.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
+	 * @copy feathers.themes.IAsyncTheme#event:complete
 	 *
 	 * @eventType starling.events.Event.COMPLETE
 	 */
@@ -67,7 +51,7 @@ package feathers.themes
 	 *
 	 * @see http://feathersui.com/help/theme-assets.html
 	 */
-	public class TopcoatLightMobileThemeWithAssetManager extends BaseTopcoatLightMobileTheme
+	public class TopcoatLightMobileThemeWithAssetManager extends BaseTopcoatLightMobileTheme implements IAsyncTheme
 	{
 		/**
 		 * @private
@@ -103,6 +87,11 @@ package feathers.themes
 		/**
 		 * @private
 		 */
+		protected var isComplete:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			super.dispose();
@@ -111,6 +100,14 @@ package feathers.themes
 				this.assetManager.removeTextureAtlas(ATLAS_NAME);
 				this.assetManager = null;
 			}
+		}
+
+		/**
+		 * @copy feathers.themes.IAsyncTheme#isCompleteForStarling()
+		 */
+		public function isCompleteForStarling(starling:Starling):Boolean
+		{
+			return this.isComplete;
 		}
 
 		/**
@@ -140,6 +137,7 @@ package feathers.themes
 				return;
 			}
 			this.initialize();
+			this.isComplete = true;
 			this.dispatchEventWith(Event.COMPLETE);
 		}
 

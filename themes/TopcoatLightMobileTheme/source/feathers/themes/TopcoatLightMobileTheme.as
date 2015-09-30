@@ -50,9 +50,7 @@ package feathers.themes
 		public function TopcoatLightMobileTheme(scaleToDPI:Boolean = true)
 		{
 			super(scaleToDPI);
-
 			this.initialize();
-			this.dispatchEventWith(Event.COMPLETE);
 		}
 
 		override protected function initialize():void
