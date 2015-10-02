@@ -133,7 +133,7 @@ If we're generally happy with the styles provided by the global style provider, 
 Let's use an `AddOnFunctionStyleProvider` to add an icon to a `Button` component:
 
 ``` code
-function setExtraStyles( button ):void
+function setExtraStyles( button:Button ):void
 {
     button.iconPosition = Button.ICON_POSITION_TOP;
     button.defaultIcon = new Image( texture );

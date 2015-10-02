@@ -99,7 +99,7 @@ When we remove the style provider, we can be sure that the theme won't make any 
 Completely removing the theme from a component may undesireable. Maybe we want to keep some of the theme's styles, but tweak others. We can do that using the [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) class:
 
 ``` code
-function setExtraStyles( button ):void
+function setExtraStyles( button:Button ):void
 {
     button.iconPosition = Button.ICON_POSITION_TOP;
     button.defaultIcon = new Image( texture );
