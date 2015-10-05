@@ -147,7 +147,7 @@ package feathers.themes
 		protected static const HEADER_BACKGROUND_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 20, 112);
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 10, 110);
 		protected static const SEARCH_INPUT_SCALE9_GRID:Rectangle = new Rectangle(50, 49, 20, 2);
-		protected static const BACKGROUND_POPUP_SCALE9_GRID:Rectangle = new Rectangle(8, 8, 24, 24);
+		protected static const BACKGROUND_POPUP_SCALE9_GRID:Rectangle = new Rectangle(10, 10, 20, 20);
 		protected static const LIST_ITEM_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 2, 12);
 		protected static const GROUPED_LIST_HEADER_OR_FOOTER_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 2, 12);
 		protected static const PICKER_LIST_LIST_BACKGROUND_SCALE9_GRID:Rectangle = new Rectangle(20, 20, 2, 72);
@@ -181,6 +181,7 @@ package feathers.themes
 		protected var controlSize:int;
 		protected var smallControlSize:int;
 		protected var wideControlSize:int;
+		protected var popUpFillSize:int;
 		protected var thumbSize:int;
 		protected var calloutBackgroundMinSize:int;
 
@@ -391,6 +392,7 @@ package feathers.themes
 			this.controlSize = Math.round(100 * this.scale);
 			this.smallControlSize = Math.round(32 * this.scale);
 			this.wideControlSize = Math.round(460 * this.scale);
+			this.popUpFillSize = Math.round(600 * this.scale);
 			this.thumbSize = Math.round(68 * this.scale);
 			this.calloutBackgroundMinSize = Math.round(106 * this.scale);
 		}
@@ -1313,7 +1315,7 @@ package feathers.themes
 		protected function setPickerListButtonStyles(button:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.pickerListButtonUpTexture;
+			skinSelector.defaultValue = this.buttonUpTexture;
 			skinSelector.setValueForState(this.buttonDownTexture, Button.STATE_DOWN);
 			skinSelector.setValueForState(this.buttonDisabledTexture, Button.STATE_DISABLED);
 			this.setBaseButtonSize(skinSelector);
@@ -1779,8 +1781,8 @@ package feathers.themes
 			alert.paddingBottom = this.gutterSize;
 			alert.paddingLeft = this.gutterSize;
 			alert.gap = this.gutterSize;
-			alert.maxWidth = this.wideControlSize;
-			alert.maxHeight = this.wideControlSize;
+			alert.maxWidth = this.popUpFillSize;
+			alert.maxHeight = this.popUpFillSize;
 		}
 
 		//see Panel section for Header styles
