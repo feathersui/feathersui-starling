@@ -310,10 +310,10 @@ package feathers.media
 			
 			if(this._direction === DIRECTION_VERTICAL)
 			{
-				var trackScrollableHeight:Number = this.actualHeight - this._minimumPadding - this._maximumPadding;
+				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height / 2 - this._minimumPadding - this._maximumPadding;
 				this._progressSkin.x = Math.round((this.actualWidth - this._progressSkin.width) / 2);
-				var progressHeight:Number = (trackScrollableHeight * this._progress);
-				var maxProgressHeight:Number = this.thumb.y + this.thumb.height / 2;
+				var progressHeight:Number = Math.round(trackScrollableHeight * this._progress);
+				var maxProgressHeight:Number = Math.round(this.thumb.y + this.thumb.height / 2);
 				if(progressHeight < 0)
 				{
 					progressHeight = 0;
@@ -328,16 +328,16 @@ package feathers.media
 			else //horizontal
 			{
 				var trackScrollableWidth:Number = this.actualWidth - this._minimumPadding - this._maximumPadding;
-				this._progressSkin.x = Math.round(this._minimumPadding + trackScrollableWidth * percentage);
+				this._progressSkin.x = Math.round(this.thumb.x + this.thumb.width / 2);
 				this._progressSkin.y = Math.round((this.actualHeight - this._progressSkin.height) / 2);
-				var progressWidth:Number = (trackScrollableWidth * this._progress) - this._progressSkin.x;
+				var progressWidth:Number = Math.round((trackScrollableWidth * this._progress) - this._progressSkin.x);
 				if(progressWidth < 0)
 				{
 					progressWidth = 0;
 				}
 				else
 				{
-					var maxProgressWidth:Number = this.actualWidth - this._progressSkin.x;
+					var maxProgressWidth:Number = Math.round(this.actualWidth - this._progressSkin.x);
 					if(progressWidth > maxProgressWidth)
 					{
 						progressWidth = maxProgressWidth;
