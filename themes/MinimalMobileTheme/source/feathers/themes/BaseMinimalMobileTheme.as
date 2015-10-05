@@ -155,6 +155,7 @@ package feathers.themes
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(0, 5, 3, 1);
 		protected static const LIST_ITEM_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(0, 5, 1, 1);
+		protected static const SEEK_SLIDER_PROGRESS_SKIN_SCALE9_GRID:Rectangle = new Rectangle(0, 6, 4, 26);
 		protected static const BACK_BUTTON_SCALE_REGION1:int = 30;
 		protected static const BACK_BUTTON_SCALE_REGION2:int = 1;
 		protected static const FORWARD_BUTTON_SCALE_REGION1:int = 9;
@@ -401,6 +402,7 @@ package feathers.themes
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
 		protected var muteToggleButtonLoudUpIconTexture:Texture;
 		protected var muteToggleButtonMutedUpIconTexture:Texture;
+		protected var seekSliderProgressSkinTextures:Scale9Textures;
 		protected var volumeSliderMinimumTrackSkinTexture:Texture;
 		protected var volumeSliderMaximumTrackSkinTexture:Texture;
 		
@@ -650,6 +652,7 @@ package feathers.themes
 			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("mute-toggle-button-loud-up-icon");
 			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin");
 			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
+			this.seekSliderProgressSkinTextures = new Scale9Textures(this.atlas.getTexture("seek-slider-progress-skin"), SEEK_SLIDER_PROGRESS_SKIN_SCALE9_GRID);
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 
@@ -2259,6 +2262,8 @@ package feathers.themes
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 			slider.minWidth = this.controlSize;
 			slider.minHeight = this.smallControlSize;
+			var progressSkin:Scale9Image = new Scale9Image(this.seekSliderProgressSkinTextures, this.scale);
+			slider.progressSkin = progressSkin;
 		}
 
 	//-------------------------
