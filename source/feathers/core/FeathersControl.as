@@ -997,13 +997,15 @@ package feathers.core
 		protected var _focusManager:IFocusManager;
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#focusManager
-		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject#focusManager
 		 *
 		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get focusManager():IFocusManager
 		{
@@ -1042,13 +1044,15 @@ package feathers.core
 		protected var _focusOwner:IFocusDisplayObject;
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#focusOwner
-		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject#focusOwner
 		 *
 		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get focusOwner():IFocusDisplayObject
 		{
@@ -1069,13 +1073,15 @@ package feathers.core
 		protected var _isFocusEnabled:Boolean = true;
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#isFocusEnabled
-		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject
 		 *
 		 * @default true
+		 *
+		 * @see feathers.core.IFocusDisplayObject#isFocusEnabled
 		 */
 		public function get isFocusEnabled():Boolean
 		{
@@ -1104,13 +1110,16 @@ package feathers.core
 		protected var _nextTabFocus:IFocusDisplayObject;
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#nextTabFocus
 		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject#nextTabFocus
 		 *
 		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get nextTabFocus():IFocusDisplayObject
 		{
@@ -1135,13 +1144,15 @@ package feathers.core
 		protected var _previousTabFocus:IFocusDisplayObject;
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
-		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
 		 *
 		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get previousTabFocus():IFocusDisplayObject
 		{
@@ -1784,11 +1795,13 @@ package feathers.core
 		}
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#showFocus()
-		 *
 		 * <p>The implementation of this method is provided for convenience, but
 		 * it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject#showFocus()
+		 *
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function showFocus():void
 		{
@@ -1802,11 +1815,13 @@ package feathers.core
 		}
 
 		/**
-		 * @copy feathers.core.IFocusDisplayObject#hideFocus()
-		 *
 		 * <p>The implementation of this method is provided for convenience, but
 		 * it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @copy feathers.core.IFocusDisplayObject#hideFocus()
+		 *
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function hideFocus():void
 		{

@@ -16,10 +16,12 @@ package feathers.core
 	/**
 	 * Manages touch and keyboard focus.
 	 *
-	 * <p>Note: When enabling focus management, you should always use
-	 * <code>TextFieldTextEditor</code> as the text editor for <code>TextInput</code>
-	 * components. <code>StageTextTextEditor</code> is not compatible with the
-	 * focus manager.</p>
+	 * <p>Note: When enabling focus management, you should never use
+	 * <code>StageTextTextEditor</code> as the text editor for
+	 * <code>TextInput</code> components. This text editor is not compatible
+	 * with the focus manager.</p>
+	 *
+	 * @see ../../../help/focus.html Keyboard focus management in Feathers
 	 */
 	public class FocusManager
 	{

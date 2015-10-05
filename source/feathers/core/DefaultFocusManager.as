@@ -26,9 +26,10 @@ package feathers.core
 	import starling.events.TouchPhase;
 
 	/**
-	 * The default <code>IPopUpManager</code> implementation.
+	 * The default <code>IFocusManager</code> implementation.
 	 *
-	 * @see FocusManager
+	 * @see ../../../help/focus.html Keyboard focus management in Feathers
+	 * @see feathers.core.FocusManager
 	 */
 	public class DefaultFocusManager implements IFocusManager
 	{
