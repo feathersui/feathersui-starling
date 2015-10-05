@@ -1941,6 +1941,7 @@ package feathers.themes
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
+			input.isSelectable = false;
 		}
 		
 		protected function setNumericStepperTextInputEditorStyles(textEditor:TextBlockTextEditor):void

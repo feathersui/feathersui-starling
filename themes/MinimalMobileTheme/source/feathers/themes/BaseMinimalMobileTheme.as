@@ -1491,6 +1491,7 @@ package feathers.themes
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
+			input.isSelectable = false;
 			input.textEditorFactory = numericStepperTextEditorFactory;
 			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_TEXT_EDITOR;
 

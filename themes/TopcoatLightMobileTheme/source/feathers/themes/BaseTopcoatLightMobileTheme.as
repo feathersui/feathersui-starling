@@ -1281,6 +1281,7 @@ package feathers.themes
 			input.minHeight = this.controlSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
+			input.isSelectable = false;
 			input.textEditorFactory = stepperTextEditorFactory;
 			input.textEditorProperties.elementFormat = this.darkUIElementFormat;
 			input.textEditorProperties.disabledElementFormat = this.darkUIDisabledElementFormat;
