@@ -561,16 +561,11 @@ package feathers.controls.text
 		protected var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Indicates whether the text field is a password text field that hides
-		 * input characters using a substitute character.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#displayAsPassword
 		 *
-		 * <p>In the following example, the text is displayed as a password:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.displayAsPassword = true;</listing>
-		 *
-		 * @default false
-		 *
+		 * @see feathers.controls.TextInput#displayAsPassword
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#displayAsPassword Full description of flash.text.StageText.displayAsPassword in Adobe's Flash Platform API Reference
 		 */
 		public function get displayAsPassword():Boolean
@@ -597,15 +592,11 @@ package feathers.controls.text
 		protected var _isEditable:Boolean = true;
 
 		/**
-		 * Determines if the text input is editable. If the text input is not
-		 * editable, it will still appear enabled.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#isEditable
 		 *
-		 * <p>In the following example, the text is not editable:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.isEditable = false;</listing>
-		 *
-		 * @default true
+		 * @see feathers.controls.TextInput#isEditable
 		 */
 		public function get isEditable():Boolean
 		{
@@ -622,6 +613,36 @@ package feathers.controls.text
 				return;
 			}
 			this._isEditable = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isSelectable:Boolean = true;
+
+		/**
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#isSelectable
+		 *
+		 * @see feathers.controls.TextInput#isSelectable
+		 */
+		public function get isSelectable():Boolean
+		{
+			return this._isEditable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSelectable(value:Boolean):void
+		{
+			if(this._isSelectable == value)
+			{
+				return;
+			}
+			this._isSelectable = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -823,18 +844,11 @@ package feathers.controls.text
 		protected var _maxChars:int = 0;
 
 		/**
-		 * Indicates the maximum number of characters that a user can enter into
-		 * the text editor. A script can insert more text than <code>maxChars</code>
-		 * allows. If <code>maxChars</code> equals zero, a user can enter an
-		 * unlimited amount of text into the text editor.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#maxChars
 		 *
-		 * <p>In the following example, the maximum character count is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.maxChars = 10;</listing>
-		 *
-		 * @default 0
-		 *
+		 * @see feathers.controls.TextInput#maxChars
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#maxChars Full description of flash.text.StageText.maxChars in Adobe's Flash Platform API Reference
 		 */
 		public function get maxChars():int
@@ -905,17 +919,11 @@ package feathers.controls.text
 		protected var _restrict:String;
 
 		/**
-		 * Restricts the set of characters that a user can enter into the text
-		 * field. Only user interaction is restricted; a script can put any text
-		 * into the text field.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#restrict
 		 *
-		 * <p>In the following example, the text is restricted to numbers:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.restrict = "0-9";</listing>
-		 *
-		 * @default null
-		 *
+		 * @see feathers.controls.TextInput#restrict
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#restrict Full description of flash.text.StageText.restrict in Adobe's Flash Platform API Reference
 		 */
 		public function get restrict():String
@@ -1173,6 +1181,10 @@ package feathers.controls.text
 			//setting the editable property of a StageText to false seems to be
 			//ignored on Android, so this is the workaround
 			if(!this._isEditable && SystemUtil.platform === "AND")
+			{
+				return;
+			}
+			if(!this._isEditable && !this._isSelectable)
 			{
 				return;
 			}
@@ -1601,7 +1613,6 @@ package feathers.controls.text
 			this.stageText.displayAsPassword = this._displayAsPassword;
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
-
 			this.stageText.fontWeight = this._fontWeight;
 			this.stageText.locale = this._locale;
 			this.stageText.maxChars = this._maxChars;
