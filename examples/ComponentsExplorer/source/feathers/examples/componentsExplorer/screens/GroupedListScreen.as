@@ -103,7 +103,6 @@ package feathers.examples.componentsExplorer.screens
 					]
 				}
 			];
-			groups.fixed = true;
 			
 			this._list = new GroupedList();
 			if(this.settings.style == GroupedListSettings.STYLE_INSET)
