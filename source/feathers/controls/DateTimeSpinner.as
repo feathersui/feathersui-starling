@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundUpToNearest;
@@ -64,6 +65,13 @@ package feathers.controls
 	 */
 	public class DateTimeSpinner extends FeathersControl
 	{
+		/**
+		 * The default name to use with lists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-date-time-spinner-list";
+		
 		/**
 		 * The <code>DateTimeSpinner</code> will allow both the date and the
 		 * time to be edited.
@@ -121,7 +129,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const MAX_HOURS_VALUE_AMPM:int = 11;
+		private static const MAX_HOURS_VALUE_12HOURS:int = 11;
 
 		/**
 		 * @private
@@ -164,6 +172,28 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_PENDING_SCROLL:String = "pendingScroll";
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_SPINNER_LIST_FACTORY:String = "spinnerListFactory";
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>DateTimeSpinner</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+
+		/**
+		 * @private
+		 */
+		protected static function defaultListFactory():SpinnerList
+		{
+			return new SpinnerList();
+		}
+
+		/**
 		 * Constructor.
 		 */
 		public function DateTimeSpinner()
@@ -182,6 +212,20 @@ package feathers.controls
 				DAYS_IN_MONTH.fixed = true;
 			}
 		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the lists. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the list style name in their constructors instead of using the
+		 * default style name defined by <code>DEFAULT_CHILD_STYLE_NAME_LIST</code>.
+		 *
+		 * <p>To customize the list style name without subclassing, see
+		 * <code>customListStyleName</code>.</p>
+		 *
+		 * @see #customListStyleName
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var listStyleName:String = DEFAULT_CHILD_STYLE_NAME_LIST;
 
 		/**
 		 * @private
@@ -216,12 +260,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var ampmList:SpinnerList;
+		protected var meridiemList:SpinnerList;
 		
 		/**
 		 * @private
 		 */
 		protected var listGroup:LayoutGroup;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return DateTimeSpinner.globalStyleProvider;
+		}
 
 		/**
 		 * @private
@@ -451,12 +503,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _ampm:Boolean = true;
+		protected var _showMeridiem:Boolean = true;
 
 		/**
 		 * @private
 		 */
-		protected var _lastAmpmValue:int = 0;
+		protected var _lastMeridiemValue:int = 0;
 
 		/**
 		 * @private
@@ -549,6 +601,101 @@ package feathers.controls
 		public function set scrollDuration(value:Number):void
 		{
 			this._scrollDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _listFactory:Function;
+
+		/**
+		 * A function used to instantiate the date time spinner's list
+		 * sub-components. The lists must be instances of
+		 * <code>SpinnerList</code>. This factory can be used to change
+		 * properties of the list sub-components when they are first created.
+		 * For instance, if you are skinning Feathers components without a
+		 * theme, you might use this factory to style the list sub-components.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():SpinnerList</pre>
+		 *
+		 * <p>In the following example, the date time spinner uses a custom list
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.listFactory = function():SpinnerList
+		 * {
+		 *     var list:SpinnerList = new SpinnerList();
+		 *     // set properties
+		 *     return list;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.SpinnerList
+		 */
+		public function get listFactory():Function
+		{
+			return this._listFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set listFactory(value:Function):void
+		{
+			if(this._listFactory == value)
+			{
+				return;
+			}
+			this._listFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customListStyleName:String;
+
+		/**
+		 * A style name to add to the date time spinner's list sub-components.
+		 * Typically used by a theme to provide different styles to different
+		 * date time spinners.
+		 *
+		 * <p>In the following example, a custom list style name is passed to
+		 * the date time spijnner:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.customListStyleName = "my-custom-spinner-list";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( SpinnerList ).setFunctionForStyleName( "my-custom-spinner-list", setCustomSpinnerListStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #listFactory
+		 */
+		public function get customListStyleName():String
+		{
+			return this._customListStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customListStyleName(value:String):void
+		{
+			if(this._customListStyleName == value)
+			{
+				return;
+			}
+			this._customListStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_SPINNER_LIST_FACTORY);
 		}
 
 		/**
@@ -664,6 +811,7 @@ package feathers.controls
 			var localeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LOCALE);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
+			var spinnerListFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SPINNER_LIST_FACTORY);
 			
 			if(this._todayLabel)
 			{
@@ -675,9 +823,13 @@ package feathers.controls
 				this.refreshLocale();
 			}
 			
-			if(localeInvalid || editingModeInvalid || dataInvalid)
+			if(localeInvalid || editingModeInvalid || spinnerListFactoryInvalid)
 			{
-				this.refreshLists();
+				this.refreshLists(editingModeInvalid || spinnerListFactoryInvalid);
+			}
+
+			if(localeInvalid || editingModeInvalid || dataInvalid || spinnerListFactoryInvalid)
+			{
 				this.useDefaultsIfNeeded();
 				this.refreshValidRanges();
 				this.refreshSelection();
@@ -716,65 +868,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshLists():void
+		protected function refreshLists(createNewLists:Boolean):void
 		{
+			if(createNewLists)
+			{
+				this.createYearList();
+				this.createMonthList();
+				this.createDateList();
+
+				this.createHourList();
+				this.createMinuteList();
+				this.createMeridiemList();
+
+				this.createDateAndTimeDateList();
+			}
+			
 			if(this._editingMode == EDITING_MODE_DATE)
 			{
-				//first, get rid of lists that we don't need for this mode
-				if(this.dateAndTimeDatesList)
-				{
-					this.listGroup.removeChild(this.dateAndTimeDatesList, true);
-					this.dateAndTimeDatesList = null;
-				}
-				if(this.hoursList)
-				{
-					this.listGroup.removeChild(this.hoursList, true);
-					this.hoursList = null;
-				}
-				if(this.minutesList)
-				{
-					this.listGroup.removeChild(this.minutesList, true);
-					this.minutesList = null;
-				}
-				if(this.ampmList)
-				{
-					this.listGroup.removeChild(this.ampmList, true);
-					this.ampmList = null;
-				}
-				
-				//next, create the lists that we need, if they don't exist yet
-				if(!this.yearsList)
-				{
-					this.yearsList = new SpinnerList();
-					//we'll set the data provider later, when we know what range
-					//of years we need
-					this.yearsList.itemRendererFactory = this.yearsListItemRendererFactory;
-					this.yearsList.addEventListener(Event.CHANGE, yearsList_changeHandler);
-					this.listGroup.addChild(this.yearsList);
-				}
-				if(!this.datesList)
-				{
-					this.datesList = new SpinnerList();
-					var datesRange:IntegerRange = new IntegerRange(MIN_DATE_VALUE, MAX_DATE_VALUE, 1);
-					var datesCollection:ListCollection = new ListCollection(datesRange);
-					datesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-					this.datesList.dataProvider = datesCollection;
-					this.datesList.itemRendererFactory = this.datesListItemRendererFactory;
-					this.datesList.addEventListener(Event.CHANGE, datesList_changeHandler);
-					this.listGroup.addChildAt(this.datesList, 0);
-				}
-				if(!this.monthsList)
-				{
-					this.monthsList = new SpinnerList();
-					var monthsRange:IntegerRange = new IntegerRange(MIN_MONTH_VALUE, MAX_MONTH_VALUE, 1);
-					var monthsCollection:ListCollection = new ListCollection(monthsRange);
-					monthsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-					this.monthsList.dataProvider = monthsCollection;
-					this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
-					this.monthsList.addEventListener(Event.CHANGE, monthsList_changeHandler);
-					this.listGroup.addChildAt(this.monthsList, 0);
-				}
-				
 				//does this locale show the month or the date first?
 				if(this._monthFirst)
 				{
@@ -785,65 +895,194 @@ package feathers.controls
 					this.listGroup.setChildIndex(this.datesList, 0);
 				}
 			}
-			else
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createYearList():void
+		{
+			if(this.yearsList)
 			{
-				if(this.monthsList)
-				{
-					this.listGroup.removeChild(this.monthsList, true);
-					this.monthsList = null;
-				}
-				if(this.datesList)
-				{
-					this.listGroup.removeChild(this.datesList, true);
-					this.datesList = null;
-				}
-				if(this.yearsList)
-				{
-					this.listGroup.removeChild(this.yearsList, true);
-					this.yearsList = null;
-				}
-				if(!this.dateAndTimeDatesList && this._editingMode === EDITING_MODE_DATE_AND_TIME)
-				{
-					this.dateAndTimeDatesList = new SpinnerList();
-					this.dateAndTimeDatesList.itemRendererFactory = this.dateAndTimeDatesListItemRendererFactory;
-					this.dateAndTimeDatesList.addEventListener(Event.CHANGE, dateAndTimeDatesList_changeHandler);
-					this.listGroup.addChildAt(this.dateAndTimeDatesList, 0);
-				}
-				if(!this.hoursList)
-				{
-					this.hoursList = new SpinnerList();
-					this.hoursList.itemRendererFactory = this.hoursListItemRendererFactory;
-					this.hoursList.addEventListener(Event.CHANGE, hoursList_changeHandler);
-					this.listGroup.addChild(this.hoursList);
-				}
-				if(!this.minutesList)
-				{
-					this.minutesList = new SpinnerList();
-					var minutesRange:IntegerRange = new IntegerRange(MIN_MINUTES_VALUE, MAX_MINUTES_VALUE, this._minuteStep);
-					var minutesCollection:ListCollection = new ListCollection(minutesRange);
-					minutesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-					this.minutesList.dataProvider = minutesCollection;
-					this.minutesList.itemRendererFactory = this.minutesListItemRendererFactory;
-					this.minutesList.addEventListener(Event.CHANGE, minutesList_changeHandler);
-					this.listGroup.addChild(this.minutesList);
-				}
-				
-				//does this locale use a 12 or 24 hour time format?
-				if(this._ampm) //12 hour format
-				{
-					if(!this.ampmList)
-					{
-						this.ampmList = new SpinnerList();
-						this.ampmList.addEventListener(Event.CHANGE, ampmList_changeHandler);
-						this.listGroup.addChild(this.ampmList);
-					}
-				}
-				else if(this.ampmList)
-				{
-					this.listGroup.removeChild(this.ampmList, true);
-					this.ampmList = null;
-				}
+				this.listGroup.removeChild(this.yearsList, true);
+				this.yearsList = null;
 			}
+			
+			if(this._editingMode !== EDITING_MODE_DATE)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.yearsList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.yearsList.styleNameList.add(listStyleName);
+			//we'll set the data provider later, when we know what range
+			//of years we need
+			this.yearsList.itemRendererFactory = this.yearsListItemRendererFactory;
+			this.yearsList.addEventListener(Event.CHANGE, yearsList_changeHandler);
+			this.listGroup.addChild(this.yearsList);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createMonthList():void
+		{
+			if(this.monthsList)
+			{
+				this.listGroup.removeChild(this.monthsList, true);
+				this.monthsList = null;
+			}
+
+			if(this._editingMode !== EDITING_MODE_DATE)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.monthsList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.monthsList.styleNameList.add(listStyleName);
+			var monthsRange:IntegerRange = new IntegerRange(MIN_MONTH_VALUE, MAX_MONTH_VALUE, 1);
+			var monthsCollection:ListCollection = new ListCollection(monthsRange);
+			monthsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
+			this.monthsList.dataProvider = monthsCollection;
+			this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
+			this.monthsList.addEventListener(Event.CHANGE, monthsList_changeHandler);
+			this.listGroup.addChildAt(this.monthsList, 0);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createDateList():void
+		{
+			if(this.datesList)
+			{
+				this.listGroup.removeChild(this.datesList, true);
+				this.datesList = null;
+			}
+
+			if(this._editingMode !== EDITING_MODE_DATE)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.datesList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.datesList.styleNameList.add(listStyleName);
+			var datesRange:IntegerRange = new IntegerRange(MIN_DATE_VALUE, MAX_DATE_VALUE, 1);
+			var datesCollection:ListCollection = new ListCollection(datesRange);
+			datesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
+			this.datesList.dataProvider = datesCollection;
+			this.datesList.itemRendererFactory = this.datesListItemRendererFactory;
+			this.datesList.addEventListener(Event.CHANGE, datesList_changeHandler);
+			this.listGroup.addChildAt(this.datesList, 0);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createHourList():void
+		{
+			if(this.hoursList)
+			{
+				this.listGroup.removeChild(this.hoursList, true);
+				this.hoursList = null;
+			}
+
+			if(this._editingMode === EDITING_MODE_DATE)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.hoursList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.hoursList.styleNameList.add(listStyleName);
+			this.hoursList.itemRendererFactory = this.hoursListItemRendererFactory;
+			this.hoursList.addEventListener(Event.CHANGE, hoursList_changeHandler);
+			this.listGroup.addChild(this.hoursList);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createMinuteList():void
+		{
+			if(this.minutesList)
+			{
+				this.listGroup.removeChild(this.minutesList, true);
+				this.minutesList = null;
+			}
+
+			if(this._editingMode === EDITING_MODE_DATE)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.minutesList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.minutesList.styleNameList.add(listStyleName);
+			var minutesRange:IntegerRange = new IntegerRange(MIN_MINUTES_VALUE, MAX_MINUTES_VALUE, this._minuteStep);
+			var minutesCollection:ListCollection = new ListCollection(minutesRange);
+			minutesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
+			this.minutesList.dataProvider = minutesCollection;
+			this.minutesList.itemRendererFactory = this.minutesListItemRendererFactory;
+			this.minutesList.addEventListener(Event.CHANGE, minutesList_changeHandler);
+			this.listGroup.addChild(this.minutesList);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createMeridiemList():void
+		{
+			if(this.meridiemList)
+			{
+				this.listGroup.removeChild(this.meridiemList, true);
+				this.meridiemList = null;
+			}
+
+			if(this._editingMode === EDITING_MODE_DATE || !this._showMeridiem)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.meridiemList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.meridiemList.styleNameList.add(listStyleName);
+			this.meridiemList.addEventListener(Event.CHANGE, meridiemList_changeHandler);
+			this.listGroup.addChild(this.meridiemList);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createDateAndTimeDateList():void
+		{
+			if(this.dateAndTimeDatesList)
+			{
+				this.listGroup.removeChild(this.dateAndTimeDatesList, true);
+				this.dateAndTimeDatesList = null;
+			}
+
+			if(this._editingMode !== EDITING_MODE_DATE_AND_TIME)
+			{
+				return;
+			}
+
+			var listFactory:Function = (this._listFactory !== null) ? this._listFactory : defaultListFactory;
+			this.dateAndTimeDatesList = SpinnerList(listFactory());
+			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
+			this.dateAndTimeDatesList.styleNameList.add(listStyleName);
+			this.dateAndTimeDatesList.itemRendererFactory = this.dateAndTimeDatesListItemRendererFactory;
+			this.dateAndTimeDatesList.addEventListener(Event.CHANGE, dateAndTimeDatesList_changeHandler);
+			this.listGroup.addChildAt(this.dateAndTimeDatesList, 0);
 		}
 
 		/**
@@ -860,8 +1099,8 @@ package feathers.controls
 				var dateIndex:int = dateTimePattern.indexOf("d");
 				this._monthFirst = monthIndex < dateIndex;
 				//figure out if this locale uses am/pm or 24-hour format
-				this._ampm = dateTimePattern.indexOf("a") >= 0;
-				if(this._ampm)
+				this._showMeridiem = dateTimePattern.indexOf("a") >= 0;
+				if(this._showMeridiem)
 				{
 					this._formatter.setDateTimePattern("a");
 					HELPER_DATE.setHours(1);
@@ -948,7 +1187,7 @@ package feathers.controls
 				}
 
 				var hoursMinimum:Number = MIN_HOURS_VALUE;
-				var hoursMaximum:Number = this._ampm ? MAX_HOURS_VALUE_AMPM : MAX_HOURS_VALUE_24HOURS;
+				var hoursMaximum:Number = this._showMeridiem ? MAX_HOURS_VALUE_12HOURS : MAX_HOURS_VALUE_24HOURS;
 				var hoursCollection:ListCollection = this.hoursList.dataProvider;
 				if(hoursCollection)
 				{
@@ -969,9 +1208,9 @@ package feathers.controls
 					this.hoursList.dataProvider = hoursCollection;
 				}
 				
-				if(this._ampm && !this.ampmList.dataProvider)
+				if(this._showMeridiem && !this.meridiemList.dataProvider)
 				{
-					this.ampmList.dataProvider = new ListCollection(new <String>[this._amString, this._pmString]);
+					this.meridiemList.dataProvider = new ListCollection(new <String>[this._amString, this._pmString]);
 				}
 			}
 			
@@ -994,7 +1233,7 @@ package feathers.controls
 			}
 			if(this.hoursList)
 			{
-				if(this._ampm)
+				if(this._showMeridiem)
 				{
 					this.hoursList.selectedIndex = this._value.hours % 12;
 				}
@@ -1007,9 +1246,9 @@ package feathers.controls
 			{
 				this.minutesList.selectedItem = this._value.minutes;
 			}
-			if(this.ampmList)
+			if(this.meridiemList)
 			{
-				this.ampmList.selectedIndex = (this._value.hours <= MAX_HOURS_VALUE_AMPM) ? 0 : 1;
+				this.meridiemList.selectedIndex = (this._value.hours <= MAX_HOURS_VALUE_12HOURS) ? 0 : 1;
 			}
 			this._ignoreListChanges = oldIgnoreListChanges;
 		}
@@ -1169,7 +1408,7 @@ package feathers.controls
 			}
 			var hoursCollection:ListCollection = this.hoursList ? this.hoursList.dataProvider : null;
 			if(hoursCollection && (oldMinHours !== this._minHours || oldMaxHours !== this._maxHours ||
-				(this._ampm && this._lastAmpmValue !== this.ampmList.selectedIndex)))
+				(this._showMeridiem && this._lastMeridiemValue !== this.meridiemList.selectedIndex)))
 			{
 				hoursCollection.updateAll();
 			}
@@ -1178,9 +1417,9 @@ package feathers.controls
 			{
 				minutesCollection.updateAll();
 			}
-			if(this._ampm)
+			if(this._showMeridiem)
 			{
-				this._lastAmpmValue = (this._value.hours <= MAX_HOURS_VALUE_AMPM) ? 0 : 1;
+				this._lastMeridiemValue = (this._value.hours <= MAX_HOURS_VALUE_12HOURS) ? 0 : 1;
 			}
 		}
 
@@ -1327,7 +1566,7 @@ package feathers.controls
 			if(this.hoursList)
 			{
 				var hours:int = this.pendingScrollToDate.hours;
-				if(this._ampm)
+				if(this._showMeridiem)
 				{
 					hours %= 12;
 				}
@@ -1344,12 +1583,12 @@ package feathers.controls
 					this.minutesList.scrollToDisplayIndex(minutes, duration);
 				}
 			}
-			if(this.ampmList)
+			if(this.meridiemList)
 			{
-				var index:int = (this.pendingScrollToDate.hours < MAX_HOURS_VALUE_AMPM) ? 0 : 1;
-				if(this.ampmList.selectedIndex !== index)
+				var index:int = (this.pendingScrollToDate.hours < MAX_HOURS_VALUE_12HOURS) ? 0 : 1;
+				if(this.meridiemList.selectedIndex !== index)
 				{
-					this.ampmList.scrollToDisplayIndex(index, duration);
+					this.meridiemList.scrollToDisplayIndex(index, duration);
 				}
 			}
 		}
@@ -1452,7 +1691,7 @@ package feathers.controls
 		 */
 		protected function isHourEnabled(hour:int):Boolean
 		{
-			if(this._ampm && this.ampmList.selectedIndex !== 0)
+			if(this._showMeridiem && this.meridiemList.selectedIndex !== 0)
 			{
 				hour += 12;
 			}
@@ -1472,7 +1711,7 @@ package feathers.controls
 		 */
 		protected function formatHours(item:int):String
 		{
-			if(this._ampm)
+			if(this._showMeridiem)
 			{
 				if(item === 0)
 				{
@@ -1589,7 +1828,7 @@ package feathers.controls
 		protected function updateHoursFromLists():void
 		{
 			var hours:int = this.hoursList.selectedItem as int;
-			if(this.ampmList && this.ampmList.selectedIndex === 1)
+			if(this.meridiemList && this.meridiemList.selectedIndex === 1)
 			{
 				hours += 12;
 			}
@@ -1693,7 +1932,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function ampmList_changeHandler(event:Event):void
+		protected function meridiemList_changeHandler(event:Event):void
 		{
 			if(this._ignoreListChanges)
 			{
