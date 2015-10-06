@@ -30,6 +30,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
@@ -166,6 +167,7 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_LAST_BUTTON:String = "topcoat-light-mobile-alert-button-group-last-button";
 		protected static const THEME_STYLE_NAME_GROUPED_LIST_FIRST_ITEM_RENDERER:String = "topcoat-light-mobile-grouped-list-first-item-renderer";
 		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "topcoat-light-mobile-spinner-list-item-renderer";
+		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "topcoat-light-mobile-date-time-spinner-list-item-renderer";
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER:String = "topcoat-light-mobile-pop-up-drawer";
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER_HEADER:String = "topcoat-light-mobile-pop-up-drawer-header";
 
@@ -563,6 +565,10 @@ package feathers.themes
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+			
+			//date time spinner
+			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
 
 			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
@@ -906,6 +912,29 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// DateTimeSpinner
+	//-------------------------
+
+		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setSpinnerListStyles(list);
+			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setSpinnerListItemRendererStyles(itemRenderer);
+			itemRenderer.paddingLeft = this.smallGutterSize;
+			itemRenderer.paddingRight = this.smallGutterSize;
+			itemRenderer.gap = this.extraSmallGutterSize;
+			itemRenderer.minGap = this.extraSmallGutterSize;
+			itemRenderer.accessoryGap = this.extraSmallGutterSize;
+			itemRenderer.minAccessoryGap = this.extraSmallGutterSize;
+			itemRenderer.minWidth = this.controlSize;
+			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+		}
+
+	//-------------------------
 	// Radio
 	//-------------------------
 
@@ -1183,8 +1212,6 @@ package feathers.themes
 			renderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
-			renderer.minTouchWidth = this.gridSize;
-			renderer.minTouchHeight = this.gridSize;
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;

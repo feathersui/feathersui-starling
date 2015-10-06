@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
@@ -144,6 +145,13 @@ package feathers.themes
 		 * in a NumericStepper.
 		 */
 		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_TEXT_EDITOR:String = "minimal-mobile-numeric-stepper-text-input-text-editor";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the item renderer of the
+		 * SpinnerList in a DateTimeSpinner.
+		 */
+		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "minimal-mobile-date-time-spinner-list-item-renderer";
 
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
@@ -719,7 +727,11 @@ package feathers.themes
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Check.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setCheckLabelStyles);
 
-			//check
+			//date time spinner
+			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
+
+			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
 
 			//grouped list (see also: item renderers)
@@ -1196,6 +1208,26 @@ package feathers.themes
 		{
 			textRenderer.textFormat = this.primaryTextFormat;
 			textRenderer.disabledTextFormat = this.disabledTextFormat;
+		}
+
+	//-------------------------
+	// DateTimeSpinner
+	//-------------------------
+
+		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setSpinnerListStyles(list);
+			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setSpinnerListItemRendererStyles(itemRenderer);
+			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.gap = this.gutterSize;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.accessoryGap = this.gutterSize;
+			itemRenderer.minAccessoryGap = this.gutterSize;
 		}
 
 	//-------------------------

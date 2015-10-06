@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
@@ -286,6 +287,12 @@ package feathers.themes
 		 * The theme's custom style name for the text editor of the NumericStepper's TextInput.
 		 */
 		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR:String = "metal-works-mobile-numeric-stepper-text-input-editor";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the item renderer of the DateTimeSpinner's SpinnerLists.
+		 */
+		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-date-time-spinner-list-item-renderer";
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -987,6 +994,10 @@ package feathers.themes
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Check.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setCheckLabelStyles);
+			
+			//date time spinner
+			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
 
 			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
@@ -1516,6 +1527,26 @@ package feathers.themes
 			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
+	//-------------------------
+	// DateTimeSpinner
+	//-------------------------
+
+		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setSpinnerListStyles(list);
+			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setSpinnerListItemRendererStyles(itemRenderer);
+			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.gap = this.smallGutterSize;
+			itemRenderer.minGap = this.smallGutterSize;
+			itemRenderer.accessoryGap = this.smallGutterSize;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+		}
+		
 	//-------------------------
 	// Drawers
 	//-------------------------
