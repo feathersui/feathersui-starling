@@ -748,6 +748,58 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// Alert
+	//-------------------------
+
+		protected function setAlertStyles(alert:Alert):void
+		{
+			this.setScrollerStyles(alert);
+
+			alert.backgroundSkin = new Scale9Image(this.popUpBackgroundTexture, this.scale);
+
+			alert.paddingTop = 0;
+			alert.paddingRight = this.gutterSize;
+			alert.paddingBottom = this.gutterSize;
+			alert.paddingLeft = this.gutterSize;
+			alert.gap = this.gutterSize;
+			alert.maxWidth = this.popUpFillSize;
+			alert.maxHeight = this.popUpFillSize;
+		}
+
+		//see Panel section for Header styles
+
+		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
+		{
+			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
+			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.distributeButtonSizes = false;
+			group.gap = this.gutterSize;
+			group.padding = this.gutterSize;
+			group.paddingTop = 0;
+			group.customLastButtonStyleName = THEME_STYLE_NAME_ALERT_BUTTON_GROUP_LAST_BUTTON;
+			group.customButtonStyleName = THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON;
+		}
+
+		protected function setAlertButtonGroupButtonStyles(button:Button):void
+		{
+			this.setButtonStyles(button);
+			button.minWidth = this.controlSize * 2;
+		}
+
+		protected function setAlertButtonGroupLastButtonStyles(button:Button):void
+		{
+			this.setCallToActionButtonStyles(button);
+			button.minWidth = this.controlSize * 2;
+		}
+
+		protected function setAlertMessageTextRendererStyles(renderer:TextBlockTextRenderer):void
+		{
+			renderer.wordWrap = true;
+			renderer.elementFormat = this.darkUIElementFormat;
+		}
+
+	//-------------------------
 	// AutoComplete
 	//-------------------------
 
@@ -885,6 +937,44 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// Callout
+	//-------------------------
+
+		protected function setCalloutStyles(callout:Callout):void
+		{
+			var backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundTexture, this.scale);
+			backgroundSkin.width = this.calloutBackgroundMinSize;
+			backgroundSkin.height = this.calloutBackgroundMinSize;
+			callout.backgroundSkin = backgroundSkin;
+
+			var topArrowSkin:Image = new Image(this.calloutTopArrowTexture);
+			topArrowSkin.scaleX = this.scale;
+			topArrowSkin.scaleY = this.scale;
+			callout.topArrowSkin = topArrowSkin;
+			callout.topArrowGap = -16 * this.scale;
+
+			var rightArrowSkin:Image = new Image(this.calloutRightArrowTexture);
+			rightArrowSkin.scaleX = this.scale;
+			rightArrowSkin.scaleY = scale;
+			callout.rightArrowSkin = rightArrowSkin;
+			callout.rightArrowGap = -14 * this.scale;
+
+			var bottomArrowSkin:Image = new Image(this.calloutBottomArrowTexture);
+			bottomArrowSkin.scaleX = this.scale;
+			bottomArrowSkin.scaleY = this.scale;
+			callout.bottomArrowSkin = bottomArrowSkin;
+			callout.bottomArrowGap = -16 * this.scale;
+
+			var leftArrowSkin:Image = new Image(this.calloutLeftArrowTexture);
+			leftArrowSkin.scaleX = this.scale;
+			leftArrowSkin.scaleY = this.scale;
+			callout.leftArrowSkin = leftArrowSkin;
+			callout.leftArrowGap = -14 * this.scale;
+
+			callout.padding = this.gutterSize;
+		}
+
+	//-------------------------
 	// Check
 	//-------------------------
 
@@ -935,150 +1025,99 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// Radio
+	// Drawers
 	//-------------------------
 
-		protected function setRadioStyles(radio:Radio):void
+		protected function setDrawersStyles(drawers:Drawers):void
 		{
-			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.defaultValue = this.radioUpIconTexture;
-			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
-			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN);
-			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED);
-			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
-			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
-			iconSelector.displayObjectProperties =
-			{
-				scaleX: this.scale,
-				scaleY: this.scale
-			};
-			radio.stateToIconFunction = iconSelector.updateValue;
-
-			radio.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
-			radio.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			radio.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-
-			radio.gap = this.smallGutterSize;
+			var overlaySkin:Quad = new Quad(10, 10, COLOR_DRAWER_OVERLAY);
+			overlaySkin.alpha = ALPHA_DRAWER_OVERLAY;
+			drawers.overlaySkin = overlaySkin;
 		}
 
-	//-------------------------
-	// ToggleSwitch
-	//-------------------------
-
-		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
+		protected function setBaseToggleSwitchSize(skinSelector:SmartDisplayObjectStateValueSelector):void
 		{
-			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF;
-
-			toggle.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
-			toggle.onLabelProperties.elementFormat = this.blueUIElementFormat;
-			toggle.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-		}
-
-		protected function setToggleSwitchOnTrackStyles(track:Button):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.toggleSwitchOnTrackTexture;
-			skinSelector.setValueForState(this.toggleSwitchOnTrackDisabledTexture, Button.STATE_DISABLED);
-			this.setBaseToggleSwitchSize(skinSelector);
-
-			track.stateToSkinFunction = skinSelector.updateValue;
-			track.hasLabelTextRenderer = false;
-		}
-
-		protected function setToggleSwitchOffTrackStyles(track:Button):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.toggleSwitchOffTrackTexture;
-			skinSelector.setValueForState(this.toggleSwitchOffTrackDisabledTexture, Button.STATE_DISABLED);
-			this.setBaseToggleSwitchSize(skinSelector);
-
-			track.stateToSkinFunction = skinSelector.updateValue;
-			track.hasLabelTextRenderer = false;
-		}
-
-		protected function setHorizontalThumbStyles(thumb:Button):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.buttonUpTexture;
-			skinSelector.setValueForState(this.buttonDisabledTexture, Button.STATE_DISABLED);
 			skinSelector.displayObjectProperties =
 			{
-				width: this.thumbSize,
+				width: this.gridSize,
 				height: this.controlSize,
 				textureScale: this.scale
 			};
-			thumb.stateToSkinFunction = skinSelector.updateValue;
-			thumb.hasLabelTextRenderer = false;
 		}
 
-		protected function setVerticalThumbStyles(thumb:Button):void
+	//-------------------------
+	// GroupedList
+	//-------------------------
+
+		protected function setGroupedListStyles(list:GroupedList):void
+		{
+			this.setScrollerStyles(list);
+			list.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
+			list.customFirstItemRendererStyleName = THEME_STYLE_NAME_GROUPED_LIST_FIRST_ITEM_RENDERER;
+		}
+
+		//see List section for item renderer styles
+
+		protected function setGroupedListFirstItemRendererStyles(renderer:BaseDefaultItemRenderer):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.buttonUpTexture;
-			skinSelector.setValueForState(this.buttonDisabledTexture, Button.STATE_DISABLED);
+			skinSelector.defaultValue = this.firstItemRendererUpTexture;
+			skinSelector.defaultSelectedValue = this.itemRendererSelectedTexture;
+			skinSelector.setValueForState(this.itemRendererSelectedTexture, Button.STATE_DOWN);
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.thumbSize,
+				height: this.controlSize,
 				textureScale: this.scale
 			};
-			thumb.stateToSkinFunction = skinSelector.updateValue;
-			thumb.hasLabelTextRenderer = false;
+			renderer.stateToSkinFunction = skinSelector.updateValue;
+
+			this.setBaseItemRendererStyles(renderer);
+		}
+
+		protected function setGroupedListHeaderRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		{
+			renderer.backgroundSkin = new Scale9Image(this.groupedListHeaderTexture, this.scale);
+
+			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.contentLabelProperties.elementFormat = this.darkUISmallElementFormat;
+			renderer.contentLabelProperties.disabledElementFormat = this.darkUISmallDisabledElementFormat;
+			renderer.paddingTop = this.smallGutterSize;
+			renderer.paddingRight = this.gutterSize;
+			renderer.paddingBottom = this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
+
+			renderer.contentLoaderFactory = this.imageLoaderFactory;
+		}
+
+		protected function setGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		{
+			renderer.backgroundSkin = new Scale9Image(this.groupedListFooterTexture, this.scale);
+
+			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
+			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
+			renderer.contentLabelProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
+			renderer.paddingTop = this.smallGutterSize;
+			renderer.paddingRight = this.gutterSize;
+			renderer.paddingBottom = this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
+
+			renderer.contentLoaderFactory = this.imageLoaderFactory;
 		}
 
 	//-------------------------
-	// ProgressBar
+	// Header
 	//-------------------------
 
-		protected function setProgressBarStyles(progress:ProgressBar):void
+		protected function setHeaderStyles(header:Header):void
 		{
-			var backgroundSkin:Scale9Image;
-			var backgroundDisabledSkin:Scale9Image;
-			/* Horizontal background skin */
-			if(progress.direction === ProgressBar.DIRECTION_HORIZONTAL)
-			{
-				backgroundSkin = new Scale9Image(this.horizontalProgressBarBackgroundTexture, this.scale);
-				backgroundSkin.width = this.wideControlSize;
-				backgroundSkin.height = this.smallControlSize;
-				backgroundDisabledSkin = new Scale9Image(this.horizontalProgressBarBackgroundDisabledTexture, this.scale);
-				backgroundDisabledSkin.width = this.wideControlSize;
-				backgroundDisabledSkin.height = this.smallControlSize;
-			}
-			else //vertical
-			{
-				backgroundSkin = new Scale9Image(this.verticalProgressBarBackgroundTexture, this.scale);
-				backgroundSkin.width = this.smallControlSize;
-				backgroundSkin.height = this.wideControlSize;
-				backgroundDisabledSkin = new Scale9Image(this.verticalProgressBarBackgroundDisabledTexture, this.scale);
-				backgroundDisabledSkin.width = this.smallControlSize;
-				backgroundDisabledSkin.height = this.wideControlSize;
-			}
-			progress.backgroundSkin = backgroundSkin;
-			progress.backgroundDisabledSkin = backgroundDisabledSkin;
+			this.setHeaderWithoutBackgroundStyles(header);
 
-			var fillSkin:Scale9Image;
-			var fillDisabledSkin:Scale9Image;
-			/* Horizontal fill skin */
-			if(progress.direction === ProgressBar.DIRECTION_HORIZONTAL)
-			{
-				fillSkin = new Scale9Image(this.horizontalProgressBarFillTexture, this.scale);
-				fillSkin.width = this.smallControlSize;
-				fillSkin.height = this.smallControlSize;
-				fillDisabledSkin = new Scale9Image(this.horizontalProgressBarFillDisabledTexture, this.scale);
-				fillDisabledSkin.width = this.smallControlSize;
-				fillDisabledSkin.height = this.smallControlSize;
-			}
-			else //vertical
-			{
-				fillSkin = new Scale9Image(this.verticalProgressBarFillTexture, this.scale);
-				fillSkin.width = this.smallControlSize;
-				fillSkin.height = this.smallControlSize;
-				fillDisabledSkin = new Scale9Image(verticalProgressBarFillDisabledTexture, this.scale);
-				fillDisabledSkin.width = this.smallControlSize;
-				fillDisabledSkin.height = this.smallControlSize;
-			}
-			progress.fillSkin = fillSkin;
-			progress.fillDisabledSkin = fillDisabledSkin;
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundSkinTexture, this.scale);
+			backgroundSkin.width = this.gridSize;
+			backgroundSkin.height = this.gridSize;
+			header.backgroundSkin = backgroundSkin;
+			header.titleProperties.elementFormat = this.darkUILargeElementFormat;
 		}
 
 	//-------------------------
@@ -1106,7 +1145,7 @@ package feathers.themes
 	//-------------------------
 	// LayoutGroup
 	//-------------------------
-		
+
 		protected function setToolbarLayoutGroupStyles(group:LayoutGroup):void
 		{
 			if(!group.layout)
@@ -1189,94 +1228,6 @@ package feathers.themes
 			renderer.elementFormat = this.darkUIElementFormat;
 		}
 
-		protected function setSpinnerListItemRendererStyles(renderer:DefaultListItemRenderer):void
-		{
-			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
-			defaultSkin.alpha = 0;
-			renderer.defaultSkin = defaultSkin;
-
-			renderer.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
-			renderer.downLabelProperties.elementFormat = this.darkUIElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.darkUIElementFormat;
-
-			renderer.horizontalAlign = DefaultListItemRenderer.HORIZONTAL_ALIGN_LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.gap = this.smallGutterSize;
-			renderer.minGap = this.smallGutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = this.smallGutterSize;
-			renderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = this.gridSize;
-			renderer.minHeight = this.gridSize;
-
-			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
-			renderer.iconLoaderFactory = this.imageLoaderFactory;
-		}
-
-	//-------------------------
-	// GroupedList
-	//-------------------------
-
-		protected function setGroupedListStyles(list:GroupedList):void
-		{
-			this.setScrollerStyles(list);
-			list.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
-			list.customFirstItemRendererStyleName = THEME_STYLE_NAME_GROUPED_LIST_FIRST_ITEM_RENDERER;
-		}
-
-		//see List section for item renderer styles
-
-		protected function setGroupedListFirstItemRendererStyles(renderer:BaseDefaultItemRenderer):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.firstItemRendererUpTexture;
-			skinSelector.defaultSelectedValue = this.itemRendererSelectedTexture;
-			skinSelector.setValueForState(this.itemRendererSelectedTexture, Button.STATE_DOWN);
-			skinSelector.displayObjectProperties =
-			{
-				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
-			};
-			renderer.stateToSkinFunction = skinSelector.updateValue;
-
-			this.setBaseItemRendererStyles(renderer);
-		}
-
-		protected function setGroupedListHeaderRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
-		{
-			renderer.backgroundSkin = new Scale9Image(this.groupedListHeaderTexture, this.scale);
-
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
-			renderer.contentLabelProperties.elementFormat = this.darkUISmallElementFormat;
-			renderer.contentLabelProperties.disabledElementFormat = this.darkUISmallDisabledElementFormat;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-
-			renderer.contentLoaderFactory = this.imageLoaderFactory;
-		}
-
-		protected function setGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
-		{
-			renderer.backgroundSkin = new Scale9Image(this.groupedListFooterTexture, this.scale);
-
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
-			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
-			renderer.contentLabelProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingRight = this.gutterSize; 
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-
-			renderer.contentLoaderFactory = this.imageLoaderFactory;
-		}
-
 	//-------------------------
 	// NumericStepper
 	//-------------------------
@@ -1321,6 +1272,63 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// PageIndicator
+	//-------------------------
+
+		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
+		{
+			pageIndicator.normalSymbolFactory = pageIndicatorNormalSymbolFactory;
+			pageIndicator.selectedSymbolFactory = pageIndicatorSelectedSymbolFactory;
+			pageIndicator.gap = this.gutterSize;
+			pageIndicator.padding = this.gutterSize;
+			pageIndicator.minTouchWidth = this.controlSize;
+			pageIndicator.minTouchHeight = this.controlSize;
+		}
+
+	//-------------------------
+	// Panel
+	//-------------------------
+
+		protected function setPanelStyles(panel:Panel):void
+		{
+			this.setScrollerStyles(panel);
+
+			panel.backgroundSkin = new Scale9Image(this.popUpBackgroundTexture, this.scale);
+
+			panel.paddingTop = this.smallGutterSize;
+			panel.paddingRight = this.smallGutterSize;
+			panel.paddingBottom = this.smallGutterSize;
+			panel.paddingLeft = this.smallGutterSize;
+		}
+
+		protected function setHeaderWithoutBackgroundStyles(header:Header):void
+		{
+			header.gap = this.gutterSize;
+			header.paddingTop = this.smallGutterSize;
+			header.paddingRight = this.smallGutterSize;
+			header.paddingBottom = this.smallGutterSize;
+			header.paddingLeft = this.smallGutterSize;
+			header.titleGap = this.smallGutterSize;
+			header.minHeight = this.gridSize;
+			header.titleProperties.elementFormat = this.darkUILargeElementFormat;
+		}
+
+	//-------------------------
+	// PanelScreen
+	//-------------------------
+
+		protected function setPanelScreenStyles(screen:PanelScreen):void
+		{
+			this.setScrollerStyles(screen);
+		}
+
+		protected function setPanelScreenHeaderStyles(header:Header):void
+		{
+			this.setHeaderStyles(header);
+			header.useExtraPaddingForOSStatusBar = true;
+		}
+
+	//-------------------------
 	// PickerList
 	//-------------------------
 
@@ -1333,7 +1341,7 @@ package feathers.themes
 			else
 			{
 				list.listFactory = pickerListSpinnerListFactory;
-				
+
 				var popUpContentManager:BottomDrawerPopUpContentManager = new BottomDrawerPopUpContentManager();
 				popUpContentManager.customPanelStyleName = THEME_STYLE_NAME_POP_UP_DRAWER;
 				list.popUpContentManager = popUpContentManager;
@@ -1381,7 +1389,7 @@ package feathers.themes
 				//should provide a reasonable fallback skin if the listFactory
 				//on the PickerList returns a List instead. we don't want the
 				//List to be too big for the BottomDrawerPopUpContentManager
-				
+
 				list.padding = this.smallGutterSize;
 
 				var layout:VerticalLayout = new VerticalLayout();
@@ -1396,24 +1404,94 @@ package feathers.themes
 		protected function setPickerListPopUpDrawerStyles(panel:Panel):void
 		{
 			this.setScrollerStyles(panel);
-			
+
 			panel.customHeaderStyleName = THEME_STYLE_NAME_POP_UP_DRAWER_HEADER;
-			
+
 			panel.backgroundSkin = new Scale9Image(this.popUpDrawerBackgroundTexture, this.scale);
 
 			panel.outerPaddingTop = this.borderSize;
 		}
 
 	//-------------------------
-	// SpinnerList
+	// ProgressBar
 	//-------------------------
 
-		protected function setSpinnerListStyles(list:SpinnerList):void
+		protected function setProgressBarStyles(progress:ProgressBar):void
 		{
-			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-			list.backgroundSkin = new Quad(this.controlSize, this.controlSize, COLOR_SPINNER_LIST_BACKGROUND);
-			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlayTexture, this.scale);
-			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
+			var backgroundSkin:Scale9Image;
+			var backgroundDisabledSkin:Scale9Image;
+			/* Horizontal background skin */
+			if(progress.direction === ProgressBar.DIRECTION_HORIZONTAL)
+			{
+				backgroundSkin = new Scale9Image(this.horizontalProgressBarBackgroundTexture, this.scale);
+				backgroundSkin.width = this.wideControlSize;
+				backgroundSkin.height = this.smallControlSize;
+				backgroundDisabledSkin = new Scale9Image(this.horizontalProgressBarBackgroundDisabledTexture, this.scale);
+				backgroundDisabledSkin.width = this.wideControlSize;
+				backgroundDisabledSkin.height = this.smallControlSize;
+			}
+			else //vertical
+			{
+				backgroundSkin = new Scale9Image(this.verticalProgressBarBackgroundTexture, this.scale);
+				backgroundSkin.width = this.smallControlSize;
+				backgroundSkin.height = this.wideControlSize;
+				backgroundDisabledSkin = new Scale9Image(this.verticalProgressBarBackgroundDisabledTexture, this.scale);
+				backgroundDisabledSkin.width = this.smallControlSize;
+				backgroundDisabledSkin.height = this.wideControlSize;
+			}
+			progress.backgroundSkin = backgroundSkin;
+			progress.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			var fillSkin:Scale9Image;
+			var fillDisabledSkin:Scale9Image;
+			/* Horizontal fill skin */
+			if(progress.direction === ProgressBar.DIRECTION_HORIZONTAL)
+			{
+				fillSkin = new Scale9Image(this.horizontalProgressBarFillTexture, this.scale);
+				fillSkin.width = this.smallControlSize;
+				fillSkin.height = this.smallControlSize;
+				fillDisabledSkin = new Scale9Image(this.horizontalProgressBarFillDisabledTexture, this.scale);
+				fillDisabledSkin.width = this.smallControlSize;
+				fillDisabledSkin.height = this.smallControlSize;
+			}
+			else //vertical
+			{
+				fillSkin = new Scale9Image(this.verticalProgressBarFillTexture, this.scale);
+				fillSkin.width = this.smallControlSize;
+				fillSkin.height = this.smallControlSize;
+				fillDisabledSkin = new Scale9Image(verticalProgressBarFillDisabledTexture, this.scale);
+				fillDisabledSkin.width = this.smallControlSize;
+				fillDisabledSkin.height = this.smallControlSize;
+			}
+			progress.fillSkin = fillSkin;
+			progress.fillDisabledSkin = fillDisabledSkin;
+		}
+
+	//-------------------------
+	// Radio
+	//-------------------------
+
+		protected function setRadioStyles(radio:Radio):void
+		{
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.defaultValue = this.radioUpIconTexture;
+			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
+			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN);
+			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED);
+			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.displayObjectProperties =
+			{
+				scaleX: this.scale,
+				scaleY: this.scale
+			};
+			radio.stateToIconFunction = iconSelector.updateValue;
+
+			radio.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
+			radio.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			radio.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+
+			radio.gap = this.smallGutterSize;
 		}
 
 	//-------------------------
@@ -1492,104 +1570,43 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// PageIndicator
+	// SpinnerList
 	//-------------------------
 
-		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
+		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
-			pageIndicator.normalSymbolFactory = pageIndicatorNormalSymbolFactory;
-			pageIndicator.selectedSymbolFactory = pageIndicatorSelectedSymbolFactory;
-			pageIndicator.gap = this.gutterSize;
-			pageIndicator.padding = this.gutterSize;
-			pageIndicator.minTouchWidth = this.controlSize;
-			pageIndicator.minTouchHeight = this.controlSize;
+			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
+			list.backgroundSkin = new Quad(this.controlSize, this.controlSize, COLOR_SPINNER_LIST_BACKGROUND);
+			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlayTexture, this.scale);
+			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
 		}
 
-	//-------------------------
-	// Panel
-	//-------------------------
-
-		protected function setPanelStyles(panel:Panel):void
+		protected function setSpinnerListItemRendererStyles(renderer:DefaultListItemRenderer):void
 		{
-			this.setScrollerStyles(panel);
+			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
+			defaultSkin.alpha = 0;
+			renderer.defaultSkin = defaultSkin;
 
-			panel.backgroundSkin = new Scale9Image(this.popUpBackgroundTexture, this.scale);
+			renderer.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
+			renderer.downLabelProperties.elementFormat = this.darkUIElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.darkUIElementFormat;
 
-			panel.paddingTop = this.smallGutterSize;
-			panel.paddingRight = this.smallGutterSize;
-			panel.paddingBottom = this.smallGutterSize;
-			panel.paddingLeft = this.smallGutterSize;
-		}
+			renderer.horizontalAlign = DefaultListItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.paddingTop = this.smallGutterSize;
+			renderer.paddingBottom = this.smallGutterSize;
+			renderer.paddingLeft = this.gutterSize;
+			renderer.paddingRight = this.gutterSize;
+			renderer.gap = this.smallGutterSize;
+			renderer.minGap = this.smallGutterSize;
+			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = this.smallGutterSize;
+			renderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.minWidth = this.gridSize;
+			renderer.minHeight = this.gridSize;
 
-		protected function setHeaderWithoutBackgroundStyles(header:Header):void
-		{
-			header.gap = this.gutterSize;
-			header.paddingTop = this.smallGutterSize;
-			header.paddingRight = this.smallGutterSize;
-			header.paddingBottom = this.smallGutterSize;
-			header.paddingLeft = this.smallGutterSize;
-			header.titleGap = this.smallGutterSize;
-			header.minHeight = this.gridSize;
-			header.titleProperties.elementFormat = this.darkUILargeElementFormat;
-		}
-
-	//-------------------------
-	// PanelScreen
-	//-------------------------
-
-		protected function setPanelScreenStyles(screen:PanelScreen):void
-		{
-			this.setScrollerStyles(screen);
-		}
-
-		protected function setPanelScreenHeaderStyles(header:Header):void
-		{
-			this.setHeaderStyles(header);
-			header.useExtraPaddingForOSStatusBar = true;
-		}
-
-	//-------------------------
-	// Header
-	//-------------------------
-
-		protected function setHeaderStyles(header:Header):void
-		{
-			this.setHeaderWithoutBackgroundStyles(header);
-
-			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundSkinTexture, this.scale);
-			backgroundSkin.width = this.gridSize;
-			backgroundSkin.height = this.gridSize;
-			header.backgroundSkin = backgroundSkin;
-			header.titleProperties.elementFormat = this.darkUILargeElementFormat;
-		}
-
-	//-------------------------
-	// TabBar
-	//-------------------------
-
-		protected function setTabBarStyles(tabBar:TabBar):void
-		{
-			tabBar.distributeTabSizes = true;
-		}
-
-		protected function setTabStyles(tab:ToggleButton):void
-		{
-			tab.defaultSkin = new Scale9Image(this.tabUpTexture, this.scale);
-			tab.downSkin = new Scale9Image(this.tabDownTexture, this.scale);
-			//no skin for disabled state (just different label)
-			tab.defaultSelectedSkin = new Scale9Image(this.tabSelectedUpTexture, this.scale);
-			tab.selectedDisabledSkin = new Scale9Image(this.tabSelectedDisabledTexture, this.scale);
-			tab.selectedDownSkin = new Scale9Image(this.tabSelectedDownTexture, this.scale);
-
-			tab.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
-			tab.defaultSelectedLabelProperties.elementFormat = this.blueUIElementFormat;
-			tab.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			tab.selectedDisabledLabelProperties.elementFormat = this.blueUIDisabledElementFormat;
-
-			tab.paddingLeft = this.gutterSize;
-			tab.paddingRight = this.gutterSize;
-			tab.minWidth = this.wideControlSize;
-			tab.minHeight = this.wideControlSize;
+			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
+			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
 
 	//-------------------------
@@ -1671,6 +1688,35 @@ package feathers.themes
 			skinSelector.displayObjectProperties.height = this.wideControlSize - this.thumbSize / 2
 			track.stateToSkinFunction = skinSelector.updateValue;
 			track.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// TabBar
+	//-------------------------
+
+		protected function setTabBarStyles(tabBar:TabBar):void
+		{
+			tabBar.distributeTabSizes = true;
+		}
+
+		protected function setTabStyles(tab:ToggleButton):void
+		{
+			tab.defaultSkin = new Scale9Image(this.tabUpTexture, this.scale);
+			tab.downSkin = new Scale9Image(this.tabDownTexture, this.scale);
+			//no skin for disabled state (just different label)
+			tab.defaultSelectedSkin = new Scale9Image(this.tabSelectedUpTexture, this.scale);
+			tab.selectedDisabledSkin = new Scale9Image(this.tabSelectedDisabledTexture, this.scale);
+			tab.selectedDownSkin = new Scale9Image(this.tabSelectedDownTexture, this.scale);
+
+			tab.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
+			tab.defaultSelectedLabelProperties.elementFormat = this.blueUIElementFormat;
+			tab.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			tab.selectedDisabledLabelProperties.elementFormat = this.blueUIDisabledElementFormat;
+
+			tab.paddingLeft = this.gutterSize;
+			tab.paddingRight = this.gutterSize;
+			tab.minWidth = this.wideControlSize;
+			tab.minHeight = this.wideControlSize;
 		}
 
 	//-------------------------
@@ -1767,114 +1813,68 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// Callout
+	// ToggleSwitch
 	//-------------------------
 
-		protected function setCalloutStyles(callout:Callout):void
+		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
-			var backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundTexture, this.scale);
-			backgroundSkin.width = this.calloutBackgroundMinSize;
-			backgroundSkin.height = this.calloutBackgroundMinSize;
-			callout.backgroundSkin = backgroundSkin;
+			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF;
 
-			var topArrowSkin:Image = new Image(this.calloutTopArrowTexture);
-			topArrowSkin.scaleX = this.scale;
-			topArrowSkin.scaleY = this.scale;
-			callout.topArrowSkin = topArrowSkin;
-			callout.topArrowGap = -16 * this.scale;
-
-			var rightArrowSkin:Image = new Image(this.calloutRightArrowTexture);
-			rightArrowSkin.scaleX = this.scale;
-			rightArrowSkin.scaleY = scale;
-			callout.rightArrowSkin = rightArrowSkin;
-			callout.rightArrowGap = -14 * this.scale;
-
-			var bottomArrowSkin:Image = new Image(this.calloutBottomArrowTexture);
-			bottomArrowSkin.scaleX = this.scale;
-			bottomArrowSkin.scaleY = this.scale;
-			callout.bottomArrowSkin = bottomArrowSkin;
-			callout.bottomArrowGap = -16 * this.scale;
-
-			var leftArrowSkin:Image = new Image(this.calloutLeftArrowTexture);
-			leftArrowSkin.scaleX = this.scale;
-			leftArrowSkin.scaleY = this.scale;
-			callout.leftArrowSkin = leftArrowSkin;
-			callout.leftArrowGap = -14 * this.scale;
-
-			callout.padding = this.gutterSize;
+			toggle.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
+			toggle.onLabelProperties.elementFormat = this.blueUIElementFormat;
+			toggle.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 		}
 
-	//-------------------------
-	// Alert
-	//-------------------------
-
-		protected function setAlertStyles(alert:Alert):void
+		protected function setToggleSwitchOnTrackStyles(track:Button):void
 		{
-			this.setScrollerStyles(alert);
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.toggleSwitchOnTrackTexture;
+			skinSelector.setValueForState(this.toggleSwitchOnTrackDisabledTexture, Button.STATE_DISABLED);
+			this.setBaseToggleSwitchSize(skinSelector);
 
-			alert.backgroundSkin = new Scale9Image(this.popUpBackgroundTexture, this.scale);
-
-			alert.paddingTop = 0;
-			alert.paddingRight = this.gutterSize;
-			alert.paddingBottom = this.gutterSize;
-			alert.paddingLeft = this.gutterSize;
-			alert.gap = this.gutterSize;
-			alert.maxWidth = this.popUpFillSize;
-			alert.maxHeight = this.popUpFillSize;
+			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
-		//see Panel section for Header styles
-
-		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
+		protected function setToggleSwitchOffTrackStyles(track:Button):void
 		{
-			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
-			group.distributeButtonSizes = false;
-			group.gap = this.gutterSize;
-			group.padding = this.gutterSize;
-			group.paddingTop = 0;
-			group.customLastButtonStyleName = THEME_STYLE_NAME_ALERT_BUTTON_GROUP_LAST_BUTTON;
-			group.customButtonStyleName = THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON;
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.toggleSwitchOffTrackTexture;
+			skinSelector.setValueForState(this.toggleSwitchOffTrackDisabledTexture, Button.STATE_DISABLED);
+			this.setBaseToggleSwitchSize(skinSelector);
+
+			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
-		protected function setAlertButtonGroupButtonStyles(button:Button):void
+		protected function setHorizontalThumbStyles(thumb:Button):void
 		{
-			this.setButtonStyles(button);
-			button.minWidth = this.controlSize * 2;
-		}
-
-		protected function setAlertButtonGroupLastButtonStyles(button:Button):void
-		{
-			this.setCallToActionButtonStyles(button);
-			button.minWidth = this.controlSize * 2;
-		}
-
-		protected function setAlertMessageTextRendererStyles(renderer:TextBlockTextRenderer):void
-		{
-			renderer.wordWrap = true;
-			renderer.elementFormat = this.darkUIElementFormat;
-		}
-
-	//-------------------------
-	// Drawers
-	//-------------------------
-
-		protected function setDrawersStyles(drawers:Drawers):void
-		{
-			var overlaySkin:Quad = new Quad(10, 10, COLOR_DRAWER_OVERLAY);
-			overlaySkin.alpha = ALPHA_DRAWER_OVERLAY;
-			drawers.overlaySkin = overlaySkin;
-		}
-
-		protected function setBaseToggleSwitchSize(skinSelector:SmartDisplayObjectStateValueSelector):void
-		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonUpTexture;
+			skinSelector.setValueForState(this.buttonDisabledTexture, Button.STATE_DISABLED);
 			skinSelector.displayObjectProperties =
 			{
-				width: this.gridSize,
+				width: this.thumbSize,
 				height: this.controlSize,
 				textureScale: this.scale
 			};
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+			thumb.hasLabelTextRenderer = false;
+		}
+
+		protected function setVerticalThumbStyles(thumb:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonUpTexture;
+			skinSelector.setValueForState(this.buttonDisabledTexture, Button.STATE_DISABLED);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.controlSize,
+				height: this.thumbSize,
+				textureScale: this.scale
+			};
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	}
