@@ -125,6 +125,7 @@ package feathers.themes
 		protected static const COLOR_TEXT_BLUE_DISABLED:uint = 0xC6DFF3;
 		protected static const COLOR_TEXT_DANGER_DISABLED:uint = 0xF7B4AF;
 		protected static const COLOR_BACKGROUND_LIGHT:uint = 0xDFE2E2;
+		protected static const COLOR_SPINNER_LIST_BACKGROUND:uint = 0xE5E9E8;
 		protected static const COLOR_MODAL_OVERLAY:uint = 0xDFE2E2;
 		protected static const ALPHA_MODAL_OVERLAY:Number = 0.8;
 		protected static const COLOR_DRAWER_OVERLAY:uint = 0x454545;
@@ -134,8 +135,6 @@ package feathers.themes
 		protected static const BUTTON_BACK_SCALE9_GRID:Rectangle = new Rectangle(52, 10, 20, 80);
 		protected static const BUTTON_FORWARD_SCALE9_GRID:Rectangle = new Rectangle(10, 10, 20, 80);
 		protected static const TEXT_INPUT_SCALE9_GRID:Rectangle = new Rectangle(14, 14, 2, 2);
-		protected static const BUTTON_THUMB_HORIZONTAL_SCALE9_GRID:Rectangle = new Rectangle(31, 31, 4, 38);
-		protected static const BUTTON_THUMB_VERTICAL_SCALE9_GRID:Rectangle = new Rectangle(31, 31, 38, 4);
 		protected static const HORIZONTAL_TRACK_SCALE3_FIRST_REGION:Number = 10;
 		protected static const HORIZONTAL_TRACK_SCALE3_SECOND_REGION:Number = 2;
 		protected static const HORIZONTAL_TRACK_SCALE3_THIRD_REGION:Number = 0;
@@ -148,9 +147,9 @@ package feathers.themes
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 10, 110);
 		protected static const SEARCH_INPUT_SCALE9_GRID:Rectangle = new Rectangle(50, 49, 20, 2);
 		protected static const BACKGROUND_POPUP_SCALE9_GRID:Rectangle = new Rectangle(10, 10, 20, 20);
+		protected static const POP_UP_DRAWER_BACKGROUND_SCALE9_GRID:Rectangle = new Rectangle(2, 6, 6, 8);
 		protected static const LIST_ITEM_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 2, 12);
 		protected static const GROUPED_LIST_HEADER_OR_FOOTER_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 2, 12);
-		protected static const PICKER_LIST_LIST_BACKGROUND_SCALE9_GRID:Rectangle = new Rectangle(20, 20, 2, 72);
 		protected static const SPINNER_LIST_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(4, 10, 2, 2);
 		protected static const SCROLL_BAR_REGION1:int = 9;
 		protected static const SCROLL_BAR_REGION2:int = 6;
@@ -167,6 +166,8 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_LAST_BUTTON:String = "topcoat-light-mobile-alert-button-group-last-button";
 		protected static const THEME_STYLE_NAME_GROUPED_LIST_FIRST_ITEM_RENDERER:String = "topcoat-light-mobile-grouped-list-first-item-renderer";
 		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "topcoat-light-mobile-spinner-list-item-renderer";
+		protected static const THEME_STYLE_NAME_POP_UP_DRAWER:String = "topcoat-light-mobile-pop-up-drawer";
+		protected static const THEME_STYLE_NAME_POP_UP_DRAWER_HEADER:String = "topcoat-light-mobile-pop-up-drawer-header";
 
 		public function BaseTopcoatLightMobileTheme(scaleToDPI:Boolean = true)
 		{
@@ -178,6 +179,7 @@ package feathers.themes
 		protected var gutterSize:int;
 		protected var smallGutterSize:int;
 		protected var extraSmallGutterSize:int;
+		protected var borderSize:int;
 		protected var controlSize:int;
 		protected var smallControlSize:int;
 		protected var wideControlSize:int;
@@ -290,13 +292,9 @@ package feathers.themes
 		protected var firstItemRendererUpTexture:Scale9Textures;
 		protected var groupedListHeaderTexture:Scale9Textures;
 		protected var groupedListFooterTexture:Scale9Textures;
-		protected var pickerListItemRendererUpTexture:Scale9Textures;
-		protected var pickerListItemRendererDownTexture:Scale9Textures;
-		protected var pickerListItemRendererSelectedTexture:Scale9Textures;
 		protected var pickerListButtonIcon:Texture;
 		protected var pickerListButtonDisabledIcon:Texture;
-		protected var pickerListButtonUpTexture:Scale9Textures;
-		protected var pickerListListBackgroundTexture:Scale9Textures;
+		protected var popUpDrawerBackgroundTexture:Scale9Textures;
 		protected var spinnerListSelectionOverlayTexture:Scale9Textures;
 		protected var pageIndicatorNormalTexture:Texture;
 		protected var pageIndicatorSelectedTexture:Texture;
@@ -389,6 +387,7 @@ package feathers.themes
 			this.gutterSize = Math.round(40 * this.scale);
 			this.smallGutterSize = Math.round(20 * this.scale);
 			this.extraSmallGutterSize = Math.round(10 * this.scale);
+			this.borderSize = Math.round(4 * this.scale);
 			this.controlSize = Math.round(100 * this.scale);
 			this.smallControlSize = Math.round(32 * this.scale);
 			this.wideControlSize = Math.round(460 * this.scale);
@@ -400,6 +399,7 @@ package feathers.themes
 		protected function initializeTextures():void
 		{
 			this.popUpBackgroundTexture = new Scale9Textures(this.atlas.getTexture("background-popup-skin0000"), BACKGROUND_POPUP_SCALE9_GRID);
+			this.popUpDrawerBackgroundTexture = new Scale9Textures(this.atlas.getTexture("pop-up-drawer-background-skin0000"), POP_UP_DRAWER_BACKGROUND_SCALE9_GRID);
 
 			this.buttonUpTexture = new Scale9Textures(this.atlas.getTexture("button-up-skin0000"), BUTTON_SCALE9_GRID);
 			this.buttonDownTexture = new Scale9Textures(this.atlas.getTexture("button-down-skin0000"), BUTTON_SCALE9_GRID);
@@ -443,14 +443,9 @@ package feathers.themes
 			this.pageIndicatorNormalTexture = this.atlas.getTexture("page-indicator-normal-skin0000");
 			this.pageIndicatorSelectedTexture = this.atlas.getTexture("page-indicator-selected-skin0000");
 
-			this.pickerListButtonUpTexture = new Scale9Textures(this.atlas.getTexture("button-picker-list-up-skin0000"), BUTTON_SCALE9_GRID);
-			this.pickerListListBackgroundTexture = new Scale9Textures(this.atlas.getTexture("picker-list-list-background-skin0000"), PICKER_LIST_LIST_BACKGROUND_SCALE9_GRID);
 			this.pickerListButtonIcon = this.atlas.getTexture("picker-list-button-icon0000");
 			this.pickerListButtonDisabledIcon = this.atlas.getTexture("picker-list-button-disabled-icon0000");
-			this.pickerListItemRendererUpTexture = new Scale9Textures(this.atlas.getTexture("picker-list-list-item-up-skin0000"), LIST_ITEM_SCALE9_GRID);
-			this.pickerListItemRendererDownTexture = new Scale9Textures(this.atlas.getTexture("picker-list-list-item-down-skin0000"), LIST_ITEM_SCALE9_GRID);
-			this.pickerListItemRendererSelectedTexture = new Scale9Textures(this.atlas.getTexture("picker-list-list-item-selected-skin0000"), LIST_ITEM_SCALE9_GRID);
-
+			
 			this.horizontalProgressBarFillTexture = new Scale9Textures(this.atlas.getTexture("progress-bar-horizontal-fill-skin0000"), BAR_HORIZONTAL_SCALE9_GRID);
 			this.horizontalProgressBarFillDisabledTexture = new Scale9Textures(this.atlas.getTexture("progress-bar-horizontal-fill-disabled-skin0000"), BAR_HORIZONTAL_SCALE9_GRID);
 			this.horizontalProgressBarBackgroundTexture = new Scale9Textures(this.atlas.getTexture("progress-bar-horizontal-background-skin0000"), BAR_HORIZONTAL_SCALE9_GRID);
@@ -615,9 +610,11 @@ package feathers.themes
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(PanelScreen.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPanelScreenHeaderStyles);
 
 			//picker list
-			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListListStyles);
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
+			this.getStyleProviderForClass(Panel).setFunctionForStyleName(THEME_STYLE_NAME_POP_UP_DRAWER, this.setPickerListPopUpDrawerStyles);
+			this.getStyleProviderForClass(Header).setFunctionForStyleName(THEME_STYLE_NAME_POP_UP_DRAWER_HEADER, this.setHeaderStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -1309,7 +1306,10 @@ package feathers.themes
 			else
 			{
 				list.listFactory = pickerListSpinnerListFactory;
-				list.popUpContentManager = new BottomDrawerPopUpContentManager();
+				
+				var popUpContentManager:BottomDrawerPopUpContentManager = new BottomDrawerPopUpContentManager();
+				popUpContentManager.customPanelStyleName = THEME_STYLE_NAME_POP_UP_DRAWER;
+				list.popUpContentManager = popUpContentManager;
 			}
 		}
 
@@ -1366,6 +1366,17 @@ package feathers.themes
 			list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK;
 		}
 
+		protected function setPickerListPopUpDrawerStyles(panel:Panel):void
+		{
+			this.setScrollerStyles(panel);
+			
+			panel.customHeaderStyleName = THEME_STYLE_NAME_POP_UP_DRAWER_HEADER;
+			
+			panel.backgroundSkin = new Scale9Image(this.popUpDrawerBackgroundTexture, this.scale);
+
+			panel.outerPaddingTop = this.borderSize;
+		}
+
 	//-------------------------
 	// SpinnerList
 	//-------------------------
@@ -1373,8 +1384,7 @@ package feathers.themes
 		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
 			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-			list.padding = this.extraSmallGutterSize;
-			list.backgroundSkin = new Scale9Image(this.popUpBackgroundTexture, this.scale);
+			list.backgroundSkin = new Quad(this.controlSize, this.controlSize, COLOR_SPINNER_LIST_BACKGROUND);
 			list.selectionOverlaySkin = new Scale9Image(this.spinnerListSelectionOverlayTexture, this.scale);
 			list.customItemRendererStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER;
 		}
@@ -1476,7 +1486,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(panel);
 
-			panel.backgroundSkin = new Quad(1, 1, COLOR_BACKGROUND_LIGHT);
+			panel.backgroundSkin = new Scale9Image(this.popUpBackgroundTexture, this.scale);
 
 			panel.paddingTop = this.smallGutterSize;
 			panel.paddingRight = this.smallGutterSize;
