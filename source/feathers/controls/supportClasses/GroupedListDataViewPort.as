@@ -302,6 +302,7 @@ package feathers.controls.supportClasses
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
@@ -312,6 +313,7 @@ package feathers.controls.supportClasses
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 			}
 			if(this._layout is IVariableVirtualLayout)
 			{
@@ -2713,6 +2715,40 @@ package feathers.controls.supportClasses
 				//TODO: figure out the length of the previous group so that we
 				//don't need to reset the whole cache
 				layout.resetVariableVirtualCache();
+			}
+		}
+
+		private function dataProvider_updateAllHandler(event:Event):void
+		{
+			for(var item:Object in this._itemRendererMap)
+			{
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+				if(!itemRenderer)
+				{
+					return;
+				}
+				itemRenderer.data = null;
+				itemRenderer.data = item;
+			}
+			for(var header:Object in this._headerRendererMap)
+			{
+				var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
+				if(!headerRenderer)
+				{
+					return;
+				}
+				headerRenderer.data = null;
+				headerRenderer.data = header;
+			}
+			for(var footer:Object in this._footerRendererMap)
+			{
+				var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
+				if(!footerRenderer)
+				{
+					return;
+				}
+				footerRenderer.data = null;
+				footerRenderer.data = footer;
 			}
 		}
 
