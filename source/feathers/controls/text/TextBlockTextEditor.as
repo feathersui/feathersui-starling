@@ -702,10 +702,11 @@ package feathers.controls.text
 				//only clear the native focus when our native target has focus
 				//because otherwise another component may lose focus.
 
-				//don't set focus to null here. the focus manager will interpret
-				//that as the runtime automatically clearing focus for other
-				//reasons.
-				nativeStage.focus = nativeStage;
+				//for consistency with StageTextTextEditor and
+				//TextFieldTextEditor, we set the native stage's focus to null
+				//here instead of setting it to the native stage due to issues
+				//with those text editors on Android.
+				nativeStage.focus = null;
 			}
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}

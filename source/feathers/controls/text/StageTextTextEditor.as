@@ -1268,7 +1268,11 @@ package feathers.controls.text
 			{
 				return;
 			}
-			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			//setting the focus to Starling.current.nativeStage doesn't work
+			//here, so we need to use null. on Android, if we give focus to the
+			//nativeStage, focus will be removed from the StageText, but the
+			//soft keyboard will incorrectly remain open.
+			Starling.current.nativeStage.focus = null;
 		}
 
 		/**

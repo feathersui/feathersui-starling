@@ -1523,11 +1523,18 @@ package feathers.controls.text
 			{
 				//only clear the native focus when our native target has focus
 				//because otherwise another component may lose focus.
+
+				//setting the focus to Starling.current.nativeStage doesn't work
+				//here, so we need to use null. on Android, if we give focus to the
+				//nativeStage, focus will be removed from the StageText, but the
+				//soft keyboard will incorrectly remain open.
+				nativeStage.focus = null;
 				
-				//don't set focus to null here. the focus manager will interpret
-				//that as the runtime automatically clearing focus for other
-				//reasons.
-				nativeStage.focus = nativeStage;
+				//previously, there was a comment here that said that the native
+				//stage focus should not be set to null. this was due to an
+				//issue in focus manager where focus would be restored
+				//incorrectly if the stage focus became null. this issue was
+				//fixed, and it is now considered safe to use null.
 			}
 		}
 
