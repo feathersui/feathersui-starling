@@ -403,6 +403,7 @@ package feathers.controls
 			if(oldTexture)
 			{
 				this._texture = oldTexture;
+				this._isTextureOwner = true;
 			}
 			if(this.image)
 			{
