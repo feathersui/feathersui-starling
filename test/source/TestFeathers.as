@@ -11,6 +11,8 @@ package
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.ImageLoaderInternalStateTests;
+	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
 	import feathers.tests.LayoutGroupFlowLayoutTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
@@ -114,6 +116,8 @@ package
 				DrawersTests,
 				GroupedListTests,
 				GroupedListRendererAddRemoveTests,
+				ImageLoaderTests,
+				ImageLoaderInternalStateTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				ListTests,

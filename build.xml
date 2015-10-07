@@ -487,6 +487,9 @@
 			<arg value="-output=${dependency.output}/TestFeathers.swf"/>
 			<arg value="TestFeathers.as"/>
 		</java>
+		<copy todir="${dependency.output}/fixtures">
+			<fileset dir="${test.root}/fixtures"/>
+		</copy>
 		<flexunit
 			command="${flashplayer}"
 			player="flash"
