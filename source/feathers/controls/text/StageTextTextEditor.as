@@ -8,10 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.StageTextField;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -192,10 +194,6 @@ package feathers.controls.text
 	 * <code>BitmapData</code> and uploaded to a texture on the GPU. Textures
 	 * are managed internally by this component, and they will be automatically
 	 * disposed when the component is disposed.
-	 *
-	 * <p>Note: Due to quirks with how the runtime manages focus with
-	 * <code>StageText</code>, <code>StageTextTextEditor</code> is not
-	 * compatible with the Feathers <code>FocusManager</code>.</p>
 	 *
 	 * <p>The following example shows how to use
 	 * <code>StageTextTextEditor</code> with a <code>TextInput</code>:</p>
@@ -1954,6 +1952,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function dispatchKeyFocusChangeEvent(event:KeyboardEvent):void
+		{
+			var starling:Starling = stageToStarling(this.stage);
+			var focusEvent:FocusEvent = new FocusEvent(FocusEvent.KEY_FOCUS_CHANGE, true, false, null, event.shiftKey, event.keyCode);
+			starling.nativeStage.dispatchEvent(focusEvent);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_removedFromStageHandler(event:starling.events.Event):void
 		{
 			//remove this from the stage, if needed
@@ -2059,6 +2067,11 @@ package feathers.controls.text
 				event.preventDefault();
 				Starling.current.nativeStage.focus = Starling.current.nativeStage;
 			}
+			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
+			{
+				event.preventDefault();
+				this.dispatchKeyFocusChangeEvent(event);
+			}
 		}
 
 		/**
@@ -2067,6 +2080,10 @@ package feathers.controls.text
 		protected function stageText_keyUpHandler(event:KeyboardEvent):void
 		{
 			if(!this._multiline && (event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.NEXT))
+			{
+				event.preventDefault();
+			}
+			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
 			{
 				event.preventDefault();
 			}
