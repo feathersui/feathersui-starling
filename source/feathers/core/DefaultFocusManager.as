@@ -176,10 +176,12 @@ package feathers.core
 			{
 				return;
 			}
+			var shouldHaveFocus:Boolean = false;
 			var oldFocus:IFeathersDisplayObject = this._focus;
 			if(this._isEnabled && value && value.isFocusEnabled && value.focusManager == this)
 			{
 				this._focus = value;
+				shouldHaveFocus = true;
 			}
 			else
 			{
@@ -188,7 +190,6 @@ package feathers.core
 			var nativeStage:Stage = this._starling.nativeStage;
 			if(nativeStage && nativeStage.focus)
 			{
-				
 				//this listener restores focus, if it is lost in a way that is
 				//out of our control. since we may be manually removing focus in
 				//a listener for FeathersEventType.FOCUS_OUT, we don't want it
@@ -202,7 +203,7 @@ package feathers.core
 				//focus property in the event listener.
 				oldFocus.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
-			if(this._focus !== value)
+			if(shouldHaveFocus && this._focus !== value)
 			{
 				//this shouldn't happen, but if it does, let's not break the
 				//current state even more by referencing an old focused object.
