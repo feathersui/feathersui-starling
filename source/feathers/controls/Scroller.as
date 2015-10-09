@@ -2611,13 +2611,13 @@ package feathers.controls
 		 * velocity is recommended if you are looking to closely match the
 		 * behavior of native scrolling on iOS.</p>
 		 *
-		 * <p>In the following example, the duration of the animation that
-		 * changes the scroller's content is equal:</p>
+		 * <p>In the following example, the behavior of a "throw" animation is
+		 * changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.throwDuration = 1.5;</listing>
+		 * scroller.useFixedThrowDuration = false;</listing>
 		 *
-		 * @default 2.0
+		 * @default true
 		 *
 		 * @see #decelerationRate
 		 * @see #pageThrowDuration
