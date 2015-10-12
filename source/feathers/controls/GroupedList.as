@@ -2761,6 +2761,7 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				layout.stickyHeader = !this._styleNameList.contains(ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST);
 				this.layout = layout;
 			}
 		}
