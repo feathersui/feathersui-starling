@@ -19,6 +19,7 @@ package feathers.controls.supportClasses
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.IGroupedLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
@@ -1609,7 +1610,7 @@ package feathers.controls.supportClasses
 				var group:Object = this._dataProvider.getItemAt(i);
 				if(this._owner.groupToHeaderData(group) !== null)
 				{
-					this._headerIndices.push(totalLayoutCount);
+					this._headerIndices[totalHeaderCount] = totalLayoutCount;
 					totalLayoutCount++;
 					totalHeaderCount++;
 				}
@@ -1622,12 +1623,16 @@ package feathers.controls.supportClasses
 				}
 				if(this._owner.groupToFooterData(group) !== null)
 				{
-					this._footerIndices.push(totalLayoutCount);
+					this._footerIndices[totalFooterCount] = totalLayoutCount;
 					totalLayoutCount++;
 					totalFooterCount++;
 				}
 			}
 			this._layoutItems.length = totalLayoutCount;
+			if(this._layout is IGroupedLayout)
+			{
+				IGroupedLayout(this._layout).headerIndices = this._headerIndices;
+			}
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
@@ -1669,12 +1674,7 @@ package feathers.controls.supportClasses
 					this._minimumItemCount = 1;
 				}
 			}
-			var hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._customFirstItemRendererStyleName;
-			var hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._customLastItemRendererStyleName;
-			var hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._customSingleItemRendererStyleName;
 			var currentIndex:int = 0;
-			var unrenderedHeadersLastIndex:int = this._unrenderedHeaders.length;
-			var unrenderedFootersLastIndex:int = this._unrenderedFooters.length;
 			for(i = 0; i < groupCount; i++)
 			{
 				group = this._dataProvider.getItemAt(i);
