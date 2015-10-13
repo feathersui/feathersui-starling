@@ -985,7 +985,7 @@ package feathers.layout
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
 			var stickyHeaderMaxY:Number = Number.POSITIVE_INFINITY;
-			if(this._headerIndices && this._stickyHeader)
+			if(this._headerIndices && this._headerIndices.length > 0 && this._stickyHeader)
 			{
 				headerIndicesIndex = 0;
 				nextHeaderIndex = this._headerIndices[headerIndicesIndex];
@@ -1588,7 +1588,7 @@ package feathers.layout
 
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
-			if(this._headerIndices && this._stickyHeader)
+			if(this._headerIndices && this._headerIndices.length > 0 && this._stickyHeader)
 			{
 				headerIndicesIndex = 0;
 				nextHeaderIndex = this._headerIndices[headerIndicesIndex];
