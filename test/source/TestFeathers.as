@@ -14,7 +14,7 @@ package
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
-	import feathers.tests.LayoutGroupFlowLayoutTests;
+	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupTests;
@@ -140,7 +140,7 @@ package
 				ToggleSwitchTests,
 				
 				//layout tests
-				LayoutGroupFlowLayoutTests,
+				FlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
 				LayoutGroupVerticalLayoutTests,
 				TiledRowsLayoutTests,
