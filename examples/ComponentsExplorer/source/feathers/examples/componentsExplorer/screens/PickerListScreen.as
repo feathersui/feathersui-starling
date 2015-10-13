@@ -54,6 +54,7 @@ package feathers.examples.componentsExplorer.screens
 			listLayoutData.horizontalCenter = 0;
 			listLayoutData.verticalCenter = 0;
 			this._list.layoutData = listLayoutData;
+			this._list.addEventListener(Event.CHANGE, pickerList_changeHandler);
 			this.addChildAt(this._list, 0);
 
 			//the typical item helps us set an ideal width for the button
@@ -128,6 +129,11 @@ package feathers.examples.componentsExplorer.screens
 		private function backButton_triggeredHandler(event:Event):void
 		{
 			this.onBackButton();
+		}
+		
+		private function pickerList_changeHandler(event:Event):void
+		{
+			trace("PickerList change:", this._list.selectedIndex);
 		}
 	}
 }
