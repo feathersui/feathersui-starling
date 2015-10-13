@@ -18,8 +18,6 @@ package
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupTests;
-	import feathers.tests.LayoutGroupTiledColumnsLayoutTests;
-	import feathers.tests.LayoutGroupTiledRowsLayoutTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListRendererAddRemoveTests;
@@ -49,6 +47,8 @@ package
 	import feathers.tests.TextInputFocusTests;
 	import feathers.tests.TextInputTests;
 	import feathers.tests.TextureCacheTests;
+	import feathers.tests.TiledColumnsLayoutTests;
+	import feathers.tests.TiledRowsLayoutTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
@@ -143,8 +143,8 @@ package
 				LayoutGroupFlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
 				LayoutGroupVerticalLayoutTests,
-				LayoutGroupTiledRowsLayoutTests,
-				LayoutGroupTiledColumnsLayoutTests,
+				TiledRowsLayoutTests,
+				TiledColumnsLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,
