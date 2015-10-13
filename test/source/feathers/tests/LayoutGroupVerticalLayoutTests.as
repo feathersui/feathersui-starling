@@ -2,8 +2,11 @@ package feathers.tests
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.VerticalLayout;
+	import feathers.layout.ViewPortBounds;
 
 	import org.flexunit.Assert;
+
+	import starling.display.DisplayObject;
 
 	import starling.display.Quad;
 
@@ -264,6 +267,19 @@ package feathers.tests
 			this._group.addChild(child);
 			this._group.validate();
 			Assert.assertStrictlyEquals("Child y position incorrectly set to non-integer with VerticalLayout.VERTICAL_ALIGN_MIDDLE", Math.round(child.y), child.y);
+		}
+
+		[Test]
+		public function testNoErrorNoChildrenStickyHeader():void
+		{
+			var items:Vector.<DisplayObject> = new <DisplayObject>[];
+			this._layout.headerIndices = new <int>[];
+			this._layout.stickyHeader = true;
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			this._layout.layout(items, bounds);
+
+			this._layout.useVirtualLayout = true;
+			this._layout.measureViewPort(0, bounds);
 		}
 	}
 }
