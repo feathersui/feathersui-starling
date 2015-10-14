@@ -2390,7 +2390,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererType;
 				}
 			}
-			else if(this._lastItemRendererType !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererType !== null && itemIndex === (groupLength - 1))
 			{
 				return this._lastItemRendererType;
 			}
@@ -2411,7 +2411,7 @@ package feathers.controls.supportClasses
 					return this._customFirstItemRendererStyleName;
 				}
 			}
-			else if(this._customLastItemRendererStyleName !== null && itemIndex === (groupLength - 1))
+			if(this._customLastItemRendererStyleName !== null && itemIndex === (groupLength - 1))
 			{
 				return this._customLastItemRendererStyleName;
 			}
@@ -2443,7 +2443,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererFactory;
 				}
 			}
-			else if(this._lastItemRendererFactory !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererFactory !== null && itemIndex === (groupLength - 1))
 			{
 				return this._lastItemRendererFactory;
 			}
@@ -2474,7 +2474,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererStorage;
 				}
 			}
-			else if(this._lastItemRendererStorage !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererStorage !== null && itemIndex === (groupLength - 1))
 			{
 				return this._lastItemRendererStorage;
 			}
