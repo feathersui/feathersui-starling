@@ -248,11 +248,6 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected static const NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:String = "NetStream.Seek.Notify";
-
-		/**
-		 * @private
-		 */
 		protected static const NO_VIDEO_SOURCE_PLAY_ERROR:String = "Cannot play media when videoSource property has not been set.";
 
 		/**
@@ -888,7 +883,7 @@ package feathers.media
 				var netConnectionFactory:Function = this._netConnectionFactory !== null ? this._netConnectionFactory : defaultNetConnectionFactory;
 				this._netConnection = netConnectionFactory();
 				this._netStream = new NetStream(this._netConnection);
-				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData, this.netStream_onPlayStatus);
+				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 				this._netStream.addEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			}
@@ -1018,7 +1013,12 @@ package feathers.media
 			this._isWaitingForTextureReady = false;
 			//the texture is ready to be displayed
 			this.dispatchEventWith(starling.events.Event.READY);
-			this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+			if(this._isPlaying)
+			{
+				//only add the listener if the video is playing. it may be
+				//paused when restoring lost context.
+				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+			}
 			var bytesTotal:Number = this._netStream.bytesTotal;
 			if(this._bytesTotal === 0 && bytesTotal > 0)
 			{
@@ -1062,27 +1062,6 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function netStream_onPlayStatus(data:Object):void
-		{
-			var code:String = data.code as String;
-			switch(code)
-			{
-				case PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:
-				{
-					//the video has reached the end
-					if(this._isPlaying)
-					{
-						this.stop();
-						this.dispatchEventWith(starling.events.Event.COMPLETE);
-					}
-					break;
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		protected function netStream_ioErrorHandler(event:IOErrorEvent):void
 		{
 			this.dispatchEventWith(event.type, false, event);
@@ -1103,26 +1082,22 @@ package feathers.media
 				}
 				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
 				{
-					//on iOS when context is lost, the NetStream will stop
-					//automatically, and its time property will reset to 0.
-					//we want to seek to the correct time after the texture is
-					//restored, so we don't want _currentTime to get changed to
-					//0 when the Event.ENTER_FRAME listener is called one last
-					//time.
+					//any time that the NetStream stops, we want to remove the
+					//Event.ENTER_FRAME listener. in most cases, we don't want
+					//a listener being called every frame for no reason. on iOS,
+					//context loss resets the NetStream time to 0, and we need
+					//to keep the current time so that we can seek back.
 					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
-					break;
-				}
-				case NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:
-				{
-					if(this._isWaitingForTextureReady)
+
+					//on iOS, when context is lost, the NetStream will stop
+					//automatically, and the time property will be reset to 0.
+					//on other platforms, the NetStream will continue playing on
+					//context loss, and the time will be correct.
+					if(Starling.context.driverInfo !== "Disposed")
 					{
-						//ignore until the texture is ready because we might
-						//be waiting to seek once the texture is ready, and this
-						//will screw up our current time.
-						return;
+						this.stop();
+						this.dispatchEventWith(starling.events.Event.COMPLETE);
 					}
-					this._currentTime = this._netStream.time;
-					this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 					break;
 				}
 			}
@@ -1156,10 +1131,9 @@ package feathers.media
 
 dynamic class VideoPlayerNetStreamClient
 {
-	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function, onPlayStatusCallback:Function)
+	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function)
 	{
 		this.onMetaDataCallback = onMetaDataCallback;
-		this.onPlayStatusCallback = onPlayStatusCallback;
 	}
 	
 	public var onMetaDataCallback:Function;
@@ -1167,15 +1141,5 @@ dynamic class VideoPlayerNetStreamClient
 	public function onMetaData(metadata:Object):void
 	{
 		this.onMetaDataCallback(metadata);
-	}
-
-	public var onPlayStatusCallback:Function;
-
-	public function onPlayStatus(data:Object):void
-	{
-		if(this.onPlayStatusCallback !== null)
-		{
-			this.onPlayStatusCallback(data);
-		}
 	}
 }
