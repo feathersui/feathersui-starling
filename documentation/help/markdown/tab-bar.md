@@ -114,9 +114,9 @@ getStyleProviderForClass( Button )
 If you are not using a theme, you can use [`tabFactory`](../api-reference/feathers/controls/TabBar.html#tabFactory) to provide skins for the tabs:
 
 ``` code
-tabBar.tabFactory = function():Button
+tabBar.tabFactory = function():ToggleButton
 {
-    var tab:Button = new Button();
+    var tab:ToggleButton = new ToggleButton();
     tab.defaultSkin = new Image( texture );
     tab.downSkin = new Image( texture );
     tab.defaultLabelProperties.textFormat = new TextFormat("Arial", 24, 0x323232, true );
