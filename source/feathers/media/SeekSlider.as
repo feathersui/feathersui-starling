@@ -203,7 +203,6 @@ package feathers.media
 					{
 						this._progress = 0;
 					}
-					trace(this._progress);
 				}
 				else
 				{
