@@ -252,10 +252,14 @@ package feathers.media
 				this.removeChild(this._progressSkin);
 			}
 			this._progressSkin = value;
-			if(this._progressSkin && this._progressSkin.parent != this)
+			if(this._progressSkin)
 			{
-				this._progressSkin.visible = false;
-				this.addChild(this._progressSkin);
+				if(this._progressSkin.parent != this)
+				{
+					this._progressSkin.visible = false;
+					this.addChild(this._progressSkin);
+				}
+				this._progressSkin.touchable = false;
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
