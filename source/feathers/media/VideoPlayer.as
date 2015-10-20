@@ -260,7 +260,8 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected static const PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:String = "NetStream.Play.Complete";
+		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_START:String = "NetStream.Play.Start";
+		
 		/**
 		 * @private
 		 */
@@ -930,21 +931,26 @@ package feathers.media
 			{
 				//after playing the media until the end, if we restart from the
 				//beginning, the audio plays, but we cannot see the video.
-				//trying to resume the video or play it again with the same
-				//texture causes multiple audio tracks to play on iOS, so we
-				//need to dispose the old texture and start fresh.
-				this._texture.dispose();
-				this._texture = null;
-				this.dispatchEventWith(FeathersEventType.CLEAR);
-				onCompleteCallback = videoTexture_onRestartAfterStopComplete;
+				//however, we can ask the NetStream to play the video source
+				//again from the beginning, and the video displays. if we need
+				//to restore the time, we can do it after the NetStream
+				//dispatches NetStream.Play.Start
+				this._netStream.play(this._videoSource);
 			}
-			if(this._texture)
+			else if(this._texture)
 			{
+				//this case happens if the video is paused and resumed without
+				//reaching the end.
+				//NetStream.Play.Start will not be dispatched after calling
+				//resume(), so we need to manually add the ENTER_FRAME listener.
+				//there's no need to seek. we're resuming from where the video
+				//was paused.
 				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 				this._netStream.resume();
 			}
 			else
 			{
+				//in the final case, the texture hasn't been created yet.
 				this._isWaitingForTextureReady = true;
 				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, onCompleteCallback);
 				this._texture.root.onRestore = videoTexture_onRestore;
@@ -982,7 +988,8 @@ package feathers.media
 			this._currentTime = seconds;
 			if(this._hasPlayedToEnd)
 			{
-				//the current texture cannot seek properly
+				//the video played until the end, which means that the current
+				//texture cannot seek properly without reloading the media.
 				this.playMedia();
 				return;
 			}
@@ -1052,7 +1059,7 @@ package feathers.media
 		{
 			this.pauseMedia();
 			this._isWaitingForTextureReady = true;
-			this._texture.root.attachNetStream(this._netStream, videoTexture_onRestartAfterStopComplete);
+			this._texture.root.attachNetStream(this._netStream, videoTexture_onComplete);
 			//this will start playback from the beginning again, but we can seek
 			//back to the current time once the video texture is ready.
 			this._netStream.play(this._videoSource);
@@ -1066,12 +1073,6 @@ package feathers.media
 			this._isWaitingForTextureReady = false;
 			//the texture is ready to be displayed
 			this.dispatchEventWith(starling.events.Event.READY);
-			if(this._isPlaying)
-			{
-				//only add the listener if the video is playing. it may be
-				//paused when restoring lost context.
-				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
-			}
 			var bytesTotal:Number = this._netStream.bytesTotal;
 			if(this._bytesTotal === 0 && bytesTotal > 0)
 			{
@@ -1083,22 +1084,6 @@ package feathers.media
 					this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 				}
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function videoTexture_onRestartAfterStopComplete():void
-		{
-			//seek back to the video's current time from when the context was
-			//was lost. we couldn't seek when we started playing the video
-			//again. we had to wait until this callback.
-			this.seek(this._currentTime);
-			if(!this._isPlaying)
-			{
-				this.pauseMedia();
-			}
-			this.videoTexture_onComplete();
 		}
 
 		/**
@@ -1133,12 +1118,41 @@ package feathers.media
 					this.dispatchEventWith(FeathersEventType.ERROR, false, code);
 					break;
 				}
+				case NET_STATUS_CODE_NETSTREAM_PLAY_START:
+				{
+					if(this._netStream.time !== this._currentTime)
+					{
+						//if we're restoring from a lost context, or we've
+						//restarted the video after it had reached the end, the
+						//NetStream may have restarted from the beginning. in
+						//that case, we can manually seek to the last known good
+						//position.
+						this._netStream.seek(this._currentTime);
+					}
+					if(this._isPlaying)
+					{
+						//only add the listener if a video is playing. it may be
+						//paused when restoring lost context, but we need to
+						//temporarily start playing the NetStream in order to
+						//restore the video texture.
+						this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+					}
+					else
+					{
+						//the only way to prepare the video texture is to start
+						//playing the NetStream. the media player is not in a
+						//playing state, though, so we should pause the
+						//NetStream now.
+						this.pauseMedia();
+					}
+					break;
+				}
 				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
 				{
 					if(this._hasPlayedToEnd)
 					{
-						//we haven't even cleared this flag yet, so this is safe
-						//to ignore.
+						//we haven't cleared this flag yet after calling play()
+						//on the NetStream. it is safe to ignore this case.
 						return;
 					}
 					
@@ -1153,6 +1167,8 @@ package feathers.media
 					//automatically, and the time property will be reset to 0.
 					//on other platforms, the NetStream will continue playing on
 					//context loss, and the time will be correct.
+					//we need to check if the context is lost or not to decide
+					//if we've reached the end of the video or not.
 					if(Starling.context.driverInfo !== "Disposed")
 					{
 						this.stop();
