@@ -161,6 +161,33 @@ package feathers.media
 	[Event(name="ready",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the video texture is no longer valid. Indicates that
+	 * the <code>texture</code> property will return a <code>null</code> value,
+	 * and that that the previous texture has been disposed and should not be
+	 * rendered any more.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #texture
+	 *
+	 * @eventType feathers.events.FeathersEventType.CLEAR
+	 */
+	[Event(name="clear",type="starling.events.Event")]
+
+	/**
 	 * Dispatched periodically when a media player's content is loading to
 	 * indicate the current progress. The <code>bytesLoaded</code> and
 	 * <code>bytesTotal</code> properties may be accessed to determine the
@@ -443,6 +470,11 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _hasPlayedToEnd:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _videoSource:String;
 
 		/**
@@ -479,6 +511,7 @@ package feathers.media
 			{
 				this._texture.dispose();
 				this._texture = null;
+				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 			if(!value)
@@ -799,6 +832,7 @@ package feathers.media
 			{
 				this._texture.dispose();
 				this._texture = null;
+				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			this.disposeNetStream();
 			super.dispose();
@@ -892,6 +926,19 @@ package feathers.media
 				this._soundTransform = new SoundTransform();
 			}
 			this._netStream.soundTransform = this._soundTransform;
+			var onCompleteCallback:Function = videoTexture_onComplete;
+			if(this._texture && this._hasPlayedToEnd)
+			{
+				//after playing the media until the end, if we restart from the
+				//beginning, the audio plays, but we cannot see the video.
+				//trying to resume the video or play it again with the same
+				//texture causes multiple audio tracks to play on iOS, so we
+				//need to dispose the old texture and start fresh.
+				this._texture.dispose();
+				this._texture = null;
+				this.dispatchEventWith(FeathersEventType.CLEAR);
+				onCompleteCallback = videoTexture_onRestartAfterStopComplete;
+			}
 			if(this._texture)
 			{
 				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
@@ -900,7 +947,7 @@ package feathers.media
 			else
 			{
 				this._isWaitingForTextureReady = true;
-				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, videoTexture_onComplete);
+				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, onCompleteCallback);
 				this._texture.root.onRestore = videoTexture_onRestore;
 				//don't call play() until after Texture.fromNetStream() because
 				//the texture needs to be created first.
@@ -908,6 +955,7 @@ package feathers.media
 				//isn't ready to be rendered yet.
 				this._netStream.play(this._videoSource);
 			}
+			this._hasPlayedToEnd = false;
 		}
 
 		/**
@@ -933,6 +981,12 @@ package feathers.media
 				throw new IllegalOperationError(NO_VIDEO_SOURCE_SEEK_ERROR);
 			}
 			this._currentTime = seconds;
+			if(this._hasPlayedToEnd)
+			{
+				//the current texture cannot seek properly
+				this.playMedia();
+				return;
+			}
 			this._netStream.seek(seconds);
 		}
 
@@ -999,7 +1053,7 @@ package feathers.media
 		{
 			this.pauseMedia();
 			this._isWaitingForTextureReady = true;
-			this._texture.root.attachNetStream(this._netStream, videoTexture_onRestoreComplete);
+			this._texture.root.attachNetStream(this._netStream, videoTexture_onRestartAfterStopComplete);
 			//this will start playback from the beginning again, but we can seek
 			//back to the current time once the video texture is ready.
 			this._netStream.play(this._videoSource);
@@ -1035,7 +1089,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function videoTexture_onRestoreComplete():void
+		protected function videoTexture_onRestartAfterStopComplete():void
 		{
 			//seek back to the video's current time from when the context was
 			//was lost. we couldn't seek when we started playing the video
@@ -1082,6 +1136,13 @@ package feathers.media
 				}
 				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
 				{
+					if(this._hasPlayedToEnd)
+					{
+						//we haven't even cleared this flag yet, so this is safe
+						//to ignore.
+						return;
+					}
+					
 					//any time that the NetStream stops, we want to remove the
 					//Event.ENTER_FRAME listener. in most cases, we don't want
 					//a listener being called every frame for no reason. on iOS,
@@ -1096,6 +1157,10 @@ package feathers.media
 					if(Starling.context.driverInfo !== "Disposed")
 					{
 						this.stop();
+						
+						//set this flag after calling stop() because stopping
+						//will seek to the beginning and may check for the flag.
+						this._hasPlayedToEnd = true;
 						this.dispatchEventWith(starling.events.Event.COMPLETE);
 					}
 					break;
