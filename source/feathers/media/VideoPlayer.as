@@ -507,19 +507,18 @@ package feathers.media
 			{
 				this.stop();
 			}
-			if(this._texture)
-			{
-				this._texture.dispose();
-				this._texture = null;
-				this.dispatchEventWith(FeathersEventType.CLEAR);
-			}
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 			if(!value)
 			{
 				//if we're not playing anything, we shouldn't keep the NetStream
 				//around in memory. if we're switching to something else, then
 				//the NetStream can be reused.
 				this.disposeNetStream();
+			}
+			if(this._texture)
+			{
+				this._texture.dispose();
+				this._texture = null;
+				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			this._videoSource = value;
 			//reset the current and total time if we were playing a different
@@ -537,7 +536,7 @@ package feathers.media
 			//same with the bytes loaded and total
 			this._bytesLoaded = 0;
 			this._bytesTotal = 0;
-			if(this._autoPlay)
+			if(this._autoPlay && this._videoSource)
 			{
 				this.play();
 			}
@@ -828,14 +827,20 @@ package feathers.media
 		 */
 		override public function dispose():void
 		{
-			if(this._texture)
-			{
-				this._texture.dispose();
-				this._texture = null;
-				this.dispatchEventWith(FeathersEventType.CLEAR);
-			}
-			this.disposeNetStream();
+			this.videoSource = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function play():void
+		{
+			if(this._videoSource === null)
+			{
+				return;
+			}
+			super.play();
 		}
 
 		/**
