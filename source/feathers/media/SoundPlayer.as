@@ -306,6 +306,10 @@ package feathers.media
 				this._totalTime = 0;
 				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
 			}
+			if(this._sound)
+			{
+				this.cleanupSound();
+			}
 			this._isLoaded = false;
 			if(this._soundSource is String)
 			{
@@ -508,6 +512,27 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.soundSource = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function play():void
+		{
+			if(this._sound === null)
+			{
+				return;
+			}
+			super.play();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function playMedia():void
 		{
 			if(!this._soundSource)
@@ -591,11 +616,7 @@ package feathers.media
 			this._isLoading = true;
 			if(this._sound)
 			{
-				this._sound.removeEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
-				this._sound.removeEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
-				this._sound.removeEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
-				this._sound.removeEventListener(flash.events.Event.ID3, sound_id3Handler);
-				this._sound = null;
+				this.cleanupSound();
 			}
 			this._sound = new Sound();
 			this._sound.addEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
@@ -603,6 +624,22 @@ package feathers.media
 			this._sound.addEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
 			this._sound.addEventListener(flash.events.Event.ID3, sound_id3Handler);
 			this._sound.load(request);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function cleanupSound():void
+		{
+			if(!this._sound)
+			{
+				return;
+			}
+			this._sound.removeEventListener(IOErrorEvent.IO_ERROR, sound_errorHandler);
+			this._sound.removeEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
+			this._sound.removeEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
+			this._sound.removeEventListener(flash.events.Event.ID3, sound_id3Handler);
+			this._sound = null;
 		}
 
 		/**
