@@ -1051,10 +1051,10 @@ package feathers.controls.renderers
 		 * accessory.
 		 *
 		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
+		 * <code>stateToAccessoryFunction</code> property.</p>
 		 *
-		 * <p>The following example gives the button a default icon to use for
-		 * all states when no specific icon is available:</p>
+		 * <p>The following example gives the item renderer a default accessory
+		 * to use for all states when no specific accessory is available:</p>
 		 *
 		 * <listing version="3.0">
 		 * itemRenderer.defaultAccessory = new Image( texture );</listing>
