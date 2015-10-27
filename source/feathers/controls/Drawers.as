@@ -3141,16 +3141,13 @@ package feathers.controls
 					}
 				}
 			}
-			else if(touch.target != this && !touch.isTouching(this._content) &&
-				!(this.isTopDrawerDocked && touch.isTouching(this._topDrawer)) &&
-				!(this.isRightDrawerDocked && touch.isTouching(this._rightDrawer)) &&
-				!(this.isBottomDrawerDocked && touch.isTouching(this._bottomDrawer)) &&
-				!(this.isLeftDrawerDocked && touch.isTouching(this._leftDrawer)))
+			else if(this._openMode === OPEN_MODE_BELOW && touch.target !== this)
 			{
-				//a drawer is open, let's only work with touches over the
-				//content or other drawers that are docked
+				//when the drawer is opened below, it will only close when
+				//something outside of the drawer is touched
 				return;
 			}
+			//when the drawer is opened above, anything may be touched
 
 			this.touchPointID = touch.id;
 			this._velocityX = 0;
