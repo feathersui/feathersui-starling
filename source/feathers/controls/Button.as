@@ -1323,6 +1323,7 @@ package feathers.controls
 		 * @default null
 		 * 
 		 * @see #defaultSkin
+		 * @see #setSkinForState()
 		 * @see #STATE_UP
 		 */
 		public function get upSkin():DisplayObject
@@ -1358,6 +1359,7 @@ package feathers.controls
 		 * @default null
 		 * 
 		 * @see #defaultSkin
+		 * @see #setSkinForState()
 		 * @see #STATE_DOWN
 		 */
 		public function get downSkin():DisplayObject
@@ -1393,6 +1395,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #defaultSkin
+		 * @see #setSkinForState()
 		 * @see #STATE_HOVER
 		 */
 		public function get hoverSkin():DisplayObject
@@ -1428,6 +1431,7 @@ package feathers.controls
 		 * @default null
 		 * 
 		 * @see #defaultSkin
+		 * @see #setSkinForState()
 		 * @see #STATE_DISABLED
 		 */
 		public function get disabledSkin():DisplayObject
@@ -1882,6 +1886,7 @@ package feathers.controls
 		 * @default null
 		 * 
 		 * @see #defaultIcon
+		 * @see #setIconForState()
 		 * @see #STATE_UP
 		 */
 		public function get upIcon():DisplayObject
@@ -1917,6 +1922,7 @@ package feathers.controls
 		 * @default null
 		 * 
 		 * @see #defaultIcon
+		 * @see #setIconForState()
 		 * @see #STATE_DOWN
 		 */
 		public function get downIcon():DisplayObject
@@ -1952,6 +1958,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #defaultIcon
+		 * @see #setIconForState()
 		 * @see #STATE_HOVER
 		 */
 		public function get hoverIcon():DisplayObject
@@ -1987,6 +1994,7 @@ package feathers.controls
 		 * @default null
 		 * 
 		 * @see #defaultIcon
+		 * @see #setIconForState()
 		 * @see #STATE_DISABLED
 		 */
 		public function get disabledIcon():DisplayObject
