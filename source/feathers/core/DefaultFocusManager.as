@@ -26,9 +26,10 @@ package feathers.core
 	import starling.events.TouchPhase;
 
 	/**
-	 * The default <code>IPopUpManager</code> implementation.
+	 * The default <code>IFocusManager</code> implementation.
 	 *
-	 * @see FocusManager
+	 * @see ../../../help/focus.html Keyboard focus management in Feathers
+	 * @see feathers.core.FocusManager
 	 */
 	public class DefaultFocusManager implements IFocusManager
 	{
@@ -175,25 +176,41 @@ package feathers.core
 			{
 				return;
 			}
+			var shouldHaveFocus:Boolean = false;
 			var oldFocus:IFeathersDisplayObject = this._focus;
 			if(this._isEnabled && value && value.isFocusEnabled && value.focusManager == this)
 			{
 				this._focus = value;
+				shouldHaveFocus = true;
 			}
 			else
 			{
 				this._focus = null;
 			}
+			var nativeStage:Stage = this._starling.nativeStage;
+			if(nativeStage && nativeStage.focus)
+			{
+				//this listener restores focus, if it is lost in a way that is
+				//out of our control. since we may be manually removing focus in
+				//a listener for FeathersEventType.FOCUS_OUT, we don't want it
+				//to restore focus.
+				nativeStage.focus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+			}
 			if(oldFocus)
 			{
 				//this event should be dispatched after setting the new value of
-				//_focus because we want to be able to access it in the event
-				//listener
+				//_focus because we want to be able to access the value of the
+				//focus property in the event listener.
 				oldFocus.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+			}
+			if(shouldHaveFocus && this._focus !== value)
+			{
+				//this shouldn't happen, but if it does, let's not break the
+				//current state even more by referencing an old focused object.
+				return;
 			}
 			if(this._isEnabled)
 			{
-				var nativeStage:Stage = this._starling.nativeStage;
 				if(this._focus)
 				{
 					if(this._focus is INativeFocusOwner)

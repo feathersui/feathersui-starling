@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:a439393e8333a9a8baae1446eade76ea:aef21cac32d839bba7669961cf965643:d02c8579ede2a04e892b8ae249e62cb0$ -->
-<TextureAtlas imagePath="minimal_mobile.png">
+<!-- $TexturePacker:SmartUpdate:c8fa52766815c434386508483689e7c3:b20ea7bc72802a7411c4af9a733231c3:d02c8579ede2a04e892b8ae249e62cb0$ -->
+<TextureAtlas imagePath="minimal_mobile.png" width="256" height="512">
     <SubTexture name="button-back-disabled-skin" x="67" y="287" rotated="true" width="60" height="36"/>
     <SubTexture name="button-back-down-skin" x="131" y="287" rotated="true" width="60" height="36"/>
     <SubTexture name="button-back-up-skin" x="24" y="363" width="36" height="60"/>
@@ -55,10 +55,11 @@
     <SubTexture name="radio-icon" x="154" y="427" width="36" height="36"/>
     <SubTexture name="radio-selected-disabled-icon" x="97" y="467" width="36" height="36"/>
     <SubTexture name="radio-selected-icon" x="153" y="467" width="36" height="36"/>
-    <SubTexture name="scrollbar-thumb-skin" x="247" y="63" width="4" height="4"/>
+    <SubTexture name="scrollbar-thumb-skin" x="247" y="94" width="4" height="4"/>
     <SubTexture name="search-icon-disabled" x="195" y="293" rotated="true" width="19" height="18"/>
     <SubTexture name="search-icon" x="195" y="315" rotated="true" width="19" height="18"/>
-    <SubTexture name="spinner-list-selection-overlay-skin" x="247" y="71" width="1" height="11"/>
+    <SubTexture name="seek-slider-progress-skin" x="247" y="63" width="4" height="27" frameX="0" frameY="-5" frameWidth="4" frameHeight="32"/>
+    <SubTexture name="spinner-list-selection-overlay-skin" x="247" y="102" width="1" height="11"/>
     <SubTexture name="tab-down-skin" x="24" y="207" rotated="true" width="39" height="47"/>
     <SubTexture name="tab-selected-disabled-skin" x="24" y="258" rotated="true" width="39" height="47"/>
     <SubTexture name="tab-selected-skin" x="24" y="309" rotated="true" width="39" height="47"/>

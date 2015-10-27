@@ -11,13 +11,13 @@ package
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.ImageLoaderInternalStateTests;
+	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
-	import feathers.tests.LayoutGroupFlowLayoutTests;
+	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupTests;
-	import feathers.tests.LayoutGroupTiledColumnsLayoutTests;
-	import feathers.tests.LayoutGroupTiledRowsLayoutTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListRendererAddRemoveTests;
@@ -47,6 +47,8 @@ package
 	import feathers.tests.TextInputFocusTests;
 	import feathers.tests.TextInputTests;
 	import feathers.tests.TextureCacheTests;
+	import feathers.tests.TiledColumnsLayoutTests;
+	import feathers.tests.TiledRowsLayoutTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
@@ -114,6 +116,8 @@ package
 				DrawersTests,
 				GroupedListTests,
 				GroupedListRendererAddRemoveTests,
+				ImageLoaderTests,
+				ImageLoaderInternalStateTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				ListTests,
@@ -136,11 +140,11 @@ package
 				ToggleSwitchTests,
 				
 				//layout tests
-				LayoutGroupFlowLayoutTests,
+				FlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
 				LayoutGroupVerticalLayoutTests,
-				LayoutGroupTiledRowsLayoutTests,
-				LayoutGroupTiledColumnsLayoutTests,
+				TiledRowsLayoutTests,
+				TiledColumnsLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,

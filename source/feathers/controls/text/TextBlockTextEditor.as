@@ -298,15 +298,11 @@ package feathers.controls.text
 		protected var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Indicates whether the text field is a password text field that hides
-		 * input characters using a substitute character.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#displayAsPassword
 		 *
-		 * <p>In the following example, the text is displayed as a password:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.displayAsPassword = true;</listing>
-		 *
-		 * @default false
+		 * @see feathers.controls.TextInput#displayAsPassword
 		 *
 		 * @see #passwordCharCode
 		 */
@@ -385,15 +381,11 @@ package feathers.controls.text
 		protected var _isEditable:Boolean = true;
 
 		/**
-		 * Determines if the text input is editable. If the text input is not
-		 * editable, it will still appear enabled.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#isEditable
 		 *
-		 * <p>In the following example, the text is not editable:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.isEditable = false;</listing>
-		 *
-		 * @default true
+		 * @see feathers.controls.TextInput#isEditable
 		 */
 		public function get isEditable():Boolean
 		{
@@ -410,6 +402,36 @@ package feathers.controls.text
 				return;
 			}
 			this._isEditable = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isSelectable:Boolean = true;
+
+		/**
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#isSelectable
+		 *
+		 * @see feathers.controls.TextInput#isSelectable
+		 */
+		public function get isSelectable():Boolean
+		{
+			return this._isSelectable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSelectable(value:Boolean):void
+		{
+			if(this._isSelectable == value)
+			{
+				return;
+			}
+			this._isSelectable = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -488,17 +510,11 @@ package feathers.controls.text
 		protected var _maxChars:int = 0;
 
 		/**
-		 * Indicates the maximum number of characters that a user can enter into
-		 * the text editor. A script can insert more text than <code>maxChars</code>
-		 * allows. If <code>maxChars</code> equals zero, a user can enter an
-		 * unlimited amount of text into the text editor.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#maxChars
 		 *
-		 * <p>In the following example, the maximum character count is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.maxChars = 10;</listing>
-		 *
-		 * @default 0
+		 * @see feathers.controls.TextInput#maxChars
 		 */
 		public function get maxChars():int
 		{
@@ -524,16 +540,11 @@ package feathers.controls.text
 		protected var _restrict:TextInputRestrict;
 
 		/**
-		 * Restricts the set of characters that a user can enter into the text
-		 * field. Only user interaction is restricted; a script can put any text
-		 * into the text field.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#restrict
 		 *
-		 * <p>In the following example, the text is restricted to numbers:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.restrict = "0-9";</listing>
-		 *
-		 * @default null
+		 * @see feathers.controls.TextInput#restrict
 		 */
 		public function get restrict():String
 		{
@@ -635,9 +646,16 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
-			//we already have focus, so there's no reason to change
+			if(!this._isEditable && !this._isSelectable)
+			{
+				//if the text can't be edited or selected, then all focus is
+				//disabled.
+				return;
+			}
 			if(this._hasFocus && !position)
 			{
+				//we already have focus, and there isn't a touch position, we
+				//can ignore this because nothing would change
 				return;
 			}
 			if(this._nativeFocus)
@@ -684,10 +702,11 @@ package feathers.controls.text
 				//only clear the native focus when our native target has focus
 				//because otherwise another component may lose focus.
 
-				//don't set focus to null here. the focus manager will interpret
-				//that as the runtime automatically clearing focus for other
-				//reasons.
-				nativeStage.focus = nativeStage;
+				//for consistency with StageTextTextEditor and
+				//TextFieldTextEditor, we set the native stage's focus to null
+				//here instead of setting it to the native stage due to issues
+				//with those text editors on Android.
+				nativeStage.focus = null;
 			}
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
@@ -697,6 +716,10 @@ package feathers.controls.text
 		 */
 		public function selectRange(beginIndex:int, endIndex:int):void
 		{
+			if(!this._isEditable && !this._isSelectable)
+			{
+				return;
+			}
 			if(endIndex < beginIndex)
 			{
 				var temp:int = endIndex;
@@ -1071,7 +1094,7 @@ package feathers.controls.text
 		 */
 		protected function textEditor_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled || (!this._isEditable && !this._isSelectable))
 			{
 				this.touchPointID = -1;
 				return;
@@ -1146,7 +1169,8 @@ package feathers.controls.text
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(!this._isEnabled || this.touchPointID >= 0 || event.isDefaultPrevented())
+			if(!this._isEnabled || (!this._isEditable && !this._isSelectable) ||
+				this.touchPointID >= 0 || event.isDefaultPrevented())
 			{
 				return;
 			}
@@ -1347,7 +1371,7 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_selectAllHandler(event:flash.events.Event):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled || (!this._isEditable && !this._isSelectable))
 			{
 				return;
 			}
@@ -1360,7 +1384,8 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_cutHandler(event:flash.events.Event):void
 		{
-			if(!this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
+			if(!this._isEnabled || (!this._isEditable && !this._isSelectable) ||
+				this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
 				return;
 			}
@@ -1377,7 +1402,8 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_copyHandler(event:flash.events.Event):void
 		{
-			if(!this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
+			if(!this._isEnabled || (!this._isEditable && !this._isSelectable) ||
+				this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
 				return;
 			}

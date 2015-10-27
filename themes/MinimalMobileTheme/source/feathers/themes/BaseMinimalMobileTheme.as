@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
@@ -145,6 +146,13 @@ package feathers.themes
 		 */
 		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_TEXT_EDITOR:String = "minimal-mobile-numeric-stepper-text-input-text-editor";
 
+		/**
+		 * @private
+		 * The theme's custom style name for the item renderer of the
+		 * SpinnerList in a DateTimeSpinner.
+		 */
+		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "minimal-mobile-date-time-spinner-list-item-renderer";
+
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
 		protected static const SCALE_9_GRID:Rectangle = new Rectangle(9, 9, 2, 2);
@@ -155,6 +163,7 @@ package feathers.themes
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(0, 5, 3, 1);
 		protected static const LIST_ITEM_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(0, 5, 1, 1);
+		protected static const SEEK_SLIDER_PROGRESS_SKIN_SCALE9_GRID:Rectangle = new Rectangle(0, 6, 4, 26);
 		protected static const BACK_BUTTON_SCALE_REGION1:int = 30;
 		protected static const BACK_BUTTON_SCALE_REGION2:int = 1;
 		protected static const FORWARD_BUTTON_SCALE_REGION1:int = 9;
@@ -163,6 +172,7 @@ package feathers.themes
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const LIST_BACKGROUND_COLOR:uint = 0xf8f8f8;
 		protected static const LIST_HEADER_BACKGROUND_COLOR:uint = 0xeeeeee;
+		protected static const DRAWERS_DIVIDER_COLOR:uint = 0xebebeb;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
 		protected static const MODAL_OVERLAY_COLOR:uint = 0xcccccc;
@@ -401,6 +411,7 @@ package feathers.themes
 		protected var fullScreenToggleButtonExitUpIconTexture:Texture;
 		protected var muteToggleButtonLoudUpIconTexture:Texture;
 		protected var muteToggleButtonMutedUpIconTexture:Texture;
+		protected var seekSliderProgressSkinTextures:Scale9Textures;
 		protected var volumeSliderMinimumTrackSkinTexture:Texture;
 		protected var volumeSliderMaximumTrackSkinTexture:Texture;
 		
@@ -650,6 +661,7 @@ package feathers.themes
 			this.muteToggleButtonLoudUpIconTexture = this.atlas.getTexture("mute-toggle-button-loud-up-icon");
 			this.volumeSliderMinimumTrackSkinTexture = this.atlas.getTexture("volume-slider-minimum-track-skin");
 			this.volumeSliderMaximumTrackSkinTexture = this.atlas.getTexture("volume-slider-maximum-track-skin");
+			this.seekSliderProgressSkinTextures = new Scale9Textures(this.atlas.getTexture("seek-slider-progress-skin"), SEEK_SLIDER_PROGRESS_SKIN_SCALE9_GRID);
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 
@@ -716,7 +728,11 @@ package feathers.themes
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Check.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setCheckLabelStyles);
 
-			//check
+			//date time spinner
+			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
+
+			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
 
 			//grouped list (see also: item renderers)
@@ -1196,6 +1212,26 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// DateTimeSpinner
+	//-------------------------
+
+		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setSpinnerListStyles(list);
+			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setSpinnerListItemRendererStyles(itemRenderer);
+			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.gap = this.gutterSize;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.accessoryGap = this.gutterSize;
+			itemRenderer.minAccessoryGap = this.gutterSize;
+		}
+
+	//-------------------------
 	// Drawers
 	//-------------------------
 
@@ -1204,6 +1240,18 @@ package feathers.themes
 			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
 			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
 			drawers.overlaySkin = overlaySkin;
+
+			var topDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.topDrawerDivider = topDrawerDivider;
+
+			var rightDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.rightDrawerDivider = rightDrawerDivider;
+
+			var bottomDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.bottomDrawerDivider = bottomDrawerDivider;
+
+			var leftDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.leftDrawerDivider = leftDrawerDivider;
 		}
 
 	//-------------------------
@@ -1488,6 +1536,7 @@ package feathers.themes
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
+			input.isSelectable = false;
 			input.textEditorFactory = numericStepperTextEditorFactory;
 			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_TEXT_EDITOR;
 
@@ -1569,7 +1618,7 @@ package feathers.themes
 
 		protected function setPanelScreenHeaderStyles(header:Header):void
 		{
-			this.setPanelHeaderStyles(header);
+			this.setHeaderStyles(header);
 			header.useExtraPaddingForOSStatusBar = true;
 		}
 
@@ -2259,6 +2308,8 @@ package feathers.themes
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 			slider.minWidth = this.controlSize;
 			slider.minHeight = this.smallControlSize;
+			var progressSkin:Scale9Image = new Scale9Image(this.seekSliderProgressSkinTextures, this.scale);
+			slider.progressSkin = progressSkin;
 		}
 
 	//-------------------------

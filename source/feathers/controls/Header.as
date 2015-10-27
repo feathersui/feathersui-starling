@@ -74,17 +74,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const IOS_RETINA_STATUS_BAR_HEIGHT:Number = 40;
+		protected static const IOS_STATUS_BAR_HEIGHT:Number = 20;
 
 		/**
 		 * @private
 		 */
-		protected static const IOS_NON_RETINA_STATUS_BAR_HEIGHT:Number = 20;
-
-		/**
-		 * @private
-		 */
-		protected static const IOS_RETINA_MINIMUM_DPI:Number = 264;
+		protected static const IOS_DPI:Number = 132;
 
 		/**
 		 * @private
@@ -1612,13 +1607,7 @@ package feathers.controls
 			{
 				return 0;
 			}
-			if(DeviceCapabilities.dpi >= IOS_RETINA_MINIMUM_DPI)
-			{
-				//retina devices have more padding than non-retina
-				//we also need to account for contentScaleFactor
-				return IOS_RETINA_STATUS_BAR_HEIGHT / Starling.current.contentScaleFactor;
-			}
-			return IOS_NON_RETINA_STATUS_BAR_HEIGHT / Starling.current.contentScaleFactor;
+			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IOS_DPI) / Starling.current.contentScaleFactor;
 		}
 
 		/**

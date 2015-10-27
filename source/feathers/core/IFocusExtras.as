@@ -15,7 +15,7 @@ package feathers.core
 	 * "extra" children may still need to receive focus. An example of this
 	 * would be a container with "chrome", such as <code>feathers.controls.Panel</code>.
 	 *
-	 * @see feathers.core.IFocusManager
+	 * @see ../../../help/focus.html Keyboard focus management in Feathers
 	 */
 	public interface IFocusExtras
 	{

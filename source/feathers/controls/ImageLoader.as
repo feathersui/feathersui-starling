@@ -308,6 +308,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _originalTextureWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _originalTextureHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _currentTextureWidth:Number = NaN;
 
 		/**
@@ -403,6 +413,7 @@ package feathers.controls
 			if(oldTexture)
 			{
 				this._texture = oldTexture;
+				this._isTextureOwner = true;
 			}
 			if(this.image)
 			{
@@ -988,9 +999,9 @@ package feathers.controls
 		 */
 		public function get originalSourceWidth():Number
 		{
-			if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
+			if(this._originalTextureWidth === this._originalTextureWidth) //!isNaN
 			{
-				return this._currentTextureWidth;
+				return this._originalTextureWidth;
 			}
 			return 0;
 		}
@@ -1003,9 +1014,9 @@ package feathers.controls
 		 */
 		public function get originalSourceHeight():Number
 		{
-			if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
+			if(this._originalTextureHeight === this._originalTextureHeight) //!isNaN
 			{
-				return this._currentTextureHeight;
+				return this._originalTextureHeight;
 			}
 			return 0;
 		}
@@ -1721,6 +1732,8 @@ package feathers.controls
 			{
 				this._currentTextureWidth = this._currentTexture.width;
 				this._currentTextureHeight = this._currentTexture.height;
+				this._originalTextureWidth = this._currentTexture.nativeWidth;
+				this._originalTextureHeight = this._currentTexture.nativeHeight;
 			}
 			if(!this.image)
 			{
@@ -1762,6 +1775,8 @@ package feathers.controls
 			this._currentTexture = null;
 			this._currentTextureWidth = NaN;
 			this._currentTextureHeight = NaN;
+			this._originalTextureWidth = NaN;
+			this._originalTextureHeight = NaN;
 			this._pendingBitmapDataTexture = null;
 			this._pendingRawTextureData = null;
 			this._texture = null;

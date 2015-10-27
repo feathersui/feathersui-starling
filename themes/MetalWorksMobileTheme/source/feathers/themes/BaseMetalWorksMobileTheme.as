@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
@@ -288,6 +289,12 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR:String = "metal-works-mobile-numeric-stepper-text-input-editor";
 
 		/**
+		 * @private
+		 * The theme's custom style name for the item renderer of the DateTimeSpinner's SpinnerLists.
+		 */
+		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-date-time-spinner-list-item-renderer";
+
+		/**
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
@@ -473,6 +480,11 @@ package feathers.themes
 		 * The size, in pixels, of smaller UI controls.
 		 */
 		protected var smallControlSize:int;
+
+		/**
+		 * The size, in pixels, of borders;
+		 */
+		protected var borderSize:int;
 
 		protected var popUpFillSize:int;
 		protected var calloutBackgroundMinSize:int;
@@ -793,6 +805,7 @@ package feathers.themes
 			this.calloutBackgroundMinSize = Math.round(11 * this.scale);
 			this.scrollBarGutterSize = Math.round(4 * this.scale);
 			this.wideControlSize = this.gridSize * 3 + this.gutterSize * 2;
+			this.borderSize = Math.round(2 * this.scale);
 		}
 
 		/**
@@ -987,6 +1000,10 @@ package feathers.themes
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Check.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setCheckLabelStyles);
+			
+			//date time spinner
+			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
 
 			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
@@ -1517,6 +1534,26 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// DateTimeSpinner
+	//-------------------------
+
+		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
+		{
+			this.setSpinnerListStyles(list);
+			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setSpinnerListItemRendererStyles(itemRenderer);
+			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.gap = this.smallGutterSize;
+			itemRenderer.minGap = this.smallGutterSize;
+			itemRenderer.accessoryGap = this.smallGutterSize;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+		}
+		
+	//-------------------------
 	// Drawers
 	//-------------------------
 
@@ -1525,6 +1562,18 @@ package feathers.themes
 			var overlaySkin:Quad = new Quad(10, 10, DRAWER_OVERLAY_COLOR);
 			overlaySkin.alpha = DRAWER_OVERLAY_ALPHA;
 			drawers.overlaySkin = overlaySkin;
+
+			var topDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.topDrawerDivider = topDrawerDivider;
+
+			var rightDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.rightDrawerDivider = rightDrawerDivider;
+
+			var bottomDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.bottomDrawerDivider = bottomDrawerDivider;
+
+			var leftDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.leftDrawerDivider = leftDrawerDivider;
 		}
 
 	//-------------------------
@@ -1941,6 +1990,7 @@ package feathers.themes
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
+			input.isSelectable = false;
 		}
 		
 		protected function setNumericStepperTextInputEditorStyles(textEditor:TextBlockTextEditor):void

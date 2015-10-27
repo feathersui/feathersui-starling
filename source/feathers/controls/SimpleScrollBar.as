@@ -416,10 +416,6 @@ package feathers.controls
 		/**
 		 * @inheritDoc
 		 *
-		 * <p>If this value is <code>0</code>, the <code>step</code> value
-		 * will be used instead. If the <code>step</code> value is
-		 * <code>0</code>, paging with the track is not possible.</p>
-		 *
 		 * @default 0
 		 *
 		 * @see #value

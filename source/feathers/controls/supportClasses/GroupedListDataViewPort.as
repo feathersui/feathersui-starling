@@ -19,6 +19,7 @@ package feathers.controls.supportClasses
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.IGroupedLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
@@ -302,6 +303,7 @@ package feathers.controls.supportClasses
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
@@ -312,6 +314,7 @@ package feathers.controls.supportClasses
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 			}
 			if(this._layout is IVariableVirtualLayout)
 			{
@@ -929,8 +932,13 @@ package feathers.controls.supportClasses
 			{
 				if(this._layout is IVariableVirtualLayout)
 				{
-					var variableVirtualLayout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout)
+					var variableVirtualLayout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout);
+
+					//headers and footers are almost always going to have a
+					//different height, so we might as well force it because if
+					//we don't, there will be a lot of support requests
 					variableVirtualLayout.hasVariableItemDimensions = true;
+					
 					variableVirtualLayout.resetVariableVirtualCache();
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
@@ -1602,7 +1610,7 @@ package feathers.controls.supportClasses
 				var group:Object = this._dataProvider.getItemAt(i);
 				if(this._owner.groupToHeaderData(group) !== null)
 				{
-					this._headerIndices.push(totalLayoutCount);
+					this._headerIndices[totalHeaderCount] = totalLayoutCount;
 					totalLayoutCount++;
 					totalHeaderCount++;
 				}
@@ -1615,12 +1623,16 @@ package feathers.controls.supportClasses
 				}
 				if(this._owner.groupToFooterData(group) !== null)
 				{
-					this._footerIndices.push(totalLayoutCount);
+					this._footerIndices[totalFooterCount] = totalLayoutCount;
 					totalLayoutCount++;
 					totalFooterCount++;
 				}
 			}
 			this._layoutItems.length = totalLayoutCount;
+			if(this._layout is IGroupedLayout)
+			{
+				IGroupedLayout(this._layout).headerIndices = this._headerIndices;
+			}
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
@@ -1662,12 +1674,7 @@ package feathers.controls.supportClasses
 					this._minimumItemCount = 1;
 				}
 			}
-			var hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._customFirstItemRendererStyleName;
-			var hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._customLastItemRendererStyleName;
-			var hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._customSingleItemRendererStyleName;
 			var currentIndex:int = 0;
-			var unrenderedHeadersLastIndex:int = this._unrenderedHeaders.length;
-			var unrenderedFootersLastIndex:int = this._unrenderedFooters.length;
 			for(i = 0; i < groupCount; i++)
 			{
 				group = this._dataProvider.getItemAt(i);
@@ -2383,7 +2390,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererType;
 				}
 			}
-			else if(this._lastItemRendererType !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererType !== null && itemIndex === (groupLength - 1))
 			{
 				return this._lastItemRendererType;
 			}
@@ -2404,7 +2411,7 @@ package feathers.controls.supportClasses
 					return this._customFirstItemRendererStyleName;
 				}
 			}
-			else if(this._customLastItemRendererStyleName !== null && itemIndex === (groupLength - 1))
+			if(this._customLastItemRendererStyleName !== null && itemIndex === (groupLength - 1))
 			{
 				return this._customLastItemRendererStyleName;
 			}
@@ -2436,7 +2443,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererFactory;
 				}
 			}
-			else if(this._lastItemRendererFactory !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererFactory !== null && itemIndex === (groupLength - 1))
 			{
 				return this._lastItemRendererFactory;
 			}
@@ -2467,7 +2474,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererStorage;
 				}
 			}
-			else if(this._lastItemRendererStorage !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererStorage !== null && itemIndex === (groupLength - 1))
 			{
 				return this._lastItemRendererStorage;
 			}
@@ -2713,6 +2720,40 @@ package feathers.controls.supportClasses
 				//TODO: figure out the length of the previous group so that we
 				//don't need to reset the whole cache
 				layout.resetVariableVirtualCache();
+			}
+		}
+
+		private function dataProvider_updateAllHandler(event:Event):void
+		{
+			for(var item:Object in this._itemRendererMap)
+			{
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+				if(!itemRenderer)
+				{
+					return;
+				}
+				itemRenderer.data = null;
+				itemRenderer.data = item;
+			}
+			for(var header:Object in this._headerRendererMap)
+			{
+				var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
+				if(!headerRenderer)
+				{
+					return;
+				}
+				headerRenderer.data = null;
+				headerRenderer.data = header;
+			}
+			for(var footer:Object in this._footerRendererMap)
+			{
+				var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
+				if(!footerRenderer)
+				{
+					return;
+				}
+				footerRenderer.data = null;
+				footerRenderer.data = footer;
 			}
 		}
 

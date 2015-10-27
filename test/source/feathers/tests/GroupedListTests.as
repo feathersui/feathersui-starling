@@ -3,7 +3,9 @@ package feathers.tests
 	import feathers.controls.GroupedList;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
+	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.data.HierarchicalCollection;
+	import feathers.events.FeathersEventType;
 
 	import flash.geom.Point;
 
@@ -42,6 +44,13 @@ package feathers.tests
 						{label: "Four"},
 						{label: "Five"},
 						{label: "Six"},
+					]
+				},
+				{
+					header: { label: "C" },
+					children:
+					[
+						{label: "Seven"},
 					]
 				}
 			]);
@@ -397,6 +406,288 @@ package feathers.tests
 			});
 			this._list.dispose();
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+		}
+
+		[Test]
+		public function testFirstItemRendererFactoryWithMultipleItemsInGroup():void
+		{
+			var firstItemName:String = "first-item";
+			this._list.firstItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = firstItemName;
+				return itemRenderer;
+			};
+			var usedFirstItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.name === firstItemName)
+				{
+					usedFirstItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("firstItemRendererFactory not used when data provider has multiple items in group", usedFirstItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomFirstItemRendererStyleNameWithMultipleItemsInGroup():void
+		{
+			var firstStyleName:String = "custom-first-item";
+			this._list.customFirstItemRendererStyleName = firstStyleName;
+			var containsFirstItemRendererStyleName:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(firstStyleName))
+				{
+					containsFirstItemRendererStyleName = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("customFirstItemRendererStyleName not used when data provider has multiple items in group", containsFirstItemRendererStyleName);
+		}
+
+		[Test]
+		public function testLastItemRendererFactoryWithMultipleItemsInGroup():void
+		{
+			var lastItemName:String = "last-item";
+			this._list.lastItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = lastItemName;
+				return itemRenderer;
+			};
+			var usedLastItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 2 &&
+					itemRenderer.name === lastItemName)
+				{
+					usedLastItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("lastItemRendererFactory not used when data provider has multiple items in group", usedLastItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomLastItemRendererStyleNameWithMultipleItemsInGroup():void
+		{
+			var lastStyleName:String = "custom-last-item";
+			this._list.customLastItemRendererStyleName = lastStyleName;
+			var containsLastItemRendererStyleName:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 2 &&
+					itemRenderer.styleNameList.contains(lastStyleName))
+				{
+					containsLastItemRendererStyleName = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("customLastItemRendererStyleName not used when data provider has multiple items in group", containsLastItemRendererStyleName);
+		}
+
+		[Test]
+		public function testFirstItemRendererFactoryWithOneItemAndCustomLastItemRendererFactory():void
+		{
+			var firstItemName:String = "first-item";
+			var lastItemName:String = "last-item";
+			this._list.firstItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = firstItemName;
+				return itemRenderer;
+			};
+			this._list.lastItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = lastItemName;
+				return itemRenderer;
+			};
+			var usedFirstItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.name === firstItemName)
+				{
+					usedFirstItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("firstItemRendererFactory not used when data provider has only one item in group and lastItemRendererFactory is defined", usedFirstItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomFirstItemRendererStyleNameWithOneItemAndCustomLastItemRendererStyleName():void
+		{
+			var firstStyleName:String = "custom-first-item";
+			var lastStyleName:String = "custom-last-item";
+			this._list.customFirstItemRendererStyleName = firstStyleName;
+			this._list.customLastItemRendererStyleName = lastStyleName;
+			var containsFirstItemRendererStyleName:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(firstStyleName))
+				{
+					containsFirstItemRendererStyleName = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("customFirstItemRendererStyleName not used when data provider has only one item in group and customLastItemRendererStyleName is defined", containsFirstItemRendererStyleName);
+		}
+
+		[Test]
+		public function testSingleItemRendererFactoryWithOneItemAndOtherFactories():void
+		{
+			var firstItemName:String = "first-item";
+			var lastItemName:String = "last-item";
+			var singleItemName:String = "single-item";
+			this._list.firstItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = firstItemName;
+				return itemRenderer;
+			};
+			this._list.lastItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = lastItemName;
+				return itemRenderer;
+			};
+			this._list.singleItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = singleItemName;
+				return itemRenderer;
+			};
+			var usedSingleItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.name === singleItemName)
+				{
+					usedSingleItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("singleItemRendererFactory not used when data provider has only one item in group and firstItemRendererFactory and lastItemRendererFactory are defined", singleItemName);
+		}
+
+		[Test]
+		public function testCustomSingleItemRendererStyleNameWithOneItemAndOtherStyleNames():void
+		{
+			var firstStyleName:String = "custom-first-item";
+			var lastStyleName:String = "custom-last-item";
+			var singleStyleName:String = "custom-single-item";
+			this._list.customFirstItemRendererStyleName = firstStyleName;
+			this._list.customLastItemRendererStyleName = lastStyleName;
+			this._list.customSingleItemRendererStyleName = singleStyleName;
+			var containsSingleItemRendererStyleName:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(singleStyleName))
+				{
+					containsSingleItemRendererStyleName = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("containsSingleItemRendererStyleName not used when data provider has only one item in group and customFirstItemRendererStyleName or customLastItemRendererStyleName are defined", containsSingleItemRendererStyleName);
+		}
+
+		[Test]
+		public function testLastItemRendererFactoryWithOneItem():void
+		{
+			var componentName:String = "last-item";
+			this._list.lastItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				var itemRenderer:DefaultGroupedListItemRenderer = _list.itemRendererFactory();
+				itemRenderer.name = componentName;
+				return itemRenderer;
+			};
+			var usedLastItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.name === componentName)
+				{
+					usedLastItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("lastItemRendererFactory not used when data provider has only one item in group and neither firstItemRendererFactory or singleItemRendererFactory are defined", usedLastItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomLastItemRendererStyleNameWithOneItem():void
+		{
+			var styleName:String = "custom-last-item";
+			this._list.customLastItemRendererStyleName = styleName;
+			var containsLastItemRendererStyleName:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(styleName))
+				{
+					containsLastItemRendererStyleName = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("customLastItemRendererStyleName not used when data provider has only one item in group and neither customFirstItemRendererStyleName or customSingleItemRendererStyleName are defined", containsLastItemRendererStyleName);
 		}
 	}
 }

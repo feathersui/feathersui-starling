@@ -146,8 +146,7 @@ package feathers.media
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The <code>flash.events.IOErrorEvent</code>
-	 *   dispatched by the <code>flash.net.NetStream</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
 	 *   <code>currentTarget</code> property to always access the Object
@@ -159,6 +158,33 @@ package feathers.media
 	 * @eventType starling.events.Event.READY
 	 */
 	[Event(name="ready",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the video texture is no longer valid. Indicates that
+	 * the <code>texture</code> property will return a <code>null</code> value,
+	 * and that that the previous texture has been disposed and should not be
+	 * rendered any more.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #texture
+	 *
+	 * @eventType feathers.events.FeathersEventType.CLEAR
+	 */
+	[Event(name="clear",type="starling.events.Event")]
 
 	/**
 	 * Dispatched periodically when a media player's content is loading to
@@ -234,7 +260,8 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected static const PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:String = "NetStream.Play.Complete";
+		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_START:String = "NetStream.Play.Start";
+		
 		/**
 		 * @private
 		 */
@@ -244,11 +271,6 @@ package feathers.media
 		 * @private
 		 */
 		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_STREAMNOTFOUND:String = "NetStream.Play.StreamNotFound";
-
-		/**
-		 * @private
-		 */
-		protected static const NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:String = "NetStream.Seek.Notify";
 
 		/**
 		 * @private
@@ -448,6 +470,11 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _hasPlayedToEnd:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _videoSource:String;
 
 		/**
@@ -480,18 +507,18 @@ package feathers.media
 			{
 				this.stop();
 			}
-			if(this._texture)
-			{
-				this._texture.dispose();
-				this._texture = null;
-			}
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 			if(!value)
 			{
 				//if we're not playing anything, we shouldn't keep the NetStream
 				//around in memory. if we're switching to something else, then
 				//the NetStream can be reused.
 				this.disposeNetStream();
+			}
+			if(this._texture)
+			{
+				this._texture.dispose();
+				this._texture = null;
+				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			this._videoSource = value;
 			//reset the current and total time if we were playing a different
@@ -509,7 +536,7 @@ package feathers.media
 			//same with the bytes loaded and total
 			this._bytesLoaded = 0;
 			this._bytesTotal = 0;
-			if(this._autoPlay)
+			if(this._autoPlay && this._videoSource)
 			{
 				this.play();
 			}
@@ -800,13 +827,20 @@ package feathers.media
 		 */
 		override public function dispose():void
 		{
-			if(this._texture)
-			{
-				this._texture.dispose();
-				this._texture = null;
-			}
-			this.disposeNetStream();
+			this.videoSource = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function play():void
+		{
+			if(this._videoSource === null)
+			{
+				return;
+			}
+			super.play();
 		}
 
 		/**
@@ -888,7 +922,7 @@ package feathers.media
 				var netConnectionFactory:Function = this._netConnectionFactory !== null ? this._netConnectionFactory : defaultNetConnectionFactory;
 				this._netConnection = netConnectionFactory();
 				this._netStream = new NetStream(this._netConnection);
-				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData, this.netStream_onPlayStatus);
+				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 				this._netStream.addEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			}
@@ -897,15 +931,33 @@ package feathers.media
 				this._soundTransform = new SoundTransform();
 			}
 			this._netStream.soundTransform = this._soundTransform;
-			if(this._texture)
+			var onCompleteCallback:Function = videoTexture_onComplete;
+			if(this._texture && this._hasPlayedToEnd)
 			{
+				//after playing the media until the end, if we restart from the
+				//beginning, the audio plays, but we cannot see the video.
+				//however, we can ask the NetStream to play the video source
+				//again from the beginning, and the video displays. if we need
+				//to restore the time, we can do it after the NetStream
+				//dispatches NetStream.Play.Start
+				this._netStream.play(this._videoSource);
+			}
+			else if(this._texture)
+			{
+				//this case happens if the video is paused and resumed without
+				//reaching the end.
+				//NetStream.Play.Start will not be dispatched after calling
+				//resume(), so we need to manually add the ENTER_FRAME listener.
+				//there's no need to seek. we're resuming from where the video
+				//was paused.
 				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 				this._netStream.resume();
 			}
 			else
 			{
+				//in the final case, the texture hasn't been created yet.
 				this._isWaitingForTextureReady = true;
-				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, videoTexture_onComplete);
+				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, onCompleteCallback);
 				this._texture.root.onRestore = videoTexture_onRestore;
 				//don't call play() until after Texture.fromNetStream() because
 				//the texture needs to be created first.
@@ -913,6 +965,7 @@ package feathers.media
 				//isn't ready to be rendered yet.
 				this._netStream.play(this._videoSource);
 			}
+			this._hasPlayedToEnd = false;
 		}
 
 		/**
@@ -938,6 +991,13 @@ package feathers.media
 				throw new IllegalOperationError(NO_VIDEO_SOURCE_SEEK_ERROR);
 			}
 			this._currentTime = seconds;
+			if(this._hasPlayedToEnd)
+			{
+				//the video played until the end, which means that the current
+				//texture cannot seek properly without reloading the media.
+				this.playMedia();
+				return;
+			}
 			this._netStream.seek(seconds);
 		}
 
@@ -1004,7 +1064,7 @@ package feathers.media
 		{
 			this.pauseMedia();
 			this._isWaitingForTextureReady = true;
-			this._texture.root.attachNetStream(this._netStream, videoTexture_onRestoreComplete);
+			this._texture.root.attachNetStream(this._netStream, videoTexture_onComplete);
 			//this will start playback from the beginning again, but we can seek
 			//back to the current time once the video texture is ready.
 			this._netStream.play(this._videoSource);
@@ -1018,7 +1078,6 @@ package feathers.media
 			this._isWaitingForTextureReady = false;
 			//the texture is ready to be displayed
 			this.dispatchEventWith(starling.events.Event.READY);
-			this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 			var bytesTotal:Number = this._netStream.bytesTotal;
 			if(this._bytesTotal === 0 && bytesTotal > 0)
 			{
@@ -1035,49 +1094,12 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function videoTexture_onRestoreComplete():void
-		{
-			//seek back to the video's current time from when the context was
-			//was lost. we couldn't seek when we started playing the video
-			//again. we had to wait until this callback.
-			this.seek(this._currentTime);
-			if(!this._isPlaying)
-			{
-				this.pauseMedia();
-			}
-			this.videoTexture_onComplete();
-		}
-
-		/**
-		 * @private
-		 */
 		protected function netStream_onMetaData(metadata:Object):void
 		{
 			this.dispatchEventWith(MediaPlayerEventType.DIMENSIONS_CHANGE);
 			this._totalTime = metadata.duration;
 			this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
 			this.dispatchEventWith(MediaPlayerEventType.METADATA_RECEIVED, false, metadata);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function netStream_onPlayStatus(data:Object):void
-		{
-			var code:String = data.code as String;
-			switch(code)
-			{
-				case PLAY_STATUS_CODE_NETSTREAM_PLAY_COMPLETE:
-				{
-					//the video has reached the end
-					if(this._isPlaying)
-					{
-						this.stop();
-						this.dispatchEventWith(starling.events.Event.COMPLETE);
-					}
-					break;
-				}
-			}
 		}
 
 		/**
@@ -1101,28 +1123,66 @@ package feathers.media
 					this.dispatchEventWith(FeathersEventType.ERROR, false, code);
 					break;
 				}
-				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
+				case NET_STATUS_CODE_NETSTREAM_PLAY_START:
 				{
-					//on iOS when context is lost, the NetStream will stop
-					//automatically, and its time property will reset to 0.
-					//we want to seek to the correct time after the texture is
-					//restored, so we don't want _currentTime to get changed to
-					//0 when the Event.ENTER_FRAME listener is called one last
-					//time.
-					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+					if(this._netStream.time !== this._currentTime)
+					{
+						//if we're restoring from a lost context, or we've
+						//restarted the video after it had reached the end, the
+						//NetStream may have restarted from the beginning. in
+						//that case, we can manually seek to the last known good
+						//position.
+						this._netStream.seek(this._currentTime);
+					}
+					if(this._isPlaying)
+					{
+						//only add the listener if a video is playing. it may be
+						//paused when restoring lost context, but we need to
+						//temporarily start playing the NetStream in order to
+						//restore the video texture.
+						this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+					}
+					else
+					{
+						//the only way to prepare the video texture is to start
+						//playing the NetStream. the media player is not in a
+						//playing state, though, so we should pause the
+						//NetStream now.
+						this.pauseMedia();
+					}
 					break;
 				}
-				case NET_STATUS_CODE_NETSTREAM_SEEK_NOTIFY:
+				case NET_STATUS_CODE_NETSTREAM_PLAY_STOP:
 				{
-					if(this._isWaitingForTextureReady)
+					if(this._hasPlayedToEnd)
 					{
-						//ignore until the texture is ready because we might
-						//be waiting to seek once the texture is ready, and this
-						//will screw up our current time.
+						//we haven't cleared this flag yet after calling play()
+						//on the NetStream. it is safe to ignore this case.
 						return;
 					}
-					this._currentTime = this._netStream.time;
-					this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
+					
+					//any time that the NetStream stops, we want to remove the
+					//Event.ENTER_FRAME listener. in most cases, we don't want
+					//a listener being called every frame for no reason. on iOS,
+					//context loss resets the NetStream time to 0, and we need
+					//to keep the current time so that we can seek back.
+					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+
+					//on iOS, when context is lost, the NetStream will stop
+					//automatically, and the time property will be reset to 0.
+					//on other platforms, the NetStream will continue playing on
+					//context loss, and the time will be correct.
+					//we need to check if the context is lost or not to decide
+					//if we've reached the end of the video or not.
+					if(Starling.context.driverInfo !== "Disposed")
+					{
+						this.stop();
+						
+						//set this flag after calling stop() because stopping
+						//will seek to the beginning and may check for the flag.
+						this._hasPlayedToEnd = true;
+						this.dispatchEventWith(starling.events.Event.COMPLETE);
+					}
 					break;
 				}
 			}
@@ -1156,10 +1216,9 @@ package feathers.media
 
 dynamic class VideoPlayerNetStreamClient
 {
-	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function, onPlayStatusCallback:Function)
+	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function)
 	{
 		this.onMetaDataCallback = onMetaDataCallback;
-		this.onPlayStatusCallback = onPlayStatusCallback;
 	}
 	
 	public var onMetaDataCallback:Function;
@@ -1167,15 +1226,5 @@ dynamic class VideoPlayerNetStreamClient
 	public function onMetaData(metadata:Object):void
 	{
 		this.onMetaDataCallback(metadata);
-	}
-
-	public var onPlayStatusCallback:Function;
-
-	public function onPlayStatus(data:Object):void
-	{
-		if(this.onPlayStatusCallback !== null)
-		{
-			this.onPlayStatusCallback(data);
-		}
 	}
 }

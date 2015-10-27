@@ -969,7 +969,7 @@ package feathers.layout
 				result = new LayoutBoundsResult();
 			}
 			result.contentX = 0;
-			result.contentWidth = availableRowWidth;
+			result.contentWidth = maxRowWidth;
 			result.contentY = 0;
 			result.contentHeight = totalHeight;
 			result.viewPortWidth = availableRowWidth;
@@ -1027,6 +1027,7 @@ package feathers.layout
 
 			var i:int = 0;
 			var positionY:Number = boundsY + this._paddingTop;
+			var maxRowWidth:Number = 0;
 			var maxItemHeight:Number = 0;
 			var verticalGap:Number = this._verticalGap;
 			var hasFirstHorizontalGap:Boolean = this._firstHorizontalGap === this._firstHorizontalGap; //!isNaN
@@ -1105,12 +1106,34 @@ package feathers.layout
 					}
 					rowItemCount++;
 				}
+
+				//this is the total width of all items in the row
+				var totalRowWidth:Number = positionX - horizontalGap + this._paddingRight - boundsX;
+				if(totalRowWidth > maxRowWidth)
+				{
+					maxRowWidth = totalRowWidth;
+				}
 			}
 			while(i < itemCount)
-			
-			if(!supportsMultipleRows)
+
+			if(supportsMultipleRows)
 			{
-				availableRowWidth = positionX - horizontalGap + this._paddingRight - boundsX;
+				if(explicitWidth !== explicitWidth) //isNaN
+				{
+					availableRowWidth = maxRowWidth;
+					if(availableRowWidth < minWidth)
+					{
+						availableRowWidth = minWidth;
+					}
+					else if(availableRowWidth > maxWidth)
+					{
+						availableRowWidth = maxWidth;
+					}
+				}
+			}
+			else
+			{
+				availableRowWidth = maxRowWidth;
 			}
 			
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;

@@ -1057,16 +1057,19 @@ package feathers.controls.renderers
 		 * accessory.
 		 *
 		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
+		 * <code>stateToAccessoryFunction</code> property. This property may be
+		 * ignored if the <code>itemHasAccessory</code> property is
+		 * <code>true</code>.</p>
 		 *
-		 * <p>The following example gives the button a default icon to use for
-		 * all states when no specific icon is available:</p>
+		 * <p>The following example gives the item renderer a default accessory
+		 * to use for all states when no specific accessory is available:</p>
 		 *
 		 * <listing version="3.0">
 		 * itemRenderer.defaultAccessory = new Image( texture );</listing>
 		 *
 		 * @default null
 		 *
+		 * @see #setAccessoryForState()
 		 * @see #stateToAccessoryFunction
 		 * @see #itemHasAccessory
 		 */
@@ -3418,6 +3421,28 @@ package feathers.controls.renderers
 			}
 
 			return true;
+		}
+
+		/**
+		 * Sets the accessory to be used by the item renderer when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If an accessory is not defined for a specific state, the value of
+		 * the <code>defaultAccessory</code> property will be used instead.</p>
+		 *
+		 * @see #defaultAccessory
+		 */
+		public function setAccessoryForState(state:String, accessory:DisplayObject):void
+		{
+			if(accessory)
+			{
+				this._accessorySelector.setValueForState(accessory, state);
+			}
+			else
+			{
+				this._accessorySelector.clearValueForState(state);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**

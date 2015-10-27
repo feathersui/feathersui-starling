@@ -12,8 +12,9 @@ package feathers.core
 	/**
 	 * Interface for focus management.
 	 *
-	 * @see feathers.core.IFocusDisplayObject
+	 * @see ../../../help/focus.html Keyboard focus management in Feathers
 	 * @see feathers.core.FocusManager
+	 * @see feathers.core.IFocusDisplayObject
 	 */
 	public interface IFocusManager
 	{

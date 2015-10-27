@@ -52,14 +52,15 @@ package feathers.core
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
-	 * A component that can receive focus.
+	 * A component that can receive focus if a focus manager is enabled.
 	 *
-	 * @see feathers.core.IFocusManager
+	 * @see ../../../help/focus.html Keyboard focus management in Feathers
 	 */
 	public interface IFocusDisplayObject extends IFeathersDisplayObject
 	{
 		/**
-		 * The current focus manager for this component.
+		 * The current focus manager for this component. May be
+		 * <code>null</code> if no focus manager is enabled.
 		 */
 		function get focusManager():IFocusManager;
 
@@ -84,8 +85,9 @@ package feathers.core
 		function set isFocusEnabled(value:Boolean):void;
 
 		/**
-		 * The next object that will receive focus when the tab key is pressed.
-		 * If <code>null</code>, defaults to the next child on the display list.
+		 * The next object that will receive focus when the tab key is pressed
+		 * when a focus manager is enabled. If <code>null</code>, defaults to
+		 * the next child on the display list.
 		 *
 		 * <p>In the following example, the next tab focus is changed:</p>
 		 *
@@ -101,8 +103,9 @@ package feathers.core
 
 		/**
 		 * The previous object that will receive focus when the tab key is
-		 * pressed while holding shift. If <code>null</code>, defaults to the
-		 * previous child on the display list.
+		 * pressed while holding shift when a focus manager is enabled. If
+		 * <code>null</code>, defaults to the previous child on the display
+		 * list.
 		 *
 		 * <p>In the following example, the previous tab focus is changed:</p>
 		 *

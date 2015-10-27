@@ -738,6 +738,8 @@ package feathers.controls
 		 * input.isEditable = false;</listing>
 		 *
 		 * @default true
+		 *
+		 * @see #isSelectable
 		 */
 		public function get isEditable():Boolean
 		{
@@ -754,6 +756,45 @@ package feathers.controls
 				return;
 			}
 			this._isEditable = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isSelectable:Boolean = true;
+
+		/**
+		 * If the <code>isEditable</code> property is set to <code>false</code>,
+		 * the <code>isSelectable</code> property determines if the text is
+		 * selectable. If the <code>isEditable</code> property is set to
+		 * <code>true</code>, the text will always be selectable.
+		 *
+		 * <p>In the following example, the text input is not selectable:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.isEditable = false;
+		 * input.isSelectable = false;</listing>
+		 *
+		 * @default true
+		 * 
+		 * @see #isEditable
+		 */
+		public function get isSelectable():Boolean
+		{
+			return this._isSelectable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSelectable(value:Boolean):void
+		{
+			if(this._isSelectable == value)
+			{
+				return;
+			}
+			this._isSelectable = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -2193,6 +2234,7 @@ package feathers.controls
 			this.textEditor.maxChars = this._maxChars;
 			this.textEditor.restrict = this._restrict;
 			this.textEditor.isEditable = this._isEditable;
+			this.textEditor.isSelectable = this._isSelectable;
 			for(var propertyName:String in this._textEditorProperties)
 			{
 				var propertyValue:Object = this._textEditorProperties[propertyName];

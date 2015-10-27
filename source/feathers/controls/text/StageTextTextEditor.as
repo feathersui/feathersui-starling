@@ -8,10 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.StageTextField;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -192,10 +194,6 @@ package feathers.controls.text
 	 * <code>BitmapData</code> and uploaded to a texture on the GPU. Textures
 	 * are managed internally by this component, and they will be automatically
 	 * disposed when the component is disposed.
-	 *
-	 * <p>Note: Due to quirks with how the runtime manages focus with
-	 * <code>StageText</code>, <code>StageTextTextEditor</code> is not
-	 * compatible with the Feathers <code>FocusManager</code>.</p>
 	 *
 	 * <p>The following example shows how to use
 	 * <code>StageTextTextEditor</code> with a <code>TextInput</code>:</p>
@@ -561,16 +559,11 @@ package feathers.controls.text
 		protected var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Indicates whether the text field is a password text field that hides
-		 * input characters using a substitute character.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#displayAsPassword
 		 *
-		 * <p>In the following example, the text is displayed as a password:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.displayAsPassword = true;</listing>
-		 *
-		 * @default false
-		 *
+		 * @see feathers.controls.TextInput#displayAsPassword
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#displayAsPassword Full description of flash.text.StageText.displayAsPassword in Adobe's Flash Platform API Reference
 		 */
 		public function get displayAsPassword():Boolean
@@ -597,15 +590,11 @@ package feathers.controls.text
 		protected var _isEditable:Boolean = true;
 
 		/**
-		 * Determines if the text input is editable. If the text input is not
-		 * editable, it will still appear enabled.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#isEditable
 		 *
-		 * <p>In the following example, the text is not editable:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.isEditable = false;</listing>
-		 *
-		 * @default true
+		 * @see feathers.controls.TextInput#isEditable
 		 */
 		public function get isEditable():Boolean
 		{
@@ -622,6 +611,36 @@ package feathers.controls.text
 				return;
 			}
 			this._isEditable = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isSelectable:Boolean = true;
+
+		/**
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#isSelectable
+		 *
+		 * @see feathers.controls.TextInput#isSelectable
+		 */
+		public function get isSelectable():Boolean
+		{
+			return this._isEditable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSelectable(value:Boolean):void
+		{
+			if(this._isSelectable == value)
+			{
+				return;
+			}
+			this._isSelectable = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -823,18 +842,11 @@ package feathers.controls.text
 		protected var _maxChars:int = 0;
 
 		/**
-		 * Indicates the maximum number of characters that a user can enter into
-		 * the text editor. A script can insert more text than <code>maxChars</code>
-		 * allows. If <code>maxChars</code> equals zero, a user can enter an
-		 * unlimited amount of text into the text editor.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#maxChars
 		 *
-		 * <p>In the following example, the maximum character count is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.maxChars = 10;</listing>
-		 *
-		 * @default 0
-		 *
+		 * @see feathers.controls.TextInput#maxChars
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#maxChars Full description of flash.text.StageText.maxChars in Adobe's Flash Platform API Reference
 		 */
 		public function get maxChars():int
@@ -905,17 +917,11 @@ package feathers.controls.text
 		protected var _restrict:String;
 
 		/**
-		 * Restricts the set of characters that a user can enter into the text
-		 * field. Only user interaction is restricted; a script can put any text
-		 * into the text field.
+		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * 
+		 * @copy feathers.controls.TextInput#restrict
 		 *
-		 * <p>In the following example, the text is restricted to numbers:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.restrict = "0-9";</listing>
-		 *
-		 * @default null
-		 *
+		 * @see feathers.controls.TextInput#restrict
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#restrict Full description of flash.text.StageText.restrict in Adobe's Flash Platform API Reference
 		 */
 		public function get restrict():String
@@ -1176,6 +1182,10 @@ package feathers.controls.text
 			{
 				return;
 			}
+			if(!this._isEditable && !this._isSelectable)
+			{
+				return;
+			}
 			if(this.stage && !this.stageText.stage)
 			{
 				this.stageText.stage = Starling.current.nativeStage;
@@ -1256,7 +1266,11 @@ package feathers.controls.text
 			{
 				return;
 			}
-			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			//setting the focus to Starling.current.nativeStage doesn't work
+			//here, so we need to use null. on Android, if we give focus to the
+			//nativeStage, focus will be removed from the StageText, but the
+			//soft keyboard will incorrectly remain open.
+			Starling.current.nativeStage.focus = null;
 		}
 
 		/**
@@ -1601,7 +1615,6 @@ package feathers.controls.text
 			this.stageText.displayAsPassword = this._displayAsPassword;
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
-
 			this.stageText.fontWeight = this._fontWeight;
 			this.stageText.locale = this._locale;
 			this.stageText.maxChars = this._maxChars;
@@ -1939,6 +1952,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function dispatchKeyFocusChangeEvent(event:KeyboardEvent):void
+		{
+			var starling:Starling = stageToStarling(this.stage);
+			var focusEvent:FocusEvent = new FocusEvent(FocusEvent.KEY_FOCUS_CHANGE, true, false, null, event.shiftKey, event.keyCode);
+			starling.nativeStage.dispatchEvent(focusEvent);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_removedFromStageHandler(event:starling.events.Event):void
 		{
 			//remove this from the stage, if needed
@@ -2044,6 +2067,11 @@ package feathers.controls.text
 				event.preventDefault();
 				Starling.current.nativeStage.focus = Starling.current.nativeStage;
 			}
+			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
+			{
+				event.preventDefault();
+				this.dispatchKeyFocusChangeEvent(event);
+			}
 		}
 
 		/**
@@ -2052,6 +2080,10 @@ package feathers.controls.text
 		protected function stageText_keyUpHandler(event:KeyboardEvent):void
 		{
 			if(!this._multiline && (event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.NEXT))
+			{
+				event.preventDefault();
+			}
+			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
 			{
 				event.preventDefault();
 			}

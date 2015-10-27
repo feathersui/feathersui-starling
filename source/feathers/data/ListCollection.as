@@ -128,13 +128,8 @@ package feathers.data
 	[Event(name="replaceItem",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when a property of an item in the collection has changed
-	 * and the item doesn't have its own change event or signal. This event
-	 * is only dispatched when the <code>updateItemAt()</code> function is
-	 * called on the <code>ListCollection</code>.
-	 *
-	 * <p>In general, it's better for the items themselves to dispatch events
-	 * or signals when their properties change.</p>
+	 * Dispatched when the <code>updateItemAt()</code> function is called on the
+	 * <code>ListCollection</code>.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -151,12 +146,39 @@ package feathers.data
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #updateItemAt()
 	 *
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ITEM
 	 */
 	[Event(name="updateItem",type="starling.events.Event")]
 
 	[DefaultProperty("data")]
+	/**
+	 * Dispatched when the <code>updateAll()</code> function is called on the
+	 * <code>ListCollection</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #updateAll()
+	 *
+	 * @eventType feathers.events.CollectionEventType.UPDATE_ALL
+	 */
+	[Event(name="updateAll",type="starling.events.Event")]
+
 	/**
 	 * Wraps a data source with a common API for use with UI controls, like
 	 * lists, that support one dimensional collections of data. Supports custom
@@ -287,10 +309,15 @@ package feathers.data
 		}
 
 		/**
-		 * If an item doesn't dispatch an event or signal to indicate that it
-		 * has changed, you can manually tell the collection about the change,
-		 * and the collection will dispatch the <code>CollectionEventType.UPDATE_ITEM</code>
-		 * event to manually notify the component that renders the data.
+		 * Call <code>updateItemAt()</code> to manually inform any component
+		 * rendering the <code>ListCollection</code> that the properties of a
+		 * single item in the collection have changed, and that any views
+		 * associated with the item should be updated. The collection will
+		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
+		 *
+		 * <p>Alternatively, the item can dispatch an event when one of its
+		 * properties has changed, and item renderers can listen for that event
+		 * and update themselves automatically.</p>
 		 * 
 		 * @see #updateAll()
 		 */
@@ -300,8 +327,15 @@ package feathers.data
 		}
 
 		/**
-		 * Dispatches <code>CollectionEventType.UPDATE_ALL</code> to inform any
-		 * component that renders this data to update all visible data.
+		 * Call <code>updateAll()</code> to manually inform any component
+		 * rendering the <code>ListCollection</code> that the properties of all,
+		 * or many, of the collection's items have changed, and that any
+		 * rendered views should be updated. The collection will dispatch the
+		 * <code>CollectionEventType.UPDATE_ALL</code> event.
+		 *
+		 * <p>Alternatively, the item can dispatch an event when one of its
+		 * properties has changed, and item renderers can listen for that event
+		 * and update themselves automatically.</p>
 		 * 
 		 * @see #updateItemAt()
 		 */
