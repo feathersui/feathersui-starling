@@ -481,6 +481,11 @@ package feathers.themes
 		 */
 		protected var smallControlSize:int;
 
+		/**
+		 * The size, in pixels, of borders;
+		 */
+		protected var borderSize:int;
+
 		protected var popUpFillSize:int;
 		protected var calloutBackgroundMinSize:int;
 		protected var scrollBarGutterSize:int;
@@ -800,6 +805,7 @@ package feathers.themes
 			this.calloutBackgroundMinSize = Math.round(11 * this.scale);
 			this.scrollBarGutterSize = Math.round(4 * this.scale);
 			this.wideControlSize = this.gridSize * 3 + this.gutterSize * 2;
+			this.borderSize = Math.round(2 * this.scale);
 		}
 
 		/**
@@ -1556,6 +1562,18 @@ package feathers.themes
 			var overlaySkin:Quad = new Quad(10, 10, DRAWER_OVERLAY_COLOR);
 			overlaySkin.alpha = DRAWER_OVERLAY_ALPHA;
 			drawers.overlaySkin = overlaySkin;
+
+			var topDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.topDrawerDivider = topDrawerDivider;
+
+			var rightDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.rightDrawerDivider = rightDrawerDivider;
+
+			var bottomDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.bottomDrawerDivider = bottomDrawerDivider;
+
+			var leftDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWER_OVERLAY_COLOR);
+			drawers.leftDrawerDivider = leftDrawerDivider;
 		}
 
 	//-------------------------

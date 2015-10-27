@@ -172,6 +172,7 @@ package feathers.themes
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const LIST_BACKGROUND_COLOR:uint = 0xf8f8f8;
 		protected static const LIST_HEADER_BACKGROUND_COLOR:uint = 0xeeeeee;
+		protected static const DRAWERS_DIVIDER_COLOR:uint = 0xebebeb;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
 		protected static const MODAL_OVERLAY_COLOR:uint = 0xcccccc;
@@ -1239,6 +1240,18 @@ package feathers.themes
 			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
 			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
 			drawers.overlaySkin = overlaySkin;
+
+			var topDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.topDrawerDivider = topDrawerDivider;
+
+			var rightDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.rightDrawerDivider = rightDrawerDivider;
+
+			var bottomDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.bottomDrawerDivider = bottomDrawerDivider;
+
+			var leftDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, DRAWERS_DIVIDER_COLOR);
+			drawers.leftDrawerDivider = leftDrawerDivider;
 		}
 
 	//-------------------------
@@ -1605,7 +1618,7 @@ package feathers.themes
 
 		protected function setPanelScreenHeaderStyles(header:Header):void
 		{
-			this.setPanelHeaderStyles(header);
+			this.setHeaderStyles(header);
 			header.useExtraPaddingForOSStatusBar = true;
 		}
 

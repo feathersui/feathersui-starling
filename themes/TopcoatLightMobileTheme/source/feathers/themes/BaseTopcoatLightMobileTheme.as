@@ -136,6 +136,7 @@ package feathers.themes
 		protected static const ALPHA_MODAL_OVERLAY:Number = 0.8;
 		protected static const COLOR_DRAWER_OVERLAY:uint = 0x454545;
 		protected static const ALPHA_DRAWER_OVERLAY:Number = 0.8;
+		protected static const COLOR_DRAWERS_DIVIDER:uint = 0x9DACA9;
 
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(14, 14, 2, 2);
 		protected static const BUTTON_BACK_SCALE9_GRID:Rectangle = new Rectangle(52, 10, 20, 80);
@@ -194,6 +195,7 @@ package feathers.themes
 		protected var wideControlSize:int;
 		protected var popUpFillSize:int;
 		protected var thumbSize:int;
+		protected var shadowSize:int;
 		protected var calloutBackgroundMinSize:int;
 		protected var calloutVerticalArrowGap:int;
 		protected var calloutHorizontalArrowGap:int;
@@ -398,7 +400,7 @@ package feathers.themes
 			this.gutterSize = Math.round(40 * this.scale);
 			this.smallGutterSize = Math.round(20 * this.scale);
 			this.extraSmallGutterSize = Math.round(10 * this.scale);
-			this.borderSize = Math.round(4 * this.scale);
+			this.borderSize = Math.round(2 * this.scale);
 			this.controlSize = Math.round(100 * this.scale);
 			this.smallControlSize = Math.round(32 * this.scale);
 			this.wideControlSize = Math.round(460 * this.scale);
@@ -407,6 +409,7 @@ package feathers.themes
 			this.calloutBackgroundMinSize = Math.round(106 * this.scale);
 			this.calloutVerticalArrowGap = Math.round(-15 * this.scale);
 			this.calloutHorizontalArrowGap = Math.round(-14 * this.scale);
+			this.shadowSize = Math.round(4 * this.scale);
 		}
 
 		protected function initializeTextures():void
@@ -1111,6 +1114,18 @@ package feathers.themes
 			var overlaySkin:Quad = new Quad(10, 10, COLOR_DRAWER_OVERLAY);
 			overlaySkin.alpha = ALPHA_DRAWER_OVERLAY;
 			drawers.overlaySkin = overlaySkin;
+
+			var topDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, COLOR_DRAWERS_DIVIDER);
+			drawers.topDrawerDivider = topDrawerDivider;
+
+			var rightDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, COLOR_DRAWERS_DIVIDER);
+			drawers.rightDrawerDivider = rightDrawerDivider;
+
+			var bottomDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, COLOR_DRAWERS_DIVIDER);
+			drawers.bottomDrawerDivider = bottomDrawerDivider;
+
+			var leftDrawerDivider:Quad = new Quad(this.borderSize, this.borderSize, COLOR_DRAWERS_DIVIDER);
+			drawers.leftDrawerDivider = leftDrawerDivider;
 		}
 
 		protected function setBaseToggleSwitchSize(skinSelector:SmartDisplayObjectStateValueSelector):void
@@ -1562,7 +1577,7 @@ package feathers.themes
 
 			panel.backgroundSkin = new Scale9Image(this.popUpDrawerBackgroundTextures, this.scale);
 
-			panel.outerPaddingTop = this.borderSize;
+			panel.outerPaddingTop = this.shadowSize;
 		}
 
 	//-------------------------
