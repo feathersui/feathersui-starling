@@ -693,7 +693,7 @@ package feathers.controls.text
 					}
 					previousCharID = NaN;
 					currentX = 0;
-					currentY = currentY + lineHeight;
+					currentY += lineHeight;
 					startXOfPreviousWord = 0;
 					wordCountForLine = 0;
 					widthOfWhitespaceAfterWord = 0;
