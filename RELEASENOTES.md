@@ -16,16 +16,19 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * BottomDrawerPopUpContentManager: New IPopUpContentManager for PickerList that opens a drawer at the bottom of the stage.
 * Button: added setSkinForState() and setIconForState() methods. Recommended instead of separate properties like downSkin and hoverSkin.
 * Button: fixed issue where skin was positioned incorrectly when using scaleWhenDown. Thanks, zongjingyao!
+* Button: added customLabelStyleName property.
 * ToggleButton: fixed issue where the button could get stuck in a disabled state if selected and re-enabled.
 * Button, ToggleButton, LayoutGroup, Scroller, TextInput, TextArea: ensures that all skins are disposed when disposing the parent component (some may not be on the display list at the time, so they need to be disposed manually).
 * Button, Item Renderers: when skin, icon, or accessory is IStateObserver, sets the stateContext property.
 * ButtonGroup: when distributeButtonSizes is false, and the direction is horizontal, will display buttons in multiple rows if they will not fit into one row.
 * ButtonGroup: added support for passing the item from the data provider as an optional third parameter to event listeners added in the data provider.
 * ButtonGroup: added support for listening to FeathersEventType.LONG_PRESS on buttons.
+* ButtonGroup: added support for calling updateItemAt() and updateAll() on data provider.
 * Callout: adjusts minimum and maximum dimensions of content instead of setting width and height directly, if possible, to allow resizing.
 * DefaultFocusManager: fixed issue where focus could be restored to an object that was no longer on stage, causing a runtime error.
 * DefaultFocusManager: fixed issue where a component added under a modal pop-up doesn't have a focus manager.
 * DefaultListItemRenderer, DefaultGroupedListItemRenderer: added defaultAccessory property and setAccessoryForState() method. As long as itemHasAccessory property is false, accessory does not need to be set with data provider.
+* DefaultGroupedListHeaderOrFooterRenderer: added customContentLabelStyleName.
 * Drawers: added openMode property to control whether drawers are opened above or below the content. For backwards compatibility, defaults to below.
 * Drawers: fixed issue where setting drawer to null while open would leave overlay skin visible, making it impossible to interact with the content.
 * Drawers: fixed issue where opening or closing a drawer without animation wouldn't always work.
@@ -37,6 +40,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * GroupedList, List: dispatches FeathersEventType.RENDERER_REMOVE for all item renderers on dispose.
 * GroupedList: default layout now uses stickyHeader property of VerticalLayout.
 * Header: extra padding for iOS status bar now supports 3x devices.
+* Header: added customTitleStyleName property.
 * HierarchicalCollection, ListCollection: added updateAll() method, similar to updateItemItem(), that tells the List that all items have been updated.
 * HorizontalLayout, VerticalLayout: fixed issue where percentWidth and percentHeight values were ignored when measuring the typical item in a virtual layout.
 * HorizontalSpinnerLayout, VerticalSpinnerLayout: fixed issue where a "renderer map contains bad data" runtime error could be thrown after duplicate indices were requested by getVisibleIndicesAtScrollPosition().
@@ -44,6 +48,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * IGroupedLayout: new interface for layouts that support special modifiers for GroupedList, like headers that stick to the top.
 * IGroupedListHeaderOrFooterRenderer: interface is deprecated, and it replaced by two separate interfaces, IGroupedListHeaderRenderer and IGroupedListFooterRenderer.
 * IListItemRenderer, IGroupedListItemRenderer: added factoryID property that allows List to determine which item renderer factory was used to create the renderer.
+* IStateContext, IStateObserver: new relationship between components that have state and sub-components that want to know their parent's state.
 * ImageLoader: immediately stops loading when changing source property, instead of waiting for validation.
 * Layouts: fixed issue where the wrong dimensions would be calculated when the layout contained zero items.
 * LayoutGroup: fixed issue where background skin dimensions did not affect min dimensions of layout.
@@ -61,18 +66,25 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * SpinnerList: default layouts requested four rows instead of five because it will be more visually obvious that it can scroll because some items will be only partially visible
 * StandardIcons: this class is considered deprecated because List now supports multiple item renderer factories. Drill down icon should be passed to item renderer during skinning.
 * StackScreenNavigator: added stackCount property.
+* StackScreenNavigator: added replaceScreen(), popAll(), and popToRootAndReplace() functions.
 * StackScreenNavigatorItem: added setScreenIDForReplaceEvent() and clearReplaceEvent() methods and replaceEvents property.
 * StackScreenNavigator, ScreenNavigator: fixed issue where loading new screen in a FeathersEventType.TRANSITION_COMPLETE listener could cause old screen to remain on display list.
 * StageTextTextEditor: added support for FocusManager.
+* TabBar: implements IFocusDisplayObject, and the selected tab may be changed with keyboard.
+* TextArea: added customTextEditorStyleName property.
+* Text Editors: added global style providers.
 * Text Editors: fixed issue where calling clearFocus() on Android would remove focus, but keep the soft keyboard open.
 * TextBlockTextEditor: fixed issue where selection skin could incorrectly appear outside bounds of TextInput.
+* Text Renderers: added text styles for selected state.
 * TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where textures were uploaded too frequently with certain Starling scale factors.
 * TextFieldTextRenderer: fixed issue where snapshot was not updated when Starling scale factor changes at runtime.
 * TextInput: added isSelectable property, to go with isEditable property, to allow selection and editing to be controlled separately.
+* TextInput: added customTextEditorStyleName and customPromptStyleName properties.
 * TiledRowsLayout, TiledColumnsLayout: fixed issue where wrong number of rows or columns were calculated when using maxWidth or maxHeight.
 * TiledRowsLayout, TiledColumnsLayout: fixed issues with measurement and item positioning when using requested row or column counts.
 * ToggleButton: added toggleGroup property, similar to Radio, and implemented IGroupedToggle interface.
 * ToggleButton: added some missing constants inherited from Button.
+* ToggleSwitch: added customOnLabelStyleName and customOffLabelStyleName.
 * Todos: Example updated with modernized coding practices and changed design a bit.
 * ValidationQueue: uses Vector insertAt() when available in runtime to improve performance by avoiding extra garbage collection.
 * VideoPlayer: added netConnectionFactory to allow creation of NetConnection and the call to connect() to be customized.
