@@ -63,6 +63,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`Check`](check.html)
 
+-   [`DateTimeSpinner`](date-time-spinner.html)
+
 -   [`DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
 
 -   [`Drawers`](drawers.html)
@@ -138,6 +140,16 @@ A bit further down, you can find number of articles that go into detail about th
 -   [`BitmapFontTextRenderer`](bitmap-font-text-renderer.html)
 
 -   [`TextFieldTextRenderer`](text-field-text-renderer.html)
+
+## Text Editors
+
+-   [`StageTextTextEditor`](stage-text-text-editor.html)
+
+-   [`TextBlockTextEditor`](text-block-text-editor.html)
+
+-   [`BitmapFontTextEditor`](bitmap-font-text-editor.html)
+
+-   [`TextFieldTextEditor`](text-field-text-editor.html)
 
 ## Media Player Framework
 
