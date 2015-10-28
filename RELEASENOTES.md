@@ -95,6 +95,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * VideoPlayer: fixed issue where only audio would play on iOS if played a second time.
 * VideoPlayer: fixed issue where video might not stop playing or might not be cleaned up properly on dispose.
 * VideoPlayer: dispatches FeathersEventType.CLEAR when texture is disposed, similar to Event.READY when texture is ready to be rendered. ImageLoader should clear its source when this is dispatched.
+* More than doubled the number of unit tests!
 
 ### 2.3.0 Deprecated APIs
 
