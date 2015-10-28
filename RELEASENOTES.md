@@ -25,6 +25,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Callout: adjusts minimum and maximum dimensions of content instead of setting width and height directly, if possible, to allow resizing.
 * DefaultFocusManager: fixed issue where focus could be restored to an object that was no longer on stage, causing a runtime error.
 * DefaultFocusManager: fixed issue where a component added under a modal pop-up doesn't have a focus manager.
+* DefaultListItemRenderer, DefaultGroupedListItemRenderer: added defaultAccessory property and setAccessoryForState() method. As long as itemHasAccessory property is false, accessory does not need to be set with data provider.
 * Drawers: added openMode property to control whether drawers are opened above or below the content. For backwards compatibility, defaults to below.
 * Drawers: fixed issue where setting drawer to null while open would leave overlay skin visible, making it impossible to interact with the content.
 * Drawers: fixed issue where opening or closing a drawer without animation wouldn't always work.
