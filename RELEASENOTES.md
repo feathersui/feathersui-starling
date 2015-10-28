@@ -4,11 +4,89 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 2.3.0 - In Development
 
+* New Component: DateTimeSpinner combines a set of SpinnerList components to select the date, the time, or both.
+* New Theme: TopcoatLightMobileTheme. Thank you to Marcel Piestansky for your contributions.
+* List, GroupedList: added support for displaying more than one type of item renderer (plus multiple header and footer renderers on GroupedList).
+* TapToTrigger, TapToSelect, and LongPress: new utility classes that make it easy to implement Event.TRIGGERED, Event.CHANGE, and FeathersEventType.LONG_PRESS on custom item renderers.
+* TextureCache: utility class used to store textures loaded from URL by ImageLoader for quick reloading from memory instead of requesting URL again.
+* Text: Support changing between multiple font styles when parent component changes state. Makes it easier to set font styles for button and item renderer states with strict compile-time type checking (instead of using downLabelProperties, hoverLabelProperties, etc).
+* Alert: fixed issue where icon would not be positioned correctly when message needed to scroll.
+* Alert: fixed issue where layout would not be updated after icon resized.
+* BitmapFontTextRenderer: fixed issue where a line break could happen too early due to floating point inaccuracy.
+* BottomDrawerPopUpContentManager: New IPopUpContentManager for PickerList that opens a drawer at the bottom of the stage.
+* Button: added setSkinForState() and setIconForState() methods. Recommended instead of separate properties like downSkin and hoverSkin.
+* Button: fixed issue where skin was positioned incorrectly when using scaleWhenDown. Thanks, zongjingyao!
+* ToggleButton: fixed issue where the button could get stuck in a disabled state if selected and re-enabled.
+* Button, ToggleButton, LayoutGroup, Scroller, TextInput, TextArea: ensures that all skins are disposed when disposing the parent component (some may not be on the display list at the time, so they need to be disposed manually).
+* Button, Item Renderers: when skin, icon, or accessory is IStateObserver, sets the stateContext property.
+* ButtonGroup: when distributeButtonSizes is false, and the direction is horizontal, will display buttons in multiple rows if they will not fit into one row.
+* ButtonGroup: added support for passing the item from the data provider as an optional third parameter to event listeners added in the data provider.
+* ButtonGroup: added support for listening to FeathersEventType.LONG_PRESS on buttons.
+* Callout: adjusts minimum and maximum dimensions of content instead of setting width and height directly, if possible, to allow resizing.
+* DefaultFocusManager: fixed issue where focus could be restored to an object that was no longer on stage, causing a runtime error.
+* DefaultFocusManager: fixed issue where a component added under a modal pop-up doesn't have a focus manager.
+* Drawers: added openMode property to control whether drawers are opened above or below the content. For backwards compatibility, defaults to below.
+* Drawers: fixed issue where setting drawer to null while open would leave overlay skin visible, making it impossible to interact with the content.
+* Drawers: fixed issue where opening or closing a drawer without animation wouldn't always work.
+* Drawers: added support for dividers between docked drawers and content.
+* FlowLayout: added firstHorizontalGap and lastHorizontalGap properties to allow a different gap after the first item and before the last item.
+* FlowLayout: fixed contentWidth result from layout() when content is larger than view port.
+* FlowLayout: fixed result from measureViewPort() when using multiple rows.
+* FlowLayout, TiledRowsLayout, TiledColumnsLayout: fixed issue where the calculated view port dimensions were too large when using maxWidth/maxHeight and the rows or columns were smaller than the maximum dimensions.
+* GroupedList, List: dispatches FeathersEventType.RENDERER_REMOVE for all item renderers on dispose.
+* GroupedList: default layout now uses stickyHeader property of VerticalLayout.
+* Header: extra padding for iOS status bar now supports 3x devices.
+* HierarchicalCollection, ListCollection: added updateAll() method, similar to updateItemItem(), that tells the List that all items have been updated.
+* HorizontalLayout, VerticalLayout: fixed issue where percentWidth and percentHeight values were ignored when measuring the typical item in a virtual layout.
+* HorizontalSpinnerLayout, VerticalSpinnerLayout: fixed issue where a "renderer map contains bad data" runtime error could be thrown after duplicate indices were requested by getVisibleIndicesAtScrollPosition().
+* IAsyncTheme: new interface available to themes that need to load assets asynchronously. Used by Feathers SDK to delay app initialization until the theme is ready.
+* IGroupedLayout: new interface for layouts that support special modifiers for GroupedList, like headers that stick to the top.
+* IGroupedListHeaderOrFooterRenderer: interface is deprecated, and it replaced by two separate interfaces, IGroupedListHeaderRenderer and IGroupedListFooterRenderer.
+* IListItemRenderer, IGroupedListItemRenderer: added factoryID property that allows List to determine which item renderer factory was used to create the renderer.
+* ImageLoader: immediately stops loading when changing source property, instead of waiting for validation.
+* Layouts: fixed issue where the wrong dimensions would be calculated when the layout contained zero items.
+* LayoutGroup: fixed issue where background skin dimensions did not affect min dimensions of layout.
+* LayoutGroup: fixed issue where removing a child in an Event.REMOVED_FROM_STAGE listener could cause the internal state to get out of sync with the display list.
+* List: fixed issue where FeathersEventType.RENDERER_REMOVE would be dispatched for item renderers that were kept in memory to improve performance, but they didn't have an item, so the event would make no sense.
+* PickerList: defaults to using BottomDrawerPopUpContentManager and SpinnerList on devices detected as phones.
+* PickerList: defaults to DropDownPopUpContentManager on devices detected as desktop computers.
+* Scale3Image: removed duplicate code that had no effect.
+* SeekSlider: added progressSkin property to display loading progress from media player.
+* SoundPlayer: fixed issue where passing Sound instance to soundSource property would not update totalTime property and the sound would not play.
+* SoundPlayer: added MediaPlayerEventType.METADATA_RECEIVED event for Sound Event.ID3.
+* SoundPlayer, VideoPlayer: implement new IProgressiveMediaPlayer interface with bytesLoaded and bytesTotal properties.
+* SoundPlayer: fixed issue where sound might not stop playing or might not be cleaned up properly on dispose.
+* SpinnerList: fixed issue where setting data provider to same object would reset selection.
+* SpinnerList: default layouts requested four rows instead of five because it will be more visually obvious that it can scroll because some items will be only partially visible
+* StandardIcons: this class is considered deprecated because List now supports multiple item renderer factories. Drill down icon should be passed to item renderer during skinning.
+* StackScreenNavigator: added stackCount property.
+* StackScreenNavigatorItem: added setScreenIDForReplaceEvent() and clearReplaceEvent() methods and replaceEvents property.
+* StackScreenNavigator, ScreenNavigator: fixed issue where loading new screen in a FeathersEventType.TRANSITION_COMPLETE listener could cause old screen to remain on display list.
+* StageTextTextEditor: added support for FocusManager.
+* Text Editors: fixed issue where calling clearFocus() on Android would remove focus, but keep the soft keyboard open.
+* TextBlockTextEditor: fixed issue where selection skin could incorrectly appear outside bounds of TextInput.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where textures were uploaded too frequently with certain Starling scale factors.
+* TextFieldTextRenderer: fixed issue where snapshot was not updated when Starling scale factor changes at runtime.
+* TextInput: added isSelectable property, to go with isEditable property, to allow selection and editing to be controlled separately.
+* TiledRowsLayout, TiledColumnsLayout: fixed issue where wrong number of rows or columns were calculated when using maxWidth or maxHeight.
+* TiledRowsLayout, TiledColumnsLayout: fixed issues with measurement and item positioning when using requested row or column counts.
+* ToggleButton: added toggleGroup property, similar to Radio, and implemented IGroupedToggle interface.
+* ToggleButton: added some missing constants inherited from Button.
+* Todos: Example updated with modernized coding practices and changed design a bit.
+* ValidationQueue: uses Vector insertAt() when available in runtime to improve performance by avoiding extra garbage collection.
+* VideoPlayer: added netConnectionFactory to allow creation of NetConnection and the call to connect() to be customized.
+* VideoPlayer: added MediaPlayerEventType.METADATA_RECEIVED event for NetStream onMetaData callback.
+* VideoPlayer: fixed issue where Event.COMPLETE was not dispatched on iOS because NetStream.Play.Complete event was not dispatched on this platform only.
+* VideoPlayer: fixed issue where restoring context would cause video to start playing if paused before context was lost.
+* VideoPlayer: fixed issue where only audio would play on iOS if played a second time.
+* VideoPlayer: fixed issue where video might not stop playing or might not be cleaned up properly on dispose.
+* VideoPlayer: dispatches FeathersEventType.CLEAR when texture is disposed, similar to Event.READY when texture is ready to be rendered. ImageLoader should clear its source when this is dispatched.
+
 ### 2.3.0 Deprecated APIs
 
 All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
-The `StandardIcons` class is deprecated. It was used to provide a drill-down icon for item renderers, but since lists now support multiple item renderer types, it is no longer needed. Additionally, the `StandardIcons` didn't work properly with multiple Starling instances.
+The `StandardIcons` class is deprecated. It was used to provide a drill-down icon for item renderers, but since lists now support multiple item renderer types, it is no longer needed. Additionally, the `StandardIcons` didn't work properly with multiple Starling instances, so it was ultimately a poor design choice.
 
 The `IGroupedListHeaderOrFooterRenderer` interface is deprecated. The `GroupedList` component used this interface, but it now supports separate `IGroupedListHeaderRenderer` and `IGroupedListFooterRenderer` interfaces.
 
