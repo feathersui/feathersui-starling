@@ -13,6 +13,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Alert: fixed issue where icon would not be positioned correctly when message needed to scroll.
 * Alert: fixed issue where layout would not be updated after icon resized.
 * BitmapFontTextRenderer: fixed issue where a line break could happen too early due to floating point inaccuracy.
+* BitmapFontTextRenderer: added support for leading property on BitmapFontTextFormat to add extra space between lines. Thanks, matyasatfp!
 * BottomDrawerPopUpContentManager: New IPopUpContentManager for PickerList that opens a drawer at the bottom of the stage.
 * Button: added setSkinForState() and setIconForState() methods. Recommended instead of separate properties like downSkin and hoverSkin.
 * Button: fixed issue where skin was positioned incorrectly when using scaleWhenDown. Thanks, zongjingyao!
