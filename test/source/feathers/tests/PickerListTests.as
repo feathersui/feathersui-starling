@@ -189,8 +189,8 @@ package feathers.tests
 			});
 			this._list.dataProvider.removeItemAt(0);
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
-			Assert.assertFalse("The selectedIndex property was not changed",
-				beforeSelectedIndex === this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedIndex property was not changed",
+				beforeSelectedIndex - 1, this._list.selectedIndex);
 			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
 				beforeSelectedItem, this._list.selectedItem);
 		}
@@ -296,8 +296,8 @@ package feathers.tests
 			});
 			this._list.dataProvider.addItemAt({label: "New Item"}, 0);
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
-			Assert.assertFalse("The selectedIndex property was not changed",
-				beforeSelectedIndex === this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedIndex property was not changed",
+				beforeSelectedIndex + 1, this._list.selectedIndex);
 			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
 				beforeSelectedItem, this._list.selectedItem);
 		}
