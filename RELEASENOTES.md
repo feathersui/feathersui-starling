@@ -57,6 +57,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * List: fixed issue where FeathersEventType.RENDERER_REMOVE would be dispatched for item renderers that were kept in memory to improve performance, but they didn't have an item, so the event would make no sense.
 * PickerList: defaults to using BottomDrawerPopUpContentManager and SpinnerList on devices detected as phones.
 * PickerList: defaults to DropDownPopUpContentManager on devices detected as desktop computers.
+* PickerList: fixed issue where pop-up List may incorrectly create an item renderer for every item in the data provider before the list is opened.
 * Scale3Image: removed duplicate code that had no effect.
 * SeekSlider: added progressSkin property to display loading progress from media player.
 * SoundPlayer: fixed issue where passing Sound instance to soundSource property would not update totalTime property and the sound would not play.
