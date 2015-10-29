@@ -44,15 +44,6 @@ package feathers.layout
 	 * For use with the <code>SpinnerList</code> component, positions items from
 	 * left to right in a single row and repeats infinitely.
 	 *
-	 * <p><strong>Beta Layout:</strong> This is a new layout, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this layout. The
-	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
-	 *
 	 * @see ../../../help/horizontal-spinner-layout.html How to use HorizontalSpinnerLayout with the Feathers SpinnerList component
 	 */
 	public class HorizontalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout

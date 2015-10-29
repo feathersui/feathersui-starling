@@ -146,8 +146,8 @@ package feathers.tests
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertStrictlyEquals("The selectedGroupIndex property was incorrectly changed",
 				beforeSelectedGroupIndex, this._list.selectedGroupIndex);
-			Assert.assertFalse("The selectedItemIndex property was not changed",
-				beforeSelectedItemIndex === this._list.selectedItemIndex);
+			Assert.assertStrictlyEquals("The selectedItemIndex property was not changed",
+				beforeSelectedItemIndex - 1, this._list.selectedItemIndex);
 			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
 				beforeSelectedItem, this._list.selectedItem);
 		}
@@ -268,8 +268,8 @@ package feathers.tests
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertStrictlyEquals("The selectedGroupIndex property was incorrectly changed",
 				beforeSelectedGroupIndex, this._list.selectedGroupIndex);
-			Assert.assertFalse("The selectedItemIndex property was not changed",
-				beforeSelectedItemIndex === this._list.selectedItemIndex);
+			Assert.assertStrictlyEquals("The selectedItemIndex property was not changed",
+				beforeSelectedItemIndex + 1, this._list.selectedItemIndex);
 			Assert.assertStrictlyEquals("The selectedItem property was incorrectly changed",
 				beforeSelectedItem, this._list.selectedItem);
 		}

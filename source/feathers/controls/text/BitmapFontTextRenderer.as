@@ -660,7 +660,7 @@ package feathers.controls.text
 			{
 				scale = 1;
 			}
-			var lineHeight:Number = font.lineHeight * scale;
+			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
 			var maxLineWidth:Number = this.explicitWidth;
 			if(maxLineWidth !== maxLineWidth) //isNaN
 			{
@@ -778,7 +778,7 @@ package feathers.controls.text
 			}
 
 			result.x = maxX;
-			result.y = currentY + lineHeight;
+			result.y = currentY + lineHeight - this.currentTextFormat.leading;
 			return result;
 		}
 
@@ -881,7 +881,7 @@ package feathers.controls.text
 			{
 				scale = 1;
 			}
-			var lineHeight:Number = font.lineHeight * scale;
+			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
 
 			var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
 			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
@@ -1075,7 +1075,7 @@ package feathers.controls.text
 			this._characterBatch.x = this._batchX;
 
 			result.x = maxX;
-			result.y = currentY + lineHeight;
+			result.y = currentY + lineHeight - this.currentTextFormat.leading;
 			return result;
 		}
 
