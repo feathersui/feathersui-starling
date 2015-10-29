@@ -1,4 +1,4 @@
-# Feathers UI 2.3.0-prerelease [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
+# Feathers UI 2.3.0-beta [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
 
 ---
 
@@ -11,8 +11,8 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Prerelease Help](http://feathersui.com/beta/help/)
-* [Prerelease API Reference](http://feathersui.com/beta/api-reference/)
+* [Beta Help](http://feathersui.com/beta/help/)
+* [Beta API Reference](http://feathersui.com/beta/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/BowlerHatLLC/feathers)
 
