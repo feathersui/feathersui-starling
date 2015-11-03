@@ -50,7 +50,7 @@ package feathers.controls
 		 * @param popEvent An event that pops the screen from the top of the stack.
 		 * @param properties A set of key-value pairs to pass to the screen when it is shown.
 		 */
-		public function StackScreenNavigatorItem(screen:Object, pushEvents:Object = null, popEvent:String = null, properties:Object = null)
+		public function StackScreenNavigatorItem(screen:Object = null, pushEvents:Object = null, popEvent:String = null, properties:Object = null)
 		{
 			this._screen = screen;
 			this._pushEvents = pushEvents ? pushEvents : {};
