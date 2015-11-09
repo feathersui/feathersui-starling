@@ -2217,7 +2217,10 @@ package feathers.layout
 			header.y = maxY;
 			//ensure that the sticky header is always on top!
 			var headerParent:DisplayObjectContainer = header.parent;
-			headerParent.setChildIndex(header, headerParent.numChildren - 1);
+			if(headerParent)
+			{
+				headerParent.setChildIndex(header, headerParent.numChildren - 1);
+			}
 		}
 	}
 }
