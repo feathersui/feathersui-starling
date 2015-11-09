@@ -984,11 +984,16 @@ package feathers.layout
 			
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
+			var headerCount:int = 0;
 			var stickyHeaderMaxY:Number = Number.POSITIVE_INFINITY;
-			if(this._headerIndices && this._headerIndices.length > 0 && this._stickyHeader)
+			if(this._headerIndices && this._stickyHeader)
 			{
-				headerIndicesIndex = 0;
-				nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				headerCount = this._headerIndices.length;
+				if(headerCount > 0)
+				{
+					headerIndicesIndex = 0;
+					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				}
 			}
 			
 			//this first loop sets the y position of items, and it calculates
@@ -1008,7 +1013,10 @@ package feathers.layout
 					if((positionY - startPositionY) < scrollY)
 					{
 						headerIndicesIndex++;
-						nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						if(headerIndicesIndex < headerCount)
+						{
+							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						}
 					}
 					else
 					{
@@ -1588,10 +1596,15 @@ package feathers.layout
 
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
-			if(this._headerIndices && this._headerIndices.length > 0 && this._stickyHeader)
+			var headerCount:int = 0;
+			if(this._headerIndices && this._stickyHeader)
 			{
-				headerIndicesIndex = 0;
-				nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				headerCount = this._headerIndices.length;
+				if(headerCount > 0)
+				{
+					headerIndicesIndex = 0;
+					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				}
 			}
 			
 			var secondToLastIndex:int = itemCount - 2;
@@ -1605,7 +1618,10 @@ package feathers.layout
 					if((positionY - startPositionY) < scrollY)
 					{
 						headerIndicesIndex++;
-						nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						if(headerIndicesIndex < headerCount)
+						{
+							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						}
 					}
 					else
 					{
