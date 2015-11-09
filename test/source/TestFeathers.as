@@ -52,6 +52,7 @@ package
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
+	import feathers.tests.VerticalLayoutTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -145,6 +146,7 @@ package
 				LayoutGroupVerticalLayoutTests,
 				TiledRowsLayoutTests,
 				TiledColumnsLayoutTests,
+				VerticalLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,
