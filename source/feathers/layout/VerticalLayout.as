@@ -1610,6 +1610,7 @@ package feathers.layout
 			var secondToLastIndex:int = itemCount - 2;
 			var maxPositionY:Number = scrollY + height;
 			var startPositionY:Number = this._paddingTop;
+			var foundSticky:Boolean = false;
 			var positionY:Number = startPositionY;
 			for(i = 0; i < itemCount; i++)
 			{
@@ -1630,6 +1631,7 @@ package feathers.layout
 						{
 							//this is the index of the "sticky" header
 							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+							foundSticky = true;
 						}
 					}
 				}
@@ -1662,6 +1664,15 @@ package feathers.layout
 
 				if(positionY >= maxPositionY)
 				{
+					if(!foundSticky)
+					{
+						headerIndicesIndex--;
+						if(headerIndicesIndex >= 0)
+						{
+							//this is the index of the "sticky" header
+							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						}
+					}
 					break;
 				}
 			}
