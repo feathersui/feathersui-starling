@@ -1368,9 +1368,18 @@ package feathers.controls.text
 				this.textSnapshot = null;
 			}
 
-			if(this.textField && this.textField.parent)
+			if(this.textField)
 			{
-				this.textField.parent.removeChild(this.textField);
+				if(this.textField.parent)
+				{
+					this.textField.parent.removeChild(this.textField);
+				}
+				this.textField.removeEventListener(flash.events.Event.CHANGE, textField_changeHandler);
+				this.textField.removeEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
+				this.textField.removeEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
+				this.textField.removeEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+				this.textField.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
+				this.textField.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
 			}
 			//this isn't necessary, but if a memory leak keeps the text renderer
 			//from being garbage collected, freeing up the text field may help
@@ -1653,6 +1662,8 @@ package feathers.controls.text
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
+			//when adding more events here, don't forget to remove them when the
+			//text editor is disposed
 
 			this.measureTextField = new TextField();
 			this.measureTextField.autoSize = TextFieldAutoSize.LEFT;
