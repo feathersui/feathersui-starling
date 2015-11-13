@@ -68,6 +68,24 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testSetValueProgramaticallyWithMinimum():void
+		{
+			this._slider.minimum = 5;
+			this._slider.maximum = 10;
+			this._slider.value = 2;
+			Assert.assertEquals("Setting value smaller than minimum not changed to minimum.", this._slider.minimum, this._slider.value);
+		}
+
+		[Test]
+		public function testSetValueProgramaticallyWithMaximum():void
+		{
+			this._slider.minimum = 5;
+			this._slider.maximum = 10;
+			this._slider.value = 12;
+			Assert.assertEquals("Setting value larger than maximum not changed to maximum.", this._slider.maximum, this._slider.value);
+		}
+
+		[Test]
 		public function testProgrammaticSelectionChange():void
 		{
 			this._slider.minimum = 0;

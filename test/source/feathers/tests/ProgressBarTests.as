@@ -45,5 +45,23 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The height of the progress bar was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._progress.height);
 		}
+
+		[Test]
+		public function testSetValueProgramaticallyWithMinimum():void
+		{
+			this._progress.minimum = 5;
+			this._progress.maximum = 10;
+			this._progress.value = 2;
+			Assert.assertEquals("Setting value smaller than minimum not changed to minimum.", this._progress.minimum, this._progress.value);
+		}
+
+		[Test]
+		public function testSetValueProgramaticallyWithMaximum():void
+		{
+			this._progress.minimum = 5;
+			this._progress.maximum = 10;
+			this._progress.value = 12;
+			Assert.assertEquals("Setting value larger than maximum not changed to maximum.", this._progress.maximum, this._progress.value);
+		}
 	}
 }
