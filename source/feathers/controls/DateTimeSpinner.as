@@ -348,12 +348,20 @@ package feathers.controls
 		 */
 		public function set value(value:Date):void
 		{
-			var time:Number = clamp(value.time, this._minimum.time, this._maximum.time);
+			var time:Number = value.time;
+			if(this._minimum && this._minimum.time > time)
+			{
+				time = this._minimum.time;
+			}
+			if(this._maximum && this._maximum.time < time)
+			{
+				time = this._maximum.time;
+			}
 			if(this._value && this._value.time === time)
 			{
 				return;
 			}
-			this._value = new Date(value.time);
+			this._value = new Date(time);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
