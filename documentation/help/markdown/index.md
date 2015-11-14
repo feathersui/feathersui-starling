@@ -135,6 +135,8 @@ A bit further down, you can find number of articles that go into detail about th
 
 ## Text Renderers
 
+-   [Introduction to Feathers text renderers](text-renderers.html)
+
 -   [`TextBlockTextRenderer`](text-block-text-renderer.html)
 
 -   [`BitmapFontTextRenderer`](bitmap-font-text-renderer.html)
@@ -142,6 +144,8 @@ A bit further down, you can find number of articles that go into detail about th
 -   [`TextFieldTextRenderer`](text-field-text-renderer.html)
 
 ## Text Editors
+
+-   [Introduction to Feathers text editors](text-editors.html)
 
 -   [`StageTextTextEditor`](stage-text-text-editor.html)
 
