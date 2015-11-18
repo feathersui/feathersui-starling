@@ -5,23 +5,23 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `TextBlockTextRenderer` component
 
-The [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) class renders text using [Flash Text Engine](http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html).
+The [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) class displays text using [Flash Text Engine](http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html), a software-based vector font renderer with many advanced features. Text may be rendered with either device fonts (the fonts installed on a user's operating system) or embedded fonts (in TTF or OTF formats). A [`flash.text.engine.TextBlock`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html) is drawn to `BitmapData` and converted to a Starling `Texture` to display as a snapshot within the Starling display list.
 
 <aside class="info">`TextBlockTextRenderer` is one of many different [text renderers](text-renderers.html) supported by Feathers. Since no method of rendering text on the GPU is considered definitively better than the others, Feathers allows you to choose the best text renderer for your project's requirements. See [Introduction to Feathers text renderers](text-renderers.html) for complete details about all of the text rendering options supported by Feathers.</aside>
 
 ## Advantages and disadvantages
 
-[Flash Text Engine](http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html) displays device fonts or embedded fonts using a software-based vector renderer. Feathers draws the rendered text to [`BitmapData`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/BitmapData.html), and a texture is uploaded to the GPU. This text renderer may use device fonts (the fonts installed on the user's operating system), and it also supports embedded fonts in both TTF or OTF formats.
+Flash Text Engine may render text using device fonts, which are the fonts installed on the user's operating system. For some languages with many glyphs and ligatures, device fonts may be the only option when embedded fonts would require too much memory.
 
-Since embedded vector fonts require less memory than embedded bitmap fonts, you may be able to use embedded vector fonts for languages with too many characters or ligatures to be rendered with bitmap fonts. However, even when the embedded vector glyphs require too much memory, you can always fall back to using *device fonts* (the fonts installed on the user's operating system) to draw your text. For some languages, device fonts may be the only option.
+Similarly, since embedded vector fonts often require less memory than embedded bitmap fonts, you may still be able to use embedded vector fonts when bitmap fonts would require too much memory.
+
+Flash Text Engine has the best support for right-to-left languages and bi-directional text, which `flash.text.TextField` may not render correctly.
 
 Changing vector-based text on the GPU is slower than with bitmap fonts because the text needs to be redrawn to `BitmapData` and then it needs to be uploaded to a texture on the GPU. However, once this texture is on the GPU, performance will be very smooth as long as the text doesn't change again. For text that changes often, the texture upload time may become a bottleneck.
 
 Because each passage of vector text needs to be drawn to `BitmapData`, each separate renderer requires its own separate texture on the GPU. This results in more [state changes](http://wiki.starling-framework.org/manual/performance_optimization#minimize_state_changes) and [draw calls](faq/draw-calls.html), which can create more work for the GPU, and it might hurt performance if you have many different instances of `TextBlockTextRenderer` on screen at the same time.
 
 Flash Text Engine may render a bit slower than `flash.text.TextField` sometimes. In general, this performance difference is negligible, and the more advanced capabilities of FTE are often more compelling than a minor risk of reduced performance.
-
-Flash Text Engine has the best support for right-to-left languages, which `flash.text.TextField` may not render correctly.
 
 `TextBlockTextRenderer` optionally supports rich text, but it needs to be constructed manually adding multiple [`TextElement`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextElement.html) objects, each with different [`ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) values, to a [`GroupElement`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/GroupElement.html) object. You may pass the `GroupElement` to the text renderer's [`content`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#content) property. `TextBlockTextRenderer` does not support the simple subset of HTML that `TextFieldTextRenderer` can display.
 
@@ -34,7 +34,7 @@ var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
 textRenderer.text = "I understand equations, both the simple and quadratical";
 ```
 
-Font styles may be customized by passing a [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) instance to the [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) property:
+Font styles may be customized by passing a [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) instance to the [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#elementFormat) property:
 
 ``` code
 var font:FontDescription = new FontDescription(
@@ -44,7 +44,7 @@ textRenderer.elementFormat = new ElementFormat( font, 16, 0xcccccc );
 
 The first parameter to the `ElementFormat` constructor is a [`FontDescription`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontDescription.html) object. This class is provided by Flash Text Engine to handle font lookup, including name, weight (whether it is bold or normal), posture (whether it is italicized or not), and whether the font is embedded or installed on the device.
 
-The `ElementFormat` allows you to customize font size, color, alpha, and a huge variety of more advanced options.
+The `ElementFormat` allows you to customize font size, color, alpha, and more.
 
 ``` code
 var format:ElementFormat = new ElementFormat( fontDescription );
@@ -53,7 +53,7 @@ format.color = 0xc4c4c4;
 format.alpha = 0.5;
 ```
 
-Text alignment is not included in the `FontDescription` or the `ElementFormat`. Instead, we can set the [`textAlign`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#textAlign) property:
+Text alignment is not included in the `FontDescription` or the `ElementFormat`. Instead, we can set the [`textAlign`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#textAlign) property directly on the text renderer:
 
 ``` code
 textRenderer.textAlign = TextBlockTextRenderer.TEXT_ALIGN_CENTER;
@@ -97,7 +97,7 @@ Here are the parameters:
 -   The `mimeType` parameter must be set to `application/x-font`.
 -   The `embedAsCFF` parameter must be set to `true` to use a font with Flash Text Engine.
 
-To use an embedded font with `TextBlockTextRenderer`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the the `FontDescription` object.
+To use an embedded font with `TextBlockTextRenderer`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the `FontDescription` object.
 
 ``` code
 var font:FontDescription = new FontDescription(

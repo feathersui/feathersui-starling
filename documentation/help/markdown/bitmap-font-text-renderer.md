@@ -53,7 +53,7 @@ The RGB values of the tint color are multiplied with the RGB values of each of t
 The alignment of the text can be customized with the [`align`](../api-reference/feathers/text/BitmapFontTextFormat.html#align) property:
 
 ``` code
-format.textAlign = TextFormatAlign.CENTER;
+format.align = TextFormatAlign.CENTER;
 ```
 
 Bitmap fonts have one primary font size. They may be scaled, but scaled bitmap fonts may not render as nicely as scaled vector fonts. However, if needed, we can use the [`size`](../api-reference/feathers/text/BitmapFontTextFormat.html#size) property:

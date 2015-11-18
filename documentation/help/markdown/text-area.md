@@ -106,9 +106,10 @@ The text editor may be styled using the [`textEditorFactory`](../api-reference/f
 ``` code
 textArea.textEditorFactory = function():ITextEditorViewPOrt
 {
-    var editor:TextFieldTextEditorViewPort = new TextFieldTextEditorViewPort();
-    editor.textFormat = new TextFormat( "_sans", 12, 0x333333 );
-    return editor;
+    var textEditor:TextFieldTextEditorViewPort = new TextFieldTextEditorViewPort();
+    textEditor.styleProvider = null;
+    textEditor.textFormat = new TextFormat( "_sans", 12, 0x333333 );
+    return textEditor;
 }
 ```
 

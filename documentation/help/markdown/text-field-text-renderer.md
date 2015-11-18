@@ -5,25 +5,27 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `TextFieldTextRenderer` component
 
-The [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) class renders text using the classic [flash.text.TextField](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html).
+The [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) class renders text using the classic [flash.text.TextField](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) a software-based vector font renderer. Text may be rendered with either device fonts (the fonts installed on a user's operating system) or embedded fonts (in TTF or OTF formats). The [`TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html) is drawn to `BitmapData` and converted to a Starling `Texture` to display as a snapshot within the Starling display list.
 
 <aside class="info">`TextFieldTextRenderer` is one of many different [text renderers](text-renderers.html) supported by Feathers. Since no method of rendering text on the GPU is considered definitively better than the others, Feathers allows you to choose the best text renderer for your project's requirements. See [Introduction to Feathers text renderers](text-renderers.html) for complete details about all of the text rendering options supported by Feathers.</aside>
 
 ## Advantages and disadvantages
 
-[`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) displays device fonts or embedded fonts using a software-based vector renderer. Feathers draws the rendered text to [`BitmapData`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/BitmapData.html), and a texture is uploaded to the GPU. This text renderer may use device fonts (the fonts installed on the user's operating system), and it supports embedded fonts in both TTF or OTF formats.
+The classic Flash `TextField` may render text using device fonts, which are the fonts installed on the user's operating system. For some languages with many glyphs and ligatures, device fonts may be the only option when embedded fonts would require too much memory.
 
-Since embedded vector fonts require less memory than embedded bitmap fonts, you may be able to use embedded vector fonts for languages with too many characters or ligatures to be rendered with bitmap fonts. However, even when the embedded vector glyphs require too much memory, you can always fall back to using *device fonts* (the fonts installed on the user's operating system) to draw your text. For some languages, device fonts may be the only option.
+Similarly, since embedded vector fonts often require less memory than embedded bitmap fonts, you may still be able to use embedded vector fonts when bitmap fonts would require too much memory.
 
 Changing vector-based text on the GPU is slower than with bitmap fonts because the text needs to be redrawn to `BitmapData` and then it needs to be uploaded to a texture on the GPU. However, once this texture is on the GPU, performance will be very smooth as long as the text doesn't change again. For text that changes often, the texture upload time may become a bottleneck.
 
 Because each passage of vector text needs to be drawn to `BitmapData`, each separate renderer requires its own separate texture on the GPU. This results in more [state changes](http://wiki.starling-framework.org/manual/performance_optimization#minimize_state_changes) and [draw calls](faq/draw-calls.html), which can create more work for the GPU, and it might hurt performance if you have many different instances of `TextFieldTextRenderer` on screen at the same time.
 
+`flash.text.TextField` can sometimes render a bit faster than Flash Text Engine. However, this performance difference is generally negligible.
+
 [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) has some known issues and limitations:
 
 -   `TextField` may render incorrectly when drawn to `BitmapData` immediately after its properties have been changed. As a workaround, `TextFieldTextRenderer` can wait one frame before drawing to `BitmapData` and uploading as a texture when the text or font styles are changed. Often, this delay will not be an issue, but it can be seen if watching closely.
 
--   `TextField` offers limited support for some languages, including right-to-left and bidirectional languages, and Flash Text Engine is recommended for these languages.
+-   `TextField` offers limited support for some languages, including right-to-left languages and bi-directional text, and Flash Text Engine is recommended for these languages.
 
 `TextFieldTextRenderer` supports [a limited subset of HTML](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#htmlText) courtesy of `flash.text.TextField`. This may be used to render richer text with multiple font styles.
 
@@ -36,13 +38,13 @@ var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
 textRenderer.text = "About binomial theorem I'm teeming with a lot o' news";
 ```
 
-Font styles may be customized using the native [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) class. Many of the property names defined by `TextField` are duplicated on `TextFieldTextRenderer`, most importantly [`textFormat`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#textFormat):
+Font styles may be customized using the native [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) class. Pass an instance of `TextFormat` to the [`textFormat`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#textFormat) property:
 
 ``` code
 textRenderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0xcccccc );
 ```
 
-The `TextFormat` allows you to customize font size, color, alignment, and a huge variety of more advanced options.
+The `TextFormat` allows you to customize font size, color, alignment, and more.
 
 ``` code
 var format:TextFormat = new TextFormat( "Helvetica" );
@@ -94,7 +96,7 @@ Here are the parameters:
 -   The `mimeType` parameter must be set to `application/x-font`.
 -   The `embedAsCFF` parameter must be set to `false` to use a font with the classic Flash `TextField`.
 
-To use an embedded font with `TextFieldTextRenderer`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the the `TextFormat` object.
+To use an embedded font with `TextFieldTextRenderer`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the `TextFormat` object.
 
 ``` code
 textRenderer.textFormat = new TextFormat( "My Font Name", 16, 0xcccccc );

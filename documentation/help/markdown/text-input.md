@@ -151,11 +151,12 @@ The text editor may be styled using the [`textEditorFactory`](../api-reference/f
 ``` code
 input.textEditorFactory = function():ITextEditor
 {
-    var editor:StageTextTextEditor = new StageTextTextEditor();
-    editor.fontFamily = "Helvetica";
-    editor.fontSize = 12;
-    editor.color = 0x333333;
-    return editor;
+    var textEditor:StageTextTextEditor = new StageTextTextEditor();
+    textEditor.styleProvider = null;
+    textEditor.fontFamily = "Helvetica";
+    textEditor.fontSize = 12;
+    textEditor.color = 0x333333;
+    return textEditor;
 }
 ```
 
@@ -167,7 +168,7 @@ input.textEditorProperties.fontSize = 12;
 input.textEditorProperties.color = 0x333333;
 ```
 
-Using the `textEditorProperties` hash is a bit slower, so if the font styles do not change, you should always use the `textEditorFactory`. The `textEditorProperties` is best for when the font styles change after the editor is initially created.
+Using the `textEditorProperties` hash is a bit slower, so if the font styles do not change at runtime, you should always use the `textEditorFactory`. The `textEditorProperties` is best for when the font styles change after the editor is initially created.
 
 ### Background and Layout
 
