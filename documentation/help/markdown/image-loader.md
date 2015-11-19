@@ -47,19 +47,78 @@ function loader_completeHandler( event:Event ):void
 You can also listen for errors to know if the `ImageLoader` is unable to load the texture:
 
 ``` code
-loader.addEventListener( FeathersEventType.ERROR, loader_errorHandler );
+loader.addEventListener( Event.IO_ERROR, loader_ioErrorHandler );
 ```
 
-The listener for [`FeathersEventType.ERROR`](../api-reference/feathers/events/FeathersEventType.html#ERROR) might look like this:
+The listener for [`Event.IO_ERROR`](../api-reference/feathers/controls/ImageLoader.html#event:ioError) might look like this:
 
 ``` code
-function loader_errorHandler( event:Event, data:ErrorEvent ):void
+function loader_ioErrorHandler( event:Event, data:IOErrorEvent ):void
 {
     // loader error
 }
 ```
 
-The `data` parameter in the function signature is optional, as always. It is a [`flash.events.ErrorEvent`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/ErrorEvent.html) that is dispatched by the internal [`flash.display.Loader`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html) used internally by the `ImageLoader`. It may be of type [`IOErrorEvent.IO_ERROR`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/IOErrorEvent.html#IO_ERROR) or of type [`SecurityErrorEvent.SECURITY_ERROR`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/SecurityErrorEvent.html#SECURITY_ERROR).
+The `data` parameter in the function signature is optional, as always. It is a [`flash.events.IOErrorEvent`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/IOErrorEvent.html) that is dispatched by the internal [`flash.display.Loader`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html) used internally by the `ImageLoader`.
+
+Similarly, you may listen for [`Event.SECURITY_ERROR`](../api-reference/feathers/controls/ImageLoader.html#event:securityError). The `data` property of the event is a [`flash.events.SecurityErrorEvent`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/SecurityErrorEvent.html) dispatched by the internal `Loader`.
+
+### Caching Textures
+
+By default, the `ImageLoader` will always create a new texture every time that it loads a source from a URL. In components like [`List`](list.html) and [`GroupedList`](grouped-list.html), it's common for the same URL to be loaded multiple times by one or more `ImageLoader` components. This can use extra bandwidth and affect performance.
+
+If enough memory is available, it's possible to store the loaded textures without disposing them. An instance of the [`feathers.utils.textures.TextureCache`](../api-reference/feathers/utils/textures/TextureCache.html) class can be shared by multiple `ImageLoader` components, and if a URL has already been loaded, the texture will be taken from the cache instead of reloading the image file and creating a new texture.
+
+To use, simply pass the same `TextureCache` instance to the [`textureCache`]() property of multiple `ImageLoader` components:
+
+``` code
+var cache:TextureCache = new TextureCache( 30 );
+
+var loader1:ImageLoader = new ImageLoader();
+loader1.textureCache = cache;
+
+var loader2:ImageLoader = new ImageLoader();
+loader2.textureCache = cache;
+```
+
+The parameter passed to the `TextureCache` constructor specifies how many textures should be stored in the cache. This limit affects only textures that are not currently displayed by any `ImageLoader` using the cache. The parameter defaults to `int.MAX_VALUE`, but a smaller value is recommended to avoid using too much memory and crashing your application. In this case, we've chosen `30`.
+
+For a `List`, we might use a `TextureCache` for icons or accessories that are loaded from URLs:
+
+``` code
+var cache:TextureCache = new TextureCache( 15 );
+list.itemRendererFactory = function():IListItemRenderer
+{
+	var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	itemRenderer.iconLoaderFactory = function():ImageLoader
+	{
+		var loader:ImageLoader = new ImageLoader();
+		loader.textureCache = cache;
+		return loader;
+	};
+	return itemRenderer;
+};
+```
+
+The [`dispose()`](../api-reference/feathers/utils/textures/TextureCache.html#dispose()) method of the `TextureCache` should be called when the `List` or other component using the cache is disposed. The `TextureCache` does not automatically know when it should dispose its stored textures, much like how a `starling.display.Image` will never dispose its own `texture` property because the texture may still be needed elsewhere.
+
+<aside class="warn">Failing to dispose a `TextureCache` will cause a pretty serious memory leak because the cache may have stored a large number of textures. Don't forget!</aside>
+
+In the following example, let's assume that we stored a `TextureCache` instance in a `savedTextures` member variable in one of our screens:
+
+``` code
+override public function dispose():void
+{
+	if( this.savedTextures )
+	{
+		this.savedTextures.dispose();
+		this.savedTextures = null;
+	}
+	super.dispose();
+}
+```
+
+When the screen is disposed, we'll simply dispose the `TextureCache`.
 
 ### Other Properties
 
@@ -102,13 +161,13 @@ else
 }
 ```
 
-You can scale the original dimensions of the loaded texture:
+You may set the scale factor of the loaded texture:
 
 ``` code
-loader.textureScale = 0.5;
+loader.scaleFactor = 0.5;
 ```
 
-This value is mainly used when the `ImageLoader` needs to resize after loading a new [`source`](../api-reference/feathers/controls/ImageLoader.html#source). The original width and height of the loaded texture are multiplied by the [`textureScale`](../api-reference/feathers/controls/ImageLoader.html#textureScale) and that's the width and height of the `ImageLoader`.
+Using this value, the texture will be scaled to an appropriate size for Starling's current `contentScaleFactor`.
 
 Finally, just like `starling.display.Image`, `ImageLoader` allows you to customize the [`color`](../api-reference/feathers/controls/ImageLoader.html#color) and [`smoothing`](../api-reference/feathers/controls/ImageLoader.html#smoothing) properties:
 
