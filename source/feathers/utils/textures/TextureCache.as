@@ -14,6 +14,8 @@ package feathers.utils.textures
 	/**
 	 * Caches textures in memory. Each texture may be saved with its own key,
 	 * such as the URL where the original image file is located.
+	 * 
+	 * @see feathers.controls.ImageLoader#textureCache
 	 */
 	public class TextureCache
 	{
