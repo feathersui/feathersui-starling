@@ -114,7 +114,7 @@ We'll start the skinning process by giving our list appropriate background skins
 
 ``` code
 list.backgroundSkin = new Scale9Image( enabledTextures );
-list.backgroundDisabledSkin = new Image( disabledTextures );
+list.backgroundDisabledSkin = new Scale9Image( disabledTextures );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the list is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled list, it will fall back to using the `backgroundSkin` in the disabled state.
@@ -350,6 +350,41 @@ function list_rendererRemoveHandler( event:Event, itemRenderer:IListItemRenderer
     itemRenderer.removeEventListener( Event.COMPLETE, itemRenderer_customCompleteHandler );
 }
 ```
+
+## Using Multiple Item Renderer Factories
+
+A list may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/List.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
+
+``` code
+function regularItemFactory():IListItemRenderer
+{
+    return new DefaultListItemRenderer();
+}
+list.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
+
+function headerItemFactory():IListItemRenderer
+{
+    return new CustomItemRenderer();
+}
+list.setItemRendererFactoryWithID( "header-item", listHeaderFactory );
+```
+
+Each factory should be given a unique `String` identifier. We'll use these values in a moment.
+
+The [`factoryIDFunction`](../api-reference/feathers/controls/List.html#factoryIDFunction) is used to determine which item renderer factory should be used for a particular item. In the example below, we use `factoryIDFunction` to give the first item in the data provider a different item renderer than the other items:
+ 
+``` code
+list.factoryIDFunction = function( item:Object, index:int ):String
+{
+    if(index === 0)
+    {
+        return "header-item";
+    }
+    return "regular-item";
+};
+```
+
+This function should accept two arguments. The first is the item from the data provider, and the second is the item's index in the data provider. We can use this index, or one of the properties of the item, to determine which item renderer factory to use. The function should return one of the `String` identifiers that we passed to `setItemRendererFactoryWithID()`.
 
 ## Customizing Scrolling Behavior
 

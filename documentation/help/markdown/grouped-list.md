@@ -414,6 +414,43 @@ list.headerRendererFunction = function():IGroupedListHeaderOrFooterRenderer
 
 To customize the type or properties of footer renderers, you can use `footerRendererType` or `footerRendererFactory`.
 
+## Using Multiple Item Renderer Factories
+
+A list may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
+
+``` code
+function regularItemFactory():IGroupedListItemRenderer
+{
+    return new DefaultGroupedListItemRenderer();
+}
+list.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
+
+function headerItemFactory():IGroupedListItemRenderer
+{
+    return new CustomItemRenderer();
+}
+list.setItemRendererFactoryWithID( "header-item", listHeaderFactory );
+```
+
+Each factory should be given a unique `String` identifier. We'll use these values in a moment.
+
+The [`factoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#factoryIDFunction) is used to determine which item renderer factory should be used for a particular item. In the example below, we use `factoryIDFunction` to give the first item in the data provider a different item renderer than the other items:
+ 
+``` code
+list.factoryIDFunction = function( item:Object, index:int ):String
+{
+    if(index === 0)
+    {
+        return "header-item";
+    }
+    return "regular-item";
+};
+```
+
+This function should accept two arguments. The first is the item from the data provider, and the second is the item's index in the data provider. We can use this index, or one of the properties of the item, to determine which item renderer factory to use. The function should return one of the `String` identifiers that we passed to `setItemRendererFactoryWithID()`.
+
+`GroupedList` also provides [`setHeaderRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setItemRendererFactoryWithID()) and [`headerFactoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#headerFactoryIDFunction) for header renderers. Similarly, we can use [`setFooterRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setFooterRendererFactoryWithID()) and [`footerFactoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#footerFactoryIDFunction) for footer renderers.
+
 ## Customizing Scrolling Behavior
 
 A number of properties are available to customize scrolling behavior and the scroll bars.
