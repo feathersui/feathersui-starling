@@ -40,7 +40,7 @@ The listener might look something like this:
 function slider_changeHandler( event:Event ):void
 {
     var slider:Slider = Slider( event.currentTarget );
-    trace( "slider.value changed:", slider.value);
+    trace( "slider.value changed:", slider.value );
 }
 ```
 
