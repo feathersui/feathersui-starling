@@ -438,6 +438,18 @@ package feathers.controls
 		 */
 		protected var _minuteStep:int = 1;
 
+		/**
+		 * In the list that allows selection of minutes, customizes the number
+		 * of minutes between each item. For instance, one might choose 15 or
+		 * 30 minute increments.
+		 *
+		 * <p>In the following example, the spinner uses 15 minute increments:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.minuteStep = 15;</listing>
+		 * 
+		 * @default 1
+		 */
 		public function get minuteStep():int
 		{
 			return this._minuteStep;
