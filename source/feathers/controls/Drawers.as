@@ -2677,7 +2677,8 @@ package feathers.controls
 						topDrawerX = this._content.x;
 					}
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === OPEN_MODE_ABOVE &&
+					!this._isTopDrawerOpen)
 				{
 					topDrawerY -= topDrawerHeight;
 				}
@@ -2722,7 +2723,8 @@ package feathers.controls
 					}
 					rightDrawerY = this._content.y;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === OPEN_MODE_ABOVE &&
+					!this._isRightDrawerOpen)
 				{
 					rightDrawerX += rightDrawerWidth;
 				}
@@ -2761,7 +2763,8 @@ package feathers.controls
 						bottomDrawerY += this._bottomDrawerDivider.height;
 					}
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === OPEN_MODE_ABOVE &&
+					!this._isBottomDrawerOpen)
 				{
 					bottomDrawerY += bottomDrawerHeight;
 				}
@@ -2805,7 +2808,8 @@ package feathers.controls
 					}
 					leftDrawerY = this._content.y;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === OPEN_MODE_ABOVE &&
+					!this._isLeftDrawerOpen)
 				{
 					leftDrawerX -= leftDrawerWidth;
 				}
