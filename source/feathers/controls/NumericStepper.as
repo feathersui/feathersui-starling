@@ -1408,7 +1408,7 @@ package feathers.controls
 			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
 				var maxButtonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
-				this.textInput.minWidth = Math.max(0, this._minWidth - maxButtonWidth);
+				this.textInput.minWidth = Math.max(0, this.explicitMinWidth - maxButtonWidth);
 				this.textInput.maxWidth = Math.max(0, this._maxWidth - maxButtonWidth);
 				this.textInput.width = Math.max(0, this.explicitWidth - maxButtonWidth)
 				this.textInput.height = this.explicitHeight;
@@ -1425,7 +1425,7 @@ package feathers.controls
 			}
 			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
 			{
-				this.textInput.minHeight = Math.max(0, this._minHeight - this.decrementButton.height - this.incrementButton.height);
+				this.textInput.minHeight = Math.max(0, this.explicitMinHeight - this.decrementButton.height - this.incrementButton.height);
 				this.textInput.maxHeight = Math.max(0, this._maxHeight - this.decrementButton.height - this.incrementButton.height);
 				this.textInput.height = Math.max(0, this.explicitHeight - this.decrementButton.height - this.incrementButton.height);
 				this.textInput.width = this.explicitWidth;
@@ -1442,7 +1442,7 @@ package feathers.controls
 			}
 			else //split horizontal
 			{
-				this.textInput.minWidth = Math.max(0, this._minWidth - this.decrementButton.width - this.incrementButton.width);
+				this.textInput.minWidth = Math.max(0, this.explicitMinWidth - this.decrementButton.width - this.incrementButton.width);
 				this.textInput.maxWidth = Math.max(0, this._maxWidth - this.decrementButton.width - this.incrementButton.width);
 				this.textInput.width = Math.max(0, this.explicitWidth - this.decrementButton.width - this.incrementButton.width);
 				this.textInput.height = this.explicitHeight;

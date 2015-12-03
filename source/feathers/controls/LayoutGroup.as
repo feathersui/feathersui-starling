@@ -686,8 +686,16 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitHeight = this.explicitHeight;
 			}
-			var minWidth:Number = this._minWidth;
-			var minHeight:Number = this._minHeight;
+			var minWidth:Number = this.explicitMinWidth;
+			if(minWidth !== minWidth) //isNaN
+			{
+				minWidth = 0;
+			}
+			var minHeight:Number = this.explicitMinHeight;
+			if(minHeight !== minHeight) //isNaN
+			{
+				minHeight = 0;
+			}
 			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 				this.originalBackgroundWidth > minWidth)
 			{

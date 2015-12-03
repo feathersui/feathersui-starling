@@ -502,8 +502,8 @@ package feathers.core
 		}
 
 		/**
-		 * The width value explicitly set by calling the width setter or
-		 * setSize().
+		 * The width value explicitly set by passing a value to the
+		 * <code>width</code> setter or to the <code>setSize()</code> method.
 		 */
 		protected var explicitWidth:Number = NaN;
 
@@ -531,7 +531,7 @@ package feathers.core
 		 * explicit width value is provided. Each component has a different
 		 * automatic sizing behavior, but it's usually based on the component's
 		 * skin or content, including text or subcomponents.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> Values of the <code>width</code> and
 		 * <code>height</code> properties may not be accurate until after
 		 * validation. If you are seeing <code>width</code> or <code>height</code>
@@ -587,8 +587,9 @@ package feathers.core
 		}
 
 		/**
-		 * The height value explicitly set by calling the height setter or
-		 * setSize().
+		 * The height value explicitly set by passing a value to the
+		 * <code>height</code> setter or by calling the <code>setSize()</code>
+		 * function.
 		 */
 		protected var explicitHeight:Number = NaN;
 
@@ -616,7 +617,7 @@ package feathers.core
 		 * explicit height value is provided. Each component has a different
 		 * automatic sizing behavior, but it's usually based on the component's
 		 * skin or content, including text or subcomponents.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> Values of the <code>width</code> and
 		 * <code>height</code> properties may not be accurate until after
 		 * validation. If you are seeing <code>width</code> or <code>height</code>
@@ -742,9 +743,29 @@ package feathers.core
 		}
 
 		/**
-		 * @private
+		 * The minimum width value explicitly set by passing a value to the
+		 * <code>minWidth</code> setter.
 		 */
-		protected var _minWidth:Number = 0;
+		protected var explicitMinWidth:Number = NaN;
+
+		/**
+		 * The final minimum width value that should be used for layout. If the
+		 * minimum width has been explicitly set, then that value is used. If
+		 * not, the actual minimum width will be calculated automatically. Each
+		 * component has different automatic sizing behavior, but it's usually
+		 * based on the component's skin or content, including text or
+		 * subcomponents.
+		 */
+		protected var actualMinWidth:Number = 0;
+
+		/**
+		 * @private
+		 * The <code>actualMinWidth</code> value that accounts for
+		 * <code>scaleX</code>. Not intended to be used for layout since layout
+		 * uses unscaled values. This is the value exposed externally through
+		 * the <code>minWidth</code> getter.
+		 */
+		protected var scaledActualMinWidth:Number = 0;
 
 		/**
 		 * The minimum recommended width to be used for self-measurement and,
@@ -763,7 +784,7 @@ package feathers.core
 		 */
 		public function get minWidth():Number
 		{
-			return this._minWidth;
+			return this.scaledActualMinWidth;
 		}
 
 		/**
@@ -771,22 +792,51 @@ package feathers.core
 		 */
 		public function set minWidth(value:Number):void
 		{
-			if(this._minWidth == value)
+			if(this.explicitMinWidth == value)
 			{
 				return;
 			}
-			if(value !== value) //isNaN
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN && this.explicitMinWidth !== this.explicitMinWidth)
 			{
-				throw new ArgumentError("minWidth cannot be NaN");
+				return;
 			}
-			this._minWidth = value;
+			this.explicitMinWidth = value;
+			if(valueIsNaN)
+			{
+				this.actualMinWidth = this.scaledActualMinWidth = 0;
+			}
+			else
+			{
+				this.saveMeasurements(this.actualWidth, this.actualHeight, value, this.actualMinHeight);
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
-		 * @private
+		 * The minimum height value explicitly set by passing a value to the
+		 * <code>minHeight</code> setter.
 		 */
-		protected var _minHeight:Number = 0;
+		protected var explicitMinHeight:Number = NaN;
+
+		/**
+		 * The final minimum height value that should be used for layout. If the
+		 * minimum height has been explicitly set, then that value is used. If
+		 * not, the actual minimum height will be calculated automatically. Each
+		 * component has different automatic sizing behavior, but it's usually
+		 * based on the component's skin or content, including text or
+		 * subcomponents.
+		 */
+		protected var actualMinHeight:Number = 0;
+
+		/**
+		 * @private
+		 * The <code>actuaMinHeight</code> value that accounts for
+		 * <code>scaleY</code>. Not intended to be used for layout since layout
+		 * uses unscaled values. This is the value exposed externally through
+		 * the <code>minHeight</code> getter.
+		 */
+		protected var scaledActualMinHeight:Number = 0;
 
 		/**
 		 * The minimum recommended height to be used for self-measurement and,
@@ -805,7 +855,7 @@ package feathers.core
 		 */
 		public function get minHeight():Number
 		{
-			return this._minHeight;
+			return this.scaledActualMinHeight;
 		}
 
 		/**
@@ -813,15 +863,24 @@ package feathers.core
 		 */
 		public function set minHeight(value:Number):void
 		{
-			if(this._minHeight == value)
+			if(this.explicitMinHeight == value)
 			{
 				return;
 			}
-			if(value !== value) //isNaN
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN && this.explicitMinHeight !== this.explicitMinHeight)
 			{
-				throw new ArgumentError("minHeight cannot be NaN");
+				return;
 			}
-			this._minHeight = value;
+			this.explicitMinHeight = value;
+			if(valueIsNaN)
+			{
+				this.actualMinHeight = this.scaledActualMinHeight = 0;
+			}
+			else
+			{
+				this.saveMeasurements(this.actualWidth, this.actualHeight, this.actualMinWidth, value);
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -1051,7 +1110,7 @@ package feathers.core
 		 * @copy feathers.core.IFocusDisplayObject#focusOwner
 		 *
 		 * @default null
-		 *
+		 * 
 		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get focusOwner():IFocusDisplayObject
@@ -1076,12 +1135,12 @@ package feathers.core
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
-		 * @copy feathers.core.IFocusDisplayObject
+		 *
+		 * @copy feathers.core.IFocusDisplayObject#isFocusEnabled
 		 *
 		 * @default true
 		 *
-		 * @see feathers.core.IFocusDisplayObject#isFocusEnabled
+		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get isFocusEnabled():Boolean
 		{
@@ -1110,11 +1169,10 @@ package feathers.core
 		protected var _nextTabFocus:IFocusDisplayObject;
 
 		/**
-		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#nextTabFocus
 		 *
 		 * @default null
@@ -1147,7 +1205,7 @@ package feathers.core
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
 		 *
 		 * @default null
@@ -1592,13 +1650,13 @@ package feathers.core
 		 * control to the screen. The validation system exists to ensure that
 		 * multiple properties can be set together without redrawing multiple
 		 * times in between each property change.
-		 * 
+		 *
 		 * <p>If you cannot wait until later for the validation to happen, you
 		 * can call <code>validate()</code> to redraw immediately. As an example,
 		 * you might want to validate immediately if you need to access the
 		 * correct <code>width</code> or <code>height</code> values of the UI
 		 * control, since these values are calculated during validation.</p>
-		 * 
+		 *
 		 * @see feathers.core.FeathersControl#validate()
 		 */
 		public function invalidate(flag:String = INVALIDATION_FLAG_ALL):void
@@ -1661,7 +1719,7 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IValidating#validate()
-		 * 
+		 *
 		 * @see #invalidate()
 		 */
 		public function validate():void
@@ -1759,13 +1817,13 @@ package feathers.core
 		public function setSize(width:Number, height:Number):void
 		{
 			this.explicitWidth = width;
-			var widthIsNaN:Boolean = width != width;
+			var widthIsNaN:Boolean = width !== width;
 			if(widthIsNaN)
 			{
 				this.actualWidth = this.scaledActualWidth = 0;
 			}
 			this.explicitHeight = height;
-			var heightIsNaN:Boolean = height != height;
+			var heightIsNaN:Boolean = height !== height;
 			if(heightIsNaN)
 			{
 				this.actualHeight = this.scaledActualHeight = 0;
@@ -1798,7 +1856,7 @@ package feathers.core
 		 * <p>The implementation of this method is provided for convenience, but
 		 * it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#showFocus()
 		 *
 		 * @see feathers.core.IFocusDisplayObject
@@ -1818,7 +1876,7 @@ package feathers.core
 		 * <p>The implementation of this method is provided for convenience, but
 		 * it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#hideFocus()
 		 *
 		 * @see feathers.core.IFocusDisplayObject
@@ -1842,15 +1900,40 @@ package feathers.core
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
+			var changed:Boolean = this.saveMeasurements(width, height, this.actualMinWidth, this.actualMinHeight);
+			if(canInvalidate && changed)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			return changed;
+		}
+
+		/**
+		 *
+		 */
+		protected function saveMeasurements(width:Number, height:Number, minWidth:Number = 0, minHeight:Number = 0):Boolean
+		{
+			if(this.explicitMinWidth === this.explicitMinWidth) //!isNaN
+			{
+				//the min width has been set explicitly. it has precedence over
+				//the measured min width
+				minWidth = this.explicitMinWidth;
+			}
+			if(this.explicitMinHeight === this.explicitMinHeight) //!isNaN
+			{
+				//the min height has been set explicitly. it has precedence over
+				//the measured min height
+				minHeight = this.explicitMinHeight;
+			}
 			if(this.explicitWidth === this.explicitWidth) //!isNaN
 			{
 				width = this.explicitWidth;
 			}
 			else
 			{
-				if(width < this._minWidth)
+				if(width < minWidth)
 				{
-					width = this._minWidth;
+					width = minWidth;
 				}
 				else if(width > this._maxWidth)
 				{
@@ -1863,9 +1946,9 @@ package feathers.core
 			}
 			else
 			{
-				if(height < this._minHeight)
+				if(height < minHeight)
 				{
-					height = this._minHeight;
+					height = minHeight;
 				}
 				else if(height > this._maxHeight)
 				{
@@ -1880,33 +1963,54 @@ package feathers.core
 			{
 				throw new ArgumentError(ILLEGAL_HEIGHT_ERROR);
 			}
+			var scaleX:Number = this.scaleX;
+			if(scaleX < 0)
+			{
+				scaleX = -scaleX;
+			}
+			var scaleY:Number = this.scaleY;
+			if(scaleY < 0)
+			{
+				scaleY = -scaleY;
+			}
 			var resized:Boolean = false;
-			if(this.actualWidth != width)
+			if(this.actualWidth !== width)
 			{
 				this.actualWidth = width;
 				this.refreshHitAreaX();
 				resized = true;
 			}
-			if(this.actualHeight != height)
+			if(this.actualHeight !== height)
 			{
 				this.actualHeight = height;
 				this.refreshHitAreaY();
 				resized = true;
 			}
+			if(this.actualMinWidth !== minWidth)
+			{
+				this.actualMinWidth = minWidth;
+				resized = true;
+			}
+			if(this.actualMinHeight !== minHeight)
+			{
+				this.actualMinHeight = minHeight;
+				resized = true;
+			}
 			width = this.scaledActualWidth;
 			height = this.scaledActualHeight;
-			this.scaledActualWidth = this.actualWidth * Math.abs(this.scaleX);
-			this.scaledActualHeight = this.actualHeight * Math.abs(this.scaleY);
-			if(width != this.scaledActualWidth || height != this.scaledActualHeight)
+			minWidth = this.scaledActualMinWidth;
+			minHeight = this.scaledActualMinHeight;
+			this.scaledActualWidth = this.actualWidth * scaleX;
+			this.scaledActualHeight = this.actualHeight * scaleY;
+			this.scaledActualMinWidth = this.actualMinWidth * scaleX;
+			this.scaledActualMinHeight = this.actualMinHeight * scaleY;
+			if(width !== this.scaledActualWidth || height !== this.scaledActualHeight ||
+					minWidth !== this.scaledActualMinWidth || minHeight !== this.scaledActualMinHeight)
 			{
 				resized = true;
 			}
 			if(resized)
 			{
-				if(canInvalidate)
-				{
-					this.invalidate(INVALIDATION_FLAG_SIZE);
-				}
 				this.dispatchEventWith(FeathersEventType.RESIZE);
 			}
 			return resized;

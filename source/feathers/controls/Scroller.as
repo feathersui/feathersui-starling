@@ -3527,7 +3527,12 @@ package feathers.controls
 			//view port fills the entire bounds.
 			this._viewPort.visibleWidth = this.explicitWidth - horizontalWidthOffset;
 			this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
-			var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+			var minVisibleWidth:Number = this.explicitMinWidth;
+			if(minVisibleWidth !== minVisibleWidth) //isNaN
+			{
+				minVisibleWidth = 0;
+			}
+			minVisibleWidth -= horizontalWidthOffset;
 			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 			 this.originalBackgroundWidth > minVisibleWidth)
 			{
@@ -3541,7 +3546,12 @@ package feathers.controls
 			}
 			this._viewPort.minVisibleWidth = minVisibleWidth;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-			var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+			var minVisibleHeight:Number = this.actualMinHeight;
+			if(minVisibleHeight !== minVisibleHeight) //isNaN
+			{
+				minVisibleHeight = 0;
+			}
+			minVisibleHeight -= verticalHeightOffset;
 			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
 				this.originalBackgroundHeight > minVisibleHeight)
 			{
@@ -3579,7 +3589,12 @@ package feathers.controls
 			{
 				//if we didn't need to do any measurement, we would have skipped
 				//setting this stuff earlier, and now is the last chance
-				var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+				var minVisibleWidth:Number = this.explicitMinWidth;
+				if(minVisibleWidth !== minVisibleWidth) //isNaN
+				{
+					minVisibleWidth = 0;
+				}
+				minVisibleWidth -= horizontalWidthOffset;
 				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 					this.originalBackgroundWidth > minVisibleWidth)
 				{
@@ -3593,7 +3608,12 @@ package feathers.controls
 				}
 				this._viewPort.minVisibleWidth = minVisibleWidth;
 				this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-				var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+				var minVisibleHeight:Number = this.explicitMinHeight;
+				if(minVisibleHeight !== minVisibleHeight) //isNaN
+				{
+					minVisibleHeight = 0;
+				}
+				minVisibleHeight -= verticalHeightOffset;
 				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
 					this.originalBackgroundHeight > minVisibleHeight)
 				{

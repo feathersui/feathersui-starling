@@ -1732,9 +1732,9 @@ package feathers.controls
 				return result;
 			}
 
-			var minWidth:Number = this._minWidth;
+			var minWidth:Number = this.explicitMinWidth;
 			var maxWidth:Number = this._maxWidth;
-			var minHeight:Number = this._minHeight;
+			var minHeight:Number = this.explicitMinHeight;
 			var maxHeight:Number = this._maxHeight;
 			//the background skin dimensions affect the minimum width
 			if(this._originalBackgroundWidth === this._originalBackgroundWidth && //!isNaN

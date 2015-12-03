@@ -1776,8 +1776,8 @@ package feathers.controls
 			this._viewPortBounds.scrollY = 0;
 			this._viewPortBounds.explicitWidth = this.explicitWidth;
 			this._viewPortBounds.explicitHeight = this.explicitHeight;
-			this._viewPortBounds.minWidth = this._minWidth;
-			this._viewPortBounds.minHeight = this._minHeight;
+			this._viewPortBounds.minWidth = this.explicitMinWidth;
+			this._viewPortBounds.minHeight = this.explicitMinHeight;
 			this._viewPortBounds.maxWidth = this._maxWidth;
 			this._viewPortBounds.maxHeight = this._maxHeight;
 			if(this.verticalLayout)

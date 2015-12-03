@@ -1430,9 +1430,9 @@ package feathers.controls.text
 			if(needsWidth)
 			{
 				newWidth = this._measureTextField.textWidth;
-				if(newWidth < this._minWidth)
+				if(newWidth < this.explicitMinWidth)
 				{
-					newWidth = this._minWidth;
+					newWidth = this.explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1452,9 +1452,9 @@ package feathers.controls.text
 				//if only StageText had an API for text measurement, we wouldn't
 				//be in this mess...
 				newHeight = this._measureTextField.height;
-				if(newHeight < this._minHeight)
+				if(newHeight < this.explicitMinHeight)
 				{
-					newHeight = this._minHeight;
+					newHeight = this.explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{

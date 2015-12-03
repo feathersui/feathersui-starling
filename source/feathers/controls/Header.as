@@ -1469,9 +1469,9 @@ package feathers.controls
 				if(extraPaddingTop > 0)
 				{
 					//account for the minimum height before adding the padding
-					if(newHeight < this._minHeight)
+					if(newHeight < this.explicitMinHeight)
 					{
-						newHeight = this._minHeight;
+						newHeight = this.explicitMinHeight;
 					}
 					newHeight += extraPaddingTop;
 				}

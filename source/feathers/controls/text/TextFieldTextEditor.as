@@ -1765,9 +1765,9 @@ package feathers.controls.text
 			{
 				this.measureTextField.wordWrap = false;
 				newWidth = this.measureTextField.width - gutterDimensionsOffset;
-				if(newWidth < this._minWidth)
+				if(newWidth < this.explicitMinWidth)
 				{
-					newWidth = this._minWidth;
+					newWidth = this.explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1785,9 +1785,9 @@ package feathers.controls.text
 				{
 					newHeight += 4;
 				}
-				if(newHeight < this._minHeight)
+				if(newHeight < this.explicitMinHeight)
 				{
-					newHeight = this._minHeight;
+					newHeight = this.explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{

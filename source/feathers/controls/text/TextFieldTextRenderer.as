@@ -1502,9 +1502,9 @@ package feathers.controls.text
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
 				newWidth = (this.textField.width / scaleFactor) - gutterDimensionsOffset;
-				if(newWidth < this._minWidth)
+				if(newWidth < this.explicitMinWidth)
 				{
-					newWidth = this._minWidth;
+					newWidth = this.explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1525,9 +1525,9 @@ package feathers.controls.text
 			if(needsHeight)
 			{
 				newHeight = (this.textField.height / scaleFactor) - gutterDimensionsOffset;
-				if(newHeight < this._minHeight)
+				if(newHeight < this.explicitMinHeight)
 				{
-					newHeight = this._minHeight;
+					newHeight = this.explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{
