@@ -366,7 +366,7 @@ function headerItemFactory():IListItemRenderer
 {
     return new CustomItemRenderer();
 }
-list.setItemRendererFactoryWithID( "header-item", listHeaderFactory );
+list.setItemRendererFactoryWithID( "header-item", headerItemFactory );
 ```
 
 Each factory should be given a unique `String` identifier. We'll use these values in a moment.
