@@ -223,10 +223,19 @@ package feathers.tests
 			{
 				if(renderer is IGroupedListHeaderRenderer)
 				{
+					var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(renderer);
+					Assert.assertNotNull("Header renderer incorrectly has null owner during dispose().", headerRenderer.owner);
+					Assert.assertNotNull("Header renderer incorrectly has null data during dispose().", headerRenderer.data);
+					Assert.assertTrue("Header renderer incorrectly has negative group index during dispose().", headerRenderer.groupIndex >= 0);
 					headerRendererCount++;
 				}
 				else if(renderer is IGroupedListItemRenderer)
 				{
+					var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(renderer);
+					Assert.assertNotNull("Item renderer incorrectly has null owner during dispose().", itemRenderer.owner);
+					Assert.assertNotNull("Item renderer incorrectly has null data during dispose().", itemRenderer.data);
+					Assert.assertTrue("Item renderer incorrectly has negative group index during dispose().", itemRenderer.groupIndex >= 0);
+					Assert.assertTrue("Item renderer incorrectly has negative item index during dispose().", itemRenderer.itemIndex >= 0);
 					itemRendererCount++;
 				}
 			});

@@ -2,7 +2,9 @@ package feathers.tests
 {
 	import feathers.controls.GroupedList;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
+	import feathers.controls.renderers.IGroupedListHeaderRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
+	import feathers.core.IFeathersControl;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.FeathersEventType;
 
@@ -166,6 +168,50 @@ package feathers.tests
 			var itemRenderer1:IGroupedListItemRenderer = this.getItemRendererAt(0, 1);
 			Assert.assertStrictlyEquals("Item renderer factoryID not changed to new result of factoryIDFunction after calling setItemAt() and addItemAt() for previous item.", FACTORY_ONE, itemRenderer1.factoryID);
 			Assert.assertStrictlyEquals("Item renderer data not changed with new result of factoryIDFunction after calling setItemAt() and addItemAt() for previous item.", itemToSet, itemRenderer1.data);
+		}
+
+		[Test]
+		public function testNewTypicalItemWithDifferentFactoryAndRemoveTypicalItemAfterDispose():void
+		{
+			var itemToSet:Object = { label: "Replacement Item", factory: 1 };
+			this._list.factoryIDFunction = factoryIDFunction;
+			this._list.validate();
+			this._list.dataProvider.setItemAt(itemToSet, 0, 1);
+			this._list.dataProvider.removeItemAt(0, 0);
+			this._list.validate();
+
+			var expectedItemRendererCount:int = 0;
+			var groupCount:int = this._list.dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				expectedItemRendererCount += this._list.dataProvider.getLength(i);
+			}
+
+			var headerRendererCount:int = 0;
+			var itemRendererCount:int = 0;
+			this._list.addEventListener(FeathersEventType.RENDERER_REMOVE, function(event:Event, renderer:IFeathersControl):void
+			{
+				if(renderer is IGroupedListHeaderRenderer)
+				{
+					var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(renderer);
+					Assert.assertNotNull("Header renderer incorrectly has null owner during dispose().", headerRenderer.owner);
+					Assert.assertNotNull("Header renderer incorrectly has null data during dispose().", headerRenderer.data);
+					Assert.assertTrue("Header renderer incorrectly has negative group index during dispose().", headerRenderer.groupIndex >= 0);
+					headerRendererCount++;
+				}
+				else if(renderer is IGroupedListItemRenderer)
+				{
+					var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(renderer);
+					Assert.assertNotNull("Item renderer incorrectly has null owner during dispose().", itemRenderer.owner);
+					Assert.assertNotNull("Item renderer incorrectly has null data during dispose().", itemRenderer.data);
+					Assert.assertTrue("Item renderer incorrectly has negative group index during dispose().", itemRenderer.groupIndex >= 0);
+					Assert.assertTrue("Item renderer incorrectly has negative item index during dispose().", itemRenderer.itemIndex >= 0);
+					itemRendererCount++;
+				}
+			});
+			this._list.dispose();
+			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_REMOVE not dispatched for all header renderers after dispose().", groupCount, headerRendererCount);
+			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_REMOVE not dispatched for all item renderers after dispose().", expectedItemRendererCount, itemRendererCount);
 		}
 
 		private function getItemRendererAt(groupIndex:int, itemIndex:int):IGroupedListItemRenderer

@@ -147,6 +147,9 @@ package feathers.tests
 			var removedRendererCount:int = 0;
 			this._list.addEventListener(FeathersEventType.RENDERER_REMOVE, function(event:Event, itemRenderer:IListItemRenderer):void
 			{
+				Assert.assertNotNull("Item renderer incorrectly has null owner during dispose().", itemRenderer.owner);
+				Assert.assertNotNull("Item renderer incorrectly has null data during dispose().", itemRenderer.data);
+				Assert.assertTrue("Item renderer incorrectly has negative index during dispose().", itemRenderer.index >= 0);
 				removedRendererCount++;
 			});
 			this._list.dispose();

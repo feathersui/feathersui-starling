@@ -597,13 +597,12 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
-			this.refreshInactiveRenderers(this._defaultStorage, true);
+			this.refreshInactiveRenderers(null, true);
 			if(this._storageMap)
 			{
 				for(var factoryID:String in this._storageMap)
 				{
-					var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
-					this.refreshInactiveRenderers(storage, true);
+					this.refreshInactiveRenderers(factoryID, true);
 				}
 			}
 			this.owner = null;
@@ -642,13 +641,12 @@ package feathers.controls.supportClasses
 			}
 			if(basicsInvalid)
 			{
-				this.refreshInactiveRenderers(this._defaultStorage, itemRendererInvalid);
+				this.refreshInactiveRenderers(null, itemRendererInvalid);
 				if(this._storageMap)
 				{
 					for(var factoryID:String in this._storageMap)
 					{
-						var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
-						this.refreshInactiveRenderers(storage, itemRendererInvalid);
+						this.refreshInactiveRenderers(factoryID, itemRendererInvalid);
 					}
 				}
 			}
@@ -908,8 +906,16 @@ package feathers.controls.supportClasses
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
 
-		private function refreshInactiveRenderers(storage:ItemRendererFactoryStorage, itemRendererTypeIsInvalid:Boolean):void
+		private function refreshInactiveRenderers(factoryID:String, itemRendererTypeIsInvalid:Boolean):void
 		{
+			if(factoryID !== null)
+			{
+				var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
+			}
+			else
+			{
+				storage = this._defaultStorage;
+			}
 			var temp:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
 			storage.inactiveItemRenderers = storage.activeItemRenderers;
 			storage.activeItemRenderers = temp;
@@ -921,7 +927,7 @@ package feathers.controls.supportClasses
 			{
 				this.recoverInactiveRenderers(storage);
 				this.freeInactiveRenderers(storage, 0);
-				if(this._typicalItemRenderer)
+				if(this._typicalItemRenderer && this._typicalItemRenderer.factoryID === factoryID)
 				{
 					if(this._typicalItemIsInDataProvider)
 					{
