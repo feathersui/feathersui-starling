@@ -155,6 +155,7 @@ package feathers.tests
 			var addedItemIndex:int = -1;
 			function rendererAddListener(event:Event, itemRenderer:IGroupedListItemRenderer):void
 			{
+				Assert.assertTrue("FeathersEventType.RENDERER_REMOVE not dispatched before FeathersEventType.RENDERER_ADD when calling setItemAt().", removedRenderer);
 				addedRenderer = true;
 				addedGroupIndex = itemRenderer.groupIndex;
 				addedItemIndex = itemRenderer.itemIndex;
@@ -180,6 +181,28 @@ package feathers.tests
 			Assert.assertTrue("FeathersEventType.RENDERER_ADD not dispatched after setItemAt().", addedRenderer);
 			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_ADD not dispatched with correct item renderer after setItemAt().", groupIndex, addedGroupIndex);
 			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_ADD not dispatched with correct item renderer after setItemAt().", itemIndex, addedItemIndex);
+		}
+
+		[Test]
+		public function testRendererAddAndRemoveEventAfterChangeTypicalItemFromDefaultToCustom():void
+		{
+			this._list.validate();
+			this._list.typicalItem = { label: "Typical Item" };
+			var addedRenderer:Boolean = false;
+			function rendererAddListener(event:Event, itemRenderer:Object):void
+			{
+				addedRenderer = true;
+			}
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, rendererAddListener);
+			var removedRenderer:Boolean = false;
+			function rendererRemoveListener(event:Event, itemRenderer:Object):void
+			{
+				removedRenderer = true;
+			}
+			this._list.addEventListener(FeathersEventType.RENDERER_REMOVE, rendererRemoveListener);
+			this._list.validate();
+			Assert.assertFalse("FeathersEventType.RENDERER_REMOVE incorrectly dispatched after change typicalItem from default to custom.", removedRenderer);
+			Assert.assertFalse("FeathersEventType.RENDERER_ADD incorrectly dispatched after change typicalItem from default to custom.", addedRenderer);
 		}
 
 		[Test]

@@ -1159,9 +1159,6 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			var hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._customFirstItemRendererStyleName;
-			var hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._customSingleItemRendererStyleName;
-
 			var newTypicalItemIsInDataProvider:Boolean = false;
 			var typicalItem:Object = this._typicalItem;
 			var groupCount:int = 0;
@@ -1202,25 +1199,48 @@ package feathers.controls.supportClasses
 
 			if(typicalItem !== null)
 			{
-				var isFirst:Boolean = false;
-				var isSingle:Boolean = false;
 				var typicalItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
 				if(typicalItemRenderer)
 				{
+					//at this point, the item already has an item renderer.
+					//(this doesn't necessarily mean that the current typical
+					//item was the typical item last time this function was
+					//called)
+					
 					//the indices may have changed if items were added, removed,
 					//or reordered in the data provider
 					typicalItemRenderer.groupIndex = typicalItemGroupIndex;
 					typicalItemRenderer.itemIndex = typicalItemItemIndex;
 				}
-				if(!typicalItemRenderer && !newTypicalItemIsInDataProvider && this._typicalItemRenderer)
+				if(!typicalItemRenderer && this._typicalItemRenderer)
 				{
-					//can use reuse the old item renderer instance
-					//since it is not in the data provider, we don't need to mess
-					//with the renderer map dictionary.
-					typicalItemRenderer = this._typicalItemRenderer;
-					typicalItemRenderer.data = typicalItem;
-					typicalItemRenderer.groupIndex = typicalItemGroupIndex;
-					typicalItemRenderer.itemIndex = typicalItemItemIndex;
+					//the typical item has changed, and doesn't have an item
+					//renderer yet. the previous typical item had an item
+					//renderer, so we will try to reuse it.
+
+					var canReuse:Boolean = !this._typicalItemIsInDataProvider;
+					if(canReuse)
+					{
+						//we can't reuse if the factoryID has changed, though!
+						var factoryID:String = null;
+						if(this._factoryIDFunction !== null)
+						{
+							factoryID = this.getFactoryID(typicalItem, typicalItemGroupIndex, typicalItemItemIndex);
+						}
+						if(this._typicalItemRenderer.factoryID !== factoryID)
+						{
+							canReuse = false;
+						}
+					}
+					if(canReuse)
+					{
+						//we can reuse the item renderer used for the old
+						//typical item!
+						typicalItemRenderer = this._typicalItemRenderer;
+						typicalItemRenderer.data = typicalItem;
+						typicalItemRenderer.groupIndex = typicalItemGroupIndex;
+						typicalItemRenderer.itemIndex = typicalItemItemIndex;
+					}
 				}
 				if(!typicalItemRenderer)
 				{
@@ -2070,14 +2090,7 @@ package feathers.controls.supportClasses
 			var factoryID:String = null;
 			if(this._factoryIDFunction !== null)
 			{
-				if(this._factoryIDFunction.length === 1)
-				{
-					factoryID = this._factoryIDFunction(item);
-				}
-				else
-				{
-					factoryID = this._factoryIDFunction(item, groupIndex, itemIndex);
-				}
+				factoryID = this.getFactoryID(item, groupIndex, itemIndex);
 			}
 			var itemRendererFactory:Function = this.factoryIDToFactory(factoryID, groupIndex, itemIndex);
 			var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(factoryID, groupIndex, itemIndex);
@@ -2416,6 +2429,19 @@ package feathers.controls.supportClasses
 				return this._customLastItemRendererStyleName;
 			}
 			return this._customItemRendererStyleName;
+		}
+
+		private function getFactoryID(item:Object, groupIndex:int, itemIndex:int):String
+		{
+			if(this._factoryIDFunction === null)
+			{
+				return null;
+			}
+			if(this._factoryIDFunction.length === 1)
+			{
+				return this._factoryIDFunction(item);
+			}
+			return this._factoryIDFunction(item, groupIndex, itemIndex);
 		}
 
 		private function factoryIDToFactory(id:String, groupIndex:int, itemIndex:int):Function
