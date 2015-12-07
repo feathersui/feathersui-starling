@@ -6,9 +6,11 @@ package
 	import feathers.tests.ButtonTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
+	import feathers.tests.DateTimeSpinnerTests;
 	import feathers.tests.DrawersTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
+	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -20,6 +22,7 @@ package
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
+	import feathers.tests.ListFactoryIDFunctionTests;
 	import feathers.tests.ListRendererAddRemoveTests;
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
@@ -52,6 +55,7 @@ package
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
+	import feathers.tests.VerticalLayoutTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -113,14 +117,17 @@ package
 				ButtonGroupTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,
+				DateTimeSpinnerTests,
 				DrawersTests,
 				GroupedListTests,
+				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				ListTests,
+				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
 				PickerListTests,
 				ProgressBarTests,
@@ -145,6 +152,7 @@ package
 				LayoutGroupVerticalLayoutTests,
 				TiledRowsLayoutTests,
 				TiledColumnsLayoutTests,
+				VerticalLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,

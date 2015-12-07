@@ -57,6 +57,26 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testSetValueProgramaticallyWithMinimum():void
+		{
+			this._scrollBar.clampToRange = true;
+			this._scrollBar.minimum = 5;
+			this._scrollBar.maximum = 10;
+			this._scrollBar.value = 2;
+			Assert.assertEquals("Setting value smaller than minimum not changed to minimum.", this._scrollBar.minimum, this._scrollBar.value);
+		}
+
+		[Test]
+		public function testSetValueProgramaticallyWithMaximum():void
+		{
+			this._scrollBar.clampToRange = true;
+			this._scrollBar.minimum = 5;
+			this._scrollBar.maximum = 10;
+			this._scrollBar.value = 12;
+			Assert.assertEquals("Setting value larger than maximum not changed to maximum.", this._scrollBar.maximum, this._scrollBar.value);
+		}
+
+		[Test]
 		public function testProgrammaticSelectionChange():void
 		{
 			this._scrollBar.minimum = 0;

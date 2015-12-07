@@ -9,7 +9,6 @@ package feathers.layout
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
-	import feathers.layout.ILayoutDisplayObject;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -1005,11 +1004,16 @@ package feathers.layout
 			
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
+			var headerCount:int = 0;
 			var stickyHeaderMaxY:Number = Number.POSITIVE_INFINITY;
-			if(this._headerIndices && this._headerIndices.length > 0 && this._stickyHeader)
+			if(this._headerIndices && this._stickyHeader)
 			{
-				headerIndicesIndex = 0;
-				nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				headerCount = this._headerIndices.length;
+				if(headerCount > 0)
+				{
+					headerIndicesIndex = 0;
+					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				}
 			}
 			
 			//this first loop sets the y position of items, and it calculates
@@ -1029,7 +1033,10 @@ package feathers.layout
 					if((positionY - startPositionY) < scrollY)
 					{
 						headerIndicesIndex++;
-						nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						if(headerIndicesIndex < headerCount)
+						{
+							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						}
 					}
 					else
 					{
@@ -1609,15 +1616,21 @@ package feathers.layout
 
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
-			if(this._headerIndices && this._headerIndices.length > 0 && this._stickyHeader)
+			var headerCount:int = 0;
+			if(this._headerIndices && this._stickyHeader)
 			{
-				headerIndicesIndex = 0;
-				nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				headerCount = this._headerIndices.length;
+				if(headerCount > 0)
+				{
+					headerIndicesIndex = 0;
+					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				}
 			}
 			
 			var secondToLastIndex:int = itemCount - 2;
 			var maxPositionY:Number = scrollY + height;
 			var startPositionY:Number = this._paddingTop;
+			var foundSticky:Boolean = false;
 			var positionY:Number = startPositionY;
 			for(i = 0; i < itemCount; i++)
 			{
@@ -1626,7 +1639,10 @@ package feathers.layout
 					if((positionY - startPositionY) < scrollY)
 					{
 						headerIndicesIndex++;
-						nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						if(headerIndicesIndex < headerCount)
+						{
+							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						}
 					}
 					else
 					{
@@ -1635,6 +1651,7 @@ package feathers.layout
 						{
 							//this is the index of the "sticky" header
 							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+							foundSticky = true;
 						}
 					}
 				}
@@ -1667,6 +1684,15 @@ package feathers.layout
 
 				if(positionY >= maxPositionY)
 				{
+					if(!foundSticky)
+					{
+						headerIndicesIndex--;
+						if(headerIndicesIndex >= 0)
+						{
+							//this is the index of the "sticky" header
+							nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+						}
+					}
 					break;
 				}
 			}
@@ -2222,7 +2248,10 @@ package feathers.layout
 			header.y = maxY;
 			//ensure that the sticky header is always on top!
 			var headerParent:DisplayObjectContainer = header.parent;
-			headerParent.setChildIndex(header, headerParent.numChildren - 1);
+			if(headerParent)
+			{
+				headerParent.setChildIndex(header, headerParent.numChildren - 1);
+			}
 		}
 	}
 }

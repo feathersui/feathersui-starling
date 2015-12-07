@@ -85,7 +85,7 @@ To use this template at any time, choose the **File** menu → **New** → **MXM
 
 8. IntelliJ IDEA has a bug where we can reference Feathers SDK components in ActionScript, but the editor shows errors in MXML. Thankfully, we can manually add the SWC files in the Feathers SDK to our module's dependencies as a workaround. With the module still selected in the **Project Structure** window, navigate to the **Dependencies** tab.
 
-	Press the button with the **+** (plus) symbol and select **New Library**. Navigate to the directory where we installed the Feathers SDK. Then, add the **frameworks/libs** directory as a new library. This will add the required SWC files to the module.
+	Press the button with the **+** (plus) symbol and select **New Library**. Navigate to the directory where we installed the Feathers SDK. Then, add the **frameworks/libs** directory as a new library (but don't include the frameworks/libs/air or frameworks/libs/player directories!). This will add the required SWC files to the module.
 
 	If the module is an AIR application, don't close the **Project Structure** window yet. We'll need it open in the next step. If the module is a Flash Player application, click **OK** to save all of our changes. This will close the Project Structure window.
 

@@ -11,7 +11,6 @@ package feathers.media
 	import feathers.skins.IStyleProvider;
 
 	import flash.errors.IllegalOperationError;
-
 	import flash.events.ErrorEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -554,7 +553,7 @@ package feathers.media
 			}
 			this._soundChannel = this._sound.play(this._currentTime * 1000, 0, this._soundTransform);
 			this._soundChannel.addEventListener(flash.events.Event.SOUND_COMPLETE, soundChannel_soundCompleteHandler);
-			this.addEventListener(Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
+			this.addEventListener(starling.events.Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
 		}
 
 		/**
@@ -567,7 +566,7 @@ package feathers.media
 				//this could be null when seeking
 				return;
 			}
-			this.removeEventListener(Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
+			this.removeEventListener(starling.events.Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
 			this._soundChannel.stop();
 			this._soundChannel.removeEventListener(flash.events.Event.SOUND_COMPLETE, soundChannel_soundCompleteHandler);
 			this._soundChannel = null;
@@ -645,7 +644,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function soundPlayer_enterFrameHandler(event:Event):void
+		protected function soundPlayer_enterFrameHandler(event:starling.events.Event):void
 		{
 			this._currentTime = this._soundChannel.position / 1000;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
