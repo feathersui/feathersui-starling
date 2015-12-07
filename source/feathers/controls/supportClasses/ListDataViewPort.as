@@ -759,25 +759,52 @@ package feathers.controls.supportClasses
 				var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
 				if(typicalRenderer)
 				{
+					//at this point, the item already has an item renderer.
+					//(this doesn't necessarily mean that the current typical
+					//item was the typical item last time this function was
+					//called)
+					
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					typicalRenderer.index = typicalItemIndex;
 				}
 				if(!typicalRenderer && this._typicalItemRenderer)
 				{
-					//we can reuse the typical item renderer if the old typical item
-					//wasn't in the data provider.
+					//the typical item has changed, and doesn't have an item
+					//renderer yet. the previous typical item had an item
+					//renderer, so we will try to reuse it.
+					
+					//we can reuse the existing typical item renderer if the old
+					//typical item wasn't in the data provider. otherwise, it
+					//may still be needed for the same item.
 					var canReuse:Boolean = !this._typicalItemIsInDataProvider;
-					if(!canReuse)
+					var oldTypicalItemRemoved:Boolean = this._typicalItemIsInDataProvider && this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
+					if(!canReuse && oldTypicalItemRemoved)
 					{
-						//we can also reuse the typical item renderer if the old
-						//typical item was in the data provider, but it isn't now.
-						canReuse = this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
+						//special case: if the old typical item was in the data
+						//provider, but it has been removed, it's safe to reuse.
+						canReuse = true;
 					}
 					if(canReuse)
 					{
-						//if the old typical item was in the data provider, remove
-						//it from the renderer map.
+						//we can't reuse if the factoryID has changed, though!
+						var factoryID:String = null;
+						if(this._factoryIDFunction !== null)
+						{
+							factoryID = this.getFactoryID(typicalItem, typicalItemIndex);
+						}
+						if(this._typicalItemRenderer.factoryID !== factoryID)
+						{
+							canReuse = false;
+						}
+					}
+					if(canReuse)
+					{
+						//we can reuse the item renderer used for the old
+						//typical item!
+						
+						//if the old typical item was in the data provider,
+						//remove it from the renderer map.
 						if(this._typicalItemIsInDataProvider)
 						{
 							delete this._rendererMap[this._typicalItemRenderer.data];
@@ -801,8 +828,9 @@ package feathers.controls.supportClasses
 					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
 					{
 						//get rid of the old typical item renderer if it isn't
-						//needed anymore.  since it was not in the data provider, we
-						//don't need to mess with the renderer map dictionary.
+						//needed anymore.  since it was not in the data
+						//provider, we don't need to mess with the renderer map
+						//dictionary or dispatch any events.
 						this.destroyRenderer(this._typicalItemRenderer);
 						this._typicalItemRenderer = null;
 					}
@@ -1191,14 +1219,7 @@ package feathers.controls.supportClasses
 			var factoryID:String = null;
 			if(this._factoryIDFunction !== null)
 			{
-				if(this._factoryIDFunction.length === 1)
-				{
-					factoryID = this._factoryIDFunction(item);
-				}
-				else
-				{
-					factoryID = this._factoryIDFunction(item, index);
-				}
+				factoryID = this.getFactoryID(item, index);
 			}
 			var itemRendererFactory:Function = this.factoryIDToFactory(factoryID);
 			var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(factoryID);
@@ -1260,6 +1281,19 @@ package feathers.controls.supportClasses
 			renderer.data = null;
 			renderer.factoryID = null;
 			this.removeChild(DisplayObject(renderer), true);
+		}
+		
+		private function getFactoryID(item:Object, index:int):String
+		{
+			if(this._factoryIDFunction === null)
+			{
+				return null;
+			}
+			if(this._factoryIDFunction.length === 1)
+			{
+				return this._factoryIDFunction(item);
+			}
+			return this._factoryIDFunction(item, index);
 		}
 		
 		private function factoryIDToFactory(id:String):Function

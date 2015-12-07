@@ -10,6 +10,7 @@ package
 	import feathers.tests.DrawersTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
+	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -21,6 +22,7 @@ package
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
+	import feathers.tests.ListFactoryIDFunctionTests;
 	import feathers.tests.ListRendererAddRemoveTests;
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
@@ -118,12 +120,14 @@ package
 				DateTimeSpinnerTests,
 				DrawersTests,
 				GroupedListTests,
+				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				ListTests,
+				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
 				PickerListTests,
 				ProgressBarTests,
