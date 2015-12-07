@@ -1,18 +1,12 @@
 # Feathers UI 2.3.0
 
----
-
-**Warning:** This is a pre-release version of Feathers UI. It may contain bugs or unfinished features. It is not recommended for production apps because it is considered potentially *unstable*. Use at your own risk. To download a stable build, visit the [Feathers website](http://feathersui.com/).
-
----
-
 Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, skinnable, and extensible UI controls for mobile and desktop. The components run on [Starling Framework](http://starling-framework.org/) and the [Adobe Flash runtimes](http://gaming.adobe.com/technologies/) — offering blazing fast GPU powered graphics to create a smooth and responsive experience. Build completely standalone, native applications on iOS, Android, Windows, and Mac OS X, or target Adobe Flash Player in desktop browsers. Created by [Josh Tynjala](http://twitter.com/joshtynjala) from Bowler Hat LLC, Feathers UI is free and open source.
 
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Beta Help](http://feathersui.com/beta/help/)
-* [Beta API Reference](http://feathersui.com/beta/api-reference/)
+* [Help](http://feathersui.com/help/)
+* [API Reference](http://feathersui.com/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/BowlerHatLLC/feathers)
 
