@@ -950,7 +950,7 @@ package feathers.media
 				//resume(), so we need to manually add the ENTER_FRAME listener.
 				//there's no need to seek. we're resuming from where the video
 				//was paused.
-				this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+				this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 				this._netStream.resume();
 			}
 			else
@@ -977,7 +977,7 @@ package feathers.media
 			{
 				throw new IllegalOperationError(NO_VIDEO_SOURCE_PAUSE_ERROR);
 			}
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+			this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 			this._netStream.pause();
 		}
 
@@ -1020,7 +1020,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function videoPlayer_enterFrameHandler(event:starling.events.Event):void
+		protected function videoPlayer_enterFrameHandler(event:Event):void
 		{
 			this._currentTime = this._netStream.time;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
@@ -1029,7 +1029,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function videoPlayer_progress_enterFrameHandler(event:starling.events.Event):void
+		protected function videoPlayer_progress_enterFrameHandler(event:Event):void
 		{
 			var newBytesTotal:Number = this._netStream.bytesTotal;
 			if(newBytesTotal > 0)
@@ -1052,7 +1052,7 @@ package feathers.media
 				}
 				if(newBytesLoaded === newBytesTotal)
 				{
-					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+					this.removeEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 				}
 			}
 		}
@@ -1077,7 +1077,7 @@ package feathers.media
 		{
 			this._isWaitingForTextureReady = false;
 			//the texture is ready to be displayed
-			this.dispatchEventWith(starling.events.Event.READY);
+			this.dispatchEventWith(Event.READY);
 			var bytesTotal:Number = this._netStream.bytesTotal;
 			if(this._bytesTotal === 0 && bytesTotal > 0)
 			{
@@ -1086,7 +1086,7 @@ package feathers.media
 				this.dispatchEventWith(MediaPlayerEventType.LOAD_PROGRESS, false, this._bytesLoaded / bytesTotal);
 				if(this._bytesLoaded !== this._bytesTotal)
 				{
-					this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+					this.addEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 				}
 			}
 		}
@@ -1140,7 +1140,7 @@ package feathers.media
 						//paused when restoring lost context, but we need to
 						//temporarily start playing the NetStream in order to
 						//restore the video texture.
-						this.addEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+						this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 					}
 					else
 					{
@@ -1166,7 +1166,7 @@ package feathers.media
 					//a listener being called every frame for no reason. on iOS,
 					//context loss resets the NetStream time to 0, and we need
 					//to keep the current time so that we can seek back.
-					this.removeEventListener(starling.events.Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+					this.removeEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
 
 					//on iOS, when context is lost, the NetStream will stop
 					//automatically, and the time property will be reset to 0.
@@ -1181,7 +1181,7 @@ package feathers.media
 						//set this flag after calling stop() because stopping
 						//will seek to the beginning and may check for the flag.
 						this._hasPlayedToEnd = true;
-						this.dispatchEventWith(starling.events.Event.COMPLETE);
+						this.dispatchEventWith(Event.COMPLETE);
 					}
 					break;
 				}
@@ -1191,7 +1191,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		override protected function mediaPlayer_addedHandler(event:starling.events.Event):void
+		override protected function mediaPlayer_addedHandler(event:Event):void
 		{
 			if(this._ignoreDisplayListEvents)
 			{
@@ -1203,7 +1203,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		override protected function mediaPlayer_removedHandler(event:starling.events.Event):void
+		override protected function mediaPlayer_removedHandler(event:Event):void
 		{
 			if(this._ignoreDisplayListEvents)
 			{

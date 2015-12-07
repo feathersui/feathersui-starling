@@ -14,7 +14,6 @@ package feathers.media
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	/**
