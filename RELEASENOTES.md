@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 2.3.0 - In Development
+## 2.3.0 - December 2015
 
 * New Component: DateTimeSpinner combines a set of SpinnerList components to select the date, the time, or both.
 * New Theme: TopcoatLightMobileTheme. Thank you to Marcel Piestansky for your contributions.

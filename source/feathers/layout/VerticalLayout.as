@@ -9,7 +9,6 @@ package feathers.layout
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
-	import feathers.layout.ILayoutDisplayObject;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;

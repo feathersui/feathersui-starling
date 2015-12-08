@@ -12,7 +12,6 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundUpToNearest;
 

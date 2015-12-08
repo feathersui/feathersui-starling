@@ -11,7 +11,6 @@ package feathers.controls.renderers
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Scroller;
 	import feathers.controls.ToggleButton;
-	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;

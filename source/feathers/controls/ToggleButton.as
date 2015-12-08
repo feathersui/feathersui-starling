@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.IGroupedToggle;
-	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.events.FeathersEventType;
