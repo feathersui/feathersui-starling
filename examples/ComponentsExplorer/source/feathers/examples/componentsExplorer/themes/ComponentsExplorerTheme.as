@@ -68,7 +68,6 @@ package feathers.examples.componentsExplorer.themes
 			//the icon will be blurry if it's not on a whole pixel. ImageLoader
 			//can snap to pixels to fix that issue.
 			icon.snapToPixels = true;
-			icon.textureScale = this.scale;
 			button.defaultIcon = icon;
 		}
 

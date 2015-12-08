@@ -65,6 +65,7 @@ package feathers.themes
 		 */
 		public function MetalWorksMobileThemeWithAssetManager(assetsBasePath:String = "./", assetManager:AssetManager = null)
 		{
+			super();
 			this.loadAssets(assetsBasePath, assetManager);
 		}
 
@@ -149,7 +150,7 @@ package feathers.themes
 			if(assetManager)
 			{
 				oldScaleFactor = assetManager.scaleFactor;
-				assetManager.scaleFactor = 1;
+				assetManager.scaleFactor = 2;
 			}
 			else
 			{
