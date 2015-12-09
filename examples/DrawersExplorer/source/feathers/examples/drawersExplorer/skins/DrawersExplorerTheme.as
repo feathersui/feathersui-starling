@@ -48,8 +48,8 @@ package feathers.examples.drawersExplorer.skins
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
-			layout.padding = 20 * this.scale;
-			layout.gap = 20 * this.scale;
+			layout.padding = this.smallGutterSize;
+			layout.gap = this.smallGutterSize;
 			view.layout = layout;
 		}
 
@@ -63,8 +63,8 @@ package feathers.examples.drawersExplorer.skins
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
-			layout.padding = 20 * this.scale;
-			layout.gap = 20 * this.scale;
+			layout.padding = this.smallGutterSize;
+			layout.gap = this.smallGutterSize;
 			view.layout = layout;
 		}
 	}

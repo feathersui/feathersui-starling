@@ -42,11 +42,11 @@ package feathers.examples.todos
 		
 		protected function setTodoItemRendererStyles(itemRenderer:TodoItemRenderer):void
 		{
-			itemRenderer.backgroundSkin = new Scale9Image(this.itemRendererUpSkinTextures, this.scale);
+			itemRenderer.backgroundSkin = new Scale9Image(this.itemRendererUpSkinTextures);
 
 			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.gap = 10;
-			layout.padding = 10;
+			layout.gap = this.smallGutterSize;
+			layout.padding = this.smallGutterSize;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 			itemRenderer.layout = layout;
 		}

@@ -10,7 +10,7 @@ package feathers.examples.gallery
 	{
 		public function GalleryTheme()
 		{
-			super(true)
+			super();
 		}
 
 		override protected function initializeStyleProviders():void
