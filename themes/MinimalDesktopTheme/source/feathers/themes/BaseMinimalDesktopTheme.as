@@ -260,12 +260,8 @@ package feathers.themes
 		 */
 		public function BaseMinimalDesktopTheme()
 		{
+			super();
 		}
-
-		/**
-		 * Skins are scaled by a value based on the content scale factor.
-		 */
-		protected var scale:Number = 1;
 
 		/**
 		 * A normal font size.
@@ -475,7 +471,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
@@ -485,40 +480,28 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes the value used for scaling things like textures and font
-		 * sizes.
-		 */
-		protected function initializeScale():void
-		{
-			//Starling automatically accounts for the contentScaleFactor on Mac
-			//HiDPI screens, and converts pixels to points, so we don't need to
-			//do any scaling for that.
-			this.scale = 1;
-		}
-
-		/**
 		 * Initializes common values used for setting the dimensions of components.
 		 */
 		protected function initializeDimensions():void
 		{
-			this.gridSize = Math.round(30 * this.scale);
-			this.extraSmallGutterSize = Math.round(2 * this.scale);
-			this.smallGutterSize = Math.round(4 * this.scale);
-			this.gutterSize = Math.round(8 * this.scale);
-			this.borderSize = Math.max(1, Math.round(1 * this.scale));
-			this.dropShadowSize = Math.round(4 * this.scale);
-			this.controlSize = Math.round(20 * this.scale);
-			this.smallControlSize = Math.round(12 * this.scale);
-			this.calloutTopLeftArrowOverlapGapSize = Math.round(-2 * this.scale);
-			this.calloutBottomRightArrowOverlapGapSize = Math.round(-6 * this.scale);
-			this.calloutBackgroundMinSize = Math.round(5 * this.scale);
-			this.progressBarFillMinSize = Math.round(7 * this.scale);
+			this.gridSize = 30;
+			this.extraSmallGutterSize = 2;
+			this.smallGutterSize = 4;
+			this.gutterSize = 8;
+			this.borderSize = 1;
+			this.dropShadowSize = 4;
+			this.controlSize = 20;
+			this.smallControlSize = 12;
+			this.calloutTopLeftArrowOverlapGapSize = -2;
+			this.calloutBottomRightArrowOverlapGapSize = -6;
+			this.calloutBackgroundMinSize = 5;
+			this.progressBarFillMinSize = 7;
 			this.buttonMinWidth = this.gridSize * 2 + this.smallGutterSize * 1;
 			this.wideControlSize = this.gridSize * 3 + this.smallGutterSize * 2;
 			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.dropDownGapSize = Math.min(-1, Math.round(-1 * this.scale));
-			this.focusPaddingSize = Math.min(-1, Math.round(-2 * this.scale));
-			this.popUpVolumeSliderPaddingTopLeft = Math.round(9 * this.scale);
+			this.dropDownGapSize = -1;
+			this.focusPaddingSize = -2;
+			this.popUpVolumeSliderPaddingTopLeft = 9;
 			this.popUpVolumeSliderPaddingBottomRight = this.popUpVolumeSliderPaddingTopLeft + this.dropShadowSize;
 		}
 
@@ -645,8 +628,8 @@ package feathers.themes
 		{
 			//since it's a pixel font, we want a multiple of the original size,
 			//which, in this case, is 8.
-			this.fontSize = Math.max(8, roundToNearest(8 * this.scale, 8));
-			this.largeFontSize = Math.max(8, roundToNearest(16 * this.scale, 8));
+			this.fontSize = 8;
+			this.largeFontSize = 16;
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
@@ -856,7 +839,6 @@ package feathers.themes
 		{
 			var symbol:ImageLoader = new ImageLoader();
 			symbol.source = this.pageIndicatorSymbolTexture;
-			symbol.textureScale = this.scale;
 			symbol.snapToPixels = true;
 			return symbol;
 		}
@@ -865,7 +847,6 @@ package feathers.themes
 		{
 			var symbol:ImageLoader = new ImageLoader();
 			symbol.source = this.pageIndicatorSelectedSymbolTexture;
-			symbol.textureScale = this.scale;
 			symbol.snapToPixels = true;
 			return symbol;
 		}
@@ -873,7 +854,6 @@ package feathers.themes
 		protected function imageLoaderFactory():ImageLoader
 		{
 			var image:ImageLoader = new ImageLoader();
-			image.textureScale = this.scale;
 			image.snapToPixels = true;
 			return image;
 		}
@@ -889,7 +869,7 @@ package feathers.themes
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
 
-			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			scroller.focusPadding = 0;
 		}
 
@@ -907,7 +887,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(alert);
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundSkinTextures);
 			backgroundSkin.width = this.controlSize;
 			backgroundSkin.height = this.controlSize;
 			alert.backgroundSkin = backgroundSkin;
@@ -946,7 +926,7 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
-			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = this.focusPaddingSize;
 
 			button.paddingTop = this.smallGutterSize;
@@ -976,8 +956,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
@@ -999,8 +978,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
@@ -1025,8 +1003,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
@@ -1043,8 +1020,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
@@ -1062,8 +1038,7 @@ package feathers.themes
 			{
 				width: this.controlSize,
 				height: this.controlSize,
-				smoothing: TextureSmoothing.NONE,
-				textureScale: this.scale
+				smoothing: TextureSmoothing.NONE
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
@@ -1082,8 +1057,7 @@ package feathers.themes
 			{
 				width: this.controlSize,
 				height: this.controlSize,
-				smoothing: TextureSmoothing.NONE,
-				textureScale: this.scale
+				smoothing: TextureSmoothing.NONE
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
@@ -1119,12 +1093,11 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = this.focusPaddingSize;
 
 			button.paddingTop = this.smallGutterSize;
@@ -1147,28 +1120,24 @@ package feathers.themes
 			callout.paddingRight = this.gutterSize + this.dropShadowSize;
 			callout.paddingBottom = this.gutterSize + this.dropShadowSize;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundSkinTextures);
 			backgroundSkin.width = this.calloutBackgroundMinSize;
 			backgroundSkin.height = this.calloutBackgroundMinSize;
 			callout.backgroundSkin = backgroundSkin;
 
 			var topArrowSkin:Image = new Image(this.calloutTopArrowSkinTexture);
-			topArrowSkin.scaleX = topArrowSkin.scaleY = this.scale;
 			callout.topArrowSkin = topArrowSkin;
 			callout.topArrowGap = this.calloutTopLeftArrowOverlapGapSize;
 
 			var bottomArrowSkin:Image = new Image(this.calloutBottomArrowSkinTexture);
-			bottomArrowSkin.scaleX = bottomArrowSkin.scaleY = this.scale;
 			callout.bottomArrowSkin = bottomArrowSkin;
 			callout.bottomArrowGap = this.calloutBottomRightArrowOverlapGapSize;
 
 			var leftArrowSkin:Image = new Image(this.calloutLeftArrowSkinTexture);
-			leftArrowSkin.scaleX = leftArrowSkin.scaleY = this.scale;
 			callout.leftArrowSkin = leftArrowSkin;
 			callout.leftArrowGap = this.calloutTopLeftArrowOverlapGapSize;
 
 			var rightArrowSkin:Image = new Image(this.calloutRightArrowSkinTexture);
-			rightArrowSkin.scaleX = rightArrowSkin.scaleY = this.scale;
 			callout.rightArrowSkin = rightArrowSkin;
 			callout.rightArrowGap = this.calloutBottomRightArrowOverlapGapSize;
 		}
@@ -1187,13 +1156,12 @@ package feathers.themes
 			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.displayObjectProperties =
 			{
-				textureScale: this.scale,
 				snapToPixels: true,
 				smoothing: TextureSmoothing.NONE
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
-			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			check.focusPaddingLeft = this.focusPaddingSize;
 			check.focusPaddingRight = this.focusPaddingSize;
 
@@ -1248,12 +1216,12 @@ package feathers.themes
 
 			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.listBackgroundSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			list.backgroundSkin = backgroundSkin;
 
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures, this.scale);
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures);
 			backgroundDisabledSkin.width = this.gridSize;
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
@@ -1288,12 +1256,12 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.listInsetBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.listInsetBackgroundSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			list.backgroundSkin = backgroundSkin;
 
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures, this.scale);
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures);
 			backgroundDisabledSkin.width = this.gridSize;
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
@@ -1340,7 +1308,7 @@ package feathers.themes
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.headerSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
@@ -1386,7 +1354,7 @@ package feathers.themes
 			group.minWidth = this.gridSize;
 			group.minHeight = this.gridSize;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.headerSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			group.backgroundSkin = backgroundSkin;
@@ -1402,12 +1370,12 @@ package feathers.themes
 
 			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.listBackgroundSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			list.backgroundSkin = backgroundSkin;
 
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures, this.scale);
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures);
 			backgroundDisabledSkin.width = this.gridSize;
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
@@ -1457,7 +1425,6 @@ package feathers.themes
 			itemRenderer.itemHasAccessory = false;
 			var defaultAccessory:ImageLoader = new ImageLoader();
 			defaultAccessory.source = this.listDrillDownAccessoryTexture;
-			defaultAccessory.textureScale = this.scale;
 			itemRenderer.defaultAccessory = defaultAccessory;
 		}
 
@@ -1471,10 +1438,6 @@ package feathers.themes
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.checkIconTexture;
 			iconSelector.defaultSelectedValue = this.checkSelectedIconTexture;
-			iconSelector.displayObjectProperties =
-			{
-				textureScale: this.scale
-			};
 			itemRenderer.stateToIconFunction = iconSelector.updateValue;
 
 			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
@@ -1523,7 +1486,7 @@ package feathers.themes
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
 
-			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			stepper.focusPadding = this.focusPaddingSize;
 		}
 
@@ -1536,8 +1499,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			button.keepDownStateOnRollOut = true;
@@ -1601,7 +1563,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(panel);
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.panelBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.panelBackgroundSkinTextures);
 			backgroundSkin.width = this.controlSize;
 			backgroundSkin.height = this.controlSize;
 			panel.backgroundSkin = backgroundSkin;
@@ -1620,7 +1582,7 @@ package feathers.themes
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.panelHeaderSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.panelHeaderSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
@@ -1658,8 +1620,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
@@ -1675,7 +1636,6 @@ package feathers.themes
 			}
 			iconSelector.displayObjectProperties =
 			{
-				textureScale: this.scale,
 				snapToPixels: true
 			};
 			button.stateToIconFunction = iconSelector.updateValue;
@@ -1695,7 +1655,7 @@ package feathers.themes
 
 		protected function setProgressBarStyles(progress:ProgressBar):void
 		{
-			var backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures);
 			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
 			{
 				backgroundSkin.width = this.smallControlSize;
@@ -1708,7 +1668,7 @@ package feathers.themes
 			}
 			progress.backgroundSkin = backgroundSkin;
 
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(insetBackgroundDisabledSkinTextures, this.scale);
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(insetBackgroundDisabledSkinTextures);
 			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
 			{
 				backgroundDisabledSkin.width = this.smallControlSize;
@@ -1721,7 +1681,7 @@ package feathers.themes
 			}
 			progress.backgroundDisabledSkin = backgroundDisabledSkin;
 
-			var fillSkin:Scale9Image = new Scale9Image(buttonUpSkinTextures, this.scale);
+			var fillSkin:Scale9Image = new Scale9Image(buttonUpSkinTextures);
 			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
 			{
 				fillSkin.width = this.smallControlSize;
@@ -1734,7 +1694,7 @@ package feathers.themes
 			}
 			progress.fillSkin = fillSkin;
 
-			var fillDisabledSkin:Scale9Image = new Scale9Image(buttonDisabledSkinTextures, this.scale);
+			var fillDisabledSkin:Scale9Image = new Scale9Image(buttonDisabledSkinTextures);
 			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
 			{
 				fillDisabledSkin.width = this.smallControlSize;
@@ -1762,12 +1722,11 @@ package feathers.themes
 			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.displayObjectProperties =
 			{
-				textureScale: this.scale,
 				snapToPixels: true
 			};
 			radio.stateToIconFunction = iconSelector.updateValue;
 
-			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			radio.focusPadding = this.focusPaddingSize;
 
 			radio.gap = this.smallGutterSize;
@@ -1812,8 +1771,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
-				height: this.smallControlSize,
-				textureScale: this.scale
+				height: this.smallControlSize
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 
@@ -1828,8 +1786,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
-				height: this.smallControlSize,
-				textureScale: this.scale
+				height: this.smallControlSize
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 
@@ -1845,8 +1802,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
-				height: this.smallControlSize,
-				textureScale: this.scale
+				height: this.smallControlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
@@ -1869,10 +1825,6 @@ package feathers.themes
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.horizontalScrollBarDecrementButtonIconTexture;
 			iconSelector.setValueForState(null, Button.STATE_DISABLED, false);
-			iconSelector.displayObjectProperties =
-			{
-				textureScale: this.scale
-			};
 			button.stateToIconFunction = iconSelector.updateValue;
 		}
 
@@ -1884,10 +1836,6 @@ package feathers.themes
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.horizontalScrollBarIncrementButtonIconTexture;
 			iconSelector.setValueForState(null, Button.STATE_DISABLED, false);
-			iconSelector.displayObjectProperties =
-			{
-				textureScale: this.scale
-			};
 			button.stateToIconFunction = iconSelector.updateValue;
 		}
 
@@ -1899,10 +1847,6 @@ package feathers.themes
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.verticalScrollBarDecrementButtonIconTexture;
 			iconSelector.setValueForState(null, Button.STATE_DISABLED, false);
-			iconSelector.displayObjectProperties =
-			{
-				textureScale: this.scale
-			};
 			button.stateToIconFunction = iconSelector.updateValue;
 		}
 
@@ -1914,10 +1858,6 @@ package feathers.themes
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.verticalScrollBarIncrementButtonIconTexture;
 			iconSelector.setValueForState(null, Button.STATE_DISABLED, false);
-			iconSelector.displayObjectProperties =
-			{
-				textureScale: this.scale
-			};
 			button.stateToIconFunction = iconSelector.updateValue;
 		}
 
@@ -1946,7 +1886,7 @@ package feathers.themes
 			container.minWidth = this.gridSize;
 			container.minHeight = this.gridSize;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(headerSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(headerSkinTextures);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			container.backgroundSkin = backgroundSkin;
@@ -1980,7 +1920,7 @@ package feathers.themes
 
 		protected function setSimpleScrollBarThumbStyles(thumb:Button):void
 		{
-			var defaultSkin:Scale9Image = new Scale9Image(this.simpleScrollBarThumbSkinTextures, this.scale);
+			var defaultSkin:Scale9Image = new Scale9Image(this.simpleScrollBarThumbSkinTextures);
 			defaultSkin.width = this.smallControlSize;
 			defaultSkin.height = this.smallControlSize;
 			thumb.defaultSkin = defaultSkin;
@@ -2007,7 +1947,7 @@ package feathers.themes
 				slider.minWidth = this.wideControlSize;
 			}
 
-			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			slider.focusPadding = this.focusPaddingSize;
 		}
 
@@ -2019,8 +1959,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.wideControlSize,
-				height: this.smallControlSize,
-				textureScale: this.scale
+				height: this.smallControlSize
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 
@@ -2035,8 +1974,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
-				height: this.wideControlSize,
-				textureScale: this.scale
+				height: this.wideControlSize
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 
@@ -2051,8 +1989,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
-				height: this.smallControlSize,
-				textureScale: this.scale
+				height: this.smallControlSize
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 
@@ -2080,8 +2017,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			tab.stateToSkinFunction = skinSelector.updateValue;
 
@@ -2113,8 +2049,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.wideControlSize * 2,
-				height: this.wideControlSize,
-				textureScale: this.scale
+				height: this.wideControlSize
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
 		}
@@ -2154,7 +2089,7 @@ package feathers.themes
 			};
 			input.stateToSkinFunction = skinSelector.updateValue;
 
-			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			input.focusPadding = this.focusPaddingSize;
 		}
 
@@ -2173,7 +2108,6 @@ package feathers.themes
 			iconSelector.setValueForState(this.searchIconDisabledTexture, TextInput.STATE_DISABLED, false);
 			iconSelector.displayObjectProperties =
 			{
-				textureScale: this.scale,
 				snapToPixels: true
 			};
 			input.stateToIconFunction = iconSelector.updateValue;
@@ -2201,7 +2135,7 @@ package feathers.themes
 		{
 			toggleSwitch.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
 
-			toggleSwitch.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			toggleSwitch.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			toggleSwitch.focusPadding = this.focusPaddingSize;
 		}
 
@@ -2225,8 +2159,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: Math.round(this.controlSize * 2.5),
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 
@@ -2241,8 +2174,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 
@@ -2271,8 +2203,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			
@@ -2282,14 +2213,12 @@ package feathers.themes
 			iconSelector.defaultSelectedValue = this.playPauseButtonPauseUpIconTexture;
 			iconSelector.displayObjectProperties =
 			{
-				scaleX: this.scale,
-				scaleY: this.scale,
 				smoothing: TextureSmoothing.NONE,
 				snapToPixels: true
 			};
 			button.stateToIconFunction = iconSelector.updateValue;
 			
-			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = this.focusPaddingSize;
 
 			button.hasLabelTextRenderer = false;
@@ -2307,11 +2236,6 @@ package feathers.themes
 			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_UP, false);
 			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayUpIconTexture, Button.STATE_HOVER, false);
 			iconSelector.setValueForState(this.overlayPlayPauseButtonPlayDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.displayObjectProperties =
-			{
-				scaleX: this.scale,
-				scaleY: this.scale
-			};
 			button.stateToIconFunction = iconSelector.updateValue;
 
 			button.hasLabelTextRenderer = false;
@@ -2340,8 +2264,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			
@@ -2351,14 +2274,12 @@ package feathers.themes
 			iconSelector.defaultSelectedValue = this.fullScreenToggleButtonExitUpIconTexture;
 			iconSelector.displayObjectProperties =
 			{
-				scaleX: this.scale,
-				scaleY: this.scale,
 				smoothing: TextureSmoothing.NONE,
 				snapToPixels: true
 			};
 			button.stateToIconFunction = iconSelector.updateValue;
 
-			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = this.focusPaddingSize;
 
 			button.hasLabelTextRenderer = false;
@@ -2383,8 +2304,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize,
-				textureScale: this.scale
+				height: this.controlSize
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			
@@ -2394,14 +2314,12 @@ package feathers.themes
 			iconSelector.defaultSelectedValue = this.muteToggleButtonMutedUpIconTexture;
 			iconSelector.displayObjectProperties =
 			{
-				scaleX: this.scale,
-				scaleY: this.scale,
 				smoothing: TextureSmoothing.NONE,
 				snapToPixels: true
 			};
 			button.stateToIconFunction = iconSelector.updateValue;
 
-			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = this.focusPaddingSize;
 
 			button.hasLabelTextRenderer = false;
@@ -2418,7 +2336,7 @@ package feathers.themes
 		{
 			slider.direction = VolumeSlider.DIRECTION_VERTICAL;
 			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_SINGLE;
-			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			slider.focusPadding = this.focusPaddingSize;
 			slider.maximumPadding = this.popUpVolumeSliderPaddingTopLeft;
 			slider.minimumPadding = this.popUpVolumeSliderPaddingBottomRight;
@@ -2433,10 +2351,6 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.popUpVolumeSliderTrackSkinTextures;
-			skinSelector.displayObjectProperties =
-			{
-				textureScale: this.scale
-			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 
 			track.hasLabelTextRenderer = false;
@@ -2449,7 +2363,7 @@ package feathers.themes
 		protected function setSeekSliderStyles(slider:SeekSlider):void
 		{
 			this.setSliderStyles(slider);
-			var progressSkin:Scale9Image = new Scale9Image(this.seekSliderProgressSkinTextures, this.scale);
+			var progressSkin:Scale9Image = new Scale9Image(this.seekSliderProgressSkinTextures);
 			slider.progressSkin = progressSkin;
 		}
 
@@ -2461,16 +2375,16 @@ package feathers.themes
 		{
 			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
 			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
-			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			slider.focusPadding = this.focusPaddingSize;
 			slider.showThumb = false;
-			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width * this.scale;
-			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height * this.scale;
+			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;
+			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height;
 		}
 
 		protected function setVolumeSliderThumbStyles(thumb:Button):void
 		{
-			var thumbSize:Number = 6 * this.scale;
+			var thumbSize:Number = 6;
 			var defaultSkin:Quad = new Quad(thumbSize, thumbSize);
 			defaultSkin.width = 0;
 			defaultSkin.height = 0;
@@ -2483,7 +2397,6 @@ package feathers.themes
 			var defaultSkin:ImageLoader = new ImageLoader();
 			defaultSkin.scaleContent = false;
 			defaultSkin.source = this.volumeSliderMinimumTrackSkinTexture;
-			defaultSkin.textureScale = this.scale;
 			track.defaultSkin = defaultSkin;
 
 			track.hasLabelTextRenderer = false;
@@ -2495,7 +2408,6 @@ package feathers.themes
 			defaultSkin.scaleContent = false;
 			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
-			defaultSkin.textureScale = this.scale;
 			track.defaultSkin = defaultSkin;
 			
 			track.hasLabelTextRenderer = false;

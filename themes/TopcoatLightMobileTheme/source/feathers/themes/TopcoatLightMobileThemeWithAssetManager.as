@@ -150,7 +150,7 @@ package feathers.themes
 			if(assetManager)
 			{
 				oldScaleFactor = assetManager.scaleFactor;
-				assetManager.scaleFactor = 1;
+				assetManager.scaleFactor = 2;
 			}
 			else
 			{
