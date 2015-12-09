@@ -2344,6 +2344,8 @@ package feathers.themes
 			track.defaultSkin = defaultSkin;
 
 			track.hasLabelTextRenderer = false;
+
+			track.minTouchHeight = this.gridSize;
 		}
 
 		protected function setVolumeSliderMaximumTrackStyles(track:Button):void
@@ -2356,6 +2358,8 @@ package feathers.themes
 			track.defaultSkin = defaultSkin;
 			
 			track.hasLabelTextRenderer = false;
+
+			track.minTouchHeight = this.gridSize;
 		}
 	}
 }
