@@ -17,8 +17,8 @@ package feathers.examples.componentsExplorer.data
 		public static function initialize():void
 		{
 			//we can't create these textures until Starling is ready
-			SKULL_ICON_DARK = Texture.fromEmbeddedAsset(SKULL_ICON_DARK_EMBEDDED, false);
-			SKULL_ICON_LIGHT = Texture.fromEmbeddedAsset(SKULL_ICON_LIGHT_EMBEDDED, false);
+			SKULL_ICON_DARK = Texture.fromEmbeddedAsset(SKULL_ICON_DARK_EMBEDDED, false, false, 2);
+			SKULL_ICON_LIGHT = Texture.fromEmbeddedAsset(SKULL_ICON_LIGHT_EMBEDDED, false, false, 2);
 		}
 	}
 }
