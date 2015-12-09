@@ -1,6 +1,7 @@
 package
 {
 	import feathers.examples.displayObjects.Main;
+	import feathers.utils.ScreenDensityScaleFactorManager;
 
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -35,6 +36,7 @@ package
 		}
 
 		private var _starling:Starling;
+		private var _scaler:ScreenDensityScaleFactorManager;
 		private var _launchImage:Loader;
 		private var _savedAutoOrients:Boolean;
 
@@ -120,8 +122,7 @@ package
 			{
 				this._starling.addEventListener("rootCreated", starling_rootCreatedHandler);
 			}
-
-			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
+			this._scaler = new ScreenDensityScaleFactorManager(this._starling);
 			this.stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
 		}
 
@@ -134,21 +135,6 @@ package
 				this._launchImage = null;
 				this.stage.autoOrients = this._savedAutoOrients;
 			}
-		}
-
-		private function stage_resizeHandler(event:Event):void
-		{
-			this._starling.stage.stageWidth = this.stage.stageWidth;
-			this._starling.stage.stageHeight = this.stage.stageHeight;
-
-			var viewPort:Rectangle = this._starling.viewPort;
-			viewPort.width = this.stage.stageWidth;
-			viewPort.height = this.stage.stageHeight;
-			try
-			{
-				this._starling.viewPort = viewPort;
-			}
-			catch(error:Error) {}
 		}
 
 		private function stage_deactivateHandler(event:Event):void

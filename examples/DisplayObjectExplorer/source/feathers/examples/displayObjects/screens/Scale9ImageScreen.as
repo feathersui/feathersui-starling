@@ -63,8 +63,8 @@ package feathers.examples.displayObjects.screens
 			
 			this.title = "Scale 9 Image";
 
-			this._texture = Texture.fromEmbeddedAsset(SCALE_9_TEXTURE, false);
-			var textures:Scale9Textures = new Scale9Textures(this._texture, new Rectangle(20, 20, 20, 20));
+			this._texture = Texture.fromEmbeddedAsset(SCALE_9_TEXTURE, false, false, 2);
+			var textures:Scale9Textures = new Scale9Textures(this._texture, new Rectangle(10, 10, 10, 10));
 			this._image = new Scale9Image(textures);
 			this._minDisplayObjectWidth = 40;
 			this._minDisplayObjectHeight = 40;

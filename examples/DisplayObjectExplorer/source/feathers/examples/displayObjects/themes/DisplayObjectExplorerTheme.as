@@ -32,8 +32,8 @@ package feathers.examples.displayObjects.themes
 		override protected function initializeTextures():void
 		{
 			super.initializeTextures();
-			this._rightGripTexture = Texture.fromEmbeddedAsset(VERTICAL_GRIP, false);
-			this._bottomGripTexture = Texture.fromEmbeddedAsset(HORIZONTAL_GRIP, false);
+			this._rightGripTexture = Texture.fromEmbeddedAsset(VERTICAL_GRIP, false, false, 2);
+			this._bottomGripTexture = Texture.fromEmbeddedAsset(HORIZONTAL_GRIP, false, false, 2);
 		}
 
 		override protected function initializeStyleProviders():void
@@ -49,14 +49,12 @@ package feathers.examples.displayObjects.themes
 		private function setRightGripStyles(button:Button):void
 		{
 			var rightSkin:Image = new Image(this._rightGripTexture);
-			rightSkin.scaleX = rightSkin.scaleY = this.scale;
 			button.defaultSkin = rightSkin;
 		}
 
 		private function setBottomGripStyles(button:Button):void
 		{
 			var bottomSkin:Image = new Image(this._bottomGripTexture);
-			bottomSkin.scaleX = bottomSkin.scaleY = this.scale;
 			button.defaultSkin = bottomSkin;
 		}
 
@@ -67,7 +65,7 @@ package feathers.examples.displayObjects.themes
 			
 			screen.horizontalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
-			screen.padding = 30 * this.scale;
+			screen.padding = 16;
 		}
 
 		private function setScale3ImageScreenStyles(screen:Scale3ImageScreen):void
@@ -77,7 +75,7 @@ package feathers.examples.displayObjects.themes
 			
 			screen.horizontalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
-			screen.padding = 30 * this.scale;
+			screen.padding = 16;
 		}
 
 		private function setTiledImageScreenStyles(screen:TiledImageScreen):void
@@ -87,7 +85,7 @@ package feathers.examples.displayObjects.themes
 			
 			screen.horizontalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_OFF;
-			screen.padding = 30 * this.scale;
+			screen.padding = 16;
 		}
 	}
 }

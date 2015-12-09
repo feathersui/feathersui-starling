@@ -61,8 +61,8 @@ package feathers.examples.displayObjects.screens
 			
 			this.title = "Scale 3 Image";
 
-			this._texture = Texture.fromEmbeddedAsset(SCALE_3_TEXTURE, false);
-			var textures:Scale3Textures = new Scale3Textures(this._texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
+			this._texture = Texture.fromEmbeddedAsset(SCALE_3_TEXTURE, false, false, 2);
+			var textures:Scale3Textures = new Scale3Textures(this._texture, 30, 40, Scale3Textures.DIRECTION_HORIZONTAL);
 			this._image = new Scale3Image(textures);
 			this._image.width /= 2;
 			this._image.height /= 2;
