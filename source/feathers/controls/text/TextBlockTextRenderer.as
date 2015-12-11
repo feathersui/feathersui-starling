@@ -211,6 +211,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _measuredHeight:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _textLineContainer:Sprite;
 
 		/**
@@ -1517,7 +1522,7 @@ package feathers.controls.text
 			}
 			if(needsHeight)
 			{
-				newHeight = Math.ceil(this._measurementTextLineContainer.height);
+				newHeight = Math.ceil(this._measuredHeight);
 				if(newHeight <= 0 && this._elementFormat)
 				{
 					newHeight = this._elementFormat.fontSize;
@@ -1965,6 +1970,22 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 * the ascent alone doesn't account for diacritical marks,
+		 * like accents and things. however, increasing the ascent by
+		 * the value of the descent seems to be a good approximation.
+		 */
+		protected function calculateLineAscent(line:TextLine):Number
+		{
+			var calculatedAscent:Number = line.ascent + line.descent;
+			if(line.totalAscent > calculatedAscent)
+			{
+				calculatedAscent = line.totalAscent;
+			}
+			return calculatedAscent;
+		}
+
+		/**
+		 * @private
 		 */
 		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
 		{
@@ -2102,21 +2123,18 @@ package feathers.controls.text
 					{
 						yPosition += this._leading;
 					}
-					//the ascent alone doesn't account for diacritical marks,
-					//like accents and things. however, increasing the ascent by
-					//the value of the descent seems to be a good approximation.
-					var calculatedAscent:Number = line.ascent + line.descent;
-					if(line.totalAscent > calculatedAscent)
-					{
-						calculatedAscent = line.totalAscent;
-					}
-					yPosition += calculatedAscent;
+					
+					yPosition += this.calculateLineAscent(line);
 					line.y = yPosition;
 					yPosition += line.totalDescent;
 					textLines[pushIndex] = line;
 					pushIndex++;
 					lineStartIndex += lineLength;
 				}
+			}
+			if(textLines === this._measurementTextLines)
+			{
+				this._measuredHeight = yPosition;
 			}
 
 			this.alignTextLines(textLines, width, this._textAlign);
