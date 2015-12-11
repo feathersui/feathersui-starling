@@ -2102,9 +2102,9 @@ package feathers.controls.text
 					{
 						yPosition += this._leading;
 					}
-					yPosition += line.ascent;
+					yPosition += line.totalAscent;
 					line.y = yPosition;
-					yPosition += line.descent;
+					yPosition += line.totalDescent;
 					textLines[pushIndex] = line;
 					pushIndex++;
 					lineStartIndex += lineLength;
