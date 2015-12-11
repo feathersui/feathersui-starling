@@ -954,7 +954,15 @@ package feathers.controls.text
 			cursorX = int(cursorX - (this._cursorSkin.width / 2));
 			this._cursorSkin.x = cursorX;
 			this._cursorSkin.y = 0;
-			this._cursorSkin.height = this._elementFormat.fontSize;
+			if(this._textLines.length > 0)
+			{
+				var line:TextLine = this._textLines[0];
+				this._cursorSkin.height = this.calculateLineAscent(line) + line.totalDescent;
+			}
+			else
+			{
+				this._cursorSkin.height = this._elementFormat.fontSize;
+			}
 
 			//then we update the scroll to always show the cursor
 			var minScrollX:Number = cursorX + this._cursorSkin.width - this.actualWidth;
@@ -1019,7 +1027,12 @@ package feathers.controls.text
 			this._selectionSkin.y = 0;
 			if(this._textLines.length > 0)
 			{
-				this._selectionSkin.height = this._textLines[0].height;
+				var line:TextLine = this._textLines[0];
+				this._selectionSkin.height = this.calculateLineAscent(line) + line.totalDescent;
+			}
+			else
+			{
+				this._selectionSkin.height = this._elementFormat.fontSize;
 			}
 		}
 
