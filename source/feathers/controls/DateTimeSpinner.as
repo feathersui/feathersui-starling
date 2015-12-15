@@ -634,6 +634,59 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _itemRendererFactory:Function;
+
+		/**
+		 * A function used to instantiate the date time spinner's item renderer
+		 * sub-components. A single factory will be shared by all
+		 * <code>SpinnerList</code> sub-components displayed by the
+		 * <code>DateTimeSpinner</code>. The item renderers must be instances of
+		 * <code>DefaultListItemRenderer</code>. This factory can be used to
+		 * change properties of the item renderer sub-components when they are
+		 * first created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the item
+		 * renderer sub-components.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():DefaultListItemRenderer</pre>
+		 *
+		 * <p>In the following example, the date time spinner uses a custom item
+		 * renderer factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * spinner.itemRendererFactory = function():DefaultListItemRenderer
+		 * {
+		 *     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+		 *     // set properties
+		 *     return itemRenderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.DefaultListItemRenderer
+		 * @see #itemRendererFactory
+		 */
+		public function get itemRendererFactory():Function
+		{
+			return this._itemRendererFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererFactory(value:Function):void
+		{
+			if(this._itemRendererFactory === value)
+			{
+				return;
+			}
+			this._itemRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_SPINNER_LIST_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _listFactory:Function;
 
 		/**
@@ -643,6 +696,12 @@ package feathers.controls
 		 * properties of the list sub-components when they are first created.
 		 * For instance, if you are skinning Feathers components without a
 		 * theme, you might use this factory to style the list sub-components.
+		 * 
+		 * <p><strong>Warning:</strong> The <code>itemRendererFactory</code>
+		 * property of the <code>SpinnerList</code> should not be set in the
+		 * <code>listFactory</code>. Instead, set the
+		 * <code>itemRendererFactory</code> property of the
+		 * <code>DateTimeSpinner</code>.</p>
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():SpinnerList</pre>
@@ -661,6 +720,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.SpinnerList
+		 * @see #itemRendererFactory
 		 */
 		public function get listFactory():Function
 		{
@@ -1084,6 +1144,7 @@ package feathers.controls
 			this.meridiemList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.meridiemList.styleNameList.add(listStyleName);
+			this.meridiemList.itemRendererFactory = this.meridiemListItemRendererFactory;
 			this.meridiemList.addEventListener(Event.CHANGE, meridiemList_changeHandler);
 			this.listGroup.addChild(this.meridiemList);
 		}
@@ -1624,9 +1685,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function meridiemListItemRendererFactory():DefaultListItemRenderer
+		{
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
+			return itemRenderer;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function minutesListItemRendererFactory():DefaultListItemRenderer
 		{
-			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
 			itemRenderer.labelFunction = formatMinutes;
 			itemRenderer.enabledFunction = isMinuteEnabled;
 			itemRenderer.itemHasEnabled = true;
@@ -1638,7 +1722,14 @@ package feathers.controls
 		 */
 		protected function hoursListItemRendererFactory():DefaultListItemRenderer
 		{
-			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
 			itemRenderer.labelFunction = formatHours;
 			itemRenderer.enabledFunction = isHourEnabled;
 			itemRenderer.itemHasEnabled = true;
@@ -1650,7 +1741,14 @@ package feathers.controls
 		 */
 		protected function dateAndTimeDatesListItemRendererFactory():DefaultListItemRenderer
 		{
-			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
 			itemRenderer.labelFunction = formatDateAndTimeDate;
 			itemRenderer.accessoryLabelFunction = formatDateAndTimeWeekday;
 			return itemRenderer;
@@ -1661,7 +1759,14 @@ package feathers.controls
 		 */
 		protected function monthsListItemRendererFactory():DefaultListItemRenderer
 		{
-			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
 			itemRenderer.labelFunction = formatMonthName;
 			itemRenderer.enabledFunction = isMonthEnabled;
 			itemRenderer.itemHasEnabled = true;
@@ -1673,7 +1778,14 @@ package feathers.controls
 		 */
 		protected function datesListItemRendererFactory():DefaultListItemRenderer
 		{
-			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
 			itemRenderer.enabledFunction = isDateEnabled;
 			itemRenderer.itemHasEnabled = true;
 			return itemRenderer;
@@ -1684,7 +1796,14 @@ package feathers.controls
 		 */
 		protected function yearsListItemRendererFactory():DefaultListItemRenderer
 		{
-			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			if(this._itemRendererFactory !== null)
+			{
+				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
+			}
+			else
+			{
+				itemRenderer = new DefaultListItemRenderer();
+			}
 			itemRenderer.enabledFunction = isYearEnabled;
 			itemRenderer.itemHasEnabled = true;
 			return itemRenderer;
