@@ -618,7 +618,7 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-			return this._textLines[0].ascent;
+			return this.calculateLineAscent(this._textLines[0]);
 		}
 
 		/**
