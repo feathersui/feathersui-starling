@@ -444,7 +444,16 @@ package feathers.controls
 		 * <p>In the following example, a cache is provided for textures:</p>
 		 *
 		 * <listing version="3.0">
-		 * loader.textureCache = new TextureCache(30);</listing>
+		 * var cache:TextureCache = new TextureCache(30);
+		 * loader1.textureCache = cache;
+		 * loader2.textureCache = cache;</listing>
+		 * 
+		 * <p><strong>Warning:</strong> the textures in the cache will not be
+		 * disposed automatically. When the cache is no longer needed (such as
+		 * when the <code>ImageLoader</code> components have all been disposed),
+		 * you must call the <code>dispose()</code> method on the
+		 * <code>TextureCache</code>. Failing to do so will result in a serious
+		 * memory leak.</p>
 		 *
 		 * @default null
 		 */
