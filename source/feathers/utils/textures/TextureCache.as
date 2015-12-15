@@ -15,6 +15,46 @@ package feathers.utils.textures
 	 * Caches textures in memory. Each texture may be saved with its own key,
 	 * such as the URL where the original image file is located.
 	 * 
+	 * <p><strong>Note:</strong> Most developers will only need to create a
+	 * <code>TextureCache</code>, pass it to multiple <code>ImageLoader</code>
+	 * components, and dispose the cache when finished. APIs to retain and
+	 * release textures are meant to be used by <code>ImageLoader</code>.</p>
+	 * 
+	 * <p>A single <code>TextureCache</code> may be passed to multiple
+	 * <code>ImageLoader</code> components using the <code>textureCache</code>
+	 * property:</p>
+	 * 
+	 * <listing version="3.0">
+	 * var cache:TextureCache = new TextureCache();
+	 * loader1.textureCache = cache;
+	 * loader2.textureCache = cache;</listing>
+	 *
+	 * <p>Don't forget to dispose the <code>TextureCache</code> when it is no
+	 * longer needed -- to avoid memory leaks:</p>
+	 *
+	 * <listing version="3.0">
+	 * cache.dispose();</listing>
+	 * 
+	 * <p>To use a TextureCache in a <code>List</code> or
+	 * <code>GroupedList</code> with the default item renderer, pass the cache
+	 * to the <code>ImageLoader</code> components using the
+	 * <code>iconLoaderFactory</code> or
+	 * <code>accessoryLoaderFactory</code>:</p>
+	 * 
+	 * <listing version="3.0">
+	 * var cache:TextureCache = new TextureCache();
+	 * list.itemRendererFactory = function():IListItemRenderer
+	 * {
+	 *     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	 *     itemRenderer.iconLoaderFactory = function():ImageLoader
+	 *     {
+	 *         var loader:ImageLoader = new ImageLoader();
+	 *         loader.textureCache = cache;
+	 *         return loader;
+	 *     };
+	 *     return itemRenderer;
+	 * };</listing>
+	 * 
 	 * @see feathers.controls.ImageLoader#textureCache
 	 */
 	public class TextureCache
