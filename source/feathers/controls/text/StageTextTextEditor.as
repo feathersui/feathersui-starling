@@ -247,7 +247,8 @@ package feathers.controls.text
 		 */
 		public function StageTextTextEditor()
 		{
-			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os);
+			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os) || 
+				(Capabilities.playerType === "Desktop" && Capabilities.isDebugger);
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
 		}
@@ -1445,13 +1446,22 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				//since we're measuring with TextField, but rendering with
-				//StageText, we're using height instead of textHeight here to be
-				//sure that the measured size is on the larger side, in case the
-				//rendered size is actually bigger than textHeight
-				//if only StageText had an API for text measurement, we wouldn't
-				//be in this mess...
-				newHeight = this._measureTextField.height;
+				if(this._stageTextIsTextField)
+				{
+					//we know that the StageText implementation is using
+					//TextField internally, so textHeight will be accurate.
+					newHeight = this._measureTextField.textHeight;
+				}
+				else
+				{
+					//since we're measuring with TextField, but rendering with
+					//StageText, we're using height instead of textHeight here to be
+					//sure that the measured size is on the larger side, in case the
+					//rendered size is actually bigger than textHeight
+					//if only StageText had an API for text measurement, we wouldn't
+					//be in this mess...
+					newHeight = this._measureTextField.height;
+				}
 				if(newHeight < this.explicitMinHeight)
 				{
 					newHeight = this.explicitMinHeight;
