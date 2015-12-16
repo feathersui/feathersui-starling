@@ -2468,14 +2468,14 @@ package feathers.controls
 					}
 					default: //middle
 					{
-						this.textEditor.y = biggerBaseline - this.textEditor.baseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
+						this.textEditor.y = biggerBaseline - this.textEditor.baseline + this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2);
 						if(this.promptTextRenderer)
 						{
-							this.promptTextRenderer.y = biggerBaseline - promptBaseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
+							this.promptTextRenderer.y = biggerBaseline - promptBaseline + this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2);
 						}
 						if(this.currentIcon)
 						{
-							this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
+							this.currentIcon.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2);
 						}
 					}
 				}
