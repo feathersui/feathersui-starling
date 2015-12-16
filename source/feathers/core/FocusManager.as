@@ -237,7 +237,14 @@ package feathers.core
 				return;
 			}
 			manager.isEnabled = false;
-			stack.splice(index, 1);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				stack["removeAt"](index);
+			}
+			else
+			{
+				stack.splice(index, 1);
+			}
 			//if this is the top-level focus manager, enable the previous one
 			if(index > 0 && index == stack.length)
 			{

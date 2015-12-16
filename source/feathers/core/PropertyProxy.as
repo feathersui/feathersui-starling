@@ -121,14 +121,21 @@ package feathers.core
 			}
 			else
 			{
-				var lastIndex:int = this._names.length - 1;
-				if(index == lastIndex)
+				if(Array.prototype.removeAt !== undefined)
 				{
-					this._names.pop();
+					this._names["removeAt"](index);
 				}
 				else
 				{
-					this._names.splice(index, 1);
+					var lastIndex:int = this._names.length - 1;
+					if(index == lastIndex)
+					{
+						this._names.pop();
+					}
+					else
+					{
+						this._names.splice(index, 1);
+					}
 				}
 			}
 			var result:Boolean = delete this._storage[nameAsString];
@@ -197,7 +204,14 @@ package feathers.core
 				this._onChangeCallbacks.pop();
 				return;
 			}
-			this._onChangeCallbacks.splice(index, 1);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this._onChangeCallbacks["removeAt"](index);
+			}
+			else
+			{
+				this._onChangeCallbacks.splice(index, 1);
+			}
 		}
 
 		/**

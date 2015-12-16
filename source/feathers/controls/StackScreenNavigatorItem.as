@@ -530,7 +530,14 @@ package feathers.controls
 			{
 				return;
 			}
-			this._popEvents.splice(index, 1);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this._popEvents["removeAt"](index);
+			}
+			else
+			{
+				this._popEvents.splice(index, 1);
+			}
 		}
 
 		/**
@@ -586,7 +593,14 @@ package feathers.controls
 			{
 				return;
 			}
-			this._popToRootEvents.splice(index, 1);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this._popToRootEvents["removeAt"](index);
+			}
+			else
+			{
+				this._popToRootEvents.splice(index, 1);
+			}
 		}
 
 		/**

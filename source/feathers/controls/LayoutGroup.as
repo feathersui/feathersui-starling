@@ -402,13 +402,24 @@ package feathers.controls
 			}
 			if(oldIndex >= 0)
 			{
-				this.items.splice(oldIndex, 1);
+				if(Array.prototype.removeAt !== undefined)
+				{
+					this.items["removeAt"](oldIndex);
+				}
+				else
+				{
+					this.items.splice(oldIndex, 1);
+				}
 			}
 			var itemCount:int = this.items.length;
 			if(index == itemCount)
 			{
 				//faster than splice because it avoids gc
 				this.items[index] = child;
+			}
+			else if(Array.prototype.insertAt !== undefined)
+			{
+				this.items["insertAt"](index, child);
 			}
 			else
 			{
@@ -425,7 +436,14 @@ package feathers.controls
 		{
 			if(index >= 0 && index < this.items.length)
 			{
-				this.items.splice(index, 1);
+				if(Array.prototype.removeAt !== undefined)
+				{
+					this.items["removeAt"](index);
+				}
+				else
+				{
+					this.items.splice(index, 1);
+				}
 			}
 			var child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
@@ -455,8 +473,16 @@ package feathers.controls
 			//the super function already checks if oldIndex < 0, and throws an
 			//appropriate error, so no need to do it again!
 
-			this.items.splice(oldIndex, 1);
-			this.items.splice(index, 0, child);
+			if(Array.prototype.insertAt !== undefined)
+			{
+				this.items["removeAt"](oldIndex);
+				this.items["insertAt"](index, child);
+			}
+			else
+			{
+				this.items.splice(oldIndex, 1);
+				this.items.splice(index, 0, child);
+			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
@@ -465,7 +491,7 @@ package feathers.controls
 		 */
 		override public function swapChildrenAt(index1:int, index2:int):void
 		{
-			super.swapChildrenAt(index1, index2)
+			super.swapChildrenAt(index1, index2);
 			var child1:DisplayObject = this.items[index1];
 			var child2:DisplayObject = this.items[index2];
 			this.items[index1] = child2;

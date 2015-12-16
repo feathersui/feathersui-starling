@@ -157,20 +157,18 @@ package feathers.core
 			{
 				return;
 			}
-			if(index == 0)
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this.names["removeAt"](index);
+			}
+			else if(index === 0)
 			{
 				this.names.shift();
-				this.dispatchEventWith(Event.CHANGE);
-				return;
 			}
-			var lastIndex:int = this.names.length - 1;
-			if(index == lastIndex)
+			else
 			{
-				this.names.pop();
-				this.dispatchEventWith(Event.CHANGE);
-				return;
+				this.names.splice(index, 1);
 			}
-			this.names.splice(index,  1);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 

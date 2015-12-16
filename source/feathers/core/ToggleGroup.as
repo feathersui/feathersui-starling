@@ -238,7 +238,14 @@ package feathers.core
 			{
 				return;
 			}
-			this._items.splice(index, 1);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this._items["removeAt"](index);
+			}
+			else
+			{
+				this._items.splice(index, 1);
+			}
 			item.removeEventListener(Event.CHANGE, item_changeHandler);
 			if(item is IGroupedToggle)
 			{
@@ -353,8 +360,16 @@ package feathers.core
 				//no change needed
 				return;
 			}
-			this._items.splice(oldIndex, 1);
-			this._items.splice(index, 0, item);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this._items["removeAt"](oldIndex);
+				this._items["insertAt"](index, item);
+			}
+			else
+			{
+				this._items.splice(oldIndex, 1);
+				this._items.splice(index, 0, item);
+			}
 			if(this._selectedIndex >= 0)
 			{
 				if(this._selectedIndex == oldIndex)

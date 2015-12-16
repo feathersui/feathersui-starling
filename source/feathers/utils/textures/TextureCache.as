@@ -65,13 +65,7 @@ package feathers.utils.textures
 		public function TextureCache(maxUnretainedTextures:int = int.MAX_VALUE)
 		{
 			this._maxUnretainedTextures = maxUnretainedTextures;
-			this._hasInsertAtRemoveAt = "insertAt" in this._unretainedKeys;
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _hasInsertAtRemoveAt:Boolean;
 
 		/**
 		 * @private
@@ -300,17 +294,17 @@ package feathers.utils.textures
 		protected function removeUnretainedKey(key:String):void
 		{
 			var index:int = this._unretainedKeys.indexOf(key);
-			if(this._hasInsertAtRemoveAt)
+			if(Array.prototype.removeAt !== undefined)
 			{
 				this._unretainedKeys["removeAt"](index);
-			}
-			else if(index === (this._unretainedKeys.length - 1))
-			{
-				this._unretainedKeys.pop();
 			}
 			else if(index === 0)
 			{
 				this._unretainedKeys.shift();
+			}
+			else if(index === (this._unretainedKeys.length - 1))
+			{
+				this._unretainedKeys.pop();
 			}
 			else
 			{

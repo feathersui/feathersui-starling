@@ -1240,10 +1240,17 @@ package feathers.layout
 		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			var widthValue:* = item ? item.width: undefined;
-			this._widthCache.splice(index, 0, widthValue);
-			
 			var heightValue:* = item ? item.height : undefined;
-			this._heightCache.splice(index, 0, heightValue);
+			if(Array.prototype.insertAt !== undefined)
+			{
+				this._widthCache["insertAt"](index, widthValue);
+				this._heightCache["insertAt"](index, heightValue);
+			}
+			else
+			{
+				this._widthCache.splice(index, 0, widthValue);
+				this._heightCache.splice(index, 0, heightValue);
+			}
 		}
 
 		/**
@@ -1251,8 +1258,16 @@ package feathers.layout
 		 */
 		public function removeFromVariableVirtualCacheAtIndex(index:int):void
 		{
-			this._widthCache.splice(index, 1);
-			this._heightCache.splice(index, 1);
+			if(Array.prototype.removeAt !== undefined)
+			{
+				this._widthCache["removeAt"](index);
+				this._heightCache["removeAt"](index);
+			}
+			else
+			{
+				this._widthCache.splice(index, 1);
+				this._heightCache.splice(index, 1);
+			}
 		}
 
 		/**
