@@ -2009,17 +2009,6 @@ package feathers.controls.text
 			{
 				smallerGlobalScale = globalScaleY;
 			}
-			if(this.is3D)
-			{
-				HELPER_MATRIX3D = this.getTransformationMatrix3D(this.stage, HELPER_MATRIX3D);
-				HELPER_POINT3D = MatrixUtil.transformCoords3D(HELPER_MATRIX3D, 0, 0, 0, HELPER_POINT3D);
-				HELPER_POINT.setTo(HELPER_POINT3D.x, HELPER_POINT3D.y);
-			}
-			else
-			{
-				MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			}
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
 			{
@@ -2031,8 +2020,19 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 2 * smallerGlobalScale;
 			}
-			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset);
-			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset);
+			if(this.is3D)
+			{
+				HELPER_MATRIX3D = this.getTransformationMatrix3D(this.stage, HELPER_MATRIX3D);
+				HELPER_POINT3D = MatrixUtil.transformCoords3D(HELPER_MATRIX3D, -gutterPositionOffset, -gutterPositionOffset, 0, HELPER_POINT3D);
+				HELPER_POINT.setTo(HELPER_POINT3D.x, HELPER_POINT3D.y);
+			}
+			else
+			{
+				MatrixUtil.transformCoords(HELPER_MATRIX, -gutterPositionOffset, -gutterPositionOffset, HELPER_POINT);
+			}
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
+			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
