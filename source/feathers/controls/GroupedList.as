@@ -9,6 +9,9 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
+	import feathers.controls.renderers.IGroupedListFooterRenderer;
+	import feathers.controls.renderers.IGroupedListHeaderRenderer;
+	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.controls.supportClasses.GroupedListDataViewPort;
 	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
@@ -2725,6 +2728,42 @@ package feathers.controls
 			}
 
 			return null;
+		}
+
+		/**
+		 * Returns the current item renderer used to render a specific item. May
+		 * return <code>null</code> if an item doesn't currently have an item
+		 * renderer because the layout is virtual and the item is not visible.
+		 */
+		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
+		{
+			return this.dataViewPort.itemToItemRenderer(item);
+		}
+
+		/**
+		 * Returns the current header renderer used to render specific header
+		 * data. May return <code>null</code> if the header data doesn't
+		 * currently have a header renderer because the layout is virtual and
+		 * the header is not visible.
+		 * 
+		 * @see #groupToHeaderData()
+		 */
+		public function headerDataToHeaderRenderer(headerData:Object):IGroupedListHeaderRenderer
+		{
+			return this.dataViewPort.headerDataToHeaderRenderer(headerData);
+		}
+
+		/**
+		 * Returns the current footer renderer used to render specific footer
+		 * data. May return <code>null</code> if the footer data doesn't
+		 * currently have a footer renderer because the layout is virtual and
+		 * the footer is not visible.
+		 *
+		 * @see #groupToFooterData()
+		 */
+		public function footerDataToFooterRenderer(footerData:Object):IGroupedListFooterRenderer
+		{
+			return this.dataViewPort.footerDataToFooterRenderer(footerData);
 		}
 
 		/**

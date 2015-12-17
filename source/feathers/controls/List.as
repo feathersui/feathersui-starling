@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
@@ -1346,6 +1347,16 @@ package feathers.controls
 			{
 				delete this._itemRendererFactories[id];
 			}
+		}
+
+		/**
+		 * Returns the current item renderer used to render a specific item. May
+		 * return <code>null</code> if an item doesn't currently have an item
+		 * renderer because the layout is virtual and the item is not visible.
+		 */
+		public function itemToItemRenderer(item:Object):IListItemRenderer
+		{
+			return this.dataViewPort.itemToItemRenderer(item);
 		}
 
 		/**

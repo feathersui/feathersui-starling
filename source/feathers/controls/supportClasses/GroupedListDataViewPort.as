@@ -1029,6 +1029,21 @@ package feathers.controls.supportClasses
 				this._verticalScrollPosition, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
 
+		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
+		{
+			return IGroupedListItemRenderer(this._itemRendererMap[item]);
+		}
+
+		public function headerDataToHeaderRenderer(headerData:Object):IGroupedListHeaderRenderer
+		{
+			return IGroupedListHeaderRenderer(this._headerRendererMap[headerData]);
+		}
+
+		public function footerDataToFooterRenderer(footerData:Object):IGroupedListFooterRenderer
+		{
+			return IGroupedListFooterRenderer(this._footerRendererMap[footerData]);
+		}
+
 		override public function dispose():void
 		{
 			this.refreshInactiveRenderers(true);

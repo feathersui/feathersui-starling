@@ -10,6 +10,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.List;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
@@ -593,6 +594,11 @@ package feathers.controls.supportClasses
 			return this._layout.getNearestScrollPositionForIndex(index,
 				this._horizontalScrollPosition, this._verticalScrollPosition,
 				this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+		}
+		
+		public function itemToItemRenderer(item:Object):IListItemRenderer
+		{
+			return IListItemRenderer(this._rendererMap[item]);
 		}
 
 		override public function dispose():void
