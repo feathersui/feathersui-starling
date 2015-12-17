@@ -3174,7 +3174,10 @@ package feathers.controls.renderers
 				{
 					return labelResult as String;
 				}
-				return labelResult.toString();
+				else if(labelResult)
+				{
+					return labelResult.toString();
+				}
 			}
 			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
@@ -3183,7 +3186,10 @@ package feathers.controls.renderers
 				{
 					return labelResult as String;
 				}
-				return labelResult.toString();
+				else if(labelResult)
+				{
+					return labelResult.toString();
+				}
 			}
 			else if(item is String)
 			{
@@ -3195,7 +3201,7 @@ package feathers.controls.renderers
 				//non-strictly equal to null
 				return item.toString();
 			}
-			return "";
+			return null;
 		}
 
 		/**
@@ -4249,10 +4255,11 @@ package feathers.controls.renderers
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
 			this.refreshMaxLabelSize(false);
-			if(this._label && this.labelTextRenderer)
+			var labelRenderer:DisplayObject = null;
+			if(this._label !== null && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.validate();
-				var labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
+				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
 			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
 			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
@@ -4261,7 +4268,7 @@ package feathers.controls.renderers
 			{
 				accessoryGap = this._gap;
 			}
-			if(this._label && this.labelTextRenderer && iconIsInLayout && accessoryIsInLayout)
+			if(labelRenderer && iconIsInLayout && accessoryIsInLayout)
 			{
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
@@ -4284,7 +4291,7 @@ package feathers.controls.renderers
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
 				}
 			}
-			else if(this._label && this.labelTextRenderer)
+			else if(labelRenderer)
 			{
 				this.positionSingleChild(labelRenderer);
 				//we won't position both the icon and accessory here, otherwise
@@ -4331,7 +4338,7 @@ package feathers.controls.renderers
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
 			}
-			if(this._label && this.labelTextRenderer)
+			if(labelRenderer)
 			{
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;

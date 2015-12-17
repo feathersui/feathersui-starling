@@ -2682,22 +2682,23 @@ package feathers.controls
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
 			this.refreshMaxLabelSize(false);
-			if(this._label && this.labelTextRenderer && this.currentIcon)
+			var labelRenderer:DisplayObject = null;
+			if(this._label !== null && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.validate();
-				this.positionSingleChild(DisplayObject(this.labelTextRenderer));
-				if(this._iconPosition != ICON_POSITION_MANUAL)
-				{
-					this.positionLabelAndIcon();
-				}
-
+				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
-			else if(this._label && this.labelTextRenderer && !this.currentIcon)
+			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
+			if(labelRenderer && iconIsInLayout)
 			{
-				this.labelTextRenderer.validate();
-				this.positionSingleChild(DisplayObject(this.labelTextRenderer));
+				this.positionSingleChild(labelRenderer);
+				this.positionLabelAndIcon();
 			}
-			else if((!this._label || !this.labelTextRenderer) && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
+			else if(labelRenderer)
+			{
+				this.positionSingleChild(labelRenderer);
+			}
+			else if(iconIsInLayout)
 			{
 				this.positionSingleChild(this.currentIcon);
 			}
@@ -2712,7 +2713,7 @@ package feathers.controls
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
 			}
-			if(this._label && this.labelTextRenderer)
+			if(labelRenderer)
 			{
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
@@ -2744,7 +2745,7 @@ package feathers.controls
 					calculatedHeight = this._maxHeight;
 				}
 			}
-			if(this._label && this.labelTextRenderer)
+			if(this._label != null && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 				this.labelTextRenderer.maxHeight = calculatedHeight - this._paddingTop - this._paddingBottom;
