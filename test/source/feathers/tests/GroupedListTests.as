@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.GroupedList;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
+	import feathers.controls.renderers.IGroupedListHeaderRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.FeathersEventType;
@@ -688,6 +689,57 @@ package feathers.tests
 			})
 			this._list.validate();
 			Assert.assertTrue("customLastItemRendererStyleName not used when data provider has only one item in group and neither customFirstItemRendererStyleName or customSingleItemRendererStyleName are defined", containsLastItemRendererStyleName);
+		}
+
+		[Test]
+		public function testItemToItemRenderer():void
+		{
+			this._list.height = 220;
+			this._list.validate();
+			var item00:Object = this._list.dataProvider.getItemAt(0, 0);
+			var itemRenderer00:IGroupedListItemRenderer = this._list.itemToItemRenderer(item00);
+			var item01:Object = this._list.dataProvider.getItemAt(0, 1);
+			var itemRenderer01:IGroupedListItemRenderer = this._list.itemToItemRenderer(item01);
+			var item20:Object = this._list.dataProvider.getItemAt(2, 0);
+			var itemRenderer20:IGroupedListItemRenderer = this._list.itemToItemRenderer(item20);
+			Assert.assertNotNull("itemToItemRenderer() incorrectly returned null for item at index 0,0 that should have an item renderer", itemRenderer00);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item00, itemRenderer00.data);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect group index", 0, itemRenderer00.groupIndex);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect item index", 0, itemRenderer00.itemIndex);
+			Assert.assertNotNull("itemToItemRenderer() incorrectly returned null for item at index 0,1 that should have an item renderer", itemRenderer01);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item01, itemRenderer01.data);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect group index", 0, itemRenderer01.groupIndex);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect item index", 1, itemRenderer01.itemIndex);
+			Assert.assertNull("itemToItemRenderer() incorrectly returned item renderer for item that should not have one", itemRenderer20);
+		}
+
+		[Test]
+		public function testHeaderDataToHeaderRenderer():void
+		{
+			this._list.height = 20;
+			this._list.validate();
+			var group0:Object = this._list.dataProvider.getItemAt(0);
+			var header0:Object = this._list.groupToHeaderData(group0);
+			var headerRenderer0:IGroupedListHeaderRenderer = this._list.headerDataToHeaderRenderer(header0);
+			var group1:Object = this._list.dataProvider.getItemAt(1);
+			var header1:Object = this._list.groupToHeaderData(group1);
+			var headerRenderer1:IGroupedListHeaderRenderer = this._list.headerDataToHeaderRenderer(header1);
+			Assert.assertNotNull("headerDataToHeaderRenderer() incorrectly returned null for header at group index 0", headerRenderer0);
+			Assert.assertStrictlyEquals("Header renderer returned by headerDataToHeaderRenderer() has incorrect header data", header0, headerRenderer0.data);
+			Assert.assertStrictlyEquals("Header renderer returned by headerDataToHeaderRenderer() has incorrect group index", 0, headerRenderer0.groupIndex);
+			Assert.assertNull("headerDataToHeaderRenderer() incorrectly returned header renderer for header data that should not have one", headerRenderer1);
+		}
+
+		[Test]
+		public function testGroupToHeaderData():void
+		{
+			var rawData:Object = this._list.dataProvider.data;
+			var group0:Object = this._list.dataProvider.getItemAt(0);
+			var header0:Object = this._list.groupToHeaderData(group0);
+			var group1:Object = this._list.dataProvider.getItemAt(1);
+			var header1:Object = this._list.groupToHeaderData(group1);
+			Assert.assertStrictlyEquals("groupToHeaderData() incorrectly returned wrong header data for index 0", header0, rawData[0].header);
+			Assert.assertStrictlyEquals("groupToHeaderData() incorrectly returned wrong header data for index 1", header1, rawData[1].header);
 		}
 	}
 }

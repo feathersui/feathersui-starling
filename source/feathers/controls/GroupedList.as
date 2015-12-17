@@ -2733,7 +2733,11 @@ package feathers.controls
 		/**
 		 * Returns the current item renderer used to render a specific item. May
 		 * return <code>null</code> if an item doesn't currently have an item
-		 * renderer because the layout is virtual and the item is not visible.
+		 * renderer. Most lists use virtual layouts where only the visible items
+		 * will have an item renderer, so the result will usually be
+		 * <code>null</code> for most items in the data provider.
+		 *
+		 * @see ../../../help/faq/layout-virtualization.html What is layout virtualization?
 		 */
 		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
 		{
@@ -2743,10 +2747,13 @@ package feathers.controls
 		/**
 		 * Returns the current header renderer used to render specific header
 		 * data. May return <code>null</code> if the header data doesn't
-		 * currently have a header renderer because the layout is virtual and
-		 * the header is not visible.
+		 * currently have a header renderer. Most lists use virtual layouts
+		 * where only the visible headers will have a header renderer, so the
+		 * result will usually be <code>null</code> for most header data in the
+		 * data provider.
 		 * 
 		 * @see #groupToHeaderData()
+		 * @see ../../../help/faq/layout-virtualization.html What is layout virtualization?
 		 */
 		public function headerDataToHeaderRenderer(headerData:Object):IGroupedListHeaderRenderer
 		{
@@ -2756,10 +2763,13 @@ package feathers.controls
 		/**
 		 * Returns the current footer renderer used to render specific footer
 		 * data. May return <code>null</code> if the footer data doesn't
-		 * currently have a footer renderer because the layout is virtual and
-		 * the footer is not visible.
+		 * currently have a footer renderer. Most lists use virtual layouts
+		 * where only the visible footers will have a footer renderer, so the
+		 * result will usually be <code>null</code> for most footer data in the
+		 * data provider.
 		 *
 		 * @see #groupToFooterData()
+		 * @see ../../../help/faq/layout-virtualization.html What is layout virtualization?
 		 */
 		public function footerDataToFooterRenderer(footerData:Object):IGroupedListFooterRenderer
 		{
