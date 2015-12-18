@@ -1,4 +1,4 @@
-# Feathers UI 3.0.0-prerelease
+# Feathers UI 3.0.0-prerelease [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
 
 ---
 
