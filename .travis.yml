@@ -19,7 +19,7 @@ before_script:
   - cp -f playerglobal.swc air_sdk/frameworks/libs/player/11.1/
   - export AIR_HOME="$TRAVIS_BUILD_DIR/air_sdk"
   # starling
-  - git clone git://github.com/Gamua/Starling-Framework.git --depth 1
+  - git clone -b v2.0 git://github.com/Gamua/Starling-Framework.git --depth 1
   - mkdir -p third-party/starling
   - cp -r Starling-Framework/starling/src/* third-party/starling
   # flexunit
