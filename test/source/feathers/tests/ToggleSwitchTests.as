@@ -93,7 +93,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(THUMB_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._toggle.stage.hitTest(position, true);
+			var target:DisplayObject = this._toggle.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the toggle switch's thumb",
 				this._toggle.getChildByName(THUMB_NAME).name, target.name);
@@ -129,7 +129,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(THUMB_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._toggle.stage.hitTest(position, true);
+			var target:DisplayObject = this._toggle.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the toggle switch's thumb",
 				this._toggle.getChildByName(THUMB_NAME).name, target.name);
@@ -162,7 +162,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH - THUMB_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._toggle.stage.hitTest(position, true);
+			var target:DisplayObject = this._toggle.stage.hitTest(position);
 
 			//we don't care what is hit as long as its not the thumb
 			Assert.assertTrue("The hit test did not return a display object contained by the toggle switch",

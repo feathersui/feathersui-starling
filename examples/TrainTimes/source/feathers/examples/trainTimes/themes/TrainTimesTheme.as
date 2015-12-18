@@ -103,7 +103,6 @@ package feathers.examples.trainTimes.themes
 		protected var stationListDetailTextFormat:TextFormat;
 
 		protected var atlas:TextureAtlas;
-		protected var atlasBitmapData:BitmapData;
 		protected var mainBackgroundTexture:Texture;
 		protected var headerBackgroundTextures:Scale9Textures;
 		protected var stationListNormalIconTexture:Texture;
@@ -130,11 +129,6 @@ package feathers.examples.trainTimes.themes
 			{
 				this.atlas.dispose();
 				this.atlas = null;
-			}
-			if(this.atlasBitmapData)
-			{
-				this.atlasBitmapData.dispose();
-				this.atlasBitmapData = null;
 			}
 			super.dispose();
 		}
@@ -191,16 +185,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function initializeTextures():void
 		{
-			var atlasBitmapData:BitmapData = (new ATLAS_IMAGE()).bitmapData;
-			this.atlas = new TextureAtlas(Texture.fromBitmapData(atlasBitmapData, false), XML(new ATLAS_XML()));
-			if(Starling.handleLostContext)
-			{
-				this.atlasBitmapData = atlasBitmapData;
-			}
-			else
-			{
-				atlasBitmapData.dispose();
-			}
+			this.atlas = new TextureAtlas(Texture.fromEmbeddedAsset(ATLAS_IMAGE, false), XML(new ATLAS_XML()));
 
 			this.mainBackgroundTexture = this.atlas.getTexture("main-background");
 			this.headerBackgroundTextures = new Scale9Textures(this.atlas.getTexture("header-background"), HEADER_SCALE9_GRID);

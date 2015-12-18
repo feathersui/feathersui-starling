@@ -356,7 +356,7 @@ package feathers.media
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					touch.getLocation(this.stage, HELPER_POINT);
-					var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+					var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 					if(isInBounds)
 					{
 						this._isToggled = !this._isToggled;

@@ -182,11 +182,11 @@ package feathers.utils.touch
 					touch.getLocation(stage, HELPER_POINT);
 					if(this._target is DisplayObjectContainer)
 					{
-						var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(HELPER_POINT, true));
+						var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(HELPER_POINT));
 					}
 					else
 					{
-						isInBounds = this._target === stage.hitTest(HELPER_POINT, true);
+						isInBounds = this._target === stage.hitTest(HELPER_POINT);
 					}
 					if(isInBounds)
 					{

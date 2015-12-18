@@ -1783,7 +1783,7 @@ package feathers.controls
 			this._clipContent = value;
 			if(!value && this._viewPort)
 			{
-				this._viewPort.clipRect = null;
+				this._viewPort.mask = null;
 			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
@@ -3099,18 +3099,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
 			//save localX and localY because localPoint could change after the
 			//call to super.hitTest().
 			var localX:Number = localPoint.x;
 			var localY:Number = localPoint.y;
 			//first check the children for touches
-			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint);
 			if(!result)
 			{
 				//we want to register touches in our hitArea as a last resort
-				if(forTouch && (!this.visible || !this.touchable))
+				if(!this.visible || !this.touchable)
 				{
 					return null;
 				}
@@ -3241,7 +3241,7 @@ package feathers.controls
 
 			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || clippingInvalid)
 			{
-				this.refreshClipRect();
+				this.refreshMask();
 			}
 			this.refreshFocusIndicator();
 
@@ -4272,32 +4272,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshClipRect():void
+		protected function refreshMask():void
 		{
 			if(!this._clipContent)
 			{
 				return;
 			}
-			var clipRect:Rectangle = this._viewPort.clipRect;
-			if(!clipRect)
-			{
-				clipRect = new Rectangle();
-			}
-			clipRect.x = this._horizontalScrollPosition;
-			clipRect.y = this._verticalScrollPosition;
 			var clipWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
 			if(clipWidth < 0)
 			{
 				clipWidth = 0;
 			}
-			clipRect.width = clipWidth;
 			var clipHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
 			if(clipHeight < 0)
 			{
 				clipHeight = 0;
 			}
-			clipRect.height = clipHeight;
-			this._viewPort.clipRect = clipRect;
+			var mask:Quad = this._viewPort.mask as Quad;
+			if(!mask)
+			{
+				mask = new Quad(1, 1, 0xff0ff);
+				this._viewPort.mask = mask;
+			}
+			mask.x = this._horizontalScrollPosition;
+			mask.y = this._verticalScrollPosition;
+			mask.width = clipWidth;
+			mask.height = clipHeight;
 		}
 
 		/**
@@ -5620,7 +5620,7 @@ package feathers.controls
 			var scaleFactor:Number = nativeScaleFactor / Starling.contentScaleFactor;
 			HELPER_POINT.x = (event.stageX - starlingViewPort.x) * scaleFactor;
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) * scaleFactor;
-			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
+			if(this.contains(this.stage.hitTest(HELPER_POINT)))
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);
 				var localMouseX:Number = HELPER_POINT.x;
@@ -5707,7 +5707,7 @@ package feathers.controls
 
 				this._horizontalScrollBarTouchPointID = -1;
 				touch.getLocation(displayHorizontalScrollBar, HELPER_POINT);
-				var isInBounds:Boolean = this.horizontalScrollBar.hitTest(HELPER_POINT, true) != null;
+				var isInBounds:Boolean = this.horizontalScrollBar.hitTest(HELPER_POINT) !== null;
 				if(!isInBounds)
 				{
 					this.hideHorizontalScrollBar();
@@ -5759,7 +5759,7 @@ package feathers.controls
 
 				this._verticalScrollBarTouchPointID = -1;
 				touch.getLocation(displayVerticalScrollBar, HELPER_POINT);
-				var isInBounds:Boolean = this.verticalScrollBar.hitTest(HELPER_POINT, true) != null;
+				var isInBounds:Boolean = this.verticalScrollBar.hitTest(HELPER_POINT) !== null;
 				if(!isInBounds)
 				{
 					this.hideVerticalScrollBar();

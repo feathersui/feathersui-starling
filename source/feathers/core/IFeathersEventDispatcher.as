@@ -62,6 +62,6 @@ package feathers.core
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#hasEventListener() Full description of starling.events.EventDispatcher.hasEventListener() in Gamua's Starling Framework API Reference
 		 */
-		function hasEventListener(type:String):Boolean;
+		function hasEventListener(type:String, listener:Function = null):Boolean;
 	}
 }

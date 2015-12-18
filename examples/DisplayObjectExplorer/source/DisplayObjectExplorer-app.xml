@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.DisplayObjectExplorer</id>
 	<filename>Display Objects</filename>
 	<name>Display Objects</name>
-	<versionNumber>2.3.0</versionNumber>
+	<versionNumber>3.0.0</versionNumber>
 	<description>Display Object Explorer example application built with Feathers UI controls for Starling</description>
 	<copyright>2015 Bowler Hat LLC</copyright>
 

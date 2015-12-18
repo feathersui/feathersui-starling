@@ -112,7 +112,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 410);
-			var target:DisplayObject = this._list.stage.hitTest(position, true);
+			var target:DisplayObject = this._list.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;

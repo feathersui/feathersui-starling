@@ -371,7 +371,7 @@ package feathers.examples.gallery
 					this.touchPointID = -1;
 
 					touch.getLocation(this, HELPER_POINT);
-					if(this.hitTest(HELPER_POINT, true) != null && !this._isSelected)
+					if(this.hitTest(HELPER_POINT) !== null && !this._isSelected)
 					{
 						this.isSelected = true;
 					}

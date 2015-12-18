@@ -115,7 +115,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
 				this._slider.getChildByName(THUMB_NAME).name, target.name);
@@ -153,7 +153,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
 				this._slider.getChildByName(THUMB_NAME).name, target.name);
@@ -191,7 +191,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
 				this._slider.getChildByName(THUMB_NAME).name, target.name);
@@ -229,7 +229,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 3, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's track",
 				this._slider.getChildByName(TRACK_NAME).name, target.name);
@@ -264,7 +264,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(2 * TRACK_WIDTH / 3, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's track",
 				this._slider.getChildByName(TRACK_NAME).name, target.name);

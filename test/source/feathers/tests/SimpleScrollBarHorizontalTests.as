@@ -110,7 +110,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(SCROLL_BAR_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's thumb",
 				this._scrollBar.getChildByName(THUMB_NAME).name, target.name);
@@ -150,7 +150,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(SCROLL_BAR_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's thumb",
 				this._scrollBar.getChildByName(THUMB_NAME).name, target.name);
@@ -190,7 +190,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(SCROLL_BAR_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's thumb",
 				this._scrollBar.getChildByName(THUMB_NAME).name, target.name);
@@ -231,7 +231,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(SCROLL_BAR_WIDTH / 4, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 			
 			Assert.assertTrue("The hit test did not return a display object contained by the scroll bar",
 				this._scrollBar.contains(target));
@@ -271,7 +271,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(3 * SCROLL_BAR_WIDTH / 4, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertTrue("The hit test did not return a display object contained by the scroll bar",
 				this._scrollBar.contains(target));
@@ -311,7 +311,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(SCROLL_BAR_WIDTH / 3, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertTrue("The hit test did not return a display object contained by the scroll bar",
 				this._scrollBar.contains(target));

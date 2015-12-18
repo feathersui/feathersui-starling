@@ -55,7 +55,7 @@ package feathers.tests
 			Async.delayCall(this, function():void
 			{
 				var position:Point = new Point(stage.stageWidth - 1, stage.stageHeight - 1);
-				var target:DisplayObject = stage.hitTest(position, true);
+				var target:DisplayObject = stage.hitTest(position);
 				var touch:Touch = new Touch(0);
 				touch.target = target;
 				touch.phase = TouchPhase.BEGAN;
@@ -78,7 +78,7 @@ package feathers.tests
 			Async.delayCall(this, function():void
 			{
 				var position:Point = new Point(stage.stageWidth - 1, stage.stageHeight - 1);
-				var target:DisplayObject = stage.hitTest(position, true);
+				var target:DisplayObject = stage.hitTest(position);
 				var touch:Touch = new Touch(0);
 				touch.target = target;
 				touch.phase = TouchPhase.BEGAN;
@@ -124,7 +124,7 @@ package feathers.tests
 			Async.delayCall(this, function():void
 			{
 				var position:Point = new Point(stage.stageWidth - 1, stage.stageHeight - 1);
-				var target:DisplayObject = stage.hitTest(position, true);
+				var target:DisplayObject = stage.hitTest(position);
 				var touch:Touch = new Touch(0);
 				touch.target = target;
 				touch.phase = TouchPhase.BEGAN;
@@ -149,7 +149,7 @@ package feathers.tests
 			Async.delayCall(this, function():void
 			{
 				var position:Point = new Point(stage.stageWidth - 1, stage.stageHeight - 1);
-				var target:DisplayObject = stage.hitTest(position, true);
+				var target:DisplayObject = stage.hitTest(position);
 				var touch:Touch = new Touch(0);
 				touch.target = target;
 				touch.phase = TouchPhase.BEGAN;

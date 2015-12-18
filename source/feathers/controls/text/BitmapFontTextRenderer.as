@@ -21,10 +21,10 @@ package feathers.controls.text
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 
-	import starling.core.RenderSupport;
 	import starling.display.Image;
-	import starling.display.QuadBatch;
+	import starling.display.MeshBatch;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
@@ -134,7 +134,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _characterBatch:QuadBatch;
+		protected var _characterBatch:MeshBatch;
 
 		/**
 		 * @private
@@ -309,36 +309,36 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _smoothing:String = TextureSmoothing.BILINEAR;
+		protected var _textureSmoothing:String = TextureSmoothing.BILINEAR;
 
 		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
 		/**
-		 * A smoothing value passed to each character image.
+		 * A texture smoothing value passed to each character image.
 		 *
 		 * <p>In the following example, the texture smoothing is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.smoothing = TextureSmoothing.NONE;</listing>
+		 * textRenderer.textureSmoothing = TextureSmoothing.NONE;</listing>
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
 		 */
-		public function get smoothing():String
+		public function get textureSmoothing():String
 		{
-			return this._smoothing;
+			return this._textureSmoothing;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set smoothing(value:String):void
+		public function set textureSmoothing(value:String):void
 		{
-			if(this._smoothing == value)
+			if(this._textureSmoothing == value)
 			{
 				return;
 			}
-			this._smoothing = value;
+			this._textureSmoothing = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -606,7 +606,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			var offsetX:Number = 0;
 			var offsetY:Number = 0;
@@ -618,7 +618,7 @@ package feathers.controls.text
 			}
 			this._characterBatch.x = this._batchX + offsetX;
 			this._characterBatch.y = offsetY;
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 		
 		/**
@@ -827,7 +827,7 @@ package feathers.controls.text
 		{
 			if(!this._characterBatch)
 			{
-				this._characterBatch = new QuadBatch();
+				this._characterBatch = new MeshBatch();
 				this._characterBatch.touchable = false;
 				this.addChild(this._characterBatch);
 			}
@@ -851,7 +851,7 @@ package feathers.controls.text
 			if(dataInvalid || stylesInvalid || sizeInvalid || stateInvalid)
 			{
 				this._characterBatch.batchable = !this._useSeparateBatch;
-				this._characterBatch.reset();
+				this._characterBatch.clear();
 				if(!this.currentTextFormat || this._text === null)
 				{
 					this.setSizeInternal(0, 0, false);
@@ -1156,7 +1156,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function addCharacterToBatch(charData:BitmapChar, x:Number, y:Number, scale:Number, support:RenderSupport = null, parentAlpha:Number = 1):void
+		protected function addCharacterToBatch(charData:BitmapChar, x:Number, y:Number, scale:Number, painter:Painter = null):void
 		{
 			var texture:Texture = charData.texture;
 			var frame:Rectangle = texture.frame;
@@ -1184,18 +1184,18 @@ package feathers.controls.text
 			HELPER_IMAGE.x = x;
 			HELPER_IMAGE.y = y;
 			HELPER_IMAGE.color = this.currentTextFormat.color;
-			HELPER_IMAGE.smoothing = this._smoothing;
+			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
 
-			if(support)
+			if(painter)
 			{
-				support.pushMatrix();
+				/*support.pushMatrix();
 				support.transformMatrix(HELPER_IMAGE);
-				support.batchQuad(HELPER_IMAGE, parentAlpha, HELPER_IMAGE.texture, this._smoothing);
-				support.popMatrix();
+				support.batchQuad(HELPER_IMAGE, parentAlpha, HELPER_IMAGE.texture, this._textureSmoothing);
+				support.popMatrix();*/
 			}
 			else
 			{
-				this._characterBatch.addImage(HELPER_IMAGE);
+				this._characterBatch.addMesh(HELPER_IMAGE);
 			}
 		}
 

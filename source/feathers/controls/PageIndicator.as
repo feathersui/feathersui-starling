@@ -891,7 +891,7 @@ package feathers.controls
 				}
 				this.touchPointID = -1;
 				touch.getLocation(this.stage, HELPER_POINT);
-				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 				if(isInBounds)
 				{
 					var lastPageIndex:int = this._pageCount - 1;

@@ -37,11 +37,11 @@ package feathers.controls.text
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
@@ -1143,7 +1143,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
 			{
@@ -1169,7 +1169,7 @@ package feathers.controls.text
 				this.positionSnapshot();
 			}
 
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -2044,7 +2044,7 @@ package feathers.controls.text
 				var target:DisplayObject = this;
 				do
 				{
-					if(!target.hasVisibleArea)
+					if(!target.visible)
 					{
 						this.stageText.stage.focus = null;
 						break;

@@ -494,7 +494,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT);
 				if(!this.panel.contains(hitTestResult))
 				{
 					this.touchPointID = -1;
@@ -509,7 +509,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				hitTestResult = stage.hitTest(HELPER_POINT, true);
+				hitTestResult = stage.hitTest(HELPER_POINT);
 				if(this.panel.contains(hitTestResult))
 				{
 					return;

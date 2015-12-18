@@ -200,7 +200,7 @@ package feathers.themes
 		{
 			var renderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
 			//since it's a pixel font, we don't want to smooth it.
-			renderer.smoothing = TextureSmoothing.NONE;
+			renderer.textureSmoothing = TextureSmoothing.NONE;
 			return renderer;
 		}
 
@@ -225,7 +225,7 @@ package feathers.themes
 			//because it can't use the soft keyboard or other mobile-friendly UI
 			var editor:BitmapFontTextEditor = new BitmapFontTextEditor();
 			//since it's a pixel font, we don't want to smooth it.
-			editor.smoothing = TextureSmoothing.NONE;
+			editor.textureSmoothing = TextureSmoothing.NONE;
 			return editor;
 		}
 

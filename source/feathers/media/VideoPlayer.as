@@ -26,6 +26,7 @@ package feathers.media
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.Texture;
 
 	/**
@@ -813,18 +814,6 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		override public function get hasVisibleArea():Boolean
-		{
-			if(this._isFullScreen)
-			{
-				return false;
-			}
-			return super.hasVisibleArea;
-		}
-
-		/**
-		 * @private
-		 */
 		override public function dispose():void
 		{
 			this.videoSource = null;
@@ -841,6 +830,18 @@ package feathers.media
 				return;
 			}
 			super.play();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(painter:Painter):void
+		{
+			if(this._isFullScreen)
+			{
+				return;
+			}
+			super.render(painter);
 		}
 
 		/**

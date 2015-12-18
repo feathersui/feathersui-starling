@@ -191,12 +191,12 @@ package feathers.tests
 			return null;
 		}
 		
-		private function list_rendererAddHandler(event:Event, itemRenderer:IListItemRenderer)
+		private function list_rendererAddHandler(event:Event, itemRenderer:IListItemRenderer):void
 		{
 			this._itemRendererMap[itemRenderer.data] = itemRenderer;
 		}
 
-		private function list_rendererRemoveHandler(event:Event, itemRenderer:IListItemRenderer)
+		private function list_rendererRemoveHandler(event:Event, itemRenderer:IListItemRenderer):void
 		{
 			delete this._itemRendererMap[itemRenderer.data];
 		}

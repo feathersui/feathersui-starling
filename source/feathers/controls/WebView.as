@@ -19,10 +19,10 @@ package feathers.controls
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
 
 	/**
@@ -278,10 +278,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			this.refreshViewPort();
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -504,7 +504,7 @@ package feathers.controls
 			var target:DisplayObject = this;
 			do
 			{
-				if(!target.hasVisibleArea)
+				if(!target.visible)
 				{
 					this.stageWebView.stage = null;
 					return;

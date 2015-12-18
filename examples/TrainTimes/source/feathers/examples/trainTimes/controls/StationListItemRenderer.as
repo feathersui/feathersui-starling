@@ -601,7 +601,7 @@ package feathers.examples.trainTimes.controls
 				{
 					this._touchPointID = -1;
 					touch.getLocation(this, HELPER_POINT);
-					var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
+					var isInBounds:Boolean = this.hitTest(HELPER_POINT) !== null;
 					if(isInBounds)
 					{
 						if(!this._isSelected && !this._data.isDepartingFromHere)

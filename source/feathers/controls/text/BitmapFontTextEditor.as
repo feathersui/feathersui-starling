@@ -27,7 +27,6 @@ package feathers.controls.text
 	import flash.text.TextFormatAlign;
 	import flash.ui.Keyboard;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -36,6 +35,7 @@ package feathers.controls.text
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.rendering.Painter;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 
@@ -749,13 +749,13 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			var oldBatchX:Number = this._batchX;
 			var oldCursorX:Number = this._cursorSkin.x;
 			this._batchX -= this._scrollX;
 			this._cursorSkin.x -= this._scrollX;
-			super.render(support, parentAlpha);
+			super.render(painter);
 			this._batchX = oldBatchX;
 			this._cursorSkin.x = oldCursorX;
 		}
@@ -808,14 +808,17 @@ package feathers.controls.text
 				this.positionSelectionBackground();
 			}
 
-			var clipRect:Rectangle = this.clipRect;
-			if(clipRect)
+			var mask:Quad = this.mask as Quad;
+			if(mask)
 			{
-				clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
+				mask.x = 0;
+				mask.y = 0;
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
 			}
 			else
 			{
-				this.clipRect = new Rectangle(0, 0, this.actualWidth, this.actualHeight)
+				this.mask = new Quad(this.actualWidth, this.actualHeight, 0xff00ff);
 			}
 		}
 
@@ -828,7 +831,7 @@ package feathers.controls.text
 			if(this.explicitWidth === this.explicitWidth && //!isNaN
 				result.x > this.explicitWidth)
 			{
-				this._characterBatch.reset();
+				this._characterBatch.clear();
 				var oldTextAlign:String = this.currentTextFormat.align;
 				this.currentTextFormat.align = TextFormatAlign.LEFT;
 				result = super.layoutCharacters(result);
@@ -1159,7 +1162,7 @@ package feathers.controls.text
 			var target:DisplayObject = this;
 			do
 			{
-				if(!target.hasVisibleArea)
+				if(!target.visible)
 				{
 					this.clearFocus();
 					break;
@@ -1235,7 +1238,7 @@ package feathers.controls.text
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;

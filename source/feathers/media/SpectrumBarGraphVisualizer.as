@@ -15,7 +15,7 @@ package feathers.media
 	import flash.utils.ByteArray;
 
 	import starling.display.Quad;
-	import starling.display.QuadBatch;
+	import starling.display.MeshBatch;
 	import starling.events.Event;
 
 	/**
@@ -64,7 +64,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected var _bars:QuadBatch;
+		protected var _bars:MeshBatch;
 
 		/**
 		 * @private
@@ -211,7 +211,7 @@ package feathers.media
 		 */
 		override protected function initialize():void
 		{
-			this._bars = new QuadBatch();
+			this._bars = new MeshBatch();
 			this.addChild(this._bars);
 		}
 
@@ -254,7 +254,7 @@ package feathers.media
 		 */
 		protected function layoutBarGraph():void
 		{
-			this._bars.reset();
+			this._bars.clear();
 			if(!this._mediaPlayer.isPlaying)
 			{
 				return;
@@ -311,7 +311,7 @@ package feathers.media
 				HELPER_QUAD.width = barWidth;
 				HELPER_QUAD.height = Math.floor(maxHeight * this._barValues[i]);
 				HELPER_QUAD.y = maxHeight - HELPER_QUAD.height;
-				this._bars.addQuad(HELPER_QUAD);
+				this._bars.addMesh(HELPER_QUAD);
 				xPosition += barWidth + this._gap;
 			}
 		}

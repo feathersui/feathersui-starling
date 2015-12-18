@@ -207,7 +207,7 @@ package feathers.themes
 		{
 			var renderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
 			//since it's a pixel font, we don't want to smooth it.
-			renderer.smoothing = TextureSmoothing.NONE;
+			renderer.textureSmoothing = TextureSmoothing.NONE;
 			return renderer;
 		}
 

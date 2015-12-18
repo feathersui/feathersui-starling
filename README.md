@@ -24,10 +24,8 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 
 ## Minimum Requirements
 
-* Adobe AIR 19.0 or newer for mobile apps
-* Adobe AIR 3.5 or newer for desktop apps
-* Adobe Flash Player 11.5 or newer for web browser apps
-* Starling Framework 1.7
+* Adobe AIR or Adobe Flash Player 19.0
+* [Starling Framework 2.0](http://forum.starling-framework.org/topic/preview-starling-20)
 
 ## Downloads
 

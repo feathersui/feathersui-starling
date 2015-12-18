@@ -1108,7 +1108,7 @@ package feathers.controls
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(!this._textEditorHasFocus && isInBounds)
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);

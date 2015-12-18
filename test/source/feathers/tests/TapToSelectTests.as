@@ -61,7 +61,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._target.stage.hitTest(position, true);
+			var target:DisplayObject = this._target.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -89,7 +89,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._target.stage.hitTest(position, true);
+			var target:DisplayObject = this._target.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -116,7 +116,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._target.stage.hitTest(position, true);
+			var target:DisplayObject = this._target.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -144,7 +144,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._target.stage.hitTest(position, true);
+			var target:DisplayObject = this._target.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -170,7 +170,7 @@ package feathers.tests
 			this._target.isSelected = true;
 			
 			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._target.stage.hitTest(position, true);
+			var target:DisplayObject = this._target.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -192,7 +192,7 @@ package feathers.tests
 			this._target.isSelected = true;
 
 			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._target.stage.hitTest(position, true);
+			var target:DisplayObject = this._target.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;

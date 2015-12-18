@@ -39,7 +39,6 @@ package feathers.controls.text
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -47,10 +46,11 @@ package feathers.controls.text
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.MathUtil;
 	import starling.utils.MatrixUtil;
-	import starling.utils.getNextPowerOfTwo;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -1395,7 +1395,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot)
 			{
@@ -1418,7 +1418,7 @@ package feathers.controls.text
 			{
 				this.transformTextField();
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -2065,8 +2065,8 @@ package feathers.controls.text
 			}
 			else
 			{
-				this._snapshotWidth = getNextPowerOfTwo(this._textFieldSnapshotClipRect.width);
-				this._snapshotHeight = getNextPowerOfTwo(this._textFieldSnapshotClipRect.height);
+				this._snapshotWidth = MathUtil.getNextPowerOfTwo(this._textFieldSnapshotClipRect.width);
+				this._snapshotHeight = MathUtil.getNextPowerOfTwo(this._textFieldSnapshotClipRect.height);
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
@@ -2227,7 +2227,7 @@ package feathers.controls.text
 				var target:DisplayObject = this;
 				do
 				{
-					if(!target.hasVisibleArea)
+					if(!target.visible)
 					{
 						this.clearFocus();
 						break;
@@ -2262,7 +2262,7 @@ package feathers.controls.text
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;

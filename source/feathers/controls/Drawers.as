@@ -28,6 +28,7 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.display.Stage;
 	import starling.events.Event;
@@ -2227,15 +2228,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
-			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint);
 			if(result)
 			{
-				if(!forTouch)
-				{
-					return result;
-				}
 				if(this._isDragging)
 				{
 					return this;
@@ -2259,7 +2256,7 @@ package feathers.controls
 				return result;
 			}
 			//we want to register touches in our hitArea as a last resort
-			if(forTouch && (!this.visible || !this.touchable))
+			if(!this.visible || !this.touchable)
 			{
 				return null;
 			}
@@ -3120,9 +3117,9 @@ package feathers.controls
 				return;
 			}
 			var topSprite:Sprite = Sprite(this._topDrawer);
-			if(!topSprite.clipRect)
+			if(!topSprite.mask)
 			{
-				topSprite.clipRect = new Rectangle(0, 0, this.actualWidth, this._content.y);
+				topSprite.mask = new Quad(this.actualWidth, this._content.y, 0xffffff);
 			}
 		}
 
@@ -3145,9 +3142,9 @@ package feathers.controls
 				return;
 			}
 			var rightSprite:Sprite = Sprite(this._rightDrawer);
-			if(!rightSprite.clipRect)
+			if(!rightSprite.mask)
 			{
-				rightSprite.clipRect = new Rectangle(0, 0, -this._content.x, this.actualHeight);
+				rightSprite.mask = new Quad(-this._content.x, this.actualHeight, 0xff00ff);
 			}
 		}
 
@@ -3170,9 +3167,9 @@ package feathers.controls
 				return;
 			}
 			var bottomSprite:Sprite = Sprite(this._bottomDrawer);
-			if(!bottomSprite.clipRect)
+			if(!bottomSprite.mask)
 			{
-				bottomSprite.clipRect = new Rectangle(0, 0, this.actualWidth, -this._content.y);
+				bottomSprite.mask = new Quad(this.actualWidth, -this._content.y, 0xff00ff);
 			}
 		}
 
@@ -3195,9 +3192,9 @@ package feathers.controls
 				return;
 			}
 			var leftSprite:Sprite = Sprite(this._leftDrawer);
-			if(!leftSprite.clipRect)
+			if(!leftSprite.mask)
 			{
-				leftSprite.clipRect = new Rectangle(0, 0, this._content.x, this.actualHeight);
+				leftSprite.mask = new Quad(this._content.x, this.actualHeight, 0xff00ff);
 			}
 		}
 
@@ -3325,7 +3322,7 @@ package feathers.controls
 		protected function handleTapToClose(touch:Touch):void
 		{
 			touch.getLocation(this.stage, HELPER_POINT);
-			if(this != this.stage.hitTest(HELPER_POINT, true))
+			if(this !== this.stage.hitTest(HELPER_POINT))
 			{
 				return;
 			}
@@ -3974,17 +3971,17 @@ package feathers.controls
 				if(this._topDrawer is Sprite)
 				{
 					var sprite:Sprite = Sprite(this._topDrawer);
-					var clipRect:Rectangle = sprite.clipRect;
-					if(clipRect)
+					var mask:Quad = sprite.mask as Quad;
+					if(mask)
 					{
-						clipRect.height = this._content.y;
+						mask.height = this._content.y;
 					}
 				}
 				if(this._rightDrawer is Sprite)
 				{
 					sprite = Sprite(this._rightDrawer);
-					clipRect = sprite.clipRect;
-					if(clipRect)
+					mask = sprite.mask as Quad;
+					if(mask)
 					{
 						var rightClipWidth:Number = -this._content.x;
 						if(isLeftDrawerDocked)
@@ -3995,15 +3992,15 @@ package feathers.controls
 								rightClipWidth += this._leftDrawerDivider.width;
 							}
 						}
-						clipRect.x = this._rightDrawer.width - rightClipWidth;
-						clipRect.width = rightClipWidth;
+						mask.x = this._rightDrawer.width - rightClipWidth;
+						mask.width = rightClipWidth;
 					}
 				}
 				if(this._bottomDrawer is Sprite)
 				{
 					sprite = Sprite(this._bottomDrawer);
-					clipRect = sprite.clipRect;
-					if(clipRect)
+					mask = sprite.mask as Quad;
+					if(mask)
 					{
 						var bottomClipHeight:Number = -this._content.y;
 						if(isTopDrawerDocked)
@@ -4014,17 +4011,17 @@ package feathers.controls
 								bottomClipHeight += this._topDrawerDivider.height;
 							}
 						}
-						clipRect.y = this._bottomDrawer.height - bottomClipHeight;
-						clipRect.height = bottomClipHeight;
+						mask.y = this._bottomDrawer.height - bottomClipHeight;
+						mask.height = bottomClipHeight;
 					}
 				}
 				if(this._leftDrawer is Sprite)
 				{
 					sprite = Sprite(this._leftDrawer);
-					clipRect = sprite.clipRect;
-					if(clipRect)
+					mask = sprite.mask as Quad;
+					if(mask)
 					{
-						clipRect.width = this._content.x;
+						mask.width = this._content.x;
 					}
 				}
 				var contentX:Number = this._content.x;
@@ -4119,7 +4116,7 @@ package feathers.controls
 			this._openOrCloseTween = null;
 			if(this._topDrawer is Sprite)
 			{
-				Sprite(this._topDrawer).clipRect = null;
+				Sprite(this._topDrawer).mask = null;
 			}
 			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
 			var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
@@ -4146,7 +4143,7 @@ package feathers.controls
 			this._openOrCloseTween = null;
 			if(this._rightDrawer is Sprite)
 			{
-				Sprite(this._rightDrawer).clipRect = null;
+				Sprite(this._rightDrawer).mask = null;
 			}
 			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
 			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
@@ -4173,7 +4170,7 @@ package feathers.controls
 			this._openOrCloseTween = null;
 			if(this._bottomDrawer is Sprite)
 			{
-				Sprite(this._bottomDrawer).clipRect = null;
+				Sprite(this._bottomDrawer).mask = null;
 			}
 			var isBottomDrawerOpen:Boolean = this.isBottomDrawerOpen;
 			var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
@@ -4200,7 +4197,7 @@ package feathers.controls
 			this._openOrCloseTween = null;
 			if(this._leftDrawer is Sprite)
 			{
-				Sprite(this._leftDrawer).clipRect = null;
+				Sprite(this._leftDrawer).mask = null;
 			}
 			var isLeftDrawerOpen:Boolean = this.isLeftDrawerOpen;
 			var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;

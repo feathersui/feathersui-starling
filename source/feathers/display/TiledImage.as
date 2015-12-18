@@ -15,19 +15,18 @@ package feathers.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.display.QuadBatch;
+	import starling.display.MeshBatch;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.MatrixUtil;
 
 	[Exclude(name="numChildren",kind="property")]
-	[Exclude(name="isFlattened",kind="property")]
 	[Exclude(name="addChild",kind="method")]
 	[Exclude(name="addChildAt",kind="method")]
 	[Exclude(name="broadcastEvent",kind="method")]
@@ -43,8 +42,6 @@ package feathers.display
 	[Exclude(name="sortChildren",kind="method")]
 	[Exclude(name="swapChildren",kind="method")]
 	[Exclude(name="swapChildrenAt",kind="method")]
-	[Exclude(name="flatten",kind="method")]
-	[Exclude(name="unflatten",kind="method")]
 
 	/**
 	 * Tiles a texture to fill the specified bounds.
@@ -72,11 +69,10 @@ package feathers.display
 			this.texture = texture;
 			this.initializeWidthAndHeight();
 
-			this._batch = new QuadBatch();
+			this._batch = new MeshBatch();
 			this._batch.touchable = false;
 			this.addChild(this._batch);
 
-			this.addEventListener(Event.FLATTEN, flattenHandler);
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 
@@ -85,7 +81,7 @@ package feathers.display
 
 		private var _hitArea:Rectangle;
 
-		private var _batch:QuadBatch;
+		private var _batch:MeshBatch;
 		private var _image:Image;
 
 		private var _originalImageWidth:Number;
@@ -205,37 +201,37 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _smoothing:String = TextureSmoothing.BILINEAR;
+		private var _textureSmoothing:String = TextureSmoothing.BILINEAR;
 
 		/**
-		 * The smoothing value to pass to the tiled images.
+		 * The texture smoothing value to pass to the tiled images.
 		 *
 		 * <p>In the following example, the smoothing is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * image.smoothing = TextureSmoothing.NONE;</listing>
+		 * image.textureSmoothing = TextureSmoothing.NONE;</listing>
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
 		 */
-		public function get smoothing():String
+		public function get textureSmoothing():String
 		{
-			return this._smoothing;
+			return this._textureSmoothing;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set smoothing(value:String):void
+		public function set textureSmoothing(value:String):void
 		{
 			if(TextureSmoothing.isValid(value))
 			{
-				this._smoothing = value;
+				this._textureSmoothing = value;
 			}
 			else
 			{
-				throw new ArgumentError("Invalid smoothing mode: " + value);
+				throw new ArgumentError("Invalid texture smoothing mode: " + value);
 			}
 			this._propertiesChanged = true;
 			this.invalidate();
@@ -433,9 +429,9 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
-			if(forTouch && (!this.visible || !this.touchable))
+			if(!this.visible || !this.touchable)
 			{
 				return null;
 			}
@@ -454,13 +450,13 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this._isInvalid)
 			{
 				this.validate();
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -485,13 +481,13 @@ package feathers.display
 			this._isValidating = true;
 			if(this._propertiesChanged)
 			{
-				this._image.smoothing = this._smoothing;
+				this._image.textureSmoothing = this._textureSmoothing;
 				this._image.color = this._color;
 			}
 			if(this._propertiesChanged || this._layoutChanged)
 			{
 				this._batch.batchable = !this._useSeparateBatch;
-				this._batch.reset();
+				this._batch.clear();
 				this._image.scaleX = this._image.scaleY = this._textureScale;
 				var scaledTextureWidth:Number = this._originalImageWidth * this._textureScale;
 				var scaledTextureHeight:Number = this._originalImageHeight * this._textureScale;
@@ -514,17 +510,11 @@ package feathers.display
 
 					var xCoord:Number = imageWidth / scaledTextureWidth;
 					var yCoord:Number = imageHeight / scaledTextureHeight;
-					HELPER_POINT.x = xCoord;
-					HELPER_POINT.y = 0;
-					this._image.setTexCoords(1, HELPER_POINT);
+					this._image.setTexCoords(1, xCoord, 0);
+					this._image.setTexCoords(3, xCoord, yCoord);
+					this._image.setTexCoords(2, 0, yCoord);
 
-					HELPER_POINT.y = yCoord;
-					this._image.setTexCoords(3, HELPER_POINT);
-
-					HELPER_POINT.x = 0;
-					this._image.setTexCoords(2, HELPER_POINT);
-
-					this._batch.addImage(this._image);
+					this._batch.addMesh(this._image);
 
 					if(nextXPosition >= this._width)
 					{
@@ -570,14 +560,6 @@ package feathers.display
 		{
 			this.width = this._originalImageWidth * this._textureScale;
 			this.height = this._originalImageHeight * this._textureScale;
-		}
-
-		/**
-		 * @private
-		 */
-		private function flattenHandler(event:Event):void
-		{
-			this.validate();
 		}
 
 		/**

@@ -251,7 +251,6 @@ package feathers.core
 			this._styleProvider = this.defaultStyleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, feathersControl_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, feathersControl_removedFromStageHandler);
-			this.addEventListener(Event.FLATTEN, feathersControl_flattenHandler);
 		}
 
 		/**
@@ -1611,22 +1610,21 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
 			if(this._isQuickHitAreaEnabled)
 			{
-				if(forTouch && (!this.visible || !this.touchable))
+				if(!this.visible || !this.touchable)
 				{
 					return null;
 				}
-				var clipRect:Rectangle = this.clipRect;
-				if(clipRect && !clipRect.containsPoint(localPoint))
+				if(this.mask && !this.hitTestMask(localPoint))
 				{
 					return null;
 				}
 				return this._hitArea.containsPoint(localPoint) ? this : null;
 			}
-			return super.hitTest(localPoint, forTouch);
+			return super.hitTest(localPoint);
 		}
 
 		/**
@@ -2192,14 +2190,6 @@ package feathers.core
 			this._hasFocus = false;
 			this._showFocus = false;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function feathersControl_flattenHandler(event:Event):void
-		{
-			this.validate();
 		}
 
 		/**

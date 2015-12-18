@@ -205,6 +205,7 @@ import flash.geom.Rectangle;
 import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.DisplayObject;
+import starling.display.Quad;
 import starling.display.Sprite;
 
 class CoverTween extends Tween
@@ -213,9 +214,9 @@ class CoverTween extends Tween
 		xOffset:Number, yOffset:Number, duration:Number, ease:Object, onCompleteCallback:Function,
 		tweenProperties:Object)
 	{
-		var clipRect:Rectangle = new Rectangle(0, 0, oldScreen.width, oldScreen.height);
+		var mask:Quad = new Quad(oldScreen.width, oldScreen.height);
 		this._temporaryParent = new Sprite();
-		this._temporaryParent.clipRect = clipRect;
+		this._temporaryParent.mask = mask;
 		oldScreen.parent.addChild(this._temporaryParent);
 		var delegate:RenderDelegate = new RenderDelegate(oldScreen);
 		delegate.alpha = oldScreen.alpha;
@@ -227,7 +228,7 @@ class CoverTween extends Tween
 		oldScreen.visible = false;
 		this._savedOldScreen = oldScreen;
 
-		super(this._temporaryParent.clipRect, duration, ease);
+		super(this._temporaryParent.mask, duration, ease);
 
 		if(xOffset < 0)
 		{
@@ -275,22 +276,22 @@ class CoverTween extends Tween
 
 	private function updateNewScreen():void
 	{
-		var clipRect:Rectangle = this._temporaryParent.clipRect;
+		var mask:Quad = Quad(this._temporaryParent.mask);
 		if(this._savedXOffset < 0)
 		{
-			this._savedNewScreen.x = clipRect.width;
+			this._savedNewScreen.x = mask.width;
 		}
 		else if(this._savedXOffset > 0)
 		{
-			this._savedNewScreen.x = -clipRect.width;
+			this._savedNewScreen.x = -mask.width;
 		}
 		if(this._savedYOffset < 0)
 		{
-			this._savedNewScreen.y = clipRect.height;
+			this._savedNewScreen.y = mask.height;
 		}
 		else if(this._savedYOffset > 0)
 		{
-			this._savedNewScreen.y = -clipRect.height;
+			this._savedNewScreen.y = -mask.height;
 		}
 	}
 

@@ -17,19 +17,18 @@ package feathers.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.display.QuadBatch;
+	import starling.display.MeshBatch;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.MatrixUtil;
 
 	[Exclude(name="numChildren",kind="property")]
-	[Exclude(name="isFlattened",kind="property")]
 	[Exclude(name="addChild",kind="method")]
 	[Exclude(name="addChildAt",kind="method")]
 	[Exclude(name="broadcastEvent",kind="method")]
@@ -45,8 +44,6 @@ package feathers.display
 	[Exclude(name="sortChildren",kind="method")]
 	[Exclude(name="swapChildren",kind="method")]
 	[Exclude(name="swapChildrenAt",kind="method")]
-	[Exclude(name="flatten",kind="method")]
-	[Exclude(name="unflatten",kind="method")]
 
 	/**
 	 * Scales an image like a "pill" shape with three regions, either
@@ -82,11 +79,10 @@ package feathers.display
 			this._hitArea = new Rectangle();
 			this.readjustSize();
 
-			this._batch = new QuadBatch();
+			this._batch = new MeshBatch();
 			this._batch.touchable = false;
 			this.addChild(this._batch);
 
-			this.addEventListener(Event.FLATTEN, flattenHandler);
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 
@@ -245,35 +241,35 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _smoothing:String = TextureSmoothing.BILINEAR;
+		private var _textureSmoothing:String = TextureSmoothing.BILINEAR;
 
 		/**
-		 * The smoothing value to pass to the images.
+		 * The texture smoothing value to pass to the images.
 		 *
 		 * <p>In the following example, the smoothing is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * image.smoothing = TextureSmoothing.NONE;</listing>
+		 * image.textureSmoothing = TextureSmoothing.NONE;</listing>
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
 		 */
-		public function get smoothing():String
+		public function get textureSmoothing():String
 		{
-			return this._smoothing;
+			return this._textureSmoothing;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set smoothing(value:String):void
+		public function set textureSmoothing(value:String):void
 		{
-			if(this._smoothing == value)
+			if(this._textureSmoothing == value)
 			{
 				return;
 			}
-			this._smoothing = value;
+			this._textureSmoothing = value;
 			this._propertiesChanged = true;
 			this.invalidate();
 		}
@@ -355,7 +351,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _batch:QuadBatch;
+		private var _batch:MeshBatch;
 
 		/**
 		 * @private
@@ -445,9 +441,9 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
-			if(forTouch && (!this.visible || !this.touchable))
+			if(!this.visible || !this.touchable)
 			{
 				return null;
 			}
@@ -457,13 +453,13 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this._isInvalid)
 			{
 				this.validate();
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -489,7 +485,7 @@ package feathers.display
 			if(this._propertiesChanged || this._layoutChanged || this._renderingChanged)
 			{
 				this._batch.batchable = !this._useSeparateBatch;
-				this._batch.reset();
+				this._batch.clear();
 
 				if(!helperImage)
 				{
@@ -498,7 +494,7 @@ package feathers.display
 					//won't be an error from Quad.
 					helperImage = new Image(this._textures.second);
 				}
-				helperImage.smoothing = this._smoothing;
+				helperImage.textureSmoothing = this._textureSmoothing;
 				helperImage.color = this._color;
 
 				var image:Image;
@@ -528,7 +524,7 @@ package feathers.display
 							helperImage.y = 0;
 							helperImage.width = scaledOppositeEdgeSize;
 							helperImage.height = scaledFirstRegionSize;
-							this._batch.addImage(helperImage);
+							this._batch.addMesh(helperImage);
 						}
 
 						if(scaledSecondRegionSize > 0)
@@ -539,7 +535,7 @@ package feathers.display
 							helperImage.y = scaledFirstRegionSize;
 							helperImage.width = scaledOppositeEdgeSize;
 							helperImage.height = scaledSecondRegionSize;
-							this._batch.addImage(helperImage);
+							this._batch.addMesh(helperImage);
 						}
 
 						if(scaledThirdRegionSize > 0)
@@ -550,7 +546,7 @@ package feathers.display
 							helperImage.y = this._height - scaledThirdRegionSize;
 							helperImage.width = scaledOppositeEdgeSize;
 							helperImage.height = scaledThirdRegionSize;
-							this._batch.addImage(helperImage);
+							this._batch.addMesh(helperImage);
 						}
 					}
 				}
@@ -580,7 +576,7 @@ package feathers.display
 							helperImage.y = 0;
 							helperImage.width = scaledFirstRegionSize;
 							helperImage.height = scaledOppositeEdgeSize;
-							this._batch.addImage(helperImage);
+							this._batch.addMesh(helperImage);
 						}
 
 						if(scaledSecondRegionSize > 0)
@@ -591,7 +587,7 @@ package feathers.display
 							helperImage.y = 0;
 							helperImage.width = scaledSecondRegionSize;
 							helperImage.height = scaledOppositeEdgeSize;
-							this._batch.addImage(helperImage);
+							this._batch.addMesh(helperImage);
 						}
 
 						if(scaledThirdRegionSize > 0)
@@ -602,7 +598,7 @@ package feathers.display
 							helperImage.y = 0;
 							helperImage.width = scaledThirdRegionSize;
 							helperImage.height = scaledOppositeEdgeSize;
-							this._batch.addImage(helperImage);
+							this._batch.addMesh(helperImage);
 						}
 					}
 				}
@@ -640,14 +636,6 @@ package feathers.display
 				return;
 			}
 			this._validationQueue.addControl(this, false);
-		}
-
-		/**
-		 * @private
-		 */
-		private function flattenHandler(event:Event):void
-		{
-			this.validate();
 		}
 
 		/**

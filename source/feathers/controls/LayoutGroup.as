@@ -21,9 +21,10 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 
 	/**
 	 * A generic container that supports layout. For a container that supports
@@ -229,7 +230,7 @@ package feathers.controls
 			this._clipContent = value;
 			if(!value)
 			{
-				this.clipRect = null;
+				this.mask = null;
 			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
@@ -512,11 +513,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
 			var localX:Number = localPoint.x;
 			var localY:Number = localPoint.y;
-			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint);
 			if(result)
 			{
 				if(!this._isEnabled)
@@ -525,7 +526,7 @@ package feathers.controls
 				}
 				return result;
 			}
-			if(forTouch && (!this.visible || !this.touchable))
+			if(!this.visible || !this.touchable)
 			{
 				return null;
 			}
@@ -539,7 +540,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		/*override public function render(painter:Painter):void
 		{
 			if(this.currentBackgroundSkin && this.currentBackgroundSkin.hasVisibleArea)
 			{
@@ -566,8 +567,8 @@ package feathers.controls
 					support.popClipRect();
 				}
 			}
-			super.render(support, parentAlpha);
-		}
+			super.render(painter);
+		}*/
 
 		/**
 		 * @private
@@ -848,16 +849,18 @@ package feathers.controls
 				return;
 			}
 
-			var clipRect:Rectangle = this.clipRect;
-			if(!clipRect)
+			var mask:Quad = this.mask as Quad;
+			if(mask)
 			{
-				clipRect = new Rectangle();
+				mask.x = 0;
+				mask.y = 0;
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
 			}
-			clipRect.x = 0;
-			clipRect.y = 0;
-			clipRect.width = this.actualWidth;
-			clipRect.height = this.actualHeight;
-			this.clipRect = clipRect;
+			else
+			{
+				this.mask = new Quad(this.actualWidth, this.actualHeight, 0xff00ff);
+			}
 		}
 
 		/**

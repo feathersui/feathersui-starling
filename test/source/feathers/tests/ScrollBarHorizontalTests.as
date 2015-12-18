@@ -139,7 +139,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(DECREMENT_BUTTON_WIDTH + TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's thumb",
 				this._scrollBar.getChildByName(THUMB_NAME).name, target.name);
@@ -179,7 +179,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(INCREMENT_BUTTON_WIDTH + TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's thumb",
 				this._scrollBar.getChildByName(THUMB_NAME).name, target.name);
@@ -219,7 +219,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(DECREMENT_BUTTON_WIDTH + TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's thumb",
 				this._scrollBar.getChildByName(THUMB_NAME).name, target.name);
@@ -261,7 +261,7 @@ package feathers.tests
 			});
 			var thumbWidth:Number = this._scrollBar.getChildByName(THUMB_NAME).width;
 			var position:Point = new Point(DECREMENT_BUTTON_WIDTH + (TRACK_WIDTH - thumbWidth) / 4, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's track",
 				this._scrollBar.getChildByName(TRACK_NAME).name, target.name);
@@ -300,7 +300,7 @@ package feathers.tests
 			});
 			var thumbWidth:Number = this._scrollBar.getChildByName(THUMB_NAME).width;
 			var position:Point = new Point(DECREMENT_BUTTON_WIDTH + 3 * (TRACK_WIDTH - thumbWidth) / 4, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's track",
 				this._scrollBar.getChildByName(TRACK_NAME).name, target.name);
@@ -338,7 +338,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(DECREMENT_BUTTON_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's decrement button",
 				this._scrollBar.getChildByName(DECREMENT_BUTTON_NAME).name, target.name);
@@ -376,7 +376,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(this._scrollBar.width - INCREMENT_BUTTON_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's increment button",
 				this._scrollBar.getChildByName(INCREMENT_BUTTON_NAME).name, target.name);
@@ -415,7 +415,7 @@ package feathers.tests
 			});
 			var thumbWidth:Number = this._scrollBar.getChildByName(THUMB_NAME).width;
 			var position:Point = new Point(DECREMENT_BUTTON_WIDTH + (TRACK_WIDTH - thumbWidth) / 4, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._scrollBar.stage.hitTest(position, true);
+			var target:DisplayObject = this._scrollBar.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the scroll bar's track",
 				this._scrollBar.getChildByName(TRACK_NAME).name, target.name);

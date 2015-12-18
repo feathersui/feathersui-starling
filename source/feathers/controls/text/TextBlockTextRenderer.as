@@ -39,13 +39,13 @@ package feathers.controls.text
 	import flash.text.engine.TextLineValidity;
 	import flash.text.engine.TextRotation;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
-	import starling.utils.getNextPowerOfTwo;
+	import starling.utils.MathUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
@@ -1004,7 +1004,7 @@ package feathers.controls.text
 			//check if we can use rectangle textures or not
 			if(Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED)
 			{
-				value = getNextPowerOfTwo(value);
+				value = MathUtil.getNextPowerOfTwo(value);
 			}
 			if(this._maxTextureDimensions == value)
 			{
@@ -1262,7 +1262,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot)
 			{
@@ -1342,7 +1342,7 @@ package feathers.controls.text
 				}
 				while(totalBitmapWidth > 0)
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -1588,11 +1588,11 @@ package feathers.controls.text
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
 					{
-						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
+						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
 					}
 					else
 					{
-						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
+						this._snapshotWidth = MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth);
 					}
 				}
 				if(canUseRectangleTexture)
@@ -1610,11 +1610,11 @@ package feathers.controls.text
 				{
 					if(rectangleSnapshotHeight > this._maxTextureDimensions)
 					{
-						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
+						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
 					}
 					else
 					{
-						this._snapshotHeight = getNextPowerOfTwo(rectangleSnapshotHeight);
+						this._snapshotHeight = MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight);
 					}
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;

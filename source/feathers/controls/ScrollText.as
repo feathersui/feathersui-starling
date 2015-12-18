@@ -1083,10 +1083,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function get hasVisibleArea():Boolean
+		/*override public function get hasVisibleArea():Boolean
 		{
 			return true;
-		}
+		}*/
 
 		/**
 		 * @private

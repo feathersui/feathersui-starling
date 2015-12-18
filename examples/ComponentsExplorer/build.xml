@@ -25,7 +25,7 @@
 		<echo message="Building ComponentsExplorerWeb.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
-			<arg value="-swf-version=${swf.version.web}"/>
+			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-advanced-telemetry=true"/>
 			<arg value="-frame=two,feathers.examples.componentsExplorer.Main"/>
 			<arg value="-source-path+=source"/>
@@ -40,7 +40,7 @@
 		<echo message="Building ComponentsExplorer.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${airmobile.config}"/>
-			<arg value="-swf-version=${swf.version.air}"/>
+			<arg value="-swf-version=${swf.version}"/>
 			<!-- uncomment for profiling with scout -->
 			<!--<arg value="-advanced-telemetry=true"/>-->
 			<arg value="-source-path+=source"/>

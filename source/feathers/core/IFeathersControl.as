@@ -128,16 +128,6 @@ package feathers.core
 		function set maxHeight(value:Number):void;
 
 		/**
-		 * @private
-		 */
-		function get clipRect():Rectangle;
-
-		/**
-		 * @private
-		 */
-		function set clipRect(value:Rectangle):void;
-
-		/**
 		 * @copy feathers.core.FeathersControl#isEnabled
 		 */
 		function get isEnabled():Boolean;

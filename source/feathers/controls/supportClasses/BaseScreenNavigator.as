@@ -17,6 +17,7 @@ package feathers.controls.supportClasses
 	import flash.utils.getDefinitionByName;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.errors.AbstractMethodError;
 	import starling.events.Event;
 
@@ -260,7 +261,7 @@ package feathers.controls.supportClasses
 			this._clipContent = value;
 			if(!value)
 			{
-				this.clipRect = null;
+				this.mask = null;
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -438,7 +439,7 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid || sizeInvalid)
 			{
-				this.refreshClipRect();
+				this.refreshMask();
 			}
 		}
 
@@ -517,20 +518,22 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		protected function refreshClipRect():void
+		protected function refreshMask():void
 		{
 			if(!this._clipContent)
 			{
 				return;
 			}
-			var clipRect:Rectangle = this.clipRect;
-			if(!clipRect)
+			var mask:DisplayObject = this.mask as Quad;
+			if(mask)
 			{
-				clipRect = new Rectangle();
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
 			}
-			clipRect.width = this.actualWidth;
-			clipRect.height = this.actualHeight;
-			this.clipRect = clipRect;
+			else
+			{
+				this.mask = new Quad(this.actualWidth, this.actualHeight, 0xff00ff);
+			}
 		}
 
 		/**

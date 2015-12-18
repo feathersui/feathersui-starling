@@ -232,7 +232,7 @@ package feathers.tests
 			return null;
 		}
 
-		private function list_rendererAddHandler(event:Event, renderer:Object)
+		private function list_rendererAddHandler(event:Event, renderer:Object):void
 		{
 			if(renderer is IGroupedListItemRenderer)
 			{
@@ -241,7 +241,7 @@ package feathers.tests
 			}
 		}
 
-		private function list_rendererRemoveHandler(event:Event, renderer:Object)
+		private function list_rendererRemoveHandler(event:Event, renderer:Object):void
 		{
 			if(renderer is IGroupedListItemRenderer)
 			{

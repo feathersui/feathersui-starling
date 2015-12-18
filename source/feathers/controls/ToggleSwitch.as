@@ -24,6 +24,7 @@ package feathers.controls
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
@@ -2124,7 +2125,7 @@ package feathers.controls
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
 			var offLabelStyleName:String = this._customOffLabelStyleName != null ? this._customOffLabelStyleName : this.offLabelStyleName;
 			this.offTextRenderer.styleNameList.add(offLabelStyleName);
-			this.offTextRenderer.clipRect = new Rectangle();
+			this.offTextRenderer.mask = new Quad(1, 1, 0xff00ff);
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
 			var onLabelFactory:Function = this._onLabelFactory;
@@ -2140,7 +2141,7 @@ package feathers.controls
 
 			var onLabelStyleName:String = this._customOnLabelStyleName != null ? this._customOnLabelStyleName : this.onLabelStyleName;
 			this.onTextRenderer.styleNameList.add(onLabelStyleName);
-			this.onTextRenderer.clipRect = new Rectangle();
+			this.onTextRenderer.mask = new Quad(1, 1, 0xff00ff);
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
 
@@ -2164,17 +2165,15 @@ package feathers.controls
 				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
 
-			var clipRect:Rectangle = this.onTextRenderer.clipRect;
-			clipRect.width = maxLabelWidth;
-			clipRect.height = totalLabelHeight;
-			this.onTextRenderer.clipRect = clipRect;
+			var mask:DisplayObject = this.onTextRenderer.mask;
+			mask.width = maxLabelWidth;
+			mask.height = totalLabelHeight;
 
 			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
-			clipRect = this.offTextRenderer.clipRect;
-			clipRect.width = maxLabelWidth;
-			clipRect.height = totalLabelHeight;
-			this.offTextRenderer.clipRect = clipRect;
+			mask = this.offTextRenderer.mask;
+			mask.width = maxLabelWidth;
+			mask.height = totalLabelHeight;
 
 			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
@@ -2190,15 +2189,13 @@ package feathers.controls
 			var thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
 			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
-			var currentClipRect:Rectangle = this.onTextRenderer.clipRect;
-			currentClipRect.x = onScrollOffset
-			this.onTextRenderer.clipRect = currentClipRect;
+			var currentMask:DisplayObject = this.onTextRenderer.mask;
+			currentMask.x = onScrollOffset;
 			this.onTextRenderer.x = this._paddingLeft - onScrollOffset;
 
 			var offScrollOffset:Number = -thumbOffset - (maxLabelWidth - this.offTextRenderer.width) / 2;
-			currentClipRect = this.offTextRenderer.clipRect;
-			currentClipRect.x = offScrollOffset
-			this.offTextRenderer.clipRect = currentClipRect;
+			currentMask = this.offTextRenderer.mask;
+			currentMask.x = offScrollOffset;
 			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
@@ -2472,7 +2469,7 @@ package feathers.controls
 			}
 			this._touchPointID = -1;
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds)
 			{
 				this.setSelectionWithAnimation(!this._isSelected);

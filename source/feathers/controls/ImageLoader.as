@@ -33,9 +33,9 @@ package feathers.controls
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -641,37 +641,37 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _smoothing:String = TextureSmoothing.BILINEAR;
+		private var _textureSmoothing:String = TextureSmoothing.BILINEAR;
 
 		/**
-		 * The smoothing value to use on the internal <code>Image</code>.
+		 * The texture smoothing value to use on the internal <code>Image</code>.
 		 *
 		 * <p>In the following example, the image loader's smoothing is set to a
 		 * custom value:</p>
 		 *
 		 * <listing version="3.0">
-		 * loader.smoothing = TextureSmoothing.NONE;</listing>
+		 * loader.textureSmoothing = TextureSmoothing.NONE;</listing>
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
-		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#smoothing starling.display.Image.smoothing
+		 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#textureSmoothing starling.display.Mesh.textureSmoothing
 		 */
-		public function get smoothing():String
+		public function get textureSmoothing():String
 		{
-			return this._smoothing;
+			return this._textureSmoothing;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set smoothing(value:String):void
+		public function set textureSmoothing(value:String):void
 		{
-			if(this._smoothing == value)
+			if(this._textureSmoothing == value)
 			{
 				return;
 			}
-			this._smoothing = value;
+			this._textureSmoothing = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1357,23 +1357,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
-		{
-			if(this._snapToPixels)
-			{
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				support.translateMatrix(Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx, Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty);
-			}
-			super.render(support, parentAlpha);
-			if(this._snapToPixels)
-			{
-				support.translateMatrix(-(Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx), -(Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty));
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		override public function dispose():void
 		{
 			this._isRestoringTexture = false;
@@ -1596,7 +1579,7 @@ package feathers.controls
 			{
 				return;
 			}
-			this.image.smoothing = this._smoothing;
+			this.image.textureSmoothing = this._textureSmoothing;
 			this.image.color = this._color;
 		}
 
@@ -1669,17 +1652,22 @@ package feathers.controls
 			if((!this._scaleContent || (this._maintainAspectRatio && this._scaleMode !== ScaleMode.SHOW_ALL)) &&
 				(this.actualWidth != imageWidth || this.actualHeight != imageHeight))
 			{
-				var clipRect:Rectangle = this.clipRect;
-				if(!clipRect)
+				var mask:Quad = this.mask as Quad;
+				if(mask)
 				{
-					clipRect = new Rectangle()
+					mask.x = 0;
+					mask.y = 0;
+					mask.width = this.actualWidth;
+					mask.height = this.actualHeight;
 				}
-				clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
-				this.clipRect = clipRect;
+				else
+				{
+					this.mask = new Quad(this.actualWidth, this.actualHeight, 0xff00ff)
+				}
 			}
 			else
 			{
-				this.clipRect = null;
+				this.mask = null;
 			}
 		}
 
@@ -1876,7 +1864,7 @@ package feathers.controls
 		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
-			if(Starling.handleLostContext && !Starling.current.contextValid)
+			if(!Starling.current.contextValid)
 			{
 				//this trace duplicates the behavior of AssetManager
 				trace(CONTEXT_LOST_WARNING);
@@ -1937,7 +1925,7 @@ package feathers.controls
 		 */
 		protected function replaceRawTextureData(rawData:ByteArray):void
 		{
-			if(Starling.handleLostContext && !Starling.current.contextValid)
+			if(!Starling.current.contextValid)
 			{
 				//this trace duplicates the behavior of AssetManager
 				trace(CONTEXT_LOST_WARNING);

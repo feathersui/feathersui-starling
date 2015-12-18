@@ -382,7 +382,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT);
 				var isInBounds:Boolean = false;
 				if(this.content is DisplayObjectContainer)
 				{
@@ -406,7 +406,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				hitTestResult = stage.hitTest(HELPER_POINT, true);
+				hitTestResult = stage.hitTest(HELPER_POINT);
 				isInBounds = false;
 				if(this.content is DisplayObjectContainer)
 				{

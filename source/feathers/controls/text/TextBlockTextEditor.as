@@ -30,7 +30,6 @@ package feathers.controls.text
 	import flash.text.engine.TextLine;
 	import flash.ui.Keyboard;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -39,6 +38,7 @@ package feathers.controls.text
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.rendering.Painter;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -764,12 +764,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			var oldSnapshotX:Number = this._textSnapshotOffsetX;
 			var oldCursorX:Number = this._cursorSkin.x;
 			this._cursorSkin.x -= this._textSnapshotScrollX;
-			super.render(support, parentAlpha);
+			super.render(painter);
 			this._textSnapshotOffsetX = oldSnapshotX;
 			this._cursorSkin.x = oldCursorX;
 		}
@@ -1092,7 +1092,7 @@ package feathers.controls.text
 			var target:DisplayObject = this;
 			do
 			{
-				if(!target.hasVisibleArea)
+				if(!target.visible)
 				{
 					this.clearFocus();
 					break;
@@ -1168,7 +1168,7 @@ package feathers.controls.text
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;
