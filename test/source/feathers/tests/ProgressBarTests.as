@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.ProgressBar;
 
 	import org.flexunit.Assert;
@@ -12,7 +13,7 @@ package feathers.tests
 		private static const BACKGROUND_HEIGHT:Number = 20;
 		private static const FILL_WIDTH:Number = 18;
 		private static const FILL_HEIGHT:Number = 14;
-
+		
 		private var _progress:ProgressBar;
 
 		[Before]
@@ -35,15 +36,6 @@ package feathers.tests
 			this._progress = null;
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
-		}
-
-		[Test]
-		public function testAutoSize():void
-		{
-			Assert.assertStrictlyEquals("The width of the progress bar was not calculated correctly.",
-				BACKGROUND_WIDTH, this._progress.width);
-			Assert.assertStrictlyEquals("The height of the progress bar was not calculated correctly.",
-				BACKGROUND_HEIGHT, this._progress.height);
 		}
 
 		[Test]

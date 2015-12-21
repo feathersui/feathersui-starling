@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 
@@ -243,7 +245,22 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The primary background to display.
+		 * The primary background to display in the progress bar. The background
+		 * skin is displayed below the fill skin, and the fill skin is affected
+		 * by the padding, and the background skin may be seen around the edges. 
+		 * 
+		 * <p>The original width or height of the background skin will be one
+		 * of the values used to calculate the width or height of the progress
+		 * bar, if the <code>width</code> and <code>height</code> properties are
+		 * not set explicitly. The fill skin and padding values will also be
+		 * used.</p>
+		 * 
+		 * <p>If the background skin is a Feathers component, the
+		 * <code>minWidth</code> or <code>minHeight</code> properties will be
+		 * one of the values used to calculate the width or height of the
+		 * progress bar. If the background skin is a regular Starling display
+		 * object, the original width and height of the display object will be
+		 * used to calculate the minimum dimensions instead.</p>
 		 *
 		 * <p>In the following example, the progress bar is given a background
 		 * skin:</p>
@@ -296,6 +313,8 @@ package feathers.controls
 		 * progress.backgroundDisabledSkin = new Image( texture );</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see #backgroundSkin
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -346,7 +365,9 @@ package feathers.controls
 		protected var _fillSkin:DisplayObject;
 
 		/**
-		 * The primary fill to display.
+		 * The primary fill to display in the progress bar. The fill skin is
+		 * displayed over the background skin, with padding around the edges of
+		 * the fill skin to reveal the background skin behind. 
 		 *
 		 * <p>Note: The size of the <code>fillSkin</code>, at the time that it
 		 * is passed to the setter, will be used used as the size of the fill
@@ -412,6 +433,8 @@ package feathers.controls
 		 * progress.fillDisabledSkin = new Image( texture );</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see #fillSkin
 		 */
 		public function get fillDisabledSkin():DisplayObject
 		{
@@ -626,9 +649,18 @@ package feathers.controls
 				this.refreshFill();
 			}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+			this.autoSizeIfNeeded();
 
 			this.layoutChildren();
+			
+			if(this.currentBackground is IValidating)
+			{
+				IValidating(this.currentBackground).validate();
+			}
+			if(this.currentFill is IValidating)
+			{
+				IValidating(this.currentFill).validate();
+			}
 		}
 
 		/**
@@ -651,13 +683,88 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
 			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this.explicitMinWidth !== this.explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this.explicitMinHeight !== this.explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = needsWidth ? this._originalBackgroundWidth : this.explicitWidth;
-			var newHeight:Number = needsHeight ? this._originalBackgroundHeight  : this.explicitHeight;
-			return this.setSizeInternal(newWidth, newHeight, false);
+			if(this.currentBackground is IFeathersControl)
+			{
+				var feathersChild:IFeathersControl = IFeathersControl(this.currentBackground);
+				feathersChild.validate();
+			}
+			if(this.currentFill is IFeathersControl)
+			{
+				feathersChild = IFeathersControl(this.currentFill);
+				feathersChild.validate();
+			}
+			
+			//minimum dimensions
+			var newMinWidth:Number = this.explicitMinWidth;
+			if(needsMinWidth)
+			{
+				var backgroundMinWidth:Number = this._originalBackgroundWidth;
+				if(this.currentBackground is IFeathersControl)
+				{
+					backgroundMinWidth = IFeathersControl(this.currentBackground).minWidth;
+				}
+				var fillMinWidth:Number = this._originalFillWidth;
+				if(this.currentFill is IFeathersControl)
+				{
+					fillMinWidth = IFeathersControl(this.currentFill).minWidth;
+				}
+				fillMinWidth += this._paddingLeft + this._paddingRight;
+				newMinWidth = backgroundMinWidth;
+				if(fillMinWidth > newMinWidth)
+				{
+					newMinWidth = fillMinWidth;
+				}
+			}
+			var newMinHeight:Number = this.explicitMinHeight;
+			if(needsMinHeight)
+			{
+				var backgroundMinHeight:Number = this._originalBackgroundHeight;
+				if(this.currentBackground is IFeathersControl)
+				{
+					backgroundMinHeight = IFeathersControl(this.currentBackground).minHeight;
+				}
+				var fillMinHeight:Number = this._originalFillHeight;
+				if(this.currentFill is IFeathersControl)
+				{
+					fillMinHeight = IFeathersControl(this.currentFill).minHeight;
+				}
+				fillMinHeight += this._paddingTop + this._paddingBottom;
+				newMinHeight = backgroundMinHeight;
+				if(fillMinHeight > newMinHeight)
+				{
+					newMinHeight = fillMinHeight;
+				}
+			}
+
+			//current dimensions
+			var newWidth:Number = this.explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = this._originalBackgroundWidth;
+				var fillWidth:Number = this._originalFillWidth + this._paddingLeft + this._paddingRight;
+				if(fillWidth > newWidth)
+				{
+					newWidth = fillWidth;
+				}
+			}
+			var newHeight:Number = this.explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = this._originalBackgroundHeight;
+				var fillHeight:Number = this._originalFillHeight + this._paddingTop + this._paddingBottom;
+				if(fillHeight > newHeight)
+				{
+					newHeight = fillHeight;
+				}
+			}
+			
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -683,6 +790,10 @@ package feathers.controls
 			}
 			if(this.currentBackground)
 			{
+				if(this.currentBackground is IValidating)
+				{
+					IValidating(this.currentBackground).validate();
+				}
 				if(this._originalBackgroundWidth !== this._originalBackgroundWidth) //isNaN
 				{
 					this._originalBackgroundWidth = this.currentBackground.width;
@@ -718,6 +829,10 @@ package feathers.controls
 			}
 			if(this.currentFill)
 			{
+				if(this.currentFill is IValidating)
+				{
+					IValidating(this.currentFill).validate();
+				}
 				if(this._originalFillWidth !== this._originalFillWidth) //isNaN
 				{
 					this._originalFillWidth = this.currentFill.width;

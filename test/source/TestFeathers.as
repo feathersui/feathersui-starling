@@ -30,6 +30,7 @@ package
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
+	import feathers.tests.ProgressBarMeasurementTests;
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.RadioTests;
 	import feathers.tests.ScreenNavigatorTests;
@@ -131,6 +132,7 @@ package
 				ListRendererAddRemoveTests,
 				PickerListTests,
 				ProgressBarTests,
+				ProgressBarMeasurementTests,
 				RadioTests,
 				SimpleScrollBarHorizontalTests,
 				ScreenNavigatorTests,
