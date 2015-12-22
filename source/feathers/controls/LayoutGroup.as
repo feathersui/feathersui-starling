@@ -24,6 +24,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.rendering.BatchToken;
 	import starling.rendering.Painter;
 
 	/**
@@ -244,6 +245,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkinPushToken:BatchToken = new BatchToken();
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkinPopToken:BatchToken = new BatchToken();
 
 		/**
 		 * @private
@@ -504,35 +515,28 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		/*override public function render(painter:Painter):void
+		override public function render(painter:Painter):void
 		{
-			if(this.currentBackgroundSkin && this.currentBackgroundSkin.hasVisibleArea)
+			if(this.currentBackgroundSkin &&
+				this.currentBackgroundSkin.visible &&
+				this.currentBackgroundSkin.alpha > 0)
 			{
-				var clipRect:Rectangle = this.clipRect;
-				if(clipRect)
+				var mask:DisplayObject = this.currentBackgroundSkin.mask;
+				painter.pushState(this._backgroundSkinPushToken);
+				painter.setStateTo(this.currentBackgroundSkin.transformationMatrix, this.currentBackgroundSkin.alpha, this.currentBackgroundSkin.blendMode);
+				if(mask)
 				{
-					clipRect = support.pushClipRect(this.getClipRect(stage, HELPER_RECTANGLE));
-					if(clipRect.isEmpty())
-					{
-						// empty clipping bounds - no need to render children.
-						support.popClipRect();
-						return;
-					}
+					painter.drawMask(mask);
 				}
-				var blendMode:String = this.blendMode;
-				support.pushMatrix();
-				support.transformMatrix(this.currentBackgroundSkin);
-				support.blendMode = this.currentBackgroundSkin.blendMode;
-				this.currentBackgroundSkin.render(support, parentAlpha * this.alpha);
-				support.blendMode = blendMode;
-				support.popMatrix();
-				if(clipRect)
+				this.currentBackgroundSkin.render(painter);
+				if(mask)
 				{
-					support.popClipRect();
+					painter.eraseMask(mask);
 				}
+				painter.popState(this._backgroundSkinPopToken);
 			}
 			super.render(painter);
-		}*/
+		}
 
 		/**
 		 * @private
