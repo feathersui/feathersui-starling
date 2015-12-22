@@ -868,7 +868,8 @@ package feathers.controls
 			SUGGESTED_BOUNDS.minWidth = this.explicitMinWidth;
 			SUGGESTED_BOUNDS.minHeight = this.explicitMinHeight;
 			this._layout.layout(this.symbols, SUGGESTED_BOUNDS, LAYOUT_RESULT);
-			this.setSizeInternal(LAYOUT_RESULT.contentWidth, LAYOUT_RESULT.contentHeight, false);
+			this.saveMeasurements(LAYOUT_RESULT.contentWidth, LAYOUT_RESULT.contentHeight,
+				LAYOUT_RESULT.contentWidth, LAYOUT_RESULT.contentHeight);
 		}
 
 		/**

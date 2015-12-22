@@ -76,6 +76,8 @@ package feathers.tests
 				Assert.assertTrue("Event.RESIZE not dispatched by ImageLoader after loading URL.", resizeDispatched);
 				Assert.assertStrictlyEquals("ImageLoader width property not changed after loading URL.", 100, loader.width);
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading URL.", 100, loader.height);
+				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading URL.", 100, loader.minWidth);
+				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading URL.", 100, loader.minHeight);
 			}, 200);
 		}
 
@@ -95,6 +97,8 @@ package feathers.tests
 			{
 				Assert.assertStrictlyEquals("ImageLoader width property not changed after loading second URL.", 200, loader.width);
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading second URL.", 200, loader.height);
+				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading second URL.", 200, loader.minWidth);
+				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading second URL.", 200, loader.minHeight);
 			}, 200);
 		}
 
@@ -111,6 +115,8 @@ package feathers.tests
 				Assert.assertStrictlyEquals("ImageLoader originalSourceHeight property not changed after loading URL.", 200, loader.originalSourceHeight);
 				Assert.assertStrictlyEquals("ImageLoader width property not changed after loading URL.", 100, loader.width);
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading URL.", 100, loader.height);
+				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading URL.", 100, loader.minWidth);
+				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading URL.", 100, loader.minHeight);
 			}, 200);
 		}
 	}

@@ -1501,7 +1501,7 @@ package feathers.controls
 				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 		}
 
 		/**

@@ -4,6 +4,7 @@ package
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonTests;
+	import feathers.tests.CalloutMeasurementTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
@@ -17,6 +18,7 @@ package
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
 	import feathers.tests.FlowLayoutTests;
+	import feathers.tests.LabelMeasurementTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupTests;
@@ -27,6 +29,7 @@ package
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
+	import feathers.tests.PageIndicatorMeasurementTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
@@ -125,11 +128,13 @@ package
 				GroupedListRendererAddRemoveTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
+				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
+				PageIndicatorMeasurementTests,
 				PickerListTests,
 				ProgressBarTests,
 				ProgressBarMeasurementTests,
