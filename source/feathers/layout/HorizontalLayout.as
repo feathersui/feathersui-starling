@@ -1532,7 +1532,7 @@ package feathers.layout
 				}
 				for(i = firstExistingIndex - 1; i >= lastIndexToAdd; i--)
 				{
-					result.unshift(i);
+					result.insertAt(0, i);
 				}
 			}
 			resultLength = result.length;

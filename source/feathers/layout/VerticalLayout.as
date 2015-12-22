@@ -1714,7 +1714,7 @@ package feathers.layout
 					{
 						continue;
 					}
-					result.unshift(i);
+					result.insertAt(0, i);
 				}
 			}
 			resultLength = result.length;
