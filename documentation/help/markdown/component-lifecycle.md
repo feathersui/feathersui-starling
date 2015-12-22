@@ -9,7 +9,7 @@ To develop custom components for Feathers, one should understand the basics of t
 
 ## Instantiation
 
-The component instance is created with the `new` keyword. It has not yet been added to the display list. Properties may be changed, and the new values will be saved, but the component will not react to those changes until after it has been added to the display list. This ensures that the Feathers component doesn't run its drawing code too often.
+The component instance is created with the `new` keyword. It has not yet been added to the display list. Properties may be changed, and the new values will be saved, but the component will not automatically react to those changes until after it has been added to the display list. This ensures that the Feathers component doesn't run its drawing code too often.
 
 ## Initialization
 
@@ -17,7 +17,7 @@ The component is added to the display list and its `initialize()` function is ca
 
 ## Validation
 
-The component's `draw()` function is called. The component should handle any changes that have been made to its properties. Then, if the component's dimensions have not be specified, it should automatically calculate ideal width and height values. These should be passed to `setSizeInternal()` where other values such as minimum width and height will come into play. After the final dimensions are determined, the component should position and size its children.
+The component's `draw()` function is called. The component should handle any changes that have been made to its properties. Then, if the component's dimensions have not been specified manually, it should automatically calculate ideal width and height values (along with minimum width and height values). These calculated values should be passed to `saveMeasurements()` where the final dimensions used for layout are calculated. Finally, the component should position and resize its children, as needed.
 
 Read [Anatomy of a Feathers Component](component-properties-methods.html) for more detailed information about the various "width" and "height" properties and variables that are available on a Feathers component.
 
@@ -35,15 +35,17 @@ The process of 1) invalidation, 2) validation, 3) rendering will repeat indefini
 
 ## Removal
 
-The component is removed from the display list. Unless it is added to the display list again, it will not validate. Property changes will be saved, but they will not be handled while the component is not attached to the stage.
+The component is removed from the display list. Unless it is added to the display list again, it will no longer validate automatically. Property changes will be saved, but they will not be handled while the component is not attached to the stage.
 
 ## Disposal
 
-Like all Starling display objects, Feathers components have a `dispose()` function that may be used to do things like remove event listeners and dispose of children. In general, the core Feathers components are designed to ensure that disposal isn't strictly required, but disposal is recommended for safety in most cases.
+Like all Starling display objects, Feathers components have a `dispose()` function that may be used to do things like remove external event listeners and dispose children or textures.
+
+Once a Feathers component is disposed, it cannot be validated again. A disposed component should never be added to the display list. It may result in runtime errors or unexpected behavior. Most disposed components will be completely unresponsive to user interaction.
 
 ## Garbage Collection
 
-After all references to the component have been removed, it becomes eligible for garbage collection to be handled by the runtime. The component's short life has ended.
+After all references to the component have been removed, it becomes eligible for garbage collection to be handled by the runtime. The component's life has completed.
 
 ## Related Links
 

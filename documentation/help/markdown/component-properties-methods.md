@@ -29,17 +29,15 @@ Please read [Component Validation with draw()](component-validation.html) for mo
 
 The `isInvalid()` method is used to determine if a specific flag has been set with `invalidate()`. Call this in `draw()` to determine which parts of the component need to be redrawn. If you call it with no arguments, the result will be `true` if `invalidate()` has been called regardless of which flags have been passed in.
 
-## setSizeInternal()
+## saveMeasurements()
 
-The `setSizeInternal()` method is called to specify ideal dimensions. It chooses between explicit and ideal dimensions to calculate the final "actual" dimensions used for layout.
+The `saveMeasurements()` method is called to set a component's dimensions during validation, if the `width` and `height` properties have not been set manually. In this case, the component needs to automatically measure its own ideal dimensions, possibly based on the dimensions of skins or sub-components and properties like padding and gap.
 
-The final argument determines if the component should invalidate after adjusting the dimensions. If you call it during validation (during `draw()`, basically), then you should probably pass `false`. Otherwise, the component will end up redrawing itself every render cycle, which you probably don't want.
-
-See below for more detailed information on component dimensions.
+See below for more detailed information on the various properties for a component's dimensions.
 
 ## isQuickHitAreaEnabled
 
-The `isQuickHitAreaEnabled` property is similar to `mouseChildren` from the classic display list. However, it takes things a step further and limits the component's hit area to a simple rectangle, which can greatly improve performance of touch hit tests. The rectangular hit area is automatically calculated based on the component's "actual" width and height dimensions (see below). This is most useful in buttons, but any component where the children don't need to receive touch events can benefit from it.
+The `isQuickHitAreaEnabled` property is similar to `mouseChildren` from the classic display list. However, it takes things a step further and limits the component's hit area to a simple rectangle, which can greatly improve performance of touch hit tests. The rectangular hit area is automatically calculated based on the component's `actualWidth` and `actualHeight` member variables (see below). This is most useful in buttons, but any component where the children don't need to receive touch events can benefit from this optimization.
 
 ## styleName and styleNameList
 
@@ -47,11 +45,11 @@ A component's `styleNameList` is used by [Feathers themes](themes.html) to provi
 
 For more information about component style names, please read [Introduction to Feathers Themes](themes.html).
 
-## width and height
+## Variables and properties for width and height
 
-`FeathersControl` provides a number of useful width and height values. Understanding the differences among them is important for maximizing performance and getting the most out Feathers' capabilities.
+The `FeathersControl` class provides a number of useful variables and properties for its dimensions. Fully understanding what each one is used for and when they should be changed or accessed is important for maximizing the performance of custom Feathers components and getting the most out of the framework's architecture.
 
-The `width` and `height` getters and setters expose the component's dimensions externally. The values returned by the getters are determined based on a number of factors. They may be explicit dimensions passed to the setters or they may be ideal dimensions calculated automatically because no explicit dimensions were specified.
+The `width` and `height` getters and setters expose the component's dimensions externally. The values returned by the getters are determined based on a number of factors. They may be explicit dimensions passed to the setters or they may be ideal dimensions calculated automatically during validation (because no explicit dimensions were specified).
 
 The `explicitWidth` and `explicitHeight` variables are changed if the `width` and `height` setters are called with numeric values. In the following example, a `Button` control is created, and its `width` property is set to `150` pixels. Internally, the button will store this value in the `explicitWidth` variable.
 
@@ -60,13 +58,9 @@ var button:Button = new Button();
 button.width = 150;
 ```
 
-The `actualWidth` and `actualHeight` variables are the values returned by the `width` and `height` getters. These values should also be used when drawing the component. The "actual" dimensions typically default to the values of `explicitWidth` and `explicitHeight`, but if explicit dimensions are not specified, the component may try to calculate ideal dimensions. These could be hard-coded pixel values or they could be determined based on the dimensions of skins or other children (such as sub-components). How the ideal dimensions are calculated is often different from component to component.
+The `actualWidth` and `actualHeight` variables are the values used for layout. The "actual" dimensions typically default to the values of `explicitWidth` and `explicitHeight`, but if explicit dimensions are not specified, the component must calculate ideal dimensions. The ideal dimensions could be hard-coded values or they could be determined based on the dimensions of skins or sub-components, and other values like padding and gap. Most components calculate their ideal dimensions differently, but the result should always be passed to the `saveMeasurements()` method.
 
-A custom component should pass its ideal calculated dimensions to the `setSizeInternal()` method before the layout phase. This method will determine if the dimensions were already set explicitly. If so, the ideal values will be ignored, and the `actualWidth` and `actualHeight` variables will be set to the explicit dimensions. If not, they will be set to the ideal dimensions instead.
-
-If explicit dimensions have been set, and you want to use the component's ideal dimensions instead, pass `NaN` to the `width` and `height` setters.
-
-The `minWidth` and `minHeight` properties are used by `setSizeInternal()` to adjust the ideal dimensions to a minimum value. `minWidth` and `minHeight` do *not* affect explicit dimensions in any way.
+Minimum dimensions work similarly, with `minWidth` and `minHeight` properties exposed publicly, and `explicitMinWidth`, `explicitMinHeight`, `actualMinWidth`, and `actualMinHeight` variables used internally.
 
 ## Related Links
 
