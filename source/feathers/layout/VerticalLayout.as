@@ -1491,14 +1491,7 @@ package feathers.layout
 		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			var heightValue:* = item ? item.height : undefined;
-			if(Array.prototype.insertAt !== undefined)
-			{
-				this._heightCache["insertAt"](index, heightValue);
-			}
-			else
-			{
-				this._heightCache.splice(index, 0, heightValue);
-			}
+			this._heightCache.insertAt(index, heightValue);
 		}
 
 		/**
@@ -1506,14 +1499,7 @@ package feathers.layout
 		 */
 		public function removeFromVariableVirtualCacheAtIndex(index:int):void
 		{
-			if(Array.prototype.removeAt !== undefined)
-			{
-				this._heightCache["removeAt"](index);
-			}
-			else
-			{
-				this._heightCache.splice(index, 1);
-			}
+			this._heightCache.removeAt(index);
 		}
 
 		/**
@@ -1691,20 +1677,12 @@ package feathers.layout
 			}
 			if(nextHeaderIndex >= 0 && result.indexOf(nextHeaderIndex) < 0)
 			{
-				var hasInsertAt:Boolean = Array.prototype.insertAt !== undefined;
 				var addedStickyHeader:Boolean = false;
 				for(i = 0; i < resultLastIndex; i++)
 				{
 					if(nextHeaderIndex <= result[i])
 					{
-						if(hasInsertAt)
-						{
-							result["insertAt"](i, nextHeaderIndex);
-						}
-						else
-						{
-							result.splice(i, 0, nextHeaderIndex);
-						}
+						result.insertAt(i, nextHeaderIndex);
 						addedStickyHeader = true;
 						break;
 					}

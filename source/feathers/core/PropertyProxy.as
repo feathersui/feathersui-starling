@@ -115,28 +115,9 @@ package feathers.core
 		{
 			var nameAsString:String = name is QName ? QName(name).localName : name.toString();
 			var index:int = this._names.indexOf(nameAsString);
-			if(index == 0)
+			if(index >= 0)
 			{
-				this._names.shift();
-			}
-			else
-			{
-				if(Array.prototype.removeAt !== undefined)
-				{
-					this._names["removeAt"](index);
-				}
-				else
-				{
-					var lastIndex:int = this._names.length - 1;
-					if(index == lastIndex)
-					{
-						this._names.pop();
-					}
-					else
-					{
-						this._names.splice(index, 1);
-					}
-				}
+				this._names.removeAt(index);
 			}
 			var result:Boolean = delete this._storage[nameAsString];
 			if(result)
@@ -204,14 +185,7 @@ package feathers.core
 				this._onChangeCallbacks.pop();
 				return;
 			}
-			if(Array.prototype.removeAt !== undefined)
-			{
-				this._onChangeCallbacks["removeAt"](index);
-			}
-			else
-			{
-				this._onChangeCallbacks.splice(index, 1);
-			}
+			this._onChangeCallbacks.removeAt(index);
 		}
 
 		/**

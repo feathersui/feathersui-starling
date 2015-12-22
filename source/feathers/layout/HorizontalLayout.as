@@ -1378,14 +1378,7 @@ package feathers.layout
 		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			var widthValue:* = item ? item.width : undefined;
-			if(Array.prototype.insertAt !== undefined)
-			{
-				this._widthCache["insertAt"](index, widthValue);
-			}
-			else
-			{
-				this._widthCache.splice(index, 0, widthValue);
-			}
+			this._widthCache.insertAt(index, widthValue);
 		}
 
 		/**
@@ -1393,14 +1386,7 @@ package feathers.layout
 		 */
 		public function removeFromVariableVirtualCacheAtIndex(index:int):void
 		{
-			if(Array.prototype.removeAt !== undefined)
-			{
-				this._widthCache["removeAt"](index);
-			}
-			else
-			{
-				this._widthCache.splice(index, 1);
-			}
+			this._widthCache.removeAt(index);
 		}
 
 		/**

@@ -123,21 +123,12 @@ package feathers.core
 				//add one because we're going after the last item we checked
 				//if we made it through all of them, i will be -1, and we want 0
 				i++;
-				if(i === queueLength)
-				{
-					currentQueue[queueLength] = control;
-				}
-				else if(Array.prototype.insertAt !== undefined)
-				{
-					currentQueue["insertAt"](i, control);
-				}
-				else
-				{
-					currentQueue.splice(i, 0, control);
-				}
+				currentQueue.insertAt(i, control);
 			}
 			else
 			{
+				//faster than push() because push() creates a temporary rest
+				//Array that needs to be garbage collected
 				currentQueue[queueLength] = control;
 			}
 		}

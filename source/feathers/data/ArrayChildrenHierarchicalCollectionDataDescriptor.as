@@ -113,14 +113,7 @@ package feathers.data
 				branch = branch[index][childrenField] as Array;
 			}
 			var lastIndex:int = rest[indexCount];
-			if(Array.prototype.insertAt !== undefined)
-			{
-				branch["insertAt"](lastIndex, item);
-			}
-			else
-			{
-				branch.splice(lastIndex, 0, item);
-			}
+			branch.insertAt(lastIndex, item);
 		}
 
 		/**
@@ -137,16 +130,7 @@ package feathers.data
 				branch = branch[index][childrenField] as Array;
 			}
 			var lastIndex:int = rest[indexCount];
-			var item:Object = branch[lastIndex];
-			if(Array.prototype.removeAt !== undefined)
-			{
-				branch["removeAt"](lastIndex);
-			}
-			else
-			{
-				branch.splice(lastIndex, 1);
-			}
-			return item;
+			return branch.removeAt(lastIndex);
 		}
 
 		/**

@@ -411,20 +411,12 @@ package feathers.controls
 		public function removeScreen(id:String):StackScreenNavigatorItem
 		{
 			var stackCount:int = this._stack.length;
-			var hasRemoveAt:Boolean = Array.prototype.removeAt !== undefined;
 			for(var i:int = stackCount - 1; i >= 0; i--)
 			{
 				var item:StackItem = this._stack[i];
-				if(item.id == id)
+				if(item.id === id)
 				{
-					if(hasRemoveAt)
-					{
-						this._stack["removeAt"](i);
-					}
-					else
-					{
-						this._stack.splice(i, 1);
-					}
+					this._stack.removeAt(i);
 					//don't break here because there might be multiple screens
 					//with this ID in the stack
 				}

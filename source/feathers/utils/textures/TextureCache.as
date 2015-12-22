@@ -294,22 +294,11 @@ package feathers.utils.textures
 		protected function removeUnretainedKey(key:String):void
 		{
 			var index:int = this._unretainedKeys.indexOf(key);
-			if(Array.prototype.removeAt !== undefined)
+			if(index < 0)
 			{
-				this._unretainedKeys["removeAt"](index);
+				return;
 			}
-			else if(index === 0)
-			{
-				this._unretainedKeys.shift();
-			}
-			else if(index === (this._unretainedKeys.length - 1))
-			{
-				this._unretainedKeys.pop();
-			}
-			else
-			{
-				this._unretainedKeys.splice(index, 1);
-			}
+			this._unretainedKeys.removeAt(index);
 			delete this._unretainedTextures[key];
 		}
 

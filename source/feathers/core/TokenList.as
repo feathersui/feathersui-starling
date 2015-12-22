@@ -157,18 +157,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(Array.prototype.removeAt !== undefined)
-			{
-				this.names["removeAt"](index);
-			}
-			else if(index === 0)
-			{
-				this.names.shift();
-			}
-			else
-			{
-				this.names.splice(index, 1);
-			}
+			this.names.removeAt(index);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 

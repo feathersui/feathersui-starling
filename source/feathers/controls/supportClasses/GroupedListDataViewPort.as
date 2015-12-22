@@ -1529,14 +1529,7 @@ package feathers.controls.supportClasses
 					var inactiveIndex:int = inactiveItemRenderers.indexOf(this._typicalItemRenderer);
 					if(inactiveIndex >= 0)
 					{
-						if(Array.prototype.removeAt !== undefined)
-						{
-							inactiveItemRenderers["removeAt"](inactiveIndex);
-						}
-						else
-						{
-							inactiveItemRenderers.splice(inactiveIndex, 1);
-						}
+						inactiveItemRenderers.removeAt(inactiveIndex);
 					}
 					//if refreshLayoutTypicalItem() was called, it will have already
 					//added the typical item renderer to the active renderers. if
@@ -1837,14 +1830,7 @@ package feathers.controls.supportClasses
 					var inactiveIndex:int = inactiveItemRenderers.indexOf(itemRenderer);
 					if(inactiveIndex >= 0)
 					{
-						if(Array.prototype.removeAt !== undefined)
-						{
-							inactiveItemRenderers["removeAt"](inactiveIndex);
-						}
-						else
-						{
-							inactiveItemRenderers.splice(inactiveIndex, 1);
-						}
+						inactiveItemRenderers.removeAt(inactiveIndex);
 					}
 					else
 					{
@@ -1882,14 +1868,7 @@ package feathers.controls.supportClasses
 				var activeHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.activeHeaderRenderers;
 				var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.inactiveHeaderRenderers;
 				activeHeaderRenderers[activeHeaderRenderers.length] = headerRenderer;
-				if(Array.prototype.removeAt !== undefined)
-				{
-					inactiveHeaderRenderers["removeAt"](inactiveHeaderRenderers.indexOf(headerRenderer));
-				}
-				else
-				{
-					inactiveHeaderRenderers.splice(inactiveHeaderRenderers.indexOf(headerRenderer), 1);
-				}
+				inactiveHeaderRenderers.removeAt(inactiveHeaderRenderers.indexOf(headerRenderer));
 				headerRenderer.visible = true;
 				this._layoutItems[layoutIndex] = DisplayObject(headerRenderer);
 			}
@@ -1919,14 +1898,7 @@ package feathers.controls.supportClasses
 				var activeFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.activeFooterRenderers;
 				var inactiveFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.inactiveFooterRenderers;
 				activeFooterRenderers[activeFooterRenderers.length] = footerRenderer;
-				if(Array.prototype.removeAt !== undefined)
-				{
-					inactiveFooterRenderers["removeAt"](inactiveFooterRenderers.indexOf(footerRenderer), 1);
-				}
-				else
-				{
-					inactiveFooterRenderers.splice(inactiveFooterRenderers.indexOf(footerRenderer), 1);
-				}
+				inactiveFooterRenderers.removeAt(inactiveFooterRenderers.indexOf(footerRenderer));
 				footerRenderer.visible = true;
 				this._layoutItems[layoutIndex] = DisplayObject(footerRenderer);
 			}
