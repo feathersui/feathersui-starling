@@ -154,32 +154,32 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _delayThreshold:Number = 0.1;
+		protected var _resetDelay:Number = 0.1;
 
 		/**
 		 * The time, in seconds, after hiding a tool tip before the
 		 * <code>showDelay</code> is required to show a new tool tip for another
-		 * component. If the mouse is over a component before this threshold,
-		 * the tool tip will be shown immediately. This allows tooltips for
-		 * adjacent components, such as those appearing in toolbars, to be shown
-		 * quickly.
+		 * component. If the mouse moves over another component before this
+		 * threshold, the tool tip will be shown immediately. This allows
+		 * tooltips for adjacent components, such as those appearing in
+		 * toolbars, to be shown quickly.
 		 * 
-		 * <p>To disable this behavior, set the <code>delayThreshold</code> to
+		 * <p>To disable this behavior, set the <code>resetDelay</code> to
 		 * <code>0</code>.
 		 *
 		 * @default 0.1
 		 */
-		public function get delayThreshold():Number
+		public function get resetDelay():Number
 		{
-			return this._delayThreshold;
+			return this._resetDelay;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set delayThreshold(value:Number):void
+		public function set resetDelay(value:Number):void
 		{
-			this._delayThreshold = value;
+			this._resetDelay = value;
 		}
 
 		/**
@@ -360,7 +360,7 @@ package feathers.core
 				this._toolTipX = touch.globalX;
 				this._toolTipY = touch.globalY;
 				var timeSinceHide:Number = (getTimer() - this._hideTime) / 1000;
-				if(timeSinceHide < this._delayThreshold)
+				if(timeSinceHide < this._resetDelay)
 				{
 					this.hoverDelayCallback();
 					return;
