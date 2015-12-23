@@ -71,6 +71,7 @@ package feathers.themes
 	import feathers.core.FeathersControl;
 	import feathers.core.FocusManager;
 	import feathers.core.PopUpManager;
+	import feathers.core.ToolTipManager;
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
@@ -96,6 +97,7 @@ package feathers.themes
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.display.Stage;
 	import starling.text.TextField;
 	import starling.textures.SubTexture;
 	import starling.textures.Texture;
@@ -519,7 +521,9 @@ package feathers.themes
 		 */
 		protected function initializeGlobals():void
 		{
-			FocusManager.setEnabledForStage(Starling.current.stage, true);
+			var stage:Stage = Starling.current.stage;
+			FocusManager.setEnabledForStage(stage, true);
+			ToolTipManager.setEnabledForStage(stage, true);
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;

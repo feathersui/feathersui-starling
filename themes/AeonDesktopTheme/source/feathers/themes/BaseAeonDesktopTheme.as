@@ -72,6 +72,7 @@ package feathers.themes
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
+	import feathers.core.ToolTipManager;
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
@@ -95,6 +96,7 @@ package feathers.themes
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.display.Stage;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.SubTexture;
 	import starling.textures.Texture;
@@ -654,7 +656,9 @@ package feathers.themes
 		 */
 		protected function initializeGlobals():void
 		{
-			FocusManager.setEnabledForStage(Starling.current.stage, true);
+			var stage:Stage = Starling.current.stage;
+			FocusManager.setEnabledForStage(stage, true);
+			ToolTipManager.setEnabledForStage(stage, true);
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
