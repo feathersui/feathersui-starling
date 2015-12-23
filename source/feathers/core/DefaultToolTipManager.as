@@ -165,7 +165,7 @@ package feathers.core
 		 * toolbars, to be shown quickly.
 		 * 
 		 * <p>To disable this behavior, set the <code>resetDelay</code> to
-		 * <code>0</code>.
+		 * <code>0</code>.</p>
 		 *
 		 * @default 0.1
 		 */
