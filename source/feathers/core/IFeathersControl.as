@@ -173,6 +173,16 @@ package feathers.core
 		function set styleProvider(value:IStyleProvider):void
 
 		/**
+		 * @copy feathers.core.FeathersControl#toolTip
+		 */
+		function get toolTip():String;
+
+		/**
+		 * @private
+		 */
+		function set toolTip(value:String):void
+
+		/**
 		 * @copy feathers.core.FeathersControl#setSize()
 		 */
 		function setSize(width:Number, height:Number):void;

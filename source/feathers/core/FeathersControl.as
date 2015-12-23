@@ -1052,6 +1052,33 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _toolTip:String;
+
+		/**
+		 * Text to display in a tool tip to when hovering over this component,
+		 * if the <code>ToolTipManager</code> is enabled.
+		 * 
+		 * @default null
+		 *
+		 * @see ../../../help/tool-tips.html Tool tips in Feathers
+		 * @see feathers.core.ToolTipManager
+		 */
+		public function get toolTip():String
+		{
+			return this._toolTip;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toolTip(value:String):void
+		{
+			this._toolTip = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _focusManager:IFocusManager;
 
 		/**

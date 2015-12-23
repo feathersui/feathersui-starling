@@ -242,6 +242,7 @@ package feathers.themes
 		public static const FONT_NAME:String = "_sans";
 
 		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 2, 2);
+		protected static const TOOL_TIP_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 7);
 		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 15);
 		protected static const STEPPER_INCREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 9, 15, 1);
@@ -397,6 +398,8 @@ package feathers.themes
 		protected var progressBarFillMinSize:int;
 		protected var popUpSize:int;
 		protected var popUpVolumeSliderPaddingSize:int;
+		protected var bottomDropShadowSize:int;
+		protected var leftAndRightDropShadowSize:int;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -437,6 +440,7 @@ package feathers.themes
 		protected var detailDisabledTextFormat:TextFormat;
 
 		protected var focusIndicatorSkinTextures:Scale9Textures;
+		protected var toolTipBackgroundSkinTextures:Scale9Textures;
 
 		protected var buttonUpSkinTextures:Scale9Textures;
 		protected var buttonHoverSkinTextures:Scale9Textures;
@@ -632,6 +636,8 @@ package feathers.themes
 			this.wideControlSize = 152;
 			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
 			this.popUpVolumeSliderPaddingSize = 6;
+			this.leftAndRightDropShadowSize = 1;
+			this.bottomDropShadowSize = 3;
 		}
 
 		/**
@@ -681,6 +687,7 @@ package feathers.themes
 		protected function initializeTextures():void
 		{
 			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin0000"), FOCUS_INDICATOR_SCALE_9_GRID);
+			this.toolTipBackgroundSkinTextures = new Scale9Textures(this.atlas.getTexture("tool-tip-background-skin0000"), TOOL_TIP_SCALE_9_GRID);
 
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin0000"), BUTTON_SCALE_9_GRID);
 			this.buttonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("button-hover-skin0000"), BUTTON_SCALE_9_GRID);
@@ -894,6 +901,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_TOOL_TIP, this.setToolTipLabelStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1483,6 +1491,19 @@ package feathers.themes
 		{
 			label.textRendererProperties.textFormat = this.detailTextFormat;
 			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
+		}
+
+		protected function setToolTipLabelStyles(label:Label):void
+		{
+			label.backgroundSkin = new Scale9Image(this.toolTipBackgroundSkinTextures);
+			
+			label.textRendererProperties.textFormat = this.defaultTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
+			
+			label.paddingTop = this.extraSmallGutterSize;
+			label.paddingRight = this.smallGutterSize + this.leftAndRightDropShadowSize;
+			label.paddingBottom = this.extraSmallGutterSize + this.bottomDropShadowSize;
+			label.paddingLeft = this.smallGutterSize + this.leftAndRightDropShadowSize;
 		}
 
 	//-------------------------

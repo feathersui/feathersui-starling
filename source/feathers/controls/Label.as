@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IToolTip;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
 
@@ -24,7 +25,7 @@ package feathers.controls
 	 * @see ../../../help/label.html How to use the Feathers Label component
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 	 */
-	public class Label extends FeathersControl implements ITextBaselineControl
+	public class Label extends FeathersControl implements ITextBaselineControl, IToolTip
 	{
 		/**
 		 * @private
@@ -74,6 +75,20 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_DETAIL:String = "feathers-detail-label";
+
+		/**
+		 * An alternate style name to use with <code>Label</code> to allow a
+		 * theme to give it a tool tip style for use with the tool tip manager.
+		 * If a theme does not provide a style for a tool tip label, the theme
+		 * will automatically fall back to using the default style for a label.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_TOOL_TIP:String = "feathers-tool-tip";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Label</code>

@@ -968,6 +968,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_TOOL_TIP, this.setToolTipLabelStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1557,6 +1558,16 @@ package feathers.themes
 		{
 			label.textRendererProperties.elementFormat = this.smallLightElementFormat;
 			label.textRendererProperties.disabledElementFormat = this.smallDisabledElementFormat;
+		}
+		
+		protected function setToolTipLabelStyles(label:Label):void
+		{
+			label.backgroundSkin = new Scale9Image(this.backgroundSkinTextures);
+			
+			label.textRendererProperties.elementFormat = this.lightElementFormat;
+			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+			
+			label.padding = this.smallGutterSize;
 		}
 
 	//-------------------------
