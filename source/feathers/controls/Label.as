@@ -646,21 +646,21 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
-			var needsMinWidth:Boolean = this.explicitMinWidth !== this.explicitMinWidth; //isNaN
-			var needsMinHeight:Boolean = this.explicitMinHeight !== this.explicitMinHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
 			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 			
-			this.textRenderer.minWidth = this.explicitMinWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.minWidth = this._explicitMinWidth - this._paddingLeft - this._paddingRight;
 			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.minHeight = this.explicitMinHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.width = this._explicitWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.minHeight = this._explicitMinHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.height = this._explicitHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.measureText(HELPER_POINT);
 
 			if(this.currentBackgroundSkin is IFeathersControl)
@@ -670,7 +670,7 @@ package feathers.controls
 			}
 
 			//minimum dimensions
-			var newMinWidth:Number = this.explicitMinWidth;
+			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
 				if(this._text)
@@ -696,7 +696,7 @@ package feathers.controls
 					newMinWidth = backgroundMinWidth;
 				}
 			}
-			var newMinHeight:Number = this.explicitMinHeight;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
 				if(this._text)
@@ -723,7 +723,7 @@ package feathers.controls
 				}
 			}
 			
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this._text)
@@ -742,7 +742,7 @@ package feathers.controls
 				}
 			}
 
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				if(this._text)

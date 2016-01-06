@@ -501,10 +501,18 @@ package feathers.core
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _explicitWidth:Number = NaN;
+
+		/**
 		 * The width value explicitly set by passing a value to the
 		 * <code>width</code> setter or to the <code>setSize()</code> method.
 		 */
-		protected var explicitWidth:Number = NaN;
+		public function get explicitWidth():Number
+		{
+			return this._explicitWidth;
+		}
 
 		/**
 		 * The final width value that should be used for layout. If the width
@@ -564,16 +572,16 @@ package feathers.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this.explicitWidth == value)
+			if(this._explicitWidth == value)
 			{
 				return;
 			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this.explicitWidth !== this.explicitWidth)
+			if(valueIsNaN && this._explicitWidth !== this._explicitWidth)
 			{
 				return;
 			}
-			this.explicitWidth = value;
+			this._explicitWidth = value;
 			if(valueIsNaN)
 			{
 				this.actualWidth = this.scaledActualWidth = 0;
@@ -586,11 +594,19 @@ package feathers.core
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _explicitHeight:Number = NaN;
+
+		/**
 		 * The height value explicitly set by passing a value to the
 		 * <code>height</code> setter or by calling the <code>setSize()</code>
 		 * function.
 		 */
-		protected var explicitHeight:Number = NaN;
+		public function get explicitHeight():Number
+		{
+			return this._explicitHeight;
+		}
 
 		/**
 		 * The final height value that should be used for layout. If the height
@@ -650,16 +666,16 @@ package feathers.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this.explicitHeight == value)
+			if(this._explicitHeight == value)
 			{
 				return;
 			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this.explicitHeight !== this.explicitHeight)
+			if(valueIsNaN && this._explicitHeight !== this._explicitHeight)
 			{
 				return;
 			}
-			this.explicitHeight = value;
+			this._explicitHeight = value;
 			if(valueIsNaN)
 			{
 				this.actualHeight = this.scaledActualHeight = 0;
@@ -742,10 +758,18 @@ package feathers.core
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _explicitMinWidth:Number = NaN;
+
+		/**
 		 * The minimum width value explicitly set by passing a value to the
 		 * <code>minWidth</code> setter.
 		 */
-		protected var explicitMinWidth:Number = NaN;
+		public function get explicitMinWidth():Number
+		{
+			return this._explicitMinWidth;
+		}
 
 		/**
 		 * The final minimum width value that should be used for layout. If the
@@ -791,16 +815,16 @@ package feathers.core
 		 */
 		public function set minWidth(value:Number):void
 		{
-			if(this.explicitMinWidth == value)
+			if(this._explicitMinWidth == value)
 			{
 				return;
 			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this.explicitMinWidth !== this.explicitMinWidth)
+			if(valueIsNaN && this._explicitMinWidth !== this._explicitMinWidth)
 			{
 				return;
 			}
-			this.explicitMinWidth = value;
+			this._explicitMinWidth = value;
 			if(valueIsNaN)
 			{
 				this.actualMinWidth = this.scaledActualMinWidth = 0;
@@ -813,10 +837,18 @@ package feathers.core
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _explicitMinHeight:Number = NaN;
+
+		/**
 		 * The minimum height value explicitly set by passing a value to the
 		 * <code>minHeight</code> setter.
 		 */
-		protected var explicitMinHeight:Number = NaN;
+		public function get explicitMinHeight():Number
+		{
+			return this._explicitMinHeight;
+		}
 
 		/**
 		 * The final minimum height value that should be used for layout. If the
@@ -862,16 +894,16 @@ package feathers.core
 		 */
 		public function set minHeight(value:Number):void
 		{
-			if(this.explicitMinHeight == value)
+			if(this._explicitMinHeight == value)
 			{
 				return;
 			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this.explicitMinHeight !== this.explicitMinHeight)
+			if(valueIsNaN && this._explicitMinHeight !== this._explicitMinHeight)
 			{
 				return;
 			}
-			this.explicitMinHeight = value;
+			this._explicitMinHeight = value;
 			if(valueIsNaN)
 			{
 				this.actualMinHeight = this.scaledActualMinHeight = 0;
@@ -1841,13 +1873,13 @@ package feathers.core
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
-			this.explicitWidth = width;
+			this._explicitWidth = width;
 			var widthIsNaN:Boolean = width !== width;
 			if(widthIsNaN)
 			{
 				this.actualWidth = this.scaledActualWidth = 0;
 			}
-			this.explicitHeight = height;
+			this._explicitHeight = height;
 			var heightIsNaN:Boolean = height !== height;
 			if(heightIsNaN)
 			{
@@ -1938,21 +1970,21 @@ package feathers.core
 		 */
 		protected function saveMeasurements(width:Number, height:Number, minWidth:Number = 0, minHeight:Number = 0):Boolean
 		{
-			if(this.explicitMinWidth === this.explicitMinWidth) //!isNaN
+			if(this._explicitMinWidth === this._explicitMinWidth) //!isNaN
 			{
 				//the min width has been set explicitly. it has precedence over
 				//the measured min width
-				minWidth = this.explicitMinWidth;
+				minWidth = this._explicitMinWidth;
 			}
-			if(this.explicitMinHeight === this.explicitMinHeight) //!isNaN
+			if(this._explicitMinHeight === this._explicitMinHeight) //!isNaN
 			{
 				//the min height has been set explicitly. it has precedence over
 				//the measured min height
-				minHeight = this.explicitMinHeight;
+				minHeight = this._explicitMinHeight;
 			}
-			if(this.explicitWidth === this.explicitWidth) //!isNaN
+			if(this._explicitWidth === this._explicitWidth) //!isNaN
 			{
-				width = this.explicitWidth;
+				width = this._explicitWidth;
 			}
 			else
 			{
@@ -1965,9 +1997,9 @@ package feathers.core
 					width = this._maxWidth;
 				}
 			}
-			if(this.explicitHeight === this.explicitHeight) //!isNaN
+			if(this._explicitHeight === this._explicitHeight) //!isNaN
 			{
-				height = this.explicitHeight;
+				height = this._explicitHeight;
 			}
 			else
 			{

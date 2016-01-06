@@ -940,15 +940,15 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 			
-			this.listGroup.width = this.explicitWidth;
-			this.listGroup.height = this.explicitHeight;
+			this.listGroup.width = this._explicitWidth;
+			this.listGroup.height = this._explicitHeight;
 			this.listGroup.validate();
 			return this.setSizeInternal(this.listGroup.width, this.listGroup.height, false);
 		}

@@ -3167,8 +3167,8 @@ package feathers.controls
 				this.verticalScrollBar.validate();
 			}
 
-			var needsWidthOrHeight:Boolean = this.explicitWidth !== this.explicitWidth ||
-				this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidthOrHeight:Boolean = this._explicitWidth !== this._explicitWidth ||
+				this._explicitHeight !== this._explicitHeight; //isNaN
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var loopCount:int = 0;
@@ -3274,15 +3274,15 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				if(this._measureViewPort)
@@ -3525,9 +3525,9 @@ package feathers.controls
 			//if scroll bars are fixed, we're going to include the offsets even
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
-			this._viewPort.visibleWidth = this.explicitWidth - horizontalWidthOffset;
-			this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
-			var minVisibleWidth:Number = this.explicitMinWidth;
+			this._viewPort.visibleWidth = this._explicitWidth - horizontalWidthOffset;
+			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
+			var minVisibleWidth:Number = this._explicitMinWidth;
 			if(minVisibleWidth !== minVisibleWidth) //isNaN
 			{
 				minVisibleWidth = 0;
@@ -3583,13 +3583,13 @@ package feathers.controls
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
-			var needsWidthOrHeight:Boolean = this.explicitWidth != this.explicitWidth ||
-				this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidthOrHeight:Boolean = this._explicitWidth != this._explicitWidth ||
+				this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!(this._measureViewPort && needsWidthOrHeight))
 			{
 				//if we didn't need to do any measurement, we would have skipped
 				//setting this stuff earlier, and now is the last chance
-				var minVisibleWidth:Number = this.explicitMinWidth;
+				var minVisibleWidth:Number = this._explicitMinWidth;
 				if(minVisibleWidth !== minVisibleWidth) //isNaN
 				{
 					minVisibleWidth = 0;
@@ -3608,7 +3608,7 @@ package feathers.controls
 				}
 				this._viewPort.minVisibleWidth = minVisibleWidth;
 				this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-				var minVisibleHeight:Number = this.explicitMinHeight;
+				var minVisibleHeight:Number = this._explicitMinHeight;
 				if(minVisibleHeight !== minVisibleHeight) //isNaN
 				{
 					minVisibleHeight = 0;
@@ -4053,7 +4053,7 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar && (this._measureViewPort || useActualBounds))
 			{
-				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this.explicitWidth;
+				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this._explicitWidth;
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
 				if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 					((totalWidth > scrollerWidth || totalWidth > this._maxWidth) &&
@@ -4083,7 +4083,7 @@ package feathers.controls
 		{
 			if(this.verticalScrollBar && (this._measureViewPort || useActualBounds))
 			{
-				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this.explicitHeight;
+				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this._explicitHeight;
 				var totalHeight:Number = this._viewPort.height + this._topViewPortOffset + this._bottomViewPortOffset;
 				if(forceScrollBars || this._verticalScrollPolicy == SCROLL_POLICY_ON ||
 					((totalHeight > scrollerHeight || totalHeight > this._maxHeight) &&

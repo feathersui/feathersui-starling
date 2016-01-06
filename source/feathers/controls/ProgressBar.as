@@ -681,10 +681,10 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
-			var needsMinWidth:Boolean = this.explicitMinWidth !== this.explicitMinWidth; //isNaN
-			var needsMinHeight:Boolean = this.explicitMinHeight !== this.explicitMinHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
 			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
@@ -701,7 +701,7 @@ package feathers.controls
 			}
 			
 			//minimum dimensions
-			var newMinWidth:Number = this.explicitMinWidth;
+			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
 				var backgroundMinWidth:Number = this._originalBackgroundWidth;
@@ -721,7 +721,7 @@ package feathers.controls
 					newMinWidth = fillMinWidth;
 				}
 			}
-			var newMinHeight:Number = this.explicitMinHeight;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
 				var backgroundMinHeight:Number = this._originalBackgroundHeight;
@@ -743,7 +743,7 @@ package feathers.controls
 			}
 
 			//current dimensions
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				newWidth = this._originalBackgroundWidth;
@@ -753,7 +753,7 @@ package feathers.controls
 					newWidth = fillWidth;
 				}
 			}
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				newHeight = this._originalBackgroundHeight;

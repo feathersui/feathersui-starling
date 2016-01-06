@@ -1426,14 +1426,14 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
@@ -1444,15 +1444,15 @@ package feathers.controls
 						var heightScale:Number = 1;
 						if(!needsHeight)
 						{
-							heightScale = this.explicitHeight / (this._currentTextureHeight * this._textureScale);
+							heightScale = this._explicitHeight / (this._currentTextureHeight * this._textureScale);
 						}
 						else if(this._maxHeight < this._currentTextureHeight)
 						{
 							heightScale = this._maxHeight / (this._currentTextureHeight * this._textureScale);
 						}
-						else if(this.explicitMinHeight > this._currentTextureHeight)
+						else if(this._explicitMinHeight > this._currentTextureHeight)
 						{
-							heightScale = this.explicitMinHeight / (this._currentTextureHeight * this._textureScale);
+							heightScale = this._explicitMinHeight / (this._currentTextureHeight * this._textureScale);
 						}
 						if(heightScale !== 1)
 						{
@@ -1467,7 +1467,7 @@ package feathers.controls
 				newWidth += this._paddingLeft + this._paddingRight;
 			}
 
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
@@ -1478,15 +1478,15 @@ package feathers.controls
 						var widthScale:Number = 1;
 						if(!needsWidth)
 						{
-							widthScale = this.explicitWidth / (this._currentTextureWidth * this._textureScale);
+							widthScale = this._explicitWidth / (this._currentTextureWidth * this._textureScale);
 						}
 						else if(this._maxWidth < this._currentTextureWidth)
 						{
 							widthScale = this._maxWidth / (this._currentTextureWidth * this._textureScale);
 						}
-						else if(this.explicitMinWidth > this._currentTextureWidth)
+						else if(this._explicitMinWidth > this._currentTextureWidth)
 						{
-							widthScale = this.explicitMinWidth / (this._currentTextureWidth * this._textureScale);
+							widthScale = this._explicitMinWidth / (this._currentTextureWidth * this._textureScale);
 						}
 						if(widthScale !== 1)
 						{

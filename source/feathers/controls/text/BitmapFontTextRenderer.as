@@ -631,12 +631,12 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -661,7 +661,7 @@ package feathers.controls.text
 				scale = 1;
 			}
 			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
-			var maxLineWidth:Number = this.explicitWidth;
+			var maxLineWidth:Number = this._explicitWidth;
 			if(maxLineWidth !== maxLineWidth) //isNaN
 			{
 				maxLineWidth = this._maxWidth;
@@ -883,9 +883,9 @@ package feathers.controls.text
 			}
 			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
 
-			var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
+			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
-			var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
 			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
 			{
 				//we need to measure the text to get the maximum line width

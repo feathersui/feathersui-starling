@@ -1327,14 +1327,14 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this.explicitWidth;
-			var newHeight:Number = needsHeight ? 0 : this.explicitHeight;
+			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this._explicitWidth;
+			var newHeight:Number = needsHeight ? 0 : this._explicitHeight;
 
 			var totalItemWidth:Number = 0;
 			var leftItemCount:int = this._leftItems ? this._leftItems.length : 0;
@@ -1425,7 +1425,7 @@ package feathers.controls
 					calculatedTitleGap = this._gap;
 				}
 				newWidth += 2 * calculatedTitleGap;
-				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth;
+				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this._explicitWidth) - totalItemWidth;
 				if(leftItemCount > 0)
 				{
 					maxTitleWidth -= calculatedTitleGap;
@@ -1469,9 +1469,9 @@ package feathers.controls
 				if(extraPaddingTop > 0)
 				{
 					//account for the minimum height before adding the padding
-					if(newHeight < this.explicitMinHeight)
+					if(newHeight < this._explicitMinHeight)
 					{
-						newHeight = this.explicitMinHeight;
+						newHeight = this._explicitMinHeight;
 					}
 					newHeight += extraPaddingTop;
 				}

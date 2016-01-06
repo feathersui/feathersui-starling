@@ -88,6 +88,16 @@ package feathers.core
 	public interface IFeathersControl extends IValidating
 	{
 		/**
+		 * @copy feathers.core.FeathersControl#explicitWidth
+		 */
+		function get explicitWidth():Number;
+
+		/**
+		 * @copy feathers.core.FeathersControl#explicitHeight
+		 */
+		function get explicitHeight():Number;
+		
+		/**
 		 * @copy feathers.core.FeathersControl#minWidth
 		 */
 		function get minWidth():Number;
@@ -98,6 +108,11 @@ package feathers.core
 		function set minWidth(value:Number):void;
 
 		/**
+		 * @copy feathers.core.FeathersControl#explicitMinWidth
+		 */
+		function get explicitMinWidth():Number;
+
+		/**
 		 * @copy feathers.core.FeathersControl#minHeight
 		 */
 		function get minHeight():Number;
@@ -106,6 +121,11 @@ package feathers.core
 		 * @private
 		 */
 		function set minHeight(value:Number):void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#explicitMinHeight
+		 */
+		function get explicitMinHeight():Number;
 
 		/**
 		 * @copy feathers.core.FeathersControl#maxWidth

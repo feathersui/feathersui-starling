@@ -1371,8 +1371,8 @@ package feathers.controls.renderers
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1384,7 +1384,7 @@ package feathers.controls.renderers
 			if(this.contentLabel)
 			{
 				//special case for label to allow word wrap
-				var labelMaxWidth:Number = this.explicitWidth;
+				var labelMaxWidth:Number = this._explicitWidth;
 				if(needsWidth)
 				{
 					labelMaxWidth = this._maxWidth;
@@ -1393,18 +1393,18 @@ package feathers.controls.renderers
 			}
 			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
 			{
-				this.content.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
+				this.content.width = this._explicitWidth - this._paddingLeft - this._paddingRight;
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
 			{
-				this.content.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
+				this.content.height = this._explicitHeight - this._paddingTop - this._paddingBottom;
 			}
 			if(this.content is IValidating)
 			{
 				IValidating(this.content).validate();
 			}
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = this.content.width + this._paddingLeft + this._paddingRight;

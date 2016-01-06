@@ -828,8 +828,8 @@ package feathers.controls.text
 		override protected function layoutCharacters(result:Point = null):Point
 		{
 			result = super.layoutCharacters(result);
-			if(this.explicitWidth === this.explicitWidth && //!isNaN
-				result.x > this.explicitWidth)
+			if(this._explicitWidth === this._explicitWidth && //!isNaN
+				result.x > this._explicitWidth)
 			{
 				this._characterBatch.clear();
 				var oldTextAlign:String = this.currentTextFormat.align;
@@ -921,8 +921,8 @@ package feathers.controls.text
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
-				var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)
@@ -990,8 +990,8 @@ package feathers.controls.text
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
-				var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)

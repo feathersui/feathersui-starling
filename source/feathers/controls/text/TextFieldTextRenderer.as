@@ -1323,12 +1323,12 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -1480,8 +1480,8 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 
 			this.textField.autoSize = TextFieldAutoSize.LEFT;
 			this.textField.wordWrap = false;
@@ -1493,7 +1493,7 @@ package feathers.controls.text
 				gutterDimensionsOffset = 0;
 			}
 
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				//yes, this value is never used. this is a workaround for a bug
@@ -1502,9 +1502,9 @@ package feathers.controls.text
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
 				newWidth = (this.textField.width / scaleFactor) - gutterDimensionsOffset;
-				if(newWidth < this.explicitMinWidth)
+				if(newWidth < this._explicitMinWidth)
 				{
-					newWidth = this.explicitMinWidth;
+					newWidth = this._explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1521,13 +1521,13 @@ package feathers.controls.text
 				this.textField.width = newWidth + gutterDimensionsOffset;
 				this.textField.wordWrap = this._wordWrap;
 			}
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				newHeight = (this.textField.height / scaleFactor) - gutterDimensionsOffset;
-				if(newHeight < this.explicitMinHeight)
+				if(newHeight < this._explicitMinHeight)
 				{
-					newHeight = this.explicitMinHeight;
+					newHeight = this._explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{
@@ -1708,8 +1708,8 @@ package feathers.controls.text
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;

@@ -1022,8 +1022,8 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1040,7 +1040,7 @@ package feathers.controls
 
 			var oldHeaderWidth:Number = this.header.width;
 			var oldHeaderHeight:Number = this.header.height;
-			this.header.width = this.explicitWidth;
+			this.header.width = this._explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
 			this.header.validate();
@@ -1049,14 +1049,14 @@ package feathers.controls
 			{
 				var oldFooterWidth:Number = this.footer.width;
 				var oldFooterHeight:Number = this.footer.height;
-				this.footer.width = this.explicitWidth;
+				this.footer.width = this._explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
 				this.footer.validate();
 			}
 
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = Math.max(this.header.width, this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset);
@@ -1206,7 +1206,7 @@ package feathers.controls
 			}
 			else
 			{
-				this.header.width = this.explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
+				this.header.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
 			}
 			this.header.maxWidth = this._maxWidth - this._outerPaddingLeft - this._outerPaddingRight;
 			this.header.height = NaN;
@@ -1228,7 +1228,7 @@ package feathers.controls
 				}
 				else
 				{
-					this.header.width = this.explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
+					this.header.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				}
 				this.footer.maxWidth = this._maxWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				this.footer.height = NaN;

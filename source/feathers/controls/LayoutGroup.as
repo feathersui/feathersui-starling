@@ -664,29 +664,29 @@ package feathers.controls
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
 			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
-				this.explicitWidth !== this.explicitWidth)
+				this._explicitWidth !== this._explicitWidth)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
 			}
 			else
 			{
-				this.viewPortBounds.explicitWidth = this.explicitWidth;
+				this.viewPortBounds.explicitWidth = this._explicitWidth;
 			}
 			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
-					this.explicitHeight !== this.explicitHeight)
+					this._explicitHeight !== this._explicitHeight)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
 			}
 			else
 			{
-				this.viewPortBounds.explicitHeight = this.explicitHeight;
+				this.viewPortBounds.explicitHeight = this._explicitHeight;
 			}
-			var minWidth:Number = this.explicitMinWidth;
+			var minWidth:Number = this._explicitMinWidth;
 			if(minWidth !== minWidth) //isNaN
 			{
 				minWidth = 0;
 			}
-			var minHeight:Number = this.explicitMinHeight;
+			var minHeight:Number = this._explicitMinHeight;
 			if(minHeight !== minHeight) //isNaN
 			{
 				minHeight = 0;

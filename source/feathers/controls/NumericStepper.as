@@ -1391,15 +1391,15 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 
 			this.decrementButton.validate();
 			this.incrementButton.validate();
@@ -1408,10 +1408,10 @@ package feathers.controls
 			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
 				var maxButtonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
-				this.textInput.minWidth = Math.max(0, this.explicitMinWidth - maxButtonWidth);
+				this.textInput.minWidth = Math.max(0, this._explicitMinWidth - maxButtonWidth);
 				this.textInput.maxWidth = Math.max(0, this._maxWidth - maxButtonWidth);
-				this.textInput.width = Math.max(0, this.explicitWidth - maxButtonWidth)
-				this.textInput.height = this.explicitHeight;
+				this.textInput.width = Math.max(0, this._explicitWidth - maxButtonWidth)
+				this.textInput.height = this._explicitHeight;
 				this.textInput.validate();
 
 				if(needsWidth)
@@ -1425,10 +1425,10 @@ package feathers.controls
 			}
 			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
 			{
-				this.textInput.minHeight = Math.max(0, this.explicitMinHeight - this.decrementButton.height - this.incrementButton.height);
+				this.textInput.minHeight = Math.max(0, this._explicitMinHeight - this.decrementButton.height - this.incrementButton.height);
 				this.textInput.maxHeight = Math.max(0, this._maxHeight - this.decrementButton.height - this.incrementButton.height);
-				this.textInput.height = Math.max(0, this.explicitHeight - this.decrementButton.height - this.incrementButton.height);
-				this.textInput.width = this.explicitWidth;
+				this.textInput.height = Math.max(0, this._explicitHeight - this.decrementButton.height - this.incrementButton.height);
+				this.textInput.width = this._explicitWidth;
 				this.textInput.validate();
 
 				if(needsWidth)
@@ -1442,10 +1442,10 @@ package feathers.controls
 			}
 			else //split horizontal
 			{
-				this.textInput.minWidth = Math.max(0, this.explicitMinWidth - this.decrementButton.width - this.incrementButton.width);
+				this.textInput.minWidth = Math.max(0, this._explicitMinWidth - this.decrementButton.width - this.incrementButton.width);
 				this.textInput.maxWidth = Math.max(0, this._maxWidth - this.decrementButton.width - this.incrementButton.width);
-				this.textInput.width = Math.max(0, this.explicitWidth - this.decrementButton.width - this.incrementButton.width);
-				this.textInput.height = this.explicitHeight;
+				this.textInput.width = Math.max(0, this._explicitWidth - this.decrementButton.width - this.incrementButton.width);
+				this.textInput.height = this._explicitHeight;
 				this.textInput.validate();
 
 				if(needsWidth)
