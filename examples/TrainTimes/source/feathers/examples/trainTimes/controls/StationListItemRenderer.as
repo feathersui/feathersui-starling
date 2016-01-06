@@ -383,20 +383,20 @@ package feathers.examples.trainTimes.controls
 
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this._explicitWidth);
+			var needsHeight:Boolean = isNaN(this._explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 			this.icon.validate();
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				newWidth = this.icon.width;
 				newWidth += this._paddingLeft + this._paddingRight;
 			}
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				newHeight = this.icon.height;

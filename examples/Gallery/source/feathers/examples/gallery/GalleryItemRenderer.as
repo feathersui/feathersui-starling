@@ -253,8 +253,8 @@ package feathers.examples.gallery
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this._explicitWidth);
+			var needsHeight:Boolean = isNaN(this._explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -262,7 +262,7 @@ package feathers.examples.gallery
 
 			this.image.width = this.image.height = NaN;
 			this.image.validate();
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this.image.isLoaded)
@@ -296,7 +296,7 @@ package feathers.examples.gallery
 
 				}
 			}
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				if(this.image.isLoaded)
