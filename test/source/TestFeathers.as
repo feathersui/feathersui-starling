@@ -4,10 +4,10 @@ package
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonTests;
-	import feathers.tests.CalloutMeasurementTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
+	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
@@ -123,6 +123,7 @@ package
 				CalloutTests,
 				DateTimeSpinnerTests,
 				DrawersTests,
+				DrawersMeasurementTests,
 				GroupedListTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
