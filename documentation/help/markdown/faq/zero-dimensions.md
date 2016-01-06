@@ -19,5 +19,3 @@ trace( label.width ); // 150 (or an appropriate value for the current font)
 ```
 
 As you can see, changing the `text` property on the `Label` component doesn't immediately update its `width` property. When we check it the first time, its value is `0`. Normally, the label would wait until Starling renders before it processes all of its changed properties, but we've manually called the `validate()` function to force that to happen immediately. Afterwards, the `width` property has been updated, and we can use it in our layout code.
-
-A component must be on the display list for `validate()` to work. A call to `validate()` does nothing if the component doesn't have access to the stage.
