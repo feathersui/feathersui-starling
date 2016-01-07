@@ -693,15 +693,13 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this.currentBackground is IFeathersControl)
+			if(this.currentBackground is IValidating)
 			{
-				var feathersChild:IFeathersControl = IFeathersControl(this.currentBackground);
-				feathersChild.validate();
+				IValidating(this.currentBackground).validate();
 			}
-			if(this.currentFill is IFeathersControl)
+			if(this.currentFill is IValidating)
 			{
-				feathersChild = IFeathersControl(this.currentFill);
-				feathersChild.validate();
+				IValidating(this.currentFill).validate();
 			}
 			
 			//minimum dimensions
