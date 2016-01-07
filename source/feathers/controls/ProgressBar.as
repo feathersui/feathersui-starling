@@ -226,11 +226,13 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * The width of the first background skin that was displayed.
 		 */
 		protected var _originalBackgroundWidth:Number = NaN;
 
 		/**
 		 * @private
+		 * The height of the first background skin that was displayed.
 		 */
 		protected var _originalBackgroundHeight:Number = NaN;
 
@@ -346,11 +348,13 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * The width of the first fill skin that was displayed.
 		 */
 		protected var _originalFillWidth:Number = NaN;
 
 		/**
 		 * @private
+		 * The width of the first fill skin that was displayed.
 		 */
 		protected var _originalFillHeight:Number = NaN;
 
