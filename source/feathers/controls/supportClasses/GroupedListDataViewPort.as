@@ -2945,18 +2945,33 @@ import feathers.controls.renderers.IGroupedListItemRenderer;
 
 class ItemRendererFactoryStorage
 {
+	public function ItemRendererFactoryStorage()
+	{
+
+	}
+	
 	public var activeItemRenderers:Vector.<IGroupedListItemRenderer> = new <IGroupedListItemRenderer>[];
 	public var inactiveItemRenderers:Vector.<IGroupedListItemRenderer> = new <IGroupedListItemRenderer>[];
 }
 
 class HeaderRendererFactoryStorage
 {
+	public function HeaderRendererFactoryStorage()
+	{
+
+	}
+	
 	public var activeHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = new <IGroupedListHeaderRenderer>[];
 	public var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = new <IGroupedListHeaderRenderer>[];
 }
 
 class FooterRendererFactoryStorage
 {
+	public function FooterRendererFactoryStorage()
+	{
+
+	}
+	
 	public var activeFooterRenderers:Vector.<IGroupedListFooterRenderer> = new <IGroupedListFooterRenderer>[];
 	public var inactiveFooterRenderers:Vector.<IGroupedListFooterRenderer> = new <IGroupedListFooterRenderer>[];
 }

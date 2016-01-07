@@ -1540,6 +1540,11 @@ import feathers.controls.renderers.IListItemRenderer;
 
 class ItemRendererFactoryStorage
 {
+	public function ItemRendererFactoryStorage()
+	{
+		
+	}
+	
 	public var activeItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 	public var inactiveItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 }
