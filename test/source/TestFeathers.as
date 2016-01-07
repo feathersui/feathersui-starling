@@ -3,6 +3,7 @@ package
 	import feathers.tests.BitmapFontTextEditorFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
+	import feathers.tests.ButtonMeasurementTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
@@ -119,6 +120,7 @@ package
 				
 				//individual component tests
 				ButtonTests,
+				ButtonMeasurementTests,
 				ButtonGroupTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,

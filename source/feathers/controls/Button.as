@@ -2349,111 +2349,255 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			this.refreshMaxLabelSize(true);
-			if(this.labelTextRenderer)
+			
+			var labelRenderer:ITextRenderer = null;
+			if(this._label !== null && this.labelTextRenderer)
 			{
+				labelRenderer = this.labelTextRenderer;
+				this.refreshMaxLabelSize(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
-			else
+			
+			var adjustedGap:Number = this._gap;
+			if(adjustedGap === Number.POSITIVE_INFINITY)
 			{
-				HELPER_POINT.setTo(0, 0);
+				adjustedGap = this._minGap;
 			}
+			
+			if(this.currentIcon is IValidating)
+			{
+				IValidating(this.currentIcon).validate();
+			}
+			if(this.currentSkin is IValidating)
+			{
+				IValidating(this.currentSkin).validate();
+			}
+			
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(labelRenderer)
+				{
+					newMinWidth = HELPER_POINT.x;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				if(this.currentIcon)
+				{
+					if(labelRenderer) //both label and icon
+					{
+						if(this._iconPosition !== ICON_POSITION_TOP && this._iconPosition !== ICON_POSITION_BOTTOM &&
+							this._iconPosition !== ICON_POSITION_MANUAL)
+						{
+							newMinWidth += adjustedGap;
+							if(this.currentIcon is IFeathersControl)
+							{
+								newMinWidth += IFeathersControl(this.currentIcon).minWidth;
+							}
+							else
+							{
+								newMinWidth += this.currentIcon.width;
+							}
+						}
+						else //top, bottom, or manual
+						{
+							if(this.currentIcon is IFeathersControl)
+							{
+								var iconMinWidth:Number = IFeathersControl(this.currentIcon).minWidth;
+								if(iconMinWidth > newMinWidth)
+								{
+									newMinWidth = iconMinWidth;
+								}
+							}
+							else if(this.currentIcon.width > newMinWidth)
+							{
+								newMinWidth = this.currentIcon.width;
+							}
+						}
+					}
+					else //no label
+					{
+						if(this.currentIcon is IFeathersControl)
+						{
+							newMinWidth = IFeathersControl(this.currentIcon).minWidth;
+						}
+						else
+						{
+							newMinWidth = this.currentIcon.width;
+						}
+					}
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				if(this.currentSkin is IFeathersControl)
+				{
+					var skinMinWidth:Number = IFeathersControl(this.currentSkin).minWidth;
+					if(skinMinWidth > newMinWidth)
+					{
+						newMinWidth = skinMinWidth;
+					}
+				}
+				else if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
+					this._originalSkinWidth > newMinWidth)
+				{
+					newMinWidth = this._originalSkinWidth;
+				}
+			}
+
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(labelRenderer)
+				{
+					newMinHeight = HELPER_POINT.y;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				if(this.currentIcon)
+				{
+					if(labelRenderer) //both label and icon
+					{
+						if(this._iconPosition === ICON_POSITION_TOP || this._iconPosition === ICON_POSITION_BOTTOM)
+						{
+							newMinHeight += adjustedGap;
+							if(this.currentIcon is IFeathersControl)
+							{
+								newMinHeight += IFeathersControl(this.currentIcon).minHeight;
+							}
+							else
+							{
+								newMinHeight += this.currentIcon.height;
+							}
+						}
+						else //left, right, manual
+						{
+							if(this.currentIcon is IFeathersControl)
+							{
+								var iconMinHeight:Number = IFeathersControl(this.currentIcon).minHeight;
+								if(iconMinHeight > newMinHeight)
+								{
+									newMinHeight = iconMinHeight;
+								}
+							}
+							else if(this.currentIcon.height > newMinHeight)
+							{
+								newMinHeight = this.currentIcon.height;
+							}
+						}
+					}
+					else //no label
+					{
+						if(this.currentIcon is IFeathersControl)
+						{
+							newMinHeight = IFeathersControl(this.currentIcon).minHeight;
+						}
+						else
+						{
+							newMinHeight = this.currentIcon.height;
+						}
+					}
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentSkin is IFeathersControl)
+				{
+					var skinMinHeight:Number = IFeathersControl(this.currentSkin).minHeight;
+					if(skinMinHeight > newMinHeight)
+					{
+						newMinHeight = skinMinHeight;
+					}
+				}
+				else if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
+					this._originalSkinHeight > newMinHeight)
+				{
+					newMinHeight = this._originalSkinHeight;
+				}
+			}
+			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this.currentIcon && this.label)
-				{
-					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM &&
-						this._iconPosition != ICON_POSITION_MANUAL)
-					{
-						var adjustedGap:Number = this._gap;
-						if(adjustedGap == Number.POSITIVE_INFINITY)
-						{
-							adjustedGap = this._minGap;
-						}
-						newWidth = this.currentIcon.width + adjustedGap + HELPER_POINT.x;
-					}
-					else
-					{
-						newWidth = Math.max(this.currentIcon.width, HELPER_POINT.x);
-					}
-				}
-				else if(this.currentIcon)
-				{
-					newWidth = this.currentIcon.width;
-				}
-				else if(this.label)
+				if(labelRenderer)
 				{
 					newWidth = HELPER_POINT.x;
 				}
-				newWidth += this._paddingLeft + this._paddingRight;
-				if(newWidth !== newWidth) //isNaN
+				else
 				{
-					newWidth = this._originalSkinWidth;
-					if(newWidth != newWidth)
+					newWidth = 0;
+				}
+				if(this.currentIcon)
+				{
+					if(labelRenderer) //both label and icon
 					{
-						newWidth = 0;
+						if(this._iconPosition !== ICON_POSITION_TOP && this._iconPosition !== ICON_POSITION_BOTTOM &&
+							this._iconPosition !== ICON_POSITION_MANUAL)
+						{
+							newWidth += adjustedGap + this.currentIcon.width;
+						}
+						else if(this.currentIcon.width > newWidth) //top, bottom, or manual
+						{
+							newWidth = this.currentIcon.width;
+						}
+					}
+					else //no label
+					{
+						newWidth = this.currentIcon.width;
 					}
 				}
-				else if(this._originalSkinWidth === this._originalSkinWidth) //!isNaN
+				newWidth += this._paddingLeft + this._paddingRight;
+				if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
+					this._originalSkinWidth > newWidth)
 				{
-					if(this._originalSkinWidth > newWidth)
-					{
-						newWidth = this._originalSkinWidth;
-					}
+					newWidth = this._originalSkinWidth;
 				}
 			}
 
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this.currentIcon && this.label)
-				{
-					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
-					{
-						adjustedGap = this._gap;
-						if(adjustedGap == Number.POSITIVE_INFINITY)
-						{
-							adjustedGap = this._minGap;
-						}
-						newHeight = this.currentIcon.height + adjustedGap + HELPER_POINT.y;
-					}
-					else
-					{
-						newHeight = Math.max(this.currentIcon.height, HELPER_POINT.y);
-					}
-				}
-				else if(this.currentIcon)
-				{
-					newHeight = this.currentIcon.height;
-				}
-				else if(this.label)
+				if(labelRenderer)
 				{
 					newHeight = HELPER_POINT.y;
 				}
-				newHeight += this._paddingTop + this._paddingBottom;
-				if(newHeight != newHeight)
+				else
 				{
-					newHeight = this._originalSkinHeight;
-					if(newHeight != newHeight)
+					newHeight = 0;
+				}
+				if(this.currentIcon)
+				{
+					if(labelRenderer) //both label and icon
 					{
-						newHeight = 0;
+						if(this._iconPosition === ICON_POSITION_TOP || this._iconPosition === ICON_POSITION_BOTTOM)
+						{
+							newHeight += adjustedGap + this.currentIcon.height;
+						}
+						else if(this.currentIcon.height > newHeight) //left, right, manual
+						{
+							newHeight = this.currentIcon.height;
+						}
+					}
+					else //no label
+					{
+						newHeight = this.currentIcon.height;
 					}
 				}
-				else if(this._originalSkinHeight === this._originalSkinHeight) //!isNaN
+				newHeight += this._paddingTop + this._paddingBottom;
+				if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
+					this._originalSkinHeight > newHeight)
 				{
-					if(this._originalSkinHeight > newHeight)
-					{
-						newHeight = this._originalSkinHeight;
-					}
+					newHeight = this._originalSkinHeight;
 				}
 			}
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
