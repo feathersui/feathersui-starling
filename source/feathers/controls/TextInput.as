@@ -24,7 +24,6 @@ package feathers.controls
 
 	import flash.display.InteractiveObject;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 
@@ -585,11 +584,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _typicalText:String;
+		protected var _typicalText:String = null;
 
 		/**
-		 * The text used to measure the input when the dimensions are not set
-		 * explicitly (in addition to using the background skin for measurement).
+		 * If not <code>null</code>, the dimensions of the
+		 * <code>typicalText</code> will be used in the calculation of the text
+		 * input's full dimensions. If the text input's dimensions haven't been
+		 * set explicitly, it's calculated dimensions will be at least large
+		 * enough to display the <code>typicalText</code>. Other children, such
+		 * as the background skin and the prompt text renderer may also affect
+		 * the dimensions of the text input, allowing it to, potentially, be
+		 * bigger than the rendered <code>typicalText</code>.
 		 *
 		 * <p>In the following example, the text input's typical text is
 		 * updated:</p>
@@ -609,7 +614,7 @@ package feathers.controls
 		 */
 		public function set typicalText(value:String):void
 		{
-			if(this._typicalText == value)
+			if(this._typicalText === value)
 			{
 				return;
 			}
@@ -1073,13 +1078,13 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * The width of the first skin that was displayed.
+		 * The width of the first background skin that was displayed.
 		 */
 		protected var _originalSkinWidth:Number = NaN;
 
 		/**
 		 * @private
-		 * The height of the first skin that was displayed.
+		 * The height of the first background skin that was displayed.
 		 */
 		protected var _originalSkinHeight:Number = NaN;
 
@@ -1242,6 +1247,18 @@ package feathers.controls
 			this._stateToSkinFunction = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
+
+		/**
+		 * @private
+		 * The width of the first icon that was displayed.
+		 */
+		protected var _originalIconWidth:Number = NaN;
+
+		/**
+		 * @private
+		 * The height of the first icon that was displayed.
+		 */
+		protected var _originalIconHeight:Number = NaN;
 
 		/**
 		 * @private
@@ -2056,14 +2073,29 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
+			
+			if(this.currentBackground is IValidating)
+			{
+				IValidating(this.currentBackground).validate();
+			}
+			if(this.currentIcon is IValidating)
+			{
+				IValidating(this.currentIcon).validate();
+			}
 
-			var typicalTextWidth:Number = 0;
-			var typicalTextHeight:Number = 0;
-			if(this._typicalText)
+			var measuredContentWidth:Number = 0;
+			var measuredContentHeight:Number = 0;
+			
+			//if the typicalText is specified, the dimensions of the text editor
+			//can affect the final dimensions. otherwise, the background skin or
+			//prompt should be used for measurement.
+			if(this._typicalText !== null)
 			{
 				var oldTextEditorWidth:Number = this.textEditor.width;
 				var oldTextEditorHeight:Number = this.textEditor.height;
@@ -2074,44 +2106,123 @@ package feathers.controls
 				this.textEditor.measureText(HELPER_POINT);
 				this.textEditor.text = this._text;
 				this._ignoreTextChanges = oldIgnoreTextChanges;
-				typicalTextWidth = HELPER_POINT.x;
-				typicalTextHeight = HELPER_POINT.y;
+				measuredContentWidth = HELPER_POINT.x;
+				measuredContentHeight = HELPER_POINT.y;
 			}
 			if(this._prompt !== null)
 			{
 				this.promptTextRenderer.setSize(NaN, NaN);
 				this.promptTextRenderer.measureText(HELPER_POINT);
-				typicalTextWidth = Math.max(typicalTextWidth, HELPER_POINT.x);
-				typicalTextHeight = Math.max(typicalTextHeight, HELPER_POINT.y);
+				if(HELPER_POINT.x > measuredContentWidth)
+				{
+					measuredContentWidth = HELPER_POINT.x;
+				}
+				if(HELPER_POINT.y > measuredContentHeight)
+				{
+					measuredContentHeight = HELPER_POINT.y;
+				}
 			}
 
 			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this._originalSkinWidth, typicalTextWidth + this._paddingLeft + this._paddingRight);
-				if(newWidth !== newWidth) //isNaN
+				newWidth = measuredContentWidth;
+				if(this._originalIconWidth === this._originalIconWidth) //!isNaN
 				{
-					newWidth = 0;
+					newWidth += this._originalIconWidth + this._gap;
+				}
+				newWidth += this._paddingLeft + this._paddingRight;
+				if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
+					this._originalSkinWidth > newWidth)
+				{
+					newWidth = this._originalSkinWidth;
 				}
 			}
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingTop + this._paddingBottom);
-				if(newHeight !== newHeight) //isNaN
+				newHeight = measuredContentHeight;
+				if(this._originalIconHeight === this._originalIconHeight && //!isNaN
+					this._originalIconHeight > newHeight)
 				{
-					newHeight = 0;
+					newHeight = this._originalIconHeight;
+				}
+				newHeight += this._paddingTop + this._paddingBottom;
+				if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
+					this._originalSkinHeight > newHeight)
+				{
+					newHeight = this._originalSkinHeight;
+				}
+			}
+
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				newMinWidth = measuredContentWidth;
+				if(this.currentIcon is IFeathersControl)
+				{
+					newMinWidth += IFeathersControl(this.currentIcon).minWidth + this._gap;
+				}
+				else if(this._originalIconWidth === this._originalIconWidth)
+				{
+					newMinWidth += this._originalIconWidth + this._gap;
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				if(this.currentBackground is IFeathersControl)
+				{
+					var backgroundMinWidth:Number = IFeathersControl(this.currentBackground).minWidth;
+					if(backgroundMinWidth > newMinWidth)
+					{
+						newMinWidth = backgroundMinWidth;
+					}
+				}
+				else if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
+					this._originalSkinWidth > newMinWidth)
+				{
+					newMinWidth = this._originalSkinWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				newMinHeight = measuredContentHeight;
+				if(this.currentIcon is IFeathersControl)
+				{
+					var iconMinHeight:Number = IFeathersControl(this.currentIcon).minHeight;
+					if(iconMinHeight > newMinHeight)
+					{
+						newMinHeight = iconMinHeight;
+					}
+				}
+				else if(this._originalIconHeight === this._originalIconHeight && //!isNaN
+					this._originalIconHeight > newMinHeight)
+				{
+					newMinHeight = this._originalIconHeight;
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentBackground is IFeathersControl)
+				{
+					var backgroundMinHeight:Number = IFeathersControl(this.currentBackground).minHeight;
+					if(backgroundMinHeight > newMinHeight)
+					{
+						newMinHeight = backgroundMinHeight;
+					}
+				}
+				else if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
+					this._originalSkinHeight > newMinHeight)
+				{
+					newMinHeight = this._originalSkinHeight;
 				}
 			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
-			if(this._typicalText && (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY || isMultiline))
+			if(this._typicalText !== null && (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY || isMultiline))
 			{
 				this.textEditor.width = oldTextEditorWidth;
 				this.textEditor.height = oldTextEditorHeight;
 			}
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -2329,6 +2440,17 @@ package feathers.controls
 					var index:int = this.getChildIndex(DisplayObject(this.textEditor));
 					this.addChildAt(this.currentIcon, index);
 				}
+			}
+			if(this.currentIcon &&
+				(this._originalIconWidth !== this._originalIconWidth || //isNaN
+					this._originalIconHeight !== this._originalIconHeight)) //isNaN
+			{
+				if(this.currentIcon is IValidating)
+				{
+					IValidating(this.currentIcon).validate();
+				}
+				this._originalIconWidth = this.currentIcon.width;
+				this._originalIconHeight = this.currentIcon.height;
 			}
 		}
 

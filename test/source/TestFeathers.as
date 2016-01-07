@@ -52,6 +52,7 @@ package
 	import feathers.tests.TextBlockTextEditorFocusTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
 	import feathers.tests.TextInputFocusTests;
+	import feathers.tests.TextInputMeasurementTests;
 	import feathers.tests.TextInputTests;
 	import feathers.tests.TextureCacheTests;
 	import feathers.tests.TiledColumnsLayoutTests;
@@ -150,6 +151,7 @@ package
 				TabBarEmptyDataProviderTests,
 				TextAreaTests,
 				TextInputTests,
+				TextInputMeasurementTests,
 				ToggleButtonTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,
