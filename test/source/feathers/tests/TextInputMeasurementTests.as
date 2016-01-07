@@ -311,6 +311,22 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testAutoSizeWithSimpleIcon():void
+		{
+			this.addLargeSimpleIcon();
+			this.input.validate();
+
+			Assert.assertStrictlyEquals("The width of the TextInput was not calculated correctly based on the icon width.",
+				LARGE_ICON_WIDTH, this.input.width);
+			Assert.assertStrictlyEquals("The height of the TextInput was not calculated correctly based on the icon height.",
+				LARGE_ICON_HEIGHT, this.input.height);
+			Assert.assertStrictlyEquals("The minWidth of the TextInput was not calculated correctly based on the icon width.",
+				LARGE_ICON_WIDTH, this.input.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the TextInput was not calculated correctly based on the icon height.",
+				LARGE_ICON_HEIGHT, this.input.minHeight);
+		}
+
+		[Test]
 		public function testAutoSizeWithComplexIcon():void
 		{
 			this.addComplexIcon();
