@@ -29,7 +29,7 @@ When it's finished, we'll want to use it like this:
 var list:List = new List();
 list.itemRendererFactory = function():IListItemRenderer
 {
-    var renderer:CustomFeathersControlItemRenderer = new renderer:CustomFeathersControlItemRenderer();
+    var renderer:CustomFeathersControlItemRenderer = new CustomFeathersControlItemRenderer();
     renderer.padding = 10;
     return renderer;
 };
@@ -60,9 +60,9 @@ package
     import feathers.controls.renderers.IListItemRenderer;
     import feathers.core.FeathersControl;
  
-    public class CustomLayoutGroupItemRenderer extends Feathers implements IListItemRenderer
+    public class CustomFeathersControlItemRenderer extends FeathersControl implements IListItemRenderer
     {
-        public function CustomLayoutGroupItemRenderer()
+        public function CustomFeathersControlItemRenderer()
         {
         }
     }
