@@ -73,7 +73,7 @@ Next, we'll implement the properties required by the `IListItemRenderer` interfa
 
 ### Implementing IListItemRenderer
 
-The [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface defines several properties, including [`owner`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#owner), [`index`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#index), [`data`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#data), and [`isSelected`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#isSelected). Each of these properties can be implemented the same way in most cases, and the relevant code is included below.
+The [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface defines several properties, including [`owner`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#owner), [`index`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#index), [`data`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#data), [`factoryID`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#factoryID), and [`isSelected`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#isSelected). Each of these properties can be implemented the same way in most cases, and the relevant code is included below.
 
 ``` code
 protected var _index:int = -1;
@@ -139,6 +139,22 @@ public function set data(value:Object):void
 The `data` property contains the item displayed by the item renderer. The properties of this item can be used to display something in the item renderer. There are no rules for how to interpret the item's properties, but we'll show a basic example later.
 
 ``` code
+protected var _factoryID:String;
+
+public function get factoryID():String
+{
+    return this._factoryID;
+}
+
+public function set factoryID(value:String):void
+{
+    this._factoryID = value;
+}
+```
+
+The `factoryID` property stores the ID of the factory used by the list to create this item renderer. In general, you won't need to reference this property inside your item renderer class, but it could be used to change the item renderer's behavior or appearance if the same class were used in multiple factories. The list uses this property internally to manage its item renderers.
+
+``` code
 protected var _isSelected:Boolean;
  
 public function get isSelected():Boolean
@@ -162,7 +178,7 @@ The `isSelected` property indicates if the item has been selected. It's common f
 
 <aside class="info">The [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface is very similar. Instead of an `index` property, this type of item renderer has [`groupIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#groupIndex) and [`itemIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#itemIndex) properties to specify where in the data provider the item is located. An additional [`layoutIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#layoutIndex) property specifies the item's order in the layout, including headers and footers. The `owner` property should be typed as `GroupedList` instead of `List`, obviously.</aside>
 
-<aside class="info">Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the [`IGroupedListHeaderOrFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) interface. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.</aside>
+<aside class="info">Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the [`IGroupedListHeaderRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderRenderer.html) and [`IGroupedListFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListFooterRenderer.html) interfaces. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.</aside>
 
 ### Adding Children
 
@@ -425,6 +441,18 @@ package
             }
             this._data = value;
             this.invalidate(INVALIDATION_FLAG_DATA);
+        }
+
+        protected var _factoryID:String;
+
+        public function get factoryID():String
+        {
+            return this._factoryID;
+        }
+
+        public function set factoryID(value:String):void
+        {
+            this._factoryID = value;
         }
  
         protected var _isSelected:Boolean;
