@@ -44,6 +44,14 @@ function slider_changeHandler( event:Event ):void
 }
 ```
 
+Finally, the [`direction`](../api-reference/feathers/controls/Slider.html#direction) property may be used to change whether the slider is oriented horizontally or vertically:
+
+``` code
+slider.direction = Slider.DIRECTION_VERTICAL;
+```
+
+When the slider is horizontal, the minimum value is on the left and the maximum is on the right. When the slider is vertical, the minimum value is at the bottom and the maximum is at the top.
+
 ## Skinning a `Slider`
 
 The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [`Slider` API reference](../api-reference/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
