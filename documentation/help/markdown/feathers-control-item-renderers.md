@@ -60,9 +60,9 @@ package
     import feathers.controls.renderers.IListItemRenderer;
     import feathers.core.FeathersControl;
  
-    public class CustomLayoutGroupItemRenderer extends FeathersControl implements IListItemRenderer
+    public class CustomFeathersControlItemRenderer extends FeathersControl implements IListItemRenderer
     {
-        public function CustomLayoutGroupItemRenderer()
+        public function CustomFeathersControlItemRenderer()
         {
         }
     }
