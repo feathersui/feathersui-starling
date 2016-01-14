@@ -85,48 +85,8 @@ package feathers.core
 	 * Basic interface for Feathers UI controls. A Feathers control must also
 	 * be a Starling display object.
 	 */
-	public interface IFeathersControl extends IValidating
+	public interface IFeathersControl extends IValidating, IMeasureDisplayObject
 	{
-		/**
-		 * @copy feathers.core.FeathersControl#explicitWidth
-		 */
-		function get explicitWidth():Number;
-
-		/**
-		 * @copy feathers.core.FeathersControl#explicitHeight
-		 */
-		function get explicitHeight():Number;
-		
-		/**
-		 * @copy feathers.core.FeathersControl#minWidth
-		 */
-		function get minWidth():Number;
-
-		/**
-		 * @private
-		 */
-		function set minWidth(value:Number):void;
-
-		/**
-		 * @copy feathers.core.FeathersControl#explicitMinWidth
-		 */
-		function get explicitMinWidth():Number;
-
-		/**
-		 * @copy feathers.core.FeathersControl#minHeight
-		 */
-		function get minHeight():Number;
-
-		/**
-		 * @private
-		 */
-		function set minHeight(value:Number):void;
-
-		/**
-		 * @copy feathers.core.FeathersControl#explicitMinHeight
-		 */
-		function get explicitMinHeight():Number;
-
 		/**
 		 * @copy feathers.core.FeathersControl#maxWidth
 		 */
@@ -146,7 +106,7 @@ package feathers.core
 		 * @private
 		 */
 		function set maxHeight(value:Number):void;
-
+		
 		/**
 		 * @copy feathers.core.FeathersControl#isEnabled
 		 */

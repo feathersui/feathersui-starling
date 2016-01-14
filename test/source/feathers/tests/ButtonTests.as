@@ -127,6 +127,7 @@ package feathers.tests
 		{
 			var hasLongPressed:Boolean = false;
 			this._button.isLongPressEnabled = true;
+			this._button.validate();
 			this._button.addEventListener(FeathersEventType.LONG_PRESS, function():void
 			{
 				hasLongPressed = true;
@@ -174,6 +175,7 @@ package feathers.tests
 		{
 			var hasLongPressed:Boolean = false;
 			this._button.isLongPressEnabled = true;
+			this._button.validate();
 			this._button.addEventListener(FeathersEventType.LONG_PRESS, function():void
 			{
 				hasLongPressed = true;

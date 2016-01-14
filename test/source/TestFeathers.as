@@ -1,6 +1,8 @@
 package
 {
+	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonMeasurementTests;
@@ -19,6 +21,8 @@ package
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
 	import feathers.tests.FlowLayoutTests;
+	import feathers.tests.KeyToSelectTests;
+	import feathers.tests.KeyToTriggerTests;
 	import feathers.tests.LabelMeasurementTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
@@ -58,6 +62,7 @@ package
 	import feathers.tests.TextureCacheTests;
 	import feathers.tests.TiledColumnsLayoutTests;
 	import feathers.tests.TiledRowsLayoutTests;
+	import feathers.tests.ToggleButtonFocusTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
@@ -119,7 +124,9 @@ package
 				ComponentLifecycleTests,
 				
 				//individual component tests
+				BasicButtonMeasurementTests,
 				ButtonTests,
+				ButtonFocusTests,
 				ButtonMeasurementTests,
 				ButtonGroupTests,
 				ButtonGroupDataProviderEventsTests,
@@ -155,6 +162,7 @@ package
 				TextInputTests,
 				TextInputMeasurementTests,
 				ToggleButtonTests,
+				ToggleButtonFocusTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				
@@ -186,6 +194,8 @@ package
 				TapToTriggerTests,
 				TapToSelectTests,
 				LongPressTests,
+				KeyToSelectTests,
+				KeyToTriggerTests,
 			]);
 		}
 

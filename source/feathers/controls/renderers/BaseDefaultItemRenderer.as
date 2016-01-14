@@ -7,7 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.Button;
+	import feathers.controls.ButtonState;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Scroller;
 	import feathers.controls.ToggleButton;
@@ -112,74 +112,90 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_UP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_UP:String = "up";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DOWN
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DOWN:String = "down";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_HOVER
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_HOVER:String = "hover";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DISABLED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
@@ -364,6 +380,7 @@ package feathers.controls.renderers
 			this.labelStyleName = DEFAULT_CHILD_STYLE_NAME_LABEL;
 			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
+			this.addEventListener(Event.REMOVED_FROM_STAGE, itemRenderer_removedFromStageHandler);
 			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
 
@@ -458,7 +475,7 @@ package feathers.controls.renderers
 		 */
 		override public function set defaultIcon(value:DisplayObject):void
 		{
-			if(this._iconSelector.defaultValue == value)
+			if(this._defaultIcon === value)
 			{
 				return;
 			}
@@ -472,7 +489,7 @@ package feathers.controls.renderers
 		 */
 		override public function set defaultSkin(value:DisplayObject):void
 		{
-			if(this._skinSelector.defaultValue == value)
+			if(this._defaultSkin === value)
 			{
 				return;
 			}
@@ -3566,7 +3583,7 @@ package feathers.controls.renderers
 		{
 			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
 			{
-				value = STATE_UP;
+				value = ButtonState.UP;
 			}
 			if(this._useStateDelayTimer)
 			{
@@ -3576,9 +3593,9 @@ package feathers.controls.renderers
 					return;
 				}
 
-				if(value == Button.STATE_DOWN)
+				if(value == ButtonState.DOWN)
 				{
-					if(this._currentState == value)
+					if(this._currentState === value)
 					{
 						return;
 					}
@@ -3921,16 +3938,16 @@ package feathers.controls.renderers
 			if(!this._isEnabled)
 			{
 				this.touchable = false;
-				this._currentState = STATE_DISABLED;
+				this._currentState = ButtonState.DISABLED;
 				this.touchPointID = -1;
 			}
 			else
 			{
 				//might be in another state for some reason
 				//let's only change to up if needed
-				if(this._currentState == STATE_DISABLED)
+				if(this._currentState == ButtonState.DISABLED)
 				{
-					this._currentState = STATE_UP;
+					this._currentState = ButtonState.UP;
 				}
 				this.touchable = true;
 			}
@@ -3974,9 +3991,9 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new icon immediately when we call super.draw().
-			if(this._iconSelector.defaultValue != newIcon)
+			if(this._defaultIcon !== newIcon)
 			{
-				this._iconSelector.defaultValue = newIcon;
+				this._defaultIcon = newIcon;
 				//we don't want this taking precedence over our icon from the
 				//data provider.
 				this._stateToIconFunction = null;
@@ -4073,9 +4090,9 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new skin immediately when we call super.draw().
-			if(this._skinSelector.defaultValue != newSkin)
+			if(this._defaultSkin !== newSkin)
 			{
-				this._skinSelector.defaultValue = newSkin;
+				this._defaultSkin = newSkin;
 				//we don't want this taking precedence over our skin from the
 				//data provider.
 				this._stateToSkinFunction = null;
@@ -4772,9 +4789,8 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override protected function button_removedFromStageHandler(event:Event):void
+		protected function itemRenderer_removedFromStageHandler(event:Event):void
 		{
-			super.button_removedFromStageHandler(event);
 			this.accessoryTouchPointID = -1;
 		}
 
@@ -4802,7 +4818,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override protected function button_touchHandler(event:TouchEvent):void
+		override protected function basicButton_touchHandler(event:TouchEvent):void
 		{
 			if(this.currentAccessory && !this._isSelectableOnAccessoryTouch && this.currentAccessory != this.accessoryLabel && this.currentAccessory != this.accessoryLoader && this.touchPointID < 0)
 			{
@@ -4811,11 +4827,11 @@ package feathers.controls.renderers
 				var touch:Touch = event.getTouch(this.currentAccessory);
 				if(touch)
 				{
-					this.changeState(Button.STATE_UP);
+					this.changeState(ButtonState.UP);
 					return;
 				}
 			}
-			super.button_touchHandler(event);
+			super.basicButton_touchHandler(event);
 		}
 
 		/**

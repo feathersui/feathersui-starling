@@ -1,7 +1,6 @@
 package feathers.tests
 {
-	import feathers.controls.Button;
-	import feathers.controls.ToggleButton;
+	import feathers.tests.supportClasses.CustomToggle;
 	import feathers.utils.touch.TapToSelect;
 
 	import flash.geom.Point;
@@ -9,7 +8,6 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -18,17 +16,16 @@ package feathers.tests
 
 	public class TapToSelectTests
 	{
-		private var _target:ToggleButton;
+		private var _target:CustomToggle;
 		private var _blocker:Quad;
 		private var _tapToSelect:TapToSelect;
 
 		[Before]
 		public function prepare():void
 		{
-			this._target = new ToggleButton();
-			this._target.setSize(200, 200);
-			this._target.isToggle = false;
+			this._target = new CustomToggle();
 			TestFeathers.starlingRoot.addChild(this._target);
+			this._target.validate();
 
 			this._tapToSelect = new TapToSelect(this._target);
 		}
