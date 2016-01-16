@@ -400,7 +400,6 @@ package feathers.controls
 			{
 				this.removeFromTextureQueue();
 			}
-			this._source = value;
 			
 			var oldTexture:Texture;
 			//we should try to reuse the existing texture, if possible.
@@ -410,6 +409,12 @@ package feathers.controls
 				this._isTextureOwner = false;
 			}
 			this.cleanupTexture();
+			
+			//the source variable needs to be set after cleanupTexture() is
+			//called because cleanupTexture() needs to know the old source if
+			//a TextureCache is in use.
+			this._source = value;
+			
 			if(oldTexture)
 			{
 				this._texture = oldTexture;
