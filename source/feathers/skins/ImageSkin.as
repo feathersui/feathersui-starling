@@ -466,7 +466,6 @@ package feathers.skins
 			if(this.texture !== texture)
 			{
 				this.texture = texture;
-				this.readjustSize();
 			}
 		}
 
