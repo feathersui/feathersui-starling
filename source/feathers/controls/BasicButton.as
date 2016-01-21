@@ -575,7 +575,7 @@ package feathers.controls
 				{
 					if(isInBounds || this._keepDownStateOnRollOut)
 					{
-						this.changeState(ButtonState.HOVER);
+						this.changeState(ButtonState.DOWN);
 					}
 					else
 					{
