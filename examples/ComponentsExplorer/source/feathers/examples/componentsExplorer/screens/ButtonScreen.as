@@ -2,7 +2,6 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Header;
-	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleButton;
 	import feathers.skins.IStyleProvider;
@@ -34,8 +33,6 @@ package feathers.examples.componentsExplorer.screens
 		private var _dangerButton:Button;
 		private var _sampleBackButton:Button;
 		private var _forwardButton:Button;
-		
-		private var _icon:ImageLoader;
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
@@ -58,12 +55,11 @@ package feathers.examples.componentsExplorer.screens
 			this._disabledButton.label = "Disabled Button";
 			this._disabledButton.isEnabled = false;
 			this.addChild(this._disabledButton);
-
+			
 			this._iconButton = new Button();
-			//since it's a skin, we'll specif an icon in the theme
+			//since it's a skin, we'll specify an icon in the theme
 			this._iconButton.styleNameList.add(CHILD_STYLE_NAME_ICON_BUTTON);
 			this._iconButton.label = "Icon Button";
-			this._iconButton.defaultIcon = this._icon;
 			this.addChild(this._iconButton);
 
 			this._toggleButton = new ToggleButton();
