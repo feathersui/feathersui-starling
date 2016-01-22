@@ -1297,7 +1297,7 @@ package feathers.themes
 
 		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
 		{
-			this.setListStyles(list);
+			this.setSpinnerListStyles(list);
 			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
 		}
 
