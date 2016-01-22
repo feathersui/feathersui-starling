@@ -401,7 +401,6 @@ package feathers.examples.trainTimes.controls
 			{
 				newHeight = this.icon.height;
 			}
-			trace(newWidth, newHeight);
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
