@@ -252,7 +252,7 @@ package feathers.skins
 			{
 				super.width = value;
 			}
-			else
+			else //return to the original width of the texture
 			{
 				this.readjustSize();
 			}
@@ -294,7 +294,7 @@ package feathers.skins
 			{
 				super.height = value;
 			}
-			else
+			else //return to the original height of the texture
 			{
 				this.readjustSize();
 			}
@@ -463,9 +463,16 @@ package feathers.skins
 			{
 				texture = this._defaultTexture;
 			}
-			if(this.texture !== texture)
+			this.texture = texture;
+			if(this._explicitWidth === this._explicitWidth && //!isNaN
+				super.width !== this._explicitWidth)
 			{
-				this.texture = texture;
+				super.width = this._explicitWidth;
+			}
+			if(this._explicitHeight === this._explicitHeight && //!isNaN
+				super.height !== this._explicitHeight)
+			{
+				super.height = this._explicitHeight;
 			}
 		}
 
