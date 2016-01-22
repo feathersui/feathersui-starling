@@ -15,24 +15,19 @@ package feathers.examples.trainTimes.themes
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
-	import feathers.display.Scale3Image;
-	import feathers.display.Scale9Image;
 	import feathers.display.TiledImage;
 	import feathers.examples.trainTimes.controls.StationListItemRenderer;
 	import feathers.examples.trainTimes.screens.StationScreen;
 	import feathers.examples.trainTimes.screens.TimesScreen;
 	import feathers.layout.HorizontalLayout;
-	import feathers.system.DeviceCapabilities;
-	import feathers.textures.Scale3Textures;
-	import feathers.textures.Scale9Textures;
 	import feathers.themes.StyleNameFunctionTheme;
 
-	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
@@ -57,12 +52,9 @@ package feathers.examples.trainTimes.themes
 
 		protected static const TIMES_LIST_ITEM_RENDERER_NAME:String = "traintimes-times-list-item-renderer";
 
-		protected static const ORIGINAL_DPI_IPHONE_RETINA:int = 326;
-		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
-
-		protected static const HEADER_SCALE9_GRID:Rectangle = new Rectangle(0, 0, 4, 5);
-		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
-		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
+		protected static const HEADER_SCALE9_GRID:Rectangle = new Rectangle(0, 0, 2, 2);
+		protected static const HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(5, 0, 14, 4);
+		protected static const VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(0, 5, 4, 14);
 
 		protected static const PRIMARY_TEXT_COLOR:uint = 0xe8caa4;
 		protected static const DETAIL_TEXT_COLOR:uint = 0x64908a;
@@ -92,8 +84,6 @@ package feathers.examples.trainTimes.themes
 			this.initialize();
 		}
 
-		protected var scale:Number = 1;
-
 		protected var primaryBackground:TiledImage;
 
 		protected var defaultTextFormat:TextFormat;
@@ -104,7 +94,7 @@ package feathers.examples.trainTimes.themes
 
 		protected var atlas:TextureAtlas;
 		protected var mainBackgroundTexture:Texture;
-		protected var headerBackgroundTextures:Scale9Textures;
+		protected var headerBackgroundTexture:Texture;
 		protected var stationListNormalIconTexture:Texture;
 		protected var stationListFirstNormalIconTexture:Texture;
 		protected var stationListLastNormalIconTexture:Texture;
@@ -114,8 +104,8 @@ package feathers.examples.trainTimes.themes
 		protected var confirmIconTexture:Texture;
 		protected var cancelIconTexture:Texture;
 		protected var backIconTexture:Texture;
-		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
-		protected var verticalScrollBarThumbSkinTextures:Scale3Textures;
+		protected var horizontalScrollBarThumbSkinTexture:Texture;
+		protected var verticalScrollBarThumbSkinTexture:Texture;
 
 		override public function dispose():void
 		{
@@ -135,7 +125,6 @@ package feathers.examples.trainTimes.themes
 
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeGlobals();
 			this.initializeTextures();
 			this.initializeStage();
@@ -151,28 +140,6 @@ package feathers.examples.trainTimes.themes
 			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
 
-		protected function initializeScale():void
-		{
-			var starling:Starling = Starling.current;
-			var nativeScaleFactor:Number = 1;
-			if(starling.supportHighResolutions)
-			{
-				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
-			}
-			
-			var scaledDPI:int = DeviceCapabilities.dpi / (Starling.contentScaleFactor / nativeScaleFactor);
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				var originalDPI:int = ORIGINAL_DPI_IPAD_RETINA;
-			}
-			else
-			{
-				originalDPI = ORIGINAL_DPI_IPHONE_RETINA;
-			}
-
-			this.scale = scaledDPI / originalDPI;
-		}
-
 		protected function initializeGlobals():void
 		{
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
@@ -180,15 +147,16 @@ package feathers.examples.trainTimes.themes
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = 16 * this.scale;
+				Callout.stagePaddingLeft = 8;
 		}
 
 		protected function initializeTextures():void
 		{
-			this.atlas = new TextureAtlas(Texture.fromEmbeddedAsset(ATLAS_IMAGE, false), XML(new ATLAS_XML()));
+			var atlasTexture:Texture = Texture.fromEmbeddedAsset(ATLAS_IMAGE, false, false, 2);
+			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
 
 			this.mainBackgroundTexture = this.atlas.getTexture("main-background");
-			this.headerBackgroundTextures = new Scale9Textures(this.atlas.getTexture("header-background"), HEADER_SCALE9_GRID);
+			this.headerBackgroundTexture = this.atlas.getTexture("header-background");
 			this.stationListNormalIconTexture = this.atlas.getTexture("station-list-normal-icon");
 			this.stationListFirstNormalIconTexture = this.atlas.getTexture("station-list-first-normal-icon");
 			this.stationListLastNormalIconTexture = this.atlas.getTexture("station-list-last-normal-icon");
@@ -198,8 +166,8 @@ package feathers.examples.trainTimes.themes
 			this.confirmIconTexture = this.atlas.getTexture("confirm-icon");
 			this.cancelIconTexture = this.atlas.getTexture("cancel-icon");
 			this.backIconTexture = this.atlas.getTexture("back-icon");
-			this.horizontalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("horizontal-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_HORIZONTAL);
-			this.verticalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_VERTICAL);
+			this.horizontalScrollBarThumbSkinTexture = this.atlas.getTexture("horizontal-scroll-bar-thumb-skin");
+			this.verticalScrollBarThumbSkinTexture = this.atlas.getTexture("vertical-scroll-bar-thumb-skin");
 
 			//we need to use different font names because Flash runtimes seem to
 			//have a bug where setting defaultTextFormat on a TextField with a
@@ -210,12 +178,12 @@ package feathers.examples.trainTimes.themes
 			var regularFontName:String = "SourceSansPro";
 			var boldFontName:String = "SourceSansProBold";
 			var boldItalicFontName:String = "SourceSansProBoldItalic";
-			this.defaultTextFormat = new TextFormat(regularFontName, Math.round(36 * this.scale), PRIMARY_TEXT_COLOR);
-			this.selectedTextFormat = new TextFormat(boldFontName, Math.round(36 * this.scale), PRIMARY_TEXT_COLOR, true);
-			this.headerTitleTextFormat = new TextFormat(regularFontName, Math.round(36 * this.scale), PRIMARY_TEXT_COLOR);
-			this.stationListNameTextFormat = new TextFormat(boldItalicFontName, Math.round(48 * this.scale), PRIMARY_TEXT_COLOR, true, true);
-			this.stationListDetailTextFormat = new TextFormat(boldFontName, Math.round(24 * this.scale), DETAIL_TEXT_COLOR, true);
-			this.stationListDetailTextFormat.letterSpacing = 6 * this.scale;
+			this.defaultTextFormat = new TextFormat(regularFontName, 18, PRIMARY_TEXT_COLOR);
+			this.selectedTextFormat = new TextFormat(boldFontName, 18, PRIMARY_TEXT_COLOR, true);
+			this.headerTitleTextFormat = new TextFormat(regularFontName, 18, PRIMARY_TEXT_COLOR);
+			this.stationListNameTextFormat = new TextFormat(boldItalicFontName, 24, PRIMARY_TEXT_COLOR, true, true);
+			this.stationListDetailTextFormat = new TextFormat(boldFontName, 12, DETAIL_TEXT_COLOR, true);
+			this.stationListDetailTextFormat.letterSpacing = 3;
 		}
 
 		protected function initializeStyleProviders():void
@@ -237,21 +205,15 @@ package feathers.examples.trainTimes.themes
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER, setActionContainerStyles);
 		}
 
-		protected function imageLoaderFactory():ImageLoader
-		{
-			var image:ImageLoader = new ImageLoader();
-			image.textureScale = this.scale;
-			return image;
-		}
-
 		protected function horizontalScrollBarFactory():SimpleScrollBar
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
 			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.width = 10 * this.scale;
+			var defaultSkin:Image = new Image(this.horizontalScrollBarThumbSkinTexture);
+			defaultSkin.scale9Grid = HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID;
+			defaultSkin.width = 5;
 			scrollBar.thumbProperties.defaultSkin = defaultSkin;
-			scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
+			scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 2;
 			return scrollBar;
 		}
 
@@ -259,10 +221,11 @@ package feathers.examples.trainTimes.themes
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
 			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			var defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.height = 10 * this.scale;
+			var defaultSkin:Image = new Image(this.verticalScrollBarThumbSkinTexture);
+			defaultSkin.scale9Grid = VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID;
+			defaultSkin.height = 5;
 			scrollBar.thumbProperties.defaultSkin = defaultSkin;
-			scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
+			scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 2;
 			return scrollBar;
 		}
 
@@ -287,47 +250,45 @@ package feathers.examples.trainTimes.themes
 		{
 			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.backIconTexture;
-			defaultIcon.textureScale = this.scale;
 			defaultIcon.snapToPixels = true;
 			button.defaultIcon = defaultIcon;
-			button.minWidth = button.minHeight = 44 * this.scale;
-			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+			button.minWidth = button.minHeight = 22;
+			button.minTouchWidth = button.minTouchHeight = 44;
 		}
 
 		protected function setConfirmButtonStyles(button:Button):void
 		{
 			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.confirmIconTexture;
-			defaultIcon.textureScale = this.scale;
 			defaultIcon.snapToPixels = true;
 			button.defaultIcon = defaultIcon;
-			button.minWidth = button.minHeight = 44 * this.scale;
-			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+			button.minWidth = button.minHeight = 22;
+			button.minTouchWidth = button.minTouchHeight = 44;
 		}
 
 		protected function setCancelButtonStyles(button:Button):void
 		{
 			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.cancelIconTexture;
-			defaultIcon.textureScale = this.scale;
 			defaultIcon.snapToPixels = true;
 			button.defaultIcon = defaultIcon;
-			button.minWidth = button.minHeight = 44 * this.scale;
-			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+			button.minWidth = button.minHeight = 22;
+			button.minTouchWidth = button.minTouchHeight = 44;
 		}
 
 		protected function setHeaderStyles(header:Header):void
 		{
 			header.useExtraPaddingForOSStatusBar = true;
 			
-			header.minWidth = 88 * this.scale;
-			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 14 * this.scale;
+			header.minWidth = 44;
+			header.minHeight = 44;
+			header.padding = 7;
 			header.titleAlign = Header.TITLE_ALIGN_PREFER_RIGHT;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundTextures, this.scale);
+			var backgroundSkin:Image = new Image(this.headerBackgroundTexture);
+			backgroundSkin.scale9Grid = HEADER_SCALE9_GRID;
 			header.backgroundSkin = backgroundSkin;
+			
 			header.titleProperties.textFormat = this.headerTitleTextFormat;
 		}
 
@@ -346,52 +307,49 @@ package feathers.examples.trainTimes.themes
 
 		protected function setTimesListItemRendererStyles(renderer:DefaultListItemRenderer):void
 		{
-			var defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xff00ff);
+			var defaultSkin:Quad = new Quad(44, 44, 0xff00ff);
 			defaultSkin.alpha = 0;
 			renderer.defaultSkin = defaultSkin;
-			var defaultSelectedSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xcc2a41);
+			var defaultSelectedSkin:Quad = new Quad(44, 44, 0xcc2a41);
 			renderer.defaultSelectedSkin = defaultSelectedSkin;
 			renderer.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			renderer.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
-			renderer.paddingLeft = 8 * this.scale;
-			renderer.paddingRight = 16 * this.scale;
+			renderer.paddingLeft = 4;
+			renderer.paddingRight = 8;
 		}
 
 		protected function setStationListItemRendererStyles(renderer:StationListItemRenderer):void
 		{
-			renderer.paddingLeft = 44 * this.scale;
-			renderer.paddingRight = 32 * this.scale;
-			renderer.iconLoaderFactory = imageLoaderFactory;
+			renderer.paddingLeft = 22;
+			renderer.paddingRight = 16;
 			renderer.normalIconTexture = this.stationListNormalIconTexture;
 			renderer.selectedIconTexture = this.stationListSelectedIconTexture;
 		}
 
 		protected function setStationListFirstItemRendererStyles(renderer:StationListItemRenderer):void
 		{
-			renderer.paddingLeft = 44 * this.scale;
-			renderer.paddingRight = 32 * this.scale;
-			renderer.iconLoaderFactory = imageLoaderFactory;
+			renderer.paddingLeft = 22;
+			renderer.paddingRight = 16;
 			renderer.normalIconTexture = this.stationListFirstNormalIconTexture;
 			renderer.selectedIconTexture = this.stationListFirstSelectedIconTexture;
 		}
 
 		protected function setStationListLastItemRendererStyles(renderer:StationListItemRenderer):void
 		{
-			renderer.paddingLeft = 44 * this.scale;
-			renderer.paddingRight = 32 * this.scale;
-			renderer.iconLoaderFactory = imageLoaderFactory;
+			renderer.paddingLeft = 22;
+			renderer.paddingRight = 16;
 			renderer.normalIconTexture = this.stationListLastNormalIconTexture;
 			renderer.selectedIconTexture = this.stationListLastSelectedIconTexture;
 		}
 
 		protected function setActionContainerStyles(container:ScrollContainer):void
 		{
-			var backgroundSkin:Quad = new Quad(48 * this.scale, 48 * this.scale, 0xcc2a41);
+			var backgroundSkin:Quad = new Quad(24, 24, 0xcc2a41);
 			container.backgroundSkin = backgroundSkin;
 
 			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.paddingRight = 32 * this.scale;
-			layout.gap = 48 * this.scale;
+			layout.paddingRight = 16;
+			layout.gap = 24;
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 			container.layout = layout;
