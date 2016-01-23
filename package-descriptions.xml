@@ -66,6 +66,9 @@
 		<package name="feathers.utils.geom"> 
 			<shortDescription><![CDATA[Utilities for working with geometrical calculations.]]></shortDescription>
 		</package>
+		<package name="feathers.utils.keyboard"> 
+			<shortDescription><![CDATA[Utilities for working with the keyboard.]]></shortDescription>
+		</package>
 		<package name="feathers.utils.math"> 
 			<shortDescription><![CDATA[Utilities for common mathematical calculations.]]></shortDescription>
 		</package>
