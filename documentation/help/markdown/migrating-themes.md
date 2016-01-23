@@ -104,11 +104,11 @@ button.styleProvider = null;
 
 Make sure you do that before the component initializes. That's when the theme is asked to style the component. By default, a component will initialize when it is added to the stage.
 
-## Replace `name` and `nameList` with `styleName` and `styleNameList`
+## Replace "name" with "style name"
 
 In order to fix some issues developers had using [`getChildByName()`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#getChildByName()), Feathers no longer uses the [`name`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#name) and `nameList` properties to indicate to the theme that it should give a component an alternate visual appearance.
 
-In a legacy theme, you would add a string to the `nameList` property (or set the `name` property directly):
+In a legacy theme, you might add a string to the `nameList` property (or set the `name` property directly):
 
 ``` code
 // legacy
@@ -126,9 +126,15 @@ button.styleNameList.add( "my-custom-button" );
 button.styleName = "my-custom-button";
 ```
 
-The `nameList` property still exists, temporarily. It simply maps to the `styleNameList` property so that legacy code will continue to work. However, the `nameList` property is considered deprecated, and it will be removed in a future version of Feathers.
+The `nameList` property still exists in Feathers 2.0 and 2.1, but it is completely removed in Feathers 2.2 and newer. In the versions where it still exists, it simply maps to the `styleNameList` property so that legacy code will continue to work.
 
 The [`name`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#name) property is no longer used for styling Feathers components at all. It does not map to the `styleName` property the way that `nameList` maps to the `styleNameList` property. This change makes a strict distinction between `name` and `styleName` in order to fix issues using `getChildByName()` with Feathers components.
+
+Constants for alternate style names have also been renamed. For example, constants like `Button.ALTERNATE_NAME_DANGER` that contain `NAME` have been renamed with `STYLE_NAME` instead. To reference the alternate style name for a "danger" button, use the new constant `Button.ALTERNATE_STYLE_NAME_DANGER` instead.
+
+Similarly, constants like `Slider.DEFAULT_CHILD_NAME_THUMB` switched from `NAME` to `STYLE_NAME`. To reference the default style name of the slider's thumb, use `Slider.DEFAULT_CHILD_STYLE_NAME_THUMB` instead.
+
+Finally, properties like `customThumbName` on the slider component switch from `Name` to `StyleName`. To set a custom style name for a slider's thumb, use the `customThumbStyleName` property instead.
 
 ## Related Links
 
