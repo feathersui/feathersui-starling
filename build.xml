@@ -385,15 +385,6 @@
 			</fileset>
 		</copy>
 
-		<copy overwrite="true" todir="${examples.output}/DisplayObjectExplorer">
-			<fileset dir="${examples.root}/DisplayObjectExplorer">
-				<include name="README.md"/>
-				<include name="source/**"/>
-				<include name="assets/**"/>
-				<exclude name="source/DisplayObjectExplorerWeb.as"/>
-			</fileset>
-		</copy>
-
 		<copy overwrite="true" todir="${examples.output}/DragAndDrop">
 			<fileset dir="${examples.root}/DragAndDrop">
 				<include name="README.md"/>
