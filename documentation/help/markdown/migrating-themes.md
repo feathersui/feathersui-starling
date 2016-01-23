@@ -1,3 +1,8 @@
+---
+title: Migrating legacy themes to Feathers 2.0  
+author: Josh Tynjala
+
+---
 # Migrating legacy themes to Feathers 2.0
 
 Feathers 2.0 includes a [new skinning architecture](skinning.html). The [`DisplayListWatcher`](../api-reference/feathers/core/DisplayListWatcher.html) class that legacy themes extended still exists, and you can continue using it for the foreseeable future. However, if you're ready to modernize your theme to take advantage of the new style provider system, you will need to make a number of fundamental changes to your themes.
@@ -24,7 +29,7 @@ After this change, if you try to compile, you will probably see a number of erro
 
 The modern [`StyleNameFunctionTheme`](../api-reference/feathers/themes/StyleNameFunctionTheme.html) still calls functions that set properties on components, similar to legacy themes. You can still use strings (called style names) to differentiate between components of the same type that need to have different appearances. The API has changed a bit for setting these functions, though.
 
-In a legacy theme, you might call [`setInitializerForClass()`](../api-reference/feathers/core/DisplayListWatcher.html#setInitializerForClass()) and pass in a class and a function. You could optionally pass in a style name as the optional third argument, to specify function for alternate styles:
+When using a legacy theme, you might call [`setInitializerForClass()`](../api-reference/feathers/core/DisplayListWatcher.html#setInitializerForClass()) and pass in a class and a function. You could optionally pass in a style name as the optional third argument, to specify function for alternate styles:
 
 ``` code
 // legacy
