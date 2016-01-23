@@ -81,9 +81,6 @@ package feathers.themes
 	import feathers.media.VideoPlayer;
 	import feathers.media.VolumeSlider;
 	import feathers.skins.ImageSkin;
-	import feathers.skins.StandardIcons;
-
-	import flash.geom.Rectangle;
 
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
@@ -100,7 +97,6 @@ package feathers.themes
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Stage;
-	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -632,12 +628,6 @@ package feathers.themes
 		{
 			if(this.atlas)
 			{
-				//these are saved globally, so we want to clear them out
-				if(StandardIcons.listDrillDownAccessoryTexture.root == this.atlas.texture.root)
-				{
-					StandardIcons.listDrillDownAccessoryTexture = null;
-				}
-				
 				//if anything is keeping a reference to the texture, we don't
 				//want it to keep a reference to the theme too.
 				this.atlas.texture.root.onRestore = null;
@@ -849,10 +839,6 @@ package feathers.themes
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
 			this.listDrillDownAccessorySelectedTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-selected-icon0000");
-			
-			//in a future version of Feathers, the StandardIcons class will be
-			//removed. it's still used here to support legacy code.
-			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
 
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");

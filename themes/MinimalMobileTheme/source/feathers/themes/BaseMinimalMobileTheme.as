@@ -79,7 +79,6 @@ package feathers.themes
 	import feathers.media.VideoPlayer;
 	import feathers.media.VolumeSlider;
 	import feathers.skins.ImageSkin;
-	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 	import feathers.text.BitmapFontTextFormat;
 
@@ -421,12 +420,6 @@ package feathers.themes
 		{
 			if(this.atlas)
 			{
-				//these are saved globally, so we want to clear them out
-				if(StandardIcons.listDrillDownAccessoryTexture.root == this.atlas.texture.root)
-				{
-					StandardIcons.listDrillDownAccessoryTexture = null;
-				}
-				
 				//if anything is keeping a reference to the texture, we don't
 				//want it to keep a reference to the theme too.
 				this.atlas.texture.root.onRestore = null;
@@ -593,10 +586,6 @@ package feathers.themes
 			this.seekSliderProgressSkinTexture = this.atlas.getTexture("seek-slider-progress-skin0000");
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon0000");
-
-			//in a future version of Feathers, the StandardIcons class will be
-			//removed. it's still used here to support legacy code.
-			StandardIcons.listDrillDownAccessoryTexture = this.listDrillDownAccessoryTexture;
 		}
 
 		/**
