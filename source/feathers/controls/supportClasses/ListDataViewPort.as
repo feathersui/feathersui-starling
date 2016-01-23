@@ -1112,7 +1112,7 @@ package feathers.controls.supportClasses
 						}
 						else
 						{
-							throw new IllegalOperationError("ListDataViewPort: renderer map contains bad data.");
+							throw new IllegalOperationError("ListDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 						}
 					}
 					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(itemRenderer);

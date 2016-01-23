@@ -1834,7 +1834,7 @@ package feathers.controls.supportClasses
 					}
 					else
 					{
-						throw new IllegalOperationError("GroupedListDataViewPort: renderer map contains bad data.");
+						throw new IllegalOperationError("GroupedListDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 					}
 				}
 				itemRenderer.visible = true;
