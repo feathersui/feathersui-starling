@@ -7,6 +7,8 @@ package feathers.examples.todos
 	import feathers.layout.HorizontalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
 
+	import starling.display.Image;
+
 	public class TodosTheme extends MetalWorksMobileTheme
 	{
 		public function TodosTheme()
@@ -42,7 +44,9 @@ package feathers.examples.todos
 		
 		protected function setTodoItemRendererStyles(itemRenderer:TodoItemRenderer):void
 		{
-			itemRenderer.backgroundSkin = new Scale9Image(this.itemRendererUpSkinTextures);
+			var backgroundSkin:Image = new Image(this.itemRendererUpSkinTexture);
+			backgroundSkin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
+			itemRenderer.backgroundSkin = backgroundSkin;
 
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.gap = this.smallGutterSize;
