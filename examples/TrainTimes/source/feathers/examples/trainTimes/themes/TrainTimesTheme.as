@@ -15,7 +15,6 @@ package feathers.examples.trainTimes.themes
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
-	import feathers.display.TiledImage;
 	import feathers.examples.trainTimes.controls.StationListItemRenderer;
 	import feathers.examples.trainTimes.screens.StationScreen;
 	import feathers.examples.trainTimes.screens.TimesScreen;
@@ -53,8 +52,8 @@ package feathers.examples.trainTimes.themes
 		protected static const TIMES_LIST_ITEM_RENDERER_NAME:String = "traintimes-times-list-item-renderer";
 
 		protected static const HEADER_SCALE9_GRID:Rectangle = new Rectangle(0, 0, 2, 2);
-		protected static const HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(5, 0, 14, 4);
-		protected static const VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(0, 5, 4, 14);
+		protected static const HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(3, 0, 7, 4);
+		protected static const VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(0, 3, 4, 7);
 
 		protected static const PRIMARY_TEXT_COLOR:uint = 0xe8caa4;
 		protected static const DETAIL_TEXT_COLOR:uint = 0x64908a;
@@ -84,7 +83,7 @@ package feathers.examples.trainTimes.themes
 			this.initialize();
 		}
 
-		protected var primaryBackground:TiledImage;
+		protected var primaryBackground:Image;
 
 		protected var defaultTextFormat:TextFormat;
 		protected var selectedTextFormat:TextFormat;
@@ -133,7 +132,8 @@ package feathers.examples.trainTimes.themes
 
 		protected function initializeStage():void
 		{
-			this.primaryBackground = new TiledImage(this.mainBackgroundTexture);
+			this.primaryBackground = new Image(this.mainBackgroundTexture);
+			this.primaryBackground.tileGrid = new Rectangle();
 			this.primaryBackground.width = Starling.current.stage.stageWidth;
 			this.primaryBackground.height = Starling.current.stage.stageHeight;
 			Starling.current.stage.addChildAt(this.primaryBackground, 0);
