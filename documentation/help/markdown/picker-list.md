@@ -115,9 +115,9 @@ If you are not using a theme, you can use [`buttonFactory`](../api-reference/fea
 list.buttonFactory = function():Button
 {
     var button:Button = new Button();
-    button.defaultSkin = new Scale9Image( upTextures );
-    button.downSkin = new Scale9Image( downTextures );
-    button.hoverSkin = new Scale9Image( hoverTextures );
+    button.defaultSkin = new Image( upTexture );
+    button.downSkin = new Image( downTexture );
+    button.hoverSkin = new Image( hoverTexture );
     return button;
 };
 ```
@@ -125,9 +125,9 @@ list.buttonFactory = function():Button
 Alternatively, or in addition to the `buttonFactory`, you may use the [`buttonProperties`](../api-reference/feathers/controls/PickerList.html#buttonProperties) to pass skins to the button:
 
 ``` code
-list.buttonProperties.defaultSkin = new Scale9Image( upTextures );
-list.buttonProperties.downSkin = new Scale9Image( downTextures );
-list.buttonProperties.hoverSkin = new Scale9Image( hoverTextures );
+list.buttonProperties.defaultSkin = new Image( upTexture );
+list.buttonProperties.downSkin = new Image( downTexture );
+list.buttonProperties.hoverSkin = new Image( hoverTexture );
 ```
 
 In general, you should only skins to the picker list's button through `buttonProperties` if you need to change skins after the button is created. Using `buttonFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
@@ -166,7 +166,7 @@ If you are not using a theme, you can use [`listFactory`](../api-reference/feath
 list.listFactory = function():List
 {
     var list:List = new List();
-    list.backgroundSkin = new Scale9Image( backgroundSkinTextures );
+    list.backgroundSkin = new Image( backgroundSkinTexture );
     return list;
 };
 ```
@@ -174,7 +174,7 @@ list.listFactory = function():List
 Alternatively, or in addition to the `listFactory`, you may use the [`listProperties`](../api-reference/feathers/controls/PickerList.html#listProperties) to pass skins to the list.
 
 ``` code
-list.listProperties.backgroundSkin = new Scale9Image( backgroundSkinTextures );
+list.listProperties.backgroundSkin = new Image( backgroundSkinTexture );
 ```
 
 In general, you should only skins to the picker list's list through `listProperties` if you need to change skins after the list is created. Using `listFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.

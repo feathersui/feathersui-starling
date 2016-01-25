@@ -65,8 +65,8 @@ The skins for a `LayoutGroup` control are mainly the background skins. For full 
 We'll start the skinning process by giving our group appropriate background skins.
 
 ``` code
-container.backgroundSkin = new Scale9Image( enabledTextures );
-container.backgroundDisabledSkin = new Image( disabledTextures );
+container.backgroundSkin = new Image( enabledTexture );
+container.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/LayoutGroup.html#backgroundSkin) property provides the default background for when the container is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/LayoutGroup.html#backgroundDisabledSkin) is displayed when the group is disabled.

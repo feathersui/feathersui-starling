@@ -201,7 +201,7 @@ package feathers.controls
 		 * skin:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.selectionOverlaySkin = new Scale9Image( textures );</listing>
+		 * list.selectionOverlaySkin = new Image( texture );</listing>
 		 *
 		 * @default null
 		 */

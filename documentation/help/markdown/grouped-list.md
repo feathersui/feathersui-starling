@@ -179,8 +179,8 @@ A grouped list has a background skin and a layout. Much of the ability to custom
 We'll start the skinning process by giving our grouped list appropriate background skins.
 
 ``` code
-list.backgroundSkin = new Scale9Image( enabledTextures );
-list.backgroundDisabledSkin = new Image( disabledTextures );
+list.backgroundSkin = new Image( enabledTexture );
+list.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the grouped list is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the grouped list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled grouped list, it will fall back to using the `backgroundSkin` in the disabled state.

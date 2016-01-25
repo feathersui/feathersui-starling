@@ -62,7 +62,9 @@ Alerts are displayed using the [`PopUpManager`](pop-ups.html). By default, modal
 ``` code
 Alert.overlayFactory = function():DisplayObject
 {
-    return new TiledImage( myTexture );
+    var tiledBackground:Image = new Image( texture );
+    tiledBackground.tileGrid = new Rectangle();
+    return tiledBackground;
 };
 ```
 
@@ -97,8 +99,8 @@ The skins for an `Alert` control are divided into the header, the message text r
 We'll start the skinning process by giving our alert appropriate background skins.
 
 ``` code
-alert.backgroundSkin = new Scale9Image( enabledTextures );
-alert.backgroundDisabledSkin = new Image( disabledTextures );
+alert.backgroundSkin = new Image( enabledTexture );
+alert.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the alert is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#disabledBackgroundSkin) is displayed when the alert is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled alert, it will fall back to using the `backgroundSkin` in the disabled state.
@@ -178,7 +180,7 @@ alert.headerFactory = function():Header
 {
     var header:Header = new Header();
     //skin the header here
-    header.backgroundSkin = new Scale9Image( headerBackgroundTextures );
+    header.backgroundSkin = new Image( headerBackgroundTexture );
     return header;
 }
 ```
@@ -186,7 +188,7 @@ alert.headerFactory = function():Header
 Alternatively, or in addition to the `headerFactory`, you may use the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) to pass skins to the header.
 
 ``` code
-alert.headerProperties.backgroundSkin = new Scale9Image( headerBackgroundTextures );
+alert.headerProperties.backgroundSkin = new Image( headerBackgroundTexture );
 ```
 
 In general, you should only pass skins to the alert's header through `headerProperties` if you need to change skins after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
@@ -282,7 +284,7 @@ If you're not using a theme, you can specify a factory to create the alert, incl
 function skinnedAlertFactory():Alert
 {
     var alert:Alert = new Alert();
-    alert.backgroundSkin = new Scale9Image( myTextures );
+    alert.backgroundSkin = new Image( texture );
     // etc...
     return alert;
 };
@@ -295,7 +297,7 @@ Another option is to pass an alert factory to `Alert.show()`. This allows you to
 function skinnedAlertFactory():Alert
 {
     var alert:Alert = new Alert();
-    alert.backgroundSkin = new Scale9Image( myTextures );
+    alert.backgroundSkin = new Image( texture );
     // etc...
     return alert;
 };

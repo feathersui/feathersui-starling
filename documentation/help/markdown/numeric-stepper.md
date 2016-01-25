@@ -180,7 +180,7 @@ stepper.textInputFactory = function():TextInput
 {
     var input:TextInput = new TextInput();
     //skin the text input here
-    input.backgroundSkin = new Scale9Image( backgroundTextures );
+    input.backgroundSkin = new Image( backgroundTexture );
     input.padding = 20;
     return input;
 }
@@ -189,7 +189,7 @@ stepper.textInputFactory = function():TextInput
 Alternatively, or in addition to the `textInputFactory`, you may use the [`textInputProperties`](../api-reference/feathers/controls/NumericStepper.html#textInputProperties) to pass skins to the text input.
 
 ``` code
-stepper.textInputProperties.backgroundSkin = new Scale9Image( backgroundTextures );
+stepper.textInputProperties.backgroundSkin = new Image( backgroundTexture );
 stepper.textInputProperties.padding = 20;
 ```
 

@@ -133,10 +133,6 @@ This applies to any scrolling component or container, and a few others like `Sta
 
 Unfortunately, `flash.text.TextField` often does not draw correctly `BitmapData` until a frame later. If you are using the Feathers `TextFieldTextRenderer`, it will wait a frame before uploading its text as a texture on the GPU. Since flattening happens immediately, the `TextField` won't be ready in time. The best workaround is to immediately validate the component and wait a frame before flattening.
 
-### Why do I see colored lines or strange gaps between tiles when I use `TiledImage`?
-
-This is actually something common that happens on GPUs when you position textures on non-integer pixels or if you scale the textures. If you use TexturePacker to create your texture atlases, you can use the "extrude" setting to work around this issue. The [`TiledImage`](../tiled-image.html) documentation has a detailed explaination of this issue and the extrude workaround.
-
 ### How do I create a `List` where each item renderer can have a different height?
 
 Pass in a [`VerticalLayout`](../vertical-layout.html) with its [`hasVariableItemDimensions`](../../api-reference/feathers/layout/VerticalLayout.html#hasVariableItemDimensions) property set to `true`. By default, `VerticalLayout` forces all item renderers to have the same height because this improves performance for most lists.

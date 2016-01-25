@@ -56,14 +56,11 @@ package feathers.media
 		 * "filling up" as the slider is dragged.
 		 *
 		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as a <code>Scale9Image</code>,
-		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
+		 * using a special display object such as an <code>Image</code> with a
+		 * <code>scale9Grid</code> or a <code>tileGrid</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
 		 * @see #trackLayoutMode
-		 * @see feathers.display.Scale9Image
-		 * @see feathers.display.Scale3Image
-		 * @see feathers.display.TiledImage
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 

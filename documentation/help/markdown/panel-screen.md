@@ -144,7 +144,7 @@ screen.headerFactory = function():Header
 {
     var header:Header = new Header();
     //skin the header here
-    header.backgroundSkin = new Scale9Image( headerBackgroundTextures );
+    header.backgroundSkin = new Image( headerBackgroundTexture );
     return header;
 }
 ```
@@ -152,7 +152,7 @@ screen.headerFactory = function():Header
 Alternatively, or in addition to the `headerFactory`, you may use the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) to pass skins to the header.
 
 ``` code
-screen.headerProperties.backgroundSkin = new Scale9Image( headerBackgroundTextures );
+screen.headerProperties.backgroundSkin = new Image( headerBackgroundTexture );
 ```
 
 In general, you should only pass skins to the panel's header through `headerProperties` if you need to change skins after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
@@ -192,7 +192,7 @@ screen.footerFactory = function():ScrollContainer
 {
     var footer:LayoutGroup = new LayoutGroup();
     //skin the footer here
-    footer.backgroundSkin = new Scale9Image( footerBackgroundTextures );
+    footer.backgroundSkin = new Image( footerBackgroundTexture );
     return footer;
 }
 ```
@@ -200,7 +200,7 @@ screen.footerFactory = function():ScrollContainer
 Alternatively, or in addition to the `footerFactory`, you may use the [`footerProperties`](../api-reference/feathers/controls/Panel.html#footerProperties) to pass skins to the footer.
 
 ``` code
-screen.footerProperties.backgroundSkin = new Scale9Image( footerBackgroundTextures );
+screen.footerProperties.backgroundSkin = new Image( footerBackgroundTexture );
 ```
 
 In general, you should only pass skins to the panel's footer through `footerProperties` if you need to change skins after the footer is created. Using `footerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.

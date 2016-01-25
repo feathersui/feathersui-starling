@@ -71,7 +71,6 @@ package feathers.themes
 	import feathers.core.FocusManager;
 	import feathers.core.PopUpManager;
 	import feathers.core.ToolTipManager;
-	import feathers.display.TiledImage;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
@@ -1510,7 +1509,8 @@ package feathers.themes
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture);
+			var backgroundSkin:Image = new Image(this.headerBackgroundSkinTexture);
+			backgroundSkin.tileGrid = new Rectangle();
 			backgroundSkin.width = this.controlSize;
 			backgroundSkin.height = this.controlSize;
 			header.backgroundSkin = backgroundSkin;
@@ -1571,7 +1571,8 @@ package feathers.themes
 				group.layout = layout;
 			}
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture);
+			var backgroundSkin:Image = new Image(this.headerBackgroundSkinTexture);
+			backgroundSkin.tileGrid = new Rectangle();
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			group.backgroundSkin = backgroundSkin;
@@ -1851,8 +1852,10 @@ package feathers.themes
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerPopupBackgroundSkinTexture);
-			backgroundSkin.width = backgroundSkin.height = this.controlSize;
+			var backgroundSkin:Image = new Image(this.headerPopupBackgroundSkinTexture);
+			backgroundSkin.tileGrid = new Rectangle();
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
 			header.backgroundSkin = backgroundSkin;
 		}
 
@@ -2200,8 +2203,10 @@ package feathers.themes
 			container.minWidth = this.gridSize;
 			container.minHeight = this.gridSize;
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture);
-			backgroundSkin.width = backgroundSkin.height = this.gridSize;
+			var backgroundSkin:Image = new Image(this.headerBackgroundSkinTexture);
+			backgroundSkin.tileGrid = new Rectangle();
+			backgroundSkin.width = this.gridSize;
+			backgroundSkin.height = this.gridSize;
 			container.backgroundSkin = backgroundSkin;
 		}
 

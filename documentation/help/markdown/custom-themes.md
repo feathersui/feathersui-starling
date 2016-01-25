@@ -143,8 +143,8 @@ Once our assets are loaded, we can start setting up the functions called to styl
 ``` code
 private function setButtonStyles( button:Button ):void
 {
-	button.defaultSkin = new Scale9Image( this.atlas.getTexture( "button-up" ) );
-	button.downSkin = new Scale9Image( this.atlas.getTexture( "button-down" ) );
+	button.defaultSkin = new Image( this.atlas.getTexture( "button-up" ) );
+	button.downSkin = new Image( this.atlas.getTexture( "button-down" ) );
 
 	button.padding = 20;
 	button.gap = 15;
@@ -188,8 +188,8 @@ Inside our theme, we can add a new function for this button variation. We'll nam
 ``` code
 private function setDangerButtonStyles( button:Button ):void
 {
-	button.defaultSkin = new Scale9Image( this.atlas.getTexture( "danger-button-up" ) );
-	button.downSkin = new Scale9Image( this.atlas.getTexture( "danger-button-down" ) );
+	button.defaultSkin = new Image( this.atlas.getTexture( "danger-button-up" ) );
+	button.downSkin = new Image( this.atlas.getTexture( "danger-button-down" ) );
 
 	button.padding = 20;
 	button.gap = 15;

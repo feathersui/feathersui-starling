@@ -48,7 +48,9 @@ Callouts are displayed using the [`PopUpManager`](pop-ups.html). By default, mod
 ``` code
 Callout.calloutOverlayFactory = function():DisplayObject
 {
-    return new TiledImage( myTexture );
+    var tiledBackground:Image = new Image( texture );
+    tiledBackground.tileGrid = new Rectangle();
+    return tiledBackground;
 };
 ```
 
@@ -77,7 +79,7 @@ Callouts have a number of skin and style properties to let you customize their a
 Let's look at the skins first.
 
 ``` code
-callout.backgroundSkin = new Scale9Image( backgroundTextures );
+callout.backgroundSkin = new Image( backgroundTexture );
 callout.topArrowSkin = new Image( topArrowTexture );
 callout.rightArrowSkin = new Image( rightArrowTexture );
 callout.bottomArrowSkin = new Image( bottomArrowTexture );
@@ -140,7 +142,7 @@ If you're not using a theme, you can specify a factory to create the callout, in
 function skinnedCalloutFactory():Callout
 {
     var callout:Callout = new Callout();
-    callout.backgroundSkin = new Scale9Image( myTextures );
+    callout.backgroundSkin = new Image( myBackgroundTexture );
     callout.topArrowSkin = new Image( myTopTexture );
     // etc...
     return callout;
@@ -154,7 +156,7 @@ Another option is to pass a callout factory to `Callout.show()`. This allows you
 function skinnedCalloutFactory():Callout
 {
     var callout:Callout = new Callout();
-    callout.backgroundSkin = new Scale9Image( myTextures );
+    callout.backgroundSkin = new Image( myBackgroundTexture );
     callout.topArrowSkin = new Image( myTopTexture );
     // etc...
     return callout;

@@ -61,8 +61,8 @@ Now that everything is hooked up in the theme, let's style the button in the bod
 // this is the default function for buttons
 protected function setButtonStyles( button:Button ):void
 {
-	button.defaultSkin = new Scale9Image( this.buttonUpSkinTextures );
-	button.downSkin = new Scale9Image( this.buttonDownSkinTextures );
+	button.defaultSkin = new Image( this.buttonUpSkinTexture );
+	button.downSkin = new Image( this.buttonDownSkinTexture );
 	button.padding = 20;
 	button.defaultLabelProperties.elementFormat = this.buttonElementFormat;
 }
@@ -73,8 +73,8 @@ We're interested in the background skins and the padding, but we don't want to s
 ``` code
 protected function setMyCustomButtonStyles( button:Button ):void
 {
-	button.defaultSkin = new Scale9Image( this.buttonUpSkinTextures );
-	button.downSkin = new Scale9Image( this.buttonDownSkinTextures );
+	button.defaultSkin = new Image( this.buttonUpSkinTexture );
+	button.downSkin = new Image( this.buttonDownSkinTexture );
 	button.padding = 20;
 
 	// we'll set different font styles here
@@ -91,8 +91,8 @@ protected function customTextRendererFactory():ITextRenderer
 
 protected function setMyCustomButtonStyles( button:Button ):void
 {
-	button.defaultSkin = new Scale9Image( this.buttonUpSkinTextures );
-	button.downSkin = new Scale9Image( this.buttonDownSkinTextures );
+	button.defaultSkin = new Image( this.buttonUpSkinTexture );
+	button.downSkin = new Image( this.buttonDownSkinTexture );
 	button.padding = 20;
 
 	button.textRendererFactory = this.customTextRendererFactory;

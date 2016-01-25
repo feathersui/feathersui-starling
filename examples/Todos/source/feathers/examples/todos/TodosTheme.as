@@ -2,7 +2,6 @@ package feathers.examples.todos
 {
 	import feathers.controls.Check;
 	import feathers.controls.LayoutGroup;
-	import feathers.display.Scale9Image;
 	import feathers.examples.todos.controls.TodoItemRenderer;
 	import feathers.layout.HorizontalLayout;
 	import feathers.themes.MetalWorksMobileTheme;

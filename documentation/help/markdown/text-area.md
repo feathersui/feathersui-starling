@@ -126,9 +126,9 @@ Using the `textEditorProperties` hash is a bit slower, so if the font styles do 
 In addition to changing font styles on the text editor, you can change the text area's background skin and padding. Text area has three separate background skins, but two of them are optional.
 
 ``` code
-textArea.backgroundSkin = new Scale9Image( backgroundSkinTextures );
-textArea.backgroundDisabledSkin = new Scale9Image( disabledBackgroundSkinTextures );
-textArea.backgroundFocusedSkin = new Scale9Image( focusedBackgroundSkinTextures );
+textArea.backgroundSkin = new Image( backgroundSkinTexture );
+textArea.backgroundDisabledSkin = new Image( disabledBackgroundSkinTexture );
+textArea.backgroundFocusedSkin = new Image( focusedBackgroundSkinTexture );
 ```
 
 The default [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) is displayed when the text area doesn't have focus and is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgrounDisabledSkin) is displayed when the text area is not enabled, but if you don't provide a disabled background skin, the default background skin will be used. Similarly, the [`backgroundFocusedSkin`](../api-reference/feathers/controls/TextArea.html#backgroundFocusedSkin) is displayed when the text area has focus. Again, text area will fall back to the default background skin if there is no focused background skin.

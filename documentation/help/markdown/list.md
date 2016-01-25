@@ -113,8 +113,8 @@ A list has a background skin and a layout. Much of the ability to customize the 
 We'll start the skinning process by giving our list appropriate background skins.
 
 ``` code
-list.backgroundSkin = new Scale9Image( enabledTextures );
-list.backgroundDisabledSkin = new Scale9Image( disabledTextures );
+list.backgroundSkin = new Image( enabledTexture );
+list.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the list is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled list, it will fall back to using the `backgroundSkin` in the disabled state.

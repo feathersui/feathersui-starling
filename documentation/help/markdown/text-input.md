@@ -175,9 +175,9 @@ Using the `textEditorProperties` hash is a bit slower, so if the font styles do 
 In addition to changing font styles on the text editor, you can change the text input's background skin and padding. Text input has three separate background skins, but two of them are optional.
 
 ``` code
-input.backgroundSkin = new Scale9Image( backgroundSkinTextures );
-input.backgroundDisabledSkin = new Scale9Image( disabledBackgroundSkinTextures );
-input.backgroundFocusedSkin = new Scale9Image( focusedBackgroundSkinTextures );
+input.backgroundSkin = new Image( backgroundSkinTexture );
+input.backgroundDisabledSkin = new Image( disabledBackgroundSkinTexture );
+input.backgroundFocusedSkin = new Image( focusedBackgroundSkinTexture );
 ```
 
 The default [`backgroundSkin`](../api-reference/feathers/controls/TextInput.html#backgroundSkin) is displayed when the text input doesn't have focus and is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/TextInput.html#backgroundDisabledSkin) is displayed when the text input is not enabled, but if you don't provide a disabled background skin, the default background skin will be used. Similarly, the [`backgroundFocusedSkin`](../api-reference/feathers/controls/TextInput.html#backgroundFocusedSkin) is displayed when the text input has focus. Again, text input will fall back to the default background skin if there is no focused background skin.

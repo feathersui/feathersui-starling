@@ -165,16 +165,6 @@ Feathers includes a number of components for building media players.
 
 -   [Media player controls](media-player-controls.html)
 
-## Display Objects
-
-Custom Starling display objects included with Feathers for skinning. These display objects are designed to scale up to any size without distortion.
-
--   [`Scale3Image`](scale3-image.html)
-
--   [`Scale9Image`](scale9-image.html)
-
--   [`TiledImage`](tiled-image.html)
-
 ## Layouts
 
 A detailed look at each of the layout algorithms that Feathers provides out-of-the-box.

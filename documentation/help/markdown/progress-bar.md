@@ -34,11 +34,11 @@ A progress bar provides a number of properties that can be used to customize its
 The [`backgroundSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundSkin) and [`fillSkin`](../api-reference/feathers/controls/ProgressBar.html#fillSkin) properties are used to customize the appearance of the progress bar.
 
 ``` code
-var backgroundSkin:Scale9Image = new Scale9Image( backgroundTextures );
+var backgroundSkin:Image = new Image( backgroundTexture );
 backgroundSkin.width = 150;
 progress.backgroundSkin = backgroundSkin;
  
-var fillSkin:Scale9Image = new Scale9Image( fillTextures );
+var fillSkin:Image = new Image( fillTexture );
 fillSkin.width = 20;
 progress.fillSkin = fillSkin;
 ```

@@ -59,7 +59,7 @@ A spinner list provides a number of properties to customize its appearance. For 
 To add a display object above the selected item to visually highlight it, you may use the [`selectionOverlaySkin`](../api-reference/feathers/controls/SpinnerList.html#selectionOverlaySkin) property:
 
 ``` code
-list.selectionOverlaySkin = new Scale9Image( textures );
+list.selectionOverlaySkin = new Image( texture );
 ```
 
 This skin will be displayed in the center of the list, positioned either horizontally or vertically, depending on which way the list may be scrolled.

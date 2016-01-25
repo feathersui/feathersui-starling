@@ -40,7 +40,7 @@ A headers offers a number of properties that may be used to customize its appear
 The header has [`backgroundSkin`](../api-reference/feathers/controls/Header.html#backgroundSkin) and [`backgroundDisabledSkin`](../api-reference/feathers/controls/Header.html#backgroundDisabledSkin) properties:
 
 ``` code
-header.backgroundSkin = new Scale9Image( textures );
+header.backgroundSkin = new Image( texture );
 ```
 
 The background stretches to fill the entire width and height of the header.

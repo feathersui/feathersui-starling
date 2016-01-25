@@ -379,12 +379,12 @@ package feathers.controls
 		 * if the fill of a horizontal progress bar with a value from 0 to 100
 		 * should be virtually invisible when the value is 0, then the
 		 * <code>fillSkin</code> should have a width of 0 when you pass it in.
-		 * On the other hand, if you're using a <code>Scale9Image</code> as the
-		 * skin, it may require a minimum width before the image parts begin to
-		 * overlap. In that case, the <code>Scale9Image</code> instance passed
-		 * to the <code>fillSkin</code> setter should have a <code>width</code>
-		 * value that is the same as that minimum width value where the image
-		 * parts do not overlap.</p>
+		 * On the other hand, if you're using an <code>Image</code> with a
+		 * <code>scale9Grid</code> as the skin, it may require a minimum width
+		 * before the image parts begin to overlap. In that case, the
+		 * <code>Image</code> instance passed to the <code>fillSkin</code>
+		 * setter should have a <code>width</code> value that is the same as
+		 * that minimum width value where the image parts do not overlap.</p>
 		 *
 		 * <p>In the following example, the progress bar is given a fill
 		 * skin:</p>

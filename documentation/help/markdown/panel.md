@@ -144,8 +144,8 @@ The skins for a `Panel` control are divided into the header, the content, and th
 We'll start the skinning process by giving our panel appropriate background skins.
 
 ``` code
-panel.backgroundSkin = new Scale9Image( enabledTextures );
-panel.backgroundDisabledSkin = new Image( disabledTextures );
+panel.backgroundSkin = new Image( enabledTexture );
+panel.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the panel is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the panel is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled panel, it will fall back to using the `backgroundSkin` in the disabled state.
@@ -227,7 +227,7 @@ panel.headerFactory = function():Header
 {
     var header:Header = new Header();
     //skin the header here
-    header.backgroundSkin = new Scale9Image( headerBackgroundTextures );
+    header.backgroundSkin = new Image( headerBackgroundTexture );
     return header;
 }
 ```
@@ -235,7 +235,7 @@ panel.headerFactory = function():Header
 Alternatively, or in addition to the `headerFactory`, you may use the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) to pass skins to the header.
 
 ``` code
-panel.headerProperties.backgroundSkin = new Scale9Image( headerBackgroundTextures );
+panel.headerProperties.backgroundSkin = new Image( headerBackgroundTexture );
 ```
 
 In general, you should only pass skins to the panel's header through `headerProperties` if you need to change skins after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
@@ -275,7 +275,7 @@ panel.footerFactory = function():ScrollContainer
 {
     var footer:ScrollContainer = new ScrollContainer();
     //skin the footer here
-    footer.backgroundSkin = new Scale9Image( footerBackgroundTextures );
+    footer.backgroundSkin = new Image( footerBackgroundTexture );
     return footer;
 }
 ```
@@ -283,7 +283,7 @@ panel.footerFactory = function():ScrollContainer
 Alternatively, or in addition to the `footerFactory`, you may use the [`footerProperties`](../api-reference/feathers/controls/Panel.html#footerProperties) to pass skins to the footer.
 
 ``` code
-panel.footerProperties.backgroundSkin = new Scale9Image( footerBackgroundTextures );
+panel.footerProperties.backgroundSkin = new Image( footerBackgroundTexture );
 ```
 
 In general, you should only pass skins to the panel's footer through `footerProperties` if you need to change skins after the footer is created. Using `footerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.

@@ -63,8 +63,8 @@ The skins for a `ScrollContainer` control are mainly the background skins and so
 We'll start the skinning process by giving our scroll container appropriate background skins.
 
 ``` code
-container.backgroundSkin = new Scale9Image( enabledTextures );
-container.backgroundDisabledSkin = new Image( disabledTextures );
+container.backgroundSkin = new Image( enabledTexture );
+container.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
 The [`backgroundSkin`](../api-reference/feathers/controls/ScrollContainer.html#backgroundSkin) property provides the default background for when the container is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/ScrollContainer.html#backgroundDisabledSkin) is displayed when the container is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled container, it will fall back to using the `backgroundSkin` in the disabled state.
