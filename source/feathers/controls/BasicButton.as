@@ -266,6 +266,7 @@ package feathers.controls
 		 *
 		 * @see #defaultSkin
 		 * @see #getSkinForState()
+		 * @see feathers.controls.ButtonState
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{

@@ -45,11 +45,18 @@ A number of skins and styles may be customized on a toggle button, expanding on 
 
 ### Background skins, labels, and icons
 
-In addition to the skin properties provided by the `Button` class, like `defaultSkin` and `downSkin`, a `ToggleButton` has additional skins for its states when selected. You can use [`defaultSelectedSkin`](../api-reference/feathers/controls/ToggleButton.html#defaultSelectedSkin), [`selectedUpSkin`](../api-reference/feathers/controls/ToggleButton.html#selectedUpSkin), [`selectedDownSkin`](../api-reference/feathers/controls/ToggleButton.html#selectedDownSkin), [`selectedHoverSkin`](../api-reference/feathers/controls/ToggleButton.html#selectedHoverSkin), and [`selectedDisabledSkin`](../api-reference/feathers/controls/ToggleButton.html#selectedDisabledSkin).
+In addition to the states provided by the `Button` class, the `ToggleButton` class supports some extra states that will be used when the button is selected. 
 
-Similarly, a `ToggleButton` provides similar properties for styling the label text renderer when selected, like [`defaultSelectedLabelProperties`](../api-reference/feathers/controls/ToggleButton.html#defaultSelectedLabelProperties), [`selectedUpLabelProperties`](../api-reference/feathers/controls/ToggleButton.html#selectedUpLabelProperties), [`selectedDownLabelProperties`](../api-reference/feathers/controls/ToggleButton.html#selectedDownLabelProperties), [`selectedHoverLabelProperties`](../api-reference/feathers/controls/ToggleButton.html#selectedHoverLabelProperties), and [`selectedDisabledLabelProperties`](../api-reference/feathers/controls/ToggleButton.html#selectedDisabledLabelProperties).
+The [`defaultSelectedSkin`](../api-reference/feathers/controls/ToggleButton.html#defaultSelectedSkin) property works in a similar way to the [`defaultSkin`](../api-reference/feathers/controls/BasicButton.html#defaultSkin) property from the `Button` class. If the `ToggleButton` is selected, and a skin isn't provided for the current state, the `defaultSelectedSkin` will be used.
 
-Likewise, a `ToggleButton` provides similar properties for styling the licon when selected, like [`defaultSelectedIcon`](../api-reference/feathers/controls/ToggleButton.html#defaultSelectedIcon), [`selectedUpIcon`](../api-reference/feathers/controls/ToggleButton.html#selectedUpIcon), [`selectedDownIcon`](../api-reference/feathers/controls/ToggleButton.html#selectedDownIcon), [`selectedHoverIcon`](../api-reference/feathers/controls/ToggleButton.html#selectedHoverIcon), and [`selectedDisabledIcon`](../api-reference/feathers/controls/ToggleButton.html#selectedDisabledIcon).
+The same [`setSkinForState()`](../api-reference/feathers/controls/BasicButton.html#setSkinForState()) may set skins for the selected states of a ToggleButton. In addition to the states available to a regular `Button`, the following states may be referenced for a `ToggleButton`:
+
+* [`ButtonState.UP_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#UP_AND_SELECTED)
+* [`ButtonState.DOWN_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DOWN_AND_SELECTED)
+* [`ButtonState.HOVER_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#HOVER_AND_SELECTED)
+* [`ButtonState.DISABLED_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DISABLED_AND_SELECTED)
+
+Likewise, a `ToggleButton` provides the [`defaultSelectedIcon`](../api-reference/feathers/controls/ToggleButton.html#defaultSelectedIcon) property for styling the icon when selected. The [`setIconForState()`](../api-reference/feathers/controls/Button.html#setIconForState()) method may also use the extra states defined above, like `ButtonState.UP_AND_SELECTED` and `ButtonState.DOWN_AND_SELECTED`.
 
 ### Targeting a `ToggleButton` in a theme
 
@@ -74,28 +81,7 @@ getStyleProviderForClass( ToggleButton )
 
 Trying to change the toggle button's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
 
-If you aren't using a theme, then you may set any of the btoggle utton's properties directly.
-
-### Advanced Skinning: Skin Value Selectors
-
-The following [`SmartDisplayObjectStateValueSelector`](../api-reference/feathers/skins/SmartDisplayObjectStateValueSelector.html) provides skins for states, including selected states, similar to the example from [How to use the Feathers `Button` component](button.html).
-
-``` code
-var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-skinSelector.defaultValue = upButtonSkinTexture;
-skinSelector.defaultSelectedValue = selectedUpButtonSkinTexture;
-skinSelector.setValueForState( downSkinTexture, Button.STATE_DOWN, false);
-skinSelector.setValueForState( hoverSkinTexture, Button.STATE_HOVER, false);
-skinSelector.setValueForState( disabledSkinTextures, Button.STATE_DISABLED, false);
-skinSelector.setValueForState( selectedDownSkinTexture, Button.STATE_DOWN, true);
-skinSelector.setValueForState( selectedHoverSkinTexture, Button.STATE_HOVER, true);
-skinSelector.setValueForState( selectedDisabledSkinTextures, Button.STATE_DISABLED, true);
-toggle.stateToSkinFunction = skinSelector.updateValue;
-```
-
-Notice that we added a third argument when calling [`setValueForState()`](../api-reference/feathers/skins/StateWithToggleValueSelector.html#setValueForState()) in this example. This argument specifies whether a skin should be used if the toggle button's `isSelected` property is `true` or `false`.
-
-Obviously, you could check `target.isSelected` in your own custom [`stateToSkinFunction`](../api-reference/feathers/controls/Button.html#stateToSkinFunction) to provide skins for states when the button is selected. Similarly, you could go even further to check whether the button has focus (if you're making a desktop app and the [focus manager](focus.html) is enabled) by using `button.focusManager.focus == button`.
+If you aren't using a theme, then you may set any of the toggle button's properties directly.
 
 ## Related Links
 

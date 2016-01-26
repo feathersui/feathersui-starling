@@ -17,7 +17,7 @@ button.label = "Click Me";
 this.addChild( button );
 ```
 
-If we want to know when the button is tapped or clicked, we can listen for [`Event.TRIGGERED`](../api-reference/feathers/controls/Button.html#event:triggered):
+If we want to know when the button is tapped or clicked, we can listen for [`Event.TRIGGERED`](../api-reference/feathers/controls/BasicButton.html#event:triggered):
 
 ``` code
 button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
@@ -46,21 +46,19 @@ We'll start the skinning process by giving our button its background skin.
 
 ``` code
 button.defaultSkin = new Image( myUpTexture );
-button.setSkinForState( Button.STATE_DOWN, new Image( myDownTexture ) );
+button.setSkinForState( ButtonState.DOWN, new Image( myDownTexture ) );
 ```
 
-Above, we add background skins for a couple of different states. The [`defaultSkin`](../api-reference/feathers/controls/Button.html#defaultSkin) is a used for any state where a specific skin isn't provided. We provided a skin specfically for the down state, using the [`setSkinForState()`](../api-reference/feathers/controls/Button.html#setSkinForState()) method, and that will take precedence over the default skin when the button is pressed down. However, other states (like up, hover, and disabled) don't have skins in our example code, so the button will use the default skin for these states.
+Above, we add background skins for a couple of different states. The [`defaultSkin`](../api-reference/feathers/controls/BasicButton.html#defaultSkin) is a used when a skin isn't provided for the button's current skin. In the code above, we provided a skin specfically for the down state, using the [`setSkinForState()`](../api-reference/feathers/controls/BasicButton.html#setSkinForState()) method, and that will take precedence over the default skin when the button is pressed down. However, other states (like up, hover, and disabled) don't have skins in our example code, so the button will use the default skin for these states.
+
+<aside class="info">In general, it's better to pass the skin for the up state to the `defaultSkin` property instead of calling `setSkinForState()` with `ButtonState.UP`. The up skin often makes the best default for any other states that don't have a specific skin.</aside>
 
 Buttons may display separate skins for the following states:
 
-* [`Button.STATE_UP`](../api-reference/feathers/controls/Button.html#STATE_UP)
-* [`Button.STATE_DOWN`](../api-reference/feathers/controls/Button.html#STATE_DOWN)
-* [`Button.STATE_HOVER`](../api-reference/feathers/controls/Button.html#STATE_HOVER)
-* [`Button.STATE_DISABLED`](../api-reference/feathers/controls/Button.html#STATE_DISABLED)
-
-<aside class="info">In general, it's better to pass the skin for the up state to the `defaultSkin` property instead of calling `setSkinForState()` with `Button.STATE_UP`. The up skin often makes the best default for any other states that don't have a specific skin.</aside>
-
-See the [Advanced Skinning](#advanced-skinning) section below for additional button skinning techniques that can be used for optimized performance.
+* [`ButtonState.UP`](../api-reference/feathers/controls/ButtonState.html#UP)
+* [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
+* [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
+* [`ButtonState.DISABLED`](../api-reference/feathers/controls/ButtonState.html#DISABLED)
 
 ### Label font styles
 
@@ -89,10 +87,10 @@ Often, the color of a button's label, or other font styles, should change when t
 
 ```code
 var downFormat:ElementFormat = new ElementFormat( font, 20, 0x343434 );
-textRenderer.setElementFormatForState( Button.STATE_DOWN, downFormat );
+textRenderer.setElementFormatForState( ButtonState.DOWN, downFormat );
 
 var disabledFormat:ElementFormat = new ElementFormat( font, 20, 0x969696 );
-textRenderer.setElementFormatForState( Button.STATE_DISABLED, disabledFormat );
+textRenderer.setElementFormatForState( ButtonState.DISABLED, disabledFormat );
 ```
 
 ### Icons
@@ -121,93 +119,30 @@ button.horizontalAlign = Button.HORIZONTAL_ALIGN_CENTER;
 button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 ```
 
-See the [Advanced Skinning](#advanced-skinning) section below for additional techniques to optimize performance when providing icons for multiple button states.
+### Targeting a `Button` in a theme
 
-## Advanced Skinning
-
-For optimal performance, the same display object may be shared among different button states while simply changing properties. For instance, you might want to share a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) instance between multiple states while changing the value of [`texture`](http://doc.starling-framework.org/core/starling/display/Image.html#texture) property, or maybe you'd prefer to use a Feathers [`ImageLoader`](image-loader.html) instance and simply change the value of the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property.
-
-When using this technique, the standard `defaultSkin`, `downSkin`, and similar properties are ignored. Instead, the `Function` passed to the [`stateToSkinFunction`](../api-reference/feathers/controls/Button.html#stateToSkinFunction) property is always used. This function has the following signature:
+If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
 
 ``` code
-function( target:Button, state:Object, oldSkin:DisplayObject = null ):DisplayObject
+getStyleProviderForClass( Button ).defaultStyleFunction = setButtonStyles;
 ```
 
-This function receives the `Button` instance, the current state, and the skin used for the button's previous state.
-
-The following state constants are used by the `Button` class:
-
--   [`Button.STATE_UP`](../api-reference/feathers/controls/Button.html#STATE_UP)
-
--   [`Button.STATE_HOVER`](../api-reference/feathers/controls/Button.html#STATE_HOVER)
-
--   [`Button.STATE_DOWN`](../api-reference/feathers/controls/Button.html#STATE_DOWN)
-
--   [`Button.STATE_DISABLED`](../api-reference/feathers/controls/Button.html#STATE_DISABLED)
-
-The old skin passed in as the final argument may be `null`. If so, a new skin must be created. If it is not `null`, and its datatype matches the expected datatype, then it may be reused. If it's a different datatype, then a new skin must be created.
-
-Let's look at an example of a simple `stateToSkinFunction` implementation:
+If you want to customize a specific button to look different than the default, you may use a custom style name to call a different function:
 
 ``` code
-function( target:Button, state:Object, oldSkin:DisplayObject = null ):DisplayObject
-{
-    var skin:ImageLoader = oldSkin as ImageLoader;
-    if( !skin )
-    {
-        skin = new ImageLoader();
-    }
- 
-    switch( state )
-    {
-        case Button.STATE_DISABLED:
-        {
-            skin.source = disabledButtonSkinTexture;
-            break;
-        }
-        case Button.STATE_DOWN:
-        {
-            skin.source = downButtonSkinTexture;
-            break;
-        }
-        case Button.STATE_HOVER:
-        {
-            skin.source = hoverButtonSkinTexture;
-            break;
-        }
-        default:
-        {
-            skin.source = upButtonSkinTexture;
-        }
-    }
-    return skin;
-}
+button.styleNameList.add( "custom-button" );
 ```
 
-In the example above, the button skins are [`ImageLoader`](image-loader.html) components. If the old skin is an `ImageLoader`, it is reused. If it is `null` or another datatype, then a new `ImageLoader` is created. The `source` property is updated to use a different [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html) instance depending on the value of the `Button` instance's current state.
-
-### Skin Value Selectors
-
-The [`SmartDisplayObjectStateValueSelector`](../api-reference/feathers/skins/SmartDisplayObjectStateValueSelector.html) class provides an implementation of [`stateToSkinFunction`](../api-reference/feathers/controls/Button.html#stateToIconFunction) that smartly selects the correct display object based on the values passed in. For instance, if you pass in a `Texture` instance, it will return an `Image` as the skin. If you pass in a `Scale9Textures` object, it will return a `Scale9Image` as the skin. If you pass in a `Scale3Textures` object, it will return a `Scale3Image` as the skin. Finally, if you pass in a `uint` color value, it will return a `Quad` as the skin.
-
-The following `SmartDisplayObjectStateValueSelector` provides an implementation similar to the example above.
+You can specify the function for the custom style name like this:
 
 ``` code
-var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-skinSelector.defaultValue = upButtonSkinTexture;
-skinSelector.setValueForState( downSkinTexture, Button.STATE_DOWN );
-skinSelector.setValueForState( hoverSkinTexture, Button.STATE_HOVER );
-skinSelector.setValueForState( disabledSkinTextures, Button.STATE_DISABLED );
-button.stateToSkinFunction = skinSelector.updateValue;
+getStyleProviderForClass( Button )
+    .setFunctionForStyleName( "custom-button", setCustomButtonStyles );
 ```
 
-Simply pass a reference to the [`updateValue`](../api-reference/feathers/skins/StateWithToggleValueSelector.html#updateValue()) function to the button's `stateToSkinFunction` property.
+Trying to change the button's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
 
-In your own custom `stateToSkinFunction`, you could even provide skins for states when the button is focused (if you're making a desktop app and the [focus manager](focus.html) is enabled) by using `button.focusManager.focus == button`.
-
-### Icons
-
-Similar to `stateToSkinFunction`, button also provides [`stateToIconFunction`](../api-reference/feathers/controls/Button.html#stateToIconFunction) to share a display object between multiple states for the button's icon.
+If you aren't using a theme, then you may set any of the button's properties directly.
 
 ## Related Links
 

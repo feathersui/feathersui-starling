@@ -1648,7 +1648,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #setIconForState()
-		 * @see #stateToIconFunction
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -2015,6 +2014,7 @@ package feathers.controls
 		 *
 		 * @see #defaultIcon
 		 * @see #getIconForState()
+		 * @see feathers.controls.ButtonState
 		 */
 		public function setIconForState(state:String, icon:DisplayObject):void
 		{

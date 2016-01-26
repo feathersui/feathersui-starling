@@ -73,10 +73,10 @@ var defaultFormat:TextFormat = new TextFormat( "Helvetica", 20, 0xc4c4c4 );
 textRenderer.textFormat = defaultFormat;
 
 var downFormat:TextFormat = new TextFormat( "Helvetica", 20, 0x343434 );
-textRenderer.setTextFormatForState( Button.STATE_DOWN, downFormat );
+textRenderer.setTextFormatForState( ButtonState.DOWN, downFormat );
 ```
 
-We didn't provide separate font styles for other states, like `Button.STATE_HOVER` or `Button.STATE_DISABLED`. When the `Button` is in one of these states, the `TextFieldTextRenderer` will fall back to using the value we passed to the `textFormat` property.
+We didn't provide separate font styles for other states, like `ButtonState.HOVER` or `ButtonState.DISABLED`. When the `Button` is in one of these states, the `TextFieldTextRenderer` will fall back to using the value we passed to the `textFormat` property.
 
 ### Using embedded fonts
 

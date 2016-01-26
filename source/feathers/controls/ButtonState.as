@@ -15,6 +15,8 @@ package feathers.controls
 	 * @see feathers.controls.ToggleButton
 	 * @see feathers.controls.Check
 	 * @see feathers.controls.Radio
+	 * @see feathers.controls.renderers.DefaultListItemRenderer
+	 * @see feathers.controls.renderers.DefaultGroupedListItemRenderer
 	 */
 	public class ButtonState
 	{

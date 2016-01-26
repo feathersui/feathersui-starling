@@ -14,7 +14,7 @@ Let's start out by tracking whether the user is touching the item renderer or no
 First, let's define a `currentState` property:
 
 ``` code
-private var _currentState = STATE_UP;
+private var _currentState = ButtonState.UP;
  
 public function get currentState():String
 {
@@ -32,12 +32,7 @@ public function set currentState( value:String ):void
 }
 ```
 
-Notice the `STATE_UP` default value. We're going to add some constants that represent different states:
-
-``` code
-public static const STATE_UP:String = "up";
-public static const STATE_DOWN:String = "down";
-```
+We'll borrow the values defined by the `feathers.controls.ButtonState` class. The default value will be `ButtonState.UP`. The `ButtonState` class defines a number of other constants like `ButtonState.DOWN`, `ButtonState.HOVER`, and `ButtonState.DISABLED`.
 
 Later, we'll set this `currentState` property in a `TouchEvent.TOUCH` listener.
 
@@ -74,7 +69,7 @@ private function touchHandler(event:TouchEvent):void
  
         // the button should return to the up state, if it is disabled.
         // you may also use a separate disabled state, if you prefer.
-        this.currentState = STATE_UP;
+        this.currentState = ButtonState.UP;
         return;
     }
  
@@ -91,7 +86,7 @@ private function touchHandler(event:TouchEvent):void
  
         if( touch.phase == TouchPhase.ENDED )
         {
-            this.currentState = STATE_UP;
+            this.currentState = ButtonState.UP;
  
             // the touch has ended, so now we can start watching for a new one.
             this.touchID = -1;
@@ -109,7 +104,7 @@ private function touchHandler(event:TouchEvent):void
             return;
         }
  
-        this.currentState = STATE_DOWN;
+        this.currentState = ButtonState.DOWN;
  
         // save the touch ID so that we can track this touch's phases.
         this.touchID = touch.id;
@@ -140,12 +135,6 @@ This ensures that if a component is reused later, it won't be trying to track a 
 
 On mobile, Starling doesn't dispatch touch events for [`TouchPhase.HOVER`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#HOVER). However, on devices with a mouse, you may want to support a separate background skin (or icon or label styles) when the mouse hovers over your item renderer.
 
-Let's start by adding a new state for `TouchPhase.HOVER`:
-
-``` code
-public static const STATE_HOVER:String = "hover";
-```
-
 Next, we'll modify the `else` block in the `TouchEvent.TOUCH` listener we created previously:
 
 ``` code
@@ -156,7 +145,7 @@ else
     touch = event.getTouch( this, TouchPhase.BEGAN );
     if( touch )
     {
-        this.currentState = STATE_DOWN;
+        this.currentState = ButtonState.DOWN;
  
         // save the touch ID so that we can track this touch's phases.
         this.touchID = touch.id;
@@ -168,19 +157,19 @@ else
     touch = event.getTouch( this, TouchPhase.HOVER );
     if( touch )
     {
-        this.currentState = STATE_HOVER;
+        this.currentState = ButtonState.HOVER;
         return;
     }
  
     // the only remaining possibility: the hover has ended.
  
-    this.currentState = STATE_UP;
+    this.currentState = ButtonState.UP;
 }
 ```
 
-Now, if we don't find a touch for [`TouchPhase.BEGAN`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we also check for `TouchPhase.HOVER`. This puts us into the hover state. If we check for `TouchPhase.BEGAN` and `TouchPhase.HOVER`, and we still don't find a touch, that means that a hover has ended, and we can return to `STATE_UP`.
+Now, if we don't find a touch for [`TouchPhase.BEGAN`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we also check for `TouchPhase.HOVER`. This puts us into the hover state. If we check for `TouchPhase.BEGAN` and `TouchPhase.HOVER`, and we still don't find a touch, that means that a hover has ended, and we can return to `ButtonState.UP`.
 
-That's not all we need to do, though. When a touch ends, we need to figure out if the mouse is still hovering over our item renderer or if the touch ended outside of the item renderer to decide if we want to change to `STATE_UP` or `STATE_HOVER`:
+That's not all we need to do, though. When a touch ends, we need to figure out if the mouse is still hovering over our item renderer or if the touch ended outside of the item renderer to decide if we want to change to `ButtonState.UP` or `ButtonState.HOVER`:
 
 ``` code
 if( touch.phase == TouchPhase.ENDED )
@@ -189,11 +178,11 @@ if( touch.phase == TouchPhase.ENDED )
     var isInBounds:Boolean = this.contains( this.stage.hitTest( HELPER_POINT, true ) );
     if( isInBounds )
     {
-        this.currentState = STATE_HOVER;
+        this.currentState = ButtonState.HOVER;
     }
     else
     {
-        this.currentState = STATE_UP;
+        this.currentState = ButtonState.UP;
     }
  
     // the touch has ended, so now we can start watching for a new one.
@@ -203,7 +192,7 @@ if( touch.phase == TouchPhase.ENDED )
 
 Notice the `isInBounds` local variable. What we're doing there with the call to [`contains()`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html#contains()) and [`hitTest()`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#hitTest()) is ensuring two things: 1) the touch hasn't moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
 
-The second case may be a little confusing, so let's go into a bit more detail. When Starling handles a touch, it will dispatch `TouchEvent.TOUCH` to the original target for every single phase of the touch, regardless of whether other objects may be blocking the touch. It's our responsibility to ensure that a touch is still valid for the original target. We'll always receive the event for `TouchPhase.ENDED`, but the call to the `hitTest()` on the stage may not return the item renderer or any of its children. If that's the case, then we go back to `STATE_UP` instead of `STATE_HOVER`.
+The second case may be a little confusing, so let's go into a bit more detail. When Starling handles a touch, it will dispatch `TouchEvent.TOUCH` to the original target for every single phase of the touch, regardless of whether other objects may be blocking the touch. It's our responsibility to ensure that a touch is still valid for the original target. We'll always receive the event for `TouchPhase.ENDED`, but the call to the `hitTest()` on the stage may not return the item renderer or any of its children. If that's the case, then we go back to `ButtonState.UP` instead of `ButtonState.HOVER`.
 
 Also, you may have seen the `HELPER_POINT` object we passed to [`getLocation()`](http://doc.starling-framework.org/core/starling/events/Touch.html#getLocation()). We're going to add a static constant that we can pass into that function so that it doesn't need to create a new [`flash.geom.Point`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html) for its return value. This will help us avoid some unnecessary garbage collection when we check a touch's location to help performance a bit:
 
@@ -239,7 +228,7 @@ We'll update this value in a new function that we're also adding to our class:
 private function updateCurrentBackground():void
 {
     var newBackground:DisplayObject = this._backgroundSkin;
-    if( this._currentState == STATE_DOWN )
+    if( this._currentState == ButtonState.DOWN )
     {
         newBackground = this._downBackgroundSkin;
     }
@@ -265,7 +254,7 @@ private function updateCurrentBackground():void
 }
 ```
 
-In this simple example code, we're only checking for `STATE_DOWN`. We could check for `STATE_HOVER` by adding an appropriate `else if` at the end. We could also use a `switch` statement instead, if preferred. The point here is simply to select the most appropriate background skin for the current state.
+In this simple example code, we're only checking for `ButtonState.DOWN`. We could check for `ButtonState.HOVER` by adding an appropriate `else if` at the end. We could also use a `switch` statement instead, if preferred. The point here is simply to select the most appropriate background skin for the current state.
 
 ### In LayoutGroup Item Renderers
 

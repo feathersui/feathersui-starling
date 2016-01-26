@@ -74,10 +74,10 @@ var defaultFormat:ElementFormat = new ElementFormat( fontDescription, 20, 0xc4c4
 textRenderer.elementFormat = defaultFormat;
 
 var downFormat:ElementFormat = new ElementFormat( fontDescription, 20, 0x343434 );
-textRenderer.setElementFormatForState( Button.STATE_DOWN, downFormat );
+textRenderer.setElementFormatForState( ButtonState.DOWN, downFormat );
 ```
 
-We didn't provide separate font styles for other states, like `Button.STATE_HOVER` or `Button.STATE_DISABLED`. When the `Button` is in one of these states, the `TextBlockTextRenderer` will fall back to using the value we passed to the `elementFormat` property.
+We didn't provide separate font styles for other states, like `ButtonState.HOVER` or `ButtonState.DISABLED`. When the `Button` is in one of these states, the `TextBlockTextRenderer` will fall back to using the value we passed to the `elementFormat` property.
 
 ### Using embedded fonts
 
