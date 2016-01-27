@@ -3290,19 +3290,18 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._topDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._topDrawer is Sprite))
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
 			{
 				return;
 			}
-			var topSprite:Sprite = Sprite(this._topDrawer);
-			if(!topSprite.mask)
+			if(this._topDrawer.mask === null)
 			{
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
 				mask.width = this.actualWidth;
 				mask.height = this._content.y;
-				topSprite.mask = mask;
+				this._topDrawer.mask = mask;
 			}
 		}
 
@@ -3320,19 +3319,18 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._rightDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._rightDrawer is Sprite))
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
 			{
 				return;
 			}
-			var rightSprite:Sprite = Sprite(this._rightDrawer);
-			if(!rightSprite.mask)
+			if(this._rightDrawer.mask === null)
 			{
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
 				mask.width = -this._content.x;
 				mask.height = this.actualHeight;
-				rightSprite.mask = mask;
+				this._rightDrawer.mask = mask;
 			}
 		}
 
@@ -3350,19 +3348,18 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._bottomDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._bottomDrawer is Sprite))
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
 			{
 				return;
 			}
-			var bottomSprite:Sprite = Sprite(this._bottomDrawer);
-			if(!bottomSprite.mask)
+			if(this._bottomDrawer.mask === null)
 			{
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
 				mask.width = this.actualWidth;
 				mask.height = -this._content.y;
-				bottomSprite.mask = mask;
+				this._bottomDrawer.mask = mask;
 			}
 		}
 
@@ -3380,19 +3377,18 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._leftDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW || !(this._leftDrawer is Sprite))
+			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
 			{
 				return;
 			}
-			var leftSprite:Sprite = Sprite(this._leftDrawer);
-			if(!leftSprite.mask)
+			if(this._leftDrawer.mask === null)
 			{
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
 				mask.width = this._content.x;
 				mask.height = this.actualHeight;
-				leftSprite.mask = mask;
+				this._leftDrawer.mask = mask;
 			}
 		}
 
@@ -4166,61 +4162,45 @@ package feathers.controls
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
 				var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
 				var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
-				if(this._topDrawer is Sprite)
+				var mask:Quad = this._topDrawer.mask as Quad;
+				if(mask)
 				{
-					var sprite:Sprite = Sprite(this._topDrawer);
-					var mask:Quad = sprite.mask as Quad;
-					if(mask)
-					{
-						mask.height = this._content.y;
-					}
+					mask.height = this._content.y;
 				}
-				if(this._rightDrawer is Sprite)
+				mask = this._rightDrawer.mask as Quad;
+				if(mask)
 				{
-					sprite = Sprite(this._rightDrawer);
-					mask = sprite.mask as Quad;
-					if(mask)
+					var rightClipWidth:Number = -this._content.x;
+					if(isLeftDrawerDocked)
 					{
-						var rightClipWidth:Number = -this._content.x;
-						if(isLeftDrawerDocked)
+						rightClipWidth += this.leftDrawer.width;
+						if(this._leftDrawerDivider)
 						{
-							rightClipWidth += this.leftDrawer.width;
-							if(this._leftDrawerDivider)
-							{
-								rightClipWidth += this._leftDrawerDivider.width;
-							}
+							rightClipWidth += this._leftDrawerDivider.width;
 						}
-						mask.x = this._rightDrawer.width - rightClipWidth;
-						mask.width = rightClipWidth;
 					}
+					mask.x = this._rightDrawer.width - rightClipWidth;
+					mask.width = rightClipWidth;
 				}
-				if(this._bottomDrawer is Sprite)
+				mask = this._bottomDrawer.mask as Quad;
+				if(mask)
 				{
-					sprite = Sprite(this._bottomDrawer);
-					mask = sprite.mask as Quad;
-					if(mask)
+					var bottomClipHeight:Number = -this._content.y;
+					if(isTopDrawerDocked)
 					{
-						var bottomClipHeight:Number = -this._content.y;
-						if(isTopDrawerDocked)
+						bottomClipHeight += this.topDrawer.height;
+						if(this._topDrawerDivider)
 						{
-							bottomClipHeight += this.topDrawer.height;
-							if(this._topDrawerDivider)
-							{
-								bottomClipHeight += this._topDrawerDivider.height;
-							}
+							bottomClipHeight += this._topDrawerDivider.height;
 						}
-						mask.y = this._bottomDrawer.height - bottomClipHeight;
-						mask.height = bottomClipHeight;
 					}
+					mask.y = this._bottomDrawer.height - bottomClipHeight;
+					mask.height = bottomClipHeight;
 				}
-				if(this._leftDrawer is Sprite)
+				mask = this._leftDrawer.mask as Quad;
+				if(mask)
 				{
-					sprite = Sprite(this._leftDrawer);
-					mask = sprite.mask as Quad;
-					if(mask)
-					{
-						mask.width = this._content.x;
-					}
+					mask.width = this._content.x;
 				}
 				var contentX:Number = this._content.x;
 				var contentY:Number = this._content.y;
@@ -4312,10 +4292,7 @@ package feathers.controls
 				this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 			}
 			this._openOrCloseTween = null;
-			if(this._topDrawer is Sprite)
-			{
-				Sprite(this._topDrawer).mask = null;
-			}
+			this._topDrawer.mask = null;
 			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
 			var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
 			this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked;
@@ -4339,10 +4316,7 @@ package feathers.controls
 		protected function rightDrawerOpenOrCloseTween_onComplete():void
 		{
 			this._openOrCloseTween = null;
-			if(this._rightDrawer is Sprite)
-			{
-				Sprite(this._rightDrawer).mask = null;
-			}
+			this._rightDrawer.mask = null;
 			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
 			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
 			this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked;
@@ -4366,10 +4340,7 @@ package feathers.controls
 		protected function bottomDrawerOpenOrCloseTween_onComplete():void
 		{
 			this._openOrCloseTween = null;
-			if(this._bottomDrawer is Sprite)
-			{
-				Sprite(this._bottomDrawer).mask = null;
-			}
+			this._bottomDrawer.mask = null;
 			var isBottomDrawerOpen:Boolean = this.isBottomDrawerOpen;
 			var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
 			this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked;
@@ -4393,10 +4364,7 @@ package feathers.controls
 		protected function leftDrawerOpenOrCloseTween_onComplete():void
 		{
 			this._openOrCloseTween = null;
-			if(this._leftDrawer is Sprite)
-			{
-				Sprite(this._leftDrawer).mask = null;
-			}
+			this._leftDrawer.mask = null;
 			var isLeftDrawerOpen:Boolean = this.isLeftDrawerOpen;
 			var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
 			this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked;
