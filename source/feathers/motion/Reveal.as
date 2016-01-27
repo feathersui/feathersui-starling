@@ -217,6 +217,11 @@ class RevealTween extends Tween
 		tweenProperties:Object)
 	{
 		var mask:Quad = new Quad(1, 1, 0xff00ff);
+		//the initial dimensions cannot be 0 or there's a runtime error
+		mask.width = oldScreen.width;
+		mask.height = oldScreen.height;
+		mask.width = 0;
+		mask.height = 0;
 		if(xOffset === 0)
 		{
 			mask.width = newScreen.width;

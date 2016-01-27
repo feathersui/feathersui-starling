@@ -214,7 +214,11 @@ class CoverTween extends Tween
 		xOffset:Number, yOffset:Number, duration:Number, ease:Object, onCompleteCallback:Function,
 		tweenProperties:Object)
 	{
-		var mask:Quad = new Quad(oldScreen.width, oldScreen.height);
+		var mask:Quad = new Quad(1, 1, 0xff00ff);
+		//the initial dimensions cannot be 0 or there's a runtime error,
+		//and these values might be 0
+		mask.width = oldScreen.width;
+		mask.height = oldScreen.height;
 		this._temporaryParent = new Sprite();
 		this._temporaryParent.mask = mask;
 		oldScreen.parent.addChild(this._temporaryParent);

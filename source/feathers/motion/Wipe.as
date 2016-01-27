@@ -144,6 +144,9 @@ class WipeTween extends Tween
 		{
 			this._temporaryNewScreenParent = new Sprite();
 			mask = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error,
+			mask.width = 0;
+			mask.height = 0;
 			if(xOffset !== 0)
 			{
 				if(xOffset < 0)
@@ -177,7 +180,12 @@ class WipeTween extends Tween
 		if(oldScreen)
 		{
 			this._temporaryOldScreenParent = new Sprite();
-			this._temporaryOldScreenParent.mask = new Quad(oldScreen.width, oldScreen.height, 0xff00ff);
+			mask = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error,
+			//and these values might be 0
+			mask.width = oldScreen.width;
+			mask.height = oldScreen.height;
+			this._temporaryOldScreenParent.mask = mask;
 			delegate = new RenderDelegate(oldScreen);
 			delegate.alpha = oldScreen.alpha;
 			delegate.blendMode = oldScreen.blendMode;
@@ -185,7 +193,6 @@ class WipeTween extends Tween
 			delegate.scaleX = oldScreen.scaleX;
 			delegate.scaleY = oldScreen.scaleY;
 			this._temporaryOldScreenParent.addChild(delegate);
-			mask = Quad(this._temporaryOldScreenParent.mask);
 			oldScreen.parent.addChild(this._temporaryOldScreenParent);
 			oldScreen.visible = false;
 			this._savedOldScreen = oldScreen;

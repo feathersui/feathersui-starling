@@ -532,7 +532,12 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				this.mask = new Quad(this.actualWidth, this.actualHeight, 0xff00ff);
+				mask = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
+				this.mask = mask;
 			}
 		}
 

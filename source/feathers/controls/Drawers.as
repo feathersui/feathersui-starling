@@ -3297,7 +3297,12 @@ package feathers.controls
 			var topSprite:Sprite = Sprite(this._topDrawer);
 			if(!topSprite.mask)
 			{
-				topSprite.mask = new Quad(this.actualWidth, this._content.y, 0xffffff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this.actualWidth;
+				mask.height = this._content.y;
+				topSprite.mask = mask;
 			}
 		}
 
@@ -3322,7 +3327,12 @@ package feathers.controls
 			var rightSprite:Sprite = Sprite(this._rightDrawer);
 			if(!rightSprite.mask)
 			{
-				rightSprite.mask = new Quad(-this._content.x, this.actualHeight, 0xff00ff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = -this._content.x;
+				mask.height = this.actualHeight;
+				rightSprite.mask = mask;
 			}
 		}
 
@@ -3347,7 +3357,12 @@ package feathers.controls
 			var bottomSprite:Sprite = Sprite(this._bottomDrawer);
 			if(!bottomSprite.mask)
 			{
-				bottomSprite.mask = new Quad(this.actualWidth, -this._content.y, 0xff00ff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this.actualWidth;
+				mask.height = -this._content.y;
+				bottomSprite.mask = mask;
 			}
 		}
 
@@ -3372,7 +3387,12 @@ package feathers.controls
 			var leftSprite:Sprite = Sprite(this._leftDrawer);
 			if(!leftSprite.mask)
 			{
-				leftSprite.mask = new Quad(this._content.x, this.actualHeight, 0xff00ff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this._content.x;
+				mask.height = this.actualHeight;
+				leftSprite.mask = mask;
 			}
 		}
 

@@ -2122,7 +2122,11 @@ package feathers.controls
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
 			var offLabelStyleName:String = this._customOffLabelStyleName != null ? this._customOffLabelStyleName : this.offLabelStyleName;
 			this.offTextRenderer.styleNameList.add(offLabelStyleName);
-			this.offTextRenderer.mask = new Quad(1, 1, 0xff00ff);
+			var mask:Quad = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error
+			mask.width = 0;
+			mask.height = 0;
+			this.offTextRenderer.mask = mask;
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
 			var onLabelFactory:Function = this._onLabelFactory;
@@ -2138,7 +2142,11 @@ package feathers.controls
 
 			var onLabelStyleName:String = this._customOnLabelStyleName != null ? this._customOnLabelStyleName : this.onLabelStyleName;
 			this.onTextRenderer.styleNameList.add(onLabelStyleName);
-			this.onTextRenderer.mask = new Quad(1, 1, 0xff00ff);
+			mask = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error
+			mask.width = 0;
+			mask.height = 0;
+			this.onTextRenderer.mask = mask;
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
 
