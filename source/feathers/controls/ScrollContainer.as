@@ -341,7 +341,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * container.autoSizeMode = ScrollContainer.AUTO_SIZE_MODE_STAGE;</listing>
 		 *
-		 * @default ScrollContainer.AUTO_SIZE_MODE_CONTENT
+		 * <p>Usually defaults to <code>ScrollContainer.AUTO_SIZE_MODE_CONTENT</code>.
+		 * However, if this component is the root of the Starling display list,
+		 * defaults to <code>ScrollContainer.AUTO_SIZE_MODE_STAGE</code> instead.</p>
 		 *
 		 * @see #AUTO_SIZE_MODE_STAGE
 		 * @see #AUTO_SIZE_MODE_CONTENT
@@ -689,6 +691,18 @@ package feathers.controls
 		{
 			this.layoutViewPort.readjustLayout();
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			if(this.root === this)
+			{
+				this.autoSizeMode = AUTO_SIZE_MODE_STAGE;
+			}
+			super.initialize();
 		}
 
 		/**

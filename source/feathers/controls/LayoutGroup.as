@@ -355,7 +355,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * group.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;</listing>
 		 *
-		 * @default LayoutGroup.AUTO_SIZE_MODE_CONTENT
+		 * <p>Usually defaults to <code>LayoutGroup.AUTO_SIZE_MODE_CONTENT</code>.
+		 * However, if this component is the root of the Starling display list,
+		 * defaults to <code>LayoutGroup.AUTO_SIZE_MODE_STAGE</code> instead.</p>
 		 *
 		 * @see #AUTO_SIZE_MODE_STAGE
 		 * @see #AUTO_SIZE_MODE_CONTENT
@@ -566,6 +568,18 @@ package feathers.controls
 		public function readjustLayout():void
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			if(this.root === this)
+			{
+				this.autoSizeMode = AUTO_SIZE_MODE_STAGE;
+			}
+			super.initialize();
 		}
 
 		/**
