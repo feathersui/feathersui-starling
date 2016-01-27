@@ -248,9 +248,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function setButtonStyles(button:Button):void
 		{
-			var defaultIcon:ImageLoader = new ImageLoader();
-			defaultIcon.source = this.backIconTexture;
-			defaultIcon.snapToPixels = true;
+			var defaultIcon:Image = new Image(this.backIconTexture);
 			button.defaultIcon = defaultIcon;
 			button.minWidth = button.minHeight = 22;
 			button.minTouchWidth = button.minTouchHeight = 44;
@@ -258,9 +256,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function setConfirmButtonStyles(button:Button):void
 		{
-			var defaultIcon:ImageLoader = new ImageLoader();
-			defaultIcon.source = this.confirmIconTexture;
-			defaultIcon.snapToPixels = true;
+			var defaultIcon:Image = new Image(this.confirmIconTexture);
 			button.defaultIcon = defaultIcon;
 			button.minWidth = button.minHeight = 22;
 			button.minTouchWidth = button.minTouchHeight = 44;
@@ -268,9 +264,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function setCancelButtonStyles(button:Button):void
 		{
-			var defaultIcon:ImageLoader = new ImageLoader();
-			defaultIcon.source = this.cancelIconTexture;
-			defaultIcon.snapToPixels = true;
+			var defaultIcon:Image = new Image(this.cancelIconTexture);
 			button.defaultIcon = defaultIcon;
 			button.minWidth = button.minHeight = 22;
 			button.minTouchWidth = button.minTouchHeight = 44;

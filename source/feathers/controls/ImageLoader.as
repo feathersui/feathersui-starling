@@ -756,41 +756,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _snapToPixels:Boolean = false;
-
-		/**
-		 * Determines if the image should be snapped to the nearest global whole
-		 * pixel when rendered. Turning this on helps to avoid blurring.
-		 *
-		 * <p>In the following example, the image loader's position is snapped
-		 * to pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.snapToPixels = true;</listing>
-		 *
-		 * @default false
-		 */
-		public function get snapToPixels():Boolean
-		{
-			return this._snapToPixels;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set snapToPixels(value:Boolean):void
-		{
-			if(this._snapToPixels == value)
-			{
-				return;
-			}
-			this._snapToPixels = value;
-		}
-
-
-		/**
-		 * @private
-		 */
 		private var _scaleContent:Boolean = true;
 
 		/**

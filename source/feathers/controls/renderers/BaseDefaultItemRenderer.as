@@ -2742,7 +2742,7 @@ package feathers.controls.renderers
 		 * renderer.iconLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
-		 *    loader.snapToPixels = true;
+		 *    loader.scaleFactor = 2;
 		 *    return loader;
 		 * };</listing>
 		 *
@@ -2925,7 +2925,7 @@ package feathers.controls.renderers
 		 * renderer.accessoryLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
-		 *    loader.snapToPixels = true;
+		 *    loader.scaleFactor = 2;
 		 *    return loader;
 		 * };</listing>
 		 *
@@ -3108,7 +3108,7 @@ package feathers.controls.renderers
 		 * renderer.skinLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
-		 *    loader.snapToPixels = true;
+		 *    loader.scaleFactor = 2;
 		 *    return loader;
 		 * };</listing>
 		 *

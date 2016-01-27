@@ -737,7 +737,7 @@ package feathers.controls.renderers
 		 * renderer.contentLoaderFactory = function():ImageLoader
 		 * {
 		 *     var loader:ImageLoader = new ImageLoader();
-		 *     loader.snapToPixels = true;
+		 *     loader.scaleFactor = 2;
 		 *     return loader;
 		 * };</listing>
 		 *

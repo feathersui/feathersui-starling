@@ -138,6 +138,8 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 * This variable may be used by subclasses to affect the x position of
+		 * the text.
 		 */
 		protected var _batchX:Number = 0;
 
@@ -378,42 +380,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _snapToPixels:Boolean = true;
-
-		/**
-		 * Determines if the position of the text should be snapped to the
-		 * nearest whole pixel when rendered. When snapped to a whole pixel, the
-		 * text is often more readable. When not snapped, the text may become
-		 * blurry due to texture smoothing.
-		 *
-		 * <p>In the following example, the text is not snapped to pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.snapToPixels = false;</listing>
-		 *
-		 * @default true
-		 */
-		public function get snapToPixels():Boolean
-		{
-			return _snapToPixels;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set snapToPixels(value:Boolean):void
-		{
-			if(this._snapToPixels == value)
-			{
-				return;
-			}
-			this._snapToPixels = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _truncateToFit:Boolean = true;
 
 		/**
@@ -608,16 +574,7 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			var offsetX:Number = 0;
-			var offsetY:Number = 0;
-			if(this._snapToPixels)
-			{
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				offsetX = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				offsetY = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
-			}
-			this._characterBatch.x = this._batchX + offsetX;
-			this._characterBatch.y = offsetY;
+			this._characterBatch.x = this._batchX;
 			super.render(painter);
 		}
 		

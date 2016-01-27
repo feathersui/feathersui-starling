@@ -65,9 +65,6 @@ package feathers.examples.componentsExplorer.themes
 
 			var icon:ImageLoader = new ImageLoader();
 			icon.source = EmbeddedAssets.SKULL_ICON_DARK;
-			//the icon will be blurry if it's not on a whole pixel. ImageLoader
-			//can snap to pixels to fix that issue.
-			icon.snapToPixels = true;
 			button.defaultIcon = icon;
 		}
 

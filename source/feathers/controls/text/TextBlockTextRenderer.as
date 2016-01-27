@@ -944,37 +944,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _snapToPixels:Boolean = true;
-
-		/**
-		 * Determines if the text should be snapped to the nearest whole pixel
-		 * when rendered. When this is <code>false</code>, text may be displayed
-		 * on sub-pixels, which often results in blurred rendering due to
-		 * texture smoothing.
-		 *
-		 * <p>In the following example, the text is not snapped to pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.snapToPixels = false;</listing>
-		 *
-		 * @default true
-		 */
-		public function get snapToPixels():Boolean
-		{
-			return this._snapToPixels;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set snapToPixels(value:Boolean):void
-		{
-			this._snapToPixels = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _maxTextureDimensions:int = 2048;
 
 		/**
@@ -1289,11 +1258,6 @@ package feathers.controls.text
 				{
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
-				}
-				if(this._snapToPixels)
-				{
-					offsetX += Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
 
 				var snapshotIndex:int = -1;
