@@ -79,6 +79,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const LABEL_FIELD:String = "label";
+
+		/**
+		 * @private
+		 */
+		protected static const ENABLED_FIELD:String = "isEnabled";
+
+		/**
+		 * @private
+		 */
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
 			"defaultIcon",
@@ -91,7 +101,6 @@ package feathers.controls
 			"selectedDownIcon",
 			"selectedHoverIcon",
 			"selectedDisabledIcon",
-			"isEnabled",
 			"name"
 		];
 
@@ -1538,13 +1547,21 @@ package feathers.controls
 		{
 			if(item is Object)
 			{
-				if(item.hasOwnProperty("label"))
+				if(item.hasOwnProperty(LABEL_FIELD))
 				{
 					tab.label = item.label;
 				}
 				else
 				{
 					tab.label = item.toString();
+				}
+				if(item.hasOwnProperty(ENABLED_FIELD))
+				{
+					tab.isEnabled = item.isEnabled as Boolean;
+				}
+				else
+				{
+					tab.isEnabled = this._isEnabled;
 				}
 				for each(var field:String in DEFAULT_TAB_FIELDS)
 				{
@@ -1553,15 +1570,11 @@ package feathers.controls
 						tab[field] = item[field];
 					}
 				}
-				if(!("isEnabled" in item))
-				{
-					tab.isEnabled = true;
-				}
 			}
 			else
 			{
 				tab.label = "";
-				tab.isEnabled = true;
+				tab.isEnabled = this._isEnabled;
 			}
 
 		}

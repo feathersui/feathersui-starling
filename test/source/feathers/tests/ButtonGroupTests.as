@@ -26,9 +26,10 @@ package feathers.tests
 			this._group = new ButtonGroup();
 			this._group.dataProvider = new ListCollection(
 			[
-				{ label: "One" },
-				{ label: "Two" },
-				{ label: "Three" },
+				{ label: "One", name: "one" },
+				{ label: "Two", name: "two" },
+				{ label: "Three", isEnabled: true, name: "three" },
+				{ label: "Four", isEnabled: false, name: "four" },
 			]);
 			this._group.buttonFactory = function():Button
 			{
@@ -82,9 +83,9 @@ package feathers.tests
 		{
 			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
 			this._group.distributeButtonSizes = true;
-			this._group.height = 1200;
+			this._group.height = 1600;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, larger explicit height, and distributeButtonSizes set to true", 400, this._group.getChildAt(0).height);
+			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, larger explicit height, and distributeButtonSizes set to true", 400, this._group.getChildByName("one").height);
 		}
 
 		[Test]
@@ -92,31 +93,31 @@ package feathers.tests
 		{
 			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
 			this._group.distributeButtonSizes = true;
-			this._group.height = 300;
+			this._group.height = 400;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, smaller explicit height, and distributeButtonSizes set to true", 100, this._group.getChildAt(0).height);
+			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, smaller explicit height, and distributeButtonSizes set to true", 100, this._group.getChildByName("one").height);
 		}
 
 		[Test]
 		public function testDirectionSetToVerticalAndDistributeButtonSizesSetToFalseWithLargerHeight():void
 		{
-			var originalButtonHeight:Number = this._group.getChildAt(0).height;
+			var originalButtonHeight:Number = this._group.getChildByName("one").height;
 			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
 			this._group.distributeButtonSizes = false;
-			this._group.height = 1200;
+			this._group.height = 1600;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, larger explicit height, and distributeButtonSizes set to true", originalButtonHeight, this._group.getChildAt(0).height);
+			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, larger explicit height, and distributeButtonSizes set to true", originalButtonHeight, this._group.getChildByName("one").height);
 		}
 
 		[Test]
 		public function testDirectionSetToVerticalAndDistributeButtonSizesSetToFalseWithSmallerHeight():void
 		{
-			var originalButtonHeight:Number = this._group.getChildAt(0).height;
+			var originalButtonHeight:Number = this._group.getChildByName("one").height;
 			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
 			this._group.distributeButtonSizes = false;
 			this._group.height = 300;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, smaller explicit height, and distributeButtonSizes set to true", originalButtonHeight, this._group.getChildAt(0).height);
+			Assert.assertStrictlyEquals("ButtonGroup button height not changed with vertical direction, smaller explicit height, and distributeButtonSizes set to true", originalButtonHeight, this._group.getChildByName("one").height);
 		}
 
 		[Test]
@@ -124,9 +125,9 @@ package feathers.tests
 		{
 			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			this._group.distributeButtonSizes = true;
-			this._group.width = 1200;
+			this._group.width = 1600;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, larger explicit width, and distributeButtonSizes set to true", 400, this._group.getChildAt(0).width);
+			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, larger explicit width, and distributeButtonSizes set to true", 400, this._group.getChildByName("one").width);
 		}
 
 		[Test]
@@ -134,34 +135,62 @@ package feathers.tests
 		{
 			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			this._group.distributeButtonSizes = true;
-			this._group.width = 300;
+			this._group.width = 400;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, smaller explicit width, and distributeButtonSizes set to true", 100, this._group.getChildAt(0).width);
+			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, smaller explicit width, and distributeButtonSizes set to true", 100, this._group.getChildByName("one").width);
 		}
 
 		[Test]
 		public function testDirectionSetToHorizontalAndDistributeButtonSizesSetToFalseWithLargerWidth():void
 		{
-			var originalButtonWidth:Number = this._group.getChildAt(0).width;
+			var originalButtonWidth:Number = this._group.getChildByName("one").width;
 			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			this._group.distributeButtonSizes = false;
-			this._group.width = 1200;
+			this._group.width = 1600;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, larger explicit width, and distributeButtonSizes set to false", originalButtonWidth, this._group.getChildAt(0).width);
+			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, larger explicit width, and distributeButtonSizes set to false", originalButtonWidth, this._group.getChildByName("one").width);
 		}
 
 		[Test]
 		public function testButtonWidthAfterDirectionSetToHorizontalAndDistributeButtonSizesSetToFalseWithSmallerWidth():void
 		{
-			var button:DisplayObject = this._group.getChildAt(0)
+			var button:DisplayObject = this._group.getChildByName("one");
 			var originalButtonWidth:Number = button.width;
 			var originalButtonHeight:Number = button.height;
 			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			this._group.distributeButtonSizes = false;
 			this._group.width = 300;
 			this._group.validate();
-			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, smaller explicit width, and distributeButtonSizes set to false", originalButtonWidth, this._group.getChildAt(0).width);
-			Assert.assertStrictlyEquals("ButtonGroup button not on new row with flow layout and small explicit width", originalButtonHeight, this._group.getChildAt(1).y);
+			Assert.assertStrictlyEquals("ButtonGroup button width not changed with horizontal direction, smaller explicit width, and distributeButtonSizes set to false", originalButtonWidth, this._group.getChildByName("one").width);
+			Assert.assertStrictlyEquals("ButtonGroup button not on new row with flow layout and small explicit width", originalButtonHeight, this._group.getChildByName("two").y);
+		}
+
+		[Test]
+		public function testDisableAndReenable():void
+		{
+			this._group.isEnabled = false;
+			this._group.validate();
+			this._group.isEnabled = true;
+			this._group.validate();
+			var button1:Button = Button(this._group.getChildByName("one"));
+			var button3:Button = Button(this._group.getChildByName("three"));
+			var button4:Button = Button(this._group.getChildByName("four"));
+			Assert.assertTrue("Button without isEnabled value in data provider is not enabled when ButtonGroup is disabled and then re-enabled", button1.isEnabled);
+			Assert.assertTrue("Button with isEnabled value set to true in data provider is not enabled when ButtonGroup is disabled and then re-enabled", button3.isEnabled);
+			Assert.assertFalse("Button with isEnabled value set to false in data provider is not disabled when ButtonGroup is disabled and then re-enabled", button4.isEnabled);
+		}
+
+		[Test]
+		public function testDisable():void
+		{
+			this._group.isEnabled = false;
+			this._group.validate();
+			var button1:Button = Button(this._group.getChildByName("one"));
+			var button3:Button = Button(this._group.getChildByName("three"));
+			var button4:Button = Button(this._group.getChildByName("four"));
+			Assert.assertFalse("Button without isEnabled value in data provider is incorrectly enabled when ButtonGroup is disabled", button1.isEnabled);
+			Assert.assertFalse("Button with isEnabled value set to true in data provider is incorrectly enabled when ButtonGroup is disabled", button3.isEnabled);
+			Assert.assertFalse("Button with isEnabled value set to false in data provider is incorrectly enabled when ButtonGroup is disabled", button4.isEnabled);
 		}
 	}
 }

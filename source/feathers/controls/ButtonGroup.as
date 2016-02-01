@@ -126,6 +126,7 @@ package feathers.controls
 			"isSelected",
 			"isToggle",
 			"isLongPressEnabled",
+			"name",
 		];
 
 		/**
@@ -357,6 +358,7 @@ package feathers.controls
 		 *     <li>isSelected (only supported by <code>ToggleButton</code>)</li>
 		 *     <li>isToggle (only supported by <code>ToggleButton</code>)</li>
 		 *     <li>isEnabled</li>
+		 *     <li>name</li>
 		 * </ul>
 		 *
 		 * <p>Additionally, you can add the following event listeners:</p>
@@ -1501,6 +1503,7 @@ package feathers.controls
 			else
 			{
 				button.label = "";
+				button.isEnabled = this._isEnabled;
 			}
 		}
 
