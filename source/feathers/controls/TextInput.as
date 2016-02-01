@@ -2428,10 +2428,18 @@ package feathers.controls
 			{
 				if(oldIcon)
 				{
+					if(oldIcon is IStateObserver)
+					{
+						IStateObserver(oldIcon).stateContext = null;
+					}
 					this.removeChild(oldIcon, false);
 				}
 				if(this.currentIcon)
 				{
+					if(this.currentIcon is IStateObserver)
+					{
+						IStateObserver(this.currentIcon).stateContext = this;
+					}
 					//we want the icon to appear below the text editor
 					var index:int = this.getChildIndex(DisplayObject(this.textEditor));
 					this.addChildAt(this.currentIcon, index);
