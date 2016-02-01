@@ -7,8 +7,6 @@ author: Josh Tynjala
 
 The [`TabBar`](../api-reference/feathers/controls/TabBar.html) class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar's tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more "pill" shaped control that looks more like a segmented button bar than a set of tabs.
 
-<aside class="info">The [DisplayObjectExplorer example](http://feathersui.com/examples/display-object-explorer/) demonstrates how to connect a `TabBar` to a `ScreenNavigator`.</aside>
-
 ## The Basics
 
 First, let's create a `TabBar` control, set its data provider to display a few tabs, and add it to the display list:
