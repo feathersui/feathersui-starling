@@ -25,9 +25,10 @@ package feathers.tests
 			this._tabBar = new TabBar();
 			this._tabBar.dataProvider = new ListCollection(
 			[
-				{ label: "One" },
+				{ label: "One", name: "one" },
 				{ label: "Two" },
-				{ label: "Three" },
+				{ label: "Three", isEnabled: true, name: "three" },
+				{ label: "Four", isEnabled: false, name: "four" },
 			]);
 			this._tabBar.tabFactory = function():ToggleButton
 			{
@@ -231,6 +232,34 @@ package feathers.tests
 			});
 			this._tabBar.dispose();
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+		}
+
+		[Test]
+		public function testDisableAndReenable():void
+		{
+			this._tabBar.isEnabled = false;
+			this._tabBar.validate();
+			this._tabBar.isEnabled = true;
+			this._tabBar.validate();
+			var tab1:ToggleButton = ToggleButton(this._tabBar.getChildByName("one"));
+			var tab3:ToggleButton = ToggleButton(this._tabBar.getChildByName("three"));
+			var tab4:ToggleButton = ToggleButton(this._tabBar.getChildByName("four"));
+			Assert.assertTrue("Tab without isEnabled value in data provider is not enabled when TabBar is disabled and then re-enabled", tab1.isEnabled);
+			Assert.assertTrue("Tab with isEnabled value set to true in data provider is not enabled when TabBar is disabled and then re-enabled", tab3.isEnabled);
+			Assert.assertFalse("Tab with isEnabled value set to false in data provider is not disabled when TabBar is disabled and then re-enabled", tab4.isEnabled);
+		}
+
+		[Test]
+		public function testDisable():void
+		{
+			this._tabBar.isEnabled = false;
+			this._tabBar.validate();
+			var tab1:ToggleButton = ToggleButton(this._tabBar.getChildByName("one"));
+			var tab3:ToggleButton = ToggleButton(this._tabBar.getChildByName("three"));
+			var tab4:ToggleButton = ToggleButton(this._tabBar.getChildByName("four"));
+			Assert.assertFalse("Tab without isEnabled value in data provider is incorrectly enabled when TabBar is disabled", tab1.isEnabled);
+			Assert.assertFalse("Tab with isEnabled value set to true in data provider is incorrectly enabled when TabBar is disabled", tab3.isEnabled);
+			Assert.assertFalse("Tab with isEnabled value set to false in data provider is incorrectly enabled when TabBar is disabled", tab4.isEnabled);
 		}
 	}
 }

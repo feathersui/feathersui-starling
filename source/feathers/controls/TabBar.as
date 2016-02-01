@@ -91,7 +91,8 @@ package feathers.controls
 			"selectedDownIcon",
 			"selectedHoverIcon",
 			"selectedDisabledIcon",
-			"isEnabled"
+			"isEnabled",
+			"name"
 		];
 
 		/**
@@ -320,6 +321,7 @@ package feathers.controls
 		 *     <li>selectedHoverIcon</li>
 		 *     <li>selectedDisabledIcon</li>
 		 *     <li>isEnabled</li>
+		 *     <li>name</li>
 		 * </ul>
 		 *
 		 * <p>The following example passes in a data provider:</p>
@@ -1416,7 +1418,7 @@ package feathers.controls
 			var tabFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TAB_FACTORY);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
-			if(dataInvalid || tabFactoryInvalid)
+			if(dataInvalid || tabFactoryInvalid || stateInvalid)
 			{
 				this.refreshTabs(tabFactoryInvalid);
 			}
@@ -1551,10 +1553,15 @@ package feathers.controls
 						tab[field] = item[field];
 					}
 				}
+				if(!("isEnabled" in item))
+				{
+					tab.isEnabled = true;
+				}
 			}
 			else
 			{
 				tab.label = "";
+				tab.isEnabled = true;
 			}
 
 		}
