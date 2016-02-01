@@ -85,7 +85,7 @@ If you aren't using a theme, then you may set any of the tab bar's properties di
 
 ### Skinning the Tabs
 
-This section only explains how to access the tab sub-components, which are simply buttons. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the tab sub-components, which are simply toggle buttons. Please read [How to use the Feathers `ToggleButton` component](toggle-button.html) for full details about the skinning properties that are available on `ToggleButton` components.
 
 #### With a Theme
 
