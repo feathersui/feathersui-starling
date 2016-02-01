@@ -314,15 +314,25 @@ package feathers.controls
 				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 				{
 					this._selectionOverlaySkin.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-					this._selectionOverlaySkin.height = this.actualPageHeight;
+					var overlayHeight:Number = this.actualPageHeight;
+					if(overlayHeight > this.actualHeight)
+					{
+						overlayHeight = this.actualHeight;
+					}
+					this._selectionOverlaySkin.height = overlayHeight;
 					this._selectionOverlaySkin.x = this._leftViewPortOffset;
-					this._selectionOverlaySkin.y = Math.round(this._topViewPortOffset + (this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - this.actualPageHeight) / 2);
+					this._selectionOverlaySkin.y = Math.round(this._topViewPortOffset + (this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - overlayHeight) / 2);
 				}
 				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 				{
-					this._selectionOverlaySkin.width = this.actualPageWidth;
+					var overlayWidth:Number = this.actualPageWidth;
+					if(overlayWidth > this.actualWidth)
+					{
+						overlayWidth = this.actualWidth;
+					}
+					this._selectionOverlaySkin.width = overlayWidth;
 					this._selectionOverlaySkin.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
-					this._selectionOverlaySkin.x = Math.round(this._leftViewPortOffset + (this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - this.actualPageWidth) / 2);
+					this._selectionOverlaySkin.x = Math.round(this._leftViewPortOffset + (this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - overlayWidth) / 2);
 					this._selectionOverlaySkin.y = this._topViewPortOffset;
 				}
 			}
