@@ -92,8 +92,8 @@ This section only explains how to access the tab sub-components, which are simpl
 If you're creating a [theme](themes.html), you can target the [`TabBar.DEFAULT_CHILD_STYLE_NAME_TAB`](../api-reference/feathers/controls/TabBar.html#DEFAULT_CHILD_STYLE_NAME_TAB) style name.
 
 ``` code
-getStyleProviderForClass( Button )
-    .setFunctionForStyleName( setTabStyles, TabBar.DEFAULT_CHILD_STYLE_NAME_TAB );
+getStyleProviderForClass( ToggleButton )
+    .setFunctionForStyleName( TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, setTabStyles );
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -105,8 +105,8 @@ tabBar.customTabStyleName = "custom-tab";
 You can set the function for the [`customTabStyleName`](../api-reference/feathers/controls/TabBar.html#customTabStyleName) like this:
 
 ``` code
-getStyleProviderForClass( Button )
-    .setFunctionForStyleName( setCustomTabStyles, "custom-tab" );
+getStyleProviderForClass( ToggleButton )
+    .setFunctionForStyleName( "custom-tab", setCustomTabStyles );
 ```
 
 #### Without a Theme
@@ -134,7 +134,7 @@ In general, you should only pass properties to the tab bar's tabs through `tabPr
 
 ### Skinning the First and Last Tabs
 
-This section only explains how to access the first and last tab sub-components. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
+This section only explains how to access the first and last tab sub-components. Please read [How to use the Feathers `ToggleButton` component](toggle-button.html) for full details about the skinning properties that are available on `ToggleButton` components.
 
 The tab bar's first and last tabs will have the same skins as the other tabs by default. However, their skins may be customized separately, if desired.
 
