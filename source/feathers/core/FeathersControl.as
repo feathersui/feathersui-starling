@@ -1334,14 +1334,27 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focusIndicatorSkin && this._focusIndicatorSkin.parent == this)
+			if(this._focusIndicatorSkin)
 			{
-				this._focusIndicatorSkin.removeFromParent(false);
+				if(this._focusIndicatorSkin.parent == this)
+				{
+					this._focusIndicatorSkin.removeFromParent(false);
+				}
+				if(this._focusIndicatorSkin is IStateObserver &&
+					this is IStateContext)
+				{
+					IStateObserver(this._focusIndicatorSkin).stateContext = null;
+				}
 			}
 			this._focusIndicatorSkin = value;
 			if(this._focusIndicatorSkin)
 			{
 				this._focusIndicatorSkin.touchable = false;
+			}
+			if(this._focusIndicatorSkin is IStateObserver &&
+				this is IStateContext)
+			{
+				IStateObserver(this._focusIndicatorSkin).stateContext = IStateContext(this);
 			}
 			if(this._focusManager && this._focusManager.focus == this)
 			{
