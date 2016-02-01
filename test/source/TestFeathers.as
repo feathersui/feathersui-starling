@@ -18,6 +18,7 @@ package
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
@@ -68,6 +69,7 @@ package
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.VerticalLayoutTests;
+	import feathers.tests.VerticalSpinnerLayoutTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -175,6 +177,8 @@ package
 				TiledRowsLayoutTests,
 				TiledColumnsLayoutTests,
 				VerticalLayoutTests,
+				HorizontalSpinnerLayoutTests,
+				VerticalSpinnerLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,

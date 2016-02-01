@@ -512,6 +512,37 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _repeatItems:Boolean = true;
+
+		/**
+		 * If set to <code>true</code>, the layout will repeat the items
+		 * infinitely, if there are enough items to allow this behavior. If the
+		 * total height of the items is smaller than the height of the view
+		 * port, the items cannot repeat.
+		 *
+		 * @default true
+		 */
+		public function get repeatItems():Boolean
+		{
+			return this._repeatItems;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set repeatItems(value:Boolean):void
+		{
+			if(this._repeatItems == value)
+			{
+				return;
+			}
+			this._repeatItems = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * @copy feathers.layout.ISpinnerLayout#snapInterval
 		 */
 		public function get snapInterval():Number
@@ -678,7 +709,7 @@ package feathers.layout
 				}
 			}
 
-			var canRepeatItems:Boolean = totalHeight > availableHeight;
+			var canRepeatItems:Boolean = this._repeatItems && totalHeight > availableHeight;
 			if(canRepeatItems)
 			{
 				totalHeight += gap;
@@ -915,7 +946,7 @@ package feathers.layout
 
 			scrollY -= Math.round((height - calculatedTypicalItemHeight) / 2);
 
-			var canRepeatItems:Boolean = totalItemHeight > height;
+			var canRepeatItems:Boolean = this._repeatItems && totalItemHeight > height;
 			if(canRepeatItems)
 			{
 				scrollY %= totalItemHeight;
