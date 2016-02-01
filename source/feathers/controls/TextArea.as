@@ -78,15 +78,6 @@ package feathers.controls
 	 * A text entry control that allows users to enter and edit multiple lines
 	 * of uniformly-formatted text with the ability to scroll.
 	 *
-	 * <p><strong>Important:</strong> <code>TextArea</code> is not recommended
-	 * for mobile. Instead, you should generally use a <code>TextInput</code>
-	 * with a <code>StageTextTextEditor</code> that has its <code>multiline</code>
-	 * property set to <code>true</code> and the text input's <code>verticalAlign</code>
-	 * property should be set to <code>TextInput.VERTICAL_ALIGN_JUSTIFY</code>.
-	 * In that situation, the <code>StageText</code> instance will automatically
-	 * provide its own operating system native scroll bars. <code>TextArea</code>
-	 * is intended for use on desktop and may not behave correctly on mobile.</p>
-	 *
 	 * <p>The following example sets the text in a text area, selects the text,
 	 * and listens for when the text value changes:</p>
 	 *

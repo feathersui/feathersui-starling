@@ -201,10 +201,6 @@ package feathers.controls
 	 * A text entry control that allows users to enter and edit a single line of
 	 * uniformly-formatted text.
 	 *
-	 * <p>To set things like font properties, the ability to display as
-	 * password, and character restrictions, use the <code>textEditorProperties</code> to pass
-	 * values to the <code>ITextEditor</code> instance.</p>
-	 *
 	 * <p>The following example sets the text in a text input, selects the text,
 	 * and listens for when the text value changes:</p>
 	 *
