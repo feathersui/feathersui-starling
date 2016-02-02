@@ -8,7 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -329,7 +331,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 		
 		/**
 		 * The minimum track sub-component.
@@ -339,7 +341,7 @@ package feathers.controls
 		 * @see #minimumTrackFactory
 		 * @see #createMinimumTrack()
 		 */
-		protected var minimumTrack:Button;
+		protected var minimumTrack:DisplayObject;
 
 		/**
 		 * The maximum track sub-component.
@@ -349,7 +351,7 @@ package feathers.controls
 		 * @see #maximumTrackFactory
 		 * @see #createMaximumTrack()
 		 */
-		protected var maximumTrack:Button;
+		protected var maximumTrack:DisplayObject;
 
 		/**
 		 * @private
@@ -1571,17 +1573,10 @@ package feathers.controls
 				this.refreshMaximumTrackStyles();
 			}
 			
-			if(thumbFactoryInvalid || stateInvalid)
+			if(stateInvalid || thumbFactoryInvalid || minimumTrackFactoryInvalid ||
+				maximumTrackFactoryInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
-			}
-			if(minimumTrackFactoryInvalid || stateInvalid)
-			{
-				this.minimumTrack.isEnabled = this._isEnabled;
-			}
-			if((maximumTrackFactoryInvalid || layoutInvalid || stateInvalid) && this.maximumTrack)
-			{
-				this.maximumTrack.isEnabled = this._isEnabled;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1615,7 +1610,10 @@ package feathers.controls
 			if(this.minimumTrackOriginalWidth !== this.minimumTrackOriginalWidth || //isNaN
 				this.minimumTrackOriginalHeight !== this.minimumTrackOriginalHeight) //isNaN
 			{
-				this.minimumTrack.validate();
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
 				this.minimumTrackOriginalWidth = this.minimumTrack.width;
 				this.minimumTrackOriginalHeight = this.minimumTrack.height;
 			}
@@ -1624,7 +1622,10 @@ package feathers.controls
 				if(this.maximumTrackOriginalWidth !== this.maximumTrackOriginalWidth || //isNaN
 					this.maximumTrackOriginalHeight !== this.maximumTrackOriginalHeight) //isNaN
 				{
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrackOriginalWidth = this.maximumTrack.width;
 					this.maximumTrackOriginalHeight = this.maximumTrack.height;
 				}
@@ -1636,7 +1637,10 @@ package feathers.controls
 			{
 				return false;
 			}
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
@@ -1715,11 +1719,12 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.keepDownStateOnRollOut = true;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -1743,11 +1748,12 @@ package feathers.controls
 
 			var factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
 			var minimumTrackStyleName:String = this._customMinimumTrackStyleName != null ? this._customMinimumTrackStyleName : this.minimumTrackStyleName;
-			this.minimumTrack = Button(factory());
-			this.minimumTrack.styleNameList.add(minimumTrackStyleName);
-			this.minimumTrack.keepDownStateOnRollOut = true;
-			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-			this.addChildAt(this.minimumTrack, 0);
+			var minimumTrack:Button = Button(factory());
+			minimumTrack.styleNameList.add(minimumTrackStyleName);
+			minimumTrack.keepDownStateOnRollOut = true;
+			minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+			this.addChildAt(minimumTrack, 0);
+			this.minimumTrack = minimumTrack;
 		}
 
 		/**
@@ -1773,11 +1779,12 @@ package feathers.controls
 				}
 				var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
 				var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
-				this.maximumTrack = Button(factory());
-				this.maximumTrack.styleNameList.add(maximumTrackStyleName);
-				this.maximumTrack.keepDownStateOnRollOut = true;
-				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChildAt(this.maximumTrack, 1);
+				var maximumTrack:Button = Button(factory());
+				maximumTrack.styleNameList.add(maximumTrackStyleName);
+				maximumTrack.keepDownStateOnRollOut = true;
+				maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChildAt(maximumTrack, 1);
+				this.maximumTrack = maximumTrack;
 			}
 			else if(this.maximumTrack) //single
 			{
@@ -1830,6 +1837,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshEnabled():void
+		{
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = this._isEnabled;
+			}
+			if(this.minimumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.minimumTrack).isEnabled = this._isEnabled;
+			}
+			if(this.maximumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.maximumTrack).isEnabled = this._isEnabled;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layoutChildren():void
 		{
 			this.layoutThumb();
@@ -1850,7 +1876,10 @@ package feathers.controls
 		protected function layoutThumb():void
 		{
 			//this will auto-size the thumb, if needed
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 			
 			if(this._minimum === this._maximum)
 			{
@@ -1901,10 +1930,16 @@ package feathers.controls
 				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
 				{
 					this.maximumTrack.width = NaN;
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrack.x = (this.actualWidth - this.maximumTrack.width) / 2;
 					this.minimumTrack.width = NaN;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
 				}
 				else //exact fit
@@ -1915,8 +1950,14 @@ package feathers.controls
 					this.minimumTrack.width = this.actualWidth;
 
 					//final validation to avoid juggler next frame issues
-					this.minimumTrack.validate();
-					this.maximumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 				}
 			}
 			else //horizontal
@@ -1929,10 +1970,16 @@ package feathers.controls
 				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
 				{
 					this.minimumTrack.height = NaN;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
 					this.maximumTrack.height = NaN;
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrack.y = (this.actualHeight - this.maximumTrack.height) / 2;
 				}
 				else //exact fit
@@ -1943,8 +1990,14 @@ package feathers.controls
 					this.maximumTrack.height = this.actualHeight;
 
 					//final validation to avoid juggler next frame issues
-					this.minimumTrack.validate();
-					this.maximumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 				}
 			}
 		}
@@ -1961,7 +2014,10 @@ package feathers.controls
 					this.minimumTrack.y = 0;
 					this.minimumTrack.width = NaN;
 					this.minimumTrack.height = this.actualHeight;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
 				}
 				else //horizontal
@@ -1969,7 +2025,10 @@ package feathers.controls
 					this.minimumTrack.x = 0;
 					this.minimumTrack.width = this.actualWidth;
 					this.minimumTrack.height = NaN;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
 				}
 			}
@@ -1981,7 +2040,10 @@ package feathers.controls
 				this.minimumTrack.height = this.actualHeight;
 
 				//final validation to avoid juggler next frame issues
-				this.minimumTrack.validate();
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
 			}
 		}
 

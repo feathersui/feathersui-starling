@@ -8,6 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -18,6 +21,7 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.utils.Timer;
 
+	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -208,7 +212,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 
 		/**
 		 * @private
@@ -916,7 +920,7 @@ package feathers.controls
 
 			if(dataInvalid || thumbFactoryInvalid || stateInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled && this._maximum > this._minimum;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -945,7 +949,10 @@ package feathers.controls
 			if(this.thumbOriginalWidth !== this.thumbOriginalWidth ||
 				this.thumbOriginalHeight !== this.thumbOriginalHeight) //isNaN
 			{
-				this.thumb.validate();
+				if(this.thumb is IValidating)
+				{
+					IValidating(this.thumb).validate();
+				}
 				this.thumbOriginalWidth = this.thumb.width;
 				this.thumbOriginalHeight = this.thumb.height;
 			}
@@ -1040,12 +1047,13 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.isFocusEnabled = false;
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.isFocusEnabled = false;
+			thumb.keepDownStateOnRollOut = true;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -1057,6 +1065,17 @@ package feathers.controls
 			{
 				var propertyValue:Object = this._thumbProperties[propertyName];
 				this.thumb[propertyName] = propertyValue;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshEnabled():void
+		{
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = this._isEnabled && this._maximum > this._minimum;
 			}
 		}
 
@@ -1076,7 +1095,10 @@ package feathers.controls
 			}
 
 			//this will auto-size the thumb, if needed
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
@@ -1101,7 +1123,11 @@ package feathers.controls
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.thumb.width = this.thumbOriginalWidth;
-				var thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
+				var thumbMinHeight:Number = this.thumbOriginalHeight;
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
+				}
 				var thumbHeight:Number = contentHeight * adjustedPage / range;
 				var heightOffset:Number = contentHeight - thumbHeight;
 				if(heightOffset > thumbHeight)
@@ -1130,7 +1156,11 @@ package feathers.controls
 			}
 			else //horizontal
 			{
-				var thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
+				var thumbMinWidth:Number = this.thumbOriginalWidth;
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
+				}
 				var thumbWidth:Number = contentWidth * adjustedPage / range;
 				var widthOffset:Number = contentWidth - thumbWidth;
 				if(widthOffset > thumbWidth)
@@ -1160,7 +1190,10 @@ package feathers.controls
 			}
 
 			//final validation to avoid juggler next frame issues
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 		}
 
 		/**

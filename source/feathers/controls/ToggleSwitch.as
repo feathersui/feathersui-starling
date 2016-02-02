@@ -8,16 +8,17 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
@@ -276,7 +277,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 
 		/**
 		 * The "on" text renderer sub-component.
@@ -302,7 +303,7 @@ package feathers.controls
 		 * @see #onTrackFactory
 		 * @see #createOnTrack()
 		 */
-		protected var onTrack:Button;
+		protected var onTrack:DisplayObject;
 
 		/**
 		 * The "off" track sub-component.
@@ -312,7 +313,7 @@ package feathers.controls
 		 * @see #offTrackFactory
 		 * @see #createOffTrack()
 		 */
-		protected var offTrack:Button;
+		protected var offTrack:DisplayObject;
 
 		/**
 		 * @private
@@ -1900,22 +1901,10 @@ package feathers.controls
 				this.refreshOffTrackStyles();
 			}
 
-			if(thumbFactoryInvalid || stateInvalid)
+			if(stateInvalid || layoutInvalid || thumbFactoryInvalid || onTrackFactoryInvalid ||
+				onTrackFactoryInvalid || textRendererInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
-			}
-			if(onTrackFactoryInvalid || stateInvalid)
-			{
-				this.onTrack.isEnabled = this._isEnabled;
-			}
-			if((offTrackFactoryInvalid || layoutInvalid || stateInvalid) && this.offTrack)
-			{
-				this.offTrack.isEnabled = this._isEnabled;
-			}
-			if(textRendererInvalid || stateInvalid)
-			{
-				this.onTextRenderer.isEnabled = this._isEnabled;
-				this.offTextRenderer.isEnabled = this._isEnabled;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1954,7 +1943,10 @@ package feathers.controls
 			if(this.onTrackSkinOriginalWidth !== this.onTrackSkinOriginalWidth || //isNaN
 				this.onTrackSkinOriginalHeight !== this.onTrackSkinOriginalHeight) //isNaN
 			{
-				this.onTrack.validate();
+				if(this.onTrack is IValidating)
+				{
+					IValidating(this.onTrack).validate();
+				}
 				this.onTrackSkinOriginalWidth = this.onTrack.width;
 				this.onTrackSkinOriginalHeight = this.onTrack.height;
 			}
@@ -1963,7 +1955,10 @@ package feathers.controls
 				if(this.offTrackSkinOriginalWidth !== this.offTrackSkinOriginalWidth || //isNaN
 					this.offTrackSkinOriginalHeight !== this.offTrackSkinOriginalHeight) //isNaN
 				{
-					this.offTrack.validate();
+					if(this.offTrack is IValidating)
+					{
+						IValidating(this.offTrack).validate();
+					}
 					this.offTrackSkinOriginalWidth = this.offTrack.width;
 					this.offTrackSkinOriginalHeight = this.offTrack.height;
 				}
@@ -1975,7 +1970,10 @@ package feathers.controls
 			{
 				return false;
 			}
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
@@ -2024,11 +2022,12 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.keepDownStateOnRollOut = true;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -2052,10 +2051,11 @@ package feathers.controls
 
 			var factory:Function = this._onTrackFactory != null ? this._onTrackFactory : defaultOnTrackFactory;
 			var onTrackStyleName:String = this._customOnTrackStyleName != null ? this._customOnTrackStyleName : this.onTrackStyleName;
-			this.onTrack = Button(factory());
-			this.onTrack.styleNameList.add(onTrackStyleName);
-			this.onTrack.keepDownStateOnRollOut = true;
-			this.addChildAt(this.onTrack, 0);
+			var onTrack:Button = Button(factory());
+			onTrack.styleNameList.add(onTrackStyleName);
+			onTrack.keepDownStateOnRollOut = true;
+			this.addChildAt(onTrack, 0);
+			this.onTrack = onTrack;
 		}
 
 		/**
@@ -2081,10 +2081,11 @@ package feathers.controls
 				}
 				var factory:Function = this._offTrackFactory != null ? this._offTrackFactory : defaultOffTrackFactory;
 				var offTrackStyleName:String = this._customOffTrackStyleName != null ? this._customOffTrackStyleName : this.offTrackStyleName;
-				this.offTrack = Button(factory());
-				this.offTrack.styleNameList.add(offTrackStyleName);
-				this.offTrack.keepDownStateOnRollOut = true;
-				this.addChildAt(this.offTrack, 1);
+				var offTrack:Button = Button(factory());
+				offTrack.styleNameList.add(offTrackStyleName);
+				offTrack.keepDownStateOnRollOut = true;
+				this.addChildAt(offTrack, 1);
+				this.offTrack = offTrack;
 			}
 			else if(this.offTrack) //single
 			{
@@ -2155,7 +2156,10 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 			this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 
 			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
@@ -2230,7 +2234,10 @@ package feathers.controls
 					toggleThumb.isSelected = false;
 				}
 			}
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 
 			var xPosition:Number = this._paddingLeft;
 			if(this._isSelected)
@@ -2384,6 +2391,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshEnabled():void
+		{
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = this._isEnabled;
+			}
+			if(this.onTrack is IFeathersControl)
+			{
+				IFeathersControl(this.onTrack).isEnabled = this._isEnabled;
+			}
+			if(this.offTrack is IFeathersControl)
+			{
+				IFeathersControl(this.offTrack).isEnabled = this._isEnabled;
+			}
+			this.onTextRenderer.isEnabled = this._isEnabled;
+			this.offTextRenderer.isEnabled = this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layoutTrackWithOnOff():void
 		{
 			this.onTrack.x = 0;
@@ -2397,8 +2425,14 @@ package feathers.controls
 			this.offTrack.height = this.actualHeight;
 
 			//final validation to avoid juggler next frame issues
-			this.onTrack.validate();
-			this.offTrack.validate();
+			if(this.onTrack is IValidating)
+			{
+				IValidating(this.onTrack).validate();
+			}
+			if(this.offTrack is IValidating)
+			{
+				IValidating(this.offTrack).validate();
+			}
 		}
 
 		/**
@@ -2412,7 +2446,10 @@ package feathers.controls
 			this.onTrack.height = this.actualHeight;
 
 			//final validation to avoid juggler next frame issues
-			this.onTrack.validate();
+			if(this.onTrack is IValidating)
+			{
+				IValidating(this.onTrack).validate();
+			}
 		}
 
 		/**
