@@ -206,6 +206,16 @@ package feathers.controls
 		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
 
 		/**
+		 * When the track is touched, the slider's thumb jumps directly to the
+		 * touch position, and the slider's <code>value</code> property is
+		 * updated to match as if the thumb were dragged to that position, and
+		 * the thumb may continue to be dragged until the touch ends.
+		 *
+		 * @see #trackInteractionMode
+		 */
+		public static const TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG:String = "toValueWithDrag";
+
+		/**
 		 * When the track is touched, the <code>value</code> is increased or
 		 * decreased (depending on the location of the touch) by the value of
 		 * the <code>page</code> property.
@@ -885,7 +895,7 @@ package feathers.controls
 		 */
 		protected var _trackInteractionMode:String = TRACK_INTERACTION_MODE_TO_VALUE;
 
-		[Inspectable(type="String",enumeration="toValue,byPage")]
+		[Inspectable(type="String",enumeration="toValue,toValueWithDrag,byPage")]
 		/**
 		 * Determines how the slider's value changes when the track is touched.
 		 *
@@ -903,6 +913,7 @@ package feathers.controls
 		 * @default Slider.TRACK_INTERACTION_MODE_TO_VALUE
 		 *
 		 * @see #TRACK_INTERACTION_MODE_TO_VALUE
+		 * @see #TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG
 		 * @see #TRACK_INTERACTION_MODE_BY_PAGE
 		 * @see #page
 		 */
@@ -2172,12 +2183,13 @@ package feathers.controls
 				{
 					return;
 				}
-				if(!this._showThumb && touch.phase == TouchPhase.MOVED)
+				if(touch.phase === TouchPhase.MOVED &&
+					(!this._showThumb || this._trackInteractionMode === TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG))
 				{
 					touch.getLocation(this, HELPER_POINT);
 					this.value = this.locationToValue(HELPER_POINT);
 				}
-				else if(touch.phase == TouchPhase.ENDED)
+				else if(touch.phase === TouchPhase.ENDED)
 				{
 					if(this._repeatTimer)
 					{
@@ -2216,7 +2228,7 @@ package feathers.controls
 				this._touchValue = this.locationToValue(HELPER_POINT);
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-				if(this._showThumb && this._trackInteractionMode == TRACK_INTERACTION_MODE_BY_PAGE)
+				if(this._showThumb && this._trackInteractionMode === TRACK_INTERACTION_MODE_BY_PAGE)
 				{
 					this.adjustPage();
 					this.startRepeatTimer(this.adjustPage);
