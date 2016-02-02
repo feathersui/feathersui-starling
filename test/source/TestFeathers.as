@@ -46,6 +46,7 @@ package
 	import feathers.tests.ScreenNavigatorTests;
 	import feathers.tests.ScrollBarHorizontalTests;
 	import feathers.tests.ScrollContainerTests;
+	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.StackScreenNavigatorTests;
@@ -158,6 +159,7 @@ package
 				ScreenNavigatorTests,
 				ScrollBarHorizontalTests,
 				ScrollContainerTests,
+				ScrollerTests,
 				SliderHorizontalTests,
 				StackScreenNavigatorTests,
 				TabBarTests,

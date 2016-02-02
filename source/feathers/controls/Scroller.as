@@ -5813,6 +5813,8 @@ package feathers.controls
 			this._touchPointID = -1;
 			this._horizontalScrollBarTouchPointID = -1;
 			this._verticalScrollBarTouchPointID = -1;
+			this._isDraggingHorizontally = false;
+			this._isDraggingVertically = false;
 			this._velocityX = 0;
 			this._velocityY = 0;
 			this._previousVelocityX.length = 0;
@@ -5857,6 +5859,7 @@ package feathers.controls
 			{
 				this.dispatchEventWith(Event.SCROLL);
 			}
+			this.completeScroll();
 		}
 
 		/**
