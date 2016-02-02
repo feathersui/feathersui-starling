@@ -45,6 +45,8 @@ package feathers.core
 		public function TokenList()
 		{
 		}
+		
+		protected var _joinedNames:String = null;
 
 		/**
 		 * @private
@@ -59,7 +61,11 @@ package feathers.core
 		 */
 		public function get value():String
 		{
-			return names.join(" ");
+			if(this._joinedNames === null)
+			{
+				this._joinedNames = names.join(" ");
+			}
+			return this._joinedNames;
 		}
 
 		/**
@@ -71,6 +77,7 @@ package feathers.core
 			{
 				return;
 			}
+			this._joinedNames = value;
 			this.names.length = 0;
 			this.names = Vector.<String>(value.split(" "));
 			this.dispatchEventWith(Event.CHANGE);
@@ -108,7 +115,12 @@ package feathers.core
 			{
 				return;
 			}
+			if(this._joinedNames !== null)
+			{
+				this._joinedNames += " " + name;
+			}
 			this.names[this.names.length] = name;
+			
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -131,6 +143,10 @@ package feathers.core
 			var index:int = this.names.indexOf(name);
 			if(index < 0)
 			{
+				if(this._joinedNames !== null)
+				{
+					this._joinedNames += " " + name;
+				}
 				this.names[this.names.length] = name;
 				this.dispatchEventWith(Event.CHANGE);
 			}
@@ -157,6 +173,7 @@ package feathers.core
 			{
 				return;
 			}
+			this._joinedNames = null;
 			this.names.removeAt(index);
 			this.dispatchEventWith(Event.CHANGE);
 		}

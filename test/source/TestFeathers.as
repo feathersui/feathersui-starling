@@ -69,6 +69,7 @@ package
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
+	import feathers.tests.TokenListTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
 
@@ -204,6 +205,7 @@ package
 				LongPressTests,
 				KeyToSelectTests,
 				KeyToTriggerTests,
+				TokenListTests,
 			]);
 		}
 
