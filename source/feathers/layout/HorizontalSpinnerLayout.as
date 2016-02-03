@@ -949,6 +949,8 @@ package feathers.layout
 			var canRepeatItems:Boolean = this._repeatItems && totalItemWidth > width;
 			if(canRepeatItems)
 			{
+				//if we're repeating, then there's an extra gap
+				totalItemWidth += gap;
 				scrollX %= totalItemWidth;
 				if(scrollX < 0)
 				{

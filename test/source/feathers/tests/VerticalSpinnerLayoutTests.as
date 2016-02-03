@@ -58,5 +58,20 @@ package feathers.tests
 			Assert.assertStrictlyEquals("VerticalSpinnerLayout layout() LayoutBoundsResult contentY not equal to 0 when repeatItems is false and the total item height is larger than the view port height", 0, result.contentY);
 			Assert.assertStrictlyEquals("VerticalSpinnerLayout layout() LayoutBoundsResult contentHeight not equal to total height of items minus view port height when repeatItems is false and the total item height is larger than the view port height", items.length * itemSize, result.contentHeight);
 		}
+
+		[Test]
+		public function testVisibleIndicesWithOneItemVisibleAndRepeatingWithGap():void
+		{
+			//Github issue #1257
+			var itemSize:Number = 256;
+			var gap:Number = 64;
+			this._layout.useVirtualLayout = true;
+			this._layout.gap = gap;
+			this._layout.requestedRowCount = 1;
+			var item1:Quad = new Quad(itemSize, itemSize);
+			this._layout.typicalItem = item1;
+			var result:Vector.<int> = this._layout.getVisibleIndicesAtScrollPosition(0, (itemSize + gap) * 9.8, 320, 320, 5);
+			Assert.assertTrue("VerticalSpinnerLayout getVisibleIndicesAtScrollPosition() does not contain and index that should be visible", result.indexOf(4) >= 0)
+		}
 	}
 }
