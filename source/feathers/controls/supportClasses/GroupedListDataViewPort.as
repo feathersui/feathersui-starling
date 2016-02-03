@@ -43,6 +43,10 @@ package feathers.controls.supportClasses
 	public class GroupedListDataViewPort extends FeathersControl implements IViewPort
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
+		
+		private static const FIRST_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-first";
+		private static const SINGLE_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-single";
+		private static const LAST_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-last";
 
 		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
@@ -235,10 +239,7 @@ package feathers.controls.supportClasses
 
 		private var _unrenderedItems:Vector.<int> = new <int>[];
 		private var _defaultItemRendererStorage:ItemRendererFactoryStorage = new ItemRendererFactoryStorage();
-		private var _firstItemRendererStorage:ItemRendererFactoryStorage;
-		private var _lastItemRendererStorage:ItemRendererFactoryStorage;
-		private var _singleItemRendererStorage:ItemRendererFactoryStorage;
-		private var _itemStorageMap:Object;
+		private var _itemStorageMap:Object = {};
 		private var _itemRendererMap:Dictionary = new Dictionary(true);
 
 		private var _unrenderedHeaders:Vector.<int> = new <int>[];
@@ -413,10 +414,6 @@ package feathers.controls.supportClasses
 			}
 
 			this._itemRendererFactories = value;
-			if(value !== null)
-			{
-				this._itemStorageMap = {};
-			}
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
@@ -1237,11 +1234,7 @@ package feathers.controls.supportClasses
 					if(canReuse)
 					{
 						//we can't reuse if the factoryID has changed, though!
-						var factoryID:String = null;
-						if(this._factoryIDFunction !== null)
-						{
-							factoryID = this.getFactoryID(typicalItem, typicalItemGroupIndex, typicalItemItemIndex);
-						}
+						var factoryID:String = this.getFactoryID(typicalItem, typicalItemGroupIndex, typicalItemItemIndex);
 						if(this._typicalItemRenderer.factoryID !== factoryID)
 						{
 							canReuse = false;
@@ -1377,56 +1370,7 @@ package feathers.controls.supportClasses
 
 		private function refreshInactiveRenderers(itemRendererTypeIsInvalid:Boolean):void
 		{
-			var hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._customFirstItemRendererStyleName;
-			if(hasCustomFirstItemRenderer)
-			{
-				if(!this._firstItemRendererStorage)
-				{
-					this._firstItemRendererStorage = new ItemRendererFactoryStorage();
-				}
-			}
-			else
-			{
-				this._firstItemRendererStorage = null;
-			}
-			var hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._customLastItemRendererStyleName;
-			if(hasCustomLastItemRenderer)
-			{
-				if(!this._lastItemRendererStorage)
-				{
-					this._lastItemRendererStorage = new ItemRendererFactoryStorage();
-				}
-			}
-			else
-			{
-				this._lastItemRendererStorage = null;
-			}
-			var hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._customSingleItemRendererStyleName;
-			if(hasCustomSingleItemRenderer)
-			{
-				if(!this._singleItemRendererStorage)
-				{
-					this._singleItemRendererStorage = new ItemRendererFactoryStorage();
-				}
-			}
-			else
-			{
-				this._singleItemRendererStorage = null;
-			}
-			
 			this.refreshInactiveItemRenderers(this._defaultItemRendererStorage, itemRendererTypeIsInvalid);
-			if(this._firstItemRendererStorage)
-			{
-				this.refreshInactiveItemRenderers(this._firstItemRendererStorage, itemRendererTypeIsInvalid);
-			}
-			if(this._lastItemRendererStorage)
-			{
-				this.refreshInactiveItemRenderers(this._lastItemRendererStorage, itemRendererTypeIsInvalid);
-			}
-			if(this._singleItemRendererStorage)
-			{
-				this.refreshInactiveItemRenderers(this._singleItemRendererStorage, itemRendererTypeIsInvalid);
-			}
 			for(var factoryID:String in this._itemStorageMap)
 			{
 				var itemStorage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._itemStorageMap[factoryID]);
@@ -1548,18 +1492,6 @@ package feathers.controls.supportClasses
 
 			this.findUnrenderedData();
 			this.recoverInactiveItemRenderers(this._defaultItemRendererStorage);
-			if(this._firstItemRendererStorage)
-			{
-				this.recoverInactiveItemRenderers(this._firstItemRendererStorage);
-			}
-			if(this._lastItemRendererStorage)
-			{
-				this.recoverInactiveItemRenderers(this._lastItemRendererStorage);
-			}
-			if(this._singleItemRendererStorage)
-			{
-				this.recoverInactiveItemRenderers(this._singleItemRendererStorage);
-			}
 			if(this._itemStorageMap)
 			{
 				for(var factoryID:String in this._itemStorageMap)
@@ -1590,18 +1522,6 @@ package feathers.controls.supportClasses
 			this.renderUnrenderedData();
 			
 			this.freeInactiveItemRenderers(this._defaultItemRendererStorage, this._minimumItemCount);
-			if(this._firstItemRendererStorage)
-			{
-				this.freeInactiveItemRenderers(this._firstItemRendererStorage, this._minimumFirstAndLastItemCount);
-			}
-			if(this._lastItemRendererStorage)
-			{
-				this.freeInactiveItemRenderers(this._lastItemRendererStorage, this._minimumFirstAndLastItemCount);
-			}
-			if(this._singleItemRendererStorage)
-			{
-				this.freeInactiveItemRenderers(this._singleItemRendererStorage, this._minimumSingleItemCount);
-			}
 			if(this._itemStorageMap)
 			{
 				for(factoryID in this._itemStorageMap)
@@ -2102,11 +2022,7 @@ package feathers.controls.supportClasses
 		private function createItemRenderer(item:Object, groupIndex:int, itemIndex:int,
 			layoutIndex:int, useCache:Boolean, isTemporary:Boolean):IGroupedListItemRenderer
 		{
-			var factoryID:String = null;
-			if(this._factoryIDFunction !== null)
-			{
-				factoryID = this.getFactoryID(item, groupIndex, itemIndex);
-			}
+			var factoryID:String = this.getFactoryID(item, groupIndex, itemIndex);
 			var itemRendererFactory:Function = this.factoryIDToFactory(factoryID, groupIndex, itemIndex);
 			var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(factoryID, groupIndex, itemIndex);
 			var customStyleName:String = this.indexToCustomStyleName(groupIndex, itemIndex);
@@ -2450,6 +2366,28 @@ package feathers.controls.supportClasses
 		{
 			if(this._factoryIDFunction === null)
 			{
+				var groupLength:int = this._dataProvider.getLength(groupIndex);
+				if(itemIndex === 0)
+				{
+					if((this._singleItemRendererType !== null ||
+						this._singleItemRendererFactory !== null ||
+						this._customSingleItemRendererStyleName !== null) &&
+						groupLength === 1)
+					{
+						return SINGLE_ITEM_RENDERER_FACTORY_ID;
+					}
+					else if(this._firstItemRendererType !== null || this._firstItemRendererFactory !== null || this._customFirstItemRendererStyleName !== null)
+					{
+						return FIRST_ITEM_RENDERER_FACTORY_ID;
+					}
+				}
+				if((this._lastItemRendererType !== null ||
+					this._lastItemRendererFactory !== null ||
+					this._customLastItemRendererStyleName !== null) &&
+					itemIndex === (groupLength - 1))
+				{
+					return LAST_ITEM_RENDERER_FACTORY_ID;
+				}
 				return null;
 			}
 			if(this._factoryIDFunction.length === 1)
@@ -2463,6 +2401,39 @@ package feathers.controls.supportClasses
 		{
 			if(id !== null)
 			{
+				if(id === FIRST_ITEM_RENDERER_FACTORY_ID)
+				{
+					if(this._firstItemRendererFactory !== null)
+					{
+						return this._firstItemRendererFactory;
+					}
+					else
+					{
+						return this._itemRendererFactory;
+					}
+				}
+				else if(id === LAST_ITEM_RENDERER_FACTORY_ID)
+				{
+					if(this._lastItemRendererFactory !== null)
+					{
+						return this._lastItemRendererFactory;
+					}
+					else
+					{
+						return this._itemRendererFactory;
+					}
+				}
+				else if(id === SINGLE_ITEM_RENDERER_FACTORY_ID)
+				{
+					if(this._singleItemRendererFactory !== null)
+					{
+						return this._singleItemRendererFactory;
+					}
+					else
+					{
+						return this._itemRendererFactory;
+					}
+				}
 				if(id in this._itemRendererFactories)
 				{
 					return this._itemRendererFactories[id] as Function;
@@ -2471,22 +2442,6 @@ package feathers.controls.supportClasses
 				{
 					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".")
 				}
-			}
-			var groupLength:int = this._dataProvider.getLength(groupIndex);
-			if(itemIndex === 0)
-			{
-				if(this._singleItemRendererFactory !== null && groupLength === 1)
-				{
-					return this._singleItemRendererFactory;
-				}
-				else if(this._firstItemRendererFactory !== null)
-				{
-					return this._firstItemRendererFactory;
-				}
-			}
-			if(this._lastItemRendererFactory !== null && itemIndex === (groupLength - 1))
-			{
-				return this._lastItemRendererFactory;
 			}
 			return this._itemRendererFactory;
 		}
@@ -2502,22 +2457,6 @@ package feathers.controls.supportClasses
 				var storage:ItemRendererFactoryStorage = new ItemRendererFactoryStorage();
 				this._itemStorageMap[id] = storage;
 				return storage;
-			}
-			var groupLength:int = this._dataProvider.getLength(groupIndex);
-			if(itemIndex === 0)
-			{
-				if(this._singleItemRendererStorage !== null && groupLength === 1)
-				{
-					return this._singleItemRendererStorage;
-				}
-				else if(this._firstItemRendererStorage !== null)
-				{
-					return this._firstItemRendererStorage;
-				}
-			}
-			if(this._lastItemRendererStorage !== null && itemIndex === (groupLength - 1))
-			{
-				return this._lastItemRendererStorage;
 			}
 			return this._defaultItemRendererStorage;
 		}

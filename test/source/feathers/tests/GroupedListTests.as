@@ -741,5 +741,101 @@ package feathers.tests
 			Assert.assertStrictlyEquals("groupToHeaderData() incorrectly returned wrong header data for index 0", header0, rawData[0].header);
 			Assert.assertStrictlyEquals("groupToHeaderData() incorrectly returned wrong header data for index 1", header1, rawData[1].header);
 		}
+
+		[Test]
+		public function testNoErrorOnRemoveItemWithFirstItemRendererFactory():void
+		{
+			this._list.firstItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				return _list.itemRendererFactory();
+			};
+			this._list.validate();
+			this._list.dataProvider.removeItemAt(1, 0);
+			this._list.validate();
+		}
+
+		[Test]
+		public function testNoErrorOnRemoveItemWithLastItemRendererFactory():void
+		{
+			this._list.lastItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				return _list.itemRendererFactory();
+			};
+			this._list.validate();
+			this._list.dataProvider.removeItemAt(0, 2);
+			this._list.validate();
+		}
+
+		[Test]
+		public function testCustomFirstItemRendererStyleNameWithoutFirstItemRendererFactory():void
+		{
+			var firstStyleName:String = "custom-first-item";
+			this._list.customFirstItemRendererStyleName = firstStyleName;
+			var usedDefaultItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(firstStyleName) &&
+					itemRenderer.defaultSkin !== null)
+				{
+					usedDefaultItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("itemRendererFactory not used when customFirstItemRendererStyleName defined, but firstItemRendererFactory is null", usedDefaultItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomLastItemRendererStyleNameWithoutLastItemRendererFactory():void
+		{
+			var lastStyleName:String = "custom-last-item";
+			this._list.customLastItemRendererStyleName = lastStyleName;
+			var usedDefaultItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 2 &&
+					itemRenderer.styleNameList.contains(lastStyleName) &&
+					itemRenderer.defaultSkin !== null)
+				{
+					usedDefaultItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("itemRendererFactory not used when customLastItemRendererStyleName defined, but lastItemRendererFactory is null", usedDefaultItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomSingleItemRendererStyleNameWithoutSingleItemRendererFactory():void
+		{
+			var singleStyleName:String = "custom-single-item";
+			this._list.customSingleItemRendererStyleName = singleStyleName;
+			var usedDefaultItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(singleStyleName) &&
+					itemRenderer.defaultSkin !== null)
+				{
+					usedDefaultItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("itemRendererFactory not used when customSingleItemRendererStyleName defined, but singleItemRendererFactory is null", usedDefaultItemRendererFactory);
+		}
 	}
 }
