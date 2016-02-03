@@ -575,7 +575,7 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(this.root === this)
+			if(this.stage !== null && this.stage.root === this)
 			{
 				this.autoSizeMode = AUTO_SIZE_MODE_STAGE;
 			}
