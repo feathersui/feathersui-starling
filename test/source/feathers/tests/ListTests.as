@@ -51,6 +51,21 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNullDataProvider():void
+		{
+			this._list.dataProvider = null;
+			this._list.validate();
+		}
+
+		[Test]
+		public function testNullDataProviderWithTypicalItem():void
+		{
+			this._list.dataProvider = null;
+			this._list.typicalItem = { label: "Typical Item" };
+			this._list.validate();
+		}
+
+		[Test]
 		public function testProgrammaticSelectionChange():void
 		{
 			var beforeSelectedIndex:int = this._list.selectedIndex;

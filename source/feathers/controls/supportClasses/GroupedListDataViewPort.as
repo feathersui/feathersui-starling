@@ -2322,7 +2322,11 @@ package feathers.controls.supportClasses
 		
 		private function indexToItemRendererType(groupIndex:int, itemIndex:int):Class
 		{
-			var groupLength:int = this._dataProvider.getLength(groupIndex);
+			var groupLength:int = 0;
+			if(this._dataProvider !== null)
+			{
+				groupLength = this._dataProvider.getLength(groupIndex);
+			}
 			if(itemIndex === 0)
 			{
 				if(this._singleItemRendererType !== null && groupLength === 1)
@@ -2343,7 +2347,11 @@ package feathers.controls.supportClasses
 
 		private function indexToCustomStyleName(groupIndex:int, itemIndex:int):String
 		{
-			var groupLength:int = this._dataProvider.getLength(groupIndex);
+			var groupLength:int = 0;
+			if(this._dataProvider !== null)
+			{
+				groupLength = this._dataProvider.getLength(groupIndex);
+			}
 			if(itemIndex === 0)
 			{
 				if(this._customSingleItemRendererStyleName !== null && groupLength === 1)
@@ -2366,7 +2374,11 @@ package feathers.controls.supportClasses
 		{
 			if(this._factoryIDFunction === null)
 			{
-				var groupLength:int = this._dataProvider.getLength(groupIndex);
+				var groupLength:int = 0;
+				if(this._dataProvider !== null)
+				{
+					groupLength = this._dataProvider.getLength(groupIndex);
+				}
 				if(itemIndex === 0)
 				{
 					if((this._singleItemRendererType !== null ||
