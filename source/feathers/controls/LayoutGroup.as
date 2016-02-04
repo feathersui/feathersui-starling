@@ -644,6 +644,7 @@ package feathers.controls
 		 */
 		protected function refreshBackgroundSkin():void
 		{
+			var oldBackgroundSkin:DisplayObject = this.currentBackgroundSkin;
 			if(!this._isEnabled && this._backgroundDisabledSkin)
 			{
 				this.currentBackgroundSkin = this._backgroundDisabledSkin;
@@ -664,6 +665,10 @@ package feathers.controls
 					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}
+			}
+			if(this.currentBackgroundSkin !== oldBackgroundSkin)
+			{
+				this.setRequiresRedraw();
 			}
 		}
 
