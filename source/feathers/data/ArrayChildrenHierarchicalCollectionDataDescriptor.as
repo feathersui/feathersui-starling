@@ -58,6 +58,10 @@ package feathers.data
 			var indexCount:int = rest.length;
 			for(var i:int = 0; i < indexCount; i++)
 			{
+				if(branch.length === 0)
+				{
+					return 0;
+				}
 				var index:int = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
