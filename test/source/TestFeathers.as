@@ -16,6 +16,7 @@ package
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
+	import feathers.tests.GroupedListDataProviderTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
@@ -141,6 +142,7 @@ package
 				DrawersTests,
 				DrawersMeasurementTests,
 				GroupedListTests,
+				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
 				ImageLoaderTests,
