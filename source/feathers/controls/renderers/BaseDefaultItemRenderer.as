@@ -1080,7 +1080,6 @@ package feathers.controls.renderers
 		 * @default null
 		 *
 		 * @see #setAccessoryForState()
-		 * @see #stateToAccessoryFunction
 		 * @see #itemHasAccessory
 		 */
 		public function get defaultAccessory():DisplayObject
@@ -1109,14 +1108,13 @@ package feathers.controls.renderers
 		protected var _stateToAccessoryFunction:Function;
 
 		/**
-		 * Returns an accessory for the current state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>defaultAccessory</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function(target:BaseDefaultItemRenderer, state:Object, oldAccessory:DisplayObject = null):DisplayObject</pre>
-		 *
-		 * @default null
-		 * 
-		 * @see #itemHasAccessory
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToAccessoryFunction():Function
 		{

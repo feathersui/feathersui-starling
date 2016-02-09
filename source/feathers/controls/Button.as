@@ -1026,18 +1026,13 @@ package feathers.controls
 		protected var _stateToIconFunction:Function;
 
 		/**
-		 * Returns an icon for the current state. Can be used instead of
-		 * individual icon properties for different states, like
-		 * <code>upIcon</code> or <code>hoverIcon</code>, to reuse the same
-		 * display object for all states. the function should simply change the
-		 * display object's properties. For example, a function could reuse the
-		 * the same <code>starling.display.Image</code> instance among all
-		 * button states, and change its texture for each state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>defaultIcon</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function(target:Button, state:Object, oldIcon:DisplayObject = null):DisplayObject</pre>
-		 *
-		 * @default null
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToIconFunction():Function
 		{
@@ -1063,12 +1058,13 @@ package feathers.controls
 		protected var _stateToLabelPropertiesFunction:Function;
 
 		/**
-		 * Returns a text format for the current state.
+		 * DEPRECATED: Call the appropriate function on the text renderer to set
+		 * different font styles for each state.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function(target:Button, state:Object):Object</pre>
-		 *
-		 * @default null
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToLabelPropertiesFunction():Function
 		{
@@ -1218,18 +1214,13 @@ package feathers.controls
 		protected var _stateToSkinFunction:Function;
 
 		/**
-		 * Returns a skin for the current state. Can be used instead of
-		 * individual skin properties for different states, like
-		 * <code>upSkin</code> or <code>hoverSkin</code>, to reuse the same
-		 * display object for all states. The function should simply change the
-		 * display object's properties. For example, a function could reuse the
-		 * the same <code>starling.display.Image</code> instance among all
-		 * button states, and change its texture for each state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>defaultSkin</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function(target:Button, state:Object, oldSkin:DisplayObject = null):DisplayObject</pre>
-		 *
-		 * @default null
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToSkinFunction():Function
 		{
@@ -1372,7 +1363,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
-		 * @see #stateToLabelPropertiesFunction
 		 */
 		public function get defaultLabelProperties():Object
 		{
