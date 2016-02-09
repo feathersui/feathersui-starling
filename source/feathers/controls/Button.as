@@ -1399,26 +1399,13 @@ package feathers.controls
 		protected var _stateToLabelProperties:Object = {};
 		
 		/**
-		 * An object that stores properties for the button's label text renderer
-		 * when the button is in the <code>ButtonState.UP</code> state, and the
-		 * properties will be passed down to the label text renderer when the
-		 * button validates. The available properties depend on which
-		 * <code>ITextRenderer</code> implementation is returned by
-		 * <code>labelFactory</code>. Refer to
-		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
-		 * for a list of available text renderer implementations.
+		 * DEPRECATED: Use the appropriate API on the label text renderer to set
+		 * font styles for a particular state.
 		 *
-		 * <p>The following example gives the button label properties for the
-		 * up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.upLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
-		 * @see feathers.controls.ButtonState.UP
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get upLabelProperties():Object
 		{
@@ -1454,26 +1441,13 @@ package feathers.controls
 		}
 		
 		/**
-		 * An object that stores properties for the button's label text renderer
-		 * when the button is in the <code>ButtonState.DOWN</code> state, and
-		 * the properties will be passed down to the label text renderer when
-		 * the button validates. The available properties depend on which
-		 * <code>ITextRenderer</code> implementation is returned by
-		 * <code>labelFactory</code>. Refer to
-		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
-		 * for a list of available text renderer implementations.
+		 * DEPRECATED: Use the appropriate API on the label text renderer to set
+		 * font styles for a particular state.
 		 *
-		 * <p>The following example gives the button label properties for the
-		 * down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.downLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
-		 * @see feathers.controls.ButtonState.DOWN
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get downLabelProperties():Object
 		{
@@ -1509,26 +1483,13 @@ package feathers.controls
 		}
 
 		/**
-		 * An object that stores properties for the button's label text renderer
-		 * when the button is in the <code>ButtonState.HOVER</code> state, and
-		 * the properties will be passed down to the label text renderer when
-		 * the button validates. The available properties depend on which
-		 * <code>ITextRenderer</code> implementation is returned by
-		 * <code>labelFactory</code>. Refer to
-		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
-		 * for a list of available text renderer implementations.
+		 * DEPRECATED: Use the appropriate API on the label text renderer to set
+		 * font styles for a particular state.
 		 *
-		 * <p>The following example gives the button label properties for the
-		 * hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hoverLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
-		 * @see feathers.controls.ButtonState.HOVER
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get hoverLabelProperties():Object
 		{
@@ -1564,26 +1525,13 @@ package feathers.controls
 		}
 		
 		/**
-		 * An object that stores properties for the button's label text renderer
-		 * when the button is in the <code>ButtonState.DISABLED</code> state,
-		 * and the properties will be passed down to the label text renderer
-		 * when the button validates. The available properties depend on which
-		 * <code>ITextRenderer</code> implementation is returned by
-		 * <code>labelFactory</code>. Refer to
-		 * <a href="../core/ITextRenderer.html"><code>feathers.core.ITextRenderer</code></a>
-		 * for a list of available text renderer implementations.
+		 * DEPRECATED: Use the appropriate API on the label text renderer to set
+		 * font styles for a particular state.
 		 *
-		 * <p>The following example gives the button label properties for the
-		 * disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
-		 * @see feathers.controls.ButtonState.DISABLED
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get disabledLabelProperties():Object
 		{
