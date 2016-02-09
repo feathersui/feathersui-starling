@@ -1031,7 +1031,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToIconFunction():Function
 		{
@@ -1063,7 +1063,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToLabelPropertiesFunction():Function
 		{
@@ -1219,7 +1219,7 @@ package feathers.controls
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
-		 * <a href="http://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToSkinFunction():Function
 		{
