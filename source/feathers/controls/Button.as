@@ -17,7 +17,6 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.skins.StateWithToggleValueSelector;
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.touch.LongPress;
 
@@ -1335,11 +1334,11 @@ package feathers.controls
 			this._customLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _labelPropertiesSelector:StateWithToggleValueSelector = new StateWithToggleValueSelector();
+		protected var _defaultLabelProperties:PropertyProxy;
 		
 		/**
 		 * An object that stores properties for the button's label text renderer
@@ -1366,13 +1365,11 @@ package feathers.controls
 		 */
 		public function get defaultLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
-			if(!value)
+			if(this._defaultLabelProperties === null)
 			{
-				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.defaultValue = value;
+				this._defaultLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
-			return value;
+			return this._defaultLabelProperties;
 		}
 		
 		/**
@@ -1384,18 +1381,22 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
-			if(oldValue)
+			if(this._defaultLabelProperties !== null)
 			{
-				oldValue.removeOnChangeCallback(childProperties_onChange);
+				this._defaultLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.defaultValue = value;
-			if(value)
+			this._defaultLabelProperties = PropertyProxy(value);
+			if(this._defaultLabelProperties !== null)
 			{
-				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
+				this._defaultLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToLabelProperties:Object = {};
 		
 		/**
 		 * An object that stores properties for the button's label text renderer
@@ -1421,11 +1422,11 @@ package feathers.controls
 		 */
 		public function get upLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.UP, false));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.UP]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.UP, false);
+				this._stateToLabelProperties[ButtonState.UP] = value;
 			}
 			return value;
 		}
@@ -1439,12 +1440,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.UP, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.UP]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.UP, false);
+			this._stateToLabelProperties[ButtonState.UP] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -1476,11 +1477,11 @@ package feathers.controls
 		 */
 		public function get downLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DOWN, false));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DOWN]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.DOWN, false);
+				this._stateToLabelProperties[ButtonState.DOWN] = value;
 			}
 			return value;
 		}
@@ -1494,12 +1495,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DOWN, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DOWN]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.DOWN, false);
+			this._stateToLabelProperties[ButtonState.DOWN] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -1531,11 +1532,11 @@ package feathers.controls
 		 */
 		public function get hoverLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.HOVER, false));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.HOVER]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.HOVER, false);
+				this._stateToLabelProperties[ButtonState.HOVER] = value;
 			}
 			return value;
 		}
@@ -1549,12 +1550,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.HOVER, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.HOVER]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.HOVER, false);
+			this._stateToLabelProperties[ButtonState.HOVER] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -1586,11 +1587,11 @@ package feathers.controls
 		 */
 		public function get disabledLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DISABLED, false));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DISABLED]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.DISABLED, false);
+				this._stateToLabelProperties[ButtonState.DISABLED] = value;
 			}
 			return value;
 		}
@@ -1604,12 +1605,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DISABLED, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DISABLED]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.DISABLED, false);
+			this._stateToLabelProperties[ButtonState.DISABLED] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -1966,14 +1967,14 @@ package feathers.controls
 		{
 			//we don't dispose it if the button is the parent because it'll
 			//already get disposed in super.dispose()
-			if(this._defaultIcon && this._defaultIcon.parent !== this)
+			if(this._defaultIcon !== null && this._defaultIcon.parent !== this)
 			{
 				this._defaultIcon.dispose();
 			}
 			for(var state:String in this._stateToIcon)
 			{
 				var icon:DisplayObject = this._stateToIcon[state] as DisplayObject;
-				if(icon && icon.parent !== this)
+				if(icon !== null && icon.parent !== this)
 				{
 					icon.dispose();
 				}
@@ -2474,19 +2475,29 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._stateToLabelPropertiesFunction != null)
-			{
-				var properties:Object = this._stateToLabelPropertiesFunction(this, this._currentState);
-			}
-			else
-			{
-				properties = this._labelPropertiesSelector.updateValue(this, this._currentState);
-			}
+			var properties:Object = this.getCurrentLabelProperties();
 			for(var propertyName:String in properties)
 			{
 				var propertyValue:Object = properties[propertyName];
 				this.labelTextRenderer[propertyName] = propertyValue;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentLabelProperties():Object
+		{
+			if(this._stateToLabelPropertiesFunction !== null)
+			{
+				return this._stateToLabelPropertiesFunction(this, this._currentState);
+			}
+			var result:Object = this._stateToLabelProperties[this._currentState];
+			if(result !== null)
+			{
+				return result;
+			}
+			return this._defaultLabelProperties;
 		}
 		
 		/**

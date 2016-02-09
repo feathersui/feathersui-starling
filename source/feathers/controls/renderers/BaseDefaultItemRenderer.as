@@ -19,7 +19,6 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
-	import feathers.skins.StateValueSelector;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -1059,7 +1058,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessorySelector:StateValueSelector = new StateValueSelector();
+		protected var _defaultAccessory:DisplayObject;
 
 		/**
 		 * The accessory used when no other accessory is defined for the current
@@ -1084,7 +1083,7 @@ package feathers.controls.renderers
 		 */
 		public function get defaultAccessory():DisplayObject
 		{
-			return DisplayObject(this._accessorySelector.defaultValue);
+			return this._defaultAccessory;
 		}
 
 		/**
@@ -1092,15 +1091,20 @@ package feathers.controls.renderers
 		 */
 		public function set defaultAccessory(value:DisplayObject):void
 		{
-			if(this._accessorySelector.defaultValue === value)
+			if(this._defaultAccessory === value)
 			{
 				return;
 			}
 			this.replaceAccessory(null);
 			this._accessoryIsFromItem = false;
-			this._accessorySelector.defaultValue = value;
+			this._defaultAccessory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToAccessory:Object = {};
 
 		/**
 		 * @private
@@ -3438,6 +3442,20 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * Gets the accessory to be used by the button when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a accessory is not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see #setAccessoryForState()
+		 */
+		public function getAccessoryForState(state:String):DisplayObject
+		{
+			return this._stateToAccessory[state] as DisplayObject;
+		}
+
+		/**
 		 * Sets the accessory to be used by the item renderer when its
 		 * <code>currentState</code> property matches the specified state value.
 		 *
@@ -3448,13 +3466,13 @@ package feathers.controls.renderers
 		 */
 		public function setAccessoryForState(state:String, accessory:DisplayObject):void
 		{
-			if(accessory)
+			if(accessory !== null)
 			{
-				this._accessorySelector.setValueForState(accessory, state);
+				this._stateToAccessory[state] = accessory;
 			}
 			else
 			{
-				this._accessorySelector.clearValueForState(state);
+				delete this._stateToAccessory[state];
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -4042,9 +4060,9 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new icon immediately when we call super.draw().
-			if(this._accessorySelector.defaultValue != newAccessory)
+			if(this._defaultAccessory !== newAccessory)
 			{
-				this._accessorySelector.defaultValue = newAccessory;
+				this._defaultAccessory = newAccessory;
 				//we don't want this taking precedence over our icon from the
 				//data provider.
 				this._stateToAccessoryFunction = null;
@@ -4128,14 +4146,7 @@ package feathers.controls.renderers
 		protected function refreshAccessory():void
 		{
 			var oldAccessory:DisplayObject = this.currentAccessory;
-			if(this._stateToAccessoryFunction != null)
-			{
-				this.currentAccessory = DisplayObject(this._stateToAccessoryFunction(this, this._currentState, oldAccessory));
-			}
-			else
-			{
-				this.currentAccessory = DisplayObject(this._accessorySelector.updateValue(this, this._currentState, this.currentAccessory));
-			}
+			this.currentAccessory = this.getCurrentAccessory();
 			if(this.currentAccessory is IFeathersControl)
 			{
 				IFeathersControl(this.currentAccessory).isEnabled = this._isEnabled;
@@ -4178,6 +4189,23 @@ package feathers.controls.renderers
 					displayAccessoryLabel[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentAccessory():DisplayObject
+		{
+			if(this._stateToAccessoryFunction !== null)
+			{
+				return DisplayObject(this._stateToAccessoryFunction(this, this._currentState, this.currentAccessory));
+			}
+			var result:DisplayObject = this._stateToAccessory[this._currentState] as DisplayObject;
+			if(result !== null)
+			{
+				return result;
+			}
+			return this._defaultAccessory;
 		}
 
 		/**

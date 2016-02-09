@@ -288,14 +288,14 @@ package feathers.controls
 		{
 			//we don't dispose it if the button is the parent because it'll
 			//already get disposed in super.dispose()
-			if(this._defaultSkin && this._defaultSkin.parent !== this)
+			if(this._defaultSkin !== null && this._defaultSkin.parent !== this)
 			{
 				this._defaultSkin.dispose();
 			}
 			for(var state:String in this._stateToSkin)
 			{
 				var skin:DisplayObject = this._stateToSkin[state] as DisplayObject;
-				if(skin && skin.parent !== this)
+				if(skin !== null && skin.parent !== this)
 				{
 					skin.dispose();
 				}

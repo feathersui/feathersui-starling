@@ -592,6 +592,11 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _defaultSelectedLabelProperties:PropertyProxy;
+
+		/**
 		 * An object that stores properties for the button's label text renderer
 		 * when no specific properties are defined for the button's current
 		 * state (and the button's <code>isSelected</code> property is
@@ -617,13 +622,11 @@ package feathers.controls
 		 */
 		public function get defaultSelectedLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
-			if(!value)
+			if(this._defaultSelectedLabelProperties === null)
 			{
-				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.defaultSelectedValue = value;
+				this._defaultSelectedLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
-			return value;
+			return this._defaultSelectedLabelProperties;
 		}
 
 		/**
@@ -635,15 +638,14 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
-			if(oldValue)
+			if(this._defaultSelectedLabelProperties !== null)
 			{
-				oldValue.removeOnChangeCallback(childProperties_onChange);
+				this._defaultSelectedLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.defaultSelectedValue = value;
-			if(value)
+			this._defaultSelectedLabelProperties.defaultSelectedValue = value;
+			if(this._defaultSelectedLabelProperties !== null)
 			{
-				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
+				this._defaultSelectedLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -675,11 +677,11 @@ package feathers.controls
 		 */
 		public function get selectedUpLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.UP, true));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.UP_AND_SELECTED]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.UP, true);
+				this._stateToLabelProperties[ButtonState.UP_AND_SELECTED] = value;
 			}
 			return value;
 		}
@@ -693,12 +695,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.UP, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.UP_AND_SELECTED]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.UP, true);
+			this._stateToLabelProperties[ButtonState.UP_AND_SELECTED] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -733,11 +735,11 @@ package feathers.controls
 		 */
 		public function get selectedDownLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DOWN, true));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DOWN_AND_SELECTED]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.DOWN, true);
+				this._stateToLabelProperties[ButtonState.DOWN_AND_SELECTED] = value;
 			}
 			return value;
 		}
@@ -751,12 +753,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DOWN, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DOWN_AND_SELECTED]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.DOWN, true);
+			this._stateToLabelProperties[ButtonState.DOWN_AND_SELECTED] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -791,11 +793,11 @@ package feathers.controls
 		 */
 		public function get selectedHoverLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.HOVER, true));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.HOVER_AND_SELECTED]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.HOVER, true);
+				this._stateToLabelProperties[ButtonState.HOVER_AND_SELECTED] = value;
 			}
 			return value;
 		}
@@ -809,12 +811,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.HOVER, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.HOVER_AND_SELECTED]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.HOVER, true);
+			this._stateToLabelProperties[ButtonState.HOVER_AND_SELECTED] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
@@ -849,11 +851,11 @@ package feathers.controls
 		 */
 		public function get selectedDisabledLabelProperties():Object
 		{
-			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DISABLED, true));
+			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DISABLED_AND_SELECTED]);
 			if(!value)
 			{
 				value = new PropertyProxy(childProperties_onChange);
-				this._labelPropertiesSelector.setValueForState(value, ButtonState.DISABLED, true);
+				this._stateToLabelProperties[ButtonState.DISABLED_AND_SELECTED] = value;
 			}
 			return value;
 		}
@@ -867,12 +869,12 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(ButtonState.DISABLED, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DISABLED_AND_SELECTED]);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
-			this._labelPropertiesSelector.setValueForState(value, ButtonState.DISABLED, true);
+			this._stateToLabelProperties[ButtonState.DISABLED_AND_SELECTED] = value;
 			if(value)
 			{
 				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);

@@ -1,16 +1,19 @@
 package
 {
+	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
 	import feathers.tests.BitmapFontTextEditorFocusTests;
 	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
+	import feathers.tests.ButtonInternalStateTests;
 	import feathers.tests.ButtonMeasurementTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
+	import feathers.tests.DefaultListItemRendererInternalStateTests;
 	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
 	import feathers.tests.FocusManagerEnabledTests;
@@ -61,6 +64,7 @@ package
 	import feathers.tests.TextBlockTextEditorFocusTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
 	import feathers.tests.TextInputFocusTests;
+	import feathers.tests.TextInputInternalStateTests;
 	import feathers.tests.TextInputMeasurementTests;
 	import feathers.tests.TextInputTests;
 	import feathers.tests.TextureCacheTests;
@@ -132,13 +136,16 @@ package
 				//individual component tests
 				BasicButtonTests,
 				BasicButtonMeasurementTests,
+				BasicButtonInternalStateTests,
 				ButtonTests,
+				ButtonInternalStateTests,
 				ButtonFocusTests,
 				ButtonMeasurementTests,
 				ButtonGroupTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,
 				DateTimeSpinnerTests,
+				DefaultListItemRendererInternalStateTests,
 				DrawersTests,
 				DrawersMeasurementTests,
 				GroupedListTests,
@@ -170,6 +177,7 @@ package
 				TextAreaTests,
 				TextInputTests,
 				TextInputMeasurementTests,
+				TextInputInternalStateTests,
 				ToggleButtonTests,
 				ToggleButtonFocusTests,
 				ToggleGroupTests,

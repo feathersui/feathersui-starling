@@ -20,7 +20,6 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.skins.StateValueSelector;
 
 	import flash.display.InteractiveObject;
 	import flash.geom.Point;
@@ -451,26 +450,6 @@ package feathers.controls
 			{
 				this.changeState(STATE_DISABLED);
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateNames:Vector.<String> = new <String>
-		[
-			STATE_ENABLED, STATE_DISABLED, STATE_FOCUSED
-		];
-
-		/**
-		 * A list of all valid state names for use with <code>currentState</code>.
-		 *
-		 * <p>For internal use in subclasses.</p>
-		 *
-		 * @see #currentState
-		 */
-		protected function get stateNames():Vector.<String>
-		{
-			return this._stateNames;
 		}
 
 		/**
@@ -1087,7 +1066,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _skinSelector:StateValueSelector = new StateValueSelector();
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * The skin used when no other skin is defined for the current state.
@@ -1107,7 +1086,7 @@ package feathers.controls
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
-			return DisplayObject(this._skinSelector.defaultValue);
+			return this._backgroundSkin;
 		}
 
 		/**
@@ -1115,13 +1094,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._skinSelector.defaultValue == value)
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-			this._skinSelector.defaultValue = value;
+			this._backgroundSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToSkin:Object = {};
 
 		/**
 		 * The skin used for the input's enabled state. If <code>null</code>,
@@ -1139,7 +1123,7 @@ package feathers.controls
 		 */
 		public function get backgroundEnabledSkin():DisplayObject
 		{
-			return DisplayObject(this._skinSelector.getValueForState(STATE_ENABLED));
+			return this.getSkinForState(STATE_ENABLED);
 		}
 
 		/**
@@ -1147,12 +1131,7 @@ package feathers.controls
 		 */
 		public function set backgroundEnabledSkin(value:DisplayObject):void
 		{
-			if(this._skinSelector.getValueForState(STATE_ENABLED) == value)
-			{
-				return;
-			}
-			this._skinSelector.setValueForState(value, STATE_ENABLED);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
+			this.setSkinForState(STATE_ENABLED, value);
 		}
 
 		/**
@@ -1168,7 +1147,7 @@ package feathers.controls
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
-			return DisplayObject(this._skinSelector.getValueForState(STATE_FOCUSED));
+			return this.getSkinForState(STATE_FOCUSED);
 		}
 
 		/**
@@ -1176,12 +1155,7 @@ package feathers.controls
 		 */
 		public function set backgroundFocusedSkin(value:DisplayObject):void
 		{
-			if(this._skinSelector.getValueForState(STATE_FOCUSED) == value)
-			{
-				return;
-			}
-			this._skinSelector.setValueForState(value, STATE_FOCUSED);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
+			this.setSkinForState(STATE_FOCUSED, value);
 		}
 
 		/**
@@ -1197,7 +1171,7 @@ package feathers.controls
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
-			return DisplayObject(this._skinSelector.getValueForState(STATE_DISABLED));
+			return this.getSkinForState(STATE_DISABLED);
 		}
 
 		/**
@@ -1205,12 +1179,7 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._skinSelector.getValueForState(STATE_DISABLED) == value)
-			{
-				return;
-			}
-			this._skinSelector.setValueForState(value, STATE_DISABLED);
-			this.invalidate(INVALIDATION_FLAG_SKIN);
+			this.setSkinForState(STATE_DISABLED, value);
 		}
 
 		/**
@@ -1259,7 +1228,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _iconSelector:StateValueSelector = new StateValueSelector();
+		protected var _defaultIcon:DisplayObject;
 
 		/**
 		 * The icon used when no other icon is defined for the current state.
@@ -1280,7 +1249,7 @@ package feathers.controls
 		 */
 		public function get defaultIcon():DisplayObject
 		{
-			return DisplayObject(this._iconSelector.defaultValue);
+			return this._defaultIcon;
 		}
 
 		/**
@@ -1288,13 +1257,18 @@ package feathers.controls
 		 */
 		public function set defaultIcon(value:DisplayObject):void
 		{
-			if(this._iconSelector.defaultValue == value)
+			if(this._defaultIcon === value)
 			{
 				return;
 			}
-			this._iconSelector.defaultValue = value;
+			this._defaultIcon = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToIcon:Object = {};
 
 		/**
 		 * The icon used for the input's enabled state. If <code>null</code>,
@@ -1312,7 +1286,7 @@ package feathers.controls
 		 */
 		public function get enabledIcon():DisplayObject
 		{
-			return DisplayObject(this._iconSelector.getValueForState(STATE_ENABLED));
+			return this.getIconForState(STATE_ENABLED);
 		}
 
 		/**
@@ -1320,12 +1294,7 @@ package feathers.controls
 		 */
 		public function set enabledIcon(value:DisplayObject):void
 		{
-			if(this._iconSelector.getValueForState(STATE_ENABLED) == value)
-			{
-				return;
-			}
-			this._iconSelector.setValueForState(value, STATE_ENABLED);
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.setIconForState(STATE_ENABLED, value);
 		}
 
 		/**
@@ -1344,7 +1313,7 @@ package feathers.controls
 		 */
 		public function get disabledIcon():DisplayObject
 		{
-			return DisplayObject(this._iconSelector.getValueForState(STATE_DISABLED));
+			return this.getIconForState(STATE_DISABLED);
 		}
 
 		/**
@@ -1352,12 +1321,7 @@ package feathers.controls
 		 */
 		public function set disabledIcon(value:DisplayObject):void
 		{
-			if(this._iconSelector.getValueForState(STATE_DISABLED) == value)
-			{
-				return;
-			}
-			this._iconSelector.setValueForState(value, STATE_DISABLED);
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.setIconForState(STATE_DISABLED, value);
 		}
 
 		/**
@@ -1377,7 +1341,7 @@ package feathers.controls
 		 */
 		public function get focusedIcon():DisplayObject
 		{
-			return DisplayObject(this._iconSelector.getValueForState(STATE_FOCUSED));
+			return this.getIconForState(STATE_FOCUSED);
 		}
 
 		/**
@@ -1385,12 +1349,7 @@ package feathers.controls
 		 */
 		public function set focusedIcon(value:DisplayObject):void
 		{
-			if(this._iconSelector.getValueForState(STATE_FOCUSED) == value)
-			{
-				return;
-			}
-			this._iconSelector.setValueForState(value, STATE_FOCUSED);
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.setIconForState(STATE_FOCUSED, value);
 		}
 
 		/**
@@ -1928,36 +1887,108 @@ package feathers.controls
 		}
 
 		/**
+		 * Gets the skin to be used by the text input when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a skin is not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see #setSkinForState()
+		 */
+		public function getSkinForState(state:String):DisplayObject
+		{
+			return this._stateToSkin[state] as DisplayObject;
+		}
+
+		/**
+		 * Sets the skin to be used by the text input when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a skin is not defined for a specific state, the value of the
+		 * <code>backgroundSkin</code> property will be used instead.</p>
+		 *
+		 * @see #backgroundSkin
+		 * @see #getSkinForState()
+		 */
+		public function setSkinForState(state:String, skin:DisplayObject):void
+		{
+			if(skin !== null)
+			{
+				this._stateToSkin[state] = skin;
+			}
+			else
+			{
+				delete this._stateToSkin[state];
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Gets the icon to be used by the text input when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a icon is not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see #setIconForState()
+		 */
+		public function getIconForState(state:String):DisplayObject
+		{
+			return this._stateToIcon[state] as DisplayObject;
+		}
+
+		/**
+		 * Sets the icon to be used by the text input when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If an icon is not defined for a specific state, the value of the
+		 * <code>defaultIcon</code> property will be used instead.</p>
+		 *
+		 * @see #defaultIcon
+		 * @see #getIconForState()
+		 */
+		public function setIconForState(state:String, icon:DisplayObject):void
+		{
+			if(icon !== null)
+			{
+				this._stateToIcon[state] = icon;
+			}
+			else
+			{
+				delete this._stateToIcon[state];
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void
 		{
-			var skin:DisplayObject = this._skinSelector.defaultValue as DisplayObject;
 			//we don't dispose it if the text input is the parent because it'll
 			//already get disposed in super.dispose()
-			if(skin && skin.parent !== this)
+			if(this._backgroundSkin !== null && this._backgroundSkin.parent !== this)
 			{
-				skin.dispose();
+				this._backgroundSkin.dispose();
 			}
-			for each(var state:String in this.stateNames)
+			for(var state:String in this._stateToSkin)
 			{
-				skin = this._skinSelector.getValueForState(state) as DisplayObject;
-				if(skin && skin.parent !== this)
+				var skin:DisplayObject = this._stateToSkin[state] as DisplayObject;
+				if(skin !== null && skin.parent !== this)
 				{
 					skin.dispose();
 				}
 			}
-			skin = this._iconSelector.defaultValue as DisplayObject;
-			if(skin && skin.parent !== this)
+			if(this._defaultIcon !== null && this._defaultIcon.parent !== this)
 			{
-				skin.dispose();
+				this._defaultIcon.dispose();
 			}
-			for each(state in this.stateNames)
+			for(state in this._stateToIcon)
 			{
-				skin = this._iconSelector.getValueForState(state) as DisplayObject;
-				if(skin && skin.parent !== this)
+				var icon:DisplayObject = this._stateToIcon[state] as DisplayObject;
+				if(icon !== null && icon.parent !== this)
 				{
-					skin.dispose();
+					icon.dispose();
 				}
 			}
 			super.dispose();
@@ -2286,13 +2317,9 @@ package feathers.controls
 		 */
 		protected function changeState(state:String):void
 		{
-			if(this._currentState == state)
+			if(this._currentState === state)
 			{
 				return;
-			}
-			if(this.stateNames.indexOf(state) < 0)
-			{
-				throw new ArgumentError("Invalid state: " + state + ".");
 			}
 			this._currentState = state;
 			this.invalidate(INVALIDATION_FLAG_STATE);
@@ -2372,22 +2399,23 @@ package feathers.controls
 		protected function refreshBackgroundSkin():void
 		{
 			var oldSkin:DisplayObject = this.currentBackground;
-			if(this._stateToSkinFunction != null)
-			{
-				this.currentBackground = DisplayObject(this._stateToSkinFunction(this, this._currentState, oldSkin));
-			}
-			else
-			{
-				this.currentBackground = DisplayObject(this._skinSelector.updateValue(this, this._currentState, this.currentBackground));
-			}
-			if(this.currentBackground != oldSkin)
+			this.currentBackground = this.getCurrentSkin();
+			if(this.currentBackground !== oldSkin)
 			{
 				if(oldSkin)
 				{
+					if(oldSkin is IStateObserver)
+					{
+						IStateObserver(oldSkin).stateContext = null;
+					}
 					this.removeChild(oldSkin, false);
 				}
 				if(this.currentBackground)
 				{
+					if(this.currentBackground is IStateObserver)
+					{
+						IStateObserver(this.currentBackground).stateContext = this;
+					}
 					this.addChildAt(this.currentBackground, 0);
 				}
 			}
@@ -2412,19 +2440,12 @@ package feathers.controls
 		protected function refreshIcon():void
 		{
 			var oldIcon:DisplayObject = this.currentIcon;
-			if(this._stateToIconFunction != null)
-			{
-				this.currentIcon = DisplayObject(this._stateToIconFunction(this, this._currentState, oldIcon));
-			}
-			else
-			{
-				this.currentIcon = DisplayObject(this._iconSelector.updateValue(this, this._currentState, this.currentIcon));
-			}
+			this.currentIcon = this.getCurrentIcon();
 			if(this.currentIcon is IFeathersControl)
 			{
 				IFeathersControl(this.currentIcon).isEnabled = this._isEnabled;
 			}
-			if(this.currentIcon != oldIcon)
+			if(this.currentIcon !== oldIcon)
 			{
 				if(oldIcon)
 				{
@@ -2456,6 +2477,40 @@ package feathers.controls
 				this._originalIconWidth = this.currentIcon.width;
 				this._originalIconHeight = this.currentIcon.height;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentSkin():DisplayObject
+		{
+			if(this._stateToSkinFunction !== null)
+			{
+				return DisplayObject(this._stateToSkinFunction(this, this._currentState, this.currentBackground));
+			}
+			var result:DisplayObject = this._stateToSkin[this._currentState] as DisplayObject;
+			if(result !== null)
+			{
+				return result;
+			}
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentIcon():DisplayObject
+		{
+			if(this._stateToIconFunction !== null)
+			{
+				return DisplayObject(this._stateToIconFunction(this, this._currentState, this.currentIcon));
+			}
+			var result:DisplayObject = this._stateToIcon[this._currentState] as DisplayObject;
+			if(result !== null)
+			{
+				return result;
+			}
+			return this._defaultIcon;
 		}
 
 		/**
