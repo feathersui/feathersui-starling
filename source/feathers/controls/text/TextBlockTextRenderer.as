@@ -1951,28 +1951,37 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
+		protected function refreshTextElementText():void
 		{
-			if(this._textElement)
+			if(this._textElement === null)
 			{
-				if(this._text)
+				return;
+			}
+			if(this._text)
+			{
+				this._textElement.text = this._text;
+				if(this._text !== null && this._text.charAt(this._text.length - 1) == " ")
 				{
-					this._textElement.text = this._text;
-					if(this._text !== null && this._text.charAt(this._text.length - 1) == " ")
-					{
-						//add an invisible control character because FTE apparently
-						//doesn't think that it's important to include trailing
-						//spaces in its width measurement.
-						this._textElement.text += String.fromCharCode(3);
-					}
-				}
-				else
-				{
-					//similar to above. this hack ensures that the baseline is
-					//measured properly when the text is an empty string.
-					this._textElement.text = String.fromCharCode(3);
+					//add an invisible control character because FTE apparently
+					//doesn't think that it's important to include trailing
+					//spaces in its width measurement.
+					this._textElement.text += String.fromCharCode(3);
 				}
 			}
+			else
+			{
+				//similar to above. this hack ensures that the baseline is
+				//measured properly when the text is an empty string.
+				this._textElement.text = String.fromCharCode(3);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
+		{
+			this.refreshTextElementText();
 			HELPER_TEXT_LINES.length = 0;
 			var yPosition:Number = 0;
 			var lineCount:int = textLines.length;
