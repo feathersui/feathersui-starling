@@ -1104,12 +1104,27 @@ package feathers.controls.text
 		 */
 		protected function positionSelectionBackground():void
 		{
-			var startX:Number = this.getXPositionOfCharIndex(this._selectionBeginIndex) - this._textSnapshotScrollX;
+			var displayText:String = this._text;
+			if(this._imeText !== null)
+			{
+				displayText = this._imeText;
+			}
+			var beginIndex:int = this._selectionBeginIndex;
+			if(beginIndex > displayText.length)
+			{
+				beginIndex = displayText.length;
+			}
+			var startX:Number = this.getXPositionOfCharIndex(beginIndex) - this._textSnapshotScrollX;
 			if(startX < 0)
 			{
 				startX = 0;
 			}
-			var endX:Number = this.getXPositionOfCharIndex(this._selectionEndIndex) - this._textSnapshotScrollX;
+			var endIndex:int = this._selectionEndIndex;
+			if(endIndex > displayText.length)
+			{
+				endIndex = displayText.length;
+			}
+			var endX:Number = this.getXPositionOfCharIndex(endIndex) - this._textSnapshotScrollX;
 			if(endX < 0)
 			{
 				endX = 0;
