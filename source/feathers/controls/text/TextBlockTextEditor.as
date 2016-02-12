@@ -8,10 +8,11 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FocusManager;
+	import feathers.core.IIMETextEditor;
 	import feathers.core.INativeFocusOwner;
-	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.text.TextEditorIMEClient;
 	import feathers.utils.text.TextInputNavigation;
 	import feathers.utils.text.TextInputRestrict;
 
@@ -28,6 +29,7 @@ package feathers.controls.text
 	import flash.text.TextFormatAlign;
 	import flash.text.engine.TextElement;
 	import flash.text.engine.TextLine;
+	import flash.text.ime.CompositionAttributeRange;
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
@@ -157,7 +159,7 @@ package feathers.controls.text
 	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
-	public class TextBlockTextEditor extends TextBlockTextRenderer implements ITextEditor, INativeFocusOwner
+	public class TextBlockTextEditor extends TextBlockTextRenderer implements IIMETextEditor, INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -215,6 +217,21 @@ package feathers.controls.text
 		{
 			return globalStyleProvider;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreNextTextInputEvent:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _imeText:String;
+
+		/**
+		 * @private
+		 */
+		protected var _imeCursorIndex:int = -1;
 
 		/**
 		 * @private
@@ -594,6 +611,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #selectionEndIndex
 		 */
 		public function get selectionBeginIndex():int
 		{
@@ -607,6 +626,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #selectionBeginIndex
 		 */
 		public function get selectionEndIndex():int
 		{
@@ -616,7 +637,31 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _selectionAnchorIndex:int = -1;
+		protected var _selectionAnchorIndex:int = 0;
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @see #selectionActiveIndex
+		 */
+		public function get selectionAnchorIndex():int
+		{
+			return this._selectionAnchorIndex;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @see #selectionAnchorIndex
+		 */
+		public function get selectionActiveIndex():int
+		{
+			if(this._selectionAnchorIndex === this._selectionBeginIndex)
+			{
+				return this._selectionEndIndex;
+			}
+			return this._selectionBeginIndex;
+		}
 
 		/**
 		 * @private
@@ -730,6 +775,7 @@ package feathers.controls.text
 			this._selectionEndIndex = endIndex;
 			if(beginIndex == endIndex)
 			{
+				this._selectionAnchorIndex = beginIndex;
 				if(beginIndex < 0)
 				{
 					this._cursorSkin.visible = false;
@@ -781,7 +827,7 @@ package feathers.controls.text
 		{
 			if(!this._nativeFocus)
 			{
-				this._nativeFocus = new Sprite();
+				this._nativeFocus = new TextEditorIMEClient(this, imeClientStartCallback, imeClientUpdateCallback, imeClientConfirmCallback);
 				//let's ensure that this can only get focus through code
 				this._nativeFocus.tabEnabled = false;
 				this._nativeFocus.tabChildren = false;
@@ -806,6 +852,9 @@ package feathers.controls.text
 			super.initialize();
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -815,6 +864,39 @@ package feathers.controls.text
 			{
 				this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());
 				this.positionSelectionBackground();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshTextElementText():void
+		{
+			if(this._textElement === null)
+			{
+				return
+			}
+			var displayText:String = this._text;
+			if(this._imeText !== null)
+			{
+				displayText = this._imeText;
+			}
+			if(displayText)
+			{
+				this._textElement.text = displayText;
+				if(displayText !== null && displayText.charAt(displayText.length - 1) == " ")
+				{
+					//add an invisible control character because FTE apparently
+					//doesn't think that it's important to include trailing
+					//spaces in its width measurement.
+					this._textElement.text += String.fromCharCode(3);
+				}
+			}
+			else
+			{
+				//similar to above. this hack ensures that the baseline is
+				//measured properly when the text is an empty string.
+				this._textElement.text = String.fromCharCode(3);
 			}
 		}
 
@@ -920,7 +1002,12 @@ package feathers.controls.text
 		 */
 		protected function getXPositionOfCharIndex(index:int):Number
 		{
-			if(!this._text || this._textLines.length == 0)
+			var displayText:String = this._text;
+			if(this._imeText !== null)
+			{
+				displayText = this._imeText;
+			}
+			if(!displayText || this._textLines.length == 0)
 			{
 				if(this._textAlign == TextFormatAlign.CENTER)
 				{
@@ -933,7 +1020,7 @@ package feathers.controls.text
 				return 0;
 			}
 			var line:TextLine = this._textLines[0];
-			if(index == this._text.length)
+			if(index == displayText.length)
 			{
 				return line.x + line.width;
 			}
@@ -966,7 +1053,12 @@ package feathers.controls.text
 
 			//then we update the scroll to always show the cursor
 			var minScrollX:Number = cursorX + this._cursorSkin.width - this.actualWidth;
-			var maxScrollX:Number = this.getXPositionOfCharIndex(this._text.length) - this.actualWidth;
+			var displayText:String = this._text;
+			if(this._imeText !== null)
+			{
+				displayText = this._imeText;
+			}
+			var maxScrollX:Number = this.getXPositionOfCharIndex(displayText.length) - this.actualWidth;
 			if(maxScrollX < 0)
 			{
 				maxScrollX = 0;
@@ -995,6 +1087,10 @@ package feathers.controls.text
 		 */
 		protected function getCursorIndexFromSelectionRange():int
 		{
+			if(this._imeCursorIndex >= 0)
+			{
+				return this._imeCursorIndex;
+			}
 			var cursorIndex:int = this._selectionEndIndex;
 			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex)
 			{
@@ -1087,6 +1183,39 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function imeClientStartCallback():void
+		{
+		}
+
+		/**
+		 * @private
+		 */
+		protected function imeClientUpdateCallback(text:String, attributes:Vector.<CompositionAttributeRange>, compositionStartIndex:int, compositionEndIndex:int):void
+		{
+			var currentValue:String = this._text;
+			if(this._displayAsPassword)
+			{
+				currentValue = this._unmaskedText;
+			}
+			this._imeText = currentValue.substr(0, this._selectionBeginIndex) + text + currentValue.substr(this._selectionEndIndex);
+			this._imeCursorIndex = this._selectionBeginIndex + compositionStartIndex;
+			this.setInvalidationFlag(INVALIDATION_FLAG_DATA);
+			this.validate();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function imeClientConfirmCallback(text:String = null, preserveSelection:Boolean = false):void
+		{
+			//the focus will dispatch an extra TextEvent.TEXT_INPUT event, for
+			//some reason. we need to ignore it or extra text will be displayed.
+			this._ignoreNextTextInputEvent = true;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function hasFocus_enterFrameHandler(event:starling.events.Event):void
 		{
 			var target:DisplayObject = this;
@@ -1121,10 +1250,6 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					if(this._selectionBeginIndex == this._selectionEndIndex)
-					{
-						this._selectionAnchorIndex = -1;
-					}
 					if(!FocusManager.isEnabledForStage(this.stage) && this._hasFocus)
 					{
 						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -1152,7 +1277,6 @@ package feathers.controls.text
 				else
 				{
 					this.setFocus(HELPER_POINT);
-					this._selectionAnchorIndex = this._selectionBeginIndex;
 				}
 			}
 		}
@@ -1211,10 +1335,6 @@ package feathers.controls.text
 			{
 				if(event.shiftKey)
 				{
-					if(this._selectionAnchorIndex < 0)
-					{
-						this._selectionAnchorIndex = this._selectionBeginIndex;
-					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionBeginIndex &&
 						this._selectionBeginIndex != this._selectionEndIndex)
 					{
@@ -1256,10 +1376,6 @@ package feathers.controls.text
 			{
 				if(event.shiftKey)
 				{
-					if(this._selectionAnchorIndex < 0)
-					{
-						this._selectionAnchorIndex = this._selectionBeginIndex;
-					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex &&
 						this._selectionBeginIndex != this._selectionEndIndex)
 					{
@@ -1352,7 +1468,6 @@ package feathers.controls.text
 			if(newIndex >= 0)
 			{
 				this.validate();
-				this._selectionAnchorIndex = newIndex;
 				this.selectRange(newIndex, newIndex);
 			}
 		}
@@ -1362,10 +1477,17 @@ package feathers.controls.text
 		 */
 		protected function nativeFocus_textInputHandler(event:TextEvent):void
 		{
+			if(this._ignoreNextTextInputEvent)
+			{
+				this._ignoreNextTextInputEvent = false;
+				return;
+			}
 			if(!this._isEditable || !this._isEnabled)
 			{
 				return;
 			}
+			this._imeText = null;
+			this._imeCursorIndex = -1;
 			var text:String = event.text;
 			if(text === CARRIAGE_RETURN || text === LINE_FEED)
 			{
