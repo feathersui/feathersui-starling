@@ -23,7 +23,6 @@ package feathers.controls.text
 	import flash.events.Event;
 	import flash.events.TextEvent;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 	import flash.ui.Keyboard;
 
@@ -574,6 +573,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #selectionEndIndex
 		 */
 		public function get selectionBeginIndex():int
 		{
@@ -587,6 +588,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #selectionBeginIndex
 		 */
 		public function get selectionEndIndex():int
 		{
@@ -596,7 +599,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _selectionAnchorIndex:int = -1;
+		protected var _selectionAnchorIndex:int = 0;
 
 		/**
 		 * @private
@@ -715,6 +718,7 @@ package feathers.controls.text
 			this._selectionEndIndex = endIndex;
 			if(beginIndex == endIndex)
 			{
+				this._selectionAnchorIndex = beginIndex;
 				if(beginIndex < 0)
 				{
 					this._cursorSkin.visible = false;
@@ -1196,10 +1200,6 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					if(this._selectionBeginIndex == this._selectionEndIndex)
-					{
-						this._selectionAnchorIndex = -1;
-					}
 					if(!FocusManager.isEnabledForStage(this.stage) && this._hasFocus)
 					{
 						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -1227,7 +1227,6 @@ package feathers.controls.text
 				else
 				{
 					this.setFocus(HELPER_POINT);
-					this._selectionAnchorIndex = this._selectionBeginIndex;
 				}
 			}
 		}
@@ -1286,10 +1285,6 @@ package feathers.controls.text
 			{
 				if(event.shiftKey)
 				{
-					if(this._selectionAnchorIndex < 0)
-					{
-						this._selectionAnchorIndex = this._selectionBeginIndex;
-					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionBeginIndex &&
 						this._selectionBeginIndex != this._selectionEndIndex)
 					{
@@ -1331,10 +1326,6 @@ package feathers.controls.text
 			{
 				if(event.shiftKey)
 				{
-					if(this._selectionAnchorIndex < 0)
-					{
-						this._selectionAnchorIndex = this._selectionBeginIndex;
-					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex &&
 						this._selectionBeginIndex != this._selectionEndIndex)
 					{
@@ -1426,7 +1417,6 @@ package feathers.controls.text
 			}
 			if(newIndex >= 0)
 			{
-				this._selectionAnchorIndex = newIndex;
 				this.selectRange(newIndex, newIndex);
 			}
 		}
