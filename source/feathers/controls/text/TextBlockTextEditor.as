@@ -1214,6 +1214,8 @@ package feathers.controls.text
 			}
 			this._imeText = currentValue.substr(0, this._selectionBeginIndex) + text + currentValue.substr(this._selectionEndIndex);
 			this._imeCursorIndex = this._selectionBeginIndex + compositionStartIndex;
+			this._cursorSkin.visible = this._hasFocus;
+			this._selectionSkin.visible = false;
 			this.setInvalidationFlag(INVALIDATION_FLAG_DATA);
 			this.validate();
 		}
