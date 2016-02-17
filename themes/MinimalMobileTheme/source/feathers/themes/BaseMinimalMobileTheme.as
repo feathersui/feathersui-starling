@@ -55,6 +55,7 @@ package feathers.themes
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInputState;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
@@ -1410,8 +1411,8 @@ package feathers.themes
 			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_TEXT_EDITOR;
 
 			var skin:ImageSkin = new ImageSkin(this.insetBackgroundSkinTexture);
-			skin.setTextureForState(TextInput.STATE_DISABLED, this.insetBackgroundDisabledSkinTexture);
-			skin.setTextureForState(TextInput.STATE_FOCUSED, this.insetBackgroundFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.DISABLED, this.insetBackgroundDisabledSkinTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.insetBackgroundFocusedSkinTexture);
 			skin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			skin.width = this.gridSize;
 			skin.height = this.controlSize;
@@ -1875,8 +1876,8 @@ package feathers.themes
 			this.setScrollerStyles(textArea);
 
 			var skin:ImageSkin = new ImageSkin(this.insetBackgroundSkinTexture);
-			skin.setTextureForState(TextArea.STATE_DISABLED, this.insetBackgroundDisabledSkinTexture);
-			skin.setTextureForState(TextArea.STATE_FOCUSED, this.insetBackgroundFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.DISABLED, this.insetBackgroundDisabledSkinTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.insetBackgroundFocusedSkinTexture);
 			skin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
@@ -1897,8 +1898,8 @@ package feathers.themes
 		protected function setBaseTextInputStyles(input:TextInput):void
 		{
 			var skin:ImageSkin = new ImageSkin(this.insetBackgroundSkinTexture);
-			skin.setTextureForState(TextInput.STATE_DISABLED, this.insetBackgroundDisabledSkinTexture);
-			skin.setTextureForState(TextInput.STATE_FOCUSED, this.insetBackgroundFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.DISABLED, this.insetBackgroundDisabledSkinTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.insetBackgroundFocusedSkinTexture);
 			skin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;

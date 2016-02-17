@@ -55,6 +55,7 @@ package feathers.themes
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInputState;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
@@ -2349,8 +2350,8 @@ package feathers.themes
 			this.setScrollerStyles(textArea);
 
 			var skin:ImageSkin = new ImageSkin(this.backgroundInsetSkinTexture);
-			skin.setTextureForState(TextArea.STATE_DISABLED, this.backgroundDisabledSkinTexture);
-			skin.setTextureForState(TextArea.STATE_FOCUSED, this.backgroundInsetFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.DISABLED, this.backgroundDisabledSkinTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.backgroundInsetFocusedSkinTexture);
 			skin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
@@ -2375,8 +2376,8 @@ package feathers.themes
 		protected function setBaseTextInputStyles(input:TextInput):void
 		{
 			var skin:ImageSkin = new ImageSkin(this.backgroundInsetSkinTexture);
-			skin.setTextureForState(TextInput.STATE_DISABLED, this.backgroundInsetDisabledSkinTexture);
-			skin.setTextureForState(TextInput.STATE_FOCUSED, this.backgroundInsetFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.DISABLED, this.backgroundInsetDisabledSkinTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.backgroundInsetFocusedSkinTexture);
 			skin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
@@ -2415,7 +2416,7 @@ package feathers.themes
 			this.setBaseTextInputStyles(input);
 
 			var icon:ImageSkin = new ImageSkin(this.searchIconTexture);
-			icon.setTextureForState(TextInput.STATE_DISABLED, this.searchIconDisabledTexture);
+			icon.setTextureForState(TextInputState.DISABLED, this.searchIconDisabledTexture);
 			input.defaultIcon = icon;
 		}
 

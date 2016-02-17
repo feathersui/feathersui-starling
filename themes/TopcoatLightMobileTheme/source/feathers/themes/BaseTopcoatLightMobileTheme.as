@@ -55,6 +55,7 @@ package feathers.themes
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInputState;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
@@ -1769,7 +1770,7 @@ package feathers.themes
 
 			var skin:ImageSkin = new ImageSkin(this.textInputBackgroundEnabledTexture);
 			skin.disabledTexture = this.textInputBackgroundDisabledTexture;
-			skin.setTextureForState(TextArea.STATE_FOCUSED, this.textInputBackgroundFocusedTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.textInputBackgroundFocusedTexture);
 			skin.scale9Grid = TEXT_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
@@ -1807,7 +1808,7 @@ package feathers.themes
 		{
 			var skin:ImageSkin = new ImageSkin(this.textInputBackgroundEnabledTexture);
 			skin.disabledTexture = this.textInputBackgroundDisabledTexture;
-			skin.setTextureForState(TextInput.STATE_FOCUSED, this.textInputBackgroundFocusedTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.textInputBackgroundFocusedTexture);
 			skin.scale9Grid = TEXT_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
@@ -1820,7 +1821,7 @@ package feathers.themes
 		{
 			var skin:ImageSkin = new ImageSkin(this.searchTextInputBackgroundEnabledTexture);
 			skin.disabledTexture = this.searchTextInputBackgroundDisabledTexture;
-			skin.setTextureForState(TextInput.STATE_FOCUSED, this.searchTextInputBackgroundFocusedTexture);
+			skin.setTextureForState(TextInputState.FOCUSED, this.searchTextInputBackgroundFocusedTexture);
 			skin.scale9Grid = SEARCH_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
