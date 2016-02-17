@@ -60,6 +60,7 @@ package
 	import feathers.tests.TapToSelectTests;
 	import feathers.tests.TapToTriggerTests;
 	import feathers.tests.TextAreaFocusTests;
+	import feathers.tests.TextAreaInternalStateTests;
 	import feathers.tests.TextAreaTests;
 	import feathers.tests.TextBlockTextEditorFocusTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
@@ -175,6 +176,7 @@ package
 				TabBarTests,
 				TabBarEmptyDataProviderTests,
 				TextAreaTests,
+				TextAreaInternalStateTests,
 				TextInputTests,
 				TextInputMeasurementTests,
 				TextInputInternalStateTests,

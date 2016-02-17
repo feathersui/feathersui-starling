@@ -17,6 +17,7 @@ package feathers.controls
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
+	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -229,17 +230,35 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
 
 		/**
-		 * The <code>TextInput</code> is enabled and does not have focus.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.ENABLED</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_ENABLED:String = "enabled";
 
 		/**
-		 * The <code>TextInput</code> is disabled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.DISABLED</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
-		 * The <code>TextInput</code> is enabled and has focus.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.FOCUSED</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_FOCUSED:String = "focused";
 
@@ -362,6 +381,15 @@ package feathers.controls
 		protected var currentIcon:DisplayObject;
 
 		/**
+		 * The callout that displays the value of the <code>errorString</code>
+		 * property. The value will be <code>null</code> if there is no current
+		 * error string.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 */
+		protected var callout:Callout;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the text editor.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the text editor style name in their constructors instead of
@@ -442,24 +470,18 @@ package feathers.controls
 		override public function set isEnabled(value:Boolean):void
 		{
 			super.isEnabled = value;
-			if(this._isEnabled)
-			{
-				this.changeState(this.hasFocus ? STATE_FOCUSED : STATE_ENABLED);
-			}
-			else
-			{
-				this.changeState(STATE_DISABLED);
-			}
+			this.refreshState();
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _currentState:String = STATE_ENABLED;
+		protected var _currentState:String = TextInputState.ENABLED;
 
 		/**
 		 * The current state of the text input.
 		 *
+		 * @see feathers.controls.TextInputState
 		 * @see #event:stateChange feathers.events.FeathersEventType.STATE_CHANGE
 		 */
 		public function get currentState():String
@@ -779,6 +801,50 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _errorString:String = null;
+
+		/**
+		 * Error text to display in a <code>Callout</code> when the input has
+		 * focus. When this value is not <code>null</code> the input's state is
+		 * changed to <code>TextInputState.ERROR</code>.
+		 *
+		 * An empty string will change the background, but no
+		 * <code>Callout</code> will appear on focus.
+		 *
+		 * To clear an error, the <code>errorString</code> property must be set
+		 * to <code>null</code>
+		 *
+		 * <p>The following example displays an error string:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.errorString = "Something is wrong";</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #currentState
+		 */
+		public function get errorString():String
+		{
+			return this._errorString;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set errorString(value:String):void
+		{
+			if(this._errorString === value)
+			{
+				return;
+			}
+			this._errorString = value;
+			this.refreshState();
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -1080,9 +1146,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #backgroundEnabledSkin
-		 * @see #backgroundDisabledSkin
-		 * @see #backgroundFocusedSkin
+		 * @see #setSkinForState()
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1117,13 +1181,10 @@ package feathers.controls
 		 * input.backgroundEnabledSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 *
-		 * @see #backgroundSkin
-		 * @see #backgroundDisabledSkin
 		 */
 		public function get backgroundEnabledSkin():DisplayObject
 		{
-			return this.getSkinForState(STATE_ENABLED);
+			return this.getSkinForState(TextInputState.ENABLED);
 		}
 
 		/**
@@ -1131,7 +1192,7 @@ package feathers.controls
 		 */
 		public function set backgroundEnabledSkin(value:DisplayObject):void
 		{
-			this.setSkinForState(STATE_ENABLED, value);
+			this.setSkinForState(TextInputState.ENABLED, value);
 		}
 
 		/**
@@ -1147,7 +1208,7 @@ package feathers.controls
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
-			return this.getSkinForState(STATE_FOCUSED);
+			return this.getSkinForState(TextInputState.FOCUSED);
 		}
 
 		/**
@@ -1155,7 +1216,31 @@ package feathers.controls
 		 */
 		public function set backgroundFocusedSkin(value:DisplayObject):void
 		{
-			this.setSkinForState(STATE_FOCUSED, value);
+			this.setSkinForState(TextInputState.FOCUSED, value);
+		}
+
+		/**
+		 * The skin used for the input's error state. If <code>null</code>,
+		 * then <code>backgroundSkin</code> is used instead.
+		 *
+		 * <p>The following example gives the input a skin for the error state:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.backgroundErrorSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundErrorSkin():DisplayObject
+		{
+			return this.getSkinForState(TextInputState.ERROR);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundErrorSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(TextInputState.ERROR, value);
 		}
 
 		/**
@@ -1171,7 +1256,7 @@ package feathers.controls
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
-			return this.getSkinForState(STATE_DISABLED);
+			return this.getSkinForState(TextInputState.DISABLED);
 		}
 
 		/**
@@ -1179,7 +1264,7 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			this.setSkinForState(STATE_DISABLED, value);
+			this.setSkinForState(TextInputState.DISABLED, value);
 		}
 
 		/**
@@ -1188,12 +1273,13 @@ package feathers.controls
 		protected var _stateToSkinFunction:Function;
 
 		/**
-		 * Returns a skin for the current state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>backgroundSkin</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function( target:TextInput, state:Object, oldSkin:DisplayObject = null ):DisplayObject</pre>
-		 *
-		 * @default null
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToSkinFunction():Function
 		{
@@ -1242,10 +1328,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #stateToIconFunction
-		 * @see #enabledIcon
-		 * @see #disabledIcon
-		 * @see #focusedIcon
+		 * @see #setIconForState()
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -1280,13 +1363,10 @@ package feathers.controls
 		 * button.enabledIcon = new Image( texture );</listing>
 		 *
 		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #disabledIcon
 		 */
 		public function get enabledIcon():DisplayObject
 		{
-			return this.getIconForState(STATE_ENABLED);
+			return this.getIconForState(TextInputState.ENABLED);
 		}
 
 		/**
@@ -1294,7 +1374,7 @@ package feathers.controls
 		 */
 		public function set enabledIcon(value:DisplayObject):void
 		{
-			this.setIconForState(STATE_ENABLED, value);
+			this.setIconForState(TextInputState.ENABLED, value);
 		}
 
 		/**
@@ -1307,13 +1387,10 @@ package feathers.controls
 		 * button.disabledIcon = new Image( texture );</listing>
 		 *
 		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #enabledIcon
 		 */
 		public function get disabledIcon():DisplayObject
 		{
-			return this.getIconForState(STATE_DISABLED);
+			return this.getIconForState(TextInputState.DISABLED);
 		}
 
 		/**
@@ -1321,7 +1398,7 @@ package feathers.controls
 		 */
 		public function set disabledIcon(value:DisplayObject):void
 		{
-			this.setIconForState(STATE_DISABLED, value);
+			this.setIconForState(TextInputState.DISABLED, value);
 		}
 
 		/**
@@ -1334,14 +1411,10 @@ package feathers.controls
 		 * button.focusedIcon = new Image( texture );</listing>
 		 *
 		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #enabledIcon
-		 * @see #disabledIcon
 		 */
 		public function get focusedIcon():DisplayObject
 		{
-			return this.getIconForState(STATE_FOCUSED);
+			return this.getIconForState(TextInputState.FOCUSED);
 		}
 
 		/**
@@ -1349,7 +1422,31 @@ package feathers.controls
 		 */
 		public function set focusedIcon(value:DisplayObject):void
 		{
-			this.setIconForState(STATE_FOCUSED, value);
+			this.setIconForState(TextInputState.FOCUSED, value);
+		}
+
+		/**
+		 * The icon used for the input's error state. If <code>null</code>,
+		 * then <code>defaultIcon</code> is used instead.
+		 *
+		 * <p>The following example gives the input an icon for the error state:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.errorIcon = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get errorIcon():DisplayObject
+		{
+			return this.getIconForState(TextInputState.ERROR);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set errorIcon(value:DisplayObject):void
+		{
+			this.setIconForState(TextInputState.ERROR, value);
 		}
 
 		/**
@@ -1358,12 +1455,13 @@ package feathers.controls
 		protected var _stateToIconFunction:Function;
 
 		/**
-		 * Returns an icon for the current state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>defaultIcon</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function( target:TextInput, state:Object, oldIcon:DisplayObject = null ):DisplayObject</pre>
-		 *
-		 * @default null
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToIconFunction():Function
 		{
@@ -1894,6 +1992,7 @@ package feathers.controls
 		 * <code>null</code>.</p>
 		 *
 		 * @see #setSkinForState()
+		 * @see feathers.controls.TextInputState
 		 */
 		public function getSkinForState(state:String):DisplayObject
 		{
@@ -1909,6 +2008,7 @@ package feathers.controls
 		 *
 		 * @see #backgroundSkin
 		 * @see #getSkinForState()
+		 * @see feathers.controls.TextInputState
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
@@ -2323,6 +2423,7 @@ package feathers.controls
 			}
 			this._currentState = state;
 			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 
 		/**
@@ -2684,6 +2785,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshState():void
+		{
+			if(this._isEnabled)
+			{
+				if(this._textEditorHasFocus)
+				{
+					this.changeState(TextInputState.FOCUSED);
+				}
+				else if(this._errorString !== null)
+				{
+					this.changeState(TextInputState.ERROR);
+				}
+				else
+				{
+					this.changeState(TextInputState.ENABLED);
+				}
+			}
+			else
+			{
+				this.changeState(TextInputState.DISABLED);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -2821,7 +2948,20 @@ package feathers.controls
 				return;
 			}
 			this._textEditorHasFocus = true;
-			this.changeState(STATE_FOCUSED);
+			this.refreshState();
+			if(this._errorString !== null && this._errorString.length > 0)
+			{
+				this.callout = new Callout();
+				this.callout.closeOnKeys = null;
+				this.callout.closeOnTouchBeganOutside = false;
+				this.callout.closeOnTouchEndedOutside = false;
+				this.callout.touchable = false;
+				var label:Label = new Label();
+				label.text = this._errorString;
+				this.callout.content = label;
+				this.callout.origin = this;
+				PopUpManager.addPopUp(this.callout, false, false);
+			}
 			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
 			{
 				//if setFocus() was called manually, we need to notify the focus
@@ -2842,7 +2982,12 @@ package feathers.controls
 		protected function textEditor_focusOutHandler(event:Event):void
 		{
 			this._textEditorHasFocus = false;
-			this.changeState(this._isEnabled ? STATE_ENABLED : STATE_DISABLED);
+			this.refreshState();
+			if(this.callout)
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
 			if(this._focusManager && this._focusManager.focus === this)
 			{
 				//if clearFocus() was called manually, we need to notify the
