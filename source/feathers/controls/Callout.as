@@ -284,9 +284,10 @@ package feathers.controls
 		public static var stagePaddingLeft:Number = 0;
 
 		/**
-		 * Returns a new <code>Callout</code> instance when <code>Callout.show()</code>
-		 * is called with isModal set to true. If one wishes to skin the callout
-		 * manually, a custom factory may be provided.
+		 * Returns a new <code>Callout</code> instance when
+		 * <code>Callout.show()</code> is called. If one wishes to skin the
+		 * callout manually or change its behavior, a custom factory may be
+		 * provided.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
