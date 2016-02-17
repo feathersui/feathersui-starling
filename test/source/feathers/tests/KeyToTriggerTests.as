@@ -73,6 +73,13 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNoErrorWhenDisabledAfterRemove():void
+		{
+			this._target.removeFromParent(false);
+			this._keyToTrigger.isEnabled = false;
+		}
+
+		[Test]
 		public function testCancelKeyBeforeTriggeredEvent():void
 		{
 			FocusManager.focus = this._target;

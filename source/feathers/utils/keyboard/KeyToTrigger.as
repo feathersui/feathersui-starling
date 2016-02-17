@@ -82,12 +82,14 @@ package feathers.utils.keyboard
 			{
 				this._target.removeEventListener(FeathersEventType.FOCUS_IN, target_focusInHandler);
 				this._target.removeEventListener(FeathersEventType.FOCUS_OUT, target_focusOutHandler);
+				this._target.removeEventListener(Event.REMOVED_FROM_STAGE, target_removedFromStageHandler);
 			}
 			this._target = value;
 			if(this._target)
 			{
 				this._target.addEventListener(FeathersEventType.FOCUS_IN, target_focusInHandler);
 				this._target.addEventListener(FeathersEventType.FOCUS_OUT, target_focusOutHandler);
+				this._target.addEventListener(Event.REMOVED_FROM_STAGE, target_removedFromStageHandler);
 			}
 		}
 
@@ -156,16 +158,7 @@ package feathers.utils.keyboard
 		 */
 		public function set isEnabled(value:Boolean):void
 		{
-			if(this._isEnabled === value)
-			{
-				return;
-			}
 			this._isEnabled = value;
-			if(!value)
-			{
-				this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-				this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-			}
 		}
 
 		/**
@@ -180,6 +173,15 @@ package feathers.utils.keyboard
 		 * @private
 		 */
 		protected function target_focusOutHandler(event:Event):void
+		{
+			this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function target_removedFromStageHandler(event:Event):void
 		{
 			this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

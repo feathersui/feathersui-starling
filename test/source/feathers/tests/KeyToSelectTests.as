@@ -96,6 +96,13 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNoErrorWhenDisabledAfterRemove():void
+		{
+			this._target.removeFromParent(false);
+			this._keyToSelect.isEnabled = false;
+		}
+
+		[Test]
 		public function testCancelKeyBeforeChangeEvent():void
 		{
 			this._target.isSelected = false;
