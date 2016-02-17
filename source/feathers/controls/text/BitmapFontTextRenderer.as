@@ -30,6 +30,7 @@ package feathers.controls.text
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
+	import starling.utils.MathUtil;
 
 	/**
 	 * Renders text using
@@ -723,7 +724,7 @@ package feathers.controls.text
 			//lines.
 			if(this._wordWrap)
 			{
-				while(currentX > maxLineWidth)
+				while(currentX > maxLineWidth && !MathUtil.isEquivalent(currentX, maxLineWidth))
 				{
 					currentX -= maxLineWidth;
 					currentY += lineHeight;
@@ -1002,7 +1003,7 @@ package feathers.controls.text
 			//lines.
 			if(this._wordWrap)
 			{
-				while(currentX > maxLineWidth)
+				while(currentX > maxLineWidth && !MathUtil.isEquivalent(currentX, maxLineWidth))
 				{
 					currentX -= maxLineWidth;
 					currentY += lineHeight;
