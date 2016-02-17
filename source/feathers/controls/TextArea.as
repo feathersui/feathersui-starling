@@ -86,7 +86,7 @@ package feathers.controls
 	 * var textArea:TextArea = new TextArea();
 	 * textArea.text = "Hello\nWorld"; //it's multiline!
 	 * textArea.selectRange( 0, textArea.text.length );
-	 * textArea.addEventListener( Event.CHANGE, input_changeHandler );
+	 * textArea.addEventListener( Event.CHANGE, textArea_changeHandler );
 	 * this.addChild( textArea );</listing>
 	 *
 	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
@@ -256,6 +256,19 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR:String = "feathers-text-area-text-editor";
 
 		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * error callout.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT:String = "feathers-text-input-error-callout";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY:String = "errorCalloutFactory";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextArea</code>
 		 * components.
 		 *
@@ -281,13 +294,14 @@ package feathers.controls
 		protected var textEditorViewPort:ITextEditorViewPort;
 
 		/**
-		 * The callout that displays the value of the <code>errorString</code>
-		 * property. The value will be <code>null</code> if there is no current
-		 * error string.
+		 * The <code>TextCallout</code> that displays the value of the
+		 * <code>errorString</code> property. The value may be <code>null</code>
+		 * if there is no current error string or if the text area doesn't have
+		 * focus.
 		 *
 		 * <p>For internal use in subclasses.</p>
 		 */
-		protected var callout:Callout;
+		protected var callout:TextCallout;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the text editor.
@@ -299,6 +313,17 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textEditorStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the error
+		 * callout. This variable is <code>protected</code> so that sub-classes
+		 * can customize the prompt text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT</code>.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var errorCalloutStyleName:String = DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT;
 
 		/**
 		 * @private
@@ -562,9 +587,9 @@ package feathers.controls
 		protected var _errorString:String = null;
 
 		/**
-		 * Error text to display in a <code>Callout</code> when the input has
-		 * focus. When this value is not <code>null</code> the input's state is
-		 * changed to <code>TextInputState.ERROR</code>.
+		 * Error text to display in a <code>Callout</code> when the text area
+		 * has focus. When this value is not <code>null</code> the text area's
+		 * state is changed to <code>TextInputState.ERROR</code>.
 		 *
 		 * An empty string will change the background, but no
 		 * <code>Callout</code> will appear on focus.
@@ -575,7 +600,7 @@ package feathers.controls
 		 * <p>The following example displays an error string:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.errorString = "Something is wrong";</listing>
+		 * textArea.errorString = "Something is wrong";</listing>
 		 *
 		 * @default null
 		 *
@@ -657,13 +682,13 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the input's error state. If <code>null</code>,
+		 * The skin used for the text area's error state. If <code>null</code>,
 		 * then <code>backgroundSkin</code> is used instead.
 		 *
-		 * <p>The following example gives the input a skin for the error state:</p>
+		 * <p>The following example gives the text area a skin for the error state:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.backgroundErrorSkin = new Image( texture );</listing>
+		 * textArea.backgroundErrorSkin = new Image( texture );</listing>
 		 *
 		 * @default null
 		 */
@@ -734,7 +759,7 @@ package feathers.controls
 		 * to the text area:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.textEditorFactory = function():ITextEditorViewPort
+		 * textArea.textEditorFactory = function():ITextEditorViewPort
 		 * {
 		 *     return new TextFieldTextEditorViewPort();
 		 * };</listing>
@@ -742,7 +767,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.text.ITextEditorViewPort
-		 * @see feathers.controls.text.TextFieldTextEditorViewPort
 		 */
 		public function get textEditorFactory():Function
 		{
@@ -770,7 +794,7 @@ package feathers.controls
 		/**
 		 * A style name to add to the text area's text editor sub-component.
 		 * Typically used by a theme to provide different styles to different
-		 * text inputs.
+		 * text areas.
 		 *
 		 * <p>In the following example, a custom text editor style name is
 		 * passed to the text area:</p>
@@ -837,8 +861,8 @@ package feathers.controls
 		 * <code>TextFieldTextEditorViewPort</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * input.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
-		 * input.textEditorProperties.embedFonts = true;</listing>
+		 * textArea.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
+		 * textArea.textEditorProperties.embedFonts = true;</listing>
 		 *
 		 * @default null
 		 *
@@ -889,6 +913,51 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _customErrorCalloutStyleName:String;
+
+		/**
+		 * A style name to add to the text area's error callout sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * text areas.
+		 *
+		 * <p>In the following example, a custom error callout style name
+		 * is passed to the text area:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.customErrorCalloutStyleName = "my-custom-text-area-error-callout";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-area-error-callout", setCustomTextAreaErrorCalloutStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public function get customErrorCalloutStyleName():String
+		{
+			return this._customErrorCalloutStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customErrorCalloutStyleName(value:String):void
+		{
+			if(this._customErrorCalloutStyleName == value)
+			{
+				return;
+			}
+			this._customErrorCalloutStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		override public function showFocus():void
@@ -923,7 +992,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Manually removes focus from the text input control.
+		 * Manually removes focus from the text area control.
 		 */
 		public function clearFocus():void
 		{
@@ -1114,6 +1183,33 @@ package feathers.controls
 				//the view port setter won't do this
 				oldViewPort.dispose();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createErrorCallout():void
+		{
+			if(this.callout)
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
+
+			if(this._errorString === null)
+			{
+				return;
+			}
+			this.callout = new TextCallout();
+			var errorCalloutStyleName:String = this._customErrorCalloutStyleName != null ? this._customErrorCalloutStyleName : this.errorCalloutStyleName;
+			this.callout.styleNameList.add(errorCalloutStyleName);
+			this.callout.closeOnKeys = null;
+			this.callout.closeOnTouchBeganOutside = false;
+			this.callout.closeOnTouchEndedOutside = false;
+			this.callout.touchable = false;
+			this.callout.text = this._errorString;
+			this.callout.origin = this;
+			PopUpManager.addPopUp(this.callout, false, false);
 		}
 
 		/**
@@ -1415,16 +1511,7 @@ package feathers.controls
 			this.refreshState();
 			if(this._errorString !== null && this._errorString.length > 0)
 			{
-				this.callout = new Callout();
-				this.callout.closeOnKeys = null;
-				this.callout.closeOnTouchBeganOutside = false;
-				this.callout.closeOnTouchEndedOutside = false;
-				this.callout.touchable = false;
-				var label:Label = new Label();
-				label.text = this._errorString;
-				this.callout.content = label;
-				this.callout.origin = this;
-				PopUpManager.addPopUp(this.callout, false, false);
+				this.createErrorCallout();
 			}
 			this._touchPointID = -1;
 			this.invalidate(INVALIDATION_FLAG_STATE);

@@ -231,6 +231,11 @@ package feathers.controls
 
 		/**
 		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY:String = "errorCalloutFactory";
+
+		/**
+		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.ENABLED</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
@@ -277,6 +282,14 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_PROMPT:String = "feathers-text-input-prompt";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * error callout.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT:String = "feathers-text-input-error-callout";
 
 		/**
 		 * An alternate style name to use with <code>TextInput</code> to allow a
@@ -381,13 +394,14 @@ package feathers.controls
 		protected var currentIcon:DisplayObject;
 
 		/**
-		 * The callout that displays the value of the <code>errorString</code>
-		 * property. The value will be <code>null</code> if there is no current
-		 * error string.
+		 * The <code>TextCallout</code> that displays the value of the
+		 * <code>errorString</code> property. The value may be
+		 * <code>null</code> if there is no current error string or the text
+		 * input does not have focus.
 		 *
 		 * <p>For internal use in subclasses.</p>
 		 */
-		protected var callout:Callout;
+		protected var callout:TextCallout;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the text editor.
@@ -410,6 +424,17 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var promptStyleName:String = DEFAULT_CHILD_STYLE_NAME_PROMPT;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the error
+		 * callout. This variable is <code>protected</code> so that sub-classes
+		 * can customize the prompt text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT</code>.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var errorCalloutStyleName:String = DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT;
 
 		/**
 		 * @private
@@ -1115,6 +1140,51 @@ package feathers.controls
 				this._promptProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customErrorCalloutStyleName:String;
+
+		/**
+		 * A style name to add to the text input's error callout sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * text inputs.
+		 *
+		 * <p>In the following example, a custom error callout style name
+		 * is passed to the text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.customErrorCalloutStyleName = "my-custom-text-input-error-callout";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-input-error-callout", setCustomTextInputErrorCalloutStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public function get customErrorCalloutStyleName():String
+		{
+			return this._customErrorCalloutStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customErrorCalloutStyleName(value:String):void
+		{
+			if(this._customErrorCalloutStyleName == value)
+			{
+				return;
+			}
+			this._customErrorCalloutStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY);
 		}
 
 		/**
@@ -2415,6 +2485,33 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function createErrorCallout():void
+		{
+			if(this.callout)
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
+
+			if(this._errorString === null)
+			{
+				return;
+			}
+			this.callout = new TextCallout();
+			var errorCalloutStyleName:String = this._customErrorCalloutStyleName != null ? this._customErrorCalloutStyleName : this.errorCalloutStyleName;
+			this.callout.styleNameList.add(errorCalloutStyleName);
+			this.callout.closeOnKeys = null;
+			this.callout.closeOnTouchBeganOutside = false;
+			this.callout.closeOnTouchEndedOutside = false;
+			this.callout.touchable = false;
+			this.callout.text = this._errorString;
+			this.callout.origin = this;
+			PopUpManager.addPopUp(this.callout, false, false);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function changeState(state:String):void
 		{
 			if(this._currentState === state)
@@ -2951,16 +3048,7 @@ package feathers.controls
 			this.refreshState();
 			if(this._errorString !== null && this._errorString.length > 0)
 			{
-				this.callout = new Callout();
-				this.callout.closeOnKeys = null;
-				this.callout.closeOnTouchBeganOutside = false;
-				this.callout.closeOnTouchEndedOutside = false;
-				this.callout.touchable = false;
-				var label:Label = new Label();
-				label.text = this._errorString;
-				this.callout.content = label;
-				this.callout.origin = this;
-				PopUpManager.addPopUp(this.callout, false, false);
+				this.createErrorCallout();
 			}
 			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
 			{
