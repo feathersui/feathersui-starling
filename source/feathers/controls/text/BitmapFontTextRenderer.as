@@ -666,7 +666,7 @@ package feathers.controls.text
 					currentX += charData.getKerning(previousCharID) * scale;
 				}
 
-				var offsetX:Number = charData.xAdvance * scale;
+				var xAdvance:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
 					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
@@ -677,7 +677,7 @@ package feathers.controls.text
 						{
 							widthOfWhitespaceAfterWord = 0;
 						}
-						widthOfWhitespaceAfterWord += offsetX;
+						widthOfWhitespaceAfterWord += xAdvance;
 					}
 					else if(previousCharIsWhitespace)
 					{
@@ -687,7 +687,7 @@ package feathers.controls.text
 						word = "";
 					}
 
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + xAdvance) > maxLineWidth)
 					{
 						//we're just reusing this variable to avoid creating a
 						//new one. it'll be reset to 0 in a moment.
@@ -705,7 +705,7 @@ package feathers.controls.text
 						line = "";
 					}
 				}
-				currentX += offsetX + customLetterSpacing;
+				currentX += xAdvance + customLetterSpacing;
 				previousCharID = charID;
 				word += String.fromCharCode(charID);
 			}
@@ -835,6 +835,8 @@ package feathers.controls.text
 				scale = 1;
 			}
 			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
+			var offsetX:Number = font.offsetX * scale;
+			var offsetY:Number = font.offsetY * scale;
 
 			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
@@ -906,7 +908,7 @@ package feathers.controls.text
 					currentX += charData.getKerning(previousCharID) * scale;
 				}
 
-				var offsetX:Number = charData.xAdvance * scale;
+				var xAdvance:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
 					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
@@ -917,7 +919,7 @@ package feathers.controls.text
 						{
 							widthOfWhitespaceAfterWord = 0;
 						}
-						widthOfWhitespaceAfterWord += offsetX;
+						widthOfWhitespaceAfterWord += xAdvance;
 					}
 					else if(previousCharIsWhitespace)
 					{
@@ -939,7 +941,7 @@ package feathers.controls.text
 					//floating point errors can cause unnecessary line breaks,
 					//so we're going to be a little bit fuzzy on the greater
 					//than check. such tiny numbers shouldn't break anything.
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + offsetX) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + xAdvance) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
 					{
 						if(isAligned)
 						{
@@ -969,18 +971,21 @@ package feathers.controls.text
 				{
 					var charLocation:CharLocation = CHAR_LOCATION_POOL.length > 0 ? CHAR_LOCATION_POOL.shift() : new CharLocation();
 					charLocation.char = charData;
-					charLocation.x = currentX + charData.xOffset * scale;
-					charLocation.y = currentY + charData.yOffset * scale;
+					charLocation.x = currentX + offsetX + charData.xOffset * scale;
+					charLocation.y = currentY + offsetY + charData.yOffset * scale;
 					charLocation.scale = scale;
 					CHARACTER_BUFFER[CHARACTER_BUFFER.length] = charLocation;
 					wordLength++;
 				}
 				else
 				{
-					this.addCharacterToBatch(charData, currentX + charData.xOffset * scale, currentY + charData.yOffset * scale, scale);
+					this.addCharacterToBatch(charData,
+						currentX + offsetX + charData.xOffset * scale,
+						currentY + offsetY + charData.yOffset * scale,
+						scale);
 				}
 
-				currentX += offsetX + customLetterSpacing;
+				currentX += xAdvance + customLetterSpacing;
 				previousCharID = charID;
 			}
 			currentX = currentX - customLetterSpacing;
