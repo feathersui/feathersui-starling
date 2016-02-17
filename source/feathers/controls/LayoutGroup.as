@@ -621,12 +621,7 @@ package feathers.controls
 					this.handleManualLayout();
 				}
 				this.handleLayoutResult();
-				
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
+				this.refreshBackgroundLayout();
 
 				//final validation to avoid juggler next frame issues
 				this.validateChildren();
@@ -668,6 +663,24 @@ package feathers.controls
 			}
 			if(this.currentBackgroundSkin !== oldBackgroundSkin)
 			{
+				this.setRequiresRedraw();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshBackgroundLayout():void
+		{
+			if(this.currentBackgroundSkin === null)
+			{
+				return;
+			}
+			if(this.currentBackgroundSkin.width !== this.actualWidth ||
+				this.currentBackgroundSkin.height !== this.actualHeight)
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
 				this.setRequiresRedraw();
 			}
 		}
