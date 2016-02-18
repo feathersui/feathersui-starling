@@ -20,6 +20,8 @@ package feathers.controls
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.touch.LongPress;
 
+	import flash.geom.Matrix;
+
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
@@ -410,6 +412,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var longPress:LongPress;
+
+		/**
+		 * @private
+		 */
+		protected var _scaleMatrix:Matrix;
 		
 		/**
 		 * @private
@@ -1891,20 +1898,29 @@ package feathers.controls
 		override public function render(painter:Painter):void
 		{
 			var scale:Number = 1;
-			if(this._currentState == ButtonState.DOWN)
+			if(this._currentState === ButtonState.DOWN)
 			{
 				scale = this._scaleWhenDown;
 			}
-			else if(this._currentState == ButtonState.HOVER)
+			else if(this._currentState === ButtonState.HOVER)
 			{
 				scale = this._scaleWhenHovering;
 			}
-			/*if(scale !== 1)
+			if(scale !== 1)
 			{
-				painter.translateMatrix(Math.round((1 - scale) / 2 * this.actualWidth),
+				if(this._scaleMatrix === null)
+				{
+					this._scaleMatrix = new Matrix();
+				}
+				else
+				{
+					this._scaleMatrix.identity();
+				}
+				this._scaleMatrix.translate(Math.round((1 - scale) / 2 * this.actualWidth),
 					Math.round((1 - scale) / 2 * this.actualHeight));
-				painter.scaleMatrix(scale, scale);
-			}*/
+				this._scaleMatrix.scale(scale, scale);
+				painter.state.transformModelviewMatrix(this._scaleMatrix);
+			}
 			super.render(painter);
 		}
 
@@ -2289,6 +2305,29 @@ package feathers.controls
 			}
 
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function changeState(state:String):void
+		{
+			var oldState:String = this._currentState;
+			if(oldState === state)
+			{
+				return;
+			}
+			super.changeState(state);
+			if(this._scaleWhenHovering !== 1 &&
+				(state === ButtonState.HOVER || oldState === ButtonState.HOVER))
+			{
+				this.setRequiresRedraw();
+			}
+			else if(this._scaleWhenDown !== 1 &&
+				(state === ButtonState.DOWN || oldState === ButtonState.DOWN))
+			{
+				this.setRequiresRedraw();
+			}
 		}
 
 		/**
