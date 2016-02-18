@@ -1083,14 +1083,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		/*override public function get hasVisibleArea():Boolean
-		{
-			return true;
-		}*/
-
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);

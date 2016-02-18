@@ -750,6 +750,13 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		override protected function get supportsRenderCache():Boolean
+		{
+			//since the text field is rendered above starling, some of its
+			//properties need to be updated every frame
+			return false;
+		}
+
 		override public function render(painter:Painter):void
 		{
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
