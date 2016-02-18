@@ -2019,6 +2019,8 @@ package feathers.themes
 			skin.width = this.wideControlSize * 2;
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
+
+			textArea.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
