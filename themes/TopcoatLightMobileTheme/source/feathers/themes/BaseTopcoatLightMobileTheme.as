@@ -75,6 +75,7 @@ package feathers.themes
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.ImageSkin;
 	import feathers.system.DeviceCapabilities;
@@ -997,7 +998,7 @@ package feathers.themes
 			itemRenderer.accessoryGap = this.extraSmallGutterSize;
 			itemRenderer.minAccessoryGap = this.extraSmallGutterSize;
 			itemRenderer.minWidth = this.controlSize;
-			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.accessoryPosition = RelativePosition.LEFT;
 		}
 
 	//-------------------------
@@ -1216,10 +1217,10 @@ package feathers.themes
 			itemRenderer.paddingLeft = this.gutterSize;
 			itemRenderer.gap = this.gutterSize;
 			itemRenderer.minGap = this.gutterSize;
-			itemRenderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
 			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
 			itemRenderer.minAccessoryGap = this.gutterSize;
-			itemRenderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
 			itemRenderer.minWidth = this.controlSize;
 			itemRenderer.minHeight = this.controlSize;
 			itemRenderer.minTouchWidth = this.controlSize;
@@ -1399,7 +1400,7 @@ package feathers.themes
 			this.setBaseButtonStyles(button);
 			button.gap = Number.POSITIVE_INFINITY;
 			button.minGap = this.gutterSize;
-			button.iconPosition = Button.ICON_POSITION_RIGHT;
+			button.iconPosition = RelativePosition.RIGHT;
 			button.paddingLeft = this.gutterSize;
 		}
 
@@ -1653,10 +1654,10 @@ package feathers.themes
 			itemRenderer.paddingRight = this.gutterSize;
 			itemRenderer.gap = this.smallGutterSize;
 			itemRenderer.minGap = this.smallGutterSize;
-			itemRenderer.iconPosition = DefaultListItemRenderer.ICON_POSITION_LEFT;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
 			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
 			itemRenderer.minAccessoryGap = this.smallGutterSize;
-			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
 			itemRenderer.minWidth = this.gridSize;
 			itemRenderer.minHeight = this.gridSize;
 		}

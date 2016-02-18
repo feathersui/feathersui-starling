@@ -9,6 +9,7 @@ package feathers.examples.tileList
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.text.BitmapFontTextFormat;
 
@@ -166,7 +167,7 @@ package feathers.examples.tileList
 			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 			renderer.labelField = "label";
 			renderer.iconSourceField = "texture";
-			renderer.iconPosition = Button.ICON_POSITION_TOP;
+			renderer.iconPosition = RelativePosition.TOP;
 			renderer.defaultLabelProperties.textFormat = new BitmapFontTextFormat(this._font, NaN, 0x000000);
 			return renderer;
 		}

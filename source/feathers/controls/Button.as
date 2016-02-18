@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.RelativePosition;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.touch.LongPress;
@@ -252,57 +253,79 @@ package feathers.controls
 		public static const STATE_DISABLED:String = "disabled";
 		
 		/**
-		 * The icon will be positioned above the label.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 		
 		/**
-		 * The icon will be positioned to the right of the label.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 		
 		/**
-		 * The icon will be positioned below the label.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 		
 		/**
-		 * The icon will be positioned to the left of the label.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
 		/**
-		 * The icon will be positioned manually with no relation to the position
-		 * of the label. Use <code>iconOffsetX</code> and <code>iconOffsetY</code>
-		 * to set the icon's position.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
 		 *
-		 * @see #iconPosition
-		 * @see #iconOffsetX
-		 * @see #iconOffsetY
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 		
 		/**
-		 * The icon will be positioned to the left the label, and the bottom of
-		 * the icon will be aligned to the baseline of the label text.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 		
 		/**
-		 * The icon will be positioned to the right the label, and the bottom of
-		 * the icon will be aligned to the baseline of the label text.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 		
@@ -489,7 +512,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _iconPosition:String = ICON_POSITION_LEFT;
+		protected var _iconPosition:String = RelativePosition.LEFT;
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,rightBaseline,leftBaseline,manual")]
 		/**
@@ -501,17 +524,17 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.label = "Click Me";
 		 * button.defaultIcon = new Image( texture );
-		 * button.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 * button.iconPosition = RelativePosition.RIGHT;</listing>
 		 *
-		 * @default Button.ICON_POSITION_LEFT
+		 * @default feathers.layout.RelativePosition.LEFT
 		 *
-		 * @see #ICON_POSITION_TOP
-		 * @see #ICON_POSITION_RIGHT
-		 * @see #ICON_POSITION_BOTTOM
-		 * @see #ICON_POSITION_LEFT
-		 * @see #ICON_POSITION_RIGHT_BASELINE
-		 * @see #ICON_POSITION_LEFT_BASELINE
-		 * @see #ICON_POSITION_MANUAL
+		 * @see feathers.layout.RelativePosition#TOP
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#BOTTOM
+		 * @see feathers.layout.RelativePosition#LEFT
+		 * @see feathers.layout.RelativePosition#RIGHT_BASELINE
+		 * @see feathers.layout.RelativePosition#LEFT_BASELINE
+		 * @see feathers.layout.RelativePosition#MANUAL
 		 */
 		public function get iconPosition():String
 		{
@@ -2101,8 +2124,8 @@ package feathers.controls
 				{
 					if(labelRenderer) //both label and icon
 					{
-						if(this._iconPosition !== ICON_POSITION_TOP && this._iconPosition !== ICON_POSITION_BOTTOM &&
-							this._iconPosition !== ICON_POSITION_MANUAL)
+						if(this._iconPosition !== RelativePosition.TOP && this._iconPosition !== RelativePosition.BOTTOM &&
+							this._iconPosition !== RelativePosition.MANUAL)
 						{
 							newMinWidth += adjustedGap;
 							if(this.currentIcon is IFeathersControl)
@@ -2173,7 +2196,7 @@ package feathers.controls
 				{
 					if(labelRenderer) //both label and icon
 					{
-						if(this._iconPosition === ICON_POSITION_TOP || this._iconPosition === ICON_POSITION_BOTTOM)
+						if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
 						{
 							newMinHeight += adjustedGap;
 							if(this.currentIcon is IFeathersControl)
@@ -2244,8 +2267,8 @@ package feathers.controls
 				{
 					if(labelRenderer) //both label and icon
 					{
-						if(this._iconPosition !== ICON_POSITION_TOP && this._iconPosition !== ICON_POSITION_BOTTOM &&
-							this._iconPosition !== ICON_POSITION_MANUAL)
+						if(this._iconPosition !== RelativePosition.TOP && this._iconPosition !== RelativePosition.BOTTOM &&
+							this._iconPosition !== RelativePosition.MANUAL)
 						{
 							newWidth += adjustedGap + this.currentIcon.width;
 						}
@@ -2282,7 +2305,7 @@ package feathers.controls
 				{
 					if(labelRenderer) //both label and icon
 					{
-						if(this._iconPosition === ICON_POSITION_TOP || this._iconPosition === ICON_POSITION_BOTTOM)
+						if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
 						{
 							newHeight += adjustedGap + this.currentIcon.height;
 						}
@@ -2503,7 +2526,7 @@ package feathers.controls
 				this.labelTextRenderer.validate();
 				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
-			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
+			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != RelativePosition.MANUAL;
 			if(labelRenderer && iconIsInLayout)
 			{
 				this.positionSingleChild(labelRenderer);
@@ -2520,7 +2543,7 @@ package feathers.controls
 
 			if(this.currentIcon)
 			{
-				if(this._iconPosition == ICON_POSITION_MANUAL)
+				if(this._iconPosition == RelativePosition.MANUAL)
 				{
 					this.currentIcon.x = this._paddingLeft;
 					this.currentIcon.y = this._paddingTop;
@@ -2571,12 +2594,12 @@ package feathers.controls
 					{
 						adjustedGap = this._minGap;
 					}
-					if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-						this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+					if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE ||
+						this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE)
 					{
 						this.labelTextRenderer.maxWidth -= (this.currentIcon.width + adjustedGap);
 					}
-					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+					if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
 					{
 						this.labelTextRenderer.maxHeight -= (this.currentIcon.height + adjustedGap);
 					}
@@ -2620,7 +2643,7 @@ package feathers.controls
 		 */
 		protected function positionLabelAndIcon():void
 		{
-			if(this._iconPosition == ICON_POSITION_TOP)
+			if(this._iconPosition == RelativePosition.TOP)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
@@ -2640,7 +2663,7 @@ package feathers.controls
 					this.currentIcon.y = this.labelTextRenderer.y - this.currentIcon.height - this._gap;
 				}
 			}
-			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			else if(this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
@@ -2660,7 +2683,7 @@ package feathers.controls
 					this.currentIcon.x = this.labelTextRenderer.x + this.labelTextRenderer.width + this._gap;
 				}
 			}
-			else if(this._iconPosition == ICON_POSITION_BOTTOM)
+			else if(this._iconPosition == RelativePosition.BOTTOM)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
@@ -2680,7 +2703,7 @@ package feathers.controls
 					this.currentIcon.y = this.labelTextRenderer.y + this.labelTextRenderer.height + this._gap;
 				}
 			}
-			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
+			else if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
@@ -2701,7 +2724,7 @@ package feathers.controls
 				}
 			}
 			
-			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
+			if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.RIGHT)
 			{
 				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 				{
@@ -2716,7 +2739,7 @@ package feathers.controls
 					this.currentIcon.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2);
 				}
 			}
-			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			else if(this._iconPosition == RelativePosition.LEFT_BASELINE || this._iconPosition == RelativePosition.RIGHT_BASELINE)
 			{
 				this.currentIcon.y = this.labelTextRenderer.y + (this.labelTextRenderer.baseline) - this.currentIcon.height;
 			}

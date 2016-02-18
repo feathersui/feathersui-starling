@@ -74,6 +74,7 @@ package feathers.themes
 	import feathers.core.PopUpManager;
 	import feathers.core.ToolTipManager;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
 	import feathers.media.MuteToggleButton;
@@ -1421,7 +1422,7 @@ package feathers.themes
 		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
 			this.setItemRendererStyles(itemRenderer);
-			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.accessoryPosition = RelativePosition.LEFT;
 			itemRenderer.accessoryGap = this.smallGutterSize;
 		}
 
@@ -1625,10 +1626,10 @@ package feathers.themes
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.smallGutterSize;
 			renderer.minGap = this.smallGutterSize;
-			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+			renderer.iconPosition = RelativePosition.LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.smallGutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.accessoryPosition = RelativePosition.RIGHT;
 			renderer.minWidth = this.controlSize;
 			renderer.minHeight = this.controlSize;
 
@@ -1671,10 +1672,10 @@ package feathers.themes
 			itemRenderer.paddingRight = this.gutterSize;
 			itemRenderer.gap = this.smallGutterSize;
 			itemRenderer.minGap = this.smallGutterSize;
-			itemRenderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
 			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
 			itemRenderer.minAccessoryGap = this.smallGutterSize;
-			itemRenderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
 			itemRenderer.minWidth = this.controlSize;
 			itemRenderer.minHeight = this.controlSize;
 
@@ -1922,7 +1923,7 @@ package feathers.themes
 
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			button.iconPosition = Button.ICON_POSITION_RIGHT;
+			button.iconPosition = RelativePosition.RIGHT;
 			button.minWidth = this.buttonMinWidth;
 			button.minHeight = this.controlSize;
 		}

@@ -72,6 +72,7 @@ package feathers.themes
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
 	import feathers.media.MuteToggleButton;
@@ -1433,7 +1434,7 @@ package feathers.themes
 		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
 			this.setSpinnerListItemRendererStyles(itemRenderer);
-			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.accessoryPosition = RelativePosition.LEFT;
 			itemRenderer.gap = this.smallGutterSize;
 			itemRenderer.minGap = this.smallGutterSize;
 			itemRenderer.accessoryGap = this.smallGutterSize;
@@ -1546,10 +1547,10 @@ package feathers.themes
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.gutterSize;
 			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.iconPosition = RelativePosition.LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = DefaultGroupedListItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.accessoryPosition = RelativePosition.RIGHT;
 			renderer.minWidth = renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = renderer.minTouchHeight = this.gridSize;
 		}
@@ -1705,10 +1706,10 @@ package feathers.themes
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.gutterSize;
 			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.iconPosition = RelativePosition.LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.accessoryPosition = RelativePosition.RIGHT;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
@@ -1757,10 +1758,10 @@ package feathers.themes
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = Number.POSITIVE_INFINITY;
 			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_RIGHT;
+			renderer.iconPosition = RelativePosition.RIGHT;
 			renderer.accessoryGap = this.smallGutterSize;
 			renderer.minAccessoryGap = this.smallGutterSize;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;
+			renderer.accessoryPosition = RelativePosition.BOTTOM;
 			renderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
@@ -1983,7 +1984,7 @@ package feathers.themes
 
 			button.gap = Number.POSITIVE_INFINITY;
 			button.minGap = this.gutterSize;
-			button.iconPosition = Button.ICON_POSITION_RIGHT;
+			button.iconPosition = RelativePosition.RIGHT;
 		}
 
 	//-------------------------
@@ -2278,10 +2279,10 @@ package feathers.themes
 			renderer.paddingRight = this.gutterSize;
 			renderer.gap = this.gutterSize;
 			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.iconPosition = RelativePosition.LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.accessoryPosition = RelativePosition.RIGHT;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;

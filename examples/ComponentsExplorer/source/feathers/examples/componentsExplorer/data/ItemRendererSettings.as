@@ -2,6 +2,7 @@ package feathers.examples.componentsExplorer.data
 {
 	import feathers.controls.Button;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.layout.RelativePosition;
 
 	public class ItemRendererSettings
 	{
@@ -17,9 +18,9 @@ package feathers.examples.componentsExplorer.data
 		public var hasAccessory:Boolean = true;
 		public var layoutOrder:String = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY;
 		public var iconType:String = ICON_ACCESSORY_TYPE_TEXTURE;
-		public var iconPosition:String = Button.ICON_POSITION_LEFT;
+		public var iconPosition:String = RelativePosition.LEFT;
 		public var useInfiniteGap:Boolean = false;
-		public var accessoryPosition:String = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+		public var accessoryPosition:String = RelativePosition.RIGHT;
 		public var accessoryType:String = ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
 		public var useInfiniteAccessoryGap:Boolean = true;
 		public var horizontalAlign:String = Button.HORIZONTAL_ALIGN_LEFT;

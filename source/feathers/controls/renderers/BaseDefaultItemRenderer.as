@@ -19,6 +19,8 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.RelativePosition;
+	import feathers.layout.RelativePosition;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -199,53 +201,79 @@ package feathers.controls.renderers
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_TOP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_BOTTOM
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_LEFT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_MANUAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
-		 * @see feathers.controls.Button#iconOffsetX
-		 * @see feathers.controls.Button#iconOffsetY
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_LEFT_BASELINE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT_BASELINE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
@@ -292,44 +320,57 @@ package feathers.controls.renderers
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The accessory will be positioned above its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_TOP:String = "top";
 
 		/**
-		 * The accessory will be positioned to the right of its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_RIGHT:String = "right";
 
 		/**
-		 * The accessory will be positioned below its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_BOTTOM:String = "bottom";
 
 		/**
-		 * The accessory will be positioned to the left of its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_LEFT:String = "left";
 
 		/**
-		 * The accessory will be positioned manually with no relation to another
-		 * child. Use <code>accessoryOffsetX</code> and <code>accessoryOffsetY</code>
-		 * to set the accessory position.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
 		 *
-		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
-		 *
-		 * @see #accessoryPosition
-		 * @see #accessoryOffsetX
-		 * @see #accessoryOffsetY
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_MANUAL:String = "manual";
 
@@ -813,26 +854,26 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryPosition:String = ACCESSORY_POSITION_RIGHT;
+		protected var _accessoryPosition:String = RelativePosition.RIGHT;
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,manual")]
 		/**
 		 * The location of the accessory, relative to one of the other children.
-		 * Use <code>ACCESSORY_POSITION_MANUAL</code> to position the accessory
+		 * Use <code>RelativePosition.MANUAL</code> to position the accessory
 		 * from the top-left corner.
 		 *
 		 * <p>In the following example, the accessory is placed on the bottom:</p>
 		 *
 		 * <listing version="3.0">
-		 * renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;</listing>
+		 * renderer.accessoryPosition = RelativePosition.BOTTOM;</listing>
 		 *
-		 * @default BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT
+		 * @default feathers.layout.RelativePosition.RIGHT
 		 *
-		 * @see #ACCESSORY_POSITION_TOP
-		 * @see #ACCESSORY_POSITION_RIGHT
-		 * @see #ACCESSORY_POSITION_BOTTOM
-		 * @see #ACCESSORY_POSITION_LEFT
-		 * @see #ACCESSORY_POSITION_MANUAL
+		 * @see feathers.layout.RelativePosition#TOP
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#BOTTOM
+		 * @see feathers.layout.RelativePosition#LEFT
+		 * @see feathers.layout.RelativePosition#MANUAL
 		 * @see #layoutOrder
 		 */
 		public function get accessoryPosition():String
@@ -864,7 +905,7 @@ package feathers.controls.renderers
 		 * label or the icon) the accessory should be relative to.
 		 *
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
+		 * if <code>accessoryPosition</code> is set to <code>RelativePosition.MANUAL</code>.</p>
 		 *
 		 * <p>In the following example, the layout order is changed:</p>
 		 *
@@ -3653,7 +3694,7 @@ package feathers.controls.renderers
 				width = 0;
 			}
 
-			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE || this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE)
 			{
 				if(hasPreviousItem)
 				{
@@ -3694,7 +3735,7 @@ package feathers.controls.renderers
 				width = 0;
 			}
 
-			if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
+			if(this._accessoryPosition == RelativePosition.LEFT || this._accessoryPosition == RelativePosition.RIGHT)
 			{
 				if(hasPreviousItem)
 				{
@@ -3754,7 +3795,7 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+			if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
@@ -3795,7 +3836,7 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM)
+			if(this._accessoryPosition == RelativePosition.TOP || this._accessoryPosition == RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
@@ -4304,8 +4345,8 @@ package feathers.controls.renderers
 				this.labelTextRenderer.validate();
 				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
-			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
-			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
+			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != RelativePosition.MANUAL;
+			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != RelativePosition.MANUAL;
 			var accessoryGap:Number = this._accessoryGap;
 			if(accessoryGap !== accessoryGap) //isNaN
 			{
@@ -4318,13 +4359,13 @@ package feathers.controls.renderers
 				{
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
 					var iconPosition:String = this._iconPosition;
-					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
+					if(iconPosition == RelativePosition.LEFT_BASELINE)
 					{
-						iconPosition = ICON_POSITION_LEFT;
+						iconPosition = RelativePosition.LEFT;
 					}
-					else if(iconPosition == ICON_POSITION_RIGHT_BASELINE)
+					else if(iconPosition == RelativePosition.RIGHT_BASELINE)
 					{
-						iconPosition = ICON_POSITION_RIGHT;
+						iconPosition = RelativePosition.RIGHT;
 					}
 					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.currentAccessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
 				}
@@ -4435,11 +4476,11 @@ package feathers.controls.renderers
 				}
 			}
 
-			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
-			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM);
-			var hasAccessoryToLeftOrRight:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
-			var hasAccessoryToTopOrBottom:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
+			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE ||
+				this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE);
+			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM);
+			var hasAccessoryToLeftOrRight:Boolean = this.currentAccessory && (this._accessoryPosition == RelativePosition.LEFT || this._accessoryPosition == RelativePosition.RIGHT);
+			var hasAccessoryToTopOrBottom:Boolean = this.currentAccessory && (this._accessoryPosition == RelativePosition.TOP || this._accessoryPosition == RelativePosition.BOTTOM);
 
 			if(this.accessoryLabel)
 			{
@@ -4570,7 +4611,7 @@ package feathers.controls.renderers
 			var relativeToHeight:Number = relativeTo2 ? (Math.max(relativeTo.y + relativeTo.height, relativeTo2.y + relativeTo2.height) - relativeToY) : relativeTo.height;
 			var newRelativeToX:Number = relativeToX;
 			var newRelativeToY:Number = relativeToY;
-			if(position == ACCESSORY_POSITION_TOP)
+			if(position == RelativePosition.TOP)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4594,7 +4635,7 @@ package feathers.controls.renderers
 					object.y = newRelativeToY - object.height - gap;
 				}
 			}
-			else if(position == ACCESSORY_POSITION_RIGHT)
+			else if(position == RelativePosition.RIGHT)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4618,7 +4659,7 @@ package feathers.controls.renderers
 					object.x = newRelativeToX + relativeToWidth + gap;
 				}
 			}
-			else if(position == ACCESSORY_POSITION_BOTTOM)
+			else if(position == RelativePosition.BOTTOM)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4642,7 +4683,7 @@ package feathers.controls.renderers
 					object.y = newRelativeToY + relativeToHeight + gap;
 				}
 			}
-			else if(position == ACCESSORY_POSITION_LEFT)
+			else if(position == RelativePosition.LEFT)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4670,10 +4711,10 @@ package feathers.controls.renderers
 			var offsetX:Number = newRelativeToX - relativeToX;
 			var offsetY:Number = newRelativeToY - relativeToY;
 			if(!relativeTo2 || otherGap != Number.POSITIVE_INFINITY || !(
-				(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP) ||
-				(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
-				(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
-				(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+				(position == RelativePosition.TOP && otherPosition == RelativePosition.TOP) ||
+				(position == RelativePosition.RIGHT && otherPosition == RelativePosition.RIGHT) ||
+				(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.BOTTOM) ||
+				(position == RelativePosition.LEFT && otherPosition == RelativePosition.LEFT)
 			))
 			{
 				relativeTo.x += offsetX;
@@ -4682,10 +4723,10 @@ package feathers.controls.renderers
 			if(relativeTo2)
 			{
 				if(otherGap != Number.POSITIVE_INFINITY || !(
-					(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
-					(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT) ||
-					(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
-					(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+					(position == RelativePosition.LEFT && otherPosition == RelativePosition.RIGHT) ||
+					(position == RelativePosition.RIGHT && otherPosition == RelativePosition.LEFT) ||
+					(position == RelativePosition.TOP && otherPosition == RelativePosition.BOTTOM) ||
+					(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.TOP)
 				))
 				{
 					relativeTo2.x += offsetX;
@@ -4693,42 +4734,42 @@ package feathers.controls.renderers
 				}
 				if(gap == Number.POSITIVE_INFINITY && otherGap == Number.POSITIVE_INFINITY)
 				{
-					if(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT)
+					if(position == RelativePosition.RIGHT && otherPosition == RelativePosition.LEFT)
 					{
 						relativeTo.x = relativeTo2.x + Math.round((object.x - relativeTo2.x + relativeTo2.width - relativeTo.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT)
+					else if(position == RelativePosition.LEFT && otherPosition == RelativePosition.RIGHT)
 					{
 						relativeTo.x = object.x + Math.round((relativeTo2.x - object.x + object.width - relativeTo.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT)
+					else if(position == RelativePosition.RIGHT && otherPosition == RelativePosition.RIGHT)
 					{
 						relativeTo2.x = relativeTo.x + Math.round((object.x - relativeTo.x + relativeTo.width - relativeTo2.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+					else if(position == RelativePosition.LEFT && otherPosition == RelativePosition.LEFT)
 					{
 						relativeTo2.x = object.x + Math.round((relativeTo.x - object.x + object.width - relativeTo2.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+					else if(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.TOP)
 					{
 						relativeTo.y = relativeTo2.y + Math.round((object.y - relativeTo2.y + relativeTo2.height - relativeTo.height) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM)
+					else if(position == RelativePosition.TOP && otherPosition == RelativePosition.BOTTOM)
 					{
 						relativeTo.y = object.y + Math.round((relativeTo2.y - object.y + object.height - relativeTo.height) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM)
+					else if(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.BOTTOM)
 					{
 						relativeTo2.y = relativeTo.y + Math.round((object.y - relativeTo.y + relativeTo.height - relativeTo2.height) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP)
+					else if(position == RelativePosition.TOP && otherPosition == RelativePosition.TOP)
 					{
 						relativeTo2.y = object.y + Math.round((relativeTo.y - object.y + object.height - relativeTo2.height) / 2);
 					}
 				}
 			}
 
-			if(position == ACCESSORY_POSITION_LEFT || position == ACCESSORY_POSITION_RIGHT)
+			if(position == RelativePosition.LEFT || position == RelativePosition.RIGHT)
 			{
 				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 				{
@@ -4743,7 +4784,7 @@ package feathers.controls.renderers
 					object.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - object.height) / 2);
 				}
 			}
-			else if(position == ACCESSORY_POSITION_TOP || position == ACCESSORY_POSITION_BOTTOM)
+			else if(position == RelativePosition.TOP || position == RelativePosition.BOTTOM)
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 				{

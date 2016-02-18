@@ -1330,7 +1330,7 @@ package feathers.controls
 		 * <p>In the following example, the tab bar's tab properties are updated:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 * tabs.tabProperties.iconPosition = RelativePosition.RIGHT;</listing>
 		 *
 		 * @default null
 		 *

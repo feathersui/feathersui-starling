@@ -12,6 +12,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.RelativePosition;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -82,18 +83,18 @@ package feathers.examples.componentsExplorer.screens
 			this._iconTypePicker.addEventListener(Event.CHANGE, iconTypePicker_changeHandler);
 
 			this._iconPositionPicker = new PickerList();
-			this._iconPositionPicker.typicalItem = Button.ICON_POSITION_RIGHT_BASELINE;
+			this._iconPositionPicker.typicalItem = RelativePosition.RIGHT_BASELINE;
 			this._iconPositionPicker.dataProvider = new ListCollection(new <String>
 			[
-				Button.ICON_POSITION_TOP,
-				Button.ICON_POSITION_RIGHT,
-				Button.ICON_POSITION_BOTTOM,
-				Button.ICON_POSITION_LEFT,
-				Button.ICON_POSITION_LEFT_BASELINE,
-				Button.ICON_POSITION_RIGHT_BASELINE,
-				//Button.ICON_POSITION_MANUAL,
+				RelativePosition.TOP,
+				RelativePosition.RIGHT,
+				RelativePosition.BOTTOM,
+				RelativePosition.LEFT,
+				RelativePosition.LEFT_BASELINE,
+				RelativePosition.RIGHT_BASELINE,
+				//RelativePosition.MANUAL,
 			]);
-			this._iconPositionPicker.listProperties.typicalItem = Button.ICON_POSITION_RIGHT_BASELINE;
+			this._iconPositionPicker.listProperties.typicalItem = RelativePosition.RIGHT_BASELINE;
 			this._iconPositionPicker.selectedItem = this.settings.iconPosition;
 			this._iconPositionPicker.addEventListener(Event.CHANGE, iconPositionPicker_changeHandler);
 
@@ -125,16 +126,16 @@ package feathers.examples.componentsExplorer.screens
 			this._accessoryTypePicker.addEventListener(Event.CHANGE, accessoryTypePicker_changeHandler);
 
 			this._accessoryPositionPicker = new PickerList();
-			this._accessoryPositionPicker.typicalItem = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;
+			this._accessoryPositionPicker.typicalItem = RelativePosition.BOTTOM;
 			this._accessoryPositionPicker.dataProvider = new ListCollection(new <String>
 			[
-				BaseDefaultItemRenderer.ACCESSORY_POSITION_TOP,
-				BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT,
-				BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM,
-				BaseDefaultItemRenderer.ACCESSORY_POSITION_LEFT,
-				//BaseDefaultItemRenderer.ACCESSORY_POSITION_MANUAL,
+				RelativePosition.TOP,
+				RelativePosition.RIGHT,
+				RelativePosition.BOTTOM,
+				RelativePosition.LEFT,
+				//RelativePosition.MANUAL,
 			]);
-			this._accessoryPositionPicker.listProperties.typicalItem = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;
+			this._accessoryPositionPicker.listProperties.typicalItem = RelativePosition.BOTTOM;
 			this._accessoryPositionPicker.selectedItem = this.settings.accessoryPosition;
 			this._accessoryPositionPicker.addEventListener(Event.CHANGE, accessoryPositionPicker_changeHandler);
 

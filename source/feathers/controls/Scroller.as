@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
@@ -339,16 +340,24 @@ package feathers.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
-		 * The vertical scroll bar will be positioned on the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
 
 		/**
-		 * The vertical scroll bar will be positioned on the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
 
@@ -995,7 +1004,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalScrollBarPosition:String = VERTICAL_SCROLL_BAR_POSITION_RIGHT;
+		protected var _verticalScrollBarPosition:String = RelativePosition.RIGHT;
 
 		[Inspectable(type="String",enumeration="right,left")]
 		/**
@@ -1004,12 +1013,12 @@ package feathers.controls
 		 * <p>In the following example, the scroll bars is positioned on the left:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.verticalScrollBarPosition = Scroller.VERTICAL_SCROLL_BAR_POSITION_LEFT;</listing>
+		 * scroller.verticalScrollBarPosition = RelativePosition.LEFT;</listing>
 		 *
-		 * @default Scroller.VERTICAL_SCROLL_BAR_POSITION_RIGHT
+		 * @default feathers.layout.RelativePosition.RIGHT
 		 *
-		 * @see #VERTICAL_SCROLL_BAR_POSITION_RIGHT
-		 * @see #VERTICAL_SCROLL_BAR_POSITION_LEFT
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#LEFT
 		 */
 		public function get verticalScrollBarPosition():String
 		{
@@ -4096,7 +4105,7 @@ package feathers.controls
 					this._hasVerticalScrollBar = true;
 					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
 					{
-						if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+						if(this._verticalScrollBarPosition == RelativePosition.LEFT)
 						{
 							this._leftViewPortOffset += this.verticalScrollBar.width;
 						}
@@ -4245,7 +4254,7 @@ package feathers.controls
 
 			if(this.verticalScrollBar)
 			{
-				if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+				if(this._verticalScrollBarPosition == RelativePosition.LEFT)
 				{
 					this.verticalScrollBar.x = this._paddingLeft;
 				}

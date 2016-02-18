@@ -76,6 +76,7 @@ package feathers.themes
 	import feathers.core.PopUpManager;
 	import feathers.core.ToolTipManager;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
 	import feathers.media.MuteToggleButton;
@@ -1198,7 +1199,7 @@ package feathers.themes
 			icon.disabledTexture = this.backButtonDisabledIconTexture;
 			button.defaultIcon = icon;
 			
-			button.iconPosition = Button.ICON_POSITION_LEFT_BASELINE;
+			button.iconPosition = RelativePosition.LEFT_BASELINE;
 		}
 
 		protected function setForwardButtonStyles(button:Button):void
@@ -1209,7 +1210,7 @@ package feathers.themes
 			icon.disabledTexture = this.forwardButtonDisabledIconTexture;
 			button.defaultIcon = icon;
 			
-			button.iconPosition = Button.ICON_POSITION_RIGHT_BASELINE;
+			button.iconPosition = RelativePosition.RIGHT_BASELINE;
 		}
 		
 		protected function setButtonLabelStyles(textRenderer:TextFieldTextRenderer):void
@@ -1296,7 +1297,7 @@ package feathers.themes
 		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
 			this.setItemRendererStyles(itemRenderer);
-			itemRenderer.accessoryPosition = DefaultListItemRenderer.ACCESSORY_POSITION_LEFT;
+			itemRenderer.accessoryPosition = RelativePosition.LEFT;
 			itemRenderer.accessoryGap = this.smallGutterSize;
 		}
 
@@ -1387,8 +1388,8 @@ package feathers.themes
 
 			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
 
-			renderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.iconPosition = RelativePosition.LEFT;
+			renderer.accessoryPosition = RelativePosition.RIGHT;
 
 			renderer.paddingTop = this.extraSmallGutterSize;
 			renderer.paddingBottom = this.extraSmallGutterSize;
@@ -1541,8 +1542,8 @@ package feathers.themes
 
 			itemRenderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 
-			itemRenderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
-			itemRenderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
 
 			itemRenderer.paddingTop = this.extraSmallGutterSize;
 			itemRenderer.paddingBottom = this.extraSmallGutterSize;
@@ -1586,8 +1587,8 @@ package feathers.themes
 
 			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
 
-			itemRenderer.iconPosition = BaseDefaultItemRenderer.ICON_POSITION_LEFT;
-			itemRenderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
 
 			itemRenderer.paddingTop = this.extraSmallGutterSize;
 			itemRenderer.paddingBottom = this.extraSmallGutterSize;
@@ -1757,7 +1758,7 @@ package feathers.themes
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
 			button.minGap = this.smallGutterSize;
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			button.iconPosition = Button.ICON_POSITION_RIGHT;
+			button.iconPosition = RelativePosition.RIGHT;
 			button.paddingRight = this.smallGutterSize;
 		}
 
