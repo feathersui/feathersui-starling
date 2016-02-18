@@ -171,5 +171,10 @@ package feathers.core
 		 * @copy feathers.core.FeathersControl#move()
 		 */
 		function move(x:Number, y:Number):void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#resetStyleProvider()
+		 */
+		function resetStyleProvider():void;
 	}
 }

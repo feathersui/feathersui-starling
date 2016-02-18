@@ -1923,6 +1923,18 @@ package feathers.core
 		}
 
 		/**
+		 * Resets the <code>styleProvider</code> property to its default value,
+		 * which is usually the global style provider for the component.
+		 * 
+		 * @see #styleProvider
+		 * @see #defaultStyleProvider
+		 */
+		public function resetStyleProvider():void
+		{
+			this.styleProvider = this.defaultStyleProvider;
+		}
+
+		/**
 		 * <p>The implementation of this method is provided for convenience, but
 		 * it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
