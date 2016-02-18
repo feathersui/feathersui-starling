@@ -180,11 +180,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-
-		/**
-		 * @private
-		 */
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
@@ -677,6 +672,114 @@ package feathers.controls
 				return;
 			}
 			this._textureSmoothing = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _scale9Grid:Rectangle;
+
+		/**
+		 * The <code>scale9Grid</code> value to use on the internal <code>Image</code>.
+		 *
+		 * <p>In the following example, the image loader's scale9Grid is set to a
+		 * custom value:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.scale9Grid = Rectangle(2, 3, 7, 12);</listing>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#scale9Grid starling.display.Image.scale9Grid
+		 */
+		public function get scale9Grid():Rectangle
+		{
+			return this._scale9Grid;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scale9Grid(value:Rectangle):void
+		{
+			if(this._scale9Grid == value)
+			{
+				return;
+			}
+			this._scale9Grid = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _tileGrid:Rectangle;
+
+		/**
+		 * The <code>tileGrid</code> value to use on the internal <code>Image</code>.
+		 *
+		 * <p>In the following example, the image loader's tileGrid is set to a
+		 * custom value:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.tileGrid = Rectangle();</listing>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#tileGrid starling.display.Image.tileGrid
+		 */
+		public function get tileGrid():Rectangle
+		{
+			return this._tileGrid;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set tileGrid(value:Rectangle):void
+		{
+			if(this._tileGrid == value)
+			{
+				return;
+			}
+			this._tileGrid = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _pixelSnapping:Boolean = true;
+
+		/**
+		 * The <code>pixelSnapping</code> value to use on the internal <code>Image</code>.
+		 *
+		 * <p>In the following example, the image loader's pixelSnapping is
+		 * disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.pixelSnapping = false;</listing>
+		 *
+		 * @default true
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#pixelSnapping starling.display.Mesh.pixelSnapping
+		 */
+		public function get pixelSnapping():Boolean
+		{
+			return this._pixelSnapping;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pixelSnapping(value:Boolean):void
+		{
+			if(this._pixelSnapping == value)
+			{
+				return;
+			}
+			this._pixelSnapping = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1551,6 +1654,9 @@ package feathers.controls
 			}
 			this.image.textureSmoothing = this._textureSmoothing;
 			this.image.color = this._color;
+			this.image.scale9Grid = this._scale9Grid;
+			this.image.tileGrid = this._tileGrid;
+			this.image.pixelSnapping = this._pixelSnapping;
 		}
 
 		/**
