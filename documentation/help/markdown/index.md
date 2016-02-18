@@ -121,6 +121,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`TextArea`](text-area.html)
 
+-   [`TextCallout`](text-callout.html)
+
 -   [`TextInput`](text-input.html)
 
 -   [`ToggleButton`](toggle-button.html)
