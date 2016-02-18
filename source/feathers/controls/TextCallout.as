@@ -193,7 +193,7 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var textRendererStyleName:String;
+		protected var textRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER;
 
 		/**
 		 * @private
