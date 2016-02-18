@@ -4006,8 +4006,12 @@ package feathers.controls
 		 */
 		protected function showOrHideChildren():void
 		{
-			var isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
 			var childCount:int = this.numRawChildrenInternal;
+			if(this._touchBlocker)
+			{
+				//keep scroll bars below the touch blocker, if it exists
+				childCount--;
+			}
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.visible = this._hasVerticalScrollBar;
