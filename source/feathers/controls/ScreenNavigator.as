@@ -230,7 +230,12 @@ package feathers.controls
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = events[eventName];
 				if(eventAction is Function)
 				{
@@ -275,7 +280,12 @@ package feathers.controls
 			var savedScreenEvents:Object = this._screenEvents[this._activeScreenID];
 			for(var eventName:String in events)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = events[eventName];
 				if(eventAction is Function)
 				{
