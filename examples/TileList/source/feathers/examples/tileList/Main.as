@@ -9,6 +9,7 @@ package feathers.examples.tileList
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.text.BitmapFontTextFormat;
@@ -142,8 +143,8 @@ package feathers.examples.tileList
 			var listLayout:TiledRowsLayout = new TiledRowsLayout();
 			listLayout.paging = TiledRowsLayout.PAGING_HORIZONTAL;
 			listLayout.useSquareTiles = false;
-			listLayout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
-			listLayout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_CENTER;
+			listLayout.tileHorizontalAlign = HorizontalAlign.CENTER;
+			listLayout.horizontalAlign = HorizontalAlign.CENTER;
 			listLayout.padding = 20;
 			listLayout.gap = 20;
 			this._list.layout = listLayout;

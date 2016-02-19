@@ -2,7 +2,9 @@ package feathers.examples.componentsExplorer.data
 {
 	import feathers.controls.Button;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 
 	public class ItemRendererSettings
 	{
@@ -23,7 +25,7 @@ package feathers.examples.componentsExplorer.data
 		public var accessoryPosition:String = RelativePosition.RIGHT;
 		public var accessoryType:String = ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
 		public var useInfiniteAccessoryGap:Boolean = true;
-		public var horizontalAlign:String = Button.HORIZONTAL_ALIGN_LEFT;
-		public var verticalAlign:String = Button.VERTICAL_ALIGN_MIDDLE;
+		public var horizontalAlign:String = HorizontalAlign.LEFT;
+		public var verticalAlign:String = VerticalAlign.MIDDLE;
 	}
 }

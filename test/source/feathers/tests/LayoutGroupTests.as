@@ -2,6 +2,8 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
@@ -206,8 +208,8 @@ package feathers.tests
 			this._group.addChild(child);
 			this._group.backgroundSkin = new Quad(LARGE_BACKGROUND_WIDTH, LARGE_BACKGROUND_HEIGHT);
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			this._group.layout = layout;
 			this._group.validate();
 			Assert.assertTrue("The layout group does not account for the background skin width when passing bounds to the layout.",

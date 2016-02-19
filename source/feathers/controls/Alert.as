@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -695,7 +696,7 @@ package feathers.controls
 			if(!this.layout)
 			{
 				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				this.layout = layout;
 			}
 			super.initialize();

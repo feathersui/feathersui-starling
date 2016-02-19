@@ -9,10 +9,12 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
@@ -88,44 +90,68 @@ package feathers.controls
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The symbols will be vertically aligned to the top.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The symbols will be vertically aligned to the middle.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The symbols will be vertically aligned to the bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The symbols will be horizontally aligned to the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The symbols will be horizontally aligned to the center.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The symbols will be horizontally aligned to the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -372,7 +398,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
@@ -382,13 +408,13 @@ package feathers.controls
 		 * the right:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.horizontalAlign = PageIndicator.HORIZONTAL_ALIGN_RIGHT;</listing>
+		 * pages.horizontalAlign = HorizontalAlign.RIGHT;</listing>
 		 *
-		 * @default PageIndicator.HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -411,7 +437,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
@@ -421,13 +447,13 @@ package feathers.controls
 		 * the bottom:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.verticalAlign = PageIndicator.VERTICAL_ALIGN_BOTTOM;</listing>
+		 * pages.verticalAlign = VerticalAlign.BOTTOM;</listing>
 		 *
-		 * @default PageIndicator.VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
 		 */
 		public function get verticalAlign():String
 		{

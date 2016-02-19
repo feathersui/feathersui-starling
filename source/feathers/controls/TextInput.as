@@ -20,6 +20,7 @@ package feathers.controls
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 
 	import flash.display.InteractiveObject;
@@ -314,34 +315,46 @@ package feathers.controls
 		public static const ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
 
 		/**
-		 * The text editor, icon, and prompt will be aligned vertically to the
-		 * top edge of the text input.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The text editor, icon, and prompt will be aligned vertically to the
-		 * middle of the text input.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The text editor, icon, and prompt will be aligned vertically to the
-		 * bottom edge of the text input.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The text editor will fill the full height of the text input (minus
-		 * top and bottom padding).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -1765,7 +1778,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
@@ -1775,14 +1788,14 @@ package feathers.controls
 		 * <p>The following example aligns the text editor to the top:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.verticalAlign = TextInput.VERTICAL_ALIGN_TOP;</listing>
+		 * input.verticalAlign = VerticalAlign.TOP;</listing>
 		 *
-		 * @default TextInput.VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
-		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -2413,7 +2426,7 @@ package feathers.controls
 			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
-			if(this._typicalText !== null && (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY || isMultiline))
+			if(this._typicalText !== null && (this._verticalAlign == VerticalAlign.JUSTIFY || isMultiline))
 			{
 				this.textEditor.width = oldTextEditorWidth;
 				this.textEditor.height = oldTextEditorHeight;
@@ -2755,7 +2768,7 @@ package feathers.controls
 			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
-			if(isMultiline || this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
+			if(isMultiline || this._verticalAlign == VerticalAlign.JUSTIFY)
 			{
 				//multiline is treated the same as justify
 				this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
@@ -2804,7 +2817,7 @@ package feathers.controls
 			{
 				switch(this._verticalAlign)
 				{
-					case VERTICAL_ALIGN_JUSTIFY:
+					case VerticalAlign.JUSTIFY:
 					{
 						this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
 						if(this.promptTextRenderer)
@@ -2818,7 +2831,7 @@ package feathers.controls
 						}
 						break;
 					}
-					case VERTICAL_ALIGN_TOP:
+					case VerticalAlign.TOP:
 					{
 						this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
 						if(this.promptTextRenderer)
@@ -2831,7 +2844,7 @@ package feathers.controls
 						}
 						break;
 					}
-					case VERTICAL_ALIGN_BOTTOM:
+					case VerticalAlign.BOTTOM:
 					{
 						this.textEditor.y = this.actualHeight - this._paddingBottom - biggerHeight + biggerBaseline - this.textEditor.baseline;
 						if(this.promptTextRenderer)

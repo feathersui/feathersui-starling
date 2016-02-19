@@ -49,11 +49,11 @@ package feathers.layout
 		 * <p>Performance tip: If all items in your layout will have 100% width,
 		 * it's better to set the <code>horizontalAlign</code> property of the
 		 * <code>VerticalLayout</code> to
-		 * <code>VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY</code>.</p>
+		 * <code>HorizontalAlign.JUSTIFY</code>.</p>
 		 *
 		 * @default NaN
 		 * 
-		 * @see feathers.layout.VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalLayout#horizontalAlign
 		 */
 		public function get percentWidth():Number
 		{

@@ -888,7 +888,7 @@ package feathers.controls.text
 		 *
 		 * When setting this property to <code>true</code>, it is recommended
 		 * that the text input's <code>verticalAlign</code> property is set to
-		 * <code>TextInput.VERTICAL_ALIGN_JUSTIFY</code>.
+		 * <code>VerticalAlign.JUSTIFY</code>.
 		 *
 		 * @default false
 		 *

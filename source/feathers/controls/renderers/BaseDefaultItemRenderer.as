@@ -19,8 +19,10 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -278,44 +280,68 @@ package feathers.controls.renderers
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_LEFT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see feathers.controls.Button#horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_CENTER
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see feathers.controls.Button#horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_RIGHT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Button#horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_TOP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see feathers.controls.Button#verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_MIDDLE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see feathers.controls.Button#verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_BOTTOM
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see feathers.controls.Button#verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
@@ -4620,11 +4646,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+					if(this._verticalAlign == VerticalAlign.TOP)
 					{
 						newRelativeToY += object.height + gap;
 					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
 					{
 						newRelativeToY += Math.round((object.height + gap) / 2);
 					}
@@ -4644,11 +4670,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					if(this._horizontalAlign == HorizontalAlign.RIGHT)
 					{
 						newRelativeToX -= (object.width + gap);
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						newRelativeToX -= Math.round((object.width + gap) / 2);
 					}
@@ -4668,11 +4694,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					if(this._verticalAlign == VerticalAlign.BOTTOM)
 					{
 						newRelativeToY -= (object.height + gap);
 					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
 					{
 						newRelativeToY -= Math.round((object.height + gap) / 2);
 					}
@@ -4692,11 +4718,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+					if(this._horizontalAlign == HorizontalAlign.LEFT)
 					{
 						newRelativeToX += gap + object.width;
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						newRelativeToX += Math.round((gap + object.width) / 2);
 					}
@@ -4771,11 +4797,11 @@ package feathers.controls.renderers
 
 			if(position == RelativePosition.LEFT || position == RelativePosition.RIGHT)
 			{
-				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+				if(this._verticalAlign == VerticalAlign.TOP)
 				{
 					object.y = this._paddingTop;
 				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				else if(this._verticalAlign == VerticalAlign.BOTTOM)
 				{
 					object.y = this.actualHeight - this._paddingBottom - object.height;
 				}
@@ -4786,11 +4812,11 @@ package feathers.controls.renderers
 			}
 			else if(position == RelativePosition.TOP || position == RelativePosition.BOTTOM)
 			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				if(this._horizontalAlign == HorizontalAlign.LEFT)
 				{
 					object.x = this._paddingLeft;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				else if(this._horizontalAlign == HorizontalAlign.RIGHT)
 				{
 					object.x = this.actualWidth - this._paddingRight - object.width;
 				}

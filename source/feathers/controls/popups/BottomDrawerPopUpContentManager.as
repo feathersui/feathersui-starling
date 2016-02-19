@@ -11,6 +11,7 @@ package feathers.controls.popups
 	import feathers.controls.Header;
 	import feathers.controls.Panel;
 	import feathers.core.PopUpManager;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
@@ -277,7 +278,7 @@ package feathers.controls.popups
 			this.content = content;
 			
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 			
 			this.panel = new Panel();
 			if(this.customPanelStyleName)

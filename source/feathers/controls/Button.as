@@ -16,7 +16,9 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.touch.LongPress;
@@ -330,44 +332,68 @@ package feathers.controls
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 		
 		/**
-		 * The icon and label will be aligned horizontally to the left edge of the button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 		
 		/**
-		 * The icon and label will be aligned horizontally to the center of the button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 		
 		/**
-		 * The icon and label will be aligned horizontally to the right edge of the button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 		
 		/**
-		 * The icon and label will be aligned vertically to the top edge of the button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 		
 		/**
-		 * The icon and label will be aligned vertically to the middle of the button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 		
 		/**
-		 * The icon and label will be aligned vertically to the bottom edge of the button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
@@ -643,7 +669,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
@@ -653,13 +679,13 @@ package feathers.controls
 		 * <p>The following example aligns the button's content to the left:</p>
 		 *
 		 * <listing version="3.0">
-		 * button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;</listing>
+		 * button.horizontalAlign = HorizontalAlign.LEFT;</listing>
 		 *
-		 * @default Button.HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -682,7 +708,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
@@ -692,13 +718,13 @@ package feathers.controls
 		 * <p>The following example aligns the button's content to the top:</p>
 		 *
 		 * <listing version="3.0">
-		 * button.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
+		 * button.verticalAlign = VerticalAlign.TOP;</listing>
 		 *
-		 * @default Button.VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -2612,11 +2638,11 @@ package feathers.controls
 		 */
 		protected function positionSingleChild(displayObject:DisplayObject):void
 		{
-			if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+			if(this._horizontalAlign == HorizontalAlign.LEFT)
 			{
 				displayObject.x = this._paddingLeft;
 			}
-			else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+			else if(this._horizontalAlign == HorizontalAlign.RIGHT)
 			{
 				displayObject.x = this.actualWidth - this._paddingRight - displayObject.width;
 			}
@@ -2624,11 +2650,11 @@ package feathers.controls
 			{
 				displayObject.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - displayObject.width) / 2);
 			}
-			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+			if(this._verticalAlign == VerticalAlign.TOP)
 			{
 				displayObject.y = this._paddingTop;
 			}
-			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+			else if(this._verticalAlign == VerticalAlign.BOTTOM)
 			{
 				displayObject.y = this.actualHeight - this._paddingBottom - displayObject.height;
 			}
@@ -2652,11 +2678,11 @@ package feathers.controls
 				}
 				else
 				{
-					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+					if(this._verticalAlign == VerticalAlign.TOP)
 					{
 						this.labelTextRenderer.y += this.currentIcon.height + this._gap;
 					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
 					{
 						this.labelTextRenderer.y += Math.round((this.currentIcon.height + this._gap) / 2);
 					}
@@ -2672,11 +2698,11 @@ package feathers.controls
 				}
 				else
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					if(this._horizontalAlign == HorizontalAlign.RIGHT)
 					{
 						this.labelTextRenderer.x -= this.currentIcon.width + this._gap;
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						this.labelTextRenderer.x -= Math.round((this.currentIcon.width + this._gap) / 2);
 					}
@@ -2692,11 +2718,11 @@ package feathers.controls
 				}
 				else
 				{
-					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					if(this._verticalAlign == VerticalAlign.BOTTOM)
 					{
 						this.labelTextRenderer.y -= this.currentIcon.height + this._gap;
 					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
 					{
 						this.labelTextRenderer.y -= Math.round((this.currentIcon.height + this._gap) / 2);
 					}
@@ -2712,11 +2738,11 @@ package feathers.controls
 				}
 				else
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+					if(this._horizontalAlign == HorizontalAlign.LEFT)
 					{
 						this.labelTextRenderer.x += this._gap + this.currentIcon.width;
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						this.labelTextRenderer.x += Math.round((this._gap + this.currentIcon.width) / 2);
 					}
@@ -2726,11 +2752,11 @@ package feathers.controls
 			
 			if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.RIGHT)
 			{
-				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+				if(this._verticalAlign == VerticalAlign.TOP)
 				{
 					this.currentIcon.y = this._paddingTop;
 				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				else if(this._verticalAlign == VerticalAlign.BOTTOM)
 				{
 					this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
 				}
@@ -2745,11 +2771,11 @@ package feathers.controls
 			}
 			else //top or bottom
 			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				if(this._horizontalAlign == HorizontalAlign.LEFT)
 				{
 					this.currentIcon.x = this._paddingLeft;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				else if(this._horizontalAlign == HorizontalAlign.RIGHT)
 				{
 					this.currentIcon.x = this.actualWidth - this._paddingRight - this.currentIcon.width;
 				}

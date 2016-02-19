@@ -1,6 +1,8 @@
 package feathers.examples.layoutExplorer.data
 {
 	import feathers.layout.FlowLayout;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 
 	public class FlowLayoutSettings
 	{
@@ -9,9 +11,9 @@ package feathers.examples.layoutExplorer.data
 		}
 
 		public var itemCount:int = 75;
-		public var horizontalAlign:String = FlowLayout.HORIZONTAL_ALIGN_LEFT;
-		public var verticalAlign:String = FlowLayout.VERTICAL_ALIGN_TOP;
-		public var rowVerticalAlign:String = FlowLayout.VERTICAL_ALIGN_TOP;
+		public var horizontalAlign:String = HorizontalAlign.LEFT;
+		public var verticalAlign:String = VerticalAlign.TOP;
+		public var rowVerticalAlign:String = VerticalAlign.TOP;
 		public var horizontalGap:Number = 2;
 		public var verticalGap:Number = 2;
 		public var paddingTop:Number = 0;

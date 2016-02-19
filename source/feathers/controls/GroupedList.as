@@ -17,8 +17,10 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -2816,8 +2818,8 @@ package feathers.controls
 				layout.useVirtualLayout = true;
 				layout.padding = 0;
 				layout.gap = 0;
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+				layout.verticalAlign = VerticalAlign.TOP;
 				layout.stickyHeader = !this._styleNameList.contains(ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST);
 				this.layout = layout;
 			}

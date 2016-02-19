@@ -2,7 +2,9 @@ package feathers.examples.drawersExplorer.skins
 {
 	import feathers.examples.drawersExplorer.views.ContentView;
 	import feathers.examples.drawersExplorer.views.DrawerView;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
 
@@ -32,7 +34,7 @@ package feathers.examples.drawersExplorer.skins
 			this.setScrollerStyles(view);
 			
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
 			layout.padding = this.gutterSize;
 			layout.gap = this.gutterSize;
 			view.layout = layout;
@@ -46,8 +48,8 @@ package feathers.examples.drawersExplorer.skins
 			view.backgroundSkin = new Quad(10, 10, LIST_BACKGROUND_COLOR);
 
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			layout.padding = this.smallGutterSize;
 			layout.gap = this.smallGutterSize;
 			view.layout = layout;
@@ -61,8 +63,8 @@ package feathers.examples.drawersExplorer.skins
 			view.backgroundSkin = new Quad(10, 10, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
 			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			layout.padding = this.smallGutterSize;
 			layout.gap = this.smallGutterSize;
 			view.layout = layout;

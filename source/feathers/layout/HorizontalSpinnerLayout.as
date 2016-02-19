@@ -49,30 +49,46 @@ package feathers.layout
 	public class HorizontalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{
 		/**
-		 * The items will be aligned to the top of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The items will be aligned to the middle of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The items will be aligned to the bottom of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The items will fill the height of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -200,18 +216,18 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
+		protected var _verticalAlign:String = VerticalAlign.TOP;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
 		 *
-		 * @default HorizontalLayout.VERTICAL_ALIGN_TOP
+		 * @default feathers.layout.VerticalAlign.TOP
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
-		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -590,7 +606,7 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			if(!this._useVirtualLayout || this._verticalAlign != VERTICAL_ALIGN_JUSTIFY ||
+			if(!this._useVirtualLayout || this._verticalAlign != VerticalAlign.JUSTIFY ||
 				explicitHeight !== explicitHeight) //isNaN
 			{
 				//in some cases, we may need to validate all of the items so
@@ -765,7 +781,7 @@ package feathers.layout
 				}
 
 				//in this section, we handle vertical alignment
-				if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
+				if(this._verticalAlign == VerticalAlign.JUSTIFY)
 				{
 					//if we justify items vertically, we can skip percent height
 					item.y = item.pivotY + boundsY + this._paddingTop;
@@ -782,12 +798,12 @@ package feathers.layout
 					}
 					switch(this._verticalAlign)
 					{
-						case VERTICAL_ALIGN_BOTTOM:
+						case VerticalAlign.BOTTOM:
 						{
 							item.y = item.pivotY + boundsY + verticalAlignHeight - this._paddingBottom - item.height;
 							break;
 						}
-						case VERTICAL_ALIGN_MIDDLE:
+						case VerticalAlign.MIDDLE:
 						{
 							//round to the nearest pixel when dividing by 2 to
 							//align in the middle
@@ -823,7 +839,7 @@ package feathers.layout
 				result.contentWidth = totalWidth;
 			}
 			result.contentY = 0;
-			result.contentHeight = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY ? availableHeight : totalHeight;
+			result.contentHeight = this._verticalAlign == VerticalAlign.JUSTIFY ? availableHeight : totalHeight;
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;
 			return result;
@@ -1041,7 +1057,7 @@ package feathers.layout
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
-			var isJustified:Boolean = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY;
+			var isJustified:Boolean = this._verticalAlign == VerticalAlign.JUSTIFY;
 			var mustSetJustifyHeight:Boolean = isJustified && justifyHeight === justifyHeight; //!isNaN
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -1083,7 +1099,7 @@ package feathers.layout
 			{
 				this._typicalItem.width = this._typicalItemWidth;
 			}
-			if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY &&
+			if(this._verticalAlign == VerticalAlign.JUSTIFY &&
 				justifyHeight === justifyHeight) //!isNaN
 			{
 				this._typicalItem.height = justifyHeight;

@@ -72,8 +72,10 @@ package feathers.themes
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
 	import feathers.media.MuteToggleButton;
@@ -858,8 +860,8 @@ package feathers.themes
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
 			group.direction = ButtonGroup.DIRECTION_VERTICAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.horizontalAlign = HorizontalAlign.JUSTIFY;
+			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.gap = this.smallGutterSize;
 			group.padding = this.smallGutterSize;
 		}
@@ -1084,8 +1086,8 @@ package feathers.themes
 			check.minHeight = this.controlSize;
 			check.minTouchWidth = this.gridSize;
 			check.minTouchHeight = this.gridSize;
-			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
-			check.verticalAlign = Check.VERTICAL_ALIGN_MIDDLE;
+			check.horizontalAlign = HorizontalAlign.LEFT;
+			check.verticalAlign = VerticalAlign.MIDDLE;
 		}
 		
 		protected function setCheckLabelStyles(textRenderer:BitmapFontTextRenderer):void
@@ -1179,8 +1181,8 @@ package feathers.themes
 			layout.padding = this.gutterSize;
 			layout.paddingTop = 0;
 			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.verticalAlign = VerticalAlign.TOP;
 			list.layout = layout;
 		}
 
@@ -1252,7 +1254,7 @@ package feathers.themes
 				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.padding = this.smallGutterSize;
 				layout.gap = this.smallGutterSize;
-				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+				layout.verticalAlign = VerticalAlign.MIDDLE;
 				group.layout = layout;
 			}
 
@@ -1306,7 +1308,7 @@ package feathers.themes
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
 			renderer.minTouchHeight = this.gridSize;
-			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.iconPosition = RelativePosition.LEFT;
 			renderer.accessoryPosition = RelativePosition.RIGHT;
 		}
@@ -1363,7 +1365,7 @@ package feathers.themes
 			itemRenderer.gap = Number.POSITIVE_INFINITY;
 			itemRenderer.minGap = this.gutterSize;
 			itemRenderer.iconPosition = RelativePosition.RIGHT;
-			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.accessoryGap = this.smallGutterSize;
 			itemRenderer.minAccessoryGap = this.smallGutterSize;
 			itemRenderer.accessoryPosition = RelativePosition.BOTTOM;
@@ -1534,7 +1536,7 @@ package feathers.themes
 				//List to be too big for the BottomDrawerPopUpContentManager
 
 				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
 				list.layout = layout;
 			}
@@ -1565,7 +1567,7 @@ package feathers.themes
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
 			button.minGap = this.gutterSize;
 			button.iconPosition = RelativePosition.RIGHT;
-			button.horizontalAlign =  Button.HORIZONTAL_ALIGN_LEFT;
+			button.horizontalAlign = HorizontalAlign.LEFT;
 		}
 
 	//-------------------------
@@ -1648,8 +1650,8 @@ package feathers.themes
 			radio.minHeight = this.controlSize;
 			radio.minTouchWidth = this.gridSize;
 			radio.minTouchHeight = this.gridSize;
-			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
-			radio.verticalAlign = Radio.VERTICAL_ALIGN_MIDDLE;
+			radio.horizontalAlign = HorizontalAlign.LEFT;
+			radio.verticalAlign = VerticalAlign.MIDDLE;
 		}
 
 		protected function setRadioLabelStyles(textRenderer:BitmapFontTextRenderer):void
@@ -1817,7 +1819,7 @@ package feathers.themes
 			renderer.gap = Number.POSITIVE_INFINITY;
 			renderer.minGap = this.gutterSize;
 			renderer.iconPosition = RelativePosition.RIGHT;
-			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.gutterSize;
 			renderer.accessoryPosition = RelativePosition.RIGHT;
@@ -2192,7 +2194,7 @@ package feathers.themes
 		{
 			var defaultSkin:ImageLoader = new ImageLoader();
 			defaultSkin.scaleContent = false;
-			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.horizontalAlign = HorizontalAlign.RIGHT;
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
 			track.defaultSkin = defaultSkin;
 			

@@ -73,8 +73,10 @@ package feathers.themes
 	import feathers.core.FocusManager;
 	import feathers.core.PopUpManager;
 	import feathers.core.ToolTipManager;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
 	import feathers.media.MuteToggleButton;
@@ -1115,8 +1117,8 @@ package feathers.themes
 			layout.useVirtualLayout = true;
 			layout.padding = 0;
 			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.verticalAlign = VerticalAlign.TOP;
 			layout.resetTypicalItemDimensionsOnMeasure = true;
 			list.layout = layout;
 			list.maxHeight = this.wideControlSize;
@@ -1149,8 +1151,8 @@ package feathers.themes
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
 			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.horizontalAlign = HorizontalAlign.CENTER;
+			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
 			group.gap = this.smallGutterSize;
 			group.padding = this.smallGutterSize;
@@ -1397,7 +1399,7 @@ package feathers.themes
 			check.focusPaddingLeft = this.focusPaddingSize;
 			check.focusPaddingRight = this.focusPaddingSize;
 
-			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
+			check.horizontalAlign = HorizontalAlign.LEFT;
 			check.gap = this.smallGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
@@ -1464,7 +1466,7 @@ package feathers.themes
 		{
 			renderer.backgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1480,7 +1482,7 @@ package feathers.themes
 
 			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
 
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
+			renderer.horizontalAlign = HorizontalAlign.CENTER;
 
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1574,7 +1576,7 @@ package feathers.themes
 				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.padding = this.gutterSize;
 				layout.gap = this.smallGutterSize;
-				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+				layout.verticalAlign = VerticalAlign.MIDDLE;
 				group.layout = layout;
 			}
 
@@ -1619,7 +1621,7 @@ package feathers.themes
 			skin.height = this.controlSize;
 			renderer.defaultSkin = skin;
 
-			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -1665,7 +1667,7 @@ package feathers.themes
 			itemRenderer.customIconLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL;
 			itemRenderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL;
 
-			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
 			itemRenderer.paddingBottom = this.smallGutterSize;
 			itemRenderer.paddingLeft = this.gutterSize;
@@ -1922,7 +1924,7 @@ package feathers.themes
 			this.setBaseButtonStyles(button);
 
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
-			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			button.horizontalAlign = HorizontalAlign.LEFT;
 			button.iconPosition = RelativePosition.RIGHT;
 			button.minWidth = this.buttonMinWidth;
 			button.minHeight = this.controlSize;
@@ -2011,7 +2013,7 @@ package feathers.themes
 			radio.focusPaddingLeft = this.focusPaddingSize;
 			radio.focusPaddingRight = this.focusPaddingSize;
 
-			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
+			radio.horizontalAlign = HorizontalAlign.LEFT;
 			radio.gap = this.smallGutterSize;
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;
@@ -2387,8 +2389,8 @@ package feathers.themes
 		protected function setTabBarStyles(tabBar:TabBar):void
 		{
 			tabBar.distributeTabSizes = false;
-			tabBar.horizontalAlign = TabBar.HORIZONTAL_ALIGN_LEFT;
-			tabBar.verticalAlign = TabBar.VERTICAL_ALIGN_JUSTIFY;
+			tabBar.horizontalAlign = HorizontalAlign.LEFT;
+			tabBar.verticalAlign = VerticalAlign.JUSTIFY;
 		}
 
 		protected function setTabStyles(tab:ToggleButton):void
@@ -2685,7 +2687,7 @@ package feathers.themes
 		{
 			var defaultSkin:ImageLoader = new ImageLoader();
 			defaultSkin.scaleContent = false;
-			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.horizontalAlign = HorizontalAlign.RIGHT;
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
 			track.defaultSkin = defaultSkin;
 			track.hasLabelTextRenderer = false;

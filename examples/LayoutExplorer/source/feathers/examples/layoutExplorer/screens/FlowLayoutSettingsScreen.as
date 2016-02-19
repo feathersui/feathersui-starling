@@ -11,6 +11,8 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.FlowLayout;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -70,34 +72,34 @@ package feathers.examples.layoutExplorer.screens
 			this._itemCountStepper.addEventListener(Event.CHANGE, itemCountStepper_changeHandler);
 
 			this._horizontalAlignPicker = new PickerList();
-			this._horizontalAlignPicker.typicalItem = FlowLayout.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
 			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				FlowLayout.HORIZONTAL_ALIGN_LEFT,
-				FlowLayout.HORIZONTAL_ALIGN_CENTER,
-				FlowLayout.HORIZONTAL_ALIGN_RIGHT
+				HorizontalAlign.LEFT,
+				HorizontalAlign.CENTER,
+				HorizontalAlign.RIGHT
 			]);
 			this._horizontalAlignPicker.selectedItem = this.settings.horizontalAlign;
 			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);
 
 			this._verticalAlignPicker = new PickerList();
-			this._verticalAlignPicker.typicalItem = FlowLayout.VERTICAL_ALIGN_BOTTOM;
+			this._verticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
 			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				FlowLayout.VERTICAL_ALIGN_TOP,
-				FlowLayout.VERTICAL_ALIGN_MIDDLE,
-				FlowLayout.VERTICAL_ALIGN_BOTTOM,
+				VerticalAlign.TOP,
+				VerticalAlign.MIDDLE,
+				VerticalAlign.BOTTOM,
 			]);
 			this._verticalAlignPicker.selectedItem = this.settings.verticalAlign;
 			this._verticalAlignPicker.addEventListener(Event.CHANGE, verticalAlignPicker_changeHandler);
 
 			this._rowVerticalAlignPicker = new PickerList();
-			this._rowVerticalAlignPicker.typicalItem = FlowLayout.VERTICAL_ALIGN_BOTTOM;
+			this._rowVerticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
 			this._rowVerticalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				FlowLayout.VERTICAL_ALIGN_TOP,
-				FlowLayout.VERTICAL_ALIGN_MIDDLE,
-				FlowLayout.VERTICAL_ALIGN_BOTTOM,
+				VerticalAlign.TOP,
+				VerticalAlign.MIDDLE,
+				VerticalAlign.BOTTOM,
 			]);
 			this._rowVerticalAlignPicker.selectedItem = this.settings.rowVerticalAlign;
 			this._rowVerticalAlignPicker.addEventListener(Event.CHANGE, rowVerticalAlignPicker_changeHandler);

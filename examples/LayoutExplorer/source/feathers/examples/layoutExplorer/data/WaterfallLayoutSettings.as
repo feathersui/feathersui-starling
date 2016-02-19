@@ -1,5 +1,6 @@
 package feathers.examples.layoutExplorer.data
 {
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.WaterfallLayout;
 
 	public class WaterfallLayoutSettings
@@ -10,7 +11,7 @@ package feathers.examples.layoutExplorer.data
 
 		public var itemCount:int = 75;
 		public var requestedColumnCount:int = 0;
-		public var horizontalAlign:String = WaterfallLayout.HORIZONTAL_ALIGN_CENTER;
+		public var horizontalAlign:String = HorizontalAlign.CENTER;
 		public var horizontalGap:Number = 2;
 		public var verticalGap:Number = 2;
 		public var paddingTop:Number = 0;

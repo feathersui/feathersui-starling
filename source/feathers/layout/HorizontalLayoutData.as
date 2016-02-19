@@ -87,11 +87,11 @@ package feathers.layout
 		 * <p>Performance tip: If all items in your layout will have 100%
 		 * height, it's better to set the <code>verticalAlign</code> property of
 		 * the <code>HorizontalLayout</code> to
-		 * <code>HorizontalLayout.VERTICAL_ALIGN_JUSTIFY</code>.</p>
+		 * <code>VerticalAlign.JUSTIFY</code>.</p>
 		 *
 		 * @default NaN
 		 *
-		 * @see feathers.layout.HorizontalLayout.VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign.JUSTIFY
 		 */
 		public function get percentHeight():Number
 		{

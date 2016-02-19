@@ -13,10 +13,12 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.FlowLayout;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
@@ -154,68 +156,90 @@ package feathers.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The buttons will be aligned horizontally to the left edge of the
-		 * button group.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The buttons will be aligned horizontally to the center of the
-		 * button group.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The buttons will be aligned horizontally to the right edge of the
-		 * button group.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * If the direction is vertical, each button will fill the entire
-		 * width of the button group, and if the direction is horizontal, the
-		 * alignment will behave the same as <code>HORIZONTAL_ALIGN_LEFT</code>.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
 		 *
-		 * @see #horizontalAlign
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * The buttons will be aligned vertically to the top edge of the
-		 * button group.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The buttons will be aligned vertically to the middle of the
-		 * button group.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The buttons will be aligned vertically to the bottom edge of the
-		 * button group.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * If the direction is horizontal, each button will fill the entire
-		 * height of the button group, and if the direction is vertical, the
-		 * alignment will behave the same as <code>VERTICAL_ALIGN_TOP</code>.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #verticalAlign
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -479,7 +503,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
+		protected var _horizontalAlign:String = HorizontalAlign.JUSTIFY;
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
@@ -489,14 +513,14 @@ package feathers.controls
 		 * <p>The following example aligns the group's content to the left:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_LEFT;</listing>
+		 * group.horizontalAlign = HorizontalAlign.LEFT;</listing>
 		 *
-		 * @default ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY
+		 * @default feathers.layout.HorizontalAlign.JUSTIFY
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
-		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{
@@ -519,7 +543,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_JUSTIFY;
+		protected var _verticalAlign:String = VerticalAlign.JUSTIFY;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
@@ -529,14 +553,14 @@ package feathers.controls
 		 * <p>The following example aligns the group's content to the top:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_TOP;</listing>
+		 * group.verticalAlign = VerticalAlign.TOP;</listing>
 		 *
-		 * @default ButtonGroup.VERTICAL_ALIGN_JUSTIFY
+		 * @default feathers.layout.VerticalAlign.JUSTIFY
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
-		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -1238,8 +1262,8 @@ package feathers.controls
 		 * <p>The following example sets some properties on all of the buttons:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.buttonProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-		 * group.buttonProperties.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
+		 * group.buttonProperties.horizontalAlign = HorizontalAlign.LEFT;
+		 * group.buttonProperties.verticalAlign = VerticalAlign.TOP;</listing>
 		 *
 		 * <p>Setting properties in a <code>buttonFactory</code> function instead
 		 * of using <code>buttonProperties</code> will result in better
@@ -1393,7 +1417,7 @@ package feathers.controls
 				}
 				verticalLayout.distributeHeights = this._distributeButtonSizes;
 				verticalLayout.horizontalAlign = this._horizontalAlign;
-				verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
+				verticalLayout.verticalAlign = (this._verticalAlign == VerticalAlign.JUSTIFY) ? VerticalAlign.TOP : this._verticalAlign;
 				verticalLayout.gap = this._gap;
 				verticalLayout.firstGap = this._firstGap;
 				verticalLayout.lastGap = this._lastGap;
@@ -1412,7 +1436,7 @@ package feathers.controls
 						this.layout = horizontalLayout = new HorizontalLayout();
 					}
 					horizontalLayout.distributeWidths = true;
-					horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
+					horizontalLayout.horizontalAlign = (this._horizontalAlign == HorizontalAlign.JUSTIFY) ? HorizontalAlign.LEFT : this._horizontalAlign;
 					horizontalLayout.verticalAlign = this._verticalAlign;
 					horizontalLayout.gap = this._gap;
 					horizontalLayout.firstGap = this._firstGap;
@@ -1429,7 +1453,7 @@ package feathers.controls
 					{
 						this.layout = flowLayout = new FlowLayout();
 					}
-					flowLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
+					flowLayout.horizontalAlign = (this._horizontalAlign == HorizontalAlign.JUSTIFY) ? HorizontalAlign.LEFT : this._horizontalAlign;
 					flowLayout.verticalAlign = this._verticalAlign;
 					flowLayout.gap = this._gap;
 					flowLayout.firstHorizontalGap = this._firstGap;

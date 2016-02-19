@@ -14,9 +14,11 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.IVariableVirtualLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -1416,8 +1418,8 @@ package feathers.controls
 				layout.useVirtualLayout = true;
 				layout.padding = 0;
 				layout.gap = 0;
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+				layout.verticalAlign = VerticalAlign.TOP;
 				this.layout = layout;
 			}
 		}

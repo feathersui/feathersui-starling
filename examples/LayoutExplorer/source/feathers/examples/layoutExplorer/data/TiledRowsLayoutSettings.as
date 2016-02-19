@@ -1,6 +1,8 @@
 package feathers.examples.layoutExplorer.data
 {
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.TiledRowsLayout;
+	import feathers.layout.VerticalAlign;
 
 	public class TiledRowsLayoutSettings
 	{
@@ -11,10 +13,10 @@ package feathers.examples.layoutExplorer.data
 		public var paging:String = TiledRowsLayout.PAGING_NONE;
 		public var itemCount:int = 75;
 		public var requestedColumnCount:int = 0;
-		public var horizontalAlign:String = TiledRowsLayout.HORIZONTAL_ALIGN_LEFT;
-		public var verticalAlign:String = TiledRowsLayout.VERTICAL_ALIGN_TOP;
-		public var tileHorizontalAlign:String = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_LEFT;
-		public var tileVerticalAlign:String = TiledRowsLayout.TILE_VERTICAL_ALIGN_TOP;
+		public var horizontalAlign:String = HorizontalAlign.LEFT;
+		public var verticalAlign:String = VerticalAlign.TOP;
+		public var tileHorizontalAlign:String = HorizontalAlign.LEFT;
+		public var tileVerticalAlign:String = VerticalAlign.TOP;
 		public var horizontalGap:Number = 2;
 		public var verticalGap:Number = 2;
 		public var paddingTop:Number = 0;

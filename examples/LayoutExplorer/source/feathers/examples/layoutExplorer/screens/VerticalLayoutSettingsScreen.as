@@ -10,6 +10,8 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
@@ -68,24 +70,24 @@ package feathers.examples.layoutExplorer.screens
 			this._itemCountStepper.addEventListener(Event.CHANGE, itemCountStepper_changeHandler);
 
 			this._horizontalAlignPicker = new PickerList();
-			this._horizontalAlignPicker.typicalItem = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
 			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				VerticalLayout.HORIZONTAL_ALIGN_LEFT,
-				VerticalLayout.HORIZONTAL_ALIGN_CENTER,
-				VerticalLayout.HORIZONTAL_ALIGN_RIGHT,
-				VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY
+				HorizontalAlign.LEFT,
+				HorizontalAlign.CENTER,
+				HorizontalAlign.RIGHT,
+				HorizontalAlign.JUSTIFY
 			]);
 			this._horizontalAlignPicker.selectedItem = this.settings.horizontalAlign;
 			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);
 
 			this._verticalAlignPicker = new PickerList();
-			this._verticalAlignPicker.typicalItem = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
+			this._verticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
 			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				VerticalLayout.VERTICAL_ALIGN_TOP,
-				VerticalLayout.VERTICAL_ALIGN_MIDDLE,
-				VerticalLayout.VERTICAL_ALIGN_BOTTOM
+				VerticalAlign.TOP,
+				VerticalAlign.MIDDLE,
+				VerticalAlign.BOTTOM
 			]);
 			this._verticalAlignPicker.selectedItem = this.settings.verticalAlign;
 			this._verticalAlignPicker.addEventListener(Event.CHANGE, verticalAlignPicker_changeHandler);

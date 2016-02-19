@@ -10,7 +10,9 @@ package feathers.controls
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundUpToNearest;
@@ -882,8 +884,8 @@ package feathers.controls
 			if(!this.listGroup)
 			{
 				var groupLayout:HorizontalLayout = new HorizontalLayout();
-				groupLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-				groupLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
+				groupLayout.horizontalAlign = HorizontalAlign.CENTER;
+				groupLayout.verticalAlign = VerticalAlign.JUSTIFY;
 				this.listGroup = new LayoutGroup();
 				this.listGroup.layout = groupLayout;
 				this.addChild(this.listGroup);

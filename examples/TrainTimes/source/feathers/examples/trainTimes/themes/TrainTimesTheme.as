@@ -18,7 +18,9 @@ package feathers.examples.trainTimes.themes
 	import feathers.examples.trainTimes.controls.StationListItemRenderer;
 	import feathers.examples.trainTimes.screens.StationScreen;
 	import feathers.examples.trainTimes.screens.TimesScreen;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.themes.StyleNameFunctionTheme;
 
 	import flash.geom.Rectangle;
@@ -344,8 +346,8 @@ package feathers.examples.trainTimes.themes
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.paddingRight = 16;
 			layout.gap = 24;
-			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			container.layout = layout;
 		}
 

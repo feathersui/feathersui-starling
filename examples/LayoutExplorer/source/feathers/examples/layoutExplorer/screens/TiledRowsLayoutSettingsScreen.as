@@ -10,7 +10,9 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.TiledRowsLayout;
+	import feathers.layout.VerticalAlign;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -92,47 +94,47 @@ package feathers.examples.layoutExplorer.screens
 			this._pagingPicker.addEventListener(Event.CHANGE, pagingPicker_changeHandler);
 
 			this._horizontalAlignPicker = new PickerList();
-			this._horizontalAlignPicker.typicalItem = TiledRowsLayout.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
 			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				TiledRowsLayout.HORIZONTAL_ALIGN_LEFT,
-				TiledRowsLayout.HORIZONTAL_ALIGN_CENTER,
-				TiledRowsLayout.HORIZONTAL_ALIGN_RIGHT
+				HorizontalAlign.LEFT,
+				HorizontalAlign.CENTER,
+				HorizontalAlign.RIGHT
 			]);
 			this._horizontalAlignPicker.selectedItem = this.settings.horizontalAlign;
 			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);
 
 			this._verticalAlignPicker = new PickerList();
-			this._verticalAlignPicker.typicalItem = TiledRowsLayout.VERTICAL_ALIGN_BOTTOM;
+			this._verticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
 			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				TiledRowsLayout.VERTICAL_ALIGN_TOP,
-				TiledRowsLayout.VERTICAL_ALIGN_MIDDLE,
-				TiledRowsLayout.VERTICAL_ALIGN_BOTTOM
+				VerticalAlign.TOP,
+				VerticalAlign.MIDDLE,
+				VerticalAlign.BOTTOM
 			]);
 			this._verticalAlignPicker.selectedItem = this.settings.verticalAlign;
 			this._verticalAlignPicker.addEventListener(Event.CHANGE, verticalAlignPicker_changeHandler);
 
 			this._tileHorizontalAlignPicker = new PickerList();
-			this._tileHorizontalAlignPicker.typicalItem = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
+			this._tileHorizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
 			this._tileHorizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				TiledRowsLayout.TILE_HORIZONTAL_ALIGN_LEFT,
-				TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER,
-				TiledRowsLayout.TILE_HORIZONTAL_ALIGN_RIGHT,
-				TiledRowsLayout.TILE_HORIZONTAL_ALIGN_JUSTIFY
+				HorizontalAlign.LEFT,
+				HorizontalAlign.CENTER,
+				HorizontalAlign.RIGHT,
+				HorizontalAlign.JUSTIFY
 			]);
 			this._tileHorizontalAlignPicker.selectedItem = this.settings.tileHorizontalAlign;
 			this._tileHorizontalAlignPicker.addEventListener(Event.CHANGE, tileHorizontalAlignPicker_changeHandler);
 
 			this._tileVerticalAlignPicker = new PickerList();
-			this._tileVerticalAlignPicker.typicalItem = TiledRowsLayout.TILE_VERTICAL_ALIGN_BOTTOM;
+			this._tileVerticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
 			this._tileVerticalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				TiledRowsLayout.TILE_VERTICAL_ALIGN_TOP,
-				TiledRowsLayout.TILE_VERTICAL_ALIGN_MIDDLE,
-				TiledRowsLayout.TILE_VERTICAL_ALIGN_BOTTOM,
-				TiledRowsLayout.TILE_VERTICAL_ALIGN_JUSTIFY
+				VerticalAlign.TOP,
+				VerticalAlign.MIDDLE,
+				VerticalAlign.BOTTOM,
+				VerticalAlign.JUSTIFY
 			]);
 			this._tileVerticalAlignPicker.selectedItem = this.settings.tileVerticalAlign;
 			this._tileVerticalAlignPicker.addEventListener(Event.CHANGE, tileVerticalAlignPicker_changeHandler);

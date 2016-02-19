@@ -9,6 +9,7 @@ package feathers.examples.gallery
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -60,7 +61,7 @@ package feathers.examples.gallery
 			this.apiLoader.load(new URLRequest(FLICKR_URL));
 
 			var listLayout:HorizontalLayout = new HorizontalLayout();
-			listLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
+			listLayout.verticalAlign = VerticalAlign.JUSTIFY;
 			listLayout.hasVariableItemDimensions = true;
 			
 			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();

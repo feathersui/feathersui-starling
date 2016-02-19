@@ -12,7 +12,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -164,24 +166,24 @@ package feathers.examples.componentsExplorer.screens
 			this._horizontalAlignPicker = new PickerList();
 			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				Button.HORIZONTAL_ALIGN_LEFT,
-				Button.HORIZONTAL_ALIGN_CENTER,
-				Button.HORIZONTAL_ALIGN_RIGHT,
+				HorizontalAlign.LEFT,
+				HorizontalAlign.CENTER,
+				HorizontalAlign.RIGHT,
 			]);
-			this._horizontalAlignPicker.typicalItem = Button.HORIZONTAL_ALIGN_CENTER;
-			this._horizontalAlignPicker.listProperties.typicalItem = Button.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
+			this._horizontalAlignPicker.listProperties.typicalItem = HorizontalAlign.CENTER;
 			this._horizontalAlignPicker.selectedItem = this.settings.horizontalAlign;
 			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);
 
 			this._verticalAlignPicker = new PickerList();
 			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				Button.VERTICAL_ALIGN_TOP,
-				Button.VERTICAL_ALIGN_MIDDLE,
-				Button.VERTICAL_ALIGN_BOTTOM,
+				VerticalAlign.TOP,
+				VerticalAlign.MIDDLE,
+				VerticalAlign.BOTTOM,
 			]);
-			this._verticalAlignPicker.typicalItem = Button.VERTICAL_ALIGN_MIDDLE;
-			this._verticalAlignPicker.listProperties.typicalItem = Button.VERTICAL_ALIGN_MIDDLE;
+			this._verticalAlignPicker.typicalItem = VerticalAlign.MIDDLE;
+			this._verticalAlignPicker.listProperties.typicalItem = VerticalAlign.MIDDLE;
 			this._verticalAlignPicker.selectedItem = this.settings.verticalAlign;
 			this._verticalAlignPicker.addEventListener(Event.CHANGE, verticalAlignPicker_changeHandler);
 

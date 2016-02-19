@@ -71,8 +71,10 @@ package feathers.themes
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.media.FullScreenToggleButton;
 	import feathers.media.MuteToggleButton;
@@ -1153,8 +1155,8 @@ package feathers.themes
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
 			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.horizontalAlign = HorizontalAlign.CENTER;
+			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
 			group.gap = this.smallGutterSize;
 			group.padding = this.smallGutterSize;
@@ -1407,7 +1409,7 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.checkSelectedDisabledIconTexture);
 			check.defaultIcon = icon;
 
-			check.horizontalAlign = Check.HORIZONTAL_ALIGN_LEFT;
+			check.horizontalAlign = HorizontalAlign.LEFT;
 			check.gap = this.smallGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
@@ -1481,7 +1483,7 @@ package feathers.themes
 		{
 			renderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
@@ -1494,7 +1496,7 @@ package feathers.themes
 			
 			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
 
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
+			renderer.horizontalAlign = HorizontalAlign.CENTER;
 			renderer.paddingTop = renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
@@ -1525,8 +1527,8 @@ package feathers.themes
 			layout.useVirtualLayout = true;
 			layout.padding = this.smallGutterSize;
 			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.verticalAlign = VerticalAlign.TOP;
 			list.layout = layout;
 		}
 
@@ -1540,7 +1542,7 @@ package feathers.themes
 			skin.height = this.gridSize;
 			renderer.defaultSkin = skin;
 
-			renderer.horizontalAlign = DefaultGroupedListItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1581,7 +1583,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			renderer.backgroundSkin = defaultSkin;
 
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1598,7 +1600,7 @@ package feathers.themes
 
 			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
 
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
+			renderer.horizontalAlign = HorizontalAlign.CENTER;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1665,7 +1667,7 @@ package feathers.themes
 				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.padding = this.smallGutterSize;
 				layout.gap = this.smallGutterSize;
-				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+				layout.verticalAlign = VerticalAlign.MIDDLE;
 				group.layout = layout;
 			}
 			group.minWidth = this.gridSize;
@@ -1699,7 +1701,7 @@ package feathers.themes
 			skin.height = this.gridSize;
 			renderer.defaultSkin = skin;
 
-			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -1751,7 +1753,7 @@ package feathers.themes
 			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL;
 
 			renderer.itemHasIcon = false;
-			renderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -1965,7 +1967,7 @@ package feathers.themes
 				list.padding = this.smallGutterSize;
 				
 				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
 				list.layout = layout;
 			}
@@ -2064,7 +2066,7 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.radioSelectedDisabledIconTexture);
 			radio.defaultIcon = icon;
 
-			radio.horizontalAlign = Radio.HORIZONTAL_ALIGN_LEFT;
+			radio.horizontalAlign = HorizontalAlign.LEFT;
 			radio.gap = this.smallGutterSize;
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;
@@ -2095,7 +2097,7 @@ package feathers.themes
 				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.padding = this.smallGutterSize;
 				layout.gap = this.smallGutterSize;
-				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+				layout.verticalAlign = VerticalAlign.MIDDLE;
 				container.layout = layout;
 			}
 			container.minWidth = this.gridSize;
@@ -2272,7 +2274,7 @@ package feathers.themes
 			renderer.customIconLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL;
 			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL;
 
-			renderer.horizontalAlign = DefaultListItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -2409,7 +2411,7 @@ package feathers.themes
 			input.minTouchHeight = this.gridSize;
 			input.gap = this.smallGutterSize;
 			input.padding = this.smallGutterSize;
-			input.verticalAlign = TextInput.VERTICAL_ALIGN_MIDDLE;
+			input.verticalAlign = VerticalAlign.MIDDLE;
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
@@ -2644,7 +2646,7 @@ package feathers.themes
 		{
 			var defaultSkin:ImageLoader = new ImageLoader();
 			defaultSkin.scaleContent = false;
-			defaultSkin.horizontalAlign = ImageLoader.HORIZONTAL_ALIGN_RIGHT;
+			defaultSkin.horizontalAlign = HorizontalAlign.RIGHT;
 			defaultSkin.source = this.volumeSliderMaximumTrackSkinTexture;
 			track.defaultSkin = defaultSkin;
 			track.hasLabelTextRenderer = false;

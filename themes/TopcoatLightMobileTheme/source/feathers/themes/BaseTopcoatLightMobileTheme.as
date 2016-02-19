@@ -74,8 +74,10 @@ package feathers.themes
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.ImageSkin;
 	import feathers.system.DeviceCapabilities;
@@ -748,8 +750,8 @@ package feathers.themes
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
 			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.horizontalAlign = HorizontalAlign.CENTER;
+			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
 			group.gap = this.gutterSize;
 			group.padding = this.gutterSize;
@@ -1063,7 +1065,7 @@ package feathers.themes
 			backgroundSkin.scale9Grid = GROUPED_LIST_HEADER_OR_FOOTER_SCALE9_GRID;
 			headerRenderer.backgroundSkin = backgroundSkin;
 
-			headerRenderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			headerRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			headerRenderer.paddingTop = this.smallGutterSize;
 			headerRenderer.paddingRight = this.gutterSize;
 			headerRenderer.paddingBottom = this.smallGutterSize;
@@ -1072,7 +1074,7 @@ package feathers.themes
 
 		protected function setGroupedListInsetHeaderRendererStyles(headerRenderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
-			headerRenderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			headerRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			headerRenderer.paddingTop = this.gutterSize;
 			headerRenderer.paddingRight = this.gutterSize;
 			headerRenderer.paddingBottom = this.smallGutterSize;
@@ -1085,7 +1087,7 @@ package feathers.themes
 			backgroundSkin.scale9Grid = GROUPED_LIST_HEADER_OR_FOOTER_SCALE9_GRID;
 			footerRenderer.backgroundSkin = backgroundSkin;
 			
-			footerRenderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
+			footerRenderer.horizontalAlign = HorizontalAlign.CENTER;
 			footerRenderer.paddingTop = this.smallGutterSize;
 			footerRenderer.paddingRight = this.gutterSize;
 			footerRenderer.paddingBottom = this.smallGutterSize;
@@ -1094,7 +1096,7 @@ package feathers.themes
 
 		protected function setGroupedListInsetFooterRendererStyles(footerRenderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
-			footerRenderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			footerRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			footerRenderer.paddingTop = this.smallGutterSize;
 			footerRenderer.paddingRight = this.gutterSize;
 			footerRenderer.paddingBottom = this.gutterSize;
@@ -1210,7 +1212,7 @@ package feathers.themes
 
 		protected function setBaseItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
-			itemRenderer.horizontalAlign = BaseDefaultItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
 			itemRenderer.paddingRight = this.gutterSize;
 			itemRenderer.paddingBottom = this.smallGutterSize;
@@ -1421,7 +1423,7 @@ package feathers.themes
 				list.padding = this.smallGutterSize;
 
 				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
 				list.layout = layout;
 			}
@@ -1647,7 +1649,7 @@ package feathers.themes
 				return textRenderer;
 			};
 
-			itemRenderer.horizontalAlign = DefaultListItemRenderer.HORIZONTAL_ALIGN_LEFT;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
 			itemRenderer.paddingBottom = this.smallGutterSize;
 			itemRenderer.paddingLeft = this.gutterSize;

@@ -1,7 +1,9 @@
 package feathers.tests
 {
 	import feathers.controls.LayoutGroup;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 
 	import org.flexunit.Assert;
 
@@ -225,45 +227,45 @@ package feathers.tests
 		[Test]
 		public function testChildXWithHorizontalAlignCenterAndMaxWidthSmallerThanChild():void
 		{
-			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
+			this._layout.horizontalAlign = HorizontalAlign.CENTER;
 			var child:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
 			this._group.maxWidth = child.width / 2;
 			this._group.addChild(child);
 			this._group.validate();
-			Assert.assertStrictlyEquals("Child x position incorrectly set to value less than zero with HorizontalLayout.HORIZONTAL_ALIGN_CENTER", 0, child.x);
+			Assert.assertStrictlyEquals("Child x position incorrectly set to value less than zero with HorizontalAlign.CENTER", 0, child.x);
 		}
 
 		[Test]
 		public function testChildYWithVerticalAlignMiddleAndMaxHeightSmallerThanChild():void
 		{
-			this._layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			this._layout.verticalAlign = VerticalAlign.MIDDLE;
 			var child:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
 			this._group.maxHeight = child.height / 2;
 			this._group.addChild(child);
 			this._group.validate();
-			Assert.assertStrictlyEquals("Child y position incorrectly set to value less than zero with HorizontalLayout.VERTICAL_ALIGN_MIDDLE", 0, child.y);
+			Assert.assertStrictlyEquals("Child y position incorrectly set to value less than zero with VerticalAlign.MIDDLE", 0, child.y);
 		}
 
 		[Test]
 		public function testChildXIsIntegerWithHorizontalAlignCenter():void
 		{
-			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
+			this._layout.horizontalAlign = HorizontalAlign.CENTER;
 			var child:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
 			this._group.width = child.width + 111;
 			this._group.addChild(child);
 			this._group.validate();
-			Assert.assertStrictlyEquals("Child x position incorrectly set to non-integer with VerticalLayout.HORIZONTAL_ALIGN_CENTER", Math.round(child.x), child.x);
+			Assert.assertStrictlyEquals("Child x position incorrectly set to non-integer with HorizontalAlign.CENTER", Math.round(child.x), child.x);
 		}
 
 		[Test]
 		public function testChildYIsIntegerWithVerticalAlignMiddle():void
 		{
-			this._layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			this._layout.verticalAlign = VerticalAlign.MIDDLE;
 			var child:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
 			this._group.height = child.height + 111;
 			this._group.addChild(child);
 			this._group.validate();
-			Assert.assertStrictlyEquals("Child y position incorrectly set to non-integer with VerticalLayout.VERTICAL_ALIGN_MIDDLE", Math.round(child.y), child.y);
+			Assert.assertStrictlyEquals("Child y position incorrectly set to non-integer with VerticalAlign.MIDDLE", Math.round(child.y), child.y);
 		}
 	}
 }

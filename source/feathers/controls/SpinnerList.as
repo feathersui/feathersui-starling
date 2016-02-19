@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.VerticalSpinnerLayout;
@@ -251,7 +252,7 @@ package feathers.controls
 				layout.useVirtualLayout = true;
 				layout.padding = 0;
 				layout.gap = 0;
-				layout.horizontalAlign = VerticalSpinnerLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
 				this.layout = layout;
 			}

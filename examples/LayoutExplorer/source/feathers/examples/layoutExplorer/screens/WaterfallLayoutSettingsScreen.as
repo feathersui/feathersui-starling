@@ -10,6 +10,7 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.examples.layoutExplorer.data.WaterfallLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.WaterfallLayout;
 
 	import starling.display.DisplayObject;
@@ -77,12 +78,12 @@ package feathers.examples.layoutExplorer.screens
 			this._requestedColumnCountStepper.addEventListener(Event.CHANGE, requestedColumnCountStepper_changeHandler);
 
 			this._horizontalAlignPicker = new PickerList();
-			this._horizontalAlignPicker.typicalItem = WaterfallLayout.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
 			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				WaterfallLayout.HORIZONTAL_ALIGN_LEFT,
-				WaterfallLayout.HORIZONTAL_ALIGN_CENTER,
-				WaterfallLayout.HORIZONTAL_ALIGN_RIGHT
+				HorizontalAlign.LEFT,
+				HorizontalAlign.CENTER,
+				HorizontalAlign.RIGHT
 			]);
 			this._horizontalAlignPicker.selectedItem = this.settings.horizontalAlign;
 			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);

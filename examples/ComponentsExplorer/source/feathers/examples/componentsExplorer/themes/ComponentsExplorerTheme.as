@@ -14,7 +14,9 @@ package feathers.examples.componentsExplorer.themes
 	import feathers.examples.componentsExplorer.screens.SliderScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
 
@@ -49,8 +51,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
@@ -74,8 +76,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
@@ -97,8 +99,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 
 			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.MIDDLE;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
@@ -120,8 +122,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			verticalLayout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
@@ -135,8 +137,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			layout.gap = this.gutterSize;
 			screen.layout = layout;
 		}
@@ -147,8 +149,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			layout.gap = this.gutterSize;
 			screen.layout = layout;
 		}
@@ -159,8 +161,8 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
@@ -174,14 +176,14 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 			
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			layout.gap = this.gutterSize;
 			screen.layout = layout;
 
 			var innerLayout:HorizontalLayout = new HorizontalLayout();
-			innerLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-			innerLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			innerLayout.horizontalAlign = HorizontalAlign.CENTER;
+			innerLayout.verticalAlign = VerticalAlign.MIDDLE;
 			innerLayout.gap = this.gutterSize;
 			screen.innerLayout = innerLayout;
 		}
