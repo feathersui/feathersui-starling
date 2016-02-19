@@ -162,28 +162,24 @@ package feathers.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The slider has only one track, that fills the full length of the
-		 * slider. In this layout mode, the "minimum" track is displayed and
-		 * fills the entire length of the slider. The maximum track will not
-		 * exist.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
 		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The slider has two tracks, stretching to fill each side of the slider
-		 * with the thumb in the middle. The tracks will be resized as the thumb
-		 * moves. This layout mode is designed for sliders where the two sides
-		 * of the track may be colored differently to show the value
-		 * "filling up" as the slider is dragged.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
 		 *
-		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as an <code>Image</code> with a
-		 * <code>scale9Grid</code> or a <code>tileGrid</code> that is
-		 * designed to be resized dynamically.</p>
-		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
@@ -825,9 +821,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TrackLayoutMode.SINGLE;
 
-		[Inspectable(type="String",enumeration="single,minMax")]
+		[Inspectable(type="String",enumeration="single,split")]
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
 		 * sized.
@@ -835,12 +831,12 @@ package feathers.controls
 		 * <p>In the following example, the slider is given two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
+		 * slider.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
 		 *
-		 * @default Slider.TRACK_LAYOUT_MODE_SINGLE
+		 * @default feathers.controls.TrackLayoutMode.SINGLE
 		 *
-		 * @see #TRACK_LAYOUT_MODE_SINGLE
-		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
+		 * @see feathers.controls.TrackLayoutMode#SINGLE
+		 * @see feathers.controls.TrackLayoutMode#SPLIT
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -852,6 +848,10 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
+			if(value === TRACK_LAYOUT_MODE_MIN_MAX)
+			{
+				value = TrackLayoutMode.SPLIT;
+			}
 			if(this._trackLayoutMode == value)
 			{
 				return;
@@ -1790,7 +1790,7 @@ package feathers.controls
 		 */
 		protected function createMaximumTrack():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				if(this.maximumTrack)
 				{
@@ -1880,7 +1880,7 @@ package feathers.controls
 		{
 			this.layoutThumb();
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				this.layoutTrackWithMinMax();
 			}

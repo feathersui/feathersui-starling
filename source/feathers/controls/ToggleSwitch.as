@@ -100,28 +100,24 @@ package feathers.controls
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
 		/**
-		 * The toggle switch has only one track skin, stretching to fill the
-		 * full length of switch. In this layout mode, the on track is
-		 * displayed and fills the entire length of the toggle switch. The off
-		 * track will not exist.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
 		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The toggle switch has two tracks, stretching to fill each side of the
-		 * scroll bar with the thumb in the middle. The tracks will be resized
-		 * as the thumb moves. This layout mode is designed for toggle switches
-		 * where the two sides of the track may be colored differently to better
-		 * differentiate between the on state and the off state.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
 		 *
-		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as an <code>Image</code> with a
-		 * <code>scale9Grid</code> or a <code>tileGrid</code> that is
-		 * designed to be resized dynamically.</p>
-		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
 
@@ -464,9 +460,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TrackLayoutMode.SINGLE;
 
-		[Inspectable(type="String",enumeration="single,onOff")]
+		[Inspectable(type="String",enumeration="single,split")]
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
 		 *
@@ -474,12 +470,12 @@ package feathers.controls
 		 * updated to use two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF;</listing>
+		 * toggle.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
 		 *
-		 * @default ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE
+		 * @default feathers.controls.TrackLayoutMode.SINGLE
 		 *
-		 * @see #TRACK_LAYOUT_MODE_SINGLE
-		 * @see #TRACK_LAYOUT_MODE_ON_OFF
+		 * @see feathers.controls.TrackLayoutMode#SINGLE
+		 * @see feathers.controls.TrackLayoutMode#SPLIT
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -491,6 +487,10 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
+			if(value === TRACK_LAYOUT_MODE_ON_OFF)
+			{
+				value = TrackLayoutMode.SPLIT;
+			}
 			if(this._trackLayoutMode == value)
 			{
 				return;
@@ -2072,7 +2072,7 @@ package feathers.controls
 		 */
 		protected function createOffTrack():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				if(this.offTrack)
 				{
@@ -2207,7 +2207,7 @@ package feathers.controls
 			currentMask.x = offScrollOffset;
 			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				this.layoutTrackWithOnOff();
 			}

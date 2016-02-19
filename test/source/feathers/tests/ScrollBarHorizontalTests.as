@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.ScrollBar;
+	import feathers.controls.TrackLayoutMode;
 
 	import flash.geom.Point;
 
@@ -36,7 +37,7 @@ package feathers.tests
 		{
 			this._scrollBar = new ScrollBar();
 			this._scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-			this._scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
+			this._scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
 			this._scrollBar.decrementButtonFactory = function():Button
 			{
 				var decrementButton:Button = new Button();

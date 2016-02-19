@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.Button;
 	import feathers.controls.Slider;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.TrackLayoutMode;
 
 	import flash.geom.Point;
 
@@ -30,7 +31,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._toggle = new ToggleSwitch();
-			this._toggle.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
+			this._toggle.trackLayoutMode = TrackLayoutMode.SINGLE;
 			this._toggle.onTrackFactory = function():Button
 			{
 				var track:Button = new Button();

@@ -59,6 +59,7 @@ package feathers.themes
 	import feathers.controls.TextInputState;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.TrackLayoutMode;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
@@ -71,6 +72,7 @@ package feathers.themes
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
@@ -2179,7 +2181,7 @@ package feathers.themes
 
 		protected function setSliderStyles(slider:Slider):void
 		{
-			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
@@ -2448,7 +2450,7 @@ package feathers.themes
 
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
-			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+			toggle.trackLayoutMode = TrackLayoutMode.SINGLE;
 		}
 
 		//see Shared section for thumb styles
@@ -2559,7 +2561,7 @@ package feathers.themes
 
 		protected function setSeekSliderStyles(slider:SeekSlider):void
 		{
-			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			slider.showThumb = false;
 			if(slider.direction == Direction.VERTICAL)
 			{
@@ -2616,7 +2618,7 @@ package feathers.themes
 		protected function setVolumeSliderStyles(slider:VolumeSlider):void
 		{
 			slider.direction = Direction.HORIZONTAL;
-			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			slider.showThumb = false;
 			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;
 			slider.minHeight = this.volumeSliderMinimumTrackSkinTexture.height;

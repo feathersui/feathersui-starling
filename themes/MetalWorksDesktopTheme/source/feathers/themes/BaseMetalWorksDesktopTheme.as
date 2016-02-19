@@ -65,6 +65,7 @@ package feathers.themes
 	import feathers.controls.TextInputState;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.TrackLayoutMode;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
@@ -77,6 +78,7 @@ package feathers.themes
 	import feathers.core.FocusManager;
 	import feathers.core.PopUpManager;
 	import feathers.core.ToolTipManager;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
@@ -2036,7 +2038,7 @@ package feathers.themes
 		protected function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 		{
 			scrollBar.direction = Direction.HORIZONTAL;
-			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
+			scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
 
 			scrollBar.customIncrementButtonStyleName = THEME_STYLE_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON;
 			scrollBar.customDecrementButtonStyleName = THEME_STYLE_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON;
@@ -2047,7 +2049,7 @@ package feathers.themes
 		protected function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
 		{
 			scrollBar.direction = Direction.VERTICAL;
-			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX;
+			scrollBar.trackLayoutMode = TrackLayoutMode.SPLIT;
 
 			scrollBar.customIncrementButtonStyleName = THEME_STYLE_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON;
 			scrollBar.customDecrementButtonStyleName = THEME_STYLE_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON;
@@ -2293,7 +2295,7 @@ package feathers.themes
 
 		protected function setSliderStyles(slider:Slider):void
 		{
-			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
@@ -2534,7 +2536,7 @@ package feathers.themes
 
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
-			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+			toggle.trackLayoutMode = TrackLayoutMode.SINGLE;
 
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
@@ -2656,7 +2658,7 @@ package feathers.themes
 		protected function setVolumeSliderStyles(slider:VolumeSlider):void
 		{
 			slider.direction = Direction.HORIZONTAL;
-			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
@@ -2719,7 +2721,7 @@ package feathers.themes
 		protected function setPopUpVolumeSliderStyles(slider:VolumeSlider):void
 		{
 			slider.direction = Direction.VERTICAL;
-			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_SINGLE;
+			slider.trackLayoutMode = TrackLayoutMode.SINGLE;
 			
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
@@ -2749,7 +2751,7 @@ package feathers.themes
 
 		protected function setSeekSliderStyles(slider:SeekSlider):void
 		{
-			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
+			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			slider.showThumb = false;
 			if(slider.direction == Direction.VERTICAL)
 			{
