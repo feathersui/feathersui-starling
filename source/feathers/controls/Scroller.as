@@ -7,7 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.ScrollerInteractionMode;
+	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
@@ -133,7 +133,7 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the user starts dragging the scroller when
-	 * <code>ScrollerInteractionMode.TOUCH</code> is enabled or when the user
+	 * <code>ScrollInteractionMode.TOUCH</code> is enabled or when the user
 	 * starts interacting with the scroll bar.
 	 *
 	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
@@ -165,7 +165,7 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the user stops dragging the scroller when
-	 * <code>ScrollerInteractionMode.TOUCH</code> is enabled or when the user
+	 * <code>ScrollInteractionMode.TOUCH</code> is enabled or when the user
 	 * stops interacting with the scroll bar. The scroller may continue
 	 * scrolling after this event is dispatched if the user interaction has also
 	 * triggered an animation.
@@ -378,7 +378,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollerInteractionMode.TOUCH</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -389,7 +389,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollerInteractionMode.MOUSE</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -400,7 +400,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollerInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -2077,7 +2077,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _interactionMode:String = ScrollerInteractionMode.TOUCH;
+		protected var _interactionMode:String = ScrollInteractionMode.TOUCH;
 
 		[Inspectable(type="String",enumeration="touch,mouse,touchAndScrollBars")]
 		/**
@@ -2086,13 +2086,13 @@ package feathers.controls
 		 * <p>In the following example, the interaction mode is optimized for mouse:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.interactionMode = ScrollerInteractionMode.MOUSE;</listing>
+		 * scroller.interactionMode = ScrollInteractionMode.MOUSE;</listing>
 		 *
-		 * @default feathers.controls.ScrollerInteractionMode.TOUCH
+		 * @default feathers.controls.ScrollInteractionMode.TOUCH
 		 *
-		 * @see feathers.controls.ScrollerInteractionMode#TOUCH
-		 * @see feathers.controls.ScrollerInteractionMode#MOUSE
-		 * @see feathers.controls.ScrollerInteractionMode#TOUCH_AND_SCROLL_BARS
+		 * @see feathers.controls.ScrollInteractionMode#TOUCH
+		 * @see feathers.controls.ScrollInteractionMode#MOUSE
+		 * @see feathers.controls.ScrollInteractionMode#TOUCH_AND_SCROLL_BARS
 		 */
 		public function get interactionMode():String
 		{
@@ -4055,13 +4055,13 @@ package feathers.controls
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.visible = this._hasVerticalScrollBar;
-				this.verticalScrollBar.touchable = this._hasVerticalScrollBar && this._interactionMode != ScrollerInteractionMode.TOUCH;
+				this.verticalScrollBar.touchable = this._hasVerticalScrollBar && this._interactionMode != ScrollInteractionMode.TOUCH;
 				this.setRawChildIndexInternal(DisplayObject(this.verticalScrollBar), childCount - 1);
 			}
 			if(this.horizontalScrollBar)
 			{
 				this.horizontalScrollBar.visible = this._hasHorizontalScrollBar;
-				this.horizontalScrollBar.touchable = this._hasHorizontalScrollBar && this._interactionMode != ScrollerInteractionMode.TOUCH;
+				this.horizontalScrollBar.touchable = this._hasHorizontalScrollBar && this._interactionMode != ScrollInteractionMode.TOUCH;
 				if(this.verticalScrollBar)
 				{
 					this.setRawChildIndexInternal(DisplayObject(this.horizontalScrollBar), childCount - 2);
@@ -4186,7 +4186,7 @@ package feathers.controls
 		 */
 		protected function refreshInteractionModeEvents():void
 		{
-			if(this._interactionMode == ScrollerInteractionMode.TOUCH || this._interactionMode == ScrollerInteractionMode.TOUCH_AND_SCROLL_BARS)
+			if(this._interactionMode == ScrollInteractionMode.TOUCH || this._interactionMode == ScrollInteractionMode.TOUCH_AND_SCROLL_BARS)
 			{
 				this.addEventListener(TouchEvent.TOUCH, scroller_touchHandler);
 				if(!this._touchBlocker)
@@ -4205,7 +4205,7 @@ package feathers.controls
 				}
 			}
 
-			if((this._interactionMode == ScrollerInteractionMode.MOUSE || this._interactionMode == ScrollerInteractionMode.TOUCH_AND_SCROLL_BARS) &&
+			if((this._interactionMode == ScrollInteractionMode.MOUSE || this._interactionMode == ScrollInteractionMode.TOUCH_AND_SCROLL_BARS) &&
 				this._scrollBarDisplayMode == ScrollBarDisplayMode.FLOAT)
 			{
 				if(this.horizontalScrollBar)
@@ -5371,7 +5371,7 @@ package feathers.controls
 				return;
 			}
 
-			if(this._interactionMode == ScrollerInteractionMode.TOUCH_AND_SCROLL_BARS &&
+			if(this._interactionMode == ScrollInteractionMode.TOUCH_AND_SCROLL_BARS &&
 				(event.interactsWith(DisplayObject(this.horizontalScrollBar)) || event.interactsWith(DisplayObject(this.verticalScrollBar))))
 			{
 				return;

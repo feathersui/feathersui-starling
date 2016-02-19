@@ -8,10 +8,10 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	/**
-	 * Different ways that the user can interact with a scroller to a control
-	 * its scroll position.
+	 * Different ways that the user can interact with a scrolling container to
+	 * control its scroll position.
 	 */
-	public class ScrollerInteractionMode
+	public class ScrollInteractionMode
 	{
 		/**
 		 * The user may touch anywhere on the scroller and drag to scroll. The

@@ -237,7 +237,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollerInteractionMode.TOUCH</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -248,7 +248,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollerInteractionMode.MOUSE</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -259,7 +259,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollerInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of

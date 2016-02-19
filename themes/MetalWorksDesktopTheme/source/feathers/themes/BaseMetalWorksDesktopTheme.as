@@ -54,7 +54,7 @@ package feathers.themes
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
-	import feathers.controls.ScrollerInteractionMode;
+	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
@@ -1106,7 +1106,7 @@ package feathers.themes
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
 			scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;
-			scroller.interactionMode = ScrollerInteractionMode.MOUSE;
+			scroller.interactionMode = ScrollInteractionMode.MOUSE;
 
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;

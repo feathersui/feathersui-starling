@@ -54,7 +54,7 @@ package feathers.themes
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
-	import feathers.controls.ScrollerInteractionMode;
+	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
@@ -846,7 +846,7 @@ package feathers.themes
 
 		protected function setScrollerStyles(scroller:Scroller):void
 		{
-			scroller.interactionMode = ScrollerInteractionMode.MOUSE;
+			scroller.interactionMode = ScrollInteractionMode.MOUSE;
 			scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
