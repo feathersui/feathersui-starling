@@ -1,5 +1,6 @@
 package feathers.examples.tileList
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
@@ -36,7 +37,7 @@ package feathers.examples.tileList
 		{
 			//the container will fill the whole stage and resize when the stage
 			//resizes.
-			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this.autoSizeMode = AutoSizeMode.STAGE;
 		}
 
 		private var _iconAtlas:TextureAtlas;

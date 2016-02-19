@@ -1,5 +1,6 @@
 package feathers.examples.video
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.LayoutGroup;
 	import feathers.events.MediaPlayerEventType;
@@ -49,7 +50,7 @@ package feathers.examples.video
 			this.createMenu();
 			
 			this._videoPlayer = new VideoPlayer();
-			this._videoPlayer.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this._videoPlayer.autoSizeMode = AutoSizeMode.STAGE;
 			this._videoPlayer.layout = new AnchorLayout();
 			this._videoPlayer.addEventListener(Event.READY, videoPlayer_readyHandler);
 			this._videoPlayer.addEventListener(MediaPlayerEventType.DISPLAY_STATE_CHANGE, videoPlayer_displayStateChangeHandler);

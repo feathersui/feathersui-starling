@@ -226,16 +226,24 @@ package feathers.controls
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
-		 * @copy feathers.controls.ScrollContainer#AUTO_SIZE_MODE_STAGE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
 		 *
-		 * @see feathers.controls.ScrollContainer#autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
 		/**
-		 * @copy feathers.controls.ScrollContainer#AUTO_SIZE_MODE_CONTENT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
 		 *
-		 * @see feathers.controls.ScrollContainer#autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
@@ -1085,7 +1093,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			if(this._autoSizeMode == AutoSizeMode.STAGE)
 			{
 				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
 			}

@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.media
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.LayoutGroup;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
@@ -893,7 +894,7 @@ package feathers.media
 				if(!this._fullScreenContainer)
 				{
 					this._fullScreenContainer = new LayoutGroup();
-					this._fullScreenContainer.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+					this._fullScreenContainer.autoSizeMode = AutoSizeMode.STAGE;
 				}
 				this._fullScreenContainer.layout = this._layout;
 				childCount = this.numChildren;

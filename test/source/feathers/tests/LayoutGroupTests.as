@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.HorizontalAlign;
@@ -110,11 +111,11 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeModeStage():void
 		{
-			this._group.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this._group.autoSizeMode = AutoSizeMode.STAGE;
 			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._group.stage.stageWidth, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._group.stage.stageHeight, this._group.height);
 		}
 

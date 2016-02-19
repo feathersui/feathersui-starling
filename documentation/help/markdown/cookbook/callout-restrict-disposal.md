@@ -19,7 +19,7 @@ public class Example extends LayoutGroup
 	public function Example()
 	{
 		super();
-		this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+		this.autoSizeMode = AutoSizeMode.STAGE;
 	}
 
 	private var _label:Label;
@@ -84,7 +84,7 @@ public class Example extends LayoutGroup
 	public function Example()
 	{
 		super();
-		this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+		this.autoSizeMode = AutoSizeMode.STAGE;
 	}
 
 	private var _callout:Callout;

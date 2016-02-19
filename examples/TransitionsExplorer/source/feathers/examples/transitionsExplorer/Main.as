@@ -1,5 +1,6 @@
 package feathers.examples.transitionsExplorer
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.ScreenNavigator;
@@ -52,7 +53,7 @@ package feathers.examples.transitionsExplorer
 			//set up the theme right away!
 			new MetalWorksMobileTheme();
 			super();
-			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this.autoSizeMode = AutoSizeMode.STAGE;
 		}
 
 		private var _menu:StackScreenNavigator;
@@ -63,7 +64,7 @@ package feathers.examples.transitionsExplorer
 			this.layout = new AnchorLayout();
 
 			this._menu = new StackScreenNavigator();
-			this._menu.autoSizeMode = StackScreenNavigator.AUTO_SIZE_MODE_CONTENT;
+			this._menu.autoSizeMode = AutoSizeMode.CONTENT;
 			var menuLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			menuLayoutData.top = 0;
 			menuLayoutData.bottom = 0;

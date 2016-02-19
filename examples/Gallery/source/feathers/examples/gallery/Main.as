@@ -1,5 +1,6 @@
 package feathers.examples.gallery
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
@@ -51,7 +52,7 @@ package feathers.examples.gallery
 			//this is an *extended* version of MetalWorksMobileTheme
 			new GalleryTheme();
 
-			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this.autoSizeMode = AutoSizeMode.STAGE;
 			this.layout = new AnchorLayout();
 
 			this.apiLoader = new URLLoader();

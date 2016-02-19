@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Drawers;
 	import feathers.controls.LayoutGroup;
 
@@ -104,7 +105,7 @@ package feathers.tests
 		public function testAutoSizeStage():void
 		{
 			this.addContent();
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_STAGE;
+			this._drawers.autoSizeMode = AutoSizeMode.STAGE;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the stage width.",
@@ -121,7 +122,7 @@ package feathers.tests
 		public function testAutoSizeContent():void
 		{
 			this.addContent();
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the content width.",
@@ -146,7 +147,7 @@ package feathers.tests
 			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_NONE;
 			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_NONE;
 			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_NONE;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the content width.",
@@ -165,7 +166,7 @@ package feathers.tests
 			this.addContent();
 			this.addLeftDrawer();
 			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the content width plus docked left drawer width.",
@@ -184,7 +185,7 @@ package feathers.tests
 			this.addContent();
 			this.addRightDrawer();
 			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the content width plus docked right drawer width.",
@@ -203,7 +204,7 @@ package feathers.tests
 			this.addContent();
 			this.addTopDrawer();
 			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the maximum of content width and docked top drawer width.",
@@ -222,7 +223,7 @@ package feathers.tests
 			this.addContent();
 			this.addBottomDrawer();
 			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the maximum of content width and docked bottom drawer width.",
@@ -243,7 +244,7 @@ package feathers.tests
 			this.addBottomDrawer();
 			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_BOTH;
 			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the maximum of content width, docked top drawer width, and docked bottom drawer width.",
@@ -264,7 +265,7 @@ package feathers.tests
 			this.addLeftDrawer();
 			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_BOTH;
 			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.autoSizeMode = Drawers.AUTO_SIZE_MODE_CONTENT;
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
 			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on the content width, plus docked left drawer width, plus docked right drawer width.",

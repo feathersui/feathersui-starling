@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.LayoutGroup;
 	import feathers.core.IValidating;
 
@@ -232,7 +233,7 @@ package feathers.controls.supportClasses
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this.viewPortBounds.scrollY = this._verticalScrollPosition;
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+			if(this._autoSizeMode == AutoSizeMode.STAGE &&
 				this._explicitVisibleWidth !== this._explicitVisibleWidth)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
@@ -241,7 +242,7 @@ package feathers.controls.supportClasses
 			{
 				this.viewPortBounds.explicitWidth = this._explicitVisibleWidth;
 			}
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+			if(this._autoSizeMode == AutoSizeMode.STAGE &&
 				this._explicitVisibleHeight !== this._explicitVisibleHeight)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
