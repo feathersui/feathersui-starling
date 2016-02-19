@@ -59,6 +59,11 @@ package feathers.themes
 		protected static const ATLAS_NAME:String = "metalworks_mobile";
 
 		/**
+		 * @private
+		 */
+		protected static const ATLAS_SCALE_FACTOR:int = 2;
+
+		/**
 		 * Constructor.
 		 * @param assetsBasePath The root folder of the assets.
 		 * @param assetManager An optional pre-created AssetManager. The scaleFactor property must be equal to Starling.contentScaleFactor. To load assets with a different scale factor, use multiple AssetManager instances.
@@ -150,11 +155,11 @@ package feathers.themes
 			if(assetManager)
 			{
 				oldScaleFactor = assetManager.scaleFactor;
-				assetManager.scaleFactor = 2;
+				assetManager.scaleFactor = ATLAS_SCALE_FACTOR;
 			}
 			else
 			{
-				assetManager = new AssetManager();
+				assetManager = new AssetManager(ATLAS_SCALE_FACTOR);
 			}
 			this.assetManager = assetManager;
 			//add a trailing slash, if needed
