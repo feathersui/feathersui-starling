@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
@@ -74,18 +75,24 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The page indicator's symbols will be positioned vertically, from top
-		 * to bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The page indicator's symbols will be positioned horizontally, from
-		 * left to right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
@@ -361,7 +368,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -370,12 +377,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.direction = PageIndicator.DIRECTION_VERTICAL;</listing>
+		 * pages.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default PageIndicator.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -852,12 +859,12 @@ package feathers.controls
 		{
 			if(layoutInvalid)
 			{
-				if(this._direction == DIRECTION_VERTICAL && !(this._layout is VerticalLayout))
+				if(this._direction == Direction.VERTICAL && !(this._layout is VerticalLayout))
 				{
 					this._layout = new VerticalLayout();
 					IVirtualLayout(this._layout).useVirtualLayout = false;
 				}
-				else if(this._direction != DIRECTION_VERTICAL && !(this._layout is HorizontalLayout))
+				else if(this._direction != Direction.VERTICAL && !(this._layout is HorizontalLayout))
 				{
 					this._layout = new HorizontalLayout();
 					IVirtualLayout(this._layout).useVirtualLayout = false;
@@ -923,7 +930,7 @@ package feathers.controls
 				{
 					var lastPageIndex:int = this._pageCount - 1;
 					this.globalToLocal(HELPER_POINT, HELPER_POINT);
-					if(this._direction == DIRECTION_VERTICAL)
+					if(this._direction == Direction.VERTICAL)
 					{
 						if(this._interactionMode == INTERACTION_MODE_PRECISE)
 						{

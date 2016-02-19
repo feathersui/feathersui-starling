@@ -12,6 +12,7 @@ package feathers.media
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.core.PropertyProxy;
 	import feathers.events.MediaPlayerEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundTransform;
@@ -103,7 +104,7 @@ package feathers.media
 		protected static function defaultVolumeSliderFactory():VolumeSlider
 		{
 			var slider:VolumeSlider = new VolumeSlider();
-			slider.direction = VolumeSlider.DIRECTION_VERTICAL;
+			slider.direction = Direction.VERTICAL;
 			return slider;
 		}
 
@@ -305,7 +306,7 @@ package feathers.media
 		 * button.volumeSliderFactory = function():VolumeSlider
 		 * {
 		 *     var popUpSlider:VolumeSlider = new VolumeSlider();
-		 *     popUpSlider.direction = VolumeSlider.DIRECTION_VERTICAL;
+		 *     popUpSlider.direction = Direction.VERTICAL;
 		 *     return popUpSlider;
 		 * };</listing>
 		 *
@@ -406,7 +407,7 @@ package feathers.media
 		 * to the button:</p>
 		 *
 		 * <listing version="3.0">
-		 * button.volumeSliderProperties.direction = VolumeSlider.DIRECTION_VERTICAL;</listing>
+		 * button.volumeSliderProperties.direction = Direction.VERTICAL;</listing>
 		 *
 		 * @default null
 		 *

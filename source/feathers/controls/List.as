@@ -308,16 +308,24 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
-		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
 

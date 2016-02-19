@@ -859,7 +859,7 @@ package feathers.themes
 
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
-			group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			group.direction = Direction.VERTICAL;
 			group.horizontalAlign = HorizontalAlign.JUSTIFY;
 			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.gap = this.smallGutterSize;
@@ -1578,7 +1578,7 @@ package feathers.themes
 		{
 			var backgroundSkin:Image = new Image(this.insetBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				backgroundSkin.width = this.smallControlSize;
 				backgroundSkin.height = this.wideControlSize;
@@ -1592,7 +1592,7 @@ package feathers.themes
 
 			var backgroundDisabledSkin:Image = new Image(this.insetBackgroundDisabledSkinTexture);
 			backgroundDisabledSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				backgroundDisabledSkin.width = this.smallControlSize;
 				backgroundDisabledSkin.height = this.wideControlSize;
@@ -1606,7 +1606,7 @@ package feathers.themes
 
 			var fillSkin:Image = new Image(this.buttonUpSkinTexture);
 			fillSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				fillSkin.width = this.smallGutterSize;
 				fillSkin.height = this.borderSize;
@@ -1620,7 +1620,7 @@ package feathers.themes
 
 			var fillDisabledSkin:Image = new Image(this.buttonDisabledSkinTexture);
 			fillDisabledSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				fillDisabledSkin.width = this.smallGutterSize;
 				fillDisabledSkin.height = this.borderSize;
@@ -1739,7 +1739,7 @@ package feathers.themes
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 
-			if(slider.direction == Slider.DIRECTION_VERTICAL)
+			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
 			}
@@ -2145,7 +2145,7 @@ package feathers.themes
 
 		protected function setSeekSliderStyles(slider:SeekSlider):void
 		{
-			slider.direction = SeekSlider.DIRECTION_HORIZONTAL;
+			slider.direction = Direction.HORIZONTAL;
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 			slider.minWidth = this.controlSize;
 			slider.minHeight = this.smallControlSize;
@@ -2161,7 +2161,7 @@ package feathers.themes
 
 		protected function setVolumeSliderStyles(slider:VolumeSlider):void
 		{
-			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
+			slider.direction = Direction.HORIZONTAL;
 			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.showThumb = false;
 			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;

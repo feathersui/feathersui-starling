@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
@@ -150,16 +151,24 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY:String = "incrementButtonFactory";
 
 		/**
-		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The scroll bar's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -452,7 +461,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -463,12 +472,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;</listing>
+		 * scrollBar.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default ScrollBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -1974,7 +1983,7 @@ package feathers.controls
 			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -2000,7 +2009,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -2292,7 +2301,7 @@ package feathers.controls
 		 */
 		protected function layoutStepButtons():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.decrementButton.x = (this.actualWidth - this.decrementButton.width) / 2;
 				this.decrementButton.y = 0;
@@ -2340,7 +2349,7 @@ package feathers.controls
 			{
 				adjustedPage = range;
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				contentHeight -= (this.decrementButton.height + this.incrementButton.height);
 				var thumbMinHeight:Number = this.thumbOriginalHeight;
@@ -2383,7 +2392,7 @@ package feathers.controls
 			}
 
 			var showButtons:Boolean = this._maximum != this._minimum;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.minimumTrack.x = 0;
 				if(showButtons)
@@ -2456,7 +2465,7 @@ package feathers.controls
 			this.minimumTrack.touchable = range > 0 && range < Number.POSITIVE_INFINITY;
 
 			var showButtons:Boolean = this._maximum != this._minimum;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.minimumTrack.x = 0;
 				if(showButtons)
@@ -2512,7 +2521,7 @@ package feathers.controls
 		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number = 0;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this.decrementButton.height - this.incrementButton.height - this._paddingTop - this._paddingBottom;
 				if(trackScrollableHeight > 0)

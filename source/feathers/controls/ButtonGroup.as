@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
@@ -142,16 +143,24 @@ package feathers.controls
 		];
 
 		/**
-		 * The buttons are displayed in order from left to right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The buttons are displayed in order from top to bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -459,14 +468,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_VERTICAL;
+		protected var _direction:String = Direction.VERTICAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The button group layout is either vertical or horizontal.
 		 * 
 		 * <p>If the <code>direction</code> is
-		 * <code>ButtonGroup.DIRECTION_HORIZONTAL</code> and
+		 * <code>Direction.HORIZONTAL</code> and
 		 * <code>distributeButtonSizes</code> is <code>false</code>, the buttons
 		 * may be displayed in multiple rows, if they won't fit in one row
 		 * horizontally.</p>
@@ -475,12 +484,12 @@ package feathers.controls
 		 * to line them up horizontally:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.direction = ButtonGroup.DIRECTION_HORIZONTAL;</listing>
+		 * group.direction = Direction.HORIZONTAL;</listing>
 		 *
-		 * @default ButtonGroup.DIRECTION_VERTICAL
+		 * @default feathers.layout.Direction.VERTICAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -1408,7 +1417,7 @@ package feathers.controls
 		 */
 		protected function refreshLayoutStyles():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var verticalLayout:VerticalLayout = this.layout as VerticalLayout;
 				if(!verticalLayout)

@@ -11,6 +11,7 @@ package feathers.media
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
@@ -26,16 +27,24 @@ package feathers.media
 	public class SeekSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
-		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -307,7 +316,7 @@ package feathers.media
 				IValidating(this._progressSkin).validate();
 			}
 			
-			if(this._direction === DIRECTION_VERTICAL)
+			if(this._direction === Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height / 2 - this._minimumPadding - this._maximumPadding;
 				this._progressSkin.x = Math.round((this.actualWidth - this._progressSkin.width) / 2);

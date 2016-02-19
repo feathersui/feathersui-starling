@@ -750,7 +750,7 @@ package feathers.themes
 
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
-			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.direction = Direction.HORIZONTAL;
 			group.horizontalAlign = HorizontalAlign.CENTER;
 			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
@@ -1454,7 +1454,7 @@ package feathers.themes
 			var backgroundSkin:Image;
 			var backgroundDisabledSkin:Image;
 			/* Horizontal background skin */
-			if(progress.direction === ProgressBar.DIRECTION_HORIZONTAL)
+			if(progress.direction === Direction.HORIZONTAL)
 			{
 				backgroundSkin = new Image(this.horizontalProgressBarBackgroundTexture);
 				backgroundSkin.scale9Grid = BAR_HORIZONTAL_SCALE9_GRID;
@@ -1482,7 +1482,7 @@ package feathers.themes
 			var fillSkin:Image;
 			var fillDisabledSkin:Image;
 			/* Horizontal fill skin */
-			if(progress.direction === ProgressBar.DIRECTION_HORIZONTAL)
+			if(progress.direction === Direction.HORIZONTAL)
 			{
 				fillSkin = new Image(this.horizontalProgressBarFillTexture);
 				fillSkin.scale9Grid = BAR_HORIZONTAL_SCALE9_GRID;
@@ -1579,7 +1579,7 @@ package feathers.themes
 
 		protected function setSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
 		{
-			if(scrollBar.direction === SimpleScrollBar.DIRECTION_HORIZONTAL)
+			if(scrollBar.direction === Direction.HORIZONTAL)
 			{
 				scrollBar.customThumbStyleName = THEME_STYLE_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
 			}
@@ -1672,7 +1672,7 @@ package feathers.themes
 		protected function setSliderStyles(slider:Slider):void
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
-			if(slider.direction === Slider.DIRECTION_VERTICAL)
+			if(slider.direction === Direction.VERTICAL)
 			{
 				slider.customThumbStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_THUMB;
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;

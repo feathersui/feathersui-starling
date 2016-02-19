@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.roundDownToNearest;
@@ -410,16 +411,24 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
-		 * The scroller will scroll vertically when the mouse wheel is scrolled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The scroller will scroll horizontally when the mouse wheel is scrolled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
 
@@ -2736,7 +2745,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalMouseWheelScrollDirection:String = MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL;
+		protected var _verticalMouseWheelScrollDirection:String = Direction.VERTICAL;
 
 		/**
 		 * The direction of scrolling when the user scrolls the mouse wheel
@@ -2748,12 +2757,12 @@ package feathers.controls
 		 * the mouse wheel is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.verticalMouseWheelScrollDirection = Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL;</listing>
+		 * scroller.verticalMouseWheelScrollDirection = Direction.HORIZONTAL;</listing>
 		 *
-		 * @default Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 * @default feathers.layout.Direction.VERTICAL
 		 *
-		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
-		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get verticalMouseWheelScrollDirection():String
 		{
@@ -3404,7 +3413,7 @@ package feathers.controls
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
 				if(this.horizontalScrollBar is IDirectionalScrollBar)
 				{
-					IDirectionalScrollBar(this.horizontalScrollBar).direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+					IDirectionalScrollBar(this.horizontalScrollBar).direction = Direction.HORIZONTAL;
 				}
 				var horizontalScrollBarStyleName:String = this._customHorizontalScrollBarStyleName != null ? this._customHorizontalScrollBarStyleName : this.horizontalScrollBarStyleName;
 				this.horizontalScrollBar.styleNameList.add(horizontalScrollBarStyleName);
@@ -3419,7 +3428,7 @@ package feathers.controls
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
 				if(this.verticalScrollBar is IDirectionalScrollBar)
 				{
-					IDirectionalScrollBar(this.verticalScrollBar).direction = SimpleScrollBar.DIRECTION_VERTICAL;
+					IDirectionalScrollBar(this.verticalScrollBar).direction = Direction.VERTICAL;
 				}
 				var verticalScrollBarStyleName:String = this._customVerticalScrollBarStyleName != null ? this._customVerticalScrollBarStyleName : this.verticalScrollBarStyleName;
 				this.verticalScrollBar.styleNameList.add(verticalScrollBarStyleName);
@@ -5649,8 +5658,8 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			if((this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == ScrollPolicy.OFF)) ||
-				(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == ScrollPolicy.OFF)))
+			if((this._verticalMouseWheelScrollDirection == Direction.VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == ScrollPolicy.OFF)) ||
+				(this._verticalMouseWheelScrollDirection == Direction.HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == ScrollPolicy.OFF)))
 			{
 				return;
 			}
@@ -5678,7 +5687,7 @@ package feathers.controls
 				var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
 				var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
 				var scrollStep:Number = this._verticalMouseWheelScrollStep;
-				if(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL)
+				if(this._verticalMouseWheelScrollDirection == Direction.HORIZONTAL)
 				{
 					if(scrollStep !== scrollStep) //isNaN
 					{

@@ -78,6 +78,7 @@ package feathers.themes
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.core.ToolTipManager;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.RelativePosition;
@@ -1073,7 +1074,7 @@ package feathers.themes
 
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
-			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.direction = Direction.HORIZONTAL;
 			group.horizontalAlign = HorizontalAlign.CENTER;
 			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
@@ -1775,7 +1776,7 @@ package feathers.themes
 		{
 			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				backgroundSkin.height = this.wideControlSize;
 			}
@@ -1786,7 +1787,7 @@ package feathers.themes
 			progress.backgroundSkin = backgroundSkin;
 
 			var fillSkin:Image = new Image(this.progressBarFillSkinTexture);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				fillSkin.height = 0;
 			}
@@ -2085,7 +2086,7 @@ package feathers.themes
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 			slider.minimumPadding = slider.maximumPadding = -vSliderThumbUpSkinTexture.height / 2;
 
-			if(slider.direction == Slider.DIRECTION_VERTICAL)
+			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.customThumbStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_THUMB;
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
@@ -2458,7 +2459,7 @@ package feathers.themes
 			slider.focusIndicatorSkin = focusIndicatorSkin;
 			slider.focusPadding = -1;
 			slider.showThumb = false;
-			if(slider.direction == VolumeSlider.DIRECTION_VERTICAL)
+			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_VOLUME_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackStyleName = THEME_STYLE_NAME_VERTICAL_VOLUME_SLIDER_MAXIMUM_TRACK;
@@ -2568,7 +2569,7 @@ package feathers.themes
 
 		protected function setPopUpVolumeSliderStyles(slider:VolumeSlider):void
 		{
-			slider.direction = VolumeSlider.DIRECTION_VERTICAL;
+			slider.direction = Direction.VERTICAL;
 			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.showThumb = false;
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
@@ -2608,7 +2609,7 @@ package feathers.themes
 
 		protected function setSeekSliderStyles(slider:SeekSlider):void
 		{
-			slider.direction = SeekSlider.DIRECTION_HORIZONTAL;
+			slider.direction = Direction.HORIZONTAL;
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
 			
 			slider.minimumPadding = slider.maximumPadding = -this.vSliderThumbUpSkinTexture.height / 2;

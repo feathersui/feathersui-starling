@@ -1154,7 +1154,7 @@ package feathers.themes
 
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
-			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.direction = Direction.HORIZONTAL;
 			group.horizontalAlign = HorizontalAlign.CENTER;
 			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
@@ -1997,7 +1997,7 @@ package feathers.themes
 		{
 			var backgroundSkin:Image = new Image(this.backgroundSkinTexture);
 			backgroundSkin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				backgroundSkin.width = this.smallControlSize;
 				backgroundSkin.height = this.wideControlSize;
@@ -2011,7 +2011,7 @@ package feathers.themes
 
 			var backgroundDisabledSkin:Image = new Image(this.backgroundDisabledSkinTexture);
 			backgroundDisabledSkin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				backgroundDisabledSkin.width = this.smallControlSize;
 				backgroundDisabledSkin.height = this.wideControlSize;
@@ -2025,7 +2025,7 @@ package feathers.themes
 
 			var fillSkin:Image = new Image(this.buttonUpSkinTexture);
 			fillSkin.scale9Grid = BUTTON_SCALE9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				fillSkin.width = this.smallControlSize;
 				fillSkin.height = this.smallControlSize;
@@ -2039,7 +2039,7 @@ package feathers.themes
 
 			var fillDisabledSkin:Image = new Image(this.buttonDisabledSkinTexture);
 			fillDisabledSkin.scale9Grid = BUTTON_SCALE9_GRID;
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			if(progress.direction == Direction.VERTICAL)
 			{
 				fillDisabledSkin.width = this.smallControlSize;
 				fillDisabledSkin.height = this.smallControlSize;
@@ -2139,7 +2139,7 @@ package feathers.themes
 
 		protected function setSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
 		{
-			if(scrollBar.direction == SimpleScrollBar.DIRECTION_HORIZONTAL)
+			if(scrollBar.direction == Direction.HORIZONTAL)
 			{
 				scrollBar.paddingRight = this.scrollBarGutterSize;
 				scrollBar.paddingBottom = this.scrollBarGutterSize;
@@ -2180,7 +2180,7 @@ package feathers.themes
 		protected function setSliderStyles(slider:Slider):void
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
-			if(slider.direction == Slider.DIRECTION_VERTICAL)
+			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackStyleName = THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK;
@@ -2561,7 +2561,7 @@ package feathers.themes
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.showThumb = false;
-			if(slider.direction == SeekSlider.DIRECTION_VERTICAL)
+			if(slider.direction == Direction.VERTICAL)
 			{
 				slider.minWidth = this.smallControlSize;
 				slider.minHeight = this.controlSize;
@@ -2615,7 +2615,7 @@ package feathers.themes
 
 		protected function setVolumeSliderStyles(slider:VolumeSlider):void
 		{
-			slider.direction = VolumeSlider.DIRECTION_HORIZONTAL;
+			slider.direction = Direction.HORIZONTAL;
 			slider.trackLayoutMode = VolumeSlider.TRACK_LAYOUT_MODE_MIN_MAX;
 			slider.showThumb = false;
 			slider.minWidth = this.volumeSliderMinimumTrackSkinTexture.width;

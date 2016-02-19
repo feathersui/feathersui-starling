@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 
@@ -32,16 +33,24 @@ package feathers.controls
 	public class ProgressBar extends FeathersControl
 	{
 		/**
-		 * The progress bar fills horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The progress bar fills vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -73,7 +82,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -84,12 +93,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is set to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * progress.direction = ProgressBar.DIRECTION_VERTICAL;</listing>
+		 * progress.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default ProgressBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -874,7 +883,7 @@ package feathers.controls
 					percentage = 1;
 				}
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction === Direction.VERTICAL)
 			{
 				this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 				this.currentFill.height = Math.round(this._originalFillHeight + percentage * (this.actualHeight - this._paddingTop - this._paddingBottom - this._originalFillHeight));

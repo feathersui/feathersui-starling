@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
@@ -107,16 +108,24 @@ package feathers.controls
 		];
 
 		/**
-		 * The tabs are displayed in order from left to right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The tabs are displayed in order from top to bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -447,7 +456,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -457,12 +466,12 @@ package feathers.controls
 		 * vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.direction = TabBar.DIRECTION_VERTICAL;</listing>
+		 * tabs.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default TabBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -577,7 +586,7 @@ package feathers.controls
 		 * <p>The following example aligns the tabs to the middle without distributing them:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.direction = TabBar.DIRECTION_VERTICAL;
+		 * tabs.direction = Direction.VERTICAL;
 		 * tabs.verticalAlign = VerticalAlign.MIDDLE;
 		 * tabs.distributeTabSizes = false;</listing>
 		 *
@@ -1519,7 +1528,7 @@ package feathers.controls
 		 */
 		protected function refreshLayoutStyles():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				if(this.horizontalLayout)
 				{

@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
@@ -139,16 +140,24 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY:String = "maximumTrackFactory";
 
 		/**
-		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 		
 		/**
-		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -394,7 +403,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -405,12 +414,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.direction = Slider.DIRECTION_VERTICAL;</listing>
+		 * slider.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default Slider.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -1656,7 +1665,7 @@ package feathers.controls
 			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -1682,7 +1691,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -1908,7 +1917,7 @@ package feathers.controls
 					percentage = 1;
 				}
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
 				this.thumb.x = Math.round((this.actualWidth - this.thumb.width) / 2) + this._thumbOffset;
@@ -1931,7 +1940,7 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithMinMax():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.maximumTrack.y = 0;
 				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
@@ -2020,7 +2029,7 @@ package feathers.controls
 		{
 			if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					this.minimumTrack.y = 0;
 					this.minimumTrack.width = NaN;
@@ -2064,7 +2073,7 @@ package feathers.controls
 		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
 				var yOffset:Number = location.y - this._touchStartY - this._maximumPadding;
@@ -2213,7 +2222,7 @@ package feathers.controls
 				}
 				touch.getLocation(this, HELPER_POINT);
 				this._touchPointID = touch.id;
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					this._thumbStartX = HELPER_POINT.x;
 					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, HELPER_POINT.y - this.thumb.height / 2));
@@ -2326,7 +2335,7 @@ package feathers.controls
 			{
 				page = this._step;
 			}
-			if(this._direction == Slider.DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				if(event.keyCode == Keyboard.UP)
 				{
