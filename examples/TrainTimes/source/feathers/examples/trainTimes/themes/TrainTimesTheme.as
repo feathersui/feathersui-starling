@@ -18,6 +18,7 @@ package feathers.examples.trainTimes.themes
 	import feathers.examples.trainTimes.controls.StationListItemRenderer;
 	import feathers.examples.trainTimes.screens.StationScreen;
 	import feathers.examples.trainTimes.screens.TimesScreen;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
@@ -210,7 +211,7 @@ package feathers.examples.trainTimes.themes
 		protected function horizontalScrollBarFactory():SimpleScrollBar
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+			scrollBar.direction = Direction.HORIZONTAL;
 			var defaultSkin:Image = new Image(this.horizontalScrollBarThumbSkinTexture);
 			defaultSkin.scale9Grid = HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID;
 			defaultSkin.width = 5;
@@ -222,7 +223,7 @@ package feathers.examples.trainTimes.themes
 		protected function verticalScrollBarFactory():SimpleScrollBar
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
+			scrollBar.direction = Direction.VERTICAL;
 			var defaultSkin:Image = new Image(this.verticalScrollBarThumbSkinTexture);
 			defaultSkin.scale9Grid = VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID;
 			defaultSkin.height = 5;

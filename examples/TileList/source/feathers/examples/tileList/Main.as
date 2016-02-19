@@ -9,6 +9,7 @@ package feathers.examples.tileList
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.TiledRowsLayout;
@@ -81,7 +82,7 @@ package feathers.examples.tileList
 			{
 				return new Image(pageIndicatorSelectedSymbol);
 			}
-			this._pageIndicator.direction = PageIndicator.DIRECTION_HORIZONTAL;
+			this._pageIndicator.direction = Direction.HORIZONTAL;
 			this._pageIndicator.gap = 4;
 			this._pageIndicator.padding = 6;
 

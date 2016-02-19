@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ProgressBar;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -42,14 +43,14 @@ package feathers.examples.componentsExplorer.screens
 			this.title = "Progress Bar";
 
 			this._horizontalProgress = new ProgressBar();
-			this._horizontalProgress.direction = ProgressBar.DIRECTION_HORIZONTAL;
+			this._horizontalProgress.direction = Direction.HORIZONTAL;
 			this._horizontalProgress.minimum = 0;
 			this._horizontalProgress.maximum = 1;
 			this._horizontalProgress.value = 0;
 			this.addChild(this._horizontalProgress);
 
 			this._verticalProgress = new ProgressBar();
-			this._verticalProgress.direction = ProgressBar.DIRECTION_VERTICAL;
+			this._verticalProgress.direction = Direction.VERTICAL;
 			this._verticalProgress.minimum = 0;
 			this._verticalProgress.maximum = 100;
 			this._verticalProgress.value = 0;

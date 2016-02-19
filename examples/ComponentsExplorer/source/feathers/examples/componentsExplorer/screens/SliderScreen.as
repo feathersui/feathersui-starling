@@ -5,6 +5,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.Slider;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -44,7 +45,7 @@ package feathers.examples.componentsExplorer.screens
 			this.title = "Slider";
 
 			this._horizontalSlider = new Slider();
-			this._horizontalSlider.direction = Slider.DIRECTION_HORIZONTAL;
+			this._horizontalSlider.direction = Direction.HORIZONTAL;
 			this._horizontalSlider.minimum = 0;
 			this._horizontalSlider.maximum = 100;
 			this._horizontalSlider.value = 50;
@@ -55,7 +56,7 @@ package feathers.examples.componentsExplorer.screens
 			this.addChild(this._horizontalSlider);
 
 			this._verticalSlider = new Slider();
-			this._verticalSlider.direction = Slider.DIRECTION_VERTICAL;
+			this._verticalSlider.direction = Direction.VERTICAL;
 			this._verticalSlider.minimum = 0;
 			this._verticalSlider.maximum = 100;
 			this._verticalSlider.value = 50;

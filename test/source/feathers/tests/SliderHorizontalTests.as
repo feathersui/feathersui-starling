@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.Button;
 	import feathers.controls.Slider;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.layout.Direction;
 
 	import flash.geom.Point;
 
@@ -30,7 +31,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._slider = new Slider();
-			this._slider.direction = Slider.DIRECTION_HORIZONTAL;
+			this._slider.direction = Direction.HORIZONTAL;
 			this._slider.trackLayoutMode = TrackLayoutMode.SINGLE;
 			this._slider.minimumTrackFactory = function():Button
 			{

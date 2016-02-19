@@ -4,6 +4,7 @@ package feathers.tests
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ToggleButton;
 	import feathers.data.ListCollection;
+	import feathers.layout.Direction;
 
 	import flash.geom.Point;
 
@@ -26,7 +27,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._group = new ButtonGroup();
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			TestFeathers.starlingRoot.addChild(this._group);
 		}
 

@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.data.ListCollection;
+	import feathers.layout.Direction;
 
 	import flash.geom.Point;
 
@@ -37,7 +38,7 @@ package feathers.tests
 				button.defaultSkin = new Quad(200, 200);
 				return button;
 			}
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			TestFeathers.starlingRoot.addChild(this._group);
 			this._group.validate();
 		}
@@ -81,7 +82,7 @@ package feathers.tests
 		[Test]
 		public function testDirectionSetToVerticalAndDistributeButtonSizesSetToTrueWithLargerHeight():void
 		{
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			this._group.distributeButtonSizes = true;
 			this._group.height = 1600;
 			this._group.validate();
@@ -91,7 +92,7 @@ package feathers.tests
 		[Test]
 		public function testDirectionSetToVerticalAndDistributeButtonSizesSetToTrueWithSmallerHeight():void
 		{
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			this._group.distributeButtonSizes = true;
 			this._group.height = 400;
 			this._group.validate();
@@ -102,7 +103,7 @@ package feathers.tests
 		public function testDirectionSetToVerticalAndDistributeButtonSizesSetToFalseWithLargerHeight():void
 		{
 			var originalButtonHeight:Number = this._group.getChildByName("one").height;
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			this._group.distributeButtonSizes = false;
 			this._group.height = 1600;
 			this._group.validate();
@@ -113,7 +114,7 @@ package feathers.tests
 		public function testDirectionSetToVerticalAndDistributeButtonSizesSetToFalseWithSmallerHeight():void
 		{
 			var originalButtonHeight:Number = this._group.getChildByName("one").height;
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			this._group.distributeButtonSizes = false;
 			this._group.height = 300;
 			this._group.validate();
@@ -123,7 +124,7 @@ package feathers.tests
 		[Test]
 		public function testDirectionSetToHorizontalAndDistributeButtonSizesSetToTrueWithLargerWidth():void
 		{
-			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			this._group.direction = Direction.HORIZONTAL;
 			this._group.distributeButtonSizes = true;
 			this._group.width = 1600;
 			this._group.validate();
@@ -133,7 +134,7 @@ package feathers.tests
 		[Test]
 		public function testDirectionSetToHorizontalAndDistributeButtonSizesSetToTrueWithSmallerWidth():void
 		{
-			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			this._group.direction = Direction.HORIZONTAL;
 			this._group.distributeButtonSizes = true;
 			this._group.width = 400;
 			this._group.validate();
@@ -144,7 +145,7 @@ package feathers.tests
 		public function testDirectionSetToHorizontalAndDistributeButtonSizesSetToFalseWithLargerWidth():void
 		{
 			var originalButtonWidth:Number = this._group.getChildByName("one").width;
-			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			this._group.direction = Direction.HORIZONTAL;
 			this._group.distributeButtonSizes = false;
 			this._group.width = 1600;
 			this._group.validate();
@@ -157,7 +158,7 @@ package feathers.tests
 			var button:DisplayObject = this._group.getChildByName("one");
 			var originalButtonWidth:Number = button.width;
 			var originalButtonHeight:Number = button.height;
-			this._group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			this._group.direction = Direction.HORIZONTAL;
 			this._group.distributeButtonSizes = false;
 			this._group.width = 300;
 			this._group.validate();

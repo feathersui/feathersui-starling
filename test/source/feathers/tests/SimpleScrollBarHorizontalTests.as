@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.SimpleScrollBar;
+	import feathers.layout.Direction;
 
 	import flash.geom.Point;
 
@@ -27,7 +28,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._scrollBar = new SimpleScrollBar();
-			this._scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+			this._scrollBar.direction = Direction.HORIZONTAL;
 			this._scrollBar.thumbFactory = function():Button
 			{
 				var thumb:Button = new Button();
