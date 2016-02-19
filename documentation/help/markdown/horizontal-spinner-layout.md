@@ -37,7 +37,7 @@ layout.gap = 5;
 We can *align* the items in the layout using the [`verticalAlign`](../api-reference/feathers/layout/HorizontalSpinnerLayout.html#verticalAlign) property. Let's adjust it so that the content will be aligned to the center:
 
 ``` code
-layout.verticalAlign = HorizontalSpinnerLayout.VERTICAL_ALIGN_CENTER;
+layout.verticalAlign = VerticalAlign.CENTER;
 ```
 
 ## Virtual Horizontal Spinner Layout

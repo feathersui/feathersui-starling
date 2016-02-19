@@ -71,7 +71,7 @@ If you've chosen to use a theme, it's best to stay within the theme architecture
 
 ``` code
 var button:Button = new Button();
-button.iconPosition = Button.ICON_POSITION_TOP;
+button.iconPosition = RelativePosition.TOP;
 button.defaultIcon = new Image(texture);
 this.addChild(button);
 ```
@@ -87,7 +87,7 @@ The most drastic thing we can do is tell a component not to use the theme at all
 ``` code
 var button:Button = new Button();
 button.styleProvider = null;
-button.iconPosition = Button.ICON_POSITION_TOP;
+button.iconPosition = RelativePosition.TOP;
 button.defaultIcon = new Image(texture);
 this.addChild(button);
 ```
@@ -101,7 +101,7 @@ Completely removing the theme from a component may undesireable. Maybe we want t
 ``` code
 function setExtraStyles( button:Button ):void
 {
-    button.iconPosition = Button.ICON_POSITION_TOP;
+    button.iconPosition = RelativePosition.TOP;
     button.defaultIcon = new Image( texture );
 }
  

@@ -41,10 +41,10 @@ You can customize the layout of a page indicator, and you can customize the appe
 
 ### Layout
 
-You may set the [`direction`](../api-reference/feathers/controls/PageIndicator.html#direction) of a page indicator to [`PageIndicator.DIRECTION_HORIZONTAL`](../api-reference/feathers/controls/PageIndicator.html#DIRECTION_HORIZONTAL) or [`PageIndicator.DIRECTION_VERTICAL`](../api-reference/feathers/controls/PageIndicator.html#DIRECTION_VERTICAL). The default layout direction is horizontal. Below, we change it to vertical:
+You may set the [`direction`](../api-reference/feathers/controls/PageIndicator.html#direction) of a page indicator to [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL) or [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL). The default layout direction is horizontal. Below, we change it to vertical:
 
 ``` code
-pages.direction = PageIndicator.DIRECTION_VERTICAL;
+pages.direction = Direction.VERTICAL;
 ```
 
 We can set other layout properies, such as the [`gap`](../api-reference/feathers/controls/PageIndicator.html#gap) between symbols, the padding around the edges, and the alignment, both [`horizontalAlign`](../api-reference/feathers/controls/PageIndicator.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/PageIndicator.html#verticalAlign):
@@ -55,8 +55,8 @@ pages.paddingTop = 4;
 pages.paddingRight = 4;
 pages.paddingBottom = 4;
 pages.paddingLeft = 10;
-pages.horizontalAlign = PageIndicator.HORIZONTAL_ALIGN_CENTER;
-pages.verticalAlign = PageIndicator.VERTICAL_ALIGN_MIDDLE;
+pages.horizontalAlign = HorizontalAlign.CENTER;
+pages.verticalAlign = VerticalAlign.MIDDLE;
 ```
 
 ### Symbol Skins

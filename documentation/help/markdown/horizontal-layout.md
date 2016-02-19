@@ -51,11 +51,11 @@ layout.gap = 5;
 We can *align* the items in the layout using the [`horizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html#horizontalAlign) and [`verticalLayout`](../api-reference/feathers/layout/HorizontalLayout.html#verticalAlign) properties. Horizontal alignment may be used only when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout. Let's adjust the alignments so that the content will be aligned to the horizontal center and vertical middle:
 
 ``` code
-layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+layout.horizontalAlign = HorizontalAlign.CENTER;
+layout.verticalAlign = VerticalAlign.MIDDLE;
 ```
 
-The `verticalAlign` property may be set to [`HorizontalLayout.VERTICAL_ALIGN_JUSTIFY`](../api-reference/feathers/layout/HorizontalLayout.html#VERTICAL_ALIGN_JUSTIFY), meaning that the height of all items in the layout is adjusted to fill the full height of the container.
+<aside class="info">The `verticalAlign` property has a special value, named [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.html#JUSTIFY). When vertical justification is specified, the height of all items in the layout is adjusted to fill the full height of the container.</aside>
 
 ## Percentage Dimensions
 

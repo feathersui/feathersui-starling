@@ -58,14 +58,14 @@ layout.verticalGap = 6;
 We can *align* the items in the layout using the [`horizontalLayout`](../api-reference/feathers/layout/FlowLayout.html#horizontalAlign) and [`verticalLayout`](../api-reference/feathers/layout/FlowLayout.html#verticalAlign) properties. Vertical alignment will only apply when the total height of the content (including padding and gap values) is less than or equal to the height of the container that uses the layout. Let's adjust the alignments so that the content will be aligned to the top left:
 
 ``` code
-layout.horizontalAlign = FlowLayout.HORIZONTAL_ALIGN_LEFT;
-layout.verticalAlign = FlowLayout.VERTICAL_ALIGN_TOP;
+layout.horizontalAlign = HorizontalAlign.LEFT;
+layout.verticalAlign = VerticalAlign.TOP;
 ```
 
 Since items may be smaller than the height of a row, we can align items within their rows separately from the alignment of the complete content. We'll align the items vertically in the middle of their rows:
 
 ``` code
-layout.rowVerticalAlign = FlowLayout.VERTICAL_ALIGN_MIDDLE;
+layout.rowVerticalAlign = VerticalAlign.MIDDLE;
 ```
 
 ## Virtual Flow Layout

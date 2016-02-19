@@ -129,13 +129,13 @@ In general, you should only skins to the toggle switch's thumb through `thumbPro
 
 ### Track(s) and Layout
 
-The toggle switch's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ToggleSwitch.html#trackLayoutMode) property. The default value of this property is [`ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`](../api-reference/feathers/controls/ToggleSwitch.html#TRACK_LAYOUT_MODE_SINGLE), which creates a single track that fills the entire width and height of the toggle switch.
+The toggle switch's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ToggleSwitch.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width and height of the toggle switch.
 
-If we'd like to have separate buttons for both sides of the track (one for the on side and another for the off side), we can set `trackLayoutMode` to [`ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`](../api-reference/feathers/controls/ToggleSwitch.html#TRACK_LAYOUT_MODE_ON_OFF). In this mode, the width or height of each track (depending on the direction of the toggle switch) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+If we'd like to have separate buttons for both sides of the track (one for the on side and another for the off side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the toggle switch) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
-`ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
+`TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
 
-When the value of `trackLayoutMode` is `ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`, the toggle switch will have a on track, but it will not have a off track. The on track will fill the entire region that is draggable.
+When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the toggle switch will have a on track, but it will not have a off track. The on track will fill the entire region that is draggable.
 
 ### Skinning the On Track
 

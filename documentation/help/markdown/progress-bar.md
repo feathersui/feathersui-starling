@@ -24,7 +24,7 @@ The [`minimum`](../api-reference/feathers/controls/ProgressBar.html#minimum) and
 By default, the progress bar direction is horizontal. You can change the [`direction`](../api-reference/feathers/controls/ProgressBar.html#direction) property to make the progress bar vertically-oriented instead.
 
 ``` code
-progress.direction = ProgressBar.DIRECTION_VERTICAL;
+progress.direction = Direction.VERTICAL;
 ```
 
 ## Skinning a `ProgressBar`

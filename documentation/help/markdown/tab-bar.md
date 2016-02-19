@@ -50,7 +50,7 @@ Except for a couple of layout properties, most of the skinning happens on the ta
 
 ### Layout
 
-For layout, you can set the [`direction`](../api-reference/feathers/controls/TabBar.html#direction) property to [`TabBar.DIRECTION_HORIZONTAL`](../api-reference/feathers/controls/TabBar.html#DIRECTION_HORIZONTAL) or [`TabBar.DIRECTION_VERTICAL`](../api-reference/feathers/controls/TabBar.html#DIRECTION_VERTICAL).
+For layout, you can set the [`direction`](../api-reference/feathers/controls/TabBar.html#direction) property to [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL) or [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL).
 
 The [`gap`](../api-reference/feathers/controls/TabBar.html#gap) property sets the extra space, measured in pixels, between tabs. You can also use the [`firstGap`](../api-reference/feathers/controls/TabBar.html#firstGap) property to provide a different gap after the first tab, and the [`lastGap`](../api-reference/feathers/controls/TabBar.html#lastGap) property to provide a different gap before the last tab.
 

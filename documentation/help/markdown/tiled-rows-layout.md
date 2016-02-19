@@ -62,15 +62,15 @@ layout.verticalGap = 6;
 We can *align* the items in the layout using the [`horizontalLayout`](../api-reference/feathers/layout/TiledRowsLayout.html#horizontalAlign) and [`verticalLayout`](../api-reference/feathers/layout/TiledRowsLayout.html#verticalAlign) properties. Vertical alignment may be used in two cases. In the first case, it will always apply when the tiles are divided into pages. Second, it will apply when the total height of the content (including padding and gap values) is less than or equal to the height of the container that uses the layout, regardless of whether the layout uses paging. Let's adjust the alignments so that the content will be aligned to the top left:
 
 ``` code
-layout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_LEFT;
-layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_TOP;
+layout.horizontalAlign = HorizontalAlign.LEFT;
+layout.verticalAlign = VerticalAlign.TOP;
 ```
 
 Since items may be smaller than the tile dimensions, we can align items within their tiles separately from the alignment of the rows. We'll align the items in the horizontal center and the vertical middle of their tiles:
 
 ``` code
-layout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
-layout.tileVerticalAlign = TiledRowsLayout.TILE_VERTICAL_ALIGN_MIDDLE;
+layout.tileHorizontalAlign = HorizontalAlign.CENTER;
+layout.tileVerticalAlign = VerticalAlign.MIDDLE;
 ```
 
 ### Rows and columns

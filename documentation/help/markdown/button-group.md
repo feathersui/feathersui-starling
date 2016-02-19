@@ -52,7 +52,7 @@ A button group's buttons may all be skinned, with the first and last buttons hav
 The `ButtonGroup` has a strict horizontal or vertical layout that you can customize using the [`direction`](../api-reference/feathers/controls/ButtonGroup.html#direction) property. Additionally, you can set the [`gap`](../api-reference/feathers/controls/ButtonGroup.html#gap) between buttons, including special gaps for the first and last buttons.
 
 ``` code
-group.direction = ButtonGroup.DIRECTION_VERTICAL;
+group.direction = Direction.VERTICAL;
 group.gap = 10;
 group.lastGap = 20;
 ```

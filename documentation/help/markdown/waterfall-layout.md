@@ -60,7 +60,7 @@ layout.verticalGap = 6;
 We can *align* the columns in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/WaterfallLayout.html#horizontalAlign) property. Let's adjust the horizontal alignment so that the content will be pulled to the right:
 
 ``` code
-layout.horizontalAlign = WaterfallLayout.HORIZONTAL_ALIGN_RIGHT;
+layout.horizontalAlign = HorizontalAlign.RIGHT;
 ```
 
 It's possible to request a specific number of columns for the layout to display. The layout may not always be able to accomodate this value because the container may be too small, but if there is enough room for the requested number of columns, that's the number it will display. Let's tell the layout to use three columns by setting the [`requestedColumnCount`](../api-reference/feathers/layout/WaterfallLayout.html#requestedColumnCount) property:

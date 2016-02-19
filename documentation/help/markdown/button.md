@@ -99,7 +99,7 @@ Finally, let's add an icon to the `Button`. Icons may be customized for each of 
 
 ``` code
 button.defaultIcon = new Image( myIcon );
-button.iconPosition = Button.ICON_POSITION_TOP;
+button.iconPosition = RelativePosition.TOP;
 ```
 
 Again, the `Button` class provides a default option to supply an icon for all of the button's states, the [`defaultIcon`](../api-reference/feathers/controls/Button.html#defaultIcon) property. Icons for all other states may be defined by calling [`setIconForState()`](../api-reference/feathers/controls/Button.html#setIconForState()).
@@ -115,8 +115,8 @@ button.gap = 10;
 The [`horizontalAlign`](../api-reference/feathers/controls/Button.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/Button.html#verticalAlign) properties will adjust the alignment of the icon and label inside the button, allowing you to anchor them at the edges or in the center.
 
 ``` code
-button.horizontalAlign = Button.HORIZONTAL_ALIGN_CENTER;
-button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+button.horizontalAlign = HorizontalAlign.CENTER;
+button.verticalAlign = VerticalAlign.MIDDLE;
 ```
 
 ### Targeting a `Button` in a theme

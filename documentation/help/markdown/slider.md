@@ -47,7 +47,7 @@ function slider_changeHandler( event:Event ):void
 Finally, the [`direction`](../api-reference/feathers/controls/Slider.html#direction) property may be used to change whether the slider is oriented horizontally or vertically:
 
 ``` code
-slider.direction = Slider.DIRECTION_VERTICAL;
+slider.direction = Direction.VERTICAL;
 ```
 
 When the slider is horizontal, the minimum value is on the left and the maximum is on the right. When the slider is vertical, the minimum value is at the bottom and the maximum is at the top.
@@ -58,13 +58,13 @@ The skins for a `Slider` control are divided into the thumb and one or two track
 
 ### Track(s) and Layout
 
-The slider's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/Slider.html#trackLayoutMode) property. The default value of this property is [`Slider.TRACK_LAYOUT_MODE_SINGLE`](../api-reference/feathers/controls/Slider.html#TRACK_LAYOUT_MODE_SINGLE), which creates a single track that fills the entire width or height of the slider (depending on the slider's direction).
+The slider's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/Slider.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width or height of the slider (depending on the slider's direction).
 
-If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`Slider.TRACK_LAYOUT_MODE_MIN_MAX`](../api-reference/feathers/controls/Slider.html#TRACK_LAYOUT_MODE_MIN_MAX). In this mode, the width or height of each track (depending on the direction of the slider) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the slider) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
-`Slider.TRACK_LAYOUT_MODE_SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `Slider.TRACK_LAYOUT_MODE_MIN_MAX` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
+`TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
 
-When the value of `trackLayoutMode` is `Slider.TRACK_LAYOUT_MODE_SINGLE`, the slider's will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is draggable.
+When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the slider's will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is draggable.
 
 ### Targeting a `Slider` in a theme
 
