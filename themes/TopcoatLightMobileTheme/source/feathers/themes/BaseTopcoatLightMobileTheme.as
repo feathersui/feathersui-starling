@@ -47,6 +47,7 @@ package feathers.themes
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollPolicy;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
@@ -787,7 +788,7 @@ package feathers.themes
 			this.setScrollerStyles(list);
 
 			list.maxHeight = this.wideControlSize;
-			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
+			list.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 	//-------------------------
@@ -1615,7 +1616,7 @@ package feathers.themes
 
 		protected function setSpinnerListStyles(list:SpinnerList):void
 		{
-			list.verticalScrollPolicy = List.SCROLL_POLICY_ON;
+			list.verticalScrollPolicy = ScrollPolicy.ON;
 			list.backgroundSkin = new Quad(this.controlSize, this.controlSize, COLOR_SPINNER_LIST_BACKGROUND);
 			var selectionOverlaySkin:Image = new Image(this.spinnerListSelectionOverlayTexture);
 			selectionOverlaySkin.scale9Grid = SPINNER_LIST_OVERLAY_SCALE9_GRID;

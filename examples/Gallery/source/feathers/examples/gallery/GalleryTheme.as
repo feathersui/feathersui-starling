@@ -1,5 +1,6 @@
 package feathers.examples.gallery
 {
+	import feathers.controls.DecelerationRate;
 	import feathers.controls.List;
 	import feathers.themes.MetalWorksMobileTheme;
 
@@ -29,7 +30,7 @@ package feathers.examples.gallery
 			list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_NONE;
 			
 			//make a swipe scroll a shorter distance
-			list.decelerationRate = List.DECELERATION_RATE_FAST;
+			list.decelerationRate = DecelerationRate.FAST;
 		}
 	}
 }

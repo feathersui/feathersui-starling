@@ -48,10 +48,13 @@ package feathers.themes
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
 	import feathers.controls.ScrollBar;
+	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollPolicy;
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
+	import feathers.controls.ScrollerInteractionMode;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
@@ -1029,8 +1032,8 @@ package feathers.themes
 			scroller.clipContent = true;
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
-			scroller.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			scroller.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+			scroller.interactionMode = ScrollerInteractionMode.MOUSE;
+			scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;
 
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
@@ -1322,7 +1325,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
 			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
@@ -1358,7 +1361,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
 			var backgroundSkin:Image = new Image(this.insetBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
@@ -1525,7 +1528,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
+			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
 			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;

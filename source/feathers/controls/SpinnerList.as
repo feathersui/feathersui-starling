@@ -72,10 +72,10 @@ package feathers.controls
 		public function SpinnerList()
 		{
 			super();
-			this._scrollBarDisplayMode = SCROLL_BAR_DISPLAY_MODE_NONE;
+			this._scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
 			this._snapToPages = true;
 			this._snapOnComplete = true;
-			this.decelerationRate = Scroller.DECELERATION_RATE_FAST;
+			this.decelerationRate = DecelerationRate.FAST;
 			this.addEventListener(Event.TRIGGERED, spinnerList_triggeredHandler);
 			this.addEventListener(FeathersEventType.SCROLL_COMPLETE, spinnerList_scrollCompleteHandler);
 		}
@@ -240,12 +240,12 @@ package feathers.controls
 			if(this._layout == null)
 			{
 				if(this._hasElasticEdges &&
-					this._verticalScrollPolicy == SCROLL_POLICY_AUTO &&
-					this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+					this._verticalScrollPolicy === ScrollPolicy.AUTO &&
+					this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					//so that the elastic edges work even when the max scroll
 					//position is 0, similar to iOS.
-					this.verticalScrollPolicy = SCROLL_POLICY_ON;
+					this.verticalScrollPolicy = ScrollPolicy.ON;
 				}
 
 				var layout:VerticalSpinnerLayout = new VerticalSpinnerLayout();
