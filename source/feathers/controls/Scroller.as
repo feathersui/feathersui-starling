@@ -35,6 +35,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.MathUtil;
 
 	/**
 	 * Dispatched when the scroller scrolls in either direction or when the view
@@ -470,6 +471,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const FUZZY_PAGE_SIZE_PADDING:Number = 0.000001;
+
+		/**
+		 * @private
+		 */
+		protected static const PAGE_INDEX_EPSILON:Number = 0.001;
 
 		/**
 		 * @private
@@ -3907,7 +3913,8 @@ package feathers.controls
 						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
 						var unroundedPageIndex:Number = adjustedHorizontalScrollPosition / this.actualPageWidth;
 						var nextPageIndex:int = Math.ceil(unroundedPageIndex);
-						if(unroundedPageIndex != nextPageIndex && (nextPageIndex - unroundedPageIndex) < FUZZY_PAGE_SIZE_PADDING)
+						if(unroundedPageIndex !== nextPageIndex &&
+							MathUtil.isEquivalent(unroundedPageIndex, nextPageIndex, PAGE_INDEX_EPSILON))
 						{
 							//we almost always want to round down, but a
 							//floating point math error may result in the page
@@ -3958,7 +3965,8 @@ package feathers.controls
 						var adjustedVerticalScrollPosition:Number = this._verticalScrollPosition - this._minVerticalScrollPosition;
 						unroundedPageIndex = adjustedVerticalScrollPosition / this.actualPageHeight;
 						nextPageIndex = Math.ceil(unroundedPageIndex);
-						if(unroundedPageIndex != nextPageIndex && (nextPageIndex - unroundedPageIndex) < FUZZY_PAGE_SIZE_PADDING)
+						if(unroundedPageIndex !== nextPageIndex &&
+							MathUtil.isEquivalent(unroundedPageIndex, nextPageIndex, PAGE_INDEX_EPSILON))
 						{
 							//we almost always want to round down, but a
 							//floating point math error may result in the page
