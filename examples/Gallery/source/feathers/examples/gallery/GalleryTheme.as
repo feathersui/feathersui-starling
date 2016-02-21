@@ -2,6 +2,7 @@ package feathers.examples.gallery
 {
 	import feathers.controls.DecelerationRate;
 	import feathers.controls.List;
+	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	/**
@@ -27,7 +28,7 @@ package feathers.examples.gallery
 			super.setListStyles(list);
 
 			//we're not displaying scroll bars
-			list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_NONE;
+			list.scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
 			
 			//make a swipe scroll a shorter distance
 			list.decelerationRate = DecelerationRate.FAST;

@@ -4,6 +4,7 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollPolicy;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
 	import feathers.layout.HorizontalLayout;
@@ -48,7 +49,7 @@ package feathers.examples.layoutExplorer.screens
 			this.layout = layout;
 			//when the scroll policy is set to on, the "elastic" edges will be
 			//active even when the max scroll position is zero
-			this.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_ON;
+			this.horizontalScrollPolicy = ScrollPolicy.ON;
 			this.snapScrollPositionsToPixels = true;
 
 			var minQuadSize:Number = Math.min(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight) / 15;

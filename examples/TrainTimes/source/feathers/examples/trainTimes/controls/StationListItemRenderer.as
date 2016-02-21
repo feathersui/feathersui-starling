@@ -5,6 +5,7 @@ package feathers.examples.trainTimes.controls
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollPolicy;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.examples.trainTimes.model.StationData;
@@ -340,8 +341,8 @@ package feathers.examples.trainTimes.controls
 
 			this.actionContainer = new ScrollContainer();
 			this.actionContainer.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER);
-			this.actionContainer.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-			this.actionContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
+			this.actionContainer.horizontalScrollPolicy = ScrollPolicy.OFF;
+			this.actionContainer.verticalScrollPolicy = ScrollPolicy.OFF;
 			this.actionContainer.visible = false;
 			this.addChild(this.actionContainer);
 

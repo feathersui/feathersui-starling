@@ -5,6 +5,7 @@ package feathers.examples.gallery
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
+	import feathers.controls.ScrollPolicy;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -73,7 +74,7 @@ package feathers.examples.gallery
 			this.list = new List();
 			this.list.styleNameList.add(THUMBNAIL_LIST_NAME);
 			this.list.layout = listLayout;
-			this.list.horizontalScrollPolicy = List.SCROLL_POLICY_ON;
+			this.list.horizontalScrollPolicy = ScrollPolicy.ON;
 			this.list.snapScrollPositionsToPixels = true;
 			this.list.itemRendererType = GalleryItemRenderer;
 			this.list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);

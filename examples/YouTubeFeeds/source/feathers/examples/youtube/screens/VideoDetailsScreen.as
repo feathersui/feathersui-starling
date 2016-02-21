@@ -4,6 +4,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollPolicy;
 	import feathers.controls.ScrollText;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.YouTubeModel;
@@ -66,7 +67,7 @@ package feathers.examples.youtube.screens
 
 			this._scrollText = new ScrollText();
 			this._scrollText.isHTML = true;
-			this._scrollText.verticalScrollPolicy = ScrollText.SCROLL_POLICY_ON;
+			this._scrollText.verticalScrollPolicy = ScrollPolicy.ON;
 			this.addChild(this._scrollText);
 			
 			//we're going to use these AnchorLayoutData objects later, when we
