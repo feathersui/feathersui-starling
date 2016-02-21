@@ -767,7 +767,14 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(this.stage !== null && this.stage.root === this)
+			//we use stage.root because a pop-up's root may be different than
+			//the real root
+			var root:DisplayObject = this.stage ? this.stage.root : null;
+			if(root === null)
+			{
+				root = this.root;
+			}
+			if(this.stage !== null && root === this)
 			{
 				this.autoSizeMode = AutoSizeMode.STAGE;
 			}
