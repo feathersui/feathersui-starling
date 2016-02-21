@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:e03d873b4d80c26aee33406ce98c2c27:56e65690a0ede4bbfc70f7d857016895:eab29082ace0a83bd389fcb3e4575d43$ -->
+<TextureAtlas imagePath="atlas@2x.png" width="1717" height="266">
+    <SubTexture name="behance" x="3" y="3" width="128" height="128"/>
+    <SubTexture name="blogger" x="3" y="135" width="128" height="128"/>
+    <SubTexture name="delicious" x="135" y="3" width="128" height="128"/>
+    <SubTexture name="deviantart" x="135" y="135" width="128" height="128"/>
+    <SubTexture name="digg" x="267" y="3" width="128" height="128"/>
+    <SubTexture name="dribbble" x="267" y="135" width="128" height="128"/>
+    <SubTexture name="facebook" x="399" y="3" width="128" height="128"/>
+    <SubTexture name="flickr" x="399" y="135" width="128" height="128"/>
+    <SubTexture name="github" x="1455" y="135" width="128" height="125" frameX="0" frameY="0" frameWidth="128" frameHeight="128"/>
+    <SubTexture name="google" x="531" y="3" width="128" height="128"/>
+    <SubTexture name="instagram" x="531" y="135" width="128" height="128"/>
+    <SubTexture name="linkedin" x="663" y="3" width="128" height="128"/>
+    <SubTexture name="pinterest" x="663" y="135" width="128" height="128"/>
+    <SubTexture name="snapchat" x="1587" y="3" width="127" height="127" frameX="0" frameY="0" frameWidth="128" frameHeight="128"/>
+    <SubTexture name="soundcloud" x="795" y="3" width="128" height="128"/>
+    <SubTexture name="stackoverflow" x="795" y="135" width="128" height="128"/>
+    <SubTexture name="stumbleupon" x="927" y="3" width="128" height="128"/>
+    <SubTexture name="tumblr" x="927" y="135" width="128" height="128"/>
+    <SubTexture name="twitter" x="1059" y="3" width="128" height="128"/>
+    <SubTexture name="vimeo" x="1059" y="135" width="128" height="128"/>
+    <SubTexture name="vine" x="1191" y="3" width="128" height="128"/>
+    <SubTexture name="wordpress" x="1191" y="135" width="128" height="128"/>
+    <SubTexture name="yahoo" x="1323" y="3" width="128" height="128"/>
+    <SubTexture name="yelp" x="1323" y="135" width="128" height="128"/>
+    <SubTexture name="youtube" x="1455" y="3" width="128" height="128"/>
+</TextureAtlas>

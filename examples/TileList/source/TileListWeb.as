@@ -1,6 +1,7 @@
 package
 {
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.ScreenDensityScaleFactorManager;
 
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
@@ -27,26 +28,22 @@ package
 			}
 			this.mouseEnabled = this.mouseChildren = false;
 
-			//pretends to be an iPhone Retina screen
-			DeviceCapabilities.dpi = 326;
-			DeviceCapabilities.screenPixelWidth = 960;
-			DeviceCapabilities.screenPixelHeight = 640;
-
 			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
 		}
 
 		private var _starling:Starling;
+		private var _scaler:ScreenDensityScaleFactorManager;
 
 		private function start():void
 		{
 			this.gotoAndStop(2);
-			this.graphics.clear();
 
-			Starling.multitouchEnabled = true;
 			var MainType:Class = getDefinitionByName("feathers.examples.tileList.Main") as Class;
 			this._starling = new Starling(MainType, this.stage);
 			this._starling.supportHighResolutions = true;
 			this._starling.start();
+			
+			this._scaler = new ScreenDensityScaleFactorManager(this._starling);
 		}
 
 		private function enterFrameHandler(event:Event):void

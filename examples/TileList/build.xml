@@ -30,9 +30,16 @@
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="-source-path+=${theme.root}"/>
 			<arg value="source/TileListWeb.as"/>
 			<arg value="-output=${output.path}/TileListWeb.swf"/>
 		</java>
+		<copy overwrite="true" todir="${output.path}">
+			<fileset dir="${assets.path}">
+				<include name="images/atlas@2x.png"/>
+				<include name="images/atlas@2x.xml"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="build-air-swf" depends="prepare">
@@ -43,6 +50,7 @@
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="-source-path+=${theme.root}"/>
 			<arg value="source/TileList.as"/>
 			<arg value="-output=${output.path}/TileList.swf"/>
 		</java>
@@ -70,6 +78,9 @@
 			<arg value="${launch.image.path}"/>
 			<arg line="Default.png Default-Portrait.png Default-Landscape.png Default@2x.png Default-Portrait@2x.png Default-Landscape@2x.png Default-568h@2x.png Default-375w-667h@2x.png Default-414w-736h@3x.png Default-414w-736h-Landscape@3x.png"/>
 			<arg value="-C"/>
+			<arg value="${assets.path}"/>
+			<arg line="images/atlas@2x.png images/atlas@2x.xml"/>
+			<arg value="-C"/>
 			<arg value="${output.path}"/>
 			<arg value="TileList.swf"/>
 		</java>
@@ -91,6 +102,9 @@
 			<arg value="-C"/>
 			<arg value="${icon.path}"/>
 			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon87.png icon96.png icon100.png icon114.png icon128.png icon144.png icon180.png"/>
+			<arg value="-C"/>
+			<arg value="${assets.path}"/>
+			<arg line="images/atlas@2x.png images/atlas@2x.xml"/>
 			<arg value="-C"/>
 			<arg value="${output.path}"/>
 			<arg value="TileList.swf"/>

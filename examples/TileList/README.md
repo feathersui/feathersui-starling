@@ -8,4 +8,4 @@ View the [Tile List Example](http://feathersui.com/examples/tile-list/) in your 
 
 ## Credits
 
-This example uses the free Buddycon Icon Set by [Webdesigner Depot](http://www.webdesignerdepot.com/) and [Orman Clark](http://www.ormanclark.com/).
+This example uses the free [Picons social media icon set](https://picons.me/download-social.php).
