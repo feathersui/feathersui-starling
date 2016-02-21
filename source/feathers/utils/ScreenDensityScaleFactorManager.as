@@ -16,6 +16,7 @@ package feathers.utils
 	import flash.system.Capabilities;
 
 	import starling.core.Starling;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Automatically manages the Starling view port and stage dimensions to
@@ -107,6 +108,10 @@ package feathers.utils
 		protected function calculateScaleFactor():Number
 		{
 			var nativeStage:Stage = this._starling.nativeStage;
+			if(SystemUtil.isDesktop)
+			{
+				return nativeStage.contentsScaleFactor;
+			}
 			var screenDensity:Number = DeviceCapabilities.dpi;
 			//workaround because these rules derived from Android's behavior
 			//would "incorrectly" give iPads a lower scale factor than iPhones
