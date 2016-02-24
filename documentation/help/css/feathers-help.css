@@ -214,3 +214,39 @@ article img
 {
 	max-width: 100%;
 }
+
+table
+{
+	border-collapse: collapse;
+	margin: 18px 0;
+	width: 100%;
+	table-layout: fixed;
+}
+
+table > thead
+{
+	border-bottom: solid 2px #454545;
+	font-size: 18px;
+}
+
+table > thead th, table > tbody td
+{
+	padding: 10px;
+}
+
+table > tbody tr:first-of-type
+{
+	padding-top: 15px;
+}
+
+table > tbody > tr.even
+{
+	background: #efeeea;
+}
+
+table code
+{
+	white-space: normal;
+	word-wrap: break-word;
+	word-break: break-all;
+}
