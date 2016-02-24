@@ -77,7 +77,7 @@ button.defaultSkin = skin;
 
 Each state can display a different texture, and the `ImageSkin` automatically detects when the button's state changes. If a texture isn't specified for the current state, the default texture will be used.
 
-`ImageSkin` is a subclass of `starling.display.Image`, so all properties like `scale9Grid` and `tileGrid` are available too!
+<aside class="info">`ImageSkin` is a subclass of `starling.display.Image`, so all properties like `scale9Grid` and `tileGrid` are available too!</aside>
 
 In addition to being used for background skins, `ImageSkin` can also be used for the icon on buttons, text inputs, and item renderers.
 
@@ -237,6 +237,7 @@ The following table lists all removed APIs, organized alphabetically. The replac
 
 Removed API										| How to Migrate
 ----------------------------------------------- | -----------------------------
+`BitmapFontTextRenderer.snapToPixels`			| Pixel snapping is enabled by default, and it should not be disabled or it will make the text blurry.
 `ImageLoader.snapToPixels`						| Use the [`pixelSnapping`](../api-reference/feathers/controls/ImageLoader.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Image`.
 `ImageLoader.smoothing`						| Use the [`textureSmoothing`](../api-reference/feathers/controls/ImageLoader.html#textureSmoothing) property instead, which is also the new name of the property on `starling.display.Image`.
 `Scale3Image`									| Create a `starling.display.Image` and set its `scale9Grid` property.
@@ -246,6 +247,8 @@ Removed API										| How to Migrate
 `Scale9ImageStateValueSelector`					| Create a [`feathers.skins.ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) and call `setTextureForState()` to use multiple textures.
 `SmartDisplayObjectStateValueSelector`			| Create a [`feathers.skins.ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) and call `setTextureForState()` to use multiple textures.
 `StandardIcons.listDrillDownAccessoryTexture`	| Add [`DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html#ALTERNATE_STYLE_NAME_DRILL_DOWN) to the item renderer's `styleNameList`.
+`TextBlockTextRenderer.snapToPixels`			| Pixel snapping is enabled by default, and it should not be disabled or it will make the text blurry.
+`TextFieldTextRenderer.snapToPixels`			| Pixel snapping is enabled by default, and it should not be disabled or it will make the text blurry.
 `TiledImage`									| Create a `starling.display.Image` and set the `tileGrid` property.
 
 
@@ -266,7 +269,7 @@ No APIs are deprecated.
 ### `BaseDefaultItemRenderer`
 
 Deprecated API											| How to Migrate
-------------------------------------------------------- | --------------------------------
+------------------------------------------------------- | ---------------------
 `BaseDefaultItemRenderer.STATE_UP`						| [`ButtonState.UP`](../api-reference/feathers/controls/ButtonState.html#UP)
 `BaseDefaultItemRenderer.STATE_DOWN`					| [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
 `BaseDefaultItemRenderer.STATE_HOVER`					| [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
@@ -355,10 +358,10 @@ Deprecated API							| How to Migrate
 `Check.STATE_DOWN`						| [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
 `Check.STATE_HOVER`						| [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
 `Check.STATE_DISABLED`					| [`ButtonState.DISABLED`](../api-reference/feathers/controls/ButtonState.html#DISABLED)
-`Check.STATE_UP_AND_SELECTED`						| [`ButtonState.UP_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#UP_AND_SELECTED)
-`Check.STATE_DOWN_AND_SELECTED`						| [`ButtonState.DOWN_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DOWN_AND_SELECTED)
-`Check.STATE_HOVER_AND_SELECTED`						| [`ButtonState.HOVER_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#HOVER_AND_SELECTED)
-`Check.STATE_DISABLED_AND_SELECTED`					| [`ButtonState.DISABLED_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DISABLED_AND_SELECTED)
+`Check.STATE_UP_AND_SELECTED`			| [`ButtonState.UP_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#UP_AND_SELECTED)
+`Check.STATE_DOWN_AND_SELECTED`			| [`ButtonState.DOWN_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DOWN_AND_SELECTED)
+`Check.STATE_HOVER_AND_SELECTED`		| [`ButtonState.HOVER_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#HOVER_AND_SELECTED)
+`Check.STATE_DISABLED_AND_SELECTED`		| [`ButtonState.DISABLED_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DISABLED_AND_SELECTED)
 `Check.ICON_POSITION_TOP`				| [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
 `Check.ICON_POSITION_RIGHT`				| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
 `Check.ICON_POSITION_BOTTOM`			| [`RelativePosition.BOTTOM`](../api-reference/feathers/layout/RelativePosition.html#BOTTOM)
@@ -380,7 +383,7 @@ No APIs are deprecated.
 ## `DefaultGroupedListItemRenderer`
 
 Deprecated API													| How to Migrate
---------------------------------------------------------------- | --------------------------------
+--------------------------------------------------------------- | -------------
 `DefaultGroupedListItemRenderer.STATE_UP`						| [`ButtonState.UP`](../api-reference/feathers/controls/ButtonState.html#UP)
 `DefaultGroupedListItemRenderer.STATE_DOWN`						| [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
 `DefaultGroupedListItemRenderer.STATE_HOVER`					| [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
@@ -402,7 +405,7 @@ Deprecated API													| How to Migrate
 `DefaultGroupedListItemRenderer.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
 `DefaultGroupedListItemRenderer.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
 `DefaultGroupedListItemRenderer.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
-`DefaultGroupedListItemRenderer.ACCESSORY_POSITION_TOP`		| [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
+`DefaultGroupedListItemRenderer.ACCESSORY_POSITION_TOP`			| [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
 `DefaultGroupedListItemRenderer.ACCESSORY_POSITION_RIGHT`		| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
 `DefaultGroupedListItemRenderer.ACCESSORY_POSITION_BOTTOM`		| [`RelativePosition.BOTTOM`](../api-reference/feathers/layout/RelativePosition.html#BOTTOM)
 `DefaultGroupedListItemRenderer.ACCESSORY_POSITION_LEFT`		| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
@@ -411,7 +414,7 @@ Deprecated API													| How to Migrate
 ### `DefaultListItemRenderer`
 
 Deprecated API											| How to Migrate
-------------------------------------------------------- | --------------------------------
+------------------------------------------------------- | ---------------------
 `DefaultListItemRenderer.STATE_UP`						| [`ButtonState.UP`](../api-reference/feathers/controls/ButtonState.html#UP)
 `DefaultListItemRenderer.STATE_DOWN`					| [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
 `DefaultListItemRenderer.STATE_HOVER`					| [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
@@ -466,6 +469,472 @@ Deprecated API											| How to Migrate
 `GroupedList.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
 `GroupedList.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
 `GroupedList.DECELERATION_RATE_FAST`					| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+
+### `Header`
+
+Deprecated API						| How to Migrate
+----------------------------------- | -----------------------------------------
+`Header.VERTICAL_ALIGN_TOP`			| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`Header.VERTICAL_ALIGN_MIDDLE`		| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`Header.VERTICAL_ALIGN_BOTTOM`		| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `ImageLoader`
+
+Deprecated API							| How to Migrate
+--------------------------------------- | -------------------------------------
+`ImageLoader.HORIZONTAL_ALIGN_LEFT`		| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`ImageLoader.HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`ImageLoader.HORIZONTAL_ALIGN_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`ImageLoader.VERTICAL_ALIGN_TOP`		| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`ImageLoader.VERTICAL_ALIGN_MIDDLE`		| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`ImageLoader.VERTICAL_ALIGN_BOTTOM`		| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `Label`
+
+No APIs are deprecated.
+
+### `LayoutGroup`
+
+Deprecated API							| How to Migrate
+--------------------------------------- | -------------------------------------
+`LayoutGroup.AUTO_SIZE_MODE_STAGE`		| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`LayoutGroup.AUTO_SIZE_MODE_CONTENT`	| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `List`
+
+Deprecated API									| How to Migrate
+----------------------------------------------- | ---------------------
+`List.SCROLL_POLICY_AUTO`						| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`List.SCROLL_POLICY_ON`							| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`List.SCROLL_POLICY_OFF`						| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`List.SCROLL_BAR_DISPLAY_MODE_FIXED`			| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`List.SCROLL_BAR_DISPLAY_MODE_FLOAT`			| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`List.SCROLL_BAR_DISPLAY_MODE_NONE`				| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`List.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`List.VERTICAL_SCROLL_BAR_POSITION_RIGHT`		| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`List.VERTICAL_SCROLL_BAR_POSITION_LEFT`		| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`List.INTERACTION_MODE_TOUCH`					| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`List.INTERACTION_MODE_MOUSE`					| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`List.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`	| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`List.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`	| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`List.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`List.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`List.DECELERATION_RATE_FAST`					| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+
+### `NumericStepper`
+
+No APIs are deprecated.
+
+### `PageIndicator`
+
+Deprecated API							| How to Migrate
+--------------------------------------- | -------------------------------------
+`PageIndicator.DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`PageIndicator.DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`PageIndicator.HORIZONTAL_ALIGN_LEFT`	| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`PageIndicator.HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`PageIndicator.HORIZONTAL_ALIGN_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`PageIndicator.VERTICAL_ALIGN_TOP`		| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`PageIndicator.VERTICAL_ALIGN_MIDDLE`	| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`PageIndicator.VERTICAL_ALIGN_BOTTOM`	| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `Panel`
+
+Deprecated API									| How to Migrate
+----------------------------------------------- | ---------------------
+`Panel.SCROLL_POLICY_AUTO`						| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`Panel.SCROLL_POLICY_ON`						| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`Panel.SCROLL_POLICY_OFF`						| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`Panel.SCROLL_BAR_DISPLAY_MODE_FIXED`			| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`Panel.SCROLL_BAR_DISPLAY_MODE_FLOAT`			| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`Panel.SCROLL_BAR_DISPLAY_MODE_NONE`			| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`Panel.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`Panel.VERTICAL_SCROLL_BAR_POSITION_RIGHT`		| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`Panel.VERTICAL_SCROLL_BAR_POSITION_LEFT`		| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`Panel.INTERACTION_MODE_TOUCH`					| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`Panel.INTERACTION_MODE_MOUSE`					| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`Panel.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`	| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`Panel.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`	| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`Panel.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`Panel.DECELERATION_RATE_NORMAL`				| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`Panel.DECELERATION_RATE_FAST`					| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+`Panel.AUTO_SIZE_MODE_STAGE`					| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`Panel.AUTO_SIZE_MODE_CONTENT`					| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `PanelScreen`
+
+Deprecated API											| How to Migrate
+------------------------------------------------------- | ---------------------
+`PanelScreen.SCROLL_POLICY_AUTO`						| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`PanelScreen.SCROLL_POLICY_ON`							| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`PanelScreen.SCROLL_POLICY_OFF`							| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`PanelScreen.SCROLL_BAR_DISPLAY_MODE_FIXED`				| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`PanelScreen.SCROLL_BAR_DISPLAY_MODE_FLOAT`				| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`PanelScreen.SCROLL_BAR_DISPLAY_MODE_NONE`				| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`PanelScreen.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`PanelScreen.VERTICAL_SCROLL_BAR_POSITION_RIGHT`		| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`PanelScreen.VERTICAL_SCROLL_BAR_POSITION_LEFT`			| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`PanelScreen.INTERACTION_MODE_TOUCH`					| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`PanelScreen.INTERACTION_MODE_MOUSE`					| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`PanelScreen.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`	| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`PanelScreen.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`PanelScreen.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`PanelScreen.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`PanelScreen.DECELERATION_RATE_FAST`					| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+`PanelScreen.AUTO_SIZE_MODE_STAGE`						| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`PanelScreen.AUTO_SIZE_MODE_CONTENT`					| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `PickerList`
+
+No APIs are deprecated.
+
+### `ProgressBar`
+
+Deprecated API						| How to Migrate
+----------------------------------- | -------------------------------------
+`ProgressBar.DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`ProgressBar.DIRECTION_VERTICAL`	| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+
+### `Radio`
+
+Deprecated API							| How to Migrate
+--------------------------------------- | --------------------------------
+`Radio.STATE_UP`						| [`ButtonState.UP`](../api-reference/feathers/controls/ButtonState.html#UP)
+`Radio.STATE_DOWN`						| [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
+`Radio.STATE_HOVER`						| [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
+`Radio.STATE_DISABLED`					| [`ButtonState.DISABLED`](../api-reference/feathers/controls/ButtonState.html#DISABLED)
+`Radio.STATE_UP_AND_SELECTED`			| [`ButtonState.UP_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#UP_AND_SELECTED)
+`Radio.STATE_DOWN_AND_SELECTED`			| [`ButtonState.DOWN_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DOWN_AND_SELECTED)
+`Radio.STATE_HOVER_AND_SELECTED`		| [`ButtonState.HOVER_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#HOVER_AND_SELECTED)
+`Radio.STATE_DISABLED_AND_SELECTED`		| [`ButtonState.DISABLED_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DISABLED_AND_SELECTED)
+`Radio.ICON_POSITION_TOP`				| [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
+`Radio.ICON_POSITION_RIGHT`				| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`Radio.ICON_POSITION_BOTTOM`			| [`RelativePosition.BOTTOM`](../api-reference/feathers/layout/RelativePosition.html#BOTTOM)
+`Radio.ICON_POSITION_LEFT`				| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`Radio.ICON_POSITION_MANUAL`			| [`RelativePosition.MANUAL`](../api-reference/feathers/layout/RelativePosition.html#MANUAL)
+`Radio.ICON_POSITION_LEFT_BASELINE`		| [`RelativePosition.LEFT_BASELINE`](../api-reference/feathers/layout/RelativePosition.html#LEFT_BASELINE)
+`Radio.ICON_POSITION_RIGHT_BASELINE`	| [`RelativePosition.RIGHT_BASELINE`](../api-reference/feathers/layout/RelativePosition.html#RIGHT_BASELINE)
+`Radio.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`Radio.HORIZONTAL_ALIGN_CENTER`			| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`Radio.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`Radio.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`Radio.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`Radio.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `Screen`
+
+Deprecated API						| How to Migrate
+----------------------------------- | -------------------------------------
+`Screen.AUTO_SIZE_MODE_STAGE`		| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`Screen.AUTO_SIZE_MODE_CONTENT`		| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `ScreenNavigator`
+
+Deprecated API								| How to Migrate
+------------------------------------------- | ---------------------------------
+`ScreenNavigator.AUTO_SIZE_MODE_STAGE`		| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`ScreenNavigator.AUTO_SIZE_MODE_CONTENT`	| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `ScrollBar`
+
+Deprecated API							| How to Migrate
+--------------------------------------- | -------------------------------------
+`ScrollBar.DIRECTION_HORIZONTAL`		| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`ScrollBar.DIRECTION_VERTICAL`			| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`ScrollBar.TRACK_LAYOUT_MODE_SINGLE`	| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
+`ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX`	| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+
+### `ScrollContainer`
+
+Deprecated API												| How to Migrate
+----------------------------------------------------------- | -----------------
+`ScrollContainer.SCROLL_POLICY_AUTO`						| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`ScrollContainer.SCROLL_POLICY_ON`							| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`ScrollContainer.SCROLL_POLICY_OFF`							| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED`				| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FLOAT`				| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`ScrollContainer.SCROLL_BAR_DISPLAY_MODE_NONE`				| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`ScrollContainer.VERTICAL_SCROLL_BAR_POSITION_RIGHT`		| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`ScrollContainer.VERTICAL_SCROLL_BAR_POSITION_LEFT`			| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`ScrollContainer.INTERACTION_MODE_TOUCH`					| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`ScrollContainer.INTERACTION_MODE_MOUSE`					| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`ScrollContainer.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`	| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`ScrollContainer.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`ScrollContainer.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`ScrollContainer.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`ScrollContainer.DECELERATION_RATE_FAST`					| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+`ScrollContainer.AUTO_SIZE_MODE_STAGE`						| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`ScrollContainer.AUTO_SIZE_MODE_CONTENT`					| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `ScrollScreen`
+
+Deprecated API											| How to Migrate
+------------------------------------------------------- | ---------------------
+`ScrollScreen.SCROLL_POLICY_AUTO`						| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`ScrollScreen.SCROLL_POLICY_ON`							| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`ScrollScreen.SCROLL_POLICY_OFF`						| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`ScrollScreen.SCROLL_BAR_DISPLAY_MODE_FIXED`			| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`ScrollScreen.SCROLL_BAR_DISPLAY_MODE_FLOAT`			| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`ScrollScreen.SCROLL_BAR_DISPLAY_MODE_NONE`				| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`ScrollScreen.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`ScrollScreen.VERTICAL_SCROLL_BAR_POSITION_RIGHT`		| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`ScrollScreen.VERTICAL_SCROLL_BAR_POSITION_LEFT`		| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`ScrollScreen.INTERACTION_MODE_TOUCH`					| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`ScrollScreen.INTERACTION_MODE_MOUSE`					| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`ScrollScreen.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`	| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`ScrollScreen.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`	| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`ScrollScreen.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`ScrollScreen.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`ScrollScreen.DECELERATION_RATE_FAST`					| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+`ScrollScreen.AUTO_SIZE_MODE_STAGE`						| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`ScrollScreen.AUTO_SIZE_MODE_CONTENT`					| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `ScrollText`
+
+Deprecated API											| How to Migrate
+------------------------------------------------------- | ---------------------
+`ScrollText.SCROLL_POLICY_AUTO`							| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`ScrollText.SCROLL_POLICY_ON`							| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`ScrollText.SCROLL_POLICY_OFF`							| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`ScrollText.SCROLL_BAR_DISPLAY_MODE_FIXED`				| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`ScrollText.SCROLL_BAR_DISPLAY_MODE_FLOAT`				| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`ScrollText.SCROLL_BAR_DISPLAY_MODE_NONE`				| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`ScrollText.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`ScrollText.VERTICAL_SCROLL_BAR_POSITION_RIGHT`			| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`ScrollText.VERTICAL_SCROLL_BAR_POSITION_LEFT`			| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`ScrollText.INTERACTION_MODE_TOUCH`						| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`ScrollText.INTERACTION_MODE_MOUSE`						| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`ScrollText.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`		| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`ScrollText.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`ScrollText.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`ScrollText.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`ScrollText.DECELERATION_RATE_FAST`						| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+
+### `SimpleScrollBar`
+
+Deprecated API								| How to Migrate
+------------------------------------------- | ---------------------------------
+`SimpleScrollBar.DIRECTION_HORIZONTAL`		| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`SimpleScrollBar.DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+
+### `Slider`
+
+Deprecated API						| How to Migrate
+----------------------------------- | -------------------------------------
+`Slider.DIRECTION_HORIZONTAL`		| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`Slider.DIRECTION_VERTICAL`			| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`Slider.TRACK_LAYOUT_MODE_SINGLE`	| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
+`Slider.TRACK_LAYOUT_MODE_MIN_MAX`	| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+
+### `SoundPlayer`
+
+No APIs are deprecated.
+
+### `SpinnerList`
+
+No APIs are deprecated.
+
+### `StackScreenNavigator`
+
+Deprecated API									| How to Migrate
+----------------------------------------------- | -----------------------------
+`StackScreenNavigator.AUTO_SIZE_MODE_STAGE`		| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`StackScreenNavigator.AUTO_SIZE_MODE_CONTENT`	| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+
+### `TabBar`
+
+Deprecated API						| How to Migrate
+----------------------------------- | -----------------------------------------
+`TabBar.DIRECTION_HORIZONTAL`		| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`TabBar.DIRECTION_VERTICAL`			| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`TabBar.HORIZONTAL_ALIGN_LEFT`		| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`TabBar.HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`TabBar.HORIZONTAL_ALIGN_RIGHT`		| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`TabBar.HORIZONTAL_ALIGN_JUSTIFY`	| [`HorizontalAlign.JUSTIFY`](../api-reference/feathers/layout/HorizontalAlign.html#JUSTIFY)
+`TabBar.VERTICAL_ALIGN_TOP`			| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`TabBar.VERTICAL_ALIGN_MIDDLE`		| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`TabBar.VERTICAL_ALIGN_BOTTOM`		| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`TabBar.VERTICAL_ALIGN_JUSTIFY`		| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.html#JUSTIFY)
+
+### `TextArea`
+
+Deprecated API											| How to Migrate
+------------------------------------------------------- | ---------------------
+`stateToSkinFunction`									| Pass an [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) to the `backgroundSkin` property.
+`TextArea.STATE_ENABLED`								| [`TextInputState.ENABLED`](../api-reference/feathers/controls/TextInputState.html#ENABLED)
+`TextArea.STATE_DISABLED`								| [`TextInputState.DISABLED`](../api-reference/feathers/controls/TextInputState.html#DISABLED)
+`TextArea.STATE_FOCUSED`								| [`TextInputState.FOCUSED`](../api-reference/feathers/controls/TextInputState.html#FOCUSED)
+`TextArea.SCROLL_POLICY_AUTO`							| [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO)
+`TextArea.SCROLL_POLICY_ON`							| [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON)
+`TextArea.SCROLL_POLICY_OFF`							| [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF)
+`TextArea.SCROLL_BAR_DISPLAY_MODE_FIXED`				| [`ScrollBarDisplayMode.FIXED`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FIXED)
+`TextArea.SCROLL_BAR_DISPLAY_MODE_FLOAT`				| [`ScrollBarDisplayMode.FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`TextArea.SCROLL_BAR_DISPLAY_MODE_NONE`				| [`ScrollBarDisplayMode.NONE`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#NONE)
+`TextArea.SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT`		| [`ScrollBarDisplayMode.FIXED_FLOAT`](../api-reference/feathers/controls/ScrollBarDisplayMode.html#FLOAT)
+`TextArea.VERTICAL_SCROLL_BAR_POSITION_RIGHT`			| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`TextArea.VERTICAL_SCROLL_BAR_POSITION_LEFT`			| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`TextArea.INTERACTION_MODE_TOUCH`						| [`ScrollInteractionMode.TOUCH`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH)
+`TextArea.INTERACTION_MODE_MOUSE`						| [`ScrollInteractionMode.MOUSE`](../api-reference/feathers/controls/ScrollInteractionMode.html#MOUSE)
+`TextArea.INTERACTION_MODE_TOUCH_AND_SCROLL_BARS`		| [`ScrollInteractionMode.TOUCH_AND_SCROLL_BARS`](../api-reference/feathers/controls/ScrollInteractionMode.html#TOUCH_AND_SCROLL_BARS)
+`TextArea.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`TextArea.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`TextArea.DECELERATION_RATE_NORMAL`					| [`DecelerationRate.NORMAL`](../api-reference/feathers/controls/DecelerationRate.html#NORMAL)
+`TextArea.DECELERATION_RATE_FAST`						| [`DecelerationRate.FAST`](../api-reference/feathers/controls/DecelerationRate.html#FAST)
+
+### `TextInput`
+
+Deprecated API						| How to Migrate
+----------------------------------- | -----------------------------------------
+`stateToSkinFunction`				| Pass an [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) to the `backgroundSkin` property.
+`stateToIconFunction`				| Pass an [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) to the `defaultIcon` property.
+`TextInput.STATE_ENABLED`			| [`TextInputState.ENABLED`](../api-reference/feathers/controls/TextInputState.html#ENABLED)
+`TextInput.STATE_DISABLED`			| [`TextInputState.DISABLED`](../api-reference/feathers/controls/TextInputState.html#DISABLED)
+`TextInput.STATE_FOCUSED`			| [`TextInputState.FOCUSED`](../api-reference/feathers/controls/TextInputState.html#FOCUSED)
+`TextInput.VERTICAL_ALIGN_TOP`		| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`TextInput.VERTICAL_ALIGN_MIDDLE`	| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`TextInput.VERTICAL_ALIGN_BOTTOM`	| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`TextInput.VERTICAL_ALIGN_JUSTIFY`	| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.html#JUSTIFY)
+
+### `ToggleButton`
+
+Deprecated API									| How to Migrate
+----------------------------------------------- | -----------------------------
+`ToggleButton.STATE_UP`							| [`ButtonState.UP`](../api-reference/feathers/controls/ButtonState.html#UP)
+`ToggleButton.STATE_DOWN`						| [`ButtonState.DOWN`](../api-reference/feathers/controls/ButtonState.html#DOWN)
+`ToggleButton.STATE_HOVER`						| [`ButtonState.HOVER`](../api-reference/feathers/controls/ButtonState.html#HOVER)
+`ToggleButton.STATE_DISABLED`					| [`ButtonState.DISABLED`](../api-reference/feathers/controls/ButtonState.html#DISABLED)
+`ToggleButton.STATE_UP_AND_SELECTED`			| [`ButtonState.UP_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#UP_AND_SELECTED)
+`ToggleButton.STATE_DOWN_AND_SELECTED`			| [`ButtonState.DOWN_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DOWN_AND_SELECTED)
+`ToggleButton.STATE_HOVER_AND_SELECTED`			| [`ButtonState.HOVER_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#HOVER_AND_SELECTED)
+`ToggleButton.STATE_DISABLED_AND_SELECTED`		| [`ButtonState.DISABLED_AND_SELECTED`](../api-reference/feathers/controls/ButtonState.html#DISABLED_AND_SELECTED)
+`ToggleButton.ICON_POSITION_TOP`				| [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
+`ToggleButton.ICON_POSITION_RIGHT`				| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
+`ToggleButton.ICON_POSITION_BOTTOM`				| [`RelativePosition.BOTTOM`](../api-reference/feathers/layout/RelativePosition.html#BOTTOM)
+`ToggleButton.ICON_POSITION_LEFT`				| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`ToggleButton.ICON_POSITION_MANUAL`				| [`RelativePosition.MANUAL`](../api-reference/feathers/layout/RelativePosition.html#MANUAL)
+`ToggleButton.ICON_POSITION_LEFT_BASELINE`		| [`RelativePosition.LEFT_BASELINE`](../api-reference/feathers/layout/RelativePosition.html#LEFT_BASELINE)
+`ToggleButton.ICON_POSITION_RIGHT_BASELINE`		| [`RelativePosition.RIGHT_BASELINE`](../api-reference/feathers/layout/RelativePosition.html#RIGHT_BASELINE)
+`ToggleButton.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`ToggleButton.HORIZONTAL_ALIGN_CENTER`			| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`ToggleButton.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`ToggleButton.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`ToggleButton.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`ToggleButton.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `ToggleSwitch`
+
+Deprecated API								| How to Migrate
+------------------------------------------- | ---------------------------------
+`ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`		| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
+`ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`		| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+
+### `WebView`
+
+No APIs are deprecated.
+
+### `VideoPlayer`
+
+No APIs are deprecated.
+
+### `FlowLayout`
+
+Deprecated API								| How to Migrate
+------------------------------------------- | ---------------------------------
+`FlowLayout.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`FlowLayout.HORIZONTAL_ALIGN_CENTER`		| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`FlowLayout.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`FlowLayout.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`FlowLayout.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`FlowLayout.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `HorizontalLayout`
+
+Deprecated API										| How to Migrate
+--------------------------------------------------- | -------------------------
+`HorizontalLayout.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`HorizontalLayout.HORIZONTAL_ALIGN_CENTER`			| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`HorizontalLayout.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`HorizontalLayout.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`HorizontalLayout.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`HorizontalLayout.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`HorizontalLayout.VERTICAL_ALIGN_JUSTIFY`			| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.JUSTIFY#BOTTOM)
+
+### `HorizontalSpinnerLayout`
+
+Deprecated API											| How to Migrate
+------------------------------------------------------- | ---------------------
+`HorizontalSpinnerLayout.VERTICAL_ALIGN_TOP`			| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`HorizontalSpinnerLayout.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`HorizontalSpinnerLayout.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`HorizontalSpinnerLayout.VERTICAL_ALIGN_JUSTIFY`		| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.JUSTIFY#BOTTOM)
+
+### `TiledColumnsLayout`
+
+Deprecated API										| How to Migrate
+--------------------------------------------------- | -------------------------
+`TiledColumnsLayout.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`TiledColumnsLayout.HORIZONTAL_ALIGN_CENTER`		| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`TiledColumnsLayout.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`TiledColumnsLayout.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`TiledColumnsLayout.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`TiledColumnsLayout.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`TiledColumnsLayout.TILE_HORIZONTAL_ALIGN_LEFT`		| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`TiledColumnsLayout.TILE_HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`TiledColumnsLayout.TILE_HORIZONTAL_ALIGN_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`TiledColumnsLayout.TILE_HORIZONTAL_ALIGN_JUSTIFY`	| [`HorizontalAlign.JUSTIFY`](../api-reference/feathers/layout/HorizontalAlign.html#JUSTIFY)
+`TiledColumnsLayout.TILE_VERTICAL_ALIGN_TOP`		| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`TiledColumnsLayout.TILE_VERTICAL_ALIGN_MIDDLE`		| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`TiledColumnsLayout.TILE_VERTICAL_ALIGN_BOTTOM`		| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`TiledColumnsLayout.TILE_VERTICAL_ALIGN_JUSTIFY`	| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.html#JUSTIFY)
+
+### `TiledRowsLayout`
+
+Deprecated API									| How to Migrate
+----------------------------------------------- | -----------------------------
+`TiledRowsLayout.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`TiledRowsLayout.HORIZONTAL_ALIGN_CENTER`		| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`TiledRowsLayout.HORIZONTAL_ALIGN_RIGHT`		| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`TiledRowsLayout.VERTICAL_ALIGN_TOP`			| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`TiledRowsLayout.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`TiledRowsLayout.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`TiledRowsLayout.TILE_HORIZONTAL_ALIGN_LEFT`	| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`TiledRowsLayout.TILE_HORIZONTAL_ALIGN_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`TiledRowsLayout.TILE_HORIZONTAL_ALIGN_JUSTIFY`	| [`HorizontalAlign.JUSTIFY`](../api-reference/feathers/layout/HorizontalAlign.html#JUSTIFY)
+`TiledRowsLayout.TILE_VERTICAL_ALIGN_TOP`		| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`TiledRowsLayout.TILE_VERTICAL_ALIGN_MIDDLE`	| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`TiledRowsLayout.TILE_VERTICAL_ALIGN_BOTTOM`	| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`TiledRowsLayout.TILE_VERTICAL_ALIGN_JUSTIFY`	| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.html#JUSTIFY)
+
+### `VerticalLayout`
+
+Deprecated API										| How to Migrate
+--------------------------------------------------- | -------------------------
+`VerticalLayout.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`VerticalLayout.HORIZONTAL_ALIGN_CENTER`		| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`VerticalLayout.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY`		| [`HorizontalAlign.JUSTIFY`](../api-reference/feathers/layout/HorizontalAlign.html#JUSTIFY)
+`VerticalLayout.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`VerticalLayout.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`VerticalLayout.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+
+### `VerticalSpinnerLayout`
+
+Deprecated API										| How to Migrate
+--------------------------------------------------- | -------------------------
+`VerticalSpinnerLayout.HORIZONTAL_ALIGN_LEFT`		| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`VerticalSpinnerLayout.HORIZONTAL_ALIGN_CENTER`		| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`VerticalSpinnerLayout.HORIZONTAL_ALIGN_RIGHT`		| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`VerticalSpinnerLayout.HORIZONTAL_ALIGN_JUSTIFY`	| [`HorizontalAlign.JUSTIFY`](../api-reference/feathers/layout/HorizontalAlign.html#JUSTIFY)
+
+### `WaterfallLayout`
+
+Deprecated API								| How to Migrate
+------------------------------------------- | ---------------------------------
+`WaterfallLayout.HORIZONTAL_ALIGN_LEFT`		| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`WaterfallLayout.HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`WaterfallLayout.HORIZONTAL_ALIGN_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
 
 ## Appendix: Find and Replace Regular Expressions
 
