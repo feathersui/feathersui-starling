@@ -39,6 +39,10 @@ There are a number of places where you can get help with Feathers issues or to a
 
 -   Looking for quick recipes that show you how to do common tasks using Feathers? Check out the [Feathers Cookbook](cookbook/index.html).
 
+## Upgrades
+
+-   [Feathers 3.0 Migration Guide](migration-guide-3.0.html)
+
 ## Core Concepts
 
 -   [Introduction to Themes](themes.html)
