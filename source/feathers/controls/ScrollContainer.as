@@ -769,12 +769,12 @@ package feathers.controls
 		{
 			//we use stage.root because a pop-up's root may be different than
 			//the real root
-			var root:DisplayObject = this.stage ? this.stage.root : null;
-			if(root === null)
+			var root:DisplayObject = null;
+			if(this.stage !== null)
 			{
-				root = this.root;
+				root = this.stage.root;
 			}
-			if(this.stage !== null && root === this)
+			if(root === this)
 			{
 				this.autoSizeMode = AutoSizeMode.STAGE;
 			}

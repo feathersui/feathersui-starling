@@ -52,6 +52,13 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testDefaultAutoSizeMode():void
+		{
+			this._container.validate();
+			Assert.assertStrictlyEquals("The default value of LayoutGroup autoSizeMode must be AutoSizeMode.CONTENT, if not root.", AutoSizeMode.CONTENT, this._container.autoSizeMode);
+		}
+
+		[Test]
 		public function testAutoSizeModeStage():void
 		{
 			this._container.autoSizeMode = AutoSizeMode.STAGE;
