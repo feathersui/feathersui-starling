@@ -1,5 +1,8 @@
 package feathers.tests
 {
+	import feathers.controls.AutoSizeMode;
+	import feathers.controls.LayoutGroup;
+	import feathers.controls.ScrollContainer;
 	import feathers.core.PopUpManager;
 
 	import org.flexunit.Assert;
@@ -31,6 +34,24 @@ package feathers.tests
 			PopUpManager.addPopUp(popUp);
 
 			Assert.assertStrictlyEquals("Pop-up added to wrong parent when a custom PopUpManager.root is set", customRoot, popUp.parent);
+		}
+
+		[Test]
+		public function testLayoutGroupAutoSizeModeStage():void
+		{
+			var group:LayoutGroup = new LayoutGroup();
+			PopUpManager.addPopUp(group);
+			Assert.assertStrictlyEquals("LayoutGroup added to PopUpManager should default to autoSizeMode === AutoSizeMode.CONTENT", AutoSizeMode.CONTENT, group.autoSizeMode);
+			PopUpManager.removePopUp(group, true);
+		}
+
+		[Test]
+		public function testScrollContainerAutoSizeModeStage():void
+		{
+			var container:ScrollContainer = new ScrollContainer();
+			PopUpManager.addPopUp(container);
+			Assert.assertStrictlyEquals("ScrollContainer added to PopUpManager should default to autoSizeMode === AutoSizeMode.CONTENT", AutoSizeMode.CONTENT, container.autoSizeMode);
+			PopUpManager.removePopUp(container, true);
 		}
 	}
 }

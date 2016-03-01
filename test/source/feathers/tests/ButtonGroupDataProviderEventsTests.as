@@ -4,6 +4,7 @@ package feathers.tests
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ToggleButton;
 	import feathers.data.ListCollection;
+	import feathers.layout.Direction;
 
 	import flash.geom.Point;
 
@@ -26,7 +27,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._group = new ButtonGroup();
-			this._group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			this._group.direction = Direction.VERTICAL;
 			TestFeathers.starlingRoot.addChild(this._group);
 		}
 
@@ -65,7 +66,7 @@ package feathers.tests
 			this._group.validate();
 			
 			var position:Point = new Point(10, 210);
-			var target:DisplayObject = this._group.stage.hitTest(position, true);
+			var target:DisplayObject = this._group.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -107,7 +108,7 @@ package feathers.tests
 			this._group.validate();
 			
 			var position:Point = new Point(10, 210);
-			var target:DisplayObject = this._group.stage.hitTest(position, true);
+			var target:DisplayObject = this._group.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -149,7 +150,7 @@ package feathers.tests
 			this._group.validate();
 
 			var position:Point = new Point(10, 210);
-			var target:DisplayObject = this._group.stage.hitTest(position, true);
+			var target:DisplayObject = this._group.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;

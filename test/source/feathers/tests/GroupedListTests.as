@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.GroupedList;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
+	import feathers.controls.renderers.IGroupedListHeaderRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.FeathersEventType;
@@ -80,6 +81,21 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNullDataProvider():void
+		{
+			this._list.dataProvider = null;
+			this._list.validate();
+		}
+
+		[Test]
+		public function testNullDataProviderWithTypicalItem():void
+		{
+			this._list.dataProvider = null;
+			this._list.typicalItem = { label: "Typical Item" };
+			this._list.validate();
+		}
+
+		[Test]
 		public function testProgrammaticSelectionChange():void
 		{
 			var beforeSelectedGroupIndex:int = this._list.selectedGroupIndex;
@@ -111,7 +127,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 410);
-			var target:DisplayObject = this._list.stage.hitTest(position, true);
+			var target:DisplayObject = this._list.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -688,6 +704,153 @@ package feathers.tests
 			})
 			this._list.validate();
 			Assert.assertTrue("customLastItemRendererStyleName not used when data provider has only one item in group and neither customFirstItemRendererStyleName or customSingleItemRendererStyleName are defined", containsLastItemRendererStyleName);
+		}
+
+		[Test]
+		public function testItemToItemRenderer():void
+		{
+			this._list.height = 220;
+			this._list.validate();
+			var item00:Object = this._list.dataProvider.getItemAt(0, 0);
+			var itemRenderer00:IGroupedListItemRenderer = this._list.itemToItemRenderer(item00);
+			var item01:Object = this._list.dataProvider.getItemAt(0, 1);
+			var itemRenderer01:IGroupedListItemRenderer = this._list.itemToItemRenderer(item01);
+			var item20:Object = this._list.dataProvider.getItemAt(2, 0);
+			var itemRenderer20:IGroupedListItemRenderer = this._list.itemToItemRenderer(item20);
+			Assert.assertNotNull("itemToItemRenderer() incorrectly returned null for item at index 0,0 that should have an item renderer", itemRenderer00);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item00, itemRenderer00.data);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect group index", 0, itemRenderer00.groupIndex);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect item index", 0, itemRenderer00.itemIndex);
+			Assert.assertNotNull("itemToItemRenderer() incorrectly returned null for item at index 0,1 that should have an item renderer", itemRenderer01);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item01, itemRenderer01.data);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect group index", 0, itemRenderer01.groupIndex);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect item index", 1, itemRenderer01.itemIndex);
+			Assert.assertNull("itemToItemRenderer() incorrectly returned item renderer for item that should not have one", itemRenderer20);
+		}
+
+		[Test]
+		public function testHeaderDataToHeaderRenderer():void
+		{
+			this._list.height = 20;
+			this._list.validate();
+			var group0:Object = this._list.dataProvider.getItemAt(0);
+			var header0:Object = this._list.groupToHeaderData(group0);
+			var headerRenderer0:IGroupedListHeaderRenderer = this._list.headerDataToHeaderRenderer(header0);
+			var group1:Object = this._list.dataProvider.getItemAt(1);
+			var header1:Object = this._list.groupToHeaderData(group1);
+			var headerRenderer1:IGroupedListHeaderRenderer = this._list.headerDataToHeaderRenderer(header1);
+			Assert.assertNotNull("headerDataToHeaderRenderer() incorrectly returned null for header at group index 0", headerRenderer0);
+			Assert.assertStrictlyEquals("Header renderer returned by headerDataToHeaderRenderer() has incorrect header data", header0, headerRenderer0.data);
+			Assert.assertStrictlyEquals("Header renderer returned by headerDataToHeaderRenderer() has incorrect group index", 0, headerRenderer0.groupIndex);
+			Assert.assertNull("headerDataToHeaderRenderer() incorrectly returned header renderer for header data that should not have one", headerRenderer1);
+		}
+
+		[Test]
+		public function testGroupToHeaderData():void
+		{
+			var rawData:Object = this._list.dataProvider.data;
+			var group0:Object = this._list.dataProvider.getItemAt(0);
+			var header0:Object = this._list.groupToHeaderData(group0);
+			var group1:Object = this._list.dataProvider.getItemAt(1);
+			var header1:Object = this._list.groupToHeaderData(group1);
+			Assert.assertStrictlyEquals("groupToHeaderData() incorrectly returned wrong header data for index 0", header0, rawData[0].header);
+			Assert.assertStrictlyEquals("groupToHeaderData() incorrectly returned wrong header data for index 1", header1, rawData[1].header);
+		}
+
+		[Test]
+		public function testNoErrorOnRemoveItemWithFirstItemRendererFactory():void
+		{
+			this._list.firstItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				return _list.itemRendererFactory();
+			};
+			this._list.validate();
+			this._list.dataProvider.removeItemAt(1, 0);
+			this._list.validate();
+		}
+
+		[Test]
+		public function testNoErrorOnRemoveItemWithLastItemRendererFactory():void
+		{
+			this._list.lastItemRendererFactory = function():DefaultGroupedListItemRenderer
+			{
+				return _list.itemRendererFactory();
+			};
+			this._list.validate();
+			this._list.dataProvider.removeItemAt(0, 2);
+			this._list.validate();
+		}
+
+		[Test]
+		public function testCustomFirstItemRendererStyleNameWithoutFirstItemRendererFactory():void
+		{
+			var firstStyleName:String = "custom-first-item";
+			this._list.customFirstItemRendererStyleName = firstStyleName;
+			var usedDefaultItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(firstStyleName) &&
+					itemRenderer.defaultSkin !== null)
+				{
+					usedDefaultItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("itemRendererFactory not used when customFirstItemRendererStyleName defined, but firstItemRendererFactory is null", usedDefaultItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomLastItemRendererStyleNameWithoutLastItemRendererFactory():void
+		{
+			var lastStyleName:String = "custom-last-item";
+			this._list.customLastItemRendererStyleName = lastStyleName;
+			var usedDefaultItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 2 &&
+					itemRenderer.styleNameList.contains(lastStyleName) &&
+					itemRenderer.defaultSkin !== null)
+				{
+					usedDefaultItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("itemRendererFactory not used when customLastItemRendererStyleName defined, but lastItemRendererFactory is null", usedDefaultItemRendererFactory);
+		}
+
+		[Test]
+		public function testCustomSingleItemRendererStyleNameWithoutSingleItemRendererFactory():void
+		{
+			var singleStyleName:String = "custom-single-item";
+			this._list.customSingleItemRendererStyleName = singleStyleName;
+			var usedDefaultItemRendererFactory:Boolean = false;
+			this._list.addEventListener(FeathersEventType.RENDERER_ADD, function(event:Event):void
+			{
+				if(!(event.data is IGroupedListItemRenderer))
+				{
+					return;
+				}
+				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
+				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+					itemRenderer.styleNameList.contains(singleStyleName) &&
+					itemRenderer.defaultSkin !== null)
+				{
+					usedDefaultItemRendererFactory = true;
+				}
+			})
+			this._list.validate();
+			Assert.assertTrue("itemRendererFactory not used when customSingleItemRendererStyleName defined, but singleItemRendererFactory is null", usedDefaultItemRendererFactory);
 		}
 	}
 }

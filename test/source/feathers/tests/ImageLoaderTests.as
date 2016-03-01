@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.ImageLoader;
+	import feathers.utils.textures.TextureCache;
 
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
@@ -76,6 +77,8 @@ package feathers.tests
 				Assert.assertTrue("Event.RESIZE not dispatched by ImageLoader after loading URL.", resizeDispatched);
 				Assert.assertStrictlyEquals("ImageLoader width property not changed after loading URL.", 100, loader.width);
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading URL.", 100, loader.height);
+				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading URL.", 100, loader.minWidth);
+				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading URL.", 100, loader.minHeight);
 			}, 200);
 		}
 
@@ -95,6 +98,8 @@ package feathers.tests
 			{
 				Assert.assertStrictlyEquals("ImageLoader width property not changed after loading second URL.", 200, loader.width);
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading second URL.", 200, loader.height);
+				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading second URL.", 200, loader.minWidth);
+				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading second URL.", 200, loader.minHeight);
 			}, 200);
 		}
 
@@ -111,6 +116,47 @@ package feathers.tests
 				Assert.assertStrictlyEquals("ImageLoader originalSourceHeight property not changed after loading URL.", 200, loader.originalSourceHeight);
 				Assert.assertStrictlyEquals("ImageLoader width property not changed after loading URL.", 100, loader.width);
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading URL.", 100, loader.height);
+				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading URL.", 100, loader.minWidth);
+				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading URL.", 100, loader.minHeight);
+			}, 200);
+		}
+
+		[Test(async)]
+		public function testCacheRetainCountOnComplete():void
+		{
+			var textureCache:TextureCache = new TextureCache(2);
+			var source:String = "fixtures/green200x200.png";
+			var loader:ImageLoader = this._loader;
+			loader.source = source;
+			loader.textureCache = textureCache;
+			var retainCount:int = 0;
+			loader.addEventListener(Event.COMPLETE, function():void
+			{
+				retainCount = textureCache.getRetainCount(source);
+			});
+			loader.validate();
+			Async.delayCall(this, function():void
+			{
+				textureCache.dispose();
+				Assert.assertStrictlyEquals("ImageLoader textureCache retain count incorrect after load complete.", 1, retainCount);
+			}, 200);
+		}
+
+		[Test(async)]
+		public function testReleaseTextureFromCacheAfterSetSourceToNull():void
+		{
+			var textureCache:TextureCache = new TextureCache(2);
+			var source:String = "fixtures/green200x200.png";
+			var loader:ImageLoader = this._loader;
+			loader.source = source;
+			loader.textureCache = textureCache;
+			loader.validate();
+			Async.delayCall(this, function():void
+			{
+				loader.source = null;
+				var retainCount:int = textureCache.getRetainCount(source);
+				textureCache.dispose();
+				Assert.assertStrictlyEquals("ImageLoader textureCache retain count incorrect after set source to null.", 0, retainCount);
 			}, 200);
 		}
 	}

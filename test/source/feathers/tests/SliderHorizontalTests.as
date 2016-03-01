@@ -2,6 +2,8 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.Slider;
+	import feathers.controls.TrackLayoutMode;
+	import feathers.layout.Direction;
 
 	import flash.geom.Point;
 
@@ -29,8 +31,8 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._slider = new Slider();
-			this._slider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
+			this._slider.direction = Direction.HORIZONTAL;
+			this._slider.trackLayoutMode = TrackLayoutMode.SINGLE;
 			this._slider.minimumTrackFactory = function():Button
 			{
 				var track:Button = new Button();
@@ -115,7 +117,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
 				this._slider.getChildByName(THUMB_NAME).name, target.name);
@@ -153,7 +155,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
 				this._slider.getChildByName(THUMB_NAME).name, target.name);
@@ -191,7 +193,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 2, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
 				this._slider.getChildByName(THUMB_NAME).name, target.name);
@@ -229,7 +231,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(TRACK_WIDTH / 3, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's track",
 				this._slider.getChildByName(TRACK_NAME).name, target.name);
@@ -264,7 +266,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(2 * TRACK_WIDTH / 3, THUMB_HEIGHT / 2);
-			var target:DisplayObject = this._slider.stage.hitTest(position, true);
+			var target:DisplayObject = this._slider.stage.hitTest(position);
 
 			Assert.assertStrictlyEquals("The hit test did not return the slider's track",
 				this._slider.getChildByName(TRACK_NAME).name, target.name);

@@ -1,22 +1,35 @@
 package
 {
+	import feathers.tests.BasicButtonInternalStateTests;
+	import feathers.tests.BasicButtonMeasurementTests;
+	import feathers.tests.BasicButtonTests;
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
+	import feathers.tests.ButtonInternalStateTests;
+	import feathers.tests.ButtonMeasurementTests;
 	import feathers.tests.ButtonTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
+	import feathers.tests.DefaultListItemRendererInternalStateTests;
+	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
+	import feathers.tests.GroupedListDataProviderTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.InvalidateTests;
 	import feathers.tests.FlowLayoutTests;
+	import feathers.tests.KeyToSelectTests;
+	import feathers.tests.KeyToTriggerTests;
+	import feathers.tests.LabelMeasurementTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupTests;
@@ -27,14 +40,17 @@ package
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
+	import feathers.tests.PageIndicatorMeasurementTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
+	import feathers.tests.ProgressBarMeasurementTests;
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.RadioTests;
 	import feathers.tests.ScreenNavigatorTests;
 	import feathers.tests.ScrollBarHorizontalTests;
 	import feathers.tests.ScrollContainerTests;
+	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.StackScreenNavigatorTests;
@@ -44,18 +60,24 @@ package
 	import feathers.tests.TapToSelectTests;
 	import feathers.tests.TapToTriggerTests;
 	import feathers.tests.TextAreaFocusTests;
+	import feathers.tests.TextAreaInternalStateTests;
 	import feathers.tests.TextAreaTests;
 	import feathers.tests.TextBlockTextEditorFocusTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
 	import feathers.tests.TextInputFocusTests;
+	import feathers.tests.TextInputInternalStateTests;
+	import feathers.tests.TextInputMeasurementTests;
 	import feathers.tests.TextInputTests;
 	import feathers.tests.TextureCacheTests;
 	import feathers.tests.TiledColumnsLayoutTests;
 	import feathers.tests.TiledRowsLayoutTests;
+	import feathers.tests.ToggleButtonFocusTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
+	import feathers.tests.TokenListTests;
 	import feathers.tests.VerticalLayoutTests;
+	import feathers.tests.VerticalSpinnerLayoutTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -113,36 +135,53 @@ package
 				ComponentLifecycleTests,
 				
 				//individual component tests
+				BasicButtonTests,
+				BasicButtonMeasurementTests,
+				BasicButtonInternalStateTests,
 				ButtonTests,
+				ButtonInternalStateTests,
+				ButtonFocusTests,
+				ButtonMeasurementTests,
 				ButtonGroupTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,
 				DateTimeSpinnerTests,
+				DefaultListItemRendererInternalStateTests,
 				DrawersTests,
+				DrawersMeasurementTests,
 				GroupedListTests,
+				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
+				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
+				PageIndicatorMeasurementTests,
 				PickerListTests,
 				ProgressBarTests,
+				ProgressBarMeasurementTests,
 				RadioTests,
 				SimpleScrollBarHorizontalTests,
 				ScreenNavigatorTests,
 				ScrollBarHorizontalTests,
 				ScrollContainerTests,
+				ScrollerTests,
 				SliderHorizontalTests,
 				StackScreenNavigatorTests,
 				TabBarTests,
 				TabBarEmptyDataProviderTests,
 				TextAreaTests,
+				TextAreaInternalStateTests,
 				TextInputTests,
+				TextInputMeasurementTests,
+				TextInputInternalStateTests,
 				ToggleButtonTests,
+				ToggleButtonFocusTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				
@@ -153,6 +192,8 @@ package
 				TiledRowsLayoutTests,
 				TiledColumnsLayoutTests,
 				VerticalLayoutTests,
+				HorizontalSpinnerLayoutTests,
+				VerticalSpinnerLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,
@@ -174,6 +215,9 @@ package
 				TapToTriggerTests,
 				TapToSelectTests,
 				LongPressTests,
+				KeyToSelectTests,
+				KeyToTriggerTests,
+				TokenListTests,
 			]);
 		}
 

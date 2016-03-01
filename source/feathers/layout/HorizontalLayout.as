@@ -76,54 +76,79 @@ package feathers.layout
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{
 		/**
-		 * The items will be aligned to the top of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The items will be aligned to the middle of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The items will be aligned to the bottom of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The items will fill the height of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * If the total item width is smaller than the width of the bounds, the
-		 * items will be aligned to the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * If the total item width is smaller than the width of the bounds, the
-		 * items will be aligned to the center.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * If the total item width is smaller than the width of the bounds, the
-		 * items will be aligned to the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -386,7 +411,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
+		protected var _verticalAlign:String = VerticalAlign.TOP;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
@@ -394,7 +419,7 @@ package feathers.layout
 		 * The alignment of the items vertically, on the y-axis.
 		 *
 		 * <p>If the <code>verticalAlign</code> property is set to
-		 * <code>HorizontalLayout.VERTICAL_ALIGN_JUSTIFY</code>, the
+		 * <code>VerticalAlign.JUSTIFY</code>, the
 		 * <code>height</code>, <code>minHeight</code>, and
 		 * <code>maxHeight</code> properties of the items may be changed, and
 		 * their original values ignored by the layout. In this situation, if
@@ -402,12 +427,12 @@ package feathers.layout
 		 * <code>minHeight</code>, or <code>maxHeight</code> properties should
 		 * instead be set on the parent container that is using this layout.</p>
 		 *
-		 * @default HorizontalLayout.VERTICAL_ALIGN_TOP
+		 * @default feathers.layout.VerticalAlign.TOP
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
-		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -430,7 +455,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
+		protected var _horizontalAlign:String = HorizontalAlign.LEFT;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right")]
@@ -438,11 +463,11 @@ package feathers.layout
 		 * If the total item width is less than the bounds, the positions of
 		 * the items can be aligned horizontally.
 		 *
-		 * @default HorizontalLayout.HORIZONTAL_ALIGN_LEFT
+		 * @default feathers.layout.HorizontalAlign.LEFT
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -816,7 +841,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _scrollPositionHorizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _scrollPositionHorizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right")]
@@ -824,11 +849,11 @@ package feathers.layout
 		 * When the scroll position is calculated for an item, an attempt will
 		 * be made to align the item to this position.
 		 *
-		 * @default HorizontalLayout.HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get scrollPositionHorizontalAlign():String
 		{
@@ -885,7 +910,7 @@ package feathers.layout
 			}
 
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeWidths ||
-				this._verticalAlign != VERTICAL_ALIGN_JUSTIFY ||
+				this._verticalAlign != VerticalAlign.JUSTIFY ||
 				explicitHeight !== explicitHeight) //isNaN
 			{
 				//in some cases, we may need to validate all of the items so
@@ -1126,11 +1151,11 @@ package feathers.layout
 			if(totalWidth < availableWidth)
 			{
 				var horizontalAlignOffsetX:Number = 0;
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				if(this._horizontalAlign == HorizontalAlign.RIGHT)
 				{
 					horizontalAlignOffsetX = availableWidth - totalWidth;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				else if(this._horizontalAlign == HorizontalAlign.CENTER)
 				{
 					horizontalAlignOffsetX = Math.round((availableWidth - totalWidth) / 2);
 				}
@@ -1159,7 +1184,7 @@ package feathers.layout
 
 				//in this section, we handle vertical alignment and percent
 				//height from HorizontalLayoutData
-				if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
+				if(this._verticalAlign == VerticalAlign.JUSTIFY)
 				{
 					//if we justify items vertically, we can skip percent height
 					item.y = item.pivotY + boundsY + this._paddingTop;
@@ -1216,12 +1241,12 @@ package feathers.layout
 					}
 					switch(this._verticalAlign)
 					{
-						case VERTICAL_ALIGN_BOTTOM:
+						case VerticalAlign.BOTTOM:
 						{
 							item.y = item.pivotY + boundsY + verticalAlignHeight - this._paddingBottom - item.height;
 							break;
 						}
-						case VERTICAL_ALIGN_MIDDLE:
+						case VerticalAlign.MIDDLE:
 						{
 							item.y = item.pivotY + boundsY + this._paddingTop + Math.round((verticalAlignHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
 							break;
@@ -1247,7 +1272,7 @@ package feathers.layout
 			result.contentX = 0;
 			result.contentWidth = totalWidth;
 			result.contentY = 0;
-			result.contentHeight = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY ? availableHeight : totalHeight;
+			result.contentHeight = this._verticalAlign == VerticalAlign.JUSTIFY ? availableHeight : totalHeight;
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;
 			return result;
@@ -1400,7 +1425,7 @@ package feathers.layout
 		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			var widthValue:* = item ? item.width : undefined;
-			this._widthCache.splice(index, 0, widthValue);
+			this._widthCache.insertAt(index, widthValue);
 		}
 
 		/**
@@ -1408,7 +1433,7 @@ package feathers.layout
 		 */
 		public function removeFromVariableVirtualCacheAtIndex(index:int):void
 		{
-			this._widthCache.splice(index, 1);
+			this._widthCache.removeAt(index);
 		}
 
 		/**
@@ -1455,11 +1480,11 @@ package feathers.layout
 				var indexOffset:int = 0;
 				if(totalItemWidth < width)
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					if(this._horizontalAlign == HorizontalAlign.RIGHT)
 					{
 						indexOffset = Math.ceil((width - totalItemWidth) / (calculatedTypicalItemWidth + this._gap));
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						indexOffset = Math.ceil(((width - totalItemWidth) / (calculatedTypicalItemWidth + this._gap)) / 2);
 					}
@@ -1554,7 +1579,7 @@ package feathers.layout
 				}
 				for(i = firstExistingIndex - 1; i >= lastIndexToAdd; i--)
 				{
-					result.unshift(i);
+					result.insertAt(0, i);
 				}
 			}
 			resultLength = result.length;
@@ -1661,11 +1686,11 @@ package feathers.layout
 			{
 				itemWidth = items[index].width;
 			}
-			if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_CENTER)
+			if(this._scrollPositionHorizontalAlign == HorizontalAlign.CENTER)
 			{
 				maxScrollX -= Math.round((width - itemWidth) / 2);
 			}
-			else if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+			else if(this._scrollPositionHorizontalAlign == HorizontalAlign.RIGHT)
 			{
 				maxScrollX -= (width - itemWidth);
 			}
@@ -1685,7 +1710,7 @@ package feathers.layout
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
-			var isJustified:Boolean = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY;
+			var isJustified:Boolean = this._verticalAlign == VerticalAlign.JUSTIFY;
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1733,7 +1758,7 @@ package feathers.layout
 				this._typicalItem.width = this._typicalItemWidth;
 			}
 			var hasSetHeight:Boolean = false;
-			if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY &&
+			if(this._verticalAlign == VerticalAlign.JUSTIFY &&
 				justifyHeight === justifyHeight) //!isNaN
 			{
 				hasSetHeight = true;

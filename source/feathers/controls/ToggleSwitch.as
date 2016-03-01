@@ -8,22 +8,24 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
@@ -98,31 +100,24 @@ package feathers.controls
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
 		/**
-		 * The toggle switch has only one track skin, stretching to fill the
-		 * full length of switch. In this layout mode, the on track is
-		 * displayed and fills the entire length of the toggle switch. The off
-		 * track will not exist.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
 		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The toggle switch has two tracks, stretching to fill each side of the
-		 * scroll bar with the thumb in the middle. The tracks will be resized
-		 * as the thumb moves. This layout mode is designed for toggle switches
-		 * where the two sides of the track may be colored differently to better
-		 * differentiate between the on state and the off state.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
 		 *
-		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as a <code>Scale9Image</code>,
-		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
-		 * designed to be resized dynamically.</p>
-		 *
-		 * @see #trackLayoutMode
-		 * @see feathers.display.Scale9Image
-		 * @see feathers.display.Scale3Image
-		 * @see feathers.display.TiledImage
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
 
@@ -278,7 +273,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 
 		/**
 		 * The "on" text renderer sub-component.
@@ -304,7 +299,7 @@ package feathers.controls
 		 * @see #onTrackFactory
 		 * @see #createOnTrack()
 		 */
-		protected var onTrack:Button;
+		protected var onTrack:DisplayObject;
 
 		/**
 		 * The "off" track sub-component.
@@ -314,7 +309,7 @@ package feathers.controls
 		 * @see #offTrackFactory
 		 * @see #createOffTrack()
 		 */
-		protected var offTrack:Button;
+		protected var offTrack:DisplayObject;
 
 		/**
 		 * @private
@@ -465,9 +460,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TrackLayoutMode.SINGLE;
 
-		[Inspectable(type="String",enumeration="single,onOff")]
+		[Inspectable(type="String",enumeration="single,split")]
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
 		 *
@@ -475,12 +470,12 @@ package feathers.controls
 		 * updated to use two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF;</listing>
+		 * toggle.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
 		 *
-		 * @default ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE
+		 * @default feathers.controls.TrackLayoutMode.SINGLE
 		 *
-		 * @see #TRACK_LAYOUT_MODE_SINGLE
-		 * @see #TRACK_LAYOUT_MODE_ON_OFF
+		 * @see feathers.controls.TrackLayoutMode#SINGLE
+		 * @see feathers.controls.TrackLayoutMode#SPLIT
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -492,6 +487,10 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
+			if(value === TRACK_LAYOUT_MODE_ON_OFF)
+			{
+				value = TrackLayoutMode.SPLIT;
+			}
 			if(this._trackLayoutMode == value)
 			{
 				return;
@@ -1903,22 +1902,10 @@ package feathers.controls
 				this.refreshOffTrackStyles();
 			}
 
-			if(thumbFactoryInvalid || stateInvalid)
+			if(stateInvalid || layoutInvalid || thumbFactoryInvalid || onTrackFactoryInvalid ||
+				onTrackFactoryInvalid || textRendererInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
-			}
-			if(onTrackFactoryInvalid || stateInvalid)
-			{
-				this.onTrack.isEnabled = this._isEnabled;
-			}
-			if((offTrackFactoryInvalid || layoutInvalid || stateInvalid) && this.offTrack)
-			{
-				this.offTrack.isEnabled = this._isEnabled;
-			}
-			if(textRendererInvalid || stateInvalid)
-			{
-				this.onTextRenderer.isEnabled = this._isEnabled;
-				this.offTextRenderer.isEnabled = this._isEnabled;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1957,7 +1944,10 @@ package feathers.controls
 			if(this.onTrackSkinOriginalWidth !== this.onTrackSkinOriginalWidth || //isNaN
 				this.onTrackSkinOriginalHeight !== this.onTrackSkinOriginalHeight) //isNaN
 			{
-				this.onTrack.validate();
+				if(this.onTrack is IValidating)
+				{
+					IValidating(this.onTrack).validate();
+				}
 				this.onTrackSkinOriginalWidth = this.onTrack.width;
 				this.onTrackSkinOriginalHeight = this.onTrack.height;
 			}
@@ -1966,21 +1956,27 @@ package feathers.controls
 				if(this.offTrackSkinOriginalWidth !== this.offTrackSkinOriginalWidth || //isNaN
 					this.offTrackSkinOriginalHeight !== this.offTrackSkinOriginalHeight) //isNaN
 				{
-					this.offTrack.validate();
+					if(this.offTrack is IValidating)
+					{
+						IValidating(this.offTrack).validate();
+					}
 					this.offTrackSkinOriginalWidth = this.offTrack.width;
 					this.offTrackSkinOriginalHeight = this.offTrack.height;
 				}
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			this.thumb.validate();
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				if(this.offTrack)
@@ -2027,11 +2023,12 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.keepDownStateOnRollOut = true;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -2055,10 +2052,11 @@ package feathers.controls
 
 			var factory:Function = this._onTrackFactory != null ? this._onTrackFactory : defaultOnTrackFactory;
 			var onTrackStyleName:String = this._customOnTrackStyleName != null ? this._customOnTrackStyleName : this.onTrackStyleName;
-			this.onTrack = Button(factory());
-			this.onTrack.styleNameList.add(onTrackStyleName);
-			this.onTrack.keepDownStateOnRollOut = true;
-			this.addChildAt(this.onTrack, 0);
+			var onTrack:Button = Button(factory());
+			onTrack.styleNameList.add(onTrackStyleName);
+			onTrack.keepDownStateOnRollOut = true;
+			this.addChildAt(onTrack, 0);
+			this.onTrack = onTrack;
 		}
 
 		/**
@@ -2075,7 +2073,7 @@ package feathers.controls
 		 */
 		protected function createOffTrack():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				if(this.offTrack)
 				{
@@ -2084,10 +2082,11 @@ package feathers.controls
 				}
 				var factory:Function = this._offTrackFactory != null ? this._offTrackFactory : defaultOffTrackFactory;
 				var offTrackStyleName:String = this._customOffTrackStyleName != null ? this._customOffTrackStyleName : this.offTrackStyleName;
-				this.offTrack = Button(factory());
-				this.offTrack.styleNameList.add(offTrackStyleName);
-				this.offTrack.keepDownStateOnRollOut = true;
-				this.addChildAt(this.offTrack, 1);
+				var offTrack:Button = Button(factory());
+				offTrack.styleNameList.add(offTrackStyleName);
+				offTrack.keepDownStateOnRollOut = true;
+				this.addChildAt(offTrack, 1);
+				this.offTrack = offTrack;
 			}
 			else if(this.offTrack) //single
 			{
@@ -2125,7 +2124,11 @@ package feathers.controls
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
 			var offLabelStyleName:String = this._customOffLabelStyleName != null ? this._customOffLabelStyleName : this.offLabelStyleName;
 			this.offTextRenderer.styleNameList.add(offLabelStyleName);
-			this.offTextRenderer.clipRect = new Rectangle();
+			var mask:Quad = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error
+			mask.width = 0;
+			mask.height = 0;
+			this.offTextRenderer.mask = mask;
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
 			var onLabelFactory:Function = this._onLabelFactory;
@@ -2141,7 +2144,11 @@ package feathers.controls
 
 			var onLabelStyleName:String = this._customOnLabelStyleName != null ? this._customOnLabelStyleName : this.onLabelStyleName;
 			this.onTextRenderer.styleNameList.add(onLabelStyleName);
-			this.onTextRenderer.clipRect = new Rectangle();
+			mask = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error
+			mask.width = 0;
+			mask.height = 0;
+			this.onTextRenderer.mask = mask;
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
 
@@ -2150,7 +2157,10 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 			this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 
 			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
@@ -2165,17 +2175,15 @@ package feathers.controls
 				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
 
-			var clipRect:Rectangle = this.onTextRenderer.clipRect;
-			clipRect.width = maxLabelWidth;
-			clipRect.height = totalLabelHeight;
-			this.onTextRenderer.clipRect = clipRect;
+			var mask:DisplayObject = this.onTextRenderer.mask;
+			mask.width = maxLabelWidth;
+			mask.height = totalLabelHeight;
 
 			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
-			clipRect = this.offTextRenderer.clipRect;
-			clipRect.width = maxLabelWidth;
-			clipRect.height = totalLabelHeight;
-			this.offTextRenderer.clipRect = clipRect;
+			mask = this.offTextRenderer.mask;
+			mask.width = maxLabelWidth;
+			mask.height = totalLabelHeight;
 
 			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
@@ -2191,18 +2199,16 @@ package feathers.controls
 			var thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
 			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
-			var currentClipRect:Rectangle = this.onTextRenderer.clipRect;
-			currentClipRect.x = onScrollOffset
-			this.onTextRenderer.clipRect = currentClipRect;
+			var currentMask:DisplayObject = this.onTextRenderer.mask;
+			currentMask.x = onScrollOffset;
 			this.onTextRenderer.x = this._paddingLeft - onScrollOffset;
 
 			var offScrollOffset:Number = -thumbOffset - (maxLabelWidth - this.offTextRenderer.width) / 2;
-			currentClipRect = this.offTextRenderer.clipRect;
-			currentClipRect.x = offScrollOffset
-			this.offTextRenderer.clipRect = currentClipRect;
+			currentMask = this.offTextRenderer.mask;
+			currentMask.x = offScrollOffset;
 			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				this.layoutTrackWithOnOff();
 			}
@@ -2229,7 +2235,10 @@ package feathers.controls
 					toggleThumb.isSelected = false;
 				}
 			}
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 
 			var xPosition:Number = this._paddingLeft;
 			if(this._isSelected)
@@ -2383,6 +2392,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshEnabled():void
+		{
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = this._isEnabled;
+			}
+			if(this.onTrack is IFeathersControl)
+			{
+				IFeathersControl(this.onTrack).isEnabled = this._isEnabled;
+			}
+			if(this.offTrack is IFeathersControl)
+			{
+				IFeathersControl(this.offTrack).isEnabled = this._isEnabled;
+			}
+			this.onTextRenderer.isEnabled = this._isEnabled;
+			this.offTextRenderer.isEnabled = this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layoutTrackWithOnOff():void
 		{
 			this.onTrack.x = 0;
@@ -2396,8 +2426,14 @@ package feathers.controls
 			this.offTrack.height = this.actualHeight;
 
 			//final validation to avoid juggler next frame issues
-			this.onTrack.validate();
-			this.offTrack.validate();
+			if(this.onTrack is IValidating)
+			{
+				IValidating(this.onTrack).validate();
+			}
+			if(this.offTrack is IValidating)
+			{
+				IValidating(this.offTrack).validate();
+			}
 		}
 
 		/**
@@ -2411,7 +2447,10 @@ package feathers.controls
 			this.onTrack.height = this.actualHeight;
 
 			//final validation to avoid juggler next frame issues
-			this.onTrack.validate();
+			if(this.onTrack is IValidating)
+			{
+				IValidating(this.onTrack).validate();
+			}
 		}
 
 		/**
@@ -2473,7 +2512,7 @@ package feathers.controls
 			}
 			this._touchPointID = -1;
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds)
 			{
 				this.setSelectionWithAnimation(!this._isSelected);

@@ -13,8 +13,10 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
@@ -126,23 +128,35 @@ package feathers.controls
 		public static const TITLE_ALIGN_PREFER_RIGHT:String = "preferRight";
 
 		/**
-		 * The items will be aligned to the top of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The items will be aligned to the middle of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The items will be aligned to the bottom of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
@@ -849,7 +863,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
@@ -859,13 +873,13 @@ package feathers.controls
 		 * to the middle:</p>
 		 *
 		 * <listing version="3.0">
-		 * header.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;</listing>
+		 * header.verticalAlign = VerticalAlign.MIDDLE;</listing>
 		 *
-		 * @default Header.VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -1185,7 +1199,7 @@ package feathers.controls
 			{
 				this._layout = new HorizontalLayout();
 				this._layout.useVirtualLayout = false;
-				this._layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+				this._layout.verticalAlign = VerticalAlign.MIDDLE;
 			}
 		}
 
@@ -1327,14 +1341,14 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this.explicitWidth;
-			var newHeight:Number = needsHeight ? 0 : this.explicitHeight;
+			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this._explicitWidth;
+			var newHeight:Number = needsHeight ? 0 : this._explicitHeight;
 
 			var totalItemWidth:Number = 0;
 			var leftItemCount:int = this._leftItems ? this._leftItems.length : 0;
@@ -1425,7 +1439,7 @@ package feathers.controls
 					calculatedTitleGap = this._gap;
 				}
 				newWidth += 2 * calculatedTitleGap;
-				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth;
+				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this._explicitWidth) - totalItemWidth;
 				if(leftItemCount > 0)
 				{
 					maxTitleWidth -= calculatedTitleGap;
@@ -1469,9 +1483,9 @@ package feathers.controls
 				if(extraPaddingTop > 0)
 				{
 					//account for the minimum height before adding the padding
-					if(newHeight < this._minHeight)
+					if(newHeight < this._explicitMinHeight)
 					{
-						newHeight = this._minHeight;
+						newHeight = this._explicitMinHeight;
 					}
 					newHeight += extraPaddingTop;
 				}
@@ -1639,7 +1653,7 @@ package feathers.controls
 			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
-			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
+			this._layout.horizontalAlign = HorizontalAlign.LEFT;
 			this._layout.paddingRight = 0;
 			this._layout.paddingLeft = this._paddingLeft;
 			this._layout.layout(this._leftItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -1667,7 +1681,7 @@ package feathers.controls
 			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
-			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
+			this._layout.horizontalAlign = HorizontalAlign.RIGHT;
 			this._layout.paddingRight = this._paddingRight;
 			this._layout.paddingLeft = 0;
 			this._layout.layout(this._rightItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -1694,7 +1708,7 @@ package feathers.controls
 			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
-			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
+			this._layout.horizontalAlign = HorizontalAlign.CENTER;
 			this._layout.paddingRight = this._paddingRight;
 			this._layout.paddingLeft = this._paddingLeft;
 			this._layout.layout(this._centerItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -1749,11 +1763,11 @@ package feathers.controls
 				}
 			}
 			var paddingTop:Number = this._paddingTop + this.calculateExtraOSStatusBarPadding();
-			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+			if(this._verticalAlign == VerticalAlign.TOP)
 			{
 				this.titleTextRenderer.y = paddingTop;
 			}
-			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+			else if(this._verticalAlign == VerticalAlign.BOTTOM)
 			{
 				this.titleTextRenderer.y = this.actualHeight - this._paddingBottom - this.titleTextRenderer.height;
 			}

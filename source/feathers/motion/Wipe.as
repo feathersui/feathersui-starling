@@ -130,6 +130,7 @@ import flash.geom.Rectangle;
 import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.DisplayObject;
+import starling.display.Quad;
 import starling.display.Sprite;
 
 class WipeTween extends Tween
@@ -138,28 +139,31 @@ class WipeTween extends Tween
 		xOffset:Number, yOffset:Number, duration:Number, ease:Object, onCompleteCallback:Function,
 		tweenProperties:Object)
 	{
-		var clipRect:Rectangle;
+		var mask:Quad;
 		if(newScreen)
 		{
 			this._temporaryNewScreenParent = new Sprite();
-			clipRect = new Rectangle();
+			mask = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error,
+			mask.width = 0;
+			mask.height = 0;
 			if(xOffset !== 0)
 			{
 				if(xOffset < 0)
 				{
-					clipRect.x = newScreen.width;
+					mask.x = newScreen.width;
 				}
-				clipRect.height = newScreen.height;
+				mask.height = newScreen.height;
 			}
 			if(yOffset !== 0)
 			{
 				if(yOffset < 0)
 				{
-					clipRect.y = newScreen.height;
+					mask.y = newScreen.height;
 				}
-				clipRect.width = newScreen.width;
+				mask.width = newScreen.width;
 			}
-			this._temporaryNewScreenParent.clipRect = clipRect;
+			this._temporaryNewScreenParent.mask = mask;
 			newScreen.parent.addChild(this._temporaryNewScreenParent);
 			var delegate:RenderDelegate = new RenderDelegate(newScreen);
 			delegate.alpha = newScreen.alpha;
@@ -171,12 +175,17 @@ class WipeTween extends Tween
 			newScreen.visible = false;
 			this._savedNewScreen = newScreen;
 			//the clipRect setter may have made a clone
-			clipRect = this._temporaryNewScreenParent.clipRect;
+			mask = Quad(this._temporaryNewScreenParent.mask);
 		}
 		if(oldScreen)
 		{
 			this._temporaryOldScreenParent = new Sprite();
-			this._temporaryOldScreenParent.clipRect = new Rectangle(0, 0, oldScreen.width, oldScreen.height);
+			mask = new Quad(1, 1, 0xff00ff);
+			//the initial dimensions cannot be 0 or there's a runtime error,
+			//and these values might be 0
+			mask.width = oldScreen.width;
+			mask.height = oldScreen.height;
+			this._temporaryOldScreenParent.mask = mask;
 			delegate = new RenderDelegate(oldScreen);
 			delegate.alpha = oldScreen.alpha;
 			delegate.blendMode = oldScreen.blendMode;
@@ -184,13 +193,12 @@ class WipeTween extends Tween
 			delegate.scaleX = oldScreen.scaleX;
 			delegate.scaleY = oldScreen.scaleY;
 			this._temporaryOldScreenParent.addChild(delegate);
-			clipRect = this._temporaryOldScreenParent.clipRect;
 			oldScreen.parent.addChild(this._temporaryOldScreenParent);
 			oldScreen.visible = false;
 			this._savedOldScreen = oldScreen;
 		}
 
-		super(clipRect, duration, ease);
+		super(mask, duration, ease);
 		
 		if(oldScreen)
 		{
@@ -262,8 +270,8 @@ class WipeTween extends Tween
 
 	private function updateNewScreen():void
 	{
-		var oldScreenClipRect:Rectangle = Rectangle(this.target);
-		var newScreenClipRect:Rectangle = this._temporaryNewScreenParent.clipRect;
+		var oldScreenClipRect:Quad = Quad(this.target);
+		var newScreenClipRect:Quad = Quad(this._temporaryNewScreenParent.mask);
 		if(this._savedXOffset < 0)
 		{
 			newScreenClipRect.x = oldScreenClipRect.width;

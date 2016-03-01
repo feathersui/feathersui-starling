@@ -8,8 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
@@ -18,6 +22,7 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.utils.Timer;
 
+	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -104,13 +109,13 @@ package feathers.controls
 	 * list.horizontalScrollBarFactory = function():IScrollBar
 	 * {
 	 *     var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-	 *     scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+	 *     scrollBar.direction = Direction.HORIZONTAL;
 	 *     return scrollBar;
 	 * };
 	 * list.verticalScrollBarFactory = function():IScrollBar
 	 * {
 	 *     var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-	 *     scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
+	 *     scrollBar.direction = Direction.VERTICAL;
 	 *     return scrollBar;
 	 * };</listing>
 	 *
@@ -130,16 +135,24 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
 
 		/**
-		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The scroll bar's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -208,7 +221,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 
 		/**
 		 * @private
@@ -226,7 +239,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -237,12 +250,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;</listing>
+		 * scrollBar.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default SimpleScrollBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -917,7 +930,7 @@ package feathers.controls
 
 			if(dataInvalid || thumbFactoryInvalid || stateInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled && this._maximum > this._minimum;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -946,13 +959,16 @@ package feathers.controls
 			if(this.thumbOriginalWidth !== this.thumbOriginalWidth ||
 				this.thumbOriginalHeight !== this.thumbOriginalHeight) //isNaN
 			{
-				this.thumb.validate();
+				if(this.thumb is IValidating)
+				{
+					IValidating(this.thumb).validate();
+				}
 				this.thumbOriginalWidth = this.thumb.width;
 				this.thumbOriginalHeight = this.thumb.height;
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -969,11 +985,11 @@ package feathers.controls
 			{
 				adjustedPage = range;
 			}
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					newWidth = this.thumbOriginalWidth;
 				}
@@ -996,7 +1012,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(adjustedPage === 0)
 					{
@@ -1041,12 +1057,13 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.isFocusEnabled = false;
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.isFocusEnabled = false;
+			thumb.keepDownStateOnRollOut = true;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -1058,6 +1075,17 @@ package feathers.controls
 			{
 				var propertyValue:Object = this._thumbProperties[propertyName];
 				this.thumb[propertyName] = propertyValue;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshEnabled():void
+		{
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = this._isEnabled && this._maximum > this._minimum;
 			}
 		}
 
@@ -1077,7 +1105,10 @@ package feathers.controls
 			}
 
 			//this will auto-size the thumb, if needed
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
@@ -1099,10 +1130,14 @@ package feathers.controls
 			{
 				valueOffset = (this._value - this._maximum);
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.thumb.width = this.thumbOriginalWidth;
-				var thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
+				var thumbMinHeight:Number = this.thumbOriginalHeight;
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
+				}
 				var thumbHeight:Number = contentHeight * adjustedPage / range;
 				var heightOffset:Number = contentHeight - thumbHeight;
 				if(heightOffset > thumbHeight)
@@ -1131,7 +1166,11 @@ package feathers.controls
 			}
 			else //horizontal
 			{
-				var thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
+				var thumbMinWidth:Number = this.thumbOriginalWidth;
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
+				}
 				var thumbWidth:Number = contentWidth * adjustedPage / range;
 				var widthOffset:Number = contentWidth - thumbWidth;
 				if(widthOffset > thumbWidth)
@@ -1161,7 +1200,10 @@ package feathers.controls
 			}
 
 			//final validation to avoid juggler next frame issues
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 		}
 
 		/**
@@ -1170,7 +1212,7 @@ package feathers.controls
 		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number = 0;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._paddingTop - this._paddingBottom;
 				if(trackScrollableHeight > 0)

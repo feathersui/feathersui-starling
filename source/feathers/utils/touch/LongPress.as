@@ -293,11 +293,11 @@ package feathers.utils.touch
 				var stage:Stage = this._target.stage;
 				if(this._target is DisplayObjectContainer)
 				{
-					var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(this._touchLastGlobalPosition, true));
+					var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(this._touchLastGlobalPosition));
 				}
 				else
 				{
-					isInBounds = this._target === stage.hitTest(this._touchLastGlobalPosition, true);
+					isInBounds = this._target === stage.hitTest(this._touchLastGlobalPosition);
 				}
 				if(isInBounds)
 				{

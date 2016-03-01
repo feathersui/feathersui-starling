@@ -10,6 +10,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.List;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
@@ -594,16 +595,20 @@ package feathers.controls.supportClasses
 				this._horizontalScrollPosition, this._verticalScrollPosition,
 				this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
+		
+		public function itemToItemRenderer(item:Object):IListItemRenderer
+		{
+			return IListItemRenderer(this._rendererMap[item]);
+		}
 
 		override public function dispose():void
 		{
-			this.refreshInactiveRenderers(this._defaultStorage, true);
+			this.refreshInactiveRenderers(null, true);
 			if(this._storageMap)
 			{
 				for(var factoryID:String in this._storageMap)
 				{
-					var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
-					this.refreshInactiveRenderers(storage, true);
+					this.refreshInactiveRenderers(factoryID, true);
 				}
 			}
 			this.owner = null;
@@ -642,13 +647,12 @@ package feathers.controls.supportClasses
 			}
 			if(basicsInvalid)
 			{
-				this.refreshInactiveRenderers(this._defaultStorage, itemRendererInvalid);
+				this.refreshInactiveRenderers(null, itemRendererInvalid);
 				if(this._storageMap)
 				{
 					for(var factoryID:String in this._storageMap)
 					{
-						var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
-						this.refreshInactiveRenderers(storage, itemRendererInvalid);
+						this.refreshInactiveRenderers(factoryID, itemRendererInvalid);
 					}
 				}
 			}
@@ -778,7 +782,8 @@ package feathers.controls.supportClasses
 					//typical item wasn't in the data provider. otherwise, it
 					//may still be needed for the same item.
 					var canReuse:Boolean = !this._typicalItemIsInDataProvider;
-					var oldTypicalItemRemoved:Boolean = this._typicalItemIsInDataProvider && this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
+					var oldTypicalItemRemoved:Boolean = this._typicalItemIsInDataProvider &&
+						this._dataProvider && this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
 					if(!canReuse && oldTypicalItemRemoved)
 					{
 						//special case: if the old typical item was in the data
@@ -908,8 +913,16 @@ package feathers.controls.supportClasses
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
 
-		private function refreshInactiveRenderers(storage:ItemRendererFactoryStorage, itemRendererTypeIsInvalid:Boolean):void
+		private function refreshInactiveRenderers(factoryID:String, itemRendererTypeIsInvalid:Boolean):void
 		{
+			if(factoryID !== null)
+			{
+				var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._storageMap[factoryID]);
+			}
+			else
+			{
+				storage = this._defaultStorage;
+			}
 			var temp:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
 			storage.inactiveItemRenderers = storage.activeItemRenderers;
 			storage.activeItemRenderers = temp;
@@ -921,7 +934,7 @@ package feathers.controls.supportClasses
 			{
 				this.recoverInactiveRenderers(storage);
 				this.freeInactiveRenderers(storage, 0);
-				if(this._typicalItemRenderer)
+				if(this._typicalItemRenderer && this._typicalItemRenderer.factoryID === factoryID)
 				{
 					if(this._typicalItemIsInDataProvider)
 					{
@@ -1100,7 +1113,7 @@ package feathers.controls.supportClasses
 						}
 						else
 						{
-							throw new IllegalOperationError("ListDataViewPort: renderer map contains bad data.");
+							throw new IllegalOperationError("ListDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 						}
 					}
 					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(itemRenderer);
@@ -1528,6 +1541,11 @@ import feathers.controls.renderers.IListItemRenderer;
 
 class ItemRendererFactoryStorage
 {
+	public function ItemRendererFactoryStorage()
+	{
+		
+	}
+	
 	public var activeItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 	public var inactiveItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 }

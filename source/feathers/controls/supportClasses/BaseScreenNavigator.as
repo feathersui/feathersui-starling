@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.IScreen;
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
@@ -17,6 +18,7 @@ package feathers.controls.supportClasses
 	import flash.utils.getDefinitionByName;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.errors.AbstractMethodError;
 	import starling.events.Event;
 
@@ -124,16 +126,24 @@ package feathers.controls.supportClasses
 		protected static var SIGNAL_TYPE:Class;
 
 		/**
-		 * The screen navigator will auto size itself to fill the entire stage.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
 		/**
-		 * The screen navigator will auto size itself to fit its content.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
@@ -262,7 +272,7 @@ package feathers.controls.supportClasses
 			this._clipContent = value;
 			if(!value)
 			{
-				this.clipRect = null;
+				this.mask = null;
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -270,7 +280,7 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		protected var _autoSizeMode:String = AUTO_SIZE_MODE_STAGE;
+		protected var _autoSizeMode:String = AutoSizeMode.STAGE;
 
 		[Inspectable(type="String",enumeration="stage,content")]
 		/**
@@ -281,12 +291,12 @@ package feathers.controls.supportClasses
 		 * match its content:</p>
 		 *
 		 * <listing version="3.0">
-		 * navigator.autoSizeMode = ScreenNavigator.AUTO_SIZE_MODE_CONTENT;</listing>
+		 * navigator.autoSizeMode = AutoSizeMode.CONTENT;</listing>
 		 *
-		 * @default ScreenNavigator.AUTO_SIZE_MODE_STAGE
+		 * @default feathers.controls.AutoSizeMode.STAGE
 		 *
-		 * @see #AUTO_SIZE_MODE_STAGE
-		 * @see #AUTO_SIZE_MODE_CONTENT
+		 * @see feathers.controls.AutoSizeMode#STAGE
+		 * @see feathers.controls.AutoSizeMode#CONTENT
 		 */
 		public function get autoSizeMode():String
 		{
@@ -305,7 +315,7 @@ package feathers.controls.supportClasses
 			this._autoSizeMode = value;
 			if(this._activeScreen)
 			{
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				if(this._autoSizeMode == AutoSizeMode.CONTENT)
 				{
 					this._activeScreen.addEventListener(Event.RESIZE, activeScreen_resizeHandler);
 				}
@@ -440,7 +450,7 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid || sizeInvalid)
 			{
-				this.refreshClipRect();
+				this.refreshMask();
 			}
 		}
 
@@ -462,23 +472,23 @@ package feathers.controls.supportClasses
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			if((this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage) &&
+			if((this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage) &&
 				this._activeScreen is IValidating)
 			{
 				IValidating(this._activeScreen).validate();
 			}
 
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
+				if(this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage)
 				{
 					newWidth = this._activeScreen ? this._activeScreen.width : 0;
 				}
@@ -488,10 +498,10 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
+				if(this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage)
 				{
 					newHeight = this._activeScreen ? this._activeScreen.height : 0;
 				}
@@ -519,20 +529,27 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		protected function refreshClipRect():void
+		protected function refreshMask():void
 		{
 			if(!this._clipContent)
 			{
 				return;
 			}
-			var clipRect:Rectangle = this.clipRect;
-			if(!clipRect)
+			var mask:DisplayObject = this.mask as Quad;
+			if(mask)
 			{
-				clipRect = new Rectangle();
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
 			}
-			clipRect.width = this.actualWidth;
-			clipRect.height = this.actualHeight;
-			this.clipRect = clipRect;
+			else
+			{
+				mask = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
+				this.mask = mask;
+			}
 		}
 
 		/**
@@ -605,7 +622,7 @@ package feathers.controls.supportClasses
 				screen.screenID = this._activeScreenID;
 				screen.owner = this; //subclasses will implement the interface
 			}
-			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
+			if(this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage)
 			{
 				this._activeScreen.addEventListener(Event.RESIZE, activeScreen_resizeHandler);
 			}
@@ -807,7 +824,7 @@ package feathers.controls.supportClasses
 		 */
 		protected function activeScreen_resizeHandler(event:Event):void
 		{
-			if(this._isValidating || this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+			if(this._isValidating || this._autoSizeMode != AutoSizeMode.CONTENT)
 			{
 				return;
 			}

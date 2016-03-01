@@ -278,7 +278,7 @@ package feathers.core
 			var popUp:DisplayObject = DisplayObject(event.currentTarget);
 			popUp.removeEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 			var index:int = this._popUps.indexOf(popUp);
-			this._popUps.splice(index, 1);
+			this._popUps.removeAt(index);
 			var overlay:DisplayObject = DisplayObject(this._popUpToOverlay[popUp]);
 			if(overlay)
 			{
@@ -298,7 +298,7 @@ package feathers.core
 				{
 					popUp.removeEventListener(FeathersEventType.RESIZE, popUp_resizeHandler);
 				}
-				this._centeredPopUps.splice(index, 1);
+				this._centeredPopUps.removeAt(index);
 			}
 
 			if(_popUps.length == 0)

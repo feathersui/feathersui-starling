@@ -49,30 +49,46 @@ package feathers.layout
 	public class VerticalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{
 		/**
-		 * The items will be aligned to the left of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The items will be aligned to the center of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The items will be aligned to the right of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * The items will fill the width of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -204,19 +220,19 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
+		protected var _horizontalAlign:String = HorizontalAlign.JUSTIFY;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
 		 *
-		 * @default VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY
+		 * @default feathers.layout.HorizontalAlign.JUSTIFY
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
-		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{
@@ -525,6 +541,37 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _repeatItems:Boolean = true;
+
+		/**
+		 * If set to <code>true</code>, the layout will repeat the items
+		 * infinitely, if there are enough items to allow this behavior. If the
+		 * total height of the items is smaller than the height of the view
+		 * port, the items cannot repeat.
+		 *
+		 * @default true
+		 */
+		public function get repeatItems():Boolean
+		{
+			return this._repeatItems;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set repeatItems(value:Boolean):void
+		{
+			if(this._repeatItems == value)
+			{
+				return;
+			}
+			this._repeatItems = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * @copy feathers.layout.ISpinnerLayout#snapInterval
 		 */
 		public function get snapInterval():Number
@@ -573,7 +620,7 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			if(!this._useVirtualLayout || this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY ||
+			if(!this._useVirtualLayout || this._horizontalAlign != HorizontalAlign.JUSTIFY ||
 				explicitWidth !== explicitWidth) //isNaN
 			{
 				//in some cases, we may need to validate all of the items so
@@ -692,7 +739,7 @@ package feathers.layout
 				}
 			}
 
-			var canRepeatItems:Boolean = totalHeight > availableHeight;
+			var canRepeatItems:Boolean = this._repeatItems && totalHeight > availableHeight;
 			if(canRepeatItems)
 			{
 				totalHeight += gap;
@@ -748,7 +795,7 @@ package feathers.layout
 				}
 
 				//in this section, we handle horizontal alignment
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
+				if(this._horizontalAlign == HorizontalAlign.JUSTIFY)
 				{
 					//if we justify items horizontally, we can skip percent width
 					item.x = item.pivotX + boundsX + this._paddingLeft;
@@ -765,12 +812,12 @@ package feathers.layout
 					}
 					switch(this._horizontalAlign)
 					{
-						case HORIZONTAL_ALIGN_RIGHT:
+						case HorizontalAlign.RIGHT:
 						{
 							item.x = item.pivotX + boundsX + horizontalAlignWidth - this._paddingRight - item.width;
 							break;
 						}
-						case HORIZONTAL_ALIGN_CENTER:
+						case HorizontalAlign.CENTER:
 						{
 							//round to the nearest pixel when dividing by 2 to
 							//align in the center
@@ -796,7 +843,7 @@ package feathers.layout
 				result = new LayoutBoundsResult();
 			}
 			result.contentX = 0;
-			result.contentWidth = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY ? availableWidth : totalWidth;
+			result.contentWidth = this._horizontalAlign == HorizontalAlign.JUSTIFY ? availableWidth : totalWidth;
 			if(canRepeatItems)
 			{
 				result.contentY = Number.NEGATIVE_INFINITY;
@@ -929,9 +976,11 @@ package feathers.layout
 
 			scrollY -= Math.round((height - calculatedTypicalItemHeight) / 2);
 
-			var canRepeatItems:Boolean = totalItemHeight > height;
+			var canRepeatItems:Boolean = this._repeatItems && totalItemHeight > height;
 			if(canRepeatItems)
 			{
+				//if we're repeating, then there's an extra gap
+				totalItemHeight += gap;
 				scrollY %= totalItemHeight;
 				if(scrollY < 0)
 				{
@@ -1024,7 +1073,7 @@ package feathers.layout
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
-			var isJustified:Boolean = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY;
+			var isJustified:Boolean = this._horizontalAlign == HorizontalAlign.JUSTIFY;
 			var mustSetJustifyWidth:Boolean = isJustified && justifyWidth === justifyWidth; //!isNaN
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -1062,7 +1111,7 @@ package feathers.layout
 			{
 				return;
 			}
-			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY &&
+			if(this._horizontalAlign == HorizontalAlign.JUSTIFY &&
 				justifyWidth === justifyWidth) //!isNaN
 			{
 				this._typicalItem.width = justifyWidth;

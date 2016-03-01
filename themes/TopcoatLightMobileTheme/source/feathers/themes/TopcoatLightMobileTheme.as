@@ -47,9 +47,9 @@ package feathers.themes
 		[Embed(source="/../assets/images/topcoat_light_mobile.png")]
 		private static const ATLAS_BITMAP:Class;
 
-		public function TopcoatLightMobileTheme(scaleToDPI:Boolean = true)
+		public function TopcoatLightMobileTheme()
 		{
-			super(scaleToDPI);
+			super();
 			this.initialize();
 		}
 
@@ -62,7 +62,7 @@ package feathers.themes
 		protected function initializeTextureAtlas():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
+			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false, false, 2);
 			atlasTexture.root.onRestore = onAtlasTextureRestore;
 			atlasBitmapData.dispose();
 			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));

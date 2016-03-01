@@ -39,13 +39,13 @@ package feathers.controls.text
 	import flash.text.engine.TextLineValidity;
 	import flash.text.engine.TextRotation;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
-	import starling.utils.getNextPowerOfTwo;
+	import starling.utils.MathUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
@@ -207,6 +207,11 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _lastGlobalScaleY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _measuredHeight:Number = 0;
 
 		/**
 		 * @private
@@ -613,7 +618,7 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-			return this._textLines[0].ascent;
+			return this.calculateLineAscent(this._textLines[0]);
 		}
 
 		/**
@@ -939,37 +944,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _snapToPixels:Boolean = true;
-
-		/**
-		 * Determines if the text should be snapped to the nearest whole pixel
-		 * when rendered. When this is <code>false</code>, text may be displayed
-		 * on sub-pixels, which often results in blurred rendering due to
-		 * texture smoothing.
-		 *
-		 * <p>In the following example, the text is not snapped to pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.snapToPixels = false;</listing>
-		 *
-		 * @default true
-		 */
-		public function get snapToPixels():Boolean
-		{
-			return this._snapToPixels;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set snapToPixels(value:Boolean):void
-		{
-			this._snapToPixels = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _maxTextureDimensions:int = 2048;
 
 		/**
@@ -999,7 +973,7 @@ package feathers.controls.text
 			//check if we can use rectangle textures or not
 			if(Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED)
 			{
-				value = getNextPowerOfTwo(value);
+				value = MathUtil.getNextPowerOfTwo(value);
 			}
 			if(this._maxTextureDimensions == value)
 			{
@@ -1257,7 +1231,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot)
 			{
@@ -1284,11 +1258,6 @@ package feathers.controls.text
 				{
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
-				}
-				if(this._snapToPixels)
-				{
-					offsetX += Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
 
 				var snapshotIndex:int = -1;
@@ -1337,7 +1306,7 @@ package feathers.controls.text
 				}
 				while(totalBitmapWidth > 0)
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -1350,12 +1319,12 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -1490,10 +1459,10 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = this._maxWidth;
@@ -1517,7 +1486,7 @@ package feathers.controls.text
 			}
 			if(needsHeight)
 			{
-				newHeight = Math.ceil(this._measurementTextLineContainer.height);
+				newHeight = Math.ceil(this._measuredHeight);
 				if(newHeight <= 0 && this._elementFormat)
 				{
 					newHeight = this._elementFormat.fontSize;
@@ -1583,11 +1552,11 @@ package feathers.controls.text
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
 					{
-						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
+						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
 					}
 					else
 					{
-						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
+						this._snapshotWidth = MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth);
 					}
 				}
 				if(canUseRectangleTexture)
@@ -1605,11 +1574,11 @@ package feathers.controls.text
 				{
 					if(rectangleSnapshotHeight > this._maxTextureDimensions)
 					{
-						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
+						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
 					}
 					else
 					{
-						this._snapshotHeight = getNextPowerOfTwo(rectangleSnapshotHeight);
+						this._snapshotHeight = MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight);
 					}
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
@@ -1659,8 +1628,8 @@ package feathers.controls.text
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1965,29 +1934,54 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 * the ascent alone doesn't account for diacritical marks,
+		 * like accents and things. however, increasing the ascent by
+		 * the value of the descent seems to be a good approximation.
+		 */
+		protected function calculateLineAscent(line:TextLine):Number
+		{
+			var calculatedAscent:Number = line.ascent + line.descent;
+			if(line.totalAscent > calculatedAscent)
+			{
+				calculatedAscent = line.totalAscent;
+			}
+			return calculatedAscent;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTextElementText():void
+		{
+			if(this._textElement === null)
+			{
+				return;
+			}
+			if(this._text)
+			{
+				this._textElement.text = this._text;
+				if(this._text !== null && this._text.charAt(this._text.length - 1) == " ")
+				{
+					//add an invisible control character because FTE apparently
+					//doesn't think that it's important to include trailing
+					//spaces in its width measurement.
+					this._textElement.text += String.fromCharCode(3);
+				}
+			}
+			else
+			{
+				//similar to above. this hack ensures that the baseline is
+				//measured properly when the text is an empty string.
+				this._textElement.text = String.fromCharCode(3);
+			}
+		}
+
+		/**
+		 * @private
 		 */
 		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
 		{
-			if(this._textElement)
-			{
-				if(this._text)
-				{
-					this._textElement.text = this._text;
-					if(this._text !== null && this._text.charAt(this._text.length - 1) == " ")
-					{
-						//add an invisible control character because FTE apparently
-						//doesn't think that it's important to include trailing
-						//spaces in its width measurement.
-						this._textElement.text += String.fromCharCode(3);
-					}
-				}
-				else
-				{
-					//similar to above. this hack ensures that the baseline is
-					//measured properly when the text is an empty string.
-					this._textElement.text = String.fromCharCode(3);
-				}
-			}
+			this.refreshTextElementText();
 			HELPER_TEXT_LINES.length = 0;
 			var yPosition:Number = 0;
 			var lineCount:int = textLines.length;
@@ -2102,13 +2096,18 @@ package feathers.controls.text
 					{
 						yPosition += this._leading;
 					}
-					yPosition += line.ascent;
+					
+					yPosition += this.calculateLineAscent(line);
 					line.y = yPosition;
-					yPosition += line.descent;
+					yPosition += line.totalDescent;
 					textLines[pushIndex] = line;
 					pushIndex++;
 					lineStartIndex += lineLength;
 				}
+			}
+			if(textLines === this._measurementTextLines)
+			{
+				this._measuredHeight = yPosition;
 			}
 
 			this.alignTextLines(textLines, width, this._textAlign);

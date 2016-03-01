@@ -56,167 +56,233 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-radio-label";
 		
 		/**
-		 * @copy feathers.controls.Button#STATE_UP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_UP:String = "up";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DOWN
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DOWN:String = "down";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_HOVER
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_HOVER:String = "hover";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DISABLED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_TOP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_BOTTOM
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_LEFT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_MANUAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
 		 *
-		 * @see #iconPosition
-		 * @see #iconOffsetX
-		 * @see #iconOffsetY
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_LEFT_BASELINE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT_BASELINE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
 		 *
-		 * @see #iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_LEFT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_CENTER
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_RIGHT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_TOP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_MIDDLE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_BOTTOM
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		

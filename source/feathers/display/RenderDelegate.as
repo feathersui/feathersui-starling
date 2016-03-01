@@ -11,8 +11,8 @@ package feathers.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
 
 	/**
@@ -102,11 +102,11 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			var oldAlpha:Number = this._target.alpha;
 			this._target.alpha = this.alpha;
-			this._target.render(support, parentAlpha);
+			this._target.render(painter);
 			this._target.alpha = oldAlpha;
 		}
 	}

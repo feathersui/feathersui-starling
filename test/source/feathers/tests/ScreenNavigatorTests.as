@@ -120,6 +120,15 @@ package feathers.tests
 			this._navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, removeScreenA);
 			this._navigator.showScreen(SCREEN_B_ID);
 		}
+
+		[Test]
+		public function testScreenWithEventAndMethodWithSameName():void
+		{
+			var item:ScreenNavigatorItem = new ScreenNavigatorItem(ScreenWithEventAndMethodWithSameName);
+			item.setScreenIDForEvent(EVENT_SHOW_SCREEN_B, SCREEN_B_ID);
+			this._navigator.addScreen(SCREEN_A_ID, item);
+			this._navigator.showScreen(SCREEN_A_ID);
+		}
 		
 		private function addScreenA():void
 		{
@@ -147,4 +156,16 @@ package feathers.tests
 			this._navigator.removeScreen(SCREEN_A_ID);
 		}
 	}
+}
+
+import starling.display.Quad;
+
+class ScreenWithEventAndMethodWithSameName extends Quad
+{
+	public function ScreenWithEventAndMethodWithSameName()
+	{
+		super(10, 10, 0xff00ff);
+	}
+	
+	public function showScreenB():void {}
 }

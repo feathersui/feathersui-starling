@@ -7,7 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.Button;
+	import feathers.controls.ButtonState;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Scroller;
 	import feathers.controls.ToggleButton;
@@ -19,7 +19,10 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
-	import feathers.skins.StateValueSelector;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.RelativePosition;
+	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -112,209 +115,288 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_UP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_UP:String = "up";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DOWN
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DOWN:String = "down";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_HOVER
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_HOVER:String = "hover";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DISABLED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_UP_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DOWN_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_HOVER_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#STATE_DISABLED_AND_SELECTED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
 		 *
-		 * @see #stateToSkinFunction
-		 * @see #stateToIconFunction
-		 * @see #stateToLabelPropertiesFunction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_TOP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_BOTTOM
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_LEFT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_MANUAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
-		 * @see feathers.controls.Button#iconOffsetX
-		 * @see feathers.controls.Button#iconOffsetY
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_LEFT_BASELINE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 
 		/**
-		 * @copy feathers.controls.Button#ICON_POSITION_RIGHT_BASELINE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
 		 *
-		 * @see feathers.controls.Button#iconPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_LEFT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see feathers.controls.Button#horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_CENTER
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see feathers.controls.Button#horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * @copy feathers.controls.Button#HORIZONTAL_ALIGN_RIGHT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Button#horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_TOP
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see feathers.controls.Button#verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_MIDDLE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see feathers.controls.Button#verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * @copy feathers.controls.Button#VERTICAL_ALIGN_BOTTOM
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see feathers.controls.Button#verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The accessory will be positioned above its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_TOP:String = "top";
 
 		/**
-		 * The accessory will be positioned to the right of its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_RIGHT:String = "right";
 
 		/**
-		 * The accessory will be positioned below its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_BOTTOM:String = "bottom";
 
 		/**
-		 * The accessory will be positioned to the left of its origin.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see #accessoryPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_LEFT:String = "left";
 
 		/**
-		 * The accessory will be positioned manually with no relation to another
-		 * child. Use <code>accessoryOffsetX</code> and <code>accessoryOffsetY</code>
-		 * to set the accessory position.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
 		 *
-		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
-		 *
-		 * @see #accessoryPosition
-		 * @see #accessoryOffsetX
-		 * @see #accessoryOffsetY
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const ACCESSORY_POSITION_MANUAL:String = "manual";
 
@@ -364,6 +446,7 @@ package feathers.controls.renderers
 			this.labelStyleName = DEFAULT_CHILD_STYLE_NAME_LABEL;
 			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
+			this.addEventListener(Event.REMOVED_FROM_STAGE, itemRenderer_removedFromStageHandler);
 			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
 
@@ -458,7 +541,7 @@ package feathers.controls.renderers
 		 */
 		override public function set defaultIcon(value:DisplayObject):void
 		{
-			if(this._iconSelector.defaultValue == value)
+			if(this._defaultIcon === value)
 			{
 				return;
 			}
@@ -472,7 +555,7 @@ package feathers.controls.renderers
 		 */
 		override public function set defaultSkin(value:DisplayObject):void
 		{
-			if(this._skinSelector.defaultValue == value)
+			if(this._defaultSkin === value)
 			{
 				return;
 			}
@@ -803,26 +886,26 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryPosition:String = ACCESSORY_POSITION_RIGHT;
+		protected var _accessoryPosition:String = RelativePosition.RIGHT;
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,manual")]
 		/**
 		 * The location of the accessory, relative to one of the other children.
-		 * Use <code>ACCESSORY_POSITION_MANUAL</code> to position the accessory
+		 * Use <code>RelativePosition.MANUAL</code> to position the accessory
 		 * from the top-left corner.
 		 *
 		 * <p>In the following example, the accessory is placed on the bottom:</p>
 		 *
 		 * <listing version="3.0">
-		 * renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;</listing>
+		 * renderer.accessoryPosition = RelativePosition.BOTTOM;</listing>
 		 *
-		 * @default BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT
+		 * @default feathers.layout.RelativePosition.RIGHT
 		 *
-		 * @see #ACCESSORY_POSITION_TOP
-		 * @see #ACCESSORY_POSITION_RIGHT
-		 * @see #ACCESSORY_POSITION_BOTTOM
-		 * @see #ACCESSORY_POSITION_LEFT
-		 * @see #ACCESSORY_POSITION_MANUAL
+		 * @see feathers.layout.RelativePosition#TOP
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#BOTTOM
+		 * @see feathers.layout.RelativePosition#LEFT
+		 * @see feathers.layout.RelativePosition#MANUAL
 		 * @see #layoutOrder
 		 */
 		public function get accessoryPosition():String
@@ -854,7 +937,7 @@ package feathers.controls.renderers
 		 * label or the icon) the accessory should be relative to.
 		 *
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
+		 * if <code>accessoryPosition</code> is set to <code>RelativePosition.MANUAL</code>.</p>
 		 *
 		 * <p>In the following example, the layout order is changed:</p>
 		 *
@@ -1048,7 +1131,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessorySelector:StateValueSelector = new StateValueSelector();
+		protected var _defaultAccessory:DisplayObject;
 
 		/**
 		 * The accessory used when no other accessory is defined for the current
@@ -1069,12 +1152,11 @@ package feathers.controls.renderers
 		 * @default null
 		 *
 		 * @see #setAccessoryForState()
-		 * @see #stateToAccessoryFunction
 		 * @see #itemHasAccessory
 		 */
 		public function get defaultAccessory():DisplayObject
 		{
-			return DisplayObject(this._accessorySelector.defaultValue);
+			return this._defaultAccessory;
 		}
 
 		/**
@@ -1082,15 +1164,20 @@ package feathers.controls.renderers
 		 */
 		public function set defaultAccessory(value:DisplayObject):void
 		{
-			if(this._accessorySelector.defaultValue === value)
+			if(this._defaultAccessory === value)
 			{
 				return;
 			}
 			this.replaceAccessory(null);
 			this._accessoryIsFromItem = false;
-			this._accessorySelector.defaultValue = value;
+			this._defaultAccessory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToAccessory:Object = {};
 
 		/**
 		 * @private
@@ -1098,14 +1185,13 @@ package feathers.controls.renderers
 		protected var _stateToAccessoryFunction:Function;
 
 		/**
-		 * Returns an accessory for the current state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>defaultAccessory</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function(target:BaseDefaultItemRenderer, state:Object, oldAccessory:DisplayObject = null):DisplayObject</pre>
-		 *
-		 * @default null
-		 * 
-		 * @see #itemHasAccessory
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToAccessoryFunction():Function
 		{
@@ -2731,7 +2817,7 @@ package feathers.controls.renderers
 		 * renderer.iconLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
-		 *    loader.snapToPixels = true;
+		 *    loader.scaleFactor = 2;
 		 *    return loader;
 		 * };</listing>
 		 *
@@ -2914,7 +3000,7 @@ package feathers.controls.renderers
 		 * renderer.accessoryLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
-		 *    loader.snapToPixels = true;
+		 *    loader.scaleFactor = 2;
 		 *    return loader;
 		 * };</listing>
 		 *
@@ -3097,7 +3183,7 @@ package feathers.controls.renderers
 		 * renderer.skinLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
-		 *    loader.snapToPixels = true;
+		 *    loader.scaleFactor = 2;
 		 *    return loader;
 		 * };</listing>
 		 *
@@ -3180,7 +3266,10 @@ package feathers.controls.renderers
 				{
 					return labelResult as String;
 				}
-				return labelResult.toString();
+				else if(labelResult)
+				{
+					return labelResult.toString();
+				}
 			}
 			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
@@ -3189,7 +3278,10 @@ package feathers.controls.renderers
 				{
 					return labelResult as String;
 				}
-				return labelResult.toString();
+				else if(labelResult)
+				{
+					return labelResult.toString();
+				}
 			}
 			else if(item is String)
 			{
@@ -3201,7 +3293,7 @@ package feathers.controls.renderers
 				//non-strictly equal to null
 				return item.toString();
 			}
-			return "";
+			return null;
 		}
 
 		/**
@@ -3423,6 +3515,20 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * Gets the accessory to be used by the button when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a accessory is not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see #setAccessoryForState()
+		 */
+		public function getAccessoryForState(state:String):DisplayObject
+		{
+			return this._stateToAccessory[state] as DisplayObject;
+		}
+
+		/**
 		 * Sets the accessory to be used by the item renderer when its
 		 * <code>currentState</code> property matches the specified state value.
 		 *
@@ -3433,13 +3539,13 @@ package feathers.controls.renderers
 		 */
 		public function setAccessoryForState(state:String, accessory:DisplayObject):void
 		{
-			if(accessory)
+			if(accessory !== null)
 			{
-				this._accessorySelector.setValueForState(accessory, state);
+				this._stateToAccessory[state] = accessory;
 			}
 			else
 			{
-				this._accessorySelector.clearValueForState(state);
+				delete this._stateToAccessory[state];
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -3468,8 +3574,8 @@ package feathers.controls.renderers
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -3485,7 +3591,7 @@ package feathers.controls.renderers
 			{
 				HELPER_POINT.setTo(0, 0);
 			}
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this._label)
@@ -3520,7 +3626,7 @@ package feathers.controls.renderers
 				}
 			}
 
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				if(this._label)
@@ -3566,7 +3672,7 @@ package feathers.controls.renderers
 		{
 			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
 			{
-				value = STATE_UP;
+				value = ButtonState.UP;
 			}
 			if(this._useStateDelayTimer)
 			{
@@ -3576,9 +3682,9 @@ package feathers.controls.renderers
 					return;
 				}
 
-				if(value == Button.STATE_DOWN)
+				if(value == ButtonState.DOWN)
 				{
-					if(this._currentState == value)
+					if(this._currentState === value)
 					{
 						return;
 					}
@@ -3620,7 +3726,7 @@ package feathers.controls.renderers
 				width = 0;
 			}
 
-			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE || this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE)
 			{
 				if(hasPreviousItem)
 				{
@@ -3661,7 +3767,7 @@ package feathers.controls.renderers
 				width = 0;
 			}
 
-			if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
+			if(this._accessoryPosition == RelativePosition.LEFT || this._accessoryPosition == RelativePosition.RIGHT)
 			{
 				if(hasPreviousItem)
 				{
@@ -3721,7 +3827,7 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+			if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
@@ -3762,7 +3868,7 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM)
+			if(this._accessoryPosition == RelativePosition.TOP || this._accessoryPosition == RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
@@ -3921,16 +4027,16 @@ package feathers.controls.renderers
 			if(!this._isEnabled)
 			{
 				this.touchable = false;
-				this._currentState = STATE_DISABLED;
+				this._currentState = ButtonState.DISABLED;
 				this.touchPointID = -1;
 			}
 			else
 			{
 				//might be in another state for some reason
 				//let's only change to up if needed
-				if(this._currentState == STATE_DISABLED)
+				if(this._currentState == ButtonState.DISABLED)
 				{
-					this._currentState = STATE_UP;
+					this._currentState = ButtonState.UP;
 				}
 				this.touchable = true;
 			}
@@ -3974,9 +4080,9 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new icon immediately when we call super.draw().
-			if(this._iconSelector.defaultValue != newIcon)
+			if(this._defaultIcon !== newIcon)
 			{
-				this._iconSelector.defaultValue = newIcon;
+				this._defaultIcon = newIcon;
 				//we don't want this taking precedence over our icon from the
 				//data provider.
 				this._stateToIconFunction = null;
@@ -4027,9 +4133,9 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new icon immediately when we call super.draw().
-			if(this._accessorySelector.defaultValue != newAccessory)
+			if(this._defaultAccessory !== newAccessory)
 			{
-				this._accessorySelector.defaultValue = newAccessory;
+				this._defaultAccessory = newAccessory;
 				//we don't want this taking precedence over our icon from the
 				//data provider.
 				this._stateToAccessoryFunction = null;
@@ -4073,9 +4179,9 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new skin immediately when we call super.draw().
-			if(this._skinSelector.defaultValue != newSkin)
+			if(this._defaultSkin !== newSkin)
 			{
-				this._skinSelector.defaultValue = newSkin;
+				this._defaultSkin = newSkin;
 				//we don't want this taking precedence over our skin from the
 				//data provider.
 				this._stateToSkinFunction = null;
@@ -4113,14 +4219,7 @@ package feathers.controls.renderers
 		protected function refreshAccessory():void
 		{
 			var oldAccessory:DisplayObject = this.currentAccessory;
-			if(this._stateToAccessoryFunction != null)
-			{
-				this.currentAccessory = DisplayObject(this._stateToAccessoryFunction(this, this._currentState, oldAccessory));
-			}
-			else
-			{
-				this.currentAccessory = DisplayObject(this._accessorySelector.updateValue(this, this._currentState, this.currentAccessory));
-			}
+			this.currentAccessory = this.getCurrentAccessory();
 			if(this.currentAccessory is IFeathersControl)
 			{
 				IFeathersControl(this.currentAccessory).isEnabled = this._isEnabled;
@@ -4163,6 +4262,23 @@ package feathers.controls.renderers
 					displayAccessoryLabel[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentAccessory():DisplayObject
+		{
+			if(this._stateToAccessoryFunction !== null)
+			{
+				return DisplayObject(this._stateToAccessoryFunction(this, this._currentState, this.currentAccessory));
+			}
+			var result:DisplayObject = this._stateToAccessory[this._currentState] as DisplayObject;
+			if(result !== null)
+			{
+				return result;
+			}
+			return this._defaultAccessory;
 		}
 
 		/**
@@ -4255,32 +4371,33 @@ package feathers.controls.renderers
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
 			this.refreshMaxLabelSize(false);
-			if(this._label && this.labelTextRenderer)
+			var labelRenderer:DisplayObject = null;
+			if(this._label !== null && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.validate();
-				var labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
+				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
-			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
-			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
+			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != RelativePosition.MANUAL;
+			var accessoryIsInLayout:Boolean = this.currentAccessory && this._accessoryPosition != RelativePosition.MANUAL;
 			var accessoryGap:Number = this._accessoryGap;
 			if(accessoryGap !== accessoryGap) //isNaN
 			{
 				accessoryGap = this._gap;
 			}
-			if(this._label && this.labelTextRenderer && iconIsInLayout && accessoryIsInLayout)
+			if(labelRenderer && iconIsInLayout && accessoryIsInLayout)
 			{
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
 					var iconPosition:String = this._iconPosition;
-					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
+					if(iconPosition == RelativePosition.LEFT_BASELINE)
 					{
-						iconPosition = ICON_POSITION_LEFT;
+						iconPosition = RelativePosition.LEFT;
 					}
-					else if(iconPosition == ICON_POSITION_RIGHT_BASELINE)
+					else if(iconPosition == RelativePosition.RIGHT_BASELINE)
 					{
-						iconPosition = ICON_POSITION_RIGHT;
+						iconPosition = RelativePosition.RIGHT;
 					}
 					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.currentAccessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
 				}
@@ -4290,7 +4407,7 @@ package feathers.controls.renderers
 					this.positionRelativeToOthers(this.currentAccessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
 				}
 			}
-			else if(this._label && this.labelTextRenderer)
+			else if(labelRenderer)
 			{
 				this.positionSingleChild(labelRenderer);
 				//we won't position both the icon and accessory here, otherwise
@@ -4337,7 +4454,7 @@ package feathers.controls.renderers
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
 			}
-			if(this._label && this.labelTextRenderer)
+			if(labelRenderer)
 			{
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
@@ -4354,7 +4471,7 @@ package feathers.controls.renderers
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
-				calculatedWidth = this.explicitWidth;
+				calculatedWidth = this._explicitWidth;
 				if(calculatedWidth !== calculatedWidth) //isNaN
 				{
 					calculatedWidth = this._maxWidth;
@@ -4364,7 +4481,7 @@ package feathers.controls.renderers
 			var calculatedHeight:Number = this.actualHeight;
 			if(forMeasurement)
 			{
-				calculatedHeight = this.explicitHeight;
+				calculatedHeight = this._explicitHeight;
 				if(calculatedHeight !== calculatedHeight) //isNaN
 				{
 					calculatedHeight = this._maxHeight;
@@ -4391,11 +4508,11 @@ package feathers.controls.renderers
 				}
 			}
 
-			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
-			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM);
-			var hasAccessoryToLeftOrRight:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
-			var hasAccessoryToTopOrBottom:Boolean = this.currentAccessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
+			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE ||
+				this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE);
+			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM);
+			var hasAccessoryToLeftOrRight:Boolean = this.currentAccessory && (this._accessoryPosition == RelativePosition.LEFT || this._accessoryPosition == RelativePosition.RIGHT);
+			var hasAccessoryToTopOrBottom:Boolean = this.currentAccessory && (this._accessoryPosition == RelativePosition.TOP || this._accessoryPosition == RelativePosition.BOTTOM);
 
 			if(this.accessoryLabel)
 			{
@@ -4526,7 +4643,7 @@ package feathers.controls.renderers
 			var relativeToHeight:Number = relativeTo2 ? (Math.max(relativeTo.y + relativeTo.height, relativeTo2.y + relativeTo2.height) - relativeToY) : relativeTo.height;
 			var newRelativeToX:Number = relativeToX;
 			var newRelativeToY:Number = relativeToY;
-			if(position == ACCESSORY_POSITION_TOP)
+			if(position == RelativePosition.TOP)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4535,11 +4652,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+					if(this._verticalAlign == VerticalAlign.TOP)
 					{
 						newRelativeToY += object.height + gap;
 					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
 					{
 						newRelativeToY += Math.round((object.height + gap) / 2);
 					}
@@ -4550,7 +4667,7 @@ package feathers.controls.renderers
 					object.y = newRelativeToY - object.height - gap;
 				}
 			}
-			else if(position == ACCESSORY_POSITION_RIGHT)
+			else if(position == RelativePosition.RIGHT)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4559,11 +4676,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					if(this._horizontalAlign == HorizontalAlign.RIGHT)
 					{
 						newRelativeToX -= (object.width + gap);
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						newRelativeToX -= Math.round((object.width + gap) / 2);
 					}
@@ -4574,7 +4691,7 @@ package feathers.controls.renderers
 					object.x = newRelativeToX + relativeToWidth + gap;
 				}
 			}
-			else if(position == ACCESSORY_POSITION_BOTTOM)
+			else if(position == RelativePosition.BOTTOM)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4583,11 +4700,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					if(this._verticalAlign == VerticalAlign.BOTTOM)
 					{
 						newRelativeToY -= (object.height + gap);
 					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
 					{
 						newRelativeToY -= Math.round((object.height + gap) / 2);
 					}
@@ -4598,7 +4715,7 @@ package feathers.controls.renderers
 					object.y = newRelativeToY + relativeToHeight + gap;
 				}
 			}
-			else if(position == ACCESSORY_POSITION_LEFT)
+			else if(position == RelativePosition.LEFT)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
@@ -4607,11 +4724,11 @@ package feathers.controls.renderers
 				}
 				else
 				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+					if(this._horizontalAlign == HorizontalAlign.LEFT)
 					{
 						newRelativeToX += gap + object.width;
 					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
 					{
 						newRelativeToX += Math.round((gap + object.width) / 2);
 					}
@@ -4626,10 +4743,10 @@ package feathers.controls.renderers
 			var offsetX:Number = newRelativeToX - relativeToX;
 			var offsetY:Number = newRelativeToY - relativeToY;
 			if(!relativeTo2 || otherGap != Number.POSITIVE_INFINITY || !(
-				(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP) ||
-				(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
-				(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
-				(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+				(position == RelativePosition.TOP && otherPosition == RelativePosition.TOP) ||
+				(position == RelativePosition.RIGHT && otherPosition == RelativePosition.RIGHT) ||
+				(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.BOTTOM) ||
+				(position == RelativePosition.LEFT && otherPosition == RelativePosition.LEFT)
 			))
 			{
 				relativeTo.x += offsetX;
@@ -4638,10 +4755,10 @@ package feathers.controls.renderers
 			if(relativeTo2)
 			{
 				if(otherGap != Number.POSITIVE_INFINITY || !(
-					(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
-					(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT) ||
-					(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
-					(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+					(position == RelativePosition.LEFT && otherPosition == RelativePosition.RIGHT) ||
+					(position == RelativePosition.RIGHT && otherPosition == RelativePosition.LEFT) ||
+					(position == RelativePosition.TOP && otherPosition == RelativePosition.BOTTOM) ||
+					(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.TOP)
 				))
 				{
 					relativeTo2.x += offsetX;
@@ -4649,48 +4766,48 @@ package feathers.controls.renderers
 				}
 				if(gap == Number.POSITIVE_INFINITY && otherGap == Number.POSITIVE_INFINITY)
 				{
-					if(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT)
+					if(position == RelativePosition.RIGHT && otherPosition == RelativePosition.LEFT)
 					{
 						relativeTo.x = relativeTo2.x + Math.round((object.x - relativeTo2.x + relativeTo2.width - relativeTo.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT)
+					else if(position == RelativePosition.LEFT && otherPosition == RelativePosition.RIGHT)
 					{
 						relativeTo.x = object.x + Math.round((relativeTo2.x - object.x + object.width - relativeTo.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT)
+					else if(position == RelativePosition.RIGHT && otherPosition == RelativePosition.RIGHT)
 					{
 						relativeTo2.x = relativeTo.x + Math.round((object.x - relativeTo.x + relativeTo.width - relativeTo2.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+					else if(position == RelativePosition.LEFT && otherPosition == RelativePosition.LEFT)
 					{
 						relativeTo2.x = object.x + Math.round((relativeTo.x - object.x + object.width - relativeTo2.width) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+					else if(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.TOP)
 					{
 						relativeTo.y = relativeTo2.y + Math.round((object.y - relativeTo2.y + relativeTo2.height - relativeTo.height) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM)
+					else if(position == RelativePosition.TOP && otherPosition == RelativePosition.BOTTOM)
 					{
 						relativeTo.y = object.y + Math.round((relativeTo2.y - object.y + object.height - relativeTo.height) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM)
+					else if(position == RelativePosition.BOTTOM && otherPosition == RelativePosition.BOTTOM)
 					{
 						relativeTo2.y = relativeTo.y + Math.round((object.y - relativeTo.y + relativeTo.height - relativeTo2.height) / 2);
 					}
-					else if(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP)
+					else if(position == RelativePosition.TOP && otherPosition == RelativePosition.TOP)
 					{
 						relativeTo2.y = object.y + Math.round((relativeTo.y - object.y + object.height - relativeTo2.height) / 2);
 					}
 				}
 			}
 
-			if(position == ACCESSORY_POSITION_LEFT || position == ACCESSORY_POSITION_RIGHT)
+			if(position == RelativePosition.LEFT || position == RelativePosition.RIGHT)
 			{
-				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+				if(this._verticalAlign == VerticalAlign.TOP)
 				{
 					object.y = this._paddingTop;
 				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				else if(this._verticalAlign == VerticalAlign.BOTTOM)
 				{
 					object.y = this.actualHeight - this._paddingBottom - object.height;
 				}
@@ -4699,13 +4816,13 @@ package feathers.controls.renderers
 					object.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - object.height) / 2);
 				}
 			}
-			else if(position == ACCESSORY_POSITION_TOP || position == ACCESSORY_POSITION_BOTTOM)
+			else if(position == RelativePosition.TOP || position == RelativePosition.BOTTOM)
 			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				if(this._horizontalAlign == HorizontalAlign.LEFT)
 				{
 					object.x = this._paddingLeft;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				else if(this._horizontalAlign == HorizontalAlign.RIGHT)
 				{
 					object.x = this.actualWidth - this._paddingRight - object.width;
 				}
@@ -4771,9 +4888,8 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override protected function button_removedFromStageHandler(event:Event):void
+		protected function itemRenderer_removedFromStageHandler(event:Event):void
 		{
-			super.button_removedFromStageHandler(event);
 			this.accessoryTouchPointID = -1;
 		}
 
@@ -4801,7 +4917,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override protected function button_touchHandler(event:TouchEvent):void
+		override protected function basicButton_touchHandler(event:TouchEvent):void
 		{
 			if(this.currentAccessory && !this._isSelectableOnAccessoryTouch && this.currentAccessory != this.accessoryLabel && this.currentAccessory != this.accessoryLoader && this.touchPointID < 0)
 			{
@@ -4810,11 +4926,11 @@ package feathers.controls.renderers
 				var touch:Touch = event.getTouch(this.currentAccessory);
 				if(touch)
 				{
-					this.changeState(Button.STATE_UP);
+					this.changeState(ButtonState.UP);
 					return;
 				}
 			}
-			super.button_touchHandler(event);
+			super.basicButton_touchHandler(event);
 		}
 
 		/**

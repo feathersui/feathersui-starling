@@ -30,13 +30,13 @@ package feathers.controls.text
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
-	import starling.utils.getNextPowerOfTwo;
+	import starling.utils.MathUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.TextField</code> and draws
@@ -523,37 +523,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _snapToPixels:Boolean = true;
-
-		/**
-		 * Determines if the text should be snapped to the nearest whole pixel
-		 * when rendered. When this is <code>false</code>, text may be displayed
-		 * on sub-pixels, which often results in blurred rendering due to
-		 * texture smoothing.
-		 *
-		 * <p>In the following example, the text is not snapped to pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.snapToPixels = false;</listing>
-		 *
-		 * @default true
-		 */
-		public function get snapToPixels():Boolean
-		{
-			return this._snapToPixels;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set snapToPixels(value:Boolean):void
-		{
-			this._snapToPixels = value;
-		}
-
-		/**
-		 * @private
-		 */
 		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
@@ -973,7 +942,7 @@ package feathers.controls.text
 			//check if we can use rectangle textures or not
 			if(Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED)
 			{
-				value = getNextPowerOfTwo(value);
+				value = MathUtil.getNextPowerOfTwo(value);
 			}
 			if(this._maxTextureDimensions == value)
 			{
@@ -1230,7 +1199,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot)
 			{
@@ -1257,11 +1226,6 @@ package feathers.controls.text
 				{
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
-				}
-				if(this._snapToPixels)
-				{
-					offsetX += Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					offsetY += Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
 
 				var snapshotIndex:int = -1;
@@ -1310,7 +1274,7 @@ package feathers.controls.text
 				}
 				while(totalBitmapWidth > 0)
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -1323,12 +1287,12 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -1480,8 +1444,8 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 
 			this.textField.autoSize = TextFieldAutoSize.LEFT;
 			this.textField.wordWrap = false;
@@ -1493,7 +1457,7 @@ package feathers.controls.text
 				gutterDimensionsOffset = 0;
 			}
 
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				//yes, this value is never used. this is a workaround for a bug
@@ -1502,9 +1466,9 @@ package feathers.controls.text
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
 				newWidth = (this.textField.width / scaleFactor) - gutterDimensionsOffset;
-				if(newWidth < this._minWidth)
+				if(newWidth < this._explicitMinWidth)
 				{
-					newWidth = this._minWidth;
+					newWidth = this._explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1521,13 +1485,13 @@ package feathers.controls.text
 				this.textField.width = newWidth + gutterDimensionsOffset;
 				this.textField.wordWrap = this._wordWrap;
 			}
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				newHeight = (this.textField.height / scaleFactor) - gutterDimensionsOffset;
-				if(newHeight < this._minHeight)
+				if(newHeight < this._explicitMinHeight)
 				{
-					newHeight = this._minHeight;
+					newHeight = this._explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{
@@ -1623,11 +1587,11 @@ package feathers.controls.text
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
 					{
-						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
+						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
 					}
 					else
 					{
-						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
+						this._snapshotWidth = MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth);
 					}
 				}
 				if(canUseRectangleTexture)
@@ -1645,11 +1609,11 @@ package feathers.controls.text
 				{
 					if(rectangleSnapshotHeight > this._maxTextureDimensions)
 					{
-						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
+						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
 					}
 					else
 					{
-						this._snapshotHeight = getNextPowerOfTwo(rectangleSnapshotHeight);
+						this._snapshotHeight = MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight);
 					}
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
@@ -1708,8 +1672,8 @@ package feathers.controls.text
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;

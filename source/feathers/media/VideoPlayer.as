@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.media
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.LayoutGroup;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
@@ -26,6 +27,7 @@ package feathers.media
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.Texture;
 
 	/**
@@ -813,18 +815,6 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		override public function get hasVisibleArea():Boolean
-		{
-			if(this._isFullScreen)
-			{
-				return false;
-			}
-			return super.hasVisibleArea;
-		}
-
-		/**
-		 * @private
-		 */
 		override public function dispose():void
 		{
 			this.videoSource = null;
@@ -841,6 +831,18 @@ package feathers.media
 				return;
 			}
 			super.play();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(painter:Painter):void
+		{
+			if(this._isFullScreen)
+			{
+				return;
+			}
+			super.render(painter);
 		}
 
 		/**
@@ -892,7 +894,7 @@ package feathers.media
 				if(!this._fullScreenContainer)
 				{
 					this._fullScreenContainer = new LayoutGroup();
-					this._fullScreenContainer.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+					this._fullScreenContainer.autoSizeMode = AutoSizeMode.STAGE;
 				}
 				this._fullScreenContainer.layout = this._layout;
 				childCount = this.numChildren;

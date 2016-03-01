@@ -207,6 +207,7 @@ import flash.geom.Rectangle;
 import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.DisplayObject;
+import starling.display.Quad;
 import starling.display.Sprite;
 
 class RevealTween extends Tween
@@ -215,25 +216,30 @@ class RevealTween extends Tween
 		xOffset:Number, yOffset:Number, duration:Number, ease:Object, onCompleteCallback:Function,
 		tweenProperties:Object)
 	{
-		var clipRect:Rectangle = new Rectangle();
+		var mask:Quad = new Quad(1, 1, 0xff00ff);
+		//the initial dimensions cannot be 0 or there's a runtime error
+		mask.width = oldScreen.width;
+		mask.height = oldScreen.height;
+		mask.width = 0;
+		mask.height = 0;
 		if(xOffset === 0)
 		{
-			clipRect.width = newScreen.width;
+			mask.width = newScreen.width;
 		}
 		else if(xOffset < 0)
 		{
-			clipRect.x = -xOffset;
+			mask.x = -xOffset;
 		}
 		if(yOffset === 0)
 		{
-			clipRect.height = newScreen.height;
+			mask.height = newScreen.height;
 		}
 		else if(yOffset < 0)
 		{
-			clipRect.y = -yOffset;
+			mask.y = -yOffset;
 		}
 		this._temporaryParent = new Sprite();
-		this._temporaryParent.clipRect = clipRect;
+		this._temporaryParent.mask = mask;
 		newScreen.parent.addChild(this._temporaryParent);
 		var delegate:RenderDelegate = new RenderDelegate(newScreen);
 		delegate.alpha = newScreen.alpha;
@@ -245,11 +251,11 @@ class RevealTween extends Tween
 		newScreen.visible = false;
 		this._savedNewScreen = newScreen;
 
-		super(this._temporaryParent.clipRect, duration, ease);
+		super(this._temporaryParent.mask, duration, ease);
 
 		if(xOffset < 0)
 		{
-			this.animate("x", clipRect.x + xOffset);
+			this.animate("x", mask.x + xOffset);
 			this.animate("width", -xOffset);
 		}
 		else if(xOffset > 0)
@@ -258,7 +264,7 @@ class RevealTween extends Tween
 		}
 		if(yOffset < 0)
 		{
-			this.animate("y", clipRect.y + yOffset);
+			this.animate("y", mask.y + yOffset);
 			this.animate("height", -yOffset);
 		}
 		else if(yOffset > 0)
@@ -294,22 +300,22 @@ class RevealTween extends Tween
 
 	private function updateOldScreen():void
 	{
-		var clipRect:Rectangle = this._temporaryParent.clipRect;
+		var mask:Quad = Quad(this._temporaryParent.mask);
 		if(this._savedXOffset < 0)
 		{
-			this._savedOldScreen.x = -clipRect.width;
+			this._savedOldScreen.x = -mask.width;
 		}
 		else if(this._savedXOffset > 0)
 		{
-			this._savedOldScreen.x = clipRect.width;
+			this._savedOldScreen.x = mask.width;
 		}
 		if(this._savedYOffset < 0)
 		{
-			this._savedOldScreen.y = -clipRect.height;
+			this._savedOldScreen.y = -mask.height;
 		}
 		else if(this._savedYOffset > 0)
 		{
-			this._savedOldScreen.y = clipRect.height;
+			this._savedOldScreen.y = mask.height;
 		}
 	}
 

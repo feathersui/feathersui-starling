@@ -181,6 +181,18 @@ package feathers.tests
 			Assert.assertStrictlyEquals("activeScreenID returned incorrect value for stack after pop to root with event", SCREEN_A_ID, this._navigator.activeScreenID);
 			Assert.assertStrictlyEquals("stackCount returned incorrect value for stack after pop to root with event", 1, this._navigator.stackCount);
 		}
+
+		[Test]
+		public function testScreenWithEventAndMethodWithSameName():void
+		{
+			var item:StackScreenNavigatorItem = new StackScreenNavigatorItem(ScreenWithEventAndMethodWithSameName);
+			item.setScreenIDForPushEvent(EVENT_PUSH_SCREEN_B, SCREEN_B_ID);
+			item.setScreenIDForReplaceEvent(EVENT_REPLACE_WITH_SCREEN_C, SCREEN_C_ID);
+			item.addPopEvent(EVENT_POP_SCREEN);
+			item.addPopToRootEvent(EVENT_POP_TO_ROOT_SCREEN);
+			this._navigator.addScreen(SCREEN_A_ID, item);
+			this._navigator.rootScreenID = SCREEN_A_ID;
+		}
 		
 		private function addScreenA():void
 		{
@@ -215,4 +227,19 @@ package feathers.tests
 			this._functionWasCalled = true;
 		}
 	}
+}
+
+import starling.display.Quad;
+
+class ScreenWithEventAndMethodWithSameName extends Quad
+{
+	public function ScreenWithEventAndMethodWithSameName()
+	{
+		super(10, 10, 0xff00ff);
+	}
+
+	public function pushScreenB():void {}
+	public function replaceWithScreenC():void {}
+	public function popScreen():void {}
+	public function popToRootScreen():void {}
 }

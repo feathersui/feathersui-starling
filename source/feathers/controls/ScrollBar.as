@@ -8,8 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
@@ -147,46 +151,46 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY:String = "incrementButtonFactory";
 
 		/**
-		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The scroll bar's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The scroll bar has only one track, that fills the full length of the
-		 * scroll bar. In this layout mode, the "minimum" track is displayed and
-		 * fills the entire length of the scroll bar. The maximum track will not
-		 * exist.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
 		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The scroll bar has two tracks, stretching to fill each side of the
-		 * scroll bar with the thumb in the middle. The tracks will be resized
-		 * as the thumb moves. This layout mode is designed for scroll bars
-		 * where the two sides of the track may be colored differently to show
-		 * the value "filling up" as the thumb is dragged or to highlight the
-		 * track when it is triggered to scroll by a page instead of a step.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
 		 *
-		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as a <code>Scale9Image</code>,
-		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
-		 * designed to be resized dynamically.</p>
-		 *
-		 * @see #trackLayoutMode
-		 * @see feathers.display.Scale9Image
-		 * @see feathers.display.Scale3Image
-		 * @see feathers.display.TiledImage
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
@@ -419,7 +423,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 
 		/**
 		 * The scroll bar's minimum track sub-component.
@@ -429,7 +433,7 @@ package feathers.controls
 		 * @see #minimumTrackFactory
 		 * @see #createMinimumTrack()
 		 */
-		protected var minimumTrack:Button;
+		protected var minimumTrack:DisplayObject;
 
 		/**
 		 * The scroll bar's maximum track sub-component.
@@ -439,7 +443,7 @@ package feathers.controls
 		 * @see #maximumTrackFactory
 		 * @see #createMaximumTrack()
 		 */
-		protected var maximumTrack:Button;
+		protected var maximumTrack:DisplayObject;
 
 		/**
 		 * @private
@@ -452,7 +456,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -463,12 +467,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;</listing>
+		 * scrollBar.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default ScrollBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -888,9 +892,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TrackLayoutMode.SINGLE;
 
-		[Inspectable(type="String",enumeration="single,minMax")]
+		[Inspectable(type="String",enumeration="single,split")]
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
 		 * sized.
@@ -898,12 +902,12 @@ package feathers.controls
 		 * <p>In the following example, the scroll bar is given two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
+		 * scrollBar.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
 		 *
-		 * @default ScrollBar.TRACK_LAYOUT_MODE_SINGLE
+		 * @default feathers.controls.TrackLayoutMode.SINGLE
 		 *
-		 * @see #TRACK_LAYOUT_MODE_SINGLE
-		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
+		 * @see feathers.controls.TrackLayoutMode#SINGLE
+		 * @see feathers.controls.TrackLayoutMode#SPLIT
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -915,6 +919,10 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
+			if(value === TRACK_LAYOUT_MODE_MIN_MAX)
+			{
+				value = TrackLayoutMode.SPLIT;
+			}
 			if(this._trackLayoutMode == value)
 			{
 				return;
@@ -1898,26 +1906,11 @@ package feathers.controls
 				this.refreshIncrementButtonStyles();
 			}
 
-			var isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
-			if(dataInvalid || stateInvalid || thumbFactoryInvalid)
+			if(dataInvalid || stateInvalid || thumbFactoryInvalid ||
+				minimumTrackFactoryInvalid || maximumTrackFactoryInvalid ||
+				decrementButtonFactoryInvalid || incrementButtonFactoryInvalid)
 			{
-				this.thumb.isEnabled = isEnabled;
-			}
-			if(dataInvalid || stateInvalid || minimumTrackFactoryInvalid)
-			{
-				this.minimumTrack.isEnabled = isEnabled;
-			}
-			if((dataInvalid || stateInvalid || maximumTrackFactoryInvalid || layoutInvalid) && this.maximumTrack)
-			{
-				this.maximumTrack.isEnabled = isEnabled;
-			}
-			if(dataInvalid || stateInvalid || decrementButtonFactoryInvalid)
-			{
-				this.decrementButton.isEnabled = isEnabled;
-			}
-			if(dataInvalid || stateInvalid || incrementButtonFactoryInvalid)
-			{
-				this.incrementButton.isEnabled = isEnabled;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1946,7 +1939,10 @@ package feathers.controls
 			if(this.minimumTrackOriginalWidth !== this.minimumTrackOriginalWidth || //isNaN
 				this.minimumTrackOriginalHeight !== this.minimumTrackOriginalHeight) //isNaN
 			{
-				this.minimumTrack.validate();
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
 				this.minimumTrackOriginalWidth = this.minimumTrack.width;
 				this.minimumTrackOriginalHeight = this.minimumTrack.height;
 			}
@@ -1955,7 +1951,10 @@ package feathers.controls
 				if(this.maximumTrackOriginalWidth !== this.maximumTrackOriginalWidth || //isNaN
 					this.maximumTrackOriginalHeight !== this.maximumTrackOriginalHeight) //isNaN
 				{
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrackOriginalWidth = this.maximumTrack.width;
 					this.maximumTrackOriginalHeight = this.maximumTrack.height;
 				}
@@ -1963,25 +1962,28 @@ package feathers.controls
 			if(this.thumbOriginalWidth !== this.thumbOriginalWidth || //isNaN
 				this.thumbOriginalHeight !== this.thumbOriginalHeight) //isNaN
 			{
-				this.thumb.validate();
+				if(this.thumb is IValidating)
+				{
+					IValidating(this.thumb).validate();
+				}
 				this.thumbOriginalWidth = this.thumb.width;
 				this.thumbOriginalHeight = this.thumb.height;
 			}
 			this.decrementButton.validate();
 			this.incrementButton.validate();
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -2007,7 +2009,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -2055,12 +2057,13 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.isFocusEnabled = false;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.keepDownStateOnRollOut = true;
+			thumb.isFocusEnabled = false;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -2084,12 +2087,13 @@ package feathers.controls
 
 			var factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
 			var minimumTrackStyleName:String = this._customMinimumTrackStyleName != null ? this._customMinimumTrackStyleName : this.minimumTrackStyleName;
-			this.minimumTrack = Button(factory());
-			this.minimumTrack.styleNameList.add(minimumTrackStyleName);
-			this.minimumTrack.keepDownStateOnRollOut = true;
-			this.minimumTrack.isFocusEnabled = false;
-			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-			this.addChildAt(this.minimumTrack, 0);
+			var minimumTrack:Button = Button(factory());
+			minimumTrack.styleNameList.add(minimumTrackStyleName);
+			minimumTrack.keepDownStateOnRollOut = true;
+			minimumTrack.isFocusEnabled = false;
+			minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+			this.addChildAt(minimumTrack, 0);
+			this.minimumTrack = minimumTrack;
 		}
 
 		/**
@@ -2106,7 +2110,7 @@ package feathers.controls
 		 */
 		protected function createMaximumTrack():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				if(this.maximumTrack)
 				{
@@ -2115,12 +2119,13 @@ package feathers.controls
 				}
 				var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
 				var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
-				this.maximumTrack = Button(factory());
-				this.maximumTrack.styleNameList.add(maximumTrackStyleName);
-				this.maximumTrack.keepDownStateOnRollOut = true;
-				this.maximumTrack.isFocusEnabled = false;
-				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChildAt(this.maximumTrack, 1);
+				var maximumTrack:Button = Button(factory());
+				maximumTrack.styleNameList.add(maximumTrackStyleName);
+				maximumTrack.keepDownStateOnRollOut = true;
+				maximumTrack.isFocusEnabled = false;
+				maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChildAt(maximumTrack, 1);
+				this.maximumTrack = maximumTrack;
 			}
 			else if(this.maximumTrack) //single
 			{
@@ -2254,12 +2259,34 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshEnabled():void
+		{
+			var isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = isEnabled;
+			}
+			if(this.minimumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.minimumTrack).isEnabled = isEnabled;
+			}
+			if(this.maximumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.maximumTrack).isEnabled = isEnabled;
+			}
+			this.decrementButton.isEnabled = isEnabled;
+			this.incrementButton.isEnabled = isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layout():void
 		{
 			this.layoutStepButtons();
 			this.layoutThumb();
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				this.layoutTrackWithMinMax();
 			}
@@ -2274,7 +2301,7 @@ package feathers.controls
 		 */
 		protected function layoutStepButtons():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.decrementButton.x = (this.actualWidth - this.decrementButton.width) / 2;
 				this.decrementButton.y = 0;
@@ -2306,7 +2333,10 @@ package feathers.controls
 			}
 
 			//this will auto-size the thumb, if needed
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
@@ -2319,10 +2349,14 @@ package feathers.controls
 			{
 				adjustedPage = range;
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				contentHeight -= (this.decrementButton.height + this.incrementButton.height);
-				var thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
+				var thumbMinHeight:Number = this.thumbOriginalHeight;
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
+				}
 				this.thumb.width = this.thumbOriginalWidth;
 				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPage / range);
 				var trackScrollableHeight:Number = contentHeight - this.thumb.height;
@@ -2332,7 +2366,11 @@ package feathers.controls
 			else //horizontal
 			{
 				contentWidth -= (this.decrementButton.width + this.decrementButton.width);
-				var thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
+				var thumbMinWidth:Number = this.thumbOriginalWidth;
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
+				}
 				this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPage / range);
 				this.thumb.height = this.thumbOriginalHeight;
 				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
@@ -2354,7 +2392,7 @@ package feathers.controls
 			}
 
 			var showButtons:Boolean = this._maximum != this._minimum;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.minimumTrack.x = 0;
 				if(showButtons)
@@ -2408,8 +2446,14 @@ package feathers.controls
 			}
 
 			//final validation to avoid juggler next frame issues
-			this.minimumTrack.validate();
-			this.maximumTrack.validate();
+			if(this.minimumTrack is IValidating)
+			{
+				IValidating(this.minimumTrack).validate();
+			}
+			if(this.maximumTrack is IValidating)
+			{
+				IValidating(this.maximumTrack).validate();
+			}
 		}
 
 		/**
@@ -2421,7 +2465,7 @@ package feathers.controls
 			this.minimumTrack.touchable = range > 0 && range < Number.POSITIVE_INFINITY;
 
 			var showButtons:Boolean = this._maximum != this._minimum;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.minimumTrack.x = 0;
 				if(showButtons)
@@ -2465,7 +2509,10 @@ package feathers.controls
 			}
 
 			//final validation to avoid juggler next frame issues
-			this.minimumTrack.validate();
+			if(this.minimumTrack is IValidating)
+			{
+				IValidating(this.minimumTrack).validate();
+			}
 		}
 
 		/**
@@ -2474,7 +2521,7 @@ package feathers.controls
 		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number = 0;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this.decrementButton.height - this.incrementButton.height - this._paddingTop - this._paddingBottom;
 				if(trackScrollableHeight > 0)

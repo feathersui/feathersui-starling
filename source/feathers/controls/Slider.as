@@ -8,10 +8,13 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
@@ -137,45 +140,46 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY:String = "maximumTrackFactory";
 
 		/**
-		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 		
 		/**
-		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The slider has only one track, that fills the full length of the
-		 * slider. In this layout mode, the "minimum" track is displayed and
-		 * fills the entire length of the slider. The maximum track will not
-		 * exist.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
 		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The slider has two tracks, stretching to fill each side of the slider
-		 * with the thumb in the middle. The tracks will be resized as the thumb
-		 * moves. This layout mode is designed for sliders where the two sides
-		 * of the track may be colored differently to show the value
-		 * "filling up" as the slider is dragged.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
 		 *
-		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as a <code>Scale9Image</code>,
-		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
-		 * designed to be resized dynamically.</p>
-		 *
-		 * @see #trackLayoutMode
-		 * @see feathers.display.Scale9Image
-		 * @see feathers.display.Scale3Image
-		 * @see feathers.display.TiledImage
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
@@ -205,6 +209,16 @@ package feathers.controls
 		 * @see #trackInteractionMode
 		 */
 		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
+
+		/**
+		 * When the track is touched, the slider's thumb jumps directly to the
+		 * touch position, and the slider's <code>value</code> property is
+		 * updated to match as if the thumb were dragged to that position, and
+		 * the thumb may continue to be dragged until the touch ends.
+		 *
+		 * @see #trackInteractionMode
+		 */
+		public static const TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG:String = "toValueWithDrag";
 
 		/**
 		 * When the track is touched, the <code>value</code> is increased or
@@ -332,7 +346,7 @@ package feathers.controls
 		 * @see #thumbFactory
 		 * @see #createThumb()
 		 */
-		protected var thumb:Button;
+		protected var thumb:DisplayObject;
 		
 		/**
 		 * The minimum track sub-component.
@@ -342,7 +356,7 @@ package feathers.controls
 		 * @see #minimumTrackFactory
 		 * @see #createMinimumTrack()
 		 */
-		protected var minimumTrack:Button;
+		protected var minimumTrack:DisplayObject;
 
 		/**
 		 * The maximum track sub-component.
@@ -352,7 +366,7 @@ package feathers.controls
 		 * @see #maximumTrackFactory
 		 * @see #createMaximumTrack()
 		 */
-		protected var maximumTrack:Button;
+		protected var maximumTrack:DisplayObject;
 
 		/**
 		 * @private
@@ -385,7 +399,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -396,12 +410,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.direction = Slider.DIRECTION_VERTICAL;</listing>
+		 * slider.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default Slider.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -808,9 +822,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TrackLayoutMode.SINGLE;
 
-		[Inspectable(type="String",enumeration="single,minMax")]
+		[Inspectable(type="String",enumeration="single,split")]
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
 		 * sized.
@@ -818,12 +832,12 @@ package feathers.controls
 		 * <p>In the following example, the slider is given two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
+		 * slider.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
 		 *
-		 * @default Slider.TRACK_LAYOUT_MODE_SINGLE
+		 * @default feathers.controls.TrackLayoutMode.SINGLE
 		 *
-		 * @see #TRACK_LAYOUT_MODE_SINGLE
-		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
+		 * @see feathers.controls.TrackLayoutMode#SINGLE
+		 * @see feathers.controls.TrackLayoutMode#SPLIT
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -835,6 +849,10 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
+			if(value === TRACK_LAYOUT_MODE_MIN_MAX)
+			{
+				value = TrackLayoutMode.SPLIT;
+			}
 			if(this._trackLayoutMode == value)
 			{
 				return;
@@ -887,7 +905,7 @@ package feathers.controls
 		 */
 		protected var _trackInteractionMode:String = TRACK_INTERACTION_MODE_TO_VALUE;
 
-		[Inspectable(type="String",enumeration="toValue,byPage")]
+		[Inspectable(type="String",enumeration="toValue,toValueWithDrag,byPage")]
 		/**
 		 * Determines how the slider's value changes when the track is touched.
 		 *
@@ -905,6 +923,7 @@ package feathers.controls
 		 * @default Slider.TRACK_INTERACTION_MODE_TO_VALUE
 		 *
 		 * @see #TRACK_INTERACTION_MODE_TO_VALUE
+		 * @see #TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG
 		 * @see #TRACK_INTERACTION_MODE_BY_PAGE
 		 * @see #page
 		 */
@@ -1575,17 +1594,10 @@ package feathers.controls
 				this.refreshMaximumTrackStyles();
 			}
 			
-			if(thumbFactoryInvalid || stateInvalid)
+			if(stateInvalid || thumbFactoryInvalid || minimumTrackFactoryInvalid ||
+				maximumTrackFactoryInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
-			}
-			if(minimumTrackFactoryInvalid || stateInvalid)
-			{
-				this.minimumTrack.isEnabled = this._isEnabled;
-			}
-			if((maximumTrackFactoryInvalid || layoutInvalid || stateInvalid) && this.maximumTrack)
-			{
-				this.maximumTrack.isEnabled = this._isEnabled;
+				this.refreshEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1619,7 +1631,10 @@ package feathers.controls
 			if(this.minimumTrackOriginalWidth !== this.minimumTrackOriginalWidth || //isNaN
 				this.minimumTrackOriginalHeight !== this.minimumTrackOriginalHeight) //isNaN
 			{
-				this.minimumTrack.validate();
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
 				this.minimumTrackOriginalWidth = this.minimumTrack.width;
 				this.minimumTrackOriginalHeight = this.minimumTrack.height;
 			}
@@ -1628,24 +1643,30 @@ package feathers.controls
 				if(this.maximumTrackOriginalWidth !== this.maximumTrackOriginalWidth || //isNaN
 					this.maximumTrackOriginalHeight !== this.maximumTrackOriginalHeight) //isNaN
 				{
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrackOriginalWidth = this.maximumTrack.width;
 					this.maximumTrackOriginalHeight = this.maximumTrack.height;
 				}
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			this.thumb.validate();
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -1671,7 +1692,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					if(this.maximumTrack)
 					{
@@ -1719,11 +1740,12 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbStyleName);
-			this.thumb.keepDownStateOnRollOut = true;
-			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-			this.addChild(this.thumb);
+			var thumb:Button = Button(factory());
+			thumb.styleNameList.add(thumbStyleName);
+			thumb.keepDownStateOnRollOut = true;
+			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(thumb);
+			this.thumb = thumb;
 		}
 
 		/**
@@ -1747,11 +1769,12 @@ package feathers.controls
 
 			var factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
 			var minimumTrackStyleName:String = this._customMinimumTrackStyleName != null ? this._customMinimumTrackStyleName : this.minimumTrackStyleName;
-			this.minimumTrack = Button(factory());
-			this.minimumTrack.styleNameList.add(minimumTrackStyleName);
-			this.minimumTrack.keepDownStateOnRollOut = true;
-			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-			this.addChildAt(this.minimumTrack, 0);
+			var minimumTrack:Button = Button(factory());
+			minimumTrack.styleNameList.add(minimumTrackStyleName);
+			minimumTrack.keepDownStateOnRollOut = true;
+			minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+			this.addChildAt(minimumTrack, 0);
+			this.minimumTrack = minimumTrack;
 		}
 
 		/**
@@ -1768,7 +1791,7 @@ package feathers.controls
 		 */
 		protected function createMaximumTrack():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				if(this.maximumTrack)
 				{
@@ -1777,11 +1800,12 @@ package feathers.controls
 				}
 				var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
 				var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
-				this.maximumTrack = Button(factory());
-				this.maximumTrack.styleNameList.add(maximumTrackStyleName);
-				this.maximumTrack.keepDownStateOnRollOut = true;
-				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChildAt(this.maximumTrack, 1);
+				var maximumTrack:Button = Button(factory());
+				maximumTrack.styleNameList.add(maximumTrackStyleName);
+				maximumTrack.keepDownStateOnRollOut = true;
+				maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChildAt(maximumTrack, 1);
+				this.maximumTrack = maximumTrack;
 			}
 			else if(this.maximumTrack) //single
 			{
@@ -1834,11 +1858,30 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshEnabled():void
+		{
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).isEnabled = this._isEnabled;
+			}
+			if(this.minimumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.minimumTrack).isEnabled = this._isEnabled;
+			}
+			if(this.maximumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.maximumTrack).isEnabled = this._isEnabled;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layoutChildren():void
 		{
 			this.layoutThumb();
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
 			{
 				this.layoutTrackWithMinMax();
 			}
@@ -1854,7 +1897,10 @@ package feathers.controls
 		protected function layoutThumb():void
 		{
 			//this will auto-size the thumb, if needed
-			this.thumb.validate();
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
 			
 			if(this._minimum === this._maximum)
 			{
@@ -1872,7 +1918,7 @@ package feathers.controls
 					percentage = 1;
 				}
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
 				this.thumb.x = Math.round((this.actualWidth - this.thumb.width) / 2) + this._thumbOffset;
@@ -1895,7 +1941,7 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithMinMax():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				this.maximumTrack.y = 0;
 				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
@@ -1905,10 +1951,16 @@ package feathers.controls
 				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
 				{
 					this.maximumTrack.width = NaN;
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrack.x = (this.actualWidth - this.maximumTrack.width) / 2;
 					this.minimumTrack.width = NaN;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
 				}
 				else //exact fit
@@ -1919,8 +1971,14 @@ package feathers.controls
 					this.minimumTrack.width = this.actualWidth;
 
 					//final validation to avoid juggler next frame issues
-					this.minimumTrack.validate();
-					this.maximumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 				}
 			}
 			else //horizontal
@@ -1933,10 +1991,16 @@ package feathers.controls
 				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
 				{
 					this.minimumTrack.height = NaN;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
 					this.maximumTrack.height = NaN;
-					this.maximumTrack.validate();
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 					this.maximumTrack.y = (this.actualHeight - this.maximumTrack.height) / 2;
 				}
 				else //exact fit
@@ -1947,8 +2011,14 @@ package feathers.controls
 					this.maximumTrack.height = this.actualHeight;
 
 					//final validation to avoid juggler next frame issues
-					this.minimumTrack.validate();
-					this.maximumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
+					if(this.maximumTrack is IValidating)
+					{
+						IValidating(this.maximumTrack).validate();
+					}
 				}
 			}
 		}
@@ -1960,12 +2030,15 @@ package feathers.controls
 		{
 			if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
 			{
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					this.minimumTrack.y = 0;
 					this.minimumTrack.width = NaN;
 					this.minimumTrack.height = this.actualHeight;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
 				}
 				else //horizontal
@@ -1973,7 +2046,10 @@ package feathers.controls
 					this.minimumTrack.x = 0;
 					this.minimumTrack.width = this.actualWidth;
 					this.minimumTrack.height = NaN;
-					this.minimumTrack.validate();
+					if(this.minimumTrack is IValidating)
+					{
+						IValidating(this.minimumTrack).validate();
+					}
 					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
 				}
 			}
@@ -1985,7 +2061,10 @@ package feathers.controls
 				this.minimumTrack.height = this.actualHeight;
 
 				//final validation to avoid juggler next frame issues
-				this.minimumTrack.validate();
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
 			}
 		}
 
@@ -1995,7 +2074,7 @@ package feathers.controls
 		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number;
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this._minimumPadding - this._maximumPadding;
 				var yOffset:Number = location.y - this._touchStartY - this._maximumPadding;
@@ -2114,12 +2193,13 @@ package feathers.controls
 				{
 					return;
 				}
-				if(!this._showThumb && touch.phase == TouchPhase.MOVED)
+				if(touch.phase === TouchPhase.MOVED &&
+					(!this._showThumb || this._trackInteractionMode === TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG))
 				{
 					touch.getLocation(this, HELPER_POINT);
 					this.value = this.locationToValue(HELPER_POINT);
 				}
-				else if(touch.phase == TouchPhase.ENDED)
+				else if(touch.phase === TouchPhase.ENDED)
 				{
 					if(this._repeatTimer)
 					{
@@ -2143,7 +2223,7 @@ package feathers.controls
 				}
 				touch.getLocation(this, HELPER_POINT);
 				this._touchPointID = touch.id;
-				if(this._direction == DIRECTION_VERTICAL)
+				if(this._direction == Direction.VERTICAL)
 				{
 					this._thumbStartX = HELPER_POINT.x;
 					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, HELPER_POINT.y - this.thumb.height / 2));
@@ -2158,7 +2238,7 @@ package feathers.controls
 				this._touchValue = this.locationToValue(HELPER_POINT);
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-				if(this._showThumb && this._trackInteractionMode == TRACK_INTERACTION_MODE_BY_PAGE)
+				if(this._showThumb && this._trackInteractionMode === TRACK_INTERACTION_MODE_BY_PAGE)
 				{
 					this.adjustPage();
 					this.startRepeatTimer(this.adjustPage);
@@ -2256,7 +2336,7 @@ package feathers.controls
 			{
 				page = this._step;
 			}
-			if(this._direction == Slider.DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				if(event.keyCode == Keyboard.UP)
 				{

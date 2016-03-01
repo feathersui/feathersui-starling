@@ -19,8 +19,8 @@ package feathers.controls
 		/**
 		 * The direction of the scroll bar, either horizontal or vertical.
 		 *
-		 * @see feathers.controls.SimpleScrollBar#DIRECTION_HORIZONTAL
-		 * @see feathers.controls.SimpleScrollBar#DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		function get direction():String;
 

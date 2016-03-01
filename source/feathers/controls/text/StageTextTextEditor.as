@@ -37,11 +37,11 @@ package feathers.controls.text
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
@@ -247,7 +247,8 @@ package feathers.controls.text
 		 */
 		public function StageTextTextEditor()
 		{
-			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os);
+			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os) || 
+				(Capabilities.playerType === "Desktop" && Capabilities.isDebugger);
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
 		}
@@ -887,7 +888,7 @@ package feathers.controls.text
 		 *
 		 * When setting this property to <code>true</code>, it is recommended
 		 * that the text input's <code>verticalAlign</code> property is set to
-		 * <code>TextInput.VERTICAL_ALIGN_JUSTIFY</code>.
+		 * <code>VerticalAlign.JUSTIFY</code>.
 		 *
 		 * @default false
 		 *
@@ -1142,7 +1143,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
 			{
@@ -1168,7 +1169,7 @@ package feathers.controls.text
 				this.positionSnapshot();
 			}
 
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -1301,12 +1302,12 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -1421,18 +1422,18 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 
 			this._measureTextField.autoSize = TextFieldAutoSize.LEFT;
 
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				newWidth = this._measureTextField.textWidth;
-				if(newWidth < this._minWidth)
+				if(newWidth < this._explicitMinWidth)
 				{
-					newWidth = this._minWidth;
+					newWidth = this._explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1442,19 +1443,28 @@ package feathers.controls.text
 
 			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = newWidth + 4;
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				//since we're measuring with TextField, but rendering with
-				//StageText, we're using height instead of textHeight here to be
-				//sure that the measured size is on the larger side, in case the
-				//rendered size is actually bigger than textHeight
-				//if only StageText had an API for text measurement, we wouldn't
-				//be in this mess...
-				newHeight = this._measureTextField.height;
-				if(newHeight < this._minHeight)
+				if(this._stageTextIsTextField)
 				{
-					newHeight = this._minHeight;
+					//we know that the StageText implementation is using
+					//TextField internally, so textHeight will be accurate.
+					newHeight = this._measureTextField.textHeight;
+				}
+				else
+				{
+					//since we're measuring with TextField, but rendering with
+					//StageText, we're using height instead of textHeight here to be
+					//sure that the measured size is on the larger side, in case the
+					//rendered size is actually bigger than textHeight
+					//if only StageText had an API for text measurement, we wouldn't
+					//be in this mess...
+					newHeight = this._measureTextField.height;
+				}
+				if(newHeight < this._explicitMinHeight)
+				{
+					newHeight = this._explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{
@@ -1533,8 +1543,8 @@ package feathers.controls.text
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2034,7 +2044,7 @@ package feathers.controls.text
 				var target:DisplayObject = this;
 				do
 				{
-					if(!target.hasVisibleArea)
+					if(!target.visible)
 					{
 						this.stageText.stage.focus = null;
 						break;

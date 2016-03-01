@@ -45,20 +45,7 @@ package feathers.core
 		public function ValidationQueue(starling:Starling)
 		{
 			this._starling = starling;
-			try
-			{
-				//strangely hasOwnProperty() and "insertAt" in this._queue don't
-				//work in this case. it will throw a runtime error in versions
-				//of the runtime before 19, though.
-				this._queue["insertAt"];
-			}
-			catch(error:ReferenceError)
-			{
-				this._hasInsertAt = false;
-			}
 		}
-		
-		private var _hasInsertAt:Boolean = true;
 
 		private var _starling:Starling;
 
@@ -136,21 +123,12 @@ package feathers.core
 				//add one because we're going after the last item we checked
 				//if we made it through all of them, i will be -1, and we want 0
 				i++;
-				if(i == queueLength)
-				{
-					currentQueue[queueLength] = control;
-				}
-				else if(this._hasInsertAt)
-				{
-					currentQueue["insertAt"](i, control);
-				}
-				else
-				{
-					currentQueue.splice(i, 0, control);
-				}
+				currentQueue.insertAt(i, control);
 			}
 			else
 			{
+				//faster than push() because push() creates a temporary rest
+				//Array that needs to be garbage collected
 				currentQueue[queueLength] = control;
 			}
 		}

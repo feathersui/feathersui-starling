@@ -8,6 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
+	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 
@@ -30,16 +33,24 @@ package feathers.controls
 	public class ProgressBar extends FeathersControl
 	{
 		/**
-		 * The progress bar fills horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The progress bar fills vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -71,7 +82,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -82,12 +93,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is set to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * progress.direction = ProgressBar.DIRECTION_VERTICAL;</listing>
+		 * progress.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default ProgressBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -224,11 +235,13 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * The width of the first background skin that was displayed.
 		 */
 		protected var _originalBackgroundWidth:Number = NaN;
 
 		/**
 		 * @private
+		 * The height of the first background skin that was displayed.
 		 */
 		protected var _originalBackgroundHeight:Number = NaN;
 
@@ -243,7 +256,22 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The primary background to display.
+		 * The primary background to display in the progress bar. The background
+		 * skin is displayed below the fill skin, and the fill skin is affected
+		 * by the padding, and the background skin may be seen around the edges. 
+		 * 
+		 * <p>The original width or height of the background skin will be one
+		 * of the values used to calculate the width or height of the progress
+		 * bar, if the <code>width</code> and <code>height</code> properties are
+		 * not set explicitly. The fill skin and padding values will also be
+		 * used.</p>
+		 * 
+		 * <p>If the background skin is a Feathers component, the
+		 * <code>minWidth</code> or <code>minHeight</code> properties will be
+		 * one of the values used to calculate the width or height of the
+		 * progress bar. If the background skin is a regular Starling display
+		 * object, the original width and height of the display object will be
+		 * used to calculate the minimum dimensions instead.</p>
 		 *
 		 * <p>In the following example, the progress bar is given a background
 		 * skin:</p>
@@ -296,6 +324,8 @@ package feathers.controls
 		 * progress.backgroundDisabledSkin = new Image( texture );</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see #backgroundSkin
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -327,11 +357,13 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * The width of the first fill skin that was displayed.
 		 */
 		protected var _originalFillWidth:Number = NaN;
 
 		/**
 		 * @private
+		 * The width of the first fill skin that was displayed.
 		 */
 		protected var _originalFillHeight:Number = NaN;
 
@@ -346,7 +378,9 @@ package feathers.controls
 		protected var _fillSkin:DisplayObject;
 
 		/**
-		 * The primary fill to display.
+		 * The primary fill to display in the progress bar. The fill skin is
+		 * displayed over the background skin, with padding around the edges of
+		 * the fill skin to reveal the background skin behind. 
 		 *
 		 * <p>Note: The size of the <code>fillSkin</code>, at the time that it
 		 * is passed to the setter, will be used used as the size of the fill
@@ -354,12 +388,12 @@ package feathers.controls
 		 * if the fill of a horizontal progress bar with a value from 0 to 100
 		 * should be virtually invisible when the value is 0, then the
 		 * <code>fillSkin</code> should have a width of 0 when you pass it in.
-		 * On the other hand, if you're using a <code>Scale9Image</code> as the
-		 * skin, it may require a minimum width before the image parts begin to
-		 * overlap. In that case, the <code>Scale9Image</code> instance passed
-		 * to the <code>fillSkin</code> setter should have a <code>width</code>
-		 * value that is the same as that minimum width value where the image
-		 * parts do not overlap.</p>
+		 * On the other hand, if you're using an <code>Image</code> with a
+		 * <code>scale9Grid</code> as the skin, it may require a minimum width
+		 * before the image parts begin to overlap. In that case, the
+		 * <code>Image</code> instance passed to the <code>fillSkin</code>
+		 * setter should have a <code>width</code> value that is the same as
+		 * that minimum width value where the image parts do not overlap.</p>
 		 *
 		 * <p>In the following example, the progress bar is given a fill
 		 * skin:</p>
@@ -412,6 +446,8 @@ package feathers.controls
 		 * progress.fillDisabledSkin = new Image( texture );</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see #fillSkin
 		 */
 		public function get fillDisabledSkin():DisplayObject
 		{
@@ -626,9 +662,18 @@ package feathers.controls
 				this.refreshFill();
 			}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+			this.autoSizeIfNeeded();
 
 			this.layoutChildren();
+			
+			if(this.currentBackground is IValidating)
+			{
+				IValidating(this.currentBackground).validate();
+			}
+			if(this.currentFill is IValidating)
+			{
+				IValidating(this.currentFill).validate();
+			}
 		}
 
 		/**
@@ -649,15 +694,88 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = needsWidth ? this._originalBackgroundWidth : this.explicitWidth;
-			var newHeight:Number = needsHeight ? this._originalBackgroundHeight  : this.explicitHeight;
-			return this.setSizeInternal(newWidth, newHeight, false);
+			if(this.currentBackground is IValidating)
+			{
+				IValidating(this.currentBackground).validate();
+			}
+			if(this.currentFill is IValidating)
+			{
+				IValidating(this.currentFill).validate();
+			}
+			
+			//minimum dimensions
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				var backgroundMinWidth:Number = this._originalBackgroundWidth;
+				if(this.currentBackground is IFeathersControl)
+				{
+					backgroundMinWidth = IFeathersControl(this.currentBackground).minWidth;
+				}
+				var fillMinWidth:Number = this._originalFillWidth;
+				if(this.currentFill is IFeathersControl)
+				{
+					fillMinWidth = IFeathersControl(this.currentFill).minWidth;
+				}
+				fillMinWidth += this._paddingLeft + this._paddingRight;
+				newMinWidth = backgroundMinWidth;
+				if(fillMinWidth > newMinWidth)
+				{
+					newMinWidth = fillMinWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				var backgroundMinHeight:Number = this._originalBackgroundHeight;
+				if(this.currentBackground is IFeathersControl)
+				{
+					backgroundMinHeight = IFeathersControl(this.currentBackground).minHeight;
+				}
+				var fillMinHeight:Number = this._originalFillHeight;
+				if(this.currentFill is IFeathersControl)
+				{
+					fillMinHeight = IFeathersControl(this.currentFill).minHeight;
+				}
+				fillMinHeight += this._paddingTop + this._paddingBottom;
+				newMinHeight = backgroundMinHeight;
+				if(fillMinHeight > newMinHeight)
+				{
+					newMinHeight = fillMinHeight;
+				}
+			}
+
+			//current dimensions
+			var newWidth:Number = this._explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = this._originalBackgroundWidth;
+				var fillWidth:Number = this._originalFillWidth + this._paddingLeft + this._paddingRight;
+				if(fillWidth > newWidth)
+				{
+					newWidth = fillWidth;
+				}
+			}
+			var newHeight:Number = this._explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = this._originalBackgroundHeight;
+				var fillHeight:Number = this._originalFillHeight + this._paddingTop + this._paddingBottom;
+				if(fillHeight > newHeight)
+				{
+					newHeight = fillHeight;
+				}
+			}
+			
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -683,6 +801,10 @@ package feathers.controls
 			}
 			if(this.currentBackground)
 			{
+				if(this.currentBackground is IValidating)
+				{
+					IValidating(this.currentBackground).validate();
+				}
 				if(this._originalBackgroundWidth !== this._originalBackgroundWidth) //isNaN
 				{
 					this._originalBackgroundWidth = this.currentBackground.width;
@@ -718,6 +840,10 @@ package feathers.controls
 			}
 			if(this.currentFill)
 			{
+				if(this.currentFill is IValidating)
+				{
+					IValidating(this.currentFill).validate();
+				}
 				if(this._originalFillWidth !== this._originalFillWidth) //isNaN
 				{
 					this._originalFillWidth = this.currentFill.width;
@@ -757,7 +883,7 @@ package feathers.controls
 					percentage = 1;
 				}
 			}
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction === Direction.VERTICAL)
 			{
 				this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 				this.currentFill.height = Math.round(this._originalFillHeight + percentage * (this.actualHeight - this._paddingTop - this._paddingBottom - this._originalFillHeight));

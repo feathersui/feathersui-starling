@@ -231,13 +231,19 @@ package feathers.core
 
 		/**
 		 * The index of the first character of the selection. If no text is
-		 * selected, then this is the value of the caret index.
+		 * selected, then this is the value of the caret index. This value will
+		 * always be smaller than <code>selectionEndIndex</code>.
+		 * 
+		 * @see #selectionEndIndex
 		 */
 		function get selectionBeginIndex():int;
 
 		/**
 		 * The index of the last character of the selection. If no text is
-		 * selected, then this is the value of the caret index.
+		 * selected, then this is the value of the caret index. This value will
+		 * always be larger than <code>selectionBeginIndex</code>.
+		 *
+		 * @see #selectionBeginIndex
 		 */
 		function get selectionEndIndex():int;
 

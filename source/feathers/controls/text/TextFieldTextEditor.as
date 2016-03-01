@@ -39,7 +39,6 @@ package feathers.controls.text
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -47,10 +46,11 @@ package feathers.controls.text
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.rendering.Painter;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.MathUtil;
 	import starling.utils.MatrixUtil;
-	import starling.utils.getNextPowerOfTwo;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -1395,7 +1395,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			if(this.textSnapshot)
 			{
@@ -1418,7 +1418,7 @@ package feathers.controls.text
 			{
 				this.transformTextField();
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -1581,12 +1581,12 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -1721,8 +1721,8 @@ package feathers.controls.text
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1742,13 +1742,13 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 
 			if(!needsWidth && !needsHeight)
 			{
-				result.x = this.explicitWidth;
-				result.y = this.explicitHeight;
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
 				return result;
 			}
 
@@ -1760,14 +1760,14 @@ package feathers.controls.text
 				gutterDimensionsOffset = 0;
 			}
 
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				this.measureTextField.wordWrap = false;
 				newWidth = this.measureTextField.width - gutterDimensionsOffset;
-				if(newWidth < this._minWidth)
+				if(newWidth < this._explicitMinWidth)
 				{
-					newWidth = this._minWidth;
+					newWidth = this._explicitMinWidth;
 				}
 				else if(newWidth > this._maxWidth)
 				{
@@ -1775,7 +1775,7 @@ package feathers.controls.text
 				}
 			}
 
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				this.measureTextField.wordWrap = this._wordWrap;
@@ -1785,9 +1785,9 @@ package feathers.controls.text
 				{
 					newHeight += 4;
 				}
-				if(newHeight < this._minHeight)
+				if(newHeight < this._explicitMinHeight)
 				{
-					newHeight = this._minHeight;
+					newHeight = this._explicitMinHeight;
 				}
 				else if(newHeight > this._maxHeight)
 				{
@@ -2009,17 +2009,6 @@ package feathers.controls.text
 			{
 				smallerGlobalScale = globalScaleY;
 			}
-			if(this.is3D)
-			{
-				HELPER_MATRIX3D = this.getTransformationMatrix3D(this.stage, HELPER_MATRIX3D);
-				HELPER_POINT3D = MatrixUtil.transformCoords3D(HELPER_MATRIX3D, 0, 0, 0, HELPER_POINT3D);
-				HELPER_POINT.setTo(HELPER_POINT3D.x, HELPER_POINT3D.y);
-			}
-			else
-			{
-				MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			}
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
 			{
@@ -2031,8 +2020,19 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 2 * smallerGlobalScale;
 			}
-			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset);
-			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset);
+			if(this.is3D)
+			{
+				HELPER_MATRIX3D = this.getTransformationMatrix3D(this.stage, HELPER_MATRIX3D);
+				HELPER_POINT3D = MatrixUtil.transformCoords3D(HELPER_MATRIX3D, -gutterPositionOffset, -gutterPositionOffset, 0, HELPER_POINT3D);
+				HELPER_POINT.setTo(HELPER_POINT3D.x, HELPER_POINT3D.y);
+			}
+			else
+			{
+				MatrixUtil.transformCoords(HELPER_MATRIX, -gutterPositionOffset, -gutterPositionOffset, HELPER_POINT);
+			}
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
+			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
@@ -2065,8 +2065,8 @@ package feathers.controls.text
 			}
 			else
 			{
-				this._snapshotWidth = getNextPowerOfTwo(this._textFieldSnapshotClipRect.width);
-				this._snapshotHeight = getNextPowerOfTwo(this._textFieldSnapshotClipRect.height);
+				this._snapshotWidth = MathUtil.getNextPowerOfTwo(this._textFieldSnapshotClipRect.width);
+				this._snapshotHeight = MathUtil.getNextPowerOfTwo(this._textFieldSnapshotClipRect.height);
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
@@ -2227,7 +2227,7 @@ package feathers.controls.text
 				var target:DisplayObject = this;
 				do
 				{
-					if(!target.hasVisibleArea)
+					if(!target.visible)
 					{
 						this.clearFocus();
 						break;
@@ -2262,7 +2262,7 @@ package feathers.controls.text
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;

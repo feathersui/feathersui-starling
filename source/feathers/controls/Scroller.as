@@ -7,12 +7,15 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
+	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
@@ -34,6 +37,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.MathUtil;
 
 	/**
 	 * Dispatched when the scroller scrolls in either direction or when the view
@@ -130,8 +134,8 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the user starts dragging the scroller when
-	 * <code>INTERACTION_MODE_TOUCH</code> is enabled or when the user starts
-	 * interacting with the scroll bar.
+	 * <code>ScrollInteractionMode.TOUCH</code> is enabled or when the user
+	 * starts interacting with the scroll bar.
 	 *
 	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
 	 * is set manually (in other words, the scrolling is not triggered by user
@@ -162,10 +166,10 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the user stops dragging the scroller when
-	 * <code>INTERACTION_MODE_TOUCH</code> is enabled or when the user stops
-	 * interacting with the scroll bar. The scroller may continue scrolling
-	 * after this event is dispatched if the user interaction has also triggered
-	 * an animation.
+	 * <code>ScrollInteractionMode.TOUCH</code> is enabled or when the user
+	 * stops interacting with the scroll bar. The scroller may continue
+	 * scrolling after this event is dispatched if the user interaction has also
+	 * triggered an animation.
 	 *
 	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
 	 * is set manually (in other words, the scrolling is not triggered by user
@@ -275,126 +279,156 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_PENDING_REVEAL_SCROLL_BARS:String = "pendingRevealScrollBars";
 
 		/**
-		 * The scroller may scroll if the view port is larger than the
-		 * scroller's bounds. If the interaction mode is touch, the elastic
-		 * edges will only be active if the maximum scroll position is greater
-		 * than zero. If the scroll bar display mode is fixed, the scroll bar
-		 * will only be visible when the maximum scroll position is greater than
-		 * zero.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.AUTO</code>.
 		 *
-		 * @see feathers.controls.Scroller#horizontalScrollPolicy
-		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
 		/**
-		 * The scroller will always scroll. If the interaction mode is touch,
-		 * elastic edges will always be active, even when the maximum scroll
-		 * position is zero. If the scroll bar display mode is fixed, the scroll
-		 * bar will always be visible.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.ON</code>.
 		 *
-		 * @see feathers.controls.Scroller#horizontalScrollPolicy
-		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_POLICY_ON:String = "on";
 
 		/**
-		 * The scroller does not scroll at all. If the scroll bar display mode
-		 * is fixed or float, the scroll bar will never be visible.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.OFF</code>.
 		 *
-		 * @see feathers.controls.Scroller#horizontalScrollPolicy
-		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
-		 * The scroll bars appear above the scroller's view port, overlapping
-		 * the content, and they fade out when not in use.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FLOAT</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
 
 		/**
-		 * The scroll bars are always visible and appear next to the scroller's
-		 * view port, making the view port smaller than the scroller.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 
 		/**
-		 * The scroll bars appear above the scroller's view port, overlapping
-		 * the content, but they do not fade out when not in use.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
 
 		/**
-		 * The scroll bars are never visible.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.NONE</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
-		 * The vertical scroll bar will be positioned on the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
 
 		/**
-		 * The vertical scroll bar will be positioned on the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
 
 		/**
-		 * The user may touch anywhere on the scroller and drag to scroll. The
-		 * scroll bars will be visual indicator of position, but they will not
-		 * be interactive.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
 		 *
-		 * @see feathers.controls.Scroller#interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
-		 * The user may only interact with the scroll bars to scroll. The user
-		 * cannot touch anywhere in the scroller's content and drag like a touch
-		 * interface.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
 		 *
-		 * @see feathers.controls.Scroller#interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
-		 * The user may touch anywhere on the scroller and drag to scroll, and
-		 * the scroll bars may be dragged separately. For most touch interfaces,
-		 * this is not a common behavior. The scroll bar on touch interfaces is
-		 * often simply a visual indicator and non-interactive.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
 		 *
-		 * <p>One case where this mode might be used is a "scroll bar" that
-		 * displays a tappable alphabetical index to navigate a
-		 * <code>GroupedList</code> with alphabetical categories.</p>
-		 *
-		 * @see feathers.controls.Scroller#interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
-		 * The scroller will scroll vertically when the mouse wheel is scrolled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The scroller will scroll horizontally when the mouse wheel is scrolled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
 
@@ -428,16 +462,24 @@ package feathers.controls
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
 
 		/**
-		 * The default deceleration rate per millisecond.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.NORMAL</code>.
 		 *
-		 * @see #decelerationRate
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
 
 		/**
-		 * Decelerates a bit faster per millisecond than the default.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.FAST</code>.
 		 *
-		 * @see #decelerationRate
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
@@ -461,6 +503,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const FUZZY_PAGE_SIZE_PADDING:Number = 0.000001;
+
+		/**
+		 * @private
+		 */
+		protected static const PAGE_INDEX_EPSILON:Number = 0.001;
 
 		/**
 		 * @private
@@ -995,7 +1042,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalScrollBarPosition:String = VERTICAL_SCROLL_BAR_POSITION_RIGHT;
+		protected var _verticalScrollBarPosition:String = RelativePosition.RIGHT;
 
 		[Inspectable(type="String",enumeration="right,left")]
 		/**
@@ -1004,12 +1051,12 @@ package feathers.controls
 		 * <p>In the following example, the scroll bars is positioned on the left:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.verticalScrollBarPosition = Scroller.VERTICAL_SCROLL_BAR_POSITION_LEFT;</listing>
+		 * scroller.verticalScrollBarPosition = RelativePosition.LEFT;</listing>
 		 *
-		 * @default Scroller.VERTICAL_SCROLL_BAR_POSITION_RIGHT
+		 * @default feathers.layout.RelativePosition.RIGHT
 		 *
-		 * @see #VERTICAL_SCROLL_BAR_POSITION_RIGHT
-		 * @see #VERTICAL_SCROLL_BAR_POSITION_LEFT
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#LEFT
 		 */
 		public function get verticalScrollBarPosition():String
 		{
@@ -1427,7 +1474,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalScrollPolicy:String = SCROLL_POLICY_AUTO;
+		protected var _horizontalScrollPolicy:String = ScrollPolicy.AUTO;
 
 		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
@@ -1437,13 +1484,13 @@ package feathers.controls
 		 * <p>In the following example, horizontal scrolling is disabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;</listing>
+		 * scroller.horizontalScrollPolicy = ScrollPolicy.OFF;</listing>
 		 *
-		 * @default Scroller.SCROLL_POLICY_AUTO
+		 * @default feathers.controls.ScrollPolicy.AUTO
 		 *
-		 * @see #SCROLL_POLICY_AUTO
-		 * @see #SCROLL_POLICY_ON
-		 * @see #SCROLL_POLICY_OFF
+		 * @see feathers.controls.ScrollPolicy#AUTO
+		 * @see feathers.controls.ScrollPolicy#ON
+		 * @see feathers.controls.ScrollPolicy#OFF
 		 */
 		public function get horizontalScrollPolicy():String
 		{
@@ -1722,7 +1769,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalScrollPolicy:String = SCROLL_POLICY_AUTO;
+		protected var _verticalScrollPolicy:String = ScrollPolicy.AUTO;
 
 		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
@@ -1732,13 +1779,13 @@ package feathers.controls
 		 * <p>In the following example, vertical scrolling is disabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;</listing>
+		 * scroller.verticalScrollPolicy = ScrollPolicy.OFF;</listing>
 		 *
-		 * @default Scroller.SCROLL_POLICY_AUTO
+		 * @default feathers.controls.ScrollPolicy.AUTO
 		 *
-		 * @see #SCROLL_POLICY_AUTO
-		 * @see #SCROLL_POLICY_ON
-		 * @see #SCROLL_POLICY_OFF
+		 * @see feathers.controls.ScrollPolicy#AUTO
+		 * @see feathers.controls.ScrollPolicy#ON
+		 * @see feathers.controls.ScrollPolicy#OFF
 		 */
 		public function get verticalScrollPolicy():String
 		{
@@ -1797,7 +1844,7 @@ package feathers.controls
 			this._clipContent = value;
 			if(!value && this._viewPort)
 			{
-				this._viewPort.clipRect = null;
+				this._viewPort.mask = null;
 			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
@@ -2014,7 +2061,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _scrollBarDisplayMode:String = SCROLL_BAR_DISPLAY_MODE_FLOAT;
+		protected var _scrollBarDisplayMode:String = ScrollBarDisplayMode.FLOAT;
 
 		[Inspectable(type="String",enumeration="float,fixed,none")]
 		/**
@@ -2023,14 +2070,14 @@ package feathers.controls
 		 * <p>In the following example, the scroll bars are fixed:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.scrollBarDisplayMode = Scroller.SCROLL_BAR_DISPLAY_MODE_FIXED;</listing>
+		 * scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;</listing>
 		 *
-		 * @default Scroller.SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 * @default feathers.controls.ScrollBarDisplayMode.FLOAT
 		 *
-		 * @see #SCROLL_BAR_DISPLAY_MODE_FLOAT
-		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED
-		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT
-		 * @see #SCROLL_BAR_DISPLAY_MODE_NONE
+		 * @see feathers.controls.ScrollBarDisplayMode#FLOAT
+		 * @see feathers.controls.ScrollBarDisplayMode#FIXED
+		 * @see feathers.controls.ScrollBarDisplayMode#FIXED_FLOAT
+		 * @see feathers.controls.ScrollBarDisplayMode#NONE
 		 */
 		public function get scrollBarDisplayMode():String
 		{
@@ -2053,7 +2100,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _interactionMode:String = INTERACTION_MODE_TOUCH;
+		protected var _interactionMode:String = ScrollInteractionMode.TOUCH;
 
 		[Inspectable(type="String",enumeration="touch,mouse,touchAndScrollBars")]
 		/**
@@ -2062,13 +2109,13 @@ package feathers.controls
 		 * <p>In the following example, the interaction mode is optimized for mouse:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.interactionMode = Scroller.INTERACTION_MODE_MOUSE;</listing>
+		 * scroller.interactionMode = ScrollInteractionMode.MOUSE;</listing>
 		 *
-		 * @default Scroller.INTERACTION_MODE_TOUCH
+		 * @default feathers.controls.ScrollInteractionMode.TOUCH
 		 *
-		 * @see #INTERACTION_MODE_TOUCH
-		 * @see #INTERACTION_MODE_MOUSE
-		 * @see #INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 * @see feathers.controls.ScrollInteractionMode#TOUCH
+		 * @see feathers.controls.ScrollInteractionMode#MOUSE
+		 * @see feathers.controls.ScrollInteractionMode#TOUCH_AND_SCROLL_BARS
 		 */
 		public function get interactionMode():String
 		{
@@ -2565,7 +2612,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _decelerationRate:Number = DECELERATION_RATE_NORMAL;
+		protected var _decelerationRate:Number = DecelerationRate.NORMAL;
 
 		/**
 		 * This value is used to decelerate the scroller when "thrown". The
@@ -2577,12 +2624,12 @@ package feathers.controls
 		 * the behavior of a throw:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.decelerationRate = Scroller.DECELERATION_RATE_FAST;</listing>
+		 * scroller.decelerationRate = DecelerationRate.FAST;</listing>
 		 *
-		 * @default Scroller.DECELERATION_RATE_NORMAL
+		 * @default feathers.controls.DecelerationRate.NORMAL
 		 *
-		 * @see #DECELERATION_RATE_NORMAL
-		 * @see #DECELERATION_RATE_FAST
+		 * @see feathers.controls.DecelerationRate#NORMAL
+		 * @see feathers.controls.DecelerationRate#FAST
 		 */
 		public function get decelerationRate():Number
 		{
@@ -2712,7 +2759,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalMouseWheelScrollDirection:String = MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL;
+		protected var _verticalMouseWheelScrollDirection:String = Direction.VERTICAL;
 
 		/**
 		 * The direction of scrolling when the user scrolls the mouse wheel
@@ -2724,12 +2771,12 @@ package feathers.controls
 		 * the mouse wheel is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.verticalMouseWheelScrollDirection = Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL;</listing>
+		 * scroller.verticalMouseWheelScrollDirection = Direction.HORIZONTAL;</listing>
 		 *
-		 * @default Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 * @default feathers.layout.Direction.VERTICAL
 		 *
-		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
-		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get verticalMouseWheelScrollDirection():String
 		{
@@ -3113,18 +3160,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
 			//save localX and localY because localPoint could change after the
 			//call to super.hitTest().
 			var localX:Number = localPoint.x;
 			var localY:Number = localPoint.y;
 			//first check the children for touches
-			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint);
 			if(!result)
 			{
 				//we want to register touches in our hitArea as a last resort
-				if(forTouch && (!this.visible || !this.touchable))
+				if(!this.visible || !this.touchable)
 				{
 					return null;
 				}
@@ -3181,8 +3228,8 @@ package feathers.controls
 				this.verticalScrollBar.validate();
 			}
 
-			var needsWidthOrHeight:Boolean = this.explicitWidth !== this.explicitWidth ||
-				this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidthOrHeight:Boolean = this._explicitWidth !== this._explicitWidth ||
+				this._explicitHeight !== this._explicitHeight; //isNaN
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var loopCount:int = 0;
@@ -3255,7 +3302,7 @@ package feathers.controls
 
 			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || clippingInvalid)
 			{
-				this.refreshClipRect();
+				this.refreshMask();
 			}
 			this.refreshFocusIndicator();
 
@@ -3288,15 +3335,15 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				if(this._measureViewPort)
@@ -3374,13 +3421,13 @@ package feathers.controls
 				this.verticalScrollBar = null;
 			}
 
-			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
-				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
+			if(this._scrollBarDisplayMode != ScrollBarDisplayMode.NONE &&
+				this._horizontalScrollPolicy != ScrollPolicy.OFF && this._horizontalScrollBarFactory != null)
 			{
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
 				if(this.horizontalScrollBar is IDirectionalScrollBar)
 				{
-					IDirectionalScrollBar(this.horizontalScrollBar).direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+					IDirectionalScrollBar(this.horizontalScrollBar).direction = Direction.HORIZONTAL;
 				}
 				var horizontalScrollBarStyleName:String = this._customHorizontalScrollBarStyleName != null ? this._customHorizontalScrollBarStyleName : this.horizontalScrollBarStyleName;
 				this.horizontalScrollBar.styleNameList.add(horizontalScrollBarStyleName);
@@ -3389,13 +3436,13 @@ package feathers.controls
 				this.horizontalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
 				this.addRawChildInternal(DisplayObject(this.horizontalScrollBar));
 			}
-			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
-				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
+			if(this._scrollBarDisplayMode != ScrollBarDisplayMode.NONE &&
+				this._verticalScrollPolicy != ScrollPolicy.OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
 				if(this.verticalScrollBar is IDirectionalScrollBar)
 				{
-					IDirectionalScrollBar(this.verticalScrollBar).direction = SimpleScrollBar.DIRECTION_VERTICAL;
+					IDirectionalScrollBar(this.verticalScrollBar).direction = Direction.VERTICAL;
 				}
 				var verticalScrollBarStyleName:String = this._customVerticalScrollBarStyleName != null ? this._customVerticalScrollBarStyleName : this.verticalScrollBarStyleName;
 				this.verticalScrollBar.styleNameList.add(verticalScrollBarStyleName);
@@ -3462,7 +3509,7 @@ package feathers.controls
 					Starling.juggler.remove(this._horizontalScrollBarHideTween);
 					this._horizontalScrollBarHideTween = null;
 				}
-				this.horizontalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
+				this.horizontalScrollBar.alpha = this._scrollBarDisplayMode == ScrollBarDisplayMode.FLOAT ? 0 : 1;
 			}
 			if(this.verticalScrollBar)
 			{
@@ -3476,7 +3523,7 @@ package feathers.controls
 					Starling.juggler.remove(this._verticalScrollBarHideTween);
 					this._verticalScrollBarHideTween = null;
 				}
-				this.verticalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
+				this.verticalScrollBar.alpha = this._scrollBarDisplayMode == ScrollBarDisplayMode.FLOAT ? 0 : 1;
 			}
 		}
 
@@ -3539,9 +3586,14 @@ package feathers.controls
 			//if scroll bars are fixed, we're going to include the offsets even
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
-			this._viewPort.visibleWidth = this.explicitWidth - horizontalWidthOffset;
-			this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
-			var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+			this._viewPort.visibleWidth = this._explicitWidth - horizontalWidthOffset;
+			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
+			var minVisibleWidth:Number = this._explicitMinWidth;
+			if(minVisibleWidth !== minVisibleWidth) //isNaN
+			{
+				minVisibleWidth = 0;
+			}
+			minVisibleWidth -= horizontalWidthOffset;
 			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 			 this.originalBackgroundWidth > minVisibleWidth)
 			{
@@ -3555,7 +3607,12 @@ package feathers.controls
 			}
 			this._viewPort.minVisibleWidth = minVisibleWidth;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-			var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+			var minVisibleHeight:Number = this.actualMinHeight;
+			if(minVisibleHeight !== minVisibleHeight) //isNaN
+			{
+				minVisibleHeight = 0;
+			}
+			minVisibleHeight -= verticalHeightOffset;
 			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
 				this.originalBackgroundHeight > minVisibleHeight)
 			{
@@ -3572,7 +3629,7 @@ package feathers.controls
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 
 			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
-			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED)
 			{
 				this.ignoreViewPortResizing = true;
 			}
@@ -3587,13 +3644,18 @@ package feathers.controls
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
-			var needsWidthOrHeight:Boolean = this.explicitWidth != this.explicitWidth ||
-				this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidthOrHeight:Boolean = this._explicitWidth != this._explicitWidth ||
+				this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!(this._measureViewPort && needsWidthOrHeight))
 			{
 				//if we didn't need to do any measurement, we would have skipped
 				//setting this stuff earlier, and now is the last chance
-				var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+				var minVisibleWidth:Number = this._explicitMinWidth;
+				if(minVisibleWidth !== minVisibleWidth) //isNaN
+				{
+					minVisibleWidth = 0;
+				}
+				minVisibleWidth -= horizontalWidthOffset;
 				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 					this.originalBackgroundWidth > minVisibleWidth)
 				{
@@ -3607,7 +3669,12 @@ package feathers.controls
 				}
 				this._viewPort.minVisibleWidth = minVisibleWidth;
 				this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-				var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+				var minVisibleHeight:Number = this._explicitMinHeight;
+				if(minVisibleHeight !== minVisibleHeight) //isNaN
+				{
+					minVisibleHeight = 0;
+				}
+				minVisibleHeight -= verticalHeightOffset;
 				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
 					this.originalBackgroundHeight > minVisibleHeight)
 				{
@@ -3892,7 +3959,8 @@ package feathers.controls
 						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
 						var unroundedPageIndex:Number = adjustedHorizontalScrollPosition / this.actualPageWidth;
 						var nextPageIndex:int = Math.ceil(unroundedPageIndex);
-						if(unroundedPageIndex != nextPageIndex && (nextPageIndex - unroundedPageIndex) < FUZZY_PAGE_SIZE_PADDING)
+						if(unroundedPageIndex !== nextPageIndex &&
+							MathUtil.isEquivalent(unroundedPageIndex, nextPageIndex, PAGE_INDEX_EPSILON))
 						{
 							//we almost always want to round down, but a
 							//floating point math error may result in the page
@@ -3943,7 +4011,8 @@ package feathers.controls
 						var adjustedVerticalScrollPosition:Number = this._verticalScrollPosition - this._minVerticalScrollPosition;
 						unroundedPageIndex = adjustedVerticalScrollPosition / this.actualPageHeight;
 						nextPageIndex = Math.ceil(unroundedPageIndex);
-						if(unroundedPageIndex != nextPageIndex && (nextPageIndex - unroundedPageIndex) < FUZZY_PAGE_SIZE_PADDING)
+						if(unroundedPageIndex !== nextPageIndex &&
+							MathUtil.isEquivalent(unroundedPageIndex, nextPageIndex, PAGE_INDEX_EPSILON))
 						{
 							//we almost always want to round down, but a
 							//floating point math error may result in the page
@@ -4000,18 +4069,22 @@ package feathers.controls
 		 */
 		protected function showOrHideChildren():void
 		{
-			var isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
 			var childCount:int = this.numRawChildrenInternal;
+			if(this._touchBlocker)
+			{
+				//keep scroll bars below the touch blocker, if it exists
+				childCount--;
+			}
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.visible = this._hasVerticalScrollBar;
-				this.verticalScrollBar.touchable = this._hasVerticalScrollBar && this._interactionMode != INTERACTION_MODE_TOUCH;
+				this.verticalScrollBar.touchable = this._hasVerticalScrollBar && this._interactionMode != ScrollInteractionMode.TOUCH;
 				this.setRawChildIndexInternal(DisplayObject(this.verticalScrollBar), childCount - 1);
 			}
 			if(this.horizontalScrollBar)
 			{
 				this.horizontalScrollBar.visible = this._hasHorizontalScrollBar;
-				this.horizontalScrollBar.touchable = this._hasHorizontalScrollBar && this._interactionMode != INTERACTION_MODE_TOUCH;
+				this.horizontalScrollBar.touchable = this._hasHorizontalScrollBar && this._interactionMode != ScrollInteractionMode.TOUCH;
 				if(this.verticalScrollBar)
 				{
 					this.setRawChildIndexInternal(DisplayObject(this.horizontalScrollBar), childCount - 2);
@@ -4047,14 +4120,14 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar && (this._measureViewPort || useActualBounds))
 			{
-				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this.explicitWidth;
+				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this._explicitWidth;
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
-				if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
+				if(forceScrollBars || this._horizontalScrollPolicy == ScrollPolicy.ON ||
 					((totalWidth > scrollerWidth || totalWidth > this._maxWidth) &&
-						this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
+						this._horizontalScrollPolicy != ScrollPolicy.OFF))
 				{
 					this._hasHorizontalScrollBar = true;
-					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+					if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED)
 					{
 						this._bottomViewPortOffset += this.horizontalScrollBar.height;
 					}
@@ -4077,16 +4150,16 @@ package feathers.controls
 		{
 			if(this.verticalScrollBar && (this._measureViewPort || useActualBounds))
 			{
-				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this.explicitHeight;
+				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this._explicitHeight;
 				var totalHeight:Number = this._viewPort.height + this._topViewPortOffset + this._bottomViewPortOffset;
-				if(forceScrollBars || this._verticalScrollPolicy == SCROLL_POLICY_ON ||
+				if(forceScrollBars || this._verticalScrollPolicy == ScrollPolicy.ON ||
 					((totalHeight > scrollerHeight || totalHeight > this._maxHeight) &&
-						this._verticalScrollPolicy != SCROLL_POLICY_OFF))
+						this._verticalScrollPolicy != ScrollPolicy.OFF))
 				{
 					this._hasVerticalScrollBar = true;
-					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+					if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED)
 					{
-						if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+						if(this._verticalScrollBarPosition == RelativePosition.LEFT)
 						{
 							this._leftViewPortOffset += this.verticalScrollBar.width;
 						}
@@ -4124,7 +4197,7 @@ package feathers.controls
 			//we need to double check the horizontal scroll bar if the scroll
 			//bars are fixed because adding a vertical scroll bar may require a
 			//horizontal one too.
-			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED &&
+			if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED &&
 				this._hasVerticalScrollBar && !this._hasHorizontalScrollBar)
 			{
 				this.calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars, useActualBounds);
@@ -4136,7 +4209,7 @@ package feathers.controls
 		 */
 		protected function refreshInteractionModeEvents():void
 		{
-			if(this._interactionMode == INTERACTION_MODE_TOUCH || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS)
+			if(this._interactionMode == ScrollInteractionMode.TOUCH || this._interactionMode == ScrollInteractionMode.TOUCH_AND_SCROLL_BARS)
 			{
 				this.addEventListener(TouchEvent.TOUCH, scroller_touchHandler);
 				if(!this._touchBlocker)
@@ -4155,8 +4228,8 @@ package feathers.controls
 				}
 			}
 
-			if((this._interactionMode == INTERACTION_MODE_MOUSE || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS) &&
-				this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			if((this._interactionMode == ScrollInteractionMode.MOUSE || this._interactionMode == ScrollInteractionMode.TOUCH_AND_SCROLL_BARS) &&
+				this._scrollBarDisplayMode == ScrollBarDisplayMode.FLOAT)
 			{
 				if(this.horizontalScrollBar)
 				{
@@ -4215,7 +4288,7 @@ package feathers.controls
 			{
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
 				this.horizontalScrollBar.y = this._topViewPortOffset + this._viewPort.visibleHeight;
-				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
 					if((this._hasVerticalScrollBar || this._verticalScrollBarHideTween) && this.verticalScrollBar)
@@ -4235,7 +4308,7 @@ package feathers.controls
 
 			if(this.verticalScrollBar)
 			{
-				if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+				if(this._verticalScrollBarPosition == RelativePosition.LEFT)
 				{
 					this.verticalScrollBar.x = this._paddingLeft;
 				}
@@ -4244,7 +4317,7 @@ package feathers.controls
 					this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
 				}
 				this.verticalScrollBar.y = this._topViewPortOffset;
-				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FIXED)
 				{
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
 					if((this._hasHorizontalScrollBar || this._horizontalScrollBarHideTween) && this.horizontalScrollBar)
@@ -4266,32 +4339,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshClipRect():void
+		protected function refreshMask():void
 		{
 			if(!this._clipContent)
 			{
 				return;
 			}
-			var clipRect:Rectangle = this._viewPort.clipRect;
-			if(!clipRect)
-			{
-				clipRect = new Rectangle();
-			}
-			clipRect.x = this._horizontalScrollPosition;
-			clipRect.y = this._verticalScrollPosition;
 			var clipWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
 			if(clipWidth < 0)
 			{
 				clipWidth = 0;
 			}
-			clipRect.width = clipWidth;
 			var clipHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
 			if(clipHeight < 0)
 			{
 				clipHeight = 0;
 			}
-			clipRect.height = clipHeight;
-			this._viewPort.clipRect = clipRect;
+			var mask:Quad = this._viewPort.mask as Quad;
+			if(!mask)
+			{
+				mask = new Quad(1, 1, 0xff0ff);
+				this._viewPort.mask = mask;
+			}
+			mask.x = this._horizontalScrollPosition;
+			mask.y = this._verticalScrollPosition;
+			mask.width = clipWidth;
+			mask.height = clipHeight;
 		}
 
 		/**
@@ -4978,7 +5051,7 @@ package feathers.controls
 		 */
 		protected function hideHorizontalScrollBar(delay:Number = 0):void
 		{
-			if(!this.horizontalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT || this._horizontalScrollBarHideTween)
+			if(!this.horizontalScrollBar || this._scrollBarDisplayMode != ScrollBarDisplayMode.FLOAT || this._horizontalScrollBarHideTween)
 			{
 				return;
 			}
@@ -5005,7 +5078,7 @@ package feathers.controls
 		 */
 		protected function hideVerticalScrollBar(delay:Number = 0):void
 		{
-			if(!this.verticalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT || this._verticalScrollBarHideTween)
+			if(!this.verticalScrollBar || this._scrollBarDisplayMode != ScrollBarDisplayMode.FLOAT || this._verticalScrollBarHideTween)
 			{
 				return;
 			}
@@ -5032,7 +5105,7 @@ package feathers.controls
 		 */
 		protected function revealHorizontalScrollBar():void
 		{
-			if(!this.horizontalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			if(!this.horizontalScrollBar || this._scrollBarDisplayMode != ScrollBarDisplayMode.FLOAT)
 			{
 				return;
 			}
@@ -5049,7 +5122,7 @@ package feathers.controls
 		 */
 		protected function revealVerticalScrollBar():void
 		{
-			if(!this.verticalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			if(!this.verticalScrollBar || this._scrollBarDisplayMode != ScrollBarDisplayMode.FLOAT)
 			{
 				return;
 			}
@@ -5145,7 +5218,7 @@ package feathers.controls
 				return;
 			}
 			this.isScrollBarRevealPending = false;
-			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FLOAT)
 			{
 				return;
 			}
@@ -5321,7 +5394,7 @@ package feathers.controls
 				return;
 			}
 
-			if(this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS &&
+			if(this._interactionMode == ScrollInteractionMode.TOUCH_AND_SCROLL_BARS &&
 				(event.interactsWith(DisplayObject(this.horizontalScrollBar)) || event.interactsWith(DisplayObject(this.verticalScrollBar))))
 			{
 				return;
@@ -5345,7 +5418,7 @@ package feathers.controls
 			}
 
 			//if the scroll policy is off, we shouldn't stop this animation
-			if(this._horizontalAutoScrollTween && this._horizontalScrollPolicy != Scroller.SCROLL_POLICY_OFF)
+			if(this._horizontalAutoScrollTween && this._horizontalScrollPolicy != ScrollPolicy.OFF)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
@@ -5355,7 +5428,7 @@ package feathers.controls
 					this._isDraggingHorizontally = true;
 				}
 			}
-			if(this._verticalAutoScrollTween && this._verticalScrollPolicy != Scroller.SCROLL_POLICY_OFF)
+			if(this._verticalAutoScrollTween && this._verticalScrollPolicy != ScrollPolicy.OFF)
 			{
 				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
@@ -5427,8 +5500,8 @@ package feathers.controls
 			}
 			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
-				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
+			if((this._horizontalScrollPolicy == ScrollPolicy.ON ||
+				(this._horizontalScrollPolicy == ScrollPolicy.AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.horizontalScrollBar)
@@ -5449,8 +5522,8 @@ package feathers.controls
 					this.startScroll();
 				}
 			}
-			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
-				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
+			if((this._verticalScrollPolicy == ScrollPolicy.ON ||
+				(this._verticalScrollPolicy == ScrollPolicy.AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
 				!this._isDraggingVertically && verticalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.verticalScrollBar)
@@ -5599,8 +5672,8 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			if((this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == SCROLL_POLICY_OFF)) ||
-				(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == SCROLL_POLICY_OFF)))
+			if((this._verticalMouseWheelScrollDirection == Direction.VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == ScrollPolicy.OFF)) ||
+				(this._verticalMouseWheelScrollDirection == Direction.HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == ScrollPolicy.OFF)))
 			{
 				return;
 			}
@@ -5614,7 +5687,7 @@ package feathers.controls
 			var scaleFactor:Number = nativeScaleFactor / Starling.contentScaleFactor;
 			HELPER_POINT.x = (event.stageX - starlingViewPort.x) * scaleFactor;
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) * scaleFactor;
-			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
+			if(this.contains(this.stage.hitTest(HELPER_POINT)))
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);
 				var localMouseX:Number = HELPER_POINT.x;
@@ -5628,7 +5701,7 @@ package feathers.controls
 				var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
 				var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
 				var scrollStep:Number = this._verticalMouseWheelScrollStep;
-				if(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL)
+				if(this._verticalMouseWheelScrollDirection == Direction.HORIZONTAL)
 				{
 					if(scrollStep !== scrollStep) //isNaN
 					{
@@ -5701,7 +5774,7 @@ package feathers.controls
 
 				this._horizontalScrollBarTouchPointID = -1;
 				touch.getLocation(displayHorizontalScrollBar, HELPER_POINT);
-				var isInBounds:Boolean = this.horizontalScrollBar.hitTest(HELPER_POINT, true) != null;
+				var isInBounds:Boolean = this.horizontalScrollBar.hitTest(HELPER_POINT) !== null;
 				if(!isInBounds)
 				{
 					this.hideHorizontalScrollBar();
@@ -5753,7 +5826,7 @@ package feathers.controls
 
 				this._verticalScrollBarTouchPointID = -1;
 				touch.getLocation(displayVerticalScrollBar, HELPER_POINT);
-				var isInBounds:Boolean = this.verticalScrollBar.hitTest(HELPER_POINT, true) != null;
+				var isInBounds:Boolean = this.verticalScrollBar.hitTest(HELPER_POINT) !== null;
 				if(!isInBounds)
 				{
 					this.hideVerticalScrollBar();
@@ -5807,6 +5880,8 @@ package feathers.controls
 			this._touchPointID = -1;
 			this._horizontalScrollBarTouchPointID = -1;
 			this._verticalScrollBarTouchPointID = -1;
+			this._isDraggingHorizontally = false;
+			this._isDraggingVertically = false;
 			this._velocityX = 0;
 			this._velocityY = 0;
 			this._previousVelocityX.length = 0;
@@ -5851,6 +5926,7 @@ package feathers.controls
 			{
 				this.dispatchEventWith(Event.SCROLL);
 			}
+			this.completeScroll();
 		}
 
 		/**

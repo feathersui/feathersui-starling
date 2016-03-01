@@ -8,8 +8,10 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IToolTip;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
 
@@ -23,7 +25,7 @@ package feathers.controls
 	 * @see ../../../help/label.html How to use the Feathers Label component
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 	 */
-	public class Label extends FeathersControl implements ITextBaselineControl
+	public class Label extends FeathersControl implements ITextBaselineControl, IToolTip
 	{
 		/**
 		 * @private
@@ -73,6 +75,20 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_DETAIL:String = "feathers-detail-label";
+
+		/**
+		 * An alternate style name to use with <code>Label</code> to allow a
+		 * theme to give it a tool tip style for use with the tool tip manager.
+		 * If a theme does not provide a style for a tool tip label, the theme
+		 * will automatically fall back to using the default style for a label.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_TOOL_TIP:String = "feathers-tool-tip";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Label</code>
@@ -630,20 +646,84 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			this.textRenderer.minWidth = this._minWidth - this._paddingLeft - this._paddingRight;
+			
+			this.textRenderer.minWidth = this._explicitMinWidth - this._paddingLeft - this._paddingRight;
 			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.minHeight = this._minHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.width = this._explicitWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.minHeight = this._explicitMinHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.height = this._explicitHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.measureText(HELPER_POINT);
-			var newWidth:Number = this.explicitWidth;
+
+			if(this.currentBackgroundSkin is IFeathersControl)
+			{
+				var feathersBackground:IFeathersControl = IFeathersControl(this.currentBackgroundSkin);
+				feathersBackground.validate();
+			}
+
+			//minimum dimensions
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(this._text)
+				{
+					newMinWidth = HELPER_POINT.x;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				var backgroundMinWidth:Number = 0;
+				if(this.currentBackgroundSkin is IFeathersControl)
+				{
+					backgroundMinWidth = IFeathersControl(this.currentBackgroundSkin).minWidth;
+				}
+				else if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
+				{
+					backgroundMinWidth = this.originalBackgroundWidth;
+				}
+				if(backgroundMinWidth > newMinWidth)
+				{
+					newMinWidth = backgroundMinWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(this._text)
+				{
+					newMinHeight = HELPER_POINT.y;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				var backgroundMinHeight:Number = 0;
+				if(this.currentBackgroundSkin is IFeathersControl)
+				{
+					backgroundMinHeight = IFeathersControl(this.currentBackgroundSkin).minHeight;
+				}
+				else if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
+				{
+					backgroundMinHeight = this.originalBackgroundHeight;
+				}
+				if(backgroundMinHeight > newMinHeight)
+				{
+					newMinHeight = backgroundMinHeight;
+				}
+			}
+			
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this._text)
@@ -654,15 +734,15 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
+				newWidth += this._paddingLeft + this._paddingRight;
 				if(this.originalBackgroundWidth === this.originalBackgroundWidth &&
 					this.originalBackgroundWidth > newWidth) //!isNaN
 				{
 					newWidth = this.originalBackgroundWidth;
 				}
-				newWidth += this._paddingLeft + this._paddingRight;
 			}
 
-			var newHeight:Number = this.explicitHeight;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				if(this._text)
@@ -673,15 +753,15 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
+				newHeight += this._paddingTop + this._paddingBottom;
 				if(this.originalBackgroundHeight === this.originalBackgroundHeight &&
 					this.originalBackgroundHeight > newHeight) //!isNaN
 				{
 					newHeight = this.originalBackgroundHeight;
 				}
-				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**

@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
+	import feathers.controls.supportClasses.BaseScreenNavigator;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
@@ -36,16 +37,24 @@ package feathers.controls
 	public class StackScreenNavigator extends BaseScreenNavigator
 	{
 		/**
-		 * The screen navigator will auto size itself to fill the entire stage.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
 		/**
-		 * The screen navigator will auto size itself to fit its content.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
@@ -449,9 +458,11 @@ package feathers.controls
 			for(var i:int = stackCount - 1; i >= 0; i--)
 			{
 				var item:StackItem = this._stack[i];
-				if(item.id == id)
+				if(item.id === id)
 				{
-					this._stack.splice(i, 1);
+					this._stack.removeAt(i);
+					//don't break here because there might be multiple screens
+					//with this ID in the stack
 				}
 			}
 			return StackScreenNavigatorItem(this.removeScreenInternal(id));
@@ -706,7 +717,12 @@ package feathers.controls
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = events[eventName];
 				if(eventAction is Function)
 				{
@@ -750,7 +766,12 @@ package feathers.controls
 			var savedScreenEvents:Object = this._pushScreenEvents[this._activeScreenID];
 			for(var eventName:String in pushEvents)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = pushEvents[eventName];
 				if(eventAction is Function)
 				{
@@ -792,7 +813,12 @@ package feathers.controls
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = events[eventName];
 				if(eventAction is String)
 				{
@@ -833,7 +859,12 @@ package feathers.controls
 			var savedScreenEvents:Object = this._replaceScreenEvents[this._activeScreenID];
 			for(var eventName:String in replaceEvents)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = replaceEvents[eventName];
 				if(eventAction is String)
 				{
@@ -867,7 +898,12 @@ package feathers.controls
 			for(var i:int = 0; i < eventCount; i++)
 			{
 				var eventName:String = popEvents[i];
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				if(signal)
 				{
 					signal.add(popSignalListener);
@@ -893,7 +929,12 @@ package feathers.controls
 			for(var i:int = 0; i < eventCount; i++)
 			{
 				var eventName:String = this._popScreenEvents[i];
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				if(signal)
 				{
 					signal.remove(popSignalListener);
@@ -919,7 +960,12 @@ package feathers.controls
 			for(var i:int = 0; i < eventCount; i++)
 			{
 				var eventName:String = this._popToRootScreenEvents[i];
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				if(signal)
 				{
 					signal.remove(popToRootSignalListener);
@@ -948,7 +994,12 @@ package feathers.controls
 			for(var i:int = 0; i < eventCount; i++)
 			{
 				var eventName:String = popToRootEvents[i];
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				if(signal)
 				{
 					signal.add(popToRootSignalListener);

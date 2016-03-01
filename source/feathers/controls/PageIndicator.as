@@ -9,10 +9,13 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.Direction;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
@@ -72,60 +75,90 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The page indicator's symbols will be positioned vertically, from top
-		 * to bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The page indicator's symbols will be positioned horizontally, from
-		 * left to right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The symbols will be vertically aligned to the top.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The symbols will be vertically aligned to the middle.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The symbols will be vertically aligned to the bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The symbols will be horizontally aligned to the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The symbols will be horizontally aligned to the center.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The symbols will be horizontally aligned to the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -336,7 +369,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -345,12 +378,12 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.direction = PageIndicator.DIRECTION_VERTICAL;</listing>
+		 * pages.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default PageIndicator.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -373,7 +406,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
@@ -383,13 +416,13 @@ package feathers.controls
 		 * the right:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.horizontalAlign = PageIndicator.HORIZONTAL_ALIGN_RIGHT;</listing>
+		 * pages.horizontalAlign = HorizontalAlign.RIGHT;</listing>
 		 *
-		 * @default PageIndicator.HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -412,7 +445,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
@@ -422,13 +455,13 @@ package feathers.controls
 		 * the bottom:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.verticalAlign = PageIndicator.VERTICAL_ALIGN_BOTTOM;</listing>
+		 * pages.verticalAlign = VerticalAlign.BOTTOM;</listing>
 		 *
-		 * @default PageIndicator.VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -827,12 +860,12 @@ package feathers.controls
 		{
 			if(layoutInvalid)
 			{
-				if(this._direction == DIRECTION_VERTICAL && !(this._layout is VerticalLayout))
+				if(this._direction == Direction.VERTICAL && !(this._layout is VerticalLayout))
 				{
 					this._layout = new VerticalLayout();
 					IVirtualLayout(this._layout).useVirtualLayout = false;
 				}
-				else if(this._direction != DIRECTION_VERTICAL && !(this._layout is HorizontalLayout))
+				else if(this._direction != Direction.VERTICAL && !(this._layout is HorizontalLayout))
 				{
 					this._layout = new HorizontalLayout();
 					IVirtualLayout(this._layout).useVirtualLayout = false;
@@ -862,14 +895,15 @@ package feathers.controls
 			}
 			SUGGESTED_BOUNDS.x = SUGGESTED_BOUNDS.y = 0;
 			SUGGESTED_BOUNDS.scrollX = SUGGESTED_BOUNDS.scrollY = 0;
-			SUGGESTED_BOUNDS.explicitWidth = this.explicitWidth;
-			SUGGESTED_BOUNDS.explicitHeight = this.explicitHeight;
+			SUGGESTED_BOUNDS.explicitWidth = this._explicitWidth;
+			SUGGESTED_BOUNDS.explicitHeight = this._explicitHeight;
 			SUGGESTED_BOUNDS.maxWidth = this._maxWidth;
 			SUGGESTED_BOUNDS.maxHeight = this._maxHeight;
-			SUGGESTED_BOUNDS.minWidth = this._minWidth;
-			SUGGESTED_BOUNDS.minHeight = this._minHeight;
+			SUGGESTED_BOUNDS.minWidth = this._explicitMinWidth;
+			SUGGESTED_BOUNDS.minHeight = this._explicitMinHeight;
 			this._layout.layout(this.symbols, SUGGESTED_BOUNDS, LAYOUT_RESULT);
-			this.setSizeInternal(LAYOUT_RESULT.contentWidth, LAYOUT_RESULT.contentHeight, false);
+			this.saveMeasurements(LAYOUT_RESULT.contentWidth, LAYOUT_RESULT.contentHeight,
+				LAYOUT_RESULT.contentWidth, LAYOUT_RESULT.contentHeight);
 		}
 
 		/**
@@ -892,12 +926,12 @@ package feathers.controls
 				}
 				this.touchPointID = -1;
 				touch.getLocation(this.stage, HELPER_POINT);
-				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 				if(isInBounds)
 				{
 					var lastPageIndex:int = this._pageCount - 1;
 					this.globalToLocal(HELPER_POINT, HELPER_POINT);
-					if(this._direction == DIRECTION_VERTICAL)
+					if(this._direction == Direction.VERTICAL)
 					{
 						if(this._interactionMode == INTERACTION_MODE_PRECISE)
 						{

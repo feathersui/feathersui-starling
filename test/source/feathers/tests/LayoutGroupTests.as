@@ -1,7 +1,10 @@
 package feathers.tests
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
@@ -106,13 +109,20 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testDefaultAutoSizeMode():void
+		{
+			this._group.validate();
+			Assert.assertStrictlyEquals("The default value of LayoutGroup autoSizeMode must be AutoSizeMode.CONTENT, if not root.", AutoSizeMode.CONTENT, this._group.autoSizeMode);
+		}
+
+		[Test]
 		public function testAutoSizeModeStage():void
 		{
-			this._group.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
+			this._group.autoSizeMode = AutoSizeMode.STAGE;
 			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._group.stage.stageWidth, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._group.stage.stageHeight, this._group.height);
 		}
 
@@ -206,8 +216,8 @@ package feathers.tests
 			this._group.addChild(child);
 			this._group.backgroundSkin = new Quad(LARGE_BACKGROUND_WIDTH, LARGE_BACKGROUND_HEIGHT);
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
 			this._group.layout = layout;
 			this._group.validate();
 			Assert.assertTrue("The layout group does not account for the background skin width when passing bounds to the layout.",

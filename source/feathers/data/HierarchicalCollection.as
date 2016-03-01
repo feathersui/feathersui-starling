@@ -271,7 +271,7 @@ package feathers.data
 		 */
 		public function getLength(...rest:Array):int
 		{
-			rest.unshift(this._data);
+			rest.insertAt(0, this._data);
 			return this._dataDescriptor.getLength.apply(null, rest);
 		}
 
@@ -290,7 +290,7 @@ package feathers.data
 		 */
 		public function updateItemAt(index:int, ...rest:Array):void
 		{
-			rest.unshift(index);
+			rest.insertAt(0, index);
 			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, rest);
 		}
 
@@ -318,8 +318,8 @@ package feathers.data
 		 */
 		public function getItemAt(index:int, ...rest:Array):Object
 		{
-			rest.unshift(index);
-			rest.unshift(this._data);
+			rest.insertAt(0, index);
+			rest.insertAt(0, this._data);
 			return this._dataDescriptor.getItemAt.apply(null, rest);
 		}
 
@@ -338,9 +338,9 @@ package feathers.data
 		 */
 		public function addItemAt(item:Object, index:int, ...rest:Array):void
 		{
-			rest.unshift(index);
-			rest.unshift(item);
-			rest.unshift(this._data);
+			rest.insertAt(0, index);
+			rest.insertAt(0, item);
+			rest.insertAt(0, this._data);
 			this._dataDescriptor.addItemAt.apply(null, rest);
 			this.dispatchEventWith(Event.CHANGE);
 			rest.shift();
@@ -354,8 +354,8 @@ package feathers.data
 		 */
 		public function removeItemAt(index:int, ...rest:Array):Object
 		{
-			rest.unshift(index);
-			rest.unshift(this._data);
+			rest.insertAt(0, index);
+			rest.insertAt(0, this._data);
 			var item:Object = this._dataDescriptor.removeItemAt.apply(null, rest);
 			this.dispatchEventWith(Event.CHANGE);
 			rest.shift();
@@ -401,9 +401,9 @@ package feathers.data
 		 */
 		public function setItemAt(item:Object, index:int, ...rest:Array):void
 		{
-			rest.unshift(index);
-			rest.unshift(item);
-			rest.unshift(this._data);
+			rest.insertAt(0, index);
+			rest.insertAt(0, item);
+			rest.insertAt(0, this._data);
 			this._dataDescriptor.setItemAt.apply(null, rest);
 			rest.shift();
 			rest.shift();

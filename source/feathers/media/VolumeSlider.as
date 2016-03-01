@@ -25,45 +25,46 @@ package feathers.media
 	public class VolumeSlider extends Slider implements IMediaPlayerControl
 	{
 		/**
-		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The slider has only one track, that fills the full length of the
-		 * slider. In this layout mode, the "minimum" track is displayed and
-		 * fills the entire length of the slider. The maximum track will not
-		 * exist.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
 		 *
-		 * @see #trackLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The slider has two tracks, stretching to fill each side of the slider
-		 * with the thumb in the middle. The tracks will be resized as the thumb
-		 * moves. This layout mode is designed for sliders where the two sides
-		 * of the track may be colored differently to show the value
-		 * "filling up" as the slider is dragged.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
 		 *
-		 * <p>Since the width and height of the tracks will change, consider
-		 * using a special display object such as a <code>Scale9Image</code>,
-		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
-		 * designed to be resized dynamically.</p>
-		 *
-		 * @see #trackLayoutMode
-		 * @see feathers.display.Scale9Image
-		 * @see feathers.display.Scale3Image
-		 * @see feathers.display.TiledImage
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 

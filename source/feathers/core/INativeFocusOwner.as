@@ -14,7 +14,7 @@ package feathers.core
 	 * display object on the native stage. The focus manager will automatically
 	 * pass focus to the native focus.
 	 * 
-	 * @see http://feathersui.com/help/focus.html
+	 * @see ../../../help/focus.html
 	 */
 	public interface INativeFocusOwner extends IFocusDisplayObject
 	{

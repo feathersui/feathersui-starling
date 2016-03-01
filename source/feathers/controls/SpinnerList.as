@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.VerticalSpinnerLayout;
@@ -71,10 +72,10 @@ package feathers.controls
 		public function SpinnerList()
 		{
 			super();
-			this._scrollBarDisplayMode = SCROLL_BAR_DISPLAY_MODE_NONE;
+			this._scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
 			this._snapToPages = true;
 			this._snapOnComplete = true;
-			this.decelerationRate = Scroller.DECELERATION_RATE_FAST;
+			this.decelerationRate = DecelerationRate.FAST;
 			this.addEventListener(Event.TRIGGERED, spinnerList_triggeredHandler);
 			this.addEventListener(FeathersEventType.SCROLL_COMPLETE, spinnerList_scrollCompleteHandler);
 		}
@@ -201,7 +202,7 @@ package feathers.controls
 		 * skin:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.selectionOverlaySkin = new Scale9Image( textures );</listing>
+		 * list.selectionOverlaySkin = new Image( texture );</listing>
 		 *
 		 * @default null
 		 */
@@ -239,19 +240,19 @@ package feathers.controls
 			if(this._layout == null)
 			{
 				if(this._hasElasticEdges &&
-					this._verticalScrollPolicy == SCROLL_POLICY_AUTO &&
-					this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+					this._verticalScrollPolicy === ScrollPolicy.AUTO &&
+					this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					//so that the elastic edges work even when the max scroll
 					//position is 0, similar to iOS.
-					this.verticalScrollPolicy = SCROLL_POLICY_ON;
+					this.verticalScrollPolicy = ScrollPolicy.ON;
 				}
 
 				var layout:VerticalSpinnerLayout = new VerticalSpinnerLayout();
 				layout.useVirtualLayout = true;
 				layout.padding = 0;
 				layout.gap = 0;
-				layout.horizontalAlign = VerticalSpinnerLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
 				this.layout = layout;
 			}
@@ -314,15 +315,25 @@ package feathers.controls
 				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 				{
 					this._selectionOverlaySkin.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-					this._selectionOverlaySkin.height = this.actualPageHeight;
+					var overlayHeight:Number = this.actualPageHeight;
+					if(overlayHeight > this.actualHeight)
+					{
+						overlayHeight = this.actualHeight;
+					}
+					this._selectionOverlaySkin.height = overlayHeight;
 					this._selectionOverlaySkin.x = this._leftViewPortOffset;
-					this._selectionOverlaySkin.y = Math.round(this._topViewPortOffset + (this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - this.actualPageHeight) / 2);
+					this._selectionOverlaySkin.y = Math.round(this._topViewPortOffset + (this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - overlayHeight) / 2);
 				}
 				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 				{
-					this._selectionOverlaySkin.width = this.actualPageWidth;
+					var overlayWidth:Number = this.actualPageWidth;
+					if(overlayWidth > this.actualWidth)
+					{
+						overlayWidth = this.actualWidth;
+					}
+					this._selectionOverlaySkin.width = overlayWidth;
 					this._selectionOverlaySkin.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
-					this._selectionOverlaySkin.x = Math.round(this._leftViewPortOffset + (this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - this.actualPageWidth) / 2);
+					this._selectionOverlaySkin.x = Math.round(this._leftViewPortOffset + (this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - overlayWidth) / 2);
 					this._selectionOverlaySkin.y = this._topViewPortOffset;
 				}
 			}

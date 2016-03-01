@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.ScrollContainer;
 
@@ -51,13 +52,20 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testDefaultAutoSizeMode():void
+		{
+			this._container.validate();
+			Assert.assertStrictlyEquals("The default value of LayoutGroup autoSizeMode must be AutoSizeMode.CONTENT, if not root.", AutoSizeMode.CONTENT, this._container.autoSizeMode);
+		}
+
+		[Test]
 		public function testAutoSizeModeStage():void
 		{
-			this._container.autoSizeMode = ScrollContainer.AUTO_SIZE_MODE_STAGE;
+			this._container.autoSizeMode = AutoSizeMode.STAGE;
 			this._container.validate();
-			Assert.assertStrictlyEquals("The width of the scroll container was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+			Assert.assertStrictlyEquals("The width of the scroll container was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._container.stage.stageWidth, this._container.width);
-			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly with autoSizeMode set to AUTO_SIZE_MODE_STAGE.",
+			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._container.stage.stageHeight, this._container.height);
 		}
 

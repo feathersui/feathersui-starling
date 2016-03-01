@@ -24,10 +24,10 @@ package feathers.controls.supportClasses
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
 
 	/**
@@ -750,7 +750,14 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override protected function get supportsRenderCache():Boolean
+		{
+			//since the text field is rendered above starling, some of its
+			//properties need to be updated every frame
+			return false;
+		}
+
+		override public function render(painter:Painter):void
 		{
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
@@ -767,8 +774,8 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
-			this._textFieldContainer.alpha = parentAlpha * this.alpha;
-			super.render(support, parentAlpha);
+			this._textFieldContainer.alpha = painter.state.alpha;
+			super.render(painter);
 		}
 
 		override protected function initialize():void
@@ -911,7 +918,7 @@ package feathers.controls.supportClasses
 			var target:DisplayObject = this;
 			do
 			{
-				if(!target.hasVisibleArea)
+				if(!target.visible)
 				{
 					this._textFieldContainer.visible = false;
 					return;

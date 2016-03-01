@@ -11,11 +11,11 @@ package feathers.core
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Stage;
 	import starling.filters.FragmentFilter;
+	import starling.rendering.Painter;
 
 	/**
 	 * Public properties and functions from <code>starling.display.DisplayObject</code>
@@ -225,6 +225,18 @@ package feathers.core
 		function set rotation(value:Number):void;
 
 		/**
+		 * The display object's mask.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#mask Full description of starling.display.DisplayObject.mask in Gamua's Starling Framework API Reference
+		 */
+		function get mask():DisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set mask(value:DisplayObject):void;
+
+		/**
 		 * The display object's parent, or <code>null</code> if it doesn't have
 		 * a parent.
 		 *
@@ -253,13 +265,6 @@ package feathers.core
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#stage Full description of starling.display.DisplayObject.stage in Gamua's Starling Framework API Reference
 		 */
 		function get stage():Stage;
-
-		/**
-		 * Determines if the display object should be rendered or not.
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#hasVisibleArea Full description of starling.display.DisplayObject.hasVisibleArea in Gamua's Starling Framework API Reference
-		 */
-		function get hasVisibleArea():Boolean;
 
 		/**
 		 * The transformation matrix of the display object, relative to its
@@ -313,7 +318,7 @@ package feathers.core
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#hitTest() Full description of starling.display.DisplayObject.hitTest() in Gamua's Starling Framework API Reference
 		 */
-		function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject;
+		function hitTest(localPoint:Point):DisplayObject;
 
 		/**
 		 * Converts a point from the display object's coordinate space to the
@@ -351,7 +356,7 @@ package feathers.core
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#render() Full description of starling.display.DisplayObject.render() in Gamua's Starling Framework API Reference
 		 */
-		function render(support:RenderSupport, parentAlpha:Number):void;
+		function render(painter:Painter):void;
 
 		/**
 		 * Disposes the display object.

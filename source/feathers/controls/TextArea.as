@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
+	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -78,15 +79,6 @@ package feathers.controls
 	 * A text entry control that allows users to enter and edit multiple lines
 	 * of uniformly-formatted text with the ability to scroll.
 	 *
-	 * <p><strong>Important:</strong> <code>TextArea</code> is not recommended
-	 * for mobile. Instead, you should generally use a <code>TextInput</code>
-	 * with a <code>StageTextTextEditor</code> that has its <code>multiline</code>
-	 * property set to <code>true</code> and the text input's <code>verticalAlign</code>
-	 * property should be set to <code>TextInput.VERTICAL_ALIGN_JUSTIFY</code>.
-	 * In that situation, the <code>StageText</code> instance will automatically
-	 * provide its own operating system native scroll bars. <code>TextArea</code>
-	 * is intended for use on desktop and may not behave correctly on mobile.</p>
-	 *
 	 * <p>The following example sets the text in a text area, selects the text,
 	 * and listens for when the text value changes:</p>
 	 *
@@ -94,7 +86,7 @@ package feathers.controls
 	 * var textArea:TextArea = new TextArea();
 	 * textArea.text = "Hello\nWorld"; //it's multiline!
 	 * textArea.selectRange( 0, textArea.text.length );
-	 * textArea.addEventListener( Event.CHANGE, input_changeHandler );
+	 * textArea.addEventListener( Event.CHANGE, textArea_changeHandler );
 	 * this.addChild( textArea );</listing>
 	 *
 	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
@@ -108,132 +100,211 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.AUTO</code>.
 		 *
-		 * @see feathers.controls.Scroller#horizontalScrollPolicy
-		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.ON</code>.
 		 *
-		 * @see feathers.controls.Scroller#horizontalScrollPolicy
-		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_POLICY_ON:String = "on";
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.OFF</code>.
 		 *
-		 * @see feathers.controls.Scroller#horizontalScrollPolicy
-		 * @see feathers.controls.Scroller#verticalScrollPolicy
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FLOAT</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
 
 		/**
-		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.NONE</code>.
 		 *
-		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
-		 * The vertical scroll bar will be positioned on the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
 
 		/**
-		 * The vertical scroll bar will be positioned on the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
 
 		/**
-		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
 		 *
-		 * @see feathers.controls.Scroller#interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
-		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
 		 *
-		 * @see feathers.controls.Scroller#interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
-		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
 		 *
-		 * @see feathers.controls.Scroller#interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
-		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.NORMAL</code>.
 		 *
-		 * @see feathers.controls.Scroller#decelerationRate
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
 
 		/**
-		 * @copy feathers.controls.Scroller#DECELERATION_RATE_FAST
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.FAST</code>.
 		 *
-		 * @see feathers.controls.Scroller#decelerationRate
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
-		 * The <code>TextArea</code> is enabled and does not have focus.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.ENABLED</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_ENABLED:String = "enabled";
 
 		/**
-		 * The <code>TextArea</code> is disabled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.DISABLED</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
 		/**
-		 * The <code>TextArea</code> is enabled and has focus.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.FOCUSED</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const STATE_FOCUSED:String = "focused";
 
@@ -244,6 +315,19 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR:String = "feathers-text-area-text-editor";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * error callout.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT:String = "feathers-text-input-error-callout";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY:String = "errorCalloutFactory";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextArea</code>
@@ -271,6 +355,16 @@ package feathers.controls
 		protected var textEditorViewPort:ITextEditorViewPort;
 
 		/**
+		 * The <code>TextCallout</code> that displays the value of the
+		 * <code>errorString</code> property. The value may be <code>null</code>
+		 * if there is no current error string or if the text area doesn't have
+		 * focus.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 */
+		protected var callout:TextCallout;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the text editor.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the text editor style name in their constructors instead of
@@ -280,6 +374,17 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textEditorStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the error
+		 * callout. This variable is <code>protected</code> so that sub-classes
+		 * can customize the prompt text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT</code>.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var errorCalloutStyleName:String = DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT;
 
 		/**
 		 * @private
@@ -373,44 +478,18 @@ package feathers.controls
 		override public function set isEnabled(value:Boolean):void
 		{
 			super.isEnabled = value;
-			if(this._isEnabled)
-			{
-				this.changeState(this.hasFocus ? STATE_FOCUSED : STATE_ENABLED);
-			}
-			else
-			{
-				this.changeState(STATE_DISABLED);
-			}
+			this.refreshState();
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _stateNames:Vector.<String> = new <String>
-		[
-			STATE_ENABLED, STATE_DISABLED, STATE_FOCUSED
-		];
-
-		/**
-		 * A list of all valid state names for use with <code>currentState</code>.
-		 *
-		 * <p>For internal use in subclasses.</p>
-		 *
-		 * @see #currentState
-		 */
-		protected function get stateNames():Vector.<String>
-		{
-			return this._stateNames;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _currentState:String = STATE_ENABLED;
+		protected var _currentState:String = TextInputState.ENABLED;
 
 		/**
 		 * The current state of the text area.
 		 *
+		 * @see feathers.controls.TextInputState
 		 * @see #event:stateChange feathers.events.FeathersEventType.STATE_CHANGE
 		 */
 		public function get currentState():String
@@ -567,7 +646,77 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _backgroundFocusedSkin:DisplayObject;
+		protected var _errorString:String = null;
+
+		/**
+		 * Error text to display in a <code>Callout</code> when the text area
+		 * has focus. When this value is not <code>null</code> the text area's
+		 * state is changed to <code>TextInputState.ERROR</code>.
+		 *
+		 * An empty string will change the background, but no
+		 * <code>Callout</code> will appear on focus.
+		 *
+		 * To clear an error, the <code>errorString</code> property must be set
+		 * to <code>null</code>
+		 *
+		 * <p>The following example displays an error string:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.errorString = "Something is wrong";</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #currentState
+		 */
+		public function get errorString():String
+		{
+			return this._errorString;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set errorString(value:String):void
+		{
+			if(this._errorString === value)
+			{
+				return;
+			}
+			this._errorString = value;
+			this.refreshState();
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToSkin:Object = {};
+
+		/**
+		 * A display object displayed behind the text area's content when it
+		 * is disabled.
+		 *
+		 * <p>In the following example, the text area's disabled background skin
+		 * is specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.isEnabled = false;
+		 * textArea.backgroundDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		override public function get backgroundDisabledSkin():DisplayObject
+		{
+			return this.getSkinForState(TextInputState.DISABLED);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set backgroundDisabledSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(TextInputState.DISABLED, value);
+		}
 
 		/**
 		 * A display object displayed behind the text area's content when it
@@ -583,7 +732,7 @@ package feathers.controls
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
-			return this._backgroundFocusedSkin;
+			return this.getSkinForState(TextInputState.FOCUSED);
 		}
 
 		/**
@@ -591,24 +740,31 @@ package feathers.controls
 		 */
 		public function set backgroundFocusedSkin(value:DisplayObject):void
 		{
-			if(this._backgroundFocusedSkin == value)
-			{
-				return;
-			}
+			this.setSkinForState(TextInputState.FOCUSED, value);
+		}
 
-			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin != this._backgroundSkin &&
-				this._backgroundFocusedSkin != this._backgroundDisabledSkin)
-			{
-				this.removeChild(this._backgroundFocusedSkin);
-			}
-			this._backgroundFocusedSkin = value;
-			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent != this)
-			{
-				this._backgroundFocusedSkin.visible = false;
-				this._backgroundFocusedSkin.touchable = false;
-				this.addChildAt(this._backgroundFocusedSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_SKIN);
+		/**
+		 * The skin used for the text area's error state. If <code>null</code>,
+		 * then <code>backgroundSkin</code> is used instead.
+		 *
+		 * <p>The following example gives the text area a skin for the error state:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.backgroundErrorSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundErrorSkin():DisplayObject
+		{
+			return this.getSkinForState(TextInputState.ERROR);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundErrorSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(TextInputState.ERROR, value);
 		}
 
 		/**
@@ -617,12 +773,13 @@ package feathers.controls
 		protected var _stateToSkinFunction:Function;
 
 		/**
-		 * Returns a skin for the current state.
+		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
+		 * and pass to the <code>backgroundSkin</code> property.
 		 *
-		 * <p>The following function signature is expected:</p>
-		 * <pre>function( target:TextArea, state:Object, oldSkin:DisplayObject = null ):DisplayObject</pre>
-		 *
-		 * @default null
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get stateToSkinFunction():Function
 		{
@@ -664,7 +821,7 @@ package feathers.controls
 		 * to the text area:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.textEditorFactory = function():ITextEditorViewPort
+		 * textArea.textEditorFactory = function():ITextEditorViewPort
 		 * {
 		 *     return new TextFieldTextEditorViewPort();
 		 * };</listing>
@@ -672,7 +829,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.text.ITextEditorViewPort
-		 * @see feathers.controls.text.TextFieldTextEditorViewPort
 		 */
 		public function get textEditorFactory():Function
 		{
@@ -700,7 +856,7 @@ package feathers.controls
 		/**
 		 * A style name to add to the text area's text editor sub-component.
 		 * Typically used by a theme to provide different styles to different
-		 * text inputs.
+		 * text areas.
 		 *
 		 * <p>In the following example, a custom text editor style name is
 		 * passed to the text area:</p>
@@ -767,8 +923,8 @@ package feathers.controls
 		 * <code>TextFieldTextEditorViewPort</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * input.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
-		 * input.textEditorProperties.embedFonts = true;</listing>
+		 * textArea.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
+		 * textArea.textEditorProperties.embedFonts = true;</listing>
 		 *
 		 * @default null
 		 *
@@ -819,6 +975,51 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _customErrorCalloutStyleName:String;
+
+		/**
+		 * A style name to add to the text area's error callout sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * text areas.
+		 *
+		 * <p>In the following example, a custom error callout style name
+		 * is passed to the text area:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.customErrorCalloutStyleName = "my-custom-text-area-error-callout";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-area-error-callout", setCustomTextAreaErrorCalloutStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public function get customErrorCalloutStyleName():String
+		{
+			return this._customErrorCalloutStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customErrorCalloutStyleName(value:String):void
+		{
+			if(this._customErrorCalloutStyleName == value)
+			{
+				return;
+			}
+			this._customErrorCalloutStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		override public function showFocus():void
@@ -853,7 +1054,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Manually removes focus from the text input control.
+		 * Manually removes focus from the text area control.
 		 */
 		public function clearFocus():void
 		{
@@ -904,11 +1105,56 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
-			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent !== this)
+			//we don't dispose it if the text area is the parent because it'll
+			//already get disposed in super.dispose()
+			for(var state:String in this._stateToSkin)
 			{
-				this._backgroundFocusedSkin.dispose();
+				var skin:DisplayObject = this._stateToSkin[state] as DisplayObject;
+				if(skin !== null && skin.parent !== this)
+				{
+					skin.dispose();
+				}
 			}
 			super.dispose();
+		}
+
+		/**
+		 * Gets the skin to be used by the text area when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a skin is not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see #setSkinForState()
+		 * @see feathers.controls.TextInputState
+		 */
+		public function getSkinForState(state:String):DisplayObject
+		{
+			return this._stateToSkin[state] as DisplayObject;
+		}
+
+		/**
+		 * Sets the skin to be used by the text area when its
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a skin is not defined for a specific state, the value of the
+		 * <code>backgroundSkin</code> property will be used instead.</p>
+		 *
+		 * @see #backgroundSkin
+		 * @see #getSkinForState()
+		 * @see feathers.controls.TextInputState
+		 */
+		public function setSkinForState(state:String, skin:DisplayObject):void
+		{
+			if(skin !== null)
+			{
+				this._stateToSkin[state] = skin;
+			}
+			else
+			{
+				delete this._stateToSkin[state];
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1004,15 +1250,38 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function changeState(state:String):void
+		protected function createErrorCallout():void
 		{
-			if(this._currentState == state)
+			if(this.callout)
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
+
+			if(this._errorString === null)
 			{
 				return;
 			}
-			if(this.stateNames.indexOf(state) < 0)
+			this.callout = new TextCallout();
+			var errorCalloutStyleName:String = this._customErrorCalloutStyleName != null ? this._customErrorCalloutStyleName : this.errorCalloutStyleName;
+			this.callout.styleNameList.add(errorCalloutStyleName);
+			this.callout.closeOnKeys = null;
+			this.callout.closeOnTouchBeganOutside = false;
+			this.callout.closeOnTouchEndedOutside = false;
+			this.callout.touchable = false;
+			this.callout.text = this._errorString;
+			this.callout.origin = this;
+			PopUpManager.addPopUp(this.callout, false, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function changeState(state:String):void
+		{
+			if(this._currentState === state)
 			{
-				throw new ArgumentError("Invalid state: " + state + ".");
+				return;
 			}
 			this._currentState = state;
 			this.invalidate(INVALIDATION_FLAG_STATE);
@@ -1062,23 +1331,8 @@ package feathers.controls
 		override protected function refreshBackgroundSkin():void
 		{
 			var oldSkin:DisplayObject = this.currentBackgroundSkin;
-			if(this._stateToSkinFunction != null)
-			{
-				this.currentBackgroundSkin = DisplayObject(this._stateToSkinFunction(this, this._currentState, oldSkin));
-			}
-			else if(!this._isEnabled && this._backgroundDisabledSkin)
-			{
-				this.currentBackgroundSkin = this._backgroundDisabledSkin;
-			}
-			else if(this.hasFocus && this._backgroundFocusedSkin)
-			{
-				this.currentBackgroundSkin = this._backgroundFocusedSkin;
-			}
-			else
-			{
-				this.currentBackgroundSkin = this._backgroundSkin;
-			}
-			if(oldSkin != this.currentBackgroundSkin)
+			this.currentBackgroundSkin = this.getCurrentSkin();
+			if(oldSkin !== this.currentBackgroundSkin)
 			{
 				if(oldSkin)
 				{
@@ -1102,6 +1356,49 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function getCurrentSkin():DisplayObject
+		{
+			if(this._stateToSkinFunction != null)
+			{
+				return DisplayObject(this._stateToSkinFunction(this, this._currentState, this.currentBackgroundSkin));
+			}
+			var result:DisplayObject = this._stateToSkin[this._currentState] as DisplayObject;
+			if(result !== null)
+			{
+				return result;
+			}
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshState():void
+		{
+			if(this._isEnabled)
+			{
+				if(this._textEditorHasFocus)
+				{
+					this.changeState(TextInputState.FOCUSED);
+				}
+				else if(this._errorString !== null)
+				{
+					this.changeState(TextInputState.ERROR);
+				}
+				else
+				{
+					this.changeState(TextInputState.ENABLED);
+				}
+			}
+			else
+			{
+				this.changeState(TextInputState.DISABLED);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
 		{
 			if(!this.isFocusEnabled)
@@ -1109,7 +1406,7 @@ package feathers.controls
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(!this._textEditorHasFocus && isInBounds)
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);
@@ -1273,7 +1570,11 @@ package feathers.controls
 		protected function textEditor_focusInHandler(event:Event):void
 		{
 			this._textEditorHasFocus = true;
-			this.changeState(STATE_FOCUSED);
+			this.refreshState();
+			if(this._errorString !== null && this._errorString.length > 0)
+			{
+				this.createErrorCallout();
+			}
 			this._touchPointID = -1;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
@@ -1296,7 +1597,12 @@ package feathers.controls
 		protected function textEditor_focusOutHandler(event:Event):void
 		{
 			this._textEditorHasFocus = false;
-			this.changeState(this._isEnabled ? STATE_ENABLED : STATE_DISABLED);
+			this.refreshState();
+			if(this.callout)
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager && this._focusManager.focus === this)
 			{

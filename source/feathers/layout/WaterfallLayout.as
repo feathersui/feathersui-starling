@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IValidating;
+	import feathers.layout.HorizontalAlign;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -51,23 +52,35 @@ package feathers.layout
 	public class WaterfallLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
 		/**
-		 * The items will be aligned to the left of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The items will be aligned to the center of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The items will be aligned to the right of the bounds.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -311,18 +324,18 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
 		 *
-		 * @default WaterfallLayout.HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -570,11 +583,11 @@ package feathers.layout
 			columnHeights.fixed = true;
 
 			var horizontalAlignOffset:Number = 0;
-			if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+			if(this._horizontalAlign == HorizontalAlign.RIGHT)
 			{
 				horizontalAlignOffset = (availableWidth - this._paddingLeft - this._paddingRight) - ((columnCount * (columnWidth + this._horizontalGap)) - this._horizontalGap);
 			}
-			else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+			else if(this._horizontalAlign == HorizontalAlign.CENTER)
 			{
 				horizontalAlignOffset = Math.round(((availableWidth - this._paddingLeft - this._paddingRight) - ((columnCount * (columnWidth + this._horizontalGap)) - this._horizontalGap)) / 2);
 			}
@@ -1048,7 +1061,7 @@ package feathers.layout
 		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			var heightValue:* = item ? item.height : undefined;
-			this._heightCache.splice(index, 0, heightValue);
+			this._heightCache.insertAt(index, heightValue);
 		}
 
 		/**
@@ -1056,7 +1069,7 @@ package feathers.layout
 		 */
 		public function removeFromVariableVirtualCacheAtIndex(index:int):void
 		{
-			this._heightCache.splice(index, 1);
+			this._heightCache.removeAt(index);
 		}
 
 		/**

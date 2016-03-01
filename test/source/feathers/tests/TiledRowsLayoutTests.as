@@ -1,7 +1,9 @@
 package feathers.tests
 {
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.TiledRowsLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.ViewPortBounds;
 
 	import flash.geom.Point;
@@ -582,7 +584,7 @@ package feathers.tests
 		{
 			this._layout.useSquareTiles = false;
 			this._layout.requestedColumnCount = 2;
-			this._layout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_RIGHT;
+			this._layout.horizontalAlign = HorizontalAlign.RIGHT;
 			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
 			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
 			var bounds:ViewPortBounds = new ViewPortBounds();
@@ -596,7 +598,7 @@ package feathers.tests
 		{
 			this._layout.useSquareTiles = false;
 			this._layout.requestedRowCount = 2;
-			this._layout.verticalAlign = TiledRowsLayout.VERTICAL_ALIGN_BOTTOM;
+			this._layout.verticalAlign = VerticalAlign.BOTTOM;
 			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
 			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
 			var bounds:ViewPortBounds = new ViewPortBounds();

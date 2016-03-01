@@ -120,11 +120,11 @@ import feathers.display.RenderDelegate;
 import flash.display3D.Context3DTriangleFace;
 
 import starling.animation.Tween;
-import starling.core.RenderSupport;
 import starling.core.Starling;
 import starling.display.DisplayObject;
 import starling.display.DisplayObjectContainer;
 import starling.display.Sprite3D;
+import starling.rendering.Painter;
 
 class CubeTween extends Tween
 {
@@ -251,10 +251,10 @@ class CubeTween extends Tween
 
 class CulledSprite3D extends Sprite3D
 {
-	override public function render(support:RenderSupport, parentAlpha:Number):void
+	override public function render(painter:Painter):void
 	{
 		Starling.current.context.setCulling(Context3DTriangleFace.BACK);
-		super.render(support, parentAlpha);
+		super.render(painter);
 		Starling.current.context.setCulling(Context3DTriangleFace.NONE);
 	}
 }

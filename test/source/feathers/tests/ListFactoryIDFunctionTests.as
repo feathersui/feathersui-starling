@@ -155,6 +155,28 @@ package feathers.tests
 			Assert.assertStrictlyEquals("Item renderer factoryID not changed to new result of factoryIDFunction after calling setItemAt() and addItemAt() for previous item.", FACTORY_ONE, itemRenderer1.factoryID);
 			Assert.assertStrictlyEquals("Item renderer data not changed with new result of factoryIDFunction after calling setItemAt() and addItemAt() for previous item.", itemToSet, itemRenderer1.data);
 		}
+
+		[Test]
+		public function testNewTypicalItemWithDifferentFactoryAndRemoveTypicalItemAfterDispose():void
+		{
+			var itemToSet:Object = { label: "Replacement Item", factory: 1 };
+			this._list.factoryIDFunction = factoryIDFunction;
+			this._list.validate();
+			this._list.dataProvider.setItemAt(itemToSet, 1);
+			this._list.dataProvider.removeItemAt(0);
+			this._list.validate();
+			var itemRendererCount:int = this._list.dataProvider.length;
+			var removedRendererCount:int = 0;
+			this._list.addEventListener(FeathersEventType.RENDERER_REMOVE, function(event:Event, itemRenderer:IListItemRenderer):void
+			{
+				removedRendererCount++;
+				Assert.assertNotNull("Item renderer incorrectly has null owner during dispose().", itemRenderer.owner);
+				Assert.assertNotNull("Item renderer incorrectly has null data during dispose().", itemRenderer.data);
+				Assert.assertTrue("Item renderer incorrectly has negative index during dispose().", itemRenderer.index >= 0);
+			});
+			this._list.dispose();
+			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_REMOVE not dispatched for all item renderers after dispose().", itemRendererCount, removedRendererCount);
+		}
 		
 		private function getItemRendererAt(index:int):IListItemRenderer
 		{
@@ -169,12 +191,12 @@ package feathers.tests
 			return null;
 		}
 		
-		private function list_rendererAddHandler(event:Event, itemRenderer:IListItemRenderer)
+		private function list_rendererAddHandler(event:Event, itemRenderer:IListItemRenderer):void
 		{
 			this._itemRendererMap[itemRenderer.data] = itemRenderer;
 		}
 
-		private function list_rendererRemoveHandler(event:Event, itemRenderer:IListItemRenderer)
+		private function list_rendererRemoveHandler(event:Event, itemRenderer:IListItemRenderer):void
 		{
 			delete this._itemRendererMap[itemRenderer.data];
 		}

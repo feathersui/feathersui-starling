@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.List;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 
 	import flash.geom.Point;
@@ -28,6 +29,7 @@ package feathers.tests
 				{ label: "One" },
 				{ label: "Two" },
 				{ label: "Three" },
+				{ label: "Four" },
 			]);
 			this._list.itemRendererFactory = function():DefaultListItemRenderer
 			{
@@ -46,6 +48,21 @@ package feathers.tests
 			this._list = null;
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
+		}
+
+		[Test]
+		public function testNullDataProvider():void
+		{
+			this._list.dataProvider = null;
+			this._list.validate();
+		}
+
+		[Test]
+		public function testNullDataProviderWithTypicalItem():void
+		{
+			this._list.dataProvider = null;
+			this._list.typicalItem = { label: "Typical Item" };
+			this._list.validate();
 		}
 
 		[Test]
@@ -76,7 +93,7 @@ package feathers.tests
 				hasChanged = true;
 			});
 			var position:Point = new Point(10, 210);
-			var target:DisplayObject = this._list.stage.hitTest(position, true);
+			var target:DisplayObject = this._list.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
 			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
@@ -230,6 +247,26 @@ package feathers.tests
 			});
 			this._list.dispose();
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+		}
+
+		[Test]
+		public function testItemToItemRenderer():void
+		{
+			this._list.height = 20;
+			this._list.validate();
+			var item0:Object = this._list.dataProvider.getItemAt(0);
+			var itemRenderer0:IListItemRenderer = this._list.itemToItemRenderer(item0);
+			var item1:Object = this._list.dataProvider.getItemAt(1);
+			var itemRenderer1:IListItemRenderer = this._list.itemToItemRenderer(item1);
+			var item3:Object = this._list.dataProvider.getItemAt(3);
+			var itemRenderer3:IListItemRenderer = this._list.itemToItemRenderer(item3);
+			Assert.assertNotNull("itemToItemRenderer() incorrectly returned null for item that should have an item renderer", itemRenderer0);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item0, itemRenderer0.data);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect index", 0, itemRenderer0.index);
+			Assert.assertNotNull("itemToItemRenderer() incorrectly returned null for item that should have an item renderer", itemRenderer1);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item1, itemRenderer1.data);
+			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect index", 1, itemRenderer1.index);
+			Assert.assertNull("itemToItemRenderer() incorrectly returned item renderer for item that should not have one", itemRenderer3);
 		}
 	}
 }

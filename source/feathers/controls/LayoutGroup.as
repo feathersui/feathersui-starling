@@ -21,9 +21,11 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.rendering.BatchToken;
+	import starling.rendering.Painter;
 
 	[DefaultProperty("mxmlContent")]
 	/**
@@ -70,16 +72,24 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
 		/**
-		 * The layout group will auto size itself to fill the entire stage.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
 		/**
-		 * The layout group will auto size itself to fit its content.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
@@ -277,7 +287,7 @@ package feathers.controls
 			this._clipContent = value;
 			if(!value)
 			{
-				this.clipRect = null;
+				this.mask = null;
 			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
@@ -291,6 +301,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkinPushToken:BatchToken = new BatchToken();
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkinPopToken:BatchToken = new BatchToken();
 
 		/**
 		 * @private
@@ -378,7 +398,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _autoSizeMode:String = AUTO_SIZE_MODE_CONTENT;
+		protected var _autoSizeMode:String = AutoSizeMode.CONTENT;
 
 		[Inspectable(type="String",enumeration="stage,content")]
 		/**
@@ -389,12 +409,14 @@ package feathers.controls
 		 * match the stage:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;</listing>
+		 * group.autoSizeMode = AutoSizeMode.STAGE;</listing>
 		 *
-		 * @default LayoutGroup.AUTO_SIZE_MODE_CONTENT
+		 * <p>Usually defaults to <code>AutoSizeMode.CONTENT</code>. However, if
+		 * this component is the root of the Starling display list, defaults to
+		 * <code>AutoSizeMode.STAGE</code> instead.</p>
 		 *
-		 * @see #AUTO_SIZE_MODE_STAGE
-		 * @see #AUTO_SIZE_MODE_CONTENT
+		 * @see feathers.controls.AutoSizeMode#STAGE
+		 * @see feathers.controls.AutoSizeMode#CONTENT
 		 */
 		public function get autoSizeMode():String
 		{
@@ -413,7 +435,7 @@ package feathers.controls
 			this._autoSizeMode = value;
 			if(this.stage)
 			{
-				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+				if(this._autoSizeMode == AutoSizeMode.STAGE)
 				{
 					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 				}
@@ -450,18 +472,9 @@ package feathers.controls
 			}
 			if(oldIndex >= 0)
 			{
-				this.items.splice(oldIndex, 1);
+				this.items.removeAt(oldIndex);
 			}
-			var itemCount:int = this.items.length;
-			if(index == itemCount)
-			{
-				//faster than splice because it avoids gc
-				this.items[index] = child;
-			}
-			else
-			{
-				this.items.splice(index, 0, child);
-			}
+			this.items.insertAt(index, child);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			return super.addChildAt(child, index);
 		}
@@ -473,7 +486,7 @@ package feathers.controls
 		{
 			if(index >= 0 && index < this.items.length)
 			{
-				this.items.splice(index, 1);
+				this.items.removeAt(index);
 			}
 			var child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
@@ -495,16 +508,15 @@ package feathers.controls
 		{
 			super.setChildIndex(child, index);
 			var oldIndex:int = this.items.indexOf(child);
-			if(oldIndex == index)
+			if(oldIndex === index)
 			{
 				return;
 			}
-
 			//the super function already checks if oldIndex < 0, and throws an
 			//appropriate error, so no need to do it again!
-
-			this.items.splice(oldIndex, 1);
-			this.items.splice(index, 0, child);
+			
+			this.items.removeAt(oldIndex);
+			this.items.insertAt(index, child);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
@@ -513,7 +525,7 @@ package feathers.controls
 		 */
 		override public function swapChildrenAt(index1:int, index2:int):void
 		{
-			super.swapChildrenAt(index1, index2)
+			super.swapChildrenAt(index1, index2);
 			var child1:DisplayObject = this.items[index1];
 			var child2:DisplayObject = this.items[index2];
 			this.items[index1] = child2;
@@ -534,11 +546,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		override public function hitTest(localPoint:Point):DisplayObject
 		{
 			var localX:Number = localPoint.x;
 			var localY:Number = localPoint.y;
-			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint);
 			if(result)
 			{
 				if(!this._isEnabled)
@@ -547,7 +559,7 @@ package feathers.controls
 				}
 				return result;
 			}
-			if(forTouch && (!this.visible || !this.touchable))
+			if(!this.visible || !this.touchable)
 			{
 				return null;
 			}
@@ -561,34 +573,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
-			if(this.currentBackgroundSkin && this.currentBackgroundSkin.hasVisibleArea)
+			if(this.currentBackgroundSkin &&
+				this.currentBackgroundSkin.visible &&
+				this.currentBackgroundSkin.alpha > 0)
 			{
-				var clipRect:Rectangle = this.clipRect;
-				if(clipRect)
+				var mask:DisplayObject = this.currentBackgroundSkin.mask;
+				painter.pushState(this._backgroundSkinPushToken);
+				painter.setStateTo(this.currentBackgroundSkin.transformationMatrix, this.currentBackgroundSkin.alpha, this.currentBackgroundSkin.blendMode);
+				if(mask)
 				{
-					clipRect = support.pushClipRect(this.getClipRect(stage, HELPER_RECTANGLE));
-					if(clipRect.isEmpty())
-					{
-						// empty clipping bounds - no need to render children.
-						support.popClipRect();
-						return;
-					}
+					painter.drawMask(mask);
 				}
-				var blendMode:String = this.blendMode;
-				support.pushMatrix();
-				support.transformMatrix(this.currentBackgroundSkin);
-				support.blendMode = this.currentBackgroundSkin.blendMode;
-				this.currentBackgroundSkin.render(support, parentAlpha * this.alpha);
-				support.blendMode = blendMode;
-				support.popMatrix();
-				if(clipRect)
+				this.currentBackgroundSkin.render(painter);
+				if(mask)
 				{
-					support.popClipRect();
+					painter.eraseMask(mask);
 				}
+				painter.popState(this._backgroundSkinPopToken);
 			}
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -627,6 +632,25 @@ package feathers.controls
 		override protected function initialize():void
 		{
 			this.refreshMXMLContent();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			//we use stage.root because a pop-up's root may be different than
+			//the real root
+			var root:DisplayObject = null;
+			if(this.stage !== null)
+			{
+				root = this.stage.root;
+			}
+			if(root === this)
+			{
+				this.autoSizeMode = AutoSizeMode.STAGE;
+			}
+			super.initialize();
 		}
 
 		/**
@@ -674,12 +698,7 @@ package feathers.controls
 					this.handleManualLayout();
 				}
 				this.handleLayoutResult();
-				
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
+				this.refreshBackgroundLayout();
 
 				//final validation to avoid juggler next frame issues
 				this.validateChildren();
@@ -697,6 +716,7 @@ package feathers.controls
 		 */
 		protected function refreshBackgroundSkin():void
 		{
+			var oldBackgroundSkin:DisplayObject = this.currentBackgroundSkin;
 			if(!this._isEnabled && this._backgroundDisabledSkin)
 			{
 				this.currentBackgroundSkin = this._backgroundDisabledSkin;
@@ -718,6 +738,28 @@ package feathers.controls
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}
 			}
+			if(this.currentBackgroundSkin !== oldBackgroundSkin)
+			{
+				this.setRequiresRedraw();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshBackgroundLayout():void
+		{
+			if(this.currentBackgroundSkin === null)
+			{
+				return;
+			}
+			if(this.currentBackgroundSkin.width !== this.actualWidth ||
+				this.currentBackgroundSkin.height !== this.actualHeight)
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+				this.setRequiresRedraw();
+			}
 		}
 
 		/**
@@ -730,26 +772,34 @@ package feathers.controls
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
-			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
-				this.explicitWidth !== this.explicitWidth)
+			if(this._autoSizeMode === AutoSizeMode.STAGE &&
+				this._explicitWidth !== this._explicitWidth)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
 			}
 			else
 			{
-				this.viewPortBounds.explicitWidth = this.explicitWidth;
+				this.viewPortBounds.explicitWidth = this._explicitWidth;
 			}
-			if(this._autoSizeMode === AUTO_SIZE_MODE_STAGE &&
-					this.explicitHeight !== this.explicitHeight)
+			if(this._autoSizeMode === AutoSizeMode.STAGE &&
+					this._explicitHeight !== this._explicitHeight)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
 			}
 			else
 			{
-				this.viewPortBounds.explicitHeight = this.explicitHeight;
+				this.viewPortBounds.explicitHeight = this._explicitHeight;
 			}
-			var minWidth:Number = this._minWidth;
-			var minHeight:Number = this._minHeight;
+			var minWidth:Number = this._explicitMinWidth;
+			if(minWidth !== minWidth) //isNaN
+			{
+				minWidth = 0;
+			}
+			var minHeight:Number = this._explicitMinHeight;
+			if(minHeight !== minHeight) //isNaN
+			{
+				minHeight = 0;
+			}
 			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 				this.originalBackgroundWidth > minWidth)
 			{
@@ -894,16 +944,23 @@ package feathers.controls
 				return;
 			}
 
-			var clipRect:Rectangle = this.clipRect;
-			if(!clipRect)
+			var mask:Quad = this.mask as Quad;
+			if(mask)
 			{
-				clipRect = new Rectangle();
+				mask.x = 0;
+				mask.y = 0;
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
 			}
-			clipRect.x = 0;
-			clipRect.y = 0;
-			clipRect.width = this.actualWidth;
-			clipRect.height = this.actualHeight;
-			this.clipRect = clipRect;
+			else
+			{
+				mask = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
+				this.mask = mask;
+			}
 		}
 
 		/**
@@ -911,7 +968,7 @@ package feathers.controls
 		 */
 		protected function layoutGroup_addedToStageHandler(event:Event):void
 		{
-			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			if(this._autoSizeMode == AutoSizeMode.STAGE)
 			{
 				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 			}

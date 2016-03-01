@@ -35,16 +35,24 @@ package feathers.controls
 	public class ScreenNavigator extends BaseScreenNavigator
 	{
 		/**
-		 * The screen navigator will auto size itself to fill the entire stage.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
 		/**
-		 * The screen navigator will auto size itself to fit its content.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
 		 *
-		 * @see #autoSizeMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
@@ -265,7 +273,12 @@ package feathers.controls
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = events[eventName];
 				if(eventAction is Function)
 				{
@@ -310,7 +323,12 @@ package feathers.controls
 			var savedScreenEvents:Object = this._screenEvents[this._activeScreenID];
 			for(var eventName:String in events)
 			{
-				var signal:Object = this._activeScreen.hasOwnProperty(eventName) ? (this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE) : null;
+				var signal:Object = null;
+				if(BaseScreenNavigator.SIGNAL_TYPE !== null &&
+					this._activeScreen.hasOwnProperty(eventName))
+				{
+					signal = this._activeScreen[eventName] as BaseScreenNavigator.SIGNAL_TYPE;
+				}
 				var eventAction:Object = events[eventName];
 				if(eventAction is Function)
 				{

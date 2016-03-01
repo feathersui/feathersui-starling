@@ -50,112 +50,156 @@ package feathers.layout
 	public class TiledRowsLayout extends EventDispatcher implements IVirtualLayout
 	{
 		/**
-		 * If the total item height is smaller than the height of the bounds,
-		 * the items will be aligned to the top.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * If the total item height is smaller than the height of the bounds,
-		 * the items will be aligned to the middle.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * If the total item height is smaller than the height of the bounds,
-		 * the items will be aligned to the bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * If the total item width is smaller than the width of the bounds, the
-		 * items will be aligned to the left.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * If the total item width is smaller than the width of the bounds, the
-		 * items will be aligned to the center.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * If the total item width is smaller than the width of the bounds, the
-		 * items will be aligned to the right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * If an item height is smaller than the height of a tile, the item will
-		 * be aligned to the top edge of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #tileVerticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * If an item height is smaller than the height of a tile, the item will
-		 * be aligned to the middle of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #tileVerticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * If an item height is smaller than the height of a tile, the item will
-		 * be aligned to the bottom edge of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #tileVerticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The item will be resized to fit the height of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #tileVerticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * If an item width is smaller than the width of a tile, the item will
-		 * be aligned to the left edge of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #tileHorizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * If an item width is smaller than the width of a tile, the item will
-		 * be aligned to the center of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #tileHorizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * If an item width is smaller than the width of a tile, the item will
-		 * be aligned to the right edge of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #tileHorizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * The item will be resized to fit the width of the tile.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
 		 *
-		 * @see #tileHorizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -515,7 +559,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
+		protected var _verticalAlign:String = VerticalAlign.TOP;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
@@ -523,11 +567,11 @@ package feathers.layout
 		 * If the total column height is less than the bounds, the items in the
 		 * column can be aligned vertically.
 		 *
-		 * @default TiledRowsLayout.VERTICAL_ALIGN_TOP
+		 * @default feathers.layout.VerticalAlign.TOP
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -550,7 +594,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right")]
@@ -558,11 +602,11 @@ package feathers.layout
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
 		 *
-		 * @default TiledRowsLayout.HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -585,7 +629,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _tileVerticalAlign:String = TILE_VERTICAL_ALIGN_MIDDLE;
+		protected var _tileVerticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
@@ -593,12 +637,12 @@ package feathers.layout
 		 * If an item's height is less than the tile bounds, the position of the
 		 * item can be aligned vertically.
 		 *
-		 * @default TiledRowsLayout.TILE_VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #TILE_VERTICAL_ALIGN_TOP
-		 * @see #TILE_VERTICAL_ALIGN_MIDDLE
-		 * @see #TILE_VERTICAL_ALIGN_BOTTOM
-		 * @see #TILE_VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get tileVerticalAlign():String
 		{
@@ -621,7 +665,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _tileHorizontalAlign:String = TILE_HORIZONTAL_ALIGN_CENTER;
+		protected var _tileHorizontalAlign:String = HorizontalAlign.CENTER;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
@@ -629,12 +673,12 @@ package feathers.layout
 		 * If the item's width is less than the tile bounds, the position of the
 		 * item can be aligned horizontally.
 		 *
-		 * @default TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER
+		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
-		 * @see #TILE_HORIZONTAL_ALIGN_LEFT
-		 * @see #TILE_HORIZONTAL_ALIGN_CENTER
-		 * @see #TILE_HORIZONTAL_ALIGN_RIGHT
-		 * @see #TILE_HORIZONTAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get tileHorizontalAlign():String
 		{
@@ -1111,18 +1155,18 @@ package feathers.layout
 				{
 					switch(this._tileHorizontalAlign)
 					{
-						case TILE_HORIZONTAL_ALIGN_JUSTIFY:
+						case HorizontalAlign.JUSTIFY:
 						{
 							item.x = item.pivotX + positionX;
 							item.width = tileWidth;
 							break;
 						}
-						case TILE_HORIZONTAL_ALIGN_LEFT:
+						case HorizontalAlign.LEFT:
 						{
 							item.x = item.pivotX + positionX;
 							break;
 						}
-						case TILE_HORIZONTAL_ALIGN_RIGHT:
+						case HorizontalAlign.RIGHT:
 						{
 							item.x = item.pivotX + positionX + tileWidth - item.width;
 							break;
@@ -1134,18 +1178,18 @@ package feathers.layout
 					}
 					switch(this._tileVerticalAlign)
 					{
-						case TILE_VERTICAL_ALIGN_JUSTIFY:
+						case VerticalAlign.JUSTIFY:
 						{
 							item.y = item.pivotY + positionY;
 							item.height = tileHeight;
 							break;
 						}
-						case TILE_VERTICAL_ALIGN_TOP:
+						case VerticalAlign.TOP:
 						{
 							item.y = item.pivotY + positionY;
 							break;
 						}
-						case TILE_VERTICAL_ALIGN_BOTTOM:
+						case VerticalAlign.BOTTOM:
 						{
 							item.y = item.pivotY + positionY + tileHeight - item.height;
 							break;
@@ -1476,11 +1520,11 @@ package feathers.layout
 				return;
 			}
 			var horizontalAlignOffsetX:Number = 0;
-			if(this._horizontalAlign === HORIZONTAL_ALIGN_RIGHT)
+			if(this._horizontalAlign === HorizontalAlign.RIGHT)
 			{
 				horizontalAlignOffsetX = availableWidth - totalItemWidth;
 			}
-			else if(this._horizontalAlign !== HORIZONTAL_ALIGN_LEFT)
+			else if(this._horizontalAlign !== HorizontalAlign.LEFT)
 			{
 				//we're going to default to center if we encounter an
 				//unknown value
@@ -1510,11 +1554,11 @@ package feathers.layout
 				return;
 			}
 			var verticalAlignOffsetY:Number = 0;
-			if(this._verticalAlign === VERTICAL_ALIGN_BOTTOM)
+			if(this._verticalAlign === VerticalAlign.BOTTOM)
 			{
 				verticalAlignOffsetY = availableHeight - totalItemHeight;
 			}
-			else if(this._verticalAlign === VERTICAL_ALIGN_MIDDLE)
+			else if(this._verticalAlign === VerticalAlign.MIDDLE)
 			{
 				verticalAlignOffsetY = Math.round((availableHeight - totalItemHeight) / 2);
 			}
@@ -1582,12 +1626,12 @@ package feathers.layout
 			var rightSideOffset:Number = 0;
 			if(totalRowWidth < width)
 			{
-				if(this._horizontalAlign === HORIZONTAL_ALIGN_RIGHT)
+				if(this._horizontalAlign === HorizontalAlign.RIGHT)
 				{
 					leftSideOffset = width - this._paddingLeft - this._paddingRight - totalRowWidth;
 					rightSideOffset = 0;
 				}
-				else if(this._horizontalAlign === HORIZONTAL_ALIGN_CENTER)
+				else if(this._horizontalAlign === HorizontalAlign.CENTER)
 				{
 					leftSideOffset = rightSideOffset = Math.round((width - this._paddingLeft - this._paddingRight - totalRowWidth) / 2);
 				}
@@ -1718,12 +1762,12 @@ package feathers.layout
 			var bottomSideOffset:Number = 0;
 			if(totalColumnHeight < height)
 			{
-				if(this._verticalAlign === VERTICAL_ALIGN_BOTTOM)
+				if(this._verticalAlign === VerticalAlign.BOTTOM)
 				{
 					topSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
 					bottomSideOffset = 0;
 				}
-				else if(this._verticalAlign === VERTICAL_ALIGN_MIDDLE)
+				else if(this._verticalAlign === VerticalAlign.MIDDLE)
 				{
 					topSideOffset = bottomSideOffset = Math.round((height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2);
 				}
@@ -1820,11 +1864,11 @@ package feathers.layout
 			var totalRowHeight:Number = Math.ceil(itemCount / horizontalTileCount) * (tileHeight + this._verticalGap) - this._verticalGap;
 			if(totalRowHeight < height)
 			{
-				if(this._verticalAlign === VERTICAL_ALIGN_BOTTOM)
+				if(this._verticalAlign === VerticalAlign.BOTTOM)
 				{
 					rowIndexOffset = Math.ceil((height - totalRowHeight) / (tileHeight + this._verticalGap));
 				}
-				else if(this._verticalAlign === VERTICAL_ALIGN_MIDDLE)
+				else if(this._verticalAlign === VerticalAlign.MIDDLE)
 				{
 					rowIndexOffset = Math.ceil((height - totalRowHeight) / (tileHeight + this._verticalGap) / 2);
 				}

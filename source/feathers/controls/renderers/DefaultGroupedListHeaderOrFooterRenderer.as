@@ -14,6 +14,8 @@ package feathers.controls.renderers
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
@@ -27,60 +29,90 @@ package feathers.controls.renderers
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{
 		/**
-		 * The content will be aligned horizontally to the left edge of the renderer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The content will be aligned horizontally to the center of the renderer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The content will be aligned horizontally to the right edge of the renderer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * The content will be justified horizontally, filling the entire width
-		 * of the renderer, minus padding.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * The content will be aligned vertically to the top edge of the renderer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The content will be aligned vertically to the middle of the renderer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The content will be aligned vertically to the bottom edge of the renderer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The content will be justified vertically, filling the entire height
-		 * of the renderer, minus padding.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -266,7 +298,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
+		protected var _horizontalAlign:String = HorizontalAlign.LEFT;
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
@@ -277,14 +309,14 @@ package feathers.controls.renderers
 		 * right:</p>
 		 *
 		 * <listing version="3.0">
-		 * renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_RIGHT;</listing>
+		 * renderer.horizontalAlign = HorizontalAlign.RIGHT;</listing>
 		 *
-		 * @default DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT
+		 * @default feathers.layout.HorizontalAlign.LEFT
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
-		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{
@@ -307,7 +339,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
@@ -318,14 +350,14 @@ package feathers.controls.renderers
 		 * bottom:</p>
 		 *
 		 * <listing version="3.0">
-		 * renderer.verticalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_BOTTOM;</listing>
+		 * renderer.verticalAlign = VerticalAlign.BOTTOM;</listing>
 		 *
-		 * @default DefaultGroupedListHeaderOrFooterRenderer.VERTICAL_ALIGN_MIDDLE
+		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
-		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -737,7 +769,7 @@ package feathers.controls.renderers
 		 * renderer.contentLoaderFactory = function():ImageLoader
 		 * {
 		 *     var loader:ImageLoader = new ImageLoader();
-		 *     loader.snapToPixels = true;
+		 *     loader.scaleFactor = 2;
 		 *     return loader;
 		 * };</listing>
 		 *
@@ -1371,8 +1403,8 @@ package feathers.controls.renderers
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1384,27 +1416,27 @@ package feathers.controls.renderers
 			if(this.contentLabel)
 			{
 				//special case for label to allow word wrap
-				var labelMaxWidth:Number = this.explicitWidth;
+				var labelMaxWidth:Number = this._explicitWidth;
 				if(needsWidth)
 				{
 					labelMaxWidth = this._maxWidth;
 				}
 				this.contentLabel.maxWidth = labelMaxWidth - this._paddingLeft - this._paddingRight;
 			}
-			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
+			if(this._horizontalAlign == HorizontalAlign.JUSTIFY)
 			{
-				this.content.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
+				this.content.width = this._explicitWidth - this._paddingLeft - this._paddingRight;
 			}
-			if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
+			if(this._verticalAlign == VerticalAlign.JUSTIFY)
 			{
-				this.content.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
+				this.content.height = this._explicitHeight - this._paddingTop - this._paddingBottom;
 			}
 			if(this.content is IValidating)
 			{
 				IValidating(this.content).validate();
 			}
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = this.content.width + this._paddingLeft + this._paddingRight;
@@ -1567,17 +1599,17 @@ package feathers.controls.renderers
 			}
 			switch(this._horizontalAlign)
 			{
-				case HORIZONTAL_ALIGN_CENTER:
+				case HorizontalAlign.CENTER:
 				{
 					this.content.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.content.width) / 2;
 					break;
 				}
-				case HORIZONTAL_ALIGN_RIGHT:
+				case HorizontalAlign.RIGHT:
 				{
 					this.content.x = this.actualWidth - this._paddingRight - this.content.width;
 					break;
 				}
-				case HORIZONTAL_ALIGN_JUSTIFY:
+				case HorizontalAlign.JUSTIFY:
 				{
 					this.content.x = this._paddingLeft;
 					this.content.width = this.actualWidth - this._paddingLeft - this._paddingRight;
@@ -1591,17 +1623,17 @@ package feathers.controls.renderers
 
 			switch(this._verticalAlign)
 			{
-				case VERTICAL_ALIGN_TOP:
+				case VerticalAlign.TOP:
 				{
 					this.content.y = this._paddingTop;
 					break;
 				}
-				case VERTICAL_ALIGN_BOTTOM:
+				case VerticalAlign.BOTTOM:
 				{
 					this.content.y = this.actualHeight - this._paddingBottom - this.content.height;
 					break;
 				}
-				case VERTICAL_ALIGN_JUSTIFY:
+				case VerticalAlign.JUSTIFY:
 				{
 					this.content.y = this._paddingTop;
 					this.content.height = this.actualHeight - this._paddingTop - this._paddingBottom;

@@ -23,11 +23,9 @@ package feathers.controls.text
 	import flash.events.Event;
 	import flash.events.TextEvent;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 	import flash.ui.Keyboard;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -36,6 +34,7 @@ package feathers.controls.text
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.rendering.Painter;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 
@@ -574,6 +573,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #selectionEndIndex
 		 */
 		public function get selectionBeginIndex():int
 		{
@@ -587,6 +588,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #selectionBeginIndex
 		 */
 		public function get selectionEndIndex():int
 		{
@@ -596,7 +599,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _selectionAnchorIndex:int = -1;
+		protected var _selectionAnchorIndex:int = 0;
 
 		/**
 		 * @private
@@ -715,6 +718,7 @@ package feathers.controls.text
 			this._selectionEndIndex = endIndex;
 			if(beginIndex == endIndex)
 			{
+				this._selectionAnchorIndex = beginIndex;
 				if(beginIndex < 0)
 				{
 					this._cursorSkin.visible = false;
@@ -749,13 +753,13 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			var oldBatchX:Number = this._batchX;
 			var oldCursorX:Number = this._cursorSkin.x;
 			this._batchX -= this._scrollX;
 			this._cursorSkin.x -= this._scrollX;
-			super.render(support, parentAlpha);
+			super.render(painter);
 			this._batchX = oldBatchX;
 			this._cursorSkin.x = oldCursorX;
 		}
@@ -808,14 +812,22 @@ package feathers.controls.text
 				this.positionSelectionBackground();
 			}
 
-			var clipRect:Rectangle = this.clipRect;
-			if(clipRect)
+			var mask:Quad = this.mask as Quad;
+			if(mask)
 			{
-				clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
+				mask.x = 0;
+				mask.y = 0;
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
 			}
 			else
 			{
-				this.clipRect = new Rectangle(0, 0, this.actualWidth, this.actualHeight)
+				mask = new Quad(1, 1, 0xff00ff);
+				//the initial dimensions cannot be 0 or there's a runtime error,
+				//and these values might be 0
+				mask.width = this.actualWidth;
+				mask.height = this.actualHeight;
+				this.mask = mask;
 			}
 		}
 
@@ -825,10 +837,10 @@ package feathers.controls.text
 		override protected function layoutCharacters(result:Point = null):Point
 		{
 			result = super.layoutCharacters(result);
-			if(this.explicitWidth === this.explicitWidth && //!isNaN
-				result.x > this.explicitWidth)
+			if(this._explicitWidth === this._explicitWidth && //!isNaN
+				result.x > this._explicitWidth)
 			{
-				this._characterBatch.reset();
+				this._characterBatch.clear();
 				var oldTextAlign:String = this.currentTextFormat.align;
 				this.currentTextFormat.align = TextFormatAlign.LEFT;
 				result = super.layoutCharacters(result);
@@ -918,8 +930,8 @@ package feathers.controls.text
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
-				var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)
@@ -987,8 +999,8 @@ package feathers.controls.text
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
-				var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)
@@ -1159,7 +1171,7 @@ package feathers.controls.text
 			var target:DisplayObject = this;
 			do
 			{
-				if(!target.hasVisibleArea)
+				if(!target.visible)
 				{
 					this.clearFocus();
 					break;
@@ -1188,10 +1200,6 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					if(this._selectionBeginIndex == this._selectionEndIndex)
-					{
-						this._selectionAnchorIndex = -1;
-					}
 					if(!FocusManager.isEnabledForStage(this.stage) && this._hasFocus)
 					{
 						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -1219,7 +1227,6 @@ package feathers.controls.text
 				else
 				{
 					this.setFocus(HELPER_POINT);
-					this._selectionAnchorIndex = this._selectionBeginIndex;
 				}
 			}
 		}
@@ -1235,7 +1242,7 @@ package feathers.controls.text
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;
@@ -1278,10 +1285,6 @@ package feathers.controls.text
 			{
 				if(event.shiftKey)
 				{
-					if(this._selectionAnchorIndex < 0)
-					{
-						this._selectionAnchorIndex = this._selectionBeginIndex;
-					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionBeginIndex &&
 						this._selectionBeginIndex != this._selectionEndIndex)
 					{
@@ -1323,10 +1326,6 @@ package feathers.controls.text
 			{
 				if(event.shiftKey)
 				{
-					if(this._selectionAnchorIndex < 0)
-					{
-						this._selectionAnchorIndex = this._selectionBeginIndex;
-					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex &&
 						this._selectionBeginIndex != this._selectionEndIndex)
 					{
@@ -1418,7 +1417,6 @@ package feathers.controls.text
 			}
 			if(newIndex >= 0)
 			{
-				this._selectionAnchorIndex = newIndex;
 				this.selectRange(newIndex, newIndex);
 			}
 		}

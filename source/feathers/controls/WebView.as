@@ -19,10 +19,10 @@ package feathers.controls
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
 
 	/**
@@ -278,10 +278,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, parentAlpha:Number):void
+		override public function render(painter:Painter):void
 		{
 			this.refreshViewPort();
-			super.render(support, parentAlpha);
+			super.render(painter);
 		}
 
 		/**
@@ -392,18 +392,18 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = this.explicitWidth;
+			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				newWidth = DEFAULT_SIZE;
 			}
-			var newHeight:Number = this.explicitWidth;
+			var newHeight:Number = this._explicitWidth;
 			if(needsHeight)
 			{
 				newHeight = DEFAULT_SIZE;
@@ -504,7 +504,7 @@ package feathers.controls
 			var target:DisplayObject = this;
 			do
 			{
-				if(!target.hasVisibleArea)
+				if(!target.visible)
 				{
 					this.stageWebView.stage = null;
 					return;

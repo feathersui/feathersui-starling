@@ -14,8 +14,11 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
@@ -80,6 +83,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const LABEL_FIELD:String = "label";
+
+		/**
+		 * @private
+		 */
+		protected static const ENABLED_FIELD:String = "isEnabled";
+
+		/**
+		 * @private
+		 */
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
 			"defaultIcon",
@@ -92,85 +105,116 @@ package feathers.controls
 			"selectedDownIcon",
 			"selectedHoverIcon",
 			"selectedDisabledIcon",
-			"isEnabled"
+			"name"
 		];
 
 		/**
-		 * The tabs are displayed in order from left to right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The tabs are displayed in order from top to bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The tabs will be aligned horizontally to the left edge of the tab
-		 * bar.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The tabs will be aligned horizontally to the center of the tab bar.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The tabs will be aligned horizontally to the right edge of the tab
-		 * bar.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #horizontalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * If the direction is vertical, each tab will fill the entire width of
-		 * the tab bar, and if the direction is horizontal, the alignment will
-		 * behave the same as <code>HORIZONTAL_ALIGN_LEFT</code>.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
 		 *
-		 * @see #horizontalAlign
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * The tabs will be aligned vertically to the top edge of the tab bar.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The tabs will be aligned vertically to the middle of the tab bar.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The tabs will be aligned vertically to the bottom edge of the tab
-		 * bar.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
 		 *
-		 * @see #verticalAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * If the direction is horizontal, each tab will fill the entire height
-		 * of the tab bar. If the direction is vertical, the alignment will
-		 * behave the same as <code>VERTICAL_ALIGN_TOP</code>.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
 		 *
-		 * @see #verticalAlign
-		 * @see #direction
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -321,6 +365,7 @@ package feathers.controls
 		 *     <li>selectedHoverIcon</li>
 		 *     <li>selectedDisabledIcon</li>
 		 *     <li>isEnabled</li>
+		 *     <li>name</li>
 		 * </ul>
 		 *
 		 * <p>The following example passes in a data provider:</p>
@@ -412,7 +457,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = Direction.HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -422,12 +467,12 @@ package feathers.controls
 		 * vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.direction = TabBar.DIRECTION_VERTICAL;</listing>
+		 * tabs.direction = Direction.VERTICAL;</listing>
 		 *
-		 * @default TabBar.DIRECTION_HORIZONTAL
+		 * @default feathers.layout.Direction.HORIZONTAL
 		 *
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_VERTICAL
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -450,7 +495,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
+		protected var _horizontalAlign:String = HorizontalAlign.JUSTIFY;
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
@@ -460,14 +505,14 @@ package feathers.controls
 		 * <p>The following example aligns the tabs to the left:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.horizontalAlign = TabBar.HORIZONTAL_ALIGN_LEFT;</listing>
+		 * tabs.horizontalAlign = HorizontalAlign.LEFT;</listing>
 		 *
-		 * @default TabBar.HORIZONTAL_ALIGN_JUSTIFY
+		 * @default feathers.layout.HorizontalAlign.JUSTIFY
 		 *
-		 * @see #HORIZONTAL_ALIGN_LEFT
-		 * @see #HORIZONTAL_ALIGN_CENTER
-		 * @see #HORIZONTAL_ALIGN_RIGHT
-		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{
@@ -490,7 +535,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_JUSTIFY;
+		protected var _verticalAlign:String = VerticalAlign.JUSTIFY;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
@@ -500,14 +545,14 @@ package feathers.controls
 		 * <p>The following example aligns the tabs to the top:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.verticalAlign = TabBar.VERTICAL_ALIGN_TOP;</listing>
+		 * tabs.verticalAlign = VerticalAlign.TOP;</listing>
 		 *
-		 * @default TabBar.VERTICAL_ALIGN_JUSTIFY
+		 * @default feathers.layout.VerticalAlign.JUSTIFY
 		 *
-		 * @see #VERTICAL_ALIGN_TOP
-		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_BOTTOM
-		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -542,8 +587,8 @@ package feathers.controls
 		 * <p>The following example aligns the tabs to the middle without distributing them:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.direction = TabBar.DIRECTION_VERTICAL;
-		 * tabs.verticalAlign = TabBar.VERTICAL_ALIGN_MIDDLE;
+		 * tabs.direction = Direction.VERTICAL;
+		 * tabs.verticalAlign = VerticalAlign.MIDDLE;
 		 * tabs.distributeTabSizes = false;</listing>
 		 *
 		 * @default true
@@ -1321,7 +1366,7 @@ package feathers.controls
 		 * <p>In the following example, the tab bar's tab properties are updated:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 * tabs.tabProperties.iconPosition = RelativePosition.RIGHT;</listing>
 		 *
 		 * @default null
 		 *
@@ -1418,7 +1463,7 @@ package feathers.controls
 			var tabFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TAB_FACTORY);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
-			if(dataInvalid || tabFactoryInvalid)
+			if(dataInvalid || tabFactoryInvalid || stateInvalid)
 			{
 				this.refreshTabs(tabFactoryInvalid);
 			}
@@ -1485,7 +1530,7 @@ package feathers.controls
 		 */
 		protected function refreshLayoutStyles():void
 		{
-			if(this._direction == DIRECTION_VERTICAL)
+			if(this._direction == Direction.VERTICAL)
 			{
 				if(this.horizontalLayout)
 				{
@@ -1498,7 +1543,7 @@ package feathers.controls
 				}
 				this.verticalLayout.distributeHeights = this._distributeTabSizes;
 				this.verticalLayout.horizontalAlign = this._horizontalAlign;
-				this.verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
+				this.verticalLayout.verticalAlign = (this._verticalAlign == VerticalAlign.JUSTIFY) ? VerticalAlign.TOP : this._verticalAlign;
 				this.verticalLayout.gap = this._gap;
 				this.verticalLayout.firstGap = this._firstGap;
 				this.verticalLayout.lastGap = this._lastGap;
@@ -1519,7 +1564,7 @@ package feathers.controls
 					this.horizontalLayout.useVirtualLayout = false;
 				}
 				this.horizontalLayout.distributeWidths = this._distributeTabSizes;
-				this.horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
+				this.horizontalLayout.horizontalAlign = (this._horizontalAlign == HorizontalAlign.JUSTIFY) ? HorizontalAlign.LEFT : this._horizontalAlign;
 				this.horizontalLayout.verticalAlign = this._verticalAlign;
 				this.horizontalLayout.gap = this._gap;
 				this.horizontalLayout.firstGap = this._firstGap;
@@ -1538,13 +1583,21 @@ package feathers.controls
 		{
 			if(item is Object)
 			{
-				if(item.hasOwnProperty("label"))
+				if(item.hasOwnProperty(LABEL_FIELD))
 				{
 					tab.label = item.label;
 				}
 				else
 				{
 					tab.label = item.toString();
+				}
+				if(item.hasOwnProperty(ENABLED_FIELD))
+				{
+					tab.isEnabled = item.isEnabled as Boolean;
+				}
+				else
+				{
+					tab.isEnabled = this._isEnabled;
 				}
 				for each(var field:String in DEFAULT_TAB_FIELDS)
 				{
@@ -1557,6 +1610,7 @@ package feathers.controls
 			else
 			{
 				tab.label = "";
+				tab.isEnabled = this._isEnabled;
 			}
 
 		}
@@ -1776,10 +1830,10 @@ package feathers.controls
 			this._viewPortBounds.y = 0;
 			this._viewPortBounds.scrollX = 0;
 			this._viewPortBounds.scrollY = 0;
-			this._viewPortBounds.explicitWidth = this.explicitWidth;
-			this._viewPortBounds.explicitHeight = this.explicitHeight;
-			this._viewPortBounds.minWidth = this._minWidth;
-			this._viewPortBounds.minHeight = this._minHeight;
+			this._viewPortBounds.explicitWidth = this._explicitWidth;
+			this._viewPortBounds.explicitHeight = this._explicitHeight;
+			this._viewPortBounds.minWidth = this._explicitMinWidth;
+			this._viewPortBounds.minHeight = this._explicitMinHeight;
 			this._viewPortBounds.maxWidth = this._maxWidth;
 			this._viewPortBounds.maxHeight = this._maxHeight;
 			if(this.verticalLayout)
