@@ -77,7 +77,6 @@ package feathers.skins
 		 *
 		 * @default null
 		 *
-		 * @see #defaultTexture
 		 * @see #disabledTexture
 		 * @see #selectedTexture
 		 * @see #setTextureForState()
@@ -93,7 +92,12 @@ package feathers.skins
 		 */
 		public function set defaultTexture(value:Texture):void
 		{
+			if(this._defaultTexture === value)
+			{
+				return;
+			}
 			this._defaultTexture = value;
+			this.updateTextureFromContext();
 		}
 
 		/**
@@ -133,7 +137,12 @@ package feathers.skins
 		 */
 		public function set disabledTexture(value:Texture):void
 		{
+			if(this._disabledTexture === value)
+			{
+				return;
+			}
 			this._disabledTexture = value;
+			this.updateTextureFromContext();
 		}
 
 		/**
@@ -173,7 +182,152 @@ package feathers.skins
 		 */
 		public function set selectedTexture(value:Texture):void
 		{
+			if(this._selectedTexture === value)
+			{
+				return;
+			}
 			this._selectedTexture = value;
+			this.updateTextureFromContext();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _defaultColor:uint = uint.MAX_VALUE;
+
+		/**
+		 * The default color to use to tint the skin. If the component
+		 * being skinned supports states, the color for a specific state may
+		 * be specified using the <code>setColorForState()</code> method. If
+		 * no color has been specified for the current state, the default
+		 * color will be used.
+		 * 
+		 * <p>A value of <code>uint.MAX_VALUE</code> means that the
+		 * <code>color</code> property will not be changed when the context's
+		 * state changes.</p>
+		 *
+		 * <p>In the following example, the default color is specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * var skin:ImageSkin = new ImageSkin();
+		 * skin.defaultColor = 0x9f0000;</listing>
+		 *
+		 * @default uint.MAX_VALUE
+		 *
+		 * @see #disabledColor
+		 * @see #selectedColor
+		 * @see #setColorForState()
+		 */
+		public function get defaultColor():uint
+		{
+			return this._defaultColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set defaultColor(value:uint):void
+		{
+			if(this._defaultColor === value)
+			{
+				return;
+			}
+			this._defaultColor = value;
+			this.updateColorFromContext();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disabledColor:uint = uint.MAX_VALUE;
+
+		/**
+		 * The color to tint the skin when the <code>stateContext</code> is
+		 * an <code>IFeathersControl</code> and its <code>isEnabled</code>
+		 * property is <code>false</code>. If a color has been specified for
+		 * the context's current state with <code>setColorForState()</code>,
+		 * it will take precedence over the <code>disabledColor</code>.
+		 *
+		 * <p>A value of <code>uint.MAX_VALUE</code> means that the
+		 * <code>disabledColor</code> property cannot affect the tint when the
+		 * context's state changes.</p>
+		 *
+		 * <p>In the following example, the disabled color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * var skin:ImageSkin = new ImageSkin();
+		 * skin.defaultColor = 0xffffff;
+		 * skin.disabledColor = 0x999999;
+		 * button.skin = skin;
+		 * button.isEnabled = false;</listing>
+		 *
+		 * @default uint.MAX_VALUE
+		 *
+		 * @see #defaultColor
+		 * @see #selectedColor
+		 * @see #setColorForState()
+		 */
+		public function get disabledColor():uint
+		{
+			return this._disabledColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledColor(value:uint):void
+		{
+			if(this._disabledColor === value)
+			{
+				return;
+			}
+			this._disabledColor = value;
+			this.updateColorFromContext();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedColor:uint = uint.MAX_VALUE;
+
+		/**
+		 * The color to tint the skin when the <code>stateContext</code> is
+		 * an <code>IToggle</code> instance and its <code>isSelected</code>
+		 * property is <code>true</code>. If a color has been specified for
+		 * the context's current state with <code>setColorForState()</code>,
+		 * it will take precedence over the <code>selectedColor</code>.
+		 *
+		 * <p>In the following example, the selected color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * var skin:ImageSkin = new ImageSkin();
+		 * skin.defaultColor = 0xffffff;
+		 * skin.selectedColor = 0xffcc00;
+		 * toggleButton.skin = skin;
+		 * toggleButton.isSelected = true;</listing>
+		 *
+		 * @default uint.MAX_VALUE
+		 *
+		 * @see #defaultColor
+		 * @see #disabledColor
+		 * @see #setColorForState()
+		 */
+		public function get selectedColor():uint
+		{
+			return this._selectedColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedColor(value:uint):void
+		{
+			if(this._selectedColor === value)
+			{
+				return;
+			}
+			this._selectedColor = value;
+			this.updateColorFromContext();
 		}
 
 		/**
@@ -216,6 +370,7 @@ package feathers.skins
 				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stageChangeHandler);
 			}
 			this.updateTextureFromContext();
+			this.updateColorFromContext();
 		}
 
 		/**
@@ -399,6 +554,11 @@ package feathers.skins
 		protected var _stateToTexture:Object = {};
 
 		/**
+		 * @private
+		 */
+		protected var _stateToColor:Object = {};
+
+		/**
 		 * Gets the texture to be used by the skin when the context's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
@@ -432,6 +592,50 @@ package feathers.skins
 			{
 				delete this._stateToTexture[state];
 			}
+			this.updateTextureFromContext();
+		}
+
+		/**
+		 * Gets the color to be used by the skin when the context's
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a color is not defined for a specific state, returns
+		 * <code>uint.MAX_VALUE</code>.</p>
+		 *
+		 * @see #setColorForState()
+		 */
+		public function getColorForState(state:String):uint
+		{
+			if(state in this._stateToColor)
+			{
+				return this._stateToColor[state] as uint;
+			}
+			return uint.MAX_VALUE;
+		}
+
+		/**
+		 * Sets the color to be used by the skin when the context's
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a color is not defined for a specific state, the value of the
+		 * <code>defaultTexture</code> property will be used instead.</p>
+		 * 
+		 * <p>To clear a state's color, pass in <code>uint.MAX_VALUE</code>. 
+		 *
+		 * @see #defaultColor
+		 * @see #getColorForState()
+		 */
+		public function setColorForState(state:String, color:uint):void
+		{
+			if(color !== uint.MAX_VALUE)
+			{
+				this._stateToColor[state] = color;
+			}
+			else
+			{
+				delete this._stateToColor[state];
+			}
+			this.updateColorFromContext();
 		}
 
 		/**
@@ -479,9 +683,52 @@ package feathers.skins
 		/**
 		 * @private
 		 */
+		protected function updateColorFromContext():void
+		{
+			if(this._stateContext === null)
+			{
+				if(this._defaultColor !== uint.MAX_VALUE)
+				{
+					this.color = this._defaultColor;
+				}
+				return;
+			}
+			var color:uint = uint.MAX_VALUE;
+			var currentState:String = this._stateContext.currentState;
+			if(currentState in this._stateToColor)
+			{
+				color = this._stateToColor[currentState] as uint;
+			}
+			if(color === uint.MAX_VALUE &&
+				this._disabledColor !== uint.MAX_VALUE &&
+				this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+			{
+				color = this._disabledColor;
+			}
+			if(color === uint.MAX_VALUE &&
+				this._selectedColor !== uint.MAX_VALUE &&
+				this._stateContext is IToggle &&
+				IToggle(this._stateContext).isSelected)
+			{
+				color = this._selectedColor;
+			}
+			if(color === uint.MAX_VALUE)
+			{
+				color = this._defaultColor;
+			}
+			if(color !== uint.MAX_VALUE)
+			{
+				this.color = color;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function stateContext_stageChangeHandler(event:Event):void
 		{
 			this.updateTextureFromContext();
+			this.updateColorFromContext();
 		}
 	}
 }

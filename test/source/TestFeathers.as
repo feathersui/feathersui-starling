@@ -25,6 +25,7 @@ package
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
+	import feathers.tests.ImageSkinTests;
 	import feathers.tests.InvalidateTests;
 	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.KeyToSelectTests;
@@ -218,6 +219,7 @@ package
 				KeyToSelectTests,
 				KeyToTriggerTests,
 				TokenListTests,
+				ImageSkinTests,
 			]);
 		}
 
