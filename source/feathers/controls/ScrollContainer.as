@@ -809,15 +809,6 @@ package feathers.controls
 			this.layoutViewPort.readjustLayout();
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
-		
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			super.initialize();
-			this.refreshMXMLContent();
-		}
 
 		/**
 		 * @private
@@ -836,6 +827,7 @@ package feathers.controls
 				this.autoSizeMode = AutoSizeMode.STAGE;
 			}
 			super.initialize();
+			this.refreshMXMLContent();
 		}
 
 		/**

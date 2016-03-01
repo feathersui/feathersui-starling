@@ -625,14 +625,6 @@ package feathers.controls
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
-		
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			this.refreshMXMLContent();
-		}
 
 		/**
 		 * @private
@@ -651,6 +643,7 @@ package feathers.controls
 				this.autoSizeMode = AutoSizeMode.STAGE;
 			}
 			super.initialize();
+			this.refreshMXMLContent();
 		}
 
 		/**
