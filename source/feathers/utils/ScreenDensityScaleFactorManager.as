@@ -107,11 +107,12 @@ package feathers.utils
 		 */
 		protected function calculateScaleFactor():Number
 		{
-			var nativeStage:Stage = this._starling.nativeStage;
 			if(SystemUtil.isDesktop)
 			{
-				return nativeStage.contentsScaleFactor;
+				//Starling will handle nativeStage.contentsScaleFactor
+				return 1;
 			}
+			var nativeStage:Stage = this._starling.nativeStage;
 			var screenDensity:Number = DeviceCapabilities.dpi;
 			//workaround because these rules derived from Android's behavior
 			//would "incorrectly" give iPads a lower scale factor than iPhones
