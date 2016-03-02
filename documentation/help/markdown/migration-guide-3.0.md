@@ -21,6 +21,8 @@ This guide explains how to migrate an application created with a previous versio
 
 -   [Duplicate constants moved to shared classes](#duplicate-constants-moved-to-shared-classes)
 
+-   [Backwards compatibility with `feathers-compat`](#backwards-compatibility-with-feathers-compat)
+
 -   [Appendix: List of Removed APIs](#appendix-list-of-removed-apis)
 
 -   [Appendix: List of Deprecated APIs](#appendix-list-of-deprecated-apis)
@@ -230,6 +232,14 @@ The original duplicate constants are considered deprecated. They will remain ava
 In general, a deprecated API in Feathers will not be removed until six months have passed or two minor updates have been released (whichever takes longer). However, due to the impact of this change, the deprecated constants will not be removed until 18 months have passed or one major update has been released (again, whichever takes longer). This should give developers more time to migrate.
 
 Additionally, take a look at [Appendix: Find and Replace Regular Expressions](#appendix-find-and-replace-regular-expressions) to find a set of regular expressions to help automate the process of migrating to these new shared constants.
+
+## Backwards compatibility with `feathers-compat`
+
+The [`feathers-compat`](https://github.com/BowlerHatLLC/feathers-compat) project is a backwards compatibility library that is designed to make migration to Feathers 3.0 easier. It includes a number classes that were removed from Feathers 3.0. If you relied on these classes with earlier versions of Feathers, use `feathers-compat` to get your project up and running more quickly when upgrading to Starling 2.0 and Feathers 3.0. Then, you can take a little extra time to migrate your existing code.
+
+For example, if you used `SmartDisplayObjectValueSelector` for skinning, you are strongly encouraged to switch to the new, more intuitive `ImageSkin`. However, you can add `feathers-compat` to your project, and you'll be able to continue using `SmartDisplayObjectValueSelector` and save the migration to `ImageSkin` for a later time.
+
+[Download `feathers-compat` from Github](https://github.com/BowlerHatLLC/feathers-compat)
 
 ## Appendix: List of Removed APIs
 
