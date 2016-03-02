@@ -17,9 +17,12 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import starling.core.Starling;
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -631,16 +634,15 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			//we use stage.root because a pop-up's root may be different than
-			//the real root
-			var root:DisplayObject = null;
 			if(this.stage !== null)
 			{
-				root = this.stage.root;
-			}
-			if(root === this)
-			{
-				this.autoSizeMode = AutoSizeMode.STAGE;
+				var starling:Starling = stageToStarling(this.stage);
+				//we use starling.root because a pop-up's root and the stage
+				//root may be different.
+				if(starling.root === this)
+				{
+					this.autoSizeMode = AutoSizeMode.STAGE;
+				}
 			}
 			super.initialize();
 			this.refreshMXMLContent();

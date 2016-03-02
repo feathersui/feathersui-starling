@@ -620,7 +620,7 @@ package feathers.skins
 		 * <p>If a color is not defined for a specific state, the value of the
 		 * <code>defaultTexture</code> property will be used instead.</p>
 		 * 
-		 * <p>To clear a state's color, pass in <code>uint.MAX_VALUE</code>. 
+		 * <p>To clear a state's color, pass in <code>uint.MAX_VALUE</code>.</p>
 		 *
 		 * @see #defaultColor
 		 * @see #getColorForState()
