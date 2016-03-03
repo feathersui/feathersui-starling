@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 
 	import flash.errors.IllegalOperationError;
@@ -1713,6 +1714,38 @@ package feathers.layout
 						var feathersItem:IFeathersControl = IFeathersControl(item);
 						feathersItem.minHeight = minHeight;
 						feathersItem.maxHeight = maxHeight;
+					}
+				}
+				else if(item is ILayoutDisplayObject)
+				{
+					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+					var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
+					if(layoutData !== null)
+					{
+						var percentHeight:Number = layoutData.percentHeight;
+						if(percentHeight === percentHeight) //!isNaN
+						{
+							if(percentHeight < 0)
+							{
+								percentHeight = 0;
+							}
+							if(percentHeight > 100)
+							{
+								percentHeight = 100;
+							}
+							var itemHeight:Number = explicitHeight * percentHeight / 100;
+							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
+							//we use the explicitMinHeight to make an accurate
+							//measurement, and we'll use the component's
+							//measured minHeight later, after we validate it.
+							var itemExplicitMinHeight:Number = measureItem.explicitMinHeight;
+							if(itemExplicitMinHeight === itemExplicitMinHeight && //!isNaN
+								itemHeight < itemExplicitMinHeight)
+							{
+								itemHeight = itemExplicitMinHeight;
+							}
+							item.height = itemHeight;
+						}
 					}
 				}
 				if(item is IValidating)
