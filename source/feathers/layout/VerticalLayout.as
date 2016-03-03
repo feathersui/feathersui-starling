@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 
 	import flash.errors.IllegalOperationError;
@@ -1925,6 +1926,38 @@ package feathers.layout
 						feathersItem.maxWidth = maxWidth;
 					}
 				}
+				else if(item is ILayoutDisplayObject)
+				{
+					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+					var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
+					if(layoutData !== null)
+					{
+						var percentWidth:Number = layoutData.percentWidth;
+						if(percentWidth === percentWidth) //!isNaN
+						{
+							if(percentWidth < 0)
+							{
+								percentWidth = 0;
+							}
+							if(percentWidth > 100)
+							{
+								percentWidth = 100;
+							}
+							var itemWidth:Number = explicitWidth * percentWidth / 100;
+							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
+							//we use the explicitMinWidth to make an accurate
+							//measurement, and we'll use the component's
+							//measured minWidth later, after we validate it.
+							var itemExplicitMinWidth:Number = measureItem.explicitMinWidth;
+							if(itemExplicitMinWidth === itemExplicitMinWidth && //!isNaN
+								itemWidth < itemExplicitMinWidth)
+							{
+								itemWidth = itemExplicitMinWidth;
+							}
+							item.width = itemWidth;
+						}
+					}
+				}
 				if(this._distributeHeights)
 				{
 					item.height = distributedHeight;
@@ -1956,10 +1989,22 @@ package feathers.layout
 			{
 				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(this._typicalItem);
 				var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
-				if(layoutData && layoutData.percentWidth === layoutData.percentWidth)
+				if(layoutData !== null)
 				{
-					hasSetWidth = true;
-					this._typicalItem.width = justifyWidth * layoutData.percentWidth / 100;
+					var percentWidth:Number = layoutData.percentWidth;
+					if(percentWidth === percentWidth) //!isNaN
+					{
+						if(percentWidth < 0)
+						{
+							percentWidth = 0;
+						}
+						if(percentWidth > 100)
+						{
+							percentWidth = 100;
+						}
+						hasSetWidth = true;
+						this._typicalItem.width = justifyWidth * percentWidth / 100;
+					}
 				}
 			}
 			if(!hasSetWidth && this._resetTypicalItemDimensionsOnMeasure)

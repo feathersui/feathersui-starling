@@ -788,6 +788,9 @@ package feathers.core
 		/**
 		 * The minimum width value explicitly set by passing a value to the
 		 * <code>minWidth</code> setter.
+		 * 
+		 * <p>If no value has been passed to the <code>minWidth</code> setter,
+		 * this property returns <code>NaN</code>.</p>
 		 */
 		public function get explicitMinWidth():Number
 		{
@@ -867,6 +870,9 @@ package feathers.core
 		/**
 		 * The minimum height value explicitly set by passing a value to the
 		 * <code>minHeight</code> setter.
+		 *
+		 * <p>If no value has been passed to the <code>minHeight</code> setter,
+		 * this property returns <code>NaN</code>.</p>
 		 */
 		public function get explicitMinHeight():Number
 		{

@@ -4171,45 +4171,57 @@ package feathers.controls
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
 				var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
 				var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
-				var mask:Quad = this._topDrawer.mask as Quad;
-				if(mask)
+				if(this._topDrawer)
 				{
-					mask.height = this._content.y;
-				}
-				mask = this._rightDrawer.mask as Quad;
-				if(mask)
-				{
-					var rightClipWidth:Number = -this._content.x;
-					if(isLeftDrawerDocked)
+					var mask:Quad = this._topDrawer.mask as Quad;
+					if(mask)
 					{
-						rightClipWidth += this.leftDrawer.width;
-						if(this._leftDrawerDivider)
-						{
-							rightClipWidth += this._leftDrawerDivider.width;
-						}
+						mask.height = this._content.y;
 					}
-					mask.x = this._rightDrawer.width - rightClipWidth;
-					mask.width = rightClipWidth;
 				}
-				mask = this._bottomDrawer.mask as Quad;
-				if(mask)
+				if(this._rightDrawer)
 				{
-					var bottomClipHeight:Number = -this._content.y;
-					if(isTopDrawerDocked)
+					mask = this._rightDrawer.mask as Quad;
+					if(mask)
 					{
-						bottomClipHeight += this.topDrawer.height;
-						if(this._topDrawerDivider)
+						var rightClipWidth:Number = -this._content.x;
+						if(isLeftDrawerDocked)
 						{
-							bottomClipHeight += this._topDrawerDivider.height;
+							rightClipWidth += this.leftDrawer.width;
+							if(this._leftDrawerDivider)
+							{
+								rightClipWidth += this._leftDrawerDivider.width;
+							}
 						}
+						mask.x = this._rightDrawer.width - rightClipWidth;
+						mask.width = rightClipWidth;
 					}
-					mask.y = this._bottomDrawer.height - bottomClipHeight;
-					mask.height = bottomClipHeight;
 				}
-				mask = this._leftDrawer.mask as Quad;
-				if(mask)
+				if(this._bottomDrawer)
 				{
-					mask.width = this._content.x;
+					mask = this._bottomDrawer.mask as Quad;
+					if(mask)
+					{
+						var bottomClipHeight:Number = -this._content.y;
+						if(isTopDrawerDocked)
+						{
+							bottomClipHeight += this.topDrawer.height;
+							if(this._topDrawerDivider)
+							{
+								bottomClipHeight += this._topDrawerDivider.height;
+							}
+						}
+						mask.y = this._bottomDrawer.height - bottomClipHeight;
+						mask.height = bottomClipHeight;
+					}
+				}
+				if(this._leftDrawer)
+				{
+					mask = this._leftDrawer.mask as Quad;
+					if(mask)
+					{
+						mask.width = this._content.x;
+					}
 				}
 				var contentX:Number = this._content.x;
 				var contentY:Number = this._content.y;
