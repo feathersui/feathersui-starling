@@ -5,7 +5,7 @@
 	<name>YouTube Feeds</name>
 	<versionNumber>3.0.0</versionNumber>
 	<description>YouTube Feeds example application built with Feathers UI controls for Starling</description>
-	<copyright>2015 Bowler Hat LLC</copyright>
+	<copyright>2016 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>YouTubeFeeds.swf</content>

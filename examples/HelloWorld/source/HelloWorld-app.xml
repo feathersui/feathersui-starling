@@ -5,7 +5,7 @@
 	<name>Hello World</name>
 	<versionNumber>3.0.0</versionNumber>
 	<description>Hello World example application built with Feathers UI controls for Starling</description>
-	<copyright>2015 Bowler Hat LLC</copyright>
+	<copyright>2016 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>HelloWorld.swf</content>
