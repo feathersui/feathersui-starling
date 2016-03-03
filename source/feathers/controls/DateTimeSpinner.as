@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -61,15 +61,6 @@ package feathers.controls
 	 * spinner.value = new Date();
 	 * spinner.addEventListener( Event.CHANGE, spinner_changeHandler );
 	 * this.addChild( spinner );</listing>
-	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
 	 *
 	 * @see ../../../help/date-time-spinner.html How to use the Feathers DateTimeSpinner component
 	 */

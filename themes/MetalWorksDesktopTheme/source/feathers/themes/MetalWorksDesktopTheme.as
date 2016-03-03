@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2015 Bowler Hat LLC
+Copyright 2012-2016 Bowler Hat LLC
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -27,7 +27,6 @@ package feathers.themes
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 
-	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 

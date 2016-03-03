@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -17,5 +17,5 @@ package feathers
 	 * <code>2.2.0+sdk</code>. The beta version of Feathers SDK 2.2 would use
 	 * the following value: <code>2.2.0-beta+sdk</code>.
 	 */
-	public const FEATHERS_VERSION:String = "3.0.0-prerelease+sdk";
+	public const FEATHERS_VERSION:String = "3.0.0-alpha+sdk";
 }

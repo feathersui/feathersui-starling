@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -168,8 +168,8 @@ package feathers.controls
 		 */
 		public function WebView()
 		{
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, webView_addedToStageHandler);
-			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, webView_removedFromStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, webView_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, webView_removedFromStageHandler);
 		}
 
 		/**
@@ -478,28 +478,28 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function webView_addedToStageHandler(event:starling.events.Event):void
+		protected function webView_addedToStageHandler(event:Event):void
 		{
 			this.stageWebView.stage = Starling.current.nativeStage;
-			this.addEventListener(starling.events.Event.ENTER_FRAME, webView_enterFrameHandler);
+			this.addEventListener(Event.ENTER_FRAME, webView_enterFrameHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function webView_removedFromStageHandler(event:starling.events.Event):void
+		protected function webView_removedFromStageHandler(event:Event):void
 		{
 			if(this.stageWebView)
 			{
 				this.stageWebView.stage = null;
 			}
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, webView_enterFrameHandler);
+			this.removeEventListener(Event.ENTER_FRAME, webView_enterFrameHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function webView_enterFrameHandler(event:starling.events.Event):void
+		protected function webView_enterFrameHandler(event:Event):void
 		{
 			var target:DisplayObject = this;
 			do
@@ -533,7 +533,7 @@ package feathers.controls
 		
 		protected function stageWebView_completeHandler(event:flash.events.Event):void
 		{
-			this.dispatchEventWith(starling.events.Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE);
 		}
 	}
 }

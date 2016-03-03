@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2015 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -20,7 +20,6 @@ package feathers.controls.renderers
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalAlign;
-	import feathers.layout.RelativePosition;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
 

@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2015 Bowler Hat LLC
+Copyright 2012-2016 Bowler Hat LLC
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -50,11 +50,11 @@ package feathers.themes
 	import feathers.controls.ScrollBar;
 	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.ScrollPolicy;
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
-	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
