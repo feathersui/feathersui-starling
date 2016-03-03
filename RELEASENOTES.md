@@ -2,6 +2,12 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.0.0-alpha - March 2016
+
+See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about how to upgrade to Feathers 3.0.
+
+* Support for Starling Framework 2.0
+
 ## 2.3.0 - December 2015
 
 * New Component: DateTimeSpinner combines a set of SpinnerList components to select the date, the time, or both.
