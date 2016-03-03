@@ -1935,10 +1935,22 @@ package feathers.layout
 			{
 				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(this._typicalItem);
 				var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
-				if(layoutData && layoutData.percentWidth === layoutData.percentWidth)
+				if(layoutData !== null)
 				{
-					hasSetWidth = true;
-					this._typicalItem.width = justifyWidth * layoutData.percentWidth / 100;
+					var percentWidth:Number = layoutData.percentWidth;
+					if(percentWidth === percentWidth) //!isNaN
+					{
+						if(percentWidth < 0)
+						{
+							percentWidth = 0;
+						}
+						if(percentWidth > 100)
+						{
+							percentWidth = 100;
+						}
+						hasSetWidth = true;
+						this._typicalItem.width = justifyWidth * percentWidth / 100;
+					}
 				}
 			}
 			if(!hasSetWidth && this._resetTypicalItemDimensionsOnMeasure)

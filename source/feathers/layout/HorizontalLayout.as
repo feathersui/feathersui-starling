@@ -1746,10 +1746,22 @@ package feathers.layout
 			{
 				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(this._typicalItem);
 				var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
-				if(layoutData && layoutData.percentHeight === layoutData.percentHeight)
+				if(layoutData !== null)
 				{
-					hasSetHeight = true;
-					this._typicalItem.height = justifyHeight * layoutData.percentHeight / 100;
+					var percentHeight:Number = layoutData.percentHeight;
+					if(percentHeight === percentHeight) //!isNaN
+					{
+						if(percentHeight < 0)
+						{
+							percentHeight = 0;
+						}
+						if(percentHeight > 100)
+						{
+							percentHeight = 100;
+						}
+						hasSetHeight = true;
+						this._typicalItem.height = justifyHeight * percentHeight / 100;
+					}
 				}
 			}
 			if(!hasSetHeight && this._resetTypicalItemDimensionsOnMeasure)
