@@ -99,7 +99,6 @@ package feathers.themes
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
-	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 

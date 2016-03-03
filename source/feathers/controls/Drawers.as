@@ -29,7 +29,6 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
-	import starling.display.Sprite;
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;

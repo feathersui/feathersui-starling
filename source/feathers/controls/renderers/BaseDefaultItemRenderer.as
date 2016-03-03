@@ -21,7 +21,6 @@ package feathers.controls.renderers
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
-	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
 
 	import flash.events.TimerEvent;

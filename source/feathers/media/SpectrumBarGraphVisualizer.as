@@ -14,8 +14,8 @@ package feathers.media
 	import flash.media.SoundMixer;
 	import flash.utils.ByteArray;
 
-	import starling.display.Quad;
 	import starling.display.MeshBatch;
+	import starling.display.Quad;
 	import starling.events.Event;
 
 	/**

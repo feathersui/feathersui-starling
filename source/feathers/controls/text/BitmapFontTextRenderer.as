@@ -16,7 +16,6 @@ package feathers.controls.text
 	import feathers.skins.IStyleProvider;
 	import feathers.text.BitmapFontTextFormat;
 
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;

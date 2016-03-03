@@ -14,7 +14,6 @@ package feathers.controls.supportClasses
 	import feathers.events.FeathersEventType;
 
 	import flash.errors.IllegalOperationError;
-	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 
 	import starling.display.DisplayObject;

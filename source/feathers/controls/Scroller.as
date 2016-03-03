@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;

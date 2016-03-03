@@ -125,8 +125,6 @@ package feathers.motion
 
 import feathers.display.RenderDelegate;
 
-import flash.geom.Rectangle;
-
 import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.DisplayObject;

@@ -25,7 +25,6 @@ package feathers.controls
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;

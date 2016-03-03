@@ -24,7 +24,6 @@ package feathers.controls
 	import feathers.utils.touch.LongPress;
 
 	import flash.geom.Matrix;
-
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 

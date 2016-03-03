@@ -9,8 +9,6 @@ package feathers.core
 {
 	import feathers.skins.IStyleProvider;
 
-	import flash.geom.Rectangle;
-
 	/**
 	 * Dispatched after the control has been initialized, but before it has
 	 * drawn for the first time. Typically, the component's children will have

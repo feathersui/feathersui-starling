@@ -23,7 +23,6 @@ package feathers.controls
 	import flash.geom.Rectangle;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;

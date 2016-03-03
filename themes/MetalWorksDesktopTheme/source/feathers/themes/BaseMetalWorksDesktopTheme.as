@@ -49,12 +49,11 @@ package feathers.themes
 	import feathers.controls.ScrollBar;
 	import feathers.controls.ScrollBarDisplayMode;
 	import feathers.controls.ScrollContainer;
-	import feathers.controls.ScrollPolicy;
+	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.ScrollPolicy;
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
-	import feathers.controls.ScrollInteractionMode;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;

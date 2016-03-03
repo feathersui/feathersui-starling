@@ -544,7 +544,7 @@ package feathers.media
 			}
 			this._soundChannel = this._sound.play(this._currentTime * 1000, 0, this._soundTransform);
 			this._soundChannel.addEventListener(flash.events.Event.SOUND_COMPLETE, soundChannel_soundCompleteHandler);
-			this.addEventListener(starling.events.Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
+			this.addEventListener(Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
 		}
 
 		/**
@@ -557,7 +557,7 @@ package feathers.media
 				//this could be null when seeking
 				return;
 			}
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
+			this.removeEventListener(Event.ENTER_FRAME, soundPlayer_enterFrameHandler);
 			this._soundChannel.stop();
 			this._soundChannel.removeEventListener(flash.events.Event.SOUND_COMPLETE, soundChannel_soundCompleteHandler);
 			this._soundChannel = null;
@@ -583,7 +583,7 @@ package feathers.media
 		{
 			//return to the beginning
 			this.stop();
-			this.dispatchEventWith(starling.events.Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE);
 			if(this._loop)
 			{
 				this.play();
@@ -635,7 +635,7 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected function soundPlayer_enterFrameHandler(event:starling.events.Event):void
+		protected function soundPlayer_enterFrameHandler(event:Event):void
 		{
 			this._currentTime = this._soundChannel.position / 1000;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);

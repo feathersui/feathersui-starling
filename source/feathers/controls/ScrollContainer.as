@@ -18,7 +18,6 @@ package feathers.controls
 	import feathers.utils.display.stageToStarling;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;

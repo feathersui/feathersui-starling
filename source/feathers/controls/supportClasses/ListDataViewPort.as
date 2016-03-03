@@ -10,7 +10,6 @@ package feathers.controls.supportClasses
 	import feathers.controls.List;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
