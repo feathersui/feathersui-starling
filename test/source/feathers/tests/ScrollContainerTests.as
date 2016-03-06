@@ -70,6 +70,14 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNoErrorValidatingWithoutStage():void
+		{
+			var container:ScrollContainer = new ScrollContainer();
+			container.validate();
+			container.dispose();
+		}
+
+		[Test]
 		public function testAutoSizeWithChildAtOrigin():void
 		{
 			this._container.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));

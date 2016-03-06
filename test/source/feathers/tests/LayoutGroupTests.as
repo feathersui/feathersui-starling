@@ -109,6 +109,14 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNoErrorValidatingWithoutStage():void
+		{
+			var group:LayoutGroup = new LayoutGroup();
+			group.validate();
+			group.dispose();
+		}
+
+		[Test]
 		public function testDefaultAutoSizeMode():void
 		{
 			this._group.validate();

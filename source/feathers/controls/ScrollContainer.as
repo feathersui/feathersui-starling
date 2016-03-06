@@ -769,12 +769,15 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			//we use starling.root because a pop-up's root and the stage
-			//root may be different.
-			if(starling.root === this)
+			if(this.stage !== null)
 			{
-				this.autoSizeMode = AutoSizeMode.STAGE;
+				var starling:Starling = stageToStarling(this.stage);
+				//we use starling.root because a pop-up's root and the stage
+				//root may be different.
+				if(starling.root === this)
+				{
+					this.autoSizeMode = AutoSizeMode.STAGE;
+				}
 			}
 			super.initialize();
 		}
