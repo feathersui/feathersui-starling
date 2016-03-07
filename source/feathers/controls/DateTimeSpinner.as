@@ -504,6 +504,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _longestMonthNameIndex:int;
+
+		/**
+		 * @private
+		 */
 		protected var _localeMonthNames:Vector.<String>;
 
 		/**
@@ -1029,6 +1034,7 @@ package feathers.controls
 			var monthsCollection:ListCollection = new ListCollection(monthsRange);
 			monthsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 			this.monthsList.dataProvider = monthsCollection;
+			this.monthsList.typicalItem = this._longestMonthNameIndex;
 			this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
 			this.monthsList.addEventListener(Event.CHANGE, monthsList_changeHandler);
 			this.listGroup.addChildAt(this.monthsList, 0);
@@ -1208,6 +1214,21 @@ package feathers.controls
 			{
 				this._localeMonthNames = null;
 				this._localeWeekdayNames = null;
+			}
+			if(this._localeMonthNames !== null)
+			{
+				this._longestMonthNameIndex = 0;
+				var longestMonth:String = this._localeMonthNames[0];
+				var monthCount:int = this._localeMonthNames.length;
+				for(var i:int = 1; i < monthCount; i++)
+				{
+					var otherMonthName:String = this._localeMonthNames[i];
+					if(otherMonthName.length > longestMonth.length)
+					{
+						longestMonth = otherMonthName;
+						this._longestMonthNameIndex = i;
+					}
+				}
 			}
 		}
 
