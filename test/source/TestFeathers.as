@@ -4,22 +4,26 @@ package
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.BottomDrawerPopUpContentManagerTests;
 	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonInternalStateTests;
 	import feathers.tests.ButtonMeasurementTests;
 	import feathers.tests.ButtonTests;
+	import feathers.tests.CalloutPopUpContentManagerTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
 	import feathers.tests.DefaultListItemRendererInternalStateTests;
 	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
+	import feathers.tests.DropDownPopUpContentManagerTests;
+	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
-	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListDataProviderTests;
+	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
@@ -27,7 +31,6 @@ package
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.ImageSkinTests;
 	import feathers.tests.InvalidateTests;
-	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.KeyToSelectTests;
 	import feathers.tests.KeyToTriggerTests;
 	import feathers.tests.LabelMeasurementTests;
@@ -77,6 +80,7 @@ package
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
+	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
 
@@ -220,6 +224,10 @@ package
 				KeyToTriggerTests,
 				TokenListTests,
 				ImageSkinTests,
+				DropDownPopUpContentManagerTests,
+				BottomDrawerPopUpContentManagerTests,
+				VerticalCenteredPopUpContentManagerTests,
+				CalloutPopUpContentManagerTests,
 			]);
 		}
 
