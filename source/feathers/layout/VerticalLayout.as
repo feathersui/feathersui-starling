@@ -1912,6 +1912,13 @@ package feathers.layout
 					if(layoutData !== null)
 					{
 						var percentWidth:Number = layoutData.percentWidth;
+						//for some reason, if we don't call a function right here,
+						//compiling with the flex 4.6 SDK will throw a VerifyError
+						//for a stack overflow.
+						//we could change the === check back to !isNaN() instead, but
+						//isNaN() can allocate an object, so we should call a different
+						//function without allocation.
+						this.doNothing();
 						if(percentWidth === percentWidth) //!isNaN
 						{
 							if(percentWidth < 0)
@@ -1928,6 +1935,8 @@ package feathers.layout
 							//measurement, and we'll use the component's
 							//measured minWidth later, after we validate it.
 							var itemExplicitMinWidth:Number = measureItem.explicitMinWidth;
+							//see comment above about doNothing()
+							this.doNothing();
 							if(itemExplicitMinWidth === itemExplicitMinWidth && //!isNaN
 								itemWidth < itemExplicitMinWidth)
 							{
@@ -2302,5 +2311,12 @@ package feathers.layout
 				headerParent.setChildIndex(header, headerParent.numChildren - 1);
 			}
 		}
+
+		/**
+		 * @private
+		 * This function is here to work around a bug in the Flex 4.6 SDK
+		 * compiler. For explanation, see the places where it gets called.
+		 */
+		protected function doNothing():void {}
 	}
 }
