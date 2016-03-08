@@ -911,7 +911,7 @@ package feathers.controls
 			
 			if(localeInvalid || editingModeInvalid || spinnerListFactoryInvalid)
 			{
-				this.refreshLists(editingModeInvalid || spinnerListFactoryInvalid);
+				this.refreshLists(editingModeInvalid || spinnerListFactoryInvalid, localeInvalid);
 			}
 
 			if(localeInvalid || editingModeInvalid || dataInvalid || spinnerListFactoryInvalid)
@@ -954,7 +954,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshLists(createNewLists:Boolean):void
+		protected function refreshLists(createNewLists:Boolean, localeChanged:Boolean):void
 		{
 			if(createNewLists)
 			{
@@ -986,6 +986,26 @@ package feathers.controls
 				else
 				{
 					this.listGroup.setChildIndex(this.datesList, 0);
+				}
+			}
+			
+			if(localeChanged)
+			{
+				if(this.monthsList)
+				{
+					var monthsCollection:ListCollection = this.monthsList.dataProvider;
+					if(monthsCollection)
+					{
+						monthsCollection.updateAll();
+					}
+				}
+				if(this.dateAndTimeDatesList)
+				{
+					var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
+					if(dateAndTimeDatesCollection)
+					{
+						dateAndTimeDatesCollection.updateAll();
+					}
 				}
 			}
 		}
