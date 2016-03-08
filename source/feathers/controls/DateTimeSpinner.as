@@ -1273,10 +1273,10 @@ package feathers.controls
 				if(yearsCollection)
 				{
 					var yearRange:IntegerRange = IntegerRange(yearsCollection.data);
-					if(yearRange.minimum !== this._listMinYear || yearRange.minimum !== this._listMinYear)
+					if(yearRange.minimum !== this._listMinYear || yearRange.maximum !== this._listMaxYear)
 					{
 						yearRange.minimum = this._listMinYear;
-						yearRange.maximum = this._listMinYear;
+						yearRange.maximum = this._listMaxYear;
 						var dataDescriptor:IntegerRangeDataDescriptor = IntegerRangeDataDescriptor(yearsCollection.dataDescriptor);
 						yearsCollection.data = null;
 						yearsCollection.data = yearRange;
