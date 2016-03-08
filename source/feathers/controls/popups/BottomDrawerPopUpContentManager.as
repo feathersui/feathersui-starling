@@ -266,6 +266,7 @@ package feathers.controls.popups
 		 *
 		 * <p>In the following example, the overlay is customized:</p>
 		 *
+		 * <listing version="3.0">
 		 * manager.overlayFactory = function():DisplayObject
 		 * {
 		 *     var quad:Quad = new Quad(1, 1, 0xff00ff);
