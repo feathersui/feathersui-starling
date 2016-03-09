@@ -820,11 +820,11 @@ package feathers.controls.text
 				this._characterBatch.clear();
 				if(!this.currentTextFormat || this._text === null)
 				{
-					this.setSizeInternal(0, 0, false);
+					this.saveMeasurements(0, 0, 0, 0);
 					return;
 				}
 				this.layoutCharacters(HELPER_POINT);
-				this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+				this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
 			}
 		}
 
