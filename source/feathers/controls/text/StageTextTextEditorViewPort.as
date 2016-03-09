@@ -8,10 +8,13 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFieldAutoSize;
+
+	import starling.core.Starling;
 
 	/**
 	 * A text editor view port for the <code>TextArea</code> component that uses
@@ -514,11 +517,24 @@ package feathers.controls.text
 		override protected function refreshViewPortAndFontSize():void
 		{
 			super.refreshViewPortAndFontSize();
+			
+			var starling:Starling = stageToStarling(this.stage);
+			if(starling === null)
+			{
+				starling = Starling.current;
+			}
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
+			
 			var viewPort:Rectangle = this.stageText.viewPort;
-			viewPort.x += this._paddingLeft;
-			viewPort.y += this._paddingTop;
-			viewPort.width -= (this._paddingLeft + this._paddingRight);
-			viewPort.height -= (this._paddingTop + this._paddingBottom);
+			viewPort.x += (this._paddingLeft * scaleFactor);
+			viewPort.y += (this._paddingTop * scaleFactor);
+			viewPort.width -= ((this._paddingLeft + this._paddingRight) * scaleFactor);
+			viewPort.height -= ((this._paddingTop + this._paddingBottom) * scaleFactor);
 			this.stageText.viewPort = viewPort;
 		}
 
