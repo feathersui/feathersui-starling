@@ -729,8 +729,22 @@ package feathers.controls.text
 				maxX = currentX;
 			}
 
-			result.x = maxX;
-			result.y = currentY + lineHeight - this.currentTextFormat.leading;
+			if(needsWidth)
+			{
+				result.x = maxX;
+			}
+			else
+			{
+				result.x = this._explicitWidth;
+			}
+			if(needsHeight)
+			{
+				result.y = currentY + lineHeight - this.currentTextFormat.leading;
+			}
+			else
+			{
+				result.y = this._explicitHeight;
+			}
 			return result;
 		}
 
