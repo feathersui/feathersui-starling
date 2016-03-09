@@ -353,12 +353,6 @@ package feathers.themes
 		}
 
 		/**
-		 * StageText scales strangely when contentsScaleFactor > 1, so we need
-		 * to account for that.
-		 */
-		protected var stageTextScale:Number = 1;
-
-		/**
 		 * A smaller font size for details.
 		 */
 		protected var smallFontSize:int;
@@ -377,13 +371,6 @@ package feathers.themes
 		 * An extra large font size.
 		 */
 		protected var extraLargeFontSize:int;
-
-		/**
-		 * The font size used for text inputs that use StageText.
-		 * 
-		 * @see #stageTextScale
-		 */
-		protected var inputFontSize:int;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
@@ -669,7 +656,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
@@ -700,21 +686,6 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes the scale value based on the screen density and content
-		 * scale factor.
-		 */
-		protected function initializeScale():void
-		{
-			var starling:Starling = Starling.current;
-			var nativeScaleFactor:Number = 1;
-			if(starling.supportHighResolutions)
-			{
-				nativeScaleFactor = starling.nativeStage.contentsScaleFactor; 
-			}
-			this.stageTextScale = 1 / nativeScaleFactor;
-		}
-
-		/**
 		 * Initializes common values used for setting the dimensions of components.
 		 */
 		protected function initializeDimensions():void
@@ -741,7 +712,6 @@ package feathers.themes
 			this.regularFontSize = 12;
 			this.largeFontSize = 14;
 			this.extraLargeFontSize = 18;
-			this.inputFontSize = Math.round(12 * this.stageTextScale);
 
 			//these are for components that don't use FTE
 			this.scrollTextTextFormat = new TextFormat("_sans", this.regularFontSize, LIGHT_TEXT_COLOR);
@@ -2373,7 +2343,7 @@ package feathers.themes
 		protected function setTextAreaTextEditorStyles(textEditor:StageTextTextEditorViewPort):void
 		{
 			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.inputFontSize;
+			textEditor.fontSize = this.regularFontSize;
 			textEditor.color = LIGHT_TEXT_COLOR;
 			textEditor.disabledColor = DISABLED_TEXT_COLOR;
 			textEditor.padding = this.smallGutterSize;
@@ -2424,7 +2394,7 @@ package feathers.themes
 		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
 		{
 			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.inputFontSize;
+			textEditor.fontSize = this.regularFontSize;
 			textEditor.color = LIGHT_TEXT_COLOR;
 			textEditor.disabledColor = DISABLED_TEXT_COLOR;
 		}

@@ -69,6 +69,7 @@ package feathers.themes
 	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.StageTextTextEditor;
+	import feathers.controls.text.StageTextTextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
@@ -199,6 +200,15 @@ package feathers.themes
 		}
 
 		/**
+		 * The text editor factory for a TextArea creates a
+		 * StageTextTextEditorViewPort.
+		 */
+		protected static function textAreaTextEditorFactory():StageTextTextEditorViewPort
+		{
+			return new StageTextTextEditorViewPort();
+		}
+
+		/**
 		 * The text editor factory for a NumericStepper creates a
 		 * BitmapFontTextEditor.
 		 */
@@ -250,12 +260,6 @@ package feathers.themes
 		}
 
 		/**
-		 * StageText scales strangely when contentsScaleFactor > 1, so we need
-		 * to account for that.
-		 */
-		protected var stageTextScale:Number = 1;
-
-		/**
 		 * A normal font size.
 		 */
 		protected var fontSize:int;
@@ -269,11 +273,6 @@ package feathers.themes
 		 * A smaller font size for details.
 		 */
 		protected var smallFontSize:int;
-
-		/**
-		 * A special font size for text editing.
-		 */
-		protected var inputFontSize:int;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -444,7 +443,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeDimensions();
 			this.initializeTextures();
 			this.initializeFonts();
@@ -472,21 +470,6 @@ package feathers.themes
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
-		}
-
-		/**
-		 * Initializes the scale value based on the screen density and content
-		 * scale factor.
-		 */
-		protected function initializeScale():void
-		{
-			var starling:Starling = Starling.current;
-			var nativeScaleFactor:Number = 1;
-			if(starling.supportHighResolutions)
-			{
-				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
-			}
-			this.stageTextScale = 1 / nativeScaleFactor;
 		}
 
 		/**
@@ -601,7 +584,6 @@ package feathers.themes
 			this.fontSize = 12;
 			this.largeFontSize = 16;
 			this.smallFontSize = 8;
-			this.inputFontSize = 13 * this.stageTextScale;
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
@@ -759,7 +741,7 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
+			this.getStyleProviderForClass(StageTextTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//text area
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
@@ -1890,12 +1872,17 @@ package feathers.themes
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
+
+			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 
-		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
+		protected function setTextAreaTextEditorStyles(textEditor:StageTextTextEditorViewPort):void
 		{
-			textEditor.textFormat = this.scrollTextTextFormat;
-			textEditor.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			textEditor.fontFamily = "_sans";
+			textEditor.fontSize = this.fontSize;
+			textEditor.color = PRIMARY_TEXT_COLOR;
+			textEditor.disabledColor = DISABLED_TEXT_COLOR;
+			
 			textEditor.padding = this.smallGutterSize;
 		}
 
@@ -1952,7 +1939,7 @@ package feathers.themes
 		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
 		{
 			textEditor.fontFamily = "_sans";
-			textEditor.fontSize = this.inputFontSize;
+			textEditor.fontSize = this.fontSize;
 			textEditor.color = PRIMARY_TEXT_COLOR;
 			textEditor.disabledColor = DISABLED_TEXT_COLOR;
 		}
