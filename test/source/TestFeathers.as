@@ -44,6 +44,7 @@ package
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
+	import feathers.tests.NumericStepperMeasurementTests;
 	import feathers.tests.PageIndicatorMeasurementTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
@@ -166,6 +167,7 @@ package
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
+				NumericStepperMeasurementTests,
 				PageIndicatorMeasurementTests,
 				PickerListTests,
 				ProgressBarTests,

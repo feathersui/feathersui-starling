@@ -254,6 +254,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var textInputExplicitWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var textInputExplicitHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var textInputExplicitMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var textInputExplicitMinHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var touchPointID:int = -1;
 
 		/**
@@ -1382,7 +1402,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1393,74 +1413,261 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
-
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
+			
 			this.decrementButton.validate();
 			this.incrementButton.validate();
+			var decrementButtonWidth:Number = this.decrementButton.width;
+			var decrementButtonHeight:Number = this.decrementButton.height;
+			var decrementButtonMinWidth:Number = this.decrementButton.minWidth;
+			var decrementButtonMinHeight:Number = this.decrementButton.minHeight;
+			var incrementButtonWidth:Number = this.incrementButton.width;
+			var incrementButtonHeight:Number = this.incrementButton.height;
+			var incrementButtonMinWidth:Number = this.incrementButton.minWidth;
+			var incrementButtonMinHeight:Number = this.incrementButton.minHeight;
+			
 			var oldTextInputWidth:Number = this.textInput.width;
 			var oldTextInputHeight:Number = this.textInput.height;
-			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
+			
+			//we'll default to the values set in the textInputFactory
+			var textInputWidth:Number = this.textInputExplicitWidth;
+			var textInputHeight:Number = this.textInputExplicitHeight;
+			var textInputMinWidth:Number = this.textInputExplicitMinWidth;
+			var textInputMinHeight:Number = this.textInputExplicitMinHeight;
+			var textInputMaxWidth:Number = Number.POSITIVE_INFINITY;
+			var textInputMaxHeight:Number = Number.POSITIVE_INFINITY;
+			
+			if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
-				var maxButtonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
-				this.textInput.minWidth = Math.max(0, this._explicitMinWidth - maxButtonWidth);
-				this.textInput.maxWidth = Math.max(0, this._maxWidth - maxButtonWidth);
-				this.textInput.width = Math.max(0, this._explicitWidth - maxButtonWidth)
-				this.textInput.height = this._explicitHeight;
-				this.textInput.validate();
+				var maxButtonWidth:Number = decrementButtonWidth;
+				if(incrementButtonWidth > maxButtonWidth)
+				{
+					maxButtonWidth = incrementButtonWidth;
+				}
+				var maxButtonMinWidth:Number = decrementButtonMinWidth;
+				if(incrementButtonMinWidth > maxButtonMinWidth)
+				{
+					maxButtonMinWidth = incrementButtonMinWidth;
+				}
+				
+				if(!needsWidth)
+				{
+					textInputWidth = this._explicitWidth - maxButtonWidth - this._textInputGap;
+				}
+				if(!needsHeight)
+				{
+					textInputHeight = this._explicitHeight;
+				}
+				if(!needsMinWidth)
+				{
+					textInputMinWidth = this._explicitMinWidth - maxButtonMinWidth - this._textInputGap;
+					if(this.textInputExplicitMinWidth > textInputMinWidth)
+					{
+						textInputMinWidth = this.textInputExplicitMinWidth;
+					}
+				}
+				if(!needsMinHeight)
+				{
+					textInputMinHeight = this._explicitMinHeight;
+					if(this.textInputExplicitMinHeight > textInputMinHeight)
+					{
+						textInputMinHeight = this.textInputExplicitMinHeight;
+					}
+				}
+				textInputMaxWidth = this._maxWidth - maxButtonWidth - this._textInputGap;
+			}
+			else if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
+			{
+				if(!needsWidth)
+				{
+					textInputWidth = this._explicitWidth;
+				}
+				if(!needsHeight)
+				{
+					textInputHeight = this._explicitHeight - decrementButtonHeight - incrementButtonHeight;
+				}
+				if(!needsMinWidth)
+				{
+					textInputMinWidth = this._explicitMinWidth;
+					if(this.textInputExplicitMinWidth > textInputMinWidth)
+					{
+						textInputMinWidth = this.textInputExplicitMinWidth;
+					}
+				}
+				if(!needsMinHeight)
+				{
+					textInputMinHeight = this._explicitMinHeight - decrementButtonMinHeight - incrementButtonMinHeight;
+					if(this.textInputExplicitMinHeight > textInputMinHeight)
+					{
+						textInputMinHeight = this.textInputExplicitMinHeight;
+					}
+				}
+				textInputMaxHeight = this._maxHeight - decrementButtonHeight - incrementButtonHeight;
+			}
+			else //split horizontal
+			{
+				if(!needsWidth)
+				{
+					textInputWidth = this._explicitWidth - decrementButtonWidth - incrementButtonWidth;
+				}
+				if(!needsHeight)
+				{
+					textInputHeight = this._explicitHeight;
+				}
+				if(!needsMinWidth)
+				{
+					textInputMinWidth = this._explicitMinWidth - decrementButtonMinWidth - incrementButtonMinWidth;
+					if(textInputMinWidth < this.textInputExplicitMinWidth)
+					{
+						textInputMinWidth = this.textInputExplicitMinWidth;
+					}
+				}
+				if(!needsMinHeight)
+				{
+					textInputMinHeight = this._explicitMinHeight;
+					if(this.textInputExplicitMinHeight > textInputMinHeight)
+					{
+						textInputMinHeight = this.textInputExplicitMinHeight;
+					}
+				}
+				textInputMaxWidth = this._maxWidth - decrementButtonWidth - incrementButtonWidth;
+			}
+			
+			if(textInputWidth < 0)
+			{
+				textInputWidth = 0;
+			}
+			if(textInputHeight < 0)
+			{
+				textInputHeight = 0;
+			}
+			if(textInputMinWidth < 0)
+			{
+				textInputMinWidth = 0;
+			}
+			if(textInputMinHeight < 0)
+			{
+				textInputMinHeight = 0;
+			}
+			this.textInput.width = textInputWidth;
+			this.textInput.height = textInputHeight;
+			this.textInput.minWidth = textInputMinWidth;
+			this.textInput.minHeight = textInputMinHeight;
+			this.textInput.maxWidth = textInputMaxWidth;
+			this.textInput.maxHeight = textInputMaxHeight;
+			this.textInput.validate();
 
+			if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
+			{
 				if(needsWidth)
 				{
 					newWidth = this.textInput.width + maxButtonWidth + this._textInputGap;
 				}
 				if(needsHeight)
 				{
-					newHeight = Math.max(this.textInput.height, this.decrementButton.height + this._buttonGap + this.incrementButton.height);
+					newHeight = decrementButtonHeight + this._buttonGap + incrementButtonHeight;
+					if(this.textInput.height > newHeight)
+					{
+						newHeight = this.textInput.height;
+					}
+				}
+				if(needsMinWidth)
+				{
+					newMinWidth = this.textInput.minWidth + maxButtonMinWidth + this._textInputGap;
+				}
+				if(needsMinHeight)
+				{
+					newMinHeight = decrementButtonMinHeight + this._buttonGap + incrementButtonMinHeight;
+					if(this.textInput.minHeight > newMinHeight)
+					{
+						newMinHeight = this.textInput.minHeight;
+					}
 				}
 			}
-			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
+			else if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
 			{
-				this.textInput.minHeight = Math.max(0, this._explicitMinHeight - this.decrementButton.height - this.incrementButton.height);
-				this.textInput.maxHeight = Math.max(0, this._maxHeight - this.decrementButton.height - this.incrementButton.height);
-				this.textInput.height = Math.max(0, this._explicitHeight - this.decrementButton.height - this.incrementButton.height);
-				this.textInput.width = this._explicitWidth;
-				this.textInput.validate();
-
 				if(needsWidth)
 				{
-					newWidth = Math.max(this.decrementButton.width, this.incrementButton.width, this.textInput.width);
+					newWidth = this.textInput.width;
+					if(decrementButtonWidth > newWidth)
+					{
+						newWidth = decrementButtonWidth;
+					}
+					if(incrementButtonWidth > newWidth)
+					{
+						newWidth = incrementButtonWidth;
+					}
 				}
 				if(needsHeight)
 				{
-					newHeight = this.decrementButton.height + this.textInput.height + this.incrementButton.height + 2 * this._textInputGap;
+					newHeight = decrementButtonHeight + this.textInput.height + incrementButtonHeight + 2 * this._textInputGap;
+				}
+				if(needsMinWidth)
+				{
+					newMinWidth = this.textInput.minWidth;
+					if(decrementButtonMinWidth > newMinWidth)
+					{
+						newMinWidth = decrementButtonMinWidth;
+					}
+					if(incrementButtonMinWidth > newMinWidth)
+					{
+						newMinWidth = incrementButtonMinWidth;
+					}
+				}
+				if(needsMinHeight)
+				{
+					newMinHeight = decrementButtonMinHeight + this.textInput.minHeight + incrementButtonMinHeight + 2 * this._textInputGap;
 				}
 			}
 			else //split horizontal
 			{
-				this.textInput.minWidth = Math.max(0, this._explicitMinWidth - this.decrementButton.width - this.incrementButton.width);
-				this.textInput.maxWidth = Math.max(0, this._maxWidth - this.decrementButton.width - this.incrementButton.width);
-				this.textInput.width = Math.max(0, this._explicitWidth - this.decrementButton.width - this.incrementButton.width);
-				this.textInput.height = this._explicitHeight;
-				this.textInput.validate();
-
 				if(needsWidth)
 				{
-					newWidth = this.decrementButton.width + this.textInput.width + this.incrementButton.width + 2 * this._textInputGap;
+					newWidth = decrementButtonWidth + this.textInput.width + incrementButtonWidth + 2 * this._textInputGap;
 				}
 				if(needsHeight)
 				{
-					newHeight = Math.max(this.decrementButton.height, this.incrementButton.height, this.textInput.height);
+					newHeight = this.textInput.height;
+					if(decrementButtonHeight > newHeight)
+					{
+						newHeight = decrementButtonHeight;
+					}
+					if(incrementButtonHeight > newHeight)
+					{
+						newHeight = incrementButtonHeight;
+					}
+				}
+				if(needsMinWidth)
+				{
+					newMinWidth = decrementButtonMinWidth + this.textInput.minWidth + incrementButtonMinWidth + 2 * this._textInputGap;
+				}
+				if(needsMinHeight)
+				{
+					newMinHeight = this.textInput.minHeight;
+					if(decrementButtonMinHeight > newMinHeight)
+					{
+						newMinHeight = decrementButtonMinHeight;
+					}
+					if(incrementButtonMinHeight > newMinHeight)
+					{
+						newMinHeight = incrementButtonMinHeight;
+					}
 				}
 			}
 
 			this.textInput.width = oldTextInputWidth;
 			this.textInput.height = oldTextInputHeight;
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1599,6 +1806,12 @@ package feathers.controls
 			//the text input manually.
 			this.textInput.isFocusEnabled = !this._focusManager;
 			this.addChild(this.textInput);
+			
+			//we will use these values for measurement, if possible
+			this.textInputExplicitWidth = this.textInput.explicitWidth;
+			this.textInputExplicitHeight = this.textInput.explicitHeight;
+			this.textInputExplicitMinWidth = this.textInput.explicitMinWidth;
+			this.textInputExplicitMinHeight = this.textInput.explicitMinHeight;
 		}
 
 		/**
