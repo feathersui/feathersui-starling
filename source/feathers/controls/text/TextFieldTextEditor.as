@@ -1440,6 +1440,8 @@ package feathers.controls.text
 						nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 					}
 					var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+					var scaleX:Number = this.textField.scaleX;
+					var scaleY:Number = this.textField.scaleY;
 					var gutterPositionOffset:Number = 2;
 					if(this._useGutter)
 					{
@@ -1449,11 +1451,12 @@ package feathers.controls.text
 					var positionY:Number = position.y + gutterPositionOffset;
 					if(positionX < gutterPositionOffset)
 					{
+						//account for negative positions
 						positionX = gutterPositionOffset;
 					}
 					else
 					{
-						var maxPositionX:Number = (this.textField.width / scaleFactor) - gutterPositionOffset;
+						var maxPositionX:Number = (this.textField.width / scaleX) - gutterPositionOffset;
 						if(positionX > maxPositionX)
 						{
 							positionX = maxPositionX;
@@ -1461,11 +1464,12 @@ package feathers.controls.text
 					}
 					if(positionY < gutterPositionOffset)
 					{
+						//account for negative positions
 						positionY = gutterPositionOffset;
 					}
 					else
 					{
-						var maxPositionY:Number = (this.textField.height / scaleFactor) - gutterPositionOffset;
+						var maxPositionY:Number = (this.textField.height / scaleY) - gutterPositionOffset;
 						if(positionY > maxPositionY)
 						{
 							positionY = maxPositionY;
@@ -1476,7 +1480,7 @@ package feathers.controls.text
 					{
 						if(this._multiline)
 						{
-							var lineIndex:int = this.textField.getLineIndexAtPoint(this.textField.width / 2, positionY);
+							var lineIndex:int = this.textField.getLineIndexAtPoint((this.textField.width / 2) / scaleX, positionY);
 							try
 							{
 								this._pendingSelectionBeginIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
