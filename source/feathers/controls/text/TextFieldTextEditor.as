@@ -1432,71 +1432,94 @@ package feathers.controls.text
 				{
 					Starling.current.nativeStage.addChild(this.textField);
 				}
-				if(position)
+				if(position !== null)
 				{
+					var nativeScaleFactor:Number = 1;
+					if(Starling.current.supportHighResolutions)
+					{
+						nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+					}
+					var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
 					var gutterPositionOffset:Number = 2;
 					if(this._useGutter)
 					{
 						gutterPositionOffset = 0;
 					}
-					var positionX:Number = position.x - this.textSnapshot.x + gutterPositionOffset;
-					var positionY:Number = position.y - this.textSnapshot.y + gutterPositionOffset;
-					if(positionX < 0)
+					var positionX:Number = position.x + gutterPositionOffset;
+					var positionY:Number = position.y + gutterPositionOffset;
+					if(positionX < gutterPositionOffset)
 					{
-						this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = 0;
+						positionX = gutterPositionOffset;
 					}
 					else
 					{
-						this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, positionY);
-						if(this._pendingSelectionBeginIndex < 0)
+						var maxPositionX:Number = (this.textField.width / scaleFactor) - gutterPositionOffset;
+						if(positionX > maxPositionX)
 						{
-							if(this._multiline)
+							positionX = maxPositionX;
+						}
+					}
+					if(positionY < gutterPositionOffset)
+					{
+						positionY = gutterPositionOffset;
+					}
+					else
+					{
+						var maxPositionY:Number = (this.textField.height / scaleFactor) - gutterPositionOffset;
+						if(positionY > maxPositionY)
+						{
+							positionY = maxPositionY;
+						}
+					}
+					this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, positionY);
+					if(this._pendingSelectionBeginIndex < 0)
+					{
+						if(this._multiline)
+						{
+							var lineIndex:int = this.textField.getLineIndexAtPoint(this.textField.width / 2, positionY);
+							try
 							{
-								var lineIndex:int = int(positionY / this.textField.getLineMetrics(0).height) + (this.textField.scrollV - 1);
-								try
+								this._pendingSelectionBeginIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
+								if(this._pendingSelectionBeginIndex != this._text.length)
 								{
-									this._pendingSelectionBeginIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
-									if(this._pendingSelectionBeginIndex != this._text.length)
-									{
-										this._pendingSelectionBeginIndex--;
-									}
-								}
-								catch(error:Error)
-								{
-									//we may be checking for a line beyond the
-									//end that doesn't exist
-									this._pendingSelectionBeginIndex = this._text.length;
+									this._pendingSelectionBeginIndex--;
 								}
 							}
-							else
+							catch(error:Error)
 							{
-								this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
-								if(this._pendingSelectionBeginIndex < 0)
-								{
-									this._pendingSelectionBeginIndex = this._text.length;
-								}
+								//we may be checking for a line beyond the
+								//end that doesn't exist
+								this._pendingSelectionBeginIndex = this._text.length;
 							}
 						}
 						else
 						{
-							var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionBeginIndex);
-							//bounds should never be null because the character
-							//index passed to getCharBoundaries() comes from a
-							//call to getCharIndexAtPoint(). however, a user
-							//reported that a null reference error happened
-							//here! I couldn't reproduce, but I might as well
-							//assume that the runtime has a bug. won't hurt.
-							if(bounds)
+							this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
+							if(this._pendingSelectionBeginIndex < 0)
 							{
-								var boundsX:Number = bounds.x;
-								if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
-								{
-									this._pendingSelectionBeginIndex++;
-								}
+								this._pendingSelectionBeginIndex = this._text.length;
 							}
 						}
-						this._pendingSelectionEndIndex = this._pendingSelectionBeginIndex;
 					}
+					else
+					{
+						var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionBeginIndex);
+						//bounds should never be null because the character
+						//index passed to getCharBoundaries() comes from a
+						//call to getCharIndexAtPoint(). however, a user
+						//reported that a null reference error happened
+						//here! I couldn't reproduce, but I might as well
+						//assume that the runtime has a bug. won't hurt.
+						if(bounds)
+						{
+							var boundsX:Number = bounds.x;
+							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							{
+								this._pendingSelectionBeginIndex++;
+							}
+						}
+					}
+					this._pendingSelectionEndIndex = this._pendingSelectionBeginIndex;
 				}
 				else
 				{

@@ -1411,7 +1411,8 @@ package feathers.controls
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);
 				HELPER_POINT.x -= this._paddingLeft;
 				HELPER_POINT.y -= this._paddingTop;
-				HELPER_POINT.y += this._verticalScrollPosition;
+				//we account for the scroll position in the text editor view
+				//port, so don't do it here!
 				this._isWaitingToSetFocus = false;
 				this.textEditorViewPort.setFocus(HELPER_POINT);
 			}

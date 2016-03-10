@@ -487,6 +487,19 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function setFocus(position:Point = null):void
+		{
+			if(position !== null)
+			{
+				position.x -= this._paddingLeft;
+				position.y -= this._paddingTop;
+			}
+			super.setFocus(position);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function measure(result:Point = null):Point
 		{
 			if(!result)
@@ -539,15 +552,6 @@ package feathers.controls.text
 			result.y = newHeight;
 
 			return result;
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function getSelectionIndexAtPoint(pointX:Number, pointY:Number):int
-		{
-			pointY += this._verticalScrollPosition;
-			return this.textField.getCharIndexAtPoint(pointX, pointY);
 		}
 
 		/**
