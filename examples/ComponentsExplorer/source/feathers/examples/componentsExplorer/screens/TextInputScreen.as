@@ -65,6 +65,8 @@ package feathers.examples.componentsExplorer.screens
 			this._notEditableInput.isEditable = false;
 			this.addChild(this._notEditableInput);
 
+			//note: using TextArea on mobile generally isn't recommended.
+			//consider TextInput with a multiline StageTextTextEditor instead.
 			this._textArea = new TextArea();
 			this.addChild(this._textArea);
 
