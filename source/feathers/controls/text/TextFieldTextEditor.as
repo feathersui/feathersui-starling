@@ -15,6 +15,7 @@ package feathers.controls.text
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -2038,12 +2039,17 @@ package feathers.controls.text
 			{
 				smallerGlobalScale = globalScaleY;
 			}
-			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			var starling:Starling = stageToStarling(this.stage);
+			if(starling === null)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				starling = Starling.current;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			var gutterPositionOffset:Number = 0;
 			if(!this._useGutter)
 			{
@@ -2059,7 +2065,7 @@ package feathers.controls.text
 			{
 				MatrixUtil.transformCoords(HELPER_MATRIX, -gutterPositionOffset, -gutterPositionOffset, HELPER_POINT);
 			}
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var starlingViewPort:Rectangle = starling.viewPort;
 			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
 			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
