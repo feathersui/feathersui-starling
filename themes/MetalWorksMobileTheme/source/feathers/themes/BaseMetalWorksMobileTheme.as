@@ -66,11 +66,14 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.StageTextTextEditor;
-	import feathers.controls.text.StageTextTextEditorViewPort;
 	import feathers.controls.text.TextBlockTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
+	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
@@ -285,7 +288,7 @@ package feathers.themes
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
-		protected static function textRendererFactory():TextBlockTextRenderer
+		protected static function textRendererFactory():ITextRenderer
 		{
 			return new TextBlockTextRenderer();
 		}
@@ -294,18 +297,18 @@ package feathers.themes
 		 * The default global text editor factory for this theme creates a
 		 * StageTextTextEditor.
 		 */
-		protected static function textEditorFactory():StageTextTextEditor
+		protected static function textEditorFactory():ITextEditor
 		{
 			return new StageTextTextEditor();
 		}
 
 		/**
 		 * The text editor factory for a TextArea creates a
-		 * StageTextTextEditorViewPort.
+		 * TextFieldTextEditorViewPort.
 		 */
-		protected static function textAreaTextEditorFactory():StageTextTextEditorViewPort
+		protected static function textAreaTextEditorFactory():ITextEditorViewPort
 		{
-			return new StageTextTextEditorViewPort();
+			return new TextFieldTextEditorViewPort();
 		}
 
 		/**
@@ -1015,7 +1018,7 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(StageTextTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
+			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
@@ -2340,12 +2343,11 @@ package feathers.themes
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 		
-		protected function setTextAreaTextEditorStyles(textEditor:StageTextTextEditorViewPort):void
+		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
 		{
-			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.regularFontSize;
-			textEditor.color = LIGHT_TEXT_COLOR;
-			textEditor.disabledColor = DISABLED_TEXT_COLOR;
+			textEditor.textFormat = this.scrollTextTextFormat;
+			textEditor.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			
 			textEditor.padding = this.smallGutterSize;
 		}
 

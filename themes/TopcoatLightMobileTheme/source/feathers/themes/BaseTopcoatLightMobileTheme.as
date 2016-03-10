@@ -69,9 +69,9 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.StageTextTextEditor;
-	import feathers.controls.text.StageTextTextEditorViewPort;
 	import feathers.controls.text.TextBlockTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
+	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
@@ -189,7 +189,6 @@ package feathers.themes
 		protected var smallFontSize:int;
 		protected var regularFontSize:int;
 		protected var largeFontSize:int;
-		protected var inputFontSize:int;
 
 		protected var regularFontDescription:FontDescription;
 
@@ -298,8 +297,6 @@ package feathers.themes
 		protected var pageIndicatorNormalTexture:Texture;
 		protected var pageIndicatorSelectedTexture:Texture;
 
-		protected var stageTextScale:Number;
-
 		/**
 		 * Disposes the atlas before calling super.dispose()
 		 */
@@ -319,7 +316,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
@@ -332,17 +328,6 @@ package feathers.themes
 		{
 			Starling.current.stage.color = COLOR_BACKGROUND_LIGHT;
 			Starling.current.nativeStage.color = COLOR_BACKGROUND_LIGHT;
-		}
-
-		protected function initializeScale():void
-		{
-			var starling:Starling = Starling.current;
-			var nativeScaleFactor:Number = 1;
-			if(starling.supportHighResolutions)
-			{
-				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
-			}
-			this.stageTextScale = 1 / nativeScaleFactor;
 		}
 
 		protected function initializeDimensions():void
@@ -468,7 +453,6 @@ package feathers.themes
 			this.smallFontSize = 14;
 			this.regularFontSize = 16;
 			this.largeFontSize = 20;
-			this.inputFontSize = 16 * this.stageTextScale;
 
 			//these are for components that do not use FTE
 			this.scrollTextTextFormat = new TextFormat("_sans", this.regularFontSize, COLOR_TEXT_DARK);
@@ -641,7 +625,7 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(StageTextTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
+			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
@@ -673,7 +657,7 @@ package feathers.themes
 		
 		protected static function textAreaTextEditorFactory():ITextEditorViewPort
 		{
-			return new StageTextTextEditorViewPort();
+			return new TextFieldTextEditorViewPort();
 		}
 
 		protected static function popUpOverlayFactory():DisplayObject
@@ -1786,17 +1770,15 @@ package feathers.themes
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
 
-			textArea.padding = this.smallGutterSize;
-
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 		
-		protected function setTextAreaTextEditorStyles(textEditor:StageTextTextEditorViewPort):void
+		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
 		{
-			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.inputFontSize;
-			textEditor.color = COLOR_TEXT_DARK;
-			textEditor.disabledColor = COLOR_TEXT_DARK_DISABLED;
+			textEditor.textFormat = this.scrollTextTextFormat;
+			textEditor.disabledTextFormat = this.scrollTextDisabledTextFormat;
+
+			textEditor.padding = this.smallGutterSize;
 		}
 
 	//-------------------------
@@ -1866,7 +1848,7 @@ package feathers.themes
 		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
 		{
 			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.inputFontSize;
+			textEditor.fontSize = this.regularFontSize;
 			textEditor.color = COLOR_TEXT_DARK;
 			textEditor.disabledColor = COLOR_TEXT_DARK_DISABLED;
 		}
