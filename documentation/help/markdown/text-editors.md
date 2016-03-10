@@ -89,11 +89,9 @@ Please note that unless you find a way to take advantage of `StageText` or `Text
 
 ## Multiline Text Editors
 
-The [`TextArea`](text-area.html) component introduced in Feathers 1.1 allows you edit multiline text in desktop apps. It supports text editors with an extended the [`ITextEditorViewPort`](../api-reference/feathers/controls/text/ITextEditorViewPort.html) interface. Currently, Feathers provides two different text editors for `TextArea`:
+The [`TextArea`](text-area.html) component allows you edit multiline text in desktop apps. It supports text editors with an extended the [`ITextEditorViewPort`](../api-reference/feathers/controls/text/ITextEditorViewPort.html) interface. Currently, Feathers provides one text editors for `TextArea`:
 
 -   [`TextFieldTextEditorViewPort`](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html) is similar to `TextFieldTextEditor`. It renders text using a [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html). This is the default text editor used by `TextArea`.
-
--   [`StageTextTextEditorViewPort`](../api-reference/feathers/controls/text/StageTextTextEditorViewPort.html) is similar to `StageTextTextEditor`. It renders text using a [`flash.text.StageText`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html).
 
 ## Related Links
 

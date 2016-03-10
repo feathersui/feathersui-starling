@@ -97,7 +97,7 @@ A text area provides a number of properties to customize its appearance. For ful
 
 The font styles of a text area may be changed through the [text editor](text-editors.html). Each text editor displays fonts differently and has different properties, so the way to make changes to the font styles depends on each text editor.
 
-Currently, Feathers comes with only two text editor view ports, [`TextFieldTextEditorViewPort`](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html) and [`StageTextTextEditorViewPort`](../api-reference/feathers/controls/text/StageTextTextEditorViewPort.html). It's possible to create custom implementations too.
+Currently, Feathers comes with only one text editor view port, [`TextFieldTextEditorViewPort`](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html). However, it's possible to create custom implementations too.
 
 `TextFieldTextEditorViewPort` places a [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) with its [`type`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#type) property set to [`TextFieldType.INPUT`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFieldType.html#INPUT) on the native stage. This text editor accepts a [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) object to pass to the `TextField` to style the text.
 
