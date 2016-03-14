@@ -46,6 +46,7 @@ package
 	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.NumericStepperMeasurementTests;
 	import feathers.tests.PageIndicatorMeasurementTests;
+	import feathers.tests.PickerListMeasurementTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
@@ -170,6 +171,7 @@ package
 				NumericStepperMeasurementTests,
 				PageIndicatorMeasurementTests,
 				PickerListTests,
+				PickerListMeasurementTests,
 				ProgressBarTests,
 				ProgressBarMeasurementTests,
 				RadioTests,
