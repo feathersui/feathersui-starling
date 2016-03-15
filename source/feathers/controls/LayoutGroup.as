@@ -26,6 +26,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.filters.FragmentFilter;
 	import starling.rendering.BatchToken;
 	import starling.rendering.Painter;
 
@@ -157,6 +158,30 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function set x(value:Number):void
+		{
+			super.x = value;
+			if(this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.setRequiresRedraw();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set y(value:Number):void
+		{
+			super.y = value;
+			if(this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.setRequiresRedraw();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _layout:ILayout;
 
 		/**
@@ -255,16 +280,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected var originalBackgroundHeight:Number = NaN;
-
-		/**
-		 * @private
-		 */
-		protected var _backgroundSkinPushToken:BatchToken = new BatchToken();
-
-		/**
-		 * @private
-		 */
-		protected var _backgroundSkinPopToken:BatchToken = new BatchToken();
 
 		/**
 		 * @private
@@ -534,18 +549,26 @@ package feathers.controls
 				this.currentBackgroundSkin.alpha > 0)
 			{
 				var mask:DisplayObject = this.currentBackgroundSkin.mask;
-				painter.pushState(this._backgroundSkinPushToken);
+				var filter:FragmentFilter = this.currentBackgroundSkin.filter;
+				painter.pushState();
 				painter.setStateTo(this.currentBackgroundSkin.transformationMatrix, this.currentBackgroundSkin.alpha, this.currentBackgroundSkin.blendMode);
-				if(mask)
+				if(mask !== null)
 				{
 					painter.drawMask(mask);
 				}
-				this.currentBackgroundSkin.render(painter);
-				if(mask)
+				if(filter !== null)
+				{
+					filter.render(painter);
+				}
+				else
+				{
+					this.currentBackgroundSkin.render(painter);
+				}
+				if(mask !== null)
 				{
 					painter.eraseMask(mask);
 				}
-				painter.popState(this._backgroundSkinPopToken);
+				painter.popState();
 			}
 			super.render(painter);
 		}
