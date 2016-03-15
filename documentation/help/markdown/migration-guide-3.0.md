@@ -250,11 +250,14 @@ Removed API										| How to Migrate
 `BitmapFontTextRenderer.snapToPixels`			| Pixel snapping is enabled by default, and it should not be disabled or it will make the text blurry.
 `ImageLoader.snapToPixels`						| Use the [`pixelSnapping`](../api-reference/feathers/controls/ImageLoader.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Image`.
 `ImageLoader.smoothing`						| Use the [`textureSmoothing`](../api-reference/feathers/controls/ImageLoader.html#textureSmoothing) property instead, which is also the new name of the property on `starling.display.Image`.
+`OldFadeNewSlideTransitionManager`				| Switch to `StackScreenNavigator` to get full support for navigation history. Create a custom `pushTransition` and `popTransition`.
 `Scale3Image`									| Create a `starling.display.Image` and set its `scale9Grid` property.
 `Scale3Textures`								| See instructions for `Scale3Image`.
 `Scale9Image`									| Create a `starling.display.Image` and set its `scale9Grid` property.
 `Scale9Textures`								| See instructions for `Scale9Image`.
 `Scale9ImageStateValueSelector`					| Create a [`feathers.skins.ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) and call `setTextureForState()` to use multiple textures.
+`ScreenFadeTransitionManager`					| Use `Fade` transition.
+`ScreenSlidingStackTransitionManager`			| Switch to `StackScreenNavigator` to get full support for navigation history. Use `Slide` for `pushTransition` and `popTransition`.
 `SmartDisplayObjectStateValueSelector`			| Create a [`feathers.skins.ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) and call `setTextureForState()` to use multiple textures.
 `StandardIcons.listDrillDownAccessoryTexture`	| Add [`DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html#ALTERNATE_STYLE_NAME_DRILL_DOWN) to the item renderer's `styleNameList`.
 `TextBlockTextRenderer.snapToPixels`			| Pixel snapping is enabled by default, and it should not be disabled or it will make the text blurry.
