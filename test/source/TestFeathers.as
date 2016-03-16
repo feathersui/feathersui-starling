@@ -80,6 +80,7 @@ package
 	import feathers.tests.ToggleButtonFocusTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
+	import feathers.tests.ToggleSwitchMeasurementTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
@@ -193,7 +194,8 @@ package
 				ToggleButtonFocusTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,
-				
+				ToggleSwitchMeasurementTests,
+			
 				//layout tests
 				FlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
