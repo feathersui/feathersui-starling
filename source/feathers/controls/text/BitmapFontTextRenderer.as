@@ -342,6 +342,42 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _pixelSnapping:Boolean = true;
+
+		/**
+		 * Determines if the position of the text should be snapped to the
+		 * nearest whole pixel when rendered. When snapped to a whole pixel, the
+		 * text is often more readable. When not snapped, the text may become
+		 * blurry due to texture smoothing.
+		 *
+		 * <p>In the following example, the text is not snapped to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.pixelSnapping = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get pixelSnapping():Boolean
+		{
+			return _pixelSnapping;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pixelSnapping(value:Boolean):void
+		{
+			if(this._pixelSnapping === value)
+			{
+				return;
+			}
+			this._pixelSnapping = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _wordWrap:Boolean = false;
 
 		/**
@@ -795,7 +831,6 @@ package feathers.controls.text
 			{
 				this._characterBatch = new MeshBatch();
 				this._characterBatch.touchable = false;
-				this._characterBatch.pixelSnapping = true;
 				this.addChild(this._characterBatch);
 			}
 		}
@@ -817,6 +852,7 @@ package feathers.controls.text
 
 			if(dataInvalid || stylesInvalid || sizeInvalid || stateInvalid)
 			{
+				this._characterBatch.pixelSnapping = this._pixelSnapping;
 				this._characterBatch.batchable = !this._useSeparateBatch;
 				this._characterBatch.clear();
 				if(!this.currentTextFormat || this._text === null)
@@ -1157,7 +1193,7 @@ package feathers.controls.text
 			HELPER_IMAGE.y = y;
 			HELPER_IMAGE.color = this.currentTextFormat.color;
 			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
-			HELPER_IMAGE.pixelSnapping = true;
+			HELPER_IMAGE.pixelSnapping = this._pixelSnapping;
 
 			if(painter !== null)
 			{

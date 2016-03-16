@@ -122,10 +122,10 @@ When the screen is disposed, we'll simply dispose the `TextureCache`.
 
 ### Other Properties
 
-You can snap the position of an `ImageLoader` to the nearest whole pixel using the [`snapToPixels`](../api-reference/feathers/controls/ImageLoader.html#snapToPixels) property:
+You can snap the position of an `ImageLoader` to the nearest whole pixel using the [`pixelSnapping`](../api-reference/feathers/controls/ImageLoader.html#pixelSnapping) property:
 
 ``` code
-loader.snapToPixels = true;
+loader.pixelSnapping = true;
 ```
 
 Pixel snapping is most useful for icons where crisp edges are especially important.
