@@ -247,8 +247,8 @@ The following table lists all removed APIs, organized alphabetically. The replac
 
 Removed API										| How to Migrate
 ----------------------------------------------- | -----------------------------
-`BitmapFontTextRenderer.snapToPixels`			| Use the [`pixelSnapping`](../api-reference/feathers/controls/BitmapFontTextRenderer.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Image`.
-`ImageLoader.snapToPixels`						| Use the [`pixelSnapping`](../api-reference/feathers/controls/ImageLoader.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Image`.
+`BitmapFontTextRenderer.snapToPixels`			| Use the [`pixelSnapping`](../api-reference/feathers/controls/BitmapFontTextRenderer.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Mesh`.
+`ImageLoader.snapToPixels`						| Use the [`pixelSnapping`](../api-reference/feathers/controls/ImageLoader.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Mesh`.
 `ImageLoader.smoothing`						| Use the [`textureSmoothing`](../api-reference/feathers/controls/ImageLoader.html#textureSmoothing) property instead, which is also the new name of the property on `starling.display.Image`.
 `OldFadeNewSlideTransitionManager`				| Switch to `StackScreenNavigator` to get full support for navigation history. Create a custom `pushTransition` and `popTransition`.
 `Scale3Image`									| Create a `starling.display.Image` and set its `scale9Grid` property.
@@ -260,8 +260,8 @@ Removed API										| How to Migrate
 `ScreenSlidingStackTransitionManager`			| Switch to `StackScreenNavigator` to get full support for navigation history. Use `Slide` for `pushTransition` and `popTransition`.
 `SmartDisplayObjectStateValueSelector`			| Create a [`feathers.skins.ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) and call `setTextureForState()` to use multiple textures.
 `StandardIcons.listDrillDownAccessoryTexture`	| Add [`DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html#ALTERNATE_STYLE_NAME_DRILL_DOWN) to the item renderer's `styleNameList`.
-`TextBlockTextRenderer.snapToPixels`			| Use the [`pixelSnapping`](../api-reference/feathers/controls/TextBlockTextRenderer.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Image`.
-`TextFieldTextRenderer.snapToPixels`			| Use the [`pixelSnapping`](../api-reference/feathers/controls/TextFieldTextRenderer.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Image`.
+`TextBlockTextRenderer.snapToPixels`			| Use the [`pixelSnapping`](../api-reference/feathers/controls/TextBlockTextRenderer.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Mesh`.
+`TextFieldTextRenderer.snapToPixels`			| Use the [`pixelSnapping`](../api-reference/feathers/controls/TextFieldTextRenderer.html#pixelSnapping) property instead, which is also the name of the new property on `starling.display.Mesh`.
 `TiledImage`									| Create a `starling.display.Image` and set the `tileGrid` property.
 
 
@@ -733,12 +733,14 @@ Deprecated API								| How to Migrate
 
 ### `Slider`
 
-Deprecated API						| How to Migrate
------------------------------------ | -------------------------------------
-`Slider.DIRECTION_HORIZONTAL`		| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
-`Slider.DIRECTION_VERTICAL`			| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
-`Slider.TRACK_LAYOUT_MODE_SINGLE`	| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
-`Slider.TRACK_LAYOUT_MODE_MIN_MAX`	| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+Deprecated API							| How to Migrate
+--------------------------------------- | -------------------------------------
+`Slider.DIRECTION_HORIZONTAL`			| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`Slider.DIRECTION_VERTICAL`				| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`Slider.TRACK_LAYOUT_MODE_SINGLE`		| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
+`Slider.TRACK_LAYOUT_MODE_MIN_MAX`		| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+`Slider.TRACK_SCALE_MODE_DIRECTIONAL`	| [`TrackScaleMode.DIRECTIONAL`](../api-reference/feathers/layout/TrackLayoutMode.html#DIRECTIONAL)
+`Slider.TRACK_SCALE_MODE_EXACT_FIT`		| [`TrackScaleMode.EXACT_FIT`](../api-reference/feathers/layout/TrackLayoutMode.html#EXACT_FIT)
 
 ### `SoundPlayer`
 
