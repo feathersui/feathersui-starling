@@ -7,9 +7,13 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.TrackScaleMode;
+	import feathers.controls.TrackScaleMode;
+	import feathers.controls.TrackScaleMode;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
@@ -184,20 +188,24 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
 		/**
-		 * The slider's track dimensions fill the full width and height of the
-		 * slider.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.EXACT_FIT</code>.
 		 *
-		 * @see #trackScaleMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
 		/**
-		 * If the slider's direction is horizontal, the width of the track will
-		 * fill the full width of the slider, and if the slider's direction is
-		 * vertical, the height of the track will fill the full height of the
-		 * slider. The other edge will not be scaled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.DIRECTIONAL</code>.
 		 *
-		 * @see #trackScaleMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
@@ -264,7 +272,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultThumbFactory():Button
+		protected static function defaultThumbFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -272,7 +280,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultMinimumTrackFactory():Button
+		protected static function defaultMinimumTrackFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -280,7 +288,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultMaximumTrackFactory():Button
+		protected static function defaultMaximumTrackFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -371,22 +379,42 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var minimumTrackOriginalWidth:Number = NaN;
+		protected var _minimumTrackSkinExplicitWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var minimumTrackOriginalHeight:Number = NaN;
+		protected var _minimumTrackSkinExplicitHeight:Number;
 
 		/**
 		 * @private
 		 */
-		protected var maximumTrackOriginalWidth:Number = NaN;
+		protected var _minimumTrackSkinExplicitMinWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var maximumTrackOriginalHeight:Number = NaN;
+		protected var _minimumTrackSkinExplicitMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _maximumTrackSkinExplicitWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _maximumTrackSkinExplicitHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _maximumTrackSkinExplicitMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _maximumTrackSkinExplicitMinHeight:Number;
 
 		/**
 		 * @private
@@ -863,7 +891,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackScaleMode:String = TRACK_SCALE_MODE_DIRECTIONAL;
+		protected var _trackScaleMode:String = TrackScaleMode.DIRECTIONAL;
 
 		[Inspectable(type="String",enumeration="exactFit,directional")]
 		/**
@@ -873,12 +901,12 @@ package feathers.controls
 		 * <p>In the following example, the slider's track layout is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.trackScaleMode = Slider.TRACK_SCALE_MODE_EXACT_FIT;</listing>
+		 * slider.trackScaleMode = TrackScaleMode.EXACT_FIT;</listing>
 		 *
-		 * @default Slider.TRACK_SCALE_MODE_DIRECTIONAL
+		 * @default feathers.controls.TrackScaleMode.DIRECTIONAL
 		 *
-		 * @see #TRACK_SCALE_MODE_DIRECTIONAL
-		 * @see #TRACK_SCALE_MODE_EXACT_FIT
+		 * @see feathers.controls.TrackScaleMode#DIRECTIONAL
+		 * @see feathers.controls.TrackScaleMode#EXACT_FIT
 		 * @see #trackLayoutMode
 		 */
 		public function get trackScaleMode():String
@@ -992,31 +1020,31 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's minimum track sub-component.
-		 * The minimum track must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the minimum track when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the minimum track.
+		 * The minimum track must be an instance of <code>BasicButton</code> (or
+		 * a subclass). This factory can be used to change properties on the
+		 * minimum track when it is first created. For instance, if you are
+		 * skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the minimum track.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom minimum track factory is passed
 		 * to the slider:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.minimumTrackFactory = function():Button
+		 * slider.minimumTrackFactory = function():BasicButton
 		 * {
-		 *     var track:Button = new Button();
-		 *     track.defaultSkin = new Image( upTexture );
-		 *     track.downSkin = new Image( downTexture );
+		 *     var track:BasicButton = new BasicButton();
+		 *     var skin:ImageSkin = new ImageSkin( upTexture );
+		 *     skin.setTextureForState( ButtonState.DOWN, downTexture );
+		 *     track.defaultSkin = skin;
 		 *     return track;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
-		 * @see #minimumTrackProperties
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get minimumTrackFactory():Function
 		{
@@ -1092,7 +1120,7 @@ package feathers.controls
 		 * An object that stores properties for the slider's "minimum" track,
 		 * and the properties will be passed down to the "minimum" track when
 		 * the slider validates. For a list of available properties, refer to
-		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * <a href="BasicButton.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1114,7 +1142,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #minimumTrackFactory
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get minimumTrackProperties():Object
 		{
@@ -1166,31 +1194,31 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's maximum track sub-component.
-		 * The maximum track must be an instance of <code>Button</code>.
-		 * This factory can be used to change properties on the maximum track
-		 * when it is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the maximum track.
+		 * The maximum track must be an instance of <code>BasicButton</code> (or
+		 * a subclass). This factory can be used to change properties on the
+		 * maximum track when it is first created. For instance, if you are
+		 * skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the maximum track.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom maximum track factory is passed
 		 * to the slider:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.maximumTrackFactory = function():Button
+		 * slider.maximumTrackFactory = function():BasicButton
 		 * {
-		 *     var track:Button = new Button();
-		 *     track.defaultSkin = new Image( upTexture );
-		 *     track.downSkin = new Image( downTexture );
+		 *     var track:BasicButton = new BasicButton();
+		 *     var skin:ImageSkin = new ImageSkin( upTexture );
+		 *     skin.setTextureForState( ButtonState.DOWN, downTexture );
+		 *     track.defaultSkin = skin;
 		 *     return track;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
-		 * @see #maximumTrackProperties
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get maximumTrackFactory():Function
 		{
@@ -1266,7 +1294,7 @@ package feathers.controls
 		 * An object that stores properties for the slider's "maximum" track,
 		 * and the properties will be passed down to the "maximum" track when
 		 * the slider validates. For a list of available properties, refer to
-		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * <a href="BasicButton.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1288,7 +1316,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #maximumTrackFactory
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get maximumTrackProperties():Object
 		{
@@ -1340,31 +1368,31 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's thumb sub-component.
-		 * The thumb must be an instance of <code>Button</code>. This factory
-		 * can be used to change properties on the thumb when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use this factory to set skins and other
-		 * styles on the thumb.
+		 * The thumb must be an instance of <code>BasicButton</code> (or a
+		 * subclass). This factory can be used to change properties on the thumb
+		 * when it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the thumb.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom thumb factory is passed
 		 * to the slider:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.thumbFactory = function():Button
+		 * slider.thumbFactory = function():BasicButton
 		 * {
-		 *     var thumb:Button = new Button();
-		 *     thumb.defaultSkin = new Image( upTexture );
-		 *     thumb.downSkin = new Image( downTexture );
+		 *     var thumb:BasicButton = new BasicButton();
+		 *     var skin:ImageSkin = new ImageSkin( upTexture );
+		 *     skin.setTextureForState( ButtonState.DOWN, downTexture );
+		 *     thumb.defaultSkin = skin;
 		 *     return thumb;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
-		 * @see #thumbProperties
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get thumbFactory():Function
 		{
@@ -1439,7 +1467,7 @@ package feathers.controls
 		 * An object that stores properties for the slider's thumb, and the
 		 * properties will be passed down to the thumb when the slider
 		 * validates. For a list of available properties, refer to
-		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * <a href="BasicButton.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1460,7 +1488,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 * @see #thumbFactory
 		 */
 		public function get thumbProperties():Object
@@ -1618,7 +1646,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1627,35 +1655,74 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			if(this.minimumTrackOriginalWidth !== this.minimumTrackOriginalWidth || //isNaN
-				this.minimumTrackOriginalHeight !== this.minimumTrackOriginalHeight) //isNaN
+			if(this._direction === Direction.VERTICAL)
 			{
-				if(this.minimumTrack is IValidating)
-				{
-					IValidating(this.minimumTrack).validate();
-				}
-				this.minimumTrackOriginalWidth = this.minimumTrack.width;
-				this.minimumTrackOriginalHeight = this.minimumTrack.height;
+				return this.measureVertical();
 			}
-			if(this.maximumTrack)
-			{
-				if(this.maximumTrackOriginalWidth !== this.maximumTrackOriginalWidth || //isNaN
-					this.maximumTrackOriginalHeight !== this.maximumTrackOriginalHeight) //isNaN
-				{
-					if(this.maximumTrack is IValidating)
-					{
-						IValidating(this.maximumTrack).validate();
-					}
-					this.maximumTrackOriginalWidth = this.maximumTrack.width;
-					this.maximumTrackOriginalHeight = this.maximumTrack.height;
-				}
-			}
+			return this.measureHorizontal();
+		}
 
+		/**
+		 * @private
+		 */
+		protected function measureVertical():Boolean
+		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
+			}
+			var isSingle:Boolean = this._trackLayoutMode === TrackLayoutMode.SINGLE;
+			if(needsHeight)
+			{
+				this.minimumTrack.height = this._minimumTrackSkinExplicitHeight;
+			}
+			else if(isSingle)
+			{
+				this.minimumTrack.height = this._explicitHeight;
+			}
+			if(this.minimumTrack is IMeasureDisplayObject)
+			{
+				var measureMinTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.minimumTrack);
+				if(needsMinHeight)
+				{
+					measureMinTrack.minHeight = this._minimumTrackSkinExplicitMinHeight;
+				}
+				else if(isSingle)
+				{
+					var minTrackMinHeight:Number = this._explicitMinHeight;
+					if(this._minimumTrackSkinExplicitMinHeight > minTrackMinHeight)
+					{
+						minTrackMinHeight = this._minimumTrackSkinExplicitMinHeight;
+					}
+					measureMinTrack.minHeight = minTrackMinHeight;
+				}
+			}
+			if(!isSingle)
+			{
+				if(needsHeight)
+				{
+					this.maximumTrack.height = this._maximumTrackSkinExplicitHeight;
+				}
+				if(this.maximumTrack is IMeasureDisplayObject)
+				{
+					var measureMaxTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.maximumTrack);
+					if(needsMinHeight)
+					{
+						measureMaxTrack.minHeight = this._maximumTrackSkinExplicitMinHeight;
+					}
+				}
+			}
+			if(this.minimumTrack is IValidating)
+			{
+				IValidating(this.minimumTrack).validate();
+			}
+			if(this.maximumTrack is IValidating)
+			{
+				IValidating(this.maximumTrack).validate();
 			}
 			if(this.thumb is IValidating)
 			{
@@ -1663,59 +1730,272 @@ package feathers.controls
 			}
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsWidth)
 			{
-				if(this._direction == Direction.VERTICAL)
+				newWidth = this.minimumTrack.width;
+				if(!isSingle && //split
+					this.maximumTrack.width > newWidth)
 				{
-					if(this.maximumTrack)
-					{
-						newWidth = Math.max(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth);
-					}
-					else
-					{
-						newWidth = this.minimumTrackOriginalWidth;
-					}
+					newWidth = this.maximumTrack.width;
 				}
-				else //horizontal
+				if(this.thumb.width > newWidth)
 				{
-					if(this.maximumTrack)
-					{
-						newWidth = Math.min(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth) + this.thumb.width / 2;
-					}
-					else
-					{
-						newWidth = this.minimumTrackOriginalWidth;
-					}
+					newWidth = this.thumb.width;
 				}
-				newWidth = Math.max(newWidth, this.thumb.width);
 			}
 			if(needsHeight)
 			{
-				if(this._direction == Direction.VERTICAL)
+				newHeight = this.minimumTrack.height;
+				if(!isSingle) //split
 				{
-					if(this.maximumTrack)
+					if(this.maximumTrack.height > newHeight)
 					{
-						newHeight = Math.min(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight) + this.thumb.height / 2;
+						newHeight = this.maximumTrack.height;
 					}
-					else
-					{
-						newHeight = this.minimumTrackOriginalHeight;
-					}
+					newHeight += this.thumb.height / 2;
 				}
-				else //horizontal
-				{
-					if(this.maximumTrack)
-					{
-						newHeight = Math.max(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight);
-					}
-					else
-					{
-						newHeight = this.minimumTrackOriginalHeight;
-					}
-				}
-				newHeight = Math.max(newHeight, this.thumb.height);
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			if(needsMinWidth)
+			{
+				if(measureMinTrack !== null)
+				{
+					newMinWidth = measureMinTrack.minWidth;
+				}
+				else
+				{
+					newMinWidth = this.minimumTrack.width;
+				}
+				if(!isSingle) //split
+				{
+					if(measureMaxTrack !== null)
+					{
+						if(measureMaxTrack.minWidth > newMinWidth)
+						{
+							newMinWidth = measureMaxTrack.minWidth;
+						}
+					}
+					else if(this.maximumTrack.width > newMinWidth)
+					{
+						newMinWidth = this.maximumTrack.width;
+					}
+				}
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					var measureThumb:IMeasureDisplayObject = IMeasureDisplayObject(this.thumb);
+					if(measureThumb.minWidth > newMinWidth)
+					{
+						newMinWidth = measureThumb.minWidth;
+					}
+				}
+				else if(this.thumb.width > newMinWidth)
+				{
+					newMinWidth = this.thumb.width;
+				}
+			}
+			if(needsMinHeight)
+			{
+				if(measureMinTrack !== null)
+				{
+					newMinHeight = measureMinTrack.minHeight;
+				}
+				else
+				{
+					newMinHeight = this.minimumTrack.height;
+				}
+				if(!isSingle) //split
+				{
+					if(measureMaxTrack !== null)
+					{
+						if(measureMaxTrack.minHeight > newMinHeight)
+						{
+							newMinHeight = measureMaxTrack.minHeight;
+						}
+					}
+					else
+					{
+						newMinHeight = this.maximumTrack.height;
+					}
+					if(this.thumb is IMeasureDisplayObject)
+					{
+						newMinHeight += IMeasureDisplayObject(this.thumb).minHeight / 2;
+					}
+					else
+					{
+						newMinHeight += this.thumb.height / 2;
+					}
+				}
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measureHorizontal():Boolean
+		{
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
+			{
+				return false;
+			}
+			var isSingle:Boolean = this._trackLayoutMode === TrackLayoutMode.SINGLE;
+			if(needsWidth)
+			{
+				this.minimumTrack.width = this._minimumTrackSkinExplicitWidth;
+			}
+			else if(isSingle)
+			{
+				this.minimumTrack.width = this._explicitWidth;
+			}
+			if(this.minimumTrack is IMeasureDisplayObject)
+			{
+				var measureMinTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.minimumTrack);
+				if(needsMinWidth)
+				{
+					measureMinTrack.minWidth = this._minimumTrackSkinExplicitMinWidth;
+				}
+				else if(isSingle)
+				{
+					var minTrackMinWidth:Number = this._explicitMinWidth;
+					if(this._minimumTrackSkinExplicitMinWidth > minTrackMinWidth)
+					{
+						minTrackMinWidth = this._minimumTrackSkinExplicitMinWidth;
+					}
+					measureMinTrack.minWidth = minTrackMinWidth;
+				}
+			}
+			if(!isSingle)
+			{
+				if(needsWidth)
+				{
+					this.maximumTrack.width = this._maximumTrackSkinExplicitWidth;
+				}
+				if(this.maximumTrack is IMeasureDisplayObject)
+				{
+					var measureMaxTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.maximumTrack);
+					if(needsMinWidth)
+					{
+						measureMaxTrack.minWidth = this._maximumTrackSkinExplicitMinWidth;
+					}
+				}
+			}
+			if(this.minimumTrack is IValidating)
+			{
+				IValidating(this.minimumTrack).validate();
+			}
+			if(this.maximumTrack is IValidating)
+			{
+				IValidating(this.maximumTrack).validate();
+			}
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
+			}
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsWidth)
+			{
+				newWidth = this.minimumTrack.width;
+				if(!isSingle) //split
+				{
+					if(this.maximumTrack.width > newWidth)
+					{
+						newWidth = this.maximumTrack.width;
+					}
+					newWidth += this.thumb.width / 2;
+				}
+			}
+			if(needsHeight)
+			{
+				newHeight = this.minimumTrack.height;
+				if(!isSingle && //split
+					this.maximumTrack.height > newHeight)
+				{
+					newHeight = this.maximumTrack.height;
+				}
+				if(this.thumb.height > newHeight)
+				{
+					newHeight = this.thumb.height;
+				}
+			}
+			if(needsMinWidth)
+			{
+				if(measureMinTrack !== null)
+				{
+					newMinWidth = measureMinTrack.minWidth;
+				}
+				else
+				{
+					newMinWidth = this.minimumTrack.width;
+				}
+				if(!isSingle) //split
+				{
+					if(measureMaxTrack !== null)
+					{
+						if(measureMaxTrack.minWidth > newMinWidth)
+						{
+							newMinWidth = measureMaxTrack.minWidth;
+						}
+					}
+					else if(this.maximumTrack.width > newMinWidth)
+					{
+						newMinWidth = this.maximumTrack.width;
+					}
+					if(this.thumb is IMeasureDisplayObject)
+					{
+						newMinWidth += IMeasureDisplayObject(this.thumb).minWidth / 2;
+					}
+					else
+					{
+						newMinWidth += this.thumb.width / 2;
+					}
+				}
+			}
+			if(needsMinHeight)
+			{
+				if(measureMinTrack !== null)
+				{
+					newMinHeight = measureMinTrack.minHeight;
+				}
+				else
+				{
+					newMinHeight = this.minimumTrack.height;
+				}
+				if(!isSingle) //split
+				{
+					if(measureMaxTrack !== null)
+					{
+						if(measureMaxTrack.minHeight > newMinHeight)
+						{
+							newMinHeight = measureMaxTrack.minHeight;
+						}
+					}
+					else if(this.maximumTrack.height > newMinHeight)
+					{
+						newMinHeight = this.maximumTrack.height;
+					}
+				}
+				if(this.thumb is IMeasureDisplayObject)
+				{
+					var measureThumb:IMeasureDisplayObject = IMeasureDisplayObject(this.thumb);
+					if(measureThumb.minHeight > newMinHeight)
+					{
+						newMinHeight = measureThumb.minHeight;
+					}
+				}
+				else if(this.thumb.height > newMinHeight)
+				{
+					newMinHeight = this.thumb.height;
+				}
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1739,7 +2019,7 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			var thumb:Button = Button(factory());
+			var thumb:BasicButton = BasicButton(factory());
 			thumb.styleNameList.add(thumbStyleName);
 			thumb.keepDownStateOnRollOut = true;
 			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
@@ -1768,12 +2048,30 @@ package feathers.controls
 
 			var factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
 			var minimumTrackStyleName:String = this._customMinimumTrackStyleName != null ? this._customMinimumTrackStyleName : this.minimumTrackStyleName;
-			var minimumTrack:Button = Button(factory());
+			var minimumTrack:BasicButton = BasicButton(factory());
 			minimumTrack.styleNameList.add(minimumTrackStyleName);
 			minimumTrack.keepDownStateOnRollOut = true;
 			minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 			this.addChildAt(minimumTrack, 0);
 			this.minimumTrack = minimumTrack;
+
+			if(this.minimumTrack is IMeasureDisplayObject)
+			{
+				var measureMinTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.minimumTrack);
+				this._minimumTrackSkinExplicitWidth = measureMinTrack.explicitWidth;
+				this._minimumTrackSkinExplicitHeight = measureMinTrack.explicitHeight;
+				this._minimumTrackSkinExplicitMinWidth = measureMinTrack.explicitMinWidth;
+				this._minimumTrackSkinExplicitMinHeight = measureMinTrack.explicitMinHeight;
+			}
+			else
+			{
+				//this is a regular display object, and we'll treat its
+				//measurements as explicit when we auto-size the slider
+				this._minimumTrackSkinExplicitWidth = this.minimumTrack.width;
+				this._minimumTrackSkinExplicitHeight = this.minimumTrack.height;
+				this._minimumTrackSkinExplicitMinWidth = this._minimumTrackSkinExplicitWidth;
+				this._minimumTrackSkinExplicitMinHeight = this._minimumTrackSkinExplicitHeight
+			}
 		}
 
 		/**
@@ -1790,26 +2088,41 @@ package feathers.controls
 		 */
 		protected function createMaximumTrack():void
 		{
-			if(this._trackLayoutMode == TrackLayoutMode.SPLIT)
-			{
-				if(this.maximumTrack)
-				{
-					this.maximumTrack.removeFromParent(true);
-					this.maximumTrack = null;
-				}
-				var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
-				var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
-				var maximumTrack:Button = Button(factory());
-				maximumTrack.styleNameList.add(maximumTrackStyleName);
-				maximumTrack.keepDownStateOnRollOut = true;
-				maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChildAt(maximumTrack, 1);
-				this.maximumTrack = maximumTrack;
-			}
-			else if(this.maximumTrack) //single
+			if(this.maximumTrack !== null)
 			{
 				this.maximumTrack.removeFromParent(true);
 				this.maximumTrack = null;
+			}
+			if(this._trackLayoutMode === TrackLayoutMode.SINGLE)
+			{
+				return;
+			}
+			
+			var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
+			var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
+			var maximumTrack:BasicButton = BasicButton(factory());
+			maximumTrack.styleNameList.add(maximumTrackStyleName);
+			maximumTrack.keepDownStateOnRollOut = true;
+			maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+			this.addChildAt(maximumTrack, 1);
+			this.maximumTrack = maximumTrack;
+
+			if(this.maximumTrack is IMeasureDisplayObject)
+			{
+				var measureMaxTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.maximumTrack);
+				this._maximumTrackSkinExplicitWidth = measureMaxTrack.explicitWidth;
+				this._maximumTrackSkinExplicitHeight = measureMaxTrack.explicitHeight;
+				this._maximumTrackSkinExplicitMinWidth = measureMaxTrack.explicitMinWidth;
+				this._maximumTrackSkinExplicitMinHeight = measureMaxTrack.explicitMinHeight;
+			}
+			else
+			{
+				//this is a regular display object, and we'll treat its
+				//measurements as explicit when we auto-size the slider
+				this._maximumTrackSkinExplicitWidth = this.maximumTrack.width;
+				this._maximumTrackSkinExplicitHeight = this.maximumTrack.height;
+				this._maximumTrackSkinExplicitMinWidth = this._maximumTrackSkinExplicitWidth;
+				this._maximumTrackSkinExplicitMinHeight = this._maximumTrackSkinExplicitHeight
 			}
 		}
 		
@@ -1940,84 +2253,77 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithMinMax():void
 		{
-			if(this._direction == Direction.VERTICAL)
+			if(this._direction === Direction.VERTICAL)
 			{
+				var maximumTrackHeight:Number = Math.round(this.thumb.y + (this.thumb.height / 2));
 				this.maximumTrack.y = 0;
-				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
-				this.minimumTrack.y = this.maximumTrack.height;
-				this.minimumTrack.height = this.actualHeight - this.minimumTrack.y;
-
-				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
-				{
-					this.maximumTrack.width = NaN;
-					if(this.maximumTrack is IValidating)
-					{
-						IValidating(this.maximumTrack).validate();
-					}
-					this.maximumTrack.x = (this.actualWidth - this.maximumTrack.width) / 2;
-					this.minimumTrack.width = NaN;
-					if(this.minimumTrack is IValidating)
-					{
-						IValidating(this.minimumTrack).validate();
-					}
-					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
-				}
-				else //exact fit
+				this.maximumTrack.height = maximumTrackHeight;
+				this.minimumTrack.y = maximumTrackHeight;
+				this.minimumTrack.height = this.actualHeight - maximumTrackHeight;
+				if(this._trackScaleMode === TrackScaleMode.EXACT_FIT)
 				{
 					this.maximumTrack.x = 0;
 					this.maximumTrack.width = this.actualWidth;
 					this.minimumTrack.x = 0;
 					this.minimumTrack.width = this.actualWidth;
+				}
+				else //directional
+				{
+					this.maximumTrack.width = this._maximumTrackSkinExplicitWidth;
+					this.minimumTrack.width = this._minimumTrackSkinExplicitWidth;
+				}
+				
+				//final validation to avoid juggler next frame issues
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
+				if(this.maximumTrack is IValidating)
+				{
+					IValidating(this.maximumTrack).validate();
+				}
 
-					//final validation to avoid juggler next frame issues
-					if(this.minimumTrack is IValidating)
-					{
-						IValidating(this.minimumTrack).validate();
-					}
-					if(this.maximumTrack is IValidating)
-					{
-						IValidating(this.maximumTrack).validate();
-					}
+				if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
+				{
+					this.maximumTrack.x = Math.round((this.actualWidth - this.maximumTrack.width) / 2);
+					this.minimumTrack.x = Math.round((this.actualWidth - this.minimumTrack.width) / 2);
 				}
 			}
 			else //horizontal
 			{
+				var minimumTrackWidth:Number = Math.round(this.thumb.x + (this.thumb.width / 2));
 				this.minimumTrack.x = 0;
-				this.minimumTrack.width = this.thumb.x + this.thumb.width / 2;
-				this.maximumTrack.x = this.minimumTrack.width;
-				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
+				this.minimumTrack.width = minimumTrackWidth;
+				this.maximumTrack.x = minimumTrackWidth;
+				this.maximumTrack.width = this.actualWidth - minimumTrackWidth;
 
-				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
-				{
-					this.minimumTrack.height = NaN;
-					if(this.minimumTrack is IValidating)
-					{
-						IValidating(this.minimumTrack).validate();
-					}
-					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
-					this.maximumTrack.height = NaN;
-					if(this.maximumTrack is IValidating)
-					{
-						IValidating(this.maximumTrack).validate();
-					}
-					this.maximumTrack.y = (this.actualHeight - this.maximumTrack.height) / 2;
-				}
-				else //exact fit
+				if(this._trackScaleMode === TrackScaleMode.EXACT_FIT)
 				{
 					this.minimumTrack.y = 0;
 					this.minimumTrack.height = this.actualHeight;
 					this.maximumTrack.y = 0;
 					this.maximumTrack.height = this.actualHeight;
+				}
+				else //directional
+				{
+					this.minimumTrack.height = this._minimumTrackSkinExplicitHeight;
+					this.maximumTrack.height = this._maximumTrackSkinExplicitHeight;
+				}
 
-					//final validation to avoid juggler next frame issues
-					if(this.minimumTrack is IValidating)
-					{
-						IValidating(this.minimumTrack).validate();
-					}
-					if(this.maximumTrack is IValidating)
-					{
-						IValidating(this.maximumTrack).validate();
-					}
+				//final validation to avoid juggler next frame issues
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
+				if(this.maximumTrack is IValidating)
+				{
+					IValidating(this.maximumTrack).validate();
+				}
+
+				if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
+				{
+					this.minimumTrack.y = Math.round((this.actualHeight - this.minimumTrack.height) / 2);
+					this.maximumTrack.y = Math.round((this.actualHeight - this.maximumTrack.height) / 2);
 				}
 			}
 		}
@@ -2027,42 +2333,58 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithSingle():void
 		{
-			if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
+			if(this._direction === Direction.VERTICAL)
 			{
-				if(this._direction == Direction.VERTICAL)
-				{
-					this.minimumTrack.y = 0;
-					this.minimumTrack.width = NaN;
-					this.minimumTrack.height = this.actualHeight;
-					if(this.minimumTrack is IValidating)
-					{
-						IValidating(this.minimumTrack).validate();
-					}
-					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
-				}
-				else //horizontal
+				this.minimumTrack.y = 0;
+				this.minimumTrack.height = this.actualHeight;
+				if(this._trackScaleMode === TrackScaleMode.EXACT_FIT)
 				{
 					this.minimumTrack.x = 0;
 					this.minimumTrack.width = this.actualWidth;
-					this.minimumTrack.height = NaN;
-					if(this.minimumTrack is IValidating)
-					{
-						IValidating(this.minimumTrack).validate();
-					}
-					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
 				}
-			}
-			else //exact fit
-			{
-				this.minimumTrack.x = 0;
-				this.minimumTrack.y = 0;
-				this.minimumTrack.width = this.actualWidth;
-				this.minimumTrack.height = this.actualHeight;
+				else //directional
+				{
+					//we'll calculate x after validation in case the track needs
+					//to auto-size
+					this.minimumTrack.width = this._minimumTrackSkinExplicitWidth;
+				}
 
 				//final validation to avoid juggler next frame issues
 				if(this.minimumTrack is IValidating)
 				{
 					IValidating(this.minimumTrack).validate();
+				}
+				
+				if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
+				{
+					this.minimumTrack.x = Math.round((this.actualWidth - this.minimumTrack.width) / 2);
+				}
+			}
+			else //horizontal
+			{
+				this.minimumTrack.x = 0;
+				this.minimumTrack.width = this.actualWidth;
+				if(this._trackScaleMode === TrackScaleMode.EXACT_FIT)
+				{
+					this.minimumTrack.y = 0;
+					this.minimumTrack.height = this.actualHeight;
+				}
+				else //directional
+				{
+					//we'll calculate y after validation in case the track needs
+					//to auto-size
+					this.minimumTrack.height = this._minimumTrackSkinExplicitHeight;
+				}
+
+				//final validation to avoid juggler next frame issues
+				if(this.minimumTrack is IValidating)
+				{
+					IValidating(this.minimumTrack).validate();
+				}
+
+				if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
+				{
+					this.minimumTrack.y = Math.round((this.actualHeight - this.minimumTrack.height) / 2);
 				}
 			}
 		}

@@ -59,6 +59,8 @@ package
 	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
 	import feathers.tests.SliderHorizontalTests;
+	import feathers.tests.SliderHorizontalMeasurementTests;
+	import feathers.tests.SliderVerticalMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
@@ -182,6 +184,8 @@ package
 				ScrollContainerTests,
 				ScrollerTests,
 				SliderHorizontalTests,
+				SliderHorizontalMeasurementTests,
+				SliderVerticalMeasurementTests,
 				StackScreenNavigatorTests,
 				TabBarTests,
 				TabBarEmptyDataProviderTests,
