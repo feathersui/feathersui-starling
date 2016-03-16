@@ -1891,6 +1891,7 @@ package feathers.controls.text
 					if(!snapshot)
 					{
 						snapshot = new Image(newTexture);
+						snapshot.pixelSnapping = true;
 						this.addChild(snapshot);
 					}
 					else

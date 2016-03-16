@@ -795,6 +795,7 @@ package feathers.controls.text
 			{
 				this._characterBatch = new MeshBatch();
 				this._characterBatch.touchable = false;
+				this._characterBatch.pixelSnapping = true;
 				this.addChild(this._characterBatch);
 			}
 		}
@@ -1156,13 +1157,14 @@ package feathers.controls.text
 			HELPER_IMAGE.y = y;
 			HELPER_IMAGE.color = this.currentTextFormat.color;
 			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
+			HELPER_IMAGE.pixelSnapping = true;
 
-			if(painter)
+			if(painter !== null)
 			{
-				/*support.pushMatrix();
-				support.transformMatrix(HELPER_IMAGE);
-				support.batchQuad(HELPER_IMAGE, parentAlpha, HELPER_IMAGE.texture, this._textureSmoothing);
-				support.popMatrix();*/
+				painter.pushState();
+				painter.setStateTo(HELPER_IMAGE.transformationMatrix);
+				painter.batchMesh(HELPER_IMAGE);
+				painter.popState();
 			}
 			else
 			{
