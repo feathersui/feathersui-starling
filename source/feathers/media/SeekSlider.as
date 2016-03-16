@@ -71,20 +71,24 @@ package feathers.media
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
 		/**
-		 * The slider's track dimensions fill the full width and height of the
-		 * slider.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.EXACT_FIT</code>.
 		 *
-		 * @see #trackScaleMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
 		/**
-		 * If the slider's direction is horizontal, the width of the track will
-		 * fill the full width of the slider, and if the slider's direction is
-		 * vertical, the height of the track will fill the full height of the
-		 * slider. The other edge will not be scaled.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.DIRECTIONAL</code>.
 		 *
-		 * @see #trackScaleMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
