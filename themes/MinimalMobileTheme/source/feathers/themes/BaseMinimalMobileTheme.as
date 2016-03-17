@@ -918,7 +918,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			if(button is ToggleButton)
 			{
@@ -1271,7 +1271,7 @@ package feathers.themes
 			defaultSkin.height = this.gridSize;
 			renderer.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.defaultTexture = this.itemRendererDownSkinTexture;
 			otherSkin.selectedTexture = this.itemRendererSelectedUpSkinTexture;
 			otherSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
@@ -2019,7 +2019,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
@@ -2043,7 +2043,7 @@ package feathers.themes
 
 		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
-			var icon:ImageSkin = new ImageSkin();
+			var icon:ImageSkin = new ImageSkin(null);
 			icon.setTextureForState(ButtonState.UP, this.overlayPlayPauseButtonPlayUpIconTexture);
 			icon.setTextureForState(ButtonState.HOVER, this.overlayPlayPauseButtonPlayUpIconTexture);
 			button.defaultIcon = icon;
@@ -2071,7 +2071,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
@@ -2103,7 +2103,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
