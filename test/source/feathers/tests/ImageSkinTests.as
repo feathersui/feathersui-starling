@@ -25,7 +25,7 @@ package feathers.tests
 			this._context.currentState = STATE_ONE;
 			TestFeathers.starlingRoot.addChild(this._context);
 			
-			this._skin = new ImageSkin();
+			this._skin = new ImageSkin(null);
 			this._context.addChild(this._skin);
 			this._skin.stateContext = this._context;
 		}
