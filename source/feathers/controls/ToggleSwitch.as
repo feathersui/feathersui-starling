@@ -169,7 +169,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultThumbFactory():Button
+		protected static function defaultThumbFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -177,7 +177,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultOnTrackFactory():Button
+		protected static function defaultOnTrackFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -185,7 +185,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultOffTrackFactory():Button
+		protected static function defaultOffTrackFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -1372,29 +1372,29 @@ package feathers.controls
 		/**
 		 * A function used to generate the toggle switch's "on" track
 		 * sub-component. The "on" track must be an instance of
-		 * <code>Button</code>. This factory can be used to change properties on
-		 * the "on" track when it is first created. For instance, if you are
-		 * skinning Feathers components without a theme, you might use this
-		 * factory to set skins and other styles on the "on" track.
+		 * <code>BasicButton</code> (or a subclass). This factory can be used to
+		 * change properties on the "on" track when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the "on"
+		 * track.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom on track factory is passed to
 		 * the toggle switch:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.onTrackFactory = function():Button
+		 * toggle.onTrackFactory = function():BasicButton
 		 * {
-		 *     var onTrack:Button = new Button();
+		 *     var onTrack:BasicButton = new BasicButton();
 		 *     onTrack.defaultSkin = new Image( texture );
 		 *     return onTrack;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
-		 * @see #onTrackProperties
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get onTrackFactory():Function
 		{
@@ -1470,7 +1470,7 @@ package feathers.controls
 		 * An object that stores properties for the toggle switch's "on" track,
 		 * and the properties will be passed down to the "on" track when the
 		 * toggle switch validates. For a list of available properties,
-		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * refer to <a href="BasicButton.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1490,7 +1490,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 * @see #onTrackFactory
 		 */
 		public function get onTrackProperties():Object
@@ -1544,29 +1544,29 @@ package feathers.controls
 		/**
 		 * A function used to generate the toggle switch's "off" track
 		 * sub-component. The "off" track must be an instance of
-		 * <code>Button</code>. This factory can be used to change properties on
-		 * the "off" track when it is first created. For instance, if you are
-		 * skinning Feathers components without a theme, you might use this
-		 * factory to set skins and other styles on the "off" track.
+		 * <code>BasicButton</code> (or a subclass). This factory can be used to
+		 * change properties on the "off" track when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the "off"
+		 * track.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom off track factory is passed to
 		 * the toggle switch:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.offTrackFactory = function():Button
+		 * toggle.offTrackFactory = function():BasicButton
 		 * {
-		 *     var offTrack:Button = new Button();
+		 *     var offTrack:BasicButton = new BasicButton();
 		 *     offTrack.defaultSkin = new Image( texture );
 		 *     return offTrack;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
-		 * @see #offTrackProperties
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get offTrackFactory():Function
 		{
@@ -1642,7 +1642,7 @@ package feathers.controls
 		 * An object that stores properties for the toggle switch's "off" track,
 		 * and the properties will be passed down to the "off" track when the
 		 * toggle switch validates. For a list of available properties,
-		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * refer to <a href="BasicButton.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1662,7 +1662,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 * @see #offTrackFactory
 		 */
 		public function get offTrackProperties():Object
@@ -1715,28 +1715,29 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the toggle switch's thumb sub-component.
-		 * This can be used to change properties on the thumb when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>thumbFactory</code> to set
-		 * skins and text styles on the thumb.
+		 * The thumb must be an instance of <code>BasicButton</code> (or a
+		 * subclass). This factory can be used to change properties on the thumb
+		 * when it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use <code>thumbFactory</code>
+		 * to set skins and other styles on the thumb.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom thumb factory is passed to the
 		 * toggle switch:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.thumbFactory = function():Button
+		 * toggle.thumbFactory = function():BasicButton
 		 * {
-		 *     var button:Button = new Button();
+		 *     var button:BasicButton = new BasicButton();
 		 *     button.defaultSkin = new Image( texture );
 		 *     return button;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #thumbProperties
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get thumbFactory():Function
 		{
@@ -1812,7 +1813,7 @@ package feathers.controls
 		 * An object that stores properties for the toggle switch's thumb
 		 * sub-component, and the properties will be passed down to the thumb
 		 * when the toggle switch validates. For a list of available properties,
-		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * refer to <a href="BasicButton.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1832,7 +1833,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 * @see #thumbFactory
 		 */
 		public function get thumbProperties():Object
@@ -1991,7 +1992,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -2009,17 +2010,43 @@ package feathers.controls
 				return false;
 			}
 			var isSingle:Boolean = this._trackLayoutMode === TrackLayoutMode.SINGLE;
+			if(needsWidth)
+			{
+				this.onTrack.width = this._onTrackSkinExplicitWidth;
+			}
+			else if(isSingle)
+			{
+				this.onTrack.width = this._explicitWidth;
+			}
 			if(this.onTrack is IMeasureDisplayObject)
 			{
-				if(isSingle)
+				var measureOnTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.onTrack);
+				if(needsMinWidth)
 				{
-					if(needsWidth)
+					measureOnTrack.minWidth = this._onTrackSkinExplicitMinWidth;
+				}
+				else if(isSingle)
+				{
+					var minTrackMinWidth:Number = this._explicitMinWidth;
+					if(this._onTrackSkinExplicitMinWidth > minTrackMinWidth)
 					{
-						this.onTrack.width = this._onTrackSkinExplicitWidth;
+						minTrackMinWidth = this._onTrackSkinExplicitMinWidth;
 					}
-					else
+					measureOnTrack.minWidth = minTrackMinWidth;
+				}
+			}
+			if(!isSingle)
+			{
+				if(needsWidth)
+				{
+					this.offTrack.width = this._offTrackSkinExplicitWidth;
+				}
+				if(this.offTrack is IMeasureDisplayObject)
+				{
+					var measureOffTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.offTrack);
+					if(needsMinWidth)
 					{
-						this.onTrack.width = this._explicitWidth;
+						measureOffTrack.minWidth = this._offTrackSkinExplicitMinWidth;
 					}
 				}
 			}
@@ -2044,10 +2071,8 @@ package feathers.controls
 				newWidth = this.onTrack.width;
 				if(!isSingle) //split
 				{
-					if(this.offTrack.width < newWidth)
+					if(this.offTrack.width > newWidth)
 					{
-						//assume that the the smaller track's width is its ideal
-						//size, and it shouldn't be made larger
 						newWidth = this.offTrack.width;
 					}
 					newWidth += this.thumb.width / 2;
@@ -2068,9 +2093,9 @@ package feathers.controls
 			}
 			if(needsMinWidth)
 			{
-				if(this.onTrack is IMeasureDisplayObject)
+				if(measureOnTrack !== null)
 				{
-					newMinWidth = IMeasureDisplayObject(this.onTrack).minWidth;
+					newMinWidth = measureOnTrack.minWidth;
 				}
 				else
 				{
@@ -2078,17 +2103,14 @@ package feathers.controls
 				}
 				if(!isSingle) //split
 				{
-					//assume that the the smaller track's width is its ideal
-					//size, and it shouldn't be made larger
-					if(this.offTrack is IMeasureDisplayObject)
+					if(measureOffTrack !== null)
 					{
-						var measureOffTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.offTrack);
-						if(measureOffTrack.minWidth < newMinWidth)
+						if(measureOffTrack.minWidth > newMinWidth)
 						{
 							newMinWidth = measureOffTrack.minWidth;
 						}
 					}
-					else if(this.offTrack.width < newMinWidth)
+					else if(this.offTrack.width > newMinWidth)
 					{
 						newMinWidth = this.offTrack.width;
 					}
@@ -2104,9 +2126,9 @@ package feathers.controls
 			}
 			if(needsMinHeight)
 			{
-				if(this.onTrack is IMeasureDisplayObject)
+				if(measureOnTrack !== null)
 				{
-					newMinHeight = IMeasureDisplayObject(this.onTrack).minHeight;
+					newMinHeight = measureOnTrack.minHeight;
 				}
 				else
 				{
@@ -2114,9 +2136,8 @@ package feathers.controls
 				}
 				if(!isSingle) //split
 				{
-					if(this.offTrack is IMeasureDisplayObject)
+					if(measureOffTrack !== null)
 					{
-						measureOffTrack = IMeasureDisplayObject(this.offTrack);
 						if(measureOffTrack.minHeight > newMinHeight)
 						{
 							newMinHeight = measureOffTrack.minHeight;
@@ -2588,7 +2609,7 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithOnOff():void
 		{
-			var onTrackWidth:Number = Math.round(this.thumb.width / 2);
+			var onTrackWidth:Number = Math.round(this.thumb.x + (this.thumb.width / 2));
 			this.onTrack.x = 0;
 			this.onTrack.width = onTrackWidth;
 			this.offTrack.x = onTrackWidth;
@@ -2630,6 +2651,12 @@ package feathers.controls
 			{
 				this.onTrack.y = 0;
 				this.onTrack.height = this.actualHeight;
+			}
+			else
+			{
+				//we'll calculate y after validation in case the track needs
+				//to auto-size
+				this.onTrack.height = this._onTrackSkinExplicitHeight;
 			}
 			
 			//final validation to avoid juggler next frame issues

@@ -29,7 +29,7 @@ package feathers.tests
 		private static const SMALL_THUMB_HEIGHT:Number = 40;
 		private static const LARGE_THUMB_HEIGHT:Number = 60;
 
-		private static const THUMB_MIN_WIDTH:Number = 20;
+		private static const THUMB_MIN_WIDTH:Number = 18;
 		private static const SMALL_THUMB_MIN_HEIGHT:Number = 20;
 		private static const LARGE_THUMB_MIN_HEIGHT:Number = 40;
 		
@@ -177,9 +177,9 @@ package feathers.tests
 			};
 			this._toggle.validate();
 			Assert.assertStrictlyEquals("The width of the ToggleSwitch was not calculated correctly with trackLayoutMode set to TrackLayoutMode.SPLIT.",
-				ON_TRACK_WIDTH + THUMB_WIDTH / 2, this._toggle.width);
+				OFF_TRACK_WIDTH + THUMB_WIDTH / 2, this._toggle.width);
 			Assert.assertStrictlyEquals("The minWidth of the ToggleSwitch was not calculated correctly with trackLayoutMode set to TrackLayoutMode.SPLIT.",
-				ON_TRACK_WIDTH + THUMB_WIDTH / 2, this._toggle.minWidth);
+				OFF_TRACK_WIDTH + THUMB_WIDTH / 2, this._toggle.minWidth);
 			Assert.assertStrictlyEquals("The height of the ToggleSwitch was not calculated correctly with trackLayoutMode set to TrackLayoutMode.SPLIT.",
 				OFF_TRACK_HEIGHT, this._toggle.height);
 			Assert.assertStrictlyEquals("The minHeight of the ToggleSwitch was not calculated correctly with trackLayoutMode set to TrackLayoutMode.SPLIT.",
@@ -245,7 +245,7 @@ package feathers.tests
 			};
 			this._toggle.validate();
 			Assert.assertStrictlyEquals("The minWidth of the ToggleSwitch was not calculated correctly with trackLayoutMode set to TrackLayoutMode.SPLIT when the track's minWidth is set.",
-				ON_TRACK_MIN_WIDTH + THUMB_MIN_WIDTH / 2, this._toggle.minWidth);
+				OFF_TRACK_MIN_WIDTH + THUMB_MIN_WIDTH / 2, this._toggle.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the ToggleSwitch was not calculated correctly with trackLayoutMode set to TrackLayoutMode.SPLIT when the track's minHeight is set.",
 				OFF_TRACK_MIN_HEIGHT, this._toggle.minHeight);
 		}
