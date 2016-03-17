@@ -645,7 +645,7 @@ package feathers.skins
 		{
 			if(width >= 0)
 			{
-				this._explicitWidth = width;
+				this.width = width;
 			}
 			else if(this._explicitWidth === this._explicitWidth) //!isNaN
 			{
@@ -653,7 +653,7 @@ package feathers.skins
 			}
 			if(height >= 0)
 			{
-				this._explicitHeight = height;
+				this.height = height;
 			}
 			else if(this._explicitHeight === this._explicitHeight) //!isNaN
 			{
