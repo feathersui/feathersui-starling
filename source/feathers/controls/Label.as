@@ -673,7 +673,9 @@ package feathers.controls
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
-				if(this._text)
+				//if we don't have an explicitWidth, then the minimum width
+				//should be small to allow wrapping or truncation
+				if(this._text && !needsWidth)
 				{
 					newMinWidth = HELPER_POINT.x;
 				}

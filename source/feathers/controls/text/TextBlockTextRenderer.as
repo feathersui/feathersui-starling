@@ -1682,7 +1682,35 @@ package feathers.controls.text
 			}
 
 			this.measure(HELPER_POINT);
-			return this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
+			var newWidth:Number = this._explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = HELPER_POINT.x;
+			}
+			var newHeight:Number = this._explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = HELPER_POINT.y;
+			}
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(needsWidth)
+				{
+					//this allows wrapping or truncation
+					newMinWidth = 0;
+				}
+				else
+				{
+					newMinWidth = newWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				newMinHeight = newHeight;
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
