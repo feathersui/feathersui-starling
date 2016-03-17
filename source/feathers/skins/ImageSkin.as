@@ -641,43 +641,59 @@ package feathers.skins
 		/**
 		 * @private
 		 */
+		override public function readjustSize(width:Number=-1, height:Number=-1):void
+		{
+			if(width >= 0)
+			{
+				this._explicitWidth = width;
+			}
+			else if(this._explicitWidth === this._explicitWidth) //!isNaN
+			{
+				width = this._explicitWidth;
+			}
+			if(height >= 0)
+			{
+				this._explicitHeight = height;
+			}
+			else if(this._explicitHeight === this._explicitHeight) //!isNaN
+			{
+				height = this._explicitHeight;
+			}
+			super.readjustSize(width, height);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function updateTextureFromContext():void
 		{
+			var texture:Texture = null;
 			if(this._stateContext === null)
-			{
-				this.texture = this._defaultTexture;
-				return;
-			}
-			var texture:Texture = this._stateToTexture[this._stateContext.currentState] as Texture;
-			if(texture === null &&
-				this._disabledTexture !== null &&
-				this._stateContext is IFeathersControl &&
-				!IFeathersControl(this._stateContext).isEnabled)
-			{
-				texture = this._disabledTexture;
-			}
-			if(texture === null &&
-				this._selectedTexture !== null &&
-				this._stateContext is IToggle &&
-				IToggle(this._stateContext).isSelected)
-			{
-				texture = this._selectedTexture;
-			}
-			if(texture === null)
 			{
 				texture = this._defaultTexture;
 			}
+			else
+			{
+				texture = this._stateToTexture[this._stateContext.currentState] as Texture;
+				if(texture === null &&
+					this._disabledTexture !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					texture = this._disabledTexture;
+				}
+				if(texture === null &&
+					this._selectedTexture !== null &&
+					this._stateContext is IToggle &&
+					IToggle(this._stateContext).isSelected)
+				{
+					texture = this._selectedTexture;
+				}
+				if(texture === null)
+				{
+					texture = this._defaultTexture;
+				}
+			}
 			this.texture = texture;
-			if(this._explicitWidth === this._explicitWidth && //!isNaN
-				super.width !== this._explicitWidth)
-			{
-				super.width = this._explicitWidth;
-			}
-			if(this._explicitHeight === this._explicitHeight && //!isNaN
-				super.height !== this._explicitHeight)
-			{
-				super.height = this._explicitHeight;
-			}
 		}
 
 		/**
