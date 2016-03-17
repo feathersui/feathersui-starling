@@ -44,7 +44,7 @@ package feathers.skins
 		/**
 		 * Constructor.
 		 */
-		public function ImageSkin(defaultTexture:Texture = null)
+		public function ImageSkin(defaultTexture:Texture)
 		{
 			super(defaultTexture);
 			this.defaultTexture = defaultTexture;
