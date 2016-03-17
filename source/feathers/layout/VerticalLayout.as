@@ -1912,13 +1912,7 @@ package feathers.layout
 					if(layoutData !== null)
 					{
 						var percentWidth:Number = layoutData.percentWidth;
-						//for some reason, if we don't call a function right here,
-						//compiling with the flex 4.6 SDK will throw a VerifyError
-						//for a stack overflow.
-						//we could change the === check back to !isNaN() instead, but
-						//isNaN() can allocate an object, so we should call a different
-						//function without allocation.
-						this.doNothing();
+						var percentHeight:Number = layoutData.percentHeight;
 						if(percentWidth === percentWidth) //!isNaN
 						{
 							if(percentWidth < 0)
@@ -1943,6 +1937,14 @@ package feathers.layout
 								itemWidth = itemExplicitMinWidth;
 							}
 							item.width = itemWidth;
+						}
+						if(percentHeight === percentHeight) //!isNaN
+						{
+							//we need to clear the explicitHeight because some
+							//components may change their minHeight based on
+							//whether it is set or not, and the minHeight is
+							//used with percentHeight calculations
+							item.height = NaN;
 						}
 					}
 				}
