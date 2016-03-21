@@ -1531,7 +1531,8 @@ package feathers.controls
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
 					newWidth = this._currentTextureWidth * this._textureScale;
-					if(this._scaleContent && this._maintainAspectRatio)
+					if(this._scaleContent && this._maintainAspectRatio &&
+						this._scaleMode !== ScaleMode.NONE)
 					{
 						var heightScale:Number = 1;
 						if(!needsHeight)
@@ -1565,7 +1566,8 @@ package feathers.controls
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
 					newHeight = this._currentTextureHeight * this._textureScale;
-					if(this._scaleContent && this._maintainAspectRatio)
+					if(this._scaleContent && this._maintainAspectRatio &&
+						this._scaleMode !== ScaleMode.NONE)
 					{
 						var widthScale:Number = 1;
 						if(!needsWidth)
