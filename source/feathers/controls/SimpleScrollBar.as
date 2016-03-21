@@ -1100,6 +1100,8 @@ package feathers.controls
 			}
 			else
 			{
+				//this is a regular display object, and we'll treat its
+				//measurements as explicit when we auto-size the scroll bar
 				this._thumbExplicitWidth = this.thumb.width;
 				this._thumbExplicitHeight = this.thumb.height;
 				this._thumbExplicitMinWidth = this._thumbExplicitWidth;
