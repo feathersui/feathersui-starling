@@ -799,7 +799,7 @@ package feathers.controls
 		 * An object that stores properties for the scroll bar's thumb, and the
 		 * properties will be passed down to the thumb when the scroll bar
 		 * validates. For a list of available properties, refer to
-		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * <a href="Button.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -821,7 +821,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #thumbFactory
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get thumbProperties():Object
 		{
