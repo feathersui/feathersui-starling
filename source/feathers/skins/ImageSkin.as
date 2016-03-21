@@ -643,23 +643,15 @@ package feathers.skins
 		 */
 		override public function readjustSize(width:Number=-1, height:Number=-1):void
 		{
-			if(width >= 0)
-			{
-				this.width = width;
-			}
-			else if(this._explicitWidth === this._explicitWidth) //!isNaN
-			{
-				width = this._explicitWidth;
-			}
-			if(height >= 0)
-			{
-				this.height = height;
-			}
-			else if(this._explicitHeight === this._explicitHeight) //!isNaN
-			{
-				height = this._explicitHeight;
-			}
 			super.readjustSize(width, height);
+			if(this._explicitWidth === this._explicitWidth) //!isNaN
+			{
+				super.width = this._explicitWidth;
+			}
+			if(this._explicitHeight === this._explicitHeight) //!isNaN
+			{
+				super.height = this._explicitHeight;
+			}
 		}
 
 		/**
