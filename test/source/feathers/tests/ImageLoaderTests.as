@@ -196,5 +196,37 @@ package feathers.tests
 			
 			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when using ScaleMode.NONE and setting larger explicit width.", textureSize, this._loader.height);
 		}
+
+		[Test]
+		public function testAutoSizeWidthAfterSettingHeightLarger():void
+		{
+			var textureWidth:Number = 20;
+			var textureHeight:Number = 15;
+			var expectedWidth:Number = 200;
+			var updatedHeight:Number = 150;
+			this._texture = Texture.fromColor(textureWidth, textureHeight);
+			this._loader.source = this._texture;
+			this._loader.height = updatedHeight;
+			this._loader.scaleMode = ScaleMode.SHOW_ALL;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when setting explicit height larger than texture height.", expectedWidth, this._loader.width);
+		}
+
+		[Test]
+		public function testAutoSizeHeightAfterSettingWidthLarger():void
+		{
+			var textureWidth:Number = 20;
+			var textureHeight:Number = 15;
+			var updatedWidth:Number = 200;
+			var expectedHeight:Number = 150;
+			this._texture = Texture.fromColor(textureWidth, textureHeight);
+			this._loader.source = this._texture;
+			this._loader.width = updatedWidth;
+			this._loader.scaleMode = ScaleMode.SHOW_ALL;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width.", expectedHeight, this._loader.height);
+		}
 	}
 }
