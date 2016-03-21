@@ -57,6 +57,7 @@ package
 	import feathers.tests.ScrollBarHorizontalTests;
 	import feathers.tests.ScrollContainerTests;
 	import feathers.tests.ScrollerTests;
+	import feathers.tests.SimpleScrollBarMeasurementTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderHorizontalMeasurementTests;
@@ -179,6 +180,7 @@ package
 				ProgressBarMeasurementTests,
 				RadioTests,
 				SimpleScrollBarHorizontalTests,
+				SimpleScrollBarMeasurementTests,
 				ScreenNavigatorTests,
 				ScrollBarHorizontalTests,
 				ScrollContainerTests,
