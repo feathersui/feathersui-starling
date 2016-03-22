@@ -158,30 +158,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function set x(value:Number):void
-		{
-			super.x = value;
-			if(this.currentBackgroundSkin !== null)
-			{
-				this.currentBackgroundSkin.setRequiresRedraw();
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		override public function set y(value:Number):void
-		{
-			super.y = value;
-			if(this.currentBackgroundSkin !== null)
-			{
-				this.currentBackgroundSkin.setRequiresRedraw();
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _layout:ILayout;
 
 		/**
@@ -571,6 +547,18 @@ package feathers.controls
 				painter.popState();
 			}
 			super.render(painter);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function setRequiresRedraw():void
+		{
+			if(this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.setRequiresRedraw();
+			}
+			super.setRequiresRedraw();
 		}
 
 		/**
