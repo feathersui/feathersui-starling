@@ -2183,8 +2183,12 @@ package feathers.controls.text
 			{
 				this._measuredHeight = yPosition;
 			}
-
-			this.alignTextLines(textLines, width, this._textAlign);
+			else
+			{
+				//no need to align the measurement text lines because they won't
+				//be rendered
+				this.alignTextLines(textLines, width, this._textAlign);
+			}
 
 			inactiveTextLineCount = HELPER_TEXT_LINES.length;
 			for(i = 0; i < inactiveTextLineCount; i++)
