@@ -520,6 +520,10 @@ package feathers.controls
 		 */
 		override public function render(painter:Painter):void
 		{
+			if(this.requiresRedraw && this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.setRequiresRedraw();
+			}
 			if(this.currentBackgroundSkin &&
 				this.currentBackgroundSkin.visible &&
 				this.currentBackgroundSkin.alpha > 0)
@@ -547,18 +551,6 @@ package feathers.controls
 				painter.popState();
 			}
 			super.render(painter);
-		}
-
-		/**
-		 * @private
-		 */
-		override public function setRequiresRedraw():void
-		{
-			if(this.currentBackgroundSkin !== null)
-			{
-				this.currentBackgroundSkin.setRequiresRedraw();
-			}
-			super.setRequiresRedraw();
 		}
 
 		/**
