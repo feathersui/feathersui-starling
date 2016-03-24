@@ -2073,9 +2073,7 @@ package feathers.controls
 
 			if(stylesInvalid || stateInvalid)
 			{
-				this.longPress.isEnabled = this._isEnabled && this._isLongPressEnabled;
-				this.longPress.longPressDuration = this._longPressDuration;
-				this.keyToTrigger.isEnabled = this._isEnabled;
+				this.refreshLongPressEvents();
 				this.refreshIcon();
 			}
 
@@ -2533,6 +2531,24 @@ package feathers.controls
 				return result;
 			}
 			return this._defaultLabelProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshTriggeredEvents():void
+		{
+			super.refreshTriggeredEvents();
+			this.keyToTrigger.isEnabled = this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshLongPressEvents():void
+		{
+			this.longPress.isEnabled = this._isEnabled && this._isLongPressEnabled;
+			this.longPress.longPressDuration = this._longPressDuration;
 		}
 		
 		/**

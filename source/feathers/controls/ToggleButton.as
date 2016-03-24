@@ -1074,10 +1074,7 @@ package feathers.controls
 			
 			if(stylesInvalid || stateInvalid)
 			{
-				this.tapToSelect.isEnabled = this._isEnabled && this._isToggle;
-				this.tapToSelect.tapToDeselect = this._isToggle;
-				this.keyToSelect.isEnabled = this._isEnabled && this._isToggle;
-				this.keyToSelect.keyToDeselect = this._isToggle;
+				this.refreshSelectionEvents();
 			}
 			
 			super.draw();
@@ -1123,6 +1120,17 @@ package feathers.controls
 				return this._defaultIcon;
 			}
 			return super.getCurrentIcon();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshSelectionEvents():void
+		{
+			this.tapToSelect.isEnabled = this._isEnabled && this._isToggle;
+			this.tapToSelect.tapToDeselect = this._isToggle;
+			this.keyToSelect.isEnabled = this._isEnabled && this._isToggle;
+			this.keyToSelect.keyToDeselect = this._isToggle;
 		}
 	}
 }

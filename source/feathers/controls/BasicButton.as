@@ -326,7 +326,7 @@ package feathers.controls
 
 			if(stylesInvalid || stateInvalid)
 			{
-				this.tapToTrigger.isEnabled = this._isEnabled;
+				this.refreshTriggeredEvents();
 				this.refreshSkin();
 			}
 
@@ -510,6 +510,14 @@ package feathers.controls
 			{
 				IValidating(this.currentSkin).validate();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTriggeredEvents():void
+		{
+			this.tapToTrigger.isEnabled = this._isEnabled;
 		}
 
 		/**
