@@ -1,6 +1,8 @@
 package feathers.tests
 {
 	import feathers.controls.ButtonState;
+	import feathers.controls.ImageLoader;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 
 	import flash.geom.Point;
@@ -8,11 +10,11 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.textures.Texture;
 
 	public class DefaultListItemRendererInternalStateTests
 	{
@@ -28,9 +30,7 @@ package feathers.tests
 			this._itemRenderer.owner = this._list;
 			this._itemRenderer.index = 0;
 			this._itemRenderer.data = {};
-			this._itemRenderer.itemHasAccessory = false;
 			this._itemRenderer.useStateDelayTimer = false;
-			this._itemRenderer.isQuickHitAreaEnabled = true;
 			TestFeathers.starlingRoot.addChild(this._itemRenderer);
 		}
 
@@ -58,6 +58,9 @@ package feathers.tests
 		[Test]
 		public function testGetAccessoryForState():void
 		{
+			this._itemRenderer.isQuickHitAreaEnabled = true;
+			this._itemRenderer.itemHasAccessory = false;
+
 			var defaultAccessory:Quad = new Quad(200, 200);
 			this._itemRenderer.defaultAccessory = defaultAccessory;
 
@@ -82,6 +85,9 @@ package feathers.tests
 		[Test]
 		public function testDefaultCurrentAccessory():void
 		{
+			this._itemRenderer.isQuickHitAreaEnabled = true;
+			this._itemRenderer.itemHasAccessory = false;
+
 			var defaultAccessory:Quad = new Quad(200, 200);
 			this._itemRenderer.defaultAccessory = defaultAccessory;
 
@@ -120,6 +126,9 @@ package feathers.tests
 		[Test]
 		public function testCurrentAccessoryWithSetAccessoryForState():void
 		{
+			this._itemRenderer.isQuickHitAreaEnabled = true;
+			this._itemRenderer.itemHasAccessory = false;
+			
 			var defaultAccessory:Quad = new Quad(200, 200);
 			this._itemRenderer.defaultAccessory = defaultAccessory;
 
@@ -166,10 +175,161 @@ package feathers.tests
 			Assert.assertStrictlyEquals("Item Renderer state is not ButtonState.DOWN on TouchPhase.BEGAN", ButtonState.DOWN, this._itemRenderer.currentState);
 			Assert.assertStrictlyEquals("Item Renderer accessory does not match accessory set with setAccessoryForState() when currentState is ButtonState.DOWN and accessory not provided for this state", downAccessory, this._itemRenderer.currentAccessoryInternal);
 		}
+
+		[Test]
+		public function testTapToSelectIsEnabledWhenIsSelectableOnAccessoryTouchIsFalseWithAccessorySourceFunction():void
+		{
+			var accessory:ImageLoader;
+			var texture:Texture;
+			this._itemRenderer.itemHasAccessory = true;
+			this._itemRenderer.accessoryLoaderFactory = function():ImageLoader
+			{
+				accessory = new ImageLoader();
+				return accessory;
+			}
+			this._itemRenderer.accessorySourceFunction = function():Texture
+			{
+				if(texture)
+				{
+					texture.dispose();
+				}
+				texture = Texture.fromColor(200, 200, 0xff00ff);
+				return texture;
+			}
+			this._itemRenderer.isSelectableOnAccessoryTouch = false;
+			this._itemRenderer.hasLabelTextRenderer = false;
+			this._itemRenderer.validate();
+
+			var position:Point = new Point(20, 20);
+			var target:DisplayObject = this._itemRenderer.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be item renderer accessory", accessory, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is false on TouchPhase.BEGAN", this._itemRenderer.tapToSelectInternal.isEnabled);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is false on TouchPhase.ENDED", this._itemRenderer.tapToSelectInternal.isEnabled);
+
+			texture.dispose();
+		}
+
+		[Test]
+		public function testTapToSelectIsEnabledWhenIsSelectableOnAccessoryTouchIsTrueWithAccessorySourceFunction():void
+		{
+			var accessory:ImageLoader;
+			var texture:Texture;
+			this._itemRenderer.itemHasAccessory = true;
+			this._itemRenderer.accessoryLoaderFactory = function():ImageLoader
+			{
+				accessory = new ImageLoader();
+				return accessory;
+			}
+			this._itemRenderer.accessorySourceFunction = function():Texture
+			{
+				if(texture)
+				{
+					texture.dispose();
+				}
+				texture = Texture.fromColor(200, 200, 0xff00ff);
+				return texture;
+			}
+			this._itemRenderer.isSelectableOnAccessoryTouch = true;
+			this._itemRenderer.hasLabelTextRenderer = false;
+			this._itemRenderer.validate();
+
+			var position:Point = new Point(20, 20);
+			var target:DisplayObject = this._itemRenderer.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be item renderer accessory", accessory, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is true on TouchPhase.BEGAN", this._itemRenderer.tapToSelectInternal.isEnabled);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is true on TouchPhase.ENDED", this._itemRenderer.tapToSelectInternal.isEnabled);
+
+			texture.dispose();
+		}
+
+		[Test]
+		public function testTapToSelectIsEnabledWhenIsSelectableOnAccessoryTouchIsFalseWithDefaultAccessory():void
+		{
+			this._itemRenderer.itemHasAccessory = false;
+			var defaultAccessory:LayoutGroup = new LayoutGroup();
+			defaultAccessory.backgroundSkin = new Quad(200, 200);
+			this._itemRenderer.defaultAccessory = defaultAccessory;
+			this._itemRenderer.isSelectableOnAccessoryTouch = false;
+			this._itemRenderer.hasLabelTextRenderer = false;
+			this._itemRenderer.validate();
+
+			var position:Point = new Point(20, 20);
+			var target:DisplayObject = this._itemRenderer.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be item renderer accessory", defaultAccessory, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertFalse("Item Renderer TapToSelect is incorrectly enabled when isSelectableOnAccessoryTouch is false on TouchPhase.BEGAN", this._itemRenderer.tapToSelectInternal.isEnabled);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is false on TouchPhase.ENDED", this._itemRenderer.tapToSelectInternal.isEnabled);
+		}
+
+		[Test]
+		public function testTapToSelectIsEnabledWhenIsSelectableOnAccessoryTouchIsTrueWithDefaultAccessory():void
+		{
+			this._itemRenderer.itemHasAccessory = false;
+			var defaultAccessory:LayoutGroup = new LayoutGroup();
+			defaultAccessory.backgroundSkin = new Quad(200, 200);
+			this._itemRenderer.defaultAccessory = defaultAccessory;
+			this._itemRenderer.isSelectableOnAccessoryTouch = true;
+			this._itemRenderer.hasLabelTextRenderer = false;
+			this._itemRenderer.validate();
+
+			var position:Point = new Point(20, 20);
+			var target:DisplayObject = this._itemRenderer.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be item renderer accessory", defaultAccessory, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is true on TouchPhase.BEGAN", this._itemRenderer.tapToSelectInternal.isEnabled);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._itemRenderer.validate();
+			Assert.assertTrue("Item Renderer TapToSelect is incorrectly disabled when isSelectableOnAccessoryTouch is true on TouchPhase.ENDED", this._itemRenderer.tapToSelectInternal.isEnabled);
+		}
 	}
 }
 
 import feathers.controls.renderers.DefaultListItemRenderer;
+import feathers.utils.touch.TapToSelect;
 
 import starling.display.DisplayObject;
 
@@ -178,6 +338,11 @@ class DefaultListItemRendererWithInternalState extends DefaultListItemRenderer
 	public function DefaultListItemRendererWithInternalState()
 	{
 		super();
+	}
+
+	public function get tapToSelectInternal():TapToSelect
+	{
+		return this.tapToSelect;
 	}
 
 	public function get currentAccessoryInternal():DisplayObject

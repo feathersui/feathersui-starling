@@ -446,7 +446,6 @@ package feathers.controls.renderers
 			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
 			this.addEventListener(Event.REMOVED_FROM_STAGE, itemRenderer_removedFromStageHandler);
-			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
 
 		/**
@@ -1247,7 +1246,9 @@ package feathers.controls.renderers
 		/**
 		 * If enabled, the item renderer may be selected by touching the
 		 * accessory. By default, the accessory will not trigger selection when
-		 * using <code>accessoryField</code> or <code>accessoryFunction</code>.
+		 * using <code>defaultAccessory</code>, <code>accessoryField</code>, or
+		 * <code>accessoryFunction</code> and the accessory is a Feathers
+		 * component.
 		 *
 		 * <p>In the following example, the item renderer can be selected when
 		 * the accessory is touched:</p>
@@ -4829,6 +4830,26 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function refreshSelectionEvents():void
+		{
+			var selectionEnabled:Boolean = this._isEnabled &&
+				(this._isToggle || this.isSelectableWithoutToggle);
+			if(this._itemHasSelectable)
+			{
+				selectionEnabled &&= this.itemToSelectable(this._data);
+			}
+			if(this.accessoryTouchPointID >= 0)
+			{
+				selectionEnabled &&= this._isSelectableOnAccessoryTouch;
+			}
+			this.tapToSelect.isEnabled = selectionEnabled;
+			this.tapToSelect.tapToDeselect = this._isToggle;
+			this.keyToSelect.isEnabled = false;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function owner_scrollStartHandler(event:Event):void
 		{
 			if(this._delayTextureCreationOnScroll)
@@ -4889,18 +4910,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function itemRenderer_triggeredHandler(event:Event):void
-		{
-			if(this._isToggle || !this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data)))
-			{
-				return;
-			}
-			this.isSelected = true;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
 		{
 			super.changeState(this._delayedCurrentState);
@@ -4952,6 +4961,7 @@ package feathers.controls.renderers
 					return;
 				}
 				this.accessoryTouchPointID = -1;
+				this.refreshSelectionEvents();
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
@@ -4961,6 +4971,7 @@ package feathers.controls.renderers
 					return;
 				}
 				this.accessoryTouchPointID = touch.id;
+				this.refreshSelectionEvents();
 			}
 		}
 
