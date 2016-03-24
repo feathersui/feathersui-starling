@@ -14,6 +14,7 @@ package feathers.controls.renderers
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
@@ -3585,6 +3586,8 @@ package feathers.controls.renderers
 			{
 				HELPER_POINT.setTo(0, 0);
 			}
+			this.resetSkinDimensionsForMeasurement();
+			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
@@ -3603,20 +3606,10 @@ package feathers.controls.renderers
 					newWidth = this.addAccessoryWidth(newWidth);
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(newWidth !== newWidth) //isNaN
+				if(this.currentSkin !== null &&
+					this.currentSkin.width > newWidth)
 				{
-					newWidth = this._originalSkinWidth;
-					if(newWidth !== newWidth) //isNaN
-					{
-						newWidth = 0;
-					}
-				}
-				else if(this._originalSkinWidth === this._originalSkinWidth) //!isNaN
-				{
-					if(this._originalSkinWidth > newWidth)
-					{
-						newWidth = this._originalSkinWidth;
-					}
+					newWidth = this.currentSkin.width;
 				}
 			}
 
@@ -3638,20 +3631,10 @@ package feathers.controls.renderers
 					newHeight = this.addAccessoryHeight(newHeight);
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(newHeight !== newHeight) //isNaN
+				if(this.currentSkin !== null &&
+					this.currentSkin.height > newHeight)
 				{
-					newHeight = this._originalSkinHeight;
-					if(newHeight !== newHeight) //isNaN
-					{
-						newHeight = 0;
-					}
-				}
-				else if(this._originalSkinHeight === this._originalSkinHeight) //!isNaN
-				{
-					if(this._originalSkinHeight > newHeight)
-					{
-						newHeight = this._originalSkinHeight;
-					}
+					newHeight = this.currentSkin.height;
 				}
 			}
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;

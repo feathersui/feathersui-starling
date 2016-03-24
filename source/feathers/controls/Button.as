@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IStateObserver;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
@@ -2123,6 +2124,9 @@ package feathers.controls
 				adjustedGap = this._minGap;
 			}
 			
+			this.resetSkinDimensionsForMeasurement();
+			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
+			
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
@@ -2135,7 +2139,7 @@ package feathers.controls
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
-				if(labelRenderer)
+				if(labelRenderer !== null)
 				{
 					newMinWidth = HELPER_POINT.x;
 				}
@@ -2143,9 +2147,9 @@ package feathers.controls
 				{
 					newMinWidth = 0;
 				}
-				if(this.currentIcon)
+				if(this.currentIcon !== null)
 				{
-					if(labelRenderer) //both label and icon
+					if(labelRenderer !== null) //both label and icon
 					{
 						if(this._iconPosition !== RelativePosition.TOP && this._iconPosition !== RelativePosition.BOTTOM &&
 							this._iconPosition !== RelativePosition.MANUAL)
@@ -2189,25 +2193,26 @@ package feathers.controls
 					}
 				}
 				newMinWidth += this._paddingLeft + this._paddingRight;
-				if(this.currentSkin is IFeathersControl)
+				if(this.currentSkin !== null)
 				{
-					var skinMinWidth:Number = IFeathersControl(this.currentSkin).minWidth;
-					if(skinMinWidth > newMinWidth)
+					if(measureSkin !== null)
 					{
-						newMinWidth = skinMinWidth;
+						if(measureSkin.minWidth > newMinWidth)
+						{
+							newMinWidth = measureSkin.minWidth;
+						}
 					}
-				}
-				else if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
-					this._originalSkinWidth > newMinWidth)
-				{
-					newMinWidth = this._originalSkinWidth;
+					else if(this.currentSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentSkin.width;
+					}
 				}
 			}
 
 			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
-				if(labelRenderer)
+				if(labelRenderer !== null)
 				{
 					newMinHeight = HELPER_POINT.y;
 				}
@@ -2215,9 +2220,9 @@ package feathers.controls
 				{
 					newMinHeight = 0;
 				}
-				if(this.currentIcon)
+				if(this.currentIcon !== null)
 				{
-					if(labelRenderer) //both label and icon
+					if(labelRenderer !== null) //both label and icon
 					{
 						if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
 						{
@@ -2260,25 +2265,26 @@ package feathers.controls
 					}
 				}
 				newMinHeight += this._paddingTop + this._paddingBottom;
-				if(this.currentSkin is IFeathersControl)
+				if(this.currentSkin !== null)
 				{
-					var skinMinHeight:Number = IFeathersControl(this.currentSkin).minHeight;
-					if(skinMinHeight > newMinHeight)
+					if(measureSkin !== null)
 					{
-						newMinHeight = skinMinHeight;
+						if(measureSkin.minHeight > newMinHeight)
+						{
+							newMinHeight = measureSkin.minHeight;
+						}
 					}
-				}
-				else if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
-					this._originalSkinHeight > newMinHeight)
-				{
-					newMinHeight = this._originalSkinHeight;
+					else if(this.currentSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentSkin.height;
+					}
 				}
 			}
 			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(labelRenderer)
+				if(labelRenderer !== null)
 				{
 					newWidth = HELPER_POINT.x;
 				}
@@ -2286,9 +2292,9 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
-				if(this.currentIcon)
+				if(this.currentIcon !== null)
 				{
-					if(labelRenderer) //both label and icon
+					if(labelRenderer !== null) //both label and icon
 					{
 						if(this._iconPosition !== RelativePosition.TOP && this._iconPosition !== RelativePosition.BOTTOM &&
 							this._iconPosition !== RelativePosition.MANUAL)
@@ -2306,17 +2312,17 @@ package feathers.controls
 					}
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
-					this._originalSkinWidth > newWidth)
+				if(this.currentSkin !== null &&
+					this.currentSkin.width > newWidth)
 				{
-					newWidth = this._originalSkinWidth;
+					newWidth = this.currentSkin.width;
 				}
 			}
 
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(labelRenderer)
+				if(labelRenderer !== null)
 				{
 					newHeight = HELPER_POINT.y;
 				}
@@ -2324,9 +2330,9 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
-				if(this.currentIcon)
+				if(this.currentIcon !== null)
 				{
-					if(labelRenderer) //both label and icon
+					if(labelRenderer !== null) //both label and icon
 					{
 						if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
 						{
@@ -2343,10 +2349,10 @@ package feathers.controls
 					}
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
-					this._originalSkinHeight > newHeight)
+				if(this.currentSkin !== null &&
+					this.currentSkin.height > newHeight)
 				{
-					newHeight = this._originalSkinHeight;
+					newHeight = this.currentSkin.height;
 				}
 			}
 
