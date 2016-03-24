@@ -520,14 +520,18 @@ package feathers.controls
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this.requiresRedraw && this.currentBackgroundSkin !== null)
-			{
-				this.currentBackgroundSkin.setRequiresRedraw();
-			}
-			if(this.currentBackgroundSkin &&
+			if(this.currentBackgroundSkin !== null &&
 				this.currentBackgroundSkin.visible &&
 				this.currentBackgroundSkin.alpha > 0)
 			{
+				//render() won't be called unless the LayoutGroup requires a
+				//redraw, so it's not a performance issue to set this flag on
+				//the background skin.
+				//this is needed to ensure that the background skin position and
+				//things are properly updated when the LayoutGroup is
+				//transformed
+				this.currentBackgroundSkin.setRequiresRedraw();
+				
 				var mask:DisplayObject = this.currentBackgroundSkin.mask;
 				var filter:FragmentFilter = this.currentBackgroundSkin.filter;
 				painter.pushState();
