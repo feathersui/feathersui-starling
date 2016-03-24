@@ -581,6 +581,10 @@ package feathers.core
 			{
 				return;
 			}
+			if(this.scaleX !== 1)
+			{
+				value /= this.scaleX;
+			}
 			this._explicitWidth = value;
 			if(valueIsNaN)
 			{
@@ -674,6 +678,10 @@ package feathers.core
 			if(valueIsNaN && this._explicitHeight !== this._explicitHeight)
 			{
 				return;
+			}
+			if(this.scaleY !== 1)
+			{
+				value /= this.scaleY;
 			}
 			this._explicitHeight = value;
 			if(valueIsNaN)

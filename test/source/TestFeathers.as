@@ -53,6 +53,7 @@ package
 	import feathers.tests.ProgressBarMeasurementTests;
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.RadioTests;
+	import feathers.tests.ScaleTests;
 	import feathers.tests.ScreenNavigatorTests;
 	import feathers.tests.ScrollBarHorizontalMeasurementTests;
 	import feathers.tests.ScrollBarHorizontalTests;
@@ -146,6 +147,7 @@ package
 				InvalidateTests,
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
+				ScaleTests,
 				
 				//individual component tests
 				BasicButtonTests,
