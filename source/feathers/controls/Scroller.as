@@ -10,6 +10,8 @@ package feathers.controls
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -2123,12 +2125,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundWidth:Number = NaN;
+		protected var _explicitBackgroundWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundHeight:Number = NaN;
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
 
 		/**
 		 * @private
@@ -3221,18 +3233,18 @@ package feathers.controls
 			do
 			{
 				this._hasViewPortBoundsChanged = false;
-				//if we don't need to do any measurement, we can skip this stuff
-				//and improve performance
-				if(needsWidthOrHeight && this._measureViewPort)
+				//even if fixed, we need to measure without them first because
+				//if the scroll policy is auto, we only show them when needed.
+				if(scrollInvalid || dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
-					//even if fixed, we need to measure without them first because
-					//if the scroll policy is auto, we only show them when needed.
-					if(scrollInvalid || dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
+					//if we don't need to do any measurement, we can skip
+					//this stuff and improve performance
+					if(needsWidthOrHeight && this._measureViewPort)
 					{
 						this.calculateViewPortOffsets(true, false);
 						this.refreshViewPortBoundsWithoutFixedScrollBars();
-						this.calculateViewPortOffsets(false, false);
 					}
+					this.calculateViewPortOffsets(false, false);
 				}
 
 				sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -3274,11 +3286,7 @@ package feathers.controls
 			}
 
 			this.showOrHideChildren();
-
-			if(scrollInvalid || sizeInvalid || stylesInvalid || stateInvalid || scrollBarInvalid)
-			{
-				this.layoutChildren();
-			}
+			this.layoutChildren();
 
 			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 			{
@@ -3311,7 +3319,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -3322,32 +3330,39 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
+			this.resetBackgroundSkinDimensionsForMeasurement();
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			if(this.currentBackgroundSkin is IValidating)
+			{
+				IValidating(this.currentBackgroundSkin).validate();
+			}
+
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsWidth)
 			{
 				if(this._measureViewPort)
 				{
 					newWidth = this._viewPort.visibleWidth;
-					if(newWidth !== newWidth) //isNaN
-					{
-						newWidth = this._viewPort.width;
-					}
-					newWidth += this._rightViewPortOffset + this._leftViewPortOffset;
 				}
 				else
 				{
 					newWidth = 0;
 				}
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-					this.originalBackgroundWidth > newWidth)
+				newWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.width > newWidth)
 				{
-					newWidth = this.originalBackgroundWidth;
+					newWidth = this.currentBackgroundSkin.width;
 				}
 			}
 			if(needsHeight)
@@ -3355,23 +3370,71 @@ package feathers.controls
 				if(this._measureViewPort)
 				{
 					newHeight = this._viewPort.visibleHeight;
-					if(newHeight !== newHeight) //isNaN
-					{
-						newHeight = this._viewPort.height;
-					}
-					newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
 				}
 				else
 				{
 					newHeight = 0;
 				}
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-					this.originalBackgroundHeight > newHeight)
+				newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
 				{
-					newHeight = this.originalBackgroundHeight;
+					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			if(needsMinWidth)
+			{
+				if(this._measureViewPort)
+				{
+					newMinWidth = this._viewPort.minVisibleWidth;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				newMinWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minWidth > newMinWidth)
+						{
+							newMinWidth = measureBackground.minWidth;
+						}
+					}
+					else if(this.currentBackgroundSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentBackgroundSkin.width;
+					}
+				}
+			}
+			if(needsMinHeight)
+			{
+				if(this._measureViewPort)
+				{
+					newMinHeight = this._viewPort.minVisibleHeight;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				newMinHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minHeight > newMinHeight)
+						{
+							newMinHeight = measureBackground.minHeight;
+						}
+					}
+					else if(this.currentBackgroundSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentBackgroundSkin.height;
+					}
+				}
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -3456,24 +3519,79 @@ package feathers.controls
 					this.removeRawChildInternal(this.currentBackgroundSkin);
 				}
 				this.currentBackgroundSkin = newCurrentBackgroundSkin;
-				if(this.currentBackgroundSkin)
+				if(this.currentBackgroundSkin !== null)
 				{
 					this.addRawChildAtInternal(this.currentBackgroundSkin, 0);
+
+					if(this.currentBackgroundSkin is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+					}
 				}
 			}
-			if(this.currentBackgroundSkin)
+			if(this.currentBackgroundSkin !== null)
 			{
 				//force it to the bottom
 				this.setRawChildIndexInternal(this.currentBackgroundSkin, 0);
+			}
+		}
 
-				if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
+		/**
+		 * @private
+		 * Reset the skin dimensions so that we get an accurate measurement
+		 */
+		protected function resetBackgroundSkinDimensionsForMeasurement():void
+		{
+			if(this.currentBackgroundSkin === null)
+			{
+				return;
+			}
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			if(needsWidth)
+			{
+				this.currentBackgroundSkin.width = this._explicitBackgroundWidth;
+			}
+			else
+			{
+				this.currentBackgroundSkin.width = this._explicitWidth;
+			}
+			if(needsHeight)
+			{
+				this.currentBackgroundSkin.height = this._explicitBackgroundHeight;
+			}
+			else
+			{
+				this.currentBackgroundSkin.height = this._explicitHeight;
+			}
+			var measureSkin:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			if(measureSkin !== null)
+			{
+				var skinMinWidth:Number = this._explicitMinWidth;
+				if(skinMinWidth !== skinMinWidth || //isNaN
+					this._explicitBackgroundMinWidth > skinMinWidth)
 				{
-					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+					skinMinWidth = this._explicitBackgroundMinWidth;
 				}
-				if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
+				measureSkin.minWidth = skinMinWidth;
+				var skinMinHeight:Number = this._explicitMinHeight;
+				if(skinMinHeight !== skinMinHeight || //isNaN
+					this._explicitBackgroundMinHeight > skinMinHeight)
 				{
-					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+					skinMinHeight = this._explicitBackgroundMinHeight;
 				}
+				measureSkin.minHeight = skinMinHeight;
 			}
 		}
 
@@ -3572,43 +3690,10 @@ package feathers.controls
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
 			this._viewPort.visibleWidth = this._explicitWidth - horizontalWidthOffset;
-			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
-			var minVisibleWidth:Number = this._explicitMinWidth;
-			if(minVisibleWidth !== minVisibleWidth) //isNaN
-			{
-				minVisibleWidth = 0;
-			}
-			minVisibleWidth -= horizontalWidthOffset;
-			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-			 this.originalBackgroundWidth > minVisibleWidth)
-			{
-				//to avoid going through the loop too many times, we need to
-				//account for the background skin's size.
-				minVisibleWidth = this.originalBackgroundWidth;
-			}
-			if(minVisibleWidth < 0)
-			{
-				minVisibleWidth = 0;
-			}
-			this._viewPort.minVisibleWidth = minVisibleWidth;
+			this._viewPort.minVisibleWidth = this._explicitMinWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-			var minVisibleHeight:Number = this.actualMinHeight;
-			if(minVisibleHeight !== minVisibleHeight) //isNaN
-			{
-				minVisibleHeight = 0;
-			}
-			minVisibleHeight -= verticalHeightOffset;
-			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-				this.originalBackgroundHeight > minVisibleHeight)
-			{
-				//see note above about the background skin size
-				minVisibleHeight = this.originalBackgroundHeight;
-			}
-			if(minVisibleHeight < 0)
-			{
-				minVisibleHeight = 0;
-			}
-			this._viewPort.minVisibleHeight = minVisibleHeight;
+			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
+			this._viewPort.minVisibleHeight = this._explicitMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
@@ -3629,54 +3714,14 @@ package feathers.controls
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
-			var needsWidthOrHeight:Boolean = this._explicitWidth != this._explicitWidth ||
-				this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!(this._measureViewPort && needsWidthOrHeight))
-			{
-				//if we didn't need to do any measurement, we would have skipped
-				//setting this stuff earlier, and now is the last chance
-				var minVisibleWidth:Number = this._explicitMinWidth;
-				if(minVisibleWidth !== minVisibleWidth) //isNaN
-				{
-					minVisibleWidth = 0;
-				}
-				minVisibleWidth -= horizontalWidthOffset;
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-					this.originalBackgroundWidth > minVisibleWidth)
-				{
-					//to avoid going through the loop too many times, we need to
-					//account for the background skin's size
-					minVisibleWidth = this.originalBackgroundWidth;
-				}
-				if(minVisibleWidth < 0)
-				{
-					minVisibleWidth = 0;
-				}
-				this._viewPort.minVisibleWidth = minVisibleWidth;
-				this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-				var minVisibleHeight:Number = this._explicitMinHeight;
-				if(minVisibleHeight !== minVisibleHeight) //isNaN
-				{
-					minVisibleHeight = 0;
-				}
-				minVisibleHeight -= verticalHeightOffset;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-					this.originalBackgroundHeight > minVisibleHeight)
-				{
-					//see note above about the background skin size
-					minVisibleHeight = this.originalBackgroundHeight;
-				}
-				if(minVisibleHeight < 0)
-				{
-					minVisibleHeight = 0;
-				}
-				this._viewPort.minVisibleHeight = minVisibleHeight;
-				this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
-				this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
-				this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
-			}
 			this._viewPort.visibleWidth = this.actualWidth - horizontalWidthOffset;
+			this._viewPort.minVisibleWidth = this.actualMinWidth - horizontalWidthOffset;
 			this._viewPort.visibleHeight = this.actualHeight - verticalHeightOffset;
+			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
+			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
+			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
+			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 			this._viewPort.validate();
 		}
 

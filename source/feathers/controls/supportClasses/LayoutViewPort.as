@@ -23,24 +23,27 @@ package feathers.controls.supportClasses
 		{
 		}
 
-		private var _minVisibleWidth:Number = 0;
+		private var _actualMinVisibleWidth:Number = 0;
+
+		private var _explicitMinVisibleWidth:Number;
 
 		public function get minVisibleWidth():Number
 		{
-			return this._minVisibleWidth;
+			if(this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth) //isNaN
+			{
+				return this._actualMinVisibleWidth;
+			}
+			return this._explicitMinVisibleWidth;
 		}
 
 		public function set minVisibleWidth(value:Number):void
 		{
-			if(this._minVisibleWidth == value)
+			if(this._explicitMinVisibleWidth == value ||
+				(value !== value && this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth)) //isNaN
 			{
 				return;
 			}
-			if(value !== value) //isNaN
-			{
-				throw new ArgumentError("minVisibleWidth cannot be NaN");
-			}
-			this._minVisibleWidth = value;
+			this._explicitMinVisibleWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -67,7 +70,7 @@ package feathers.controls.supportClasses
 
 		private var _actualVisibleWidth:Number = 0;
 
-		private var _explicitVisibleWidth:Number = NaN;
+		private var _explicitVisibleWidth:Number;
 
 		public function get visibleWidth():Number
 		{
@@ -89,24 +92,27 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		private var _minVisibleHeight:Number = 0;
+		private var _actualMinVisibleHeight:Number = 0;
+
+		private var _explicitMinVisibleHeight:Number;
 
 		public function get minVisibleHeight():Number
 		{
-			return this._minVisibleHeight;
+			if(this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight) //isNaN
+			{
+				return this._actualMinVisibleHeight;
+			}
+			return this._explicitMinVisibleHeight;
 		}
 
 		public function set minVisibleHeight(value:Number):void
 		{
-			if(this._minVisibleHeight == value)
+			if(this._explicitMinVisibleHeight == value ||
+				(value !== value && this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight)) //isNaN
 			{
 				return;
 			}
-			if(value !== value) //isNaN
-			{
-				throw new ArgumentError("minVisibleHeight cannot be NaN");
-			}
-			this._minVisibleHeight = value;
+			this._explicitMinVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -133,7 +139,7 @@ package feathers.controls.supportClasses
 
 		private var _actualVisibleHeight:Number = 0;
 
-		private var _explicitVisibleHeight:Number = NaN;
+		private var _explicitVisibleHeight:Number;
 
 		public function get visibleHeight():Number
 		{
@@ -251,20 +257,26 @@ package feathers.controls.supportClasses
 			{
 				this.viewPortBounds.explicitHeight = this._explicitVisibleHeight;
 			}
-			this.viewPortBounds.minWidth = this._minVisibleWidth;
-			this.viewPortBounds.minHeight = this._minVisibleHeight;
+			this.viewPortBounds.minWidth = this._explicitMinVisibleWidth;
+			this.viewPortBounds.minHeight = this._explicitMinVisibleHeight;
 			this.viewPortBounds.maxWidth = this._maxVisibleWidth;
 			this.viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
 
 		override protected function handleLayoutResult():void
 		{
-			this.setSizeInternal(this._layoutResult.contentWidth,
-				this._layoutResult.contentHeight, false);
+			var contentWidth:Number = this._layoutResult.contentWidth;
+			var contentHeight:Number = this._layoutResult.contentHeight;
+			this.saveMeasurements(contentWidth, contentHeight,
+				contentWidth, contentHeight);
 			this._contentX = this._layoutResult.contentX;
 			this._contentY = this._layoutResult.contentY;
-			this._actualVisibleWidth = this._layoutResult.viewPortWidth;
-			this._actualVisibleHeight = this._layoutResult.viewPortHeight;
+			var viewPortWidth:Number = this._layoutResult.viewPortWidth;
+			var viewPortHeight:Number = this._layoutResult.viewPortHeight;
+			this._actualVisibleWidth = viewPortWidth;
+			this._actualVisibleHeight = viewPortHeight;
+			this._actualMinVisibleWidth = viewPortWidth;
+			this._actualMinVisibleHeight = viewPortHeight;
 		}
 
 		override protected function handleManualLayout():void
@@ -371,8 +383,8 @@ package feathers.controls.supportClasses
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = calculatedWidth;
 			this._layoutResult.contentHeight = calculatedHeight;
-			this._layoutResult.viewPortWidth = calculatedWidth;//this._actualVisibleWidth;
-			this._layoutResult.viewPortHeight = calculatedHeight;//this._actualVisibleHeight;
+			this._layoutResult.viewPortWidth = calculatedWidth;
+			this._layoutResult.viewPortHeight = calculatedHeight;
 		}
 
 		/**

@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
@@ -1337,16 +1338,24 @@ package feathers.controls
 				{
 					this.removeChild(oldSkin, false);
 				}
-				if(this.currentBackgroundSkin)
+				if(this.currentBackgroundSkin !== null)
 				{
 					this.addChildAt(this.currentBackgroundSkin, 0);
-					if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
+
+					if(this.currentBackgroundSkin is IMeasureDisplayObject)
 					{
-						this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
 					}
-					if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
+					else
 					{
-						this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
 					}
 				}
 			}

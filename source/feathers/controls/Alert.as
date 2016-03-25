@@ -751,6 +751,12 @@ package feathers.controls
 				return false;
 			}
 
+			this.resetBackgroundSkinDimensionsForMeasurement();
+			if(this.currentBackgroundSkin is IValidating)
+			{
+				IValidating(this.currentBackgroundSkin).validate();
+			}
+			
 			if(this._icon is IValidating)
 			{
 				IValidating(this._icon).validate();
@@ -761,8 +767,6 @@ package feathers.controls
 			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 			this._ignoreFooterResizing = true;
 
-			var oldHeaderWidth:Number = this.header.width;
-			var oldHeaderHeight:Number = this.header.height;
 			this.header.width = this._explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
@@ -770,8 +774,6 @@ package feathers.controls
 
 			if(this.footer)
 			{
-				var oldFooterWidth:Number = this.footer.width;
-				var oldFooterHeight:Number = this.footer.height;
 				this.footer.width = this._explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
@@ -796,10 +798,10 @@ package feathers.controls
 				{
 					newWidth = Math.max(newWidth, this.footer.width);
 				}
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-					this.originalBackgroundWidth > newWidth)
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.width > newWidth)
 				{
-					newWidth = this.originalBackgroundWidth;
+					newWidth = this.currentBackgroundSkin.width;
 				}
 			}
 			if(needsHeight)
@@ -814,20 +816,13 @@ package feathers.controls
 					}
 				}
 				newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-					this.originalBackgroundHeight > newHeight)
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
 				{
-					newHeight = this.originalBackgroundHeight;
+					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
 
-			this.header.width = oldHeaderWidth;
-			this.header.height = oldHeaderHeight;
-			if(this.footer)
-			{
-				this.footer.width = oldFooterWidth;
-				this.footer.height = oldFooterHeight;
-			}
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 

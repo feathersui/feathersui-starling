@@ -2,7 +2,6 @@ package feathers.tests
 {
 	import feathers.controls.Scroller;
 	import feathers.events.FeathersEventType;
-	import feathers.system.DeviceCapabilities;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 	import feathers.tests.supportClasses.ScrollerViewPort;
 
@@ -12,7 +11,6 @@ package feathers.tests
 	import org.flexunit.async.Async;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -71,39 +69,6 @@ package feathers.tests
 			this._scroller.dispose();
 			Assert.assertTrue("backgroundSkin not disposed when Scroller disposed.", backgroundSkin.isDisposed);
 			Assert.assertTrue("backgroundDisabledSkin not disposed when Scroller disposed.", backgroundDisabledSkin.isDisposed);
-		}
-
-		[Test]
-		public function testAutoSizeNoViewPortContentNoBackground():void
-		{
-			this._scroller.validate();
-			Assert.assertStrictlyEquals("The width of the scroller was not calculated correctly when empty.",
-				0, this._scroller.width);
-			Assert.assertStrictlyEquals("The height of the scroller was not calculated correctly when empty.",
-				0, this._scroller.height);
-		}
-
-		[Test]
-		public function testAutoSizeMinDimensionsNoViewPortContentNoBackground():void
-		{
-			this._scroller.minWidth = BACKGROUND_WIDTH;
-			this._scroller.minHeight = BACKGROUND_HEIGHT;
-			this._scroller.validate();
-			Assert.assertStrictlyEquals("The width of the scroller was not calculated correctly when empty.",
-			BACKGROUND_WIDTH, this._scroller.width);
-			Assert.assertStrictlyEquals("The height of the scroller was not calculated correctly when empty.",
-			BACKGROUND_HEIGHT, this._scroller.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithBackgroundAndNoViewPortContent():void
-		{
-			this._scroller.backgroundSkin = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-			this._scroller.validate();
-			Assert.assertStrictlyEquals("The width of the scroller was not calculated correctly with background skin and no children.",
-				BACKGROUND_WIDTH, this._scroller.width);
-			Assert.assertStrictlyEquals("The height of the scroller was not calculated correctly with background skin and no children.",
-				BACKGROUND_HEIGHT, this._scroller.height);
 		}
 
 		[Test]

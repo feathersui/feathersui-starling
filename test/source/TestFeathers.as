@@ -36,6 +36,7 @@ package
 	import feathers.tests.LabelMeasurementTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
+	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
@@ -46,6 +47,7 @@ package
 	import feathers.tests.MinAndMaxDimensionsTests;
 	import feathers.tests.NumericStepperMeasurementTests;
 	import feathers.tests.PageIndicatorMeasurementTests;
+	import feathers.tests.PanelMeasurementTests;
 	import feathers.tests.PickerListMeasurementTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
@@ -58,7 +60,9 @@ package
 	import feathers.tests.ScrollBarHorizontalMeasurementTests;
 	import feathers.tests.ScrollBarHorizontalTests;
 	import feathers.tests.ScrollBarVerticalMeasurementTests;
+	import feathers.tests.ScrollContainerMeasurementTests;
 	import feathers.tests.ScrollContainerTests;
+	import feathers.tests.ScrollerMeasurementTests;
 	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarMeasurementTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
@@ -173,11 +177,13 @@ package
 				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
+				LayoutGroupMeasurementTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
 				NumericStepperMeasurementTests,
 				PageIndicatorMeasurementTests,
+				PanelMeasurementTests,
 				PickerListTests,
 				PickerListMeasurementTests,
 				ProgressBarTests,
@@ -190,7 +196,9 @@ package
 				ScrollBarHorizontalMeasurementTests,
 				ScrollBarVerticalMeasurementTests,
 				ScrollContainerTests,
+				ScrollContainerMeasurementTests,
 				ScrollerTests,
+				ScrollerMeasurementTests,
 				SliderHorizontalTests,
 				SliderHorizontalMeasurementTests,
 				SliderVerticalMeasurementTests,

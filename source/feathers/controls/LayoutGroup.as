@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
@@ -250,12 +251,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundWidth:Number = NaN;
+		protected var _explicitBackgroundWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundHeight:Number = NaN;
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
 
 		/**
 		 * @private
@@ -663,30 +674,36 @@ package feathers.controls
 		protected function refreshBackgroundSkin():void
 		{
 			var oldBackgroundSkin:DisplayObject = this.currentBackgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
 			{
 				this.currentBackgroundSkin = this._backgroundDisabledSkin;
 			}
 			else
 			{
-				this.currentBackgroundSkin = this._backgroundSkin
-			}
-			if(this.currentBackgroundSkin)
-			{
-				if(this.originalBackgroundWidth !== this.originalBackgroundWidth ||
-					this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
-				{
-					if(this.currentBackgroundSkin is IValidating)
-					{
-						IValidating(this.currentBackgroundSkin).validate();
-					}
-					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
-					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
-				}
+				this.currentBackgroundSkin = this._backgroundSkin;
 			}
 			if(this.currentBackgroundSkin !== oldBackgroundSkin)
 			{
 				this.setRequiresRedraw();
+				
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(this.currentBackgroundSkin is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+					}
+				}
 			}
 		}
 
@@ -714,12 +731,19 @@ package feathers.controls
 		 */
 		protected function refreshViewPortBounds():void
 		{
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth;
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight;
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth;
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight;
+
+			this.resetBackgroundSkinDimensionsForMeasurement();
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			
 			this.viewPortBounds.x = 0;
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
-			if(this._autoSizeMode === AutoSizeMode.STAGE &&
-				this._explicitWidth !== this._explicitWidth)
+			if(needsWidth && this._autoSizeMode === AutoSizeMode.STAGE)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
 			}
@@ -727,8 +751,7 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitWidth = this._explicitWidth;
 			}
-			if(this._autoSizeMode === AutoSizeMode.STAGE &&
-					this._explicitHeight !== this._explicitHeight)
+			if(needsHeight && this._autoSizeMode === AutoSizeMode.STAGE)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
 			}
@@ -736,28 +759,46 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitHeight = this._explicitHeight;
 			}
-			var minWidth:Number = this._explicitMinWidth;
-			if(minWidth !== minWidth) //isNaN
+			var viewPortMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
 			{
-				minWidth = 0;
+				viewPortMinWidth = 0;
 			}
-			var minHeight:Number = this._explicitMinHeight;
-			if(minHeight !== minHeight) //isNaN
+			if(this.currentBackgroundSkin !== null)
 			{
-				minHeight = 0;
+				if(measureBackground !== null)
+				{
+					if(measureBackground.minWidth > viewPortMinWidth)
+					{
+						viewPortMinWidth = measureBackground.minWidth;
+					}
+				}
+				else if(this.currentBackgroundSkin.width > viewPortMinWidth)
+				{
+					viewPortMinWidth = this.currentBackgroundSkin.width;
+				}
 			}
-			if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-				this.originalBackgroundWidth > minWidth)
+			var viewPortMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
 			{
-				minWidth = this.originalBackgroundWidth;
+				viewPortMinHeight = 0;
 			}
-			if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-				this.originalBackgroundHeight > minHeight)
+			if(this.currentBackgroundSkin !== null)
 			{
-				minHeight = this.originalBackgroundHeight;
+				if(measureBackground !== null)
+				{
+					if(measureBackground.minHeight > viewPortMinHeight)
+					{
+						viewPortMinHeight = measureBackground.minHeight;
+					}
+				}
+				else if(this.currentBackgroundSkin.height > viewPortMinHeight)
+				{
+					viewPortMinHeight = this.currentBackgroundSkin.height;
+				}
 			}
-			this.viewPortBounds.minWidth = minWidth;
-			this.viewPortBounds.minHeight = minHeight;
+			this.viewPortBounds.minWidth = viewPortMinWidth;
+			this.viewPortBounds.minHeight = viewPortMinHeight;
 			this.viewPortBounds.maxWidth = this._maxWidth;
 			this.viewPortBounds.maxHeight = this._maxHeight;
 		}
@@ -767,8 +808,13 @@ package feathers.controls
 		 */
 		protected function handleLayoutResult():void
 		{
-			this.setSizeInternal(this._layoutResult.viewPortWidth,
-					this._layoutResult.viewPortHeight, false);
+			//the layout's dimensions are also the minimum dimensions
+			//we calculate the minimum dimensions for the background skin in 
+			//refreshViewPortBounds() and let the layout handle it
+			var viewPortWidth:Number = this._layoutResult.viewPortWidth;
+			var viewPortHeight:Number = this._layoutResult.viewPortHeight;
+			this.saveMeasurements(viewPortWidth, viewPortHeight,
+				viewPortWidth, viewPortHeight);
 		}
 
 		/**
@@ -818,28 +864,76 @@ package feathers.controls
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = maxX;
 			this._layoutResult.contentHeight = maxY;
-			var minWidth:Number = this.viewPortBounds.minWidth;
-			var minHeight:Number = this.viewPortBounds.minHeight;
-			if(maxX < minWidth)
+			var viewPortMinWidth:Number = this.viewPortBounds.minWidth;
+			var viewPortMinHeight:Number = this.viewPortBounds.minHeight;
+			if(maxX < viewPortMinWidth)
 			{
-				maxX = minWidth;
+				maxX = viewPortMinWidth;
 			}
-			if(maxY < minHeight)
+			if(maxY < viewPortMinHeight)
 			{
-				maxY = minHeight;
+				maxY = viewPortMinHeight;
 			}
-			var maxWidth:Number = this.viewPortBounds.maxWidth;
-			var maxHeight:Number = this.viewPortBounds.maxHeight;
-			if(maxX > maxWidth)
+			var viewPortMaxWidth:Number = this.viewPortBounds.maxWidth;
+			var viewPortMaxHeight:Number = this.viewPortBounds.maxHeight;
+			if(maxX > viewPortMaxWidth)
 			{
-				maxX = maxWidth;
+				maxX = viewPortMaxWidth;
 			}
-			if(maxY > maxHeight)
+			if(maxY > viewPortMaxHeight)
 			{
-				maxY = maxHeight;
+				maxY = viewPortMaxHeight;
 			}
 			this._layoutResult.viewPortWidth = maxX;
 			this._layoutResult.viewPortHeight = maxY;
+		}
+
+		/**
+		 * @private
+		 * Reset the skin dimensions so that we get an accurate measurement
+		 */
+		protected function resetBackgroundSkinDimensionsForMeasurement():void
+		{
+			if(this.currentBackgroundSkin === null)
+			{
+				return;
+			}
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			if(needsWidth)
+			{
+				this.currentBackgroundSkin.width = this._explicitBackgroundWidth;
+			}
+			else
+			{
+				this.currentBackgroundSkin.width = this._explicitWidth;
+			}
+			if(needsHeight)
+			{
+				this.currentBackgroundSkin.height = this._explicitBackgroundHeight;
+			}
+			else
+			{
+				this.currentBackgroundSkin.height = this._explicitHeight;
+			}
+			var measureSkin:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			if(measureSkin !== null)
+			{
+				var skinMinWidth:Number = this._explicitMinWidth;
+				if(skinMinWidth !== skinMinWidth || //isNaN
+					this._explicitBackgroundMinWidth > skinMinWidth)
+				{
+					skinMinWidth = this._explicitBackgroundMinWidth;
+				}
+				measureSkin.minWidth = skinMinWidth;
+				var skinMinHeight:Number = this._explicitMinHeight;
+				if(skinMinHeight !== skinMinHeight || //isNaN
+					this._explicitBackgroundMinHeight > skinMinHeight)
+				{
+					skinMinHeight = this._explicitBackgroundMinHeight;
+				}
+				measureSkin.minHeight = skinMinHeight;
+			}
 		}
 
 		/**

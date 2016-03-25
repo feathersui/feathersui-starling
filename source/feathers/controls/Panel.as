@@ -9,6 +9,8 @@ package feathers.controls
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusExtras;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -339,6 +341,46 @@ package feathers.controls
 		{
 			return Panel.globalStyleProvider;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _explicitHeaderWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitHeaderHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitHeaderMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitHeaderMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitFooterWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitFooterHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitFooterMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitFooterMinHeight:Number;
 
 		/**
 		 * @private
@@ -1087,15 +1129,26 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
+			if(this._autoSizeMode === AutoSizeMode.STAGE)
+			{
+				//the implementation in ScrollContainer can handle this
+				return super.autoSizeIfNeeded();
+			}
+			
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			if(this._autoSizeMode == AutoSizeMode.STAGE)
+
+			this.resetBackgroundSkinDimensionsForMeasurement();
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			if(this.currentBackgroundSkin is IValidating)
 			{
-				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
+				IValidating(this.currentBackgroundSkin).validate();
 			}
 
 			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
@@ -1103,59 +1156,173 @@ package feathers.controls
 			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 			this._ignoreFooterResizing = true;
 
-			var oldHeaderWidth:Number = this.header.width;
-			var oldHeaderHeight:Number = this.header.height;
-			this.header.width = this._explicitWidth;
-			this.header.maxWidth = this._maxWidth;
-			this.header.height = NaN;
+			if(needsWidth)
+			{
+				this.header.width = this._explicitHeaderWidth;
+			}
+			else
+			{
+				this.header.width = this._explicitWidth;
+			}
+			var headerAndFooterMinWidth:Number = this._explicitMinWidth;
+			if(headerAndFooterMinWidth !== headerAndFooterMinWidth || //isNaN
+				this._explicitHeaderMinWidth > headerAndFooterMinWidth)
+			{
+				headerAndFooterMinWidth = this._explicitHeaderMinWidth;
+			}
+			if(headerAndFooterMinWidth !== headerAndFooterMinWidth || //isNaN
+				this._explicitFooterMinWidth > headerAndFooterMinWidth)
+			{
+				headerAndFooterMinWidth = this._explicitFooterMinWidth;
+			}
+			this.header.minWidth = headerAndFooterMinWidth;
+			if(this._maxWidth > this.header.maxWidth)
+			{
+				this.header.maxWidth = this._maxWidth;
+			}
+			this.header.height = this._explicitHeaderHeight;
+			this.header.minHeight = this._explicitHeaderMinHeight;
 			this.header.validate();
 
-			if(this.footer)
+			if(this.footer !== null)
 			{
-				var oldFooterWidth:Number = this.footer.width;
-				var oldFooterHeight:Number = this.footer.height;
-				this.footer.width = this._explicitWidth;
-				this.footer.maxWidth = this._maxWidth;
-				this.footer.height = NaN;
+				if(needsWidth)
+				{
+					this.footer.width = this._explicitFooterWidth;
+				}
+				else
+				{
+					this.footer.width = this._explicitWidth;
+				}
+				this.footer.minWidth = headerAndFooterMinWidth;
+				if(this._maxWidth > this.footer.maxWidth)
+				{
+					this.footer.maxWidth = this._maxWidth;
+				}
+				this.footer.height = this._explicitFooterHeight;
+				this.footer.minHeight = this._explicitHeaderMinHeight;
 				this.footer.validate();
 			}
 
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this.header.width, this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset);
-				if(this.footer)
+				if(this._measureViewPort)
 				{
-					newWidth = Math.max(newWidth, this.footer.width);
+					newWidth = this._viewPort.visibleWidth;
 				}
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
+				else
 				{
-					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+					newWidth = 0;
+				}
+				newWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this.header.width > newWidth)
+				{
+					newWidth = this.header.width;
+				}
+				if(this.footer !== null &&
+					this.footer.width > newWidth)
+				{
+					newWidth = this.footer.width;
+				}
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.width > newWidth)
+				{
+					newWidth = this.currentBackgroundSkin.width;
 				}
 			}
 			if(needsHeight)
 			{
-				newHeight = this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
+				if(this._measureViewPort)
 				{
-					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
+					newHeight = this._viewPort.visibleHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+				newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				//we don't need to account for the header and footer because
+				//they're already included in the top and bottom offsets
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
+				{
+					newHeight = this.currentBackgroundSkin.height;
+				}
+			}
+			if(needsMinWidth)
+			{
+				if(this._measureViewPort)
+				{
+					newMinWidth = this._viewPort.minVisibleWidth;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				newMinWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this.header.minWidth > newMinWidth)
+				{
+					newMinWidth = this.header.minWidth;
+				}
+				if(this.footer !== null &&
+					this.footer.minWidth > newMinWidth)
+				{
+					newMinWidth = this.footer.minWidth;
+				}
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minWidth > newMinWidth)
+						{
+							newMinWidth = measureBackground.minWidth;
+						}
+					}
+					else if(this.currentBackgroundSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentBackgroundSkin.width;
+					}
+				}
+			}
+			if(needsMinHeight)
+			{
+				if(this._measureViewPort)
+				{
+					newMinHeight = this._viewPort.minVisibleHeight;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				newMinHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				//we don't need to account for the header and footer because
+				//they're already included in the top and bottom offsets
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minHeight > newMinHeight)
+						{
+							newMinHeight = measureBackground.minHeight;
+						}
+					}
+					else if(this.currentBackgroundSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentBackgroundSkin.height;
+					}
 				}
 			}
 
-			this.header.width = oldHeaderWidth;
-			this.header.height = oldHeaderHeight;
-			if(this.footer)
-			{
-				this.footer.width = oldFooterWidth;
-				this.footer.height = oldFooterHeight;
-			}
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
-
+		
 		/**
 		 * Creates and adds the <code>header</code> sub-component and
 		 * removes the old instance, if one exists.
@@ -1169,7 +1336,7 @@ package feathers.controls
 		 */
 		protected function createHeader():void
 		{
-			if(this.header)
+			if(this.header !== null)
 			{
 				this.header.removeEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 				var displayHeader:DisplayObject = DisplayObject(this.header);
@@ -1186,6 +1353,11 @@ package feathers.controls
 			displayHeader = DisplayObject(this.header);
 			this.addRawChild(displayHeader);
 			this._focusExtrasBefore.push(displayHeader);
+			
+			this._explicitHeaderWidth = this.header.explicitWidth;
+			this._explicitHeaderHeight = this.header.explicitHeight;
+			this._explicitHeaderMinWidth = this.header.explicitMinWidth;
+			this._explicitHeaderMinHeight = this.header.explicitMinHeight;
 		}
 
 		/**
@@ -1201,7 +1373,7 @@ package feathers.controls
 		 */
 		protected function createFooter():void
 		{
-			if(this.footer)
+			if(this.footer !== null)
 			{
 				this.footer.removeEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
 				var displayFooter:DisplayObject = DisplayObject(this.footer);
@@ -1210,7 +1382,7 @@ package feathers.controls
 				this.footer = null;
 			}
 
-			if(this._footerFactory == null)
+			if(this._footerFactory === null)
 			{
 				return;
 			}
@@ -1221,6 +1393,11 @@ package feathers.controls
 			displayFooter = DisplayObject(this.footer);
 			this.addRawChild(displayFooter);
 			this._focusExtrasAfter.push(displayFooter);
+
+			this._explicitFooterWidth = this.footer.explicitWidth;
+			this._explicitFooterHeight = this.footer.explicitHeight;
+			this._explicitFooterMinWidth = this.footer.explicitMinWidth;
+			this._explicitFooterMinHeight = this.footer.explicitMinHeight;
 		}
 
 		/**
@@ -1263,44 +1440,42 @@ package feathers.controls
 
 			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
 			this._ignoreHeaderResizing = true;
-			var oldHeaderWidth:Number = this.header.width;
-			var oldHeaderHeight:Number = this.header.height;
 			if(useActualBounds)
 			{
 				this.header.width = this.actualWidth - this._outerPaddingLeft - this._outerPaddingRight;
+				this.header.minWidth = this.actualMinWidth - this._outerPaddingLeft - this._outerPaddingRight;
 			}
 			else
 			{
 				this.header.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
+				this.header.minWidth = this._explicitMinWidth - this._outerPaddingLeft - this._outerPaddingRight;
 			}
 			this.header.maxWidth = this._maxWidth - this._outerPaddingLeft - this._outerPaddingRight;
-			this.header.height = NaN;
+			this.header.height = this._explicitHeaderHeight;
+			this.header.minHeight = this._explicitHeaderMinHeight;
 			this.header.validate();
 			this._topViewPortOffset += this.header.height + this._outerPaddingTop;
-			this.header.width = oldHeaderWidth;
-			this.header.height = oldHeaderHeight;
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
 			if(this.footer)
 			{
 				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 				this._ignoreFooterResizing = true;
-				var oldFooterWidth:Number = this.footer.width;
-				var oldFooterHeight:Number = this.footer.height;
 				if(useActualBounds)
 				{
 					this.footer.width = this.actualWidth - this._outerPaddingLeft - this._outerPaddingRight;
+					this.footer.minWidth = this.actualMinWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				}
 				else
 				{
-					this.header.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
+					this.footer.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
+					this.footer.minWidth = this._explicitMinWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				}
 				this.footer.maxWidth = this._maxWidth - this._outerPaddingLeft - this._outerPaddingRight;
-				this.footer.height = NaN;
+				this.footer.height = this._explicitFooterHeight;
+				this.footer.minHeight = this._explicitFooterMinHeight;
 				this.footer.validate();
 				this._bottomViewPortOffset += this.footer.height + this._outerPaddingBottom;
-				this.footer.width = oldFooterWidth;
-				this.footer.height = oldFooterHeight;
 				this._ignoreFooterResizing = oldIgnoreFooterResizing;
 			}
 			else
@@ -1321,7 +1496,7 @@ package feathers.controls
 			this.header.x = this._outerPaddingLeft;
 			this.header.y = this._outerPaddingTop;
 			this.header.width = this.actualWidth - this._outerPaddingLeft - this._outerPaddingRight;
-			this.header.height = NaN;
+			this.header.height = this._explicitHeaderHeight;
 			this.header.validate();
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
@@ -1331,7 +1506,7 @@ package feathers.controls
 				this._ignoreFooterResizing = true;
 				this.footer.x = this._outerPaddingLeft;
 				this.footer.width = this.actualWidth - this._outerPaddingLeft - this._outerPaddingRight;
-				this.footer.height = NaN;
+				this.footer.height = this._explicitFooterHeight;
 				this.footer.validate();
 				this.footer.y = this.actualHeight - this.footer.height - this._outerPaddingBottom;
 				this._ignoreFooterResizing = oldIgnoreFooterResizing;
