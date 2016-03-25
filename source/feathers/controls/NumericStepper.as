@@ -1381,11 +1381,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(decrementButtonFactoryInvalid || incrementButtonFactoryInvalid || textInputFactoryInvalid ||
-				dataInvalid || stylesInvalid || sizeInvalid)
-			{
-				this.layoutChildren();
-			}
+			this.layoutChildren();
 
 			if(sizeInvalid || focusInvalid)
 			{
@@ -1435,9 +1431,6 @@ package feathers.controls
 			var incrementButtonHeight:Number = this.incrementButton.height;
 			var incrementButtonMinWidth:Number = this.incrementButton.minWidth;
 			var incrementButtonMinHeight:Number = this.incrementButton.minHeight;
-			
-			var oldTextInputWidth:Number = this.textInput.width;
-			var oldTextInputHeight:Number = this.textInput.height;
 			
 			//we'll default to the values set in the textInputFactory
 			var textInputWidth:Number = this.textInputExplicitWidth;
@@ -1665,8 +1658,6 @@ package feathers.controls
 				}
 			}
 
-			this.textInput.width = oldTextInputWidth;
-			this.textInput.height = oldTextInputHeight;
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 

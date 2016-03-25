@@ -477,24 +477,16 @@ package feathers.controls
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
 			if(measureSkin !== null)
 			{
-				var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
-				var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
 				var skinMinWidth:Number = this._explicitMinWidth;
-				if(needsMinWidth)
-				{
-					skinMinWidth = 0;
-				}
-				if(this._explicitSkinMinWidth > skinMinWidth)
+				if(skinMinWidth !== skinMinWidth || //isNaN
+					this._explicitSkinMinWidth > skinMinWidth)
 				{
 					skinMinWidth = this._explicitSkinMinWidth;
 				}
 				measureSkin.minWidth = skinMinWidth;
 				var skinMinHeight:Number = this._explicitMinHeight;
-				if(needsMinHeight)
-				{
-					skinMinHeight = 0;
-				}
-				if(this._explicitSkinMinHeight > skinMinHeight)
+				if(skinMinHeight !== skinMinHeight || //isNaN
+					this._explicitSkinMinHeight > skinMinHeight)
 				{
 					skinMinHeight = this._explicitSkinMinHeight;
 				}
