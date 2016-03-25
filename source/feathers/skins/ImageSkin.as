@@ -524,7 +524,7 @@ package feathers.skins
 		 */
 		public function get minHeight():Number
 		{
-			if(this._explicitMinHeight === _explicitMinHeight) //!isNaN
+			if(this._explicitMinHeight === this._explicitMinHeight) //!isNaN
 			{
 				return this._explicitMinHeight;
 			}
