@@ -135,10 +135,14 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeWithViewPort():void
 		{
+			//the explicit dimensions of the view port are saved when the
+			//viewPort property is set, so let's be sure they get saved.
+			this._scroller.viewPort = null;
 			this._viewPort.width = VIEW_PORT_WIDTH;
 			this._viewPort.height = VIEW_PORT_HEIGHT;
 			this._viewPort.minWidth = VIEW_PORT_MIN_WIDTH;
 			this._viewPort.minHeight = VIEW_PORT_MIN_HEIGHT;
+			this._scroller.viewPort = this._viewPort;
 			this._scroller.validate();
 
 			Assert.assertStrictlyEquals("The width of the Scroller was not calculated correctly based on the view port width.",
@@ -155,11 +159,15 @@ package feathers.tests
 		public function testAutoSizeWithViewPortWhenMeasureViewPortIsFalse():void
 		{
 			this._scroller.measureViewPort = false;
+			//the explicit dimensions of the view port are saved when the
+			//viewPort property is set, so let's be sure they get saved.
+			this._scroller.viewPort = null;
 			this._viewPort.width = VIEW_PORT_WIDTH;
 			this._viewPort.height = VIEW_PORT_HEIGHT;
 			this._viewPort.height = VIEW_PORT_HEIGHT;
 			this._viewPort.minWidth = VIEW_PORT_MIN_WIDTH;
 			this._viewPort.minHeight = VIEW_PORT_MIN_HEIGHT;
+			this._scroller.viewPort = this._viewPort;
 			this._scroller.validate();
 
 			Assert.assertStrictlyEquals("The width of the Scroller was not calculated correctly when measureViewPort is false.",
