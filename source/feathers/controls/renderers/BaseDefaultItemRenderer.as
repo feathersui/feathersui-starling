@@ -3595,7 +3595,11 @@ package feathers.controls.renderers
 				{
 					newWidth = HELPER_POINT.x;
 				}
-				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				else
+				{
+					newWidth = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
 					newWidth = this.addAccessoryWidth(newWidth);
 					newWidth = this.addIconWidth(newWidth);
@@ -3620,7 +3624,11 @@ package feathers.controls.renderers
 				{
 					newHeight = HELPER_POINT.y;
 				}
-				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				else
+				{
+					newHeight = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
 					newHeight = this.addAccessoryHeight(newHeight);
 					newHeight = this.addIconHeight(newHeight);
@@ -3788,7 +3796,7 @@ package feathers.controls.renderers
 		 */
 		protected function addIconHeight(height:Number):Number
 		{
-			if(!this.currentIcon)
+			if(this.currentIcon === null)
 			{
 				return height;
 			}
@@ -3804,12 +3812,12 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
+			if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
 					var adjustedGap:Number = this._gap;
-					if(this._gap == Number.POSITIVE_INFINITY)
+					if(this._gap === Number.POSITIVE_INFINITY)
 					{
 						adjustedGap = this._minGap;
 					}
@@ -3829,7 +3837,7 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryHeight(height:Number):Number
 		{
-			if(!this.currentAccessory)
+			if(this.currentAccessory === null)
 			{
 				return height;
 			}
@@ -3845,7 +3853,7 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._accessoryPosition == RelativePosition.TOP || this._accessoryPosition == RelativePosition.BOTTOM)
+			if(this._accessoryPosition === RelativePosition.TOP || this._accessoryPosition === RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
@@ -3861,9 +3869,9 @@ package feathers.controls.renderers
 					{
 						adjustedAccessoryGap =  this._gap;
 					}
-					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+					if(adjustedAccessoryGap === Number.POSITIVE_INFINITY)
 					{
-						if(this._minAccessoryGap != this._minAccessoryGap) //isNaN
+						if(this._minAccessoryGap !== this._minAccessoryGap) //isNaN
 						{
 							adjustedAccessoryGap = this._minGap;
 						}
