@@ -57,6 +57,7 @@ package
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.RadioTests;
 	import feathers.tests.ScaleTests;
+	import feathers.tests.ScreenNavigatorMeasurementTests;
 	import feathers.tests.ScreenNavigatorTests;
 	import feathers.tests.ScrollBarHorizontalMeasurementTests;
 	import feathers.tests.ScrollBarHorizontalTests;
@@ -70,6 +71,7 @@ package
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderHorizontalMeasurementTests;
 	import feathers.tests.SliderVerticalMeasurementTests;
+	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
@@ -196,6 +198,7 @@ package
 				SimpleScrollBarHorizontalTests,
 				SimpleScrollBarMeasurementTests,
 				ScreenNavigatorTests,
+				ScreenNavigatorMeasurementTests,
 				ScrollBarHorizontalTests,
 				ScrollBarHorizontalMeasurementTests,
 				ScrollBarVerticalMeasurementTests,
@@ -207,6 +210,7 @@ package
 				SliderHorizontalMeasurementTests,
 				SliderVerticalMeasurementTests,
 				StackScreenNavigatorTests,
+				StackScreenNavigatorMeasurementTests,
 				TabBarTests,
 				TabBarMeasurementTests,
 				TabBarEmptyDataProviderTests,
