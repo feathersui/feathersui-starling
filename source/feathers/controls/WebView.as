@@ -137,6 +137,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const DEFAULT_MIN_SIZE:Number = 50;
+
+		/**
+		 * @private
+		 */
 		protected static const STAGE_WEB_VIEW_FULLY_QUALIFIED_CLASS_NAME:String = "flash.media.StageWebView";
 
 		/**
@@ -383,7 +388,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -394,7 +399,9 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
@@ -408,7 +415,17 @@ package feathers.controls
 			{
 				newHeight = DEFAULT_SIZE;
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				newMinWidth = DEFAULT_MIN_SIZE;
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				newMinHeight = DEFAULT_MIN_SIZE;
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
