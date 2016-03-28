@@ -19,6 +19,8 @@ package feathers.tests
 		private static const BACKGROUND_WIDTH:Number = 200;
 		//note: the background height is purposefully larger than the item height
 		private static const BACKGROUND_HEIGHT:Number = 250;
+		private static const BACKGROUND_MIN_WIDTH:Number = 180;
+		private static const BACKGROUND_MIN_HEIGHT:Number = 190;
 
 		//note: the item width is purposefully larger than the background width
 		private static const ITEM_WIDTH:Number = 210;
@@ -52,6 +54,15 @@ package feathers.tests
 			this._group.backgroundSkin = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 		}
 
+		private function addComplexBackground():void
+		{
+			var backgroundSkin:LayoutGroup = new LayoutGroup();
+			backgroundSkin.setSize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+			backgroundSkin.minWidth = BACKGROUND_MIN_WIDTH;
+			backgroundSkin.minHeight = BACKGROUND_MIN_HEIGHT;
+			this._group.backgroundSkin = backgroundSkin;
+		}
+
 		[Test]
 		public function testAutoSizeNoChildrenNoBackgroundAndNoLayout():void
 		{
@@ -67,7 +78,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testAutoSizeWithBackgroundAndNoChildren():void
+		public function testAutoSizeWithSimpleBackgroundAndNoChildren():void
 		{
 			this.addSimpleBackground();
 			this._group.validate();
@@ -78,6 +89,27 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The minWidth of the layout group was not calculated correctly with background skin and no children.",
 				BACKGROUND_WIDTH, this._group.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly with background skin and no children.",
+				BACKGROUND_HEIGHT, this._group.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeWithComplexBackgroundAndNoChildren():void
+		{
+			this.addComplexBackground();
+			this._group.validate();
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with complex background skin and no children.",
+				BACKGROUND_WIDTH, this._group.width);
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with complex background skin and no children.",
+				BACKGROUND_HEIGHT, this._group.height);
+			
+			//this is a little different than other components. the layout needs
+			//to account for the full background dimensions, so the minimum
+			//dimensions cannot be passed to the layout. to use minimum
+			//dimensions with a LayoutGroup, they need to be set on the
+			//LayoutGroup directly!
+			Assert.assertStrictlyEquals("The minWidth of the layout group was not calculated correctly with complex background skin and no children.",
+				BACKGROUND_WIDTH, this._group.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly with complex background skin and no children.",
 				BACKGROUND_HEIGHT, this._group.minHeight);
 		}
 

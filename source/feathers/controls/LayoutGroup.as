@@ -60,11 +60,6 @@ package feathers.controls
 	public class LayoutGroup extends FeathersControl
 	{
 		/**
-		 * @private
-		 */
-		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
-
-		/**
 		 * Flag to indicate that the clipping has changed.
 		 */
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
@@ -737,7 +732,6 @@ package feathers.controls
 			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight;
 
 			this.resetBackgroundSkinDimensionsForMeasurement();
-			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			
 			this.viewPortBounds.x = 0;
 			this.viewPortBounds.y = 0;
@@ -764,20 +758,6 @@ package feathers.controls
 			{
 				viewPortMinWidth = 0;
 			}
-			if(this.currentBackgroundSkin !== null)
-			{
-				if(measureBackground !== null)
-				{
-					if(measureBackground.minWidth > viewPortMinWidth)
-					{
-						viewPortMinWidth = measureBackground.minWidth;
-					}
-				}
-				else if(this.currentBackgroundSkin.width > viewPortMinWidth)
-				{
-					viewPortMinWidth = this.currentBackgroundSkin.width;
-				}
-			}
 			var viewPortMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
@@ -785,14 +765,15 @@ package feathers.controls
 			}
 			if(this.currentBackgroundSkin !== null)
 			{
-				if(measureBackground !== null)
+				//because the layout might need it, we account for the
+				//dimensions of the background skin when determining the minimum
+				//dimensions of the view port.
+				//we can't use the minimum dimensions of the background skin
+				if(this.currentBackgroundSkin.width > viewPortMinWidth)
 				{
-					if(measureBackground.minHeight > viewPortMinHeight)
-					{
-						viewPortMinHeight = measureBackground.minHeight;
-					}
+					viewPortMinWidth = this.currentBackgroundSkin.width;
 				}
-				else if(this.currentBackgroundSkin.height > viewPortMinHeight)
+				if(this.currentBackgroundSkin.height > viewPortMinHeight)
 				{
 					viewPortMinHeight = this.currentBackgroundSkin.height;
 				}
