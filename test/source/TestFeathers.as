@@ -87,6 +87,7 @@ package
 	import feathers.tests.TextureCacheTests;
 	import feathers.tests.TiledColumnsLayoutTests;
 	import feathers.tests.TiledRowsLayoutTests;
+	import feathers.tests.TimeLabelTests;
 	import feathers.tests.ToggleButtonFocusTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
@@ -215,6 +216,9 @@ package
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				ToggleSwitchMeasurementTests,
+				
+				//media tests
+				TimeLabelTests,
 			
 				//layout tests
 				FlowLayoutTests,
