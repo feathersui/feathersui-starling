@@ -211,7 +211,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testWidthWithFirstAndLastGapAndThreeChildren():void
+		public function testWidthWithFirstAndLastGapAndFourChildren():void
 		{
 			this._layout.gap = GAP;
 			this._layout.firstGap = FIRST_GAP;

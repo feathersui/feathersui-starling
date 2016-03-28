@@ -1842,7 +1842,12 @@ package feathers.controls
 			{
 				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			}
-			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
+
+			var contentWidth:Number = this._layoutResult.contentWidth;
+			var contentHeight:Number = this._layoutResult.contentHeight;
+			//minimum dimensions are the same as the measured dimensions
+			this.saveMeasurements(contentWidth, contentHeight, contentWidth, contentHeight);
+			
 			//final validation to avoid juggler next frame issues
 			for each(var tab:ToggleButton in this.activeTabs)
 			{

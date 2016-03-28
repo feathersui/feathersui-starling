@@ -7,6 +7,7 @@ package
 	import feathers.tests.BottomDrawerPopUpContentManagerTests;
 	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
+	import feathers.tests.ButtonGroupMeasurementTests;
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonInternalStateTests;
 	import feathers.tests.ButtonMeasurementTests;
@@ -72,6 +73,7 @@ package
 	import feathers.tests.StackScreenNavigatorTests;
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
+	import feathers.tests.TabBarMeasurementTests;
 	import feathers.tests.TabBarTests;
 	import feathers.tests.TapToSelectTests;
 	import feathers.tests.TapToTriggerTests;
@@ -163,6 +165,7 @@ package
 				ButtonFocusTests,
 				ButtonMeasurementTests,
 				ButtonGroupTests,
+				ButtonGroupMeasurementTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,
 				DateTimeSpinnerTests,
@@ -205,6 +208,7 @@ package
 				SliderVerticalMeasurementTests,
 				StackScreenNavigatorTests,
 				TabBarTests,
+				TabBarMeasurementTests,
 				TabBarEmptyDataProviderTests,
 				TextAreaTests,
 				TextAreaInternalStateTests,
