@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
@@ -744,14 +745,23 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
+			if(this._autoSizeMode === AutoSizeMode.STAGE)
+			{
+				//the implementation in a super class can handle this
+				return super.autoSizeIfNeeded();
+			}
+
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
 			this.resetBackgroundSkinDimensionsForMeasurement();
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{
 				IValidating(this.currentBackgroundSkin).validate();
@@ -767,36 +777,75 @@ package feathers.controls
 			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 			this._ignoreFooterResizing = true;
 
-			this.header.width = this._explicitWidth;
-			this.header.maxWidth = this._maxWidth;
-			this.header.height = NaN;
+			if(needsWidth)
+			{
+				this.header.width = this._explicitHeaderWidth;
+			}
+			else
+			{
+				this.header.width = this._explicitWidth;
+			}
+			var headerAndFooterMinWidth:Number = this._explicitMinWidth;
+			if(headerAndFooterMinWidth !== headerAndFooterMinWidth || //isNaN
+				this._explicitHeaderMinWidth > headerAndFooterMinWidth)
+			{
+				headerAndFooterMinWidth = this._explicitHeaderMinWidth;
+			}
+			if(headerAndFooterMinWidth !== headerAndFooterMinWidth || //isNaN
+				this._explicitFooterMinWidth > headerAndFooterMinWidth)
+			{
+				headerAndFooterMinWidth = this._explicitFooterMinWidth;
+			}
+			this.header.minWidth = headerAndFooterMinWidth;
+			if(this._maxWidth > this.header.maxWidth)
+			{
+				this.header.maxWidth = this._maxWidth;
+			}
+			this.header.height = this._explicitHeaderHeight;
+			this.header.minHeight = this._explicitHeaderMinHeight;
 			this.header.validate();
-
-			if(this.footer)
+			
+			if(needsWidth)
+			{
+				this.footer.width = this._explicitFooterWidth;
+			}
+			else
 			{
 				this.footer.width = this._explicitWidth;
-				this.footer.maxWidth = this._maxWidth;
-				this.footer.height = NaN;
-				this.footer.validate();
 			}
+			this.footer.minWidth = headerAndFooterMinWidth;
+			if(this._maxWidth > this.footer.maxWidth)
+			{
+				this.footer.maxWidth = this._maxWidth;
+			}
+			this.footer.height = this._explicitFooterHeight;
+			this.footer.minHeight = this._explicitHeaderMinHeight;
+			this.footer.validate();
 
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsWidth)
 			{
-				newWidth = this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset;
-				if(this._icon)
+				if(this._measureViewPort)
 				{
-					var iconWidth:Number = this._icon.width;
-					if(iconWidth === iconWidth) //!isNaN
-					{
-						newWidth += this._icon.width + this._gap;
-					}
+					newWidth = this._viewPort.visibleWidth;
 				}
-				newWidth = Math.max(newWidth, this.header.width);
-				if(this.footer)
+				else
 				{
-					newWidth = Math.max(newWidth, this.footer.width);
+					newWidth = 0;
+				}
+				//we don't need to account for the icon and gap because it is
+				//already included in the left offset
+				newWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this.header.width > newWidth)
+				{
+					newWidth = this.header.width;
+				}
+				if(this.footer.width > newWidth)
+				{
+					newWidth = this.footer.width;
 				}
 				if(this.currentBackgroundSkin !== null &&
 					this.currentBackgroundSkin.width > newWidth)
@@ -806,27 +855,110 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = this._viewPort.height;
-				if(this._icon)
+				if(this._measureViewPort)
+				{
+					newHeight = this._viewPort.visibleHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+				if(this._icon !== null)
 				{
 					var iconHeight:Number = this._icon.height;
-					if(iconHeight === iconHeight) //!isNaN
+					if(iconHeight === iconHeight && //!isNaN
+						iconHeight > newHeight)
 					{
-						newHeight = Math.max(newHeight, this._icon.height);
+						newHeight = iconHeight;
 					}
 				}
 				newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				//we don't need to account for the header and footer because
+				//they're already included in the top and bottom offsets
 				if(this.currentBackgroundSkin !== null &&
 					this.currentBackgroundSkin.height > newHeight)
 				{
 					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
+			if(needsMinWidth)
+			{
+				if(this._measureViewPort)
+				{
+					newMinWidth = this._viewPort.minVisibleWidth;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				//we don't need to account for the icon and gap because it is
+				//already included in the left offset
+				newMinWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this.header.minWidth > newMinWidth)
+				{
+					newMinWidth = this.header.minWidth;
+				}
+				if(this.footer.minWidth > newMinWidth)
+				{
+					newMinWidth = this.footer.minWidth;
+				}
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minWidth > newMinWidth)
+						{
+							newMinWidth = measureBackground.minWidth;
+						}
+					}
+					else if(this.currentBackgroundSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentBackgroundSkin.width;
+					}
+				}
+			}
+			if(needsMinHeight)
+			{
+				if(this._measureViewPort)
+				{
+					newMinHeight = this._viewPort.minVisibleHeight;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				if(this._icon !== null)
+				{
+					iconHeight = this._icon.height;
+					if(iconHeight === iconHeight && //!isNaN
+						iconHeight > newMinHeight)
+					{
+						newMinHeight = iconHeight;
+					}
+				}
+				newMinHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				//we don't need to account for the header and footer because
+				//they're already included in the top and bottom offsets
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minHeight > newMinHeight)
+						{
+							newMinHeight = measureBackground.minHeight;
+						}
+					}
+					else if(this.currentBackgroundSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentBackgroundSkin.height;
+					}
+				}
+			}
 
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -931,16 +1063,16 @@ package feathers.controls
 		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
 		{
 			super.calculateViewPortOffsets(forceScrollBars, useActualBounds);
-			if(this._icon)
+			if(this._icon !== null)
 			{
 				if(this._icon is IValidating)
 				{
 					IValidating(this._icon).validate();
 				}
 				var iconWidth:Number = this._icon.width;
-				if(iconWidth == iconWidth) //!isNaN
+				if(iconWidth === iconWidth) //!isNaN
 				{
-					this._leftViewPortOffset += this._icon.width + this._gap;
+					this._leftViewPortOffset += iconWidth + this._gap;
 				}
 			}
 		}

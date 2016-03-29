@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.Panel;
+	import feathers.core.IFeathersControl;
 
 	import org.flexunit.Assert;
 
@@ -69,7 +70,7 @@ package feathers.tests
 
 		private function addHeader():void
 		{
-			this._panel.headerFactory = function()
+			this._panel.headerFactory = function():IFeathersControl
 			{
 				var header:LayoutGroup = new LayoutGroup();
 				header.backgroundSkin = new Quad(HEADER_WIDTH, HEADER_HEIGHT, 0xff00ff);
@@ -79,7 +80,7 @@ package feathers.tests
 
 		private function addWideHeader():void
 		{
-			this._panel.headerFactory = function()
+			this._panel.headerFactory = function():IFeathersControl
 			{
 				var header:LayoutGroup = new LayoutGroup();
 				header.backgroundSkin = new Quad(LARGE_HEADER_WIDTH, HEADER_HEIGHT, 0xff00ff);
@@ -89,11 +90,11 @@ package feathers.tests
 
 		private function addFooter():void
 		{
-			this._panel.footerFactory = function()
+			this._panel.footerFactory = function():IFeathersControl
 			{
-				var header:LayoutGroup = new LayoutGroup();
-				header.backgroundSkin = new Quad(FOOTER_WIDTH, FOOTER_HEIGHT, 0x00ff00);
-				return header;
+				var footer:LayoutGroup = new LayoutGroup();
+				footer.backgroundSkin = new Quad(FOOTER_WIDTH, FOOTER_HEIGHT, 0x00ff00);
+				return footer;
 			};
 		}
 

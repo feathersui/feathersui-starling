@@ -1,5 +1,6 @@
 package
 {
+	import feathers.tests.AlertMeasurementTests;
 	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
@@ -160,6 +161,7 @@ package
 				ScaleTests,
 				
 				//individual component tests
+				AlertMeasurementTests,
 				BasicButtonTests,
 				BasicButtonMeasurementTests,
 				BasicButtonInternalStateTests,
