@@ -27,6 +27,7 @@ package
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.HeaderMeasurementTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
@@ -66,10 +67,10 @@ package
 	import feathers.tests.ScrollContainerTests;
 	import feathers.tests.ScrollerMeasurementTests;
 	import feathers.tests.ScrollerTests;
-	import feathers.tests.SimpleScrollBarMeasurementTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
-	import feathers.tests.SliderHorizontalTests;
+	import feathers.tests.SimpleScrollBarMeasurementTests;
 	import feathers.tests.SliderHorizontalMeasurementTests;
+	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderVerticalMeasurementTests;
 	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
@@ -178,6 +179,7 @@ package
 				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
+				HeaderMeasurementTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
 				LabelMeasurementTests,
