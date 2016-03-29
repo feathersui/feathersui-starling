@@ -102,10 +102,10 @@ In the code above, we create a [`BitmapFontTextRenderer`](bitmap-font-text-rende
 On the `BitmapFontTextRenderer`, we can call the `setTextFormatForState()` function to pass in different font styles of each of the button's states. Let's do that in the same `labelFactory`:
 
 ``` code
-textRenderer.setElementFormatForState( ButtonState.DOWN,
+textRenderer.setTextFormatForState( ButtonState.DOWN,
 	new BitmapFontTextFormat( "My Font", BitmapFont.NATIVE_SIZE, 0xffcc00 ) );
 
-textRenderer.setElementFormatForState( ButtonState.DISABLED,
+textRenderer.setTextFormatForState( ButtonState.DISABLED,
 	new BitmapFontTextFormat( "My Font", BitmapFont.NATIVE_SIZE, 0x999999 ) );
 ```
 
