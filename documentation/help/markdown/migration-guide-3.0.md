@@ -16,6 +16,8 @@ This guide explains how to migrate an application created with a previous versio
 	-   [Setting font styles on text renderers](#setting-font-styles-on-text-renderers)
 	
 	-   [Removal of `StandardIcons.listDrillDownAccessoryTexture`](#removal-of-standardicons.listdrilldownaccessorytexture)
+	
+-   [`saveMeasurements()` replaces `setSizeInternal()`](#savemeasurements-replaces-setsizeinternal)
 
 -   [Multi-Resolution Development with Feathers](#multi-resolution-development-with-feathers)
 
@@ -160,6 +162,30 @@ If all items in the list should have a drill down icon, you may use `customItemR
 list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN;
 ```
 
+### `saveMeasurements()` replaces `setSizeInternal()`
+
+Custom component developers should migrate to the new `saveMeasurements()` as a replacement for `setSizeInternal()`, which is now considered deprecated.
+
+In addition to the more intuitive name, `saveMeasurements()` now allows components to dynamically calculate minimum width and height:
+
+``` code
+this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
+```
+
+To maintain the previous behavior, you may pass a value of `0` for the minimum dimensions:
+
+``` code
+this.saveMeasurements(newWidth, newHeight, 0, 0);
+```
+
+You might also consider setting the minimum dimensions to the same as the regular dimensions:
+
+``` code
+this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
+```
+
+All of the core Feathers components now calculate minimum dimensions, if they are not set explicitly.
+
 ## Multi-Resolution Development with Feathers
 
 Feathers 3.0 fully embraces Starling's `contentScaleFactor` system described in [Starling Multi-Resolution Development](http://wiki.starling-framework.org/manual/multi-resolution_development). Feathers even has some tricks up its sleeve to make it easy to scale to any mobile device's screen, while using its native aspect ratio.
@@ -270,6 +296,12 @@ Removed API										| How to Migrate
 The following tables list all deprecated APIs, organized by class. The replacement API or migration instructions appear next to each listed property or method.
 
 <aside class="warn">APIs that are deprecated have not been removed yet, but they will be removed at some point in the future. You are encouraged to migrate as soon as possible.</aside>
+
+### `FeathersControl`
+
+Deprecated API					| How to Migrate
+------------------------------- | -----------------------------------------
+`setSizeInternal()`				| [`saveMeasurements()`](../api-reference/feathers/core/FeathersControl.html#saveMeasurements())
 
 ### `Alert`
 
