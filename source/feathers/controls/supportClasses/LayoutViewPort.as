@@ -235,30 +235,51 @@ package feathers.controls.supportClasses
 
 		override protected function refreshViewPortBounds():void
 		{
+			var needsWidth:Boolean = this._explicitVisibleWidth !== this._explicitVisibleWidth; //isNaN
+			var needsHeight:Boolean = this._explicitVisibleHeight !== this._explicitVisibleHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight; //isNaN
+
 			this.viewPortBounds.x = 0;
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this.viewPortBounds.scrollY = this._verticalScrollPosition;
-			if(this._autoSizeMode == AutoSizeMode.STAGE &&
-				this._explicitVisibleWidth !== this._explicitVisibleWidth)
+			if(this._autoSizeMode === AutoSizeMode.STAGE && needsWidth)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
 			}
 			else
 			{
+				//layouts can handle NaN for explicit dimensions
 				this.viewPortBounds.explicitWidth = this._explicitVisibleWidth;
 			}
-			if(this._autoSizeMode == AutoSizeMode.STAGE &&
-				this._explicitVisibleHeight !== this._explicitVisibleHeight)
+			if(this._autoSizeMode === AutoSizeMode.STAGE && needsHeight)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
 			}
 			else
 			{
+				//layouts can handle NaN for explicit dimensions
 				this.viewPortBounds.explicitHeight = this._explicitVisibleHeight;
 			}
-			this.viewPortBounds.minWidth = this._explicitMinVisibleWidth;
-			this.viewPortBounds.minHeight = this._explicitMinVisibleHeight;
+			if(needsMinWidth)
+			{
+				//layouts don't expect NaN for minimum dimensions
+				this.viewPortBounds.minWidth = 0;
+			}
+			else
+			{
+				this.viewPortBounds.minWidth = this._explicitMinVisibleWidth;
+			}
+			if(needsMinHeight)
+			{
+				//layouts don't expect NaN for minimum dimensions
+				this.viewPortBounds.minHeight = 0;
+			}
+			else
+			{
+				this.viewPortBounds.minHeight = this._explicitMinVisibleHeight;
+			}
 			this.viewPortBounds.maxWidth = this._maxVisibleWidth;
 			this.viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
