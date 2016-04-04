@@ -390,10 +390,18 @@ Deprecated API							| How to Migrate
 
 Deprecated API							| How to Migrate
 --------------------------------------- | --------------------------------
+`supportedDirections`					| `supportedPositions`
 `Callout.ARROW_POSITION_TOP`			| [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
 `Callout.ARROW_POSITION_RIGHT`			| [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
 `Callout.ARROW_POSITION_BOTTOM`			| [`RelativePosition.BOTTOM`](../api-reference/feathers/layout/RelativePosition.html#BOTTOM)
 `Callout.ARROW_POSITION_LEFT`			| [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+`Callout.DIRECTION_ANY`					| `null`
+`Callout.DIRECTION_HORIZONTAL`			| `new <String>[RelativePosition.RIGHT, RelativePosition.LEFT]`
+`Callout.DIRECTION_VERTICAL`			| `new <String>[RelativePosition.BOTTOM, RelativePosition.TOP]`
+`Callout.DIRECTION_TOP`					| `new <String>[RelativePosition.TOP]`
+`Callout.DIRECTION_RIGHT`				| `new <String>[RelativePosition.RIGHT]`
+`Callout.DIRECTION_BOTTOM`				| `new <String>[RelativePosition.BOTTOM]`
+`Callout.DIRECTION_LEFT`				| `new <String>[RelativePosition.LEFT]`
 
 ### `Check`
 
