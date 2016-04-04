@@ -89,51 +89,93 @@ package feathers.controls
 		public static var globalStyleProvider:IStyleProvider;
 
 		/**
-		 * The callout may be positioned on any side of the origin region.
+		 * The default positions used by a callout.
+		 */
+		public static const DEFAULT_POSITIONS:Vector.<String> = new <String>
+		[
+			RelativePosition.BOTTOM,
+			RelativePosition.TOP,
+			RelativePosition.RIGHT,
+			RelativePosition.LEFT,
+		];
+
+		/**
+		 * @private
+		 * DEPRECATED: Replaced by a Vector.<String> containing values from
+		 * <code>feathers.layout.RelativePosition</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_ANY:String = "any";
 
 		/**
-		 * The callout may be positioned on top or bottom of the origin region.
+		 * @private
+		 * DEPRECATED: Replaced by a Vector.<String> containing values from
+		 * <code>feathers.layout.RelativePosition</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The callout may be positioned on top or bottom of the origin region.
+		 * @private
+		 * DEPRECATED: Replaced by a Vector.<String> containing values from
+		 * <code>feathers.layout.RelativePosition</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The callout must be positioned above the origin region.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_UP:String = "up";
 
 		/**
-		 * The callout must be positioned below the origin region.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_DOWN:String = "down";
 
 		/**
-		 * The callout must be positioned to the left side of the origin region.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_LEFT:String = "left";
 
 		/**
-		 * The callout must be positioned to the right side of the origin region.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
 		 *
-		 * @see #supportedDirections
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_RIGHT:String = "right";
 
@@ -195,18 +237,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		protected static const DIRECTION_TO_FUNCTION:Object = {};
-		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionBestSideOfOrigin;
-		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionAboveOrigin;
-		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionBelowOrigin;
-		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionToLeftOfOrigin;
-		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionToRightOfOrigin;
-		DIRECTION_TO_FUNCTION[DIRECTION_VERTICAL] = positionAboveOrBelowOrigin;
-		DIRECTION_TO_FUNCTION[DIRECTION_HORIZONTAL] = positionToLeftOrRightOfOrigin;
 
 		/**
 		 * @private
@@ -363,6 +393,14 @@ package feathers.controls
 		 * the original. The provided width and height values are optional, and
 		 * these values may be ignored if the callout cannot be drawn at the
 		 * specified dimensions.
+		 * 
+		 * <p>The <code>supportedPositions</code> parameter should be a
+		 * <code>Vector.&lt;String&gt;</code> of values from the
+		 * <code>feathers.layout.RelativePosition</code> class. The positions
+		 * should be ordered by preference. This parameter is typed as
+		 * <code>Object</code> to allow some deprecated <code>String</code>
+		 * values. In a future version of Feathers, the type will change to
+		 * <code>Vector.&lt;String&gt;</code> instead.</p>
 		 *
 		 * <p>In the following example, a callout displaying a <code>Label</code> is
 		 * shown when a <code>Button</code> is triggered:</p>
@@ -378,26 +416,43 @@ package feathers.controls
 		 *     Callout.show( label, button );
 		 * }</listing>
 		 */
-		public static function show(content:DisplayObject, origin:DisplayObject, supportedDirections:String = DIRECTION_ANY,
-			isModal:Boolean = true, customCalloutFactory:Function = null, customOverlayFactory:Function = null):Callout
+		public static function show(content:DisplayObject, origin:DisplayObject,
+			supportedPositions:Object = null, isModal:Boolean = true, customCalloutFactory:Function = null,
+			customOverlayFactory:Function = null):Callout
 		{
-			if(!origin.stage)
+			if(origin.stage === null)
 			{
 				throw new ArgumentError("Callout origin must be added to the stage.");
 			}
 			var factory:Function = customCalloutFactory;
-			if(factory == null)
+			if(factory === null)
 			{
-				factory = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
+				factory = calloutFactory;
+				if(factory === null)
+				{
+					factory = defaultCalloutFactory;
+				}
 			}
 			var callout:Callout = Callout(factory());
 			callout.content = content;
-			callout.supportedDirections = supportedDirections;
+			if(supportedPositions is String)
+			{
+				//fallback for deprecated options
+				callout.supportedDirections = supportedPositions as String;
+			}
+			else
+			{
+				callout.supportedPositions = supportedPositions as Vector.<String>;
+			}
 			callout.origin = origin;
 			factory = customOverlayFactory;
-			if(factory == null)
+			if(factory === null)
 			{
-				factory = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
+				factory = calloutOverlayFactory;
+				if(factory === null)
+				{
+					factory = PopUpManager.defaultOverlayFactory;
+				}
 			}
 			PopUpManager.addPopUp(callout, isModal, false, factory);
 			return callout;
@@ -416,142 +471,6 @@ package feathers.controls
 			callout.closeOnTouchEndedOutside = true;
 			callout.closeOnKeys = new <uint>[Keyboard.BACK, Keyboard.ESCAPE];
 			return callout;
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function positionWithSupportedDirections(callout:Callout, globalOrigin:Rectangle, direction:String):void
-		{
-			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
-			{
-				var calloutPositionFunction:Function = DIRECTION_TO_FUNCTION[direction];
-				calloutPositionFunction(callout, globalOrigin);
-			}
-			else
-			{
-				positionBestSideOfOrigin(callout, globalOrigin);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function positionBestSideOfOrigin(callout:Callout, globalOrigin:Rectangle):void
-		{
-			callout.measureWithArrowPosition(RelativePosition.TOP, HELPER_POINT);
-			var downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
-			if(downSpace >= stagePaddingBottom)
-			{
-				positionBelowOrigin(callout, globalOrigin);
-				return;
-			}
-
-			callout.measureWithArrowPosition(RelativePosition.BOTTOM, HELPER_POINT);
-			var upSpace:Number = globalOrigin.y - HELPER_POINT.y;
-			if(upSpace >= stagePaddingTop)
-			{
-				positionAboveOrigin(callout, globalOrigin);
-				return;
-			}
-
-			callout.measureWithArrowPosition(RelativePosition.LEFT, HELPER_POINT);
-			var rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
-			if(rightSpace >= stagePaddingRight)
-			{
-				positionToRightOfOrigin(callout, globalOrigin);
-				return;
-			}
-
-			callout.measureWithArrowPosition(RelativePosition.RIGHT, HELPER_POINT);
-			var leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
-			if(leftSpace >= stagePaddingLeft)
-			{
-				positionToLeftOfOrigin(callout, globalOrigin);
-				return;
-			}
-
-			//worst case: pick the side that has the most available space
-			if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
-			{
-				positionBelowOrigin(callout, globalOrigin);
-			}
-			else if(upSpace >= rightSpace && upSpace >= leftSpace)
-			{
-				positionAboveOrigin(callout, globalOrigin);
-			}
-			else if(rightSpace >= leftSpace)
-			{
-				positionToRightOfOrigin(callout, globalOrigin);
-			}
-			else
-			{
-				positionToLeftOfOrigin(callout, globalOrigin);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function positionAboveOrBelowOrigin(callout:Callout, globalOrigin:Rectangle):void
-		{
-			callout.measureWithArrowPosition(RelativePosition.TOP, HELPER_POINT);
-			var downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
-			if(downSpace >= stagePaddingBottom)
-			{
-				positionBelowOrigin(callout, globalOrigin);
-				return;
-			}
-
-			callout.measureWithArrowPosition(RelativePosition.BOTTOM, HELPER_POINT);
-			var upSpace:Number = globalOrigin.y - HELPER_POINT.y;
-			if(upSpace >= stagePaddingTop)
-			{
-				positionAboveOrigin(callout, globalOrigin);
-				return;
-			}
-
-			//worst case: pick the side that has the most available space
-			if(downSpace >= upSpace)
-			{
-				positionBelowOrigin(callout, globalOrigin);
-			}
-			else
-			{
-				positionAboveOrigin(callout, globalOrigin);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function positionToLeftOrRightOfOrigin(callout:Callout, globalOrigin:Rectangle):void
-		{
-			callout.measureWithArrowPosition(RelativePosition.LEFT, HELPER_POINT);
-			var rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
-			if(rightSpace >= stagePaddingRight)
-			{
-				positionToRightOfOrigin(callout, globalOrigin);
-				return;
-			}
-
-			callout.measureWithArrowPosition(RelativePosition.RIGHT, HELPER_POINT);
-			var leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
-			if(leftSpace >= stagePaddingLeft)
-			{
-				positionToLeftOfOrigin(callout, globalOrigin);
-				return;
-			}
-
-			//worst case: pick the side that has the most available space
-			if(rightSpace >= leftSpace)
-			{
-				positionToRightOfOrigin(callout, globalOrigin);
-			}
-			else
-			{
-				positionToLeftOfOrigin(callout, globalOrigin);
-			}
 		}
 
 		/**
@@ -871,45 +790,117 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _supportedDirections:String = DIRECTION_ANY;
+		protected var _supportedDirections:String = null;
 
-		[Inspectable(type="String",enumeration="any,vertical,horizontal,up,down,left,right")]
 		/**
-		 * The directions that the callout may be positioned, relative to its
-		 * origin. If the callout's origin is not set, this value will be
-		 * ignored.
+		 * @private
+		 * DEPRECATED: Replaced by the <code>position</code> property.
 		 *
-		 * <p>The <code>arrowPosition</code> property is related to this one,
-		 * but they have different meanings and are usually opposites. For
-		 * example, a callout on the right side of its origin will generally
-		 * display its left arrow.</p>
-		 *
-		 * <p>In the following example, the callout's supported directions are
-		 * restricted to up and down:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.supportedDirections = Callout.DIRECTION_VERTICAL;</listing>
-		 *
-		 * @default Callout.DIRECTION_ANY
-		 *
-		 * @see #origin
-		 * @see #DIRECTION_ANY
-		 * @see #DIRECTION_VERTICAL
-		 * @see #DIRECTION_HORIZONTAL
-		 * @see #DIRECTION_UP
-		 * @see #DIRECTION_DOWN
-		 * @see #DIRECTION_LEFT
-		 * @see #DIRECTION_RIGHT
-		 * @see #arrowPosition
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get supportedDirections():String
 		{
 			return this._supportedDirections;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set supportedDirections(value:String):void
 		{
+			var positions:Vector.<String> = null;
+			if(value === DIRECTION_ANY)
+			{
+				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.LEFT];
+			}
+			else if(value === DIRECTION_HORIZONTAL)
+			{
+				positions = new <String>[RelativePosition.RIGHT, RelativePosition.LEFT];
+			}
+			else if(value === DIRECTION_VERTICAL)
+			{
+				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP];
+			}
+			else if(value === DIRECTION_UP)
+			{
+				positions = new <String>[RelativePosition.TOP];
+			}
+			else if(value === DIRECTION_DOWN)
+			{
+				positions = new <String>[RelativePosition.BOTTOM];
+			}
+			else if(value === DIRECTION_RIGHT)
+			{
+				positions = new <String>[RelativePosition.RIGHT];
+			}
+			else if(value === DIRECTION_LEFT)
+			{
+				positions = new <String>[RelativePosition.LEFT];
+			}
 			this._supportedDirections = value;
+			this.supportedPositions = positions;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _supportedPositions:Vector.<String> = null;
+
+		/**
+		 * The position of the callout, relative to its origin. Accepts a
+		 * <code>Vector.&lt;String&gt;</code> containing one or more of the
+		 * constants from <code>feathers.layout.RelativePosition</code> or
+		 * <code>null</code>. If <code>null</code>, the callout will attempt to
+		 * position itself using values in the following order:</p>
+		 * 
+		 * <ul>
+		 *     <li><code>RelativePosition.BOTTOM</code></li>
+		 *     <li><code>RelativePosition.TOP</code></li>
+		 *     <li><code>RelativePosition.RIGHT</code></li>
+		 *     <li><code>RelativePosition.LEFT</code></li>
+		 * </ul>
+		 * 
+		 * <p>Note: If the callout's origin is not set, the
+		 * <code>supportedPositions</code> property will be ignored.</p>
+		 *
+		 * <p>In the following example, the callout's supported positions are
+		 * restricted to the top and bottom of the origin:</p>
+		 *
+		 * <listing version="3.0">
+		 * callout.supportedPositions = new <String>[RelativePosition.TOP, RelativePosition.BOTTOM];</listing>
+		 *
+		 * <p>In the following example, the callout's position is restricted to
+		 * the right of the origin:</p>
+		 *
+		 * <listing version="3.0">
+		 * callout.supportedPositions = new <String>[RelativePosition.RIGHT];</listing>
+		 *
+		 * <p>Note: The <code>arrowPosition</code> property is related to this
+		 * one, but they have different meanings and are usually opposites. For
+		 * example, a callout on the right side of its origin will generally
+		 * display its left arrow.</p>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.layout.RelativePosition#TOP
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#BOTTOM
+		 * @see feathers.layout.RelativePosition#LEFT
+		 */
+		public function get supportedPositions():Vector.<String>
+		{
+			return this._supportedPositions;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set supportedPositions(value:Vector.<String>):void
+		{
+			this._supportedPositions = value;
 		}
 
 		/**
@@ -1686,7 +1677,7 @@ package feathers.controls
 
 			if(originInvalid)
 			{
-				this.positionToOrigin();
+				this.positionRelativeToOrigin();
 			}
 
 			if(stylesInvalid || stateInvalid)
@@ -2024,25 +2015,102 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function positionToOrigin():void
+		protected function positionRelativeToOrigin():void
 		{
-			if(!this._origin)
+			if(this._origin === null)
 			{
 				return;
 			}
 			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
 			var hasGlobalBounds:Boolean = this._lastGlobalBoundsOfOrigin != null;
-			if(!hasGlobalBounds || !this._lastGlobalBoundsOfOrigin.equals(HELPER_RECT))
+			if(hasGlobalBounds && this._lastGlobalBoundsOfOrigin.equals(HELPER_RECT))
 			{
-				if(!hasGlobalBounds)
+				return;
+			}
+			if(!hasGlobalBounds)
+			{
+				this._lastGlobalBoundsOfOrigin = new Rectangle();
+			}
+			this._lastGlobalBoundsOfOrigin.x = HELPER_RECT.x;
+			this._lastGlobalBoundsOfOrigin.y = HELPER_RECT.y;
+			this._lastGlobalBoundsOfOrigin.width = HELPER_RECT.width;
+			this._lastGlobalBoundsOfOrigin.height = HELPER_RECT.height;
+
+			var supportedPositions:Vector.<String> = this._supportedPositions;
+			if(supportedPositions === null)
+			{
+				supportedPositions = DEFAULT_POSITIONS;
+			}
+			var positionsCount:int = supportedPositions.length;
+			for(var i:int = 0; i < positionsCount; i++)
+			{
+				var position:String = supportedPositions[i];
+				switch(position)
 				{
-					this._lastGlobalBoundsOfOrigin = new Rectangle();
+					case RelativePosition.TOP:
+					{
+						//arrow is opposite, on bottom side
+						this.measureWithArrowPosition(RelativePosition.BOTTOM, HELPER_POINT);
+						var upSpace:Number = this._lastGlobalBoundsOfOrigin.y - HELPER_POINT.y;
+						if(upSpace >= stagePaddingTop)
+						{
+							positionAboveOrigin(this, this._lastGlobalBoundsOfOrigin);
+							return;
+						}
+						break;
+					}
+					case RelativePosition.RIGHT:
+					{
+						//arrow is opposite, on left side
+						this.measureWithArrowPosition(RelativePosition.LEFT, HELPER_POINT);
+						var rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
+						if(rightSpace >= stagePaddingRight)
+						{
+							positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
+							return;
+						}
+						break;
+					}
+					case RelativePosition.LEFT:
+					{
+						this.measureWithArrowPosition(RelativePosition.RIGHT, HELPER_POINT);
+						var leftSpace:Number = this._lastGlobalBoundsOfOrigin.x - HELPER_POINT.x;
+						if(leftSpace >= stagePaddingLeft)
+						{
+							positionToLeftOfOrigin(this, this._lastGlobalBoundsOfOrigin);
+							return;
+						}
+						break;
+					}
+					default: //bottom
+					{
+						//arrow is opposite, on top side
+						this.measureWithArrowPosition(RelativePosition.TOP, HELPER_POINT);
+						var downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
+						if(downSpace >= stagePaddingBottom)
+						{
+							positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
+							return;
+						}
+					}
 				}
-				this._lastGlobalBoundsOfOrigin.x = HELPER_RECT.x;
-				this._lastGlobalBoundsOfOrigin.y = HELPER_RECT.y;
-				this._lastGlobalBoundsOfOrigin.width = HELPER_RECT.width;
-				this._lastGlobalBoundsOfOrigin.height = HELPER_RECT.height;
-				positionWithSupportedDirections(this, this._lastGlobalBoundsOfOrigin, this._supportedDirections);
+			}
+			//worst case: pick the side that has the most available space
+			if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
+			{
+				positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
+			}
+			else if(upSpace >= rightSpace && upSpace >= leftSpace)
+			{
+				positionAboveOrigin(this, this._lastGlobalBoundsOfOrigin);
+			}
+			else if(rightSpace >= leftSpace)
+			{
+				positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
+			}
+			else
+			{
+				positionToLeftOfOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}
 		}
 
@@ -2087,7 +2155,7 @@ package feathers.controls
 		 */
 		protected function callout_enterFrameHandler(event:EnterFrameEvent):void
 		{
-			this.positionToOrigin();
+			this.positionRelativeToOrigin();
 		}
 
 		/**
