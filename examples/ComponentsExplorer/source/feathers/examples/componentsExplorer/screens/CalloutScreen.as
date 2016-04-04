@@ -7,6 +7,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.RelativePosition;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -28,8 +29,8 @@ package feathers.examples.componentsExplorer.screens
 		}
 
 		private var _rightButton:Button;
-		private var _downButton:Button;
-		private var _upButton:Button;
+		private var _bottomButton:Button;
+		private var _topButton:Button;
 		private var _leftButton:Button;
 		private var _message:Label;
 
@@ -91,17 +92,17 @@ package feathers.examples.componentsExplorer.screens
 			this._rightButton.layoutData = this._topLeftLayoutData;
 			this.addChild(this._rightButton);
 
-			this._downButton = new Button();
-			this._downButton.label = "Down";
-			this._downButton.addEventListener(Event.TRIGGERED, downButton_triggeredHandler);
-			this._downButton.layoutData = this._topRightLayoutData;
-			this.addChild(this._downButton);
+			this._bottomButton = new Button();
+			this._bottomButton.label = "Bottom";
+			this._bottomButton.addEventListener(Event.TRIGGERED, bottomButton_triggeredHandler);
+			this._bottomButton.layoutData = this._topRightLayoutData;
+			this.addChild(this._bottomButton);
 
-			this._upButton = new Button();
-			this._upButton.label = "Up";
-			this._upButton.addEventListener(Event.TRIGGERED, upButton_triggeredHandler);
-			this._upButton.layoutData = this._bottomLeftLayoutData;
-			this.addChild(this._upButton);
+			this._topButton = new Button();
+			this._topButton.label = "Top";
+			this._topButton.addEventListener(Event.TRIGGERED, topButton_triggeredHandler);
+			this._topButton.layoutData = this._bottomLeftLayoutData;
+			this.addChild(this._topButton);
 
 			this._leftButton = new Button();
 			this._leftButton.label = "Left";
@@ -158,14 +159,14 @@ package feathers.examples.componentsExplorer.screens
 			super.draw();
 		}
 
-		private function showCallout(origin:DisplayObject, direction:String):void
+		private function showCallout(origin:DisplayObject, supportedPositions:String):void
 		{
 			if(!this._message)
 			{
 				this._message = new Label();
 				this._message.text = CONTENT_TEXT;
 			}
-			var callout:Callout = Callout.show(DisplayObject(this._message), origin, direction);
+			var callout:Callout = Callout.show(DisplayObject(this._message), origin, supportedPositions);
 			//we're reusing the message every time that this screen shows a
 			//callout, so we don't want the message to be disposed. we'll
 			//dispose of it manually later when the screen is disposed.
@@ -184,22 +185,22 @@ package feathers.examples.componentsExplorer.screens
 
 		private function rightButton_triggeredHandler(event:Event):void
 		{
-			this.showCallout(this._rightButton, Callout.DIRECTION_RIGHT);
+			this.showCallout(this._rightButton, RelativePosition.RIGHT);
 		}
 
-		private function downButton_triggeredHandler(event:Event):void
+		private function bottomButton_triggeredHandler(event:Event):void
 		{
-			this.showCallout(this._downButton, Callout.DIRECTION_DOWN);
+			this.showCallout(this._bottomButton, RelativePosition.BOTTOM);
 		}
 
-		private function upButton_triggeredHandler(event:Event):void
+		private function topButton_triggeredHandler(event:Event):void
 		{
-			this.showCallout(this._upButton, Callout.DIRECTION_UP);
+			this.showCallout(this._topButton, RelativePosition.TOP);
 		}
 
 		private function leftButton_triggeredHandler(event:Event):void
 		{
-			this.showCallout(this._leftButton, Callout.DIRECTION_LEFT)
+			this.showCallout(this._leftButton, RelativePosition.LEFT)
 		}
 	}
 }
