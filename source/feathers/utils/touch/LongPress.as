@@ -177,6 +177,9 @@ package feathers.utils.touch
 		protected var _tapToTrigger:TapToTrigger;
 
 		/**
+		 * If the target can be triggered by tapping, the
+		 * <code>TapToTrigger</code> instance should be passed in so that it can
+		 * be temporarily disabled when a long press is detected.
 		 */
 		public function get tapToTrigger():TapToTrigger
 		{
@@ -197,6 +200,9 @@ package feathers.utils.touch
 		protected var _tapToSelect:TapToSelect;
 
 		/**
+		 * If the target can be selected by tapping, the
+		 * <code>TapToSelect</code> instance should be passed in so that it can
+		 * be temporarily disabled when a long press is detected.
 		 */
 		public function get tapToSelect():TapToSelect
 		{
