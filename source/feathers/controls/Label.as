@@ -8,12 +8,14 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
-	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToolTip;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
 
 	import flash.geom.Point;
 
@@ -327,12 +329,42 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundWidth:Number = NaN;
+		protected var _explicitTextRendererWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundHeight:Number = NaN;
+		protected var _explicitTextRendererHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitTextRendererMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitTextRendererMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
 
 		/**
 		 * @private
@@ -655,18 +687,26 @@ package feathers.controls
 				return false;
 			}
 			
-			this.textRenderer.minWidth = this._explicitMinWidth - this._paddingLeft - this._paddingRight;
+			resetBackgroundDimensionsForMeasurement(DisplayObject(this.textRenderer),
+				this._explicitWidth - this._paddingLeft - this._paddingRight,
+				this._explicitHeight - this._paddingTop - this._paddingBottom,
+				this._explicitMinWidth - this._paddingLeft - this._paddingRight,
+				this._explicitMinHeight - this._paddingTop - this._paddingBottom,
+				this._explicitTextRendererWidth, this._explicitTextRendererHeight,
+				this._explicitTextRendererMinWidth, this._explicitTextRendererMinHeight);
 			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.width = this._explicitWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.minHeight = this._explicitMinHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.height = this._explicitHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.measureText(HELPER_POINT);
 
-			if(this.currentBackgroundSkin is IFeathersControl)
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+			if(this.currentBackgroundSkin is IValidating)
 			{
-				var feathersBackground:IFeathersControl = IFeathersControl(this.currentBackgroundSkin);
-				feathersBackground.validate();
+				IValidating(this.currentBackgroundSkin).validate();
 			}
 
 			//minimum dimensions
@@ -685,13 +725,13 @@ package feathers.controls
 				}
 				newMinWidth += this._paddingLeft + this._paddingRight;
 				var backgroundMinWidth:Number = 0;
-				if(this.currentBackgroundSkin is IFeathersControl)
+				if(measureBackground !== null)
 				{
-					backgroundMinWidth = IFeathersControl(this.currentBackgroundSkin).minWidth;
+					backgroundMinWidth = measureBackground.minWidth;
 				}
-				else if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
+				else if(this.currentBackgroundSkin !== null)
 				{
-					backgroundMinWidth = this.originalBackgroundWidth;
+					backgroundMinWidth = this.currentBackgroundSkin.width;
 				}
 				if(backgroundMinWidth > newMinWidth)
 				{
@@ -711,13 +751,13 @@ package feathers.controls
 				}
 				newMinHeight += this._paddingTop + this._paddingBottom;
 				var backgroundMinHeight:Number = 0;
-				if(this.currentBackgroundSkin is IFeathersControl)
+				if(measureBackground !== null)
 				{
-					backgroundMinHeight = IFeathersControl(this.currentBackgroundSkin).minHeight;
+					backgroundMinHeight = measureBackground.minHeight;
 				}
-				else if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
+				else if(this.currentBackgroundSkin !== null)
 				{
-					backgroundMinHeight = this.originalBackgroundHeight;
+					backgroundMinHeight = this.currentBackgroundSkin.height;
 				}
 				if(backgroundMinHeight > newMinHeight)
 				{
@@ -737,10 +777,10 @@ package feathers.controls
 					newWidth = 0;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth &&
-					this.originalBackgroundWidth > newWidth) //!isNaN
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.width > newWidth)
 				{
-					newWidth = this.originalBackgroundWidth;
+					newWidth = this.currentBackgroundSkin.width;
 				}
 			}
 
@@ -756,10 +796,10 @@ package feathers.controls
 					newHeight = 0;
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight &&
-					this.originalBackgroundHeight > newHeight) //!isNaN
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight) //!isNaN
 				{
-					newHeight = this.originalBackgroundHeight;
+					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
 
@@ -778,7 +818,7 @@ package feathers.controls
 		 */
 		protected function createTextRenderer():void
 		{
-			if(this.textRenderer)
+			if(this.textRenderer !== null)
 			{
 				this.removeChild(DisplayObject(this.textRenderer), true);
 				this.textRenderer = null;
@@ -787,6 +827,11 @@ package feathers.controls
 			var factory:Function = this._textRendererFactory != null ? this._textRendererFactory : FeathersControl.defaultTextRendererFactory;
 			this.textRenderer = ITextRenderer(factory());
 			this.addChild(DisplayObject(this.textRenderer));
+
+			this._explicitTextRendererWidth = this.textRenderer.explicitWidth;
+			this._explicitTextRendererHeight = this.textRenderer.explicitHeight;
+			this._explicitTextRendererMinWidth = this.textRenderer.explicitMinWidth;
+			this._explicitTextRendererMinHeight = this.textRenderer.explicitMinHeight;
 		}
 
 		/**
@@ -796,35 +841,41 @@ package feathers.controls
 		protected function refreshBackgroundSkin():void
 		{
 			var newCurrentBackgroundSkin:DisplayObject = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
 			{
 				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
 			}
 			if(this.currentBackgroundSkin != newCurrentBackgroundSkin)
 			{
-				if(this.currentBackgroundSkin)
+				if(this.currentBackgroundSkin !== null)
 				{
 					this.removeChild(this.currentBackgroundSkin);
 				}
 				this.currentBackgroundSkin = newCurrentBackgroundSkin;
-				if(this.currentBackgroundSkin)
+				if(this.currentBackgroundSkin !== null)
 				{
 					this.addChildAt(this.currentBackgroundSkin, 0);
+					if(this.currentBackgroundSkin is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+					}
 				}
 			}
-			if(this.currentBackgroundSkin)
+			if(this.currentBackgroundSkin !== null)
 			{
 				//force it to the bottom
 				this.setChildIndex(this.currentBackgroundSkin, 0);
-
-				if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
-				{
-					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
-				}
-				if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
-				{
-					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
-				}
 			}
 		}
 
@@ -834,7 +885,7 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this.currentBackgroundSkin)
+			if(this.currentBackgroundSkin !== null)
 			{
 				this.currentBackgroundSkin.x = 0;
 				this.currentBackgroundSkin.y = 0;
