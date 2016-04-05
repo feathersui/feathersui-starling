@@ -3249,8 +3249,6 @@ package feathers.controls
 				this.verticalScrollBar.validate();
 			}
 
-			var needsWidthOrHeight:Boolean = this._explicitWidth !== this._explicitWidth ||
-				this._explicitHeight !== this._explicitHeight; //isNaN
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var loopCount:int = 0;
@@ -3263,7 +3261,7 @@ package feathers.controls
 				{
 					//if we don't need to do any measurement, we can skip
 					//this stuff and improve performance
-					if(needsWidthOrHeight && this._measureViewPort)
+					if(this._measureViewPort)
 					{
 						this.calculateViewPortOffsets(true, false);
 						this.refreshViewPortBoundsWithoutFixedScrollBars();
@@ -3291,7 +3289,7 @@ package feathers.controls
 					break;
 				}
 			}
-			while(this._hasViewPortBoundsChanged)
+			while(this._hasViewPortBoundsChanged);
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
 			if(oldMaxHorizontalScrollPosition != this._maxHorizontalScrollPosition)
@@ -3766,10 +3764,10 @@ package feathers.controls
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
 			this._viewPort.visibleWidth = this._explicitWidth - horizontalWidthOffset;
-			this._viewPort.minVisibleWidth = this._explicitMinHeight - horizontalWidthOffset;
+			this._viewPort.minVisibleWidth = this._explicitMinWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = viewPortMinWidth;
-			
+
 			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
 			this._viewPort.minVisibleHeight = this._explicitMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
