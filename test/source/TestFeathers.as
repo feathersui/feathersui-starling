@@ -28,6 +28,7 @@ package
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.HeaderInternalStateTests;
 	import feathers.tests.HeaderMeasurementTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -182,6 +183,7 @@ package
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
 				HeaderMeasurementTests,
+				HeaderInternalStateTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
 				LabelMeasurementTests,

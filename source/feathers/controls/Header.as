@@ -1304,10 +1304,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid || stylesInvalid)
-			{
-				this.layoutBackground();
-			}
+			this.layoutBackground();
 
 			if(sizeInvalid || leftContentInvalid || rightContentInvalid || centerContentInvalid || stylesInvalid)
 			{
