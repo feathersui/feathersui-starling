@@ -23,7 +23,7 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.display.InteractiveObject;
 	import flash.geom.Point;
@@ -2301,7 +2301,7 @@ package feathers.controls
 			}
 			
 			var measureBackground:IMeasureDisplayObject = this.currentBackground as IMeasureDisplayObject;
-			resetBackgroundDimensionsForMeasurement(this.currentBackground,
+			resetFluidChildDimensionsForMeasurement(this.currentBackground,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,

@@ -13,7 +13,7 @@ package feathers.controls
 	import feathers.core.IStateObserver;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.TapToTrigger;
 
 	import flash.geom.Point;
@@ -376,7 +376,7 @@ package feathers.controls
 				return false;
 			}
 
-			resetBackgroundDimensionsForMeasurement(this.currentSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitSkinWidth, this._explicitSkinHeight,

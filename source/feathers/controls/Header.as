@@ -21,7 +21,7 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
@@ -1359,7 +1359,7 @@ package feathers.controls
 				return false;
 			}
 
-			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,

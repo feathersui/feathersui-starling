@@ -21,7 +21,7 @@ package feathers.controls
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -3360,7 +3360,7 @@ package feathers.controls
 				return false;
 			}
 
-			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
@@ -3665,7 +3665,7 @@ package feathers.controls
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
 
-			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,

@@ -19,7 +19,7 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.stageToStarling;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -732,7 +732,7 @@ package feathers.controls
 			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth;
 			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight;
 
-			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,

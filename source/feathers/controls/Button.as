@@ -22,7 +22,7 @@ package feathers.controls
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.keyboard.KeyToTrigger;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.LongPress;
 
 	import flash.geom.Matrix;
@@ -2125,7 +2125,7 @@ package feathers.controls
 				adjustedGap = this._minGap;
 			}
 
-			resetBackgroundDimensionsForMeasurement(this.currentSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitSkinWidth, this._explicitSkinHeight,

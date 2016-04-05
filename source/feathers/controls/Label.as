@@ -15,7 +15,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
 
@@ -687,7 +687,7 @@ package feathers.controls
 				return false;
 			}
 			
-			resetBackgroundDimensionsForMeasurement(DisplayObject(this.textRenderer),
+			resetFluidChildDimensionsForMeasurement(DisplayObject(this.textRenderer),
 				this._explicitWidth - this._paddingLeft - this._paddingRight,
 				this._explicitHeight - this._paddingTop - this._paddingBottom,
 				this._explicitMinWidth - this._paddingLeft - this._paddingRight,
@@ -699,7 +699,7 @@ package feathers.controls
 			this.textRenderer.measureText(HELPER_POINT);
 
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
-			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,

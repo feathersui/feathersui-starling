@@ -19,7 +19,7 @@ package feathers.controls
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -761,7 +761,7 @@ package feathers.controls
 				return false;
 			}
 
-			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
