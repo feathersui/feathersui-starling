@@ -35,6 +35,10 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 
 -   [How to show or hide a header when scrolling a list or container](header-show-hide-on-scroll.html)
 
+## List
+
+-   [How to disable some item renderers in a `List` component](list-disable-some-item-renderers.html)
+
 ## Miscellaneous
 
 -   [How to display a context menu with Feathers](context-menu.html)
