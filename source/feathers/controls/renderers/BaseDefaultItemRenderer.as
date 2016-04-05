@@ -23,6 +23,7 @@ package feathers.controls.renderers
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
+	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -3586,7 +3587,11 @@ package feathers.controls.renderers
 			{
 				HELPER_POINT.setTo(0, 0);
 			}
-			this.resetSkinDimensionsForMeasurement();
+			resetBackgroundDimensionsForMeasurement(this.currentSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitSkinWidth, this._explicitSkinHeight,
+				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
 			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)

@@ -19,6 +19,7 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.stageToStarling;
+	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -731,7 +732,11 @@ package feathers.controls
 			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth;
 			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight;
 
-			this.resetBackgroundSkinDimensionsForMeasurement();
+			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			
 			this.viewPortBounds.x = 0;
 			this.viewPortBounds.y = 0;
@@ -867,54 +872,6 @@ package feathers.controls
 			}
 			this._layoutResult.viewPortWidth = maxX;
 			this._layoutResult.viewPortHeight = maxY;
-		}
-
-		/**
-		 * @private
-		 * Reset the skin dimensions so that we get an accurate measurement
-		 */
-		protected function resetBackgroundSkinDimensionsForMeasurement():void
-		{
-			if(this.currentBackgroundSkin === null)
-			{
-				return;
-			}
-			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
-			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(needsWidth)
-			{
-				this.currentBackgroundSkin.width = this._explicitBackgroundWidth;
-			}
-			else
-			{
-				this.currentBackgroundSkin.width = this._explicitWidth;
-			}
-			if(needsHeight)
-			{
-				this.currentBackgroundSkin.height = this._explicitBackgroundHeight;
-			}
-			else
-			{
-				this.currentBackgroundSkin.height = this._explicitHeight;
-			}
-			var measureSkin:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
-			if(measureSkin !== null)
-			{
-				var skinMinWidth:Number = this._explicitMinWidth;
-				if(skinMinWidth !== skinMinWidth || //isNaN
-					this._explicitBackgroundMinWidth > skinMinWidth)
-				{
-					skinMinWidth = this._explicitBackgroundMinWidth;
-				}
-				measureSkin.minWidth = skinMinWidth;
-				var skinMinHeight:Number = this._explicitMinHeight;
-				if(skinMinHeight !== skinMinHeight || //isNaN
-					this._explicitBackgroundMinHeight > skinMinHeight)
-				{
-					skinMinHeight = this._explicitBackgroundMinHeight;
-				}
-				measureSkin.minHeight = skinMinHeight;
-			}
 		}
 
 		/**

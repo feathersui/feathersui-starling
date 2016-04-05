@@ -19,6 +19,7 @@ package feathers.controls
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -760,7 +761,11 @@ package feathers.controls
 				return false;
 			}
 
-			this.resetBackgroundSkinDimensionsForMeasurement();
+			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{

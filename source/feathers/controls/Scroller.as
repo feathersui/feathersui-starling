@@ -21,6 +21,7 @@ package feathers.controls
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
+	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
 
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -3359,7 +3360,11 @@ package feathers.controls
 				return false;
 			}
 
-			this.resetBackgroundSkinDimensionsForMeasurement();
+			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{
@@ -3571,54 +3576,6 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * Reset the skin dimensions so that we get an accurate measurement
-		 */
-		protected function resetBackgroundSkinDimensionsForMeasurement():void
-		{
-			if(this.currentBackgroundSkin === null)
-			{
-				return;
-			}
-			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
-			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(needsWidth)
-			{
-				this.currentBackgroundSkin.width = this._explicitBackgroundWidth;
-			}
-			else
-			{
-				this.currentBackgroundSkin.width = this._explicitWidth;
-			}
-			if(needsHeight)
-			{
-				this.currentBackgroundSkin.height = this._explicitBackgroundHeight;
-			}
-			else
-			{
-				this.currentBackgroundSkin.height = this._explicitHeight;
-			}
-			var measureSkin:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
-			if(measureSkin !== null)
-			{
-				var skinMinWidth:Number = this._explicitMinWidth;
-				if(skinMinWidth !== skinMinWidth || //isNaN
-					this._explicitBackgroundMinWidth > skinMinWidth)
-				{
-					skinMinWidth = this._explicitBackgroundMinWidth;
-				}
-				measureSkin.minWidth = skinMinWidth;
-				var skinMinHeight:Number = this._explicitMinHeight;
-				if(skinMinHeight !== skinMinHeight || //isNaN
-					this._explicitBackgroundMinHeight > skinMinHeight)
-				{
-					skinMinHeight = this._explicitBackgroundMinHeight;
-				}
-				measureSkin.minHeight = skinMinHeight;
-			}
-		}
-
-		/**
-		 * @private
 		 */
 		protected function refreshScrollBarStyles():void
 		{
@@ -3707,8 +3664,12 @@ package feathers.controls
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
-			
-			this.resetBackgroundSkinDimensionsForMeasurement();
+
+			resetBackgroundDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{

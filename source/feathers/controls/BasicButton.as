@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IStateObserver;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.skins.resetBackgroundDimensionsForMeasurement;
 	import feathers.utils.touch.TapToTrigger;
 
 	import flash.geom.Point;
@@ -374,8 +375,12 @@ package feathers.controls
 			{
 				return false;
 			}
-			
-			this.resetSkinDimensionsForMeasurement();
+
+			resetBackgroundDimensionsForMeasurement(this.currentSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitSkinWidth, this._explicitSkinHeight,
+				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
 
 			if(this.currentSkin is IValidating)
@@ -444,54 +449,6 @@ package feathers.controls
 			}
 
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
-		}
-
-		/**
-		 * @private
-		 * Reset the skin dimensions so that we get an accurate measurement
-		 */
-		protected function resetSkinDimensionsForMeasurement():void
-		{
-			if(this.currentSkin === null)
-			{
-				return;
-			}
-			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
-			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(needsWidth)
-			{
-				this.currentSkin.width = this._explicitSkinWidth;
-			}
-			else
-			{
-				this.currentSkin.width = this._explicitWidth;
-			}
-			if(needsHeight)
-			{
-				this.currentSkin.height = this._explicitSkinHeight;
-			}
-			else
-			{
-				this.currentSkin.height = this._explicitHeight;
-			}
-			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
-			if(measureSkin !== null)
-			{
-				var skinMinWidth:Number = this._explicitMinWidth;
-				if(skinMinWidth !== skinMinWidth || //isNaN
-					this._explicitSkinMinWidth > skinMinWidth)
-				{
-					skinMinWidth = this._explicitSkinMinWidth;
-				}
-				measureSkin.minWidth = skinMinWidth;
-				var skinMinHeight:Number = this._explicitMinHeight;
-				if(skinMinHeight !== skinMinHeight || //isNaN
-					this._explicitSkinMinHeight > skinMinHeight)
-				{
-					skinMinHeight = this._explicitSkinMinHeight;
-				}
-				measureSkin.minHeight = skinMinHeight;
-			}
 		}
 
 		/**
