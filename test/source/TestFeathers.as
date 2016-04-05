@@ -13,6 +13,7 @@ package
 	import feathers.tests.ButtonInternalStateTests;
 	import feathers.tests.ButtonMeasurementTests;
 	import feathers.tests.ButtonTests;
+	import feathers.tests.CalloutMeasurementTests;
 	import feathers.tests.CalloutPopUpContentManagerTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
@@ -174,6 +175,7 @@ package
 				ButtonGroupMeasurementTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,
+				CalloutMeasurementTests,
 				DateTimeSpinnerTests,
 				DefaultListItemRendererInternalStateTests,
 				DrawersTests,
