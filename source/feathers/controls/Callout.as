@@ -101,7 +101,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by a Vector.<String> containing values from
+		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
 		 * <code>feathers.layout.RelativePosition</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
@@ -113,7 +113,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by a Vector.<String> containing values from
+		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
 		 * <code>feathers.layout.RelativePosition</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
@@ -125,7 +125,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by a Vector.<String> containing values from
+		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
 		 * <code>feathers.layout.RelativePosition</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
@@ -854,7 +854,7 @@ package feathers.controls
 		 * <code>Vector.&lt;String&gt;</code> containing one or more of the
 		 * constants from <code>feathers.layout.RelativePosition</code> or
 		 * <code>null</code>. If <code>null</code>, the callout will attempt to
-		 * position itself using values in the following order:</p>
+		 * position itself using values in the following order:
 		 * 
 		 * <ul>
 		 *     <li><code>RelativePosition.BOTTOM</code></li>
@@ -870,13 +870,13 @@ package feathers.controls
 		 * restricted to the top and bottom of the origin:</p>
 		 *
 		 * <listing version="3.0">
-		 * callout.supportedPositions = new <String>[RelativePosition.TOP, RelativePosition.BOTTOM];</listing>
+		 * callout.supportedPositions = new &lt;String&gt;[RelativePosition.TOP, RelativePosition.BOTTOM];</listing>
 		 *
 		 * <p>In the following example, the callout's position is restricted to
 		 * the right of the origin:</p>
 		 *
 		 * <listing version="3.0">
-		 * callout.supportedPositions = new <String>[RelativePosition.RIGHT];</listing>
+		 * callout.supportedPositions = new &lt;String&gt;[RelativePosition.RIGHT];</listing>
 		 *
 		 * <p>Note: The <code>arrowPosition</code> property is related to this
 		 * one, but they have different meanings and are usually opposites. For
