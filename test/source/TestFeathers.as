@@ -18,6 +18,7 @@ package
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
+	import feathers.tests.DefaultGroupedListHeaderOrFooterRendererMeasurementTests;
 	import feathers.tests.DefaultListItemRendererInternalStateTests;
 	import feathers.tests.DefaultListItemRendererMeasurementTests;
 	import feathers.tests.DrawersMeasurementTests;
@@ -178,6 +179,7 @@ package
 				CalloutTests,
 				CalloutMeasurementTests,
 				DateTimeSpinnerTests,
+				DefaultGroupedListHeaderOrFooterRendererMeasurementTests,
 				DefaultListItemRendererMeasurementTests,
 				DefaultListItemRendererInternalStateTests,
 				DrawersTests,

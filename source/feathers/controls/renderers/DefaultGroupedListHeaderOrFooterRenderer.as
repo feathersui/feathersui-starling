@@ -11,12 +11,14 @@ package feathers.controls.renderers
 	import feathers.controls.ImageLoader;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import starling.display.DisplayObject;
 
@@ -969,12 +971,42 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundWidth:Number = NaN;
+		protected var _explicitBackgroundWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var originalBackgroundHeight:Number = NaN;
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMinHeight:Number;
 
 		/**
 		 * @private
@@ -1297,9 +1329,13 @@ package feathers.controls.renderers
 				{
 					this.refreshContentLabel(labelResult as String);
 				}
-				else
+				else if(labelResult !== null)
 				{
 					this.refreshContentLabel(labelResult.toString());
+				}
+				else
+				{
+					this.refreshContentLabel(null);
 				}
 				return DisplayObject(this.contentLabel);
 			}
@@ -1310,9 +1346,13 @@ package feathers.controls.renderers
 				{
 					this.refreshContentLabel(labelResult as String);
 				}
-				else
+				else if(labelResult !== null)
 				{
 					this.refreshContentLabel(labelResult.toString());
+				}
+				else
+				{
+					this.refreshContentLabel(null);
 				}
 				return DisplayObject(this.contentLabel);
 			}
@@ -1329,10 +1369,14 @@ package feathers.controls.renderers
 				this.refreshContentLabel(item as String);
 				return DisplayObject(this.contentLabel);
 			}
-			else if(item)
+			else if(item !== null)
 			{
 				this.refreshContentLabel(item.toString());
 				return DisplayObject(this.contentLabel);
+			}
+			else
+			{
+				this.refreshContentLabel(null);
 			}
 
 			return null;
@@ -1369,20 +1413,7 @@ package feathers.controls.renderers
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(dataInvalid || stylesInvalid || sizeInvalid)
-			{
-				this.layout();
-			}
-
-			if(sizeInvalid || stylesInvalid || stateInvalid)
-			{
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
-			}
+			this.layoutChildren();
 		}
 
 		/**
@@ -1405,15 +1436,14 @@ package feathers.controls.renderers
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			if(!this.content)
-			{
-				return this.setSizeInternal(0, 0, false);
-			}
-			if(this.contentLabel)
+			var measureContent:IMeasureDisplayObject = this.content as IMeasureDisplayObject;
+			if(this.contentLabel !== null)
 			{
 				//special case for label to allow word wrap
 				var labelMaxWidth:Number = this._explicitWidth;
@@ -1423,39 +1453,139 @@ package feathers.controls.renderers
 				}
 				this.contentLabel.maxWidth = labelMaxWidth - this._paddingLeft - this._paddingRight;
 			}
-			if(this._horizontalAlign == HorizontalAlign.JUSTIFY)
+			else if(this.content !== null)
 			{
-				this.content.width = this._explicitWidth - this._paddingLeft - this._paddingRight;
-			}
-			if(this._verticalAlign == VerticalAlign.JUSTIFY)
-			{
-				this.content.height = this._explicitHeight - this._paddingTop - this._paddingBottom;
+				if(this._horizontalAlign === HorizontalAlign.JUSTIFY && this._verticalAlign === VerticalAlign.JUSTIFY)
+				{
+					resetFluidChildDimensionsForMeasurement(this.content,
+						this._explicitWidth - this._paddingLeft - this._paddingRight,
+						this._explicitHeight - this._paddingTop - this._paddingBottom,
+						this._explicitMinWidth - this._paddingLeft - this._paddingRight,
+						this._explicitMinHeight - this._paddingTop - this._paddingBottom,
+						this._explicitContentWidth, this._explicitContentHeight,
+						this._explicitContentMinWidth, this._explicitContentMinHeight);
+				}
+				else
+				{
+					this.content.width = this._explicitContentWidth;
+					this.content.height = this._explicitContentHeight;
+					if(measureContent !== null)
+					{
+						measureContent.minWidth = this._explicitContentMinWidth;
+						measureContent.minHeight = this._explicitContentMinHeight;
+					}
+				}
 			}
 			if(this.content is IValidating)
 			{
 				IValidating(this.content).validate();
 			}
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+			var measureSkin:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			
 			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this.content.width + this._paddingLeft + this._paddingRight;
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
-					this.originalBackgroundWidth > newWidth)
+				if(this.content !== null)
 				{
-					newWidth = this.originalBackgroundWidth;
+					newWidth = this.content.width;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+				newWidth += this._paddingLeft + this._paddingRight;
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.width > newWidth)
+				{
+					newWidth = this.currentBackgroundSkin.width;
 				}
 			}
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this.content.height + this._paddingTop + this._paddingBottom;
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
-					this.originalBackgroundHeight > newHeight)
+				if(this.content !== null)
 				{
-					newHeight = this.originalBackgroundHeight;
+					newHeight = this.content.height;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+				newHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
+				{
+					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			var newMinWidth:Number = this._explicitMinHeight;
+			if(needsMinWidth)
+			{
+				if(measureContent !== null)
+				{
+					newMinWidth = measureContent.minWidth;
+				}
+				else if(this.content !== null)
+				{
+					newMinWidth = this.content.width;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureSkin !== null)
+					{
+						if(measureSkin.minWidth > newMinWidth)
+						{
+							newMinWidth = measureSkin.minWidth;
+						}
+					}
+					else if(this.currentBackgroundSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentBackgroundSkin.width;
+					}
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(measureContent !== null)
+				{
+					newMinHeight = measureContent.minHeight;
+				}
+				else if(this.content !== null)
+				{
+					newMinHeight = this.content.height;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureSkin !== null)
+					{
+						if(measureSkin.minHeight > newMinHeight)
+						{
+							newMinHeight = measureSkin.minHeight;
+						}
+					}
+					else if(this.currentBackgroundSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentBackgroundSkin.height;
+					}
+				}
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1464,29 +1594,36 @@ package feathers.controls.renderers
 		protected function refreshBackgroundSkin():void
 		{
 			this.currentBackgroundSkin = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
 			{
-				if(this._backgroundSkin)
+				if(this._backgroundSkin !== null)
 				{
 					this._backgroundSkin.visible = false;
 				}
 				this.currentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			else if(this._backgroundDisabledSkin)
+			else if(this._backgroundDisabledSkin !== null)
 			{
 				this._backgroundDisabledSkin.visible = false;
 			}
-			if(this.currentBackgroundSkin)
+			if(this.currentBackgroundSkin !== null)
 			{
-				if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
-				{
-					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
-				}
-				if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
-				{
-					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
-				}
 				this.currentBackgroundSkin.visible = true;
+				if(this.currentBackgroundSkin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+					this._explicitBackgroundWidth = measureSkin.explicitWidth;
+					this._explicitBackgroundHeight = measureSkin.explicitHeight;
+					this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+					this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+				}
+				else
+				{
+					this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+					this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+					this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+					this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+				}
 			}
 		}
 
@@ -1498,16 +1635,31 @@ package feathers.controls.renderers
 			if(this._owner)
 			{
 				var newContent:DisplayObject = this.itemToContent(this._data);
-				if(newContent != this.content)
+				if(newContent !== this.content)
 				{
-					if(this.content)
+					if(this.content !== null)
 					{
 						this.content.removeFromParent();
 					}
 					this.content = newContent;
-					if(this.content)
+					if(this.content !== null)
 					{
 						this.addChild(this.content);
+						if(this.content is IMeasureDisplayObject)
+						{
+							var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.content);
+							this._explicitContentWidth = measureSkin.explicitWidth;
+							this._explicitContentHeight = measureSkin.explicitHeight;
+							this._explicitContentMinWidth = measureSkin.explicitMinWidth;
+							this._explicitContentMinHeight = measureSkin.explicitMinHeight;
+						}
+						else
+						{
+							this._explicitContentWidth = this.content.width;
+							this._explicitContentHeight = this.content.height;
+							this._explicitContentMinWidth = this._explicitContentWidth;
+							this._explicitContentMinHeight = this._explicitContentHeight;
+						}
 					}
 				}
 			}
@@ -1540,7 +1692,7 @@ package feathers.controls.renderers
 		{
 			if(label !== null)
 			{
-				if(!this.contentLabel)
+				if(this.contentLabel === null)
 				{
 					var factory:Function = this._contentLabelFactory != null ? this._contentLabelFactory : FeathersControl.defaultTextRendererFactory;
 					this.contentLabel = ITextRenderer(factory());
@@ -1549,7 +1701,7 @@ package feathers.controls.renderers
 				}
 				this.contentLabel.text = label;
 			}
-			else if(this.contentLabel)
+			else if(this.contentLabel !== null)
 			{
 				DisplayObject(this.contentLabel).removeFromParent(true);
 				this.contentLabel = null;
@@ -1586,9 +1738,15 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function layout():void
+		protected function layoutChildren():void
 		{
-			if(!this.content)
+			if(this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+			}
+
+			if(this.content === null)
 			{
 				return;
 			}
