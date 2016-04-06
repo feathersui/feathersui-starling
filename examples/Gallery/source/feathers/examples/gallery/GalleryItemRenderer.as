@@ -239,13 +239,8 @@ package feathers.examples.gallery
 				}
 			}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(sizeInvalid)
-			{
-				this.image.width = this.actualWidth;
-				this.image.height = this.actualHeight;
-			}
+			this.autoSizeIfNeeded();
+			this.layoutChildren();
 		}
 
 		/**
@@ -255,7 +250,9 @@ package feathers.examples.gallery
 		{
 			var needsWidth:Boolean = isNaN(this._explicitWidth);
 			var needsHeight:Boolean = isNaN(this._explicitHeight);
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = isNaN(this._explicitMinWidth);
+			var needsMinHeight:Boolean = isNaN(this._explicitMinHeight);
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
@@ -321,7 +318,17 @@ package feathers.examples.gallery
 					}
 				}
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutChildren():void
+		{
+			this.image.width = this.actualWidth;
+			this.image.height = this.actualHeight;
+			this.image.validate();
 		}
 
 		/**
