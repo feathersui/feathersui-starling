@@ -5,6 +5,7 @@ package feathers.examples.trainTimes.themes
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.SimpleScrollBar;
@@ -205,7 +206,7 @@ package feathers.examples.trainTimes.themes
 			this.getStyleProviderForClass(StationListItemRenderer).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST_ITEM_RENDERER, setStationListItemRendererStyles);
 			this.getStyleProviderForClass(StationListItemRenderer).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST_FIRST_ITEM_RENDERER, setStationListFirstItemRendererStyles);
 			this.getStyleProviderForClass(StationListItemRenderer).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST_LAST_ITEM_RENDERER, setStationListLastItemRendererStyles);
-			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER, setActionContainerStyles);
+			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER, setActionContainerStyles);
 		}
 
 		protected function horizontalScrollBarFactory():SimpleScrollBar
@@ -339,7 +340,7 @@ package feathers.examples.trainTimes.themes
 			renderer.selectedIconTexture = this.stationListLastSelectedIconTexture;
 		}
 
-		protected function setActionContainerStyles(container:ScrollContainer):void
+		protected function setActionContainerStyles(container:LayoutGroup):void
 		{
 			var backgroundSkin:Quad = new Quad(24, 24, 0xcc2a41);
 			container.backgroundSkin = backgroundSkin;

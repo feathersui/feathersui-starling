@@ -3,9 +3,8 @@ package feathers.examples.trainTimes.controls
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
-	import feathers.controls.ScrollContainer;
-	import feathers.controls.ScrollPolicy;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.examples.trainTimes.model.StationData;
@@ -57,7 +56,7 @@ package feathers.examples.trainTimes.controls
 		}
 
 		protected var background:Quad;
-		protected var actionContainer:ScrollContainer;
+		protected var actionContainer:LayoutGroup;
 		protected var confirmButton:Button;
 		protected var cancelButton:Button;
 		protected var nameLabel:Label;
@@ -339,10 +338,8 @@ package feathers.examples.trainTimes.controls
 			this.nameLabel.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST_NAME_LABEL);
 			this.addChild(this.nameLabel);
 
-			this.actionContainer = new ScrollContainer();
+			this.actionContainer = new LayoutGroup();
 			this.actionContainer.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER);
-			this.actionContainer.horizontalScrollPolicy = ScrollPolicy.OFF;
-			this.actionContainer.verticalScrollPolicy = ScrollPolicy.OFF;
 			this.actionContainer.visible = false;
 			this.addChild(this.actionContainer);
 
@@ -375,18 +372,16 @@ package feathers.examples.trainTimes.controls
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(dataInvalid || sizeInvalid || selectionInvalid)
-			{
-				this.layout();
-			}
+			this.layout();
 		}
 
 		protected function autoSizeIfNeeded():Boolean
 		{
 			var needsWidth:Boolean = isNaN(this._explicitWidth);
 			var needsHeight:Boolean = isNaN(this._explicitHeight);
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = isNaN(this._explicitMinWidth);
+			var needsMinHeight:Boolean = isNaN(this._explicitMinHeight);
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
@@ -402,7 +397,18 @@ package feathers.examples.trainTimes.controls
 			{
 				newHeight = this.icon.height;
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				newMinWidth = this.icon.width;
+				newMinWidth += this._paddingLeft + this._paddingRight;
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				newMinHeight = this.icon.height;
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		protected function refreshIcon():void
