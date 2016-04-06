@@ -4216,8 +4216,8 @@ package feathers.controls
 			{
 				if(this._autoHideBackground)
 				{
-					this.currentBackgroundSkin.visible = this._viewPort.width < this.actualWidth ||
-						this._viewPort.height < this.actualHeight ||
+					this.currentBackgroundSkin.visible = this._viewPort.width <= this.actualWidth ||
+						this._viewPort.height <= this.actualHeight ||
 						this._horizontalScrollPosition < 0 ||
 						this._horizontalScrollPosition > this._maxHorizontalScrollPosition ||
 						this._verticalScrollPosition < 0 ||

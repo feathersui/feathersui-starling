@@ -309,5 +309,14 @@ package feathers.tests
 				}, 25);
 			}, 25);
 		}
+
+		[Test]
+		public function testAutoHideBackgroundWithoutScrolling():void
+		{
+			this._scroller.backgroundSkin = new Quad(1, 1, 0xff00ff);
+			this._scroller.autoHideBackground = true;
+			this._scroller.validate();
+			Assert.assertTrue("Background is incorrectly hidden.", this._scroller.backgroundSkin.visible);
+		}
 	}
 }
