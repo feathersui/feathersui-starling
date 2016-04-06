@@ -246,7 +246,7 @@ package feathers.media
 			{
 				newHeight = 10;
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 		}
 
 		/**
