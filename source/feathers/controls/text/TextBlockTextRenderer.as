@@ -1681,7 +1681,13 @@ package feathers.controls.text
 				return false;
 			}
 
-			this.measure(HELPER_POINT);
+			if(needsWidth || needsHeight)
+			{
+				//since the minimum dimensions are based on the regular
+				//dimensions, we don't need to measure if only minimum
+				//dimensions are required
+				this.measure(HELPER_POINT);
+			}
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
