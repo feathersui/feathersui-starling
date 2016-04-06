@@ -3685,6 +3685,11 @@ package feathers.controls
 			{
 				viewPortMinWidth = this._explicitViewPortMinWidth;
 			}
+			if(viewPortMinWidth !== viewPortMinWidth ||
+				this._explicitWidth > viewPortMinWidth)
+			{
+				viewPortMinWidth = this._explicitWidth;
+			}
 			if(this.currentBackgroundSkin !== null)
 			{
 				var backgroundMinWidth:Number = this.currentBackgroundSkin.width;
@@ -3705,6 +3710,11 @@ package feathers.controls
 				this._explicitViewPortMinHeight > viewPortMinHeight)
 			{
 				viewPortMinHeight = this._explicitViewPortMinHeight;
+			}
+			if(viewPortMinHeight !== viewPortMinHeight ||
+				this._explicitHeight > viewPortMinHeight)
+			{
+				viewPortMinHeight = this._explicitHeight;
 			}
 			if(this.currentBackgroundSkin !== null)
 			{
@@ -3775,6 +3785,11 @@ package feathers.controls
 					viewPortMinWidth = backgroundMinWidth;
 				}
 			}
+			if(viewPortMinWidth !== viewPortMinWidth ||
+				this.actualWidth > viewPortMinWidth)
+			{
+				viewPortMinWidth = this.actualWidth;
+			}
 			viewPortMinWidth -= horizontalWidthOffset;
 
 			var viewPortMinHeight:Number = this.actualMinHeight;
@@ -3795,6 +3810,11 @@ package feathers.controls
 				{
 					viewPortMinHeight = backgroundMinHeight;
 				}
+			}
+			if(viewPortMinHeight !== viewPortMinHeight ||
+				this.actualHeight > viewPortMinHeight)
+			{
+				viewPortMinHeight = this.actualHeight;
 			}
 			viewPortMinHeight -= verticalHeightOffset;
 			
