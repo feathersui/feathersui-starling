@@ -1155,59 +1155,10 @@ package feathers.controls
 			{
 				IValidating(this.currentBackgroundSkin).validate();
 			}
-
-			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
-			this._ignoreHeaderResizing = true;
-			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
-			this._ignoreFooterResizing = true;
-
-			if(needsWidth)
-			{
-				this.header.width = this._explicitHeaderWidth;
-			}
-			else
-			{
-				this.header.width = this._explicitWidth;
-			}
-			var headerAndFooterMinWidth:Number = this._explicitMinWidth;
-			if(headerAndFooterMinWidth !== headerAndFooterMinWidth || //isNaN
-				this._explicitHeaderMinWidth > headerAndFooterMinWidth)
-			{
-				headerAndFooterMinWidth = this._explicitHeaderMinWidth;
-			}
-			if(headerAndFooterMinWidth !== headerAndFooterMinWidth || //isNaN
-				this._explicitFooterMinWidth > headerAndFooterMinWidth)
-			{
-				headerAndFooterMinWidth = this._explicitFooterMinWidth;
-			}
-			this.header.minWidth = headerAndFooterMinWidth;
-			if(this._maxWidth > this.header.maxWidth)
-			{
-				this.header.maxWidth = this._maxWidth;
-			}
-			this.header.height = this._explicitHeaderHeight;
-			this.header.minHeight = this._explicitHeaderMinHeight;
-			this.header.validate();
-
-			if(this.footer !== null)
-			{
-				if(needsWidth)
-				{
-					this.footer.width = this._explicitFooterWidth;
-				}
-				else
-				{
-					this.footer.width = this._explicitWidth;
-				}
-				this.footer.minWidth = headerAndFooterMinWidth;
-				if(this._maxWidth > this.footer.maxWidth)
-				{
-					this.footer.maxWidth = this._maxWidth;
-				}
-				this.footer.height = this._explicitFooterHeight;
-				this.footer.minHeight = this._explicitHeaderMinHeight;
-				this.footer.validate();
-			}
+			
+			//we don't measure the header and footer here because they are
+			//handled in calculateViewPortOffsets(), which is automatically
+			//called by Scroller before autoSizeIfNeeded().
 
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
@@ -1321,9 +1272,6 @@ package feathers.controls
 					}
 				}
 			}
-
-			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
-			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
