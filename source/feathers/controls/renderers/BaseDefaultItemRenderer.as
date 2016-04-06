@@ -3572,31 +3572,34 @@ package feathers.controls.renderers
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
+
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
-			this.refreshMaxLabelSize(true);
-			if(this.labelTextRenderer)
+			var labelRenderer:ITextRenderer = null;
+			if(this._label !== null && this.labelTextRenderer)
 			{
+				labelRenderer = this.labelTextRenderer;
+				this.refreshMaxLabelSize(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
-			else
-			{
-				HELPER_POINT.setTo(0, 0);
-			}
+			
 			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
 				this._explicitSkinWidth, this._explicitSkinHeight,
 				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
+			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
 			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this._label)
+				if(labelRenderer !== null)
 				{
 					newWidth = HELPER_POINT.x;
 				}
@@ -3625,7 +3628,7 @@ package feathers.controls.renderers
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this._label)
+				if(labelRenderer !== null)
 				{
 					newHeight = HELPER_POINT.y;
 				}
@@ -3650,9 +3653,85 @@ package feathers.controls.renderers
 					newHeight = this.currentSkin.height;
 				}
 			}
+
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(labelRenderer !== null)
+				{
+					newMinWidth = HELPER_POINT.x;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				{
+					newMinWidth = this.addAccessoryWidth(newMinWidth);
+					newMinWidth = this.addIconWidth(newMinWidth);
+				}
+				else
+				{
+					newMinWidth = this.addIconWidth(newMinWidth);
+					newMinWidth = this.addAccessoryWidth(newMinWidth);
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				if(this.currentSkin !== null)
+				{
+					if(measureSkin !== null)
+					{
+						if(measureSkin.minWidth > newMinWidth)
+						{
+							newMinWidth = measureSkin.minWidth;
+						}
+					}
+					else if(this.currentSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentSkin.width;
+					}
+				}
+			}
+
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(labelRenderer !== null)
+				{
+					newMinHeight = HELPER_POINT.y;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				{
+					newMinHeight = this.addAccessoryHeight(newMinHeight);
+					newMinHeight = this.addIconHeight(newMinHeight);
+				}
+				else
+				{
+					newMinHeight = this.addIconHeight(newMinHeight);
+					newMinHeight = this.addAccessoryHeight(newMinHeight);
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentSkin !== null)
+				{
+					if(measureSkin !== null)
+					{
+						if(measureSkin.minHeight > newMinHeight)
+						{
+							newMinHeight = measureSkin.minHeight;
+						}
+					}
+					else if(this.currentSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentSkin.height;
+					}
+				}
+			}
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**

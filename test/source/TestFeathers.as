@@ -19,6 +19,7 @@ package
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
 	import feathers.tests.DefaultListItemRendererInternalStateTests;
+	import feathers.tests.DefaultListItemRendererMeasurementTests;
 	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
 	import feathers.tests.DropDownPopUpContentManagerTests;
@@ -177,6 +178,7 @@ package
 				CalloutTests,
 				CalloutMeasurementTests,
 				DateTimeSpinnerTests,
+				DefaultListItemRendererMeasurementTests,
 				DefaultListItemRendererInternalStateTests,
 				DrawersTests,
 				DrawersMeasurementTests,
