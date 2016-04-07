@@ -834,7 +834,12 @@ package feathers.controls.text
 				this.addChild(this._characterBatch);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
+		protected var _lastLayoutWidth:Number = 0;
+
 		/**
 		 * @private
 		 */
@@ -850,6 +855,17 @@ package feathers.controls.text
 				this.refreshTextFormat();
 			}
 
+			//sometimes, we can determine that the layout will be exactly
+			//the same without needing to update. this will result in much
+			//better performance.
+			var newWidth:Number = this._explicitWidth;
+			if(newWidth !== newWidth) //isNaN
+			{
+				newWidth = this._maxWidth;
+			}
+			sizeInvalid = (!this._wordWrap && newWidth < this._lastLayoutWidth) ||
+				(this._wordWrap && newWidth !== this._lastLayoutWidth);
+			this._lastLayoutWidth = newWidth;
 			if(dataInvalid || stylesInvalid || sizeInvalid || stateInvalid)
 			{
 				this._characterBatch.pixelSnapping = this._pixelSnapping;
