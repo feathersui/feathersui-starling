@@ -3316,8 +3316,6 @@ package feathers.controls
 				if(this._measureViewPort)
 				{
 					this.calculateViewPortOffsets(true, false);
-					//even if fixed, we need to measure without them first because
-					//if the scroll policy is auto, we only show them when needed.
 					this.refreshViewPortBoundsForMeasurement();
 				}
 				this.calculateViewPortOffsets(false, false);
