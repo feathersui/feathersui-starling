@@ -227,6 +227,13 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return this._layout !== null && this._layout.requiresLayoutOnScroll &&
+				this._explicitVisibleWidth !== this._explicitVisibleWidth &&
+				this._explicitVisibleHeight !== this._explicitVisibleHeight
+		}
+
 		override public function dispose():void
 		{
 			this.layout = null;

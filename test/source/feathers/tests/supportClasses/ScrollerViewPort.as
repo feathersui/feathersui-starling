@@ -248,5 +248,17 @@ package feathers.tests.supportClasses
 			super.height = value;
 			this._actualVisibleHeight = value;
 		}
+
+		private var _requiresMeasurementOnScroll:Boolean = false;
+
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return this._requiresMeasurementOnScroll;
+		}
+
+		public function set requiresMeasurementOnScroll(value:Boolean):void
+		{
+			this._requiresMeasurementOnScroll = value;
+		}
 	}
 }

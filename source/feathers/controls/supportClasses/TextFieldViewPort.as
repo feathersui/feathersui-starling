@@ -688,6 +688,11 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return false;
+		}
+
 		private var _paddingTop:Number = 0;
 
 		public function get paddingTop():Number

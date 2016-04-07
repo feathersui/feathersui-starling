@@ -3252,47 +3252,9 @@ package feathers.controls
 
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
-			var loopCount:int = 0;
-			do
-			{
-				this._hasViewPortBoundsChanged = false;
-				//even if fixed, we need to measure without them first because
-				//if the scroll policy is auto, we only show them when needed.
-				if(scrollInvalid || dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
-				{
-					//if we don't need to do any measurement, we can skip
-					//this stuff and improve performance
-					if(this._measureViewPort)
-					{
-						this.calculateViewPortOffsets(true, false);
-						this.refreshViewPortBoundsWithoutFixedScrollBars();
-					}
-					this.calculateViewPortOffsets(false, false);
-				}
-
-				sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-				//just in case autoSizeIfNeeded() is overridden, we need to call
-				//this again and use actualWidth/Height instead of
-				//explicitWidth/Height.
-				this.calculateViewPortOffsets(false, true);
-
-				if(scrollInvalid || dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
-				{
-					this.refreshViewPortBoundsWithFixedScrollBars();
-					this.refreshScrollValues();
-				}
-				loopCount++;
-				if(loopCount >= 10)
-				{
-					//if it still fails after ten tries, we've probably entered
-					//an infinite loop due to rounding errors or something
-					break;
-				}
-			}
-			while(this._hasViewPortBoundsChanged);
-			this._lastViewPortWidth = viewPort.width;
-			this._lastViewPortHeight = viewPort.height;
+			var needsMeasurement:Boolean = (scrollInvalid && this._viewPort.requiresMeasurementOnScroll) ||
+				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid;
+			this.refreshViewPort(needsMeasurement);
 			if(oldMaxHorizontalScrollPosition != this._maxHorizontalScrollPosition)
 			{
 				this.refreshHorizontalAutoScrollTweenEndRatio();
@@ -3331,6 +3293,55 @@ package feathers.controls
 			{
 				this.handlePendingRevealScrollBars();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshViewPort(measure:Boolean):void
+		{
+			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+			if(!measure)
+			{
+				this._viewPort.validate();
+				return;
+			}
+			var loopCount:int = 0;
+			do
+			{
+				this._hasViewPortBoundsChanged = false;
+				//if we don't need to do any measurement, we can skip
+				//this stuff and improve performance
+				if(this._measureViewPort)
+				{
+					this.calculateViewPortOffsets(true, false);
+					//even if fixed, we need to measure without them first because
+					//if the scroll policy is auto, we only show them when needed.
+					this.refreshViewPortBoundsWithoutFixedScrollBars();
+				}
+				this.calculateViewPortOffsets(false, false);
+
+				this.autoSizeIfNeeded();
+
+				//just in case autoSizeIfNeeded() is overridden, we need to call
+				//this again and use actualWidth/Height instead of
+				//explicitWidth/Height.
+				this.calculateViewPortOffsets(false, true);
+
+				this.refreshViewPortBoundsWithFixedScrollBars();
+				this.refreshScrollValues();
+				loopCount++;
+				if(loopCount >= 10)
+				{
+					//if it still fails after ten tries, we've probably entered
+					//an infinite loop due to rounding errors or something
+					break;
+				}
+			}
+			while(this._hasViewPortBoundsChanged);
+			this._lastViewPortWidth = viewPort.width;
+			this._lastViewPortHeight = viewPort.height;
 		}
 
 		/**
@@ -3743,9 +3754,6 @@ package feathers.controls
 			this._viewPort.minVisibleHeight = this._explicitMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;
-			
-			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
-			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 
 			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
 			if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
@@ -3817,19 +3825,17 @@ package feathers.controls
 				viewPortMinHeight = this.actualHeight;
 			}
 			viewPortMinHeight -= verticalHeightOffset;
-			
+
 			this._viewPort.visibleWidth = this.actualWidth - horizontalWidthOffset;
 			this._viewPort.minVisibleWidth = this.actualMinWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = viewPortMinWidth;
-			
+
 			this._viewPort.visibleHeight = this.actualHeight - verticalHeightOffset;
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;
-			
-			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
-			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+
 			this._viewPort.validate();
 		}
 

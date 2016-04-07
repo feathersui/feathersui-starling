@@ -335,6 +335,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return false;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function get baseline():Number
 		{
 			return super.baseline + this._paddingTop + this._verticalScrollPosition;

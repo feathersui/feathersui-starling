@@ -454,6 +454,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return false;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function measure(result:Point = null):Point
 		{
 			if(!result)

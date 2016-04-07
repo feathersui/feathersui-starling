@@ -580,6 +580,13 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return this._layout.requiresLayoutOnScroll &&
+				this.explicitVisibleWidth !== this.explicitVisibleWidth &&
+				this.explicitVisibleHeight !== this.explicitVisibleHeight;
+		}
+
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point
 		{
 			if(!result)
