@@ -986,8 +986,8 @@ package feathers.controls.supportClasses
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout.requiresLayoutOnScroll &&
-				this.explicitVisibleWidth !== this.explicitVisibleWidth &&
-				this.explicitVisibleHeight !== this.explicitVisibleHeight;
+				(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
+				this.explicitVisibleHeight !== this.explicitVisibleHeight);
 		}
 
 		private var _minimumItemCount:int;

@@ -3826,12 +3826,23 @@ package feathers.controls
 			}
 			viewPortMinHeight -= verticalHeightOffset;
 
-			this._viewPort.visibleWidth = this.actualWidth - horizontalWidthOffset;
+			var visibleWidth:Number = this.actualWidth - horizontalWidthOffset;
+			//we'll only set the view port's visibleWidth and visibleHeight if
+			//our dimensions are explicit. this allows the view port to know
+			//whether it needs to re-measure on scroll.
+			if(this._viewPort.visibleWidth !== visibleWidth)
+			{
+				this._viewPort.visibleWidth = visibleWidth;
+			}
 			this._viewPort.minVisibleWidth = this.actualMinWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = viewPortMinWidth;
 
-			this._viewPort.visibleHeight = this.actualHeight - verticalHeightOffset;
+			var visibleHeight:Number = this.actualHeight - horizontalWidthOffset;
+			if(this._viewPort.visibleHeight !== visibleHeight)
+			{
+				this._viewPort.visibleHeight = visibleHeight;
+			}
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;

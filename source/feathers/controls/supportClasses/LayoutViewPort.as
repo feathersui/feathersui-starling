@@ -230,8 +230,8 @@ package feathers.controls.supportClasses
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout !== null && this._layout.requiresLayoutOnScroll &&
-				this._explicitVisibleWidth !== this._explicitVisibleWidth &&
-				this._explicitVisibleHeight !== this._explicitVisibleHeight
+				(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
+				this._explicitVisibleHeight !== this._explicitVisibleHeight);
 		}
 
 		override public function dispose():void
