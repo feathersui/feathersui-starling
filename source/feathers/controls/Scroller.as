@@ -3318,7 +3318,7 @@ package feathers.controls
 					this.calculateViewPortOffsets(true, false);
 					//even if fixed, we need to measure without them first because
 					//if the scroll policy is auto, we only show them when needed.
-					this.refreshViewPortBoundsWithoutFixedScrollBars();
+					this.refreshViewPortBoundsForMeasurement();
 				}
 				this.calculateViewPortOffsets(false, false);
 
@@ -3329,7 +3329,7 @@ package feathers.controls
 				//explicitWidth/Height.
 				this.calculateViewPortOffsets(false, true);
 
-				this.refreshViewPortBoundsWithFixedScrollBars();
+				this.refreshViewPortBoundsForLayout();
 				this.refreshScrollValues();
 				loopCount++;
 				if(loopCount >= 10)
@@ -3671,7 +3671,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshViewPortBoundsWithoutFixedScrollBars():void
+		protected function refreshViewPortBoundsForMeasurement():void
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
@@ -3767,7 +3767,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshViewPortBoundsWithFixedScrollBars():void
+		protected function refreshViewPortBoundsForLayout():void
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
