@@ -3838,7 +3838,7 @@ package feathers.controls
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = viewPortMinWidth;
 
-			var visibleHeight:Number = this.actualHeight - horizontalWidthOffset;
+			var visibleHeight:Number = this.actualHeight - verticalHeightOffset;
 			if(this._viewPort.visibleHeight !== visibleHeight)
 			{
 				this._viewPort.visibleHeight = visibleHeight;
