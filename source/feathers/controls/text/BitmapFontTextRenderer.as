@@ -141,6 +141,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _textFormatChanged:Boolean = true;
+
+		/**
+		 * @private
+		 */
 		protected var currentTextFormat:BitmapFontTextFormat;
 
 		/**
@@ -847,12 +852,17 @@ package feathers.controls.text
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshTextFormat();
+			}
+
+			if(stylesInvalid)
+			{
+				this._characterBatch.pixelSnapping = this._pixelSnapping;
+				this._characterBatch.batchable = !this._useSeparateBatch;
 			}
 
 			//sometimes, we can determine that the layout will be exactly
@@ -863,13 +873,11 @@ package feathers.controls.text
 			{
 				newWidth = this._maxWidth;
 			}
-			sizeInvalid = (!this._wordWrap && newWidth < this._lastLayoutWidth) ||
+			var sizeInvalid:Boolean = (!this._wordWrap && newWidth < this._lastLayoutWidth) ||
 				(this._wordWrap && newWidth !== this._lastLayoutWidth);
-			this._lastLayoutWidth = newWidth;
-			if(dataInvalid || stylesInvalid || sizeInvalid || stateInvalid)
+			if(dataInvalid || sizeInvalid || this._textFormatChanged)
 			{
-				this._characterBatch.pixelSnapping = this._pixelSnapping;
-				this._characterBatch.batchable = !this._useSeparateBatch;
+				this._textFormatChanged = false;
 				this._characterBatch.clear();
 				if(!this.currentTextFormat || this._text === null)
 				{
@@ -878,6 +886,7 @@ package feathers.controls.text
 				}
 				this.layoutCharacters(HELPER_POINT);
 				this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
+				this._lastLayoutWidth = HELPER_POINT.x;
 			}
 		}
 
@@ -1262,7 +1271,11 @@ package feathers.controls.text
 				}
 				textFormat = this._textFormat;
 			}
-			this.currentTextFormat = textFormat;
+			if(this.currentTextFormat !== textFormat)
+			{
+				this.currentTextFormat = textFormat;
+				this._textFormatChanged = true;
+			}
 		}
 
 		/**
