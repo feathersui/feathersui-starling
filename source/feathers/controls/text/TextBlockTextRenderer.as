@@ -1223,6 +1223,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _lastMeasurementWidth:Number = 0;
+
+		/**
+		 *
+		 */
+		protected var _textBlockChanged:Boolean = true;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.stateContext = null;
@@ -1466,6 +1476,7 @@ package feathers.controls.text
 
 			if(stylesInvalid)
 			{
+				this._textBlockChanged = true;
 				this.textBlock.applyNonLinearFontScaling = this._applyNonLinearFontScaling;
 				this.textBlock.baselineFontDescription = this._baselineFontDescription;
 				this.textBlock.baselineFontSize = this._baselineFontSize;
@@ -1481,6 +1492,7 @@ package feathers.controls.text
 
 			if(dataInvalid)
 			{
+				this._textBlockChanged = true;
 				this.textBlock.content = this._content;
 			}
 		}
@@ -1511,7 +1523,18 @@ package feathers.controls.text
 			{
 				newHeight = this._maxHeight;
 			}
-			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
+
+			//sometimes, we can determine that the dimensions will be exactly
+			//the same without needing to refresh the text lines. this will
+			//result in much better performance.
+			if(this._textBlockChanged ||
+				(!this._wordWrap && newWidth < this._lastMeasurementWidth) ||
+				(this._wordWrap && newWidth !== this._lastMeasurementWidth))
+			{
+				this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
+				this._lastMeasurementWidth = this._measurementTextLineContainer.width;
+				this._textBlockChanged = false;
+			}
 			if(needsWidth)
 			{
 				newWidth = Math.ceil(this._measurementTextLineContainer.width);
@@ -1797,7 +1820,11 @@ package feathers.controls.text
 				}
 				elementFormat = this._elementFormat;
 			}
-			this._textElement.elementFormat = elementFormat;
+			if(this._textElement.elementFormat !== elementFormat)
+			{
+				this._textBlockChanged = true;
+				this._textElement.elementFormat = elementFormat;
+			}
 		}
 
 		/**
