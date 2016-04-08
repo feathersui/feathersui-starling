@@ -147,5 +147,35 @@ package feathers.tests
 
 			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched when another display object blocked the touch", hasTriggered);
 		}
+
+		[Test]
+		public function testRemovedBeforeTriggeredEvent():void
+		{
+			var hasTriggered:Boolean = false;
+			this._target.addEventListener(Event.TRIGGERED, function(event:Event):void
+			{
+				hasTriggered = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._target.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			this._target.removeFromParent(false);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			//while it's good to check that Event.TRIGGERED isn't dispatched,
+			//this test also ensures that no runtime errors are thrown after the
+			//target is removed (its stage property is null, and that is used
+			//by TapToTrigger)
+			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched when target was removed", hasTriggered);
+		}
 	}
 }

@@ -15,6 +15,7 @@ package feathers.controls.text
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -1432,71 +1433,98 @@ package feathers.controls.text
 				{
 					Starling.current.nativeStage.addChild(this.textField);
 				}
-				if(position)
+				if(position !== null)
 				{
+					var nativeScaleFactor:Number = 1;
+					if(Starling.current.supportHighResolutions)
+					{
+						nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+					}
+					var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+					var scaleX:Number = this.textField.scaleX;
+					var scaleY:Number = this.textField.scaleY;
 					var gutterPositionOffset:Number = 2;
 					if(this._useGutter)
 					{
 						gutterPositionOffset = 0;
 					}
-					var positionX:Number = position.x - this.textSnapshot.x + gutterPositionOffset;
-					var positionY:Number = position.y - this.textSnapshot.y + gutterPositionOffset;
-					if(positionX < 0)
+					var positionX:Number = position.x + gutterPositionOffset;
+					var positionY:Number = position.y + gutterPositionOffset;
+					if(positionX < gutterPositionOffset)
 					{
-						this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = 0;
+						//account for negative positions
+						positionX = gutterPositionOffset;
 					}
 					else
 					{
-						this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, positionY);
-						if(this._pendingSelectionBeginIndex < 0)
+						var maxPositionX:Number = (this.textField.width / scaleX) - gutterPositionOffset;
+						if(positionX > maxPositionX)
 						{
-							if(this._multiline)
+							positionX = maxPositionX;
+						}
+					}
+					if(positionY < gutterPositionOffset)
+					{
+						//account for negative positions
+						positionY = gutterPositionOffset;
+					}
+					else
+					{
+						var maxPositionY:Number = (this.textField.height / scaleY) - gutterPositionOffset;
+						if(positionY > maxPositionY)
+						{
+							positionY = maxPositionY;
+						}
+					}
+					this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, positionY);
+					if(this._pendingSelectionBeginIndex < 0)
+					{
+						if(this._multiline)
+						{
+							var lineIndex:int = this.textField.getLineIndexAtPoint((this.textField.width / 2) / scaleX, positionY);
+							try
 							{
-								var lineIndex:int = int(positionY / this.textField.getLineMetrics(0).height) + (this.textField.scrollV - 1);
-								try
+								this._pendingSelectionBeginIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
+								if(this._pendingSelectionBeginIndex != this._text.length)
 								{
-									this._pendingSelectionBeginIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
-									if(this._pendingSelectionBeginIndex != this._text.length)
-									{
-										this._pendingSelectionBeginIndex--;
-									}
-								}
-								catch(error:Error)
-								{
-									//we may be checking for a line beyond the
-									//end that doesn't exist
-									this._pendingSelectionBeginIndex = this._text.length;
+									this._pendingSelectionBeginIndex--;
 								}
 							}
-							else
+							catch(error:Error)
 							{
-								this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
-								if(this._pendingSelectionBeginIndex < 0)
-								{
-									this._pendingSelectionBeginIndex = this._text.length;
-								}
+								//we may be checking for a line beyond the
+								//end that doesn't exist
+								this._pendingSelectionBeginIndex = this._text.length;
 							}
 						}
 						else
 						{
-							var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionBeginIndex);
-							//bounds should never be null because the character
-							//index passed to getCharBoundaries() comes from a
-							//call to getCharIndexAtPoint(). however, a user
-							//reported that a null reference error happened
-							//here! I couldn't reproduce, but I might as well
-							//assume that the runtime has a bug. won't hurt.
-							if(bounds)
+							this._pendingSelectionBeginIndex = this.getSelectionIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
+							if(this._pendingSelectionBeginIndex < 0)
 							{
-								var boundsX:Number = bounds.x;
-								if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
-								{
-									this._pendingSelectionBeginIndex++;
-								}
+								this._pendingSelectionBeginIndex = this._text.length;
 							}
 						}
-						this._pendingSelectionEndIndex = this._pendingSelectionBeginIndex;
 					}
+					else
+					{
+						var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionBeginIndex);
+						//bounds should never be null because the character
+						//index passed to getCharBoundaries() comes from a
+						//call to getCharIndexAtPoint(). however, a user
+						//reported that a null reference error happened
+						//here! I couldn't reproduce, but I might as well
+						//assume that the runtime has a bug. won't hurt.
+						if(bounds)
+						{
+							var boundsX:Number = bounds.x;
+							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							{
+								this._pendingSelectionBeginIndex++;
+							}
+						}
+					}
+					this._pendingSelectionEndIndex = this._pendingSelectionBeginIndex;
 				}
 				else
 				{
@@ -1712,7 +1740,7 @@ package feathers.controls.text
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1723,13 +1751,15 @@ package feathers.controls.text
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
 			this.measure(HELPER_POINT);
-			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+			return this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
 		}
 
 		/**
@@ -2009,12 +2039,17 @@ package feathers.controls.text
 			{
 				smallerGlobalScale = globalScaleY;
 			}
-			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			var starling:Starling = stageToStarling(this.stage);
+			if(starling === null)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				starling = Starling.current;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			var gutterPositionOffset:Number = 0;
 			if(!this._useGutter)
 			{
@@ -2030,7 +2065,7 @@ package feathers.controls.text
 			{
 				MatrixUtil.transformCoords(HELPER_MATRIX, -gutterPositionOffset, -gutterPositionOffset, HELPER_POINT);
 			}
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var starlingViewPort:Rectangle = starling.viewPort;
 			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
 			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
@@ -2157,6 +2192,7 @@ package feathers.controls.text
 			if(!this.textSnapshot)
 			{
 				this.textSnapshot = new Image(newTexture);
+				this.textSnapshot.pixelSnapping = true;
 				this.addChild(this.textSnapshot);
 			}
 			else

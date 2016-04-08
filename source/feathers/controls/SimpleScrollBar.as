@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -175,7 +176,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultThumbFactory():Button
+		protected static function defaultThumbFactory():BasicButton
 		{
 			return new Button();
 		}
@@ -206,12 +207,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var thumbOriginalWidth:Number = NaN;
+		protected var _thumbExplicitWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var thumbOriginalHeight:Number = NaN;
+		protected var _thumbExplicitHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _thumbExplicitMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _thumbExplicitMinHeight:Number;
 
 		/**
 		 * The thumb sub-component.
@@ -688,30 +699,31 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the scroll bar's thumb sub-component.
-		 * The thumb must be an instance of <code>Button</code>. This factory
-		 * can be used to change properties on the thumb when it is first
-		 * created. For instance, if you are skinning Feathers components
+		 * The thumb must be an instance of <code>BasicButton</code>. This
+		 * factory can be used to change properties on the thumb when it is
+		 * first created. For instance, if you are skinning Feathers components
 		 * without a theme, you might use this factory to set skins and other
 		 * styles on the thumb.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Button</pre>
+		 * <pre>function():BasicButton</pre>
 		 *
 		 * <p>In the following example, a custom thumb factory is passed
 		 * to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.thumbFactory = function():Button
+		 * scrollBar.thumbFactory = function():BasicButton
 		 * {
-		 *     var thumb:Button = new Button();
-		 *     thumb.defaultSkin = new Image( upTexture );
-		 *     thumb.downSkin = new Image( downTexture );
+		 *     var thumb:BasicButton = new BasicButton();
+		 *     var skin:ImageSkin = new ImageSkin( upTexture );
+		 *     skin.setTextureForState( ButtonState.DOWN, downTexture );
+		 *     thumb.defaultSkin = skin;
 		 *     return thumb;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
@@ -788,7 +800,7 @@ package feathers.controls
 		 * An object that stores properties for the scroll bar's thumb, and the
 		 * properties will be passed down to the thumb when the scroll bar
 		 * validates. For a list of available properties, refer to
-		 * <a href="Button.html"><code>feathers.controls.Button</code></a>.
+		 * <a href="Button.html"><code>feathers.controls.BasicButton</code></a>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -810,7 +822,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #thumbFactory
-		 * @see feathers.controls.Button
+		 * @see feathers.controls.BasicButton
 		 */
 		public function get thumbProperties():Object
 		{
@@ -947,7 +959,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -956,22 +968,27 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			if(this.thumbOriginalWidth !== this.thumbOriginalWidth ||
-				this.thumbOriginalHeight !== this.thumbOriginalHeight) //isNaN
-			{
-				if(this.thumb is IValidating)
-				{
-					IValidating(this.thumb).validate();
-				}
-				this.thumbOriginalWidth = this.thumb.width;
-				this.thumbOriginalHeight = this.thumb.height;
-			}
-
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
+			}
+			
+			this.thumb.width = this._thumbExplicitWidth;
+			this.thumb.height = this._thumbExplicitHeight;
+			var measureThumb:IMeasureDisplayObject;
+			if(this.thumb is IMeasureDisplayObject)
+			{
+				measureThumb = IMeasureDisplayObject(this.thumb);
+				measureThumb.minWidth = this._thumbExplicitMinWidth;
+				measureThumb.minHeight = this._thumbExplicitMinHeight;
+			}
+			if(this.thumb is IValidating)
+			{
+				IValidating(this.thumb).validate();
 			}
 
 			var range:Number = this._maximum - this._minimum;
@@ -987,53 +1004,59 @@ package feathers.controls
 			}
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsWidth)
 			{
-				if(this._direction == Direction.VERTICAL)
+				newWidth = this.thumb.width;
+				if(this._direction !== Direction.VERTICAL && adjustedPage !== 0)
 				{
-					newWidth = this.thumbOriginalWidth;
-				}
-				else //horizontal
-				{
-					if(adjustedPage === 0)
-					{
-						newWidth = this.thumbOriginalWidth;
-					}
-					else
-					{
-						newWidth = this.thumbOriginalWidth * range / adjustedPage;
-						if(newWidth < this.thumbOriginalWidth)
-						{
-							newWidth = this.thumbOriginalWidth;
-						}
-					}
+					newWidth *= range / adjustedPage;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 			}
 			if(needsHeight)
 			{
-				if(this._direction == Direction.VERTICAL)
+				newHeight = this.thumb.height;
+				if(this._direction === Direction.VERTICAL && adjustedPage !== 0)
 				{
-					if(adjustedPage === 0)
-					{
-						newHeight = this.thumbOriginalHeight;
-					}
-					else
-					{
-						newHeight = this.thumbOriginalHeight * range / adjustedPage;
-						if(newHeight < this.thumbOriginalHeight)
-						{
-							newHeight = this.thumbOriginalHeight;
-						}
-					}
-				}
-				else //horizontal
-				{
-					newHeight = this.thumbOriginalHeight;
+					newHeight *= range / adjustedPage;
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			if(needsMinWidth)
+			{
+				if(measureThumb !== null)
+				{
+					newMinWidth = measureThumb.minWidth;
+				}
+				else
+				{
+					newMinWidth = this.thumb.width;
+				}
+				if(this._direction !== Direction.VERTICAL && adjustedPage !== 0)
+				{
+					newMinWidth *= range / adjustedPage;
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+			}
+			if(needsMinHeight)
+			{
+				if(measureThumb !== null)
+				{
+					newMinHeight = measureThumb.minHeight;
+				}
+				else
+				{
+					newMinHeight = this.thumb.height;
+				}
+				if(this._direction === Direction.VERTICAL && adjustedPage !== 0)
+				{
+					newMinHeight *= range / adjustedPage;
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1057,13 +1080,34 @@ package feathers.controls
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
-			var thumb:Button = Button(factory());
+			var thumb:BasicButton = BasicButton(factory());
 			thumb.styleNameList.add(thumbStyleName);
-			thumb.isFocusEnabled = false;
+			if(thumb is IFocusDisplayObject)
+			{
+				thumb.isFocusEnabled = false;
+			}
 			thumb.keepDownStateOnRollOut = true;
 			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
 			this.addChild(thumb);
 			this.thumb = thumb;
+			
+			if(this.thumb is IMeasureDisplayObject)
+			{
+				var measureThumb:IMeasureDisplayObject = IMeasureDisplayObject(this.thumb);
+				this._thumbExplicitWidth = measureThumb.explicitWidth;
+				this._thumbExplicitHeight = measureThumb.explicitHeight;
+				this._thumbExplicitMinWidth = measureThumb.explicitMinWidth;
+				this._thumbExplicitMinHeight = measureThumb.explicitMinHeight;
+			}
+			else
+			{
+				//this is a regular display object, and we'll treat its
+				//measurements as explicit when we auto-size the scroll bar
+				this._thumbExplicitWidth = this.thumb.width;
+				this._thumbExplicitHeight = this.thumb.height;
+				this._thumbExplicitMinWidth = this._thumbExplicitWidth;
+				this._thumbExplicitMinHeight = this._thumbExplicitHeight;
+			}
 		}
 
 		/**
@@ -1132,8 +1176,8 @@ package feathers.controls
 			}
 			if(this._direction == Direction.VERTICAL)
 			{
-				this.thumb.width = this.thumbOriginalWidth;
-				var thumbMinHeight:Number = this.thumbOriginalHeight;
+				this.thumb.width = contentWidth;
+				var thumbMinHeight:Number = this._thumbExplicitMinHeight;
 				if(this.thumb is IMeasureDisplayObject)
 				{
 					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
@@ -1166,7 +1210,7 @@ package feathers.controls
 			}
 			else //horizontal
 			{
-				var thumbMinWidth:Number = this.thumbOriginalWidth;
+				var thumbMinWidth:Number = this._thumbExplicitMinWidth;
 				if(this.thumb is IMeasureDisplayObject)
 				{
 					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
@@ -1184,7 +1228,7 @@ package feathers.controls
 					thumbWidth = thumbMinWidth;
 				}
 				this.thumb.width = thumbWidth;
-				this.thumb.height = this.thumbOriginalHeight;
+				this.thumb.height = contentHeight;
 				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				var thumbX:Number = trackScrollableWidth * (this._value - this._minimum) / range;
 				if(thumbX > trackScrollableWidth)

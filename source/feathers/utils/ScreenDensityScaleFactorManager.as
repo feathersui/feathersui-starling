@@ -30,14 +30,14 @@ package feathers.utils
 	 * are based on a combination of the screen density buckets supported by
 	 * Google Android and the native scale factors used for Apple's iPhone:</p>
 	 * 
-	 * <table>
-	 * <tr><th>Name</th><th>Density</th><th>Scale Factor</th></tr>
-	 * <tr><td>ldpi</td><td>120</td><td>0.75</td></tr>
-	 * <tr><td>mdpi</td><td>160</td><td>1</td></tr>
-	 * <tr><td>hdpi</td><td>240</td><td>1.5</td></tr>
-	 * <tr><td>xhdpi</td><td>320</td><td>2</td></tr>
-	 * <tr><td>xxhdpi</td><td>480</td><td>3</td></tr>
-	 * <tr><td>xxxhdpi</td><td>640</td><td>4</td></tr>
+	 * <table class="innertable">
+	 * <tr><th>Android</th><th>iOS</th><th>Density</th><th>Scale Factor</th></tr>
+	 * <tr><td>ldpi</td><td></td><td>120</td><td>0.75</td></tr>
+	 * <tr><td>mdpi</td><td>non-Retina (&#64;1x)</td><td>160</td><td>1</td></tr>
+	 * <tr><td>hdpi</td><td></td><td>240</td><td>1.5</td></tr>
+	 * <tr><td>xhdpi</td><td>Retina (&#64;2x)</td><td>320</td><td>2</td></tr>
+	 * <tr><td>xxhdpi</td><td>Retina HD (&#64;3x)</td><td>480</td><td>3</td></tr>
+	 * <tr><td>xxxhdpi</td><td></td><td>640</td><td>4</td></tr>
 	 * </table>
 	 * 
 	 * <p>The density values in the table above are approximate. The screen

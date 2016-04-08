@@ -34,5 +34,7 @@ package feathers.controls.supportClasses
 		function set verticalScrollPosition(value:Number):void;
 		function get horizontalScrollStep():Number;
 		function get verticalScrollStep():Number;
+
+		function get requiresMeasurementOnScroll():Boolean;
 	}
 }

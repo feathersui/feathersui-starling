@@ -7,10 +7,13 @@ package feathers.tests
 	import org.flexunit.async.Async;
 
 	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.utils.ScaleMode;
 
 	public class ImageLoaderTests
 	{
 		private var _loader:ImageLoader;
+		private var _texture:Texture;
 
 		[Before]
 		public function prepare():void
@@ -25,6 +28,12 @@ package feathers.tests
 		{
 			this._loader.removeFromParent(true);
 			this._loader = null;
+			
+			if(this._texture !== null)
+			{
+				this._texture.dispose();
+				this._texture = null;
+			}
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -158,6 +167,66 @@ package feathers.tests
 				textureCache.dispose();
 				Assert.assertStrictlyEquals("ImageLoader textureCache retain count incorrect after set source to null.", 0, retainCount);
 			}, 200);
+		}
+
+		[Test]
+		public function testAutoSizeWidthScaleModeNone():void
+		{
+			var textureSize:Number = 20;
+			var loaderHeight:Number = 200;
+			this._texture = Texture.fromColor(textureSize, textureSize);
+			this._loader.source = this._texture;
+			this._loader.height = loaderHeight;
+			this._loader.scaleMode = ScaleMode.NONE;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when using ScaleMode.NONE and setting larger explicit height.", textureSize, this._loader.width);
+		}
+
+		[Test]
+		public function testAutoSizeHeightScaleModeNone():void
+		{
+			var textureSize:Number = 20;
+			var loaderWidth:Number = 200;
+			this._texture = Texture.fromColor(textureSize, textureSize);
+			this._loader.source = this._texture;
+			this._loader.width = loaderWidth;
+			this._loader.scaleMode = ScaleMode.NONE;
+			this._loader.validate();
+			
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when using ScaleMode.NONE and setting larger explicit width.", textureSize, this._loader.height);
+		}
+
+		[Test]
+		public function testAutoSizeWidthAfterSettingHeightLarger():void
+		{
+			var textureWidth:Number = 20;
+			var textureHeight:Number = 15;
+			var expectedWidth:Number = 200;
+			var updatedHeight:Number = 150;
+			this._texture = Texture.fromColor(textureWidth, textureHeight);
+			this._loader.source = this._texture;
+			this._loader.height = updatedHeight;
+			this._loader.scaleMode = ScaleMode.SHOW_ALL;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when setting explicit height larger than texture height.", expectedWidth, this._loader.width);
+		}
+
+		[Test]
+		public function testAutoSizeHeightAfterSettingWidthLarger():void
+		{
+			var textureWidth:Number = 20;
+			var textureHeight:Number = 15;
+			var updatedWidth:Number = 200;
+			var expectedHeight:Number = 150;
+			this._texture = Texture.fromColor(textureWidth, textureHeight);
+			this._loader.source = this._texture;
+			this._loader.width = updatedWidth;
+			this._loader.scaleMode = ScaleMode.SHOW_ALL;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width.", expectedHeight, this._loader.height);
 		}
 	}
 }

@@ -817,12 +817,15 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			//we use starling.root because a pop-up's root and the stage
-			//root may be different.
-			if(starling.root === this)
+			if(this.stage !== null)
 			{
-				this.autoSizeMode = AutoSizeMode.STAGE;
+				var starling:Starling = stageToStarling(this.stage);
+				//we use starling.root because a pop-up's root and the stage
+				//root may be different.
+				if(starling.root === this)
+				{
+					this.autoSizeMode = AutoSizeMode.STAGE;
+				}
 			}
 			super.initialize();
 			this.refreshMXMLContent();
@@ -863,13 +866,17 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			if(this._autoSizeMode == AutoSizeMode.STAGE)
+			if(this._autoSizeMode === AutoSizeMode.STAGE)
 			{
-				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
+				var newWidth:Number = this.stage.stageWidth;
+				var newHeight:Number = this.stage.stageHeight;
+				return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 			}
 			return super.autoSizeIfNeeded();
 		}

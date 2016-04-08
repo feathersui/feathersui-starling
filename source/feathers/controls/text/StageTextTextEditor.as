@@ -1115,6 +1115,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override protected function get supportsRenderCache():Boolean
+		{
+			return super.supportsRenderCache && !this._stageTextHasFocus;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._measureTextField)
@@ -1534,7 +1542,7 @@ package feathers.controls.text
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1545,13 +1553,15 @@ package feathers.controls.text
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
 			this.measure(HELPER_POINT);
-			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+			return this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
 		}
 
 		/**
@@ -1559,12 +1569,6 @@ package feathers.controls.text
 		 */
 		protected function refreshMeasureProperties():void
 		{
-			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
-			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
-			}
-			
 			this._measureTextField.displayAsPassword = this._displayAsPassword;
 			this._measureTextField.maxChars = this._maxChars;
 			this._measureTextField.restrict = this._restrict;
@@ -1574,7 +1578,7 @@ package feathers.controls.text
 			format.color = this._color;
 			format.font = this._fontFamily;
 			format.italic = this._fontPosture == FontPosture.ITALIC;
-			format.size = this._fontSize * nativeScaleFactor;
+			format.size = this._fontSize;
 			format.bold = this._fontWeight == FontWeight.BOLD;
 			var alignValue:String = this._textAlign;
 			if(alignValue == TextFormatAlign.START)
@@ -1748,6 +1752,7 @@ package feathers.controls.text
 			if(!this.textSnapshot)
 			{
 				this.textSnapshot = new Image(newTexture);
+				this.textSnapshot.pixelSnapping = true;
 				this.addChild(this.textSnapshot);
 			}
 			else
@@ -1831,20 +1836,25 @@ package feathers.controls.text
 			{
 				MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
 			}
-			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			var starling:Starling = stageToStarling(this.stage);
+			if(starling === null)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				starling = Starling.current;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var nativeScaleFactor:Number = 1;
+			if(starling.supportHighResolutions)
+			{
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
+			}
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
+			var starlingViewPort:Rectangle = starling.viewPort;
 			var stageTextViewPort:Rectangle = this.stageText.viewPort;
 			if(!stageTextViewPort)
 			{
 				stageTextViewPort = new Rectangle();
 			}
-			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
-			stageTextViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * scaleFactor);
+			stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
+			stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			var viewPortWidth:Number = Math.round((this.actualWidth + desktopGutterDimensionsOffset) * scaleFactor * globalScaleX);
 			if(viewPortWidth < 1 ||
 				viewPortWidth !== viewPortWidth) //isNaN
@@ -1861,8 +1871,6 @@ package feathers.controls.text
 			stageTextViewPort.height = viewPortHeight;
 			this.stageText.viewPort = stageTextViewPort;
 
-			//for some reason, we don't need to account for the native scale factor here
-			scaleFactor = Starling.contentScaleFactor;
 			//StageText's fontSize property is an int, so we need to
 			//specifically avoid using Number here.
 			var newFontSize:int = this._fontSize * scaleFactor * smallerGlobalScale;

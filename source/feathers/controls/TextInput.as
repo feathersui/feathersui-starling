@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.IStateContext;
@@ -22,6 +23,7 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.display.InteractiveObject;
 	import flash.geom.Point;
@@ -1203,15 +1205,23 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * The width of the first background skin that was displayed.
 		 */
-		protected var _originalSkinWidth:Number = NaN;
+		protected var _explicitBackgroundWidth:Number;
 
 		/**
 		 * @private
-		 * The height of the first background skin that was displayed.
 		 */
-		protected var _originalSkinHeight:Number = NaN;
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
 
 		/**
 		 * @private
@@ -2273,7 +2283,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -2291,6 +2301,12 @@ package feathers.controls
 				return false;
 			}
 			
+			var measureBackground:IMeasureDisplayObject = this.currentBackground as IMeasureDisplayObject;
+			resetFluidChildDimensionsForMeasurement(this.currentBackground,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			if(this.currentBackground is IValidating)
 			{
 				IValidating(this.currentBackground).validate();
@@ -2343,10 +2359,10 @@ package feathers.controls
 					newWidth += this._originalIconWidth + this._gap;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
-					this._originalSkinWidth > newWidth)
+				if(this.currentBackground !== null &&
+					this.currentBackground.width > newWidth)
 				{
-					newWidth = this._originalSkinWidth;
+					newWidth = this.currentBackground.width;
 				}
 			}
 			var newHeight:Number = this._explicitHeight;
@@ -2359,10 +2375,10 @@ package feathers.controls
 					newHeight = this._originalIconHeight;
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
-					this._originalSkinHeight > newHeight)
+				if(this.currentBackground !== null &&
+					this.currentBackground.height > newHeight)
 				{
-					newHeight = this._originalSkinHeight;
+					newHeight = this.currentBackground.height;
 				}
 			}
 
@@ -2379,18 +2395,18 @@ package feathers.controls
 					newMinWidth += this._originalIconWidth + this._gap;
 				}
 				newMinWidth += this._paddingLeft + this._paddingRight;
-				if(this.currentBackground is IFeathersControl)
+				var backgroundMinWidth:Number = 0;
+				if(measureBackground !== null)
 				{
-					var backgroundMinWidth:Number = IFeathersControl(this.currentBackground).minWidth;
-					if(backgroundMinWidth > newMinWidth)
-					{
-						newMinWidth = backgroundMinWidth;
-					}
+					backgroundMinWidth = measureBackground.minWidth;
 				}
-				else if(this._originalSkinWidth === this._originalSkinWidth && //!isNaN
-					this._originalSkinWidth > newMinWidth)
+				else if(this.currentBackground !== null)
 				{
-					newMinWidth = this._originalSkinWidth;
+					backgroundMinWidth = this.currentBackground.width;
+				}
+				if(backgroundMinWidth > newMinWidth)
+				{
+					newMinWidth = backgroundMinWidth;
 				}
 			}
 			var newMinHeight:Number = this._explicitMinHeight;
@@ -2411,18 +2427,18 @@ package feathers.controls
 					newMinHeight = this._originalIconHeight;
 				}
 				newMinHeight += this._paddingTop + this._paddingBottom;
-				if(this.currentBackground is IFeathersControl)
+				var backgroundMinHeight:Number = 0;
+				if(measureBackground !== null)
 				{
-					var backgroundMinHeight:Number = IFeathersControl(this.currentBackground).minHeight;
-					if(backgroundMinHeight > newMinHeight)
-					{
-						newMinHeight = backgroundMinHeight;
-					}
+					backgroundMinHeight = measureBackground.minHeight;
 				}
-				else if(this._originalSkinHeight === this._originalSkinHeight && //!isNaN
-					this._originalSkinHeight > newMinHeight)
+				else if(this.currentBackground !== null)
 				{
-					newMinHeight = this._originalSkinHeight;
+					backgroundMinHeight = this.currentBackground.height;
+				}
+				if(backgroundMinHeight > newMinHeight)
+				{
+					newMinHeight = backgroundMinHeight;
 				}
 			}
 
@@ -2629,18 +2645,22 @@ package feathers.controls
 						IStateObserver(this.currentBackground).stateContext = this;
 					}
 					this.addChildAt(this.currentBackground, 0);
+					if(this.currentBackground is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackground);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackground.width;
+						this._explicitBackgroundHeight = this.currentBackground.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+					}
 				}
-			}
-			if(this.currentBackground &&
-				(this._originalSkinWidth !== this._originalSkinWidth || //isNaN
-					this._originalSkinHeight !== this._originalSkinHeight)) //isNaN
-			{
-				if(this.currentBackground is IValidating)
-				{
-					IValidating(this.currentBackground).validate();
-				}
-				this._originalSkinWidth = this.currentBackground.width;
-				this._originalSkinHeight = this.currentBackground.height;
 			}
 		}
 
@@ -2732,7 +2752,7 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this.currentBackground)
+			if(this.currentBackground !== null)
 			{
 				this.currentBackground.visible = true;
 				this.currentBackground.touchable = true;
@@ -2745,11 +2765,11 @@ package feathers.controls
 				IValidating(this.currentIcon).validate();
 			}
 
-			if(this.currentIcon)
+			if(this.currentIcon !== null)
 			{
 				this.currentIcon.x = this._paddingLeft;
 				this.textEditor.x = this.currentIcon.x + this.currentIcon.width + this._gap;
-				if(this.promptTextRenderer)
+				if(this.promptTextRenderer !== null)
 				{
 					this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
 				}
@@ -2757,19 +2777,19 @@ package feathers.controls
 			else
 			{
 				this.textEditor.x = this._paddingLeft;
-				if(this.promptTextRenderer)
+				if(this.promptTextRenderer !== null)
 				{
 					this.promptTextRenderer.x = this._paddingLeft;
 				}
 			}
 			this.textEditor.width = this.actualWidth - this._paddingRight - this.textEditor.x;
-			if(this.promptTextRenderer)
+			if(this.promptTextRenderer !== null)
 			{
 				this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
 			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
-			if(isMultiline || this._verticalAlign == VerticalAlign.JUSTIFY)
+			if(isMultiline || this._verticalAlign === VerticalAlign.JUSTIFY)
 			{
 				//multiline is treated the same as justify
 				this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
@@ -2780,14 +2800,14 @@ package feathers.controls
 				this.textEditor.height = NaN;
 			}
 			this.textEditor.validate();
-			if(this.promptTextRenderer)
+			if(this.promptTextRenderer !== null)
 			{
 				this.promptTextRenderer.validate();
 			}
 
 			var biggerHeight:Number = this.textEditor.height;
 			var biggerBaseline:Number = this.textEditor.baseline;
-			if(this.promptTextRenderer)
+			if(this.promptTextRenderer !== null)
 			{
 				var promptBaseline:Number = this.promptTextRenderer.baseline;
 				var promptHeight:Number = this.promptTextRenderer.height;
@@ -2804,12 +2824,12 @@ package feathers.controls
 			if(isMultiline)
 			{
 				this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
-				if(this.promptTextRenderer)
+				if(this.promptTextRenderer !== null)
 				{
 					this.promptTextRenderer.y = this._paddingTop + biggerBaseline - promptBaseline;
 					this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
 				}
-				if(this.currentIcon)
+				if(this.currentIcon !== null)
 				{
 					this.currentIcon.y = this._paddingTop;
 				}

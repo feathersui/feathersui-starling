@@ -1,38 +1,49 @@
 package
 {
+	import feathers.tests.AlertMeasurementTests;
 	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.BottomDrawerPopUpContentManagerTests;
 	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
+	import feathers.tests.ButtonGroupMeasurementTests;
 	import feathers.tests.ButtonGroupTests;
 	import feathers.tests.ButtonInternalStateTests;
 	import feathers.tests.ButtonMeasurementTests;
 	import feathers.tests.ButtonTests;
+	import feathers.tests.CalloutMeasurementTests;
+	import feathers.tests.CalloutPopUpContentManagerTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
 	import feathers.tests.DateTimeSpinnerTests;
+	import feathers.tests.DefaultGroupedListHeaderOrFooterRendererMeasurementTests;
 	import feathers.tests.DefaultListItemRendererInternalStateTests;
+	import feathers.tests.DefaultListItemRendererMeasurementTests;
 	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
+	import feathers.tests.DropDownPopUpContentManagerTests;
+	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
-	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListDataProviderTests;
+	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
+	import feathers.tests.HeaderInternalStateTests;
+	import feathers.tests.HeaderMeasurementTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
 	import feathers.tests.ImageSkinTests;
 	import feathers.tests.InvalidateTests;
-	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.KeyToSelectTests;
 	import feathers.tests.KeyToTriggerTests;
 	import feathers.tests.LabelMeasurementTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
+	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionWithArrayTests;
@@ -41,22 +52,36 @@ package
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
 	import feathers.tests.MinAndMaxDimensionsTests;
+	import feathers.tests.NumericStepperMeasurementTests;
 	import feathers.tests.PageIndicatorMeasurementTests;
+	import feathers.tests.PanelMeasurementTests;
+	import feathers.tests.PickerListMeasurementTests;
 	import feathers.tests.PickerListTests;
 	import feathers.tests.PopUpManagerFocusManagerTests;
 	import feathers.tests.PopUpManagerTests;
 	import feathers.tests.ProgressBarMeasurementTests;
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.RadioTests;
+	import feathers.tests.ScaleTests;
+	import feathers.tests.ScreenNavigatorMeasurementTests;
 	import feathers.tests.ScreenNavigatorTests;
+	import feathers.tests.ScrollBarHorizontalMeasurementTests;
 	import feathers.tests.ScrollBarHorizontalTests;
+	import feathers.tests.ScrollBarVerticalMeasurementTests;
+	import feathers.tests.ScrollContainerMeasurementTests;
 	import feathers.tests.ScrollContainerTests;
+	import feathers.tests.ScrollerMeasurementTests;
 	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
+	import feathers.tests.SimpleScrollBarMeasurementTests;
+	import feathers.tests.SliderHorizontalMeasurementTests;
 	import feathers.tests.SliderHorizontalTests;
+	import feathers.tests.SliderVerticalMeasurementTests;
+	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
+	import feathers.tests.TabBarMeasurementTests;
 	import feathers.tests.TabBarTests;
 	import feathers.tests.TapToSelectTests;
 	import feathers.tests.TapToTriggerTests;
@@ -72,11 +97,14 @@ package
 	import feathers.tests.TextureCacheTests;
 	import feathers.tests.TiledColumnsLayoutTests;
 	import feathers.tests.TiledRowsLayoutTests;
+	import feathers.tests.TimeLabelTests;
 	import feathers.tests.ToggleButtonFocusTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
+	import feathers.tests.ToggleSwitchMeasurementTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
+	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
 
@@ -134,8 +162,10 @@ package
 				InvalidateTests,
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
+				ScaleTests,
 				
 				//individual component tests
+				AlertMeasurementTests,
 				BasicButtonTests,
 				BasicButtonMeasurementTests,
 				BasicButtonInternalStateTests,
@@ -144,9 +174,13 @@ package
 				ButtonFocusTests,
 				ButtonMeasurementTests,
 				ButtonGroupTests,
+				ButtonGroupMeasurementTests,
 				ButtonGroupDataProviderEventsTests,
 				CalloutTests,
+				CalloutMeasurementTests,
 				DateTimeSpinnerTests,
+				DefaultGroupedListHeaderOrFooterRendererMeasurementTests,
+				DefaultListItemRendererMeasurementTests,
 				DefaultListItemRendererInternalStateTests,
 				DrawersTests,
 				DrawersMeasurementTests,
@@ -154,27 +188,43 @@ package
 				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
+				HeaderMeasurementTests,
+				HeaderInternalStateTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
 				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
+				LayoutGroupMeasurementTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
+				NumericStepperMeasurementTests,
 				PageIndicatorMeasurementTests,
+				PanelMeasurementTests,
 				PickerListTests,
+				PickerListMeasurementTests,
 				ProgressBarTests,
 				ProgressBarMeasurementTests,
 				RadioTests,
 				SimpleScrollBarHorizontalTests,
+				SimpleScrollBarMeasurementTests,
 				ScreenNavigatorTests,
+				ScreenNavigatorMeasurementTests,
 				ScrollBarHorizontalTests,
+				ScrollBarHorizontalMeasurementTests,
+				ScrollBarVerticalMeasurementTests,
 				ScrollContainerTests,
+				ScrollContainerMeasurementTests,
 				ScrollerTests,
+				ScrollerMeasurementTests,
 				SliderHorizontalTests,
+				SliderHorizontalMeasurementTests,
+				SliderVerticalMeasurementTests,
 				StackScreenNavigatorTests,
+				StackScreenNavigatorMeasurementTests,
 				TabBarTests,
+				TabBarMeasurementTests,
 				TabBarEmptyDataProviderTests,
 				TextAreaTests,
 				TextAreaInternalStateTests,
@@ -185,7 +235,11 @@ package
 				ToggleButtonFocusTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,
+				ToggleSwitchMeasurementTests,
 				
+				//media tests
+				TimeLabelTests,
+			
 				//layout tests
 				FlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
@@ -220,6 +274,10 @@ package
 				KeyToTriggerTests,
 				TokenListTests,
 				ImageSkinTests,
+				DropDownPopUpContentManagerTests,
+				BottomDrawerPopUpContentManagerTests,
+				VerticalCenteredPopUpContentManagerTests,
+				CalloutPopUpContentManagerTests,
 			]);
 		}
 

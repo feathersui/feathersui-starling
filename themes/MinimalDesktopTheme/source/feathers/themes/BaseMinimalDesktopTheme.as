@@ -978,7 +978,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			if(button is ToggleButton)
 			{
@@ -2179,7 +2179,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
@@ -2208,7 +2208,7 @@ package feathers.themes
 
 		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
-			var icon:ImageSkin = new ImageSkin();
+			var icon:ImageSkin = new ImageSkin(null);
 			icon.setTextureForState(ButtonState.UP, this.overlayPlayPauseButtonPlayUpIconTexture);
 			icon.setTextureForState(ButtonState.HOVER, this.overlayPlayPauseButtonPlayUpIconTexture);
 			icon.setTextureForState(ButtonState.DOWN, this.overlayPlayPauseButtonPlayDownIconTexture);
@@ -2237,7 +2237,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
@@ -2273,7 +2273,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;

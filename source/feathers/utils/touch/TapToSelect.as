@@ -179,24 +179,27 @@ package feathers.utils.touch
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					var stage:Stage = this._target.stage;
-					touch.getLocation(stage, HELPER_POINT);
-					if(this._target is DisplayObjectContainer)
+					if(stage !== null)
 					{
-						var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(HELPER_POINT));
-					}
-					else
-					{
-						isInBounds = this._target === stage.hitTest(HELPER_POINT);
-					}
-					if(isInBounds)
-					{
-						if(this._tapToDeselect)
+						touch.getLocation(stage, HELPER_POINT);
+						if(this._target is DisplayObjectContainer)
 						{
-							this._target.isSelected = !this._target.isSelected;
+							var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(HELPER_POINT));
 						}
 						else
 						{
-							this._target.isSelected = true;
+							isInBounds = this._target === stage.hitTest(HELPER_POINT);
+						}
+						if(isInBounds)
+						{
+							if(this._tapToDeselect)
+							{
+								this._target.isSelected = !this._target.isSelected;
+							}
+							else
+							{
+								this._target.isSelected = true;
+							}
 						}
 					}
 					

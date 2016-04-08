@@ -14,6 +14,7 @@ package feathers.controls.renderers
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
@@ -22,6 +23,7 @@ package feathers.controls.renderers
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -446,7 +448,6 @@ package feathers.controls.renderers
 			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
 			this.addEventListener(Event.REMOVED_FROM_STAGE, itemRenderer_removedFromStageHandler);
-			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
 
 		/**
@@ -1253,7 +1254,9 @@ package feathers.controls.renderers
 		/**
 		 * If enabled, the item renderer may be selected by touching the
 		 * accessory. By default, the accessory will not trigger selection when
-		 * using <code>accessoryField</code> or <code>accessoryFunction</code>.
+		 * using <code>defaultAccessory</code>, <code>accessoryField</code>, or
+		 * <code>accessoryFunction</code> and the accessory is a Feathers
+		 * component.
 		 *
 		 * <p>In the following example, the item renderer can be selected when
 		 * the accessory is touched:</p>
@@ -3575,29 +3578,42 @@ package feathers.controls.renderers
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
+
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
-			this.refreshMaxLabelSize(true);
-			if(this.labelTextRenderer)
+			var labelRenderer:ITextRenderer = null;
+			if(this._label !== null && this.labelTextRenderer)
 			{
+				labelRenderer = this.labelTextRenderer;
+				this.refreshMaxLabelSize(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
-			else
-			{
-				HELPER_POINT.setTo(0, 0);
-			}
+			
+			resetFluidChildDimensionsForMeasurement(this.currentSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitSkinWidth, this._explicitSkinHeight,
+				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
+			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
+			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this._label)
+				if(labelRenderer !== null)
 				{
 					newWidth = HELPER_POINT.x;
 				}
-				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				else
+				{
+					newWidth = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
 					newWidth = this.addAccessoryWidth(newWidth);
 					newWidth = this.addIconWidth(newWidth);
@@ -3608,31 +3624,25 @@ package feathers.controls.renderers
 					newWidth = this.addAccessoryWidth(newWidth);
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(newWidth !== newWidth) //isNaN
+				if(this.currentSkin !== null &&
+					this.currentSkin.width > newWidth)
 				{
-					newWidth = this._originalSkinWidth;
-					if(newWidth !== newWidth) //isNaN
-					{
-						newWidth = 0;
-					}
-				}
-				else if(this._originalSkinWidth === this._originalSkinWidth) //!isNaN
-				{
-					if(this._originalSkinWidth > newWidth)
-					{
-						newWidth = this._originalSkinWidth;
-					}
+					newWidth = this.currentSkin.width;
 				}
 			}
 
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this._label)
+				if(labelRenderer !== null)
 				{
 					newHeight = HELPER_POINT.y;
 				}
-				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				else
+				{
+					newHeight = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
 					newHeight = this.addAccessoryHeight(newHeight);
 					newHeight = this.addIconHeight(newHeight);
@@ -3643,25 +3653,91 @@ package feathers.controls.renderers
 					newHeight = this.addAccessoryHeight(newHeight);
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(newHeight !== newHeight) //isNaN
+				if(this.currentSkin !== null &&
+					this.currentSkin.height > newHeight)
 				{
-					newHeight = this._originalSkinHeight;
-					if(newHeight !== newHeight) //isNaN
+					newHeight = this.currentSkin.height;
+				}
+			}
+
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(labelRenderer !== null)
+				{
+					newMinWidth = HELPER_POINT.x;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				{
+					newMinWidth = this.addAccessoryWidth(newMinWidth);
+					newMinWidth = this.addIconWidth(newMinWidth);
+				}
+				else
+				{
+					newMinWidth = this.addIconWidth(newMinWidth);
+					newMinWidth = this.addAccessoryWidth(newMinWidth);
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				if(this.currentSkin !== null)
+				{
+					if(measureSkin !== null)
 					{
-						newHeight = 0;
+						if(measureSkin.minWidth > newMinWidth)
+						{
+							newMinWidth = measureSkin.minWidth;
+						}
+					}
+					else if(this.currentSkin.width > newMinWidth)
+					{
+						newMinWidth = this.currentSkin.width;
 					}
 				}
-				else if(this._originalSkinHeight === this._originalSkinHeight) //!isNaN
+			}
+
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(labelRenderer !== null)
 				{
-					if(this._originalSkinHeight > newHeight)
+					newMinHeight = HELPER_POINT.y;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				if(this._layoutOrder === LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
+				{
+					newMinHeight = this.addAccessoryHeight(newMinHeight);
+					newMinHeight = this.addIconHeight(newMinHeight);
+				}
+				else
+				{
+					newMinHeight = this.addIconHeight(newMinHeight);
+					newMinHeight = this.addAccessoryHeight(newMinHeight);
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentSkin !== null)
+				{
+					if(measureSkin !== null)
 					{
-						newHeight = this._originalSkinHeight;
+						if(measureSkin.minHeight > newMinHeight)
+						{
+							newMinHeight = measureSkin.minHeight;
+						}
+					}
+					else if(this.currentSkin.height > newMinHeight)
+					{
+						newMinHeight = this.currentSkin.height;
 					}
 				}
 			}
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -3810,7 +3886,7 @@ package feathers.controls.renderers
 		 */
 		protected function addIconHeight(height:Number):Number
 		{
-			if(!this.currentIcon)
+			if(this.currentIcon === null)
 			{
 				return height;
 			}
@@ -3826,12 +3902,12 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
+			if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
 					var adjustedGap:Number = this._gap;
-					if(this._gap == Number.POSITIVE_INFINITY)
+					if(this._gap === Number.POSITIVE_INFINITY)
 					{
 						adjustedGap = this._minGap;
 					}
@@ -3851,7 +3927,7 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryHeight(height:Number):Number
 		{
-			if(!this.currentAccessory)
+			if(this.currentAccessory === null)
 			{
 				return height;
 			}
@@ -3867,7 +3943,7 @@ package feathers.controls.renderers
 				height = 0;
 			}
 
-			if(this._accessoryPosition == RelativePosition.TOP || this._accessoryPosition == RelativePosition.BOTTOM)
+			if(this._accessoryPosition === RelativePosition.TOP || this._accessoryPosition === RelativePosition.BOTTOM)
 			{
 				if(hasPreviousItem)
 				{
@@ -3883,9 +3959,9 @@ package feathers.controls.renderers
 					{
 						adjustedAccessoryGap =  this._gap;
 					}
-					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+					if(adjustedAccessoryGap === Number.POSITIVE_INFINITY)
 					{
-						if(this._minAccessoryGap != this._minAccessoryGap) //isNaN
+						if(this._minAccessoryGap !== this._minAccessoryGap) //isNaN
 						{
 							adjustedAccessoryGap = this._minGap;
 						}
@@ -4835,6 +4911,26 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function refreshSelectionEvents():void
+		{
+			var selectionEnabled:Boolean = this._isEnabled &&
+				(this._isToggle || this.isSelectableWithoutToggle);
+			if(this._itemHasSelectable)
+			{
+				selectionEnabled &&= this.itemToSelectable(this._data);
+			}
+			if(this.accessoryTouchPointID >= 0)
+			{
+				selectionEnabled &&= this._isSelectableOnAccessoryTouch;
+			}
+			this.tapToSelect.isEnabled = selectionEnabled;
+			this.tapToSelect.tapToDeselect = this._isToggle;
+			this.keyToSelect.isEnabled = false;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function owner_scrollStartHandler(event:Event):void
 		{
 			if(this._delayTextureCreationOnScroll)
@@ -4895,18 +4991,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function itemRenderer_triggeredHandler(event:Event):void
-		{
-			if(this._isToggle || !this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data)))
-			{
-				return;
-			}
-			this.isSelected = true;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
 		{
 			super.changeState(this._delayedCurrentState);
@@ -4958,6 +5042,7 @@ package feathers.controls.renderers
 					return;
 				}
 				this.accessoryTouchPointID = -1;
+				this.refreshSelectionEvents();
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
@@ -4967,6 +5052,7 @@ package feathers.controls.renderers
 					return;
 				}
 				this.accessoryTouchPointID = touch.id;
+				this.refreshSelectionEvents();
 			}
 		}
 

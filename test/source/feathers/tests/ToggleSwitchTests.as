@@ -60,15 +60,6 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testSingleTrackAutoSize():void
-		{
-			Assert.assertStrictlyEquals("The width of the toggle switch was not calculated correctly.",
-				TRACK_WIDTH, this._toggle.width);
-			Assert.assertStrictlyEquals("The height of the toggle switch was not calculated correctly.",
-				TRACK_HEIGHT, this._toggle.height);
-		}
-
-		[Test]
 		public function testProgrammaticSelectionChange():void
 		{
 			this._toggle.isSelected = false;

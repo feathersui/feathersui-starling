@@ -524,7 +524,7 @@ package feathers.skins
 		 */
 		public function get minHeight():Number
 		{
-			if(this._explicitMinHeight === _explicitMinHeight) //!isNaN
+			if(this._explicitMinHeight === this._explicitMinHeight) //!isNaN
 			{
 				return this._explicitMinHeight;
 			}
@@ -641,43 +641,51 @@ package feathers.skins
 		/**
 		 * @private
 		 */
-		protected function updateTextureFromContext():void
+		override public function readjustSize(width:Number=-1, height:Number=-1):void
 		{
-			if(this._stateContext === null)
-			{
-				this.texture = this._defaultTexture;
-				return;
-			}
-			var texture:Texture = this._stateToTexture[this._stateContext.currentState] as Texture;
-			if(texture === null &&
-				this._disabledTexture !== null &&
-				this._stateContext is IFeathersControl &&
-				!IFeathersControl(this._stateContext).isEnabled)
-			{
-				texture = this._disabledTexture;
-			}
-			if(texture === null &&
-				this._selectedTexture !== null &&
-				this._stateContext is IToggle &&
-				IToggle(this._stateContext).isSelected)
-			{
-				texture = this._selectedTexture;
-			}
-			if(texture === null)
-			{
-				texture = this._defaultTexture;
-			}
-			this.texture = texture;
-			if(this._explicitWidth === this._explicitWidth && //!isNaN
-				super.width !== this._explicitWidth)
+			super.readjustSize(width, height);
+			if(this._explicitWidth === this._explicitWidth) //!isNaN
 			{
 				super.width = this._explicitWidth;
 			}
-			if(this._explicitHeight === this._explicitHeight && //!isNaN
-				super.height !== this._explicitHeight)
+			if(this._explicitHeight === this._explicitHeight) //!isNaN
 			{
 				super.height = this._explicitHeight;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function updateTextureFromContext():void
+		{
+			var texture:Texture = null;
+			if(this._stateContext === null)
+			{
+				texture = this._defaultTexture;
+			}
+			else
+			{
+				texture = this._stateToTexture[this._stateContext.currentState] as Texture;
+				if(texture === null &&
+					this._disabledTexture !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					texture = this._disabledTexture;
+				}
+				if(texture === null &&
+					this._selectedTexture !== null &&
+					this._stateContext is IToggle &&
+					IToggle(this._stateContext).isSelected)
+				{
+					texture = this._selectedTexture;
+				}
+				if(texture === null)
+				{
+					texture = this._defaultTexture;
+				}
+			}
+			this.texture = texture;
 		}
 
 		/**

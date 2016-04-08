@@ -10,6 +10,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.AutoSizeMode;
 	import feathers.controls.IScreen;
 	import feathers.core.FeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 
@@ -207,6 +208,26 @@ package feathers.controls.supportClasses
 		{
 			return this._activeScreen;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _activeScreenExplicitWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _activeScreenExplicitHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _activeScreenExplicitMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _activeScreenExplicitMinHeight:Number;
 
 		/**
 		 * @private
@@ -462,7 +483,7 @@ package feathers.controls.supportClasses
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -473,23 +494,46 @@ package feathers.controls.supportClasses
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
-			if((this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage) &&
-				this._activeScreen is IValidating)
+			var needsToMeasureContent:Boolean = this._autoSizeMode === AutoSizeMode.CONTENT || this.stage === null;
+			var measureScreen:IMeasureDisplayObject = this._activeScreen as IMeasureDisplayObject;
+			if(needsToMeasureContent)
 			{
-				IValidating(this._activeScreen).validate();
+				if(this._activeScreen !== null)
+				{
+					this._activeScreen.width = this._activeScreenExplicitWidth;
+					this._activeScreen.height = this._activeScreenExplicitHeight;
+					if(measureScreen !== null)
+					{
+						measureScreen.minWidth = this._activeScreenExplicitMinWidth;
+						measureScreen.minHeight = this._activeScreenExplicitMinHeight;
+					}
+					if(this._activeScreen is IValidating)
+					{
+						IValidating(this._activeScreen).validate();
+					}
+				}
 			}
 
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage)
+				if(needsToMeasureContent)
 				{
-					newWidth = this._activeScreen ? this._activeScreen.width : 0;
+					if(this._activeScreen !== null)
+					{
+						newWidth = this._activeScreen.width;
+					}
+					else
+					{
+						newWidth = 0;
+					}
 				}
 				else
 				{
@@ -500,9 +544,16 @@ package feathers.controls.supportClasses
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage)
+				if(needsToMeasureContent)
 				{
-					newHeight = this._activeScreen ? this._activeScreen.height : 0;
+					if(this._activeScreen !== null)
+					{
+						newHeight = this._activeScreen.height;
+					}
+					else
+					{
+						newHeight = 0;
+					}
 				}
 				else
 				{
@@ -510,7 +561,55 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(needsToMeasureContent)
+				{
+					if(measureScreen !== null)
+					{
+						newMinWidth = measureScreen.minWidth;
+					}
+					else if(this._activeScreen !== null)
+					{
+						newMinWidth = this._activeScreen.width;
+					}
+					else
+					{
+						newMinWidth = 0;
+					}
+				}
+				else
+				{
+					newMinWidth = this.stage.stageWidth;
+				}
+			}
+
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(needsToMeasureContent)
+				{
+					if(measureScreen !== null)
+					{
+						newMinHeight = measureScreen.minHeight;
+					}
+					else if(this._activeScreen !== null)
+					{
+						newMinHeight = this._activeScreen.height;
+					}
+					else
+					{
+						newMinHeight = 0;
+					}
+				}
+				else
+				{
+					newMinHeight = this.stage.stageHeight;
+				}
+			}
+
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -626,6 +725,21 @@ package feathers.controls.supportClasses
 				this._activeScreen.addEventListener(Event.RESIZE, activeScreen_resizeHandler);
 			}
 			this.prepareActiveScreen();
+			var measureScreen:IMeasureDisplayObject = this._activeScreen as IMeasureDisplayObject;
+			if(measureScreen !== null)
+			{
+				this._activeScreenExplicitWidth = measureScreen.explicitWidth;
+				this._activeScreenExplicitHeight = measureScreen.explicitHeight;
+				this._activeScreenExplicitMinWidth = measureScreen.explicitMinWidth;
+				this._activeScreenExplicitMinHeight = measureScreen.explicitMinHeight;
+			}
+			else
+			{
+				this._activeScreenExplicitWidth = this._activeScreen.width;
+				this._activeScreenExplicitHeight = this._activeScreen.height;
+				this._activeScreenExplicitMinWidth = this._activeScreenExplicitWidth;
+				this._activeScreenExplicitMinHeight = this._activeScreenExplicitHeight;
+			}
 			this.addChild(this._activeScreen);
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -737,11 +851,22 @@ package feathers.controls.supportClasses
 			this._isTransitionActive = this._clearAfterTransition || this._nextScreenID;
 			if(cancelTransition)
 			{
-				if(this._activeScreen)
+				if(this._activeScreen !== null)
 				{
 					var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[this._activeScreenID]);
 					this.cleanupActiveScreen();
 					this.removeChild(this._activeScreen, item.canDispose);
+					if(!item.canDispose)
+					{
+						this._activeScreen.width = this._activeScreenExplicitWidth;
+						this._activeScreen.height = this._activeScreenExplicitHeight;
+						var measureScreen:IMeasureDisplayObject = this._activeScreen as IMeasureDisplayObject;
+						if(measureScreen !== null)
+						{
+							measureScreen.minWidth = this._activeScreenExplicitMinWidth;
+							measureScreen.minHeight = this._activeScreenExplicitMinHeight;
+						}
+					}
 				}
 				this._activeScreen = this._previousScreenInTransition;
 				this._activeScreenID = this._previousScreenInTransitionID;

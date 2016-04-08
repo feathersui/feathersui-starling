@@ -944,6 +944,42 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _pixelSnapping:Boolean = true;
+
+		/**
+		 * Determines if the text should be snapped to the nearest whole pixel
+		 * when rendered. When this is <code>false</code>, text may be displayed
+		 * on sub-pixels, which often results in blurred rendering due to
+		 * texture smoothing.
+		 *
+		 * <p>In the following example, the text is not snapped to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.pixelSnapping = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get pixelSnapping():Boolean
+		{
+			return this._pixelSnapping;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pixelSnapping(value:Boolean):void
+		{
+			if(this._pixelSnapping === value)
+			{
+				return;
+			}
+			this._pixelSnapping = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _maxTextureDimensions:int = 2048;
 
 		/**
@@ -1183,6 +1219,16 @@ package feathers.controls.text
 			this._updateSnapshotOnScaleChange = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _lastMeasurementWidth:Number = 0;
+
+		/**
+		 *
+		 */
+		protected var _textBlockChanged:Boolean = true;
 
 		/**
 		 * @private
@@ -1430,6 +1476,7 @@ package feathers.controls.text
 
 			if(stylesInvalid)
 			{
+				this._textBlockChanged = true;
 				this.textBlock.applyNonLinearFontScaling = this._applyNonLinearFontScaling;
 				this.textBlock.baselineFontDescription = this._baselineFontDescription;
 				this.textBlock.baselineFontSize = this._baselineFontSize;
@@ -1445,6 +1492,7 @@ package feathers.controls.text
 
 			if(dataInvalid)
 			{
+				this._textBlockChanged = true;
 				this.textBlock.content = this._content;
 			}
 		}
@@ -1475,7 +1523,18 @@ package feathers.controls.text
 			{
 				newHeight = this._maxHeight;
 			}
-			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
+
+			//sometimes, we can determine that the dimensions will be exactly
+			//the same without needing to refresh the text lines. this will
+			//result in much better performance.
+			if(this._textBlockChanged ||
+				(!this._wordWrap && newWidth < this._lastMeasurementWidth) ||
+				(this._wordWrap && newWidth !== this._lastMeasurementWidth))
+			{
+				this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
+				this._lastMeasurementWidth = this._measurementTextLineContainer.width;
+				this._textBlockChanged = false;
+			}
 			if(needsWidth)
 			{
 				newWidth = Math.ceil(this._measurementTextLineContainer.width);
@@ -1606,6 +1665,14 @@ package feathers.controls.text
 				if(this.textSnapshot)
 				{
 					this.textSnapshot.visible = this._snapshotWidth > 0 && this._snapshotHeight > 0 && this._content !== null;
+					this.textSnapshot.pixelSnapping = this._pixelSnapping;
+				}
+				if(this.textSnapshots)
+				{
+					for each(var snapshot:Image in this.textSnapshots)
+					{
+						snapshot.pixelSnapping = this._pixelSnapping;
+					}
 				}
 			}
 		}
@@ -1619,7 +1686,7 @@ package feathers.controls.text
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1630,13 +1697,49 @@ package feathers.controls.text
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
-			this.measure(HELPER_POINT);
-			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+			if(needsWidth || needsHeight)
+			{
+				//since the minimum dimensions are based on the regular
+				//dimensions, we don't need to measure if only minimum
+				//dimensions are required
+				this.measure(HELPER_POINT);
+			}
+			var newWidth:Number = this._explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = HELPER_POINT.x;
+			}
+			var newHeight:Number = this._explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = HELPER_POINT.y;
+			}
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(needsWidth)
+				{
+					//this allows wrapping or truncation
+					newMinWidth = 0;
+				}
+				else
+				{
+					newMinWidth = newWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				newMinHeight = newHeight;
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1717,7 +1820,11 @@ package feathers.controls.text
 				}
 				elementFormat = this._elementFormat;
 			}
-			this._textElement.elementFormat = elementFormat;
+			if(this._textElement.elementFormat !== elementFormat)
+			{
+				this._textBlockChanged = true;
+				this._textElement.elementFormat = elementFormat;
+			}
 		}
 
 		/**
@@ -1787,7 +1894,7 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
-			if(this._snapshotWidth == 0 || this._snapshotHeight == 0)
+			if(this._snapshotWidth <= 0 || this._snapshotHeight <= 0)
 			{
 				return;
 			}
@@ -2109,8 +2216,12 @@ package feathers.controls.text
 			{
 				this._measuredHeight = yPosition;
 			}
-
-			this.alignTextLines(textLines, width, this._textAlign);
+			else
+			{
+				//no need to align the measurement text lines because they won't
+				//be rendered
+				this.alignTextLines(textLines, width, this._textAlign);
+			}
 
 			inactiveTextLineCount = HELPER_TEXT_LINES.length;
 			for(i = 0; i < inactiveTextLineCount; i++)

@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IStateObserver;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.TapToTrigger;
 
 	import flash.geom.Point;
@@ -236,12 +237,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _originalSkinWidth:Number = NaN;
+		protected var _explicitSkinWidth:Number = NaN;
 
 		/**
 		 * @private
 		 */
-		protected var _originalSkinHeight:Number = NaN;
+		protected var _explicitSkinHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitSkinMinWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitSkinMinHeight:Number = NaN;
 
 		/**
 		 * Gets the skin to be used by the button when its
@@ -326,7 +337,7 @@ package feathers.controls
 
 			if(stylesInvalid || stateInvalid)
 			{
-				this.tapToTrigger.isEnabled = this._isEnabled;
+				this.refreshTriggeredEvents();
 				this.refreshSkin();
 			}
 
@@ -347,7 +358,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -365,6 +376,13 @@ package feathers.controls
 				return false;
 			}
 
+			resetFluidChildDimensionsForMeasurement(this.currentSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitSkinWidth, this._explicitSkinHeight,
+				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
+			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
+
 			if(this.currentSkin is IValidating)
 			{
 				IValidating(this.currentSkin).validate();
@@ -373,13 +391,13 @@ package feathers.controls
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
-				if(this.currentSkin is IMeasureDisplayObject)
+				if(measureSkin !== null)
 				{
-					newMinWidth = IMeasureDisplayObject(this.currentSkin).minWidth;
+					newMinWidth = measureSkin.minWidth;
 				}
-				else if(this._originalSkinWidth === this._originalSkinWidth) //!isNaN
+				else if(this.currentSkin !== null)
 				{
-					newMinWidth = this._originalSkinWidth;
+					newMinWidth = this.currentSkin.width;
 				}
 				else
 				{
@@ -390,13 +408,13 @@ package feathers.controls
 			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
-				if(this.currentSkin is IMeasureDisplayObject)
+				if(measureSkin !== null)
 				{
-					newMinHeight = IMeasureDisplayObject(this.currentSkin).minHeight;
+					newMinHeight = measureSkin.minHeight;
 				}
-				else if(this._originalSkinHeight === this._originalSkinHeight) //!isNaN
+				else if(this.currentSkin !== null)
 				{
-					newMinHeight = this._originalSkinHeight;
+					newMinHeight = this.currentSkin.height;
 				}
 				else
 				{
@@ -407,9 +425,9 @@ package feathers.controls
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this._originalSkinWidth === this._originalSkinWidth) //!isNaN
+				if(this.currentSkin !== null)
 				{
-					newWidth = this._originalSkinWidth;
+					newWidth = this.currentSkin.width;
 				}
 				else
 				{
@@ -420,9 +438,9 @@ package feathers.controls
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this._originalSkinHeight === this._originalSkinHeight) //!isNaN
+				if(this.currentSkin !== null)
 				{
-					newHeight = this._originalSkinHeight;
+					newHeight = this.currentSkin.height;
 				}
 				else
 				{
@@ -454,23 +472,27 @@ package feathers.controls
 				}
 				if(this.currentSkin)
 				{
+					if(this.currentSkin is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentSkin);
+						this._explicitSkinWidth = measureSkin.explicitWidth;
+						this._explicitSkinHeight = measureSkin.explicitHeight;
+						this._explicitSkinMinWidth = measureSkin.explicitMinWidth;
+						this._explicitSkinMinHeight = measureSkin.explicitMinHeight;
+					}
+					else
+					{
+						this._explicitSkinWidth = this.currentSkin.width;
+						this._explicitSkinHeight = this.currentSkin.height;
+						this._explicitSkinMinWidth = this._explicitSkinWidth;
+						this._explicitSkinMinHeight = this._explicitSkinHeight;
+					}
 					if(this.currentSkin is IStateObserver)
 					{
 						IStateObserver(this.currentSkin).stateContext = this;
 					}
 					this.addChildAt(this.currentSkin, 0);
 				}
-			}
-			if(this.currentSkin &&
-				(this._originalSkinWidth !== this._originalSkinWidth || //isNaN
-				this._originalSkinHeight !== this._originalSkinHeight))
-			{
-				if(this.currentSkin is IValidating)
-				{
-					IValidating(this.currentSkin).validate();
-				}
-				this._originalSkinWidth = this.currentSkin.width;
-				this._originalSkinHeight = this.currentSkin.height;
 			}
 		}
 
@@ -510,6 +532,14 @@ package feathers.controls
 			{
 				IValidating(this.currentSkin).validate();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTriggeredEvents():void
+		{
+			this.tapToTrigger.isEnabled = this._isEnabled;
 		}
 
 		/**

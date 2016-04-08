@@ -9,10 +9,12 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import starling.display.DisplayObject;
 
@@ -235,15 +237,23 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * The width of the first background skin that was displayed.
 		 */
-		protected var _originalBackgroundWidth:Number = NaN;
+		protected var _explicitBackgroundWidth:Number;
 
 		/**
 		 * @private
-		 * The height of the first background skin that was displayed.
 		 */
-		protected var _originalBackgroundHeight:Number = NaN;
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
 
 		/**
 		 * @private
@@ -685,7 +695,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -702,6 +712,13 @@ package feathers.controls
 			{
 				return false;
 			}
+
+			var measureBackground:IMeasureDisplayObject = this.currentBackground as IMeasureDisplayObject;
+			resetFluidChildDimensionsForMeasurement(this.currentBackground,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			if(this.currentBackground is IValidating)
 			{
 				IValidating(this.currentBackground).validate();
@@ -715,10 +732,17 @@ package feathers.controls
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
-				var backgroundMinWidth:Number = this._originalBackgroundWidth;
-				if(this.currentBackground is IFeathersControl)
+				if(measureBackground !== null)
 				{
-					backgroundMinWidth = IFeathersControl(this.currentBackground).minWidth;
+					newMinWidth = measureBackground.minWidth;
+				}
+				else if(this.currentBackground !== null)
+				{
+					newMinWidth = this.currentBackground.width;
+				}
+				else
+				{
+					newMinWidth = 0;
 				}
 				var fillMinWidth:Number = this._originalFillWidth;
 				if(this.currentFill is IFeathersControl)
@@ -726,7 +750,6 @@ package feathers.controls
 					fillMinWidth = IFeathersControl(this.currentFill).minWidth;
 				}
 				fillMinWidth += this._paddingLeft + this._paddingRight;
-				newMinWidth = backgroundMinWidth;
 				if(fillMinWidth > newMinWidth)
 				{
 					newMinWidth = fillMinWidth;
@@ -735,10 +758,17 @@ package feathers.controls
 			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
-				var backgroundMinHeight:Number = this._originalBackgroundHeight;
-				if(this.currentBackground is IFeathersControl)
+				if(measureBackground !== null)
 				{
-					backgroundMinHeight = IFeathersControl(this.currentBackground).minHeight;
+					newMinHeight = measureBackground.minHeight;
+				}
+				else if(this.currentBackground !== null)
+				{
+					newMinHeight = this.currentBackground.height
+				}
+				else
+				{
+					newMinHeight = 0;
 				}
 				var fillMinHeight:Number = this._originalFillHeight;
 				if(this.currentFill is IFeathersControl)
@@ -746,7 +776,6 @@ package feathers.controls
 					fillMinHeight = IFeathersControl(this.currentFill).minHeight;
 				}
 				fillMinHeight += this._paddingTop + this._paddingBottom;
-				newMinHeight = backgroundMinHeight;
 				if(fillMinHeight > newMinHeight)
 				{
 					newMinHeight = fillMinHeight;
@@ -757,7 +786,14 @@ package feathers.controls
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = this._originalBackgroundWidth;
+				if(this.currentBackground !== null)
+				{
+					newWidth = this.currentBackground.width;
+				}
+				else
+				{
+					newWidth = 0;
+				}
 				var fillWidth:Number = this._originalFillWidth + this._paddingLeft + this._paddingRight;
 				if(fillWidth > newWidth)
 				{
@@ -767,7 +803,14 @@ package feathers.controls
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this._originalBackgroundHeight;
+				if(this.currentBackground !== null)
+				{
+					newHeight = this.currentBackground.height;
+				}
+				else
+				{
+					newHeight = 0;
+				}
 				var fillHeight:Number = this._originalFillHeight + this._paddingTop + this._paddingBottom;
 				if(fillHeight > newHeight)
 				{
@@ -784,7 +827,7 @@ package feathers.controls
 		protected function refreshBackground():void
 		{
 			this.currentBackground = this._backgroundSkin;
-			if(this._backgroundDisabledSkin)
+			if(this._backgroundDisabledSkin !== null)
 			{
 				if(this._isEnabled)
 				{
@@ -793,27 +836,30 @@ package feathers.controls
 				else
 				{
 					this.currentBackground = this._backgroundDisabledSkin;
-					if(this._backgroundSkin)
+					if(this._backgroundSkin !== null)
 					{
 						this._backgroundSkin.visible = false;
 					}
 				}
 			}
-			if(this.currentBackground)
+			if(this.currentBackground !== null)
 			{
-				if(this.currentBackground is IValidating)
-				{
-					IValidating(this.currentBackground).validate();
-				}
-				if(this._originalBackgroundWidth !== this._originalBackgroundWidth) //isNaN
-				{
-					this._originalBackgroundWidth = this.currentBackground.width;
-				}
-				if(this._originalBackgroundHeight !== this._originalBackgroundHeight) //isNaN
-				{
-					this._originalBackgroundHeight = this.currentBackground.height;
-				}
 				this.currentBackground.visible = true;
+				if(this.currentBackground is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackground);
+					this._explicitBackgroundWidth = measureSkin.explicitWidth;
+					this._explicitBackgroundHeight = measureSkin.explicitHeight;
+					this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+					this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+				}
+				else
+				{
+					this._explicitBackgroundWidth = this.currentBackground.width;
+					this._explicitBackgroundHeight = this.currentBackground.height;
+					this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+					this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+				}
 			}
 		}
 

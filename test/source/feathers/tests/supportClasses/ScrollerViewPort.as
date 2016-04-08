@@ -9,24 +9,31 @@ package feathers.tests.supportClasses
 		{
 		}
 
-		private var _minVisibleWidth:Number = 0;
+		private var _actualMinVisibleWidth:Number = 0;
+
+		private var _explicitMinVisibleWidth:Number;
 
 		public function get minVisibleWidth():Number
 		{
-			return this._minVisibleWidth;
+			if(this._explicitMinWidth === this._explicitMinWidth) //!isNaN
+			{
+				return this._explicitMinWidth;
+			}
+			if(this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth) //isNaN
+			{
+				return this._actualMinVisibleWidth;
+			}
+			return this._explicitMinVisibleWidth;
 		}
 
 		public function set minVisibleWidth(value:Number):void
 		{
-			if(this._minVisibleWidth == value)
+			if(this._explicitMinVisibleWidth == value ||
+				(value !== value && this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth)) //isNaN
 			{
 				return;
 			}
-			if(value !== value) //isNaN
-			{
-				throw new ArgumentError("minVisibleWidth cannot be NaN");
-			}
-			this._minVisibleWidth = value;
+			this._explicitMinVisibleWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -75,24 +82,31 @@ package feathers.tests.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		private var _minVisibleHeight:Number = 0;
+		private var _actualMinVisibleHeight:Number = 0;
+
+		private var _explicitMinVisibleHeight:Number;
 
 		public function get minVisibleHeight():Number
 		{
-			return this._minVisibleHeight;
+			if(this._explicitMinHeight === this._explicitMinHeight) //!isNaN
+			{
+				return this._explicitMinHeight;
+			}
+			if(this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight) //isNaN
+			{
+				return this._actualMinVisibleHeight;
+			}
+			return this._explicitMinVisibleHeight;
 		}
 
 		public function set minVisibleHeight(value:Number):void
 		{
-			if(this._minVisibleHeight == value)
+			if(this._explicitMinVisibleHeight == value ||
+				(value !== value && this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight)) //isNaN
 			{
 				return;
 			}
-			if(value !== value) //isNaN
-			{
-				throw new ArgumentError("minVisibleHeight cannot be NaN");
-			}
-			this._minVisibleHeight = value;
+			this._explicitMinVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -133,7 +147,7 @@ package feathers.tests.supportClasses
 		public function set visibleHeight(value:Number):void
 		{
 			if(this._explicitVisibleHeight == value ||
-			(value !== value && this._explicitVisibleHeight !== this._explicitVisibleHeight)) //isNaN
+				(value !== value && this._explicitVisibleHeight !== this._explicitVisibleHeight)) //isNaN
 			{
 				return;
 			}
@@ -221,6 +235,30 @@ package feathers.tests.supportClasses
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		override public function set width(value:Number):void
+		{
+			super.width = value;
+			this._actualVisibleWidth = value;
+		}
+
+		override public function set height(value:Number):void
+		{
+			super.height = value;
+			this._actualVisibleHeight = value;
+		}
+
+		private var _requiresMeasurementOnScroll:Boolean = false;
+
+		public function get requiresMeasurementOnScroll():Boolean
+		{
+			return this._requiresMeasurementOnScroll;
+		}
+
+		public function set requiresMeasurementOnScroll(value:Boolean):void
+		{
+			this._requiresMeasurementOnScroll = value;
 		}
 	}
 }

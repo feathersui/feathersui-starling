@@ -76,36 +76,11 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testAutoSizeNoChildrenNoBackgroundAndNoLayout():void
+		public function testNoErrorValidatingWithoutStage():void
 		{
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly when empty.",
-				0, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly when empty.",
-				0, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeMinDimensionsNoChildrenNoBackgroundAndNoLayout():void
-		{
-			this._group.minWidth = BACKGROUND_WIDTH;
-			this._group.minHeight = BACKGROUND_HEIGHT;
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly when empty.",
-				BACKGROUND_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly when empty.",
-				BACKGROUND_HEIGHT, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithBackgroundAndNoChildren():void
-		{
-			this._group.backgroundSkin = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with background skin and no children.",
-				BACKGROUND_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with background skin and no children.",
-				BACKGROUND_HEIGHT, this._group.height);
+			var group:LayoutGroup = new LayoutGroup();
+			group.validate();
+			group.dispose();
 		}
 
 		[Test]
@@ -113,100 +88,6 @@ package feathers.tests
 		{
 			this._group.validate();
 			Assert.assertStrictlyEquals("The default value of LayoutGroup autoSizeMode must be AutoSizeMode.CONTENT, if not root.", AutoSizeMode.CONTENT, this._group.autoSizeMode);
-		}
-
-		[Test]
-		public function testAutoSizeModeStage():void
-		{
-			this._group.autoSizeMode = AutoSizeMode.STAGE;
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
-				this._group.stage.stageWidth, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
-				this._group.stage.stageHeight, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithChildAtOrigin():void
-		{
-			this._group.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
-				ITEM_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
-				ITEM_HEIGHT, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithChild():void
-		{
-			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
-			child.x = 120;
-			child.y = 130;
-			this._group.addChild(child);
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
-				child.x + ITEM_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
-				child.y + ITEM_HEIGHT, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithChildPositionedWithBoundsFullyInNegative():void
-		{
-			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
-			child.x = -420;
-			child.y = -430;
-			this._group.addChild(child);
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
-				0, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
-				0, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithChildPositionedWithBoundsInBothPositiveAndNegative():void
-		{
-			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
-			child.x = -Math.round(ITEM_WIDTH / 4);
-			child.y = -Math.round(ITEM_HEIGHT / 3);
-			this._group.addChild(child);
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
-				child.x + ITEM_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
-				child.y + ITEM_HEIGHT, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeWithMultipleChildren():void
-		{
-			var child1:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
-			child1.x = 0;
-			child1.y = 130;
-			this._group.addChild(child1);
-			var child2:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
-			child2.x = 120;
-			child2.y = 0;
-			this._group.addChild(child2);
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
-				child2.x + ITEM_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
-				child1.y + ITEM_HEIGHT, this._group.height);
-		}
-
-		[Test]
-		public function testAutoSizeChildAndBackground():void
-		{
-			this._group.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));
-			this._group.backgroundSkin = new Quad(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-			this._group.validate();
-			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
-				ITEM_WIDTH, this._group.width);
-			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
-				BACKGROUND_HEIGHT, this._group.height);
 		}
 
 		[Test]

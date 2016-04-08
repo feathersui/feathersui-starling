@@ -66,11 +66,14 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.StageTextTextEditor;
-	import feathers.controls.text.StageTextTextEditorViewPort;
 	import feathers.controls.text.TextBlockTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
+	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
@@ -285,7 +288,7 @@ package feathers.themes
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
-		protected static function textRendererFactory():TextBlockTextRenderer
+		protected static function textRendererFactory():ITextRenderer
 		{
 			return new TextBlockTextRenderer();
 		}
@@ -294,18 +297,18 @@ package feathers.themes
 		 * The default global text editor factory for this theme creates a
 		 * StageTextTextEditor.
 		 */
-		protected static function textEditorFactory():StageTextTextEditor
+		protected static function textEditorFactory():ITextEditor
 		{
 			return new StageTextTextEditor();
 		}
 
 		/**
 		 * The text editor factory for a TextArea creates a
-		 * StageTextTextEditorViewPort.
+		 * TextFieldTextEditorViewPort.
 		 */
-		protected static function textAreaTextEditorFactory():StageTextTextEditorViewPort
+		protected static function textAreaTextEditorFactory():ITextEditorViewPort
 		{
-			return new StageTextTextEditorViewPort();
+			return new TextFieldTextEditorViewPort();
 		}
 
 		/**
@@ -353,12 +356,6 @@ package feathers.themes
 		}
 
 		/**
-		 * StageText scales strangely when contentsScaleFactor > 1, so we need
-		 * to account for that.
-		 */
-		protected var stageTextScale:Number = 1;
-
-		/**
 		 * A smaller font size for details.
 		 */
 		protected var smallFontSize:int;
@@ -377,13 +374,6 @@ package feathers.themes
 		 * An extra large font size.
 		 */
 		protected var extraLargeFontSize:int;
-
-		/**
-		 * The font size used for text inputs that use StageText.
-		 * 
-		 * @see #stageTextScale
-		 */
-		protected var inputFontSize:int;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
@@ -669,7 +659,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
@@ -700,21 +689,6 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes the scale value based on the screen density and content
-		 * scale factor.
-		 */
-		protected function initializeScale():void
-		{
-			var starling:Starling = Starling.current;
-			var nativeScaleFactor:Number = 1;
-			if(starling.supportHighResolutions)
-			{
-				nativeScaleFactor = starling.nativeStage.contentsScaleFactor; 
-			}
-			this.stageTextScale = 1 / nativeScaleFactor;
-		}
-
-		/**
 		 * Initializes common values used for setting the dimensions of components.
 		 */
 		protected function initializeDimensions():void
@@ -741,7 +715,6 @@ package feathers.themes
 			this.regularFontSize = 12;
 			this.largeFontSize = 14;
 			this.extraLargeFontSize = 18;
-			this.inputFontSize = Math.round(12 * this.stageTextScale);
 
 			//these are for components that don't use FTE
 			this.scrollTextTextFormat = new TextFormat("_sans", this.regularFontSize, LIGHT_TEXT_COLOR);
@@ -1045,7 +1018,7 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(StageTextTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
+			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
@@ -2370,12 +2343,11 @@ package feathers.themes
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 		
-		protected function setTextAreaTextEditorStyles(textEditor:StageTextTextEditorViewPort):void
+		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
 		{
-			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.inputFontSize;
-			textEditor.color = LIGHT_TEXT_COLOR;
-			textEditor.disabledColor = DISABLED_TEXT_COLOR;
+			textEditor.textFormat = this.scrollTextTextFormat;
+			textEditor.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			
 			textEditor.padding = this.smallGutterSize;
 		}
 
@@ -2424,7 +2396,7 @@ package feathers.themes
 		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
 		{
 			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.inputFontSize;
+			textEditor.fontSize = this.regularFontSize;
 			textEditor.color = LIGHT_TEXT_COLOR;
 			textEditor.disabledColor = DISABLED_TEXT_COLOR;
 		}
@@ -2500,7 +2472,7 @@ package feathers.themes
 
 		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
-			var icon:ImageSkin = new ImageSkin();
+			var icon:ImageSkin = new ImageSkin(null);
 			icon.setTextureForState(ButtonState.UP, this.overlayPlayPauseButtonPlayUpIconTexture);
 			icon.setTextureForState(ButtonState.HOVER, this.overlayPlayPauseButtonPlayUpIconTexture);
 			icon.setTextureForState(ButtonState.DOWN, this.overlayPlayPauseButtonPlayDownIconTexture);

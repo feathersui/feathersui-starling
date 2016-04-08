@@ -75,7 +75,7 @@ package feathers.tests
 
 			Assert.assertStrictlyEquals("Label width not equal to text renderer width", this.textRenderer.width, this.label.width);
 			Assert.assertStrictlyEquals("Label height not equal to text renderer height", this.textRenderer.height, this.label.height);
-			Assert.assertStrictlyEquals("Label minWidth not equal to text renderer width", this.textRenderer.width, this.label.minWidth);
+			Assert.assertStrictlyEquals("Label minWidth not equal to 0 when explicitWidth not set", 0, this.label.minWidth);
 			Assert.assertStrictlyEquals("Label minHeight not equal to text renderer height", this.textRenderer.height, this.label.minHeight);
 		}
 
@@ -94,7 +94,7 @@ package feathers.tests
 
 			Assert.assertStrictlyEquals("Label width not equal to text renderer width plus padding left and padding right", this.textRenderer.width + PADDING_LEFT + PADDING_RIGHT, this.label.width);
 			Assert.assertStrictlyEquals("Label height not equal to text renderer height plus padding top and padding bottom", this.textRenderer.height + PADDING_TOP + PADDING_BOTTOM, this.label.height);
-			Assert.assertStrictlyEquals("Label minWidth not equal to text renderer width plus padding left and padding right", this.textRenderer.width + PADDING_LEFT + PADDING_RIGHT, this.label.minWidth);
+			Assert.assertStrictlyEquals("Label minWidth not equal padding left and padding right", PADDING_LEFT + PADDING_RIGHT, this.label.minWidth);
 			Assert.assertStrictlyEquals("Label minHeight not equal to text renderer height plus padding top and padding bottom", this.textRenderer.height + PADDING_TOP + PADDING_BOTTOM, this.label.minHeight);
 		}
 

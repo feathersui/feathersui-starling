@@ -116,6 +116,30 @@ package feathers.tests
 		}
 
 		[Test(async)]
+		public function testRemovedBeforeLongPressEvent():void
+		{
+			var hasLongPressed:Boolean = false;
+			this._target.addEventListener(FeathersEventType.LONG_PRESS, function():void
+			{
+				hasLongPressed = true;
+			});
+			var touch:Touch = new Touch(0);
+			touch.target = this._target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 10;
+			touch.globalY = 10;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			this._target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			this._target.removeFromParent(false);
+
+			Async.delayCall(this, function():void
+			{
+				Assert.assertFalse("FeathersEventType.LONG_PRESS was incorrectly dispatched when target was removed", hasLongPressed);
+			}, 600);
+		}
+
+		[Test(async)]
 		public function testDisabled():void
 		{
 			this._longPress.isEnabled = false;

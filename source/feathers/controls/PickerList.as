@@ -252,6 +252,26 @@ package feathers.controls
 		{
 			return PickerList.globalStyleProvider;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var buttonExplicitWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var buttonExplicitHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var buttonExplicitMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var buttonExplicitMinHeight:Number;
 		
 		/**
 		 * @private
@@ -619,16 +639,6 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItemWidth:Number = NaN;
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItemHeight:Number = NaN;
 		
 		/**
 		 * @private
@@ -664,8 +674,6 @@ package feathers.controls
 				return;
 			}
 			this._typicalItem = value;
-			this._typicalItemWidth = NaN;
-			this._typicalItemHeight = NaN;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1083,6 +1091,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _triggered:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isOpenListPending:Boolean = false;
 
 		/**
@@ -1311,8 +1324,6 @@ package feathers.controls
 
 			if(buttonFactoryInvalid || stylesInvalid)
 			{
-				this._typicalItemWidth = NaN;
-				this._typicalItemHeight = NaN;
 				this.refreshButtonProperties();
 			}
 
@@ -1347,12 +1358,8 @@ package feathers.controls
 				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(buttonFactoryInvalid || stylesInvalid || sizeInvalid || selectionInvalid)
-			{
-				this.layout();
-			}
+			this.autoSizeIfNeeded();
+			this.layout();
 
 			if(this.list.stage)
 			{
@@ -1377,7 +1384,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1388,69 +1395,75 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
-			var buttonWidth:Number;
-			var buttonHeight:Number;
-			if(this._typicalItem)
+			var buttonWidth:Number = this._explicitWidth;
+			if(buttonWidth !== buttonWidth)
 			{
-				if(this._typicalItemWidth !== this._typicalItemWidth || //isNaN
-					this._typicalItemHeight !== this._typicalItemHeight) //isNaN
-				{
-					var oldWidth:Number = this.button.width;
-					var oldHeight:Number = this.button.height;
-					this.button.width = NaN;
-					this.button.height = NaN;
-					if(this._typicalItem)
-					{
-						this.button.label = this.itemToLabel(this._typicalItem);
-					}
-					this.button.validate();
-					this._typicalItemWidth = this.button.width;
-					this._typicalItemHeight = this.button.height;
-					this.refreshButtonLabel();
-					this.button.width = oldWidth;
-					this.button.height = oldHeight;
-				}
-				buttonWidth = this._typicalItemWidth;
-				buttonHeight = this._typicalItemHeight;
+				//we save the button's explicitWidth (and other explicit
+				//dimensions) after the buttonFactory() returns so that
+				//measurement always accounts for it, even after the button's
+				//width is set by the PickerList
+				buttonWidth = this.buttonExplicitWidth;
 			}
-			else
+			var buttonHeight:Number = this._explicitHeight;
+			if(buttonHeight !== buttonHeight)
 			{
-				this.button.validate();
-				buttonWidth = this.button.width;
-				buttonHeight = this.button.height;
+				buttonHeight = this.buttonExplicitHeight;
+			}
+			var buttonMinWidth:Number = this._explicitMinWidth;
+			if(buttonMinWidth !== buttonMinWidth)
+			{
+				buttonMinWidth = this.buttonExplicitMinWidth;
+			}
+			var buttonMinHeight:Number = this._explicitMinHeight;
+			if(buttonMinHeight !== buttonMinHeight)
+			{
+				buttonMinHeight = this.buttonExplicitMinHeight;
+			}
+			if(this._typicalItem !== null)
+			{
+				this.button.label = this.itemToLabel(this._typicalItem);
+			}
+			this.button.width = buttonWidth;
+			this.button.height = buttonHeight;
+			this.button.minWidth = buttonMinWidth;
+			this.button.minHeight = buttonMinHeight;
+			this.button.validate();
+			
+			if(this._typicalItem !== null)
+			{
+				this.refreshButtonLabel();
 			}
 
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
+			
 			if(needsWidth)
 			{
-				if(buttonWidth === buttonWidth) //!isNaN
-				{
-					newWidth = buttonWidth;
-				}
-				else
-				{
-					newWidth = 0;
-				}
+				newWidth = this.button.width;
 			}
 			if(needsHeight)
 			{
-				if(buttonHeight === buttonHeight) //!isNaN
-				{
-					newHeight = buttonHeight;
-				}
-				else
-				{
-					newHeight = 0;
-				}
+				newHeight = this.button.height;
+			}
+			if(needsMinWidth)
+			{
+				newMinWidth = this.button.minWidth;
+			}
+			if(needsMinHeight)
+			{
+				newMinHeight = this.button.minHeight;
 			}
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1484,6 +1497,12 @@ package feathers.controls
 			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 			this.addChild(this.button);
+			
+			//we will use these values for measurement, if possible
+			this.buttonExplicitWidth = this.button.explicitWidth;
+			this.buttonExplicitHeight = this.button.explicitHeight;
+			this.buttonExplicitMinWidth = this.button.explicitMinWidth;
+			this.buttonExplicitMinHeight = this.button.explicitMinHeight;
 		}
 
 		/**
@@ -1514,6 +1533,7 @@ package feathers.controls
 			this.list.styleNameList.add(listStyleName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
+			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
 		
@@ -1737,7 +1757,24 @@ package feathers.controls
 			{
 				return;
 			}
-			this.closeList();
+			this._triggered = true;
+		}
+		
+		protected function list_touchHandler(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(this.list);
+			if(touch === null)
+			{
+				return;
+			}
+			if(touch.phase === TouchPhase.BEGAN)
+			{
+				this._triggered = false;
+			}
+			if(touch.phase === TouchPhase.ENDED && this._triggered)
+			{
+				this.closeList();
+			}
 		}
 
 		/**

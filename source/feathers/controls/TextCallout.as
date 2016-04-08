@@ -136,7 +136,7 @@ package feathers.controls
 		/**
 		 * Creates a callout that displays some text, and then positions and
 		 * sizes it automatically based on an origin rectangle and the specified
-		 * direction relative to the origin.
+		 * positions, relative to the origin.
 		 *
 		 * <p>In the following example, a text callout is shown when a
 		 * <code>Button</code> is triggered:</p>
@@ -150,7 +150,7 @@ package feathers.controls
 		 *     TextCallout.show( "Hello World", button );
 		 * }</listing>
 		 */
-		public static function show(text:String, origin:DisplayObject, supportedDirections:String = DIRECTION_ANY,
+		public static function show(text:String, origin:DisplayObject, supportedPositions:Vector.<String> = null,
 			isModal:Boolean = true, customCalloutFactory:Function = null, customOverlayFactory:Function = null):TextCallout
 		{
 			if(!origin.stage)
@@ -158,18 +158,26 @@ package feathers.controls
 				throw new ArgumentError("TextCallout origin must be added to the stage.");
 			}
 			var factory:Function = customCalloutFactory;
-			if(factory == null)
+			if(factory === null)
 			{
-				factory = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
+				factory = calloutFactory;
+				if(factory === null)
+				{
+					factory = defaultCalloutFactory;
+				}
 			}
 			var callout:TextCallout = TextCallout(factory());
 			callout.text = text;
-			callout.supportedDirections = supportedDirections;
+			callout.supportedPositions = supportedPositions;
 			callout.origin = origin;
 			factory = customOverlayFactory;
 			if(factory == null)
 			{
-				factory = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
+				factory = calloutOverlayFactory;
+				if(factory == null)
+				{
+					factory = PopUpManager.defaultOverlayFactory
+				}
 			}
 			PopUpManager.addPopUp(callout, isModal, false, factory);
 			callout.validate();
@@ -402,7 +410,7 @@ package feathers.controls
 			//wait for validation
 			if(this.isCreated)
 			{
-				this.positionToOrigin();
+				this.positionRelativeToOrigin();
 			}
 		}
 	}

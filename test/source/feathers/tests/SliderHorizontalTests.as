@@ -61,15 +61,6 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testSingleTrackAutoSize():void
-		{
-			Assert.assertStrictlyEquals("The width of the slider was not calculated correctly.",
-				TRACK_WIDTH, this._slider.width);
-			Assert.assertStrictlyEquals("The height of the slider was not calculated correctly.",
-				TRACK_HEIGHT, this._slider.height);
-		}
-
-		[Test]
 		public function testSetValueProgramaticallyWithMinimum():void
 		{
 			this._slider.minimum = 5;

@@ -203,5 +203,39 @@ package feathers.tests
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Assert.assertTrue("isSelected was incorrectly changed to false when tapToDeselect set to false", this._target.isSelected);
 		}
+
+		[Test]
+		public function testRemovedBeforeTriggeredEvent():void
+		{
+			this._target.isSelected = false;
+
+			var hasChanged:Boolean = false;
+			this._target.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._target.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			this._target.removeFromParent(false);
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			//while it's good to check that Event.CHANGE isn't dispatched,
+			//this test also ensures that no runtime errors are thrown after the
+			//target is removed (its stage property is null, and that is used
+			//by TapToSelect)
+
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched when target was removed", hasChanged);
+			Assert.assertFalse("isSelected was incorrectly changed to true when target was removed", this._target.isSelected);
+		}
 	}
 }

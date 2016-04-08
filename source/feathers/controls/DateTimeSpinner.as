@@ -504,6 +504,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _longestMonthNameIndex:int;
+
+		/**
+		 * @private
+		 */
 		protected var _localeMonthNames:Vector.<String>;
 
 		/**
@@ -906,7 +911,7 @@ package feathers.controls
 			
 			if(localeInvalid || editingModeInvalid || spinnerListFactoryInvalid)
 			{
-				this.refreshLists(editingModeInvalid || spinnerListFactoryInvalid);
+				this.refreshLists(editingModeInvalid || spinnerListFactoryInvalid, localeInvalid);
 			}
 
 			if(localeInvalid || editingModeInvalid || dataInvalid || spinnerListFactoryInvalid)
@@ -949,7 +954,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshLists(createNewLists:Boolean):void
+		protected function refreshLists(createNewLists:Boolean, localeChanged:Boolean):void
 		{
 			if(createNewLists)
 			{
@@ -963,6 +968,13 @@ package feathers.controls
 
 				this.createDateAndTimeDateList();
 			}
+			else if((this._showMeridiem && !this.meridiemList) ||
+				(!this._showMeridiem && this.meridiemList))
+			{
+				//if the locale changes, we may need to create or destroy this
+				//list, but the other lists can stay
+				this.createMeridiemList();
+			}
 			
 			if(this._editingMode == EDITING_MODE_DATE)
 			{
@@ -974,6 +986,26 @@ package feathers.controls
 				else
 				{
 					this.listGroup.setChildIndex(this.datesList, 0);
+				}
+			}
+			
+			if(localeChanged)
+			{
+				if(this.monthsList)
+				{
+					var monthsCollection:ListCollection = this.monthsList.dataProvider;
+					if(monthsCollection)
+					{
+						monthsCollection.updateAll();
+					}
+				}
+				if(this.dateAndTimeDatesList)
+				{
+					var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
+					if(dateAndTimeDatesCollection)
+					{
+						dateAndTimeDatesCollection.updateAll();
+					}
 				}
 			}
 		}
@@ -1029,6 +1061,7 @@ package feathers.controls
 			var monthsCollection:ListCollection = new ListCollection(monthsRange);
 			monthsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 			this.monthsList.dataProvider = monthsCollection;
+			this.monthsList.typicalItem = this._longestMonthNameIndex;
 			this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
 			this.monthsList.addEventListener(Event.CHANGE, monthsList_changeHandler);
 			this.listGroup.addChildAt(this.monthsList, 0);
@@ -1128,7 +1161,7 @@ package feathers.controls
 				this.meridiemList = null;
 			}
 
-			if(this._editingMode === EDITING_MODE_DATE || !this._showMeridiem)
+			if(!this._showMeridiem)
 			{
 				return;
 			}
@@ -1181,7 +1214,7 @@ package feathers.controls
 				var dateIndex:int = dateTimePattern.indexOf("d");
 				this._monthFirst = monthIndex < dateIndex;
 				//figure out if this locale uses am/pm or 24-hour format
-				this._showMeridiem = dateTimePattern.indexOf("a") >= 0;
+				this._showMeridiem = this._editingMode !== EDITING_MODE_DATE && dateTimePattern.indexOf("a") >= 0;
 				if(this._showMeridiem)
 				{
 					this._formatter.setDateTimePattern("a");
@@ -1209,6 +1242,21 @@ package feathers.controls
 				this._localeMonthNames = null;
 				this._localeWeekdayNames = null;
 			}
+			if(this._localeMonthNames !== null)
+			{
+				this._longestMonthNameIndex = 0;
+				var longestMonth:String = this._localeMonthNames[0];
+				var monthCount:int = this._localeMonthNames.length;
+				for(var i:int = 1; i < monthCount; i++)
+				{
+					var otherMonthName:String = this._localeMonthNames[i];
+					if(otherMonthName.length > longestMonth.length)
+					{
+						longestMonth = otherMonthName;
+						this._longestMonthNameIndex = i;
+					}
+				}
+			}
 		}
 
 		/**
@@ -1225,12 +1273,14 @@ package feathers.controls
 				if(yearsCollection)
 				{
 					var yearRange:IntegerRange = IntegerRange(yearsCollection.data);
-					if(yearRange.minimum !== this._listMinYear || yearRange.minimum !== this._listMinYear)
+					if(yearRange.minimum !== this._listMinYear || yearRange.maximum !== this._listMaxYear)
 					{
 						yearRange.minimum = this._listMinYear;
-						yearRange.maximum = this._listMinYear;
+						yearRange.maximum = this._listMaxYear;
+						var dataDescriptor:IntegerRangeDataDescriptor = IntegerRangeDataDescriptor(yearsCollection.dataDescriptor);
 						yearsCollection.data = null;
 						yearsCollection.data = yearRange;
+						yearsCollection.dataDescriptor = dataDescriptor;
 					}
 				}
 				else
@@ -1255,8 +1305,10 @@ package feathers.controls
 						if(datesRange.maximum !== totalDays)
 						{
 							datesRange.maximum = totalDays;
+							dataDescriptor = IntegerRangeDataDescriptor(dateAndTimeDatesCollection.dataDescriptor);
 							dateAndTimeDatesCollection.data = null;
 							dateAndTimeDatesCollection.data = datesRange;
+							dateAndTimeDatesCollection.dataDescriptor = dataDescriptor;
 						}
 					}
 					else
@@ -1278,8 +1330,10 @@ package feathers.controls
 					{
 						hoursRange.minimum = hoursMinimum;
 						hoursRange.maximum = hoursMaximum;
+						dataDescriptor = IntegerRangeDataDescriptor(hoursCollection.dataDescriptor);
 						hoursCollection.data = null;
-						hoursCollection.data = datesRange;
+						hoursCollection.data = hoursRange;
+						hoursCollection.dataDescriptor = dataDescriptor;
 					}
 				}
 				else

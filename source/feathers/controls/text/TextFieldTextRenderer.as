@@ -523,6 +523,42 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _pixelSnapping:Boolean = true;
+
+		/**
+		 * Determines if the text should be snapped to the nearest whole pixel
+		 * when rendered. When this is <code>false</code>, text may be displayed
+		 * on sub-pixels, which often results in blurred rendering due to
+		 * texture smoothing.
+		 *
+		 * <p>In the following example, the text is not snapped to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.pixelSnapping = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get pixelSnapping():Boolean
+		{
+			return this._pixelSnapping;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pixelSnapping(value:Boolean):void
+		{
+			if(this._pixelSnapping === value)
+			{
+				return;
+			}
+			this._pixelSnapping = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
@@ -1650,6 +1686,14 @@ package feathers.controls.text
 				if(this.textSnapshot)
 				{
 					this.textSnapshot.visible = hasText && this._snapshotWidth > 0 && this._snapshotHeight > 0;
+					this.textSnapshot.pixelSnapping = this._pixelSnapping;
+				}
+				if(this.textSnapshots)
+				{
+					for each(var snapshot:Image in this.textSnapshots)
+					{
+						snapshot.pixelSnapping = this._pixelSnapping;
+					}
 				}
 			}
 		}
@@ -1663,7 +1707,7 @@ package feathers.controls.text
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1674,13 +1718,43 @@ package feathers.controls.text
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
 
 			this.measure(HELPER_POINT);
-			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+			var newWidth:Number = this._explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = HELPER_POINT.x;
+			}
+			var newHeight:Number = this._explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = HELPER_POINT.y;
+			}
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(needsWidth)
+				{
+					//this allows wrapping or truncation
+					newMinWidth = 0;
+				}
+				else
+				{
+					newMinWidth = newWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				newMinHeight = newHeight;
+			}
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**
@@ -1889,6 +1963,7 @@ package feathers.controls.text
 					if(!snapshot)
 					{
 						snapshot = new Image(newTexture);
+						snapshot.pixelSnapping = true;
 						this.addChild(snapshot);
 					}
 					else

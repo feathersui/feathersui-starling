@@ -68,9 +68,12 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
+	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
@@ -181,7 +184,7 @@ package feathers.themes
 		 * The default global text renderer factory for this theme creates a
 		 * BitmapFontTextRenderer.
 		 */
-		protected static function textRendererFactory():BitmapFontTextRenderer
+		protected static function textRendererFactory():ITextRenderer
 		{
 			var renderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
 			//since it's a pixel font, we don't want to smooth it.
@@ -193,9 +196,18 @@ package feathers.themes
 		 * The default global text editor factory for this theme creates a
 		 * StageTextTextEditor.
 		 */
-		protected static function textEditorFactory():StageTextTextEditor
+		protected static function textEditorFactory():ITextEditor
 		{
 			return new StageTextTextEditor();
+		}
+
+		/**
+		 * The text editor factory for a TextArea creates a
+		 * TextFieldTextEditorViewPort.
+		 */
+		protected static function textAreaTextEditorFactory():ITextEditorViewPort
+		{
+			return new TextFieldTextEditorViewPort();
 		}
 
 		/**
@@ -250,12 +262,6 @@ package feathers.themes
 		}
 
 		/**
-		 * StageText scales strangely when contentsScaleFactor > 1, so we need
-		 * to account for that.
-		 */
-		protected var stageTextScale:Number = 1;
-
-		/**
 		 * A normal font size.
 		 */
 		protected var fontSize:int;
@@ -269,11 +275,6 @@ package feathers.themes
 		 * A smaller font size for details.
 		 */
 		protected var smallFontSize:int;
-
-		/**
-		 * A special font size for text editing.
-		 */
-		protected var inputFontSize:int;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -444,7 +445,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeScale();
 			this.initializeDimensions();
 			this.initializeTextures();
 			this.initializeFonts();
@@ -472,21 +472,6 @@ package feathers.themes
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
-		}
-
-		/**
-		 * Initializes the scale value based on the screen density and content
-		 * scale factor.
-		 */
-		protected function initializeScale():void
-		{
-			var starling:Starling = Starling.current;
-			var nativeScaleFactor:Number = 1;
-			if(starling.supportHighResolutions)
-			{
-				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
-			}
-			this.stageTextScale = 1 / nativeScaleFactor;
 		}
 
 		/**
@@ -601,7 +586,6 @@ package feathers.themes
 			this.fontSize = 12;
 			this.largeFontSize = 16;
 			this.smallFontSize = 8;
-			this.inputFontSize = 13 * this.stageTextScale;
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
@@ -934,7 +918,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			if(button is ToggleButton)
 			{
@@ -1287,7 +1271,7 @@ package feathers.themes
 			defaultSkin.height = this.gridSize;
 			renderer.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.defaultTexture = this.itemRendererDownSkinTexture;
 			otherSkin.selectedTexture = this.itemRendererSelectedUpSkinTexture;
 			otherSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
@@ -1890,12 +1874,15 @@ package feathers.themes
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
+
+			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 
 		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
 		{
 			textEditor.textFormat = this.scrollTextTextFormat;
 			textEditor.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			
 			textEditor.padding = this.smallGutterSize;
 		}
 
@@ -1952,7 +1939,7 @@ package feathers.themes
 		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
 		{
 			textEditor.fontFamily = "_sans";
-			textEditor.fontSize = this.inputFontSize;
+			textEditor.fontSize = this.fontSize;
 			textEditor.color = PRIMARY_TEXT_COLOR;
 			textEditor.disabledColor = DISABLED_TEXT_COLOR;
 		}
@@ -2032,7 +2019,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
@@ -2056,7 +2043,7 @@ package feathers.themes
 
 		protected function setOverlayPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
-			var icon:ImageSkin = new ImageSkin();
+			var icon:ImageSkin = new ImageSkin(null);
 			icon.setTextureForState(ButtonState.UP, this.overlayPlayPauseButtonPlayUpIconTexture);
 			icon.setTextureForState(ButtonState.HOVER, this.overlayPlayPauseButtonPlayUpIconTexture);
 			button.defaultIcon = icon;
@@ -2084,7 +2071,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;
@@ -2116,7 +2103,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.buttonDownSkinTexture);
 			otherSkin.width = this.controlSize;

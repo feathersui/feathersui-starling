@@ -194,6 +194,47 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
+		protected var _overlayFactory:Function = null;
+
+		/**
+		 * This function may be used to customize the modal overlay displayed by
+		 * the pop-up manager. If the value of <code>overlayFactory</code> is
+		 * <code>null</code>, the pop-up manager's default overlay factory will
+		 * be used instead.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, the overlay is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.overlayFactory = function():DisplayObject
+		 * {
+		 *     var quad:Quad = new Quad(1, 1, 0xff00ff);
+		 *     quad.alpha = 0;
+		 *     return quad;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.PopUpManager#overlayFactory
+		 */
+		public function get overlayFactory():Function
+		{
+			return this._overlayFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set overlayFactory(value:Function):void
+		{
+			this._overlayFactory = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var content:DisplayObject;
 
 		/**
@@ -220,7 +261,7 @@ package feathers.controls.popups
 			}
 
 			this.content = content;
-			PopUpManager.addPopUp(this.content, true, false);
+			PopUpManager.addPopUp(this.content, true, false, this._overlayFactory);
 			if(this.content is IFeathersControl)
 			{
 				this.content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);

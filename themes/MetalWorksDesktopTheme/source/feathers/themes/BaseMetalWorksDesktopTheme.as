@@ -1245,7 +1245,7 @@ package feathers.themes
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
 			
-			var otherSkin:ImageSkin = new ImageSkin();
+			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.HOVER, this.buttonQuietHoverSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			button.hoverSkin = otherSkin;

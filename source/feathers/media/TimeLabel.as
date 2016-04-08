@@ -298,8 +298,9 @@ package feathers.media
 				seconds = -seconds;
 			}
 			var hours:int = int(seconds / 3600);
+			seconds = int(seconds - (hours * 3600));
 			var minutes:int = int(seconds / 60);
-			seconds = int(seconds - (hours * 3600) - (minutes * 60));
+			seconds = int(seconds - (minutes * 60));
 			var time:String = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 			if(hours > 0)
 			{

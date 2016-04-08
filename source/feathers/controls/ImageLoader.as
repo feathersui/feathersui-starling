@@ -1509,7 +1509,7 @@ package feathers.controls
 		 * explicit value will not be measured, but the other non-explicit
 		 * dimension will still need measurement.
 		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
 		 * <code>actualWidth</code> and <code>actualHeight</code> member
 		 * variables used for layout.</p>
 		 *
@@ -1531,7 +1531,8 @@ package feathers.controls
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
 					newWidth = this._currentTextureWidth * this._textureScale;
-					if(this._scaleContent && this._maintainAspectRatio)
+					if(this._scaleContent && this._maintainAspectRatio &&
+						this._scaleMode !== ScaleMode.NONE)
 					{
 						var heightScale:Number = 1;
 						if(!needsHeight)
@@ -1565,7 +1566,8 @@ package feathers.controls
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
 					newHeight = this._currentTextureHeight * this._textureScale;
-					if(this._scaleContent && this._maintainAspectRatio)
+					if(this._scaleContent && this._maintainAspectRatio &&
+						this._scaleMode !== ScaleMode.NONE)
 					{
 						var widthScale:Number = 1;
 						if(!needsWidth)
