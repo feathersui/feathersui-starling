@@ -1132,7 +1132,8 @@ package feathers.controls.supportClasses
 
 			this._contentX = this._layoutResult.contentX;
 			this._contentY = this._layoutResult.contentY;
-			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
+			this.saveMeasurements(this._layoutResult.contentWidth, this._layoutResult.contentHeight,
+				this._layoutResult.contentWidth, this._layoutResult.contentHeight);
 			this.actualVisibleWidth = this._layoutResult.viewPortWidth;
 			this.actualVisibleHeight = this._layoutResult.viewPortHeight;
 			this._actualMinVisibleWidth = this._layoutResult.viewPortWidth;
