@@ -7,24 +7,24 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.core.FeathersControl;
-	import feathers.data.ListCollection;
-	import feathers.layout.HorizontalAlign;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.VerticalAlign;
-	import feathers.skins.IStyleProvider;
-	import feathers.utils.math.roundDownToNearest;
-	import feathers.utils.math.roundUpToNearest;
+import feathers.controls.renderers.DefaultListItemRenderer;
+import feathers.core.FeathersControl;
+import feathers.data.ListCollection;
+import feathers.layout.HorizontalAlign;
+import feathers.layout.HorizontalLayout;
+import feathers.layout.VerticalAlign;
+import feathers.skins.IStyleProvider;
+import feathers.utils.math.roundDownToNearest;
+import feathers.utils.math.roundUpToNearest;
 
-	import flash.globalization.DateTimeFormatter;
-	import flash.globalization.DateTimeNameStyle;
-	import flash.globalization.DateTimeStyle;
-	import flash.globalization.LocaleID;
+import flash.globalization.DateTimeFormatter;
+import flash.globalization.DateTimeNameStyle;
+import flash.globalization.DateTimeStyle;
+import flash.globalization.LocaleID;
 
-	import starling.events.Event;
+import starling.events.Event;
 
-	/**
+/**
 	 * Dispatched when the spinner's value changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -920,12 +920,10 @@ package feathers.controls
 				this.refreshValidRanges();
 				this.refreshSelection();
 			}
-			
+
 			this.autoSizeIfNeeded();
 
-			this.listGroup.width = this.actualWidth;
-			this.listGroup.height = this.actualHeight;
-			this.listGroup.validate();
+			this.layoutChildren();
 
 			if(pendingScrollInvalid)
 			{
@@ -940,15 +938,20 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
-			
+
 			this.listGroup.width = this._explicitWidth;
 			this.listGroup.height = this._explicitHeight;
+			this.listGroup.minWidth = this._explicitMinWidth;
+			this.listGroup.minHeight = this._explicitMinHeight;
 			this.listGroup.validate();
-			return this.setSizeInternal(this.listGroup.width, this.listGroup.height, false);
+			return this.saveMeasurements(this.listGroup.width, this.listGroup.height,
+				this.listGroup.minWidth, this.listGroup.minHeight);
 		}
 
 		/**
@@ -1650,6 +1653,16 @@ package feathers.controls
 					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
 					MAX_MINUTES_VALUE);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutChildren():void
+		{
+			this.listGroup.width = this.actualWidth;
+			this.listGroup.height = this.actualHeight;
+			this.listGroup.validate();
 		}
 
 		/**
