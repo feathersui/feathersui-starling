@@ -230,6 +230,7 @@ package feathers.controls
 				//if this skin needs to be reused somewhere else, we need to
 				//properly clean it up
 				this.removeCurrentSkin(this._defaultSkin);
+				this.currentSkin = null;
 			}
 			this._defaultSkin = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -295,6 +296,7 @@ package feathers.controls
 				//if this skin needs to be reused somewhere else, we need to
 				//properly clean it up
 				this.removeCurrentSkin(oldSkin);
+				this.currentSkin = null;
 			}
 			if(skin !== null)
 			{

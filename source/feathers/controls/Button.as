@@ -1665,6 +1665,7 @@ package feathers.controls
 				//if this icon needs to be reused somewhere else, we need to
 				//properly clean it up
 				this.removeCurrentIcon(this._defaultIcon);
+				this.currentIcon = null;
 			}
 			this._defaultIcon = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -2037,6 +2038,7 @@ package feathers.controls
 				//if this icon needs to be reused somewhere else, we need to
 				//properly clean it up
 				this.removeCurrentIcon(oldIcon);
+				this.currentIcon = null;
 			}
 			if(icon !== null)
 			{
