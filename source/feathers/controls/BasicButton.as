@@ -224,6 +224,13 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._defaultSkin !== null &&
+				this.currentSkin === this._defaultSkin)
+			{
+				//if this skin needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentSkin(this._defaultSkin);
+			}
 			this._defaultSkin = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -281,6 +288,14 @@ package feathers.controls
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
+			var oldSkin:DisplayObject = this._stateToSkin[state] as DisplayObject;
+			if(oldSkin !== null &&
+				this.currentSkin === oldSkin)
+			{
+				//if this skin needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentSkin(oldSkin);
+			}
 			if(skin !== null)
 			{
 				this._stateToSkin[state] = skin;
@@ -462,15 +477,8 @@ package feathers.controls
 			this.currentSkin = this.getCurrentSkin();
 			if(this.currentSkin !== oldSkin)
 			{
-				if(oldSkin)
-				{
-					if(oldSkin is IStateObserver)
-					{
-						IStateObserver(oldSkin).stateContext = null;
-					}
-					this.removeChild(oldSkin, false);
-				}
-				if(this.currentSkin)
+				this.removeCurrentSkin(oldSkin);
+				if(this.currentSkin !== null)
 				{
 					if(this.currentSkin is IMeasureDisplayObject)
 					{
@@ -531,6 +539,25 @@ package feathers.controls
 			if(this.currentSkin is IValidating)
 			{
 				IValidating(this.currentSkin).validate();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
+			{
+				return;
+			}
+			if(skin is IStateObserver)
+			{
+				IStateObserver(skin).stateContext = null;
+			}
+			if(skin.parent === this)
+			{
+				this.removeChild(skin, false);
 			}
 		}
 

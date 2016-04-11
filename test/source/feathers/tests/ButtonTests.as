@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.Button;
+	import feathers.controls.ButtonState;
 	import feathers.events.FeathersEventType;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
@@ -239,6 +240,44 @@ package feathers.tests
 			Assert.assertTrue("downIcon not disposed when Button disposed.", downIcon.isDisposed);
 			Assert.assertTrue("hoverIcon not disposed when Button disposed.", hoverIcon.isDisposed);
 			Assert.assertTrue("disabledIcon not disposed when Button disposed.", disabledIcon.isDisposed);
+		}
+
+		[Test]
+		public function testIconsRemovedWhenSetToNull():void
+		{
+			var defaultIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.defaultIcon = defaultIcon;
+			var upIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setIconForState(ButtonState.UP, upIcon);
+			var downIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setIconForState(ButtonState.DOWN, downIcon);
+			var hoverIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setIconForState(ButtonState.HOVER, hoverIcon);
+			var disabledIcon:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setIconForState(ButtonState.DISABLED, disabledIcon);
+			this._button.validate();
+			this._button.defaultIcon = null;
+			this._button.setIconForState(ButtonState.UP, null);
+			this._button.setIconForState(ButtonState.DOWN, null);
+			this._button.setIconForState(ButtonState.HOVER, null);
+			this._button.setIconForState(ButtonState.DISABLED, null);
+			//should not need to validate here
+			this._button.dispose();
+			Assert.assertFalse("Removed defaultIcon incorrectly disposed when Button disposed.", defaultIcon.isDisposed);
+			Assert.assertFalse("Removed upIcon incorrectly disposed when Button disposed.", upIcon.isDisposed);
+			Assert.assertFalse("Removed downIcon incorrectly disposed when Button disposed.", downIcon.isDisposed);
+			Assert.assertFalse("Removed hoverIcon incorrectly disposed when Button disposed.", hoverIcon.isDisposed);
+			Assert.assertFalse("Removed disabledIcon incorrectly disposed when Button disposed.", disabledIcon.isDisposed);
+			Assert.assertNull("defaultIcon parent must be null when removed from Button.", defaultIcon.parent);
+			Assert.assertNull("upIcon parent must be null when removed from Button.", upIcon.parent);
+			Assert.assertNull("downIcon parent must be null when removed from Button.", downIcon.parent);
+			Assert.assertNull("hoverIcon parent must be null when removed from Button.", hoverIcon.parent);
+			Assert.assertNull("disabledIcon parent must be null when removed from Button.", disabledIcon.parent);
+			defaultIcon.dispose();
+			upIcon.dispose();
+			downIcon.dispose();
+			hoverIcon.dispose();
+			disabledIcon.dispose();
 		}
 
 	}
