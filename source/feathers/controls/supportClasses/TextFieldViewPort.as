@@ -893,7 +893,9 @@ package feathers.controls.supportClasses
 					calculatedVisibleHeight = this._maxVisibleHeight;
 				}
 			}
-			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false) || sizeInvalid;
+			sizeInvalid = this.saveMeasurements(
+					calculatedVisibleWidth, totalContentHeight,
+					calculatedVisibleWidth, totalContentHeight) || sizeInvalid;
 			this._actualVisibleWidth = calculatedVisibleWidth;
 			this._actualVisibleHeight = calculatedVisibleHeight;
 			this._actualMinVisibleWidth = calculatedVisibleWidth;
