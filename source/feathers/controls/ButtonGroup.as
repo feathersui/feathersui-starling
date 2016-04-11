@@ -24,6 +24,8 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 
+	import flash.utils.Dictionary;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
@@ -346,6 +348,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var inactiveButtons:Vector.<Button> = new <Button>[];
+
+		/**
+		 * @private
+		 */
+		protected var _buttonToItem:Dictionary = new Dictionary(true);
 
 		/**
 		 * @private
@@ -1120,6 +1127,48 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _buttonReleaser:Function = defaultButtonReleaser;
+
+		/**
+		 * Resets the properties of an individual button, using the item from the
+		 * data provider that was associated with the button.
+		 *
+		 * <p>This function is expected to have one of the following signatures:</p>
+		 * <pre>function( tab:Button ):void</pre>
+		 * <pre>function( tab:Button, oldItem:Object ):void</pre>
+		 *
+		 * <p>In the following example, a custom button releaser is passed to the
+		 * button group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.buttonReleaser = function( button:Button, oldItem:Object ):void
+		 * {
+		 *     button.label = null;
+		 * };</listing>
+		 *
+		 * @see #buttonInitializer
+		 */
+		public function get buttonReleaser():Function
+		{
+			return this._buttonReleaser;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set buttonReleaser(value:Function):void
+		{
+			if(this._buttonReleaser == value)
+			{
+				return;
+			}
+			this._buttonReleaser = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customButtonStyleName:String;
 
 		/**
@@ -1515,11 +1564,11 @@ package feathers.controls
 					if(item.hasOwnProperty(field))
 					{
 						var listener:Function = item[field] as Function;
-						if(listener == null)
+						if(listener === null)
 						{
 							continue;
 						}
-						removeListener =  false;
+						removeListener = false;
 						//we can't add the listener directly because we don't
 						//know how to remove it later if the data provider
 						//changes and we lose the old item. we'll use another
@@ -1537,6 +1586,34 @@ package feathers.controls
 			{
 				button.label = "";
 				button.isEnabled = this._isEnabled;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function defaultButtonReleaser(button:Button, oldItem:Object):void
+		{
+			button.label = null;
+			for each(var field:String in DEFAULT_BUTTON_FIELDS)
+			{
+				if(oldItem.hasOwnProperty(field))
+				{
+					button[field] = null;
+				}
+			}
+			for each(field in DEFAULT_BUTTON_EVENTS)
+			{
+				var removeListener:Boolean = true;
+				if(oldItem.hasOwnProperty(field))
+				{
+					var listener:Function = oldItem[field] as Function;
+					if(listener === null)
+					{
+						continue;
+					}
+					button.removeEventListener(field, defaultButtonEventsListener);
+				}
 			}
 		}
 
@@ -1628,9 +1705,10 @@ package feathers.controls
 		protected function createFirstButton(item:Object):Button
 		{
 			var isNewInstance:Boolean = false;
-			if(this.inactiveFirstButton)
+			if(this.inactiveFirstButton !== null)
 			{
 				var button:Button = this.inactiveFirstButton;
+				this.releaseButton(button);
 				this.inactiveFirstButton = null;
 			}
 			else
@@ -1653,6 +1731,7 @@ package feathers.controls
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
+			this._buttonToItem[button] = item;
 			if(isNewInstance)
 			{
 				//we need to listen for Event.TRIGGERED after the initializer
@@ -1669,9 +1748,10 @@ package feathers.controls
 		protected function createLastButton(item:Object):Button
 		{
 			var isNewInstance:Boolean = false;
-			if(this.inactiveLastButton)
+			if(this.inactiveLastButton !== null)
 			{
 				var button:Button = this.inactiveLastButton;
+				this.releaseButton(button);
 				this.inactiveLastButton = null;
 			}
 			else
@@ -1694,6 +1774,7 @@ package feathers.controls
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
+			this._buttonToItem[button] = item;
 			if(isNewInstance)
 			{
 				//we need to listen for Event.TRIGGERED after the initializer
@@ -1710,7 +1791,7 @@ package feathers.controls
 		protected function createButton(item:Object):Button
 		{
 			var isNewInstance:Boolean = false;
-			if(this.inactiveButtons.length == 0)
+			if(this.inactiveButtons.length === 0)
 			{
 				isNewInstance = true;
 				var button:Button = this._buttonFactory();
@@ -1727,8 +1808,10 @@ package feathers.controls
 			else
 			{
 				button = this.inactiveButtons.shift();
+				this.releaseButton(button);
 			}
 			this._buttonInitializer(button, item);
+			this._buttonToItem[button] = item;
 			if(isNewInstance)
 			{
 				//we need to listen for Event.TRIGGERED after the initializer
@@ -1742,9 +1825,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function releaseButton(button:Button):void
+		{
+			var item:Object = this._buttonToItem[button];
+			delete this._buttonToItem[button];
+			if(this._buttonReleaser.length === 1)
+			{
+				this._buttonReleaser(button);
+			}
+			else
+			{
+				this._buttonReleaser(button, item);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function destroyButton(button:Button):void
 		{
 			button.removeEventListener(Event.TRIGGERED, button_triggeredHandler);
+			this.releaseButton(button);
 			this.removeChild(button, true);
 		}
 
