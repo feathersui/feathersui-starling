@@ -104,6 +104,7 @@ package feathers.display
 		 */
 		override public function render(painter:Painter):void
 		{
+			this._target.setRequiresRedraw();
 			var oldAlpha:Number = this._target.alpha;
 			this._target.alpha = this.alpha;
 			this._target.render(painter);
