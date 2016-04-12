@@ -720,19 +720,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _cacheAsBitmap:Boolean = true;
+		private var _cacheAsBitmap:Boolean = false;
 
 		/**
 		 * If set to <code>true</code>, an internal bitmap representation of the
 		 * <code>TextField</code> on the classic display list is cached by the
-		 * runtime. This caching can increase performance.
+		 * runtime. This caching may affect performance.
 		 *
 		 * <p>In the following example, bitmap caching is disabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollText.cacheAsBitmap = false;</listing>
+		 * scrollText.cacheAsBitmap = true;</listing>
 		 *
-		 * @default true
+		 * @default false
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/DisplayObject.html#cacheAsBitmap Full description of flash.display.DisplayObject.cacheAsBitmap in Adobe's Flash Platform API Reference
 		 */
