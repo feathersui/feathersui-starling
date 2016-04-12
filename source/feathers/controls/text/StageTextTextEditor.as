@@ -1115,14 +1115,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override protected function get supportsRenderCache():Boolean
-		{
-			return super.supportsRenderCache && !this._stageTextHasFocus;
-		}
-
-		/**
-		 * @private
-		 */
 		override public function dispose():void
 		{
 			if(this._measureTextField)
@@ -1153,6 +1145,10 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
+			if(this._stageTextHasFocus)
+			{
+				painter.excludeFromCache(this);
+			}
 			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
