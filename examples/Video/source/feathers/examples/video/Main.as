@@ -1,8 +1,11 @@
 package feathers.examples.video
 {
+	import feathers.controls.Alert;
 	import feathers.controls.AutoSizeMode;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.LayoutGroup;
+	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -54,6 +57,7 @@ package feathers.examples.video
 			this._videoPlayer.layout = new AnchorLayout();
 			this._videoPlayer.addEventListener(Event.READY, videoPlayer_readyHandler);
 			this._videoPlayer.addEventListener(MediaPlayerEventType.DISPLAY_STATE_CHANGE, videoPlayer_displayStateChangeHandler);
+			this._videoPlayer.addEventListener(FeathersEventType.ERROR, videoPlayer_errorHandler);
 			this.addChild(this._videoPlayer);
 			
 			this._view = new ImageLoader();
@@ -151,6 +155,13 @@ package feathers.examples.video
 		protected function videoPlayer_displayStateChangeHandler(event:Event):void
 		{
 			this._fullScreenItem.label = this._videoPlayer.isFullScreen ? "Exit Full Screen" : "Enter Full Screen";
+		}
+		
+		protected function videoPlayer_errorHandler(event:Event):void
+		{
+			Alert.show("Cannot play selected video.",
+				"Video Error", new ListCollection([{ label: "OK" }]));
+			trace("VideoPlayer Error: " + event.data);
 		}
 		
 		protected function openItem_selectHandler(event:flash.events.Event):void
