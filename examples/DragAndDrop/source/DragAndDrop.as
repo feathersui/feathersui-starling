@@ -31,6 +31,7 @@ package
 			Starling.multitouchEnabled = true;
 			this._starling = new Starling(Main, this.stage);
 			this._starling.supportHighResolutions = true;
+			this._starling.skipUnchangedFrames = true;
 			this._starling.start();
 
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);

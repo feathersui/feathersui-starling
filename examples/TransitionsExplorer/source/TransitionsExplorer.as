@@ -113,6 +113,7 @@ package
 			Starling.multitouchEnabled = true;
 			this._starling = new Starling(Main, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE);
 			this._starling.supportHighResolutions = true;
+			this._starling.skipUnchangedFrames = true;
 			this._starling.start();
 			if(this._launchImage)
 			{

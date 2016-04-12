@@ -37,6 +37,7 @@ package
 			var MainType:Class = getDefinitionByName("feathers.examples.tileList.Main") as Class;
 			this._starling = new Starling(MainType, this.stage, new Rectangle(0, 0, 960, 640));
 			this._starling.supportHighResolutions = true;
+			this._starling.skipUnchangedFrames = true;
 			this._starling.stage.stageWidth = 480;
 			this._starling.stage.stageHeight = 320;
 			this._starling.start();
