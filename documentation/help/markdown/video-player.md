@@ -23,6 +23,8 @@ To play a video file, pass the URL to the [`videoSource`](../api-reference/feath
 player.videoSource = "http://example.com/video.m4v";
 ```
 
+<aside class="info">For additional ways to play videos (such as streaming from a server), see the [Loading Videos](#loading-videos) section below.</aside>
+
 To display the video, we need to add an [`ImageLoader`](image-loader.html) as a child of the `VideoPlayer`:
 
 ``` code
@@ -166,6 +168,50 @@ player.toggleFullScreen();
 ```
 
 When the `VideoPlayer` is displayed in full screen mode, it will be added as a modal pop-up above all Starling content.
+
+## Loading Videos
+
+Previously, we loaded a video using a simple URL. Let's look at all of the ways that video may be loaded by the `VideoPlayer` component.
+
+### Loading from URLs
+
+First, we'll review how to load a video from a URL:
+
+``` code
+player.videoSource = "http://example.com/video.mp4";
+```
+
+### Loading from the file system
+
+In Adobe AIR, we can also load a video from the file system:
+
+``` code
+var videoFile:File = File.applicationDirectory.resolvePath("video.mp4");
+player.videoSource = videoFile.url;
+```
+
+Be sure to pass the `url` property of a `flash.filesystem.File` object to `videoSource`. Attempting to use the `nativePath` property will not work.
+
+### Streaming video
+
+Finally, we can stream a video from a server, such as Adobe Media Server or the open source Red5 Media Server. First, we want to use the `netConnectionFactory` property of the video player to set up the connection to the server:
+
+``` code
+player.netConnectionFactory = function():NetConnection
+{
+	var nc:NetConnection = new NetConnection();
+	nc.connect("rtmp://localhost/vod");
+	return nc;
+};
+```
+
+Next, we'll pass the name of the stream to the `videoSource` property:
+
+``` code
+player.videoSource = "mp4:streams/myvideo";
+```
+
+To play another video stream from the same server, set the `videoSource` property again.
 
 ## Skinning a `VideoPlayer`
 
