@@ -253,8 +253,13 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected static const NET_STATUS_CODE_NETCONNECTION_CONNECT_SUCCESS:String = "NetConnection.Connect.Success";
+
+		/**
+		 * @private
+		 */
 		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_START:String = "NetStream.Play.Start";
-		
+
 		/**
 		 * @private
 		 */
@@ -500,14 +505,12 @@ package feathers.media
 			{
 				this.stop();
 			}
+			this.disposeNetStream();
 			if(!value)
 			{
-				//if we're not playing anything, we shouldn't keep the NetStream
-				//around in memory. if we're switching to something else, then
-				//the NetStream can be reused.
-				this.disposeNetStream();
+				this.disposeNetConnection();
 			}
-			if(this._texture)
+			if(this._texture !== null)
 			{
 				this._texture.dispose();
 				this._texture = null;
@@ -769,6 +772,8 @@ package feathers.media
 			}
 			this._netConnectionFactory = value;
 			this.stop();
+			this.disposeNetStream();
+			this.disposeNetConnection();
 		}
 
 		/**
@@ -822,6 +827,18 @@ package feathers.media
 				return;
 			}
 			super.play();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function stop():void
+		{
+			if(this._videoSource === null)
+			{
+				return;
+			}
+			super.stop();
 		}
 
 		/**
@@ -910,41 +927,54 @@ package feathers.media
 			{
 				throw new IllegalOperationError(NO_VIDEO_SOURCE_PLAY_ERROR);
 			}
-			if(!this._netStream)
+			if(this._netConnection === null)
 			{
 				var netConnectionFactory:Function = this._netConnectionFactory !== null ? this._netConnectionFactory : defaultNetConnectionFactory;
-				this._netConnection = netConnectionFactory();
+				this._netConnection = NetConnection(netConnectionFactory());
+			}
+			if(this._netStream === null)
+			{
+				if(!this._netConnection.connected)
+				{
+					//wait for the NetConnection to connect before trying to
+					//create the NetStream. we'll call playMedia later.
+					this._netConnection.addEventListener(NetStatusEvent.NET_STATUS, netConnection_netStatusHandler);
+					return;
+				}
 				this._netStream = new NetStream(this._netConnection);
 				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 				this._netStream.addEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			}
-			if(!this._soundTransform)
+			if(this._soundTransform === null)
 			{
 				this._soundTransform = new SoundTransform();
 			}
 			this._netStream.soundTransform = this._soundTransform;
 			var onCompleteCallback:Function = videoTexture_onComplete;
-			if(this._texture && this._hasPlayedToEnd)
+			if(this._texture !== null)
 			{
-				//after playing the media until the end, if we restart from the
-				//beginning, the audio plays, but we cannot see the video.
-				//however, we can ask the NetStream to play the video source
-				//again from the beginning, and the video displays. if we need
-				//to restore the time, we can do it after the NetStream
-				//dispatches NetStream.Play.Start
-				this._netStream.play(this._videoSource);
-			}
-			else if(this._texture)
-			{
-				//this case happens if the video is paused and resumed without
-				//reaching the end.
-				//NetStream.Play.Start will not be dispatched after calling
-				//resume(), so we need to manually add the ENTER_FRAME listener.
-				//there's no need to seek. we're resuming from where the video
-				//was paused.
-				this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
-				this._netStream.resume();
+				if(this._hasPlayedToEnd)
+				{
+					//after playing the media until the end, if we restart from the
+					//beginning, the audio plays, but we cannot see the video.
+					//however, we can ask the NetStream to play the video source
+					//again from the beginning, and the video displays. if we need
+					//to restore the time, we can do it after the NetStream
+					//dispatches NetStream.Play.Start
+					this._netStream.play(this._videoSource);
+				}
+				else
+				{
+					//this case happens if the video is paused and resumed without
+					//reaching the end.
+					//NetStream.Play.Start will not be dispatched after calling
+					//resume(), so we need to manually add the ENTER_FRAME listener.
+					//there's no need to seek. we're resuming from where the video
+					//was paused.
+					this.addEventListener(Event.ENTER_FRAME, videoPlayer_enterFrameHandler);
+					this._netStream.resume();
+				}
 			}
 			else
 			{
@@ -997,9 +1027,23 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function disposeNetConnection():void
+		{
+			if(this._netConnection === null)
+			{
+				return;
+			}
+			this._netConnection.removeEventListener(NetStatusEvent.NET_STATUS, netConnection_netStatusHandler);
+			this._netConnection.close();
+			this._netConnection = null;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function disposeNetStream():void
 		{
-			if(!this._netStream)
+			if(this._netStream === null)
 			{
 				return;
 			}
@@ -1007,7 +1051,6 @@ package feathers.media
 			this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			this._netStream.close();
 			this._netStream = null;
-			this._netConnection = null;
 		}
 
 		/**
@@ -1080,6 +1123,22 @@ package feathers.media
 				if(this._bytesLoaded !== this._bytesTotal)
 				{
 					this.addEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function netConnection_netStatusHandler(event:NetStatusEvent):void
+		{
+			var code:String = event.info.code;
+			switch(code)
+			{
+				case NET_STATUS_CODE_NETCONNECTION_CONNECT_SUCCESS:
+				{
+					this.playMedia();
+					break;
 				}
 			}
 		}
