@@ -273,6 +273,11 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected static const NET_STATUS_CODE_NETSTREAM_PLAY_NOSUPPORTEDTRACKFOUND:String = "NetStream.Play.NoSupportedTrackFound";
+
+		/**
+		 * @private
+		 */
 		protected static const NO_VIDEO_SOURCE_PLAY_ERROR:String = "Cannot play media when videoSource property has not been set.";
 
 		/**
@@ -1171,6 +1176,11 @@ package feathers.media
 			switch(code)
 			{
 				case NET_STATUS_CODE_NETSTREAM_PLAY_STREAMNOTFOUND:
+				{
+					this.dispatchEventWith(FeathersEventType.ERROR, false, code);
+					break;
+				}
+				case NET_STATUS_CODE_NETSTREAM_PLAY_NOSUPPORTEDTRACKFOUND:
 				{
 					this.dispatchEventWith(FeathersEventType.ERROR, false, code);
 					break;
