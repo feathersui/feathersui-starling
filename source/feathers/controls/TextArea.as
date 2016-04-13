@@ -1285,6 +1285,7 @@ package feathers.controls
 			}
 			this._currentState = state;
 			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
 		}
 
 		/**
@@ -1334,12 +1335,20 @@ package feathers.controls
 			this.currentBackgroundSkin = this.getCurrentSkin();
 			if(oldSkin !== this.currentBackgroundSkin)
 			{
-				if(oldSkin)
+				if(oldSkin !== null)
 				{
+					if(oldSkin is IStateObserver)
+					{
+						IStateObserver(oldSkin).stateContext = null;
+					}
 					this.removeChild(oldSkin, false);
 				}
 				if(this.currentBackgroundSkin !== null)
 				{
+					if(this.currentBackgroundSkin is IStateObserver)
+					{
+						IStateObserver(this.currentBackgroundSkin).stateContext = this;
+					}
 					this.addChildAt(this.currentBackgroundSkin, 0);
 
 					if(this.currentBackgroundSkin is IMeasureDisplayObject)
