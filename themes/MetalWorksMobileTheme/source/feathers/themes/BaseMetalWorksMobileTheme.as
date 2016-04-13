@@ -553,8 +553,10 @@ package feathers.themes
 		protected var backgroundInsetSkinTexture:Texture;
 		protected var backgroundInsetDisabledSkinTexture:Texture;
 		protected var backgroundInsetFocusedSkinTexture:Texture;
+		protected var backgroundInsetDangerSkinTexture:Texture;
 		protected var backgroundLightBorderSkinTexture:Texture;
 		protected var backgroundDarkBorderSkinTexture:Texture;
+		protected var backgroundDangerBorderSkinTexture:Texture;
 		protected var buttonUpSkinTexture:Texture;
 		protected var buttonDownSkinTexture:Texture;
 		protected var buttonDisabledSkinTexture:Texture;
@@ -608,6 +610,10 @@ package feathers.themes
 		protected var calloutRightArrowSkinTexture:Texture;
 		protected var calloutBottomArrowSkinTexture:Texture;
 		protected var calloutLeftArrowSkinTexture:Texture;
+		protected var dangerCalloutTopArrowSkinTexture:Texture;
+		protected var dangerCalloutRightArrowSkinTexture:Texture;
+		protected var dangerCalloutBottomArrowSkinTexture:Texture;
+		protected var dangerCalloutLeftArrowSkinTexture:Texture;
 		protected var verticalScrollBarThumbSkinTexture:Texture;
 		protected var horizontalScrollBarThumbSkinTexture:Texture;
 		protected var searchIconTexture:Texture;
@@ -761,8 +767,10 @@ package feathers.themes
 			this.backgroundInsetSkinTexture = this.atlas.getTexture("background-inset-skin0000");
 			this.backgroundInsetDisabledSkinTexture = this.atlas.getTexture("background-inset-disabled-skin0000");
 			this.backgroundInsetFocusedSkinTexture = this.atlas.getTexture("background-focused-skin0000");
+			this.backgroundInsetDangerSkinTexture = this.atlas.getTexture("background-inset-danger-skin0000");
 			this.backgroundLightBorderSkinTexture = this.atlas.getTexture("background-light-border-skin0000");
 			this.backgroundDarkBorderSkinTexture = this.atlas.getTexture("background-dark-border-skin0000");
+			this.backgroundDangerBorderSkinTexture = this.atlas.getTexture("background-danger-border-skin0000");
 
 			this.buttonUpSkinTexture = this.atlas.getTexture("button-up-skin0000");
 			this.buttonDownSkinTexture = this.atlas.getTexture("button-down-skin0000");
@@ -833,6 +841,10 @@ package feathers.themes
 			this.calloutRightArrowSkinTexture = this.atlas.getTexture("callout-arrow-right-skin0000");
 			this.calloutBottomArrowSkinTexture = this.atlas.getTexture("callout-arrow-bottom-skin0000");
 			this.calloutLeftArrowSkinTexture = this.atlas.getTexture("callout-arrow-left-skin0000");
+			this.dangerCalloutTopArrowSkinTexture = this.atlas.getTexture("danger-callout-arrow-top-skin0000");
+			this.dangerCalloutRightArrowSkinTexture = this.atlas.getTexture("danger-callout-arrow-right-skin0000");
+			this.dangerCalloutBottomArrowSkinTexture = this.atlas.getTexture("danger-callout-arrow-bottom-skin0000");
+			this.dangerCalloutLeftArrowSkinTexture = this.atlas.getTexture("danger-callout-arrow-left-skin0000");
 
 			this.horizontalScrollBarThumbSkinTexture = this.atlas.getTexture("horizontal-simple-scroll-bar-thumb-skin0000");
 			this.verticalScrollBarThumbSkinTexture = this.atlas.getTexture("vertical-simple-scroll-bar-thumb-skin0000");
@@ -1366,6 +1378,33 @@ package feathers.themes
 			callout.bottomArrowGap = this.calloutArrowOverlapGap;
 
 			var leftArrowSkin:Image = new Image(this.calloutLeftArrowSkinTexture);
+			callout.leftArrowSkin = leftArrowSkin;
+			callout.leftArrowGap = this.calloutArrowOverlapGap;
+
+			callout.padding = this.smallGutterSize;
+		}
+
+		protected function setDangerCalloutStyles(callout:Callout):void
+		{
+			var backgroundSkin:Image = new Image(this.backgroundDangerBorderSkinTexture);
+			backgroundSkin.scale9Grid = SMALL_BACKGROUND_SCALE9_GRID;
+			backgroundSkin.width = this.calloutBackgroundMinSize;
+			backgroundSkin.height = this.calloutBackgroundMinSize;
+			callout.backgroundSkin = backgroundSkin;
+
+			var topArrowSkin:Image = new Image(this.dangerCalloutTopArrowSkinTexture);
+			callout.topArrowSkin = topArrowSkin;
+			callout.topArrowGap = this.calloutArrowOverlapGap;
+
+			var rightArrowSkin:Image = new Image(this.dangerCalloutRightArrowSkinTexture);
+			callout.rightArrowSkin = rightArrowSkin;
+			callout.rightArrowGap = this.calloutArrowOverlapGap;
+
+			var bottomArrowSkin:Image = new Image(this.dangerCalloutBottomArrowSkinTexture);
+			callout.bottomArrowSkin = bottomArrowSkin;
+			callout.bottomArrowGap = this.calloutArrowOverlapGap;
+
+			var leftArrowSkin:Image = new Image(this.dangerCalloutLeftArrowSkinTexture);
 			callout.leftArrowSkin = leftArrowSkin;
 			callout.leftArrowGap = this.calloutArrowOverlapGap;
 
@@ -2337,6 +2376,7 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.backgroundInsetSkinTexture);
 			skin.setTextureForState(TextInputState.DISABLED, this.backgroundDisabledSkinTexture);
 			skin.setTextureForState(TextInputState.FOCUSED, this.backgroundInsetFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.ERROR, this.backgroundInsetDangerSkinTexture);
 			skin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
@@ -2355,7 +2395,7 @@ package feathers.themes
 
 		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void
 		{
-			this.setTextCalloutStyles(callout);
+			this.setDangerCalloutStyles(callout);
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
 		}
@@ -2383,6 +2423,7 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.backgroundInsetSkinTexture);
 			skin.setTextureForState(TextInputState.DISABLED, this.backgroundInsetDisabledSkinTexture);
 			skin.setTextureForState(TextInputState.FOCUSED, this.backgroundInsetFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.ERROR, this.backgroundInsetDangerSkinTexture);
 			skin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
@@ -2418,7 +2459,7 @@ package feathers.themes
 
 		protected function setTextInputErrorCalloutStyles(callout:TextCallout):void
 		{
-			this.setTextCalloutStyles(callout);
+			this.setDangerCalloutStyles(callout);
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
 		}
