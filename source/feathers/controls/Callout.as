@@ -13,7 +13,9 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
+	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
@@ -475,8 +477,28 @@ package feathers.controls
 		protected static function positionBelowOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(RelativePosition.TOP);
-			var idealXPosition:Number = globalOrigin.x + Math.round((globalOrigin.width - callout.width) / 2);
-			var xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - callout.width - stagePaddingRight, idealXPosition));
+			var idealXPosition:Number = globalOrigin.x;
+			if(callout._horizontalAlign === HorizontalAlign.CENTER)
+			{
+				idealXPosition += Math.round((globalOrigin.width - callout.width) / 2);
+			}
+			else if(callout._horizontalAlign === HorizontalAlign.RIGHT)
+			{
+				idealXPosition += (globalOrigin.width - callout.width);
+			}
+			var xPosition:Number = idealXPosition;
+			if(stagePaddingLeft > xPosition)
+			{
+				xPosition = stagePaddingLeft;
+			}
+			else
+			{
+				var maxXPosition:Number = Starling.current.stage.stageWidth - callout.width - stagePaddingRight;
+				if(maxXPosition < xPosition)
+				{
+					xPosition = maxXPosition;
+				}
+			}
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
 			if(callout._isValidating)
@@ -498,8 +520,28 @@ package feathers.controls
 		protected static function positionAboveOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(RelativePosition.BOTTOM);
-			var idealXPosition:Number = globalOrigin.x + Math.round((globalOrigin.width - callout.width) / 2);
-			var xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - callout.width - stagePaddingRight, idealXPosition));
+			var idealXPosition:Number = globalOrigin.x;
+			if(callout._horizontalAlign === HorizontalAlign.CENTER)
+			{
+				idealXPosition += Math.round((globalOrigin.width - callout.width) / 2);
+			}
+			else if(callout._horizontalAlign === HorizontalAlign.RIGHT)
+			{
+				idealXPosition += (globalOrigin.width - callout.width);
+			}
+			var xPosition:Number = idealXPosition;
+			if(stagePaddingLeft > xPosition)
+			{
+				xPosition = stagePaddingLeft;
+			}
+			else
+			{
+				var maxXPosition:Number = Starling.current.stage.stageWidth - callout.width - stagePaddingRight;
+				if(maxXPosition < xPosition)
+				{
+					xPosition = maxXPosition;
+				}
+			}
 			callout.x = xPosition;
 			callout.y = globalOrigin.y - callout.height;
 			if(callout._isValidating)
@@ -522,8 +564,28 @@ package feathers.controls
 		{
 			callout.measureWithArrowPosition(RelativePosition.LEFT);
 			callout.x = globalOrigin.x + globalOrigin.width;
-			var idealYPosition:Number = globalOrigin.y + Math.round((globalOrigin.height - callout.height) / 2);
-			var yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - callout.height - stagePaddingBottom, idealYPosition));
+			var idealYPosition:Number = globalOrigin.y;
+			if(callout._verticalAlign === VerticalAlign.MIDDLE)
+			{
+				idealYPosition += Math.round((globalOrigin.height - callout.height) / 2);
+			}
+			else if(callout._verticalAlign === VerticalAlign.BOTTOM)
+			{
+				idealYPosition += (globalOrigin.height - callout.height);
+			}
+			var yPosition:Number = idealYPosition;
+			if(stagePaddingTop > yPosition)
+			{
+				yPosition = stagePaddingTop;
+			}
+			else
+			{
+				var maxYPosition:Number = Starling.current.stage.stageHeight - callout.height - stagePaddingBottom;
+				if(maxYPosition < yPosition)
+				{
+					yPosition = maxYPosition;
+				}
+			}
 			callout.y = yPosition;
 			if(callout._isValidating)
 			{
@@ -545,8 +607,28 @@ package feathers.controls
 		{
 			callout.measureWithArrowPosition(RelativePosition.RIGHT);
 			callout.x = globalOrigin.x - callout.width;
-			var idealYPosition:Number = globalOrigin.y + Math.round((globalOrigin.height - callout.height) / 2);
-			var yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - callout.height - stagePaddingBottom, idealYPosition));
+			var idealYPosition:Number = globalOrigin.y;
+			if(callout._verticalAlign === VerticalAlign.MIDDLE)
+			{
+				idealYPosition += Math.round((globalOrigin.height - callout.height) / 2);
+			}
+			else if(callout._verticalAlign === VerticalAlign.BOTTOM)
+			{
+				idealYPosition += (globalOrigin.height - callout.height);
+			}
+			var yPosition:Number = idealYPosition;
+			if(stagePaddingTop > yPosition)
+			{
+				yPosition = stagePaddingTop;
+			}
+			else
+			{
+				var maxYPosition:Number = Starling.current.stage.stageHeight - callout.height - stagePaddingBottom;
+				if(maxYPosition < yPosition)
+				{
+					yPosition = maxYPosition;
+				}
+			}
 			callout.y = yPosition;
 			if(callout._isValidating)
 			{
@@ -952,6 +1034,72 @@ package feathers.controls
 		public function set supportedPositions(value:Vector.<String>):void
 		{
 			this._supportedPositions = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
+
+		/**
+		 * The horizontal alignment of the callout, relative to the origin.
+		 * 
+		 * @default feathers.layout.HorizontalAlign.CENTER
+		 *
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign === value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this._lastGlobalBoundsOfOrigin = null;
+			this.invalidate(INVALIDATION_FLAG_ORIGIN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = HorizontalAlign.CENTER;
+
+		/**
+		 * The vertical alignment of the callout, relative to the origin.
+		 *
+		 * @default feathers.layout.VerticalAlign.MIDDLE
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 */
+		public function get verticalAlign():String
+		{
+			return this._verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign === value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this._lastGlobalBoundsOfOrigin = null;
+			this.invalidate(INVALIDATION_FLAG_ORIGIN);
 		}
 
 		/**
@@ -1746,10 +1894,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid || stylesInvalid || dataInvalid || stateInvalid)
-			{
-				this.layoutChildren();
-			}
+			this.layoutChildren();
 		}
 
 		/**
@@ -2061,25 +2206,59 @@ package feathers.controls
 				if(this._arrowPosition === RelativePosition.LEFT)
 				{
 					this._leftArrowSkin.x = xPosition - this._leftArrowSkin.width - this._leftArrowGap;
-					this._leftArrowSkin.y = this._arrowOffset + yPosition + Math.round((backgroundHeight - this._leftArrowSkin.height) / 2);
-					this._leftArrowSkin.y = Math.min(yPosition + backgroundHeight - this._paddingBottom - this._leftArrowSkin.height, Math.max(yPosition + this._paddingTop, this._leftArrowSkin.y));
+					var leftArrowSkinY:Number = this._arrowOffset + yPosition;
+					if(this._verticalAlign === VerticalAlign.MIDDLE)
+					{
+						leftArrowSkinY += Math.round((backgroundHeight - this._leftArrowSkin.height) / 2);
+					}
+					else if(this._verticalAlign === VerticalAlign.BOTTOM)
+					{
+						leftArrowSkinY += (backgroundHeight - this._leftArrowSkin.height);
+					}
+					this._leftArrowSkin.y = Math.min(yPosition + backgroundHeight - this._paddingBottom - this._leftArrowSkin.height, Math.max(yPosition + this._paddingTop, leftArrowSkinY));
 				}
 				else if(this._arrowPosition === RelativePosition.RIGHT)
 				{
 					this._rightArrowSkin.x = xPosition + backgroundWidth + this._rightArrowGap;
-					this._rightArrowSkin.y = this._arrowOffset + yPosition + Math.round((backgroundHeight - this._rightArrowSkin.height) / 2);
-					this._rightArrowSkin.y = Math.min(yPosition + backgroundHeight - this._paddingBottom - this._rightArrowSkin.height, Math.max(yPosition + this._paddingTop, this._rightArrowSkin.y));
+					var rightArrowSkinY:Number = this._arrowOffset + yPosition;
+					if(this._verticalAlign === VerticalAlign.MIDDLE)
+					{
+						rightArrowSkinY += Math.round((backgroundHeight - this._rightArrowSkin.height) / 2);
+					}
+					else if(this._verticalAlign === VerticalAlign.BOTTOM)
+					{
+						rightArrowSkinY += (backgroundHeight - this._rightArrowSkin.height);
+					}
+					this._rightArrowSkin.y = Math.min(yPosition + backgroundHeight - this._paddingBottom - this._rightArrowSkin.height, Math.max(yPosition + this._paddingTop, rightArrowSkinY));
 				}
 				else if(this._arrowPosition === RelativePosition.BOTTOM)
 				{
-					this._bottomArrowSkin.x = this._arrowOffset + xPosition + Math.round((backgroundWidth - this._bottomArrowSkin.width) / 2);
-					this._bottomArrowSkin.x = Math.min(xPosition + backgroundWidth - this._paddingRight - this._bottomArrowSkin.width, Math.max(xPosition + this._paddingLeft, this._bottomArrowSkin.x));
+					var bottomArrowSkinX:Number = this._arrowOffset + xPosition;
+					if(this._horizontalAlign === HorizontalAlign.CENTER)
+					{
+						bottomArrowSkinX += Math.round((backgroundWidth - this._bottomArrowSkin.width) / 2);
+					}
+					else if(this._horizontalAlign === HorizontalAlign.RIGHT)
+					{
+						bottomArrowSkinX += (backgroundWidth - this._bottomArrowSkin.width);
+					}
+					bottomArrowSkinX = Math.min(xPosition + backgroundWidth - this._paddingRight - this._bottomArrowSkin.width, Math.max(xPosition + this._paddingLeft, bottomArrowSkinX));
+					this._bottomArrowSkin.x = bottomArrowSkinX; 
 					this._bottomArrowSkin.y = yPosition + backgroundHeight + this._bottomArrowGap;
 				}
 				else //top
 				{
-					this._topArrowSkin.x = this._arrowOffset + xPosition + Math.round((backgroundWidth - this._topArrowSkin.width) / 2);
-					this._topArrowSkin.x = Math.min(xPosition + backgroundWidth - this._paddingRight - this._topArrowSkin.width, Math.max(xPosition + this._paddingLeft, this._topArrowSkin.x));
+					var topArrowSkinX:Number = this._arrowOffset + xPosition;
+					if(this._horizontalAlign === HorizontalAlign.CENTER)
+					{
+						topArrowSkinX += Math.round((backgroundWidth - this._topArrowSkin.width) / 2);
+					}
+					else if(this._horizontalAlign === HorizontalAlign.RIGHT)
+					{
+						topArrowSkinX += (backgroundWidth - this._topArrowSkin.width);
+					}
+					topArrowSkinX = Math.min(xPosition + backgroundWidth - this._paddingRight - this._topArrowSkin.width, Math.max(xPosition + this._paddingLeft, topArrowSkinX));
+					this._topArrowSkin.x = topArrowSkinX;
 					this._topArrowSkin.y = yPosition - this._topArrowSkin.height - this._topArrowGap;
 				}
 			}
