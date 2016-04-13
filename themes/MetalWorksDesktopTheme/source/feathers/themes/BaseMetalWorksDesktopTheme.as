@@ -1032,10 +1032,12 @@ package feathers.themes
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_PROMPT, this.setTextInputPromptStyles);
 			this.getStyleProviderForClass(TextBlockTextEditor).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextInputTextEditorStyles);
+			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextInputErrorCalloutStyles);
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
 			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
+			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextAreaErrorCalloutStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
@@ -2464,6 +2466,13 @@ package feathers.themes
 			textEditor.paddingLeft = this.smallGutterSize;
 		}
 
+		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void
+		{
+			this.setTextCalloutStyles(callout);
+			callout.horizontalAlign = HorizontalAlign.LEFT;
+			callout.verticalAlign = VerticalAlign.TOP;
+		}
+
 	//-------------------------
 	// TextCallout
 	//-------------------------
@@ -2518,6 +2527,13 @@ package feathers.themes
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
+		}
+
+		protected function setTextInputErrorCalloutStyles(callout:TextCallout):void
+		{
+			this.setTextCalloutStyles(callout);
+			callout.horizontalAlign = HorizontalAlign.LEFT;
+			callout.verticalAlign = VerticalAlign.TOP;
 		}
 
 		protected function setSearchTextInputStyles(input:TextInput):void
