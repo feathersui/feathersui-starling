@@ -25,6 +25,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _input:TextInput;
 		private var _disabledInput:TextInput;
 		private var _passwordInput:TextInput;
+		private var _errorInput:TextInput;
 		private var _notEditableInput:TextInput;
 		private var _searchInput:TextInput;
 		private var _textArea:TextArea;
@@ -59,6 +60,11 @@ package feathers.examples.componentsExplorer.screens
 			this._passwordInput.prompt = "Password Input";
 			this._passwordInput.displayAsPassword = true;
 			this.addChild(this._passwordInput);
+
+			this._errorInput = new TextInput();
+			this._errorInput.prompt = "Error Input";
+			this._errorInput.errorString = "Oh, no! It's an error!";
+			this.addChild(this._errorInput);
 
 			this._notEditableInput = new TextInput();
 			this._notEditableInput.text = "Not Editable";
