@@ -1943,24 +1943,28 @@ package feathers.controls
 				IValidating(this._backgroundSkin).validate();
 			}
 
-			//the width of the left or right arrow skin affects the width of the content
 			var leftOrRightArrowWidth:Number = 0;
+			var leftOrRightArrowHeight:Number = 0;
 			if(arrowPosition === RelativePosition.LEFT && this._leftArrowSkin !== null)
 			{
 				leftOrRightArrowWidth = this._leftArrowSkin.width + this._leftArrowGap;
+				leftOrRightArrowHeight = this._leftArrowSkin.height;
 			}
 			else if(arrowPosition === RelativePosition.RIGHT && this._rightArrowSkin !== null)
 			{
 				leftOrRightArrowWidth = this._rightArrowSkin.width + this._rightArrowGap;
+				leftOrRightArrowHeight = this._rightArrowSkin.height;
 			}
-			//the height of the top or bottom arrow skin affects the height of the content
+			var topOrBottomArrowWidth:Number = 0;
 			var topOrBottomArrowHeight:Number = 0;
 			if(arrowPosition === RelativePosition.TOP && this._topArrowSkin !== null)
 			{
+				topOrBottomArrowWidth = this._topArrowSkin.width;
 				topOrBottomArrowHeight = this._topArrowSkin.height + this._topArrowGap;
 			}
 			else if(arrowPosition === RelativePosition.BOTTOM && this._bottomArrowSkin !== null)
 			{
+				topOrBottomArrowWidth = this._bottomArrowSkin.width;
 				topOrBottomArrowHeight = this._bottomArrowSkin.height + this._bottomArrowGap;
 			}
 			//the content resizes when the callout resizes, so we can treat it
@@ -2004,6 +2008,10 @@ package feathers.controls
 				{
 					contentWidth = this._content.width;
 				}
+				if(topOrBottomArrowWidth > contentWidth)
+				{
+					contentWidth = topOrBottomArrowWidth;
+				}
 				newWidth = contentWidth + this._paddingLeft + this._paddingRight;
 				var backgroundWidth:Number = 0;
 				if(this._backgroundSkin !== null)
@@ -2028,6 +2036,10 @@ package feathers.controls
 				{
 					contentHeight = this._content.height;
 				}
+				if(leftOrRightArrowHeight > contentWidth)
+				{
+					contentHeight = leftOrRightArrowHeight;
+				}
 				newHeight = contentHeight + this._paddingTop + this._paddingBottom;
 				var backgroundHeight:Number = 0;
 				if(this._backgroundSkin !== null)
@@ -2051,6 +2063,10 @@ package feathers.controls
 				if(measureContent !== null)
 				{
 					contentMinWidth = measureContent.minWidth;
+				}
+				if(topOrBottomArrowWidth > contentMinWidth)
+				{
+					contentMinWidth = topOrBottomArrowWidth;
 				}
 				else if(this._content !== null)
 				{
@@ -2083,6 +2099,10 @@ package feathers.controls
 				if(measureContent !== null)
 				{
 					contentMinHeight = measureContent.minHeight;
+				}
+				if(leftOrRightArrowHeight > contentMinHeight)
+				{
+					contentMinHeight = leftOrRightArrowHeight;
 				}
 				else if(this._content !== null)
 				{
@@ -2203,61 +2223,113 @@ package feathers.controls
 
 			if(this.currentArrowSkin !== null)
 			{
+				var contentWidth:Number = backgroundWidth - this._paddingLeft - this._paddingRight;
+				var contentHeight:Number = backgroundHeight - this._paddingTop - this._paddingBottom;
 				if(this._arrowPosition === RelativePosition.LEFT)
 				{
 					this._leftArrowSkin.x = xPosition - this._leftArrowSkin.width - this._leftArrowGap;
-					var leftArrowSkinY:Number = this._arrowOffset + yPosition;
+					var leftArrowSkinY:Number = this._arrowOffset + yPosition + this._paddingTop;
 					if(this._verticalAlign === VerticalAlign.MIDDLE)
 					{
-						leftArrowSkinY += Math.round((backgroundHeight - this._leftArrowSkin.height) / 2);
+						leftArrowSkinY += Math.round((contentHeight - this._leftArrowSkin.height) / 2);
 					}
 					else if(this._verticalAlign === VerticalAlign.BOTTOM)
 					{
-						leftArrowSkinY += (backgroundHeight - this._leftArrowSkin.height);
+						leftArrowSkinY += (contentHeight - this._leftArrowSkin.height);
 					}
-					this._leftArrowSkin.y = Math.min(yPosition + backgroundHeight - this._paddingBottom - this._leftArrowSkin.height, Math.max(yPosition + this._paddingTop, leftArrowSkinY));
+					var minLeftArrowSkinY:Number = yPosition + this._paddingTop;
+					if(minLeftArrowSkinY > leftArrowSkinY)
+					{
+						leftArrowSkinY = minLeftArrowSkinY;
+					}
+					else
+					{
+						var maxLeftArrowSkinY:Number = yPosition + this._paddingTop + contentHeight - this._leftArrowSkin.height;
+						if(maxLeftArrowSkinY < leftArrowSkinY)
+						{
+							leftArrowSkinY = maxLeftArrowSkinY;
+						}
+					}
+					this._leftArrowSkin.y = leftArrowSkinY;
 				}
 				else if(this._arrowPosition === RelativePosition.RIGHT)
 				{
 					this._rightArrowSkin.x = xPosition + backgroundWidth + this._rightArrowGap;
-					var rightArrowSkinY:Number = this._arrowOffset + yPosition;
+					var rightArrowSkinY:Number = this._arrowOffset + yPosition + this._paddingTop;
 					if(this._verticalAlign === VerticalAlign.MIDDLE)
 					{
-						rightArrowSkinY += Math.round((backgroundHeight - this._rightArrowSkin.height) / 2);
+						rightArrowSkinY += Math.round((contentHeight - this._rightArrowSkin.height) / 2);
 					}
 					else if(this._verticalAlign === VerticalAlign.BOTTOM)
 					{
-						rightArrowSkinY += (backgroundHeight - this._rightArrowSkin.height);
+						rightArrowSkinY += (contentHeight - this._rightArrowSkin.height);
 					}
-					this._rightArrowSkin.y = Math.min(yPosition + backgroundHeight - this._paddingBottom - this._rightArrowSkin.height, Math.max(yPosition + this._paddingTop, rightArrowSkinY));
+					var minRightArrowSkinY:Number = yPosition + this._paddingTop;
+					if(minRightArrowSkinY > rightArrowSkinY)
+					{
+						rightArrowSkinY = minRightArrowSkinY;
+					}
+					else
+					{
+						var maxRightArrowSkinY:Number = yPosition + this._paddingTop + contentHeight - this._rightArrowSkin.height;
+						if(maxRightArrowSkinY < rightArrowSkinY)
+						{
+							rightArrowSkinY = maxRightArrowSkinY;
+						}
+					}
+					this._rightArrowSkin.y = rightArrowSkinY;
 				}
 				else if(this._arrowPosition === RelativePosition.BOTTOM)
 				{
-					var bottomArrowSkinX:Number = this._arrowOffset + xPosition;
+					var bottomArrowSkinX:Number = this._arrowOffset + xPosition + this._paddingLeft;
 					if(this._horizontalAlign === HorizontalAlign.CENTER)
 					{
-						bottomArrowSkinX += Math.round((backgroundWidth - this._bottomArrowSkin.width) / 2);
+						bottomArrowSkinX += Math.round((contentWidth - this._bottomArrowSkin.width) / 2);
 					}
 					else if(this._horizontalAlign === HorizontalAlign.RIGHT)
 					{
-						bottomArrowSkinX += (backgroundWidth - this._bottomArrowSkin.width);
+						bottomArrowSkinX += (contentWidth - this._bottomArrowSkin.width);
 					}
-					bottomArrowSkinX = Math.min(xPosition + backgroundWidth - this._paddingRight - this._bottomArrowSkin.width, Math.max(xPosition + this._paddingLeft, bottomArrowSkinX));
+					var minBottomArrowSkinX:Number = xPosition + this._paddingLeft;
+					if(minBottomArrowSkinX > bottomArrowSkinX)
+					{
+						bottomArrowSkinX = minBottomArrowSkinX;
+					}
+					else
+					{
+						var maxBottomArrowSkinX:Number = xPosition + this._paddingLeft + contentWidth - this._bottomArrowSkin.width;
+						if(maxBottomArrowSkinX < bottomArrowSkinX)
+						{
+							bottomArrowSkinX = maxBottomArrowSkinX;
+						}
+					}
 					this._bottomArrowSkin.x = bottomArrowSkinX; 
 					this._bottomArrowSkin.y = yPosition + backgroundHeight + this._bottomArrowGap;
 				}
 				else //top
 				{
-					var topArrowSkinX:Number = this._arrowOffset + xPosition;
+					var topArrowSkinX:Number = this._arrowOffset + xPosition + this._paddingLeft;
 					if(this._horizontalAlign === HorizontalAlign.CENTER)
 					{
-						topArrowSkinX += Math.round((backgroundWidth - this._topArrowSkin.width) / 2);
+						topArrowSkinX += Math.round((contentWidth - this._topArrowSkin.width) / 2);
 					}
 					else if(this._horizontalAlign === HorizontalAlign.RIGHT)
 					{
-						topArrowSkinX += (backgroundWidth - this._topArrowSkin.width);
+						topArrowSkinX += (contentWidth - this._topArrowSkin.width);
 					}
-					topArrowSkinX = Math.min(xPosition + backgroundWidth - this._paddingRight - this._topArrowSkin.width, Math.max(xPosition + this._paddingLeft, topArrowSkinX));
+					var minTopArrowSkinX:Number = xPosition + this._paddingLeft;
+					if(minTopArrowSkinX > topArrowSkinX)
+					{
+						topArrowSkinX = minTopArrowSkinX;
+					}
+					else
+					{
+						var maxTopArrowSkinX:Number = xPosition + this._paddingLeft + contentWidth - this._topArrowSkin.width;
+						if(maxTopArrowSkinX < topArrowSkinX)
+						{
+							topArrowSkinX = maxTopArrowSkinX;
+						}
+					}
 					this._topArrowSkin.x = topArrowSkinX;
 					this._topArrowSkin.y = yPosition - this._topArrowSkin.height - this._topArrowGap;
 				}
