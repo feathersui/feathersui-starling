@@ -2064,13 +2064,13 @@ package feathers.controls
 				{
 					contentMinWidth = measureContent.minWidth;
 				}
-				if(topOrBottomArrowWidth > contentMinWidth)
-				{
-					contentMinWidth = topOrBottomArrowWidth;
-				}
 				else if(this._content !== null)
 				{
 					contentMinWidth = this._content.width;
+				}
+				if(topOrBottomArrowWidth > contentMinWidth)
+				{
+					contentMinWidth = topOrBottomArrowWidth;
 				}
 				newMinWidth = contentMinWidth + this._paddingLeft + this._paddingRight;
 				var backgroundMinWidth:Number = 0;
@@ -2100,13 +2100,13 @@ package feathers.controls
 				{
 					contentMinHeight = measureContent.minHeight;
 				}
-				if(leftOrRightArrowHeight > contentMinHeight)
-				{
-					contentMinHeight = leftOrRightArrowHeight;
-				}
 				else if(this._content !== null)
 				{
 					contentMinHeight = this._content.height;
+				}
+				if(leftOrRightArrowHeight > contentMinHeight)
+				{
+					contentMinHeight = leftOrRightArrowHeight;
 				}
 				newMinHeight = contentMinHeight + this._paddingTop + this._paddingBottom;
 				var backgroundMinHeight:Number = 0;
