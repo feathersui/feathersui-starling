@@ -1932,6 +1932,11 @@ package feathers.controls
 				return false;
 			}
 
+			if(this._backgroundSkin !== null)
+			{
+				var oldBackgroundWidth:Number = this._backgroundSkin.width;
+				var oldBackgroundHeight:Number = this._backgroundSkin.height;
+			}
 			var measureBackground:IMeasureDisplayObject = this._backgroundSkin as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this._backgroundSkin,
 				this._explicitWidth, this._explicitHeight,
@@ -2127,6 +2132,11 @@ package feathers.controls
 				{
 					newMinHeight = maxHeight;
 				}
+			}
+			if(this._backgroundSkin !== null)
+			{
+				this._backgroundSkin.width = oldBackgroundWidth;
+				this._backgroundSkin.height = oldBackgroundHeight;
 			}
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
