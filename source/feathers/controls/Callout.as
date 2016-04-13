@@ -2376,6 +2376,10 @@ package feathers.controls
 			{
 				supportedPositions = DEFAULT_POSITIONS;
 			}
+			var upSpace:Number = -1;
+			var rightSpace:Number = -1;
+			var downSpace:Number = -1;
+			var leftSpace:Number = -1;
 			var positionsCount:int = supportedPositions.length;
 			for(var i:int = 0; i < positionsCount; i++)
 			{
@@ -2386,11 +2390,15 @@ package feathers.controls
 					{
 						//arrow is opposite, on bottom side
 						this.measureWithArrowPosition(RelativePosition.BOTTOM);
-						var upSpace:Number = this._lastGlobalBoundsOfOrigin.y - this.actualHeight;
+						upSpace = this._lastGlobalBoundsOfOrigin.y - this.actualHeight;
 						if(upSpace >= stagePaddingTop)
 						{
 							positionAboveOrigin(this, this._lastGlobalBoundsOfOrigin);
 							return;
+						}
+						if(upSpace < 0)
+						{
+							upSpace = 0;
 						}
 						break;
 					}
@@ -2398,22 +2406,30 @@ package feathers.controls
 					{
 						//arrow is opposite, on left side
 						this.measureWithArrowPosition(RelativePosition.LEFT);
-						var rightSpace:Number = (Starling.current.stage.stageWidth - actualWidth) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
+						rightSpace = (Starling.current.stage.stageWidth - actualWidth) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
 						if(rightSpace >= stagePaddingRight)
 						{
 							positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
 							return;
+						}
+						if(rightSpace < 0)
+						{
+							rightSpace = 0;
 						}
 						break;
 					}
 					case RelativePosition.LEFT:
 					{
 						this.measureWithArrowPosition(RelativePosition.RIGHT);
-						var leftSpace:Number = this._lastGlobalBoundsOfOrigin.x - this.actualWidth;
+						leftSpace = this._lastGlobalBoundsOfOrigin.x - this.actualWidth;
 						if(leftSpace >= stagePaddingLeft)
 						{
 							positionToLeftOfOrigin(this, this._lastGlobalBoundsOfOrigin);
 							return;
+						}
+						if(leftSpace < 0)
+						{
+							leftSpace = 0;
 						}
 						break;
 					}
@@ -2421,25 +2437,30 @@ package feathers.controls
 					{
 						//arrow is opposite, on top side
 						this.measureWithArrowPosition(RelativePosition.TOP);
-						var downSpace:Number = (Starling.current.stage.stageHeight - this.actualHeight) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
+						downSpace = (Starling.current.stage.stageHeight - this.actualHeight) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
 						if(downSpace >= stagePaddingBottom)
 						{
 							positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
 							return;
 						}
+						if(downSpace < 0)
+						{
+							downSpace = 0;
+						}
 					}
 				}
 			}
 			//worst case: pick the side that has the most available space
-			if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
+			if(downSpace !== -1 && downSpace >= upSpace &&
+				downSpace >= rightSpace && downSpace >= leftSpace)
 			{
 				positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}
-			else if(upSpace >= rightSpace && upSpace >= leftSpace)
+			else if(upSpace !== -1 && upSpace >= rightSpace && upSpace >= leftSpace)
 			{
 				positionAboveOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}
-			else if(rightSpace >= leftSpace)
+			else if(rightSpace !== -1 && rightSpace >= leftSpace)
 			{
 				positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}
