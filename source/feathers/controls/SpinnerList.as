@@ -157,11 +157,35 @@ package feathers.controls
 		 */
 		override public function set selectedIndex(value:int):void
 		{
-			if(this._selectedIndex != value)
+			if(value < 0 && this._dataProvider !== null && this._dataProvider.length > 0)
+			{
+				//a SpinnerList must always select an item, unless the data
+				//provider is empty
+				return;
+			}
+			if(this._selectedIndex !== value)
 			{
 				this.scrollToDisplayIndex(value, 0);
 			}
 			super.selectedIndex = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set selectedItem(value:Object):void
+		{
+			if(this._dataProvider === null)
+			{
+				this.selectedIndex = -1;
+				return;
+			}
+			var index:int = this._dataProvider.getItemIndex(value);
+			if(index < 0)
+			{
+				return;
+			}
+			this.selectedIndex = index; 
 		}
 
 		/**

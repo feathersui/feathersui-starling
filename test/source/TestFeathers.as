@@ -77,6 +77,7 @@ package
 	import feathers.tests.SliderHorizontalMeasurementTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderVerticalMeasurementTests;
+	import feathers.tests.SpinnerListTests;
 	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
 	import feathers.tests.StageTextTextEditorFocusTests;
@@ -221,6 +222,7 @@ package
 				SliderHorizontalTests,
 				SliderHorizontalMeasurementTests,
 				SliderVerticalMeasurementTests,
+				SpinnerListTests,
 				StackScreenNavigatorTests,
 				StackScreenNavigatorMeasurementTests,
 				TabBarTests,
