@@ -274,6 +274,7 @@ package feathers.themes
 		protected var verticalSliderMaximumTrackDisabledTexture:Texture;
 		protected var textInputBackgroundEnabledTexture:Texture;
 		protected var textInputBackgroundFocusedTexture:Texture;
+		protected var textInputBackgroundErrorTexture:Texture;
 		protected var textInputBackgroundDisabledTexture:Texture;
 		protected var searchTextInputBackgroundEnabledTexture:Texture;
 		protected var searchTextInputBackgroundFocusedTexture:Texture;
@@ -436,6 +437,7 @@ package feathers.themes
 
 			this.textInputBackgroundEnabledTexture = this.atlas.getTexture("text-input-up-skin0000");
 			this.textInputBackgroundFocusedTexture = this.atlas.getTexture("text-input-focused-skin0000");
+			this.textInputBackgroundErrorTexture = this.atlas.getTexture("text-input-error-skin0000");
 			this.textInputBackgroundDisabledTexture = this.atlas.getTexture("text-input-disabled-skin0000");
 			this.searchTextInputBackgroundEnabledTexture = this.atlas.getTexture("search-input-up-skin0000");
 			this.searchTextInputBackgroundFocusedTexture = this.atlas.getTexture("search-input-focused-skin0000");
@@ -1765,6 +1767,7 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.textInputBackgroundEnabledTexture);
 			skin.disabledTexture = this.textInputBackgroundDisabledTexture;
 			skin.setTextureForState(TextInputState.FOCUSED, this.textInputBackgroundFocusedTexture);
+			skin.setTextureForState(TextInputState.ERROR, this.textInputBackgroundErrorTexture);
 			skin.scale9Grid = TEXT_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
@@ -1815,6 +1818,7 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.textInputBackgroundEnabledTexture);
 			skin.disabledTexture = this.textInputBackgroundDisabledTexture;
 			skin.setTextureForState(TextInputState.FOCUSED, this.textInputBackgroundFocusedTexture);
+			skin.setTextureForState(TextInputState.ERROR, this.textInputBackgroundErrorTexture);
 			skin.scale9Grid = TEXT_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
