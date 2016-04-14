@@ -359,11 +359,7 @@ package feathers.controls
 			}
 
 			this.autoSizeIfNeeded();
-
-			if(stylesInvalid || stateInvalid || sizeInvalid)
-			{
-				this.scaleSkin();
-			}
+			this.scaleSkin();
 		}
 
 		/**
