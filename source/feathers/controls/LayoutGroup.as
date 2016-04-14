@@ -570,6 +570,10 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			if(this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.starling_internal::setParent(null);
+			}
 			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
