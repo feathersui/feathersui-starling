@@ -177,6 +177,11 @@ package feathers.themes
 		 */
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "minimal-desktop-date-time-spinner-list-item-renderer";
 
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_DANGER_TEXT_RENDERER:String = "minimal-desktop-theme-danger-text-callout-text-renderer";
+
 		protected static const FONT_TEXTURE_NAME:String = "pf-ronda-seven-font";
 		
 		protected static const ATLAS_SCALE_FACTOR:Number = 2;
@@ -195,6 +200,7 @@ package feathers.themes
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
+		protected static const DANGER_TEXT_COLOR:uint = 0x990000;
 		protected static const MODAL_OVERLAY_COLOR:uint = 0xcccccc;
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.4;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0xcccccc;
@@ -360,6 +366,7 @@ package feathers.themes
 		protected var insetBackgroundSkinTexture:Texture;
 		protected var insetBackgroundDisabledSkinTexture:Texture;
 		protected var insetBackgroundFocusedSkinTexture:Texture;
+		protected var insetBackgroundDangerSkinTexture:Texture;
 
 		protected var pickerListButtonIconUpTexture:Texture;
 		protected var pickerListButtonIconSelectedTexture:Texture;
@@ -376,11 +383,16 @@ package feathers.themes
 
 		protected var panelBackgroundSkinTexture:Texture;
 		protected var popUpBackgroundSkinTexture:Texture;
+		protected var dangerPopUpBackgroundSkinTexture:Texture;
 		
 		protected var calloutTopArrowSkinTexture:Texture;
 		protected var calloutBottomArrowSkinTexture:Texture;
 		protected var calloutLeftArrowSkinTexture:Texture;
 		protected var calloutRightArrowSkinTexture:Texture;
+		protected var dangerCalloutTopArrowSkinTexture:Texture;
+		protected var dangerCalloutBottomArrowSkinTexture:Texture;
+		protected var dangerCalloutLeftArrowSkinTexture:Texture;
+		protected var dangerCalloutRightArrowSkinTexture:Texture;
 
 		protected var checkIconTexture:Texture;
 		protected var checkDisabledIconTexture:Texture;
@@ -425,6 +437,7 @@ package feathers.themes
 		protected var headingDisabledTextFormat:BitmapFontTextFormat;
 		protected var centeredTextFormat:BitmapFontTextFormat;
 		protected var centeredDisabledTextFormat:BitmapFontTextFormat;
+		protected var dangerTextFormat:BitmapFontTextFormat;
 
 		protected var scrollTextTextFormat:TextFormat;
 		protected var scrollTextDisabledTextFormat:TextFormat;
@@ -559,6 +572,7 @@ package feathers.themes
 			this.insetBackgroundSkinTexture = this.atlas.getTexture("inset-background-enabled-skin0000");
 			this.insetBackgroundDisabledSkinTexture = this.atlas.getTexture("inset-background-disabled-skin0000");
 			this.insetBackgroundFocusedSkinTexture = this.atlas.getTexture("inset-background-focused-skin0000");
+			this.insetBackgroundDangerSkinTexture = this.atlas.getTexture("inset-background-danger-skin0000");
 
 			this.pickerListButtonIconUpTexture = this.atlas.getTexture("picker-list-icon0000");
 			this.pickerListButtonIconSelectedTexture = this.atlas.getTexture("picker-list-selected-icon0000");
@@ -574,11 +588,16 @@ package feathers.themes
 			this.panelHeaderSkinTexture = this.atlas.getTexture("panel-header-background-skin0000");
 
 			this.popUpBackgroundSkinTexture = this.atlas.getTexture("pop-up-background-skin0000");
+			this.dangerPopUpBackgroundSkinTexture = this.atlas.getTexture("danger-pop-up-background-skin0000");
 			this.panelBackgroundSkinTexture = this.atlas.getTexture("panel-background-skin0000");
 			this.calloutTopArrowSkinTexture = this.atlas.getTexture("callout-top-arrow-skin0000");
 			this.calloutBottomArrowSkinTexture = this.atlas.getTexture("callout-bottom-arrow-skin0000");
 			this.calloutLeftArrowSkinTexture = this.atlas.getTexture("callout-left-arrow-skin0000");
 			this.calloutRightArrowSkinTexture = this.atlas.getTexture("callout-right-arrow-skin0000");
+			this.dangerCalloutTopArrowSkinTexture = this.atlas.getTexture("danger-callout-top-arrow-skin0000");
+			this.dangerCalloutBottomArrowSkinTexture = this.atlas.getTexture("danger-callout-bottom-arrow-skin0000");
+			this.dangerCalloutLeftArrowSkinTexture = this.atlas.getTexture("danger-callout-left-arrow-skin0000");
+			this.dangerCalloutRightArrowSkinTexture = this.atlas.getTexture("danger-callout-right-arrow-skin0000");
 
 			this.checkIconTexture = this.atlas.getTexture("check-up-icon0000");
 			this.checkDisabledIconTexture = this.atlas.getTexture("check-disabled-icon0000");
@@ -625,6 +644,7 @@ package feathers.themes
 			this.headingDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.largeFontSize, DISABLED_TEXT_COLOR);
 			this.centeredTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, TextFormatAlign.CENTER);
 			this.centeredDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR, TextFormatAlign.CENTER);
+			this.dangerTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DANGER_TEXT_COLOR);
 
 			var scrollTextFontList:String = "PF Ronda Seven,Roboto,Helvetica,Arial,_sans";
 			this.scrollTextTextFormat = new TextFormat(scrollTextFontList, this.fontSize, PRIMARY_TEXT_COLOR);
@@ -654,6 +674,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON, this.setBackButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON, this.setForwardButtonStyles);
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Button.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setButtonLabelStyles);
+			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DANGER_TEXT_RENDERER, this.setDangerTextRendererStyles);
 
 			//button group
 			this.getStyleProviderForClass(ButtonGroup).defaultStyleFunction = this.setButtonGroupStyles;
@@ -1013,9 +1034,9 @@ package feathers.themes
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			button.defaultSkin = skin;
-			
+			button.customLabelStyleName = THEME_STYLE_NAME_DANGER_TEXT_RENDERER;
 			this.setBaseButtonStyles(button);
-			
+
 			button.minWidth = this.buttonMinWidth;
 			button.minHeight = this.controlSize;
 		}
@@ -1128,6 +1149,35 @@ package feathers.themes
 			callout.leftArrowGap = this.calloutTopLeftArrowOverlapGapSize;
 
 			var rightArrowSkin:Image = new Image(this.calloutRightArrowSkinTexture);
+			callout.rightArrowSkin = rightArrowSkin;
+			callout.rightArrowGap = this.calloutBottomRightArrowOverlapGapSize;
+		}
+
+		protected function setDangerCalloutStyles(callout:Callout):void
+		{
+			callout.padding = this.gutterSize;
+			callout.paddingRight = this.gutterSize + this.dropShadowSize;
+			callout.paddingBottom = this.gutterSize + this.dropShadowSize;
+
+			var backgroundSkin:Image = new Image(this.dangerPopUpBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundSkin.width = this.calloutBackgroundMinSize;
+			backgroundSkin.height = this.calloutBackgroundMinSize;
+			callout.backgroundSkin = backgroundSkin;
+
+			var topArrowSkin:Image = new Image(this.dangerCalloutTopArrowSkinTexture);
+			callout.topArrowSkin = topArrowSkin;
+			callout.topArrowGap = this.calloutTopLeftArrowOverlapGapSize;
+
+			var bottomArrowSkin:Image = new Image(this.dangerCalloutBottomArrowSkinTexture);
+			callout.bottomArrowSkin = bottomArrowSkin;
+			callout.bottomArrowGap = this.calloutBottomRightArrowOverlapGapSize;
+
+			var leftArrowSkin:Image = new Image(this.dangerCalloutLeftArrowSkinTexture);
+			callout.leftArrowSkin = leftArrowSkin;
+			callout.leftArrowGap = this.calloutTopLeftArrowOverlapGapSize;
+
+			var rightArrowSkin:Image = new Image(this.dangerCalloutRightArrowSkinTexture);
 			callout.rightArrowSkin = rightArrowSkin;
 			callout.rightArrowGap = this.calloutBottomRightArrowOverlapGapSize;
 		}
@@ -2024,6 +2074,7 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.insetBackgroundSkinTexture);
 			skin.setTextureForState(TextInputState.DISABLED, this.insetBackgroundDisabledSkinTexture);
 			skin.setTextureForState(TextInputState.FOCUSED, this.insetBackgroundFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.ERROR, this.insetBackgroundDangerSkinTexture);
 			skin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			skin.width = this.wideControlSize * 2;
 			skin.height = this.wideControlSize;
@@ -2044,7 +2095,7 @@ package feathers.themes
 
 		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void
 		{
-			this.setTextCalloutStyles(callout);
+			this.setDangerTextCalloutStyles(callout);
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
 		}
@@ -2058,9 +2109,20 @@ package feathers.themes
 			this.setCalloutStyles(callout);
 		}
 
+		protected function setDangerTextCalloutStyles(callout:TextCallout):void
+		{
+			this.setDangerCalloutStyles(callout);
+			callout.customTextRendererStyleName = THEME_STYLE_NAME_DANGER_TEXT_RENDERER;
+		}
+
 		protected function setTextCalloutTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
 		{
 			textRenderer.textFormat = this.primaryTextFormat;
+		}
+
+		protected function setDangerTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
+		{
+			textRenderer.textFormat = this.dangerTextFormat;
 		}
 
 	//-------------------------
@@ -2080,6 +2142,7 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.insetBackgroundSkinTexture);
 			skin.setTextureForState(TextInputState.DISABLED, this.insetBackgroundDisabledSkinTexture);
 			skin.setTextureForState(TextInputState.FOCUSED, this.insetBackgroundFocusedSkinTexture);
+			skin.setTextureForState(TextInputState.ERROR, this.insetBackgroundDangerSkinTexture);
 			skin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
@@ -2121,7 +2184,7 @@ package feathers.themes
 
 		protected function setTextInputErrorCalloutStyles(callout:TextCallout):void
 		{
-			this.setTextCalloutStyles(callout);
+			this.setDangerTextCalloutStyles(callout);
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
 		}
