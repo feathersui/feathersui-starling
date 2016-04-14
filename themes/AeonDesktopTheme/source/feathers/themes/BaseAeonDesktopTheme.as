@@ -62,6 +62,7 @@ package feathers.themes
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInputState;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
@@ -240,6 +241,12 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "aeon-date-time-spinner-list-item-renderer";
 
 		/**
+		 * @private
+		 * The theme's custom style name for the text renderer in a danger Textcallout.
+		 */
+		protected static const THEME_STYLE_NAME_DANGER_TEXT_CALLOUT_TEXT_RENDERER:String = "aeon-danger-text-callout-text-renderer";
+
+		/**
 		 * The name of the font used by controls in this theme. This font is not
 		 * embedded. It is the default sans-serif system font.
 		 */
@@ -247,6 +254,7 @@ package feathers.themes
 
 		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 2, 2);
 		protected static const TOOL_TIP_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
+		protected static const CALLOUT_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 7);
 		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 15);
 		protected static const STEPPER_INCREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 9, 15, 1);
@@ -274,6 +282,7 @@ package feathers.themes
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.5;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x0B333C;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x5B6770;
+		protected static const INVERTED_TEXT_COLOR:uint = 0xffffff;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0xc9e0eE;
 		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.25;
 
@@ -382,6 +391,7 @@ package feathers.themes
 		protected var borderSize:int;
 
 		protected var calloutBackgroundMinSize:int;
+		protected var calloutArrowOverlapGap:int;
 		protected var progressBarFillMinSize:int;
 		protected var popUpSize:int;
 		protected var popUpVolumeSliderPaddingSize:int;
@@ -426,8 +436,23 @@ package feathers.themes
 		 */
 		protected var detailDisabledTextFormat:TextFormat;
 
+		/**
+		 * A TextFormat for text on dark backgrounds.
+		 */
+		protected var invertedTextFormat:TextFormat;
+
 		protected var focusIndicatorSkinTexture:Texture;
 		protected var toolTipBackgroundSkinTexture:Texture;
+		protected var calloutBackgroundSkinTexture:Texture;
+		protected var calloutTopArrowSkinTexture:Texture;
+		protected var calloutRightArrowSkinTexture:Texture;
+		protected var calloutBottomArrowSkinTexture:Texture;
+		protected var calloutLeftArrowSkinTexture:Texture;
+		protected var dangerCalloutBackgroundSkinTexture:Texture;
+		protected var dangerCalloutTopArrowSkinTexture:Texture;
+		protected var dangerCalloutRightArrowSkinTexture:Texture;
+		protected var dangerCalloutBottomArrowSkinTexture:Texture;
+		protected var dangerCalloutLeftArrowSkinTexture:Texture;
 
 		protected var buttonUpSkinTexture:Texture;
 		protected var buttonHoverSkinTexture:Texture;
@@ -512,6 +537,7 @@ package feathers.themes
 
 		protected var textInputBackgroundEnabledSkinTexture:Texture;
 		protected var textInputBackgroundDisabledSkinTexture:Texture;
+		protected var textInputBackgroundErrorSkinTexture:Texture;
 		protected var textInputSearchIconTexture:Texture;
 		protected var textInputSearchIconDisabledTexture:Texture;
 
@@ -619,6 +645,7 @@ package feathers.themes
 			this.popUpVolumeSliderPaddingSize = 6;
 			this.leftAndRightDropShadowSize = 1;
 			this.bottomDropShadowSize = 3;
+			this.calloutArrowOverlapGap = -1;
 		}
 
 		/**
@@ -661,6 +688,7 @@ package feathers.themes
 			this.headingDisabledTextFormat = new TextFormat(FONT_NAME, this.largeFontSize, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.detailTextFormat = new TextFormat(FONT_NAME, this.smallFontSize, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.detailDisabledTextFormat = new TextFormat(FONT_NAME, this.smallFontSize, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.invertedTextFormat = new TextFormat(FONT_NAME, this.regularFontSize, INVERTED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 		}
 
 		/**
@@ -671,6 +699,16 @@ package feathers.themes
 		{
 			this.focusIndicatorSkinTexture = this.atlas.getTexture("focus-indicator-skin0000");
 			this.toolTipBackgroundSkinTexture = this.atlas.getTexture("tool-tip-background-skin0000");
+			this.calloutBackgroundSkinTexture = this.atlas.getTexture("callout-background-skin0000");
+			this.calloutTopArrowSkinTexture = this.atlas.getTexture("callout-top-arrow-skin0000");
+			this.calloutRightArrowSkinTexture = this.atlas.getTexture("callout-right-arrow-skin0000");
+			this.calloutBottomArrowSkinTexture = this.atlas.getTexture("callout-bottom-arrow-skin0000");
+			this.calloutLeftArrowSkinTexture = this.atlas.getTexture("callout-left-arrow-skin0000");
+			this.dangerCalloutBackgroundSkinTexture = this.atlas.getTexture("danger-callout-background-skin0000");
+			this.dangerCalloutTopArrowSkinTexture = this.atlas.getTexture("danger-callout-top-arrow-skin0000");
+			this.dangerCalloutRightArrowSkinTexture = this.atlas.getTexture("danger-callout-right-arrow-skin0000");
+			this.dangerCalloutBottomArrowSkinTexture = this.atlas.getTexture("danger-callout-bottom-arrow-skin0000");
+			this.dangerCalloutLeftArrowSkinTexture = this.atlas.getTexture("danger-callout-left-arrow-skin0000");
 
 			this.buttonUpSkinTexture = this.atlas.getTexture("button-up-skin0000");
 			this.buttonHoverSkinTexture = this.atlas.getTexture("button-hover-skin0000");
@@ -755,6 +793,7 @@ package feathers.themes
 
 			this.textInputBackgroundEnabledSkinTexture = this.atlas.getTexture("text-input-background-enabled-skin0000");
 			this.textInputBackgroundDisabledSkinTexture = this.atlas.getTexture("text-input-background-disabled-skin0000");
+			this.textInputBackgroundErrorSkinTexture = this.atlas.getTexture("text-input-background-error-skin0000");
 			this.textInputSearchIconTexture = this.atlas.getTexture("search-icon0000");
 			this.textInputSearchIconDisabledTexture = this.atlas.getTexture("search-icon-disabled0000");
 
@@ -962,16 +1001,19 @@ package feathers.themes
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
 			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
+			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextAreaErrorCalloutStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
 			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(TextCallout.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setTextCalloutTextRendererStyles);
+			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DANGER_TEXT_CALLOUT_TEXT_RENDERER, this.setDangerTextCalloutTextRendererStyles);
 
 			//text input
 			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
 			this.getStyleProviderForClass(TextFieldTextEditor).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextInputTextEditorStyles);
 			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_PROMPT, this.setTextInputPromptStyles);
+			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextInputErrorCalloutStyles);
 			
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -1241,19 +1283,52 @@ package feathers.themes
 
 		protected function setCalloutStyles(callout:Callout):void
 		{
-			var backgroundSkin:Image = new Image(this.panelBorderBackgroundSkinTexture);
-			backgroundSkin.scale9Grid = PANEL_BORDER_SCALE_9_GRID;
+			var backgroundSkin:Image = new Image(this.calloutBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = CALLOUT_SCALE_9_GRID;
 			callout.backgroundSkin = backgroundSkin;
 
-			var arrowSkin:Quad = new Quad(this.gutterSize, this.gutterSize, 0xff00ff);
-			arrowSkin.alpha = 0;
-			callout.topArrowSkin =  callout.rightArrowSkin =  callout.bottomArrowSkin =
-				callout.leftArrowSkin = arrowSkin;
+			var topArrowSkin:Image = new Image(this.calloutTopArrowSkinTexture);
+			callout.topArrowSkin = topArrowSkin;
+			callout.topArrowGap = this.calloutArrowOverlapGap;
+			var rightArrowSkin:Image = new Image(this.calloutRightArrowSkinTexture);
+			callout.rightArrowSkin = rightArrowSkin;
+			callout.rightArrowGap = this.calloutArrowOverlapGap - this.leftAndRightDropShadowSize;
+			var bottomArrowSkin:Image = new Image(this.calloutBottomArrowSkinTexture);
+			callout.bottomArrowSkin = bottomArrowSkin;
+			callout.bottomArrowGap = this.calloutArrowOverlapGap - this.bottomDropShadowSize;
+			var leftArrowSkin:Image = new Image(this.calloutLeftArrowSkinTexture);
+			callout.leftArrowSkin = leftArrowSkin;
+			callout.leftArrowGap = this.calloutArrowOverlapGap - this.leftAndRightDropShadowSize;
 
 			callout.paddingTop = this.smallGutterSize;
-			callout.paddingBottom = this.smallGutterSize;
-			callout.paddingRight = this.gutterSize;
-			callout.paddingLeft = this.gutterSize;
+			callout.paddingBottom = this.smallGutterSize + this.bottomDropShadowSize;
+			callout.paddingRight = this.gutterSize + this.leftAndRightDropShadowSize;
+			callout.paddingLeft = this.gutterSize + this.leftAndRightDropShadowSize;
+		}
+
+		protected function setDangerCalloutStyles(callout:Callout):void
+		{
+			var backgroundSkin:Image = new Image(this.dangerCalloutBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = CALLOUT_SCALE_9_GRID;
+			callout.backgroundSkin = backgroundSkin;
+
+			var topArrowSkin:Image = new Image(this.dangerCalloutTopArrowSkinTexture);
+			callout.topArrowSkin = topArrowSkin;
+			callout.topArrowGap = this.calloutArrowOverlapGap;
+			var rightArrowSkin:Image = new Image(this.dangerCalloutRightArrowSkinTexture);
+			callout.rightArrowSkin = rightArrowSkin;
+			callout.rightArrowGap = this.calloutArrowOverlapGap - this.leftAndRightDropShadowSize;
+			var bottomArrowSkin:Image = new Image(this.dangerCalloutBottomArrowSkinTexture);
+			callout.bottomArrowSkin = bottomArrowSkin;
+			callout.bottomArrowGap = this.calloutArrowOverlapGap - this.bottomDropShadowSize;
+			var leftArrowSkin:Image = new Image(this.dangerCalloutLeftArrowSkinTexture);
+			callout.leftArrowSkin = leftArrowSkin;
+			callout.leftArrowGap = this.calloutArrowOverlapGap - this.leftAndRightDropShadowSize;
+
+			callout.paddingTop = this.smallGutterSize;
+			callout.paddingBottom = this.smallGutterSize + this.bottomDropShadowSize;
+			callout.paddingRight = this.gutterSize + this.leftAndRightDropShadowSize;
+			callout.paddingLeft = this.gutterSize + this.leftAndRightDropShadowSize;
 		}
 
 	//-------------------------
@@ -2212,6 +2287,7 @@ package feathers.themes
 
 			var skin:ImageSkin = new ImageSkin(this.textInputBackgroundEnabledSkinTexture);
 			skin.disabledTexture = this.textInputBackgroundDisabledSkinTexture;
+			skin.setTextureForState(TextInputState.ERROR, this.textInputBackgroundErrorSkinTexture);
 			skin.scale9Grid = TEXT_INPUT_SCALE_9_GRID;
 			skin.width = this.wideControlSize * 2;
 			skin.height = this.wideControlSize;
@@ -2228,6 +2304,15 @@ package feathers.themes
 			textEditor.paddingLeft = this.smallGutterSize;
 		}
 
+		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void
+		{
+			this.setDangerTextCalloutStyles(callout);
+			callout.verticalAlign = VerticalAlign.TOP;
+			callout.horizontalAlign = HorizontalAlign.LEFT;
+			callout.supportedPositions = new <String>[RelativePosition.RIGHT,
+				RelativePosition.TOP, RelativePosition.BOTTOM, RelativePosition.LEFT];
+		}
+
 	//-------------------------
 	// TextCallout
 	//-------------------------
@@ -2242,6 +2327,17 @@ package feathers.themes
 			textRenderer.textFormat = this.defaultTextFormat;
 		}
 
+		protected function setDangerTextCalloutStyles(callout:TextCallout):void
+		{
+			this.setDangerCalloutStyles(callout);
+			callout.customTextRendererStyleName = THEME_STYLE_NAME_DANGER_TEXT_CALLOUT_TEXT_RENDERER;
+		}
+
+		protected function setDangerTextCalloutTextRendererStyles(textRenderer:TextFieldTextRenderer):void
+		{
+			textRenderer.textFormat = this.invertedTextFormat;
+		}
+
 	//-------------------------
 	// TextInput
 	//-------------------------
@@ -2250,6 +2346,7 @@ package feathers.themes
 		{
 			var skin:ImageSkin = new ImageSkin(this.textInputBackgroundEnabledSkinTexture);
 			skin.disabledTexture = this.textInputBackgroundDisabledSkinTexture;
+			skin.setTextureForState(TextInputState.ERROR, this.textInputBackgroundErrorSkinTexture);
 			skin.scale9Grid = TEXT_INPUT_SCALE_9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
@@ -2293,6 +2390,15 @@ package feathers.themes
 		{
 			textRenderer.textFormat = this.defaultTextFormat;
 			textRenderer.disabledTextFormat = this.disabledTextFormat;
+		}
+		
+		protected function setTextInputErrorCalloutStyles(callout:TextCallout):void
+		{
+			this.setDangerTextCalloutStyles(callout);
+			callout.verticalAlign = VerticalAlign.TOP;
+			callout.horizontalAlign = HorizontalAlign.LEFT;
+			callout.supportedPositions = new <String>[RelativePosition.RIGHT,
+				RelativePosition.TOP, RelativePosition.BOTTOM, RelativePosition.LEFT];
 		}
 
 	//-------------------------
