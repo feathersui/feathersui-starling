@@ -761,15 +761,12 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		override protected function get supportsRenderCache():Boolean
-		{
-			//since the text field is rendered above starling, some of its
-			//properties need to be updated every frame
-			return false;
-		}
-
 		override public function render(painter:Painter):void
 		{
+			//this component is an overlay above Starling, and it should be
+			//excluded from the render cache
+			painter.excludeFromCache(this);
+
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
@@ -893,7 +890,9 @@ package feathers.controls.supportClasses
 					calculatedVisibleHeight = this._maxVisibleHeight;
 				}
 			}
-			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false) || sizeInvalid;
+			sizeInvalid = this.saveMeasurements(
+					calculatedVisibleWidth, totalContentHeight,
+					calculatedVisibleWidth, totalContentHeight) || sizeInvalid;
 			this._actualVisibleWidth = calculatedVisibleWidth;
 			this._actualVisibleHeight = calculatedVisibleHeight;
 			this._actualMinVisibleWidth = calculatedVisibleWidth;

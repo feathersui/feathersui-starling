@@ -279,5 +279,43 @@ package feathers.tests
 			Assert.assertTrue("hoverSkin not disposed when Button disposed.", hoverSkin.isDisposed);
 			Assert.assertTrue("disabledSkin not disposed when Button disposed.", disabledSkin.isDisposed);
 		}
+
+		[Test]
+		public function testSkinsRemovedWhenSetToNull():void
+		{
+			var defaultSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.defaultSkin = defaultSkin;
+			var upSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setSkinForState(ButtonState.UP, upSkin);
+			var downSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setSkinForState(ButtonState.DOWN, downSkin);
+			var hoverSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setSkinForState(ButtonState.HOVER, hoverSkin);
+			var disabledSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._button.setSkinForState(ButtonState.DISABLED, disabledSkin);
+			this._button.validate();
+			this._button.defaultSkin = null;
+			this._button.setSkinForState(ButtonState.UP, null);
+			this._button.setSkinForState(ButtonState.DOWN, null);
+			this._button.setSkinForState(ButtonState.HOVER, null);
+			this._button.setSkinForState(ButtonState.DISABLED, null);
+			//should not need to validate here
+			this._button.dispose();
+			Assert.assertFalse("Removed defaultSkin incorrectly disposed when Button disposed.", defaultSkin.isDisposed);
+			Assert.assertFalse("Removed upSkin incorrectly disposed when Button disposed.", upSkin.isDisposed);
+			Assert.assertFalse("Removed downSkin incorrectly disposed when Button disposed.", downSkin.isDisposed);
+			Assert.assertFalse("Removed hoverSkin incorrectly disposed when Button disposed.", hoverSkin.isDisposed);
+			Assert.assertFalse("Removed disabledSkin incorrectly disposed when Button disposed.", disabledSkin.isDisposed);
+			Assert.assertNull("defaultSkin parent must be null when removed from Button.", defaultSkin.parent);
+			Assert.assertNull("upSkin parent must be null when removed from Button.", upSkin.parent);
+			Assert.assertNull("downSkin parent must be null when removed from Button.", downSkin.parent);
+			Assert.assertNull("hoverSkin parent must be null when removed from Button.", hoverSkin.parent);
+			Assert.assertNull("disabledSkin parent must be null when removed from Button.", disabledSkin.parent);
+			defaultSkin.dispose();
+			upSkin.dispose();
+			downSkin.dispose();
+			hoverSkin.dispose();
+			disabledSkin.dispose();
+		}
 	}
 }

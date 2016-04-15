@@ -546,6 +546,7 @@ package feathers.media
 				popUpContentManager.primaryDirection = DropDownPopUpContentManager.PRIMARY_DIRECTION_UP;
 				this.popUpContentManager = popUpContentManager;
 			}
+			super.initialize();
 		}
 
 		/**

@@ -24,6 +24,7 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 
 	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -333,6 +334,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var inactiveTabs:Vector.<ToggleButton> = new <ToggleButton>[];
+
+		/**
+		 * @private
+		 */
+		protected var _tabToItem:Dictionary = new Dictionary(true);
 
 		/**
 		 * @private
@@ -1085,6 +1091,7 @@ package feathers.controls
 		 * };</listing>
 		 *
 		 * @see #dataProvider
+		 * @see #tabReleaser
 		 */
 		public function get tabInitializer():Function
 		{
@@ -1101,6 +1108,49 @@ package feathers.controls
 				return;
 			}
 			this._tabInitializer = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _tabReleaser:Function = defaultTabReleaser;
+
+		/**
+		 * Resets the properties of an individual tab, using the item from the
+		 * data provider that was associated with the tab.
+		 *
+		 * <p>This function is expected to have one of the following signatures:</p>
+		 * <pre>function( tab:ToggleButton ):void</pre>
+		 * <pre>function( tab:ToggleButton, oldItem:Object ):void</pre>
+		 *
+		 * <p>In the following example, a custom tab releaser is passed to the
+		 * tab bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.tabReleaser = function( tab:ToggleButton, oldItem:Object ):void
+		 * {
+		 *     tab.label = null;
+		 *     tab.defaultIcon = null;
+		 * };</listing>
+		 *
+		 * @see #tabInitializer
+		 */
+		public function get tabReleaser():Function
+		{
+			return this._tabReleaser;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set tabReleaser(value:Function):void
+		{
+			if(this._tabReleaser == value)
+			{
+				return;
+			}
+			this._tabReleaser = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -1612,7 +1662,21 @@ package feathers.controls
 				tab.label = "";
 				tab.isEnabled = this._isEnabled;
 			}
+		}
 
+		/**
+		 * @private
+		 */
+		protected function defaultTabReleaser(tab:ToggleButton, oldItem:Object):void
+		{
+			tab.label = null;
+			for each(var field:String in DEFAULT_TAB_FIELDS)
+			{
+				if(oldItem.hasOwnProperty(field))
+				{
+					tab[field] = null;
+				}
+			}
 		}
 
 		/**
@@ -1724,9 +1788,10 @@ package feathers.controls
 		 */
 		protected function createFirstTab(item:Object):ToggleButton
 		{
-			if(this.inactiveFirstTab)
+			if(this.inactiveFirstTab !== null)
 			{
 				var tab:ToggleButton = this.inactiveFirstTab;
+				this.releaseTab(tab);
 				this.inactiveFirstTab = null;
 			}
 			else
@@ -1749,6 +1814,7 @@ package feathers.controls
 				this.addChild(tab);
 			}
 			this._tabInitializer(tab, item);
+			this._tabToItem[tab] = item;
 			return tab;
 		}
 
@@ -1757,9 +1823,10 @@ package feathers.controls
 		 */
 		protected function createLastTab(item:Object):ToggleButton
 		{
-			if(this.inactiveLastTab)
+			if(this.inactiveLastTab !== null)
 			{
 				var tab:ToggleButton = this.inactiveLastTab;
+				this.releaseTab(tab);
 				this.inactiveLastTab = null;
 			}
 			else
@@ -1782,6 +1849,7 @@ package feathers.controls
 				this.addChild(tab);
 			}
 			this._tabInitializer(tab, item);
+			this._tabToItem[tab] = item;
 			return tab;
 		}
 
@@ -1790,9 +1858,9 @@ package feathers.controls
 		 */
 		protected function createTab(item:Object):ToggleButton
 		{
-			if(this.inactiveTabs.length == 0)
+			if(this.inactiveTabs.length === 0)
 			{
-				var tab:ToggleButton = this._tabFactory();
+				var tab:ToggleButton = ToggleButton(this._tabFactory());
 				if(this._customTabStyleName)
 				{
 					tab.styleNameList.add(this._customTabStyleName);
@@ -1807,9 +1875,28 @@ package feathers.controls
 			else
 			{
 				tab = this.inactiveTabs.shift();
+				this.releaseTab(tab);
 			}
 			this._tabInitializer(tab, item);
+			this._tabToItem[tab] = item;
 			return tab;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function releaseTab(tab:ToggleButton):void
+		{
+			var item:Object = this._tabToItem[tab];
+			delete this._tabToItem[tab];
+			if(this._tabReleaser.length === 1)
+			{
+				this._tabReleaser(tab);
+			}
+			else
+			{
+				this._tabReleaser(tab, item);
+			}
 		}
 
 		/**
@@ -1818,6 +1905,7 @@ package feathers.controls
 		protected function destroyTab(tab:ToggleButton):void
 		{
 			this.toggleGroup.removeItem(tab);
+			this.releaseTab(tab);
 			this.removeChild(tab, true);
 		}
 

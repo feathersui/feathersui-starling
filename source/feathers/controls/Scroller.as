@@ -3352,8 +3352,8 @@ package feathers.controls
 				}
 			}
 			while(this._hasViewPortBoundsChanged);
-			this._lastViewPortWidth = viewPort.width;
-			this._lastViewPortHeight = viewPort.height;
+			this._lastViewPortWidth = this._viewPort.width;
+			this._lastViewPortHeight = this._viewPort.height;
 		}
 
 		/**
@@ -3754,6 +3754,16 @@ package feathers.controls
 			}
 			viewPortMinHeight -= verticalHeightOffset;
 
+			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
+			if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
+			{
+				//setting some of the properties below may result in a resize
+				//event, which forces another layout pass for the view port and
+				//hurts performance (because it needs to break out of an
+				//infinite loop)
+				this.ignoreViewPortResizing = true;
+			}
+
 			//if scroll bars are fixed, we're going to include the offsets even
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
@@ -3766,13 +3776,10 @@ package feathers.controls
 			this._viewPort.minVisibleHeight = this._explicitMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;
-
-			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
-			if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
-			{
-				this.ignoreViewPortResizing = true;
-			}
 			this._viewPort.validate();
+			//we don't want to listen for a resize event from the view port
+			//while it is validating this time. during the next validation is
+			//where it matters if the view port resizes. 
 			this.ignoreViewPortResizing = oldIgnoreViewPortResizing;
 		}
 
@@ -3838,6 +3845,16 @@ package feathers.controls
 			}
 			viewPortMinHeight -= verticalHeightOffset;
 
+			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
+			if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
+			{
+				//setting some of the properties below may result in a resize
+				//event, which forces another layout pass for the view port and
+				//hurts performance (because it needs to break out of an
+				//infinite loop)
+				this.ignoreViewPortResizing = true;
+			}
+
 			var visibleWidth:Number = this.actualWidth - horizontalWidthOffset;
 			//we'll only set the view port's visibleWidth and visibleHeight if
 			//our dimensions are explicit. this allows the view port to know
@@ -3858,6 +3875,11 @@ package feathers.controls
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;
+
+			//this time, we care whether a resize event is dispatched while the
+			//view port is validating because it means we'll need to try another
+			//measurement pass. we restore the flag before calling validate().
+			this.ignoreViewPortResizing = oldIgnoreViewPortResizing;
 
 			this._viewPort.validate();
 		}
@@ -5401,7 +5423,7 @@ package feathers.controls
 		protected function viewPort_resizeHandler(event:Event):void
 		{
 			if(this.ignoreViewPortResizing ||
-				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))
+				(this._viewPort.width === this._lastViewPortWidth && this._viewPort.height === this._lastViewPortHeight))
 			{
 				return;
 			}

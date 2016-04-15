@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.DateTimeMode;
 	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 
@@ -69,7 +70,7 @@ package feathers.tests
 			//this test catches a potential runtime error with the internal year
 			//list not having a data descriptor
 			
-			this._spinner.editingMode = DateTimeSpinner.EDITING_MODE_DATE;
+			this._spinner.editingMode = DateTimeMode.DATE;
 			var value:Date = new Date(2016, 2, 24);
 			this._spinner.minimum = new Date(1960, 0, 1);
 			this._spinner.maximum = new Date(value.fullYear + 5, 0, 1);
@@ -85,7 +86,7 @@ package feathers.tests
 			//this test catches some runtime errors with the internal meridiem
 			//and hours lists not having data descriptors
 			
-			this._spinner.editingMode = DateTimeSpinner.EDITING_MODE_TIME;
+			this._spinner.editingMode = DateTimeMode.TIME;
 			this._spinner.locale = "fr_FR";
 			this._spinner.value = new Date(2016, 2, 24, 2);
 			this._spinner.validate();

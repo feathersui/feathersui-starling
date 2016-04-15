@@ -1659,6 +1659,14 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._defaultIcon !== null &&
+				this.currentIcon === this._defaultIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentIcon(this._defaultIcon);
+				this.currentIcon = null;
+			}
 			this._defaultIcon = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2023,6 +2031,15 @@ package feathers.controls
 		 */
 		public function setIconForState(state:String, icon:DisplayObject):void
 		{
+			var oldIcon:DisplayObject = this._stateToIcon[state] as DisplayObject;
+			if(oldIcon !== null &&
+				this.currentIcon === oldIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentIcon(oldIcon);
+				this.currentIcon = null;
+			}
 			if(icon !== null)
 			{
 				this._stateToIcon[state] = icon;
@@ -2448,19 +2465,11 @@ package feathers.controls
 			}
 			if(this.currentIcon !== oldIcon)
 			{
-				if(oldIcon)
+				if(oldIcon !== null)
 				{
-					if(oldIcon is IFeathersControl)
-					{
-						IFeathersControl(oldIcon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
-					}
-					if(oldIcon is IStateObserver)
-					{
-						IStateObserver(oldIcon).stateContext = null;
-					}
-					this.removeChild(oldIcon, false);
+					this.removeCurrentIcon(oldIcon);
 				}
-				if(this.currentIcon)
+				if(this.currentIcon !== null)
 				{
 					if(this.currentIcon is IStateObserver)
 					{
@@ -2478,6 +2487,29 @@ package feathers.controls
 						IFeathersControl(this.currentIcon).addEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
 					}
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentIcon(icon:DisplayObject):void
+		{
+			if(icon === null)
+			{
+				return;
+			}
+			if(icon is IFeathersControl)
+			{
+				IFeathersControl(icon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
+			}
+			if(icon is IStateObserver)
+			{
+				IStateObserver(icon).stateContext = null;
+			}
+			if(icon.parent === this)
+			{
+				this.removeChild(icon, false);
 			}
 		}
 

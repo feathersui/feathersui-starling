@@ -7,9 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.TrackScaleMode;
-	import feathers.controls.TrackScaleMode;
-	import feathers.controls.TrackScaleMode;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
@@ -210,30 +207,24 @@ package feathers.controls
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
 		/**
-		 * When the track is touched, the slider's thumb jumps directly to the
-		 * touch position, and the slider's <code>value</code> property is
-		 * updated to match as if the thumb were dragged to that position.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.TO_VALUE</code>.
 		 *
-		 * @see #trackInteractionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
 
 		/**
-		 * When the track is touched, the slider's thumb jumps directly to the
-		 * touch position, and the slider's <code>value</code> property is
-		 * updated to match as if the thumb were dragged to that position, and
-		 * the thumb may continue to be dragged until the touch ends.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.BY_PAGE</code>.
 		 *
-		 * @see #trackInteractionMode
-		 */
-		public static const TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG:String = "toValueWithDrag";
-
-		/**
-		 * When the track is touched, the <code>value</code> is increased or
-		 * decreased (depending on the location of the touch) by the value of
-		 * the <code>page</code> property.
-		 *
-		 * @see #trackInteractionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_INTERACTION_MODE_BY_PAGE:String = "byPage";
 
@@ -649,9 +640,12 @@ package feathers.controls
 
 		/**
 		 * If the <code>trackInteractionMode</code> property is set to
-		 * <code>Slider.TRACK_INTERACTION_MODE_BY_PAGE</code>, and the slider's
+		 * <code>TrackInteractionMode.BY_PAGE</code>, and the slider's
 		 * track is touched, and the thumb is shown, the slider value will be
-		 * incremented or decremented by the page value.
+		 * incremented or decremented by the page value. If the
+		 * <code>trackInteractionMode</code> property is set to
+		 * <code>TrackInteractionMode.TO_VALUE</code>, this property will be
+		 * ignored.
 		 *
 		 * <p>If this value is <code>NaN</code>, the <code>step</code> value
 		 * will be used instead. If the <code>step</code> value is zero, paging
@@ -931,28 +925,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _trackInteractionMode:String = TRACK_INTERACTION_MODE_TO_VALUE;
+		protected var _trackInteractionMode:String = TrackInteractionMode.TO_VALUE;
 
-		[Inspectable(type="String",enumeration="toValue,toValueWithDrag,byPage")]
+		[Inspectable(type="String",enumeration="toValue,byPage")]
 		/**
 		 * Determines how the slider's value changes when the track is touched.
 		 *
 		 * <p>If <code>showThumb</code> is set to <code>false</code>, the slider
 		 * will always behave as if <code>trackInteractionMode</code> has been
-		 * set to <code>Slider.TRACK_INTERACTION_MODE_TO_VALUE</code>. In other
+		 * set to <code>TrackInteractionMode.TO_VALUE</code>. In other
 		 * words, the value of <code>trackInteractionMode</code> may be ignored
 		 * if the thumb is hidden.</p>
 		 *
 		 * <p>In the following example, the slider's track interaction is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.trackScaleMode = Slider.TRACK_INTERACTION_MODE_BY_PAGE;</listing>
+		 * slider.trackScaleMode = TrackInteractionMode.BY_PAGE;</listing>
 		 *
-		 * @default Slider.TRACK_INTERACTION_MODE_TO_VALUE
+		 * @default TrackInteractionMode.TO_VALUE
 		 *
-		 * @see #TRACK_INTERACTION_MODE_TO_VALUE
-		 * @see #TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG
-		 * @see #TRACK_INTERACTION_MODE_BY_PAGE
+		 * @see feathers.controls.TrackInteractionMode#TO_VALUE
+		 * @see feathers.controls.TrackInteractionMode#BY_PAGE
 		 * @see #page
 		 */
 		public function get trackInteractionMode():String
@@ -2515,8 +2508,7 @@ package feathers.controls
 				{
 					return;
 				}
-				if(touch.phase === TouchPhase.MOVED &&
-					(!this._showThumb || this._trackInteractionMode === TRACK_INTERACTION_MODE_TO_VALUE_WITH_DRAG))
+				if(touch.phase === TouchPhase.MOVED)
 				{
 					touch.getLocation(this, HELPER_POINT);
 					this.value = this.locationToValue(HELPER_POINT);
@@ -2560,7 +2552,7 @@ package feathers.controls
 				this._touchValue = this.locationToValue(HELPER_POINT);
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-				if(this._showThumb && this._trackInteractionMode === TRACK_INTERACTION_MODE_BY_PAGE)
+				if(this._showThumb && this._trackInteractionMode === TrackInteractionMode.BY_PAGE)
 				{
 					this.adjustPage();
 					this.startRepeatTimer(this.adjustPage);

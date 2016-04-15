@@ -848,6 +848,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _lastLayoutHeight:Number = 0;
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -885,9 +890,11 @@ package feathers.controls.text
 					return;
 				}
 				this.layoutCharacters(HELPER_POINT);
-				this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
 				this._lastLayoutWidth = HELPER_POINT.x;
+				this._lastLayoutHeight = HELPER_POINT.y;
 			}
+			this.saveMeasurements(this._lastLayoutWidth, this._lastLayoutHeight,
+				this._lastLayoutWidth, this._lastLayoutHeight);
 		}
 
 		/**

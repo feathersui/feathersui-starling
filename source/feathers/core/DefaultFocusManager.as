@@ -105,7 +105,9 @@ package feathers.core
 				if(!this._nativeFocusTarget)
 				{
 					this._nativeFocusTarget = new NativeFocusTarget();
-					this._starling.nativeOverlay.addChild(_nativeFocusTarget);
+					//we must add it directly to the nativeStage because
+					//otherwise, the skipUnchangedFrames property won't work
+					this._starling.nativeStage.addChild(_nativeFocusTarget);
 				}
 				else
 				{

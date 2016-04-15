@@ -22,14 +22,13 @@ package feathers.controls
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 
 	import starling.core.Starling;
+	import starling.core.starling_internal;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.filters.FragmentFilter;
-	import starling.rendering.BatchToken;
 	import starling.rendering.Painter;
 
 	[DefaultProperty("mxmlContent")]
@@ -617,6 +616,10 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			if(this.currentBackgroundSkin !== null)
+			{
+				this.currentBackgroundSkin.starling_internal::setParent(null);
+			}
 			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
@@ -736,9 +739,13 @@ package feathers.controls
 			if(this.currentBackgroundSkin !== oldBackgroundSkin)
 			{
 				this.setRequiresRedraw();
-				
+				if(oldBackgroundSkin !== null)
+				{
+					oldBackgroundSkin.starling_internal::setParent(null);
+				}
 				if(this.currentBackgroundSkin !== null)
 				{
+					this.currentBackgroundSkin.starling_internal::setParent(this);
 					if(this.currentBackgroundSkin is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
@@ -772,7 +779,6 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;
-				this.setRequiresRedraw();
 			}
 		}
 
