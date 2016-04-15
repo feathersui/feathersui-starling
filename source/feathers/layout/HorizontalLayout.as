@@ -1983,6 +1983,13 @@ package feathers.layout
 					{
 						feathersItem = IFeathersControl(layoutItem);
 						var itemMinWidth:Number = feathersItem.minWidth;
+						if(itemMinWidth > remainingWidth)
+						{
+							//we try to respect the item's minimum width, but if
+							//it's larger than the remaining space, we need to
+							//force it to fit
+							itemMinWidth = remainingWidth;
+						}
 						if(itemWidth < itemMinWidth)
 						{
 							itemWidth = itemMinWidth;
