@@ -720,7 +720,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _cacheAsBitmap:Boolean = false;
+		private var _cacheAsBitmap:Boolean = true;
 
 		/**
 		 * If set to <code>true</code>, an internal bitmap representation of the
@@ -730,9 +730,9 @@ package feathers.controls
 		 * <p>In the following example, bitmap caching is disabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollText.cacheAsBitmap = true;</listing>
+		 * scrollText.cacheAsBitmap = false;</listing>
 		 *
-		 * @default false
+		 * @default true
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/DisplayObject.html#cacheAsBitmap Full description of flash.display.DisplayObject.cacheAsBitmap in Adobe's Flash Platform API Reference
 		 */
