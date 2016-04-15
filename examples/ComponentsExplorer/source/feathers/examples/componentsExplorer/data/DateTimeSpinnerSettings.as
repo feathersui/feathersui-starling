@@ -1,6 +1,6 @@
 package feathers.examples.componentsExplorer.data
 {
-	import feathers.controls.DateTimeSpinner;
+	import feathers.controls.DateTimeMode;
 
 	public class DateTimeSpinnerSettings
 	{
@@ -8,6 +8,6 @@ package feathers.examples.componentsExplorer.data
 		{
 		}
 		
-		public var editingMode:String = DateTimeSpinner.EDITING_MODE_DATE_AND_TIME;
+		public var editingMode:String = DateTimeMode.DATE_AND_TIME;
 	}
 }

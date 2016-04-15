@@ -55,7 +55,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var spinner:DateTimeSpinner = new DateTimeSpinner();
-	 * spinner.editingMode = DateTimeSpinner.EDITING_MODE_DATE;
+	 * spinner.editingMode = DateTimeMode.DATE;
 	 * spinner.minimum = new Date(1970, 0, 1);
 	 * spinner.maximum = new Date(2050, 11, 31);
 	 * spinner.value = new Date();
@@ -74,26 +74,35 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-date-time-spinner-list";
 		
 		/**
-		 * The <code>DateTimeSpinner</code> will allow both the date and the
-		 * time to be edited.
-		 * 
-		 * @see #editingMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE_AND_TIME</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const EDITING_MODE_DATE_AND_TIME:String = "dateAndTime";
 
 		/**
-		 * The <code>DateTimeSpinner</code> will allow only the time to be
-		 * edited.
-		 * 
-		 * @see #editingMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.TIME</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const EDITING_MODE_TIME:String = "time";
 
 		/**
-		 * The <code>DateTimeSpinner</code> will allow only the date to be
-		 * edited.
-		 * 
-		 * @see #editingMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const EDITING_MODE_DATE:String = "date";
 
@@ -467,16 +476,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _editingMode:String = EDITING_MODE_DATE_AND_TIME;
+		protected var _editingMode:String = DateTimeMode.DATE_AND_TIME;
 
 		/**
 		 * Determines which parts of the <code>Date</code> value may be edited.
 		 * 
-		 * @default DateTimeSpinner.EDITING_MODE_DATE_AND_TIME
+		 * @default feathers.controls.DateTimeMode.DATE_AND_TIME
 		 * 
-		 * @see #EDITING_MODE_DATE_AND_TIME
-		 * @see #EDITING_MODE_DATE
-		 * @see #EDITING_MODE_TIME
+		 * @see feathers.controls.DateTimeMode#DATE_AND_TIME
+		 * @see feathers.controls.DateTimeMode#DATE
+		 * @see feathers.controls.DateTimeMode#TIME
 		 */
 		public function get editingMode():String
 		{
@@ -796,9 +805,8 @@ package feathers.controls
 
 		/**
 		 * If not <code>null</code>, and the <code>editingMode</code> property
-		 * is set to <code>DateTimeSpinner.EDITING_MODE_DATE_AND_TIME</code> the
-		 * date matching today's current date will display this label instead
-		 * of the date.
+		 * is set to <code>DateTimeMode.DATE_AND_TIME</code> the date matching
+		 * today's current date will display this label instead of the date.
 		 *
 		 * <p>In the following example, the label for today is set:</p>
 		 *
@@ -979,7 +987,7 @@ package feathers.controls
 				this.createMeridiemList();
 			}
 			
-			if(this._editingMode == EDITING_MODE_DATE)
+			if(this._editingMode == DateTimeMode.DATE)
 			{
 				//does this locale show the month or the date first?
 				if(this._monthFirst)
@@ -1024,7 +1032,7 @@ package feathers.controls
 				this.yearsList = null;
 			}
 			
-			if(this._editingMode !== EDITING_MODE_DATE)
+			if(this._editingMode !== DateTimeMode.DATE)
 			{
 				return;
 			}
@@ -1051,7 +1059,7 @@ package feathers.controls
 				this.monthsList = null;
 			}
 
-			if(this._editingMode !== EDITING_MODE_DATE)
+			if(this._editingMode !== DateTimeMode.DATE)
 			{
 				return;
 			}
@@ -1081,7 +1089,7 @@ package feathers.controls
 				this.datesList = null;
 			}
 
-			if(this._editingMode !== EDITING_MODE_DATE)
+			if(this._editingMode !== DateTimeMode.DATE)
 			{
 				return;
 			}
@@ -1110,7 +1118,7 @@ package feathers.controls
 				this.hoursList = null;
 			}
 
-			if(this._editingMode === EDITING_MODE_DATE)
+			if(this._editingMode === DateTimeMode.DATE)
 			{
 				return;
 			}
@@ -1135,7 +1143,7 @@ package feathers.controls
 				this.minutesList = null;
 			}
 
-			if(this._editingMode === EDITING_MODE_DATE)
+			if(this._editingMode === DateTimeMode.DATE)
 			{
 				return;
 			}
@@ -1189,7 +1197,7 @@ package feathers.controls
 				this.dateAndTimeDatesList = null;
 			}
 
-			if(this._editingMode !== EDITING_MODE_DATE_AND_TIME)
+			if(this._editingMode !== DateTimeMode.DATE_AND_TIME)
 			{
 				return;
 			}
@@ -1217,7 +1225,7 @@ package feathers.controls
 				var dateIndex:int = dateTimePattern.indexOf("d");
 				this._monthFirst = monthIndex < dateIndex;
 				//figure out if this locale uses am/pm or 24-hour format
-				this._showMeridiem = this._editingMode !== EDITING_MODE_DATE && dateTimePattern.indexOf("a") >= 0;
+				this._showMeridiem = this._editingMode !== DateTimeMode.DATE && dateTimePattern.indexOf("a") >= 0;
 				if(this._showMeridiem)
 				{
 					this._formatter.setDateTimePattern("a");
@@ -1230,12 +1238,12 @@ package feathers.controls
 					this._formatter.setDateTimePattern(dateTimePattern);
 				}
 			}
-			if(this._editingMode === EDITING_MODE_DATE)
+			if(this._editingMode === DateTimeMode.DATE)
 			{
 				this._localeMonthNames = this._formatter.getMonthNames(DateTimeNameStyle.FULL);
 				this._localeWeekdayNames = null;
 			}
-			else if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+			else if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
 				this._localeMonthNames = this._formatter.getMonthNames(DateTimeNameStyle.SHORT_ABBREVIATION);
 				this._localeWeekdayNames = this._formatter.getWeekdayNames(DateTimeNameStyle.LONG_ABBREVIATION);
@@ -1270,7 +1278,7 @@ package feathers.controls
 			var oldIgnoreListChanges:Boolean = this._ignoreListChanges;
 			this._ignoreListChanges = true;
 			
-			if(this._editingMode === EDITING_MODE_DATE)
+			if(this._editingMode === DateTimeMode.DATE)
 			{
 				var yearsCollection:ListCollection = this.yearsList.dataProvider;
 				if(yearsCollection)
@@ -1299,7 +1307,7 @@ package feathers.controls
 				var totalMS:Number = this._maximum.time - this._minimum.time;
 				var totalDays:int = totalMS / MS_PER_DAY;
 
-				if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+				if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 				{
 					var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
 					if(dateAndTimeDatesCollection)
@@ -1455,7 +1463,7 @@ package feathers.controls
 					this._maxDate = DAYS_IN_MONTH[currentMonth];
 				}
 			}
-			if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
 				if(currentYear === this._minYear && currentMonth === this._minimum.month &&
 					currentDate === this._minimum.date)
@@ -1586,7 +1594,7 @@ package feathers.controls
 				//we want to be able to see years outside the range between
 				//minimum and maximum, even if we cannot select them. otherwise,
 				//it'll look weird to loop back to the beginning or end.
-				if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+				if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 				{
 					//in this editing mode, the date is only controlled by one
 					//spinner list, that increments by day. we shouldn't need to
@@ -1602,7 +1610,7 @@ package feathers.controls
 			}
 			//if there's no minimum, we need to generate something that is
 			//arbitrary, but acceptable for most needs
-			else if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+			else if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
 				//in this editing mode, the date is only controlled by one
 				//spinner list, that increments by day. we shouldn't need to
@@ -1626,7 +1634,7 @@ package feathers.controls
 			}
 			if(this._maximum)
 			{
-				if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+				if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 				{
 					this._listMaxYear = this._maximum.fullYear + 1;
 				}
@@ -1635,7 +1643,7 @@ package feathers.controls
 					this._listMaxYear = this._maximum.fullYear + 10;
 				}
 			}
-			else if(this._editingMode === EDITING_MODE_DATE_AND_TIME)
+			else if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
 				HELPER_DATE.time = this._minimum.time;
 				this._listMaxYear = HELPER_DATE.fullYear + 1;

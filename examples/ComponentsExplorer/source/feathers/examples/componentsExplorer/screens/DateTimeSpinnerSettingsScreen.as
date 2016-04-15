@@ -1,15 +1,13 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.DateTimeSpinner;
+	import feathers.controls.DateTimeMode;
 	import feathers.controls.Header;
 	import feathers.controls.List;
-	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.DateTimeSpinnerSettings;
-	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
@@ -55,9 +53,9 @@ package feathers.examples.componentsExplorer.screens
 			this._editingModePicker = new PickerList();
 			this._editingModePicker.dataProvider = new ListCollection(
 			[
-				DateTimeSpinner.EDITING_MODE_DATE_AND_TIME,
-				DateTimeSpinner.EDITING_MODE_DATE,
-				DateTimeSpinner.EDITING_MODE_TIME,
+				DateTimeMode.DATE_AND_TIME,
+				DateTimeMode.DATE,
+				DateTimeMode.TIME,
 			]);
 			this._editingModePicker.selectedItem = this.settings.editingMode;
 			this._editingModePicker.addEventListener(Event.CHANGE, editingModePicker_changeHandler);

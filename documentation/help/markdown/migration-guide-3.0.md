@@ -431,7 +431,11 @@ Deprecated API							| How to Migrate
 
 ### `DateTimeSpinner`
 
-No APIs are deprecated.
+Deprecated API									| How to Migrate
+----------------------------------------------- | -----------------------------
+`DateTimeSpinner.EDITING_MODE_DATE`				| [`DateTimeMode.DATE`](../api-reference/feathers/controls/DateTimeMode.html#DATE)
+`DateTimeSpinner.EDITING_MODE_TIME`				| [`DateTimeMode.TIME`](../api-reference/feathers/controls/DateTimeMode.html#TIME)
+`DateTimeSpinner.EDITING_MODE_DATE_AND_TIME`	| [`DateTimeMode.DATE_AND_TIME`](../api-reference/feathers/controls/DateTimeMode.html#DATE_AND_TIME)
 
 ## `DefaultGroupedListItemRenderer`
 
@@ -1020,3 +1024,4 @@ Find 												| Replace
 `\w+\.TRACK_LAYOUT_MODE_(MIN_MAX|ON_OFF)`			| `TrackLayoutMode.SPLIT`
 `\w+\.TRACK_SCALE_MODE_(\w+)`						| `TrackScaleMode.$1`
 `\w+\.TRACK_INTERACTION_MODE_(\w+)`					| `TrackInteractionMode.$1`
+`\w+\.EDITING_MODE_(\w+)`							| `DateTimeMode.$1`
