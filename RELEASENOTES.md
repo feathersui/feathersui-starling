@@ -2,11 +2,121 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.0.0-alpha - March 2016
+## 3.0.0-beta - April 2016
 
 See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about how to upgrade to Feathers 3.0.
 
 * Support for Starling Framework 2.0
+* Minimum runtime version is now Flash Player 19 and AIR 19.
+* All Components: now automatically calculate minimum dimensions when they are not set explicitly. These values may be used by some layouts, such as when specifying percentWidth and percentHeight.
+* Examples: updated to use ScreenDensityScaleFactorManager.
+* Examples: updated to use Starling's new skipUnchangedFrames property.
+* Example Themes: updated to scale based on contentScaleFactor instead of Capabilities.screenDPI.
+* Example Themes: Redesigned using Animate CC, and exported as sprite sheet. Find links to original FLA files in Feathers Help.
+* Migrated shared constants to a single class. Example: HORIZONTAL_ALIGN_LEFT, HORIZONTAL_ALIGN_CENTER, and HORIZONTAL_ALIGN_RIGHT are now available on the feathers.layout.HorizontalAlign class. See migration guide for details and regular expressions for Find/Replace.
+* BasicButton: new superclass of Button that has only a background skin. Useful as for skinning components like a Slider's thumb or tracks that don't need an icon or label.
+* BitmapFontTextEditor: fixed issue where selectionAnchorIndex was not updated in certain situations.
+* BitmapFontTextRenderer: fixed issue where explicit dimensions were ignored in measurement.
+* BitmapFontTextRenderer: replaced snapToPixels property with pixelSnapping property to match Starling 2.0 naming convention.
+* BitmapFontTextRenderer: added support for offsetX and offsetY properties from starling.text.BitmapFont.
+* BitmapFontTextRenderer: optimized measurement of width by skipping calculations if maximum is larger than last width.
+* BottomDrawerPopUpContentManager: added overlayFactory property to customize the modal overlay.
+* Button: deprecated stateToSkinFunction. Replaced by feathers.skins.ImageSkin.
+* Button: deprecated upLabelProperties, hoverLabelProperties, downLabelProperties, disabledLabelProperties. Replaced by setting font styles on text renderer in labelFactory. Text renderers now support multiple font styles for different states.
+* Button: states are defined in feathers.controls.ButtonState.
+* Button: fixes issue where some icons or skins would not be disposed when button is disposed.
+* ButtonGroup: fixed issue where changing isEnabled in data provider to false and then true would not re-enable a button.
+* ButtonGroup: added buttonReleaser property that works similarly to buttonInitializer, but for cleaning up a tab.
+* Callout: deprecated supportedDirections property, and replaced it with supportedPositions property that accepts a Vector.<String> of constants defined by the RelativePosition class. Allows more flexibility in the preferred order of callout positions.
+* Callout: added horizontalAlign and verticalAlign properties to customize alignment of callout relative to its origin.
+* CalloutPopUpContentManager: added overlayFactory property to customize the modal overlay.
+* DateTimeSpinner: added itemRendererFactory property to allow the item renderer to be customized. Must return a DefaultListItemRenderer or a subclass.
+* DateTimeSpinner: improved measurement with DateTimeMode.DATE by using longest month name as typical item.
+* DateTimeSpinner: fixed issue where runtime error could be thrown if changing range or locale.
+* DateTimeSpinner: fixed issue where changing locale would not update displayed month names.
+* DateTimeSpinner: fixed issue where year range would be wrong after changing minimum.
+* DisplayListWatcher: removed class. Please migrate to new themes, or find this class in feathers-compat library.
+* FeathersControl: setSizeInternal() is deprecated and replaced by saveMeasurements(), which includes the ability to set the minimum width and minimum height.
+* FeathersControl: added toolTip property to display a tool-tip if the ToolTipManager is enabled.
+* FeathersControl: added explicitWidth, explicitHeight, explicitMinWidth, and explicitMinHeight. Will return a Number when set, or NaN if the component has auto-sized.
+* FeathersControl: if component implements IStateContext and focusIndicatorSkin is IStateObserver, passes self to stateContext property.
+* FeathersControl: added resetStyleProvider() function to allow a component's style provider to be set back to the default. Useful when changing to a different theme.
+* FeathersControl: fixed issue where setting width after scaleX (or height after scaleY) would result in incorrect final dimensions.
+* GroupedList: added itemToItemRenderer(), headerDataToHeaderRenderer(), and footerDataToFooterRenderer() functions, to get a renderer for specific data (if one is available).
+* GroupedList: fixed issue where a runtime error could be thrown when the dataProvider property is null.
+* GroupedList: fixed issue where a runtime error could be thrown when adding or removing an item and using first, last, or single item renderer.
+* HorizontalLayout: fixed issue where percentWidth/percentHeight values greater than 100 were not clamped.
+* HorizontalSpinnerLayout: added repeatItems property that may be set to false to disable repeating items with infinite scrolling.
+* HorizontalSpinnerLayout: fixed issue where items could disappear when using gap property.
+* ImageLoader: fixed issue where setting source to null when using a TextureCache would not release the texture from the cache.
+* ImageLoader: replaced snapToPixels property with pixelSnapping property to match Starling 2.0 naming convention.
+* ImageLoader: added scale9Grid and tileGrid properties.
+* ImageLoader: fixed issue where ScaleMode.NONE was not respected during auto-sizing.
+* ImageSkin: new display object that supports multiple textures and colors for different states.
+* KeyToSelect: new utility class that allows selection with keyboard, similar to TapToSelect.
+* KeyToTrigger: new utility class that allows trigger event with keyboard, similar to TapToTrigger.
+* LayoutGroup: if component is root when initialized, defaults to AutoSizeMode.STAGE.
+* List: added itemToItemRenderer() function, to get an item renderer for a specific item (if one is available).
+* List: fixed issue where a runtime error could be thrown when the dataProvider property is null.
+* OldFadeNewSlideTransitionManager: removed class. Use StackScreenNavigator with push and pop transitions instead, or find this class in feathers-compat.
+* Scale3Image: removed class. Use starling.display.Image with scale9Grid.
+* Scale3Textures: removed class. Use starling.display.Image with scale9Grid, or find this class in feathers-compat library.
+* Scale9Image: removed class. Use starling.display.Image with scale9Grid.
+* Scale9Textures: removed class. Use starling.display.Image with scale9Grid, or find this class in feathers-compat library.
+* ScreenDensityScaleFactorManager: on desktop, screen density isn't used because native stage contentsScaleFactor has the proper behavior.
+* ScreenFadeTransitionManager: removed class. Use StackScreenNavigator with push and pop transitions instead, or find this class in feathers-compat.
+* ScreenNavigator: fixed issue where an event with the same name as a member of the screen could result in a runtime error if as3-signals weren't available.
+* ScreenSlidingStackTransitionManager: removed class. Use StackScreenNavigator with push and pop transitions instead, or find this class in feathers-compat.
+* ScrollContainer: if component is root when initialized, defaults to AutoSizeMode.STAGE.
+* Scroller: fixed issue where scrolling would still be active after removing from stage and adding again.
+* Scroller: fixed issue where the page index calculation would fail if the width or height of the component were not an integer.
+* ScrollText: switched back default value for cacheAsBitmap to false because it seems to have started hurting performance again.
+* Slider: TrackInteractionMode.TO_VALUE now allows dragging during TouchPhase.MOVED.
+* SpinnerList: fixed issue where the selectionOverlaySkin could be resized incorrectly if the page size is larger than the list's dimensions.
+* SpinnerList: can no longer be completely deselected if data provider is not empty.
+* StackScreenNavigator: fixed issue where an event with the same name as a member of the screen could result in a runtime error if as3-signals weren't available.
+* StageTextTextEditor: better measurement on desktop and when testing a mobile app in ADL to account for the internal TextField gutter. More consistent across all platforms.
+* StageTextTextEditor: simplified font size calculation.
+* StandardIcons: removed class that was deprecated. Use DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN to display a drill down accessory in an item renderer.
+* StateValueSelector: removed class. Use ImageSkin, or find this class in feathers-compat library.
+* StateToggleValueSelector: removed class. Use ImageSkin, or find this class in feathers-compat library.
+* TabBar: fixed issue where changing isEnabled in data provider to false and then true would not re-enable a tab.
+* TabBar: added tabReleaser property that works similarly to tabInitializer, but for cleaning up a tab.
+* TapToSelect: fixed issue where runtime error could be thrown if removed from stage between TouchPhase.BEGAN and TouchPhase.ENDED.
+* TapToTrigger: fixed issue where runtime error could be thrown if removed from stage between TouchPhase.BEGAN and TouchPhase.ENDED.
+* TextArea: added errorString property to display an error in a TextCallout when the component is focused.
+* TextArea: added TextInputState.ERROR to allow skins to change appearance when the errorString is set.
+* TextArea: states are defined in feathers.controls.TextInputState.
+* TextArea: fixed issue where set focus on touch did not account for vertical scroll position.
+* TextBlockTextRenderer: better calculation of ascent and descent to avoid the issue where accents and other diacritical marks were being cut off at the top. Also, results in better vertical centering of the text.
+* TextBlockTextRenderer: optimized measurement of width by skipping calculations if maximum is larger than last width.
+* TextBlockTextRenderer: added support for input method editors (IMEs) to improve compatibility with more languages.
+* TextBlockTextRenderer: replaced snapToPixels property with pixelSnapping property to match Starling 2.0 naming convention.
+* TextBlockTextRenderer: fixed issue where runtime error could be thrown when attempting to create BitmapData with negative dimensions.
+* TextBlockTextRenderer: optimized performance of measurement calculation by avoiding unecessary alignment.
+* TextCallout: new component that conveniently displays a message in a callout.
+* TextFieldTextRenderer: replaced snapToPixels property with pixelSnapping property to match Starling 2.0 naming convention.
+* TextInput: fixed issue where the position of the text editor when using VerticalAlign.MIDDLE was not rounded to the nearest pixel.
+* TextInput: added errorString property to display an error in a TextCallout when the component is focused.
+* TextInput: added TextInputState.ERROR to allow skins to change appearance when the errorString is set.
+* TextInput: states are defined in feathers.controls.TextInputState.
+* TextInput: fixes issue where some icons or skins would not be disposed when input is disposed.
+* TiledImage: removed class. Use starling.display.Image with tileGrid.
+* TimeLabel: fixed issue where displayed text was incorrectly when time is greater than one hour.
+* ToggleButton: deprecated defaultSelectedLabelProperties, selectedUpLabelProperties, selectedHoverLabelProperties, selectedDownLabelProperties, selectedDisabledLabelProperties. Replaced by setting font styles on text renderer in labelFactory. Text renderers now support multiple font styles for different states.
+* TokenList: optimized value getter to avoid repeated calls to Vector join().
+* ToolTipManager: added support for displaying tool tips on mouse hover. Must use desktop theme or opt-in using setEnabledForStage().
+* VerticalCenteredPopUpContentManager: added overlayFactory property to customize the modal overlay.
+* VerticalLayout: fixed issue where percentWidth/percentHeight values greater than 100 were not clamped.
+* VerticalSpinnerLayout: added repeatItems property that may be set to false to disable repeating items with infinite scrolling.
+* VerticalSpinnerLayout: fixed issue where items could disappear when using gap property.
+* VideoPlayer: fixed issue where runtime error was thrown when setting netConnectionFactory.
+* VideoPlayer: improved support for streaming video from server.
+* VideoPlayer: dispatches FeathersEventType.ERROR when NetStream.Play.NoSupportedTrackFound is dispatched by NetStream.
+
+### 3.0.0 API Changes
+
+Please see the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about what has been deprecated or removed in Feathers 3.0.
 
 ## 2.3.0 - December 2015
 
