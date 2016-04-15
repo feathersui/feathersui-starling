@@ -13,7 +13,7 @@ First, let's create a `DateTimeSpinner` control, set up its editing mode and its
 
 ``` code
 var spinner:DateTimeSpinner = new DateTimeSpinner();
-spinner.editingMode = DateTimeSpinner.EDITING_MODE_DATE;
+spinner.editingMode = DateTimeMode.DATE;
 spinner.minimum = new Date(1970, 0, 1);
 spinner.maximum = new Date(2050, 11, 31);
 spinner.value = new Date(2015, 10, 31);
@@ -24,9 +24,9 @@ The [`value`](../api-reference/feathers/controls/DateTimeSpinner.html#value) pro
 
 The [`editingMode`](../api-reference/feathers/controls/DateTimeSpinner.html#editingMode) property determines how the date and time are displayed.
 
-* [`DateTimeSpinner.EDITING_MODE_DATE`](../api-reference/feathers/controls/DateTimeSpinner.html#EDITING_MODE_DATE) displays only the date, without the time. The month and day are displayed in order based on the current locale.
-* [`DateTimeSpinner.EDITING_MODE_TIME`](../api-reference/feathers/controls/DateTimeSpinner.html#EDITING_MODE_TIME) displays only the time, without the date. The time is displayed in either 12-hour or 24-hour format based on the current locale.
-* [`DateTimeSpinner.EDITING_MODE_DATE_AND_TIME`](../api-reference/feathers/controls/DateTimeSpinner.html#EDITING_MODE_DATE_AND_TIME) displays both the date and the time. As with the previous mode, the current locale determines formatting.
+* [`DateTimeMode.DATE`](../api-reference/feathers/controls/DateTimeMode.html#DATE) displays only the date, without the time. The month and day are displayed in order based on the current locale.
+* [`DateTimeMode.TIME`](../api-reference/feathers/controls/DateTimeMode.html#TIME) displays only the time, without the date. The time is displayed in either 12-hour or 24-hour format based on the current locale.
+* [`DateTimeMode.DATE_AND_TIME`](../api-reference/feathers/controls/DateTimeMode.html#DATE_AND_TIME) displays both the date and the time. As with the previous mode, the current locale determines formatting.
 
 Add a listener to the [`Event.CHANGE`](../api-reference/feathers/controls/DateTimeSpinner.html#event:change) event to know when the `value` property changes:
 
