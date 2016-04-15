@@ -1,4 +1,4 @@
-# Feathers UI 3.0.0-alpha [![Build Status](https://travis-ci.org/BowlerHatLLC/feathers.svg?branch=master)](https://travis-ci.org/BowlerHatLLC/feathers)
+# Feathers UI 3.0.0-beta
 
 ---
 
@@ -25,7 +25,7 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 ## Minimum Requirements
 
 * Adobe AIR or Adobe Flash Player 19.0
-* [Starling Framework 2.0](http://forum.starling-framework.org/topic/preview-starling-20)
+* Starling Framework 2.0
 
 ## Downloads
 
