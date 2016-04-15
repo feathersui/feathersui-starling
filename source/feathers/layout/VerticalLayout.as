@@ -2154,6 +2154,13 @@ package feathers.layout
 					{
 						feathersItem = IFeathersControl(layoutItem);
 						var itemMinHeight:Number = feathersItem.minHeight;
+						if(itemMinHeight > remainingHeight)
+						{
+							//we try to respect the item's minimum height, but
+							//if it's larger than the remaining space, we need
+							//to force it to fit
+							itemMinHeight = remainingHeight;
+						}
 						if(itemHeight < itemMinHeight)
 						{
 							itemHeight = itemMinHeight;
