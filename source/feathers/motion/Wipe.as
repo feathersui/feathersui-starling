@@ -140,7 +140,6 @@ class WipeTween extends Tween
 		var mask:Quad;
 		if(newScreen)
 		{
-			this._temporaryNewScreenParent = new Sprite();
 			mask = new Quad(1, 1, 0xff00ff);
 			//the initial dimensions cannot be 0 or there's a runtime error,
 			mask.width = 0;
@@ -161,37 +160,34 @@ class WipeTween extends Tween
 				}
 				mask.width = newScreen.width;
 			}
-			this._temporaryNewScreenParent.mask = mask;
-			newScreen.parent.addChild(this._temporaryNewScreenParent);
-			var delegate:RenderDelegate = new RenderDelegate(newScreen);
-			delegate.alpha = newScreen.alpha;
-			delegate.blendMode = newScreen.blendMode;
-			delegate.rotation = newScreen.rotation;
-			delegate.scaleX = newScreen.scaleX;
-			delegate.scaleY = newScreen.scaleY;
-			this._temporaryNewScreenParent.addChild(delegate);
+			this._newScreenDelegate = new RenderDelegate(newScreen);
+			this._newScreenDelegate.alpha = newScreen.alpha;
+			this._newScreenDelegate.blendMode = newScreen.blendMode;
+			this._newScreenDelegate.rotation = newScreen.rotation;
+			this._newScreenDelegate.scaleX = newScreen.scaleX;
+			this._newScreenDelegate.scaleY = newScreen.scaleY;
+			this._newScreenDelegate.mask = mask;
+			newScreen.parent.addChild(this._newScreenDelegate);
+			newScreen.parent.addChild(mask);
 			newScreen.visible = false;
 			this._savedNewScreen = newScreen;
-			//the clipRect setter may have made a clone
-			mask = Quad(this._temporaryNewScreenParent.mask);
 		}
 		if(oldScreen)
 		{
-			this._temporaryOldScreenParent = new Sprite();
 			mask = new Quad(1, 1, 0xff00ff);
 			//the initial dimensions cannot be 0 or there's a runtime error,
 			//and these values might be 0
 			mask.width = oldScreen.width;
 			mask.height = oldScreen.height;
-			this._temporaryOldScreenParent.mask = mask;
-			delegate = new RenderDelegate(oldScreen);
-			delegate.alpha = oldScreen.alpha;
-			delegate.blendMode = oldScreen.blendMode;
-			delegate.rotation = oldScreen.rotation;
-			delegate.scaleX = oldScreen.scaleX;
-			delegate.scaleY = oldScreen.scaleY;
-			this._temporaryOldScreenParent.addChild(delegate);
-			oldScreen.parent.addChild(this._temporaryOldScreenParent);
+			this._oldScreenDelegate = new RenderDelegate(oldScreen);
+			this._oldScreenDelegate.alpha = oldScreen.alpha;
+			this._oldScreenDelegate.blendMode = oldScreen.blendMode;
+			this._oldScreenDelegate.rotation = oldScreen.rotation;
+			this._oldScreenDelegate.scaleX = oldScreen.scaleX;
+			this._oldScreenDelegate.scaleY = oldScreen.scaleY;
+			this._oldScreenDelegate.mask = mask;
+			oldScreen.parent.addChild(this._oldScreenDelegate);
+			oldScreen.parent.addChild(mask);
 			oldScreen.visible = false;
 			this._savedOldScreen = oldScreen;
 		}
@@ -218,7 +214,7 @@ class WipeTween extends Tween
 				this.animate("y", yOffset);
 				this.animate("height", oldScreen.height - yOffset);
 			}
-			if(this._temporaryNewScreenParent)
+			if(this._newScreenDelegate)
 			{
 				this.onUpdate = this.updateNewScreen;
 			}
@@ -258,8 +254,8 @@ class WipeTween extends Tween
 		Starling.juggler.add(this);
 	}
 
-	private var _temporaryOldScreenParent:Sprite;
-	private var _temporaryNewScreenParent:Sprite;
+	private var _oldScreenDelegate:RenderDelegate;
+	private var _newScreenDelegate:RenderDelegate;
 	private var _savedOldScreen:DisplayObject;
 	private var _savedNewScreen:DisplayObject;
 	private var _savedXOffset:Number;
@@ -269,7 +265,7 @@ class WipeTween extends Tween
 	private function updateNewScreen():void
 	{
 		var oldScreenClipRect:Quad = Quad(this.target);
-		var newScreenClipRect:Quad = Quad(this._temporaryNewScreenParent.mask);
+		var newScreenClipRect:Quad = Quad(this._newScreenDelegate.mask);
 		if(this._savedXOffset < 0)
 		{
 			newScreenClipRect.x = oldScreenClipRect.width;
@@ -292,15 +288,17 @@ class WipeTween extends Tween
 
 	private function cleanupTween():void
 	{
-		if(this._temporaryOldScreenParent)
+		if(this._oldScreenDelegate)
 		{
-			this._temporaryOldScreenParent.removeFromParent(true);
-			this._temporaryOldScreenParent = null;
+			this._oldScreenDelegate.mask.removeFromParent(true);
+			this._oldScreenDelegate.removeFromParent(true);
+			this._oldScreenDelegate = null;
 		}
-		if(this._temporaryNewScreenParent)
+		if(this._newScreenDelegate)
 		{
-			this._temporaryNewScreenParent.removeFromParent(true);
-			this._temporaryNewScreenParent = null;
+			this._newScreenDelegate.mask.removeFromParent(true);
+			this._newScreenDelegate.removeFromParent(true);
+			this._newScreenDelegate = null;
 		}
 		if(this._savedOldScreen)
 		{
