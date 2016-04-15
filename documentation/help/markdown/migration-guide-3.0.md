@@ -694,8 +694,8 @@ Deprecated API							| How to Migrate
 --------------------------------------- | -------------------------------------
 `ScrollBar.DIRECTION_HORIZONTAL`		| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
 `ScrollBar.DIRECTION_VERTICAL`			| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
-`ScrollBar.TRACK_LAYOUT_MODE_SINGLE`	| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
-`ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX`	| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+`ScrollBar.TRACK_LAYOUT_MODE_SINGLE`	| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE)
+`ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX`	| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT)
 
 ### `ScrollContainer`
 
@@ -773,14 +773,16 @@ Deprecated API								| How to Migrate
 
 ### `Slider`
 
-Deprecated API							| How to Migrate
---------------------------------------- | -------------------------------------
-`Slider.DIRECTION_HORIZONTAL`			| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
-`Slider.DIRECTION_VERTICAL`				| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
-`Slider.TRACK_LAYOUT_MODE_SINGLE`		| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
-`Slider.TRACK_LAYOUT_MODE_MIN_MAX`		| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
-`Slider.TRACK_SCALE_MODE_DIRECTIONAL`	| [`TrackScaleMode.DIRECTIONAL`](../api-reference/feathers/layout/TrackLayoutMode.html#DIRECTIONAL)
-`Slider.TRACK_SCALE_MODE_EXACT_FIT`		| [`TrackScaleMode.EXACT_FIT`](../api-reference/feathers/layout/TrackLayoutMode.html#EXACT_FIT)
+Deprecated API								| How to Migrate
+------------------------------------------- | ---------------------------------
+`Slider.DIRECTION_HORIZONTAL`				| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`Slider.DIRECTION_VERTICAL`					| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`Slider.TRACK_LAYOUT_MODE_SINGLE`			| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE)
+`Slider.TRACK_LAYOUT_MODE_MIN_MAX`			| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT)
+`Slider.TRACK_SCALE_MODE_DIRECTIONAL`		| [`TrackScaleMode.DIRECTIONAL`](../api-reference/feathers/controls/TrackScaleMode.html#DIRECTIONAL)
+`Slider.TRACK_SCALE_MODE_EXACT_FIT`			| [`TrackScaleMode.EXACT_FIT`](../api-reference/feathers/controls/TrackScaleMode.html#EXACT_FIT)
+`Slider.TRACK_INTERACTION_MODE_TO_VALUE`	| [`TrackInteractionMode.TO_VALUE`](../api-reference/feathers/controls/TrackInteractionMode.html#TO_VALUE)
+`Slider.TRACK_INTERACTION_MODE_BY_PAGE`		| [`TrackInteractionMode.BY_PAGE`](../api-reference/feathers/controls/TrackInteractionMode.html#BY_PAGE)
 
 ### `SoundPlayer`
 
@@ -881,8 +883,8 @@ Deprecated API									| How to Migrate
 
 Deprecated API								| How to Migrate
 ------------------------------------------- | ---------------------------------
-`ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`		| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/layout/TrackLayoutMode.html#SINGLE)
-`ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`		| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/layout/TrackLayoutMode.html#SPLIT)
+`ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`		| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE)
+`ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`		| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT)
 
 ### `WebView`
 
@@ -1014,3 +1016,7 @@ Find 												| Replace
 `(?:TextInput|TextArea).STATE_(\w+)`				| `TextInputState.$1`
 `(?:Button|ToggleButton|Check|Radio).STATE_(\w+)`	| `ButtonState.$1`
 `\w+ItemRenderer.STATE_(\w+)`						| `ButtonState.$1`
+`\w+\.TRACK_LAYOUT_MODE_SINGLE`						| `TrackLayoutMode.SINGLE`
+`\w+\.TRACK_LAYOUT_MODE_(MIN_MAX|ON_OFF)`			| `TrackLayoutMode.SPLIT`
+`\w+\.TRACK_SCALE_MODE_(\w+)`						| `TrackScaleMode.$1`
+`\w+\.TRACK_INTERACTION_MODE_(\w+)`					| `TrackInteractionMode.$1`

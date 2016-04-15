@@ -93,20 +93,24 @@ package feathers.media
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
 		/**
-		 * When the track is touched, the slider's thumb jumps directly to the
-		 * touch position, and the slider's <code>value</code> property is
-		 * updated to match as if the thumb were dragged to that position.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.TO_VALUE</code>.
 		 *
-		 * @see #trackInteractionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
 
 		/**
-		 * When the track is touched, the <code>value</code> is increased or
-		 * decreased (depending on the location of the touch) by the value of
-		 * the <code>page</code> property.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.BY_PAGE</code>.
 		 *
-		 * @see #trackInteractionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TRACK_INTERACTION_MODE_BY_PAGE:String = "byPage";
 
