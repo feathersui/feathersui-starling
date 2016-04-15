@@ -43,6 +43,12 @@ package feathers.utils.skins
 		if(measureSkin !== null)
 		{
 			var skinMinWidth:Number = parentExplicitMinWidth;
+			//for some reason, if we do the !== check on a local variable right
+			//here, compiling with the flex 4.6 SDK will throw a VerifyError
+			//for a stack overflow.
+			//we could change the !== check back to isNaN() instead, but
+			//isNaN() can allocate an object that needs garbage collection.
+			compilerWorkaround = skinMinWidth;
 			if(skinMinWidth !== skinMinWidth || //isNaN
 				skinExplicitMinWidth > skinMinWidth)
 			{
@@ -50,6 +56,7 @@ package feathers.utils.skins
 			}
 			measureSkin.minWidth = skinMinWidth;
 			var skinMinHeight:Number = parentExplicitMinHeight;
+			compilerWorkaround = skinMinHeight;
 			if(skinMinHeight !== skinMinHeight || //isNaN
 				skinExplicitMinHeight > skinMinHeight)
 			{
@@ -59,3 +66,5 @@ package feathers.utils.skins
 		}
 	}
 }
+
+var compilerWorkaround:Object;

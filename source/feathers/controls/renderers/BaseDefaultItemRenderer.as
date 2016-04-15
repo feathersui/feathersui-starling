@@ -3841,14 +3841,12 @@ package feathers.controls.renderers
 				if(hasPreviousItem)
 				{
 					var adjustedAccessoryGap:Number = this._accessoryGap;
-					//for some reason, if we don't call a function right here,
-					//compiling with the flex 4.6 SDK will throw a VerifyError
+					//for some reason, if we do the !== check on a local variable right
+					//here, compiling with the flex 4.6 SDK will throw a VerifyError
 					//for a stack overflow.
 					//we could change the !== check back to isNaN() instead, but
-					//isNaN() can allocate an object, so we should call a different
-					//function without allocation.
-					this.doNothing();
-					if(adjustedAccessoryGap !== adjustedAccessoryGap) //isNaN
+					//isNaN() can allocate an object that needs garbage collection.
+					if(this._accessoryGap !== this._accessoryGap) //isNaN
 					{
 						adjustedAccessoryGap = this._gap;
 					}
@@ -3942,14 +3940,12 @@ package feathers.controls.renderers
 				if(hasPreviousItem)
 				{
 					var adjustedAccessoryGap:Number = this._accessoryGap;
-					//for some reason, if we don't call a function right here,
-					//compiling with the flex 4.6 SDK will throw a VerifyError
+					//for some reason, if we do the !== check on a local variable right
+					//here, compiling with the flex 4.6 SDK will throw a VerifyError
 					//for a stack overflow.
 					//we could change the !== check back to isNaN() instead, but
-					//isNaN() can allocate an object, so we should call a different
-					//function without allocation.
-					this.doNothing();
-					if(adjustedAccessoryGap !== adjustedAccessoryGap) //isNaN
+					//isNaN() can allocate an object that needs garbage collection.
+					if(this._accessoryGap !== this._accessoryGap) //isNaN
 					{
 						adjustedAccessoryGap =  this._gap;
 					}
@@ -3974,13 +3970,6 @@ package feathers.controls.renderers
 			}
 			return height;
 		}
-
-		/**
-		 * @private
-		 * This function is here to work around a bug in the Flex 4.6 SDK
-		 * compiler. For explanation, see the places where it gets called.
-		 */
-		protected function doNothing():void {}
 
 		/**
 		 * Updates the renderer to display the item's data. Override this
