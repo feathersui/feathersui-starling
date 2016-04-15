@@ -22,7 +22,6 @@ package feathers.controls
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 
 	import starling.core.Starling;
 	import starling.core.starling_internal;
@@ -30,7 +29,6 @@ package feathers.controls
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.filters.FragmentFilter;
-	import starling.rendering.BatchToken;
 	import starling.rendering.Painter;
 
 	/**
