@@ -126,3 +126,72 @@ When sub-components require a factory, we can define it in the MXML using `<fx:C
 ```
 
 In the MXML above, we create a `DefaultListItemRenderer` and set its `labelField` as an inline component.
+
+### `<fx:Component>` versus `factoryFromInstance()`
+
+When using `<fx:Component>`, we may need to call functions defined in the main `<fx:Script>` element in the MXML file. Because `<fx:Component>` is considered a different class, we need to use the implicit `outerDocument` property to access the main scope of the MXML file.
+
+In the following example, we have a `PanelScreen` with a `Button` in its header. When the button is triggered, we want to call a function defined outside of the `<fx:Component>` element. This requires `outerDocument`:
+
+``` xml
+<f:PanelScreen xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:f="library://ns.feathersui.com/mxml">
+    <f:headerFactory>
+        <fx:Component>
+            <f:Header>
+                <f:leftItems>
+                    <fx:Vector type="starling.display.DisplayObject">
+                        <f:Button label="Back"
+                            triggered="outerDocument.goBack()"/>
+                    </fx:Vector>
+                </f:leftItems>
+            </f:Header>
+        </fx:Component>
+    </f:headerFactory>
+    <fx:Script>
+    <![CDATA[
+        public function goBack():void
+        {
+            this.dispatchEvent( Event.COMPLETE );
+        }
+    ]]>
+    </fx:Script>
+</f:PanelScreen>
+```
+
+When using `outerDocument`, we only have access to `public` APIs. Trying to call a `private` or `protected` function will result in an error.
+
+Perhaps we'd prefer to make that `goBack()` function `private`. We can do that by using `factoryFromInstance()` instead of `<fx:Component>`.
+
+``` xml
+<f:PanelScreen xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:f="library://ns.feathersui.com/mxml"
+    headerFactory="{factoryFromInstance(customHeader)}">
+    <fx:Declarations>
+        <f:Header id="customHeader">
+            <f:leftItems>
+                <fx:Vector type="starling.display.DisplayObject">
+                    <f:Button label="Back"
+                        triggered="goBack()"/>
+                </fx:Vector>
+            </f:leftItems>
+        </f:Header>
+    </fx:Declarations>
+    <fx:Script>
+    <![CDATA[
+        private function goBack():void
+        {
+            this.dispatchEvent( Event.COMPLETE );
+        }
+    ]]>
+    </fx:Script>
+</f:PanelScreen>
+```
+
+We can instantiate the `Header` component inside an `<fx:Declarations>` element. This will create the instance, but it will not be added to the display list. We give it an `id` so that it is assigned to a variable.
+
+Then, when we set the `headerFactory` property, we pass `customHeader` to `factoryFromInstance()`, and it will automatically create a factory that returns the `Header` instance that we created in `<fx:Declarations>`.
+
+Since the `Header` is defined inside the scope of our MXML file, we don't need to use `outerDocument`. We can call a `private` function directly.
+
+<aside class="info">Passing a component to `factoryFromInstance()` only works when one instance is needed. In this case, a `PanelScreen` has only one header. If multiple instances are needed, such as how a `List` displays more than one item renderer, then `<fx:Component>` must be used.</aside>
