@@ -23,6 +23,9 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
 	 * Dispatched when the pop-up list is opened.
@@ -526,6 +529,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _triggered:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isOpenListPending:Boolean = false;
 
 		/**
@@ -672,6 +680,7 @@ package feathers.controls
 			this.list.styleNameList.add(listStyleName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
+			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
 
@@ -886,8 +895,28 @@ package feathers.controls
 			{
 				return;
 			}
-			this.closeList();
-			this.selectRange(this.text.length, this.text.length);
+			this._triggered = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_touchHandler(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(this.list);
+			if(touch === null)
+			{
+				return;
+			}
+			if(touch.phase === TouchPhase.BEGAN)
+			{
+				this._triggered = false;
+			}
+			if(touch.phase === TouchPhase.ENDED && this._triggered)
+			{
+				this.closeList();
+				this.selectRange(this.text.length, this.text.length);
+			}
 		}
 
 		/**

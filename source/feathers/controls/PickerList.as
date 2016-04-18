@@ -1759,7 +1759,10 @@ package feathers.controls
 			}
 			this._triggered = true;
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected function list_touchHandler(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(this.list);

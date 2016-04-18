@@ -40,7 +40,7 @@ package feathers.display
 		 */
 		public function RenderDelegate(target:DisplayObject)
 		{
-			this._target = target;
+			this.target = target;
 		}
 
 		/**
@@ -61,7 +61,12 @@ package feathers.display
 		 */
 		public function set target(value:DisplayObject):void
 		{
+			if(this._target === value)
+			{
+				return;
+			}
 			this._target = value;
+			this.setRequiresRedraw();
 		}
 
 		/**
