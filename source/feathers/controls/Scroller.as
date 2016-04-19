@@ -3319,6 +3319,7 @@ package feathers.controls
 			if(!measure)
 			{
 				this._viewPort.validate();
+				this.refreshScrollValues();
 				return;
 			}
 			var loopCount:int = 0;
