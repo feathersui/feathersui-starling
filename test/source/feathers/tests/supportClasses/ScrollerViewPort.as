@@ -260,5 +260,27 @@ package feathers.tests.supportClasses
 		{
 			this._requiresMeasurementOnScroll = value;
 		}
+
+		private var _resizeOnScroll:Boolean = false;
+
+		public function get resizeOnScroll():Boolean
+		{
+			return this._resizeOnScroll;
+		}
+
+		public function set resizeOnScroll(value:Boolean):void
+		{
+			this._resizeOnScroll = value;
+		}
+		
+		override protected function draw():void
+		{
+			if(this._resizeOnScroll)
+			{
+				super.width += 1;
+				super.height += 1;
+			}
+			super.draw();
+		}
 	}
 }

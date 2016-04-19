@@ -179,5 +179,30 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The minHeight of the Scroller was not calculated correctly when measureViewPort is false.",
 				0, this._scroller.minHeight);
 		}
+
+		[Test]
+		public function testMaxScrollPositionChangeWhenViewPortResizesOnScroll():void
+		{
+			//the explicit dimensions of the view port are saved when the
+			//viewPort property is set, so let's be sure they get saved.
+			this._scroller.viewPort = null;
+			this._viewPort.width = VIEW_PORT_WIDTH;
+			this._viewPort.height = VIEW_PORT_HEIGHT;
+			this._viewPort.height = VIEW_PORT_HEIGHT;
+			this._viewPort.minWidth = VIEW_PORT_MIN_WIDTH;
+			this._viewPort.minHeight = VIEW_PORT_MIN_HEIGHT;
+			this._viewPort.resizeOnScroll = true;
+			this._scroller.viewPort = this._viewPort;
+			this._scroller.validate();
+			var oldMaxHSP:Number = this._scroller.maxHorizontalScrollPosition;
+			var oldMaxVSP:Number = this._scroller.maxVerticalScrollPosition;
+			this._scroller.verticalScrollPosition++;
+			this._scroller.validate();
+
+			Assert.assertTrue("The maxHorizontalScrollPosition of the Scroller did not change correctly when view port width changed during scrolling.",
+				oldMaxHSP !== this._scroller.maxHorizontalScrollPosition);
+			Assert.assertTrue("The maxVerticalScrollPosition of the Scroller did not change correctly when view port height changed during scrolling.",
+				oldMaxVSP !== this._scroller.maxVerticalScrollPosition);
+		}
 	}
 }
