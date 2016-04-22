@@ -83,7 +83,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const IOS_DPI:Number = 132;
+		protected static const IPAD_1X_DPI:Number = 132;
+
+		/**
+		 * @private
+		 */
+		protected static const IPHONE_1X_DPI:Number = 163;
 
 		/**
 		 * @private
@@ -1732,7 +1737,12 @@ package feathers.controls
 			{
 				return 0;
 			}
-			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IOS_DPI) / Starling.current.contentScaleFactor;
+			
+			if(DeviceCapabilities.dpi % IPAD_1X_DPI === 0)
+			{
+				return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPAD_1X_DPI) / Starling.current.contentScaleFactor;
+			}
+			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPHONE_1X_DPI) / Starling.current.contentScaleFactor;
 		}
 
 		/**
