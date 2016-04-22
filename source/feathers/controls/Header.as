@@ -1545,11 +1545,6 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = maxContentHeight;
-				if(this.currentBackgroundSkin !== null &&
-					this.currentBackgroundSkin.height > newHeight)
-				{
-					newHeight = this.currentBackgroundSkin.height;
-				}
 				newHeight += this._paddingTop + this._paddingBottom;
 				if(extraPaddingTop > 0)
 				{
@@ -1559,6 +1554,11 @@ package feathers.controls
 						newHeight = this._explicitMinHeight;
 					}
 					newHeight += extraPaddingTop;
+				}
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
+				{
+					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
 			
@@ -1586,6 +1586,16 @@ package feathers.controls
 			if(needsMinHeight)
 			{
 				newMinHeight = maxContentHeight;
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(extraPaddingTop > 0)
+				{
+					//account for the minimum height before adding the padding
+					if(newMinHeight < this._explicitMinHeight)
+					{
+						newMinHeight = this._explicitMinHeight;
+					}
+					newMinHeight += extraPaddingTop;
+				}
 				if(this.currentBackgroundSkin !== null)
 				{
 					if(measureSkin !== null)
@@ -1599,16 +1609,6 @@ package feathers.controls
 					{
 						newMinHeight = this.currentBackgroundSkin.height;
 					}
-				}
-				newMinHeight += this._paddingTop + this._paddingBottom;
-				if(extraPaddingTop > 0)
-				{
-					//account for the minimum height before adding the padding
-					if(newMinHeight < this._explicitMinHeight)
-					{
-						newMinHeight = this._explicitMinHeight;
-					}
-					newMinHeight += extraPaddingTop;
 				}
 			}
 
