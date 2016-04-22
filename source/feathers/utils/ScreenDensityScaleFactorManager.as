@@ -107,7 +107,12 @@ package feathers.utils
 		 */
 		protected function calculateScaleFactor():Number
 		{
-			if(SystemUtil.isDesktop)
+			//if DeviceCapabilities.dpi has been customized, we assume that a
+			//mobile device is being simulated. since Animate CC doesn't let you
+			//customize Capabilities.screenDPI, and SystemUtil.isDesktop
+			//incorrectly returns true when testing in Animate CC, this is a
+			//hacky way to make it work for those who prefer to use Animate CC.
+			if(SystemUtil.isDesktop && DeviceCapabilities.dpi === Capabilities.screenDPI)
 			{
 				//Starling will handle nativeStage.contentsScaleFactor
 				return 1;
