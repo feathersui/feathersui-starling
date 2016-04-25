@@ -952,19 +952,19 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
+			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth;
+			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight;
 			var distributedHeight:Number;
-			if(this._distributeHeights)
+			if(!needsExplicitHeight && this._distributeHeights)
 			{
-				//distribute the height evenly among all items.
 				//we need to calculate this before validateItems() because it
 				//needs to be passed in there.
-				distributedHeight = this.calculateDistributedHeight(items, explicitHeight, minHeight, maxHeight);
+				distributedHeight = this.calculateDistributedHeight(items, explicitHeight, minHeight, maxHeight, false);
 			}
-			var hasDistributedHeight:Boolean = distributedHeight === distributedHeight; //!isNaN
 
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeHeights ||
 				this._horizontalAlign != HorizontalAlign.JUSTIFY ||
-				explicitWidth !== explicitWidth) //isNaN
+				needsExplicitWidth) //isNaN
 			{
 				//in some cases, we may need to validate all of the items so
 				//that we can use their dimensions below.
@@ -973,6 +973,13 @@ package feathers.layout
 					maxWidth - this._paddingLeft - this._paddingRight,
 					distributedHeight);
 			}
+
+			if(needsExplicitHeight && this._distributeHeights)
+			{
+				//if we didn't calculate this before, we need to do it now.
+				distributedHeight = this.calculateDistributedHeight(items, explicitHeight, minHeight, maxHeight, true);
+			}
+			var hasDistributedHeight:Boolean = distributedHeight === distributedHeight; //!isNaN
 
 			if(!this._useVirtualLayout)
 			{
@@ -2025,10 +2032,11 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function calculateDistributedHeight(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number):Number
+		protected function calculateDistributedHeight(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number, measureItems:Boolean):Number
 		{
 			var itemCount:int = items.length;
-			if(explicitHeight !== explicitHeight) //isNaN
+			if(measureItems &&
+				explicitHeight !== explicitHeight) //isNaN
 			{
 				var maxItemHeight:Number = 0;
 				for(var i:int = 0; i < itemCount; i++)

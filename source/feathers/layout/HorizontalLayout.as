@@ -893,19 +893,19 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
+			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth;
+			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight;
 			var distributedWidth:Number;
-			if(this._distributeWidths)
+			if(!needsExplicitWidth && this._distributeWidths)
 			{
-				//distribute the width evenly among all items.
 				//we need to calculate this before validateItems() because it
 				//needs to be passed in there.
-				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth);
+				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth, false);
 			}
-			var hasDistributedWidth:Boolean = distributedWidth === distributedWidth; //!isNaN
-
+			
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeWidths ||
 				this._verticalAlign != VerticalAlign.JUSTIFY ||
-				explicitHeight !== explicitHeight) //isNaN
+				needsExplicitHeight) //isNaN
 			{
 				//in some cases, we may need to validate all of the items so
 				//that we can use their dimensions below.
@@ -914,6 +914,13 @@ package feathers.layout
 					maxHeight - this._paddingTop - this._paddingBottom,
 					distributedWidth);
 			}
+
+			if(needsExplicitWidth && this._distributeWidths)
+			{
+				//if we didn't calculate this before, we need to do it now.
+				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth, false);
+			}
+			var hasDistributedWidth:Boolean = distributedWidth === distributedWidth; //!isNaN
 
 			if(!this._useVirtualLayout)
 			{
@@ -1832,10 +1839,11 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function calculateDistributedWidth(items:Vector.<DisplayObject>, explicitWidth:Number, minWidth:Number, maxWidth:Number):Number
+		protected function calculateDistributedWidth(items:Vector.<DisplayObject>, explicitWidth:Number, minWidth:Number, maxWidth:Number, measureItems:Boolean):Number
 		{
 			var itemCount:int = items.length;
-			if(explicitWidth !== explicitWidth) //isNaN
+			if(measureItems &&
+				explicitWidth !== explicitWidth) //isNaN
 			{
 				var maxItemWidth:Number = 0;
 				for(var i:int = 0; i < itemCount; i++)
