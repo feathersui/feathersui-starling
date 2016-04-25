@@ -211,6 +211,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _lastGlobalContentScaleFactor:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _measuredHeight:Number = 0;
 
 		/**
@@ -1286,7 +1291,9 @@ package feathers.controls.text
 				{
 					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-					if(globalScaleX != this._lastGlobalScaleX || globalScaleY != this._lastGlobalScaleY)
+					if(globalScaleX != this._lastGlobalScaleX ||
+						globalScaleY != this._lastGlobalScaleY ||
+						Starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
 					{
 						//the snapshot needs to be updated because the scale has
 						//changed since the last snapshot was taken.
@@ -2035,6 +2042,7 @@ package feathers.controls.text
 			{
 				this._lastGlobalScaleX = globalScaleX;
 				this._lastGlobalScaleY = globalScaleY;
+				this._lastGlobalContentScaleFactor = scaleFactor;
 			}
 			this._needsNewTexture = false;
 		}
