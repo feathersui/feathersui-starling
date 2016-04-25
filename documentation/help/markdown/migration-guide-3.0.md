@@ -505,6 +505,10 @@ Deprecated API							| How to Migrate
 --------------------------------------- | --------------------------------
 `Drawers.AUTO_SIZE_MODE_STAGE`			| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
 `Drawers.AUTO_SIZE_MODE_CONTENT`		| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+`Drawers.DOCK_MODE_LANDSCAPE`			| [`Orientation.LANDSCAPE`](../api-reference/feathers/layout/Orientation.html#LANDSCAPE)
+`Drawers.DOCK_MODE_PORTRAIT`			| [`Orientation.PORTRAIT`](../api-reference/feathers/layout/Orientation.html#PORTRAIT)
+`Drawers.DOCK_MODE_BOTH`				| [`Orientation.BOTH`](../api-reference/feathers/layout/Orientation.html#BOTH)
+`Drawers.DOCK_MODE_NONE`				| [`Orientation.NONE`](../api-reference/feathers/layout/Orientation.html#NONE)
 
 ### `GroupedList`
 
@@ -1025,3 +1029,4 @@ Find 												| Replace
 `\w+\.TRACK_SCALE_MODE_(\w+)`						| `TrackScaleMode.$1`
 `\w+\.TRACK_INTERACTION_MODE_(\w+)`					| `TrackInteractionMode.$1`
 `\w+\.EDITING_MODE_(\w+)`							| `DateTimeMode.$1`
+`\w+\.DOCK_MODE_(\w+)`								| `Orientation.$1`

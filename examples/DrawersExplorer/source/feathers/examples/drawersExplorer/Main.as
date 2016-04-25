@@ -4,6 +4,7 @@ package feathers.examples.drawersExplorer
 	import feathers.examples.drawersExplorer.skins.DrawersExplorerTheme;
 	import feathers.examples.drawersExplorer.views.ContentView;
 	import feathers.examples.drawersExplorer.views.DrawerView;
+	import feathers.layout.Orientation;
 
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -76,28 +77,28 @@ package feathers.examples.drawersExplorer
 			this._drawers.topDrawer = topDrawer;
 			//by default, a drawer is not docked. it may be opened and closed
 			//based on user interaction or events dispatched by the content.
-			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_NONE;
+			this._drawers.topDrawerDockMode = Orientation.NONE;
 
 			var rightDrawer:DrawerView = new DrawerView("Right");
 			rightDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_LEFT_AND_RIGHT_DRAWER);
 			rightDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			rightDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			this._drawers.rightDrawer = rightDrawer;
-			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_NONE;
+			this._drawers.rightDrawerDockMode = Orientation.NONE;
 
 			var bottomDrawer:DrawerView = new DrawerView("Bottom");
 			bottomDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_TOP_AND_BOTTOM_DRAWER);
 			bottomDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			bottomDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			this._drawers.bottomDrawer = bottomDrawer;
-			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_NONE;
+			this._drawers.bottomDrawerDockMode = Orientation.NONE;
 
 			var leftDrawer:DrawerView = new DrawerView("Left");
 			leftDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_LEFT_AND_RIGHT_DRAWER);
 			leftDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			leftDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			this._drawers.leftDrawer = leftDrawer;
-			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_NONE;
+			this._drawers.leftDrawerDockMode = Orientation.NONE;
 
 			this.addChild(this._drawers);
 		}
@@ -105,13 +106,13 @@ package feathers.examples.drawersExplorer
 		private function drawer_dockNoneHandler(event:Event):void
 		{
 			var drawer:DrawerView = DrawerView(event.currentTarget);
-			this.changeDockMode(drawer, Drawers.DOCK_MODE_NONE);
+			this.changeDockMode(drawer, Orientation.NONE);
 		}
 
 		private function drawer_dockBothHandler(event:Event):void
 		{
 			var drawer:DrawerView = DrawerView(event.currentTarget);
-			this.changeDockMode(drawer, Drawers.DOCK_MODE_BOTH);
+			this.changeDockMode(drawer, Orientation.BOTH);
 		}
 		
 		private function contentView_openDrawerChangeHandler(event:Event):void

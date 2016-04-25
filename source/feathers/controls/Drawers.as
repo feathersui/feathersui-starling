@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Orientation;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -179,61 +180,46 @@ package feathers.controls
 		public static var globalStyleProvider:IStyleProvider;
 
 		/**
-		 * The drawer will be docked in portrait orientation, but it must be
-		 * opened and closed explicitly in landscape orientation.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.PORTRAIT</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_PORTRAIT:String = "portrait";
 
 		/**
-		 * The drawer will be docked in landscape orientation, but it must be
-		 * opened and closed explicitly in portrait orientation.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.LANDSCAPE</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_LANDSCAPE:String = "landscape";
 
 		/**
-		 * The drawer will be docked in all orientations.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.BOTH</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_BOTH:String = "both";
 
 		/**
-		 * The drawer won't be docked in any orientation. It must be opened and
-		 * closed explicitly in all orientations.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.NONE</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_NONE:String = "none";
 
@@ -612,7 +598,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.topDrawerDivider = quad;
-		 * drawers.topDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.topDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -648,7 +634,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _topDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _topDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -660,14 +646,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.topDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.topDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #topDrawer
 		 */
 		public function get topDrawerDockMode():String
@@ -795,11 +781,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._topDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._topDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._topDrawerDockMode == DOCK_MODE_NONE)
+			if(this._topDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -811,9 +797,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._topDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._topDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._topDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._topDrawerDockMode === Orientation.PORTRAIT;
 		}
 
 		/**
@@ -903,7 +889,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.rightDrawerDivider = quad;
-		 * drawers.rightDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.rightDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -939,7 +925,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _rightDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _rightDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -951,14 +937,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.rightDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.rightDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #rightDrawer
 		 */
 		public function get rightDrawerDockMode():String
@@ -1086,11 +1072,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._rightDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._rightDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._rightDrawerDockMode == DOCK_MODE_NONE)
+			if(this._rightDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -1102,9 +1088,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._rightDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._rightDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._rightDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._rightDrawerDockMode === Orientation.PORTRAIT;
 		}
 
 		/**
@@ -1194,7 +1180,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.bottomDrawerDivider = quad;
-		 * drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.bottomDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -1230,7 +1216,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _bottomDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _bottomDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -1242,14 +1228,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.bottomDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #bottomDrawer
 		 */
 		public function get bottomDrawerDockMode():String
@@ -1377,11 +1363,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._bottomDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._bottomDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._bottomDrawerDockMode == DOCK_MODE_NONE)
+			if(this._bottomDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -1393,9 +1379,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._bottomDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._bottomDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._bottomDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._bottomDrawerDockMode === Orientation.PORTRAIT;
 		}
 
 		/**
@@ -1485,7 +1471,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.leftDrawerDivider = quad;
-		 * drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.leftDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -1521,7 +1507,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _leftDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _leftDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -1533,14 +1519,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.leftDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.leftDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #leftDrawer
 		 */
 		public function get leftDrawerDockMode():String
@@ -1668,11 +1654,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._leftDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._leftDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._leftDrawerDockMode == DOCK_MODE_NONE)
+			if(this._leftDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -1684,9 +1670,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._leftDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._leftDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._leftDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._leftDrawerDockMode == Orientation.PORTRAIT;
 		}
 
 		/**

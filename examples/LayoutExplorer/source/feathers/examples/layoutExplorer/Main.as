@@ -23,6 +23,7 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.WaterfallLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.WaterfallLayoutSettingsScreen;
+	import feathers.layout.Orientation;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
 	import feathers.motion.Slide;
@@ -180,7 +181,7 @@ package feathers.examples.layoutExplorer
 					this._menu.addEventListener(eventType, mainMenuEventHandler);
 				}
 				this.leftDrawer = this._menu;
-				this.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+				this.leftDrawerDockMode = Orientation.BOTH;
 			}
 			else
 			{

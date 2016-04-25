@@ -39,6 +39,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.examples.componentsExplorer.screens.WebViewScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
+	import feathers.layout.Orientation;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
 	import feathers.motion.Slide;
@@ -291,7 +292,7 @@ package feathers.examples.componentsExplorer
 				}
 				this._menu.height = 200;
 				this.leftDrawer = this._menu;
-				this.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+				this.leftDrawerDockMode = Orientation.BOTH;
 			}
 			else
 			{
