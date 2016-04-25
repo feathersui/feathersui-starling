@@ -37,6 +37,9 @@ package
 			this.gotoAndStop(2);
 			this.graphics.clear();
 
+			//simulating iPhone Retina
+			DeviceCapabilities.dpi = 326;
+
 			Starling.multitouchEnabled = true;
 			var MainType:Class = getDefinitionByName("feathers.examples.gallery.Main") as Class;
 			this._starling = new Starling(MainType, this.stage, new Rectangle(0, 0, 960, 640));

@@ -1,5 +1,7 @@
 package
 {
+	import feathers.system.DeviceCapabilities;
+
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -34,6 +36,9 @@ package
 		{
 			this.gotoAndStop(2);
 			this.graphics.clear();
+
+			//simulating iPhone Retina
+			DeviceCapabilities.dpi = 326;
 			
 			Starling.multitouchEnabled = true;
 			var MainType:Class = getDefinitionByName("feathers.examples.youtube.Main") as Class;

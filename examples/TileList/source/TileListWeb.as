@@ -1,5 +1,7 @@
 package
 {
+	import feathers.system.DeviceCapabilities;
+
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -33,6 +35,9 @@ package
 		private function start():void
 		{
 			this.gotoAndStop(2);
+
+			//simulating iPhone Retina
+			DeviceCapabilities.dpi = 326;
 
 			var MainType:Class = getDefinitionByName("feathers.examples.tileList.Main") as Class;
 			this._starling = new Starling(MainType, this.stage, new Rectangle(0, 0, 960, 640));
