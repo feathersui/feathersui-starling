@@ -3337,7 +3337,14 @@ package feathers.controls
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
-				mask.width = -this._content.x;
+				if(this.isLeftDrawerDocked)
+				{
+					mask.width = -this._leftDrawer.x;
+				}
+				else
+				{
+					mask.width = -this._content.x;
+				}
 				mask.height = this.actualHeight;
 				this._rightDrawer.mask = mask;
 			}
@@ -3367,7 +3374,14 @@ package feathers.controls
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
 				mask.width = this.actualWidth;
-				mask.height = -this._content.y;
+				if(this.isTopDrawerDocked)
+				{
+					mask.height = -this._topDrawer.y;
+				}
+				else
+				{
+					mask.height = -this._content.y;
+				}
 				this._bottomDrawer.mask = mask;
 			}
 		}
@@ -4171,58 +4185,6 @@ package feathers.controls
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
 				var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
 				var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
-				if(this._topDrawer)
-				{
-					var mask:Quad = this._topDrawer.mask as Quad;
-					if(mask)
-					{
-						mask.height = this._content.y;
-					}
-				}
-				if(this._rightDrawer)
-				{
-					mask = this._rightDrawer.mask as Quad;
-					if(mask)
-					{
-						var rightClipWidth:Number = -this._content.x;
-						if(isLeftDrawerDocked)
-						{
-							rightClipWidth += this.leftDrawer.width;
-							if(this._leftDrawerDivider)
-							{
-								rightClipWidth += this._leftDrawerDivider.width;
-							}
-						}
-						mask.x = this._rightDrawer.width - rightClipWidth;
-						mask.width = rightClipWidth;
-					}
-				}
-				if(this._bottomDrawer)
-				{
-					mask = this._bottomDrawer.mask as Quad;
-					if(mask)
-					{
-						var bottomClipHeight:Number = -this._content.y;
-						if(isTopDrawerDocked)
-						{
-							bottomClipHeight += this.topDrawer.height;
-							if(this._topDrawerDivider)
-							{
-								bottomClipHeight += this._topDrawerDivider.height;
-							}
-						}
-						mask.y = this._bottomDrawer.height - bottomClipHeight;
-						mask.height = bottomClipHeight;
-					}
-				}
-				if(this._leftDrawer)
-				{
-					mask = this._leftDrawer.mask as Quad;
-					if(mask)
-					{
-						mask.width = this._content.x;
-					}
-				}
 				var contentX:Number = this._content.x;
 				var contentY:Number = this._content.y;
 				if(isTopDrawerDocked)
@@ -4294,6 +4256,50 @@ package feathers.controls
 						this._leftDrawer.x = contentX - this._leftDrawer.width;
 					}
 					this._leftDrawer.y = contentY;
+				}
+				if(this._topDrawer !== null)
+				{
+					var mask:Quad = this._topDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						mask.height = contentY;
+					}
+				}
+				if(this._rightDrawer !== null)
+				{
+					mask = this._rightDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						var rightClipWidth:Number = -contentX;
+						if(isLeftDrawerDocked)
+						{
+							rightClipWidth = -this._leftDrawer.x;
+						}
+						mask.x = this._rightDrawer.width - rightClipWidth;
+						mask.width = rightClipWidth;
+					}
+				}
+				if(this._bottomDrawer !== null)
+				{
+					mask = this._bottomDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						var bottomClipHeight:Number = -contentY;
+						if(isTopDrawerDocked)
+						{
+							bottomClipHeight = -this._topDrawer.y;
+						}
+						mask.y = this._bottomDrawer.height - bottomClipHeight;
+						mask.height = bottomClipHeight;
+					}
+				}
+				if(this._leftDrawer !== null)
+				{
+					mask = this._leftDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						mask.width = contentX;
+					}
 				}
 			}
 
