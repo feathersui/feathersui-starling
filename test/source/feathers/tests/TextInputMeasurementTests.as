@@ -13,8 +13,8 @@ package feathers.tests
 	{
 		private static const SMALL_BACKGROUND_WIDTH:Number = 10;
 		private static const SMALL_BACKGROUND_HEIGHT:Number = 12;
-		private static const LARGE_BACKGROUND_WIDTH:Number = 100;
-		private static const LARGE_BACKGROUND_HEIGHT:Number = 110;
+		private static const LARGE_BACKGROUND_WIDTH:Number = 200;
+		private static const LARGE_BACKGROUND_HEIGHT:Number = 210;
 		private static const COMPLEX_BACKGROUND_WIDTH:Number = 54;
 		private static const COMPLEX_BACKGROUND_HEIGHT:Number = 55;
 		private static const COMPLEX_BACKGROUND_MIN_WIDTH:Number = 38;
@@ -340,6 +340,26 @@ package feathers.tests
 				COMPLEX_ICON_MIN_WIDTH, this.input.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the TextInput was not calculated correctly based on the complex icon minHeight.",
 				COMPLEX_ICON_MIN_HEIGHT, this.input.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeWithSimpleBackgroundPaddingAndGap():void
+		{
+			this.input.paddingTop = PADDING_TOP;
+			this.input.paddingRight = PADDING_RIGHT;
+			this.input.paddingBottom = PADDING_BOTTOM;
+			this.input.paddingLeft = PADDING_LEFT;
+			this.input.gap = GAP;
+			this.addLargeSimpleBackground();
+			this.input.validate();
+			Assert.assertStrictlyEquals("The width of the TextInput was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_WIDTH, this.input.width);
+			Assert.assertStrictlyEquals("The height of the TextInput was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_HEIGHT, this.input.height);
+			Assert.assertStrictlyEquals("The minWidth of the TextInput was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_WIDTH, this.input.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the TextInput was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_HEIGHT, this.input.minHeight);
 		}
 	}
 }
