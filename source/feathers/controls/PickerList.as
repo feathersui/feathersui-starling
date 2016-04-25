@@ -1111,33 +1111,41 @@ package feathers.controls
 		 */
 		public function itemToLabel(item:Object):String
 		{
-			if(this._labelFunction != null)
+			if(this._labelFunction !== null)
 			{
 				var labelResult:Object = this._labelFunction(item);
 				if(labelResult is String)
 				{
 					return labelResult as String;
 				}
-				return labelResult.toString();
+				else if(labelResult !== null)
+				{
+					return labelResult.toString();
+				}
 			}
-			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
+			else if(this._labelField !== null && item !== null && item.hasOwnProperty(this._labelField))
 			{
 				labelResult = item[this._labelField];
 				if(labelResult is String)
 				{
 					return labelResult as String;
 				}
-				return labelResult.toString();
+				else if(labelResult !== null)
+				{
+					return labelResult.toString();
+				}
 			}
 			else if(item is String)
 			{
 				return item as String;
 			}
-			else if(item)
+			else if(item !== null)
 			{
+				//we need to use strict equality here because the data can be
+				//non-strictly equal to null
 				return item.toString();
 			}
-			return "";
+			return null;
 		}
 
 		/**
