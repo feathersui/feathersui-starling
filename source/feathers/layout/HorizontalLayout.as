@@ -893,6 +893,16 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
+			var distributedWidth:Number;
+			if(this._distributeWidths)
+			{
+				//distribute the width evenly among all items.
+				//we need to calculate this before validateItems() because it
+				//needs to be passed in there.
+				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth);
+			}
+			var hasDistributedWidth:Boolean = distributedWidth === distributedWidth; //!isNaN
+
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeWidths ||
 				this._verticalAlign != VerticalAlign.JUSTIFY ||
 				explicitHeight !== explicitHeight) //isNaN
@@ -902,7 +912,7 @@ package feathers.layout
 				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom,
 					minHeight - this._paddingTop - this._paddingBottom,
 					maxHeight - this._paddingTop - this._paddingBottom,
-					explicitWidth);
+					distributedWidth);
 			}
 
 			if(!this._useVirtualLayout)
@@ -911,14 +921,6 @@ package feathers.layout
 				//if available.
 				this.applyPercentWidths(items, explicitWidth, minWidth, maxWidth);
 			}
-
-			var distributedWidth:Number;
-			if(this._distributeWidths)
-			{
-				//distribute the width evenly among all items
-				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth);
-			}
-			var hasDistributedWidth:Boolean = distributedWidth === distributedWidth; //!isNaN
 
 			//this section prepares some variables needed for the following loop
 			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
