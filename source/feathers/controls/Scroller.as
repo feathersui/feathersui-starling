@@ -4246,7 +4246,7 @@ package feathers.controls
 		protected function showOrHideChildren():void
 		{
 			var childCount:int = this.numRawChildrenInternal;
-			if(this._touchBlocker)
+			if(this._touchBlocker !== null && this._touchBlocker.parent !== null)
 			{
 				//keep scroll bars below the touch blocker, if it exists
 				childCount--;
