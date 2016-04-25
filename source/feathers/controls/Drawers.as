@@ -2907,10 +2907,18 @@ package feathers.controls
 					if(isTopDrawerDocked)
 					{
 						rightDrawerHeight -= topDrawerHeight;
+						if(this._topDrawerDivider)
+						{
+							rightDrawerHeight -= this._topDrawerDivider.height;
+						}
 					}
 					if(isBottomDrawerDocked)
 					{
 						rightDrawerHeight -= bottomDrawerHeight;
+						if(this._bottomDrawerDivider)
+						{
+							rightDrawerHeight -= this._bottomDrawerDivider.height;
+						}
 					}
 					rightDrawerY = this._content.y;
 				}
@@ -2986,10 +2994,18 @@ package feathers.controls
 					if(isTopDrawerDocked)
 					{
 						leftDrawerHeight -= topDrawerHeight;
+						if(this._topDrawerDivider)
+						{
+							leftDrawerHeight -= this._topDrawerDivider.height;
+						}
 					}
 					if(isBottomDrawerDocked)
 					{
 						leftDrawerHeight -= bottomDrawerHeight;
+						if(this._bottomDrawerDivider)
+						{
+							leftDrawerHeight -= this._bottomDrawerDivider.height;
+						}
 					}
 					leftDrawerY = this._content.y;
 				}
