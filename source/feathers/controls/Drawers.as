@@ -2463,7 +2463,7 @@ package feathers.controls
 			{
 				this.refreshDrawerStates();
 			}
-			if(layoutInvalid || selectedInvalid)
+			if(sizeInvalid || layoutInvalid || selectedInvalid)
 			{
 				this.refreshOverlayState();
 			}
@@ -3508,10 +3508,10 @@ package feathers.controls
 			{
 				return;
 			}
-			var showOverlay:Boolean = this._isTopDrawerOpen ||
-				this._isRightDrawerOpen ||
-				this._isBottomDrawerOpen ||
-				this._isLeftDrawerOpen;
+			var showOverlay:Boolean = (this._isTopDrawerOpen && !this.isTopDrawerDocked) ||
+				(this._isRightDrawerOpen && !this.isRightDrawerDocked) ||
+				(this._isBottomDrawerOpen && !this.isBottomDrawerDocked) ||
+				(this._isLeftDrawerOpen && !this.isLeftDrawerDocked);
 			if(showOverlay !== this._overlaySkin.visible)
 			{
 				this._overlaySkin.visible = showOverlay;
