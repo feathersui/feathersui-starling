@@ -2913,6 +2913,10 @@ package feathers.controls
 				{
 					rightDrawerX += rightDrawerWidth;
 				}
+				if(rightDrawerHeight < 0)
+				{
+					rightDrawerHeight = 0;
+				}
 				this._rightDrawer.x = rightDrawerX;
 				this._rightDrawer.y = rightDrawerY;
 				this._rightDrawer.height = rightDrawerHeight;
@@ -2999,6 +3003,10 @@ package feathers.controls
 					!this._isLeftDrawerOpen)
 				{
 					leftDrawerX -= leftDrawerWidth;
+				}
+				if(leftDrawerHeight < 0)
+				{
+					leftDrawerHeight = 0;
 				}
 				this._leftDrawer.x = leftDrawerX;
 				this._leftDrawer.y = leftDrawerY;
