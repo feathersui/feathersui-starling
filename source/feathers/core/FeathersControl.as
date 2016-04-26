@@ -975,6 +975,10 @@ package feathers.core
 		 */
 		public function set maxWidth(value:Number):void
 		{
+			if(value < 0)
+			{
+				value = 0;
+			}
 			if(this._maxWidth == value)
 			{
 				return;
@@ -1017,6 +1021,10 @@ package feathers.core
 		 */
 		public function set maxHeight(value:Number):void
 		{
+			if(value < 0)
+			{
+				value = 0;
+			}
 			if(this._maxHeight == value)
 			{
 				return;
