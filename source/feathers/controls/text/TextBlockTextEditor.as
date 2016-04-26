@@ -903,13 +903,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
+		override protected function refreshTextLines(textLines:Vector.<TextLine>,
+			textLineParent:DisplayObjectContainer, width:Number, height:Number,
+			result:MeasureTextResult = null):MeasureTextResult
 		{
-			super.refreshTextLines(textLines, textLineParent, width, height);
-			if(textLineParent.width > width)
+			result = super.refreshTextLines(textLines, textLineParent, width, height, result);
+			if(textLines !== this._measurementTextLines &&
+				textLineParent.width > width)
 			{
 				this.alignTextLines(textLines, width, TextFormatAlign.LEFT);
 			}
+			return result;
 		}
 
 		/**

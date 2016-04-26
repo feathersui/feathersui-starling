@@ -834,11 +834,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override protected function layoutCharacters(result:Point = null):Point
+		override protected function layoutCharacters(result:MeasureTextResult = null):MeasureTextResult
 		{
 			result = super.layoutCharacters(result);
 			if(this._explicitWidth === this._explicitWidth && //!isNaN
-				result.x > this._explicitWidth)
+				result.width > this._explicitWidth)
 			{
 				this._characterBatch.clear();
 				var oldTextAlign:String = this.currentTextFormat.align;
