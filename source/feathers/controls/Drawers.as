@@ -4002,6 +4002,7 @@ package feathers.controls
 					this._overlaySkin.visible = true;
 					this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 				}
+				this._startTouchX = this._currentTouchX;
 				this._startTouchY = this._currentTouchY;
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
@@ -4049,6 +4050,7 @@ package feathers.controls
 					this._overlaySkin.visible = true;
 					this._overlaySkin.alpha = 0;
 				}
+				this._startTouchX = this._currentTouchX;
 				this._startTouchY = this._currentTouchY;
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 				exclusiveTouch.claimTouch(this.touchPointID, this);
