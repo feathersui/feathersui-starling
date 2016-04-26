@@ -1653,7 +1653,12 @@ package feathers.core
 		protected var _invalidateCount:int = 0;
 
 		/**
-		 * @private
+		 * Feathers components use an optimized <code>getBounds()</code>
+		 * implementation that may sometimes behave differently than regular
+		 * Starling display objects. For instance, filters may need some special
+		 * customization. If a component's children appear outside of its
+		 * bounds (such as at negative dimensions), padding should be added to
+		 * the filter to account for these regions.
 		 */
 		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
