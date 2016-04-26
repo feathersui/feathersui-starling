@@ -1543,9 +1543,25 @@ package feathers.controls.text
 			//sometimes, we can determine that the dimensions will be exactly
 			//the same without needing to refresh the text lines. this will
 			//result in much better performance.
-			if(this._textBlockChanged ||
-				(!this._wordWrap && (newWidth < this._lastMeasurementWidth || this._lastMeasurementWasTruncated)) ||
-				(this._wordWrap && newWidth !== this._lastMeasurementWidth))
+			if(this._wordWrap)
+			{
+				//when word wrapped, we need to measure again any time that the
+				//width changes.
+				var needsMeasurement:Boolean = newWidth !== this._lastMeasurementWidth;
+			}
+			else
+			{
+				//we can skip measuring again more frequently when the text is
+				//a single line.
+
+				//if the width is smaller than the last layout width, we need to
+				//measure again. when it's larger, the result won't change...
+				needsMeasurement = newWidth < this._lastMeasurementWidth;
+
+				//...unless the text was previously truncated!
+				needsMeasurement ||= (this._lastMeasurementWasTruncated && newWidth !== this._lastMeasurementWidth);
+			}
+			if(this._textBlockChanged || needsMeasurement)
 			{
 				this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight, HELPER_RESULT);
 				this._lastMeasurementWidth = HELPER_RESULT.width;

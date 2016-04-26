@@ -894,8 +894,28 @@ package feathers.controls.text
 			{
 				newWidth = this._maxWidth;
 			}
-			var sizeInvalid:Boolean = (!this._wordWrap && (newWidth < this._lastLayoutWidth || this._lastLayoutIsTruncated)) ||
-				(this._wordWrap && newWidth !== this._lastLayoutWidth);
+
+			//sometimes, we can determine that the dimensions will be exactly
+			//the same without needing to refresh the text lines. this will
+			//result in much better performance.
+			if(this._wordWrap)
+			{
+				//when word wrapped, we need to measure again any time that the
+				//width changes.
+				var sizeInvalid:Boolean = newWidth !== this._lastLayoutWidth;
+			}
+			else
+			{
+				//we can skip measuring again more frequently when the text is
+				//a single line.
+
+				//if the width is smaller than the last layout width, we need to
+				//measure again. when it's larger, the result won't change...
+				sizeInvalid = newWidth < this._lastLayoutWidth;
+
+				//...unless the text was previously truncated!
+				sizeInvalid ||= (this._lastLayoutIsTruncated && newWidth !== this._lastLayoutWidth);
+			}
 			if(dataInvalid || sizeInvalid || this._textFormatChanged)
 			{
 				this._textFormatChanged = false;
