@@ -2833,6 +2833,14 @@ package feathers.controls
 				}
 			}
 			this._content.y = contentY;
+			if(contentWidth < 0)
+			{
+				contentWidth = 0;
+			}
+			if(contentHeight < 0)
+			{
+				contentHeight = 0;
+			}
 			if(this._autoSizeMode !== AutoSizeMode.CONTENT)
 			{
 				this._content.width = contentWidth;
