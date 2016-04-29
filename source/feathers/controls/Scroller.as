@@ -509,7 +509,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const PAGE_INDEX_EPSILON:Number = 0.001;
+		protected static const PAGE_INDEX_EPSILON:Number = 0.01;
 
 		/**
 		 * @private
@@ -4122,26 +4122,30 @@ package feathers.controls
 					{
 						this._horizontalPageIndex = this._minHorizontalPageIndex;
 					}
-					else if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY && this._horizontalScrollPosition < 0)
-					{
-						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / this.actualPageWidth);
-					}
-					else if(this._maxHorizontalScrollPosition == Number.POSITIVE_INFINITY && this._horizontalScrollPosition >= 0)
-					{
-						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / this.actualPageWidth);
-					}
 					else
 					{
-						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
-						var unroundedPageIndex:Number = adjustedHorizontalScrollPosition / this.actualPageWidth;
-						var nextPageIndex:int = Math.ceil(unroundedPageIndex);
-						if(unroundedPageIndex !== nextPageIndex &&
-							MathUtil.isEquivalent(unroundedPageIndex, nextPageIndex, PAGE_INDEX_EPSILON))
+						if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY && this._horizontalScrollPosition < 0)
+						{
+							var unroundedPageIndex:Number = this._horizontalScrollPosition / this.actualPageWidth;
+						}
+						else if(this._maxHorizontalScrollPosition == Number.POSITIVE_INFINITY && this._horizontalScrollPosition >= 0)
+						{
+							unroundedPageIndex = this._horizontalScrollPosition / this.actualPageWidth;
+						}
+						else
+						{
+							var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
+							unroundedPageIndex = adjustedHorizontalScrollPosition / this.actualPageWidth;
+						}
+						var nearestPageIndex:int = Math.round(unroundedPageIndex);
+						if(unroundedPageIndex !== nearestPageIndex &&
+							MathUtil.isEquivalent(unroundedPageIndex, nearestPageIndex, PAGE_INDEX_EPSILON))
 						{
 							//we almost always want to round down, but a
-							//floating point math error may result in the page
-							//index being 1 too small in rare cases.
-							this._horizontalPageIndex = nextPageIndex;
+							//floating point math error, or a page width that
+							//isn't an integer (when snapping to pixels) could
+							//cause the page index to be off by one
+							this._horizontalPageIndex = nearestPageIndex;
 						}
 						else
 						{
@@ -4174,26 +4178,30 @@ package feathers.controls
 					{
 						this._verticalPageIndex = this._minVerticalPageIndex;
 					}
-					else if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY && this._verticalScrollPosition < 0)
-					{
-						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / this.actualPageHeight);
-					}
-					else if(this._maxVerticalScrollPosition == Number.POSITIVE_INFINITY && this._verticalScrollPosition >= 0)
-					{
-						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / this.actualPageHeight);
-					}
 					else
 					{
-						var adjustedVerticalScrollPosition:Number = this._verticalScrollPosition - this._minVerticalScrollPosition;
-						unroundedPageIndex = adjustedVerticalScrollPosition / this.actualPageHeight;
-						nextPageIndex = Math.ceil(unroundedPageIndex);
-						if(unroundedPageIndex !== nextPageIndex &&
-							MathUtil.isEquivalent(unroundedPageIndex, nextPageIndex, PAGE_INDEX_EPSILON))
+						if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY && this._verticalScrollPosition < 0)
+						{
+							unroundedPageIndex = this._verticalScrollPosition / this.actualPageHeight;
+						}
+						else if(this._maxVerticalScrollPosition == Number.POSITIVE_INFINITY && this._verticalScrollPosition >= 0)
+						{
+							unroundedPageIndex = this._verticalScrollPosition / this.actualPageHeight;
+						}
+						else
+						{
+							var adjustedVerticalScrollPosition:Number = this._verticalScrollPosition - this._minVerticalScrollPosition;
+							unroundedPageIndex = adjustedVerticalScrollPosition / this.actualPageHeight;
+						}
+						nearestPageIndex = Math.round(unroundedPageIndex);
+						if(unroundedPageIndex !== nearestPageIndex &&
+							MathUtil.isEquivalent(unroundedPageIndex, nearestPageIndex, PAGE_INDEX_EPSILON))
 						{
 							//we almost always want to round down, but a
-							//floating point math error may result in the page
-							//index being 1 too small in rare cases.
-							this._verticalPageIndex = nextPageIndex;
+							//floating point math error, or a page height that
+							//isn't an integer (when snapping to pixels) could
+							//cause the page index to be off by one
+							this._verticalPageIndex = nearestPageIndex;
 						}
 						else
 						{
