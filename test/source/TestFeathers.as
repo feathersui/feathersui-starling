@@ -1,5 +1,6 @@
 package
 {
+	import feathers.tests.AddOnFunctionStyleProviderTests;
 	import feathers.tests.AlertMeasurementTests;
 	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
@@ -17,6 +18,7 @@ package
 	import feathers.tests.CalloutPopUpContentManagerTests;
 	import feathers.tests.CalloutTests;
 	import feathers.tests.ComponentLifecycleTests;
+	import feathers.tests.ConditionalStyleProviderTests;
 	import feathers.tests.DateTimeSpinnerTests;
 	import feathers.tests.DefaultGroupedListHeaderOrFooterRendererMeasurementTests;
 	import feathers.tests.DefaultListItemRendererInternalStateTests;
@@ -27,6 +29,7 @@ package
 	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
+	import feathers.tests.FunctionStyleProviderTests;
 	import feathers.tests.GroupedListDataProviderTests;
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
@@ -81,6 +84,8 @@ package
 	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
 	import feathers.tests.StageTextTextEditorFocusTests;
+	import feathers.tests.StyleNameFunctionStyleProviderTests;
+	import feathers.tests.StyleProviderRegistryTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
 	import feathers.tests.TabBarMeasurementTests;
 	import feathers.tests.TabBarTests;
@@ -265,7 +270,14 @@ package
 				TextFieldTextEditorFocusTests,
 				BitmapFontTextEditorFocusTests,
 				TextBlockTextEditorFocusTests,
-				
+
+				//style providers and themes
+				ConditionalStyleProviderTests,
+				FunctionStyleProviderTests,
+				StyleNameFunctionStyleProviderTests,
+				AddOnFunctionStyleProviderTests,
+				StyleProviderRegistryTests,
+
 				//misc
 				PopUpManagerTests,
 				TextureCacheTests,

@@ -95,6 +95,10 @@ package feathers.skins
 		 */
 		public function hasStyleProvider(forClass:Class):Boolean
 		{
+			if(this._classToStyleProvider === null)
+			{
+				return false;
+			}
 			return forClass in this._classToStyleProvider;
 		}
 
