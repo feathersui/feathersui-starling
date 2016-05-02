@@ -109,7 +109,7 @@ For footers, a grouped list provides [`footerField`](../api-reference/feathers/c
 Once the header or footer renderer has its data, it may need to drill down further into the properties, similar to an item renderer. The default header and footer renderer has a [`contentLabelField`](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField) property that is similar to the item renderer's `labelField` property.
 
 ``` code
-renderer.headerRendererProperties.contentLabelField = "text";
+list.headerRendererProperties.contentLabelField = "text";
 ```
 
 The default behavior of the default header or footer renderer is simply to call `toString()` on its data, so if you simply set the `header` property to a `String` instance, you don't need to specify a `contentLabelField` at all:
