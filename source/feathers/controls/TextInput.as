@@ -3083,15 +3083,18 @@ package feathers.controls
 			{
 				this.createErrorCallout();
 			}
-			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
+			if(this._focusManager !== null && this.isFocusEnabled)
 			{
-				//if setFocus() was called manually, we need to notify the focus
-				//manager (unless isFocusEnabled is false).
-				//if the focus manager already knows that we have focus, it will
-				//simply return without doing anything.
-				this._focusManager.focus = this;
+				if(this._focusManager.focus !== this)
+				{
+					//if setFocus() was called manually, we need to notify the focus
+					//manager (unless isFocusEnabled is false).
+					//if the focus manager already knows that we have focus, it will
+					//simply return without doing anything.
+					this._focusManager.focus = this;
+				}
 			}
-			else if(!this._focusManager)
+			else
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 			}
@@ -3109,13 +3112,16 @@ package feathers.controls
 				this.callout.removeFromParent(true);
 				this.callout = null;
 			}
-			if(this._focusManager && this._focusManager.focus === this)
+			if(this._focusManager !== null && this.isFocusEnabled)
 			{
-				//if clearFocus() was called manually, we need to notify the
-				//focus manager if it still thinks we have focus.
-				this._focusManager.focus = null;
+				if(this._focusManager.focus === this)
+				{
+					//if clearFocus() was called manually, we need to notify the
+					//focus manager if it still thinks we have focus.
+					this._focusManager.focus = null;
+				}
 			}
-			else if(!this._focusManager)
+			else
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
