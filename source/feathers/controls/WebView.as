@@ -456,7 +456,7 @@ package feathers.controls
 		 */
 		protected function refreshViewPort():void
 		{
-			var starling = stageToStarling(this.stage);
+			var starling:Starling = stageToStarling(this.stage);
 			if(starling === null)
 			{
 				starling = Starling.current;
