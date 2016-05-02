@@ -16,7 +16,7 @@ If you'd like to modify the appearance of an example theme provided with Feather
 
 ### Metal Works Desktop Theme
 
-![](images/feathers-metal-works-desktop-theme.png)
+![](images/feathers-metal-works-desktop-theme.jpg)
 
 -   [Metal Works Desktop Theme FLA for Animate CC](http://feathersui.com/download/themes/metalworks_desktop.fla)
 -   [Metal Works Desktop Theme PNGs for other tools](http://feathersui.com/download/themes/metalworks_desktop.zip)
@@ -30,21 +30,21 @@ If you'd like to modify the appearance of an example theme provided with Feather
 
 ### Minimal Desktop Theme
 
-![](images/feathers-minimal-desktop-theme.png)
+![](images/feathers-minimal-desktop-theme.jpg)
 
 -   [Minimal Desktop Theme FLA for Animate CC](http://feathersui.com/download/themes/minimal_desktop.fla)
 -   [Minimal Desktop Theme PNGs for other tools](http://feathersui.com/download/themes/minimal_desktop.zip)
 
 ### Aeon Desktop Theme
 
-![](images/feathers-aeon-desktop-theme.png)
+![](images/feathers-aeon-desktop-theme.jpg)
 
 -   [Aeon Desktop Theme FLA for Animate CC](http://feathersui.com/download/themes/aeon_desktop.fla)
 -   [Aeon Desktop Theme PNGs for other tools](http://feathersui.com/download/themes/aeon_desktop.zip)
 
 ### Topcoat Light Mobile Theme
 
-![](images/feathers-topcoat-light-mobile-theme.png)
+![](images/feathers-topcoat-light-mobile-theme.jpg)
 
 -   [Topcoat Light Mobile Theme FLA for Animate CC](http://feathersui.com/download/themes/topcoat_light_mobile.fla)
 -   [Topcoat Light Mobile Theme PNGs for other tools](http://feathersui.com/download/themes/topcoat_light_mobile.zip)
