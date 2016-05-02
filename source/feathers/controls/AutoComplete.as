@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -719,7 +720,8 @@ package feathers.controls
 			//the priority here is 1 so that this listener is called before
 			//starling's listener. we want to know the list's selected index
 			//before the list changes it.
-			Starling.current.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 1, true);
+			var starling:Starling = stageToStarling(this.stage);
+			starling.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 1, true);
 			super.focusInHandler(event);
 		}
 
@@ -728,7 +730,8 @@ package feathers.controls
 		 */
 		override protected function focusOutHandler(event:Event):void
 		{
-			Starling.current.nativeStage.removeEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			var starling:Starling = stageToStarling(this.stage);
+			starling.nativeStage.removeEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			super.focusOutHandler(event);
 		}
 
