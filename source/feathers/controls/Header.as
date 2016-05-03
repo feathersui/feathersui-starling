@@ -83,7 +83,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const IOS_DPI:Number = 132;
+		protected static const IPAD_1X_DPI:Number = 132;
+
+		/**
+		 * @private
+		 */
+		protected static const IPHONE_1X_DPI:Number = 163;
 
 		/**
 		 * @private
@@ -1498,6 +1503,10 @@ package feathers.controls
 				{
 					maxTitleWidth -= calculatedTitleGap;
 				}
+				if(maxTitleWidth < 0)
+				{
+					maxTitleWidth = 0;
+				}
 				this.titleTextRenderer.maxWidth = maxTitleWidth;
 				this.titleTextRenderer.measureText(HELPER_POINT);
 				var measuredTitleWidth:Number = HELPER_POINT.x;
@@ -1540,11 +1549,6 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = maxContentHeight;
-				if(this.currentBackgroundSkin !== null &&
-					this.currentBackgroundSkin.height > newHeight)
-				{
-					newHeight = this.currentBackgroundSkin.height;
-				}
 				newHeight += this._paddingTop + this._paddingBottom;
 				if(extraPaddingTop > 0)
 				{
@@ -1554,6 +1558,11 @@ package feathers.controls
 						newHeight = this._explicitMinHeight;
 					}
 					newHeight += extraPaddingTop;
+				}
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
+				{
+					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
 			
@@ -1581,6 +1590,16 @@ package feathers.controls
 			if(needsMinHeight)
 			{
 				newMinHeight = maxContentHeight;
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(extraPaddingTop > 0)
+				{
+					//account for the minimum height before adding the padding
+					if(newMinHeight < this._explicitMinHeight)
+					{
+						newMinHeight = this._explicitMinHeight;
+					}
+					newMinHeight += extraPaddingTop;
+				}
 				if(this.currentBackgroundSkin !== null)
 				{
 					if(measureSkin !== null)
@@ -1594,16 +1613,6 @@ package feathers.controls
 					{
 						newMinHeight = this.currentBackgroundSkin.height;
 					}
-				}
-				newMinHeight += this._paddingTop + this._paddingBottom;
-				if(extraPaddingTop > 0)
-				{
-					//account for the minimum height before adding the padding
-					if(newMinHeight < this._explicitMinHeight)
-					{
-						newMinHeight = this._explicitMinHeight;
-					}
-					newMinHeight += extraPaddingTop;
 				}
 			}
 
@@ -1732,7 +1741,12 @@ package feathers.controls
 			{
 				return 0;
 			}
-			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IOS_DPI) / Starling.current.contentScaleFactor;
+			
+			if(DeviceCapabilities.dpi % IPAD_1X_DPI === 0)
+			{
+				return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPAD_1X_DPI) / Starling.current.contentScaleFactor;
+			}
+			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPHONE_1X_DPI) / Starling.current.contentScaleFactor;
 		}
 
 		/**
@@ -1846,20 +1860,38 @@ package feathers.controls
 			var rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + calculatedTitleGap) : 0;
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
-				this.titleTextRenderer.maxWidth = this.actualWidth - this._paddingLeft - rightOffset;
+				var titleMaxWidth:Number = this.actualWidth - this._paddingLeft - rightOffset;
+				if(titleMaxWidth < 0)
+				{
+					titleMaxWidth = 0;
+				}
+				this.titleTextRenderer.maxWidth = titleMaxWidth;
 				this.titleTextRenderer.validate();
 				this.titleTextRenderer.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				this.titleTextRenderer.maxWidth = this.actualWidth - this._paddingRight - leftOffset;
+				titleMaxWidth = this.actualWidth - this._paddingRight - leftOffset;
+				if(titleMaxWidth < 0)
+				{
+					titleMaxWidth = 0;
+				}
+				this.titleTextRenderer.maxWidth = titleMaxWidth;
 				this.titleTextRenderer.validate();
 				this.titleTextRenderer.x = this.actualWidth - this._paddingRight - this.titleTextRenderer.width;
 			}
 			else
 			{
 				var actualWidthMinusPadding:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+				if(actualWidthMinusPadding < 0)
+				{
+					actualWidthMinusPadding = 0;
+				}
 				var actualWidthMinusOffsets:Number = this.actualWidth - leftOffset - rightOffset;
+				if(actualWidthMinusOffsets < 0)
+				{
+					actualWidthMinusOffsets = 0;
+				}
 				this.titleTextRenderer.maxWidth = actualWidthMinusOffsets;
 				this.titleTextRenderer.validate();
 				var idealTitlePosition:Number = this._paddingLeft + (actualWidthMinusPadding - this.titleTextRenderer.width) / 2;

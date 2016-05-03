@@ -3261,26 +3261,26 @@ package feathers.controls.renderers
 		 */
 		public function itemToLabel(item:Object):String
 		{
-			if(this._labelFunction != null)
+			if(this._labelFunction !== null)
 			{
 				var labelResult:Object = this._labelFunction(item);
 				if(labelResult is String)
 				{
 					return labelResult as String;
 				}
-				else if(labelResult)
+				else if(labelResult !== null)
 				{
 					return labelResult.toString();
 				}
 			}
-			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
+			else if(this._labelField !== null && item !== null && item.hasOwnProperty(this._labelField))
 			{
 				labelResult = item[this._labelField];
 				if(labelResult is String)
 				{
 					return labelResult as String;
 				}
-				else if(labelResult)
+				else if(labelResult !== null)
 				{
 					return labelResult.toString();
 				}

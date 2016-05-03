@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IStateObserver;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.TapToTrigger;
 
@@ -86,7 +87,16 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-		
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>BasicButton</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
+
 		/**
 		 * Constructor.
 		 */
@@ -96,6 +106,14 @@ package feathers.controls
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(Event.REMOVED_FROM_STAGE, basicButton_removedFromStageHandler);
 			this.addEventListener(TouchEvent.TOUCH, basicButton_touchHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return BasicButton.globalStyleProvider;
 		}
 
 		/**

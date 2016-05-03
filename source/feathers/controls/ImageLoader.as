@@ -1749,8 +1749,8 @@ package feathers.controls
 			if((!this._scaleContent || (this._maintainAspectRatio && this._scaleMode !== ScaleMode.SHOW_ALL)) &&
 				(this.actualWidth != imageWidth || this.actualHeight != imageHeight))
 			{
-				var mask:Quad = this.mask as Quad;
-				if(mask)
+				var mask:Quad = this.image.mask as Quad;
+				if(mask !== null)
 				{
 					mask.x = 0;
 					mask.y = 0;
@@ -1764,12 +1764,18 @@ package feathers.controls
 					//and these values might be 0
 					mask.width = this.actualWidth;
 					mask.height = this.actualHeight;
-					this.mask = mask;
+					this.image.mask = mask;
+					this.addChild(mask);
 				}
 			}
 			else
 			{
-				this.mask = null;
+				mask = this.image.mask as Quad;
+				if(mask !== null)
+				{
+					mask.removeFromParent(true);
+					this.image.mask = null;
+				}
 			}
 		}
 

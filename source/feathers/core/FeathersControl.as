@@ -14,6 +14,7 @@ package feathers.core
 	import feathers.layout.ILayoutDisplayObject;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Matrix;
@@ -998,6 +999,10 @@ package feathers.core
 		 */
 		public function set maxWidth(value:Number):void
 		{
+			if(value < 0)
+			{
+				value = 0;
+			}
 			if(this._maxWidth == value)
 			{
 				return;
@@ -1040,6 +1045,10 @@ package feathers.core
 		 */
 		public function set maxHeight(value:Number):void
 		{
+			if(value < 0)
+			{
+				value = 0;
+			}
 			if(this._maxHeight == value)
 			{
 				return;
@@ -1676,7 +1685,12 @@ package feathers.core
 		protected var _invalidateCount:int = 0;
 
 		/**
-		 * @private
+		 * Feathers components use an optimized <code>getBounds()</code>
+		 * implementation that may sometimes behave differently than regular
+		 * Starling display objects. For instance, filters may need some special
+		 * customization. If a component's children appear outside of its
+		 * bounds (such as at negative dimensions), padding should be added to
+		 * the filter to account for these regions.
 		 */
 		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
@@ -2342,7 +2356,8 @@ package feathers.core
 		protected function feathersControl_addedToStageHandler(event:Event):void
 		{
 			this._depth = getDisplayObjectDepthFromStage(this);
-			this._validationQueue = ValidationQueue.forStarling(Starling.current);
+			var starling:Starling = stageToStarling(this.stage);
+			this._validationQueue = ValidationQueue.forStarling(starling);
 			if(!this._isInitialized)
 			{
 				this.initializeInternal();

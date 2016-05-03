@@ -146,6 +146,27 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testAutoSizeWithSimpleBackgroundPaddingAndGap():void
+		{
+			this._header.paddingTop = PADDING_TOP;
+			this._header.paddingRight = PADDING_RIGHT;
+			this._header.paddingBottom = PADDING_BOTTOM;
+			this._header.paddingLeft = PADDING_LEFT;
+			this._header.gap = GAP;
+			this._header.titleGap = TITLE_GAP;
+			this.addSimpleBackground();
+			this._header.validate();
+			Assert.assertStrictlyEquals("The width of the Header was not calculated correctly with background skin, padding, and gap.",
+				BACKGROUND_WIDTH, this._header.width);
+			Assert.assertStrictlyEquals("The height of the Header was not calculated correctly with background skin, padding, and gap.",
+				BACKGROUND_HEIGHT, this._header.height);
+			Assert.assertStrictlyEquals("The minWidth of the Header was not calculated correctly with background skin, padding, and gap.",
+				BACKGROUND_WIDTH, this._header.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the Header was not calculated correctly with background skin, padding, and gap.",
+				BACKGROUND_HEIGHT, this._header.minHeight);
+		}
+
+		[Test]
 		public function testDimensionsWithTitle():void
 		{
 			var title:String = "I am the very model of a modern major general";

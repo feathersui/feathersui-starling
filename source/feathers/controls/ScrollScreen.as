@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
+	import feathers.utils.display.stageToStarling;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -458,7 +459,8 @@ package feathers.controls
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
 			var priority:int = -getDisplayObjectDepthFromStage(this);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, scrollScreen_nativeStage_keyDownHandler, false, priority, true);
+			var starling:Starling = stageToStarling(this.stage);
+			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, scrollScreen_nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -467,7 +469,8 @@ package feathers.controls
 		protected function scrollScreen_removedFromStageHandler(event:Event):void
 		{
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, scrollScreen_removedFromStageHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, scrollScreen_nativeStage_keyDownHandler);
+			var starling:Starling = stageToStarling(this.stage);
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, scrollScreen_nativeStage_keyDownHandler);
 		}
 
 		/**

@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Orientation;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -180,61 +181,46 @@ package feathers.controls
 		public static var globalStyleProvider:IStyleProvider;
 
 		/**
-		 * The drawer will be docked in portrait orientation, but it must be
-		 * opened and closed explicitly in landscape orientation.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.PORTRAIT</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_PORTRAIT:String = "portrait";
 
 		/**
-		 * The drawer will be docked in landscape orientation, but it must be
-		 * opened and closed explicitly in portrait orientation.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.LANDSCAPE</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_LANDSCAPE:String = "landscape";
 
 		/**
-		 * The drawer will be docked in all orientations.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.BOTH</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_BOTH:String = "both";
 
 		/**
-		 * The drawer won't be docked in any orientation. It must be opened and
-		 * closed explicitly in all orientations.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.NONE</code>.
 		 *
-		 * @see #topDrawerDockMode
-		 * @see #rightDrawerDockMode
-		 * @see #bottomDrawerDockMode
-		 * @see #leftDrawerDockMode
-		 * @see #isTopDrawerDocked
-		 * @see #isRightDrawerDocked
-		 * @see #isBottomDrawerDocked
-		 * @see #isLeftDrawerDocked
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DOCK_MODE_NONE:String = "none";
 
@@ -613,7 +599,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.topDrawerDivider = quad;
-		 * drawers.topDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.topDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -649,7 +635,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _topDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _topDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -661,14 +647,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.topDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.topDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #topDrawer
 		 */
 		public function get topDrawerDockMode():String
@@ -796,11 +782,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._topDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._topDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._topDrawerDockMode == DOCK_MODE_NONE)
+			if(this._topDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -812,9 +798,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._topDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._topDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._topDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._topDrawerDockMode === Orientation.PORTRAIT;
 		}
 
 		/**
@@ -904,7 +890,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.rightDrawerDivider = quad;
-		 * drawers.rightDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.rightDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -940,7 +926,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _rightDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _rightDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -952,14 +938,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.rightDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.rightDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #rightDrawer
 		 */
 		public function get rightDrawerDockMode():String
@@ -1087,11 +1073,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._rightDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._rightDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._rightDrawerDockMode == DOCK_MODE_NONE)
+			if(this._rightDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -1103,9 +1089,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._rightDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._rightDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._rightDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._rightDrawerDockMode === Orientation.PORTRAIT;
 		}
 
 		/**
@@ -1195,7 +1181,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.bottomDrawerDivider = quad;
-		 * drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.bottomDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -1231,7 +1217,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _bottomDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _bottomDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -1243,14 +1229,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.bottomDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #bottomDrawer
 		 */
 		public function get bottomDrawerDockMode():String
@@ -1378,11 +1364,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._bottomDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._bottomDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._bottomDrawerDockMode == DOCK_MODE_NONE)
+			if(this._bottomDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -1394,9 +1380,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._bottomDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._bottomDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._bottomDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._bottomDrawerDockMode === Orientation.PORTRAIT;
 		}
 
 		/**
@@ -1486,7 +1472,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
 		 * drawers.leftDrawerDivider = quad;
-		 * drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH</listing>
+		 * drawers.leftDrawerDockMode = Orientation.BOTH</listing>
 		 *
 		 * @default null
 		 *
@@ -1522,7 +1508,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _leftDrawerDockMode:String = DOCK_MODE_NONE;
+		protected var _leftDrawerDockMode:String = Orientation.NONE;
 
 		[Inspectable(type="String",enumeration="portrait,landscape,both,none")]
 		/**
@@ -1534,14 +1520,14 @@ package feathers.controls
 		 * landscape stage orientation:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.leftDrawerDockMode = Drawers.DOCK_MODE_LANDSCAPE;</listing>
+		 * drawers.leftDrawerDockMode = Orientation.LANDSCAPE;</listing>
 		 *
-		 * @default Drawers.DOCK_MODE_NONE
+		 * @default feathers.layout.Orientation.NONE
 		 *
-		 * @see #DOCK_MODE_PORTRAIT
-		 * @see #DOCK_MODE_LANDSCAPE
-		 * @see #DOCK_MODE_NONE
-		 * @see #DOCK_MODE_BOTH
+		 * @see feathers.layout.Orientation#PORTRAIT
+		 * @see feathers.layout.Orientation#LANDSCAPE
+		 * @see feathers.layout.Orientation#NONE
+		 * @see feathers.layout.Orientation#BOTH
 		 * @see #leftDrawer
 		 */
 		public function get leftDrawerDockMode():String
@@ -1669,11 +1655,11 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._leftDrawerDockMode == DOCK_MODE_BOTH)
+			if(this._leftDrawerDockMode === Orientation.BOTH)
 			{
 				return true;
 			}
-			if(this._leftDrawerDockMode == DOCK_MODE_NONE)
+			if(this._leftDrawerDockMode === Orientation.NONE)
 			{
 				return false;
 			}
@@ -1685,9 +1671,9 @@ package feathers.controls
 			}
 			if(stage.stageWidth > stage.stageHeight)
 			{
-				return this._leftDrawerDockMode == DOCK_MODE_LANDSCAPE;
+				return this._leftDrawerDockMode === Orientation.LANDSCAPE;
 			}
-			return this._leftDrawerDockMode == DOCK_MODE_PORTRAIT;
+			return this._leftDrawerDockMode == Orientation.PORTRAIT;
 		}
 
 		/**
@@ -2478,7 +2464,7 @@ package feathers.controls
 			{
 				this.refreshDrawerStates();
 			}
-			if(layoutInvalid || selectedInvalid)
+			if(sizeInvalid || layoutInvalid || selectedInvalid)
 			{
 				this.refreshOverlayState();
 			}
@@ -2848,6 +2834,14 @@ package feathers.controls
 				}
 			}
 			this._content.y = contentY;
+			if(contentWidth < 0)
+			{
+				contentWidth = 0;
+			}
+			if(contentHeight < 0)
+			{
+				contentHeight = 0;
+			}
 			if(this._autoSizeMode !== AutoSizeMode.CONTENT)
 			{
 				this._content.width = contentWidth;
@@ -2908,10 +2902,18 @@ package feathers.controls
 					if(isTopDrawerDocked)
 					{
 						rightDrawerHeight -= topDrawerHeight;
+						if(this._topDrawerDivider)
+						{
+							rightDrawerHeight -= this._topDrawerDivider.height;
+						}
 					}
 					if(isBottomDrawerDocked)
 					{
 						rightDrawerHeight -= bottomDrawerHeight;
+						if(this._bottomDrawerDivider)
+						{
+							rightDrawerHeight -= this._bottomDrawerDivider.height;
+						}
 					}
 					rightDrawerY = this._content.y;
 				}
@@ -2919,6 +2921,10 @@ package feathers.controls
 					!this._isRightDrawerOpen)
 				{
 					rightDrawerX += rightDrawerWidth;
+				}
+				if(rightDrawerHeight < 0)
+				{
+					rightDrawerHeight = 0;
 				}
 				this._rightDrawer.x = rightDrawerX;
 				this._rightDrawer.y = rightDrawerY;
@@ -2987,10 +2993,18 @@ package feathers.controls
 					if(isTopDrawerDocked)
 					{
 						leftDrawerHeight -= topDrawerHeight;
+						if(this._topDrawerDivider)
+						{
+							leftDrawerHeight -= this._topDrawerDivider.height;
+						}
 					}
 					if(isBottomDrawerDocked)
 					{
 						leftDrawerHeight -= bottomDrawerHeight;
+						if(this._bottomDrawerDivider)
+						{
+							leftDrawerHeight -= this._bottomDrawerDivider.height;
+						}
 					}
 					leftDrawerY = this._content.y;
 				}
@@ -2998,6 +3012,10 @@ package feathers.controls
 					!this._isLeftDrawerOpen)
 				{
 					leftDrawerX -= leftDrawerWidth;
+				}
+				if(leftDrawerHeight < 0)
+				{
+					leftDrawerHeight = 0;
 				}
 				this._leftDrawer.x = leftDrawerX;
 				this._leftDrawer.y = leftDrawerY;
@@ -3336,7 +3354,14 @@ package feathers.controls
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
-				mask.width = -this._content.x;
+				if(this.isLeftDrawerDocked)
+				{
+					mask.width = -this._leftDrawer.x;
+				}
+				else
+				{
+					mask.width = -this._content.x;
+				}
 				mask.height = this.actualHeight;
 				this._rightDrawer.mask = mask;
 			}
@@ -3366,7 +3391,14 @@ package feathers.controls
 				//the initial dimensions cannot be 0 or there's a runtime error,
 				//and these values might be 0
 				mask.width = this.actualWidth;
-				mask.height = -this._content.y;
+				if(this.isTopDrawerDocked)
+				{
+					mask.height = -this._topDrawer.y;
+				}
+				else
+				{
+					mask.height = -this._content.y;
+				}
 				this._bottomDrawer.mask = mask;
 			}
 		}
@@ -3507,10 +3539,10 @@ package feathers.controls
 			{
 				return;
 			}
-			var showOverlay:Boolean = this._isTopDrawerOpen ||
-				this._isRightDrawerOpen ||
-				this._isBottomDrawerOpen ||
-				this._isLeftDrawerOpen;
+			var showOverlay:Boolean = (this._isTopDrawerOpen && !this.isTopDrawerDocked) ||
+				(this._isRightDrawerOpen && !this.isRightDrawerDocked) ||
+				(this._isBottomDrawerOpen && !this.isBottomDrawerDocked) ||
+				(this._isLeftDrawerOpen && !this.isLeftDrawerDocked);
 			if(showOverlay !== this._overlaySkin.visible)
 			{
 				this._overlaySkin.visible = showOverlay;
@@ -3813,10 +3845,18 @@ package feathers.controls
 			if(this.isLeftDrawerDocked)
 			{
 				contentX = this._leftDrawer.width;
+				if(this._leftDrawerDivider !== null)
+				{
+					contentX += this._leftDrawerDivider.width;
+				}
 			}
 			if(this.isTopDrawerDocked)
 			{
 				contentY = this._topDrawer.height;
+				if(this._topDrawerDivider !== null)
+				{
+					contentY += this._topDrawerDivider.height;
+				}
 			}
 			if(this._isDraggingLeftDrawer)
 			{
@@ -3860,6 +3900,10 @@ package feathers.controls
 				if(this.isLeftDrawerDocked && this._openMode === OPEN_MODE_BELOW)
 				{
 					contentX += this._leftDrawer.width;
+					if(this._leftDrawerDivider !== null)
+					{
+						contentX += this._leftDrawerDivider.width;
+					}
 				}
 			}
 			else if(this._isDraggingTopDrawer)
@@ -3904,6 +3948,10 @@ package feathers.controls
 				if(this.isTopDrawerDocked && this._openMode === OPEN_MODE_BELOW)
 				{
 					contentY += this._topDrawer.height;
+					if(this._topDrawerDivider !== null)
+					{
+						contentY += this._topDrawerDivider.height;
+					}
 				}
 			}
 			if(this._openMode === OPEN_MODE_ABOVE)
@@ -3987,6 +4035,7 @@ package feathers.controls
 					this._overlaySkin.visible = true;
 					this._overlaySkin.alpha = this._overlaySkinOriginalAlpha;
 				}
+				this._startTouchX = this._currentTouchX;
 				this._startTouchY = this._currentTouchY;
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
@@ -4034,6 +4083,7 @@ package feathers.controls
 					this._overlaySkin.visible = true;
 					this._overlaySkin.alpha = 0;
 				}
+				this._startTouchX = this._currentTouchX;
 				this._startTouchY = this._currentTouchY;
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 				exclusiveTouch.claimTouch(this.touchPointID, this);
@@ -4170,71 +4220,24 @@ package feathers.controls
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
 				var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
 				var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
-				if(this._topDrawer)
-				{
-					var mask:Quad = this._topDrawer.mask as Quad;
-					if(mask)
-					{
-						mask.height = this._content.y;
-					}
-				}
-				if(this._rightDrawer)
-				{
-					mask = this._rightDrawer.mask as Quad;
-					if(mask)
-					{
-						var rightClipWidth:Number = -this._content.x;
-						if(isLeftDrawerDocked)
-						{
-							rightClipWidth += this.leftDrawer.width;
-							if(this._leftDrawerDivider)
-							{
-								rightClipWidth += this._leftDrawerDivider.width;
-							}
-						}
-						mask.x = this._rightDrawer.width - rightClipWidth;
-						mask.width = rightClipWidth;
-					}
-				}
-				if(this._bottomDrawer)
-				{
-					mask = this._bottomDrawer.mask as Quad;
-					if(mask)
-					{
-						var bottomClipHeight:Number = -this._content.y;
-						if(isTopDrawerDocked)
-						{
-							bottomClipHeight += this.topDrawer.height;
-							if(this._topDrawerDivider)
-							{
-								bottomClipHeight += this._topDrawerDivider.height;
-							}
-						}
-						mask.y = this._bottomDrawer.height - bottomClipHeight;
-						mask.height = bottomClipHeight;
-					}
-				}
-				if(this._leftDrawer)
-				{
-					mask = this._leftDrawer.mask as Quad;
-					if(mask)
-					{
-						mask.width = this._content.x;
-					}
-				}
 				var contentX:Number = this._content.x;
 				var contentY:Number = this._content.y;
 				if(isTopDrawerDocked)
 				{
 					if(isLeftDrawerDocked)
 					{
-						this._topDrawer.x = contentX - this._leftDrawer.width;
+						var leftDrawerDockedWidth:Number = this._leftDrawer.width;
+						if(this._leftDrawerDivider !== null)
+						{
+							leftDrawerDockedWidth += this._leftDrawerDivider.width;
+						}
+						this._topDrawer.x = contentX - leftDrawerDockedWidth;
 					}
 					else
 					{
 						this._topDrawer.x = contentX;
 					}
-					if(this._topDrawerDivider)
+					if(this._topDrawerDivider !== null)
 					{
 						this._topDrawerDivider.x = this._topDrawer.x;
 						this._topDrawerDivider.y = contentY - this._topDrawerDivider.height;
@@ -4247,7 +4250,7 @@ package feathers.controls
 				}
 				if(isRightDrawerDocked)
 				{
-					if(this._leftDrawerDivider)
+					if(this._rightDrawerDivider !== null)
 					{
 						this._rightDrawerDivider.x = contentX + this._content.width;
 						this._rightDrawer.x = this._rightDrawerDivider.x + this._rightDrawerDivider.width;
@@ -4263,13 +4266,18 @@ package feathers.controls
 				{
 					if(isLeftDrawerDocked)
 					{
-						this._bottomDrawer.x = contentX - this._leftDrawer.width;
+						leftDrawerDockedWidth = this._leftDrawer.width;
+						if(this._leftDrawerDivider !== null)
+						{
+							leftDrawerDockedWidth += this._leftDrawerDivider.width;
+						}
+						this._bottomDrawer.x = contentX - leftDrawerDockedWidth;
 					}
 					else
 					{
 						this._bottomDrawer.x = contentX;
 					}
-					if(this._bottomDrawerDivider)
+					if(this._bottomDrawerDivider !== null)
 					{
 						this._bottomDrawerDivider.x = this._bottomDrawer.x;
 						this._bottomDrawerDivider.y = contentY + this._content.height;
@@ -4282,7 +4290,7 @@ package feathers.controls
 				}
 				if(isLeftDrawerDocked)
 				{
-					if(this._leftDrawerDivider)
+					if(this._leftDrawerDivider !== null)
 					{
 						this._leftDrawerDivider.x = contentX - this._leftDrawerDivider.width;
 						this._leftDrawer.x = this._leftDrawerDivider.x - this._leftDrawer.width;
@@ -4294,9 +4302,53 @@ package feathers.controls
 					}
 					this._leftDrawer.y = contentY;
 				}
+				if(this._topDrawer !== null)
+				{
+					var mask:Quad = this._topDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						mask.height = contentY;
+					}
+				}
+				if(this._rightDrawer !== null)
+				{
+					mask = this._rightDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						var rightClipWidth:Number = -contentX;
+						if(isLeftDrawerDocked)
+						{
+							rightClipWidth = -this._leftDrawer.x;
+						}
+						mask.x = this._rightDrawer.width - rightClipWidth;
+						mask.width = rightClipWidth;
+					}
+				}
+				if(this._bottomDrawer !== null)
+				{
+					mask = this._bottomDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						var bottomClipHeight:Number = -contentY;
+						if(isTopDrawerDocked)
+						{
+							bottomClipHeight = -this._topDrawer.y;
+						}
+						mask.y = this._bottomDrawer.height - bottomClipHeight;
+						mask.height = bottomClipHeight;
+					}
+				}
+				if(this._leftDrawer !== null)
+				{
+					mask = this._leftDrawer.mask as Quad;
+					if(mask !== null)
+					{
+						mask.width = contentX;
+					}
+				}
 			}
 
-			if(this._overlaySkin)
+			if(this._overlaySkin !== null)
 			{
 				this.positionOverlaySkin();
 			}

@@ -279,6 +279,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _textInputHasFocus:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return NumericStepper.globalStyleProvider;
@@ -1792,6 +1797,7 @@ package feathers.controls
 			this.textInput = TextInput(factory());
 			this.textInput.styleNameList.add(textInputStyleName);
 			this.textInput.addEventListener(FeathersEventType.ENTER, textInput_enterHandler);
+			this.textInput.addEventListener(FeathersEventType.FOCUS_IN, textInput_focusInHandler);
 			this.textInput.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
 			//while we're setting isFocusEnabled to false on the text input when
 			//we have a focus manager, we'll still be able to call setFocus() on
@@ -2064,8 +2070,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function textInput_focusInHandler(event:Event):void
+		{
+			this._textInputHasFocus = true;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textInput_focusOutHandler(event:Event):void
 		{
+			this._textInputHasFocus = false;
 			this.parseTextInputValue();
 		}
 
@@ -2097,6 +2112,10 @@ package feathers.controls
 				if(!touch)
 				{
 					return;
+				}
+				if(this._textInputHasFocus)
+				{
+					this.parseTextInputValue();
 				}
 				this.touchPointID = touch.id;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
@@ -2133,6 +2152,10 @@ package feathers.controls
 				if(!touch)
 				{
 					return;
+				}
+				if(this._textInputHasFocus)
+				{
+					this.parseTextInputValue();
 				}
 				this.touchPointID = touch.id;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);

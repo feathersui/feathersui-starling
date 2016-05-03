@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -455,7 +456,12 @@ package feathers.controls
 		 */
 		protected function refreshViewPort():void
 		{
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var starling:Starling = stageToStarling(this.stage);
+			if(starling === null)
+			{
+				starling = Starling.current;
+			}
+			var starlingViewPort:Rectangle = starling.viewPort;
 			var stageWebViewViewPort:Rectangle = this.stageWebView.viewPort;
 			if(!stageWebViewViewPort)
 			{
@@ -468,9 +474,9 @@ package feathers.controls
 			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			if(starling.supportHighResolutions)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
 			stageWebViewViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
@@ -497,7 +503,8 @@ package feathers.controls
 		 */
 		protected function webView_addedToStageHandler(event:Event):void
 		{
-			this.stageWebView.stage = Starling.current.nativeStage;
+			var starling:Starling = stageToStarling(this.stage);
+			this.stageWebView.stage = starling.nativeStage;
 			this.addEventListener(Event.ENTER_FRAME, webView_enterFrameHandler);
 		}
 
@@ -529,7 +536,8 @@ package feathers.controls
 				target = target.parent;
 			}
 			while(target)
-			this.stageWebView.stage = Starling.current.nativeStage;
+			var starling:Starling = stageToStarling(this.stage);
+			this.stageWebView.stage = starling.nativeStage;
 		}
 
 		/**

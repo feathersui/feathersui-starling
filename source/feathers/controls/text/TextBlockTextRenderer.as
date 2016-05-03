@@ -84,6 +84,10 @@ package feathers.controls.text
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
+		/**
+		 * @private
+		 */
+		private static const HELPER_RESULT:MeasureTextResult = new MeasureTextResult();
 
 		/**
 		 * @private
@@ -211,7 +215,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _measuredHeight:Number = 0;
+		protected var _lastGlobalContentScaleFactor:Number = 0;
 
 		/**
 		 * @private
@@ -1226,7 +1230,17 @@ package feathers.controls.text
 		protected var _lastMeasurementWidth:Number = 0;
 
 		/**
-		 *
+		 * @private
+		 */
+		protected var _lastMeasurementHeight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastMeasurementWasTruncated:Boolean = false;
+
+		/**
+		 * @private
 		 */
 		protected var _textBlockChanged:Boolean = true;
 
@@ -1286,7 +1300,9 @@ package feathers.controls.text
 				{
 					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-					if(globalScaleX != this._lastGlobalScaleX || globalScaleY != this._lastGlobalScaleY)
+					if(globalScaleX != this._lastGlobalScaleX ||
+						globalScaleY != this._lastGlobalScaleY ||
+						Starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
 					{
 						//the snapshot needs to be updated because the scale has
 						//changed since the last snapshot was taken.
@@ -1527,12 +1543,30 @@ package feathers.controls.text
 			//sometimes, we can determine that the dimensions will be exactly
 			//the same without needing to refresh the text lines. this will
 			//result in much better performance.
-			if(this._textBlockChanged ||
-				(!this._wordWrap && newWidth < this._lastMeasurementWidth) ||
-				(this._wordWrap && newWidth !== this._lastMeasurementWidth))
+			if(this._wordWrap)
 			{
-				this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
-				this._lastMeasurementWidth = this._measurementTextLineContainer.width;
+				//when word wrapped, we need to measure again any time that the
+				//width changes.
+				var needsMeasurement:Boolean = newWidth !== this._lastMeasurementWidth;
+			}
+			else
+			{
+				//we can skip measuring again more frequently when the text is
+				//a single line.
+
+				//if the width is smaller than the last layout width, we need to
+				//measure again. when it's larger, the result won't change...
+				needsMeasurement = newWidth < this._lastMeasurementWidth;
+
+				//...unless the text was previously truncated!
+				needsMeasurement ||= (this._lastMeasurementWasTruncated && newWidth !== this._lastMeasurementWidth);
+			}
+			if(this._textBlockChanged || needsMeasurement)
+			{
+				this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight, HELPER_RESULT);
+				this._lastMeasurementWidth = HELPER_RESULT.width;
+				this._lastMeasurementHeight = HELPER_RESULT.height;
+				this._lastMeasurementWasTruncated = HELPER_RESULT.isTruncated;
 				this._textBlockChanged = false;
 			}
 			if(needsWidth)
@@ -1545,7 +1579,7 @@ package feathers.controls.text
 			}
 			if(needsHeight)
 			{
-				newHeight = Math.ceil(this._measuredHeight);
+				newHeight = Math.ceil(this._lastMeasurementHeight);
 				if(newHeight <= 0 && this._elementFormat)
 				{
 					newHeight = this._elementFormat.fontSize;
@@ -2035,6 +2069,7 @@ package feathers.controls.text
 			{
 				this._lastGlobalScaleX = globalScaleX;
 				this._lastGlobalScaleY = globalScaleY;
+				this._lastGlobalContentScaleFactor = scaleFactor;
 			}
 			this._needsNewTexture = false;
 		}
@@ -2086,8 +2121,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
+		protected function refreshTextLines(textLines:Vector.<TextLine>,
+			textLineParent:DisplayObjectContainer, width:Number, height:Number,
+			result:MeasureTextResult = null):MeasureTextResult
 		{
+			var wasTruncated:Boolean = false;
 			this.refreshTextElementText();
 			HELPER_TEXT_LINES.length = 0;
 			var yPosition:Number = 0;
@@ -2210,13 +2248,10 @@ package feathers.controls.text
 					textLines[pushIndex] = line;
 					pushIndex++;
 					lineStartIndex += lineLength;
+					wasTruncated ||= isTruncated;
 				}
 			}
-			if(textLines === this._measurementTextLines)
-			{
-				this._measuredHeight = yPosition;
-			}
-			else
+			if(textLines !== this._measurementTextLines)
 			{
 				//no need to align the measurement text lines because they won't
 				//be rendered
@@ -2230,6 +2265,17 @@ package feathers.controls.text
 				textLineParent.removeChild(line);
 			}
 			HELPER_TEXT_LINES.length = 0;
+			if(result === null)
+			{
+				result = new MeasureTextResult(width, yPosition, wasTruncated);
+			}
+			else
+			{
+				result.width = width;
+				result.height = yPosition;
+				result.isTruncated = wasTruncated;
+			}
+			return result;
 		}
 
 		/**

@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Drawers;
 	import feathers.controls.LayoutGroup;
+	import feathers.layout.Orientation;
 
 	import org.flexunit.Assert;
 
@@ -143,10 +144,10 @@ package feathers.tests
 			this.addRightDrawer();
 			this.addBottomDrawer();
 			this.addLeftDrawer();
-			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_NONE;
-			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_NONE;
-			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_NONE;
-			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_NONE;
+			this._drawers.topDrawerDockMode = Orientation.NONE;
+			this._drawers.rightDrawerDockMode = Orientation.NONE;
+			this._drawers.bottomDrawerDockMode = Orientation.NONE;
+			this._drawers.leftDrawerDockMode = Orientation.NONE;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
@@ -165,7 +166,7 @@ package feathers.tests
 		{
 			this.addContent();
 			this.addLeftDrawer();
-			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+			this._drawers.leftDrawerDockMode = Orientation.BOTH;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
@@ -184,7 +185,7 @@ package feathers.tests
 		{
 			this.addContent();
 			this.addRightDrawer();
-			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+			this._drawers.rightDrawerDockMode = Orientation.BOTH;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
@@ -203,7 +204,7 @@ package feathers.tests
 		{
 			this.addContent();
 			this.addTopDrawer();
-			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+			this._drawers.topDrawerDockMode = Orientation.BOTH;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
@@ -222,7 +223,7 @@ package feathers.tests
 		{
 			this.addContent();
 			this.addBottomDrawer();
-			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+			this._drawers.bottomDrawerDockMode = Orientation.BOTH;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
@@ -242,8 +243,8 @@ package feathers.tests
 			this.addContent();
 			this.addTopDrawer();
 			this.addBottomDrawer();
-			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+			this._drawers.topDrawerDockMode = Orientation.BOTH;
+			this._drawers.bottomDrawerDockMode = Orientation.BOTH;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 
@@ -263,8 +264,8 @@ package feathers.tests
 			this.addContent();
 			this.addRightDrawer();
 			this.addLeftDrawer();
-			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-			this._drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+			this._drawers.rightDrawerDockMode = Orientation.BOTH;
+			this._drawers.leftDrawerDockMode = Orientation.BOTH;
 			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
 			this._drawers.validate();
 

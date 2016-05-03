@@ -12,8 +12,8 @@ package feathers.tests
 	{
 		private static const SMALL_BACKGROUND_WIDTH:Number = 10;
 		private static const SMALL_BACKGROUND_HEIGHT:Number = 12;
-		private static const LARGE_BACKGROUND_WIDTH:Number = 100;
-		private static const LARGE_BACKGROUND_HEIGHT:Number = 110;
+		private static const LARGE_BACKGROUND_WIDTH:Number = 200;
+		private static const LARGE_BACKGROUND_HEIGHT:Number = 210;
 		private static const COMPLEX_BACKGROUND_WIDTH:Number = 54;
 		private static const COMPLEX_BACKGROUND_HEIGHT:Number = 55;
 		private static const COMPLEX_BACKGROUND_MIN_WIDTH:Number = 38;
@@ -340,6 +340,26 @@ package feathers.tests
 				COMPLEX_BACKGROUND_MIN_WIDTH, this._button.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the Button was not calculated correctly based on the complex background minHeight.",
 				COMPLEX_BACKGROUND_MIN_HEIGHT, this._button.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeWithLargeSimpleBackgroundPaddingAndGap():void
+		{
+			this._button.paddingTop = PADDING_TOP;
+			this._button.paddingRight = PADDING_RIGHT;
+			this._button.paddingBottom = PADDING_BOTTOM;
+			this._button.paddingLeft = PADDING_LEFT;
+			this._button.gap = GAP;
+			this.addLargeSimpleBackground();
+			this._button.validate();
+			Assert.assertStrictlyEquals("The width of the Button was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_WIDTH, this._button.width);
+			Assert.assertStrictlyEquals("The height of the Button was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_HEIGHT, this._button.height);
+			Assert.assertStrictlyEquals("The minWidth of the Button was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_WIDTH, this._button.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the Button was not calculated correctly with background skin, padding, and gap.",
+				LARGE_BACKGROUND_HEIGHT, this._button.minHeight);
 		}
 	}
 }

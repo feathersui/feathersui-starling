@@ -143,7 +143,7 @@ package feathers.themes
 			}
 			this.initialize();
 			this.isComplete = true;
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE, false, Starling.current);
 		}
 
 		/**

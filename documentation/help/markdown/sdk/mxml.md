@@ -7,6 +7,17 @@ author: Josh Tynjala
 
 The [Feathers SDK](http://feathersui.com/sdk/) supports using MXML to declaratively layout user interfaces at compile time. MXML provides a number of features to reduce boilerplate ActionScript code and make user interface code more readable.
 
+-   [Add children to containers](#add-children-to-containers)
+-   [Set properties on objects](#set-properties-on-objects)
+-   [Add event listeners](#add-event-listeners)
+-   [Include ActionScript code inside an MXML class](#include-actionscript-code-inside-an-mxml-class)
+-   [Reference MXML objects in ActionScript](#reference-mxml-objects-in-actionscript)
+-   [Bind data to properties](#bind-data-to-properties)
+-   [Built-in primitive types](#built-in-primitive-types)
+-   [Define properties on an MXML class](#define-properties-on-an-mxml-class)
+-   [Define metadata on an MXML class](#define-metadata-on-an-mxml-class)
+-   [Create inline sub-component factories](#create-inline-sub-component-factories)
+
 ## Add children to containers
 
 With only a quick glance at MXML code, we can easily recognize the relationship between a component and its parent container. Adding a child to a container is as simple as nesting an XML element inside another.
@@ -17,9 +28,9 @@ With only a quick glance at MXML code, we can easily recognize the relationship 
 </f:LayoutGroup>
 ```
 
-## Set properties on components
+## Set properties on objects
 
-A component's properties may be set in one of two ways. First, we can set properties using XML attributes:
+The properties of an object created in MXML may be set in one of two ways. First, we can set properties using XML attributes:
 
 ``` xml
 <f:Slider minimum="0" maximum="100" value="10"/>
@@ -52,7 +63,7 @@ Similar to setting properties, we can listen for events by referencing the event
 
 We've added an event listener for `Event.CHANGE` to the `Slider`. In the next section, we'll learn how to write the ActionScript code for this event listener.
 
-## Include ActionScript code inside an MXML component
+## Include ActionScript code inside an MXML class
 
 In the previous example, we listened for an event. Let's create the event listener function using ActionScript. We can add an `<fx:Script>` block to our MXML component to include ActionScript code:
 
@@ -67,7 +78,7 @@ In the previous example, we listened for an event. Let's create the event listen
 ]]></fx:Script>
 ```
 
-## Reference MXML components in ActionScript
+## Reference MXML objects in ActionScript
 
 If we want to access the `value` property of the `Slider` in our event listener, we can give the `Slider` an id.
 
@@ -103,7 +114,87 @@ Data binding can save us time by skipping the boilerplate code for setting up ev
 
 Now, when the slider's `value` property changes, we display the value in a label.
 
-## Create inline sub-components with `<fx:Component>`
+## Built-in primitive types
+
+A number of primitive data types that we use frequently in ActionScript may also be used to create objects in MXML. For instance, the `Number`, `int`, and `uint` classes may define numeric values.
+
+``` xml
+<fx:Number>32</fx:Number>
+<fx:Number>123.45</fx:Number>
+<fx:int>-650</fx:int>
+<fx:uint>17925</fx:uint>
+```
+
+The `Boolean` class may be true or false:
+
+``` xml
+<fx:Boolean>true</fx:Boolean>
+<fx:Boolean>false</fx:Boolean>
+```
+
+The `String` class represents text, including support for `<![CDATA[ ]>` to allow unescaped text:
+
+``` xml
+<fx:String>Hello World</fx:String>
+<fx:String><![CDATA[Complex strings using <XML> & more!]]></fx:Boolean>
+```
+
+The `Object` class may define sets of key-value pairs using both attributes and child elements:
+
+``` xml
+<fx:Object numeric="35">
+    <fx:text>
+        <fx:String>Message for you, friend!</fx:String>
+    </fx:text>
+</fx:Object>
+```
+
+Additionally, `Array` objects can be populated by adding multiple children:
+
+``` xml
+<fx:Array>
+    <fx:Number>1</fx:Number>
+    <fx:Number>2</fx:Number>
+    <fx:Number>3</fx:Number>
+</fx:Array>
+```
+
+Similarly, the `Vector` class defines a typed array:
+
+``` xml
+<fx:Vector type="starling.display.DisplayObject">
+    <fx:Button label="Back"/>
+    <fx:Button label="Settings"/>
+</fx:Vector>
+```
+
+## Define properties on an MXML class
+
+An `<fx:Declarations>` element may be used in an MXML class to create MXML objects that aren't user interface components.
+
+``` xml
+<fx:Declarations>
+    <fx:Array id="items">
+        <fx:Object label="Bread"/>
+        <fx:Object label="Eggs"/>
+        <fx:Object label="Milk"/>
+    </fx:Array>
+</fx:Declarations>
+```
+
+Give the object an `id`, and it may be referenced in MXML for things like binding, and inside an ActionScript `<fx:Script>` element.
+
+## Define metadata on an MXML class
+
+Metadata may be added to an MXML class using a `<fx:Metadata>` element. For instance, you might define a component's with metadata:
+
+``` xml
+<fx:Metadata>
+    [Event(name="change",type="starling.events.Event")]
+</fx:Metadata>
+```
+
+## Create inline sub-component factories
 
 When sub-components require a factory, we can define it in the MXML using `<fx:Component>` instead of writing the factory as a function in ActionScript code:
 

@@ -88,6 +88,43 @@ package feathers.skins
 		}
 
 		/**
+		 * Determines if an <code>IStyleProvider</code> for the specified
+		 * component class has been created.
+		 *
+		 * @param forClass					The class that may have a style provider.
+		 */
+		public function hasStyleProvider(forClass:Class):Boolean
+		{
+			if(this._classToStyleProvider === null)
+			{
+				return false;
+			}
+			return forClass in this._classToStyleProvider;
+		}
+
+		/**
+		 * Returns all classes that have been registered with a style provider.
+		 */
+		public function getRegisteredClasses(result:Vector.<Class> = null):Vector.<Class>
+		{
+			if(result !== null)
+			{
+				result.length = 0;
+			}
+			else
+			{
+				result = new <Class>[]; 
+			}
+			var index:int = 0;
+			for(var forClass:Object in this._classToStyleProvider)
+			{
+				result[index] = forClass as Class;
+				index++;
+			}
+			return result;
+		}
+
+		/**
 		 * Creates an <code>IStyleProvider</code> for the specified component
 		 * class, or if it was already created, returns the existing registered
 		 * style provider. If the registry is global, a newly created style
@@ -122,7 +159,7 @@ package feathers.skins
 		 *
 		 * @param forClass		The style provider is registered for this class.
 		 */
-		public function clearStyleProvider(forClass:Class):void
+		public function clearStyleProvider(forClass:Class):IStyleProvider
 		{
 			this.validateComponentClass(forClass);
 			if(forClass in this._classToStyleProvider)
@@ -137,7 +174,9 @@ package feathers.skins
 					//before setting to null.
 					forClass[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] = null;
 				}
+				return styleProvider;
 			}
+			return null;
 		}
 
 		/**
