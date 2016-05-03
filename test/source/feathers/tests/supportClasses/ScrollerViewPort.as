@@ -277,8 +277,8 @@ package feathers.tests.supportClasses
 		{
 			if(this._resizeOnScroll)
 			{
-				super.width += 1;
-				super.height += 1;
+				super.width = this.width + 1;
+				super.height = this.height + 1;
 			}
 			super.draw();
 		}
