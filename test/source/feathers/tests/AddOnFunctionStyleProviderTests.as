@@ -51,7 +51,7 @@ package feathers.tests
 			}
 		}
 
-		private function beforeFunction(target):void
+		private function beforeFunction(target:IFeathersControl):void
 		{
 			this._beforeFunctionCalled = true;
 			if(this._styleProvider.originalStyleProvider !== null)
