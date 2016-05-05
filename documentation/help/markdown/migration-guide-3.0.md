@@ -893,6 +893,9 @@ Deprecated API								| How to Migrate
 ------------------------------------------- | ---------------------------------
 `ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE`		| [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE)
 `ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF`		| [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT)
+`ToggleSwitch.LABEL_ALIGN_MIDDLE`			| Removed completely because it was a workaround for bad height of `TextBlockTextRenderer`.
+`ToggleSwitch.LABEL_ALIGN_BASELINE`			| Removed completely because it was a workaround for bad height of `TextBlockTextRenderer`.
+`labelAlign`								| Removed completely because it was a workaround for bad height of `TextBlockTextRenderer`.
 
 ### `WebView`
 
