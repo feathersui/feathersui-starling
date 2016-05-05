@@ -975,6 +975,15 @@ Deprecated API									| How to Migrate
 `TiledRowsLayout.TILE_VERTICAL_ALIGN_BOTTOM`	| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
 `TiledRowsLayout.TILE_VERTICAL_ALIGN_JUSTIFY`	| [`VerticalAlign.JUSTIFY`](../api-reference/feathers/layout/VerticalAlign.html#JUSTIFY)
 
+### `TimeLabel`
+
+Deprecated API										| How to Migrate
+--------------------------------------------------- | -------------------------
+`TimeLabel.DISPLAY_MODE_CURRENT_TIME`				| [`MediaTimeMode.CURRENT_TIME`](../api-reference/feathers/media/MediaTimeMode.html#CURRENT_TIME)
+`TimeLabel.DISPLAY_MODE_TOTAL_TIME`					| [`MediaTimeMode.TOTAL_TIME`](../api-reference/feathers/media/MediaTimeMode.html#CURRENT_TIME)
+`TimeLabel.DISPLAY_MODE_REMAINING_TIME`				| [`MediaTimeMode.REMAINING_TIME`](../api-reference/feathers/media/MediaTimeMode.html#CURRENT_TIME)
+`TimeLabel.DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES`	| [`MediaTimeMode.CURRENT_AND_TOTAL_TIMES`](../api-reference/feathers/media/MediaTimeMode.html#CURRENT_TIME)
+
 ### `VerticalLayout`
 
 Deprecated API										| How to Migrate
@@ -1033,3 +1042,4 @@ Find 												| Replace
 `\w+\.TRACK_INTERACTION_MODE_(\w+)`					| `TrackInteractionMode.$1`
 `\w+\.EDITING_MODE_(\w+)`							| `DateTimeMode.$1`
 `\w+\.DOCK_MODE_(\w+)`								| `Orientation.$1`
+`TimeLabel\.DISPLAY_MODE_(\w+)`						| `MediaTimeMode.$1`

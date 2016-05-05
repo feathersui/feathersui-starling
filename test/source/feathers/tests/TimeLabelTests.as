@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.media.MediaTimeMode;
 	import feathers.media.TimeLabel;
 	import feathers.tests.supportClasses.CustomMediaPlayer;
 
@@ -42,7 +43,7 @@ package feathers.tests
 		 */
 		public function testTotalTimeText():void
 		{
-			this._label.displayMode = TimeLabel.DISPLAY_MODE_TOTAL_TIME;
+			this._label.displayMode = MediaTimeMode.TOTAL_TIME;
 			this._label.validate();
 			Assert.assertStrictlyEquals("TimeLabel total time not displayed correctly", "1:27:34", this._label.text);
 		}
@@ -50,7 +51,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTimeText():void
 		{
-			this._label.displayMode = TimeLabel.DISPLAY_MODE_CURRENT_TIME;
+			this._label.displayMode = MediaTimeMode.CURRENT_TIME;
 			this._mediaPlayer.seek(CURRENT_TIME);
 			this._label.validate();
 			Assert.assertStrictlyEquals("TimeLabel total time not displayed correctly", "1:02:17", this._label.text);
@@ -59,7 +60,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTimeAndTotalTimeText():void
 		{
-			this._label.displayMode = TimeLabel.DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES;
+			this._label.displayMode = MediaTimeMode.CURRENT_AND_TOTAL_TIMES;
 			this._mediaPlayer.seek(CURRENT_TIME);
 			this._label.validate();
 			Assert.assertStrictlyEquals("TimeLabel total time not displayed correctly", "1:02:17 / 1:27:34", this._label.text);
