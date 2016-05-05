@@ -792,7 +792,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _labelAlign:String = LABEL_ALIGN_BASELINE;
+		protected var _labelAlign:String = LABEL_ALIGN_MIDDLE;
 
 		[Inspectable(type="String",enumeration="baseline,middle")]
 		/**
