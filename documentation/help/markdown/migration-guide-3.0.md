@@ -1046,4 +1046,5 @@ Find 												| Replace
 `\w+\.EDITING_MODE_(\w+)`							| `DateTimeMode.$1`
 `\w+\.DOCK_MODE_(\w+)`								| `Orientation.$1`
 `TimeLabel\.DISPLAY_MODE_(\w+)`						| `MediaTimeMode.$1`
-`Header\.TITLE_ALIGN(_PREFER){0,1}_(\w+)`				| `HorizontalAlign.$2`
+`Header\.TITLE_ALIGN(_PREFER){0,1}_(\w+)`			| `HorizontalAlign.$2`
+`Drawers\.OPEN_MODE_(\w+)`							| `RelativeDepth.$1`

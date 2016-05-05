@@ -10,6 +10,7 @@ package feathers.examples.drawersExplorer.views
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.RelativeDepth;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -42,7 +43,7 @@ package feathers.examples.drawersExplorer.views
 			return ContentView.globalStyleProvider;
 		}
 		
-		private var _openMode:String = Drawers.OPEN_MODE_BELOW;
+		private var _openMode:String = RelativeDepth.BELOW;
 		
 		public function get openMode():String
 		{
@@ -106,8 +107,8 @@ package feathers.examples.drawersExplorer.views
 			this._openModePicker = new PickerList();
 			this._openModePicker.dataProvider = new ListCollection(
 			[
-				{ label: "Below", data: Drawers.OPEN_MODE_BELOW },
-				{ label: "Above", data: Drawers.OPEN_MODE_ABOVE },
+				{ label: "Below", data: RelativeDepth.BELOW },
+				{ label: "Above", data: RelativeDepth.ABOVE },
 			]);
 			this._openModePicker.addEventListener(Event.CHANGE, openModePicker_changeHandler);
 

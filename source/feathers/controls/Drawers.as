@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Orientation;
+	import feathers.layout.RelativeDepth;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -224,16 +225,24 @@ package feathers.controls
 		public static const DOCK_MODE_NONE:String = "none";
 
 		/**
-		 * The drawer will be displayed above the content.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativeDepth.ABOVE</code>.
 		 *
-		 * @see #openMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const OPEN_MODE_ABOVE:String = "overlay";
 
 		/**
-		 * The drawer will be displayed below the content.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativeDepth.BELOW</code>.
 		 *
-		 * @see #openMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const OPEN_MODE_BELOW:String = "below";
 
@@ -439,7 +448,7 @@ package feathers.controls
 				{
 					this._content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				}
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this.addChildAt(DisplayObject(this._content), 0);
 				}
@@ -571,7 +580,7 @@ package feathers.controls
 			{
 				this._topDrawer.visible = false;
 				this._topDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this.addChild(DisplayObject(this._topDrawer));
 				}
@@ -862,7 +871,7 @@ package feathers.controls
 			{
 				this._rightDrawer.visible = false;
 				this._rightDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this.addChild(DisplayObject(this._rightDrawer));
 				}
@@ -1153,7 +1162,7 @@ package feathers.controls
 			{
 				this._bottomDrawer.visible = false;
 				this._bottomDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this.addChild(DisplayObject(this._bottomDrawer));
 				}
@@ -1444,7 +1453,7 @@ package feathers.controls
 			{
 				this._leftDrawer.visible = false;
 				this._leftDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this.addChild(DisplayObject(this._leftDrawer));
 				}
@@ -1771,9 +1780,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _openMode:String = OPEN_MODE_BELOW;
+		protected var _openMode:String = RelativeDepth.BELOW;
 
-		[Inspectable(type="String",enumeration="above,below")]
+		[Inspectable(type="String",enumeration="below,above")]
 		/**
 		 * Determines whether the drawer opens above the content or below it.
 		 *
@@ -1781,12 +1790,12 @@ package feathers.controls
 		 * content:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.openMode = Drawers.OPEN_MODE_ABOVE;</listing>
+		 * drawers.openMode = RelativeDepth.ABOVE;</listing>
 		 *
-		 * @default Drawers.OPEN_MODE_BELOW
+		 * @default feathers.layout.RelativeDepth#BELOW
 		 *
-		 * @see #OPEN_MODE_ABOVE
-		 * @see #OPEN_MODE_BELOW
+		 * @see feathers.layout.RelativeDepth#BELOW
+		 * @see feathers.layout.RelativeDepth#ABOVE
 		 */
 		public function get openMode():String
 		{
@@ -1798,6 +1807,11 @@ package feathers.controls
 		 */
 		public function set openMode(value:String):void
 		{
+			//for legacy reasons, OPEN_MODE_BELOW had a different string value
+			if(value === OPEN_MODE_BELOW)
+			{
+				value = RelativeDepth.BELOW;
+			}
 			if(this._openMode == value)
 			{
 				return;
@@ -1805,7 +1819,7 @@ package feathers.controls
 			this._openMode = value;
 			if(this._content)
 			{
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this.setChildIndex(DisplayObject(this._content), 0);
 				}
@@ -2790,7 +2804,7 @@ package feathers.controls
 			}
 
 			var contentX:Number = 0;
-			if(isRightDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+			if(isRightDrawerOpen && this._openMode === RelativeDepth.BELOW)
 			{
 				contentX = -rightDrawerWidth;
 				if(isLeftDrawerDocked)
@@ -2802,7 +2816,7 @@ package feathers.controls
 					}
 				}
 			}
-			else if((isLeftDrawerOpen && this._openMode === OPEN_MODE_BELOW) || isLeftDrawerDocked)
+			else if((isLeftDrawerOpen && this._openMode === RelativeDepth.BELOW) || isLeftDrawerDocked)
 			{
 				contentX = leftDrawerWidth;
 				if(this._leftDrawerDivider && isLeftDrawerDocked)
@@ -2812,7 +2826,7 @@ package feathers.controls
 			}
 			this._content.x = contentX;
 			var contentY:Number = 0;
-			if(isBottomDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+			if(isBottomDrawerOpen && this._openMode === RelativeDepth.BELOW)
 			{
 				contentY = -bottomDrawerHeight;
 				if(isTopDrawerDocked)
@@ -2824,7 +2838,7 @@ package feathers.controls
 					}
 				}
 			}
-			else if((isTopDrawerOpen && this._openMode === OPEN_MODE_BELOW) || isTopDrawerDocked)
+			else if((isTopDrawerOpen && this._openMode === RelativeDepth.BELOW) || isTopDrawerDocked)
 			{
 				contentY = topDrawerHeight;
 				if(this._topDrawerDivider && isTopDrawerDocked)
@@ -2856,7 +2870,7 @@ package feathers.controls
 				var topDrawerY:Number = 0;
 				if(isTopDrawerDocked)
 				{
-					if(isBottomDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+					if(isBottomDrawerOpen && this._openMode === RelativeDepth.BELOW)
 					{
 						topDrawerY -= bottomDrawerHeight;
 					}
@@ -2865,7 +2879,7 @@ package feathers.controls
 						topDrawerX = this._content.x;
 					}
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE &&
+				else if(this._openMode === RelativeDepth.ABOVE &&
 					!this._isTopDrawerOpen)
 				{
 					topDrawerY -= topDrawerHeight;
@@ -2916,7 +2930,7 @@ package feathers.controls
 					}
 					rightDrawerY = this._content.y;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE &&
+				else if(this._openMode === RelativeDepth.ABOVE &&
 					!this._isRightDrawerOpen)
 				{
 					rightDrawerX += rightDrawerWidth;
@@ -2957,7 +2971,7 @@ package feathers.controls
 						bottomDrawerY += this._bottomDrawerDivider.height;
 					}
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE &&
+				else if(this._openMode === RelativeDepth.ABOVE &&
 					!this._isBottomDrawerOpen)
 				{
 					bottomDrawerY += bottomDrawerHeight;
@@ -2985,7 +2999,7 @@ package feathers.controls
 				var leftDrawerHeight:Number = this.actualHeight;
 				if(isLeftDrawerDocked)
 				{
-					if(isRightDrawerOpen && this._openMode === OPEN_MODE_BELOW)
+					if(isRightDrawerOpen && this._openMode === RelativeDepth.BELOW)
 					{
 						leftDrawerX -= rightDrawerWidth;
 					}
@@ -3007,7 +3021,7 @@ package feathers.controls
 					}
 					leftDrawerY = this._content.y;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE &&
+				else if(this._openMode === RelativeDepth.ABOVE &&
 					!this._isLeftDrawerOpen)
 				{
 					leftDrawerX -= leftDrawerWidth;
@@ -3112,7 +3126,7 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				targetPosition = targetPosition === 0 ? -this._topDrawer.height : 0;
 				this._openOrCloseTween = new Tween(this._topDrawer, duration, this._openOrCloseEase);
@@ -3160,7 +3174,7 @@ package feathers.controls
 			{
 				targetPosition = -this._rightDrawer.width;
 			}
-			if(this.isLeftDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+			if(this.isLeftDrawerDocked && this._openMode === RelativeDepth.BELOW)
 			{
 				targetPosition += this._leftDrawer.width;
 				if(this._leftDrawerDivider)
@@ -3174,7 +3188,7 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				this._openOrCloseTween = new Tween(this._rightDrawer, duration, this._openOrCloseEase);
 				targetPosition += this.actualWidth;
@@ -3222,7 +3236,7 @@ package feathers.controls
 			{
 				targetPosition = -this._bottomDrawer.height;
 			}
-			if(this.isTopDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+			if(this.isTopDrawerDocked && this._openMode === RelativeDepth.BELOW)
 			{
 				targetPosition += this._topDrawer.height;
 				if(this._topDrawerDivider)
@@ -3236,7 +3250,7 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				targetPosition += this.actualHeight;
 				this._openOrCloseTween = new Tween(this._bottomDrawer, duration, this._openOrCloseEase);
@@ -3286,7 +3300,7 @@ package feathers.controls
 				duration = this._openOrCloseDuration;
 			}
 			this.pendingToggleDuration = NaN;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				targetPosition = targetPosition === 0 ? -this._leftDrawer.width : 0;
 				this._openOrCloseTween = new Tween(this._leftDrawer, duration, this._openOrCloseEase);
@@ -3307,7 +3321,7 @@ package feathers.controls
 		protected function prepareTopDrawer():void
 		{
 			this._topDrawer.visible = true;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				if(this._overlaySkin)
 				{
@@ -3315,7 +3329,7 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._topDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
+			if(!this._clipDrawers || this._openMode !== RelativeDepth.BELOW)
 			{
 				return;
 			}
@@ -3336,7 +3350,7 @@ package feathers.controls
 		protected function prepareRightDrawer():void
 		{
 			this._rightDrawer.visible = true;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				if(this._overlaySkin)
 				{
@@ -3344,7 +3358,7 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._rightDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
+			if(!this._clipDrawers || this._openMode !== RelativeDepth.BELOW)
 			{
 				return;
 			}
@@ -3372,7 +3386,7 @@ package feathers.controls
 		protected function prepareBottomDrawer():void
 		{
 			this._bottomDrawer.visible = true;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				if(this._overlaySkin)
 				{
@@ -3380,7 +3394,7 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._bottomDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
+			if(!this._clipDrawers || this._openMode !== RelativeDepth.BELOW)
 			{
 				return;
 			}
@@ -3408,7 +3422,7 @@ package feathers.controls
 		protected function prepareLeftDrawer():void
 		{
 			this._leftDrawer.visible = true;
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				if(this._overlaySkin)
 				{
@@ -3416,7 +3430,7 @@ package feathers.controls
 				}
 				this.setChildIndex(DisplayObject(this._leftDrawer), this.numChildren - 1);
 			}
-			if(!this._clipDrawers || this._openMode !== OPEN_MODE_BELOW)
+			if(!this._clipDrawers || this._openMode !== RelativeDepth.BELOW)
 			{
 				return;
 			}
@@ -3653,7 +3667,7 @@ package feathers.controls
 					}
 				}
 			}
-			else if(this._openMode === OPEN_MODE_BELOW && touch.target !== this)
+			else if(this._openMode === RelativeDepth.BELOW && touch.target !== this)
 			{
 				//when the drawer is opened below, it will only close when
 				//something outside of the drawer is touched
@@ -3749,7 +3763,7 @@ package feathers.controls
 				{
 					this._isTopDrawerOpen = false;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this._isTopDrawerOpen = roundToNearest(this._topDrawer.y, this._topDrawer.height) == 0;
 				}
@@ -3770,7 +3784,7 @@ package feathers.controls
 				{
 					this._isRightDrawerOpen = false;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this._isRightDrawerOpen = roundToNearest(this.actualWidth - this._rightDrawer.x, this._rightDrawer.width) != 0;
 				}
@@ -3796,7 +3810,7 @@ package feathers.controls
 				{
 					this._isBottomDrawerOpen = false;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this._isBottomDrawerOpen = roundToNearest(this.actualHeight - this._bottomDrawer.y, this._bottomDrawer.height) != 0;
 				}
@@ -3822,7 +3836,7 @@ package feathers.controls
 				{
 					this._isLeftDrawerOpen = false;
 				}
-				else if(this._openMode === OPEN_MODE_ABOVE)
+				else if(this._openMode === RelativeDepth.ABOVE)
 				{
 					this._isLeftDrawerOpen = roundToNearest(this._leftDrawer.x, this._leftDrawer.width) == 0;
 				}
@@ -3896,7 +3910,7 @@ package feathers.controls
 				{
 					contentX = 0;
 				}
-				if(this.isLeftDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+				if(this.isLeftDrawerDocked && this._openMode === RelativeDepth.BELOW)
 				{
 					contentX += this._leftDrawer.width;
 					if(this._leftDrawerDivider !== null)
@@ -3944,7 +3958,7 @@ package feathers.controls
 				{
 					contentY = 0;
 				}
-				if(this.isTopDrawerDocked && this._openMode === OPEN_MODE_BELOW)
+				if(this.isTopDrawerDocked && this._openMode === RelativeDepth.BELOW)
 				{
 					contentY += this._topDrawer.height;
 					if(this._topDrawerDivider !== null)
@@ -3953,7 +3967,7 @@ package feathers.controls
 					}
 				}
 			}
-			if(this._openMode === OPEN_MODE_ABOVE)
+			if(this._openMode === RelativeDepth.ABOVE)
 			{
 				if(this._isDraggingTopDrawer)
 				{
@@ -4105,7 +4119,7 @@ package feathers.controls
 			{
 				this._overlaySkin.x = this._leftDrawer.x;
 			}
-			else if(this._openMode === OPEN_MODE_ABOVE && this._leftDrawer)
+			else if(this._openMode === RelativeDepth.ABOVE && this._leftDrawer)
 			{
 				this._overlaySkin.x = this._leftDrawer.x + this._leftDrawer.width;
 			}
@@ -4118,7 +4132,7 @@ package feathers.controls
 			{
 				this._overlaySkin.y = this._topDrawer.y;
 			}
-			else if(this._openMode === OPEN_MODE_ABOVE && this._topDrawer)
+			else if(this._openMode === RelativeDepth.ABOVE && this._topDrawer)
 			{
 				this._overlaySkin.y = this._topDrawer.y + this._topDrawer.height;
 			}
@@ -4135,7 +4149,7 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					var ratio:Number = 1 + this._topDrawer.y / this._topDrawer.height;
 				}
@@ -4155,7 +4169,7 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					var ratio:Number = -(this._rightDrawer.x - this.actualWidth) / this._rightDrawer.width;
 				}
@@ -4175,7 +4189,7 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					var ratio:Number = -(this._bottomDrawer.y - this.actualHeight) / this._bottomDrawer.height;
 				}
@@ -4195,7 +4209,7 @@ package feathers.controls
 		{
 			if(this._overlaySkin)
 			{
-				if(this._openMode === OPEN_MODE_ABOVE)
+				if(this._openMode === RelativeDepth.ABOVE)
 				{
 					var ratio:Number = 1 + this._leftDrawer.x / this._leftDrawer.width;
 				}
@@ -4213,7 +4227,7 @@ package feathers.controls
 		 */
 		protected function openOrCloseTween_onUpdate():void
 		{
-			if(this._clipDrawers && this._openMode === OPEN_MODE_BELOW)
+			if(this._clipDrawers && this._openMode === RelativeDepth.BELOW)
 			{
 				var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
