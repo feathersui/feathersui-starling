@@ -31,7 +31,7 @@ Notice that we create our button just like we would any regular button, includin
 
 We could add additional buttons or controls to the [`rightItems`](../api-reference/feathers/controls/Header.html#rightItems) region or the [`centerItems`](../api-reference/feathers/controls/Header.html#centerItems) region, if desired.
 
-<aside class="warn">Normally, the title text renderer is displayed in the center region of the `Header`. If the `centerItems` property is used, the title will be hidden. The [`titleAlign`](../api-reference/feathers/controls/Header.html#titleAlign) property, which we'll learn how to use in a moment, may be used to reposition the title on the left or right side so that it doesn't conflict with the center items.</aside>
+<aside class="warn">Normally, the title text renderer is displayed in the center region of the `Header`. If the `centerItems` property is not empty, the title will be hidden. The [`titleAlign`](../api-reference/feathers/controls/Header.html#titleAlign) property, which we'll learn how to use in a moment, may be used to reposition the title on the left or right side so that it doesn't conflict with the center items.</aside>
 
 ## Skinning a `Header`
 
@@ -45,12 +45,12 @@ header.backgroundSkin = new Image( texture );
 
 The background stretches to fill the entire width and height of the header.
 
-By default, the header's title text renderer appears in the center. The `titleAlig` property may be set to [`Header.TITLE_ALIGN_PREFER_LEFT`](../api-reference/feathers/controls/Header.html#TITLE_ALIGN_PREFER_LEFT) to position the title on the left, if the `leftItems` property is `null`. Similarly, we can use [`Header.TITLE_ALIGN_PREFER_RIGHT`](../api-reference/feathers/controls/Header.html#TITLE_ALIGN_PREFER_RIGHT) to align the title to the right side of the header.
+By default, the header's title text renderer appears in the center. The `titleAlign` property may be set to [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT) to position the title to the left. If the `leftItems` property is not empty, the title will still appear on the left, but it will be positioned after the left items. Similarly, we can use [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT) to align the title to the right side of the header. If the `rightItems` property is not empty, the title will still appear on the right, but it will be positioned before the right items.
 
-We don't have any items on the right side of the header, so we can align the title to the right:
+Let's align the title to the right:
 
 ``` code
-header.titleAlign = Header.TITLE_ALIGN_PREFER_RIGHT;
+header.titleAlign = HorizontalAlign.RIGHT;
 ```
 
 Similar to many Feathers components, the `Header` provides [`gap`](../api-reference/feathers/controls/Header.html#gap) and various padding values for layouts.

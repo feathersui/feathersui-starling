@@ -538,6 +538,9 @@ Deprecated API						| How to Migrate
 `Header.VERTICAL_ALIGN_TOP`			| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
 `Header.VERTICAL_ALIGN_MIDDLE`		| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
 `Header.VERTICAL_ALIGN_BOTTOM`		| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+`Header.TITLE_ALIGN_PREFER_LEFT`	| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`Header.TITLE_ALIGN_CENTER`			| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`Header.TITLE_ALIGN_PREFER_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
 
 ### `ImageLoader`
 
@@ -1043,3 +1046,4 @@ Find 												| Replace
 `\w+\.EDITING_MODE_(\w+)`							| `DateTimeMode.$1`
 `\w+\.DOCK_MODE_(\w+)`								| `Orientation.$1`
 `TimeLabel\.DISPLAY_MODE_(\w+)`						| `MediaTimeMode.$1`
+`Header\.TITLE_ALIGN(_PREFER){0,1}_(\w+)`				| `HorizontalAlign.$2`

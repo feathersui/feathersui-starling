@@ -281,7 +281,7 @@ package feathers.examples.trainTimes.themes
 			header.minWidth = 44;
 			header.minHeight = 44;
 			header.padding = 7;
-			header.titleAlign = Header.TITLE_ALIGN_PREFER_RIGHT;
+			header.titleAlign = HorizontalAlign.RIGHT;
 
 			var backgroundSkin:Image = new Image(this.headerBackgroundTexture);
 			backgroundSkin.scale9Grid = HEADER_SCALE9_GRID;
