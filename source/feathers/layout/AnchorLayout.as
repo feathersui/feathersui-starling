@@ -103,20 +103,36 @@ package feathers.layout
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			if(needsWidth || needsHeight)
 			{
-				this.validateItems(items, true);
+				this.validateItems(items, explicitWidth, explicitHeight, true);
 				this.measureViewPort(items, viewPortWidth, viewPortHeight, HELPER_POINT);
 				if(needsWidth)
 				{
-					viewPortWidth = Math.min(maxWidth, Math.max(minWidth, HELPER_POINT.x));
+					viewPortWidth = HELPER_POINT.x;
+					if(viewPortWidth < minWidth)
+					{
+						viewPortWidth = minWidth;
+					}
+					else if(viewPortWidth > maxWidth)
+					{
+						viewPortWidth = maxWidth;
+					}
 				}
 				if(needsHeight)
 				{
-					viewPortHeight = Math.min(maxHeight, Math.max(minHeight, HELPER_POINT.y));
+					viewPortHeight = HELPER_POINT.y;
+					if(viewPortHeight < minHeight)
+					{
+						viewPortHeight = minHeight;
+					}
+					else if(viewPortHeight > maxHeight)
+					{
+						viewPortHeight = maxHeight;
+					}
 				}
 			}
 			else
 			{
-				this.validateItems(items, false);
+				this.validateItems(items, explicitWidth, explicitHeight, false);
 			}
 
 			this.layoutWithBounds(items, boundsX, boundsY, viewPortWidth, viewPortHeight);
@@ -1045,19 +1061,18 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, force:Boolean):void
+		protected function validateItems(items:Vector.<DisplayObject>,
+			explicitWidth:Number, explicitHeight:Number,
+			force:Boolean):void
 		{
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var control:IFeathersControl = items[i] as IFeathersControl;
 				if(control)
 				{
-					if(force)
-					{
-						control.validate();
-						continue;
-					}
 					if(control is ILayoutDisplayObject)
 					{
 						var layoutControl:ILayoutDisplayObject = ILayoutDisplayObject(control);
@@ -1070,23 +1085,43 @@ package feathers.layout
 						{
 							var left:Number = layoutData.left;
 							var hasLeftPosition:Boolean = left === left; //!isNaN
+							var leftAnchor:DisplayObject = layoutData.leftAnchorDisplayObject;
 							var right:Number = layoutData.right;
+							var rightAnchor:DisplayObject = layoutData.rightAnchorDisplayObject;
 							var hasRightPosition:Boolean = right === right; //!isNaN
+							if(!needsWidth && hasLeftPosition && leftAnchor === null &&
+								hasRightPosition && rightAnchor === null)
+							{
+								//optimization: set the child width before
+								//validation if the container width is explicit
+								control.width = explicitWidth - left - right;
+							}
 							var horizontalCenter:Number = layoutData.horizontalCenter;
 							var hasHorizontalCenterPosition:Boolean = horizontalCenter === horizontalCenter; //!isNaN
+
+							var top:Number = layoutData.top;
+							var hasTopPosition:Boolean = top === top; //!isNaN
+							var topAnchor:DisplayObject = layoutData.topAnchorDisplayObject;
+							var bottom:Number = layoutData.bottom;
+							var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
+							var bottomAnchor:DisplayObject = layoutData.bottomAnchorDisplayObject;
+							if(!needsHeight && hasTopPosition && topAnchor === null &&
+								hasBottomPosition && bottomAnchor === null)
+							{
+								//optimization: set the child height before
+								//validation if the container height is explicit
+								control.height = explicitHeight - top - bottom;
+							}
+							var verticalCenter:Number = layoutData.verticalCenter;
+							var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
+
 							if((hasRightPosition && !hasLeftPosition && !hasHorizontalCenterPosition) ||
 								hasHorizontalCenterPosition)
 							{
 								control.validate();
 								continue;
 							}
-							var top:Number = layoutData.top;
-							var hasTopPosition:Boolean = top === top; //!isNaN
-							var bottom:Number = layoutData.bottom;
-							var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
-							var verticalCenter:Number = layoutData.verticalCenter;
-							var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
-							if((hasBottomPosition && !hasTopPosition && !hasVerticalCenterPosition) ||
+							else if((hasBottomPosition && !hasTopPosition && !hasVerticalCenterPosition) ||
 								hasVerticalCenterPosition)
 							{
 								control.validate();
@@ -1094,9 +1129,15 @@ package feathers.layout
 							}
 						}
 					}
+					if(force)
+					{
+						control.validate();
+						continue;
+					}
 					if(this.isReferenced(DisplayObject(control), items))
 					{
 						control.validate();
+						continue;
 					}
 				}
 			}
