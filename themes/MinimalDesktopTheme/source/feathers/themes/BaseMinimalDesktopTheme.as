@@ -459,6 +459,10 @@ package feathers.themes
 			}
 			TextField.unregisterBitmapFont(FONT_NAME);
 
+			var stage:Stage = Starling.current.stage;
+			FocusManager.setEnabledForStage(stage, false);
+			ToolTipManager.setEnabledForStage(stage, false);
+
 			//don't forget to call super.dispose()!
 			super.dispose();
 		}
