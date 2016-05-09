@@ -13,6 +13,7 @@ package feathers.controls.supportClasses
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.errors.IllegalOperationError;
 	import flash.utils.getDefinitionByName;
@@ -505,13 +506,11 @@ package feathers.controls.supportClasses
 			{
 				if(this._activeScreen !== null)
 				{
-					this._activeScreen.width = this._activeScreenExplicitWidth;
-					this._activeScreen.height = this._activeScreenExplicitHeight;
-					if(measureScreen !== null)
-					{
-						measureScreen.minWidth = this._activeScreenExplicitMinWidth;
-						measureScreen.minHeight = this._activeScreenExplicitMinHeight;
-					}
+					resetFluidChildDimensionsForMeasurement(this._activeScreen,
+						this._explicitWidth, this._explicitHeight,
+						this._explicitMinWidth, this._explicitMinHeight,
+						this._activeScreenExplicitWidth, this._activeScreenExplicitHeight,
+						this._activeScreenExplicitMinWidth, this._activeScreenExplicitMinHeight);
 					if(this._activeScreen is IValidating)
 					{
 						IValidating(this._activeScreen).validate();
