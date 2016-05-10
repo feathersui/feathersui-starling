@@ -3685,9 +3685,9 @@ package feathers.controls.renderers
 							newMinWidth = measureSkin.minWidth;
 						}
 					}
-					else if(this.currentSkin.width > newMinWidth)
+					else if(this._explicitSkinMinWidth > newMinWidth)
 					{
-						newMinWidth = this.currentSkin.width;
+						newMinWidth = this._explicitSkinMinWidth;
 					}
 				}
 			}
@@ -3723,9 +3723,9 @@ package feathers.controls.renderers
 							newMinHeight = measureSkin.minHeight;
 						}
 					}
-					else if(this.currentSkin.height > newMinHeight)
+					else if(this._explicitSkinMinHeight > newMinHeight)
 					{
-						newMinHeight = this.currentSkin.height;
+						newMinHeight = this._explicitSkinMinHeight;
 					}
 				}
 			}
