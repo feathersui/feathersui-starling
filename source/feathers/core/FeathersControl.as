@@ -853,8 +853,12 @@ package feathers.core
 			else
 			{
 				var result:Boolean = this.saveMeasurements(this.actualWidth, this.actualHeight, value, this.actualMinHeight);
-				if(result)
+				if(result &&
+					this._explicitWidth !== this._explicitWidth &&
+					this.actualWidth < this.actualMinWidth)
 				{
+					//only invalidate if this change might affect the width
+					//because everything else was handled in saveMeasurements()
 					this.invalidate(INVALIDATION_FLAG_SIZE);
 				}
 			}
@@ -939,8 +943,12 @@ package feathers.core
 			else
 			{
 				var result:Boolean = this.saveMeasurements(this.actualWidth, this.actualHeight, this.actualMinWidth, value);
-				if(result)
+				if(result &&
+					this._explicitHeight !== this._explicitHeight &&
+					this.actualHeight < this.actualMinHeight)
 				{
+					//only invalidate if this change might affect the height
+					//because everything else was handled in saveMeasurements()
 					this.invalidate(INVALIDATION_FLAG_SIZE);
 				}
 			}

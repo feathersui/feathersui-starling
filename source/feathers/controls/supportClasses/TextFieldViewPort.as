@@ -509,13 +509,32 @@ package feathers.controls.supportClasses
 
 		public function set minVisibleWidth(value:Number):void
 		{
-			if(this._explicitMinVisibleWidth == value ||
-				(value !== value && this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth)) //isNaN
+			if(this._explicitMinVisibleWidth == value)
+			{
+				return;
+			}
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN &&
+				this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth) //isNaN
 			{
 				return;
 			}
 			this._explicitMinVisibleWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(valueIsNaN)
+			{
+				this._actualMinVisibleWidth = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this._actualMinVisibleWidth = value;
+				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
+					this._actualVisibleWidth < value)
+				{
+					//only invalidate if this change might affect the visibleWidth
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+			}
 		}
 
 		private var _maxVisibleWidth:Number = Number.POSITIVE_INFINITY;
@@ -578,13 +597,32 @@ package feathers.controls.supportClasses
 
 		public function set minVisibleHeight(value:Number):void
 		{
-			if(this._explicitMinVisibleHeight == value ||
-				(value !== value && this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight)) //isNaN
+			if(this._explicitMinVisibleHeight == value)
+			{
+				return;
+			}
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN &&
+				this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight) //isNaN
 			{
 				return;
 			}
 			this._explicitMinVisibleHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(valueIsNaN)
+			{
+				this._actualMinVisibleHeight = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this._actualMinVisibleHeight = value;
+				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
+					this._actualVisibleHeight < value)
+				{
+					//only invalidate if this change might affect the visibleHeight
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+			}
 		}
 
 		private var _maxVisibleHeight:Number = Number.POSITIVE_INFINITY;
