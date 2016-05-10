@@ -2723,38 +2723,6 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this._topDrawer)
-			{
-				this._topDrawer.validate();
-			}
-			if(this._rightDrawer)
-			{
-				this._rightDrawer.validate();
-			}
-			if(this._bottomDrawer)
-			{
-				this._bottomDrawer.validate();
-			}
-			if(this._leftDrawer)
-			{
-				this._leftDrawer.validate();
-			}
-			if(this._topDrawerDivider is IValidating)
-			{
-				IValidating(this._topDrawerDivider).validate();
-			}
-			if(this._rightDrawerDivider is IValidating)
-			{
-				IValidating(this._rightDrawerDivider).validate();
-			}
-			if(this._bottomDrawerDivider is IValidating)
-			{
-				IValidating(this._bottomDrawerDivider).validate();
-			}
-			if(this._leftDrawerDivider is IValidating)
-			{
-				IValidating(this._leftDrawerDivider).validate();
-			}
 			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
 			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
 			var isBottomDrawerOpen:Boolean = this.isBottomDrawerOpen;
@@ -2763,10 +2731,70 @@ package feathers.controls
 			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
 			var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
 			var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
-			var topDrawerHeight:Number = this._topDrawer ? this._topDrawer.height : 0;
-			var rightDrawerWidth:Number = this._rightDrawer ? this._rightDrawer.width : 0;
-			var bottomDrawerHeight:Number = this._bottomDrawer ? this._bottomDrawer.height : 0;
-			var leftDrawerWidth:Number = this._leftDrawer ? this._leftDrawer.width : 0;
+
+			var topDrawerHeight:Number = 0;
+			var bottomDrawerHeight:Number = 0;
+			if(this._topDrawer !== null)
+			{
+				this._topDrawer.width = this.actualWidth;
+				this._topDrawer.validate();
+				topDrawerHeight = this._topDrawer.height;
+			}
+			if(this._bottomDrawer !== null)
+			{
+				this._bottomDrawer.width = this.actualWidth;
+				this._bottomDrawer.validate();
+				bottomDrawerHeight = this._bottomDrawer.height;
+			}
+			if(this._topDrawerDivider is IValidating)
+			{
+				IValidating(this._topDrawerDivider).validate();
+			}
+			if(this._bottomDrawerDivider is IValidating)
+			{
+				IValidating(this._bottomDrawerDivider).validate();
+			}
+
+			var contentHeight:Number = this.actualHeight;
+			if(isTopDrawerDocked)
+			{
+				contentHeight -= topDrawerHeight;
+				if(this._topDrawerDivider !== null)
+				{
+					contentHeight -= this._topDrawerDivider.height;
+				}
+			}
+			if(isBottomDrawerDocked)
+			{
+				contentHeight -= bottomDrawerHeight;
+				if(this._bottomDrawerDivider !== null)
+				{
+					contentHeight -= this._bottomDrawerDivider.height;
+				}
+			}
+
+			var rightDrawerWidth:Number = 0;
+			var leftDrawerWidth:Number = 0;
+			if(this._rightDrawer !== null)
+			{
+				this._rightDrawer.height = contentHeight;
+				this._rightDrawer.validate();
+				rightDrawerWidth = this._rightDrawer.width;
+			}
+			if(this._leftDrawer !== null)
+			{
+				this._leftDrawer.height = contentHeight;
+				this._leftDrawer.validate();
+				leftDrawerWidth = this._leftDrawer.width;
+			}
+			if(this._rightDrawerDivider is IValidating)
+			{
+				IValidating(this._rightDrawerDivider).validate();
+			}
+			if(this._leftDrawerDivider is IValidating)
+			{
+				IValidating(this._leftDrawerDivider).validate();
+			}
 
 			var contentWidth:Number = this.actualWidth;
 			if(isLeftDrawerDocked)
@@ -2783,23 +2811,6 @@ package feathers.controls
 				if(this._rightDrawerDivider)
 				{
 					contentWidth -= this._rightDrawerDivider.width;
-				}
-			}
-			var contentHeight:Number = this.actualHeight;
-			if(isTopDrawerDocked)
-			{
-				contentHeight -= topDrawerHeight;
-				if(this._topDrawerDivider)
-				{
-					contentHeight -= this._topDrawerDivider.height;
-				}
-			}
-			if(isBottomDrawerDocked)
-			{
-				contentHeight -= bottomDrawerHeight;
-				if(this._bottomDrawerDivider)
-				{
-					contentHeight -= this._bottomDrawerDivider.height;
 				}
 			}
 
