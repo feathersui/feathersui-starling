@@ -2739,20 +2739,28 @@ package feathers.controls
 				this._topDrawer.width = this.actualWidth;
 				this._topDrawer.validate();
 				topDrawerHeight = this._topDrawer.height;
+				if(this._topDrawerDivider !== null)
+				{
+					this._topDrawerDivider.width = this._topDrawer.width;
+					if(this._topDrawerDivider is IValidating)
+					{
+						IValidating(this._topDrawerDivider).validate();
+					}
+				}
 			}
 			if(this._bottomDrawer !== null)
 			{
 				this._bottomDrawer.width = this.actualWidth;
 				this._bottomDrawer.validate();
 				bottomDrawerHeight = this._bottomDrawer.height;
-			}
-			if(this._topDrawerDivider is IValidating)
-			{
-				IValidating(this._topDrawerDivider).validate();
-			}
-			if(this._bottomDrawerDivider is IValidating)
-			{
-				IValidating(this._bottomDrawerDivider).validate();
+				if(this._bottomDrawerDivider !== null)
+				{
+					this._bottomDrawerDivider.width = this._bottomDrawer.width;
+					if(this._bottomDrawerDivider is IValidating)
+					{
+						IValidating(this._bottomDrawerDivider).validate();
+					}
+				}
 			}
 
 			var contentHeight:Number = this.actualHeight;
@@ -2772,35 +2780,61 @@ package feathers.controls
 					contentHeight -= this._bottomDrawerDivider.height;
 				}
 			}
+			if(contentHeight < 0)
+			{
+				contentHeight = 0;
+			}
 
 			var rightDrawerWidth:Number = 0;
 			var leftDrawerWidth:Number = 0;
 			if(this._rightDrawer !== null)
 			{
-				this._rightDrawer.height = contentHeight;
+				if(isRightDrawerDocked)
+				{
+					this._rightDrawer.height = contentHeight;
+				}
+				else
+				{
+					this._rightDrawer.height = this.actualHeight;
+				}
 				this._rightDrawer.validate();
 				rightDrawerWidth = this._rightDrawer.width;
+				if(this._rightDrawerDivider !== null)
+				{
+					this._rightDrawerDivider.height = this._rightDrawer.height;
+					if(this._rightDrawerDivider is IValidating)
+					{
+						IValidating(this._rightDrawerDivider).validate();
+					}
+				}
 			}
 			if(this._leftDrawer !== null)
 			{
-				this._leftDrawer.height = contentHeight;
+				if(isLeftDrawerDocked)
+				{
+					this._leftDrawer.height = contentHeight;
+				}
+				else
+				{
+					this._leftDrawer.height = this.actualHeight;
+				}
 				this._leftDrawer.validate();
 				leftDrawerWidth = this._leftDrawer.width;
-			}
-			if(this._rightDrawerDivider is IValidating)
-			{
-				IValidating(this._rightDrawerDivider).validate();
-			}
-			if(this._leftDrawerDivider is IValidating)
-			{
-				IValidating(this._leftDrawerDivider).validate();
+				if(this._leftDrawerDivider !== null)
+				{
+					this._leftDrawerDivider.height = this._leftDrawer.height;
+					if(this._leftDrawerDivider is IValidating)
+					{
+						IValidating(this._leftDrawerDivider).validate();
+					}
+				}
 			}
 
 			var contentWidth:Number = this.actualWidth;
 			if(isLeftDrawerDocked)
 			{
 				contentWidth -= leftDrawerWidth;
-				if(this._leftDrawerDivider)
+				if(this._leftDrawerDivider !== null)
 				{
 					contentWidth -= this._leftDrawerDivider.width;
 				}
@@ -2808,10 +2842,14 @@ package feathers.controls
 			if(isRightDrawerDocked)
 			{
 				contentWidth -= rightDrawerWidth;
-				if(this._rightDrawerDivider)
+				if(this._rightDrawerDivider !== null)
 				{
 					contentWidth -= this._rightDrawerDivider.width;
 				}
+			}
+			if(contentWidth < 0)
+			{
+				contentWidth = 0;
 			}
 
 			var contentX:Number = 0;
@@ -2858,14 +2896,6 @@ package feathers.controls
 				}
 			}
 			this._content.y = contentY;
-			if(contentWidth < 0)
-			{
-				contentWidth = 0;
-			}
-			if(contentHeight < 0)
-			{
-				contentHeight = 0;
-			}
 			if(this._autoSizeMode !== AutoSizeMode.CONTENT)
 			{
 				this._content.width = contentWidth;
@@ -2875,7 +2905,7 @@ package feathers.controls
 				this._content.validate();
 			}
 
-			if(this._topDrawer)
+			if(this._topDrawer !== null)
 			{
 				var topDrawerX:Number = 0;
 				var topDrawerY:Number = 0;
@@ -2897,47 +2927,28 @@ package feathers.controls
 				}
 				this._topDrawer.x = topDrawerX;
 				this._topDrawer.y = topDrawerY;
-				this._topDrawer.width = this.actualWidth;
 				this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked || this._isDraggingTopDrawer;
-				if(this._topDrawerDivider)
+				if(this._topDrawerDivider !== null)
 				{
 					this._topDrawerDivider.visible = isTopDrawerDocked;
 					this._topDrawerDivider.x = topDrawerX;
 					this._topDrawerDivider.y = topDrawerY + topDrawerHeight;
-					this._topDrawerDivider.width = this.actualWidth;
 				}
 
 				//final validation to avoid juggler next frame issues
 				this._topDrawer.validate();
 			}
 
-			if(this._rightDrawer)
+			if(this._rightDrawer !== null)
 			{
 				var rightDrawerX:Number = this.actualWidth - rightDrawerWidth;
 				var rightDrawerY:Number = 0;
-				var rightDrawerHeight:Number = this.actualHeight;
 				if(isRightDrawerDocked)
 				{
 					rightDrawerX = this._content.x + this._content.width;
 					if(this._rightDrawerDivider)
 					{
 						rightDrawerX += this._rightDrawerDivider.width;
-					}
-					if(isTopDrawerDocked)
-					{
-						rightDrawerHeight -= topDrawerHeight;
-						if(this._topDrawerDivider)
-						{
-							rightDrawerHeight -= this._topDrawerDivider.height;
-						}
-					}
-					if(isBottomDrawerDocked)
-					{
-						rightDrawerHeight -= bottomDrawerHeight;
-						if(this._bottomDrawerDivider)
-						{
-							rightDrawerHeight -= this._bottomDrawerDivider.height;
-						}
 					}
 					rightDrawerY = this._content.y;
 				}
@@ -2946,27 +2957,21 @@ package feathers.controls
 				{
 					rightDrawerX += rightDrawerWidth;
 				}
-				if(rightDrawerHeight < 0)
-				{
-					rightDrawerHeight = 0;
-				}
 				this._rightDrawer.x = rightDrawerX;
 				this._rightDrawer.y = rightDrawerY;
-				this._rightDrawer.height = rightDrawerHeight;
 				this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked || this._isDraggingRightDrawer;
-				if(this._rightDrawerDivider)
+				if(this._rightDrawerDivider !== null)
 				{
 					this._rightDrawerDivider.visible = isRightDrawerDocked;
 					this._rightDrawerDivider.x = rightDrawerX - this._rightDrawerDivider.width;
 					this._rightDrawerDivider.y = rightDrawerY;
-					this._rightDrawerDivider.height = rightDrawerHeight;
 				}
 
 				//final validation to avoid juggler next frame issues
 				this._rightDrawer.validate();
 			}
 
-			if(this._bottomDrawer)
+			if(this._bottomDrawer !== null)
 			{
 				var bottomDrawerX:Number = 0;
 				var bottomDrawerY:Number = this.actualHeight - bottomDrawerHeight;
@@ -2989,46 +2994,27 @@ package feathers.controls
 				}
 				this._bottomDrawer.x = bottomDrawerX;
 				this._bottomDrawer.y = bottomDrawerY;
-				this._bottomDrawer.width = this.actualWidth;
 				this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked || this._isDraggingBottomDrawer;
-				if(this._bottomDrawerDivider)
+				if(this._bottomDrawerDivider !== null)
 				{
 					this._bottomDrawerDivider.visible = isBottomDrawerDocked;
 					this._bottomDrawerDivider.x = bottomDrawerX;
 					this._bottomDrawerDivider.y = bottomDrawerY - this._bottomDrawerDivider.height;
-					this._bottomDrawerDivider.width = this.actualWidth;
 				}
 
 				//final validation to avoid juggler next frame issues
 				this._bottomDrawer.validate();
 			}
 
-			if(this._leftDrawer)
+			if(this._leftDrawer !== null)
 			{
 				var leftDrawerX:Number = 0;
 				var leftDrawerY:Number = 0;
-				var leftDrawerHeight:Number = this.actualHeight;
 				if(isLeftDrawerDocked)
 				{
 					if(isRightDrawerOpen && this._openMode === RelativeDepth.BELOW)
 					{
 						leftDrawerX -= rightDrawerWidth;
-					}
-					if(isTopDrawerDocked)
-					{
-						leftDrawerHeight -= topDrawerHeight;
-						if(this._topDrawerDivider)
-						{
-							leftDrawerHeight -= this._topDrawerDivider.height;
-						}
-					}
-					if(isBottomDrawerDocked)
-					{
-						leftDrawerHeight -= bottomDrawerHeight;
-						if(this._bottomDrawerDivider)
-						{
-							leftDrawerHeight -= this._bottomDrawerDivider.height;
-						}
 					}
 					leftDrawerY = this._content.y;
 				}
@@ -3037,27 +3023,21 @@ package feathers.controls
 				{
 					leftDrawerX -= leftDrawerWidth;
 				}
-				if(leftDrawerHeight < 0)
-				{
-					leftDrawerHeight = 0;
-				}
 				this._leftDrawer.x = leftDrawerX;
 				this._leftDrawer.y = leftDrawerY;
-				this._leftDrawer.height = leftDrawerHeight;
 				this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked || this._isDraggingLeftDrawer;
-				if(this._leftDrawerDivider)
+				if(this._leftDrawerDivider !== null)
 				{
 					this._leftDrawerDivider.visible = isLeftDrawerDocked;
 					this._leftDrawerDivider.x = leftDrawerX + leftDrawerWidth;
 					this._leftDrawerDivider.y = leftDrawerY;
-					this._leftDrawerDivider.height = leftDrawerHeight;
 				}
 
 				//final validation to avoid juggler next frame issues
 				this._leftDrawer.validate();
 			}
 
-			if(this._overlaySkin)
+			if(this._overlaySkin !== null)
 			{
 				this.positionOverlaySkin();
 				this._overlaySkin.width = this.actualWidth;
