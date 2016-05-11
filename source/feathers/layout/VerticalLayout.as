@@ -992,7 +992,8 @@ package feathers.layout
 				this.validateItems(items, explicitWidth - this._paddingLeft - this._paddingRight,
 					minWidth - this._paddingLeft - this._paddingRight,
 					maxWidth - this._paddingLeft - this._paddingRight,
-					distributedHeight);
+					distributedHeight, explicitHeight - this._paddingTop - this._paddingBottom,
+					maxHeight - this._paddingTop - this._paddingBottom);
 			}
 
 			if(needsExplicitHeight && this._distributeHeights)
@@ -1910,9 +1911,22 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, explicitWidth:Number,
-			minWidth:Number, maxWidth:Number, distributedHeight:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>,
+			explicitWidth:Number, minWidth:Number, maxWidth:Number,
+			distributedHeight:Number, explicitHeight:Number, maxHeight:Number):void
 		{
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			var containerWidth:Number = maxWidth;
+			if(!needsWidth)
+			{
+				containerWidth = explicitWidth;
+			}
+			var containerHeight:Number = maxHeight;
+			if(!needsHeight)
+			{
+				containerHeight = explicitHeight;
+			}
 			//if the alignment is justified, then we want to set the width of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
@@ -1958,7 +1972,7 @@ package feathers.layout
 							{
 								percentWidth = 100;
 							}
-							var itemWidth:Number = explicitWidth * percentWidth / 100;
+							var itemWidth:Number = containerWidth * percentWidth / 100;
 							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 							//we use the explicitMinWidth to make an accurate
 							//measurement, and we'll use the component's
@@ -1984,6 +1998,18 @@ package feathers.layout
 							//whether it is set or not, and the minHeight is
 							//used with percentHeight calculations
 							item.height = NaN;
+
+							//we're about the validate a component without an
+							//explicit height, and that may be expensive!
+							//we want to ensure that a component like a
+							//vertical list with many item renderers doesn't
+							//completely bypass layout virtualization, so we
+							//limit the height to the maximum possible if it
+							//were the only item in the layout.
+							if(item is IFeathersControl)
+							{
+								IFeathersControl(item).maxHeight = containerHeight;
+							}
 						}
 					}
 				}
@@ -1993,7 +2019,7 @@ package feathers.layout
 				}
 				if(item is IValidating)
 				{
-					IValidating(item).validate()
+					IValidating(item).validate();
 				}
 			}
 		}

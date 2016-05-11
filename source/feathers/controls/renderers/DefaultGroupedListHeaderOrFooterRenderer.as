@@ -1498,16 +1498,13 @@ package feathers.controls.renderers
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
-				if(this.content !== null)
+				if(this.contentLabel !== null)
 				{
-					if(this.contentLabel !== null)
-					{
-						newWidth = HELPER_POINT.x;
-					}
-					else
-					{
-						newWidth = this.content.width;
-					}
+					newWidth = HELPER_POINT.x;
+				}
+				else if(this.content !== null)
+				{
+					newWidth = this.content.width;
 				}
 				else
 				{
@@ -1523,16 +1520,13 @@ package feathers.controls.renderers
 			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
-				if(this.content !== null)
+				if(this.contentLabel !== null)
 				{
-					if(this.contentLabel !== null)
-					{
-						newHeight = HELPER_POINT.y;
-					}
-					else
-					{
-						newHeight = this.content.height;
-					}
+					newHeight = HELPER_POINT.y;
+				}
+				else if(this.content !== null)
+				{
+					newHeight = this.content.height;
 				}
 				else
 				{
@@ -1781,9 +1775,14 @@ package feathers.controls.renderers
 				return;
 			}
 
-			if(this.contentLabel)
+			if(this.contentLabel !== null)
 			{
 				this.contentLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+			}
+
+			if(this.content is IValidating)
+			{
+				IValidating(this.content).validate();
 			}
 			switch(this._horizontalAlign)
 			{

@@ -1808,10 +1808,10 @@ package feathers.controls
 		 */
 		public function set openMode(value:String):void
 		{
-			//for legacy reasons, OPEN_MODE_BELOW had a different string value
-			if(value === OPEN_MODE_BELOW)
+			//for legacy reasons, OPEN_MODE_ABOVE had a different string value
+			if(value === OPEN_MODE_ABOVE)
 			{
-				value = RelativeDepth.BELOW;
+				value = RelativeDepth.ABOVE;
 			}
 			if(this._openMode == value)
 			{
