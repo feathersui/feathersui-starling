@@ -1041,6 +1041,16 @@ package feathers.layout
 		{
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			var containerWidth:Number = maxWidth;
+			if(!needsWidth)
+			{
+				containerWidth = explicitWidth;
+			}
+			var containerHeight:Number = maxHeight;
+			if(!needsHeight)
+			{
+				containerHeight = explicitHeight;
+			}
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1070,11 +1080,6 @@ package feathers.layout
 								//optimization: set the child width before
 								//validation if the container width is explicit
 								//or has a maximum
-								var containerWidth:Number = maxWidth;
-								if(explicitWidth === explicitWidth) //!isNaN
-								{
-									containerWidth = explicitWidth;
-								}
 								if(hasLeftPosition && leftAnchor === null &&
 									hasRightPosition && rightAnchor === null)
 								{
@@ -1109,11 +1114,6 @@ package feathers.layout
 								//optimization: set the child height before
 								//validation if the container height is explicit
 								//or has a maximum.
-								var containerHeight:Number = maxHeight;
-								if(explicitHeight === explicitHeight) //!isNaN
-								{
-									containerHeight = explicitHeight;
-								}
 								if(hasTopPosition && topAnchor === null &&
 									hasBottomPosition && bottomAnchor === null)
 								{

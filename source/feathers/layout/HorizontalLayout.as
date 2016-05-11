@@ -1697,9 +1697,22 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, explicitHeight:Number,
-			minHeight:Number, maxHeight:Number, distributedWidth:Number, explicitWidth:Number, maxWidth:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>,
+			explicitHeight:Number, minHeight:Number, maxHeight:Number,
+			distributedWidth:Number, explicitWidth:Number, maxWidth:Number):void
 		{
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			var containerWidth:Number = maxWidth;
+			if(!needsWidth)
+			{
+				containerWidth = explicitWidth;
+			}
+			var containerHeight:Number = maxHeight;
+			if(!needsHeight)
+			{
+				containerHeight = explicitHeight;
+			}
 			//if the alignment is justified, then we want to set the height of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
@@ -1756,11 +1769,6 @@ package feathers.layout
 							//were the only item in the layout.
 							if(item is IFeathersControl)
 							{
-								var containerWidth:Number = maxWidth;
-								if(explicitWidth === explicitWidth) //!isNaN
-								{
-									containerWidth = explicitWidth;
-								}
 								IFeathersControl(item).maxWidth = containerWidth;
 							}
 						}
@@ -1774,16 +1782,7 @@ package feathers.layout
 							{
 								percentHeight = 100;
 							}
-							var itemHeight:Number = explicitHeight * percentHeight / 100;
-							if(explicitHeight !== explicitHeight) //isNaN
-							{
-								//we want to avoid validating a component
-								//without limiting its height because that could
-								//be expensive. we'll fall back to maxHeight if
-								//the height isn't explicit.
-								//hopefully, it isn't infinity!
-								itemHeight = maxHeight * percentHeight / 100;
-							}
+							var itemHeight:Number = containerHeight * percentHeight / 100;
 							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 							//we use the explicitMinHeight to make an accurate
 							//measurement, and we'll use the component's

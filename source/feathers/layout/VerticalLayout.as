@@ -1890,9 +1890,22 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, explicitWidth:Number,
-			minWidth:Number, maxWidth:Number, distributedHeight:Number, explicitHeight:Number, maxHeight:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>,
+			explicitWidth:Number, minWidth:Number, maxWidth:Number,
+			distributedHeight:Number, explicitHeight:Number, maxHeight:Number):void
 		{
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			var containerWidth:Number = maxWidth;
+			if(!needsWidth)
+			{
+				containerWidth = explicitWidth;
+			}
+			var containerHeight:Number = maxHeight;
+			if(!needsHeight)
+			{
+				containerHeight = explicitHeight;
+			}
 			//if the alignment is justified, then we want to set the width of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
@@ -1938,16 +1951,7 @@ package feathers.layout
 							{
 								percentWidth = 100;
 							}
-							var itemWidth:Number = explicitWidth * percentWidth / 100;
-							if(explicitWidth !== explicitWidth) //isNaN
-							{
-								//we want to avoid validating a component
-								//without limiting its width because that could
-								//be expensive. we'll fall back to maxWidth if
-								//the width isn't explicit.
-								//hopefully, it isn't infinity!
-								itemWidth = maxWidth * percentWidth / 100;
-							}
+							var itemWidth:Number = containerWidth * percentWidth / 100;
 							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 							//we use the explicitMinWidth to make an accurate
 							//measurement, and we'll use the component's
@@ -1983,11 +1987,6 @@ package feathers.layout
 							//were the only item in the layout.
 							if(item is IFeathersControl)
 							{
-								var containerHeight:Number = maxHeight;
-								if(explicitHeight === explicitHeight) //!isNaN
-								{
-									containerHeight = explicitHeight;
-								}
 								IFeathersControl(item).maxHeight = containerHeight;
 							}
 						}
