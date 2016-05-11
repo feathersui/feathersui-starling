@@ -3774,60 +3774,6 @@ package feathers.controls
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
 			var verticalHeightOffset:Number = this._topViewPortOffset + this._bottomViewPortOffset;
-			
-			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
-			
-			var viewPortMinWidth:Number = this.actualMinWidth;
-			if(viewPortMinWidth !== viewPortMinWidth ||
-				this._explicitViewPortMinWidth > viewPortMinWidth)
-			{
-				viewPortMinWidth = this._explicitViewPortMinWidth;
-			}
-			if(this.currentBackgroundSkin !== null)
-			{
-				var backgroundMinWidth:Number = this.currentBackgroundSkin.width;
-				if(measureBackground !== null)
-				{
-					backgroundMinWidth = measureBackground.minWidth;
-				}
-				if(viewPortMinWidth !== viewPortMinWidth ||
-					backgroundMinWidth > viewPortMinWidth)
-				{
-					viewPortMinWidth = backgroundMinWidth;
-				}
-			}
-			if(viewPortMinWidth !== viewPortMinWidth ||
-				this.actualWidth > viewPortMinWidth)
-			{
-				viewPortMinWidth = this.actualWidth;
-			}
-			viewPortMinWidth -= horizontalWidthOffset;
-
-			var viewPortMinHeight:Number = this.actualMinHeight;
-			if(viewPortMinHeight !== viewPortMinHeight ||
-				this._explicitViewPortMinHeight > viewPortMinHeight)
-			{
-				viewPortMinHeight = this._explicitViewPortMinHeight;
-			}
-			if(this.currentBackgroundSkin !== null)
-			{
-				var backgroundMinHeight:Number = this.currentBackgroundSkin.height;
-				if(measureBackground !== null)
-				{
-					backgroundMinHeight = measureBackground.minHeight;
-				}
-				if(viewPortMinHeight !== viewPortMinHeight ||
-					backgroundMinHeight > viewPortMinHeight)
-				{
-					viewPortMinHeight = backgroundMinHeight;
-				}
-			}
-			if(viewPortMinHeight !== viewPortMinHeight ||
-				this.actualHeight > viewPortMinHeight)
-			{
-				viewPortMinHeight = this.actualHeight;
-			}
-			viewPortMinHeight -= verticalHeightOffset;
 
 			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
 			//setting some of the properties below may result in a resize
@@ -3844,9 +3790,9 @@ package feathers.controls
 			{
 				this._viewPort.visibleWidth = visibleWidth;
 			}
-			this._viewPort.minVisibleWidth = this.actualMinWidth - horizontalWidthOffset;
+			this._viewPort.minVisibleWidth = this.actualWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-			this._viewPort.minWidth = viewPortMinWidth;
+			this._viewPort.minWidth = visibleWidth;
 
 			var visibleHeight:Number = this.actualHeight - verticalHeightOffset;
 			if(this._viewPort.visibleHeight !== visibleHeight)
@@ -3855,7 +3801,7 @@ package feathers.controls
 			}
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
-			this._viewPort.minHeight = viewPortMinHeight;
+			this._viewPort.minHeight = visibleHeight;
 
 			//this time, we care whether a resize event is dispatched while the
 			//view port is validating because it means we'll need to try another
