@@ -916,11 +916,6 @@ package feathers.layout
 		}
 
 		/**
-		 * @private
-		 */
-		private var _compilerWorkaround:Object;
-
-		/**
 		 * @inheritDoc
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
@@ -1957,13 +1952,7 @@ package feathers.layout
 							//measurement, and we'll use the component's
 							//measured minWidth later, after we validate it.
 							var itemExplicitMinWidth:Number = measureItem.explicitMinWidth;
-							//for some reason, if we do the !== check on a local variable right
-							//here, compiling with the flex 4.6 SDK will throw a VerifyError
-							//for a stack overflow.
-							//we could change the !== check back to isNaN() instead, but
-							//isNaN() can allocate an object that needs garbage collection.
-							this._compilerWorkaround = itemExplicitMinWidth;
-							if(itemExplicitMinWidth === itemExplicitMinWidth && //!isNaN
+							if(measureItem.explicitMinWidth === measureItem.explicitMinWidth && //!isNaN
 								itemWidth < itemExplicitMinWidth)
 							{
 								itemWidth = itemExplicitMinWidth;
@@ -1972,23 +1961,25 @@ package feathers.layout
 						}
 						if(percentHeight === percentHeight) //!isNaN
 						{
-							//we need to clear the explicitHeight because some
-							//components may change their minHeight based on
-							//whether it is set or not, and the minHeight is
-							//used with percentHeight calculations
-							item.height = NaN;
-
-							//we're about the validate a component without an
-							//explicit height, and that may be expensive!
-							//we want to ensure that a component like a
-							//vertical list with many item renderers doesn't
-							//completely bypass layout virtualization, so we
-							//limit the height to the maximum possible if it
-							//were the only item in the layout.
-							if(item is IFeathersControl)
+							var itemHeight:Number = containerHeight * percentHeight / 100;
+							measureItem = IMeasureDisplayObject(item);
+							//we use the explicitMinHeight to make an accurate
+							//measurement, and we'll use the component's
+							//measured minHeight later, after we validate it.
+							var itemExplicitMinHeight:Number = measureItem.explicitMinHeight;
+							if(measureItem.explicitMinHeight === measureItem.explicitMinHeight && //!isNaN
+								itemHeight < itemExplicitMinHeight)
 							{
-								IFeathersControl(item).maxHeight = containerHeight;
+								itemHeight = itemExplicitMinHeight;
 							}
+							//validating this component may be expensive if we
+							//don't limit the height! we want to ensure that a
+							//component like a vertical list with many item
+							//renderers doesn't completely bypass layout
+							//virtualization, so we limit the height to the
+							//maximum possible value if it were the only item in
+							//the layout.
+							item.height = itemHeight;
 						}
 					}
 				}
