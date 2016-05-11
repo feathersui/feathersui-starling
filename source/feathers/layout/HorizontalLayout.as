@@ -912,7 +912,8 @@ package feathers.layout
 				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom,
 					minHeight - this._paddingTop - this._paddingBottom,
 					maxHeight - this._paddingTop - this._paddingBottom,
-					distributedWidth);
+					distributedWidth, explicitWidth - this._paddingLeft - this._paddingRight,
+					maxWidth - this._paddingLeft - this._paddingRight);
 			}
 
 			if(needsExplicitWidth && this._distributeWidths)
@@ -1697,7 +1698,7 @@ package feathers.layout
 		 * @private
 		 */
 		protected function validateItems(items:Vector.<DisplayObject>, explicitHeight:Number,
-			minHeight:Number, maxHeight:Number, distributedWidth:Number):void
+			minHeight:Number, maxHeight:Number, distributedWidth:Number, explicitWidth:Number, maxWidth:Number):void
 		{
 			//if the alignment is justified, then we want to set the height of
 			//each item before validating because setting one dimension may
@@ -1745,6 +1746,23 @@ package feathers.layout
 							//whether it is set or not, and the minWidth is used
 							//with percentWidth calculations
 							item.width = NaN;
+
+							//we're about the validate a component without an
+							//explicit width, and that may be expensive!
+							//we want to ensure that a component like a
+							//horizontal list with many item renderers doesn't
+							//completely bypass layout virtualization, so we
+							//limit the width to the maximum possible if it
+							//were the only item in the layout.
+							if(item is IFeathersControl)
+							{
+								var containerWidth:Number = maxWidth;
+								if(explicitWidth === explicitWidth) //!isNaN
+								{
+									containerWidth = explicitWidth;
+								}
+								IFeathersControl(item).maxWidth = containerWidth;
+							}
 						}
 						if(percentHeight === percentHeight) //!isNaN
 						{
@@ -1757,6 +1775,15 @@ package feathers.layout
 								percentHeight = 100;
 							}
 							var itemHeight:Number = explicitHeight * percentHeight / 100;
+							if(explicitHeight !== explicitHeight) //isNaN
+							{
+								//we want to avoid validating a component
+								//without limiting its height because that could
+								//be expensive. we'll fall back to maxHeight if
+								//the height isn't explicit.
+								//hopefully, it isn't infinity!
+								itemHeight = maxHeight * percentHeight / 100;
+							}
 							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 							//we use the explicitMinHeight to make an accurate
 							//measurement, and we'll use the component's

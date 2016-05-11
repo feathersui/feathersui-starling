@@ -103,7 +103,8 @@ package feathers.layout
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			if(needsWidth || needsHeight)
 			{
-				this.validateItems(items, explicitWidth, explicitHeight, true);
+				this.validateItems(items, explicitWidth, explicitHeight,
+					maxWidth, maxHeight, true);
 				this.measureViewPort(items, viewPortWidth, viewPortHeight, HELPER_POINT);
 				if(needsWidth)
 				{
@@ -132,7 +133,8 @@ package feathers.layout
 			}
 			else
 			{
-				this.validateItems(items, explicitWidth, explicitHeight, false);
+				this.validateItems(items, explicitWidth, explicitHeight,
+					maxWidth, maxHeight, false);
 			}
 
 			this.layoutWithBounds(items, boundsX, boundsY, viewPortWidth, viewPortHeight);
@@ -1035,7 +1037,7 @@ package feathers.layout
 		 */
 		protected function validateItems(items:Vector.<DisplayObject>,
 			explicitWidth:Number, explicitHeight:Number,
-			force:Boolean):void
+			maxWidth:Number, maxHeight:Number, force:Boolean):void
 		{
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
@@ -1067,10 +1069,16 @@ package feathers.layout
 							{
 								//optimization: set the child width before
 								//validation if the container width is explicit
+								//or has a maximum
+								var containerWidth:Number = maxWidth;
+								if(explicitWidth === explicitWidth) //!isNaN
+								{
+									containerWidth = explicitWidth;
+								}
 								if(hasLeftPosition && leftAnchor === null &&
 									hasRightPosition && rightAnchor === null)
 								{
-									control.width = explicitWidth - left - right;
+									control.width = containerWidth - left - right;
 								}
 								else if(hasPercentWidth)
 								{
@@ -1082,7 +1090,7 @@ package feathers.layout
 									{
 										percentWidth = 100;
 									}
-									control.width = percentWidth * 0.01 * explicitWidth;
+									control.width = percentWidth * 0.01 * containerWidth;
 								}
 							}
 							var horizontalCenter:Number = layoutData.horizontalCenter;
@@ -1100,10 +1108,16 @@ package feathers.layout
 							{
 								//optimization: set the child height before
 								//validation if the container height is explicit
+								//or has a maximum.
+								var containerHeight:Number = maxHeight;
+								if(explicitHeight === explicitHeight) //!isNaN
+								{
+									containerHeight = explicitHeight;
+								}
 								if(hasTopPosition && topAnchor === null &&
 									hasBottomPosition && bottomAnchor === null)
 								{
-									control.height = explicitHeight - top - bottom;
+									control.height = containerHeight - top - bottom;
 								}
 								else if(hasPercentHeight)
 								{
@@ -1115,7 +1129,7 @@ package feathers.layout
 									{
 										percentHeight = 100;
 									}
-									control.height = percentHeight * 0.01 * explicitHeight; 
+									control.height = percentHeight * 0.01 * containerHeight; 
 								}
 							}
 							var verticalCenter:Number = layoutData.verticalCenter;
