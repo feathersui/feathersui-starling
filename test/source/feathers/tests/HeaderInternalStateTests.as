@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.Header;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.ITextRenderer;
+	import feathers.layout.HorizontalAlign;
 
 	import org.flexunit.Assert;
 
@@ -24,7 +25,9 @@ package feathers.tests
 			this._header = new Header();
 			this._header.titleFactory = function():ITextRenderer
 			{
-				return new BitmapFontTextRenderer();
+				var textRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
+				textRenderer.name = "title";
+				return textRenderer;
 			};
 			TestFeathers.starlingRoot.addChild(this._header);
 
@@ -110,6 +113,81 @@ package feathers.tests
 				this._textRenderer.width, backgroundSkin.width);
 			Assert.assertStrictlyEquals("The Header backgroundSkin height was not resized correctly when changing to smaller title",
 				this._textRenderer.height, backgroundSkin.height);
+		}
+
+		[Test]
+		public function testTitleHiddenWithTitleAlignCenterAndCenterItemsNotEmpty():void
+		{
+			var centerItem:Quad = new Quad(10, 10, 0xff00ff);
+			this._header.title = "Header";
+			this._header.titleAlign = HorizontalAlign.CENTER;
+			this._header.centerItems = new <DisplayObject>[centerItem];
+			this._header.validate();
+			Assert.assertFalse("Header title not hidden when titleAlign is HorizontalAlign.CENTER and centerItems is not empty.",
+				this._header.getChildByName("title").visible);
+			centerItem.dispose();
+		}
+
+		[Test]
+		public function testTitleHiddenWithTitleAlignLeftAndLeftItemNotEmptyAndCenterItemsNotEmpty():void
+		{
+			var leftItem:Quad = new Quad(10, 10, 0xff00ff);
+			var centerItem:Quad = new Quad(10, 10, 0xff00ff);
+			this._header.title = "Header";
+			this._header.titleAlign = HorizontalAlign.LEFT;
+			this._header.leftItems = new <DisplayObject>[leftItem];
+			this._header.centerItems = new <DisplayObject>[centerItem];
+			this._header.validate();
+			Assert.assertFalse("Header title not hidden when titleAlign is HorizontalAlign.LEFT and both leftItems and centerItems are not empty.",
+				this._header.getChildByName("title").visible);
+			leftItem.dispose();
+			centerItem.dispose();
+		}
+
+		[Test]
+		public function testTitleHiddenWithTitleAlignRightAndRightItemsNotEmptyAndCenterItemsNotEmpty():void
+		{
+			var rightItem:Quad = new Quad(10, 10, 0xff00ff);
+			var centerItem:Quad = new Quad(10, 10, 0xff00ff);
+			this._header.title = "Header";
+			this._header.titleAlign = HorizontalAlign.RIGHT;
+			this._header.rightItems = new <DisplayObject>[rightItem];
+			this._header.centerItems = new <DisplayObject>[centerItem];
+			this._header.validate();
+			Assert.assertFalse("Header title not hidden when titleAlign is HorizontalAlign.RIGHT and both rightItems and centerItems are not empty.",
+				this._header.getChildByName("title").visible);
+			rightItem.dispose();
+			centerItem.dispose();
+		}
+
+		[Test]
+		public function testTitleNotHiddenWithTitleAlignRightAndRightItemsNotEmptyButCenterItemsIsEmpty():void
+		{
+			var rightItem:Quad = new Quad(10, 10, 0xff00ff);
+			var centerItem:Quad = new Quad(10, 10, 0xff00ff);
+			this._header.title = "Header";
+			this._header.titleAlign = HorizontalAlign.RIGHT;
+			this._header.rightItems = new <DisplayObject>[rightItem];
+			this._header.validate();
+			Assert.assertTrue("Header title incorrectly hidden when titleAlign is HorizontalAlign.RIGHT and rightItems is not empty but centerItems is empty.",
+				this._header.getChildByName("title").visible);
+			rightItem.dispose();
+			centerItem.dispose();
+		}
+
+		[Test]
+		public function testTitleNotHiddenWithTitleAlignLeftAndLeftItemsNotEmptyButCenterItemsIsEmpty():void
+		{
+			var leftItem:Quad = new Quad(10, 10, 0xff00ff);
+			var centerItem:Quad = new Quad(10, 10, 0xff00ff);
+			this._header.title = "Header";
+			this._header.titleAlign = HorizontalAlign.LEFT;
+			this._header.leftItems = new <DisplayObject>[leftItem];
+			this._header.validate();
+			Assert.assertTrue("Header title incorrectly hidden when titleAlign is HorizontalAlign.LEFT and leftItems is not empty but centerItems is empty.",
+				this._header.getChildByName("title").visible);
+			leftItem.dispose();
+			centerItem.dispose();
 		}
 	}
 }

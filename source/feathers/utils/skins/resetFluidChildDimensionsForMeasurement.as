@@ -11,13 +11,13 @@ package feathers.utils.skins
 
 	import starling.display.DisplayObject;
 
-	public function resetFluidChildDimensionsForMeasurement(skin:DisplayObject,
+	public function resetFluidChildDimensionsForMeasurement(child:DisplayObject,
 		parentExplicitWidth:Number, parentExplicitHeight:Number,
 		parentExplicitMinWidth:Number, parentExplicitMinHeight:Number,
-		skinExplicitWidth:Number, skinExplicitHeight:Number,
-		skinExplicitMinWidth:Number, skinExplicitMinHeight:Number):void
+		childExplicitWidth:Number, childExplicitHeight:Number,
+		childExplicitMinWidth:Number, childExplicitMinHeight:Number):void
 	{
-		if(skin === null)
+		if(child === null)
 		{
 			return;
 		}
@@ -25,44 +25,44 @@ package feathers.utils.skins
 		var needsHeight:Boolean = parentExplicitHeight !== parentExplicitHeight; //isNaN
 		if(needsWidth)
 		{
-			skin.width = skinExplicitWidth;
+			child.width = childExplicitWidth;
 		}
 		else
 		{
-			skin.width = parentExplicitWidth;
+			child.width = parentExplicitWidth;
 		}
 		if(needsHeight)
 		{
-			skin.height = skinExplicitHeight;
+			child.height = childExplicitHeight;
 		}
 		else
 		{
-			skin.height = parentExplicitHeight;
+			child.height = parentExplicitHeight;
 		}
-		var measureSkin:IMeasureDisplayObject = skin as IMeasureDisplayObject;
-		if(measureSkin !== null)
+		var measureChild:IMeasureDisplayObject = child as IMeasureDisplayObject;
+		if(measureChild !== null)
 		{
-			var skinMinWidth:Number = parentExplicitMinWidth;
+			var childMinWidth:Number = parentExplicitMinWidth;
 			//for some reason, if we do the !== check on a local variable right
 			//here, compiling with the flex 4.6 SDK will throw a VerifyError
 			//for a stack overflow.
 			//we could change the !== check back to isNaN() instead, but
 			//isNaN() can allocate an object that needs garbage collection.
-			compilerWorkaround = skinMinWidth;
-			if(skinMinWidth !== skinMinWidth || //isNaN
-				skinExplicitMinWidth > skinMinWidth)
+			compilerWorkaround = childMinWidth;
+			if(childMinWidth !== childMinWidth || //isNaN
+				childExplicitMinWidth > childMinWidth)
 			{
-				skinMinWidth = skinExplicitMinWidth;
+				childMinWidth = childExplicitMinWidth;
 			}
-			measureSkin.minWidth = skinMinWidth;
-			var skinMinHeight:Number = parentExplicitMinHeight;
-			compilerWorkaround = skinMinHeight;
-			if(skinMinHeight !== skinMinHeight || //isNaN
-				skinExplicitMinHeight > skinMinHeight)
+			measureChild.minWidth = childMinWidth;
+			var childMinHeight:Number = parentExplicitMinHeight;
+			compilerWorkaround = childMinHeight;
+			if(childMinHeight !== childMinHeight || //isNaN
+				childExplicitMinHeight > childMinHeight)
 			{
-				skinMinHeight = skinExplicitMinHeight;
+				childMinHeight = childExplicitMinHeight;
 			}
-			measureSkin.minHeight = skinMinHeight;
+			measureChild.minHeight = childMinHeight;
 		}
 	}
 }

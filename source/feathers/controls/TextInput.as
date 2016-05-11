@@ -2402,7 +2402,7 @@ package feathers.controls
 				}
 				else if(this.currentBackground !== null)
 				{
-					backgroundMinWidth = this.currentBackground.width;
+					backgroundMinWidth = this._explicitBackgroundMinWidth;
 				}
 				if(backgroundMinWidth > newMinWidth)
 				{
@@ -2434,7 +2434,7 @@ package feathers.controls
 				}
 				else if(this.currentBackground !== null)
 				{
-					backgroundMinHeight = this.currentBackground.height;
+					backgroundMinHeight = this._explicitBackgroundMinHeight;
 				}
 				if(backgroundMinHeight > newMinHeight)
 				{

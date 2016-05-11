@@ -34,33 +34,46 @@ package feathers.media
 		private static const HELPER_POINT:Point = new Point();
 		
 		/**
-		 * The label displays only the current time of the media content.
-		 * 
-		 * @see #displayMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_TIME</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DISPLAY_MODE_CURRENT_TIME:String = "currentTime";
 		
 		/**
-		 * The label displays only the total time of the media content.
-		 * 
-		 * @see #displayMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.TOTAL_TIME</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DISPLAY_MODE_TOTAL_TIME:String = "totalTime";
 
 		/**
-		 * The label displays only the remaining time of the media content. In
-		 * other words, the total time minus the current time.
-		 * 
-		 * @see #displayMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.REMAINING_TIME</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DISPLAY_MODE_REMAINING_TIME:String = "remainingTime";
 
 		/**
-		 * The label displays the current time of the media content, followed by
-		 * some text specified by the <code>delimiter</code> property, and
-		 * completed by the total time of the media content.
-		 * 
-		 * @see #displayMode
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES:String = "currentAndTotalTimes";
 
@@ -136,12 +149,12 @@ package feathers.media
 
 		/**
 		 * When the value of <code>displayMode</code> is
-		 * <code>TimeLabel.DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES</code>, this
-		 * text is inserted between the two times to separate them.
+		 * <code>MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>, this text is
+		 * inserted between the two times to separate them.
 		 *
 		 * @default " / "
 		 * 
-		 * @see #DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES
+		 * @see feathers.media.MediaTimeMode#CURRENT_AND_TOTAL_TIMES
 		 */
 		public function get delimiter():String
 		{
@@ -164,18 +177,18 @@ package feathers.media
 		/**
 		 * @private
 		 */
-		protected var _displayMode:String = DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES;
+		protected var _displayMode:String = MediaTimeMode.CURRENT_AND_TOTAL_TIMES;
 
 		[Inspectable(type="String",enumeration="currentAndTotalTimes,currentTime,totalTime,remainingTime")]
 		/**
 		 * Determines how the time is displayed by the label.
 		 *
-		 * @default TimeLabel.DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES
+		 * @default feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES
 		 * 
-		 * @see #DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES
-		 * @see #DISPLAY_MODE_CURRENT_TIME
-		 * @see #DISPLAY_MODE_TOTAL_TIME
-		 * @see #DISPLAY_MODE_REMAINING_TIME
+		 * @see feathers.media.MediaTimeMode#CURRENT_AND_TOTAL_TIMES
+		 * @see feathers.media.MediaTimeMode#CURRENT_TIME
+		 * @see feathers.media.MediaTimeMode#TOTAL_TIME
+		 * @see feathers.media.MediaTimeMode#REMAINING_TIME
 		 */
 		public function get displayMode():String
 		{
@@ -215,8 +228,8 @@ package feathers.media
 
 		/**
 		 * If the <code>displayMode</code> property is set to
-		 * <code>TimeLabel.DISPLAY_MODE_CURRENT_TIME</code> or
-		 * <code>TimeLabel.DISPLAY_MODE_REMAINING_TIME</code>, and this property
+		 * <code>MediaTimeMode.CURRENT_TIME</code> or
+		 * <code>MediaTimeMode.REMAINING_TIME</code>, and this property
 		 * is set to <code>true</code>, the label will switch to displaying the
 		 * current time and the remaining time, if tapped or clicked. If the
 		 * <code>displayMode</code> property is not set to one of the specified
@@ -254,28 +267,28 @@ package feathers.media
 			var displayMode:String = this._displayMode;
 			if(this._isToggled)
 			{
-				if(displayMode === DISPLAY_MODE_CURRENT_TIME)
+				if(displayMode === MediaTimeMode.CURRENT_TIME)
 				{
-					displayMode = DISPLAY_MODE_REMAINING_TIME;
+					displayMode = MediaTimeMode.REMAINING_TIME;
 				}
 				else
 				{
-					displayMode = DISPLAY_MODE_CURRENT_TIME;
+					displayMode = MediaTimeMode.CURRENT_TIME;
 				}
 			}
 			switch(displayMode)
 			{
-				case DISPLAY_MODE_CURRENT_TIME:
+				case MediaTimeMode.CURRENT_TIME:
 				{
 					this.text = this.secondsToTimeString(currentTime);
 					break;
 				}
-				case DISPLAY_MODE_TOTAL_TIME:
+				case MediaTimeMode.TOTAL_TIME:
 				{
 					this.text = this.secondsToTimeString(totalTime);
 					break;
 				}
-				case DISPLAY_MODE_REMAINING_TIME:
+				case MediaTimeMode.REMAINING_TIME:
 				{
 					this.text = this.secondsToTimeString(currentTime - totalTime);
 					break;
@@ -339,7 +352,7 @@ package feathers.media
 		protected function timeLabel_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled || !this._toggleDisplayMode ||
-				!(this._displayMode === DISPLAY_MODE_CURRENT_TIME || this._displayMode === DISPLAY_MODE_CURRENT_TIME))
+				!(this._displayMode === MediaTimeMode.CURRENT_TIME || this._displayMode === MediaTimeMode.CURRENT_TIME))
 			{
 				this.touchPointID = -1;
 				return;

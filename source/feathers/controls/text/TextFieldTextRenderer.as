@@ -16,6 +16,7 @@ package feathers.controls.text
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
+	import feathers.utils.math.roundUpToNearest;
 
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DProfile;
@@ -1532,6 +1533,12 @@ package feathers.controls.text
 			if(needsHeight)
 			{
 				newHeight = (this.textField.height / scaleFactor) - gutterDimensionsOffset;
+				//from what I can gather, TextField measures in twips, like many
+				//things in Flash. if the result of the calculation above is
+				//just below the nearest twip (due to a rounding error or
+				//whatever), some of the text may be cut off. as a workaround,
+				//round up to nearest twip.
+				newHeight = roundUpToNearest(newHeight, 0.05);
 				if(newHeight < this._explicitMinHeight)
 				{
 					newHeight = this._explicitMinHeight;

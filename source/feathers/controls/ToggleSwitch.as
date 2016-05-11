@@ -85,18 +85,24 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_OFF_TRACK_FACTORY:String = "offTrackFactory";
 
 		/**
-		 * The ON and OFF labels will be aligned to the middle vertically,
-		 * based on the full character height of the font.
+		 * @private
+		 * DEPRECATED: Removed with no replacement.
 		 *
-		 * @see #labelAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The ON and OFF labels will be aligned to the middle vertically,
-		 * based on only the baseline value of the font.
+		 * @private
+		 * DEPRECATED: Removed with no replacement.
 		 *
-		 * @see #labelAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
@@ -792,22 +798,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _labelAlign:String = LABEL_ALIGN_BASELINE;
+		protected var _labelAlign:String = LABEL_ALIGN_MIDDLE;
 
-		[Inspectable(type="String",enumeration="baseline,middle")]
 		/**
-		 * The vertical alignment of the label.
+		 * @private
+		 * DEPRECATED: Removed with no replacement.
 		 *
-		 * <p>In the following example, the toggle switch's label alignment is
-		 * updated:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;</listing>
-		 *
-		 * @default ToggleSwitch.LABEL_ALIGN_BASELINE
-		 *
-		 * @see #LABEL_ALIGN_BASELINE
-		 * @see #LABEL_ALIGN_MIDDLE
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public function get labelAlign():String
 		{

@@ -3453,9 +3453,9 @@ package feathers.controls
 							newMinWidth = measureBackground.minWidth;
 						}
 					}
-					else if(this.currentBackgroundSkin.width > newMinWidth)
+					else if(this._explicitBackgroundMinWidth > newMinWidth)
 					{
-						newMinWidth = this.currentBackgroundSkin.width;
+						newMinWidth = this._explicitBackgroundMinWidth;
 					}
 				}
 			}
@@ -3479,9 +3479,9 @@ package feathers.controls
 							newMinHeight = measureBackground.minHeight;
 						}
 					}
-					else if(this.currentBackgroundSkin.height > newMinHeight)
+					else if(this._explicitBackgroundMinHeight > newMinHeight)
 					{
-						newMinHeight = this.currentBackgroundSkin.height;
+						newMinHeight = this._explicitBackgroundMinHeight;
 					}
 				}
 			}
@@ -3756,14 +3756,11 @@ package feathers.controls
 			viewPortMinHeight -= verticalHeightOffset;
 
 			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
-			if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
-			{
-				//setting some of the properties below may result in a resize
-				//event, which forces another layout pass for the view port and
-				//hurts performance (because it needs to break out of an
-				//infinite loop)
-				this.ignoreViewPortResizing = true;
-			}
+			//setting some of the properties below may result in a resize
+			//event, which forces another layout pass for the view port and
+			//hurts performance (because it needs to break out of an
+			//infinite loop)
+			this.ignoreViewPortResizing = true;
 
 			//if scroll bars are fixed, we're going to include the offsets even
 			//if they may not be needed in the final pass. if not fixed, the
@@ -3847,14 +3844,11 @@ package feathers.controls
 			viewPortMinHeight -= verticalHeightOffset;
 
 			var oldIgnoreViewPortResizing:Boolean = this.ignoreViewPortResizing;
-			if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
-			{
-				//setting some of the properties below may result in a resize
-				//event, which forces another layout pass for the view port and
-				//hurts performance (because it needs to break out of an
-				//infinite loop)
-				this.ignoreViewPortResizing = true;
-			}
+			//setting some of the properties below may result in a resize
+			//event, which forces another layout pass for the view port and
+			//hurts performance (because it needs to break out of an
+			//infinite loop)
+			this.ignoreViewPortResizing = true;
 
 			var visibleWidth:Number = this.actualWidth - horizontalWidthOffset;
 			//we'll only set the view port's visibleWidth and visibleHeight if

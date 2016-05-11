@@ -428,7 +428,7 @@ package feathers.controls
 				}
 				else if(this.currentSkin !== null)
 				{
-					newMinWidth = this.currentSkin.width;
+					newMinWidth = this._explicitSkinMinWidth;
 				}
 				else
 				{
@@ -445,7 +445,7 @@ package feathers.controls
 				}
 				else if(this.currentSkin !== null)
 				{
-					newMinHeight = this.currentSkin.height;
+					newMinHeight = this._explicitSkinMinHeight;
 				}
 				else
 				{

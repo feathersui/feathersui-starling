@@ -20,6 +20,8 @@ package feathers.controls.renderers
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
+	import flash.geom.Point;
+
 	import starling.display.DisplayObject;
 
 	/**
@@ -134,6 +136,11 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
@@ -1452,6 +1459,7 @@ package feathers.controls.renderers
 					labelMaxWidth = this._maxWidth;
 				}
 				this.contentLabel.maxWidth = labelMaxWidth - this._paddingLeft - this._paddingRight;
+				this.contentLabel.measureText(HELPER_POINT);
 			}
 			else if(this.content !== null)
 			{
@@ -1475,10 +1483,10 @@ package feathers.controls.renderers
 						measureContent.minHeight = this._explicitContentMinHeight;
 					}
 				}
-			}
-			if(this.content is IValidating)
-			{
-				IValidating(this.content).validate();
+				if(this.content is IValidating)
+				{
+					IValidating(this.content).validate();
+				}
 			}
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
@@ -1486,13 +1494,20 @@ package feathers.controls.renderers
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
 				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this.content !== null)
 				{
-					newWidth = this.content.width;
+					if(this.contentLabel !== null)
+					{
+						newWidth = HELPER_POINT.x;
+					}
+					else
+					{
+						newWidth = this.content.width;
+					}
 				}
 				else
 				{
@@ -1510,7 +1525,14 @@ package feathers.controls.renderers
 			{
 				if(this.content !== null)
 				{
-					newHeight = this.content.height;
+					if(this.contentLabel !== null)
+					{
+						newHeight = HELPER_POINT.y;
+					}
+					else
+					{
+						newHeight = this.content.height;
+					}
 				}
 				else
 				{
@@ -1523,10 +1545,14 @@ package feathers.controls.renderers
 					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
-			var newMinWidth:Number = this._explicitMinHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
-				if(measureContent !== null)
+				if(this.contentLabel !== null)
+				{
+					newMinWidth = HELPER_POINT.x;
+				}
+				else if(measureContent !== null)
 				{
 					newMinWidth = measureContent.minWidth;
 				}
@@ -1548,16 +1574,20 @@ package feathers.controls.renderers
 							newMinWidth = measureSkin.minWidth;
 						}
 					}
-					else if(this.currentBackgroundSkin.width > newMinWidth)
+					else if(this._explicitBackgroundMinWidth > newMinWidth)
 					{
-						newMinWidth = this.currentBackgroundSkin.width;
+						newMinWidth = this._explicitBackgroundMinWidth;
 					}
 				}
 			}
 			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
-				if(measureContent !== null)
+				if(this.contentLabel !== null)
+				{
+					newMinHeight = HELPER_POINT.y;
+				}
+				else if(measureContent !== null)
 				{
 					newMinHeight = measureContent.minHeight;
 				}
@@ -1579,9 +1609,9 @@ package feathers.controls.renderers
 							newMinHeight = measureSkin.minHeight;
 						}
 					}
-					else if(this.currentBackgroundSkin.height > newMinHeight)
+					else if(this._explicitBackgroundMinHeight > newMinHeight)
 					{
-						newMinHeight = this.currentBackgroundSkin.height;
+						newMinHeight = this._explicitBackgroundMinHeight;
 					}
 				}
 			}

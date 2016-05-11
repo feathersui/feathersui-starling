@@ -607,6 +607,10 @@ package feathers.themes
 				this.atlas = null;
 			}
 
+			var stage:Stage = Starling.current.stage;
+			FocusManager.setEnabledForStage(stage, false);
+			ToolTipManager.setEnabledForStage(stage, false);
+
 			//don't forget to call super.dispose()!
 			super.dispose();
 		}
@@ -2408,7 +2412,6 @@ package feathers.themes
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = TrackLayoutMode.SINGLE;
-			toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;
 
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
