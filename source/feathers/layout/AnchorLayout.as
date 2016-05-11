@@ -681,7 +681,6 @@ package feathers.layout
 		{
 			var uiItem:IFeathersControl = item as IFeathersControl;
 			var percentWidth:Number = layoutData.percentWidth;
-			var checkWidth:Boolean = false;
 			if(percentWidth === percentWidth) //!isNaN
 			{
 				if(percentWidth < 0)
@@ -1062,12 +1061,29 @@ package feathers.layout
 							var right:Number = layoutData.right;
 							var rightAnchor:DisplayObject = layoutData.rightAnchorDisplayObject;
 							var hasRightPosition:Boolean = right === right; //!isNaN
-							if(!needsWidth && hasLeftPosition && leftAnchor === null &&
-								hasRightPosition && rightAnchor === null)
+							var percentWidth:Number = layoutData.percentWidth;
+							var hasPercentWidth:Boolean = percentWidth === percentWidth; //!isNaN
+							if(!needsWidth)
 							{
 								//optimization: set the child width before
 								//validation if the container width is explicit
-								control.width = explicitWidth - left - right;
+								if(hasLeftPosition && leftAnchor === null &&
+									hasRightPosition && rightAnchor === null)
+								{
+									control.width = explicitWidth - left - right;
+								}
+								else if(hasPercentWidth)
+								{
+									if(percentWidth < 0)
+									{
+										percentWidth = 0;
+									}
+									else if(percentWidth > 100)
+									{
+										percentWidth = 100;
+									}
+									control.width = percentWidth * 0.01 * explicitWidth;
+								}
 							}
 							var horizontalCenter:Number = layoutData.horizontalCenter;
 							var hasHorizontalCenterPosition:Boolean = horizontalCenter === horizontalCenter; //!isNaN
@@ -1078,12 +1094,29 @@ package feathers.layout
 							var bottom:Number = layoutData.bottom;
 							var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
 							var bottomAnchor:DisplayObject = layoutData.bottomAnchorDisplayObject;
-							if(!needsHeight && hasTopPosition && topAnchor === null &&
-								hasBottomPosition && bottomAnchor === null)
+							var percentHeight:Number = layoutData.percentHeight;
+							var hasPercentHeight:Boolean = percentHeight === percentHeight; //!isNaN
+							if(!needsHeight)
 							{
 								//optimization: set the child height before
 								//validation if the container height is explicit
-								control.height = explicitHeight - top - bottom;
+								if(hasTopPosition && topAnchor === null &&
+									hasBottomPosition && bottomAnchor === null)
+								{
+									control.height = explicitHeight - top - bottom;
+								}
+								else if(hasPercentHeight)
+								{
+									if(percentHeight < 0)
+									{
+										percentHeight = 0;
+									}
+									else if(percentHeight > 100)
+									{
+										percentHeight = 100;
+									}
+									control.height = percentHeight * 0.01 * explicitHeight; 
+								}
 							}
 							var verticalCenter:Number = layoutData.verticalCenter;
 							var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
