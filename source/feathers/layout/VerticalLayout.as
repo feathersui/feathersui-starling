@@ -1896,15 +1896,15 @@ package feathers.layout
 		{
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
-			var containerWidth:Number = maxWidth;
-			if(!needsWidth)
+			var containerWidth:Number = explicitWidth;
+			if(needsWidth && maxWidth < Number.POSITIVE_INFINITY)
 			{
-				containerWidth = explicitWidth;
+				containerWidth = maxWidth;
 			}
-			var containerHeight:Number = maxHeight;
-			if(!needsHeight)
+			var containerHeight:Number = explicitHeight;
+			if(needsHeight && maxHeight < Number.POSITIVE_INFINITY)
 			{
-				containerHeight = explicitHeight;
+				containerHeight = maxHeight;
 			}
 			//if the alignment is justified, then we want to set the width of
 			//each item before validating because setting one dimension may
