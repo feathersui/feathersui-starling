@@ -879,11 +879,6 @@ package feathers.layout
 		}
 
 		/**
-		 * @private
-		 */
-		private var _compilerWorkaround:Object;
-
-		/**
 		 * @inheritDoc
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
@@ -1776,23 +1771,30 @@ package feathers.layout
 						var percentHeight:Number = layoutData.percentHeight;
 						if(percentWidth === percentWidth) //!isNaN
 						{
-							//we need to clear the explicitWidth because some
-							//components may change their minWidth based on
-							//whether it is set or not, and the minWidth is used
-							//with percentWidth calculations
-							item.width = NaN;
-
-							//we're about the validate a component without an
-							//explicit width, and that may be expensive!
-							//we want to ensure that a component like a
-							//horizontal list with many item renderers doesn't
-							//completely bypass layout virtualization, so we
-							//limit the width to the maximum possible if it
-							//were the only item in the layout.
-							if(item is IFeathersControl)
+							if(percentWidth < 0)
 							{
-								IFeathersControl(item).maxWidth = containerWidth;
+								percentWidth = 0;
 							}
+							if(percentWidth > 100)
+							{
+								percentWidth = 100;
+							}
+							var itemWidth:Number = containerWidth * percentWidth / 100;
+							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
+							var itemExplicitMinWidth:Number = measureItem.explicitMinWidth;
+							if(measureItem.explicitMinWidth === measureItem.explicitMinWidth && //!isNaN
+								itemWidth < itemExplicitMinWidth)
+							{
+								itemWidth = itemExplicitMinWidth;
+							}
+							//validating this component may be expensive if we
+							//don't limit the width! we want to ensure that a
+							//component like a horizontal list with many item
+							//renderers doesn't completely bypass layout
+							//virtualization, so we limit the width to the
+							//maximum possible value if it were the only item in
+							//the layout.
+							item.width = itemWidth;
 						}
 						if(percentHeight === percentHeight) //!isNaN
 						{
@@ -1805,18 +1807,12 @@ package feathers.layout
 								percentHeight = 100;
 							}
 							var itemHeight:Number = containerHeight * percentHeight / 100;
-							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
+							measureItem = IMeasureDisplayObject(item);
 							//we use the explicitMinHeight to make an accurate
 							//measurement, and we'll use the component's
 							//measured minHeight later, after we validate it.
 							var itemExplicitMinHeight:Number = measureItem.explicitMinHeight;
-							//for some reason, if we do the !== check on a local variable right
-							//here, compiling with the flex 4.6 SDK will throw a VerifyError
-							//for a stack overflow.
-							//we could change the !== check back to isNaN() instead, but
-							//isNaN() can allocate an object that needs garbage collection.
-							this._compilerWorkaround = itemExplicitMinHeight;
-							if(itemExplicitMinHeight === itemExplicitMinHeight && //!isNaN
+							if(measureItem.explicitMinHeight === measureItem.explicitMinHeight && //!isNaN
 								itemHeight < itemExplicitMinHeight)
 							{
 								itemHeight = itemExplicitMinHeight;
