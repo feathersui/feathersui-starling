@@ -1174,15 +1174,21 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
+				//we don't need to account for the icon and gap because it is
+				//already included in the left offset
 				newWidth += this._rightViewPortOffset + this._leftViewPortOffset;
-				if(this.header.width > newWidth)
+				var headerWidth:Number = this.header.width + this._outerPaddingLeft + this._outerPaddingRight;
+				if(headerWidth > newWidth)
 				{
-					newWidth = this.header.width;
+					newWidth = headerWidth;
 				}
-				if(this.footer !== null &&
-					this.footer.width > newWidth)
+				if(this.footer !== null)
 				{
-					newWidth = this.footer.width;
+					var footerWidth:Number = this.footer.width + this._outerPaddingLeft + this._outerPaddingRight;
+					if(footerWidth > newWidth)
+					{
+						newWidth = footerWidth;
+					}
 				}
 				if(this.currentBackgroundSkin !== null &&
 					this.currentBackgroundSkin.width > newWidth)
@@ -1219,15 +1225,21 @@ package feathers.controls
 				{
 					newMinWidth = 0;
 				}
+				//we don't need to account for the icon and gap because it is
+				//already included in the left offset
 				newMinWidth += this._rightViewPortOffset + this._leftViewPortOffset;
-				if(this.header.minWidth > newMinWidth)
+				var headerMinWidth:Number = this.header.minWidth + this._outerPaddingLeft + this._outerPaddingRight;
+				if(headerMinWidth > newMinWidth)
 				{
-					newMinWidth = this.header.minWidth;
+					newMinWidth = headerMinWidth;
 				}
-				if(this.footer !== null &&
-					this.footer.minWidth > newMinWidth)
+				if(this.footer !== null)
 				{
-					newMinWidth = this.footer.minWidth;
+					var footerMinWidth:Number = this.footer.minWidth + this._outerPaddingLeft + this._outerPaddingRight;
+					if(footerMinWidth > newMinWidth)
+					{
+						newMinWidth = footerMinWidth;
+					}
 				}
 				if(this.currentBackgroundSkin !== null)
 				{
@@ -1275,7 +1287,7 @@ package feathers.controls
 
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
-		
+
 		/**
 		 * Creates and adds the <code>header</code> sub-component and
 		 * removes the old instance, if one exists.
@@ -1410,7 +1422,7 @@ package feathers.controls
 			this._topViewPortOffset += this.header.height + this._outerPaddingTop;
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
-			if(this.footer)
+			if(this.footer !== null)
 			{
 				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 				this._ignoreFooterResizing = true;
@@ -1453,7 +1465,7 @@ package feathers.controls
 			this.header.validate();
 			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
-			if(this.footer)
+			if(this.footer !== null)
 			{
 				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 				this._ignoreFooterResizing = true;
