@@ -11,8 +11,11 @@ package feathers.tests
 	{
 		private static const BASE_WIDTH:Number = 100;
 		private static const BASE_HEIGHT:Number = 140;
+
 		private static const LARGER_WIDTH:Number = 280;
 		private static const LARGER_HEIGHT:Number = 300;
+		private static const LARGER_MIN_WIDTH:Number = 270;
+		private static const LARGER_MIN_HEIGHT:Number = 290;
 		
 		private static const LARGER_SCALEX:Number = 2;
 		private static const SMALLER_SCALEY:Number = 0.25;
@@ -37,6 +40,16 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testInitialDimensions():void
+		{
+			this._control.validate();
+			Assert.assertStrictlyEquals("Component initial width incorrect.", BASE_WIDTH, this._control.width);
+			Assert.assertStrictlyEquals("Component initial height incorrect.", BASE_HEIGHT, this._control.height);
+			Assert.assertStrictlyEquals("Component initial minWidth incorrect.", BASE_WIDTH, this._control.minWidth);
+			Assert.assertStrictlyEquals("Component initial minHeight incorrect.", BASE_HEIGHT, this._control.minHeight);
+		}
+
+		[Test]
 		public function testSetScaleXAndScaleY():void
 		{
 			this._control.scaleX = LARGER_SCALEX;
@@ -44,6 +57,8 @@ package feathers.tests
 			this._control.validate();
 			Assert.assertStrictlyEquals("Component calculated width incorrect after setting scaleX.", BASE_WIDTH * LARGER_SCALEX, this._control.width);
 			Assert.assertStrictlyEquals("Component calculated height incorrect after setting scaleY.", BASE_HEIGHT * SMALLER_SCALEY, this._control.height);
+			Assert.assertStrictlyEquals("Component calculated minWidth incorrect after setting scaleX.", BASE_WIDTH * LARGER_SCALEX, this._control.minWidth);
+			Assert.assertStrictlyEquals("Component calculated minHeight incorrect after setting scaleY.", BASE_HEIGHT * SMALLER_SCALEY, this._control.minHeight);
 		}
 
 		[Test]
@@ -53,6 +68,8 @@ package feathers.tests
 			this._control.validate();
 			Assert.assertStrictlyEquals("Component calculated width incorrect after setting scale.", BASE_WIDTH * SMALLER_SCALE, this._control.width);
 			Assert.assertStrictlyEquals("Component calculated height incorrect after setting scale.", BASE_HEIGHT * SMALLER_SCALE, this._control.height);
+			Assert.assertStrictlyEquals("Component calculated minWidth incorrect after setting scale.", BASE_WIDTH * SMALLER_SCALE, this._control.minWidth);
+			Assert.assertStrictlyEquals("Component calculated minHeight incorrect after setting scale.", BASE_HEIGHT * SMALLER_SCALE, this._control.minHeight);
 		}
 
 		[Test]
@@ -62,9 +79,13 @@ package feathers.tests
 			this._control.scaleY = SMALLER_SCALEY;
 			this._control.width = LARGER_WIDTH;
 			this._control.height = LARGER_HEIGHT;
+			this._control.minWidth = LARGER_MIN_WIDTH;
+			this._control.minHeight = LARGER_MIN_HEIGHT;
 			this._control.validate();
 			Assert.assertStrictlyEquals("Component width incorrect after setting scaleX then width.", LARGER_WIDTH, this._control.width);
 			Assert.assertStrictlyEquals("Component height incorrect after setting scaleY then height.", LARGER_HEIGHT, this._control.height);
+			Assert.assertStrictlyEquals("Component minWidth incorrect after setting scaleX then minWidth.", LARGER_MIN_WIDTH, this._control.minWidth);
+			Assert.assertStrictlyEquals("Component minHeight incorrect after setting scaleY then minHeight.", LARGER_MIN_HEIGHT, this._control.minHeight);
 		}
 
 		[Test]
@@ -72,11 +93,15 @@ package feathers.tests
 		{
 			this._control.width = LARGER_WIDTH;
 			this._control.height = LARGER_HEIGHT;
+			this._control.minWidth = LARGER_MIN_WIDTH;
+			this._control.minHeight = LARGER_MIN_HEIGHT;
 			this._control.scaleX = LARGER_SCALEX;
 			this._control.scaleY = SMALLER_SCALEY;
 			this._control.validate();
 			Assert.assertStrictlyEquals("Component width incorrect after setting width then scaleX.", LARGER_WIDTH * LARGER_SCALEX, this._control.width);
 			Assert.assertStrictlyEquals("Component height incorrect after setting height then scaleY.", LARGER_HEIGHT * SMALLER_SCALEY, this._control.height);
+			Assert.assertStrictlyEquals("Component minWidth incorrect after setting minWidth then scaleX.", LARGER_MIN_WIDTH * LARGER_SCALEX, this._control.minWidth);
+			Assert.assertStrictlyEquals("Component minHeight incorrect after setting minHeight then scaleY.", LARGER_MIN_HEIGHT * SMALLER_SCALEY, this._control.minHeight);
 		}
 	}
 }

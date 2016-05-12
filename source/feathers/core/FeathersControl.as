@@ -844,6 +844,10 @@ package feathers.core
 			{
 				return;
 			}
+			if(this.scaleX !== 1)
+			{
+				value /= this.scaleX;
+			}
 			var oldValue:Number = this._explicitMinWidth;
 			this._explicitMinWidth = value;
 			if(valueIsNaN)
@@ -933,6 +937,10 @@ package feathers.core
 			if(valueIsNaN && this._explicitMinHeight !== this._explicitMinHeight)
 			{
 				return;
+			}
+			if(this.scaleY !== 1)
+			{
+				value /= this.scaleY;
 			}
 			var oldValue:Number = this._explicitMinHeight;
 			this._explicitMinHeight = value;
