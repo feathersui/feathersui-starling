@@ -303,5 +303,21 @@ package feathers.tests
 			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set first child.x incorrectly", maxChildWidth - CHILD1_WIDTH, item1.x);
 			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set second child.x incorrectly", maxChildWidth - CHILD2_WIDTH, item2.x);
 		}
+
+		[Test]
+		public function testRightAlignmentWithMinAndMaxWidthLargerThanItems():void
+		{
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.minWidth = CHILD1_WIDTH + (CHILD2_WIDTH / 4);
+			bounds.maxWidth = CHILD1_WIDTH + (CHILD2_WIDTH / 2);
+			this._layout.horizontalAlign = HorizontalAlign.RIGHT;
+			this._layout.layout(items, bounds);
+			var maxChildWidth:Number = Math.max(CHILD1_WIDTH, CHILD2_WIDTH);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set first child.x incorrectly", bounds.minWidth - CHILD1_WIDTH, item1.x);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set second child.x incorrectly", bounds.minWidth - CHILD2_WIDTH, item2.x);
+		}
 	}
 }

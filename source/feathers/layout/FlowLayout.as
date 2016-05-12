@@ -905,15 +905,7 @@ package feathers.layout
 			{
 				if(needsWidth)
 				{
-					horizontalAlignOffsetX = 0;
-					if(this._horizontalAlign === HorizontalAlign.RIGHT)
-					{
-						horizontalAlignOffsetX = availableRowWidth - maxRowWidth;
-					}
-					else if(this._horizontalAlign === HorizontalAlign.CENTER)
-					{
-						horizontalAlignOffsetX = Math.round((availableRowWidth - maxRowWidth) / 2);
-					}
+					var oldAvailableRowWidth:Number = availableRowWidth;
 					availableRowWidth = maxRowWidth;
 					if(availableRowWidth < minWidth)
 					{
@@ -922,6 +914,15 @@ package feathers.layout
 					else if(availableRowWidth > maxWidth)
 					{
 						availableRowWidth = maxWidth;
+					}
+					horizontalAlignOffsetX = 0;
+					if(this._horizontalAlign === HorizontalAlign.RIGHT)
+					{
+						horizontalAlignOffsetX = oldAvailableRowWidth - availableRowWidth;
+					}
+					else if(this._horizontalAlign === HorizontalAlign.CENTER)
+					{
+						horizontalAlignOffsetX = Math.round((oldAvailableRowWidth - availableRowWidth) / 2);
 					}
 					if(horizontalAlignOffsetX !== 0)
 					{
