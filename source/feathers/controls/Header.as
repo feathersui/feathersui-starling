@@ -1155,7 +1155,7 @@ package feathers.controls
 		 */
 		protected var _titleAlign:String = HorizontalAlign.CENTER;
 
-		[Inspectable(type="String",enumeration="center,preferLeft,preferRight")]
+		[Inspectable(type="String",enumeration="center,left,right")]
 		/**
 		 * The preferred horizontal position of the title.
 		 * 
@@ -1197,6 +1197,14 @@ package feathers.controls
 		 */
 		public function set titleAlign(value:String):void
 		{
+			if(value === TITLE_ALIGN_PREFER_LEFT)
+			{
+				value = HorizontalAlign.LEFT;
+			}
+			else if(value === TITLE_ALIGN_PREFER_RIGHT)
+			{
+				value = HorizontalAlign.RIGHT;
+			}
 			if(this._titleAlign == value)
 			{
 				return;
