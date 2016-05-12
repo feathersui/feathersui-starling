@@ -120,7 +120,12 @@ package feathers.controls.supportClasses
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
 			this._maxVisibleWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this.explicitVisibleWidth !== this.explicitVisibleWidth && //isNaN
+				this.actualVisibleWidth > value)
+			{
+				//only invalidate if this change might affect the visibleWidth
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		private var actualVisibleWidth:Number = 0;
@@ -204,7 +209,12 @@ package feathers.controls.supportClasses
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
 			this._maxVisibleHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this.explicitVisibleHeight !== this.explicitVisibleHeight && //isNaN
+				this.actualVisibleHeight > value)
+			{
+				//only invalidate if this change might affect the visibleHeight
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		private var actualVisibleHeight:Number = 0;

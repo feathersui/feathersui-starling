@@ -997,7 +997,12 @@ package feathers.core
 				throw new ArgumentError("maxWidth cannot be NaN");
 			}
 			this._maxWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this._explicitWidth !== this._explicitWidth &&
+				this.actualWidth > value)
+			{
+				//only invalidate if this change might affect the width
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		/**
@@ -1043,7 +1048,12 @@ package feathers.core
 				throw new ArgumentError("maxHeight cannot be NaN");
 			}
 			this._maxHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this._explicitHeight !== this._explicitHeight &&
+				this.actualHeight > value)
+			{
+				//only invalidate if this change might affect the width
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		/**
