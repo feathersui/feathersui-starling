@@ -645,10 +645,11 @@ package feathers.layout
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 			
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			//let's figure out if we can show multiple rows
 			var supportsMultipleRows:Boolean = true;
 			var availableRowWidth:Number = explicitWidth;
-			if(availableRowWidth !== availableRowWidth) //isNaN
+			if(needsWidth)
 			{
 				availableRowWidth = maxWidth;
 				if(availableRowWidth === Number.POSITIVE_INFINITY)
@@ -838,13 +839,15 @@ package feathers.layout
 	
 				if(supportsMultipleRows)
 				{
-					//in this section, we handle horizontal alignment.
+					//in this section, we handle horizontal alignment for the
+					//current row. however, we may need to adjust it later if
+					//the maxRowWidth is smaller than the availableRowWidth.
 					var horizontalAlignOffsetX:Number = 0;
-					if(this._horizontalAlign == HorizontalAlign.RIGHT)
+					if(this._horizontalAlign === HorizontalAlign.RIGHT)
 					{
 						horizontalAlignOffsetX = availableRowWidth - totalRowWidth;
 					}
-					else if(this._horizontalAlign == HorizontalAlign.CENTER)
+					else if(this._horizontalAlign === HorizontalAlign.CENTER)
 					{
 						horizontalAlignOffsetX = Math.round((availableRowWidth - totalRowWidth) / 2);
 					}
@@ -900,8 +903,17 @@ package feathers.layout
 			
 			if(supportsMultipleRows)
 			{
-				if(explicitWidth !== explicitWidth) //isNaN
+				if(needsWidth)
 				{
+					horizontalAlignOffsetX = 0;
+					if(this._horizontalAlign === HorizontalAlign.RIGHT)
+					{
+						horizontalAlignOffsetX = availableRowWidth - maxRowWidth;
+					}
+					else if(this._horizontalAlign === HorizontalAlign.CENTER)
+					{
+						horizontalAlignOffsetX = Math.round((availableRowWidth - maxRowWidth) / 2);
+					}
 					availableRowWidth = maxRowWidth;
 					if(availableRowWidth < minWidth)
 					{
@@ -910,6 +922,21 @@ package feathers.layout
 					else if(availableRowWidth > maxWidth)
 					{
 						availableRowWidth = maxWidth;
+					}
+					if(horizontalAlignOffsetX !== 0)
+					{
+						for(i = 0; i < itemCount; i++)
+						{
+							item = items[i];
+							if(!item || (item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout))
+							{
+								continue;
+							}
+							//previously, we used the maxWidth for alignment,
+							//but the max row width may be smaller, so we need
+							//to account for the difference
+							item.x -= horizontalAlignOffsetX;
+						}
 					}
 				}
 			}
