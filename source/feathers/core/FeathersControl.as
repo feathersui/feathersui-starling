@@ -92,7 +92,7 @@ package feathers.core
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
-	 * @eventType feathers.events.FeathersEventType.RESIZE
+	 * @eventType starling.events.Event.RESIZE
 	 */
 	[Event(name="resize",type="starling.events.Event")]
 
@@ -844,6 +844,7 @@ package feathers.core
 			{
 				return;
 			}
+			var oldValue:Number = this._explicitMinWidth;
 			this._explicitMinWidth = value;
 			if(valueIsNaN)
 			{
@@ -852,10 +853,9 @@ package feathers.core
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(this.actualWidth, this.actualHeight, value, this.actualMinHeight);
-				if(result &&
-					this._explicitWidth !== this._explicitWidth &&
-					this.actualWidth < this.actualMinWidth)
+				this.saveMeasurements(this.actualWidth, this.actualHeight, value, this.actualMinHeight);
+				if(this._explicitWidth !== this._explicitWidth &&
+					(this.actualWidth < value || this.actualWidth === oldValue))
 				{
 					//only invalidate if this change might affect the width
 					//because everything else was handled in saveMeasurements()
@@ -934,6 +934,7 @@ package feathers.core
 			{
 				return;
 			}
+			var oldValue:Number = this._explicitMinHeight;
 			this._explicitMinHeight = value;
 			if(valueIsNaN)
 			{
@@ -942,10 +943,9 @@ package feathers.core
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(this.actualWidth, this.actualHeight, this.actualMinWidth, value);
-				if(result &&
-					this._explicitHeight !== this._explicitHeight &&
-					this.actualHeight < this.actualMinHeight)
+				this.saveMeasurements(this.actualWidth, this.actualHeight, this.actualMinWidth, value);
+				if(this._explicitHeight !== this._explicitHeight && //isNaN
+					(this.actualHeight < value || this.actualHeight === oldValue))
 				{
 					//only invalidate if this change might affect the height
 					//because everything else was handled in saveMeasurements()
@@ -996,9 +996,10 @@ package feathers.core
 			{
 				throw new ArgumentError("maxWidth cannot be NaN");
 			}
+			var oldValue:Number = this._maxWidth;
 			this._maxWidth = value;
-			if(this._explicitWidth !== this._explicitWidth &&
-				this.actualWidth > value)
+			if(this._explicitWidth !== this._explicitWidth && //isNaN
+				(this.actualWidth > value || this.actualWidth === oldValue))
 			{
 				//only invalidate if this change might affect the width
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -1047,9 +1048,10 @@ package feathers.core
 			{
 				throw new ArgumentError("maxHeight cannot be NaN");
 			}
+			var oldValue:Number = this._maxHeight;
 			this._maxHeight = value;
-			if(this._explicitHeight !== this._explicitHeight &&
-				this.actualHeight > value)
+			if(this._explicitHeight !== this._explicitHeight && //isNaN
+				(this.actualHeight > value || this.actualHeight === oldValue))
 			{
 				//only invalidate if this change might affect the width
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -2057,7 +2059,9 @@ package feathers.core
 		}
 
 		/**
-		 *
+		 * Saves the dimensions and minimum dimensions calculated for the
+		 * component. Returns true if the reported values have changed and
+		 * <code>Event.RESIZE</code> was dispatched.
 		 */
 		protected function saveMeasurements(width:Number, height:Number, minWidth:Number = 0, minHeight:Number = 0):Boolean
 		{
@@ -2159,7 +2163,7 @@ package feathers.core
 			}
 			if(resized)
 			{
-				this.dispatchEventWith(FeathersEventType.RESIZE);
+				this.dispatchEventWith(Event.RESIZE);
 			}
 			return resized;
 		}

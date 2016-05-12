@@ -84,6 +84,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
+			var oldValue:Number = this._explicitMinVisibleWidth;
 			this._explicitMinVisibleWidth = value;
 			if(valueIsNaN)
 			{
@@ -94,7 +95,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleWidth = value;
 				if(this.explicitVisibleWidth !== this.explicitVisibleWidth && //isNaN
-					this.actualVisibleWidth < value)
+					(this.actualVisibleWidth < value || this.actualVisibleWidth === oldValue))
 				{
 					//only invalidate if this change might affect the visibleWidth
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -119,9 +120,10 @@ package feathers.controls.supportClasses
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
+			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
 			if(this.explicitVisibleWidth !== this.explicitVisibleWidth && //isNaN
-				this.actualVisibleWidth > value)
+				(this.actualVisibleWidth > value || this.actualVisibleWidth === oldValue))
 			{
 				//only invalidate if this change might affect the visibleWidth
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -173,6 +175,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
+			var oldValue:Number = this._explicitMinVisibleHeight;
 			this._explicitMinVisibleHeight = value;
 			if(valueIsNaN)
 			{
@@ -183,7 +186,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleHeight = value;
 				if(this.explicitVisibleHeight !== this.explicitVisibleHeight && //isNaN
-					this.actualVisibleHeight < value)
+					(this.actualVisibleHeight < value || this.actualVisibleHeight === oldValue))
 				{
 					//only invalidate if this change might affect the visibleHeight
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -208,9 +211,10 @@ package feathers.controls.supportClasses
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
+			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
 			if(this.explicitVisibleHeight !== this.explicitVisibleHeight && //isNaN
-				this.actualVisibleHeight > value)
+				(this.actualVisibleHeight > value || this.actualVisibleHeight === oldValue))
 			{
 				//only invalidate if this change might affect the visibleHeight
 				this.invalidate(INVALIDATION_FLAG_SIZE);

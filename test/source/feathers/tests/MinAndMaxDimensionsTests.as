@@ -177,7 +177,7 @@ package feathers.tests
 		{
 			this._control.addChild(new Quad(EXPLICIT_SIZE_SMALLER_THAN_MIN_SIZE, EXPLICIT_SIZE_SMALLER_THAN_MIN_SIZE, 0xff00ff));
 			this._control.validate();
-			this._control.minWidth = MAX_SIZE;
+			this._control.maxWidth = MAX_SIZE;
 			Assert.assertFalse("The component incorrectly invalidated when setting maxWidth, but component actualWidth is currently smaller", this._control.isInvalid());
 		}
 
@@ -186,7 +186,7 @@ package feathers.tests
 		{
 			this._control.addChild(new Quad(EXPLICIT_SIZE_SMALLER_THAN_MIN_SIZE, EXPLICIT_SIZE_SMALLER_THAN_MIN_SIZE, 0xff00ff));
 			this._control.validate();
-			this._control.minHeight = MAX_SIZE;
+			this._control.maxHeight = MAX_SIZE;
 			Assert.assertFalse("The component incorrectly invalidated when setting maxHeight, but component actualHeight is currently smaller", this._control.isInvalid());
 		}
 
@@ -195,7 +195,7 @@ package feathers.tests
 		{
 			this._control.addChild(new Quad(MAX_SIZE, MAX_SIZE, 0xff00ff));
 			this._control.validate();
-			this._control.minWidth = MAX_SIZE;
+			this._control.maxWidth = MAX_SIZE;
 			Assert.assertFalse("The component incorrectly invalidated when setting maxWidth, but component actualWidth is equal", this._control.isInvalid());
 		}
 
@@ -204,7 +204,7 @@ package feathers.tests
 		{
 			this._control.addChild(new Quad(MAX_SIZE, MAX_SIZE, 0xff00ff));
 			this._control.validate();
-			this._control.minHeight = MAX_SIZE;
+			this._control.maxHeight = MAX_SIZE;
 			Assert.assertFalse("The component incorrectly invalidated when setting maxHeight, but component actualHeight is equal", this._control.isInvalid());
 		}
 	}
