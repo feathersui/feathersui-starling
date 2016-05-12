@@ -417,6 +417,14 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/StackScreenNavigatorExplorer">
+			<fileset dir="${examples.root}/StackScreenNavigatorExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/StackScreenNavigatorExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/TileList">
 			<fileset dir="${examples.root}/TileList">
 				<include name="README.md"/>
