@@ -22,6 +22,11 @@ package feathers.tests
 		private static const PADDING_RIGHT:Number = 54;
 		private static const PADDING_BOTTOM:Number = 59;
 		private static const PADDING_LEFT:Number = 60;
+
+		private static const OUTER_PADDING_TOP:Number = 40;
+		private static const OUTER_PADDING_RIGHT:Number = 64;
+		private static const OUTER_PADDING_BOTTOM:Number = 69;
+		private static const OUTER_PADDING_LEFT:Number = 50;
 		
 		private static const HEADER_WIDTH:Number = 150;
 		private static const HEADER_HEIGHT:Number = 40;
@@ -131,6 +136,26 @@ package feathers.tests
 				HEADER_WIDTH, this._panel.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the Panel was not calculated correctly based on the header and top and bottom padding.",
 				HEADER_HEIGHT + PADDING_TOP + PADDING_BOTTOM, this._panel.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeWithHeaderAndOuterPadding():void
+		{
+			this.addHeader();
+			this._panel.outerPaddingTop = OUTER_PADDING_TOP;
+			this._panel.outerPaddingRight = OUTER_PADDING_RIGHT;
+			this._panel.outerPaddingBottom = OUTER_PADDING_BOTTOM;
+			this._panel.outerPaddingLeft = OUTER_PADDING_LEFT;
+			this._panel.validate();
+
+			Assert.assertStrictlyEquals("The width of the Panel was not calculated correctly based on the header and left and right outer padding.",
+				HEADER_WIDTH + OUTER_PADDING_LEFT + OUTER_PADDING_RIGHT, this._panel.width);
+			Assert.assertStrictlyEquals("The height of the Panel was not calculated correctly based on the header and top and bottom outer padding.",
+				HEADER_HEIGHT + OUTER_PADDING_TOP + OUTER_PADDING_BOTTOM, this._panel.height);
+			Assert.assertStrictlyEquals("The minWidth of the Panel was not calculated correctly based on the header and left and right outer padding.",
+				HEADER_WIDTH + OUTER_PADDING_LEFT + OUTER_PADDING_RIGHT, this._panel.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the Panel was not calculated correctly based on the header and top and bottom outer padding.",
+				HEADER_HEIGHT + OUTER_PADDING_TOP + OUTER_PADDING_BOTTOM, this._panel.minHeight);
 		}
 
 		[Test]
