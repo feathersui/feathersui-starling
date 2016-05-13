@@ -2051,9 +2051,9 @@ package feathers.layout
 		 */
 		protected function calculateDistributedHeight(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number, measureItems:Boolean):Number
 		{
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			var itemCount:int = items.length;
-			if(measureItems &&
-				explicitHeight !== explicitHeight) //isNaN
+			if(measureItems && needsHeight)
 			{
 				var maxItemHeight:Number = 0;
 				for(var i:int = 0; i < itemCount; i++)
@@ -2082,7 +2082,12 @@ package feathers.layout
 					return maxItemHeight;
 				}
 			}
-			var availableSpace:Number = explicitHeight - this._paddingTop - this._paddingBottom - this._gap * (itemCount - 1);
+			var availableSpace:Number = explicitHeight;
+			if(needsHeight && maxHeight < Number.POSITIVE_INFINITY)
+			{
+				availableSpace = maxHeight;
+			}
+			availableSpace = availableSpace - this._paddingTop - this._paddingBottom - this._gap * (itemCount - 1);
 			if(itemCount > 1 && this._firstGap === this._firstGap) //!isNaN
 			{
 				availableSpace += this._gap - this._firstGap;
