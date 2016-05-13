@@ -1352,7 +1352,8 @@ package feathers.controls
 		{
 			if(this._snapScrollPositionsToPixels)
 			{
-				value = Math.round(value);
+				var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
+				value = Math.round(value / scaledPixel) * scaledPixel;
 			}
 			if(this._horizontalScrollPosition == value)
 			{
@@ -1640,7 +1641,8 @@ package feathers.controls
 		{
 			if(this._snapScrollPositionsToPixels)
 			{
-				value = Math.round(value);
+				var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
+				value = Math.round(value / scaledPixel) * scaledPixel;
 			}
 			if(this._verticalScrollPosition == value)
 			{
@@ -2879,8 +2881,9 @@ package feathers.controls
 			this._snapScrollPositionsToPixels = value;
 			if(this._snapScrollPositionsToPixels)
 			{
-				this.horizontalScrollPosition = Math.round(this._horizontalScrollPosition);
-				this.verticalScrollPosition = Math.round(this._verticalScrollPosition);
+				var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
+				this.horizontalScrollPosition = Math.round(this._horizontalScrollPosition / scaledPixel) * scaledPixel;
+				this.verticalScrollPosition = Math.round(this._verticalScrollPosition / scaledPixel) * scaledPixel;
 			}
 		}
 
@@ -3958,10 +3961,11 @@ package feathers.controls
 				}
 				if(this._snapScrollPositionsToPixels)
 				{
-					this._minHorizontalScrollPosition = Math.round(this._minHorizontalScrollPosition);
-					this._minVerticalScrollPosition = Math.round(this._minVerticalScrollPosition);
-					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition);
-					this._maxVerticalScrollPosition = Math.round(this._maxVerticalScrollPosition);
+					var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
+					this._minHorizontalScrollPosition = Math.round(this._minHorizontalScrollPosition / scaledPixel) * scaledPixel;
+					this._minVerticalScrollPosition = Math.round(this._minVerticalScrollPosition / scaledPixel) * scaledPixel;
+					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition / scaledPixel) * scaledPixel;
+					this._maxVerticalScrollPosition = Math.round(this._maxVerticalScrollPosition / scaledPixel) * scaledPixel;
 				}
 			}
 			else
