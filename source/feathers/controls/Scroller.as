@@ -18,6 +18,7 @@ package feathers.controls
 	import feathers.layout.Direction;
 	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.display.stageToStarling;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
@@ -1350,11 +1351,6 @@ package feathers.controls
 		 */
 		public function set horizontalScrollPosition(value:Number):void
 		{
-			if(this._snapScrollPositionsToPixels)
-			{
-				var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
-				value = Math.round(value / scaledPixel) * scaledPixel;
-			}
 			if(this._horizontalScrollPosition == value)
 			{
 				return;
@@ -1639,11 +1635,6 @@ package feathers.controls
 		 */
 		public function set verticalScrollPosition(value:Number):void
 		{
-			if(this._snapScrollPositionsToPixels)
-			{
-				var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
-				value = Math.round(value / scaledPixel) * scaledPixel;
-			}
 			if(this._verticalScrollPosition == value)
 			{
 				return;
@@ -2879,12 +2870,7 @@ package feathers.controls
 				return;
 			}
 			this._snapScrollPositionsToPixels = value;
-			if(this._snapScrollPositionsToPixels)
-			{
-				var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
-				this.horizontalScrollPosition = Math.round(this._horizontalScrollPosition / scaledPixel) * scaledPixel;
-				this.verticalScrollPosition = Math.round(this._verticalScrollPosition / scaledPixel) * scaledPixel;
-			}
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		/**
@@ -3959,14 +3945,6 @@ package feathers.controls
 				{
 					this._maxVerticalScrollPosition =  this._minVerticalScrollPosition;
 				}
-				if(this._snapScrollPositionsToPixels)
-				{
-					var scaledPixel:Number = 1 / Starling.current.contentScaleFactor;
-					this._minHorizontalScrollPosition = Math.round(this._minHorizontalScrollPosition / scaledPixel) * scaledPixel;
-					this._minVerticalScrollPosition = Math.round(this._minVerticalScrollPosition / scaledPixel) * scaledPixel;
-					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition / scaledPixel) * scaledPixel;
-					this._maxVerticalScrollPosition = Math.round(this._maxVerticalScrollPosition / scaledPixel) * scaledPixel;
-				}
 			}
 			else
 			{
@@ -4409,8 +4387,22 @@ package feathers.controls
 				this._touchBlocker.height = this._viewPort.visibleHeight;
 			}
 
-			this._viewPort.x = this._leftViewPortOffset - this._horizontalScrollPosition;
-			this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
+			if(this._snapScrollPositionsToPixels)
+			{
+				var starling:Starling = stageToStarling(this.stage);
+				if(starling === null)
+				{
+					starling = Starling.current;
+				}
+				var pixelSize:Number = 1 / starling.contentScaleFactor;
+				this._viewPort.x = Math.round((this._leftViewPortOffset - this._horizontalScrollPosition) / pixelSize) * pixelSize;
+				this._viewPort.y = Math.round((this._topViewPortOffset - this._verticalScrollPosition) / pixelSize) * pixelSize;
+			}
+			else
+			{
+				this._viewPort.x = this._leftViewPortOffset - this._horizontalScrollPosition;
+				this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
+			}
 
 			if(this.horizontalScrollBar)
 			{
