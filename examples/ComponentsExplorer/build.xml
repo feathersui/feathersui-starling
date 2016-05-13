@@ -41,8 +41,7 @@
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
-			<!-- uncomment for profiling with scout -->
-			<!--<arg value="-advanced-telemetry=true"/>-->
+			<arg value="-advanced-telemetry=${advanced.telemetry}"/>
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
