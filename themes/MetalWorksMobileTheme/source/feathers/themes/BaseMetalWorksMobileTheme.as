@@ -394,6 +394,11 @@ package feathers.themes
 		protected var smallGutterSize:int;
 
 		/**
+		 * The size, in pixels, of smaller padding and gaps within controls.
+		 */
+		protected var smallControlGutterSize:int;
+
+		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
 		protected var wideControlSize:int;
@@ -700,6 +705,7 @@ package feathers.themes
 		protected function initializeDimensions():void
 		{
 			this.gridSize = 44;
+			this.smallControlGutterSize = 6;
 			this.smallGutterSize = 8;
 			this.gutterSize = 12;
 			this.controlSize = 28;
@@ -1170,12 +1176,12 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
-			button.paddingTop = this.smallGutterSize;
-			button.paddingBottom = this.smallGutterSize;
+			button.paddingTop = this.smallControlGutterSize;
+			button.paddingBottom = this.smallControlGutterSize;
 			button.paddingLeft = this.gutterSize;
 			button.paddingRight = this.gutterSize;
-			button.gap = this.smallGutterSize;
-			button.minGap = this.smallGutterSize;
+			button.gap = this.smallControlGutterSize;
+			button.minGap = this.smallControlGutterSize;
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
@@ -1242,10 +1248,12 @@ package feathers.themes
 			
 			button.customLabelStyleName = THEME_STYLE_NAME_QUIET_BUTTON_LABEL;
 
-			button.paddingTop = button.paddingBottom = this.smallGutterSize;
-			button.paddingLeft = button.paddingRight = this.gutterSize;
-			button.gap = this.smallGutterSize;
-			button.minGap = this.smallGutterSize;
+			button.paddingTop = this.smallControlGutterSize;
+			button.paddingBottom = this.smallControlGutterSize;
+			button.paddingLeft = this.smallGutterSize;
+			button.paddingRight = this.smallGutterSize;
+			button.gap = this.smallControlGutterSize;
+			button.minGap = this.smallControlGutterSize;
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = button.minTouchHeight = this.gridSize;
 		}
@@ -1426,7 +1434,8 @@ package feathers.themes
 			check.defaultIcon = icon;
 
 			check.horizontalAlign = HorizontalAlign.LEFT;
-			check.gap = this.smallGutterSize;
+			check.gap = this.smallControlGutterSize;
+			check.minGap = this.smallControlGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
 			check.minTouchWidth = this.gridSize;
@@ -1864,10 +1873,15 @@ package feathers.themes
 			input.textEditorFactory = stepperTextEditorFactory;
 			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR;
 
-			input.minWidth = input.minHeight = this.controlSize;
-			input.minTouchWidth = input.minTouchHeight = this.gridSize;
-			input.gap = this.smallGutterSize;
-			input.padding = this.smallGutterSize;
+			input.minWidth = this.controlSize;
+			input.minHeight = this.controlSize;
+			input.minTouchWidth = this.gridSize;
+			input.minTouchHeight = this.gridSize;
+			input.gap = this.smallControlGutterSize;
+			input.paddingTop = this.smallControlGutterSize;
+			input.paddingRight = this.smallGutterSize;
+			input.paddingBottom = this.smallControlGutterSize;
+			input.paddingLeft = this.smallGutterSize;
 			input.isEditable = false;
 			input.isSelectable = false;
 		}
@@ -2083,7 +2097,8 @@ package feathers.themes
 			radio.defaultIcon = icon;
 
 			radio.horizontalAlign = HorizontalAlign.LEFT;
-			radio.gap = this.smallGutterSize;
+			radio.gap = this.smallControlGutterSize;
+			radio.minGap = this.smallControlGutterSize;
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;
 			radio.minTouchWidth = this.gridSize;
@@ -2433,8 +2448,11 @@ package feathers.themes
 			input.minHeight = this.controlSize;
 			input.minTouchWidth = this.gridSize;
 			input.minTouchHeight = this.gridSize;
-			input.gap = this.smallGutterSize;
-			input.padding = this.smallGutterSize;
+			input.gap = this.smallControlGutterSize;
+			input.paddingTop = this.smallControlGutterSize;
+			input.paddingRight = this.smallGutterSize;
+			input.paddingBottom = this.smallControlGutterSize;
+			input.paddingLeft = this.smallGutterSize;
 			input.verticalAlign = VerticalAlign.MIDDLE;
 		}
 
