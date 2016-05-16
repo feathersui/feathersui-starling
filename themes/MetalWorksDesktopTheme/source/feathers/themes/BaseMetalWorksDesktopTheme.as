@@ -316,6 +316,21 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metalworks-desktop-date-time-spinner-list-item-renderer";
 
 		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "metalworks-desktop-heading-label-text-renderer";
+
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "metalworks-desktop-detail-label-text-renderer";
+
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER:String = "metalworks-desktop-tool-tip-label-text-renderer";
+
+		/**
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
@@ -933,7 +948,7 @@ package feathers.themes
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleProperties);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleStyles);
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
@@ -956,10 +971,12 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL, this.setCheckItemRendererAccessoryLabelStyles);
 
 			//labels
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_TOOL_TIP, this.setToolTipLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1575,7 +1592,7 @@ package feathers.themes
 			header.backgroundSkin = backgroundSkin;
 		}
 
-		protected function setHeaderTitleProperties(textRenderer:TextBlockTextRenderer):void
+		protected function setHeaderTitleStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.lightElementFormat;
 			textRenderer.disabledElementFormat = this.disabledElementFormat;
@@ -1585,22 +1602,32 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
 		{
-			label.textRendererProperties.elementFormat = this.lightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.elementFormat = this.largeLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.largeDisabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.elementFormat = this.smallLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.smallDisabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setDetailLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.smallLightElementFormat;
+			textRenderer.disabledElementFormat = this.smallDisabledElementFormat;
 		}
 		
 		protected function setToolTipLabelStyles(label:Label):void
@@ -1609,10 +1636,15 @@ package feathers.themes
 			backgroundSkin.scale9Grid = DEFAULT_SCALE9_GRID;
 			label.backgroundSkin = backgroundSkin;
 			
-			label.textRendererProperties.elementFormat = this.lightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER;
 			
 			label.padding = this.smallGutterSize;
+		}
+
+		protected function setToolTipLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 	//-------------------------

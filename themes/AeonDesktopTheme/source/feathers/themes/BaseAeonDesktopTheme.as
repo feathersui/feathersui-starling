@@ -247,6 +247,24 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_DANGER_TEXT_CALLOUT_TEXT_RENDERER:String = "aeon-danger-text-callout-text-renderer";
 
 		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a heading Label.
+		 */
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "aeon-heading-label-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a detail Label.
+		 */
+		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "aeon-detail-label-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a tool tip Label.
+		 */
+		protected static const THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER:String = "aeon-tool-tip-label-text-renderer";
+
+		/**
 		 * The name of the font used by controls in this theme. This font is not
 		 * embedded. It is the default sans-serif system font.
 		 */
@@ -920,10 +938,12 @@ package feathers.themes
 			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL, this.setGroupedListHeaderOrFooterRendererContentLabelStyles);
 
 			//label
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_TOOL_TIP, this.setToolTipLabelStyles);
+			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextFieldTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1543,22 +1563,32 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:TextFieldTextRenderer):void
 		{
-			label.textRendererProperties.textFormat = this.defaultTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
+			textRenderer.textFormat = this.defaultTextFormat;
+			textRenderer.disabledTextFormat = this.disabledTextFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.headingTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:TextFieldTextRenderer):void
+		{
+			textRenderer.textFormat = this.headingTextFormat;
+			textRenderer.disabledTextFormat = this.headingDisabledTextFormat;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.detailTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setDetailLabelTextRendererStyles(textRenderer:TextFieldTextRenderer):void
+		{
+			textRenderer.textFormat = this.detailTextFormat;
+			textRenderer.disabledTextFormat = this.detailDisabledTextFormat;
 		}
 
 		protected function setToolTipLabelStyles(label:Label):void
@@ -1566,14 +1596,19 @@ package feathers.themes
 			var backgroundSkin:Image = new Image(this.toolTipBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = TOOL_TIP_SCALE_9_GRID;
 			label.backgroundSkin = backgroundSkin;
-			
-			label.textRendererProperties.textFormat = this.defaultTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
+
+			label.customTextRendererStyleName = THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER;
 			
 			label.paddingTop = this.extraSmallGutterSize;
 			label.paddingRight = this.smallGutterSize + this.leftAndRightDropShadowSize;
 			label.paddingBottom = this.extraSmallGutterSize + this.bottomDropShadowSize;
 			label.paddingLeft = this.smallGutterSize + this.leftAndRightDropShadowSize;
+		}
+
+		protected function setToolTipLabelTextRendererStyles(textRenderer:TextFieldTextRenderer):void
+		{
+			textRenderer.textFormat = this.defaultTextFormat;
+			textRenderer.disabledTextFormat = this.disabledTextFormat;
 		}
 
 	//-------------------------

@@ -285,6 +285,18 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-date-time-spinner-list-item-renderer";
 
 		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a heading Label.
+		 */
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "metal-works-mobile-heading-label-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a detail Label.
+		 */
+		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "metal-works-mobile-detail-label-text-renderer";
+
+		/**
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
@@ -932,7 +944,7 @@ package feathers.themes
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleProperties);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleStyles);
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
@@ -943,9 +955,11 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL, this.setGroupedListFooterContentLabelStyles);
 
 			//labels
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, setToolbarLayoutGroupStyles);
@@ -1653,7 +1667,7 @@ package feathers.themes
 			header.backgroundSkin = backgroundSkin;
 		}
 		
-		protected function setHeaderTitleProperties(textRenderer:TextBlockTextRenderer):void
+		protected function setHeaderTitleStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.headerElementFormat;
 			textRenderer.disabledElementFormat = this.headerDisabledElementFormat;
@@ -1663,22 +1677,32 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
 		{
-			label.textRendererProperties.elementFormat = this.lightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.elementFormat = this.largeLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.largeDisabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.elementFormat = this.smallLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.smallDisabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setDetailLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.smallLightElementFormat;
+			textRenderer.disabledElementFormat = this.smallDisabledElementFormat;
 		}
 
 	//-------------------------
