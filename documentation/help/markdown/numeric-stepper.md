@@ -49,13 +49,13 @@ The skins for a `NumericStepper` control are divided into three parts. There are
 
 ### Layout Modes
 
-The numeric stepper's layout can be customized to place the buttons in different locations. In the example below, we place the buttons on the right side of the text input, stacked vertically, like you see with many desktop numeric steppers using [`NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL`](../api-reference/feathers/controls/NumericStepper.html#BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL):
+The numeric stepper's layout can be customized to place the buttons in different locations. In the example below, we place the buttons on the right side of the text input, stacked vertically, like you see with many desktop numeric steppers using [`StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#RIGHT_SIDE_VERTICAL):
 
 ``` code
-stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 ```
 
-There are two additional options for [`buttonLayoutMode`](../api-reference/feathers/controls/NumericStepper.html#buttonLayoutMode). You can use [`NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL`](../api-reference/feathers/controls/NumericStepper.html#BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL) to place the decrement button on the left side of the text input and the increment button button on the right side. Similarly, you can use [`NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL`](../api-reference/feathers/controls/NumericStepper.html#BUTTON_LAYOUT_MODE_SPLIT_VERTICAL) to place the increment button on top of the text input and the decrement button on the bottom.
+There are two additional options for [`buttonLayoutMode`](../api-reference/feathers/controls/NumericStepper.html#buttonLayoutMode). You can use [`StepperButtonLayoutMode.SPLIT_HORIZONTAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#SPLIT_HORIZONTAL) to place the decrement button on the left side of the text input and the increment button button on the right side. Similarly, you can use [`StepperButtonLayoutMode.SPLIT_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#SPLIT_VERTICAL) to place the increment button on top of the text input and the decrement button on the bottom.
 
 ### Targeting a `NumericStepper` in a theme
 

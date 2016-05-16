@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.core.FeathersControl;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextBaselineControl;
@@ -112,28 +113,35 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT:String = "feathers-numeric-stepper-text-input";
 
 		/**
-		 * The decrement button will be placed on the left side of the text
-		 * input and the increment button will be placed on the right side of
-		 * the text input.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.StepperButtonLayoutMode.SPLIT_HORIZONTAL</code>.
 		 *
-		 * @see #buttonLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL:String = "splitHorizontal";
 
 		/**
-		 * The decrement button will be placed below the text input and the
-		 * increment button will be placed above the text input.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.StepperButtonLayoutMode.SPLIT_VERTICAL</code>.
 		 *
-		 * @see #buttonLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const BUTTON_LAYOUT_MODE_SPLIT_VERTICAL:String = "splitVertical";
 
 		/**
-		 * Both the decrement and increment button will be placed on the right
-		 * side of the text input. The increment button will be above the
-		 * decrement button.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL</code>.
 		 *
-		 * @see #buttonLayoutMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL:String = "rightSideVertical";
 
@@ -604,7 +612,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _buttonLayoutMode:String = BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+		protected var _buttonLayoutMode:String = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="splitHorizontal,splitVertical,rightSideVertical")]
 		/**
@@ -615,13 +623,13 @@ package feathers.controls
 		 * appearance:</p>
 		 *
 		 * <listing version="3.0">
-		 * stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;</listing>
+		 * stepper.buttonLayoutMode = NumericStepper.StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;</listing>
 		 *
-		 * @default NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL
+		 * @default feathers.controls.StepperButtonLayoutMode.SPLIT_HORIZONTAL
 		 *
-		 * @see #BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL
-		 * @see #BUTTON_LAYOUT_MODE_SPLIT_VERTICAL
-		 * @see #BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL
+		 * @see feathers.controls.StepperButtonLayoutMode#SPLIT_HORIZONTAL
+		 * @see feathers.controls.StepperButtonLayoutMode#SPLIT_VERTICAL
+		 * @see feathers.controls.StepperButtonLayoutMode#RIGHT_SIDE_VERTICAL
 		 */
 		public function get buttonLayoutMode():String
 		{
@@ -654,7 +662,7 @@ package feathers.controls
 		 * <p>In the following example, the gap between buttons is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+		 * stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 		 * stepper.buttonGap = 20;</listing>
 		 *
 		 * @default 0
@@ -1445,7 +1453,7 @@ package feathers.controls
 			var textInputMaxWidth:Number = Number.POSITIVE_INFINITY;
 			var textInputMaxHeight:Number = Number.POSITIVE_INFINITY;
 			
-			if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
+			if(this._buttonLayoutMode === StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL)
 			{
 				var maxButtonWidth:Number = decrementButtonWidth;
 				if(incrementButtonWidth > maxButtonWidth)
@@ -1484,7 +1492,7 @@ package feathers.controls
 				}
 				textInputMaxWidth = this._maxWidth - maxButtonWidth - this._textInputGap;
 			}
-			else if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
+			else if(this._buttonLayoutMode === StepperButtonLayoutMode.SPLIT_VERTICAL)
 			{
 				if(!needsWidth)
 				{
@@ -1565,7 +1573,7 @@ package feathers.controls
 			this.textInput.maxHeight = textInputMaxHeight;
 			this.textInput.validate();
 
-			if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
+			if(this._buttonLayoutMode === StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL)
 			{
 				if(needsWidth)
 				{
@@ -1592,7 +1600,7 @@ package feathers.controls
 					}
 				}
 			}
-			else if(this._buttonLayoutMode === BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
+			else if(this._buttonLayoutMode === StepperButtonLayoutMode.SPLIT_VERTICAL)
 			{
 				if(needsWidth)
 				{
@@ -1898,7 +1906,7 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
+			if(this._buttonLayoutMode === StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL)
 			{
 				var buttonHeight:Number = (this.actualHeight - this._buttonGap) / 2;
 				this.incrementButton.y = 0;
@@ -1919,7 +1927,7 @@ package feathers.controls
 				this.textInput.width = buttonX - this._textInputGap;
 				this.textInput.height = this.actualHeight;
 			}
-			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
+			else if(this._buttonLayoutMode === StepperButtonLayoutMode.SPLIT_VERTICAL)
 			{
 				this.incrementButton.x = 0;
 				this.incrementButton.y = 0;

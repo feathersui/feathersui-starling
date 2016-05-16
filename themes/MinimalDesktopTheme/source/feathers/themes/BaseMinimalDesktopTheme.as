@@ -58,6 +58,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
@@ -1553,7 +1554,7 @@ package feathers.themes
 
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
 

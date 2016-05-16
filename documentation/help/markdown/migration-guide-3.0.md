@@ -597,7 +597,11 @@ Deprecated API									| How to Migrate
 
 ### `NumericStepper`
 
-No APIs are deprecated.
+Deprecated API												| How to Migrate
+----------------------------------------------------------- | -----------------
+`NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL`		| [`StepperButtonLayoutMode.SPLIT_HORIZONTAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#SPLIT_HORIZONTAL)
+`NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL`			| [`StepperButtonLayoutMode.SPLIT_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#SPLIT_VERTICAL)
+`NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL`		| [`StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#RIGHT_SIDE_VERTICAL)
 
 ### `PageIndicator`
 
@@ -1059,3 +1063,4 @@ Find 												| Replace
 `Header\.TITLE_ALIGN(_PREFER){0,1}_(\w+)`			| `HorizontalAlign.$2`
 `Drawers\.OPEN_MODE_(\w+)`							| `RelativeDepth.$1`
 `\w+\.LAYOUT_ORDER_(\w+)`							| `ItemRendererLayoutOrder.$1`
+`\w+\.BUTTON_LAYOUT_MODE_(\w+)`						| `StepperButtonLayoutMode.$1`
