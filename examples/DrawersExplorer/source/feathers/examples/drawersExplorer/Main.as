@@ -1,5 +1,6 @@
 package feathers.examples.drawersExplorer
 {
+	import feathers.controls.DragGesture;
 	import feathers.controls.Drawers;
 	import feathers.examples.drawersExplorer.skins.DrawersExplorerTheme;
 	import feathers.examples.drawersExplorer.views.ContentView;
@@ -57,7 +58,7 @@ package feathers.examples.drawersExplorer
 			//or you can disable gestures entirely and only open a drawer when
 			//an event is dispatched by the content or by calling a function
 			//on the drawer component to open a drawer programmatically.
-			this._drawers.openGesture = Drawers.OPEN_GESTURE_DRAG_CONTENT_EDGE;
+			this._drawers.openGesture = DragGesture.EDGE;
 
 			this._drawers.content = new ContentView();
 			//these events are dispatched by the content

@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.DragGesture;
 	import feathers.controls.supportClasses.BaseScreenNavigator;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
@@ -269,33 +270,35 @@ package feathers.controls
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
 		/**
-		 * A drawer will open by dragging the content starting from a certain
-		 * physical distance (in inches) from the nearest edge of the content.
-		 * To customize this distance, use the <code>openGestureDragContentEdgeDistance</code>
-		 * property.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.EDGE</code>.
 		 *
-		 * @see #openGesture
-		 * @see openGestureEdgeSize
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const OPEN_GESTURE_DRAG_CONTENT_EDGE:String = "dragContentEdge";
 
 		/**
-		 * A drawer will open by dragging the content from any location in the
-		 * appropriate direction.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.CONTENT</code>.
 		 *
-		 * @see #openGesture
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const OPEN_GESTURE_DRAG_CONTENT:String = "dragContent";
 
 		/**
-		 * The drawers container will only open using the toggle event types
-		 * dispatched by the content. No gesture can be used to open a drawer.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.NONE</code>.
 		 *
-		 * @see #openGesture
-		 * @see #topDrawerToggleEventType
-		 * @see #rightDrawerToggleEventType
-		 * @see #bottomDrawerToggleEventType
-		 * @see #leftDrawerToggleEventType
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const OPEN_GESTURE_NONE:String = "none";
 
@@ -1843,9 +1846,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _openGesture:String = OPEN_GESTURE_DRAG_CONTENT_EDGE;
+		protected var _openGesture:String = DragGesture.EDGE;
 
-		[Inspectable(type="String",enumeration="dragContentEdge,dragContent,none")]
+		[Inspectable(type="String",enumeration="content,edge,none")]
 		/**
 		 * An optional touch gesture used to open a drawer.
 		 *
@@ -1853,13 +1856,13 @@ package feathers.controls
 		 * anywhere inside the content:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.openGesture = Drawers.OPEN_GESTURE_DRAG_CONTENT;</listing>
+		 * drawers.openGesture = DragGesture.CONTENT;</listing>
 		 *
-		 * @default Drawers.OPEN_GESTURE_DRAG_CONTENT_EDGE
+		 * @default feathers.controls.DragGesture.EDGE
 		 *
-		 * @see #OPEN_GESTURE_NONE
-		 * @see #OPEN_GESTURE_DRAG_CONTENT
-		 * @see #OPEN_GESTURE_DRAG_CONTENT_EDGE
+		 * @see feathers.controls.DragGesture#NONE
+		 * @see feathers.controls.DragGesture#CONTENT
+		 * @see feathers.controls.DragGesture#EDGE
 		 */
 		public function get openGesture():String
 		{
@@ -1871,6 +1874,14 @@ package feathers.controls
 		 */
 		public function set openGesture(value:String):void
 		{
+			if(value === OPEN_GESTURE_DRAG_CONTENT)
+			{
+				value = DragGesture.CONTENT;
+			}
+			else if(value === OPEN_GESTURE_DRAG_CONTENT_EDGE)
+			{
+				value = DragGesture.EDGE;
+			}
 			this._openGesture = value;
 		}
 
@@ -3604,11 +3615,11 @@ package feathers.controls
 			var localY:Number = HELPER_POINT.y;
 			if(!this.isTopDrawerOpen && !this.isRightDrawerOpen && !this.isBottomDrawerOpen && !this.isLeftDrawerOpen)
 			{
-				if(this._openGesture == OPEN_GESTURE_NONE)
+				if(this._openGesture === DragGesture.NONE)
 				{
 					return;
 				}
-				if(this._openGesture == OPEN_GESTURE_DRAG_CONTENT_EDGE)
+				if(this._openGesture === DragGesture.EDGE)
 				{
 					var isNearAnyEdge:Boolean = false;
 					if(this._topDrawer && !this.isTopDrawerDocked)

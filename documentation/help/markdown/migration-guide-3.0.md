@@ -511,14 +511,17 @@ Deprecated API													| How to Migrate
 
 ### `Drawers`
 
-Deprecated API							| How to Migrate
---------------------------------------- | --------------------------------
-`Drawers.AUTO_SIZE_MODE_STAGE`			| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
-`Drawers.AUTO_SIZE_MODE_CONTENT`		| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
-`Drawers.DOCK_MODE_LANDSCAPE`			| [`Orientation.LANDSCAPE`](../api-reference/feathers/layout/Orientation.html#LANDSCAPE)
-`Drawers.DOCK_MODE_PORTRAIT`			| [`Orientation.PORTRAIT`](../api-reference/feathers/layout/Orientation.html#PORTRAIT)
-`Drawers.DOCK_MODE_BOTH`				| [`Orientation.BOTH`](../api-reference/feathers/layout/Orientation.html#BOTH)
-`Drawers.DOCK_MODE_NONE`				| [`Orientation.NONE`](../api-reference/feathers/layout/Orientation.html#NONE)
+Deprecated API								| How to Migrate
+------------------------------------------- | --------------------------------
+`Drawers.AUTO_SIZE_MODE_STAGE`				| [`AutoSizeMode.STAGE`](../api-reference/feathers/controls/AutoSizeMode.html#STAGE)
+`Drawers.AUTO_SIZE_MODE_CONTENT`			| [`AutoSizeMode.CONTENT`](../api-reference/feathers/controls/AutoSizeMode.html#CONTENT)
+`Drawers.DOCK_MODE_LANDSCAPE`				| [`Orientation.LANDSCAPE`](../api-reference/feathers/layout/Orientation.html#LANDSCAPE)
+`Drawers.DOCK_MODE_PORTRAIT`				| [`Orientation.PORTRAIT`](../api-reference/feathers/layout/Orientation.html#PORTRAIT)
+`Drawers.DOCK_MODE_BOTH`					| [`Orientation.BOTH`](../api-reference/feathers/layout/Orientation.html#BOTH)
+`Drawers.DOCK_MODE_NONE`					| [`Orientation.NONE`](../api-reference/feathers/layout/Orientation.html#NONE)
+`Drawers.OPEN_GESTURE_DRAG_CONTENT`			| [`DragGesture.CONTENT`](../api-reference/feathers/controls/DragGesture.html#CONTENT)
+`Drawers.OPEN_GESTURE_DRAG_CONTENT_EDGE`	| [`DragGesture.EDGE`](../api-reference/feathers/controls/DragGesture.html#EDGE)
+`Drawers.OPEN_GESTURE_NONE`					| [`DragGesture.NONE`](../api-reference/feathers/controls/DragGesture.html#NONE)
 
 ### `GroupedList`
 
@@ -1063,6 +1066,7 @@ Find 												| Replace
 `TimeLabel\.DISPLAY_MODE_(\w+)`						| `MediaTimeMode.$1`
 `Header\.TITLE_ALIGN(_PREFER){0,1}_(\w+)`			| `HorizontalAlign.$2`
 `Drawers\.OPEN_MODE_(\w+)`							| `RelativeDepth.$1`
+`Drawers\.OPEN_GESTURE_(DRAG_)?(CONTENT_)?(\w+)`	| `DragGesture.$3`
 `\w+\.LAYOUT_ORDER_(\w+)`							| `ItemRendererLayoutOrder.$1`
 `\w+\.BUTTON_LAYOUT_MODE_(\w+)`						| `StepperButtonLayoutMode.$1`
 `PageIndicator.INTERACTION_MODE_(\w+)`				| `PageIndicatorInteractionMode.$1`
