@@ -35,6 +35,14 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * The default value added to the <code>styleNameList</code> of the text
+		 * renderer.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER:String = "feathers-label-text-renderer";
+
+		/**
 		 * An alternate style name to use with <code>Label</code> to allow a
 		 * theme to give it a larger style meant for headings. If a theme does
 		 * not provide a style for a heading label, the theme will automatically
@@ -109,6 +117,17 @@ package feathers.controls
 			super();
 			this.isQuickHitAreaEnabled = true;
 		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the text
+		 * renderer. This variable is <code>protected</code> so that sub-classes
+		 * can customize the text renderer style name in their constructors
+		 * instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER</code>.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var textRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER;
 
 		/**
 		 * The text renderer.
@@ -254,6 +273,53 @@ package feathers.controls
 			this._textRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _customTextRendererStyleName:String;
+
+		/**
+		 * A style name to add to the label's text renderer sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * labels.
+		 *
+		 * <p>In the following example, a custom text renderer style name is
+		 * passed to the label:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.customTextRendererStyleName = "my-custom-label-text-renderer";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-label-text-renderer", setCustomLabelTextRendererStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #textRendererFactory
+		 */
+		public function get customTextRendererStyleName():String
+		{
+			return this._customTextRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customTextRendererStyleName(value:String):void
+		{
+			if(this._customTextRendererStyleName == value)
+			{
+				return;
+			}
+			this._customTextRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
 
 		/**
 		 * @private
@@ -826,6 +892,8 @@ package feathers.controls
 
 			var factory:Function = this._textRendererFactory != null ? this._textRendererFactory : FeathersControl.defaultTextRendererFactory;
 			this.textRenderer = ITextRenderer(factory());
+			var textRendererStyleName:String = this._customTextRendererStyleName != null ? this._customTextRendererStyleName : this.textRendererStyleName;
+			this.textRenderer.styleNameList.add(textRendererStyleName);
 			this.addChild(DisplayObject(this.textRenderer));
 
 			this._explicitTextRendererWidth = this.textRenderer.explicitWidth;
