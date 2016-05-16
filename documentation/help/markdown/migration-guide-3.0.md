@@ -18,6 +18,8 @@ This guide explains how to migrate an application created with a previous versio
 	-   [Removal of `StandardIcons.listDrillDownAccessoryTexture`](#removal-of-standardicons.listdrilldownaccessorytexture)
 	
 -   [`saveMeasurements()` replaces `setSizeInternal()`](#savemeasurements-replaces-setsizeinternal)
+	
+-   [`Drawers` component no longer allows `Sprite` drawers](#drawers-component-no-longer-allows-sprite-drawers)
 
 -   [Multi-Resolution Development with Feathers](#multi-resolution-development-with-feathers)
 
@@ -162,7 +164,7 @@ If all items in the list should have a drill down icon, you may use `customItemR
 list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN;
 ```
 
-### `saveMeasurements()` replaces `setSizeInternal()`
+## `saveMeasurements()` replaces `setSizeInternal()`
 
 Custom component developers should migrate to the new `saveMeasurements()` as a replacement for `setSizeInternal()`, which is now considered deprecated.
 
@@ -185,6 +187,10 @@ this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 ```
 
 All of the core Feathers components now calculate minimum dimensions, if they are not set explicitly.
+
+## `Drawers` component no longer allows `Sprite` drawers
+
+The [`Drawers`](drawers.html) component now requires its content and drawers to be Feathers components. Previously, `starling.display.Sprite` was allowed. To replace `Sprite` as a generic container, consider using [`LayoutGroup`](layout-group.html) instead.
 
 ## Multi-Resolution Development with Feathers
 
