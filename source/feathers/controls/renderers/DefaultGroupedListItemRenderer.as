@@ -343,16 +343,24 @@ package feathers.controls.renderers
 		public static const ACCESSORY_POSITION_MANUAL:String = "manual";
 
 		/**
-		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#LAYOUT_ORDER_LABEL_ACCESSORY_ICON
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON</code>.
 		 *
-		 * @see feathers.controls.renderers.BaseDefaultItemRenderer#layoutOrder
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const LAYOUT_ORDER_LABEL_ACCESSORY_ICON:String = "labelAccessoryIcon";
 
 		/**
-		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#LAYOUT_ORDER_LABEL_ICON_ACCESSORY
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY</code>.
 		 *
-		 * @see feathers.controls.renderers.BaseDefaultItemRenderer#layoutOrder
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const LAYOUT_ORDER_LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
 

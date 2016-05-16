@@ -3,6 +3,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
+	import feathers.controls.ItemRendererLayoutOrder;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
@@ -153,13 +154,13 @@ package feathers.examples.componentsExplorer.screens
 			this._accessoryGapPicker.addEventListener(Event.CHANGE, accessoryGapPicker_changeHandler);
 
 			this._layoutOrderPicker = new PickerList();
-			this._layoutOrderPicker.typicalItem = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
+			this._layoutOrderPicker.typicalItem = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
 			this._layoutOrderPicker.dataProvider = new ListCollection(new <String>
 			[
-				BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY,
-				BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON,
+				ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY,
+				ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON,
 			]);
-			this._layoutOrderPicker.listProperties.typicalItem = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
+			this._layoutOrderPicker.listProperties.typicalItem = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
 			this._layoutOrderPicker.selectedItem = this.settings.layoutOrder;
 			this._layoutOrderPicker.addEventListener(Event.CHANGE, layoutOrderPicker_changeHandler);
 

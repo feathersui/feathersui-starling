@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
+	import feathers.controls.ItemRendererLayoutOrder;
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
@@ -1813,7 +1814,7 @@ package feathers.themes
 			renderer.accessoryGap = this.smallGutterSize;
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.accessoryPosition = RelativePosition.BOTTOM;
-			renderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
+			renderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;

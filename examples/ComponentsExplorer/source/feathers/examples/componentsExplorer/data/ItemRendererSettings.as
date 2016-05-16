@@ -1,7 +1,6 @@
 package feathers.examples.componentsExplorer.data
 {
-	import feathers.controls.Button;
-	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.controls.ItemRendererLayoutOrder;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
@@ -18,7 +17,7 @@ package feathers.examples.componentsExplorer.data
 
 		public var hasIcon:Boolean = true;
 		public var hasAccessory:Boolean = true;
-		public var layoutOrder:String = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY;
+		public var layoutOrder:String = ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY;
 		public var iconType:String = ICON_ACCESSORY_TYPE_TEXTURE;
 		public var iconPosition:String = RelativePosition.LEFT;
 		public var useInfiniteGap:Boolean = false;
