@@ -42,6 +42,7 @@ package feathers.themes
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.PageIndicatorInteractionMode;
 	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
@@ -58,6 +59,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
@@ -1816,7 +1818,7 @@ package feathers.themes
 
 		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
 		{
-			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
+			pageIndicator.interactionMode = PageIndicatorInteractionMode.PRECISE;
 
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;

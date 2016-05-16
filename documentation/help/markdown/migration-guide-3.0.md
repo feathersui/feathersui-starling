@@ -605,16 +605,17 @@ Deprecated API												| How to Migrate
 
 ### `PageIndicator`
 
-Deprecated API							| How to Migrate
---------------------------------------- | -------------------------------------
-`PageIndicator.DIRECTION_HORIZONTAL`	| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
-`PageIndicator.DIRECTION_VERTICAL`		| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
-`PageIndicator.HORIZONTAL_ALIGN_LEFT`	| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
-`PageIndicator.HORIZONTAL_ALIGN_CENTER`	| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
-`PageIndicator.HORIZONTAL_ALIGN_RIGHT`	| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
-`PageIndicator.VERTICAL_ALIGN_TOP`		| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
-`PageIndicator.VERTICAL_ALIGN_MIDDLE`	| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
-`PageIndicator.VERTICAL_ALIGN_BOTTOM`	| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
+Deprecated API									| How to Migrate
+----------------------------------------------- | -----------------------------
+`PageIndicator.INTERACTION_MODE_PREVIOUS_NEXT`	| [`PageIndicatorInteractionMode.PREVIOUS_NEXT`](../api-reference/feathers/controls/PageIndicatorInteractionMode.html#PREVIOUS_NEXT)
+`PageIndicator.DIRECTION_HORIZONTAL`			| [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL)
+`PageIndicator.DIRECTION_VERTICAL`				| [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL)
+`PageIndicator.HORIZONTAL_ALIGN_LEFT`			| [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT)
+`PageIndicator.HORIZONTAL_ALIGN_CENTER`			| [`HorizontalAlign.CENTER`](../api-reference/feathers/layout/HorizontalAlign.html#CENTER)
+`PageIndicator.HORIZONTAL_ALIGN_RIGHT`			| [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT)
+`PageIndicator.VERTICAL_ALIGN_TOP`				| [`VerticalAlign.TOP`](../api-reference/feathers/layout/VerticalAlign.html#TOP)
+`PageIndicator.VERTICAL_ALIGN_MIDDLE`			| [`VerticalAlign.MIDDLE`](../api-reference/feathers/layout/VerticalAlign.html#MIDDLE)
+`PageIndicator.VERTICAL_ALIGN_BOTTOM`			| [`VerticalAlign.BOTTOM`](../api-reference/feathers/layout/VerticalAlign.html#BOTTOM)
 
 ### `Panel`
 
@@ -1064,3 +1065,4 @@ Find 												| Replace
 `Drawers\.OPEN_MODE_(\w+)`							| `RelativeDepth.$1`
 `\w+\.LAYOUT_ORDER_(\w+)`							| `ItemRendererLayoutOrder.$1`
 `\w+\.BUTTON_LAYOUT_MODE_(\w+)`						| `StepperButtonLayoutMode.$1`
+`PageIndicator.INTERACTION_MODE_(\w+)`				| `PageIndicatorInteractionMode.$1`

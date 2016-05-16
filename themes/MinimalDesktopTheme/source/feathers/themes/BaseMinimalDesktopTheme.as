@@ -42,6 +42,7 @@ package feathers.themes
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.PageIndicatorInteractionMode;
 	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
@@ -1612,7 +1613,7 @@ package feathers.themes
 
 		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
 		{
-			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
+			pageIndicator.interactionMode = PageIndicatorInteractionMode.PRECISE;
 
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;

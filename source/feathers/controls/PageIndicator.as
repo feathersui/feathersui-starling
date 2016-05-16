@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.PageIndicatorInteractionMode;
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
 	import feathers.layout.Direction;
@@ -163,19 +164,24 @@ package feathers.controls
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
-		 * Touching the page indicator on the left of the selected symbol will
-		 * select the previous index and to the right of the selected symbol
-		 * will select the next index.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.PageIndicatorInteractionMode.PREVIOUS_NEXT</code>.
 		 *
-		 * @see #interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_PREVIOUS_NEXT:String = "previousNext";
 
 		/**
-		 * Touching the page indicator on a symbol will select that symbol's
-		 * exact index.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.PageIndicatorInteractionMode.PRECISE</code>.
 		 *
-		 * @see #interactionMode
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const INTERACTION_MODE_PRECISE:String = "precise";
 
@@ -331,7 +337,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _interactionMode:String = INTERACTION_MODE_PREVIOUS_NEXT;
+		protected var _interactionMode:String = PageIndicatorInteractionMode.PREVIOUS_NEXT;
 
 		[Inspectable(type="String",enumeration="previousNext,precise")]
 		/**
@@ -340,12 +346,12 @@ package feathers.controls
 		 * <p>In the following example, the interaction mode is changed to precise:</p>
 		 *
 		 * <listing version="3.0">
-		 * pages.direction = PageIndicator.INTERACTION_MODE_PRECISE;</listing>
+		 * pages.direction = PageIndicatorInteractionMode.PRECISE;</listing>
 		 *
-		 * @default PageIndicator.INTERACTION_MODE_PREVIOUS_NEXT
+		 * @default feathers.controls.PageIndicatorInteractionMode.PREVIOUS_NEXT
 		 *
-		 * @see #INTERACTION_MODE_PREVIOUS_NEXT
-		 * @see #INTERACTION_MODE_PRECISE
+		 * @see feathers.controls.PageIndicatorInteractionMode#PREVIOUS_NEXT
+		 * @see feathers.controls.PageIndicatorInteractionMode#PRECISE
 		 */
 		public function get interactionMode():String
 		{
@@ -932,7 +938,7 @@ package feathers.controls
 					this.globalToLocal(HELPER_POINT, HELPER_POINT);
 					if(this._direction == Direction.VERTICAL)
 					{
-						if(this._interactionMode == INTERACTION_MODE_PRECISE)
+						if(this._interactionMode === PageIndicatorInteractionMode.PRECISE)
 						{
 							var symbolHeight:Number = this.selectedSymbol.height + (this.unselectedSymbols[0].height + this._gap) * lastPageIndex;
 							var newIndex:int = Math.round(lastPageIndex * (HELPER_POINT.y - this.symbols[0].y) / symbolHeight);
@@ -946,7 +952,7 @@ package feathers.controls
 							}
 							this.selectedIndex = newIndex;
 						}
-						else
+						else //previous/next
 						{
 							if(HELPER_POINT.y < this.selectedSymbol.y)
 							{
@@ -960,7 +966,7 @@ package feathers.controls
 					}
 					else
 					{
-						if(this._interactionMode == INTERACTION_MODE_PRECISE)
+						if(this._interactionMode === PageIndicatorInteractionMode.PRECISE)
 						{
 							var symbolWidth:Number = this.selectedSymbol.width + (this.unselectedSymbols[0].width + this._gap) * lastPageIndex;
 							newIndex = Math.round(lastPageIndex * (HELPER_POINT.x - this.symbols[0].x) / symbolWidth);
@@ -974,7 +980,7 @@ package feathers.controls
 							}
 							this.selectedIndex = newIndex;
 						}
-						else
+						else // previous/next
 						{
 							if(HELPER_POINT.x < this.selectedSymbol.x)
 							{
