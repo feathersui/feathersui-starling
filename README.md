@@ -1,4 +1,4 @@
-# Feathers UI 3.0.0-beta
+# Feathers UI 3.0.0-beta2
 
 ---
 
@@ -24,7 +24,8 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 
 ## Minimum Requirements
 
-* Adobe AIR or Adobe Flash Player 19.0
+* Adobe AIR 21.0 for desktop or mobile apps
+* Adobe Flash Player 19.0 for web browsers
 * Starling Framework 2.0
 
 ## Downloads
