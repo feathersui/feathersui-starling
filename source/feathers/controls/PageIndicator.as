@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.PageIndicatorInteractionMode;
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
 	import feathers.layout.Direction;

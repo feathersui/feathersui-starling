@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.DragGesture;
 	import feathers.controls.supportClasses.BaseScreenNavigator;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
