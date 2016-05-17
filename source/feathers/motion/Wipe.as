@@ -129,7 +129,6 @@ import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.DisplayObject;
 import starling.display.Quad;
-import starling.display.Sprite;
 
 class WipeTween extends Tween
 {

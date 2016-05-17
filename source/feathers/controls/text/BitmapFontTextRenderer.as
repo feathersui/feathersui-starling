@@ -164,6 +164,21 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function set maxWidth(value:Number):void
+		{
+			//this is a special case because truncation may bypass normal rules
+			//for determining if changing maxWidth should invalidate
+			var needsInvalidate:Boolean = value > this._maxWidth && this._lastLayoutIsTruncated;
+			super.maxWidth = value;
+			if(needsInvalidate)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textFormatForState:Object;
 		
 		/**

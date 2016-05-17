@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
+	import feathers.controls.ItemRendererLayoutOrder;
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
@@ -52,6 +53,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
@@ -163,6 +165,18 @@ package feathers.themes
 		 * error message or is related to a destructive action.
 		 */
 		protected static const THEME_STYLE_NAME_DANGER_TEXT_RENDERER:String = "minimal-mobile-theme-danger-text-callout-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a heading Label.
+		 */
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "minimal-mobile-heading-label-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a detail Label.
+		 */
+		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "minimal-mobile-detail-label-text-renderer";
 
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
@@ -691,9 +705,11 @@ package feathers.themes
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL, this.setGroupedListHeaderOrFooterRendererContentLabelStyles);
 
 			//label
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
+			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1264,22 +1280,32 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
 		{
-			label.textRendererProperties.textFormat = this.primaryTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
+			textRenderer.textFormat = this.primaryTextFormat;
+			textRenderer.disabledTextFormat = this.disabledTextFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.headingTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
+		{
+			textRenderer.textFormat = this.headingTextFormat;
+			textRenderer.disabledTextFormat = this.headingDisabledTextFormat;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.detailTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setDetailLabelTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
+		{
+			textRenderer.textFormat = this.detailTextFormat;
+			textRenderer.disabledTextFormat = this.detailDisabledTextFormat;
 		}
 
 	//-------------------------
@@ -1408,7 +1434,7 @@ package feathers.themes
 			itemRenderer.accessoryGap = this.smallGutterSize;
 			itemRenderer.minAccessoryGap = this.smallGutterSize;
 			itemRenderer.accessoryPosition = RelativePosition.BOTTOM;
-			itemRenderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
+			itemRenderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
 			itemRenderer.minWidth = this.gridSize;
 			itemRenderer.minHeight = this.gridSize;
 			itemRenderer.minTouchWidth = this.gridSize;
@@ -1439,7 +1465,7 @@ package feathers.themes
 
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
 		}

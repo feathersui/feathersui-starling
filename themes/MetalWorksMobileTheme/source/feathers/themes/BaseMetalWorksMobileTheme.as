@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
+	import feathers.controls.ItemRendererLayoutOrder;
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
@@ -52,6 +53,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
@@ -285,6 +287,18 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-date-time-spinner-list-item-renderer";
 
 		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a heading Label.
+		 */
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "metal-works-mobile-heading-label-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a detail Label.
+		 */
+		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "metal-works-mobile-detail-label-text-renderer";
+
+		/**
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
@@ -392,6 +406,11 @@ package feathers.themes
 		 * regions in the grid.
 		 */
 		protected var smallGutterSize:int;
+
+		/**
+		 * The size, in pixels, of smaller padding and gaps within controls.
+		 */
+		protected var smallControlGutterSize:int;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
@@ -700,6 +719,7 @@ package feathers.themes
 		protected function initializeDimensions():void
 		{
 			this.gridSize = 44;
+			this.smallControlGutterSize = 6;
 			this.smallGutterSize = 8;
 			this.gutterSize = 12;
 			this.controlSize = 28;
@@ -926,7 +946,7 @@ package feathers.themes
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleProperties);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleStyles);
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
@@ -937,9 +957,11 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL, this.setGroupedListFooterContentLabelStyles);
 
 			//labels
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, setToolbarLayoutGroupStyles);
@@ -1170,12 +1192,12 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
-			button.paddingTop = this.smallGutterSize;
-			button.paddingBottom = this.smallGutterSize;
+			button.paddingTop = this.smallControlGutterSize;
+			button.paddingBottom = this.smallControlGutterSize;
 			button.paddingLeft = this.gutterSize;
 			button.paddingRight = this.gutterSize;
-			button.gap = this.smallGutterSize;
-			button.minGap = this.smallGutterSize;
+			button.gap = this.smallControlGutterSize;
+			button.minGap = this.smallControlGutterSize;
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
@@ -1242,10 +1264,12 @@ package feathers.themes
 			
 			button.customLabelStyleName = THEME_STYLE_NAME_QUIET_BUTTON_LABEL;
 
-			button.paddingTop = button.paddingBottom = this.smallGutterSize;
-			button.paddingLeft = button.paddingRight = this.gutterSize;
-			button.gap = this.smallGutterSize;
-			button.minGap = this.smallGutterSize;
+			button.paddingTop = this.smallControlGutterSize;
+			button.paddingBottom = this.smallControlGutterSize;
+			button.paddingLeft = this.smallGutterSize;
+			button.paddingRight = this.smallGutterSize;
+			button.gap = this.smallControlGutterSize;
+			button.minGap = this.smallControlGutterSize;
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = button.minTouchHeight = this.gridSize;
 		}
@@ -1426,7 +1450,8 @@ package feathers.themes
 			check.defaultIcon = icon;
 
 			check.horizontalAlign = HorizontalAlign.LEFT;
-			check.gap = this.smallGutterSize;
+			check.gap = this.smallControlGutterSize;
+			check.minGap = this.smallControlGutterSize;
 			check.minWidth = this.controlSize;
 			check.minHeight = this.controlSize;
 			check.minTouchWidth = this.gridSize;
@@ -1644,7 +1669,7 @@ package feathers.themes
 			header.backgroundSkin = backgroundSkin;
 		}
 		
-		protected function setHeaderTitleProperties(textRenderer:TextBlockTextRenderer):void
+		protected function setHeaderTitleStyles(textRenderer:TextBlockTextRenderer):void
 		{
 			textRenderer.elementFormat = this.headerElementFormat;
 			textRenderer.disabledElementFormat = this.headerDisabledElementFormat;
@@ -1654,22 +1679,32 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
 		{
-			label.textRendererProperties.elementFormat = this.lightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+			textRenderer.elementFormat = this.lightElementFormat;
+			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.elementFormat = this.largeLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.largeDisabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.largeLightElementFormat;
+			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.elementFormat = this.smallLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.smallDisabledElementFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setDetailLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.smallLightElementFormat;
+			textRenderer.disabledElementFormat = this.smallDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1780,7 +1815,7 @@ package feathers.themes
 			renderer.accessoryGap = this.smallGutterSize;
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.accessoryPosition = RelativePosition.BOTTOM;
-			renderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
+			renderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
 			renderer.minWidth = this.gridSize;
 			renderer.minHeight = this.gridSize;
 			renderer.minTouchWidth = this.gridSize;
@@ -1836,7 +1871,7 @@ package feathers.themes
 
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
 		}
@@ -1864,10 +1899,15 @@ package feathers.themes
 			input.textEditorFactory = stepperTextEditorFactory;
 			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR;
 
-			input.minWidth = input.minHeight = this.controlSize;
-			input.minTouchWidth = input.minTouchHeight = this.gridSize;
-			input.gap = this.smallGutterSize;
-			input.padding = this.smallGutterSize;
+			input.minWidth = this.controlSize;
+			input.minHeight = this.controlSize;
+			input.minTouchWidth = this.gridSize;
+			input.minTouchHeight = this.gridSize;
+			input.gap = this.smallControlGutterSize;
+			input.paddingTop = this.smallControlGutterSize;
+			input.paddingRight = this.smallGutterSize;
+			input.paddingBottom = this.smallControlGutterSize;
+			input.paddingLeft = this.smallGutterSize;
 			input.isEditable = false;
 			input.isSelectable = false;
 		}
@@ -2083,7 +2123,8 @@ package feathers.themes
 			radio.defaultIcon = icon;
 
 			radio.horizontalAlign = HorizontalAlign.LEFT;
-			radio.gap = this.smallGutterSize;
+			radio.gap = this.smallControlGutterSize;
+			radio.minGap = this.smallControlGutterSize;
 			radio.minWidth = this.controlSize;
 			radio.minHeight = this.controlSize;
 			radio.minTouchWidth = this.gridSize;
@@ -2433,8 +2474,11 @@ package feathers.themes
 			input.minHeight = this.controlSize;
 			input.minTouchWidth = this.gridSize;
 			input.minTouchHeight = this.gridSize;
-			input.gap = this.smallGutterSize;
-			input.padding = this.smallGutterSize;
+			input.gap = this.smallControlGutterSize;
+			input.paddingTop = this.smallControlGutterSize;
+			input.paddingRight = this.smallGutterSize;
+			input.paddingBottom = this.smallControlGutterSize;
+			input.paddingLeft = this.smallGutterSize;
 			input.verticalAlign = VerticalAlign.MIDDLE;
 		}
 

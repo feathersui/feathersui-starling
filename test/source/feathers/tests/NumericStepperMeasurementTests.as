@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.NumericStepper;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TextInput;
 
 	import org.flexunit.Assert;
@@ -38,7 +39,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeWidthWithButtonLayoutModeRightSideVertical():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.buttonGap = BUTTON_GAP;
 			this._stepper.textInputFactory = function():TextInput
@@ -67,7 +68,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeHeightWithButtonLayoutModeRightSideVerticalAndLargerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.buttonGap = BUTTON_GAP;
 			this._stepper.textInputFactory = function():TextInput
@@ -96,7 +97,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeHeightWithButtonLayoutModeRightSideVerticalAndSmallerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.buttonGap = BUTTON_GAP;
 			this._stepper.textInputFactory = function():TextInput
@@ -125,7 +126,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinWidthWithButtonLayoutModeRightSideVertical():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.buttonGap = BUTTON_GAP;
 			this._stepper.textInputFactory = function():TextInput
@@ -157,7 +158,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinHeightWithButtonLayoutModeRightSideVerticalAndLargerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.buttonGap = BUTTON_GAP;
 			this._stepper.textInputFactory = function():TextInput
@@ -189,7 +190,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinHeightWithButtonLayoutModeRightSideVerticalAndSmallerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.buttonGap = BUTTON_GAP;
 			this._stepper.textInputFactory = function():TextInput
@@ -221,7 +222,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeWidthWithButtonLayoutModeSplitVerticalAndLargerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -249,7 +250,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeWidthWithButtonLayoutModeSplitVerticalAndSmallerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -277,7 +278,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeHeightWithButtonLayoutModeSplitVertical():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -305,7 +306,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinWidthWithButtonLayoutModeSplitVerticalAndLargerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -336,7 +337,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinWidthWithButtonLayoutModeSplitVerticalAndSmallerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -367,7 +368,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinHeightWithButtonLayoutModeSplitVertical():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -398,7 +399,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeWidthWithButtonLayoutModeSplitHorizontal():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -426,7 +427,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeHeightWithButtonLayoutModeSplitHorizontalAndLargerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -454,7 +455,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeHeightWithButtonLayoutModeSplitHorizontalAndSmallerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -484,7 +485,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinWidthWithButtonLayoutModeSplitHorizontal():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -515,7 +516,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinHeightWithButtonLayoutModeSplitHorizontalAndLargerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{
@@ -546,7 +547,7 @@ package feathers.tests
 		[Test]
 		public function testAutoSizeMinHeightWithButtonLayoutModeSplitHorizontalAndSmallerTextInput():void
 		{
-			this._stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			this._stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			this._stepper.textInputGap = TEXT_INPUT_GAP;
 			this._stepper.textInputFactory = function():TextInput
 			{

@@ -53,6 +53,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
@@ -165,6 +166,8 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER_HEADER:String = "topcoat-light-mobile-pop-up-drawer-header";
 		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_TEXT_EDITOR:String = "topcoat-light-mobile-numeric-stepper-text-input-text-editor";
 		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_BUTTON_LABEL:String = "topcoat-light-mobile-numeric-stepper-button-label";
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "topcoat-light-mobile-heading-label-text-renderer";
+		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "topcoat-light-mobile-detail-label-text-renderer";
 
 		public function BaseTopcoatLightMobileTheme()
 		{
@@ -543,9 +546,11 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleStyles);
 
 			//label
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1130,40 +1135,32 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
 		{
-			label.textRendererFactory = function():ITextRenderer
-			{
-				var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-				textRenderer.styleProvider = null;
-				textRenderer.elementFormat = darkUIElementFormat;
-				textRenderer.disabledElementFormat = darkUIDisabledElementFormat;
-				return textRenderer;
-			};
+			textRenderer.elementFormat = this.darkUIElementFormat;
+			textRenderer.disabledElementFormat = this.darkUIDisabledElementFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererFactory = function():ITextRenderer
-			{
-				var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-				textRenderer.styleProvider = null;
-				textRenderer.elementFormat = darkUILargeElementFormat;
-				textRenderer.disabledElementFormat = darkUILargeDisabledElementFormat;
-				return textRenderer;
-			};
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.darkUILargeElementFormat;
+			textRenderer.disabledElementFormat = this.darkUILargeDisabledElementFormat;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.textRendererFactory = function():ITextRenderer
-			{
-				var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-				textRenderer.styleProvider = null;
-				textRenderer.elementFormat = darkUISmallElementFormat;
-				textRenderer.disabledElementFormat = darkUISmallDisabledElementFormat;
-				return textRenderer;
-			};
+			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setDetailLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		{
+			textRenderer.elementFormat = this.darkUISmallElementFormat;
+			textRenderer.disabledElementFormat = this.darkUISmallDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1252,7 +1249,7 @@ package feathers.themes
 
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
 		}

@@ -1885,9 +1885,9 @@ package feathers.layout
 		 */
 		protected function calculateDistributedWidth(items:Vector.<DisplayObject>, explicitWidth:Number, minWidth:Number, maxWidth:Number, measureItems:Boolean):Number
 		{
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var itemCount:int = items.length;
-			if(measureItems &&
-				explicitWidth !== explicitWidth) //isNaN
+			if(measureItems && needsWidth)
 			{
 				var maxItemWidth:Number = 0;
 				for(var i:int = 0; i < itemCount; i++)
@@ -1916,7 +1916,12 @@ package feathers.layout
 					return maxItemWidth;
 				}
 			}
-			var availableSpace:Number = explicitWidth - this._paddingLeft - this._paddingRight - this._gap * (itemCount - 1);
+			var availableSpace:Number = explicitWidth;
+			if(needsWidth && maxWidth < Number.POSITIVE_INFINITY)
+			{
+				availableSpace = maxWidth;
+			}
+			availableSpace = availableSpace - this._paddingLeft - this._paddingRight - this._gap * (itemCount - 1);
 			if(itemCount > 1 && this._firstGap === this._firstGap) //!isNaN
 			{
 				availableSpace += this._gap - this._firstGap;

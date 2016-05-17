@@ -42,6 +42,7 @@ package feathers.themes
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.PageIndicatorInteractionMode;
 	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
@@ -58,6 +59,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.SpinnerList;
+	import feathers.controls.StepperButtonLayoutMode;
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextCallout;
@@ -181,6 +183,18 @@ package feathers.themes
 		 * @private
 		 */
 		protected static const THEME_STYLE_NAME_DANGER_TEXT_RENDERER:String = "minimal-desktop-theme-danger-text-callout-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a heading Label.
+		 */
+		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "minimal-desktop-heading-label-text-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the text renderer of a tool tip Label.
+		 */
+		protected static const THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER:String = "minimal-desktop-tool-tip-label-text-renderer";
 
 		protected static const FONT_TEXTURE_NAME:String = "pf-ronda-seven-font";
 		
@@ -725,10 +739,11 @@ package feathers.themes
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL, this.setGroupedListHeaderOrFooterContentLabelStyles);
 
 			//label
-			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			//no detail label because the font size would be too small
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_TOOL_TIP, this.setToolTipLabelStyles);
+			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
+			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
@@ -1367,16 +1382,21 @@ package feathers.themes
 	// Label
 	//-------------------------
 
-		protected function setLabelStyles(label:Label):void
+		protected function setLabelTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
 		{
-			label.textRendererProperties.textFormat = this.primaryTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
+			textRenderer.textFormat = this.primaryTextFormat;
+			textRenderer.disabledTextFormat = this.disabledTextFormat;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.headingTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
+			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
+		}
+
+		protected function setHeadingLabelTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
+		{
+			textRenderer.textFormat = this.headingTextFormat;
+			textRenderer.disabledTextFormat = this.headingDisabledTextFormat;
 		}
 
 		protected function setToolTipLabelStyles(label:Label):void
@@ -1384,13 +1404,18 @@ package feathers.themes
 			var backgroundSkin:Image = new Image(this.popUpBackgroundSkinTexture)
 			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			label.backgroundSkin = backgroundSkin;
-			
-			label.textRendererProperties.textFormat = this.primaryTextFormat;
-			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
+
+			label.customTextRendererStyleName = THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER;
 			
 			label.padding = this.smallGutterSize;
 			label.paddingBottom = this.smallGutterSize + this.dropShadowSize;
 			label.paddingRight = this.smallGutterSize + this.dropShadowSize;
+		}
+
+		protected function setToolTipLabelTextRendererStyles(textRenderer:BitmapFontTextRenderer):void
+		{
+			textRenderer.textFormat = this.primaryTextFormat;
+			textRenderer.disabledTextFormat = this.disabledTextFormat;
 		}
 
 	//-------------------------
@@ -1530,7 +1555,7 @@ package feathers.themes
 
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
 
@@ -1588,7 +1613,7 @@ package feathers.themes
 
 		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
 		{
-			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
+			pageIndicator.interactionMode = PageIndicatorInteractionMode.PRECISE;
 
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
