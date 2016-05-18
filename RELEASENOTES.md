@@ -122,6 +122,7 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * TextInput: states are defined in feathers.controls.TextInputState.
 * TextInput: fixed issue where some icons or skins would not be disposed when input is disposed.
 * TextInput: fixed issue where focus in and out events sometimes weren't dispatched.
+* TextInput: fixed issue where IBEAM mouse cursor would not always be cleared.
 * TiledImage: removed class. Use starling.display.Image with tileGrid.
 * TimeLabel: fixed issue where displayed text was incorrectly when time is greater than one hour.
 * ToggleButton: deprecated defaultSelectedLabelProperties, selectedUpLabelProperties, selectedHoverLabelProperties, selectedDownLabelProperties, selectedDisabledLabelProperties. Replaced by setting font styles on text renderer in labelFactory. Text renderers now support multiple font styles for different states.

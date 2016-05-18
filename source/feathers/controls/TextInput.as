@@ -2983,6 +2983,18 @@ package feathers.controls
 				{
 					return;
 				}
+				touch.getLocation(this.stage, HELPER_POINT);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+				if(!isInBounds)
+				{
+					//if not in bounds on TouchPhase.ENDED, there won't be a
+					//hover end event, so we need to clear the mouse cursor
+					if(Mouse.supportsNativeCursor && this._oldMouseCursor)
+					{
+						Mouse.cursor = this._oldMouseCursor;
+						this._oldMouseCursor = null;
+					}
+				}
 				this._touchPointID = -1;
 				if(this.textEditor.setTouchFocusOnEndedPhase)
 				{
