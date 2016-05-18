@@ -224,7 +224,7 @@ package feathers.controls
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT</code>.
 		 *
 		 * <p>To customize the text input name without subclassing, see
-		 * <code>customTextInputName</code>.</p>
+		 * <code>customTextInputStyleName</code>.</p>
 		 *
 		 * @see #customTextInputStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
