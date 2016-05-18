@@ -8,6 +8,8 @@ package feathers.tests
 
 	import org.flexunit.Assert;
 
+	import starling.display.Stage;
+
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 
@@ -143,6 +145,33 @@ package feathers.tests
 			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, 0, Keyboard.SPACE));
 			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_UP, 0, Keyboard.SPACE));
 			Assert.assertTrue("isSelected was incorrectly changed to false when keyToDeselect set to false", this._target.isSelected);
+		}
+
+		[Test]
+		public function testRemovedBeforeTriggeredEvent():void
+		{
+			this._target.isSelected = false;
+
+			var hasChanged:Boolean = false;
+			this._target.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+
+			var stage:Stage = this._target.stage;
+			stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, 0, Keyboard.SPACE));
+
+			this._target.removeFromParent(false);
+
+			stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_UP, 0, Keyboard.SPACE));
+
+			//while it's good to check that Event.CHANGE isn't dispatched,
+			//this test also ensures that no runtime errors are thrown after the
+			//target is removed (its stage property is null, and that is used
+			//by KeyToSelect)
+
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched when target was removed", hasChanged);
+			Assert.assertFalse("isSelected was incorrectly changed to true when target was removed", this._target.isSelected);
 		}
 	}
 }
