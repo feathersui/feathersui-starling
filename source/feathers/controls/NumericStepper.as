@@ -1700,11 +1700,8 @@ package feathers.controls
 		protected function decrement():void
 		{
 			this.value = this._value - this._step;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -1713,11 +1710,8 @@ package feathers.controls
 		protected function increment():void
 		{
 			this.value = this._value + this._step;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -1726,11 +1720,8 @@ package feathers.controls
 		protected function toMinimum():void
 		{
 			this.value = this._minimum;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -1739,11 +1730,8 @@ package feathers.controls
 		protected function toMaximum():void
 		{
 			this.value = this._maximum;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -2068,11 +2056,8 @@ package feathers.controls
 		override protected function focusInHandler(event:Event):void
 		{
 			super.focusInHandler(event);
-			if(this.textInput.isEditable)
-			{
-				this.textInput.setFocus();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.textInput.setFocus();
+			this.textInput.selectRange(0, this.textInput.text.length);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
