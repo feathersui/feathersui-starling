@@ -306,7 +306,7 @@ package feathers.controls
 		 */
 		public function get nativeFocus():Object
 		{
-			if(this.textInput)
+			if(this.textInput !== null)
 			{
 				return this.textInput.nativeFocus;
 			}
@@ -1332,11 +1332,7 @@ package feathers.controls
 		 */
 		public function get hasFocus():Boolean
 		{
-			if(this.textInput === null)
-			{
-				return false;
-			}
-			return this.textInput.hasFocus;
+			return this._hasFocus;
 		}
 
 		/**
