@@ -715,7 +715,7 @@ package feathers.core
 					}
 					else if(currentFocus is IFocusContainer && IFocusContainer(currentFocus).isChildFocusEnabled)
 					{
-						newFocus = this.findNextContainerFocus(DisplayObjectContainer(currentFocus), null, false);
+						newFocus = this.findNextContainerFocus(DisplayObjectContainer(currentFocus), null, true);
 					}
 					else
 					{
