@@ -2916,7 +2916,11 @@ package feathers.controls
 		{
 			if(this._isEnabled)
 			{
-				if(this._textEditorHasFocus)
+				//this component can have focus while its text editor does not
+				//have focus. StageText, in particular, can't receive focus
+				//when its enabled property is false, but we still want to show
+				//that the input is focused.
+				if(this._textEditorHasFocus || this._hasFocus)
 				{
 					this.changeState(TextInputState.FOCUSED);
 				}
@@ -3040,6 +3044,10 @@ package feathers.controls
 				return;
 			}
 			super.focusInHandler(event);
+			//in some cases the text editor cannot receive focus, so it won't
+			//dispatch an event. we need to detect the focused state using the
+			//_hasFocus variable
+			this.refreshState();
 			this.setFocus();
 		}
 
@@ -3053,6 +3061,9 @@ package feathers.controls
 				return;
 			}
 			super.focusOutHandler(event);
+			//similar to above, we refresh the state based on the _hasFocus
+			//because the text editor may not be able to receive focus
+			this.refreshState();
 			this.textEditor.clearFocus();
 		}
 
