@@ -129,6 +129,52 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testPopToRootScreenOnRootScreen():void
+		{
+			this.addScreenA();
+			this._navigator.rootScreenID = SCREEN_A_ID;
+			this._navigator.popToRootScreen();
+			Assert.assertStrictlyEquals("activeScreen returned incorrect value for stack after popToRootScreen() when already on root screen", this._navigator.getScreen(SCREEN_A_ID).screen, this._navigator.activeScreen);
+			Assert.assertStrictlyEquals("activeScreenID returned incorrect value for stack after popToRootScreen() when already on root screen", SCREEN_A_ID, this._navigator.activeScreenID);
+			Assert.assertStrictlyEquals("stackCount returned incorrect value for stack after popToRootScreen() when already on root screen", 1, this._navigator.stackCount);
+		}
+
+		[Test]
+		public function testPopAll():void
+		{
+			this.addScreenA();
+			this.addScreenB();
+			this.addScreenC();
+			this._navigator.rootScreenID = SCREEN_A_ID;
+			this._navigator.pushScreen(SCREEN_B_ID);
+			this._navigator.pushScreen(SCREEN_C_ID);
+			this._navigator.popAll();
+			Assert.assertNull("activeScreen returned incorrect value for stack after popAll()", this._navigator.activeScreen);
+			Assert.assertNull("activeScreenID returned incorrect value for stack after popAll()", this._navigator.activeScreenID);
+			Assert.assertStrictlyEquals("stackCount returned incorrect value for stack after popAll()", 0, this._navigator.stackCount);
+		}
+
+		[Test]
+		public function testPopAllWithOnRootScreen():void
+		{
+			this.addScreenA();
+			this._navigator.rootScreenID = SCREEN_A_ID;
+			this._navigator.popAll();
+			Assert.assertNull("activeScreen returned incorrect value for stack after popAll() when on root screen", this._navigator.activeScreen);
+			Assert.assertNull("activeScreenID returned incorrect value for stack after popAll() when on root screen", this._navigator.activeScreenID);
+			Assert.assertStrictlyEquals("stackCount returned incorrect value for stack after popAll() when on root screen", 0, this._navigator.stackCount);
+		}
+
+		[Test]
+		public function testPopAllWithNoRootScreen():void
+		{
+			this._navigator.popAll();
+			Assert.assertNull("activeScreen returned incorrect value for stack after popAll() with empty stack", this._navigator.activeScreen);
+			Assert.assertNull("activeScreenID returned incorrect value for stack after popAll() with empty stack", this._navigator.activeScreenID);
+			Assert.assertStrictlyEquals("stackCount returned incorrect value for stack after popAll() with empty stack", 0, this._navigator.stackCount);
+		}
+
+		[Test]
 		public function testPushScreenWithEvent():void
 		{
 			this.addScreenA();

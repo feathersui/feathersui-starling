@@ -582,7 +582,6 @@ package feathers.controls
 			{
 				transition = this.popTransition;
 			}
-			var item:StackItem = this._stack[0];
 			this._stack.length = 0;
 			this.clearScreenInternal(transition);
 		}
