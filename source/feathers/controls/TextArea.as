@@ -399,7 +399,7 @@ package feathers.controls
 		 *
 		 * @see feathers.core.INativeFocusOwner
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
 			if(this.textEditorViewPort is INativeFocusOwner)
 			{

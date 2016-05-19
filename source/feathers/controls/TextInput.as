@@ -463,7 +463,7 @@ package feathers.controls
 		 * 
 		 * @see feathers.core.INativeFocusOwner
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
 			if(this.textEditor is INativeFocusOwner)
 			{
@@ -497,11 +497,7 @@ package feathers.controls
 		 */
 		public function get hasFocus():Boolean
 		{
-			if(!this._focusManager)
-			{
-				return this._textEditorHasFocus;
-			}
-			return this._hasFocus;
+			return this._textEditorHasFocus;
 		}
 
 		/**

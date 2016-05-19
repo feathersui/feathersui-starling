@@ -272,7 +272,7 @@ package feathers.controls.text
 		/**
 		 * @copy feathers.core.INativeFocusOwner#nativeFocus
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
 			return this.textField;
 		}

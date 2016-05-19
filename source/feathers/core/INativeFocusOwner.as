@@ -7,8 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import flash.display.InteractiveObject;
-
 	/**
 	 * If a Feathers component may receive focus, it may be associated with a
 	 * display object on the native stage. The focus manager will automatically
@@ -26,7 +24,11 @@ package feathers.core
 		 * <code>null</code>, the focus manager should treat this display object
 		 * like any other display object that may receive focus but doesn't
 		 * implement <code>INativeFocusOwner</code>.</p>
+		 * 
+		 * <p>This property must return a
+		 * <code>flash.display.InteractiveObject</code> or an object with an
+		 * <code>assignFocus()</code> public method.</p>
 		 */
-		function get nativeFocus():InteractiveObject;
+		function get nativeFocus():Object;
 	}
 }
