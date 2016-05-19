@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInputState;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.core.FocusManager;
 	import feathers.events.FeathersEventType;
@@ -85,6 +86,75 @@ package feathers.tests
 			{
 				Assert.assertTrue("FeathersEventType.FOCUS_OUT was not dispatched after setting TextInput parent's visible property to false when using TextFieldTextEditor", hasDispatchedFocusOut);
 			}, 100);
+		}
+
+		[Test]
+		public function testSetFocusWhenFocusEnabledFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isFocusEnabled = false;
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertTrue("TextFieldTextEditor nativeFocus must not receive nativeStage focus when isFocusEnabled is false",
+				Starling.current.nativeStage.focus !== this._textInput.nativeFocus);
+			Assert.assertTrue("TextInput must not receive FocusManager focus when using TextFieldTextEditor and isFocusEnabled is false",
+				this._textInput.focusManager.focus !== this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.ENABLED after receive FocusManager focus when using TextFieldTextEditor and isFocusEnabled is false",
+				TextInputState.ENABLED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testSetFocusWhenEditableFalseAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = false;
+			this._textInput.validate();
+			Assert.assertNotNull("TextFieldTextEditor nativeFocus must not be null when isEditable is false and isSelectable is false",
+				this._textInput.nativeFocus);
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertStrictlyEquals("TextFieldTextEditor nativeFocus must receive nativeStage focus when isEditable is false and isSelectable is false",
+				Starling.current.nativeStage.focus, this._textInput.nativeFocus);
+			Assert.assertStrictlyEquals("TextInput must receive FocusManager focus when using TextFieldTextEditor and isEditable is false and isSelectable is false",
+				this._textInput.focusManager.focus, this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.FOCUSED after receive FocusManager focus when using TextFieldTextEditor and isEditable is false and isSelectable is false",
+				TextInputState.FOCUSED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testSetFocusWhenEditableTrueAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = true;
+			this._textInput.isSelectable = false;
+			this._textInput.validate();
+			Assert.assertNotNull("TextFieldTextEditor nativeFocus must not be null when isEditable is true and isSelectable is false",
+				this._textInput.nativeFocus);
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertStrictlyEquals("TextFieldTextEditor nativeFocus must receive nativeStage focus when isEditable is true and isSelectable is false",
+				Starling.current.nativeStage.focus, this._textInput.nativeFocus);
+			Assert.assertStrictlyEquals("TextInput must receive FocusManager focus when using TextFieldTextEditor and isEditable is true and isSelectable is false",
+				this._textInput.focusManager.focus, this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.FOCUSED after receive FocusManager focus when using TextFieldTextEditor and isEditable is true and isSelectable is false",
+				TextInputState.FOCUSED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testSetFocusWhenEditableFalseAndSelectableTrue():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = true;
+			this._textInput.validate();
+			Assert.assertNotNull("TextFieldTextEditor nativeFocus must not be null when isEditable is false and isSelectable is true",
+				this._textInput.nativeFocus);
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertStrictlyEquals("TextFieldTextEditor nativeFocus must have nativeStage focus",
+				Starling.current.nativeStage.focus, this._textInput.nativeFocus);
+			Assert.assertStrictlyEquals("TextInput must receive FocusManager focus when using TextFieldTextEditor and isEditable is false and isSelectable is true",
+				this._textInput.focusManager.focus, this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.FOCUSED after receive FocusManager focus when using TextFieldTextEditor and isEditable is false and isSelectable is true",
+				TextInputState.FOCUSED, this._textInput.currentState);
 		}
 	}
 }

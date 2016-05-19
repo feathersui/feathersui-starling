@@ -261,7 +261,7 @@ package feathers.controls.text
 		{
 			return globalStyleProvider;
 		}
-		
+
 		/**
 		 * The StageText instance. It's typed Object so that a replacement class
 		 * can be used in browser-based Flash Player.
@@ -273,6 +273,12 @@ package feathers.controls.text
 		 */
 		public function get nativeFocus():Object
 		{
+			if(!this._isEditable)
+			{
+				//assignFocus() doesn't work if StageText's editable property
+				//is false, so we'll just let the FocusManager take care of it
+				return null;
+			}
 			return this.stageText;
 		}
 
@@ -630,7 +636,9 @@ package feathers.controls.text
 		protected var _isSelectable:Boolean = true;
 
 		/**
-		 * <p>This property is managed by the <code>TextInput</code>.</p>
+		 * <p><strong>Warning:</strong> This property is ignored because
+		 * <code>flash.text.StageText</code> does not support selectable text
+		 * that is not editable.</p>
 		 * 
 		 * @copy feathers.controls.TextInput#isSelectable
 		 *
@@ -638,7 +646,7 @@ package feathers.controls.text
 		 */
 		public function get isSelectable():Boolean
 		{
-			return this._isEditable;
+			return this._isSelectable;
 		}
 
 		/**
@@ -1263,7 +1271,10 @@ package feathers.controls.text
 					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
 				this.stageText.visible = true;
-				this.stageText.assignFocus();
+				if(this._isEditable)
+				{
+					this.stageText.assignFocus();
+				}
 			}
 			else
 			{
