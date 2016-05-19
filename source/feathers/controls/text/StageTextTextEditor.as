@@ -10,6 +10,7 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.FocusManager;
 	import feathers.core.IMultilineTextEditor;
+	import feathers.core.INativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.StageTextField;
@@ -211,7 +212,7 @@ package feathers.controls.text
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
 	 */
-	public class StageTextTextEditor extends FeathersControl implements IMultilineTextEditor
+	public class StageTextTextEditor extends FeathersControl implements IMultilineTextEditor, INativeFocusOwner
 	{
 		/**
 		 * @private
@@ -266,6 +267,14 @@ package feathers.controls.text
 		 * can be used in browser-based Flash Player.
 		 */
 		protected var stageText:Object;
+
+		/**
+		 * @copy feathers.core.INativeFocusOwner#nativeFocus
+		 */
+		public function get nativeFocus():Object
+		{
+			return this.stageText;
+		}
 
 		/**
 		 * An image that displays a snapshot of the native <code>StageText</code>
