@@ -678,6 +678,10 @@ package feathers.controls.text
 		 */
 		public function get nativeFocus():Object
 		{
+			if(!this._isEditable)
+			{
+				return null;
+			}
 			return this._nativeFocus;
 		}
 
