@@ -8,12 +8,15 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
+	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.stageToStarling;
 
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
+	import flash.errors.IllegalOperationError;
 	import flash.events.FocusEvent;
+	import flash.events.IEventDispatcher;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
@@ -197,13 +200,13 @@ package feathers.core
 				{
 					nativeFocus = nativeStage.focus;
 				}
-				if(nativeFocus !== null)
+				if(nativeFocus is IEventDispatcher)
 				{
 					//this listener restores focus, if it is lost in a way that
 					//is out of our control. since we may be manually removing
 					//focus in a listener for FeathersEventType.FOCUS_OUT, we
 					//don't want it to restore focus.
-					nativeFocus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+					IEventDispatcher(nativeFocus).removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
 				}
 			}
 			if(oldFocus !== null)
@@ -231,11 +234,22 @@ package feathers.core
 						{
 							nativeStage.focus = InteractiveObject(nativeFocus);
 						}
-						else if(nativeFocus !== null && !this._focus["hasFocus"])
+						else if(nativeFocus !== null)
 						{
-							//let the focused component handle giving focus to
-							//its nativeFocus because it may have a custom API
-							this._focus["setFocus"]();
+							if(this._focus is IAdvancedNativeFocusOwner)
+							{
+								var advancedFocus:IAdvancedNativeFocusOwner = IAdvancedNativeFocusOwner(this._focus);
+								if(!advancedFocus.hasFocus)
+								{
+									//let the focused component handle giving focus to
+									//its nativeFocus because it may have a custom API
+									advancedFocus.setFocus();
+								}
+							}
+							else
+							{
+								throw new IllegalOperationError("If nativeFocus does not return an InteractiveObject, class must implement IAdvancedNativeFocusOwner interface");
+							}
 						}
 					}
 					//an INativeFocusOwner may return null for its
@@ -247,7 +261,10 @@ package feathers.core
 						nativeFocus = this._nativeFocusTarget;
 						nativeStage.focus = this._nativeFocusTarget;
 					}
-					nativeFocus.addEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler, false, 0, true);
+					if(nativeFocus is IEventDispatcher)
+					{
+						IEventDispatcher(nativeFocus).addEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler, false, 0, true);
+					}
 					this._focus.dispatchEventWith(FeathersEventType.FOCUS_IN);
 				}
 				else
@@ -780,8 +797,12 @@ package feathers.core
 			var nativeStage:Stage = this._starling.nativeStage;
 			if(nativeStage.focus !== null && nativeStage.focus !== nativeFocus)
 			{
-				//otherwise, we should stop listening for this event
-				nativeFocus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				//we should stop listening for this event because something else
+				//has focus now
+				if(nativeFocus is IEventDispatcher)
+				{
+					IEventDispatcher(nativeFocus).removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				}
 			}
 			else if(this._focus !== null)
 			{
@@ -798,11 +819,11 @@ package feathers.core
 				{
 					nativeStage.focus = InteractiveObject(nativeFocus);
 				}
-				else
+				else //nativeFocus is IAdvancedNativeFocusOwner
 				{
 					//let the focused component handle giving focus to its
 					//nativeFocus because it may have a custom API
-					this._focus["setFocus"]();
+					IAdvancedNativeFocusOwner(this._focus).setFocus();
 				}
 			}
 		}

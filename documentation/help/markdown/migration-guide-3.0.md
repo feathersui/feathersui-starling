@@ -19,7 +19,7 @@ This guide explains how to migrate an application created with a previous versio
 	
 -   [`saveMeasurements()` replaces `setSizeInternal()`](#savemeasurements-replaces-setsizeinternal)
 	
--   [`Drawers` component no longer allows `Sprite` drawers](#drawers-component-no-longer-allows-sprite-drawers)
+-   [Return type API changes](#return-type-api-changes)
 
 -   [Multi-Resolution Development with Feathers](#multi-resolution-development-with-feathers)
 
@@ -188,9 +188,11 @@ this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 
 All of the core Feathers components now calculate minimum dimensions, if they are not set explicitly.
 
-## `Drawers` component no longer allows `Sprite` drawers
+## Return type API changes
 
 The [`Drawers`](drawers.html) component now requires its content and drawers to be Feathers components. Previously, `starling.display.Sprite` was allowed. To replace `Sprite` as a generic container, consider using [`LayoutGroup`](layout-group.html) instead.
+
+The [`INativeFocusOwner`](../api-reference/feathers/core/INativeFocusOwner.html) interface now returns type `Object` for its `nativeFocus` property to allow objects like `flash.text.StageText` to receive focus. Previously, the return type was `flash.display.InteractiveObject`.
 
 ## Multi-Resolution Development with Feathers
 

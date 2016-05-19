@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
@@ -70,7 +71,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/numeric-stepper.html How to use the Feathers NumericStepper component
 	 */
-	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner, ITextBaselineControl
+	public class NumericStepper extends FeathersControl implements IRange, IAdvancedNativeFocusOwner, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -1324,6 +1325,30 @@ package feathers.controls
 				return this.scaledActualHeight;
 			}
 			return this.scaleY * (this.textInput.y + this.textInput.baseline);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get hasFocus():Boolean
+		{
+			if(this.textInput === null)
+			{
+				return false;
+			}
+			return this.textInput.hasFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function setFocus():void
+		{
+			if(this.textInput === null)
+			{
+				return;
+			}
+			this.textInput.setFocus();
 		}
 
 		/**
