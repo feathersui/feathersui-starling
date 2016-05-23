@@ -704,6 +704,7 @@ package feathers.layout
 		protected var _paging:String = PAGING_NONE;
 
 		[Bindable(event="change")]
+		[Inspectable(type="String",enumeration="horizontal,vertical,none")]
 		/**
 		 * If the total combined width of the columns is larger than the width
 		 * of the view port, the layout will be split into pages where each
