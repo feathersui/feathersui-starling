@@ -1,6 +1,7 @@
 package feathers.examples.componentsExplorer.themes
 {
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
@@ -12,6 +13,7 @@ package feathers.examples.componentsExplorer.themes
 	import feathers.examples.componentsExplorer.screens.LabelScreen;
 	import feathers.examples.componentsExplorer.screens.ProgressBarScreen;
 	import feathers.examples.componentsExplorer.screens.SliderScreen;
+	import feathers.examples.componentsExplorer.screens.TextCalloutScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.layout.HorizontalAlign;
@@ -31,16 +33,20 @@ package feathers.examples.componentsExplorer.themes
 		{
 			super.initializeStyleProviders();
 
+			this.getStyleProviderForClass(AutoCompleteScreen).defaultStyleFunction = this.setAutoCompleteScreenStyles;
+
 			this.getStyleProviderForClass(ButtonScreen).defaultStyleFunction = this.setButtonScreenStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonScreen.CHILD_STYLE_NAME_ICON_BUTTON, this.setButtonScreenIconButtonStyles);
 
-			this.getStyleProviderForClass(AutoCompleteScreen).defaultStyleFunction = this.setAutoCompleteScreenStyles;
 			this.getStyleProviderForClass(CalloutScreen).defaultStyleFunction = this.setCalloutScreenStyles;
+			this.getStyleProviderForClass(Header).setFunctionForStyleName(CalloutScreen.CHILD_STYLE_NAME_CALLOUT_HEADER, this.setCalloutHeaderStyles);
+
 			this.getStyleProviderForClass(DateTimeSpinnerScreen).defaultStyleFunction = this.setDateTimeSpinnerScreenStyles;
 			this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;
 			this.getStyleProviderForClass(ItemRendererScreen).defaultStyleFunction = this.setItemRendererScreenStyles;
 			this.getStyleProviderForClass(ProgressBarScreen).defaultStyleFunction = this.setProgressBarScreenStyles;
 			this.getStyleProviderForClass(SliderScreen).defaultStyleFunction = this.setSliderScreenStyles;
+			this.getStyleProviderForClass(TextCalloutScreen).defaultStyleFunction = this.setTextCalloutScreenStyles;
 			this.getStyleProviderForClass(TextInputScreen).defaultStyleFunction = this.setTextInputScreenStyles;
 			this.getStyleProviderForClass(ToggleScreen).defaultStyleFunction = this.setToggleScreenStyles;
 		}
@@ -89,8 +95,22 @@ package feathers.examples.componentsExplorer.themes
 		{
 			//don't forget to set styles from the super class, if required
 			this.setPanelScreenStyles(screen);
-			
-			screen.layoutPadding = this.gutterSize;
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
+			screen.layout = verticalLayout;
+
+			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+		}
+
+		protected function setCalloutHeaderStyles(header:Header):void
+		{
+			header.paddingBottom = this.smallGutterSize;
+			header.gap = this.smallGutterSize;
+			header.titleGap = this.smallGutterSize;
 		}
 
 		protected function setDateTimeSpinnerScreenStyles(screen:DateTimeSpinnerScreen):void
@@ -153,6 +173,14 @@ package feathers.examples.componentsExplorer.themes
 			layout.verticalAlign = VerticalAlign.MIDDLE;
 			layout.gap = this.gutterSize;
 			screen.layout = layout;
+		}
+
+		protected function setTextCalloutScreenStyles(screen:TextCalloutScreen):void
+		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+
+			screen.layoutPadding = this.gutterSize;
 		}
 
 		protected function setTextInputScreenStyles(screen:TextInputScreen):void

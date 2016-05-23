@@ -33,6 +33,7 @@ package feathers.examples.componentsExplorer.screens
 	[Event(name="showSlider",type="starling.events.Event")]
 	[Event(name="showSpinnerList",type="starling.events.Event")]
 	[Event(name="showTabBar",type="starling.events.Event")]
+	[Event(name="showTextCallout",type="starling.events.Event")]
 	[Event(name="showTextInput",type="starling.events.Event")]
 	[Event(name="showToggles",type="starling.events.Event")]
 
@@ -56,6 +57,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_SLIDER:String = "showSlider";
 		public static const SHOW_SPINNER_LIST:String = "showSpinnerList";
 		public static const SHOW_TAB_BAR:String = "showTabBar";
+		public static const SHOW_TEXT_CALLOUT:String = "showTextCallout";
 		public static const SHOW_TEXT_INPUT:String = "showTextInput";
 		public static const SHOW_TOGGLES:String = "showToggles";
 		public static const SHOW_WEB_VIEW:String = "showWebView";
@@ -100,6 +102,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Slider", event: SHOW_SLIDER},
 				{ label: "Spinner List", event: SHOW_SPINNER_LIST },
 				{ label: "Tab Bar", event: SHOW_TAB_BAR },
+				{ label: "Text Callout", event: SHOW_TEXT_CALLOUT },
 				{ label: "Text Input and Text Area", event: SHOW_TEXT_INPUT },
 				{ label: "Toggles", event: SHOW_TOGGLES },
 			]);

@@ -35,6 +35,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.SliderSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.SpinnerListScreen;
 	import feathers.examples.componentsExplorer.screens.TabBarScreen;
+	import feathers.examples.componentsExplorer.screens.TextCalloutScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.examples.componentsExplorer.screens.WebViewScreen;
@@ -77,6 +78,7 @@ package feathers.examples.componentsExplorer
 		private static const SPINNER_LIST:String = "spinnerList";
 		private static const SLIDER_SETTINGS:String = "sliderSettings";
 		private static const TAB_BAR:String = "tabBar";
+		private static const TEXT_CALLOUT:String = "textCallout";
 		private static const TEXT_INPUT:String = "textInput";
 		private static const TOGGLES:String = "toggles";
 		private static const WEB_VIEW:String = "webView";
@@ -101,6 +103,7 @@ package feathers.examples.componentsExplorer
 			showSlider: SLIDER,
 			showSpinnerList: SPINNER_LIST,
 			showTabBar: TAB_BAR,
+			showTextCallout: TEXT_CALLOUT,
 			showTextInput: TEXT_INPUT,
 			showToggles: TOGGLES,
 			showWebView: WEB_VIEW
@@ -263,6 +266,10 @@ package feathers.examples.componentsExplorer
 			var tabBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TabBarScreen);
 			tabBarItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(TAB_BAR, tabBarItem);
+
+			var textCalloutItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TextCalloutScreen);
+			textCalloutItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(TEXT_CALLOUT, textCalloutItem);
 
 			var textInputItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TextInputScreen);
 			textInputItem.addPopEvent(Event.COMPLETE);
