@@ -147,7 +147,10 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this.explicitVisibleWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this.actualVisibleWidth !== value)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		private var _actualMinVisibleHeight:Number = 0;
@@ -238,7 +241,10 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this.explicitVisibleHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this.actualVisibleHeight !== value)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		protected var _contentX:Number = 0;

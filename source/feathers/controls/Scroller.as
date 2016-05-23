@@ -3772,22 +3772,13 @@ package feathers.controls
 			this.ignoreViewPortResizing = true;
 
 			var visibleWidth:Number = this.actualWidth - horizontalWidthOffset;
-			//we'll only set the view port's visibleWidth and visibleHeight if
-			//our dimensions are explicit. this allows the view port to know
-			//whether it needs to re-measure on scroll.
-			if(this._viewPort.visibleWidth !== visibleWidth)
-			{
-				this._viewPort.visibleWidth = visibleWidth;
-			}
+			this._viewPort.visibleWidth = visibleWidth;
 			this._viewPort.minVisibleWidth = this.actualWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = visibleWidth;
 
 			var visibleHeight:Number = this.actualHeight - verticalHeightOffset;
-			if(this._viewPort.visibleHeight !== visibleHeight)
-			{
-				this._viewPort.visibleHeight = visibleHeight;
-			}
+			this._viewPort.visibleHeight = visibleHeight;
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = visibleHeight;
@@ -4404,11 +4395,11 @@ package feathers.controls
 				this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
 			}
 
-			if(this.horizontalScrollBar)
+			if(this.horizontalScrollBar !== null)
 			{
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
 				this.horizontalScrollBar.y = this._topViewPortOffset + this._viewPort.visibleHeight;
-				if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FIXED)
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
 					if((this._hasVerticalScrollBar || this._verticalScrollBarHideTween) && this.verticalScrollBar)
@@ -4426,9 +4417,9 @@ package feathers.controls
 				}
 			}
 
-			if(this.verticalScrollBar)
+			if(this.verticalScrollBar !== null)
 			{
-				if(this._verticalScrollBarPosition == RelativePosition.LEFT)
+				if(this._verticalScrollBarPosition === RelativePosition.LEFT)
 				{
 					this.verticalScrollBar.x = this._paddingLeft;
 				}
@@ -4437,7 +4428,7 @@ package feathers.controls
 					this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
 				}
 				this.verticalScrollBar.y = this._topViewPortOffset;
-				if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FIXED)
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
 					if((this._hasHorizontalScrollBar || this._horizontalScrollBarHideTween) && this.horizontalScrollBar)
