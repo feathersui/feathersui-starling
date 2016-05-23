@@ -44,6 +44,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_BUTTON:String = "showButton";
 		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
 		public static const SHOW_CALLOUT:String = "showCallout";
+		public static const SHOW_CHECK:String = "showCheck";
 		public static const SHOW_DATE_TIME_SPINNER:String = "showDateTimeSpinner";
 		public static const SHOW_GROUPED_LIST:String = "showGroupedList";
 		public static const SHOW_ITEM_RENDERER:String = "showItemRenderer";
@@ -53,6 +54,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_PAGE_INDICATOR:String = "showPageIndicator";
 		public static const SHOW_PICKER_LIST:String = "showPickerList";
 		public static const SHOW_PROGRESS_BAR:String = "showProgressBar";
+		public static const SHOW_RADIO:String = "showRadio";
 		public static const SHOW_SCROLL_TEXT:String = "showScrollText";
 		public static const SHOW_SLIDER:String = "showSlider";
 		public static const SHOW_SPINNER_LIST:String = "showSpinnerList";
@@ -89,6 +91,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Button", event: SHOW_BUTTON },
 				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
 				{ label: "Callout", event: SHOW_CALLOUT },
+				{ label: "Check", event: SHOW_CHECK },
 				{ label: "Date Time Spinner", event: SHOW_DATE_TIME_SPINNER },
 				{ label: "Grouped List", event: SHOW_GROUPED_LIST },
 				{ label: "Item Renderer", event: SHOW_ITEM_RENDERER },
@@ -98,13 +101,14 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Page Indicator", event: SHOW_PAGE_INDICATOR },
 				{ label: "Picker List", event: SHOW_PICKER_LIST },
 				{ label: "Progress Bar", event: SHOW_PROGRESS_BAR },
+				{ label: "Radio", event: SHOW_RADIO },
 				{ label: "Scroll Text", event: SHOW_SCROLL_TEXT },
 				{ label: "Slider", event: SHOW_SLIDER},
 				{ label: "Spinner List", event: SHOW_SPINNER_LIST },
 				{ label: "Tab Bar", event: SHOW_TAB_BAR },
 				{ label: "Text Callout", event: SHOW_TEXT_CALLOUT },
 				{ label: "Text Input and Text Area", event: SHOW_TEXT_INPUT },
-				{ label: "Toggles", event: SHOW_TOGGLES },
+				{ label: "Toggle Switch", event: SHOW_TOGGLES },
 			]);
 			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
 			{

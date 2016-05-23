@@ -15,6 +15,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
+	import feathers.examples.componentsExplorer.screens.CheckScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListScreen;
@@ -30,6 +31,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.PageIndicatorScreen;
 	import feathers.examples.componentsExplorer.screens.PickerListScreen;
 	import feathers.examples.componentsExplorer.screens.ProgressBarScreen;
+	import feathers.examples.componentsExplorer.screens.RadioScreen;
 	import feathers.examples.componentsExplorer.screens.ScrollTextScreen;
 	import feathers.examples.componentsExplorer.screens.SliderScreen;
 	import feathers.examples.componentsExplorer.screens.SliderSettingsScreen;
@@ -37,7 +39,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TabBarScreen;
 	import feathers.examples.componentsExplorer.screens.TextCalloutScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
-	import feathers.examples.componentsExplorer.screens.ToggleScreen;
+	import feathers.examples.componentsExplorer.screens.ToggleSwitchScreen;
 	import feathers.examples.componentsExplorer.screens.WebViewScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.layout.Orientation;
@@ -59,6 +61,7 @@ package feathers.examples.componentsExplorer
 		private static const BUTTON:String = "button";
 		private static const BUTTON_GROUP:String = "buttonGroup";
 		private static const CALLOUT:String = "callout";
+		private static const CHECK:String = "check";
 		private static const DATE_TIME_SPINNER:String = "dateTimeSpinner";
 		private static const DATE_TIME_SPINNER_SETTINGS:String = "dateTimeSpinnerSettings";
 		private static const GROUPED_LIST:String = "groupedList";
@@ -73,6 +76,7 @@ package feathers.examples.componentsExplorer
 		private static const PAGE_INDICATOR:String = "pageIndicator";
 		private static const PICKER_LIST:String = "pickerList";
 		private static const PROGRESS_BAR:String = "progressBar";
+		private static const RADIO:String = "radio";
 		private static const SCROLL_TEXT:String = "scrollText";
 		private static const SLIDER:String = "slider";
 		private static const SPINNER_LIST:String = "spinnerList";
@@ -90,6 +94,7 @@ package feathers.examples.componentsExplorer
 			showButton: BUTTON,
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
+			showCheck: CHECK,
 			showDateTimeSpinner: DATE_TIME_SPINNER,
 			showGroupedList: GROUPED_LIST,
 			showItemRenderer: ITEM_RENDERER,
@@ -99,6 +104,7 @@ package feathers.examples.componentsExplorer
 			showPageIndicator: PAGE_INDICATOR,
 			showPickerList: PICKER_LIST,
 			showProgressBar: PROGRESS_BAR,
+			showRadio: RADIO,
 			showScrollText: SCROLL_TEXT,
 			showSlider: SLIDER,
 			showSpinnerList: SPINNER_LIST,
@@ -148,6 +154,10 @@ package feathers.examples.componentsExplorer
 			var calloutItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CalloutScreen);
 			calloutItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(CALLOUT, calloutItem);
+
+			var checkItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CheckScreen);
+			checkItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(CHECK, checkItem);
 
 			var dateTimeSpinnerSettings:DateTimeSpinnerSettings = new DateTimeSpinnerSettings();
 			var dateTimeSpinnerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerScreen);
@@ -240,6 +250,10 @@ package feathers.examples.componentsExplorer
 			progressBarItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(PROGRESS_BAR, progressBarItem);
 
+			var radioItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(RadioScreen);
+			radioItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(RADIO, radioItem);
+
 			var scrollTextItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ScrollTextScreen);
 			scrollTextItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(SCROLL_TEXT, scrollTextItem);
@@ -275,7 +289,7 @@ package feathers.examples.componentsExplorer
 			textInputItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(TEXT_INPUT, textInputItem);
 
-			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleScreen);
+			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleSwitchScreen);
 			togglesItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(TOGGLES, togglesItem);
 

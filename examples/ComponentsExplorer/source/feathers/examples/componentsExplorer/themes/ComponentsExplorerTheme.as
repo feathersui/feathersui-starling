@@ -8,16 +8,19 @@ package feathers.examples.componentsExplorer.themes
 	import feathers.examples.componentsExplorer.screens.AutoCompleteScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
+	import feathers.examples.componentsExplorer.screens.CheckScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerScreen;
 	import feathers.examples.componentsExplorer.screens.ItemRendererScreen;
 	import feathers.examples.componentsExplorer.screens.LabelScreen;
 	import feathers.examples.componentsExplorer.screens.ProgressBarScreen;
+	import feathers.examples.componentsExplorer.screens.RadioScreen;
 	import feathers.examples.componentsExplorer.screens.SliderScreen;
 	import feathers.examples.componentsExplorer.screens.TextCalloutScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
-	import feathers.examples.componentsExplorer.screens.ToggleScreen;
+	import feathers.examples.componentsExplorer.screens.ToggleSwitchScreen;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.TiledRowsLayout;
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
@@ -41,14 +44,16 @@ package feathers.examples.componentsExplorer.themes
 			this.getStyleProviderForClass(CalloutScreen).defaultStyleFunction = this.setCalloutScreenStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(CalloutScreen.CHILD_STYLE_NAME_CALLOUT_HEADER, this.setCalloutHeaderStyles);
 
+			this.getStyleProviderForClass(CheckScreen).defaultStyleFunction = this.setCheckScreenStyles;
 			this.getStyleProviderForClass(DateTimeSpinnerScreen).defaultStyleFunction = this.setDateTimeSpinnerScreenStyles;
 			this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;
 			this.getStyleProviderForClass(ItemRendererScreen).defaultStyleFunction = this.setItemRendererScreenStyles;
 			this.getStyleProviderForClass(ProgressBarScreen).defaultStyleFunction = this.setProgressBarScreenStyles;
+			this.getStyleProviderForClass(RadioScreen).defaultStyleFunction = this.setRadioScreenStyles;
 			this.getStyleProviderForClass(SliderScreen).defaultStyleFunction = this.setSliderScreenStyles;
 			this.getStyleProviderForClass(TextCalloutScreen).defaultStyleFunction = this.setTextCalloutScreenStyles;
 			this.getStyleProviderForClass(TextInputScreen).defaultStyleFunction = this.setTextInputScreenStyles;
-			this.getStyleProviderForClass(ToggleScreen).defaultStyleFunction = this.setToggleScreenStyles;
+			this.getStyleProviderForClass(ToggleSwitchScreen).defaultStyleFunction = this.setToggleSwitchScreenStyles;
 		}
 		
 		protected function setAutoCompleteScreenStyles(screen:AutoCompleteScreen):void
@@ -83,6 +88,21 @@ package feathers.examples.componentsExplorer.themes
 			
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
+			screen.layout = verticalLayout;
+
+			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+		}
+
+		protected function setCheckScreenStyles(screen:CheckScreen):void
+		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.LEFT;
 			verticalLayout.verticalAlign = VerticalAlign.TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
@@ -163,6 +183,21 @@ package feathers.examples.componentsExplorer.themes
 			screen.layout = layout;
 		}
 
+		protected function setRadioScreenStyles(screen:RadioScreen):void
+		{
+			//don't forget to set styles from the super class, if required
+			this.setPanelScreenStyles(screen);
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.LEFT;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
+			screen.layout = verticalLayout;
+
+			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+		}
+
 		protected function setSliderScreenStyles(screen:SliderScreen):void
 		{
 			//don't forget to set styles from the super class, if required
@@ -198,22 +233,22 @@ package feathers.examples.componentsExplorer.themes
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
 		}
 
-		protected function setToggleScreenStyles(screen:ToggleScreen):void
+		protected function setToggleSwitchScreenStyles(screen:ToggleSwitchScreen):void
 		{
 			//don't forget to set styles from the super class, if required
 			this.setPanelScreenStyles(screen);
 			
-			var layout:VerticalLayout = new VerticalLayout();
+			var layout:TiledRowsLayout = new TiledRowsLayout();
+			layout.requestedColumnCount = 2;
+			layout.useSquareTiles = false;
 			layout.horizontalAlign = HorizontalAlign.CENTER;
-			layout.verticalAlign = VerticalAlign.MIDDLE;
-			layout.gap = this.gutterSize;
+			layout.verticalAlign = VerticalAlign.TOP;
+			layout.tileHorizontalAlign = HorizontalAlign.CENTER;
+			layout.tileVerticalAlign = VerticalAlign.TOP;
+			layout.padding = this.gutterSize;
+			layout.horizontalGap = this.gutterSize;
+			layout.verticalGap = this.gridSize;
 			screen.layout = layout;
-
-			var innerLayout:HorizontalLayout = new HorizontalLayout();
-			innerLayout.horizontalAlign = HorizontalAlign.CENTER;
-			innerLayout.verticalAlign = VerticalAlign.MIDDLE;
-			innerLayout.gap = this.gutterSize;
-			screen.innerLayout = innerLayout;
 		}
 	}
 }
