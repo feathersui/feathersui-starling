@@ -94,13 +94,11 @@ Our listener function should look something like this:
 ``` code
 private function button_triggeredHandler( event:Event ):void
 {
-    var label:Label = new Label();
-    label.text = "Hi, I'm Feathers!\nHave a nice day.";
-    Callout.show( label, this.button );
+    TextCallout.show( "Hi, I'm Feathers!\nHave a nice day.", this.button );
 }
 ```
 
-The `Event.TRIGGERED` listener displays a message by displaying a `Label` component inside a `Callout` component. We've referenced the button that we created in MXML using the `button` variable name. The `Label` and `Callout` components are automatically skinned by the theme, just like the `Button`.
+The `Event.TRIGGERED` listener displays a message in a `TextCallout` component. We've referenced the button that we created in MXML using the `button` variable name. The `TextCallout` component is automatically skinned by the theme, just like the `Button`.
 
 ### Layouts
 

@@ -1,8 +1,7 @@
 package feathers.examples.helloWorld
 {
 	import feathers.controls.Button;
-	import feathers.controls.Callout;
-	import feathers.controls.Label;
+	import feathers.controls.TextCallout;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.display.Sprite;
@@ -78,9 +77,7 @@ package feathers.examples.helloWorld
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
-			var label:Label = new Label();
-			label.text = "Hi, I'm Feathers!\nHave a nice day.";
-			Callout.show(label, this.button);
+			TextCallout.show("Hi, I'm Feathers!\nHave a nice day.", this.button);
 		}
 	}
 }

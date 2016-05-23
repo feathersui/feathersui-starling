@@ -33,8 +33,7 @@ Below, you'll find the basic structure of the `Main` class that we'll use as the
 package feathers.examples.helloWorld
 {
     import feathers.controls.Button;
-    import feathers.controls.Callout;
-    import feathers.controls.Label;
+    import feathers.controls.TextCallout;
     import feathers.themes.MetalWorksMobileTheme;
  
     import starling.display.Sprite;
@@ -87,13 +86,11 @@ Our listener function should look something like this:
 ``` code
 protected function button_triggeredHandler( event:Event ):void
 {
-    var label:Label = new Label();
-    label.text = "Hi, I'm Feathers!\nHave a nice day.";
-    Callout.show( label, this.button );
+    TextCallout.show( "Hi, I'm Feathers!\nHave a nice day.", this.button );
 }
 ```
 
-The button's `Event.TRIGGERED` listener displays a `Label`, a generic component for displaying text, in a `Callout` component. Like with our button, these two components are automatically skinned by the theme.
+The button's `Event.TRIGGERED` listener displays a message in a `TextCallout` component. Like with our button, this component is automatically skinned by the theme.
 
 Finally, let's position the button in the middle of the stage. First, though, let's take note of one thing about how Feathers controls work. Feathers uses a system of *invalidation* that delays redraws until just immediately before Starling renders to the screen. This keeps Feathers from using too much CPU by redrawing over and over again when you need to change multiple properties all at once.
 
@@ -114,6 +111,6 @@ this.button.y = (this.stage.stageHeight - this.button.height) / 2;
 
 ## Conclusion
 
-That should get you started with the very basics of working with Feathers. For more information about the capabilities of the `Button` class, read [How to use the Feathers `Button` component](button.html). For the `Callout` class, read [How to use the Feathers `Callout` component](callout.html).
+That should get you started with the very basics of working with Feathers. For more information about the capabilities of the `Button` class, read [How to use the Feathers `Button` component](button.html). For the `TextCallout` class, read [How to use the Feathers `TextCallout` component](text-callout.html).
 
 For more extensive sample code, check out the other Feathers examples included in the *examples* directory when you [download Feathers](http://feathersui.com/download/). For example themes (including `MetalWorksMobileTheme`), check out the *themes* directory.
