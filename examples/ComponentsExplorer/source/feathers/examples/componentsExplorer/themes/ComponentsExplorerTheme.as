@@ -144,8 +144,6 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
-
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
 		}
 
 		protected function setItemRendererScreenStyles(screen:ItemRendererScreen):void

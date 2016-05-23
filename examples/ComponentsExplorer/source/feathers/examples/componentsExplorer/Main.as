@@ -55,66 +55,6 @@ package feathers.examples.componentsExplorer
 
 	public class Main extends Drawers
 	{
-		private static const MAIN_MENU:String = "mainMenu";
-		private static const ALERT:String = "alert";
-		private static const AUTO_COMPLETE:String = "autoComplete";
-		private static const BUTTON:String = "button";
-		private static const BUTTON_GROUP:String = "buttonGroup";
-		private static const CALLOUT:String = "callout";
-		private static const CHECK:String = "check";
-		private static const DATE_TIME_SPINNER:String = "dateTimeSpinner";
-		private static const DATE_TIME_SPINNER_SETTINGS:String = "dateTimeSpinnerSettings";
-		private static const GROUPED_LIST:String = "groupedList";
-		private static const GROUPED_LIST_SETTINGS:String = "groupedListSettings";
-		private static const ITEM_RENDERER:String = "itemRenderer";
-		private static const ITEM_RENDERER_SETTINGS:String = "itemRendererSettings";
-		private static const LABEL:String = "label";
-		private static const LIST:String = "list";
-		private static const LIST_SETTINGS:String = "listSettings";
-		private static const NUMERIC_STEPPER:String = "numericStepper";
-		private static const NUMERIC_STEPPER_SETTINGS:String = "numericStepperSettings";
-		private static const PAGE_INDICATOR:String = "pageIndicator";
-		private static const PICKER_LIST:String = "pickerList";
-		private static const PROGRESS_BAR:String = "progressBar";
-		private static const RADIO:String = "radio";
-		private static const SCROLL_TEXT:String = "scrollText";
-		private static const SLIDER:String = "slider";
-		private static const SPINNER_LIST:String = "spinnerList";
-		private static const SLIDER_SETTINGS:String = "sliderSettings";
-		private static const TAB_BAR:String = "tabBar";
-		private static const TEXT_CALLOUT:String = "textCallout";
-		private static const TEXT_INPUT:String = "textInput";
-		private static const TOGGLES:String = "toggles";
-		private static const WEB_VIEW:String = "webView";
-
-		private static const MAIN_MENU_EVENTS:Object =
-		{
-			showAlert: ALERT,
-			showAutoComplete: AUTO_COMPLETE,
-			showButton: BUTTON,
-			showButtonGroup: BUTTON_GROUP,
-			showCallout: CALLOUT,
-			showCheck: CHECK,
-			showDateTimeSpinner: DATE_TIME_SPINNER,
-			showGroupedList: GROUPED_LIST,
-			showItemRenderer: ITEM_RENDERER,
-			showLabel: LABEL,
-			showList: LIST,
-			showNumericStepper: NUMERIC_STEPPER,
-			showPageIndicator: PAGE_INDICATOR,
-			showPickerList: PICKER_LIST,
-			showProgressBar: PROGRESS_BAR,
-			showRadio: RADIO,
-			showScrollText: SCROLL_TEXT,
-			showSlider: SLIDER,
-			showSpinnerList: SPINNER_LIST,
-			showTabBar: TAB_BAR,
-			showTextCallout: TEXT_CALLOUT,
-			showTextInput: TEXT_INPUT,
-			showToggles: TOGGLES,
-			showWebView: WEB_VIEW
-		};
-		
 		public function Main()
 		{
 			//set up the theme right away!
@@ -137,34 +77,34 @@ package feathers.examples.componentsExplorer
 
 			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
 			alertItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(ALERT, alertItem);
+			this._navigator.addScreen(ScreenID.ALERT, alertItem);
 
 			var autoCompleteItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AutoCompleteScreen);
 			autoCompleteItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(AUTO_COMPLETE, autoCompleteItem);
+			this._navigator.addScreen(ScreenID.AUTO_COMPLETE, autoCompleteItem);
 
 			var buttonItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ButtonScreen);
 			buttonItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(BUTTON, buttonItem);
+			this._navigator.addScreen(ScreenID.BUTTON, buttonItem);
 
 			var buttonGroupItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ButtonGroupScreen);
 			buttonGroupItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(BUTTON_GROUP, buttonGroupItem);
+			this._navigator.addScreen(ScreenID.BUTTON_GROUP, buttonGroupItem);
 
 			var calloutItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CalloutScreen);
 			calloutItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(CALLOUT, calloutItem);
+			this._navigator.addScreen(ScreenID.CALLOUT, calloutItem);
 
 			var checkItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CheckScreen);
 			checkItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(CHECK, checkItem);
+			this._navigator.addScreen(ScreenID.CHECK, checkItem);
 
 			var dateTimeSpinnerSettings:DateTimeSpinnerSettings = new DateTimeSpinnerSettings();
 			var dateTimeSpinnerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerScreen);
-			dateTimeSpinnerItem.setScreenIDForPushEvent(DateTimeSpinnerScreen.SHOW_SETTINGS, DATE_TIME_SPINNER_SETTINGS);
+			dateTimeSpinnerItem.setScreenIDForPushEvent(DateTimeSpinnerScreen.SHOW_SETTINGS, ScreenID.DATE_TIME_SPINNER_SETTINGS);
 			dateTimeSpinnerItem.addPopEvent(Event.COMPLETE);
 			dateTimeSpinnerItem.properties.settings = dateTimeSpinnerSettings;
-			this._navigator.addScreen(DATE_TIME_SPINNER, dateTimeSpinnerItem);
+			this._navigator.addScreen(ScreenID.DATE_TIME_SPINNER, dateTimeSpinnerItem);
 
 			var dateTimeSpinnerSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerSettingsScreen);
 			dateTimeSpinnerSettingsItem.addPopEvent(Event.COMPLETE);
@@ -172,14 +112,14 @@ package feathers.examples.componentsExplorer
 			//custom push and pop transitions for this settings screen
 			dateTimeSpinnerSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			dateTimeSpinnerSettingsItem.popTransition = Reveal.createRevealDownTransition();
-			this._navigator.addScreen(DATE_TIME_SPINNER_SETTINGS, dateTimeSpinnerSettingsItem);
+			this._navigator.addScreen(ScreenID.DATE_TIME_SPINNER_SETTINGS, dateTimeSpinnerSettingsItem);
 
 			var groupedListSettings:GroupedListSettings = new GroupedListSettings();
 			var groupedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(GroupedListScreen);
-			groupedListItem.setScreenIDForPushEvent(GroupedListScreen.SHOW_SETTINGS, GROUPED_LIST_SETTINGS);
+			groupedListItem.setScreenIDForPushEvent(GroupedListScreen.SHOW_SETTINGS, ScreenID.GROUPED_LIST_SETTINGS);
 			groupedListItem.addPopEvent(Event.COMPLETE);
 			groupedListItem.properties.settings = groupedListSettings;
-			this._navigator.addScreen(GROUPED_LIST, groupedListItem);
+			this._navigator.addScreen(ScreenID.GROUPED_LIST, groupedListItem);
 
 			var groupedListSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(GroupedListSettingsScreen);
 			groupedListSettingsItem.addPopEvent(Event.COMPLETE);
@@ -187,14 +127,14 @@ package feathers.examples.componentsExplorer
 			//custom push and pop transitions for this settings screen
 			groupedListSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			groupedListSettingsItem.popTransition = Reveal.createRevealDownTransition();
-			this._navigator.addScreen(GROUPED_LIST_SETTINGS, groupedListSettingsItem);
+			this._navigator.addScreen(ScreenID.GROUPED_LIST_SETTINGS, groupedListSettingsItem);
 
 			var itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
 			var itemRendererItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ItemRendererScreen);
-			itemRendererItem.setScreenIDForPushEvent(ItemRendererScreen.SHOW_SETTINGS, ITEM_RENDERER_SETTINGS);
+			itemRendererItem.setScreenIDForPushEvent(ItemRendererScreen.SHOW_SETTINGS, ScreenID.ITEM_RENDERER_SETTINGS);
 			itemRendererItem.addPopEvent(Event.COMPLETE);
 			itemRendererItem.properties.settings = itemRendererSettings;
-			this._navigator.addScreen(ITEM_RENDERER, itemRendererItem);
+			this._navigator.addScreen(ScreenID.ITEM_RENDERER, itemRendererItem);
 
 			var itemRendererSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ItemRendererSettingsScreen);
 			itemRendererSettingsItem.addPopEvent(Event.COMPLETE);
@@ -202,18 +142,18 @@ package feathers.examples.componentsExplorer
 			//custom push and pop transitions for this settings screen
 			itemRendererSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			itemRendererSettingsItem.popTransition = Reveal.createRevealDownTransition();
-			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, itemRendererSettingsItem);
+			this._navigator.addScreen(ScreenID.ITEM_RENDERER_SETTINGS, itemRendererSettingsItem);
 
 			var labelItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(LabelScreen);
 			labelItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(LABEL, labelItem);
+			this._navigator.addScreen(ScreenID.LABEL, labelItem);
 
 			var listSettings:ListSettings = new ListSettings();
 			var listItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ListScreen);
-			listItem.setScreenIDForPushEvent(ListScreen.SHOW_SETTINGS, LIST_SETTINGS);
+			listItem.setScreenIDForPushEvent(ListScreen.SHOW_SETTINGS, ScreenID.LIST_SETTINGS);
 			listItem.addPopEvent(Event.COMPLETE);
 			listItem.properties.settings = listSettings;
-			this._navigator.addScreen(LIST, listItem);
+			this._navigator.addScreen(ScreenID.LIST, listItem);
 
 			var listSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ListSettingsScreen);
 			listSettingsItem.addPopEvent(Event.COMPLETE);
@@ -221,14 +161,14 @@ package feathers.examples.componentsExplorer
 			//custom push and pop transitions for this settings screen
 			listSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			listSettingsItem.popTransition = Reveal.createRevealDownTransition();
-			this._navigator.addScreen(LIST_SETTINGS, listSettingsItem);
+			this._navigator.addScreen(ScreenID.LIST_SETTINGS, listSettingsItem);
 
 			var numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
 			var numericStepperItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(NumericStepperScreen);
-			numericStepperItem.setScreenIDForPushEvent(NumericStepperScreen.SHOW_SETTINGS, NUMERIC_STEPPER_SETTINGS);
+			numericStepperItem.setScreenIDForPushEvent(NumericStepperScreen.SHOW_SETTINGS, ScreenID.NUMERIC_STEPPER_SETTINGS);
 			numericStepperItem.addPopEvent(Event.COMPLETE);
 			numericStepperItem.properties.settings = numericStepperSettings;
-			this._navigator.addScreen(NUMERIC_STEPPER, numericStepperItem);
+			this._navigator.addScreen(ScreenID.NUMERIC_STEPPER, numericStepperItem);
 
 			var numericStepperSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(NumericStepperSettingsScreen);
 			numericStepperSettingsItem.addPopEvent(Event.COMPLETE);
@@ -236,34 +176,34 @@ package feathers.examples.componentsExplorer
 			//custom push and pop transitions for this settings screen
 			numericStepperSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			numericStepperSettingsItem.popTransition = Reveal.createRevealDownTransition();
-			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, numericStepperSettingsItem);
+			this._navigator.addScreen(ScreenID.NUMERIC_STEPPER_SETTINGS, numericStepperSettingsItem);
 
 			var pageIndicatorItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(PageIndicatorScreen);
 			pageIndicatorItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(PAGE_INDICATOR, pageIndicatorItem);
+			this._navigator.addScreen(ScreenID.PAGE_INDICATOR, pageIndicatorItem);
 
 			var pickerListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(PickerListScreen);
 			pickerListItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(PICKER_LIST, pickerListItem);
+			this._navigator.addScreen(ScreenID.PICKER_LIST, pickerListItem);
 
 			var progressBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ProgressBarScreen);
 			progressBarItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(PROGRESS_BAR, progressBarItem);
+			this._navigator.addScreen(ScreenID.PROGRESS_BAR, progressBarItem);
 
 			var radioItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(RadioScreen);
 			radioItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(RADIO, radioItem);
+			this._navigator.addScreen(ScreenID.RADIO, radioItem);
 
 			var scrollTextItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ScrollTextScreen);
 			scrollTextItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(SCROLL_TEXT, scrollTextItem);
+			this._navigator.addScreen(ScreenID.SCROLL_TEXT, scrollTextItem);
 
 			var sliderSettings:SliderSettings = new SliderSettings();
 			var sliderItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SliderScreen);
-			sliderItem.setScreenIDForPushEvent(SliderScreen.SHOW_SETTINGS, SLIDER_SETTINGS);
+			sliderItem.setScreenIDForPushEvent(SliderScreen.SHOW_SETTINGS, ScreenID.SLIDER_SETTINGS);
 			sliderItem.addPopEvent(Event.COMPLETE);
 			sliderItem.properties.settings = sliderSettings;
-			this._navigator.addScreen(SLIDER, sliderItem);
+			this._navigator.addScreen(ScreenID.SLIDER, sliderItem);
 
 			var sliderSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SliderSettingsScreen);
 			sliderSettingsItem.addPopEvent(Event.COMPLETE);
@@ -271,33 +211,33 @@ package feathers.examples.componentsExplorer
 			//custom push and pop transitions for this settings screen
 			sliderSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			sliderSettingsItem.popTransition = Reveal.createRevealDownTransition();
-			this._navigator.addScreen(SLIDER_SETTINGS, sliderSettingsItem);
+			this._navigator.addScreen(ScreenID.SLIDER_SETTINGS, sliderSettingsItem);
 
 			var spinnerListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SpinnerListScreen);
 			spinnerListItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(SPINNER_LIST, spinnerListItem);
+			this._navigator.addScreen(ScreenID.SPINNER_LIST, spinnerListItem);
 
 			var tabBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TabBarScreen);
 			tabBarItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(TAB_BAR, tabBarItem);
+			this._navigator.addScreen(ScreenID.TAB_BAR, tabBarItem);
 
 			var textCalloutItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TextCalloutScreen);
 			textCalloutItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(TEXT_CALLOUT, textCalloutItem);
+			this._navigator.addScreen(ScreenID.TEXT_CALLOUT, textCalloutItem);
 
 			var textInputItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TextInputScreen);
 			textInputItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(TEXT_INPUT, textInputItem);
+			this._navigator.addScreen(ScreenID.TEXT_INPUT, textInputItem);
 
 			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleSwitchScreen);
 			togglesItem.addPopEvent(Event.COMPLETE);
-			this._navigator.addScreen(TOGGLES, togglesItem);
+			this._navigator.addScreen(ScreenID.TOGGLES, togglesItem);
 
 			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
 			{
 				var webViewItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(WebViewScreen);
 				webViewItem.addPopEvent(Event.COMPLETE);
-				this._navigator.addScreen(WEB_VIEW, webViewItem);
+				this._navigator.addScreen(ScreenID.WEB_VIEW, webViewItem);
 			}
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
@@ -307,10 +247,7 @@ package feathers.examples.componentsExplorer
 				//enable clipping.
 				this._navigator.clipContent = true;
 				this._menu = new MainMenuScreen();
-				for(var eventType:String in MAIN_MENU_EVENTS)
-				{
-					this._menu.addEventListener(eventType, mainMenuEventHandler);
-				}
+				this._menu.addEventListener(Event.CHANGE, mainMenu_tabletChangeHandler);
 				this._menu.height = 200;
 				this.leftDrawer = this._menu;
 				this.leftDrawerDockMode = Orientation.BOTH;
@@ -318,24 +255,29 @@ package feathers.examples.componentsExplorer
 			else
 			{
 				var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(MainMenuScreen);
-				for(eventType in MAIN_MENU_EVENTS)
-				{
-					mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);
-				}
-				this._navigator.addScreen(MAIN_MENU, mainMenuItem);
-				this._navigator.rootScreenID = MAIN_MENU;
+				mainMenuItem.setFunctionForPushEvent(Event.CHANGE, mainMenu_phoneChangeHandler);
+				this._navigator.addScreen(ScreenID.MAIN_MENU, mainMenuItem);
+				this._navigator.rootScreenID = ScreenID.MAIN_MENU;
 			}
 
 			this._navigator.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.popTransition = Slide.createSlideRightTransition();
 		}
 
-		private function mainMenuEventHandler(event:Event):void
+		private function mainMenu_phoneChangeHandler(event:Event):void
 		{
-			var screenName:String = MAIN_MENU_EVENTS[event.type] as String;
+			//when MainMenuScreen dispatches Event.CHANGE, its selectedScreenID
+			//property has been updated. use that to show the correct screen.
+			var screen:MainMenuScreen = MainMenuScreen(event.currentTarget);
+			this._navigator.pushScreen(screen.selectedScreenID);
+		}
+
+		private function mainMenu_tabletChangeHandler(event:Event):void
+		{
 			//since this navigation is triggered by an external menu, we don't
 			//want to push a new screen onto the stack. we want to start fresh.
-			this._navigator.rootScreenID = screenName;
+			var screen:MainMenuScreen = MainMenuScreen(event.currentTarget);
+			this._navigator.rootScreenID = screen.selectedScreenID;
 		}
 	}
 }

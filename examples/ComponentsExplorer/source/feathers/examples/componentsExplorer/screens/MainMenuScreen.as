@@ -6,6 +6,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.examples.componentsExplorer.ScreenID;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.system.DeviceCapabilities;
@@ -17,53 +18,10 @@ package feathers.examples.componentsExplorer.screens
 	import starling.textures.Texture;
 
 	[Event(name="complete",type="starling.events.Event")]
-	[Event(name="showAlert",type="starling.events.Event")]
-	[Event(name="showButton",type="starling.events.Event")]
-	[Event(name="showButtonGroup",type="starling.events.Event")]
-	[Event(name="showCallout",type="starling.events.Event")]
-	[Event(name="showDateTimeSpinner",type="starling.events.Event")]
-	[Event(name="showGroupedList",type="starling.events.Event")]
-	[Event(name="showItemRenderer",type="starling.events.Event")]
-	[Event(name="showList",type="starling.events.Event")]
-	[Event(name="showNumericStepper",type="starling.events.Event")]
-	[Event(name="showPageIndicator",type="starling.events.Event")]
-	[Event(name="showPickerList",type="starling.events.Event")]
-	[Event(name="showProgressBar",type="starling.events.Event")]
-	[Event(name="showScrollText",type="starling.events.Event")]
-	[Event(name="showSlider",type="starling.events.Event")]
-	[Event(name="showSpinnerList",type="starling.events.Event")]
-	[Event(name="showTabBar",type="starling.events.Event")]
-	[Event(name="showTextCallout",type="starling.events.Event")]
-	[Event(name="showTextInput",type="starling.events.Event")]
-	[Event(name="showToggles",type="starling.events.Event")]
+	[Event(name="change",type="starling.events.Event")]
 
 	public class MainMenuScreen extends PanelScreen
 	{
-		public static const SHOW_ALERT:String = "showAlert";
-		public static const SHOW_AUTO_COMPLETE:String = "showAutoComplete";
-		public static const SHOW_BUTTON:String = "showButton";
-		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
-		public static const SHOW_CALLOUT:String = "showCallout";
-		public static const SHOW_CHECK:String = "showCheck";
-		public static const SHOW_DATE_TIME_SPINNER:String = "showDateTimeSpinner";
-		public static const SHOW_GROUPED_LIST:String = "showGroupedList";
-		public static const SHOW_ITEM_RENDERER:String = "showItemRenderer";
-		public static const SHOW_LABEL:String = "showLabel";
-		public static const SHOW_LIST:String = "showList";
-		public static const SHOW_NUMERIC_STEPPER:String = "showNumericStepper";
-		public static const SHOW_PAGE_INDICATOR:String = "showPageIndicator";
-		public static const SHOW_PICKER_LIST:String = "showPickerList";
-		public static const SHOW_PROGRESS_BAR:String = "showProgressBar";
-		public static const SHOW_RADIO:String = "showRadio";
-		public static const SHOW_SCROLL_TEXT:String = "showScrollText";
-		public static const SHOW_SLIDER:String = "showSlider";
-		public static const SHOW_SPINNER_LIST:String = "showSpinnerList";
-		public static const SHOW_TAB_BAR:String = "showTabBar";
-		public static const SHOW_TEXT_CALLOUT:String = "showTextCallout";
-		public static const SHOW_TEXT_INPUT:String = "showTextInput";
-		public static const SHOW_TOGGLES:String = "showToggles";
-		public static const SHOW_WEB_VIEW:String = "showWebView";
-		
 		public function MainMenuScreen()
 		{
 			super();
@@ -73,6 +31,13 @@ package feathers.examples.componentsExplorer.screens
 
 		public var savedVerticalScrollPosition:Number = 0;
 		public var savedSelectedIndex:int = -1;
+
+		private var _selectedScreenID:String = null;
+
+		public function get selectedScreenID():String
+		{
+			return this._selectedScreenID;
+		}
 
 		override protected function initialize():void
 		{
@@ -86,33 +51,33 @@ package feathers.examples.componentsExplorer.screens
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
 			[
-				{ label: "Alert", event: SHOW_ALERT },
-				{ label: "Auto-complete", event: SHOW_AUTO_COMPLETE },
-				{ label: "Button", event: SHOW_BUTTON },
-				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
-				{ label: "Callout", event: SHOW_CALLOUT },
-				{ label: "Check", event: SHOW_CHECK },
-				{ label: "Date Time Spinner", event: SHOW_DATE_TIME_SPINNER },
-				{ label: "Grouped List", event: SHOW_GROUPED_LIST },
-				{ label: "Item Renderer", event: SHOW_ITEM_RENDERER },
-				{ label: "Label", event: SHOW_LABEL },
-				{ label: "List", event: SHOW_LIST },
-				{ label: "Numeric Stepper", event: SHOW_NUMERIC_STEPPER },
-				{ label: "Page Indicator", event: SHOW_PAGE_INDICATOR },
-				{ label: "Picker List", event: SHOW_PICKER_LIST },
-				{ label: "Progress Bar", event: SHOW_PROGRESS_BAR },
-				{ label: "Radio", event: SHOW_RADIO },
-				{ label: "Scroll Text", event: SHOW_SCROLL_TEXT },
-				{ label: "Slider", event: SHOW_SLIDER},
-				{ label: "Spinner List", event: SHOW_SPINNER_LIST },
-				{ label: "Tab Bar", event: SHOW_TAB_BAR },
-				{ label: "Text Callout", event: SHOW_TEXT_CALLOUT },
-				{ label: "Text Input and Text Area", event: SHOW_TEXT_INPUT },
-				{ label: "Toggle Switch", event: SHOW_TOGGLES },
+				{ label: "Alert", screen: ScreenID.ALERT },
+				{ label: "Auto-complete", screen: ScreenID.AUTO_COMPLETE },
+				{ label: "Button", screen: ScreenID.BUTTON },
+				{ label: "Button Group", screen: ScreenID.BUTTON_GROUP },
+				{ label: "Callout", screen: ScreenID.CALLOUT },
+				{ label: "Check", screen: ScreenID.CHECK },
+				{ label: "Date Time Spinner", screen: ScreenID.DATE_TIME_SPINNER },
+				{ label: "Grouped List", screen: ScreenID.GROUPED_LIST },
+				{ label: "Item Renderer", screen: ScreenID.ITEM_RENDERER },
+				{ label: "Label", screen: ScreenID.LABEL },
+				{ label: "List", screen: ScreenID.LIST },
+				{ label: "Numeric Stepper", screen: ScreenID.NUMERIC_STEPPER },
+				{ label: "Page Indicator", screen: ScreenID.PAGE_INDICATOR },
+				{ label: "Picker List", screen: ScreenID.PICKER_LIST },
+				{ label: "Progress Bar", screen: ScreenID.PROGRESS_BAR },
+				{ label: "Radio", screen: ScreenID.RADIO },
+				{ label: "Scroll Text", screen: ScreenID.SCROLL_TEXT },
+				{ label: "Slider", screen: ScreenID.SLIDER},
+				{ label: "Spinner List", screen: ScreenID.SPINNER_LIST },
+				{ label: "Tab Bar", screen: ScreenID.TAB_BAR },
+				{ label: "Text Callout", screen: ScreenID.TEXT_CALLOUT },
+				{ label: "Text Input and Text Area", screen: ScreenID.TEXT_INPUT },
+				{ label: "Toggle Switch", screen: ScreenID.TOGGLES },
 			]);
 			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
 			{
-				this._list.dataProvider.addItem( { label: "Web View", event: SHOW_WEB_VIEW } );
+				this._list.dataProvider.addItem( { label: "Web View", screen: ScreenID.WEB_VIEW } );
 			}
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
@@ -166,17 +131,17 @@ package feathers.examples.componentsExplorer.screens
 		
 		private function list_changeHandler(event:Event):void
 		{
-			var eventType:String = this._list.selectedItem.event as String;
+			this._selectedScreenID = this._list.selectedItem.screen as String;
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				this.dispatchEventWith(eventType);
+				this.dispatchEventWith(Event.CHANGE);
 				return;
 			}
 
 			//save the list's scroll position and selected index so that we
 			//can restore some context when this screen when we return to it
 			//again later.
-			this.dispatchEventWith(eventType, false,
+			this.dispatchEventWith(Event.CHANGE, false,
 			{
 				savedVerticalScrollPosition: this._list.verticalScrollPosition,
 				savedSelectedIndex: this._list.selectedIndex
