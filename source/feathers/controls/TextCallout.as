@@ -241,6 +241,40 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _wordWrap:Boolean = true;
+
+		/**
+		 * Determines if the text wraps to the next line when it reaches the
+		 * width (or max width) of the component.
+		 *
+		 * <p>In the following example, the text is not wrapped:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.wordWrap = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this._wordWrap == value)
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textRendererFactory:Function;
 
 		/**
@@ -353,6 +387,7 @@ package feathers.controls
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
 
 			if(textRendererInvalid)
@@ -363,6 +398,11 @@ package feathers.controls
 			if(textRendererInvalid || dataInvalid || stateInvalid)
 			{
 				this.refreshTextRendererData();
+			}
+
+			if(textRendererInvalid || stylesInvalid)
+			{
+				this.refreshTextRendererStyles();
 			}
 			super.draw();
 		}
@@ -400,6 +440,14 @@ package feathers.controls
 		{
 			this.textRenderer.text = this._text;
 			this.textRenderer.visible = this._text && this._text.length > 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTextRendererStyles():void
+		{
+			this.textRenderer.wordWrap = this._wordWrap;
 		}
 
 		/**
