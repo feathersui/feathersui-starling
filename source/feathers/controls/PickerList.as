@@ -324,6 +324,7 @@ package feathers.controls
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_multipleEventHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_multipleEventHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_multipleEventHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
@@ -332,6 +333,7 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_multipleEventHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_multipleEventHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_multipleEventHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			if(!this._dataProvider || this._dataProvider.length == 0)
 			{
@@ -1788,12 +1790,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_multipleEventHandler():void
+		protected function dataProvider_multipleEventHandler(event:Event):void
 		{
 			//we need to ensure that the pop-up list has received the new
 			//selected index, or it might update the selected index to an
 			//incorrect value after an item is added, removed, or replaced.
 			this.validate();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_updateItemHandler(event:Event, index:int):void
+		{
+			if(index === this._selectedIndex)
+			{
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+			}
 		}
 
 		/**
