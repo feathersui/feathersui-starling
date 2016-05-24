@@ -772,6 +772,12 @@ package feathers.controls
 			{
 				return;
 			}
+			if(value)
+			{
+				this.isRightDrawerOpen = false;
+				this.isBottomDrawerOpen = false;
+				this.isLeftDrawerOpen = false;
+			}
 			this._isTopDrawerOpen = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -1062,6 +1068,12 @@ package feathers.controls
 			if(this.isRightDrawerDocked || this._isRightDrawerOpen == value)
 			{
 				return;
+			}
+			if(value)
+			{
+				this.isTopDrawerOpen = false;
+				this.isBottomDrawerOpen = false;
+				this.isLeftDrawerOpen = false;
 			}
 			this._isRightDrawerOpen = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -1354,6 +1366,12 @@ package feathers.controls
 			{
 				return;
 			}
+			if(value)
+			{
+				this.isTopDrawerOpen = false;
+				this.isRightDrawerOpen = false;
+				this.isLeftDrawerOpen = false;
+			}
 			this._isBottomDrawerOpen = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -1644,6 +1662,12 @@ package feathers.controls
 			if(this.isLeftDrawerDocked || this._isLeftDrawerOpen == value)
 			{
 				return;
+			}
+			if(value)
+			{
+				this.isTopDrawerOpen = false;
+				this.isRightDrawerOpen = false;
+				this.isBottomDrawerOpen = false;
 			}
 			this._isLeftDrawerOpen = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -2365,6 +2389,12 @@ package feathers.controls
 			{
 				return;
 			}
+			if(!this.isTopDrawerOpen)
+			{
+				this.isRightDrawerOpen = false;
+				this.isBottomDrawerOpen = false;
+				this.isLeftDrawerOpen = false;
+			}
 			this.isToggleTopDrawerPending = true;
 			this.isToggleRightDrawerPending = false;
 			this.isToggleBottomDrawerPending = false;
@@ -2396,6 +2426,12 @@ package feathers.controls
 			if(this.isToggleRightDrawerPending)
 			{
 				return;
+			}
+			if(!this.isRightDrawerOpen)
+			{
+				this.isTopDrawerOpen = false;
+				this.isBottomDrawerOpen = false;
+				this.isLeftDrawerOpen = false;
 			}
 			this.isToggleTopDrawerPending = false;
 			this.isToggleRightDrawerPending = true;
@@ -2429,6 +2465,12 @@ package feathers.controls
 			{
 				return;
 			}
+			if(!this.isBottomDrawerOpen)
+			{
+				this.isTopDrawerOpen = false;
+				this.isRightDrawerOpen = false;
+				this.isLeftDrawerOpen = false;
+			}
 			this.isToggleTopDrawerPending = false;
 			this.isToggleRightDrawerPending = false;
 			this.isToggleBottomDrawerPending = true;
@@ -2460,6 +2502,12 @@ package feathers.controls
 			if(this.isToggleLeftDrawerPending)
 			{
 				return;
+			}
+			if(!this.isLeftDrawerOpen)
+			{
+				this.isTopDrawerOpen = false;
+				this.isRightDrawerOpen = false;
+				this.isBottomDrawerOpen = false;
 			}
 			this.isToggleTopDrawerPending = false;
 			this.isToggleRightDrawerPending = false;
