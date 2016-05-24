@@ -424,7 +424,7 @@ package feathers.examples.trainTimes.controls
 
 		protected function commitData():void
 		{
-			if(this._owner)
+			if(this._owner && this._data)
 			{
 				var nameLabelText:String = this._data.name;
 				if(this._isSelected)
@@ -492,7 +492,7 @@ package feathers.examples.trainTimes.controls
 			this.detailsLabel.validate();
 			this.actionContainer.validate();
 
-			var displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
+			var displayAsSelected:Boolean = this._isSelected || (this._data && this._data.isDepartingFromHere);
 			if((displayAsSelected && this.isSelectionWaitingToBeAnimated) ||
 				(!displayAsSelected && !this.isSelectionWaitingToBeAnimated))
 			{
@@ -523,7 +523,7 @@ package feathers.examples.trainTimes.controls
 				this.selectionTween.onUpdate = selectionTween_onUpdate;
 				Starling.juggler.add(this.selectionTween);
 			}
-			else if(this._data.isDepartingFromHere && this.actionContainer.visible)
+			else if(this._data && this._data.isDepartingFromHere && this.actionContainer.visible)
 			{
 				this.selectionTween = new Tween(this.actionContainer, 0.35, Transitions.EASE_OUT);
 				this.selectionTween.fadeTo(0);
@@ -563,11 +563,6 @@ package feathers.examples.trainTimes.controls
 		protected function selectionTween_onConfirmComplete():void
 		{
 			this.actionContainer.visible = false;
-			this.selectionTween = null;
-		}
-
-		protected function selectionTween_onUnconfirmComplete():void
-		{
 			this.selectionTween = null;
 		}
 
