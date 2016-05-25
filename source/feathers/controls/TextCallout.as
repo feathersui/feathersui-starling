@@ -419,7 +419,7 @@ package feathers.controls
 		 */
 		protected function createTextRenderer():void
 		{
-			if(this.textRenderer)
+			if(this.textRenderer !== null)
 			{
 				this.removeChild(DisplayObject(this.textRenderer), true);
 				this.textRenderer = null;
@@ -429,8 +429,7 @@ package feathers.controls
 			this.textRenderer = ITextRenderer(factory());
 			var textRendererStyleName:String = this._customTextRendererStyleName !== null ? this._customTextRendererStyleName : this.textRendererStyleName;
 			this.textRenderer.styleNameList.add(textRendererStyleName);
-			this._content = DisplayObject(this.textRenderer);
-			this.addChild(this._content);
+			this.content = DisplayObject(this.textRenderer);
 		}
 
 		/**
