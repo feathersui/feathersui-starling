@@ -702,14 +702,9 @@ package feathers.controls.supportClasses
 				return null;
 			}
 
-			if(this._activeScreenID == id)
-			{
-				return this._activeScreen;
-			}
-
 			this._previousScreenInTransition = this._activeScreen;
 			this._previousScreenInTransitionID = this._activeScreenID;
-			if(this._activeScreen)
+			if(this._activeScreen !== null)
 			{
 				this.cleanupActiveScreen();
 			}
@@ -729,7 +724,7 @@ package feathers.controls.supportClasses
 				screen.screenID = this._activeScreenID;
 				screen.owner = this; //subclasses will implement the interface
 			}
-			if(this._autoSizeMode == AutoSizeMode.CONTENT || !this.stage)
+			if(this._autoSizeMode === AutoSizeMode.CONTENT || !this.stage)
 			{
 				this._activeScreen.addEventListener(Event.RESIZE, activeScreen_resizeHandler);
 			}
@@ -769,11 +764,11 @@ package feathers.controls.supportClasses
 
 			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 			this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
-			if(this._previousScreenInTransition)
+			if(this._previousScreenInTransition !== null)
 			{
 				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
 			}
-			if(transition != null)
+			if(transition !== null)
 			{
 				//temporarily make the active screen invisible because the
 				//transition doesn't start right away.
@@ -798,7 +793,7 @@ package feathers.controls.supportClasses
 		 */
 		protected function clearScreenInternal(transition:Function = null):void
 		{
-			if(!this._activeScreen)
+			if(this._activeScreen === null)
 			{
 				//no screen visible.
 				return;
@@ -899,11 +894,11 @@ package feathers.controls.supportClasses
 				item = IScreenNavigatorItem(this._screens[previousScreenID]);
 				this._previousScreenInTransition = null;
 				this._previousScreenInTransitionID = null;
-				if(previousScreen)
+				if(previousScreen !== null)
 				{
 					previousScreen.dispatchEventWith(FeathersEventType.TRANSITION_OUT_COMPLETE)
 				}
-				if(activeScreen)
+				if(activeScreen !== null)
 				{
 					activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_COMPLETE)
 				}
@@ -912,7 +907,7 @@ package feathers.controls.supportClasses
 				//written before TRANSITION_OUT_COMPLETE existed may be using
 				//this event for the same purpose.
 				this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
-				if(previousScreen)
+				if(previousScreen !== null)
 				{
 					if(previousScreen is IScreen)
 					{
@@ -930,7 +925,7 @@ package feathers.controls.supportClasses
 			{
 				this.clearScreenInternal(this._nextScreenTransition);
 			}
-			else if(this._nextScreenID)
+			else if(this._nextScreenID !== null)
 			{
 				this.showScreenInternal(this._nextScreenID, this._nextScreenTransition);
 			}
