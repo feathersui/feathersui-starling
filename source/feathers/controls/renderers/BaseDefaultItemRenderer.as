@@ -4537,7 +4537,7 @@ package feathers.controls.renderers
 				calculatedWidth = this._explicitWidth;
 				if(calculatedWidth !== calculatedWidth) //isNaN
 				{
-					calculatedWidth = this._maxWidth;
+					calculatedWidth = this._explicitMaxWidth;
 				}
 			}
 			calculatedWidth -= (this._paddingLeft + this._paddingRight);
@@ -4547,7 +4547,7 @@ package feathers.controls.renderers
 				calculatedHeight = this._explicitHeight;
 				if(calculatedHeight !== calculatedHeight) //isNaN
 				{
-					calculatedHeight = this._maxHeight;
+					calculatedHeight = this._explicitMaxHeight;
 				}
 			}
 			calculatedHeight -= (this._paddingTop + this._paddingBottom);

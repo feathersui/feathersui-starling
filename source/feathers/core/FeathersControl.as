@@ -965,7 +965,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _maxWidth:Number = Number.POSITIVE_INFINITY;
+		protected var _explicitMaxWidth:Number = Number.POSITIVE_INFINITY;
 
 		/**
 		 * The maximum recommended width to be used for self-measurement and,
@@ -984,7 +984,7 @@ package feathers.core
 		 */
 		public function get maxWidth():Number
 		{
-			return this._maxWidth;
+			return this._explicitMaxWidth;
 		}
 
 		/**
@@ -996,7 +996,7 @@ package feathers.core
 			{
 				value = 0;
 			}
-			if(this._maxWidth == value)
+			if(this._explicitMaxWidth == value)
 			{
 				return;
 			}
@@ -1004,8 +1004,8 @@ package feathers.core
 			{
 				throw new ArgumentError("maxWidth cannot be NaN");
 			}
-			var oldValue:Number = this._maxWidth;
-			this._maxWidth = value;
+			var oldValue:Number = this._explicitMaxWidth;
+			this._explicitMaxWidth = value;
 			if(this._explicitWidth !== this._explicitWidth && //isNaN
 				(this.actualWidth > value || this.actualWidth === oldValue))
 			{
@@ -1017,7 +1017,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _maxHeight:Number = Number.POSITIVE_INFINITY;
+		protected var _explicitMaxHeight:Number = Number.POSITIVE_INFINITY;
 
 		/**
 		 * The maximum recommended height to be used for self-measurement and,
@@ -1036,7 +1036,7 @@ package feathers.core
 		 */
 		public function get maxHeight():Number
 		{
-			return this._maxHeight;
+			return this._explicitMaxHeight;
 		}
 
 		/**
@@ -1048,7 +1048,7 @@ package feathers.core
 			{
 				value = 0;
 			}
-			if(this._maxHeight == value)
+			if(this._explicitMaxHeight == value)
 			{
 				return;
 			}
@@ -1056,8 +1056,8 @@ package feathers.core
 			{
 				throw new ArgumentError("maxHeight cannot be NaN");
 			}
-			var oldValue:Number = this._maxHeight;
-			this._maxHeight = value;
+			var oldValue:Number = this._explicitMaxHeight;
+			this._explicitMaxHeight = value;
 			if(this._explicitHeight !== this._explicitHeight && //isNaN
 				(this.actualHeight > value || this.actualHeight === oldValue))
 			{
@@ -2095,9 +2095,9 @@ package feathers.core
 				{
 					width = minWidth;
 				}
-				else if(width > this._maxWidth)
+				else if(width > this._explicitMaxWidth)
 				{
-					width = this._maxWidth;
+					width = this._explicitMaxWidth;
 				}
 			}
 			if(this._explicitHeight === this._explicitHeight) //!isNaN
@@ -2110,9 +2110,9 @@ package feathers.core
 				{
 					height = minHeight;
 				}
-				else if(height > this._maxHeight)
+				else if(height > this._explicitMaxHeight)
 				{
-					height = this._maxHeight;
+					height = this._explicitMaxHeight;
 				}
 			}
 			if(width !== width) //isNaN

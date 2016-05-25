@@ -1862,8 +1862,8 @@ package feathers.controls
 			this._viewPortBounds.explicitHeight = this._explicitHeight;
 			this._viewPortBounds.minWidth = this._explicitMinWidth;
 			this._viewPortBounds.minHeight = this._explicitMinHeight;
-			this._viewPortBounds.maxWidth = this._maxWidth;
-			this._viewPortBounds.maxHeight = this._maxHeight;
+			this._viewPortBounds.maxWidth = this._explicitMaxWidth;
+			this._viewPortBounds.maxHeight = this._explicitMaxHeight;
 			this.layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			
 			var contentWidth:Number = this._layoutResult.contentWidth;

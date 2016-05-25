@@ -1539,9 +1539,9 @@ package feathers.controls
 						{
 							heightScale = this._explicitHeight / (this._currentTextureHeight * this._textureScale);
 						}
-						else if(this._maxHeight < this._currentTextureHeight)
+						else if(this._explicitMaxHeight < this._currentTextureHeight)
 						{
-							heightScale = this._maxHeight / (this._currentTextureHeight * this._textureScale);
+							heightScale = this._explicitMaxHeight / (this._currentTextureHeight * this._textureScale);
 						}
 						else if(this._explicitMinHeight > this._currentTextureHeight)
 						{
@@ -1574,9 +1574,9 @@ package feathers.controls
 						{
 							widthScale = this._explicitWidth / (this._currentTextureWidth * this._textureScale);
 						}
-						else if(this._maxWidth < this._currentTextureWidth)
+						else if(this._explicitMaxWidth < this._currentTextureWidth)
 						{
-							widthScale = this._maxWidth / (this._currentTextureWidth * this._textureScale);
+							widthScale = this._explicitMaxWidth / (this._currentTextureWidth * this._textureScale);
 						}
 						else if(this._explicitMinWidth > this._currentTextureWidth)
 						{

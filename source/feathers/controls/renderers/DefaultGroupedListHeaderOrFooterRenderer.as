@@ -1456,7 +1456,7 @@ package feathers.controls.renderers
 				var labelMaxWidth:Number = this._explicitWidth;
 				if(needsWidth)
 				{
-					labelMaxWidth = this._maxWidth;
+					labelMaxWidth = this._explicitMaxWidth;
 				}
 				this.contentLabel.maxWidth = labelMaxWidth - this._paddingLeft - this._paddingRight;
 				this.contentLabel.measureText(HELPER_POINT);

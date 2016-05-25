@@ -791,8 +791,8 @@ package feathers.controls
 			}
 			this.viewPortBounds.minWidth = viewPortMinWidth;
 			this.viewPortBounds.minHeight = viewPortMinHeight;
-			this.viewPortBounds.maxWidth = this._maxWidth;
-			this.viewPortBounds.maxHeight = this._maxHeight;
+			this.viewPortBounds.maxWidth = this._explicitMaxWidth;
+			this.viewPortBounds.maxHeight = this._explicitMaxHeight;
 		}
 
 		/**

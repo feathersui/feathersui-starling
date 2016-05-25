@@ -760,8 +760,8 @@ package feathers.controls
 				this._explicitMinHeight - this._paddingTop - this._paddingBottom,
 				this._explicitTextRendererWidth, this._explicitTextRendererHeight,
 				this._explicitTextRendererMinWidth, this._explicitTextRendererMinHeight);
-			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.maxWidth = this._explicitMaxWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.maxHeight = this._explicitMaxHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.measureText(HELPER_POINT);
 
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;

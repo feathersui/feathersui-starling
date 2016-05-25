@@ -1517,7 +1517,7 @@ package feathers.controls
 				var maxTitleWidth:Number = this._explicitWidth;
 				if(needsWidth)
 				{
-					maxTitleWidth = this._maxWidth;
+					maxTitleWidth = this._explicitMaxWidth;
 				}
 				maxTitleWidth -= totalContentWidth;
 				if(hasLeftItems)

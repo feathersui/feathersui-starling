@@ -1986,12 +1986,12 @@ package feathers.controls
 				this._explicitContentMinWidth, this._explicitContentMinHeight);
 			if(measureContent !== null)
 			{
-				var contentMaxWidth:Number = this._maxWidth - this._paddingLeft - this._paddingRight;
+				var contentMaxWidth:Number = this._explicitMaxWidth - this._paddingLeft - this._paddingRight;
 				if(contentMaxWidth < measureContent.maxWidth)
 				{
 					measureContent.maxWidth = contentMaxWidth;
 				}
-				var contentMaxHeight:Number = this._maxHeight - this._paddingTop - this._paddingBottom;
+				var contentMaxHeight:Number = this._explicitMaxHeight - this._paddingTop - this._paddingBottom;
 				if(contentMaxHeight < measureContent.maxHeight)
 				{
 					measureContent.maxHeight = contentMaxHeight;
@@ -2005,8 +2005,8 @@ package feathers.controls
 
 			//the dimensions of the stage (plus stage padding) affect the
 			//maximum width and height
-			var maxWidth:Number = this._maxWidth;
-			var maxHeight:Number = this._maxHeight;
+			var maxWidth:Number = this._explicitMaxWidth;
+			var maxHeight:Number = this._explicitMaxHeight;
 			if(this.stage !== null)
 			{
 				var stageMaxWidth:Number = this.stage.stageWidth - stagePaddingLeft - stagePaddingRight;

@@ -932,7 +932,7 @@ package feathers.controls.text
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
 				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)
@@ -1001,7 +1001,7 @@ package feathers.controls.text
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
 				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)

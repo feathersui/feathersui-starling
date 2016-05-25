@@ -3742,12 +3742,12 @@ package feathers.controls
 			//view port fills the entire bounds.
 			this._viewPort.visibleWidth = this._explicitWidth - horizontalWidthOffset;
 			this._viewPort.minVisibleWidth = this._explicitMinWidth - horizontalWidthOffset;
-			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
+			this._viewPort.maxVisibleWidth = this._explicitMaxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = viewPortMinWidth;
 
 			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
 			this._viewPort.minVisibleHeight = this._explicitMinHeight - verticalHeightOffset;
-			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
+			this._viewPort.maxVisibleHeight = this._explicitMaxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;
 			this._viewPort.validate();
 			//we don't want to listen for a resize event from the view port
@@ -3774,13 +3774,13 @@ package feathers.controls
 			var visibleWidth:Number = this.actualWidth - horizontalWidthOffset;
 			this._viewPort.visibleWidth = visibleWidth;
 			this._viewPort.minVisibleWidth = this.actualWidth - horizontalWidthOffset;
-			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
+			this._viewPort.maxVisibleWidth = this._explicitMaxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = visibleWidth;
 
 			var visibleHeight:Number = this.actualHeight - verticalHeightOffset;
 			this._viewPort.visibleHeight = visibleHeight;
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
-			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
+			this._viewPort.maxVisibleHeight = this._explicitMaxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = visibleHeight;
 
 			//this time, we care whether a resize event is dispatched while the
@@ -4220,7 +4220,7 @@ package feathers.controls
 				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this._explicitWidth;
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
 				if(forceScrollBars || this._horizontalScrollPolicy == ScrollPolicy.ON ||
-					((totalWidth > scrollerWidth || totalWidth > this._maxWidth) &&
+					((totalWidth > scrollerWidth || totalWidth > this._explicitMaxWidth) &&
 						this._horizontalScrollPolicy != ScrollPolicy.OFF))
 				{
 					this._hasHorizontalScrollBar = true;
@@ -4250,7 +4250,7 @@ package feathers.controls
 				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this._explicitHeight;
 				var totalHeight:Number = this._viewPort.height + this._topViewPortOffset + this._bottomViewPortOffset;
 				if(forceScrollBars || this._verticalScrollPolicy == ScrollPolicy.ON ||
-					((totalHeight > scrollerHeight || totalHeight > this._maxHeight) &&
+					((totalHeight > scrollerHeight || totalHeight > this._explicitMaxHeight) &&
 						this._verticalScrollPolicy != ScrollPolicy.OFF))
 				{
 					this._hasVerticalScrollBar = true;

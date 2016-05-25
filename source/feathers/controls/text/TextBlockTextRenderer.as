@@ -297,7 +297,7 @@ package feathers.controls.text
 		{
 			//this is a special case because truncation may bypass normal rules
 			//for determining if changing maxWidth should invalidate
-			var needsInvalidate:Boolean = value > this._maxWidth && this._lastMeasurementWasTruncated;
+			var needsInvalidate:Boolean = value > this._explicitMaxWidth && this._lastMeasurementWasTruncated;
 			super.maxWidth = value;
 			if(needsInvalidate)
 			{
@@ -1544,7 +1544,7 @@ package feathers.controls.text
 			var newHeight:Number = this._explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._maxWidth;
+				newWidth = this._explicitMaxWidth;
 				if(newWidth > MAX_TEXT_LINE_WIDTH)
 				{
 					newWidth = MAX_TEXT_LINE_WIDTH;
@@ -1552,7 +1552,7 @@ package feathers.controls.text
 			}
 			if(needsHeight)
 			{
-				newHeight = this._maxHeight;
+				newHeight = this._explicitMaxHeight;
 			}
 
 			//sometimes, we can determine that the dimensions will be exactly
@@ -1587,9 +1587,9 @@ package feathers.controls.text
 			if(needsWidth)
 			{
 				newWidth = Math.ceil(this._measurementTextLineContainer.width);
-				if(newWidth > this._maxWidth)
+				if(newWidth > this._explicitMaxWidth)
 				{
-					newWidth = this._maxWidth;
+					newWidth = this._explicitMaxWidth;
 				}
 			}
 			if(needsHeight)

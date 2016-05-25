@@ -1510,7 +1510,7 @@ package feathers.controls
 						textInputMinHeight = this.textInputExplicitMinHeight;
 					}
 				}
-				textInputMaxWidth = this._maxWidth - maxButtonWidth - this._textInputGap;
+				textInputMaxWidth = this._explicitMaxWidth - maxButtonWidth - this._textInputGap;
 			}
 			else if(this._buttonLayoutMode === StepperButtonLayoutMode.SPLIT_VERTICAL)
 			{
@@ -1538,7 +1538,7 @@ package feathers.controls
 						textInputMinHeight = this.textInputExplicitMinHeight;
 					}
 				}
-				textInputMaxHeight = this._maxHeight - decrementButtonHeight - incrementButtonHeight;
+				textInputMaxHeight = this._explicitMaxHeight - decrementButtonHeight - incrementButtonHeight;
 			}
 			else //split horizontal
 			{
@@ -1566,7 +1566,7 @@ package feathers.controls
 						textInputMinHeight = this.textInputExplicitMinHeight;
 					}
 				}
-				textInputMaxWidth = this._maxWidth - decrementButtonWidth - incrementButtonWidth;
+				textInputMaxWidth = this._explicitMaxWidth - decrementButtonWidth - incrementButtonWidth;
 			}
 			
 			if(textInputWidth < 0)

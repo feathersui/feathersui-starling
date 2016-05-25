@@ -1799,9 +1799,9 @@ package feathers.controls.text
 				{
 					newWidth = this._explicitMinWidth;
 				}
-				else if(newWidth > this._maxWidth)
+				else if(newWidth > this._explicitMaxWidth)
 				{
-					newWidth = this._maxWidth;
+					newWidth = this._explicitMaxWidth;
 				}
 			}
 
@@ -1819,9 +1819,9 @@ package feathers.controls.text
 				{
 					newHeight = this._explicitMinHeight;
 				}
-				else if(newHeight > this._maxHeight)
+				else if(newHeight > this._explicitMaxHeight)
 				{
-					newHeight = this._maxHeight;
+					newHeight = this._explicitMaxHeight;
 				}
 			}
 
