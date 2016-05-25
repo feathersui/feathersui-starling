@@ -771,6 +771,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitContentMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _explicitBackgroundSkinWidth:Number;
 
 		/**
@@ -787,6 +797,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _explicitBackgroundSkinMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinMaxHeight:Number;
 
 		/**
 		 * @private
@@ -847,6 +867,8 @@ package feathers.controls
 					this._explicitContentHeight = measureContent.explicitHeight;
 					this._explicitContentMinWidth = measureContent.explicitMinWidth;
 					this._explicitContentMinHeight = measureContent.explicitMinHeight;
+					this._explicitContentMaxWidth = measureContent.explicitMaxWidth;
+					this._explicitContentMaxHeight = measureContent.explicitMaxHeight;
 				}
 				else
 				{
@@ -854,6 +876,8 @@ package feathers.controls
 					this._explicitContentHeight = this._content.height;
 					this._explicitContentMinWidth = this._explicitContentWidth;
 					this._explicitContentMinHeight = this._explicitContentHeight;
+					this._explicitContentMaxWidth = this._explicitContentWidth;
+					this._explicitContentMaxHeight = this._explicitContentHeight;
 				}
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -1378,6 +1402,8 @@ package feathers.controls
 					this._explicitBackgroundSkinHeight = measureSkin.explicitHeight;
 					this._explicitBackgroundSkinMinWidth = measureSkin.explicitMinWidth;
 					this._explicitBackgroundSkinMinHeight = measureSkin.explicitMinHeight;
+					this._explicitBackgroundSkinMaxWidth = measureSkin.explicitMaxWidth;
+					this._explicitBackgroundSkinMaxHeight = measureSkin.explicitMaxHeight;
 				}
 				else
 				{
@@ -1385,6 +1411,8 @@ package feathers.controls
 					this._explicitBackgroundSkinHeight = this._backgroundSkin.height;
 					this._explicitBackgroundSkinMinWidth = this._explicitBackgroundSkinWidth;
 					this._explicitBackgroundSkinMinHeight = this._explicitBackgroundSkinHeight;
+					this._explicitBackgroundSkinMaxWidth = this._explicitBackgroundSkinWidth;
+					this._explicitBackgroundSkinMaxHeight = this._explicitBackgroundSkinHeight;
 				}
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1941,8 +1969,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this._backgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundSkinWidth, this._explicitBackgroundSkinHeight,
-				this._explicitBackgroundSkinMinWidth, this._explicitBackgroundSkinMinHeight);
+				this._explicitBackgroundSkinMinWidth, this._explicitBackgroundSkinMinHeight,
+				this._explicitBackgroundSkinMaxWidth, this._explicitBackgroundSkinMaxHeight);
 			if(this._backgroundSkin is IValidating)
 			{
 				IValidating(this._backgroundSkin).validate();
@@ -1982,8 +2012,11 @@ package feathers.controls
 				this._explicitHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
 				this._explicitMinWidth - leftOrRightArrowWidth - this._paddingLeft - this._paddingRight,
 				this._explicitMinHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
+				this._explicitMaxWidth - leftOrRightArrowHeight - this._paddingLeft - this._paddingRight,
+				this._explicitMaxHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
 				this._explicitContentWidth, this._explicitContentHeight,
-				this._explicitContentMinWidth, this._explicitContentMinHeight);
+				this._explicitContentMinWidth, this._explicitContentMinHeight,
+				this._explicitContentMaxWidth, this._explicitContentMaxHeight);
 			if(measureContent !== null)
 			{
 				var contentMaxWidth:Number = this._explicitMaxWidth - this._paddingLeft - this._paddingRight;

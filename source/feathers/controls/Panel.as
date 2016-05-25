@@ -1148,8 +1148,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{

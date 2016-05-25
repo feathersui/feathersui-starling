@@ -263,22 +263,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _explicitSkinWidth:Number = NaN;
+		protected var _explicitSkinWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var _explicitSkinHeight:Number = NaN;
+		protected var _explicitSkinHeight:Number;
 
 		/**
 		 * @private
 		 */
-		protected var _explicitSkinMinWidth:Number = NaN;
+		protected var _explicitSkinMinWidth:Number;
 
 		/**
 		 * @private
 		 */
-		protected var _explicitSkinMinHeight:Number = NaN;
+		protected var _explicitSkinMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitSkinMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitSkinMaxHeight:Number;
 
 		/**
 		 * Gets the skin to be used by the button when its
@@ -410,8 +420,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitSkinWidth, this._explicitSkinHeight,
-				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
+				this._explicitSkinMinWidth, this._explicitSkinMinHeight,
+				this._explicitSkinMaxWidth, this._explicitSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
 
 			if(this.currentSkin is IValidating)
@@ -503,6 +515,8 @@ package feathers.controls
 						this._explicitSkinHeight = measureSkin.explicitHeight;
 						this._explicitSkinMinWidth = measureSkin.explicitMinWidth;
 						this._explicitSkinMinHeight = measureSkin.explicitMinHeight;
+						this._explicitSkinMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitSkinMaxHeight = measureSkin.explicitMaxHeight;
 					}
 					else
 					{
@@ -510,6 +524,8 @@ package feathers.controls
 						this._explicitSkinHeight = this.currentSkin.height;
 						this._explicitSkinMinWidth = this._explicitSkinWidth;
 						this._explicitSkinMinHeight = this._explicitSkinHeight;
+						this._explicitSkinMaxWidth = this._explicitSkinWidth;
+						this._explicitSkinMaxHeight = this._explicitSkinHeight;
 					}
 					if(this.currentSkin is IStateObserver)
 					{

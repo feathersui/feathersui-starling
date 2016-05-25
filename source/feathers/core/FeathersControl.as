@@ -968,6 +968,18 @@ package feathers.core
 		protected var _explicitMaxWidth:Number = Number.POSITIVE_INFINITY;
 
 		/**
+		 * The maximum width value explicitly set by passing a value to the
+		 * <code>maxWidth</code> setter.
+		 *
+		 * <p>If no value has been passed to the <code>maxWidth</code> setter,
+		 * this property returns <code>NaN</code>.</p>
+		 */
+		public function get explicitMaxWidth():Number
+		{
+			return this._explicitMaxWidth;
+		}
+
+		/**
 		 * The maximum recommended width to be used for self-measurement and,
 		 * optionally, by any code that is resizing this component. This value
 		 * is not strictly enforced in all cases. An explicit width value that
@@ -1018,6 +1030,18 @@ package feathers.core
 		 * @private
 		 */
 		protected var _explicitMaxHeight:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The maximum height value explicitly set by passing a value to the
+		 * <code>maxHeight</code> setter.
+		 *
+		 * <p>If no value has been passed to the <code>maxHeight</code> setter,
+		 * this property returns <code>NaN</code>.</p>
+		 */
+		public function get explicitMaxHeight():Number
+		{
+			return this._explicitMaxHeight;
+		}
 
 		/**
 		 * The maximum recommended height to be used for self-measurement and,

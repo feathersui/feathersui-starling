@@ -14,8 +14,10 @@ package feathers.utils.skins
 	public function resetFluidChildDimensionsForMeasurement(child:DisplayObject,
 		parentExplicitWidth:Number, parentExplicitHeight:Number,
 		parentExplicitMinWidth:Number, parentExplicitMinHeight:Number,
+		parentExplicitMaxWidth:Number, parentExplicitMaxHeight:Number,
 		childExplicitWidth:Number, childExplicitHeight:Number,
-		childExplicitMinWidth:Number, childExplicitMinHeight:Number):void
+		childExplicitMinWidth:Number, childExplicitMinHeight:Number,
+		childExplicitMaxWidth:Number, childExplicitMaxHeight:Number):void
 	{
 		if(child === null)
 		{
@@ -63,6 +65,23 @@ package feathers.utils.skins
 				childMinHeight = childExplicitMinHeight;
 			}
 			measureChild.minHeight = childMinHeight;
+
+			var childMaxWidth:Number = parentExplicitMaxWidth;
+			compilerWorkaround = childMaxWidth;
+			if(childMaxWidth !== childMaxWidth || //isNaN
+				childExplicitMaxWidth < childMaxWidth)
+			{
+				childMaxWidth = childExplicitMaxWidth;
+			}
+			measureChild.maxWidth = childMaxWidth;
+			var childMaxHeight:Number = parentExplicitMaxHeight;
+			compilerWorkaround = childMaxHeight;
+			if(childMaxHeight !== childMaxHeight || //isNaN
+				childExplicitMaxHeight > childMaxHeight)
+			{
+				childMaxHeight = childExplicitMaxHeight;
+			}
+			measureChild.maxHeight = childMaxHeight;
 		}
 	}
 }

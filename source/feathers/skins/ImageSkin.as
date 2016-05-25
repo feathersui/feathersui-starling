@@ -508,6 +508,18 @@ package feathers.skins
 		protected var _explicitMaxWidth:Number = Number.POSITIVE_INFINITY;
 
 		/**
+		 * The value passed to the <code>maxWidth</code> property setter. If the
+		 * <code>maxWidth</code> property has not be set, returns
+		 * <code>NaN</code>.
+		 *
+		 * @see #maxWidth
+		 */
+		public function get explicitMaxWidth():Number
+		{
+			return this._explicitMaxWidth;
+		}
+
+		/**
 		 * The maximum width of the component.
 		 */
 		public function get maxWidth():Number
@@ -581,7 +593,19 @@ package feathers.skins
 		/**
 		 * @private
 		 */
-		protected var _explicitMaxHeight:Number = Number.POSITIVE_INFINITY; 
+		protected var _explicitMaxHeight:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The value passed to the <code>maxHeight</code> property setter. If
+		 * the <code>maxHeight</code> property has not be set, returns
+		 * <code>NaN</code>.
+		 *
+		 * @see #maxHeight
+		 */
+		public function get explicitMaxHeight():Number
+		{
+			return this._explicitMaxHeight;
+		}
 
 		/**
 		 * The maximum height of the component.

@@ -1222,6 +1222,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitBackgroundMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
@@ -2301,8 +2311,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentBackground,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			if(this.currentBackground is IValidating)
 			{
 				IValidating(this.currentBackground).validate();
@@ -2648,6 +2660,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = measureSkin.explicitHeight;
 						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
 						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
 					}
 					else
 					{
@@ -2655,6 +2669,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = this.currentBackground.height;
 						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
 				}
 			}

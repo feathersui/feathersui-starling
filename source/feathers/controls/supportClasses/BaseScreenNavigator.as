@@ -231,6 +231,16 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		protected var _activeScreenExplicitMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _activeScreenExplicitMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _screens:Object = {};
 
 		/**
@@ -509,8 +519,10 @@ package feathers.controls.supportClasses
 					resetFluidChildDimensionsForMeasurement(this._activeScreen,
 						this._explicitWidth, this._explicitHeight,
 						this._explicitMinWidth, this._explicitMinHeight,
+						this._explicitMaxWidth, this._explicitMaxHeight,
 						this._activeScreenExplicitWidth, this._activeScreenExplicitHeight,
-						this._activeScreenExplicitMinWidth, this._activeScreenExplicitMinHeight);
+						this._activeScreenExplicitMinWidth, this._activeScreenExplicitMinHeight,
+						this._activeScreenExplicitMaxWidth, this._activeScreenExplicitMaxHeight);
 					if(this._activeScreen is IValidating)
 					{
 						IValidating(this._activeScreen).validate();
@@ -729,6 +741,8 @@ package feathers.controls.supportClasses
 				this._activeScreenExplicitHeight = measureScreen.explicitHeight;
 				this._activeScreenExplicitMinWidth = measureScreen.explicitMinWidth;
 				this._activeScreenExplicitMinHeight = measureScreen.explicitMinHeight;
+				this._activeScreenExplicitMaxWidth = measureScreen.explicitMaxWidth;
+				this._activeScreenExplicitMaxHeight = measureScreen.explicitMaxHeight;
 			}
 			else
 			{
@@ -736,6 +750,8 @@ package feathers.controls.supportClasses
 				this._activeScreenExplicitHeight = this._activeScreen.height;
 				this._activeScreenExplicitMinWidth = this._activeScreenExplicitWidth;
 				this._activeScreenExplicitMinHeight = this._activeScreenExplicitHeight;
+				this._activeScreenExplicitMaxWidth = this._activeScreenExplicitWidth;
+				this._activeScreenExplicitMaxHeight = this._activeScreenExplicitHeight;
 			}
 			this.addChild(this._activeScreen);
 
