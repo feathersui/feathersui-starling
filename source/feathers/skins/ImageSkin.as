@@ -474,7 +474,7 @@ package feathers.skins
 		}
 
 		/**
-		 *
+		 * The minimum width of the component.
 		 */
 		public function get minWidth():Number
 		{
@@ -505,6 +505,36 @@ package feathers.skins
 		/**
 		 * @private
 		 */
+		protected var _explicitMaxWidth:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The maximum width of the component.
+		 */
+		public function get maxWidth():Number
+		{
+			return this._explicitMaxWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxWidth(value:Number):void
+		{
+			if(this._explicitMaxWidth === value)
+			{
+				return;
+			}
+			if(value !== value && this._explicitMaxWidth !== this._explicitMaxWidth)
+			{
+				return;
+			}
+			this._explicitMaxWidth = value;
+			this.dispatchEventWith(Event.RESIZE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _explicitMinHeight:Number = NaN;
 
 		/**
@@ -520,7 +550,7 @@ package feathers.skins
 		}
 
 		/**
-		 *
+		 * The minimum height of the component.
 		 */
 		public function get minHeight():Number
 		{
@@ -545,6 +575,36 @@ package feathers.skins
 				return;
 			}
 			this._explicitMinHeight = value;
+			this.dispatchEventWith(Event.RESIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _explicitMaxHeight:Number = Number.POSITIVE_INFINITY; 
+
+		/**
+		 * The maximum height of the component.
+		 */
+		public function get maxHeight():Number
+		{
+			return this._explicitMaxHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxHeight(value:Number):void
+		{
+			if(this._explicitMaxHeight === value)
+			{
+				return;
+			}
+			if(value !== value && this._explicitMaxHeight !== this._explicitMaxHeight)
+			{
+				return;
+			}
+			this._explicitMaxHeight = value;
 			this.dispatchEventWith(Event.RESIZE);
 		}
 

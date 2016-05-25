@@ -33,6 +33,16 @@ package feathers.core
 		function set minWidth(value:Number):void;
 
 		/**
+		 * @copy feathers.core.FeathersControl#maxWidth
+		 */
+		function get maxWidth():Number;
+
+		/**
+		 * @private
+		 */
+		function set maxWidth(value:Number):void;
+
+		/**
 		 * @copy feathers.core.FeathersControl#explicitHeight
 		 */
 		function get explicitHeight():Number;
@@ -51,5 +61,15 @@ package feathers.core
 		 * @private
 		 */
 		function set minHeight(value:Number):void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#maxHeight
+		 */
+		function get maxHeight():Number;
+
+		/**
+		 * @private
+		 */
+		function set maxHeight(value:Number):void;
 	}
 }
