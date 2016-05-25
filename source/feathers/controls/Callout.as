@@ -1984,6 +1984,19 @@ package feathers.controls
 				this._explicitMinHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
 				this._explicitContentWidth, this._explicitContentHeight,
 				this._explicitContentMinWidth, this._explicitContentMinHeight);
+			if(measureContent !== null)
+			{
+				var contentMaxWidth:Number = this._maxWidth - this._paddingLeft - this._paddingRight;
+				if(contentMaxWidth < measureContent.maxWidth)
+				{
+					measureContent.maxWidth = contentMaxWidth;
+				}
+				var contentMaxHeight:Number = this._maxHeight - this._paddingTop - this._paddingBottom;
+				if(contentMaxHeight < measureContent.maxHeight)
+				{
+					measureContent.maxHeight = contentMaxHeight;
+				}
+			}
 			if(this._content is IValidating)
 			{
 				IValidating(this._content).validate();
