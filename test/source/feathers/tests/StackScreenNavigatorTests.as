@@ -5,6 +5,8 @@ package feathers.tests
 
 	import flexunit.framework.Assert;
 
+	import starling.display.DisplayObject;
+
 	import starling.display.Quad;
 	import starling.events.Event;
 
@@ -238,6 +240,17 @@ package feathers.tests
 			item.addPopToRootEvent(EVENT_POP_TO_ROOT_SCREEN);
 			this._navigator.addScreen(SCREEN_A_ID, item);
 			this._navigator.rootScreenID = SCREEN_A_ID;
+		}
+
+		[Test]
+		public function testPushSameScreenInstance():void
+		{
+			this.addScreenA();
+			this._navigator.rootScreenID = SCREEN_A_ID;
+			this._navigator.pushScreen(SCREEN_A_ID);
+			//ensures that this test isn't broken by changing addScreenA()
+			Assert.assertTrue("StackScreenNavigatorTests expected StackScreenNavigatorItem screen to be display object", this._navigator.getScreen(SCREEN_A_ID).screen is DisplayObject);
+			Assert.assertNotNull("StackScreenNavigator activeScreen.parent must not be null after pushing multiple times", this._navigator.activeScreen.parent);
 		}
 		
 		private function addScreenA():void

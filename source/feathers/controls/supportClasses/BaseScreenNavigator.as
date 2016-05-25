@@ -729,6 +729,7 @@ package feathers.controls.supportClasses
 				this._activeScreen.addEventListener(Event.RESIZE, activeScreen_resizeHandler);
 			}
 			this.prepareActiveScreen();
+			var isSameInstance:Boolean = this._previousScreenInTransition === this._activeScreen;
 			var measureScreen:IMeasureDisplayObject = this._activeScreen as IMeasureDisplayObject;
 			if(measureScreen !== null)
 			{
@@ -762,26 +763,37 @@ package feathers.controls.supportClasses
 				this.validate();
 			}
 
-			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
-			this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
-			if(this._previousScreenInTransition !== null)
+			if(isSameInstance)
 			{
-				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
-			}
-			if(transition !== null)
-			{
-				//temporarily make the active screen invisible because the
-				//transition doesn't start right away.
-				this._activeScreen.visible = false;
-				this._waitingForTransitionFrameCount = 0;
-				this._waitingTransition = transition;
-				//this is a workaround for an issue with transition performance.
-				//see the comment in the listener for details.
-				this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
+				//we can't transition if both screens are the same display
+				//object, so skip the transition!
+				this._previousScreenInTransition = null;
+				this._previousScreenInTransitionID = null;
+				this._isTransitionActive = false;
 			}
 			else
 			{
-				defaultTransition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
+				this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
+				if(this._previousScreenInTransition !== null)
+				{
+					this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
+				}
+				if(transition !== null)
+				{
+					//temporarily make the active screen invisible because the
+					//transition doesn't start right away.
+					this._activeScreen.visible = false;
+					this._waitingForTransitionFrameCount = 0;
+					this._waitingTransition = transition;
+					//this is a workaround for an issue with transition performance.
+					//see the comment in the listener for details.
+					this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
+				}
+				else
+				{
+					defaultTransition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+				}
 			}
 
 			this.dispatchEventWith(Event.CHANGE);
