@@ -1974,6 +1974,8 @@ package feathers.controls
 			}
 			//the content resizes when the callout resizes, so we can treat it
 			//similarly to a background skin
+			var oldIgnoreContentResize:Boolean = this._ignoreContentResize;
+			this._ignoreContentResize = true;
 			var measureContent:IMeasureDisplayObject = this._content as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this._content,
 				this._explicitWidth - leftOrRightArrowWidth - this._paddingLeft - this._paddingRight,
@@ -1986,6 +1988,7 @@ package feathers.controls
 			{
 				IValidating(this._content).validate();
 			}
+			this._ignoreContentResize = oldIgnoreContentResize;
 
 			//the dimensions of the stage (plus stage padding) affect the
 			//maximum width and height
