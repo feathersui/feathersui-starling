@@ -4338,7 +4338,9 @@ package feathers.controls.renderers
 			{
 				return DisplayObject(this._stateToAccessoryFunction(this, this._currentState, this.currentAccessory));
 			}
-			var result:DisplayObject = this._stateToAccessory[this._currentState] as DisplayObject;
+			//we use the currentState getter here instead of the variable
+			//because the variable does not keep track of the selection
+			var result:DisplayObject = this._stateToAccessory[this.currentState] as DisplayObject;
 			if(result !== null)
 			{
 				return result;
