@@ -2153,16 +2153,15 @@ package feathers.controls.text
 				if(line.validity === TextLineValidity.VALID)
 				{
 					lastLine = line;
-					textLines[i] = line;
 					continue;
 				}
 				else
 				{
+					//we're using this value in the next loop
 					line = lastLine;
-					if(lastLine)
+					if(lastLine !== null)
 					{
 						yPosition = lastLine.y;
-						//we're using this value in the next loop
 						lastLine = null;
 					}
 					cacheIndex = i;
