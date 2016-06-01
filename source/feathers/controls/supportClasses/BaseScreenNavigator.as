@@ -462,20 +462,7 @@ package feathers.controls.supportClasses
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid || selectionInvalid)
-			{
-				if(this._activeScreen)
-				{
-					if(this._activeScreen.width != this.actualWidth)
-					{
-						this._activeScreen.width = this.actualWidth;
-					}
-					if(this._activeScreen.height != this.actualHeight)
-					{
-						this._activeScreen.height = this.actualHeight;
-					}
-				}
-			}
+			this.layoutChildren();
 
 			if(stylesInvalid || sizeInvalid)
 			{
@@ -858,6 +845,24 @@ package feathers.controls.supportClasses
 		protected function cleanupActiveScreen():void
 		{
 			throw new AbstractMethodError();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutChildren():void
+		{
+			if(this._activeScreen !== null)
+			{
+				if(this._activeScreen.width != this.actualWidth)
+				{
+					this._activeScreen.width = this.actualWidth;
+				}
+				if(this._activeScreen.height != this.actualHeight)
+				{
+					this._activeScreen.height = this.actualHeight;
+				}
+			}
 		}
 
 		/**
