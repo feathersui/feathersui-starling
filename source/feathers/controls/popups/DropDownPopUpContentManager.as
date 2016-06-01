@@ -438,6 +438,10 @@ package feathers.controls.popups
 			{
 				return;
 			}
+			if(this._openCloseTween !== null)
+			{
+				this._openCloseTween.advanceTime(this._openCloseTween.totalTime);
+			}
 			var content:DisplayObject = this.content;
 			this.source = null;
 			this.content = null;
@@ -455,10 +459,6 @@ package feathers.controls.popups
 			if(content.parent)
 			{
 				content.removeFromParent(false);
-			}
-			if(this._openCloseTween !== null)
-			{
-				this._openCloseTween.advanceTime(this._openCloseTween.totalTime);
 			}
 			if(this._openCloseDuration > 0)
 			{
@@ -493,6 +493,7 @@ package feathers.controls.popups
 		 */
 		public function dispose():void
 		{
+			this.openCloseDuration = 0;
 			this.close();
 		}
 
