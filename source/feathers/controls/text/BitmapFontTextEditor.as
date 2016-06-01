@@ -1214,6 +1214,18 @@ package feathers.controls.text
 				{
 					return;
 				}
+				if(touch.tapCount === 2)
+				{
+					var start:int = TextInputNavigation.findCurrentWordStartIndex(this._text, this._selectionBeginIndex);
+					var end:int = TextInputNavigation.findCurrentWordEndIndex(this._text, this._selectionEndIndex);
+					this.selectRange(start, end);
+					return;
+				}
+				else if(touch.tapCount > 2)
+				{
+					this.selectRange(0, this._text.length);
+					return;
+				}
 				this.touchPointID = touch.id;
 				touch.getLocation(this, HELPER_POINT);
 				HELPER_POINT.x += this._scrollX;
