@@ -12,6 +12,7 @@ package feathers.controls.popups
 	import feathers.core.PopUpManager;
 	import feathers.core.ValidationQueue;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.RelativePosition;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.display.stageToStarling;
 
@@ -86,24 +87,33 @@ package feathers.controls.popups
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
-		 * The pop-up content will be positioned below the source, if possible. 
-		 * 
-		 * @see #primaryDirection
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.BOTTOM</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const PRIMARY_DIRECTION_DOWN:String = "down";
 
 		/**
-		 * The pop-up content will be positioned above the source, if possible.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.TOP</code>.
 		 *
-		 * @see #primaryDirection
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const PRIMARY_DIRECTION_UP:String = "up";
-		
+
 		/**
 		 * Constructor.
 		 */
 		public function DropDownPopUpContentManager()
 		{
+			super();
 		}
 
 		/**
@@ -222,15 +232,17 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected var _primaryDirection:String = PRIMARY_DIRECTION_DOWN;
+		protected var _primaryDirection:String = RelativePosition.BOTTOM;
 
 		/**
-		 * The space, in pixels, between the source and the pop-up.
+		 * The preferred position of the pop-up, relative to the source. If
+		 * there is not enough space to position pop-up at the preferred
+		 * position, it may be positioned elsewhere.
 		 * 
-		 * @default DropDownPopUpContentManager.PRIMARY_DIRECTION_DOWN
+		 * @default feathers.layout.RelativePosition.BOTTOM
 		 * 
-		 * @see #PRIMARY_DIRECTION_DOWN
-		 * @see #PRIMARY_DIRECTION_UP
+		 * @see feathers.layout.RelativePosition#BOTTOM
+		 * @see feathers.layout.RelativePosition#TOP
 		 */
 		public function get primaryDirection():String
 		{
@@ -242,6 +254,14 @@ package feathers.controls.popups
 		 */
 		public function set primaryDirection(value:String):void
 		{
+			if(value === PRIMARY_DIRECTION_UP)
+			{
+				value = RelativePosition.TOP;
+			}
+			else if(value === PRIMARY_DIRECTION_DOWN)
+			{
+				value = RelativePosition.BOTTOM;
+			}
 			this._primaryDirection = value;
 		}
 
@@ -401,7 +421,7 @@ package feathers.controls.popups
 
 			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height + this._gap);
 			//skip this if the primary direction is up
-			if(this._primaryDirection == PRIMARY_DIRECTION_DOWN && downSpace >= 0)
+			if(this._primaryDirection == RelativePosition.BOTTOM && downSpace >= 0)
 			{
 				layoutBelow(globalOrigin);
 				return;
@@ -415,7 +435,7 @@ package feathers.controls.popups
 			}
 			
 			//do what we skipped earlier if the primary direction is up
-			if(this._primaryDirection == PRIMARY_DIRECTION_UP && downSpace >= 0)
+			if(this._primaryDirection == RelativePosition.TOP && downSpace >= 0)
 			{
 				layoutBelow(globalOrigin);
 				return;
