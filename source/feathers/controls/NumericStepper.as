@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
@@ -70,7 +71,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/numeric-stepper.html How to use the Feathers NumericStepper component
 	 */
-	public class NumericStepper extends FeathersControl implements IRange, INativeFocusOwner, ITextBaselineControl
+	public class NumericStepper extends FeathersControl implements IRange, IAdvancedNativeFocusOwner, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -224,7 +225,7 @@ package feathers.controls
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT</code>.
 		 *
 		 * <p>To customize the text input name without subclassing, see
-		 * <code>customTextInputName</code>.</p>
+		 * <code>customTextInputStyleName</code>.</p>
 		 *
 		 * @see #customTextInputStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
@@ -303,9 +304,9 @@ package feathers.controls
 		 *
 		 * @see feathers.core.INativeFocusOwner
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
-			if(this.textInput)
+			if(this.textInput !== null)
 			{
 				return this.textInput.nativeFocus;
 			}
@@ -1330,6 +1331,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		public function get hasFocus():Boolean
+		{
+			return this._hasFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function setFocus():void
+		{
+			if(this.textInput === null)
+			{
+				return;
+			}
+			this.textInput.setFocus();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -1490,7 +1511,7 @@ package feathers.controls
 						textInputMinHeight = this.textInputExplicitMinHeight;
 					}
 				}
-				textInputMaxWidth = this._maxWidth - maxButtonWidth - this._textInputGap;
+				textInputMaxWidth = this._explicitMaxWidth - maxButtonWidth - this._textInputGap;
 			}
 			else if(this._buttonLayoutMode === StepperButtonLayoutMode.SPLIT_VERTICAL)
 			{
@@ -1518,7 +1539,7 @@ package feathers.controls
 						textInputMinHeight = this.textInputExplicitMinHeight;
 					}
 				}
-				textInputMaxHeight = this._maxHeight - decrementButtonHeight - incrementButtonHeight;
+				textInputMaxHeight = this._explicitMaxHeight - decrementButtonHeight - incrementButtonHeight;
 			}
 			else //split horizontal
 			{
@@ -1546,7 +1567,7 @@ package feathers.controls
 						textInputMinHeight = this.textInputExplicitMinHeight;
 					}
 				}
-				textInputMaxWidth = this._maxWidth - decrementButtonWidth - incrementButtonWidth;
+				textInputMaxWidth = this._explicitMaxWidth - decrementButtonWidth - incrementButtonWidth;
 			}
 			
 			if(textInputWidth < 0)
@@ -1680,11 +1701,8 @@ package feathers.controls
 		protected function decrement():void
 		{
 			this.value = this._value - this._step;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -1693,11 +1711,8 @@ package feathers.controls
 		protected function increment():void
 		{
 			this.value = this._value + this._step;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -1706,11 +1721,8 @@ package feathers.controls
 		protected function toMinimum():void
 		{
 			this.value = this._minimum;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -1719,11 +1731,8 @@ package feathers.controls
 		protected function toMaximum():void
 		{
 			this.value = this._maximum;
-			if(this.textInput.isEditable)
-			{
-				this.validate();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.validate();
+			this.textInput.selectRange(0, this.textInput.text.length);
 		}
 
 		/**
@@ -2048,11 +2057,8 @@ package feathers.controls
 		override protected function focusInHandler(event:Event):void
 		{
 			super.focusInHandler(event);
-			if(this.textInput.isEditable)
-			{
-				this.textInput.setFocus();
-				this.textInput.selectRange(0, this.textInput.text.length);
-			}
+			this.textInput.setFocus();
+			this.textInput.selectRange(0, this.textInput.text.length);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 

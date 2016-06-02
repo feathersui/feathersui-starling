@@ -237,6 +237,10 @@ package feathers.controls
 		 */
 		public function showScreen(id:String, transition:Function = null):DisplayObject
 		{
+			if(this._activeScreenID === id)
+			{
+				return this._activeScreen;
+			}
 			if(transition === null)
 			{
 				transition = this._transition;

@@ -1208,6 +1208,7 @@ package feathers.controls
 			this.dateAndTimeDatesList.styleNameList.add(listStyleName);
 			this.dateAndTimeDatesList.itemRendererFactory = this.dateAndTimeDatesListItemRendererFactory;
 			this.dateAndTimeDatesList.addEventListener(Event.CHANGE, dateAndTimeDatesList_changeHandler);
+			this.dateAndTimeDatesList.typicalItem = {};
 			this.listGroup.addChildAt(this.dateAndTimeDatesList, 0);
 		}
 
@@ -1958,50 +1959,62 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function formatDateAndTimeWeekday(item:int):String
+		protected function formatDateAndTimeWeekday(item:Object):String
 		{
-			HELPER_DATE.setTime(this._minimum.time);
-			HELPER_DATE.setDate(HELPER_DATE.date + item);
-			if(this._todayLabel)
+			if(item is int)
 			{
-				//_lastValidate will be updated once per validation when
-				//scrolling, which is better than creating many duplicate Date
-				//objects in this function
-				if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
-					HELPER_DATE.month === this._lastValidate.month &&
-					HELPER_DATE.date === this._lastValidate.date)
+				HELPER_DATE.setTime(this._minimum.time);
+				HELPER_DATE.setDate(HELPER_DATE.date + item);
+				if(this._todayLabel)
 				{
-					return "";
+					//_lastValidate will be updated once per validation when
+					//scrolling, which is better than creating many duplicate Date
+					//objects in this function
+					if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
+						HELPER_DATE.month === this._lastValidate.month &&
+						HELPER_DATE.date === this._lastValidate.date)
+					{
+						return "";
+					}
 				}
+				return this._localeWeekdayNames[HELPER_DATE.day] as String;
 			}
-			return this._localeWeekdayNames[HELPER_DATE.day] as String;
+			//this value is used for measurement to try to avoid truncated text.
+			//it will not be displayed!
+			return "Wom"; 
 		}
 
 		/**
 		 * @private
 		 */
-		protected function formatDateAndTimeDate(item:int):String
+		protected function formatDateAndTimeDate(item:Object):String
 		{
-			HELPER_DATE.setTime(this._minimum.time);
-			HELPER_DATE.setDate(HELPER_DATE.date + item);
-			if(this._todayLabel)
+			if(item is int)
 			{
-				//_lastValidate will be updated once per validation when
-				//scrolling, which is better than creating many duplicate Date
-				//objects in this function
-				if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
-					HELPER_DATE.month === this._lastValidate.month &&
-					HELPER_DATE.date === this._lastValidate.date)
+				HELPER_DATE.setTime(this._minimum.time);
+				HELPER_DATE.setDate(HELPER_DATE.date + item);
+				if(this._todayLabel)
 				{
-					return this._todayLabel;
+					//_lastValidate will be updated once per validation when
+					//scrolling, which is better than creating many duplicate Date
+					//objects in this function
+					if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
+						HELPER_DATE.month === this._lastValidate.month &&
+						HELPER_DATE.date === this._lastValidate.date)
+					{
+						return this._todayLabel;
+					}
 				}
+				var monthName:String = this._localeMonthNames[HELPER_DATE.month] as String;
+				if(this._monthFirst)
+				{
+					return monthName + " " + HELPER_DATE.date;
+				}
+				return HELPER_DATE.date + " " + monthName;
 			}
-			var monthName:String = this._localeMonthNames[HELPER_DATE.month] as String;
-			if(this._monthFirst)
-			{
-				return monthName + " " + HELPER_DATE.date;
-			}
-			return HELPER_DATE.date + " " + monthName;
+			//this value is used for measurement to try to avoid truncated text.
+			//it will not be displayed!
+			return "Wom 30";
 		}
 
 		/**
@@ -2215,6 +2228,10 @@ class IntegerRangeDataDescriptor implements IListCollectionDataDescriptor
 
 	public function getItemIndex(data:Object, item:Object):int
 	{
+		if(!(item is int))
+		{
+			return -1;
+		}
 		var value:int = item as int;
 		var range:IntegerRange = IntegerRange(data);
 		return Math.ceil((value - range.minimum) / range.step);

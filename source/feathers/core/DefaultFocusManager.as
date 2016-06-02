@@ -8,12 +8,15 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
+	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.stageToStarling;
 
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
+	import flash.errors.IllegalOperationError;
 	import flash.events.FocusEvent;
+	import flash.events.IEventDispatcher;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
@@ -174,13 +177,13 @@ package feathers.core
 		 */
 		public function set focus(value:IFocusDisplayObject):void
 		{
-			if(this._focus == value)
+			if(this._focus === value)
 			{
 				return;
 			}
 			var shouldHaveFocus:Boolean = false;
 			var oldFocus:IFeathersDisplayObject = this._focus;
-			if(this._isEnabled && value && value.isFocusEnabled && value.focusManager == this)
+			if(this._isEnabled && value !== null && value.isFocusEnabled && value.focusManager === this)
 			{
 				this._focus = value;
 				shouldHaveFocus = true;
@@ -190,15 +193,23 @@ package feathers.core
 				this._focus = null;
 			}
 			var nativeStage:Stage = this._starling.nativeStage;
-			if(nativeStage && nativeStage.focus)
+			if(oldFocus is INativeFocusOwner)
 			{
-				//this listener restores focus, if it is lost in a way that is
-				//out of our control. since we may be manually removing focus in
-				//a listener for FeathersEventType.FOCUS_OUT, we don't want it
-				//to restore focus.
-				nativeStage.focus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				var nativeFocus:Object = INativeFocusOwner(oldFocus).nativeFocus;
+				if(nativeFocus === null && nativeStage !== null)
+				{
+					nativeFocus = nativeStage.focus;
+				}
+				if(nativeFocus is IEventDispatcher)
+				{
+					//this listener restores focus, if it is lost in a way that
+					//is out of our control. since we may be manually removing
+					//focus in a listener for FeathersEventType.FOCUS_OUT, we
+					//don't want it to restore focus.
+					IEventDispatcher(nativeFocus).removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				}
 			}
-			if(oldFocus)
+			if(oldFocus !== null)
 			{
 				//this event should be dispatched after setting the new value of
 				//_focus because we want to be able to access the value of the
@@ -213,21 +224,47 @@ package feathers.core
 			}
 			if(this._isEnabled)
 			{
-				if(this._focus)
+				if(this._focus !== null)
 				{
+					nativeFocus = null;
 					if(this._focus is INativeFocusOwner)
 					{
-						nativeStage.focus = INativeFocusOwner(this._focus).nativeFocus;
+						nativeFocus = INativeFocusOwner(this._focus).nativeFocus;
+						if(nativeFocus is InteractiveObject)
+						{
+							nativeStage.focus = InteractiveObject(nativeFocus);
+						}
+						else if(nativeFocus !== null)
+						{
+							if(this._focus is IAdvancedNativeFocusOwner)
+							{
+								var advancedFocus:IAdvancedNativeFocusOwner = IAdvancedNativeFocusOwner(this._focus);
+								if(!advancedFocus.hasFocus)
+								{
+									//let the focused component handle giving focus to
+									//its nativeFocus because it may have a custom API
+									advancedFocus.setFocus();
+								}
+							}
+							else
+							{
+								throw new IllegalOperationError("If nativeFocus does not return an InteractiveObject, class must implement IAdvancedNativeFocusOwner interface");
+							}
+						}
 					}
 					//an INativeFocusOwner may return null for its
 					//nativeFocus property, so we still need to double-check
 					//that the native stage has something in focus. that's
 					//why there isn't an else here
-					if(!nativeStage.focus)
+					if(nativeFocus === null)
 					{
+						nativeFocus = this._nativeFocusTarget;
 						nativeStage.focus = this._nativeFocusTarget;
 					}
-					nativeStage.focus.addEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler, false, 0, true);
+					if(nativeFocus is IEventDispatcher)
+					{
+						IEventDispatcher(nativeFocus).addEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler, false, 0, true);
+					}
 					this._focus.dispatchEventWith(FeathersEventType.FOCUS_IN);
 				}
 				else
@@ -678,7 +715,7 @@ package feathers.core
 					}
 					else if(currentFocus is IFocusContainer && IFocusContainer(currentFocus).isChildFocusEnabled)
 					{
-						newFocus = this.findNextContainerFocus(DisplayObjectContainer(currentFocus), null, false);
+						newFocus = this.findNextContainerFocus(DisplayObjectContainer(currentFocus), null, true);
 					}
 					else
 					{
@@ -756,20 +793,38 @@ package feathers.core
 		 */
 		protected function nativeFocus_focusOutHandler(event:FocusEvent):void
 		{
-			var nativeFocus:InteractiveObject = InteractiveObject(event.currentTarget);
+			var nativeFocus:Object = event.currentTarget;
 			var nativeStage:Stage = this._starling.nativeStage;
-			if(this._focus && !nativeStage.focus)
+			if(nativeStage.focus !== null && nativeStage.focus !== nativeFocus)
 			{
+				//we should stop listening for this event because something else
+				//has focus now
+				if(nativeFocus is IEventDispatcher)
+				{
+					IEventDispatcher(nativeFocus).removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				}
+			}
+			else if(this._focus !== null)
+			{
+				if(this._focus is INativeFocusOwner &&
+					INativeFocusOwner(this._focus).nativeFocus !== nativeFocus)
+				{
+					return;
+				}
 				//if there's still a feathers focus, but the native stage object has
 				//lost focus for some reason, and there's no focus at all, force it
 				//back into focus.
 				//this can happen on app deactivate!
-				nativeStage.focus = nativeFocus;
-			}
-			if(nativeFocus != nativeStage.focus)
-			{
-				//otherwise, we should stop listening for this event
-				nativeFocus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				if(nativeFocus is InteractiveObject)
+				{
+					nativeStage.focus = InteractiveObject(nativeFocus);
+				}
+				else //nativeFocus is IAdvancedNativeFocusOwner
+				{
+					//let the focused component handle giving focus to its
+					//nativeFocus because it may have a custom API
+					IAdvancedNativeFocusOwner(this._focus).setFocus();
+				}
 			}
 		}
 	}

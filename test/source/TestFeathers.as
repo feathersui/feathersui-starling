@@ -105,6 +105,7 @@ package
 	import feathers.tests.TiledRowsLayoutTests;
 	import feathers.tests.TimeLabelTests;
 	import feathers.tests.ToggleButtonFocusTests;
+	import feathers.tests.ToggleButtonInternalStateTests;
 	import feathers.tests.ToggleButtonTests;
 	import feathers.tests.ToggleGroupTests;
 	import feathers.tests.ToggleSwitchMeasurementTests;
@@ -239,6 +240,7 @@ package
 				TextInputMeasurementTests,
 				TextInputInternalStateTests,
 				ToggleButtonTests,
+				ToggleButtonInternalStateTests,
 				ToggleButtonFocusTests,
 				ToggleGroupTests,
 				ToggleSwitchTests,

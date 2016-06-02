@@ -4,6 +4,7 @@ package feathers.tests
 	import feathers.controls.List;
 	import feathers.controls.PickerList;
 	import feathers.controls.popups.DropDownPopUpContentManager;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
 
@@ -38,10 +39,10 @@ package feathers.tests
 			this._list.popUpContentManager = new DropDownPopUpContentManager();
 			this._list.buttonFactory = function():Button
 			{
-				var track:Button = new Button();
-				track.name = BUTTON_NAME;
-				track.defaultSkin = new Quad(200, 200);
-				return track;
+				var button:Button = new Button();
+				button.name = BUTTON_NAME;
+				button.defaultSkin = new Quad(200, 200);
+				return button;
 			};
 			this._list.listFactory = function():List
 			{
@@ -313,6 +314,20 @@ package feathers.tests
 			});
 			this._list.dispose();
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+		}
+
+		[Test]
+		public function testUpdateItemAt():void
+		{
+			var newLabel:String = "New Item";
+			this._list.selectedIndex = 1;
+			this._list.validate();
+			var item:Object = this._list.dataProvider.getItemAt(1);
+			item.label = newLabel;
+			this._list.dataProvider.updateItemAt(1);
+			this._list.validate();
+			var button:Button = Button(this._list.getChildByName(BUTTON_NAME)); 
+			Assert.assertStrictlyEquals("PickerList updateItemAt() on selectedItem did not update button label", newLabel, button.label);
 		}
 	}
 }

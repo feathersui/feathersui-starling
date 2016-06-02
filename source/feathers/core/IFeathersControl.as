@@ -86,26 +86,6 @@ package feathers.core
 	public interface IFeathersControl extends IValidating, IMeasureDisplayObject
 	{
 		/**
-		 * @copy feathers.core.FeathersControl#maxWidth
-		 */
-		function get maxWidth():Number;
-
-		/**
-		 * @private
-		 */
-		function set maxWidth(value:Number):void;
-
-		/**
-		 * @copy feathers.core.FeathersControl#maxHeight
-		 */
-		function get maxHeight():Number;
-
-		/**
-		 * @private
-		 */
-		function set maxHeight(value:Number):void;
-		
-		/**
 		 * @copy feathers.core.FeathersControl#isEnabled
 		 */
 		function get isEnabled():Boolean;

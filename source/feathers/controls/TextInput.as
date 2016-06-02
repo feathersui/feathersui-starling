@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IMultilineTextEditor;
@@ -220,7 +221,7 @@ package feathers.controls
 	 * @see feathers.controls.AutoComplete
 	 * @see feathers.controls.TextArea
 	 */
-	public class TextInput extends FeathersControl implements ITextBaselineControl, INativeFocusOwner, IStateContext
+	public class TextInput extends FeathersControl implements ITextBaselineControl, IAdvancedNativeFocusOwner, IStateContext
 	{
 		/**
 		 * @private
@@ -463,7 +464,7 @@ package feathers.controls
 		 * 
 		 * @see feathers.core.INativeFocusOwner
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
 			if(this.textEditor is INativeFocusOwner)
 			{
@@ -497,11 +498,7 @@ package feathers.controls
 		 */
 		public function get hasFocus():Boolean
 		{
-			if(!this._focusManager)
-			{
-				return this._textEditorHasFocus;
-			}
-			return this._hasFocus;
+			return this._textEditorHasFocus;
 		}
 
 		/**
@@ -1222,6 +1219,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _explicitBackgroundMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxHeight:Number;
 
 		/**
 		 * @private
@@ -2305,8 +2312,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentBackground,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			if(this.currentBackground is IValidating)
 			{
 				IValidating(this.currentBackground).validate();
@@ -2652,6 +2661,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = measureSkin.explicitHeight;
 						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
 						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
 					}
 					else
 					{
@@ -2659,6 +2670,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = this.currentBackground.height;
 						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
 				}
 			}
@@ -2920,7 +2933,11 @@ package feathers.controls
 		{
 			if(this._isEnabled)
 			{
-				if(this._textEditorHasFocus)
+				//this component can have focus while its text editor does not
+				//have focus. StageText, in particular, can't receive focus
+				//when its enabled property is false, but we still want to show
+				//that the input is focused.
+				if(this._textEditorHasFocus || this._hasFocus)
 				{
 					this.changeState(TextInputState.FOCUSED);
 				}
@@ -2984,6 +3001,18 @@ package feathers.controls
 				{
 					return;
 				}
+				touch.getLocation(this.stage, HELPER_POINT);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+				if(!isInBounds)
+				{
+					//if not in bounds on TouchPhase.ENDED, there won't be a
+					//hover end event, so we need to clear the mouse cursor
+					if(Mouse.supportsNativeCursor && this._oldMouseCursor)
+					{
+						Mouse.cursor = this._oldMouseCursor;
+						this._oldMouseCursor = null;
+					}
+				}
 				this._touchPointID = -1;
 				if(this.textEditor.setTouchFocusOnEndedPhase)
 				{
@@ -3032,6 +3061,10 @@ package feathers.controls
 				return;
 			}
 			super.focusInHandler(event);
+			//in some cases the text editor cannot receive focus, so it won't
+			//dispatch an event. we need to detect the focused state using the
+			//_hasFocus variable
+			this.refreshState();
 			this.setFocus();
 		}
 
@@ -3045,6 +3078,9 @@ package feathers.controls
 				return;
 			}
 			super.focusOutHandler(event);
+			//similar to above, we refresh the state based on the _hasFocus
+			//because the text editor may not be able to receive focus
+			this.refreshState();
 			this.textEditor.clearFocus();
 		}
 

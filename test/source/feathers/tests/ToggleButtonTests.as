@@ -399,5 +399,129 @@ package feathers.tests
 			group.removeItem(this._button);
 			Assert.assertNull("toggleGroup property must be null after removing a ToggleButton to a ToggleGroup.", this._button.toggleGroup);
 		}
+
+		[Test]
+		public function testButtonStateHoverOnTouchPhaseHover():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("ToggleButton currentState was not changed to ButtonState.HOVER_AND_SELECTED on TouchPhase.HOVER", ButtonState.HOVER_AND_SELECTED, this._button.currentState);
+		}
+
+		[Test]
+		public function testButtonStateUpAfterHoverOut():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, new <Touch>[]));
+			Assert.assertStrictlyEquals("ToggleButton currentState was not changed to ButtonState.UP_AND_SELECTED when TouchPhase.HOVER ends", ButtonState.UP_AND_SELECTED, this._button.currentState);
+		}
+
+		[Test]
+		public function testButtonStateDownOnTouchPhaseBegan():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("ToggleButton currentState was not changed to ButtonState.DOWN_AND_SELECTED on TouchPhase.BEGAN", ButtonState.DOWN_AND_SELECTED, this._button.currentState);
+		}
+
+		[Test]
+		public function testButtonStateUpOnTouchPhaseMoveOutside():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.MOVED;
+			touch.globalX = 1000;
+			touch.globalY = position.y;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("ToggleButton currentState was not changed to ButtonState.UP_AND_SELECTED on TouchPhase.MOVED when position is outside button", ButtonState.UP_AND_SELECTED, this._button.currentState);
+		}
+
+		[Test]
+		public function testButtonStateDownOnTouchPhaseMoveOutsideAndBackInside():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.MOVED;
+			touch.globalX = 1000;
+			touch.globalY = position.y;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.globalX = 10;
+			touch.globalY = position.y;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("ToggleButton currentState was not changed to ButtonState.DOWN_AND_SELECTED on TouchPhase.MOVED when position moves outside button then back inside", ButtonState.DOWN_AND_SELECTED, this._button.currentState);
+		}
+
+		[Test]
+		public function testButtonStateUpOnTouchPhaseMoveOutsideAndKeepDownStateOnRollOutIsTrue():void
+		{
+			this._button.keepDownStateOnRollOut = true;
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.MOVED;
+			touch.globalX = 1000;
+			touch.globalY = position.y;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("ToggleButton currentState was incorrectly changed from ButtonState.DOWN_AND_SELECTED on TouchPhase.MOVED when position is outside button and keepDownStateOnRollOut is true", ButtonState.DOWN_AND_SELECTED, this._button.currentState);
+		}
+
+		[Test]
+		public function testButtonStateUpOnTouchPhaseEnded():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("ToggleButton currentState was not changed to ButtonState.UP on TouchPhase.ENDED (which toggles isSelected)", ButtonState.UP, this._button.currentState);
+		}
 	}
 }

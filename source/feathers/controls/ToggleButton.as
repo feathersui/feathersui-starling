@@ -1104,8 +1104,10 @@ package feathers.controls
 		{
 			if(this._stateToSkinFunction === null)
 			{
-				var result:DisplayObject = this._stateToSkin[this._currentState] as DisplayObject;
-				if(result)
+				//we use the currentState getter here instead of the variable
+				//because the variable does not keep track of the selection
+				var result:DisplayObject = this._stateToSkin[this.currentState] as DisplayObject;
+				if(result !== null)
 				{
 					return result;
 				}
@@ -1125,8 +1127,10 @@ package feathers.controls
 		{
 			if(this._stateToIconFunction === null)
 			{
-				var result:DisplayObject = this._stateToIcon[this._currentState] as DisplayObject;
-				if(result)
+				//we use the currentState getter here instead of the variable
+				//because the variable does not keep track of the selection
+				var result:DisplayObject = this._stateToIcon[this.currentState] as DisplayObject;
+				if(result !== null)
 				{
 					return result;
 				}

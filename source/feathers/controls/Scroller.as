@@ -2177,6 +2177,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitBackgroundMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var currentBackgroundSkin:DisplayObject;
 
 		/**
@@ -3376,8 +3386,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{
@@ -3570,6 +3582,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = measureSkin.explicitHeight;
 						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
 						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
 					}
 					else
 					{
@@ -3577,6 +3591,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
 						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
 				}
 			}
@@ -3681,8 +3697,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{
@@ -3756,12 +3774,12 @@ package feathers.controls
 			//view port fills the entire bounds.
 			this._viewPort.visibleWidth = this._explicitWidth - horizontalWidthOffset;
 			this._viewPort.minVisibleWidth = this._explicitMinWidth - horizontalWidthOffset;
-			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
+			this._viewPort.maxVisibleWidth = this._explicitMaxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = viewPortMinWidth;
 
 			this._viewPort.visibleHeight = this._explicitHeight - verticalHeightOffset;
 			this._viewPort.minVisibleHeight = this._explicitMinHeight - verticalHeightOffset;
-			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
+			this._viewPort.maxVisibleHeight = this._explicitMaxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = viewPortMinHeight;
 			this._viewPort.validate();
 			//we don't want to listen for a resize event from the view port
@@ -3794,7 +3812,7 @@ package feathers.controls
 				this._viewPort.visibleWidth = visibleWidth;
 			}
 			this._viewPort.minVisibleWidth = this.actualWidth - horizontalWidthOffset;
-			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
+			this._viewPort.maxVisibleWidth = this._explicitMaxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = visibleWidth;
 
 			var visibleHeight:Number = this.actualHeight - verticalHeightOffset;
@@ -3803,7 +3821,7 @@ package feathers.controls
 				this._viewPort.visibleHeight = visibleHeight;
 			}
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
-			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
+			this._viewPort.maxVisibleHeight = this._explicitMaxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = visibleHeight;
 
 			//this time, we care whether a resize event is dispatched while the
@@ -4243,7 +4261,7 @@ package feathers.controls
 				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this._explicitWidth;
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
 				if(forceScrollBars || this._horizontalScrollPolicy == ScrollPolicy.ON ||
-					((totalWidth > scrollerWidth || totalWidth > this._maxWidth) &&
+					((totalWidth > scrollerWidth || totalWidth > this._explicitMaxWidth) &&
 						this._horizontalScrollPolicy != ScrollPolicy.OFF))
 				{
 					this._hasHorizontalScrollBar = true;
@@ -4273,7 +4291,7 @@ package feathers.controls
 				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this._explicitHeight;
 				var totalHeight:Number = this._viewPort.height + this._topViewPortOffset + this._bottomViewPortOffset;
 				if(forceScrollBars || this._verticalScrollPolicy == ScrollPolicy.ON ||
-					((totalHeight > scrollerHeight || totalHeight > this._maxHeight) &&
+					((totalHeight > scrollerHeight || totalHeight > this._explicitMaxHeight) &&
 						this._verticalScrollPolicy != ScrollPolicy.OFF))
 				{
 					this._hasVerticalScrollBar = true;
@@ -4379,26 +4397,29 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this.currentBackgroundSkin)
+			var visibleWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+			var visibleHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+
+			if(this.currentBackgroundSkin !== null)
 			{
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;
 			}
 
-			if(this.horizontalScrollBar)
+			if(this.horizontalScrollBar !== null)
 			{
 				this.horizontalScrollBar.validate();
 			}
-			if(this.verticalScrollBar)
+			if(this.verticalScrollBar !== null)
 			{
 				this.verticalScrollBar.validate();
 			}
-			if(this._touchBlocker)
+			if(this._touchBlocker !== null)
 			{
 				this._touchBlocker.x = this._leftViewPortOffset;
 				this._touchBlocker.y = this._topViewPortOffset;
-				this._touchBlocker.width = this._viewPort.visibleWidth;
-				this._touchBlocker.height = this._viewPort.visibleHeight;
+				this._touchBlocker.width = visibleWidth;
+				this._touchBlocker.height = visibleHeight;
 			}
 
 			if(this._snapScrollPositionsToPixels)
@@ -4418,54 +4439,54 @@ package feathers.controls
 				this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
 			}
 
-			if(this.horizontalScrollBar)
+			if(this.horizontalScrollBar !== null)
 			{
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
-				this.horizontalScrollBar.y = this._topViewPortOffset + this._viewPort.visibleHeight;
-				if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FIXED)
+				this.horizontalScrollBar.y = this._topViewPortOffset + visibleHeight;
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
 					if((this._hasVerticalScrollBar || this._verticalScrollBarHideTween) && this.verticalScrollBar)
 					{
-						this.horizontalScrollBar.width = this._viewPort.visibleWidth - this.verticalScrollBar.width;
+						this.horizontalScrollBar.width = visibleWidth - this.verticalScrollBar.width;
 					}
 					else
 					{
-						this.horizontalScrollBar.width = this._viewPort.visibleWidth;
+						this.horizontalScrollBar.width = visibleWidth;
 					}
 				}
 				else
 				{
-					this.horizontalScrollBar.width = this._viewPort.visibleWidth;
+					this.horizontalScrollBar.width = visibleWidth;
 				}
 			}
 
-			if(this.verticalScrollBar)
+			if(this.verticalScrollBar !== null)
 			{
-				if(this._verticalScrollBarPosition == RelativePosition.LEFT)
+				if(this._verticalScrollBarPosition === RelativePosition.LEFT)
 				{
 					this.verticalScrollBar.x = this._paddingLeft;
 				}
 				else
 				{
-					this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
+					this.verticalScrollBar.x = this._leftViewPortOffset + visibleWidth;
 				}
 				this.verticalScrollBar.y = this._topViewPortOffset;
-				if(this._scrollBarDisplayMode != ScrollBarDisplayMode.FIXED)
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
 					if((this._hasHorizontalScrollBar || this._horizontalScrollBarHideTween) && this.horizontalScrollBar)
 					{
-						this.verticalScrollBar.height = this._viewPort.visibleHeight - this.horizontalScrollBar.height;
+						this.verticalScrollBar.height = visibleHeight - this.horizontalScrollBar.height;
 					}
 					else
 					{
-						this.verticalScrollBar.height = this._viewPort.visibleHeight;
+						this.verticalScrollBar.height = visibleHeight;
 					}
 				}
 				else
 				{
-					this.verticalScrollBar.height = this._viewPort.visibleHeight;
+					this.verticalScrollBar.height = visibleHeight;
 				}
 			}
 		}

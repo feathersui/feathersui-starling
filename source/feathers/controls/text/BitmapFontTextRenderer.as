@@ -168,7 +168,7 @@ package feathers.controls.text
 		{
 			//this is a special case because truncation may bypass normal rules
 			//for determining if changing maxWidth should invalidate
-			var needsInvalidate:Boolean = value > this._maxWidth && this._lastLayoutIsTruncated;
+			var needsInvalidate:Boolean = value > this._explicitMaxWidth && this._lastLayoutIsTruncated;
 			super.maxWidth = value;
 			if(needsInvalidate)
 			{
@@ -683,7 +683,7 @@ package feathers.controls.text
 			var maxLineWidth:Number = this._explicitWidth;
 			if(maxLineWidth !== maxLineWidth) //isNaN
 			{
-				maxLineWidth = this._maxWidth;
+				maxLineWidth = this._explicitMaxWidth;
 			}
 
 			var maxX:Number = 0;
@@ -907,7 +907,7 @@ package feathers.controls.text
 			var newWidth:Number = this._explicitWidth;
 			if(newWidth !== newWidth) //isNaN
 			{
-				newWidth = this._maxWidth;
+				newWidth = this._explicitMaxWidth;
 			}
 
 			//sometimes, we can determine that the dimensions will be exactly
@@ -974,7 +974,7 @@ package feathers.controls.text
 
 			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
-			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
+			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
 			{
 				//we need to measure the text to get the maximum line width

@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
+	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.IStateContext;
@@ -93,7 +94,7 @@ package feathers.controls
 	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
 	 * @see feathers.controls.TextInput
 	 */
-	public class TextArea extends Scroller implements INativeFocusOwner, IStateContext
+	public class TextArea extends Scroller implements IAdvancedNativeFocusOwner, IStateContext
 	{
 		/**
 		 * @private
@@ -399,7 +400,7 @@ package feathers.controls
 		 *
 		 * @see feathers.core.INativeFocusOwner
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
 			if(this.textEditorViewPort is INativeFocusOwner)
 			{

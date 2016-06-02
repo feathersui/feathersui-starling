@@ -3603,8 +3603,10 @@ package feathers.controls.renderers
 			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitSkinWidth, this._explicitSkinHeight,
-				this._explicitSkinMinWidth, this._explicitSkinMinHeight);
+				this._explicitSkinMinWidth, this._explicitSkinMinHeight,
+				this._explicitSkinMaxWidth, this._explicitSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
 			
 			var newWidth:Number = this._explicitWidth;
@@ -4342,7 +4344,9 @@ package feathers.controls.renderers
 			{
 				return DisplayObject(this._stateToAccessoryFunction(this, this._currentState, this.currentAccessory));
 			}
-			var result:DisplayObject = this._stateToAccessory[this._currentState] as DisplayObject;
+			//we use the currentState getter here instead of the variable
+			//because the variable does not keep track of the selection
+			var result:DisplayObject = this._stateToAccessory[this.currentState] as DisplayObject;
 			if(result !== null)
 			{
 				return result;
@@ -4543,7 +4547,7 @@ package feathers.controls.renderers
 				calculatedWidth = this._explicitWidth;
 				if(calculatedWidth !== calculatedWidth) //isNaN
 				{
-					calculatedWidth = this._maxWidth;
+					calculatedWidth = this._explicitMaxWidth;
 				}
 			}
 			calculatedWidth -= (this._paddingLeft + this._paddingRight);
@@ -4553,7 +4557,7 @@ package feathers.controls.renderers
 				calculatedHeight = this._explicitHeight;
 				if(calculatedHeight !== calculatedHeight) //isNaN
 				{
-					calculatedHeight = this._maxHeight;
+					calculatedHeight = this._explicitMaxHeight;
 				}
 			}
 			calculatedHeight -= (this._paddingTop + this._paddingBottom);

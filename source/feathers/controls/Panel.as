@@ -1148,8 +1148,10 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			if(this.currentBackgroundSkin is IValidating)
 			{
@@ -1415,7 +1417,7 @@ package feathers.controls
 				this.header.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				this.header.minWidth = this._explicitMinWidth - this._outerPaddingLeft - this._outerPaddingRight;
 			}
-			this.header.maxWidth = this._maxWidth - this._outerPaddingLeft - this._outerPaddingRight;
+			this.header.maxWidth = this._explicitMaxWidth - this._outerPaddingLeft - this._outerPaddingRight;
 			this.header.height = this._explicitHeaderHeight;
 			this.header.minHeight = this._explicitHeaderMinHeight;
 			this.header.validate();
@@ -1436,7 +1438,7 @@ package feathers.controls
 					this.footer.width = this._explicitWidth - this._outerPaddingLeft - this._outerPaddingRight;
 					this.footer.minWidth = this._explicitMinWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				}
-				this.footer.maxWidth = this._maxWidth - this._outerPaddingLeft - this._outerPaddingRight;
+				this.footer.maxWidth = this._explicitMaxWidth - this._outerPaddingLeft - this._outerPaddingRight;
 				this.footer.height = this._explicitFooterHeight;
 				this.footer.minHeight = this._explicitFooterMinHeight;
 				this.footer.validate();

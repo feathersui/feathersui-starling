@@ -17,6 +17,7 @@ package feathers.tests
 		private var _overlay:Quad;
 		private var _content:LayoutGroup;
 		private var _drawer1:LayoutGroup;
+		private var _drawer2:LayoutGroup;
 
 		[Before]
 		public function prepare():void
@@ -29,6 +30,9 @@ package feathers.tests
 			
 			this._drawer1 = new LayoutGroup();
 			this._drawer1.backgroundSkin = new Quad(125, 100, 0xff0000);
+
+			this._drawer2 = new LayoutGroup();
+			this._drawer2.backgroundSkin = new Quad(90, 130, 0x00ff00);
 			
 			this._drawers = new Drawers(this._content);
 			this._drawers.overlaySkin = this._overlay;
@@ -327,6 +331,94 @@ package feathers.tests
 				Assert.assertTrue("Drawers Event.CLOSE was not dispatched after toggleLeftDrawer()", hasDispatchedCloseEvent);
 				Assert.assertFalse("Drawers isLeftDrawerOpen is incorrectly true after toggleLeftDrawer()", drawers.isLeftDrawerOpen);
 			}, 300);
+		}
+
+		[Test]
+		public function testOpenTopDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.topDrawer = this._drawer2;
+			this._drawers.isLeftDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.isTopDrawerOpen = true;
+			Assert.assertFalse("Drawers isLeftDrawerOpen should be false after isTopDrawerOpen is set to true", this._drawers.isLeftDrawerOpen);
+		}
+
+		[Test]
+		public function testOpenRightDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.rightDrawer = this._drawer2;
+			this._drawers.isLeftDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.isRightDrawerOpen = true;
+			Assert.assertFalse("Drawers isLeftDrawerOpen should be false after isRightDrawerOpen is set to true", this._drawers.isLeftDrawerOpen);
+		}
+
+		[Test]
+		public function testOpenBottomDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.bottomDrawer = this._drawer2;
+			this._drawers.isLeftDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.isBottomDrawerOpen = true;
+			Assert.assertFalse("Drawers isLeftDrawerOpen should be false after isBottomDrawerOpen is set to true", this._drawers.isLeftDrawerOpen);
+		}
+
+		[Test]
+		public function testOpenLeftDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.topDrawer = this._drawer2;
+			this._drawers.isTopDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.isLeftDrawerOpen = true;
+			Assert.assertFalse("Drawers isTopDrawerOpen should be false after isLeftDrawerOpen is set to true", this._drawers.isTopDrawerOpen);
+		}
+
+		[Test]
+		public function testToggleTopDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.topDrawer = this._drawer2;
+			this._drawers.isLeftDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.toggleTopDrawer();
+			Assert.assertFalse("Drawers isLeftDrawerOpen should be false after toggleTopDrawer() opens the drawer", this._drawers.isLeftDrawerOpen);
+		}
+
+		[Test]
+		public function testToggleRightDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.rightDrawer = this._drawer2;
+			this._drawers.isLeftDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.toggleRightDrawer();
+			Assert.assertFalse("Drawers isLeftDrawerOpen should be false after toggleRightDrawer() opens the drawer", this._drawers.isLeftDrawerOpen);
+		}
+
+		[Test]
+		public function testToggleBottomDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.bottomDrawer = this._drawer2;
+			this._drawers.isLeftDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.toggleBottomDrawer();
+			Assert.assertFalse("Drawers isLeftDrawerOpen should be false after toggleBottomDrawer() opens the drawer", this._drawers.isLeftDrawerOpen);
+		}
+
+		[Test]
+		public function testToggleLeftDrawerClosesOtherDrawers():void
+		{
+			this._drawers.leftDrawer = this._drawer1;
+			this._drawers.topDrawer = this._drawer2;
+			this._drawers.isTopDrawerOpen = true;
+			this._drawers.validate();
+			this._drawers.toggleLeftDrawer();
+			Assert.assertFalse("Drawers isTopDrawerOpen should be false after toggleLeftDrawer() opens the drawer", this._drawers.isTopDrawerOpen);
 		}
 	}
 }

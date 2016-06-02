@@ -415,6 +415,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitTextRendererMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitTextRendererMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _explicitBackgroundWidth:Number;
 
 		/**
@@ -431,6 +441,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _explicitBackgroundMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxHeight:Number;
 
 		/**
 		 * @private
@@ -758,18 +778,23 @@ package feathers.controls
 				this._explicitHeight - this._paddingTop - this._paddingBottom,
 				this._explicitMinWidth - this._paddingLeft - this._paddingRight,
 				this._explicitMinHeight - this._paddingTop - this._paddingBottom,
+				this._explicitMaxWidth - this._paddingLeft - this._paddingRight,
+				this._explicitMaxHeight - this._paddingTop - this._paddingBottom,
 				this._explicitTextRendererWidth, this._explicitTextRendererHeight,
-				this._explicitTextRendererMinWidth, this._explicitTextRendererMinHeight);
-			this.textRenderer.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textRenderer.maxHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
+				this._explicitTextRendererMinWidth, this._explicitTextRendererMinHeight,
+				this._explicitTextRendererMaxWidth, this._explicitTextRendererMaxHeight);
+			this.textRenderer.maxWidth = this._explicitMaxWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.maxHeight = this._explicitMaxHeight - this._paddingTop - this._paddingBottom;
 			this.textRenderer.measureText(HELPER_POINT);
 
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
-				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight);
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
 			if(this.currentBackgroundSkin is IValidating)
 			{
 				IValidating(this.currentBackgroundSkin).validate();
@@ -900,6 +925,8 @@ package feathers.controls
 			this._explicitTextRendererHeight = this.textRenderer.explicitHeight;
 			this._explicitTextRendererMinWidth = this.textRenderer.explicitMinWidth;
 			this._explicitTextRendererMinHeight = this.textRenderer.explicitMinHeight;
+			this._explicitTextRendererMaxWidth = this.textRenderer.explicitMaxWidth;
+			this._explicitTextRendererMaxHeight = this.textRenderer.explicitMaxHeight;
 		}
 
 		/**
@@ -930,6 +957,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = measureSkin.explicitHeight;
 						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
 						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
 					}
 					else
 					{
@@ -937,6 +966,8 @@ package feathers.controls
 						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
 						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
 				}
 			}

@@ -619,7 +619,7 @@ package feathers.controls.text
 		/**
 		 * @copy feathers.core.INativeFocusOwner#nativeFocus
 		 */
-		public function get nativeFocus():InteractiveObject
+		public function get nativeFocus():Object
 		{
 			return this._nativeFocus;
 		}
@@ -634,26 +634,20 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
-			if(!this._isEditable && !this._isSelectable)
-			{
-				//if the text can't be edited or selected, then all focus is
-				//disabled.
-				return;
-			}
 			if(this._hasFocus && !position)
 			{
 				//we already have focus, and there isn't a touch position, we
 				//can ignore this because nothing would change
 				return;
 			}
-			if(this._nativeFocus)
+			if(this._nativeFocus !== null)
 			{
-				if(!this._nativeFocus.parent)
+				if(this._nativeFocus.parent === null)
 				{
 					Starling.current.nativeStage.addChild(this._nativeFocus);
 				}
 				var newIndex:int = -1;
-				if(position)
+				if(position !== null)
 				{
 					newIndex = this.getSelectionIndexAtPoint(position.x, position.y);
 				}
@@ -716,7 +710,7 @@ package feathers.controls.text
 			}
 			this._selectionBeginIndex = beginIndex;
 			this._selectionEndIndex = endIndex;
-			if(beginIndex == endIndex)
+			if(beginIndex === endIndex)
 			{
 				this._selectionAnchorIndex = beginIndex;
 				if(beginIndex < 0)
@@ -725,7 +719,9 @@ package feathers.controls.text
 				}
 				else
 				{
-					this._cursorSkin.visible = this._hasFocus;
+					//cursor skin is not shown if isSelectable === true and
+					//isEditable is false
+					this._cursorSkin.visible = this._hasFocus && this._isEditable;
 				}
 				this._selectionSkin.visible = false;
 			}
@@ -887,9 +883,14 @@ package feathers.controls.text
 		 */
 		protected function focusIn():void
 		{
-			var showCursor:Boolean = this._selectionBeginIndex >= 0 && this._selectionBeginIndex == this._selectionEndIndex;
+			var showSelection:Boolean = (this._isEditable || this._isSelectable) &&
+				this._selectionBeginIndex >= 0 &&
+				this._selectionBeginIndex !== this._selectionEndIndex;
+			var showCursor:Boolean = this._isEditable &&
+				this._selectionBeginIndex >= 0 &&
+				this._selectionBeginIndex === this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
-			this._selectionSkin.visible = !showCursor;
+			this._selectionSkin.visible = showSelection;
 			if(!FocusManager.isEnabledForStage(this.stage))
 			{
 				//if there isn't a focus manager, we need to set focus manually
@@ -931,7 +932,7 @@ package feathers.controls.text
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
 				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)
@@ -1000,7 +1001,7 @@ package feathers.controls.text
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
 				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
-				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._maxWidth;
+				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 				if(maxLineWidth > lineWidth)
 				{
 					if(align == TextFormatAlign.RIGHT)

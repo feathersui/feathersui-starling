@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.TextInput;
+	import feathers.controls.TextInputState;
 	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.core.FocusManager;
 	import feathers.events.FeathersEventType;
@@ -18,7 +19,11 @@ package feathers.tests
 
 	public class BitmapFontTextEditorFocusTests
 	{
+		private static const CURSOR_SKIN_NAME:String = "test-cursor-skin";
+		private static const SELECTION_SKIN_NAME:String = "test-selection-skin";
+
 		private var _textInput:TextInput;
+		private var _textEditor:BitmapFontTextEditor;
 
 		[Before]
 		public function prepare():void
@@ -34,8 +39,14 @@ package feathers.tests
 
 		private function textEditorFactory():BitmapFontTextEditor
 		{
-			var textEditor:BitmapFontTextEditor = new BitmapFontTextEditor();
-			return textEditor;
+			this._textEditor = new BitmapFontTextEditor();
+			var cursorSkin:Quad = new Quad(1, 1, 0xff00ff);
+			cursorSkin.name = CURSOR_SKIN_NAME;
+			this._textEditor.cursorSkin = cursorSkin;
+			var selectionSkin:Quad = new Quad(1, 1, 0xff00ff);
+			selectionSkin.name = SELECTION_SKIN_NAME;
+			this._textEditor.selectionSkin = selectionSkin;
+			return this._textEditor;
 		}
 
 		[After]
@@ -48,6 +59,8 @@ package feathers.tests
 			FocusManager.setEnabledForStage(TestFeathers.starlingRoot.stage, false);
 			this._textInput.removeFromParent(true);
 			this._textInput = null;
+
+			this._textEditor = null;
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -388,6 +401,196 @@ package feathers.tests
 				cursorIndex + textToType.length, this._textInput.selectionEndIndex);
 			Assert.assertStrictlyEquals("text not changed correctly after selectRange() and typing some text",
 				"He" + textToType + "llo World", this._textInput.text);
+		}
+
+		[Test]
+		public function testSetFocusWhenFocusEnabledFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isFocusEnabled = false;
+			this._textInput.validate();
+			Assert.assertNotNull("BitmapFontTextEditor nativeFocus must not be null when isFocusEnabled is false",
+				this._textInput.nativeFocus);
+			Assert.assertTrue("BitmapFontTextEditor nativeFocus must not receive nativeStage focus when isFocusEnabled is false",
+				Starling.current.nativeStage.focus !== this._textInput.nativeFocus);
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertTrue("TextInput must not receive FocusManager focus when using BitmapFontTextEditor and isFocusEnabled is false",
+				this._textInput.focusManager.focus !== this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.ENABLED after attempt to receive FocusManager focus when using BitmapFontTextEditor and isFocusEnabled is false",
+				TextInputState.ENABLED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testReceiveFocusWhenEditableFalseAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = false;
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			this._textInput.validate();
+			Assert.assertStrictlyEquals("BitmapFontTextEditor nativeFocus must receive nativeStage focus when isEditable is false and isSelectable is false",
+				Starling.current.nativeStage.focus, this._textInput.nativeFocus);
+			Assert.assertStrictlyEquals("TextInput must receive FocusManager focus when using BitmapFontTextEditor and isEditable is false and isSelectable is false",
+				this._textInput.focusManager.focus, this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.FOCUSED after receive FocusManager focus when using BitmapFontTextEditor and isEditable is false and isSelectable is false",
+				TextInputState.FOCUSED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testSetFocusWhenEditableTrueAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = true;
+			this._textInput.isSelectable = false;
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertStrictlyEquals("BitmapFontTextEditor nativeFocus must receive nativeStage focus when isEditable is true and isSelectable is false",
+				Starling.current.nativeStage.focus, this._textInput.nativeFocus);
+			Assert.assertStrictlyEquals("TextInput must receive FocusManager focus when using BitmapFontTextEditor and isEditable is true and isSelectable is false",
+				this._textInput.focusManager.focus, this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.FOCUSED after receive FocusManager focus when using BitmapFontTextEditor and isEditable is true and isSelectable is false",
+				TextInputState.FOCUSED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testSetFocusWhenEditableFalseAndSelectableTrue():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = true;
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertStrictlyEquals("BitmapFontTextEditor nativeFocus must receive nativeStage focus when isEditable is false and isSelectable is true",
+				Starling.current.nativeStage.focus, this._textInput.nativeFocus);
+			Assert.assertStrictlyEquals("TextInput must receive FocusManager focus when using BitmapFontTextEditor and isEditable is false and isSelectable is true",
+				this._textInput.focusManager.focus, this._textInput);
+			Assert.assertStrictlyEquals("TextInput state must be TextInputState.FOCUSED after receive FocusManager focus when using BitmapFontTextEditor and isEditable is false and isSelectable is true",
+				TextInputState.FOCUSED, this._textInput.currentState);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithNoCharactersSelected():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.selectRange(1, 1);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertTrue("BitmapFontTextEditor cursorSkin must be visible when no characters selected",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertFalse("BitmapFontTextEditor selectionSkin must not be visible when no characters selected",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithMultipleCharactersSelected():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.selectRange(1, 3);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertFalse("BitmapFontTextEditor cursorSkin must not be visible when multiple characters selected",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertTrue("BitmapFontTextEditor selectionSkin must be visible when multiple characters selected",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithNoCharactersSelectedEditableFalseAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = false;
+			this._textInput.selectRange(1, 1);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertFalse("BitmapFontTextEditor cursorSkin must not be visible when no characters selected, isEditable is false, and isSelectable is false",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertFalse("BitmapFontTextEditor selectionSkin must not be visible when no characters selected, isEditable is false, and isSelectable is false",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithMultipleCharactersSelectedEditableFalseAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = false;
+			this._textInput.selectRange(1, 3);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertFalse("BitmapFontTextEditor cursorSkin must not be visible when multiple characters selected, isEditable is false, and isSelectable is false",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertFalse("BitmapFontTextEditor selectionSkin must not be visible when multiple characters selected, isEditable is false, and isSelectable is false",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithNoCharactersSelectedEditableTrueAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = true;
+			this._textInput.isSelectable = false;
+			this._textInput.selectRange(1, 1);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertTrue("BitmapFontTextEditor cursorSkin must be visible when no characters selected, isEditable is true, and isSelectable is false",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertFalse("BitmapFontTextEditor selectionSkin must not be visible when no characters selected, isEditable is true, and isSelectable is false",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithMultipleCharactersSelectedEditableTrueAndSelectableFalse():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = true;
+			this._textInput.isSelectable = false;
+			this._textInput.selectRange(1, 3);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertFalse("BitmapFontTextEditor cursorSkin must not be visible when multiple characters selected, isEditable is true, and isSelectable is false",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertTrue("BitmapFontTextEditor selectionSkin must be visible when multiple characters selected, isEditable is true, and isSelectable is false",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithNoCharactersSelectedEditableFalseAndSelectableTrue():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = true;
+			this._textInput.selectRange(1, 1);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertFalse("BitmapFontTextEditor cursorSkin must not be visible when no characters selected, isEditable is false, and isSelectable is true",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertFalse("BitmapFontTextEditor selectionSkin must not be visible when no characters selected, isEditable is false, and isSelectable is true",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
+		}
+
+		[Test]
+		public function testCursorAndSelectionSkinsWithMultipleCharactersSelectedEditableFalseAndSelectableTrue():void
+		{
+			this._textInput.text = "Hello World";
+			this._textInput.isEditable = false;
+			this._textInput.isSelectable = true;
+			this._textInput.selectRange(1, 3);
+			//validate to be sure that the range is passed down to the text editor
+			this._textInput.validate();
+			this._textInput.focusManager.focus = this._textInput;
+			Assert.assertFalse("BitmapFontTextEditor cursorSkin must not be visible when multiple characters selected, isEditable is false, and isSelectable is true",
+				this._textEditor.getChildByName(CURSOR_SKIN_NAME).visible);
+			Assert.assertTrue("BitmapFontTextEditor selectionSkin must be visible when multiple characters selected, isEditable is false, and isSelectable is true",
+				this._textEditor.getChildByName(SELECTION_SKIN_NAME).visible);
 		}
 	}
 }
