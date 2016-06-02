@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.0.0-beta2 - May 2016
+## 3.0.0 - June 2016
 
 See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about how to upgrade to Feathers 3.0.
 
@@ -38,11 +38,13 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * DateTimeSpinner: fixed issue where runtime error could be thrown if changing range or locale.
 * DateTimeSpinner: fixed issue where changing locale would not update displayed month names.
 * DateTimeSpinner: fixed issue where year range would be wrong after changing minimum.
+* DateTimeSpinner: now uses a typicalItem for the DateTimeMode.DATE_AND_TIME dates list so that it won't resize during scrolling.
 * DefaultListItemRenderer, DefaultGroupedListItemRenderer: itemToLabel() now strictly checks for null instead of a "truthy" value, and an empty string will have different behavior.
 * DisplayListWatcher: removed class. Please migrate to new themes, or find this class in feathers-compat library.
 * Drawers: fixed issue where drawer would jump open instead of opening smoothly when minimumDragDistance was too large.
 * Drawers: optimized measurement of drawers by setting explicit/max dimensions before validation.
 * Drawers: drawers must implement IFeathersControl, and Sprite is not allowed anymore.
+* Drawers: now enforces the assumption that multiple drawers cannot be opened at the same time (multiple drawers can still be docked).
 * FeathersControl: setSizeInternal() is deprecated and replaced by saveMeasurements(), which includes the ability to set the minimum width and minimum height.
 * FeathersControl: added toolTip property to display a tool-tip if the ToolTipManager is enabled.
 * FeathersControl: added explicitWidth, explicitHeight, explicitMinWidth, and explicitMinHeight. Will return a Number when set, or NaN if the component has auto-sized.
@@ -51,6 +53,7 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * FeathersControl: fixed issue where setting width after scaleX (or height after scaleY) would result in incorrect final dimensions. Same for minWidth and minHeight.
 * FeathersControl: maxWidth and maxHeight can never be less than 0.
 * FeathersControl: optimization where the component will not invalidate if changing minWidth, minHeight, maxWidth, or maxHeight obviously won't affect the actual dimensions of the component.
+* FocusManager: fixed issue where focus would stop going forward when encountering an IFocusContainer.
 * FlowLayout: fixed issue where alignment could be wrong if maximum row width were smaller than max width.
 * GroupedList: added itemToItemRenderer(), headerDataToHeaderRenderer(), and footerDataToFooterRenderer() functions, to get a renderer for specific data (if one is available).
 * GroupedList: fixed issue where a runtime error could be thrown when the dataProvider property is null.
@@ -66,6 +69,8 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * ImageLoader: fixed issue where ScaleMode.NONE was not respected during auto-sizing.
 * ImageLoader: masks internal Image instead of itself when clipping a scaled texture so that the mask property can be used too.
 * ImageSkin: new display object that supports multiple textures and colors for different states.
+* IMeasureDisplayObject: new interface with explicit, minimum, and maximum dimensions for use when the full IFeathersControl is not necessary.
+* INativeFocusOwner: nativeFocus property is now typed as Object instead of InteractiveObject so that objects like StageText may be used, and added IAdvancedNativeFocusOwner to provide custom API for setting focus.
 * KeyToSelect: new utility class that allows selection with keyboard, similar to TapToSelect.
 * KeyToTrigger: new utility class that allows trigger event with keyboard, similar to TapToTrigger.
 * Label: added customTextRendererStyleName property.
@@ -75,6 +80,7 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * NumericStepper: fixed issue where pressing increment or decrement button after editing TextInput would result in wrong value.
 * OldFadeNewSlideTransitionManager: removed class. Use StackScreenNavigator with push and pop transitions instead, or find this class in feathers-compat.
 * PickerList: itemToLabel() now strictly checks for null instead of a "truthy" value, and an empty string will have different behavior.
+* PickerList: fixed issue where button label would not be updated when calling updateItemAt() on data provider with selected index.
 * Scale3Image: removed class. Use starling.display.Image with scale9Grid.
 * Scale3Textures: removed class. Use starling.display.Image with scale9Grid, or find this class in feathers-compat library.
 * Scale9Image: removed class. Use starling.display.Image with scale9Grid.
@@ -93,6 +99,9 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * SpinnerList: fixed issue where the selectionOverlaySkin could be resized incorrectly if the page size is larger than the list's dimensions.
 * SpinnerList: can no longer be completely deselected if data provider is not empty.
 * StackScreenNavigator: fixed issue where an event with the same name as a member of the screen could result in a runtime error if as3-signals weren't available.
+* StackScreenNavigator: fixed runtime error in popAll() when root screen is visible.
+* StackScreenNavigator: fixed issue where a new screen with the same ID as the active screen could not be shown.
+* StackScreenNavigator: fixed issue where a new screen that has the same display object instance as the active screen would break navigation. The transition is now skipped.
 * StageTextTextEditor: better measurement on desktop and when testing a mobile app in ADL to account for the internal TextField gutter. More consistent across all platforms.
 * StageTextTextEditor: simplified font size calculation.
 * StandardIcons: removed class that was deprecated. Use DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN to display a drill down accessory in an item renderer.
@@ -123,6 +132,7 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 * TextInput: fixed issue where some icons or skins would not be disposed when input is disposed.
 * TextInput: fixed issue where focus in and out events sometimes weren't dispatched.
 * TextInput: fixed issue where IBEAM mouse cursor would not always be cleared.
+* TextInput: will show focused state when focused, but text editor cannot have focus.
 * TiledImage: removed class. Use starling.display.Image with tileGrid.
 * TimeLabel: fixed issue where displayed text was incorrectly when time is greater than one hour.
 * ToggleButton: deprecated defaultSelectedLabelProperties, selectedUpLabelProperties, selectedHoverLabelProperties, selectedDownLabelProperties, selectedDisabledLabelProperties. Replaced by setting font styles on text renderer in labelFactory. Text renderers now support multiple font styles for different states.
