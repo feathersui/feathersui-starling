@@ -3790,13 +3790,22 @@ package feathers.controls
 			this.ignoreViewPortResizing = true;
 
 			var visibleWidth:Number = this.actualWidth - horizontalWidthOffset;
-			this._viewPort.visibleWidth = visibleWidth;
+			//we'll only set the view port's visibleWidth and visibleHeight if
+			//our dimensions are explicit. this allows the view port to know
+			//whether it needs to re-measure on scroll.
+			if(this._viewPort.visibleWidth !== visibleWidth)
+			{
+				this._viewPort.visibleWidth = visibleWidth;
+			}
 			this._viewPort.minVisibleWidth = this.actualWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._explicitMaxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = visibleWidth;
 
 			var visibleHeight:Number = this.actualHeight - verticalHeightOffset;
-			this._viewPort.visibleHeight = visibleHeight;
+			if(this._viewPort.visibleHeight !== visibleHeight)
+			{
+				this._viewPort.visibleHeight = visibleHeight;
+			}
 			this._viewPort.minVisibleHeight = this.actualMinHeight - verticalHeightOffset;
 			this._viewPort.maxVisibleHeight = this._explicitMaxHeight - verticalHeightOffset;
 			this._viewPort.minHeight = visibleHeight;
@@ -4374,26 +4383,29 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this.currentBackgroundSkin)
+			var visibleWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+			var visibleHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+
+			if(this.currentBackgroundSkin !== null)
 			{
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;
 			}
 
-			if(this.horizontalScrollBar)
+			if(this.horizontalScrollBar !== null)
 			{
 				this.horizontalScrollBar.validate();
 			}
-			if(this.verticalScrollBar)
+			if(this.verticalScrollBar !== null)
 			{
 				this.verticalScrollBar.validate();
 			}
-			if(this._touchBlocker)
+			if(this._touchBlocker !== null)
 			{
 				this._touchBlocker.x = this._leftViewPortOffset;
 				this._touchBlocker.y = this._topViewPortOffset;
-				this._touchBlocker.width = this._viewPort.visibleWidth;
-				this._touchBlocker.height = this._viewPort.visibleHeight;
+				this._touchBlocker.width = visibleWidth;
+				this._touchBlocker.height = visibleHeight;
 			}
 
 			if(this._snapScrollPositionsToPixels)
@@ -4416,22 +4428,22 @@ package feathers.controls
 			if(this.horizontalScrollBar !== null)
 			{
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
-				this.horizontalScrollBar.y = this._topViewPortOffset + this._viewPort.visibleHeight;
+				this.horizontalScrollBar.y = this._topViewPortOffset + visibleHeight;
 				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
 					if((this._hasVerticalScrollBar || this._verticalScrollBarHideTween) && this.verticalScrollBar)
 					{
-						this.horizontalScrollBar.width = this._viewPort.visibleWidth - this.verticalScrollBar.width;
+						this.horizontalScrollBar.width = visibleWidth - this.verticalScrollBar.width;
 					}
 					else
 					{
-						this.horizontalScrollBar.width = this._viewPort.visibleWidth;
+						this.horizontalScrollBar.width = visibleWidth;
 					}
 				}
 				else
 				{
-					this.horizontalScrollBar.width = this._viewPort.visibleWidth;
+					this.horizontalScrollBar.width = visibleWidth;
 				}
 			}
 
@@ -4443,7 +4455,7 @@ package feathers.controls
 				}
 				else
 				{
-					this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
+					this.verticalScrollBar.x = this._leftViewPortOffset + visibleWidth;
 				}
 				this.verticalScrollBar.y = this._topViewPortOffset;
 				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
@@ -4451,16 +4463,16 @@ package feathers.controls
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
 					if((this._hasHorizontalScrollBar || this._horizontalScrollBarHideTween) && this.horizontalScrollBar)
 					{
-						this.verticalScrollBar.height = this._viewPort.visibleHeight - this.horizontalScrollBar.height;
+						this.verticalScrollBar.height = visibleHeight - this.horizontalScrollBar.height;
 					}
 					else
 					{
-						this.verticalScrollBar.height = this._viewPort.visibleHeight;
+						this.verticalScrollBar.height = visibleHeight;
 					}
 				}
 				else
 				{
-					this.verticalScrollBar.height = this._viewPort.visibleHeight;
+					this.verticalScrollBar.height = visibleHeight;
 				}
 			}
 		}
