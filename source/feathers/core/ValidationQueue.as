@@ -143,12 +143,12 @@ package feathers.core
 				return;
 			}
 			var queueLength:int = this._queue.length;
-			if(queueLength == 0)
+			if(queueLength === 0)
 			{
 				return;
 			}
 			this._isValidating = true;
-			if(this._queue.length > 1)
+			if(queueLength > 1)
 			{
 				//only sort if there's more than one item in the queue because
 				//it will avoid allocating objects
