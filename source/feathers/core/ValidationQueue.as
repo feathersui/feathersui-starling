@@ -154,9 +154,10 @@ package feathers.core
 				//it will avoid allocating objects
 				this._queue = this._queue.sort(queueSortFunction);
 			}
-			while(this._queue.length > 0) //rechecking length after the shift
+			while(queueLength > 0) //rechecking length after the shift
 			{
 				var item:IValidating = this._queue.shift();
+				queueLength--;
 				if(item.depth < 0)
 				{
 					//skip items that are no longer on the display list
