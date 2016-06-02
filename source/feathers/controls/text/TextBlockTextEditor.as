@@ -19,7 +19,6 @@ package feathers.controls.text
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;

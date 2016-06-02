@@ -21,7 +21,6 @@ package feathers.controls.text
 	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
-	import flash.display.InteractiveObject;
 	import flash.display.Stage;
 	import flash.display3D.Context3DProfile;
 	import flash.events.FocusEvent;
