@@ -2402,6 +2402,10 @@ package feathers.controls
 				this._ignoreContentResize = true;
 				this._content.width = backgroundWidth - this._paddingLeft - this._paddingRight;
 				this._content.height = backgroundHeight - this._paddingTop - this._paddingBottom;
+				if(this._content is IValidating)
+				{
+					IValidating(this._content).validate();
+				}
 				this._ignoreContentResize = oldIgnoreContentResize;
 			}
 		}
