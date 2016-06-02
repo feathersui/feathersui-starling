@@ -1474,12 +1474,18 @@ package feathers.controls.supportClasses
 		{
 			var item:Object = this._dataProvider.getItemAt(index);
 			var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-			if(!renderer)
+			if(renderer === null)
 			{
 				return;
 			}
 			renderer.data = null;
 			renderer.data = item;
+			if(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
+				this.explicitVisibleHeight !== this.explicitVisibleHeight)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this.invalidateParent(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		private function dataProvider_updateAllHandler(event:Event):void
@@ -1487,12 +1493,18 @@ package feathers.controls.supportClasses
 			for(var item:Object in this._rendererMap)
 			{
 				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(!renderer)
+				if(renderer === null)
 				{
-					return;
+					continue;
 				}
 				renderer.data = null;
 				renderer.data = item;
+			}
+			if(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
+				this.explicitVisibleHeight !== this.explicitVisibleHeight)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this.invalidateParent(INVALIDATION_FLAG_SIZE);
 			}
 		}
 

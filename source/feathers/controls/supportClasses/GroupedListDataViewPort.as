@@ -2734,10 +2734,16 @@ package feathers.controls.supportClasses
 				var itemIndex:int = indices[1] as int;
 				var item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-				if(itemRenderer)
+				if(itemRenderer !== null)
 				{
 					itemRenderer.data = null;
 					itemRenderer.data = item;
+					if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
+						this._explicitVisibleHeight !== this._explicitVisibleHeight)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+						this.invalidateParent(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 			else //updating a whole group
@@ -2782,7 +2788,7 @@ package feathers.controls.supportClasses
 				this.invalidate(INVALIDATION_FLAG_DATA);
 
 				var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
-				if(!layout || !layout.hasVariableItemDimensions)
+				if(layout === null || !layout.hasVariableItemDimensions)
 				{
 					return;
 				}
@@ -2797,9 +2803,9 @@ package feathers.controls.supportClasses
 			for(var item:Object in this._itemRendererMap)
 			{
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-				if(!itemRenderer)
+				if(itemRenderer === null)
 				{
-					return;
+					continue;
 				}
 				itemRenderer.data = null;
 				itemRenderer.data = item;
@@ -2807,9 +2813,9 @@ package feathers.controls.supportClasses
 			for(var header:Object in this._headerRendererMap)
 			{
 				var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
-				if(!headerRenderer)
+				if(headerRenderer === null)
 				{
-					return;
+					continue;
 				}
 				headerRenderer.data = null;
 				headerRenderer.data = header;
@@ -2817,9 +2823,9 @@ package feathers.controls.supportClasses
 			for(var footer:Object in this._footerRendererMap)
 			{
 				var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
-				if(!footerRenderer)
+				if(footerRenderer === null)
 				{
-					return;
+					continue;
 				}
 				footerRenderer.data = null;
 				footerRenderer.data = footer;

@@ -852,5 +852,19 @@ package feathers.tests
 			this._list.validate();
 			Assert.assertTrue("itemRendererFactory not used when customSingleItemRendererStyleName defined, but singleItemRendererFactory is null", usedDefaultItemRendererFactory);
 		}
+
+		[Test]
+		public function testResizeOnUpdateItemAtWithLongerText():void
+		{
+			this._list.dataProvider.getItemAt(0, 1).label = "I am the very model of a modern major general";
+			this._list.dataProvider.updateItemAt(0, 1);
+			var hasResized:Boolean = false;
+			this._list.addEventListener(Event.RESIZE, function(event:Event):void
+			{
+				hasResized = true;
+			});
+			this._list.validate();
+			Assert.assertTrue("GroupedList Event.RESIZE was not dispatched when item was updated with longer text and width was not explicit", hasResized);
+		}
 	}
 }
