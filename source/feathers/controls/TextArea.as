@@ -19,7 +19,6 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;

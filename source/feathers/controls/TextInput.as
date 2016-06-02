@@ -26,7 +26,6 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
-	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;

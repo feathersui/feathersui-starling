@@ -269,7 +269,8 @@ package feathers.examples.componentsExplorer
 			//when MainMenuScreen dispatches Event.CHANGE, its selectedScreenID
 			//property has been updated. use that to show the correct screen.
 			var screen:MainMenuScreen = MainMenuScreen(event.currentTarget);
-			this._navigator.pushScreen(screen.selectedScreenID);
+			this._navigator.pushScreen(screen.selectedScreenID, event.data);
+			//pass the data from the event to save it for when we pop back.
 		}
 
 		private function mainMenu_tabletChangeHandler(event:Event):void

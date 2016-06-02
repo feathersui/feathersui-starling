@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
-	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.stageToStarling;
 

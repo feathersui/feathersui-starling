@@ -94,7 +94,7 @@ In addition to being used for background skins, `ImageSkin` can also be used for
 ``` code
 button.labelFactory = function():ITextRenderer
 {
-	var textRenderer:BitmapFontTextRenderer = new TextBlockTextRenderer();
+	var textRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
 	textRenderer.styleProvider = null; // avoid conflicts with the theme
 	textRenderer.textFormat = new BitmapFontTextFormat( "My Font", BitmapFont.NATIVE_SIZE, 0xffffff );
 	return textRenderer;

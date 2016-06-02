@@ -13,7 +13,6 @@ package feathers.utils.keyboard
 	import flash.ui.Keyboard;
 
 	import starling.display.Stage;
-
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 
