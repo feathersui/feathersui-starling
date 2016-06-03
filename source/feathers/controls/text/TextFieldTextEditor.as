@@ -1622,7 +1622,7 @@ package feathers.controls.text
 			//force it.
 			if(!this._isInitialized)
 			{
-				this.initializeInternal();
+				this.initializeNow();
 			}
 
 			this.commit();

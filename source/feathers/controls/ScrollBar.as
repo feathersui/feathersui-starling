@@ -2472,6 +2472,10 @@ package feathers.controls
 			this.addChildAt(minimumTrack, 0);
 			this.minimumTrack = minimumTrack;
 
+			if(this.minimumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.minimumTrack).initializeNow();
+			}
 			if(this.minimumTrack is IMeasureDisplayObject)
 			{
 				var measureMinTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.minimumTrack);
@@ -2527,6 +2531,10 @@ package feathers.controls
 			this.addChildAt(maximumTrack, 1);
 			this.maximumTrack = maximumTrack;
 
+			if(this.maximumTrack is IFeathersControl)
+			{
+				IFeathersControl(this.maximumTrack).initializeNow();
+			}
 			if(this.maximumTrack is IMeasureDisplayObject)
 			{
 				var measureMaxTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.maximumTrack);

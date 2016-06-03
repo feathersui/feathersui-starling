@@ -1320,7 +1320,8 @@ package feathers.controls
 			displayHeader = DisplayObject(this.header);
 			this.addRawChild(displayHeader);
 			this._focusExtrasBefore.push(displayHeader);
-			
+
+			this.header.initializeNow();
 			this._explicitHeaderWidth = this.header.explicitWidth;
 			this._explicitHeaderHeight = this.header.explicitHeight;
 			this._explicitHeaderMinWidth = this.header.explicitMinWidth;
@@ -1361,6 +1362,7 @@ package feathers.controls
 			this.addRawChild(displayFooter);
 			this._focusExtrasAfter.push(displayFooter);
 
+			this.footer.initializeNow();
 			this._explicitFooterWidth = this.footer.explicitWidth;
 			this._explicitFooterHeight = this.footer.explicitHeight;
 			this._explicitFooterMinWidth = this.footer.explicitMinWidth;

@@ -1819,6 +1819,7 @@ package feathers.controls
 			this.addChild(this.textInput);
 			
 			//we will use these values for measurement, if possible
+			this.textInput.initializeNow();
 			this.textInputExplicitWidth = this.textInput.explicitWidth;
 			this.textInputExplicitHeight = this.textInput.explicitHeight;
 			this.textInputExplicitMinWidth = this.textInput.explicitMinWidth;

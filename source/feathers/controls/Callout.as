@@ -860,6 +860,10 @@ package feathers.controls
 					IFeathersControl(this._content).addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				}
 				this.addChild(this._content);
+				if(this._content is IFeathersControl)
+				{
+					IFeathersControl(this._content).initializeNow();
+				}
 				if(this._content is IMeasureDisplayObject)
 				{
 					var measureContent:IMeasureDisplayObject = IMeasureDisplayObject(this._content);
@@ -1395,6 +1399,10 @@ package feathers.controls
 			if(this._backgroundSkin !== null)
 			{
 				this.addChildAt(this._backgroundSkin, 0);
+				if(this._backgroundSkin is IFeathersControl)
+				{
+					IFeathersControl(this._backgroundSkin).initializeNow();
+				}
 				if(this._backgroundSkin is IMeasureDisplayObject)
 				{
 					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._backgroundSkin);

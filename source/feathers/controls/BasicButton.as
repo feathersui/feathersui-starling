@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
@@ -508,6 +509,10 @@ package feathers.controls
 				this.removeCurrentSkin(oldSkin);
 				if(this.currentSkin !== null)
 				{
+					if(this.currentSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentSkin).initializeNow();
+					}
 					if(this.currentSkin is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentSkin);

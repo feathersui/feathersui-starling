@@ -1904,7 +1904,7 @@ package feathers.core
 					//finished initializing. we'll have to wait.
 					return;
 				}
-				this.initializeInternal();
+				this.initializeNow();
 			}
 			if(!this.isInvalid())
 			{
@@ -2072,6 +2072,40 @@ package feathers.core
 
 			this._showFocus = false;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
+		}
+
+		/**
+		 * If the component has not yet initialized, initializes immediately.
+		 * The <code>initialize()</code> function will be called, and the
+		 * <code>FeathersEventType.INITIALIZE</code> event will be dispatched.
+		 * Then, if the component has a style provider, it will be applied. The
+		 * component will not validate, though. To initialize and validate
+		 * immediately, call <code>validate()</code> instead.
+		 * 
+		 * @see #isInitialized
+		 * @see #initialize()
+		 * @see #event:initialize FeathersEventType.INITIALIZE
+		 * @see #styleProvider
+		 * @see #validate()
+		 */
+		public function initializeNow():void
+		{
+			if(this._isInitialized || this._isInitializing)
+			{
+				return;
+			}
+			this._isInitializing = true;
+			this.initialize();
+			this.invalidate(); //invalidate everything
+			this._isInitializing = false;
+			this._isInitialized = true;
+			this.dispatchEventWith(FeathersEventType.INITIALIZE);
+
+			if(this._styleProvider)
+			{
+				this._styleProvider.applyStyles(this);
+			}
+			this._styleNameList.addEventListener(Event.CHANGE, styleNameList_changeHandler);
 		}
 
 		/**
@@ -2333,29 +2367,6 @@ package feathers.core
 		}
 
 		/**
-		 * @private
-		 */
-		protected function initializeInternal():void
-		{
-			if(this._isInitialized || this._isInitializing)
-			{
-				return;
-			}
-			this._isInitializing = true;
-			this.initialize();
-			this.invalidate(); //invalidate everything
-			this._isInitializing = false;
-			this._isInitialized = true;
-			this.dispatchEventWith(FeathersEventType.INITIALIZE);
-
-			if(this._styleProvider)
-			{
-				this._styleProvider.applyStyles(this);
-			}
-			this._styleNameList.addEventListener(Event.CHANGE, styleNameList_changeHandler);
-		}
-
-		/**
 		 * Default event handler for <code>FeathersEventType.FOCUS_IN</code>
 		 * that may be overridden in subclasses to perform additional actions
 		 * when the component receives focus.
@@ -2391,7 +2402,7 @@ package feathers.core
 			this._validationQueue = ValidationQueue.forStarling(starling);
 			if(!this._isInitialized)
 			{
-				this.initializeInternal();
+				this.initializeNow();
 			}
 			if(this.isInvalid())
 			{

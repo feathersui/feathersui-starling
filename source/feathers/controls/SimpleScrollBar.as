@@ -1089,7 +1089,11 @@ package feathers.controls
 			thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
 			this.addChild(thumb);
 			this.thumb = thumb;
-			
+
+			if(this.thumb is IFeathersControl)
+			{
+				IFeathersControl(this.thumb).initializeNow();
+			}
 			if(this.thumb is IMeasureDisplayObject)
 			{
 				var measureThumb:IMeasureDisplayObject = IMeasureDisplayObject(this.thumb);

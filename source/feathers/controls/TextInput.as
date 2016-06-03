@@ -2652,6 +2652,10 @@ package feathers.controls
 						IStateObserver(this.currentBackground).stateContext = this;
 					}
 					this.addChildAt(this.currentBackground, 0);
+					if(this.currentBackground is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackground).initializeNow();
+					}
 					if(this.currentBackground is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackground);
