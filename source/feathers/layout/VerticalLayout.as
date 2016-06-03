@@ -1329,6 +1329,10 @@ package feathers.layout
 									}
 								}
 								item.width = itemWidth;
+								if(item is IValidating)
+								{
+									IValidating(item).validate();
+								}
 							}
 						}
 					}

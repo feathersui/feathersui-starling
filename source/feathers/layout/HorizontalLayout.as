@@ -1219,6 +1219,10 @@ package feathers.layout
 									}
 								}
 								item.height = itemHeight;
+								if(item is IValidating)
+								{
+									IValidating(item).validate();
+								}
 							}
 						}
 					}
