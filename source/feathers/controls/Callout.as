@@ -1096,7 +1096,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = HorizontalAlign.CENTER;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		/**
 		 * The vertical alignment of the callout, relative to the origin.
