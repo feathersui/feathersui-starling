@@ -36,6 +36,7 @@ package
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.HeaderInternalStateTests;
 	import feathers.tests.HeaderMeasurementTests;
+	import feathers.tests.HorizontalLayoutTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
 	import feathers.tests.ImageLoaderTests;
@@ -255,6 +256,7 @@ package
 				LayoutGroupVerticalLayoutTests,
 				TiledRowsLayoutTests,
 				TiledColumnsLayoutTests,
+				HorizontalLayoutTests,
 				VerticalLayoutTests,
 				HorizontalSpinnerLayoutTests,
 				VerticalSpinnerLayoutTests,
