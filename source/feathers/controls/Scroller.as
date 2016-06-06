@@ -3018,8 +3018,9 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
-			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
-			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+			starling.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
 			
 			//we don't dispose it if the text input is the parent because it'll
 			//already get disposed in super.dispose()
@@ -4418,11 +4419,7 @@ package feathers.controls
 
 			if(this._snapScrollPositionsToPixels)
 			{
-				var starling:Starling = stageToStarling(this.stage);
-				if(starling === null)
-				{
-					starling = Starling.current;
-				}
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				var pixelSize:Number = 1 / starling.contentScaleFactor;
 				this._viewPort.x = Math.round((this._leftViewPortOffset - this._horizontalScrollPosition) / pixelSize) * pixelSize;
 				this._viewPort.y = Math.round((this._topViewPortOffset - this._verticalScrollPosition) / pixelSize) * pixelSize;
@@ -4894,7 +4891,8 @@ package feathers.controls
 		{
 			if(this._snapToPages && !this._snapOnComplete)
 			{
-				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
 				{
 					var snappedPageHorizontalScrollPosition:Number = roundDownToNearest(this._horizontalScrollPosition, this.actualPageWidth);
@@ -4980,7 +4978,8 @@ package feathers.controls
 		{
 			if(this._snapToPages && !this._snapOnComplete)
 			{
-				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
 				{
 					var snappedPageVerticalScrollPosition:Number = roundDownToNearest(this._verticalScrollPosition, this.actualPageHeight);
@@ -5647,8 +5646,9 @@ package feathers.controls
 				this._previousTouchX = this._currentTouchX;
 				this._previousTouchY = this._currentTouchY;
 			}
-			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 			if((this._horizontalScrollPolicy == ScrollPolicy.ON ||
 				(this._horizontalScrollPolicy == ScrollPolicy.AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= this._minimumDragDistance)
@@ -5821,19 +5821,20 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			if((this._verticalMouseWheelScrollDirection == Direction.VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == ScrollPolicy.OFF)) ||
-				(this._verticalMouseWheelScrollDirection == Direction.HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == ScrollPolicy.OFF)))
+			if((this._verticalMouseWheelScrollDirection === Direction.VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == ScrollPolicy.OFF)) ||
+				(this._verticalMouseWheelScrollDirection === Direction.HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == ScrollPolicy.OFF)))
 			{
 				return;
 			}
 
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			if(starling.supportHighResolutions)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
-			var scaleFactor:Number = nativeScaleFactor / Starling.contentScaleFactor;
+			var starlingViewPort:Rectangle = starling.viewPort;
+			var scaleFactor:Number = nativeScaleFactor / starling.contentScaleFactor;
 			HELPER_POINT.x = (event.stageX - starlingViewPort.x) * scaleFactor;
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) * scaleFactor;
 			if(this.contains(this.stage.hitTest(HELPER_POINT)))
@@ -6010,8 +6011,9 @@ package feathers.controls
 		 */
 		protected function scroller_addedToStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler, false, 0, true);
-			Starling.current.nativeStage.addEventListener("orientationChange", nativeStage_orientationChangeHandler, false, 0, true);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler, false, 0, true);
+			starling.nativeStage.addEventListener("orientationChange", nativeStage_orientationChangeHandler, false, 0, true);
 		}
 
 		/**
@@ -6019,8 +6021,9 @@ package feathers.controls
 		 */
 		protected function scroller_removedFromStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
-			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+			starling.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
 			if(this._touchPointID >= 0)
 			{
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);

@@ -281,7 +281,13 @@ package feathers.themes
 		public function BaseMinimalMobileTheme()
 		{
 			super();
+			this.starling = Starling.current;
 		}
+
+		/**
+		 * The Starling instance for this theme.
+		 */
+		protected var starling:Starling;
 
 		/**
 		 * A normal font size.
@@ -487,8 +493,8 @@ package feathers.themes
 		 */
 		protected function initializeStage():void
 		{
-			Starling.current.stage.color = BACKGROUND_COLOR;
-			Starling.current.nativeStage.color = BACKGROUND_COLOR;
+			this.starling.stage.color = BACKGROUND_COLOR;
+			this.starling.nativeStage.color = BACKGROUND_COLOR;
 		}
 
 		/**
@@ -1574,7 +1580,7 @@ package feathers.themes
 		{
 			list.toggleButtonOnOpenAndClose = true;
 			list.buttonFactory = pickerListButtonFactory;
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.popUpContentManager = new CalloutPopUpContentManager();
 			}
@@ -1588,7 +1594,7 @@ package feathers.themes
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
 			list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK;
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.minWidth = this.popUpFillSize;
 				list.maxHeight = this.popUpFillSize;

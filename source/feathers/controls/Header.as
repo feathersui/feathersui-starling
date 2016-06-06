@@ -1785,17 +1785,18 @@ package feathers.controls
 			//next, we check if the app is full screen or not. if it is full
 			//screen, then the status bar isn't visible, and we don't need the
 			//extra padding.
-			var nativeStage:Stage = Starling.current.nativeStage;
-			if(nativeStage.displayState != StageDisplayState.NORMAL)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var nativeStage:Stage = starling.nativeStage;
+			if(nativeStage.displayState !== StageDisplayState.NORMAL)
 			{
 				return 0;
 			}
-			
+
 			if(DeviceCapabilities.dpi % IPAD_1X_DPI === 0)
 			{
-				return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPAD_1X_DPI) / Starling.current.contentScaleFactor;
+				return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPAD_1X_DPI) / starling.contentScaleFactor;
 			}
-			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPHONE_1X_DPI) / Starling.current.contentScaleFactor;
+			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPHONE_1X_DPI) / starling.contentScaleFactor;
 		}
 
 		/**
@@ -2006,7 +2007,8 @@ package feathers.controls
 		 */
 		protected function header_addedToStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addEventListener("fullScreen", nativeStage_fullScreenHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.addEventListener("fullScreen", nativeStage_fullScreenHandler);
 		}
 
 		/**
@@ -2014,7 +2016,8 @@ package feathers.controls
 		 */
 		protected function header_removedFromStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.removeEventListener("fullScreen", nativeStage_fullScreenHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener("fullScreen", nativeStage_fullScreenHandler);
 		}
 
 		/**

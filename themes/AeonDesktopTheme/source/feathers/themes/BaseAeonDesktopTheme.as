@@ -345,7 +345,13 @@ package feathers.themes
 		public function BaseAeonDesktopTheme()
 		{
 			super();
+			this.starling = Starling.current;
 		}
+
+		/**
+		 * The Starling instance for this theme.
+		 */
+		protected var starling:Starling;
 
 		/**
 		 * A smaller font size for details.
@@ -627,7 +633,7 @@ package feathers.themes
 				this.atlas = null;
 			}
 
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, false);
 			ToolTipManager.setEnabledForStage(stage, false);
 
@@ -677,8 +683,8 @@ package feathers.themes
 		 */
 		protected function initializeStage():void
 		{
-			Starling.current.stage.color = BACKGROUND_COLOR;
-			Starling.current.nativeStage.color = BACKGROUND_COLOR;
+			this.starling.stage.color = BACKGROUND_COLOR;
+			this.starling.nativeStage.color = BACKGROUND_COLOR;
 		}
 
 		/**
@@ -686,7 +692,7 @@ package feathers.themes
 		 */
 		protected function initializeGlobals():void
 		{
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, true);
 			ToolTipManager.setEnabledForStage(stage, true);
 

@@ -27,6 +27,7 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -493,7 +494,8 @@ package feathers.controls
 			}
 			else
 			{
-				var maxXPosition:Number = Starling.current.stage.stageWidth - callout.width - stagePaddingRight;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxXPosition:Number = stage.stageWidth - callout.width - stagePaddingRight;
 				if(maxXPosition < xPosition)
 				{
 					xPosition = maxXPosition;
@@ -536,7 +538,8 @@ package feathers.controls
 			}
 			else
 			{
-				var maxXPosition:Number = Starling.current.stage.stageWidth - callout.width - stagePaddingRight;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxXPosition:Number = stage.stageWidth - callout.width - stagePaddingRight;
 				if(maxXPosition < xPosition)
 				{
 					xPosition = maxXPosition;
@@ -580,7 +583,8 @@ package feathers.controls
 			}
 			else
 			{
-				var maxYPosition:Number = Starling.current.stage.stageHeight - callout.height - stagePaddingBottom;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxYPosition:Number = stage.stageHeight - callout.height - stagePaddingBottom;
 				if(maxYPosition < yPosition)
 				{
 					yPosition = maxYPosition;
@@ -623,7 +627,8 @@ package feathers.controls
 			}
 			else
 			{
-				var maxYPosition:Number = Starling.current.stage.stageHeight - callout.height - stagePaddingBottom;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxYPosition:Number = stage.stageHeight - callout.height - stagePaddingBottom;
 				if(maxYPosition < yPosition)
 				{
 					yPosition = maxYPosition;
@@ -2427,7 +2432,8 @@ package feathers.controls
 			{
 				return;
 			}
-			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
+			var stage:Stage = this.stage !== null ? this.stage : Starling.current.stage;
+			this._origin.getBounds(stage, HELPER_RECT);
 			var hasGlobalBounds:Boolean = this._lastGlobalBoundsOfOrigin != null;
 			if(hasGlobalBounds && this._lastGlobalBoundsOfOrigin.equals(HELPER_RECT))
 			{
@@ -2477,7 +2483,7 @@ package feathers.controls
 					{
 						//arrow is opposite, on left side
 						this.measureWithArrowPosition(RelativePosition.LEFT);
-						rightSpace = (Starling.current.stage.stageWidth - actualWidth) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
+						rightSpace = (stage.stageWidth - actualWidth) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
 						if(rightSpace >= stagePaddingRight)
 						{
 							positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
@@ -2508,7 +2514,7 @@ package feathers.controls
 					{
 						//arrow is opposite, on top side
 						this.measureWithArrowPosition(RelativePosition.TOP);
-						downSpace = (Starling.current.stage.stageHeight - this.actualHeight) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
+						downSpace = (stage.stageHeight - this.actualHeight) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
 						if(downSpace >= stagePaddingBottom)
 						{
 							positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
@@ -2546,10 +2552,11 @@ package feathers.controls
 		 */
 		protected function callout_addedToStageHandler(event:Event):void
 		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
 			var priority:int = -getDisplayObjectDepthFromStage(this);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler, false, priority, true);
+			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler, false, priority, true);
 
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			//to avoid touch events bubbling up to the callout and causing it to
@@ -2565,7 +2572,8 @@ package feathers.controls
 		protected function callout_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler);
 		}
 
 		/**

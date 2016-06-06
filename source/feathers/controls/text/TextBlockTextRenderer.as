@@ -1025,8 +1025,9 @@ package feathers.controls.text
 		 */
 		public function set maxTextureDimensions(value:int):void
 		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			//check if we can use rectangle textures or not
-			if(Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED)
+			if(starling.profile === Context3DProfile.BASELINE_CONSTRAINED)
 			{
 				value = MathUtil.getNextPowerOfTwo(value);
 			}
@@ -1308,8 +1309,9 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this.textSnapshot)
+			if(this.textSnapshot !== null)
 			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				if(this._updateSnapshotOnScaleChange)
 				{
@@ -1317,7 +1319,7 @@ package feathers.controls.text
 					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 					if(globalScaleX != this._lastGlobalScaleX ||
 						globalScaleY != this._lastGlobalScaleY ||
-						Starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
+						starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
 					{
 						//the snapshot needs to be updated because the scale has
 						//changed since the last snapshot was taken.
@@ -1325,7 +1327,7 @@ package feathers.controls.text
 						this.validate();
 					}
 				}
-				var scaleFactor:Number = Starling.current.contentScaleFactor;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
 					var offsetX:Number = 0;
@@ -1618,7 +1620,8 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
-				var scaleFactor:Number = Starling.current.contentScaleFactor;
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				//these are getting put into an int later, so we don't want it
 				//to possibly round down and cut off part of the text. 
 				var rectangleSnapshotWidth:Number = Math.ceil(this.actualWidth * scaleFactor);
@@ -1644,7 +1647,7 @@ package feathers.controls.text
 					rectangleSnapshotWidth = HELPER_RECTANGLE.width;
 					rectangleSnapshotHeight = HELPER_RECTANGLE.height;
 				}
-				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
+				var canUseRectangleTexture:Boolean = starling.profile !== Context3DProfile.BASELINE_CONSTRAINED;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
@@ -1885,7 +1888,8 @@ package feathers.controls.text
 			var texture:Texture = snapshot.texture;
 			texture.root.onRestore = function():void
 			{
-				var scaleFactor:Number = Starling.contentScaleFactor;
+				var starling:Starling = self.stage !== null ? self.stage.starling : Starling.current;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				if(texture.scale != scaleFactor)
 				{
 					//if we've changed between scale factors, we need to
@@ -1926,7 +1930,7 @@ package feathers.controls.text
 				bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
 			}
 			var nativeScaleFactor:Number = 1;
-			var starling:Starling = stageToStarling(this.stage);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			if(starling && starling.supportHighResolutions)
 			{
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
@@ -1947,7 +1951,8 @@ package feathers.controls.text
 			{
 				return;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);

@@ -1134,9 +1134,10 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			if(this._measureTextField)
+			if(this._measureTextField !== null)
 			{
-				Starling.current.nativeStage.removeChild(this._measureTextField);
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				starling.nativeStage.removeChild(this._measureTextField);
 				this._measureTextField = null;
 			}
 
@@ -1208,9 +1209,10 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this.stage && !this.stageText.stage)
+			if(this.stage !== null && this.stageText.stage === null)
 			{
-				this.stageText.stage = Starling.current.nativeStage;
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				this.stageText.stage = starling.nativeStage;
 			}
 			if(this.stageText && this._stageTextIsComplete)
 			{
@@ -1291,11 +1293,12 @@ package feathers.controls.text
 			{
 				return;
 			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			//setting the focus to Starling.current.nativeStage doesn't work
 			//here, so we need to use null. on Android, if we give focus to the
 			//nativeStage, focus will be removed from the StageText, but the
 			//soft keyboard will incorrectly remain open.
-			Starling.current.nativeStage.focus = null;
+			starling.nativeStage.focus = null;
 		}
 
 		/**
@@ -1361,9 +1364,10 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
-			if(this._measureTextField && !this._measureTextField.parent)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this._measureTextField !== null && this._measureTextField.parent === null)
 			{
-				Starling.current.nativeStage.addChild(this._measureTextField);
+				starling.nativeStage.addChild(this._measureTextField);
 			}
 			else if(!this._measureTextField)
 			{
@@ -1375,7 +1379,7 @@ package feathers.controls.text
 				this._measureTextField.wordWrap = false;
 				this._measureTextField.embedFonts = false;
 				this._measureTextField.defaultTextFormat = new TextFormat(null, 11, 0x000000, false, false, false);
-				Starling.current.nativeStage.addChild(this._measureTextField);
+				starling.nativeStage.addChild(this._measureTextField);
 			}
 
 			this.createStageText();
@@ -1522,12 +1526,13 @@ package feathers.controls.text
 
 			if(sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				this.refreshViewPortAndFontSize();
-				this.refreshMeasureTextFieldDimensions()
+				this.refreshMeasureTextFieldDimensions();
 				var viewPort:Rectangle = this.stageText.viewPort;
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-					textureRoot.scale != Starling.contentScaleFactor ||
+					textureRoot.scale != starling.contentScaleFactor ||
 					viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
 			}
 
@@ -1685,7 +1690,8 @@ package feathers.controls.text
 		 */
 		protected function texture_onRestore():void
 		{
-			if(this.textSnapshot.texture.scale != Starling.contentScaleFactor)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this.textSnapshot.texture.scale != starling.contentScaleFactor)
 			{
 				//if we've changed between scale factors, we need to recreate
 				//the texture to match the new scale factor.
@@ -1711,13 +1717,14 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			//StageText's stage property cannot be null when we call
 			//drawViewPortToBitmapData()
-			if(this.stage && !this.stageText.stage)
+			if(this.stage !== null && this.stageText.stage === null)
 			{
-				this.stageText.stage = Starling.current.nativeStage;
+				this.stageText.stage = starling.nativeStage;
 			}
-			if(!this.stageText.stage)
+			if(this.stageText.stage === null)
 			{
 				//we need to keep a flag active so that the snapshot will be
 				//refreshed after the text editor is added to the stage
@@ -1730,9 +1737,9 @@ package feathers.controls.text
 				return;
 			}
 			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			if(starling.supportHighResolutions)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
 			//StageText sucks because it requires that the BitmapData's width
 			//and height exactly match its view port width and height.
@@ -1756,7 +1763,7 @@ package feathers.controls.text
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
 			{
-				var scaleFactor:Number = Starling.contentScaleFactor;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				//skip Texture.fromBitmapData() because we don't want
 				//it to create an onRestore function that will be
 				//immediately discarded for garbage collection. 
@@ -1852,11 +1859,7 @@ package feathers.controls.text
 			{
 				MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
 			}
-			var starling:Starling = stageToStarling(this.stage);
-			if(starling === null)
-			{
-				starling = Starling.current;
-			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{
@@ -2099,7 +2102,8 @@ package feathers.controls.text
 				//will close the application if the StageText has focus, so we
 				//always need to prevent it here
 				event.preventDefault();
-				Starling.current.nativeStage.focus = Starling.current.nativeStage;
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				starling.nativeStage.focus = starling.nativeStage;
 			}
 			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
 			{

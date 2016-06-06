@@ -172,7 +172,13 @@ package feathers.themes
 		public function BaseTopcoatLightMobileTheme()
 		{
 			super();
+			this.starling = Starling.current;
 		}
+
+		/**
+		 * The Starling instance for this theme.
+		 */
+		protected var starling:Starling;
 
 		protected var gridSize:int;
 		protected var gutterSize:int;
@@ -330,8 +336,8 @@ package feathers.themes
 
 		protected function initializeStage():void
 		{
-			Starling.current.stage.color = COLOR_BACKGROUND_LIGHT;
-			Starling.current.nativeStage.color = COLOR_BACKGROUND_LIGHT;
+			this.starling.stage.color = COLOR_BACKGROUND_LIGHT;
+			this.starling.nativeStage.color = COLOR_BACKGROUND_LIGHT;
 		}
 
 		protected function initializeDimensions():void
@@ -1356,7 +1362,7 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.popUpContentManager = new CalloutPopUpContentManager();
 			}
@@ -1393,7 +1399,7 @@ package feathers.themes
 
 		protected function setPickerListListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.minWidth = this.wideControlSize;
 				list.maxHeight = this.wideControlSize;

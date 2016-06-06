@@ -807,7 +807,7 @@ package feathers.controls
 				return false;
 			}
 			var stage:Stage = this.stage;
-			if(!stage)
+			if(stage === null)
 			{
 				//fall back to the current stage, but it may be wrong...
 				stage = Starling.current.stage;
@@ -1104,7 +1104,7 @@ package feathers.controls
 				return false;
 			}
 			var stage:Stage = this.stage;
-			if(!stage)
+			if(stage === null)
 			{
 				//fall back to the current stage, but it may be wrong...
 				stage = Starling.current.stage;
@@ -1401,7 +1401,7 @@ package feathers.controls
 				return false;
 			}
 			var stage:Stage = this.stage;
-			if(!stage)
+			if(stage === null)
 			{
 				//fall back to the current stage, but it may be wrong...
 				stage = Starling.current.stage;
@@ -1698,7 +1698,7 @@ package feathers.controls
 				return false;
 			}
 			var stage:Stage = this.stage;
-			if(!stage)
+			if(stage === null)
 			{
 				//fall back to the current stage, but it may be wrong...
 				stage = Starling.current.stage;
@@ -3657,6 +3657,7 @@ package feathers.controls
 				return;
 			}
 
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			touch.getLocation(this, HELPER_POINT);
 			var localX:Number = HELPER_POINT.x;
 			var localY:Number = HELPER_POINT.y;
@@ -3671,7 +3672,7 @@ package feathers.controls
 					var isNearAnyEdge:Boolean = false;
 					if(this._topDrawer && !this.isTopDrawerDocked)
 					{
-						var topInches:Number = localY / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+						var topInches:Number = localY / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 						if(topInches >= 0 && topInches <= this._openGestureEdgeSize)
 						{
 							isNearAnyEdge = true;
@@ -3681,7 +3682,7 @@ package feathers.controls
 					{
 						if(this._rightDrawer && !this.isRightDrawerDocked)
 						{
-							var rightInches:Number = (this.actualWidth - localX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+							var rightInches:Number = (this.actualWidth - localX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 							if(rightInches >= 0 && rightInches <= this._openGestureEdgeSize)
 							{
 								isNearAnyEdge = true;
@@ -3691,7 +3692,7 @@ package feathers.controls
 						{
 							if(this._bottomDrawer && !this.isBottomDrawerDocked)
 							{
-								var bottomInches:Number = (this.actualHeight - localY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+								var bottomInches:Number = (this.actualHeight - localY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 								if(bottomInches >= 0 && bottomInches <= this._openGestureEdgeSize)
 								{
 									isNearAnyEdge = true;
@@ -3701,7 +3702,7 @@ package feathers.controls
 							{
 								if(this._leftDrawer && !this.isLeftDrawerDocked)
 								{
-									var leftInches:Number = localX / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+									var leftInches:Number = localX / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 									if(leftInches >= 0 && leftInches <= this._openGestureEdgeSize)
 									{
 										isNearAnyEdge = true;
@@ -3787,7 +3788,9 @@ package feathers.controls
 				sum += this._previousVelocityX.shift() * weight;
 				totalWeight += weight;
 			}
-			var inchesPerSecondX:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var inchesPerSecondX:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 
 			sum = this._velocityY * CURRENT_VELOCITY_WEIGHT;
 			velocityCount = this._previousVelocityY.length;
@@ -3798,7 +3801,7 @@ package feathers.controls
 				sum += this._previousVelocityY.shift() * weight;
 				totalWeight += weight;
 			}
-			var inchesPerSecondY:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			var inchesPerSecondY:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 
 			this._isDragging = false;
 			if(this._isDraggingTopDrawer)
@@ -4063,8 +4066,9 @@ package feathers.controls
 		 */
 		protected function checkForDragToClose():void
 		{
-			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 			if(this.isLeftDrawerOpen && horizontalInchesMoved <= -this._minimumDragDistance)
 			{
 				this._isDragging = true;
@@ -4111,8 +4115,9 @@ package feathers.controls
 		 */
 		protected function checkForDragToOpen():void
 		{
-			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 			if(this._leftDrawer && !this.isLeftDrawerDocked && horizontalInchesMoved >= this._minimumDragDistance)
 			{
 				this._isDragging = true;
@@ -4533,7 +4538,8 @@ package feathers.controls
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
 			var priority:int = -getDisplayObjectDepthFromStage(this);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler, false, priority, true);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -4553,7 +4559,8 @@ package feathers.controls
 			this._isDraggingBottomDrawer = false;
 			this._isDraggingLeftDrawer = false;
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler);
 		}
 
 		/**

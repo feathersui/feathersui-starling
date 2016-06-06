@@ -367,7 +367,13 @@ package feathers.themes
 		public function BaseMetalWorksMobileTheme()
 		{
 			super();
+			this.starling = Starling.current;
 		}
+
+		/**
+		 * The Starling instance for this theme.
+		 */
+		protected var starling:Starling;
 
 		/**
 		 * A smaller font size for details.
@@ -697,8 +703,8 @@ package feathers.themes
 		 */
 		protected function initializeStage():void
 		{
-			Starling.current.stage.color = PRIMARY_BACKGROUND_COLOR;
-			Starling.current.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
+			this.starling.stage.color = PRIMARY_BACKGROUND_COLOR;
+			this.starling.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
 		}
 
 		/**
@@ -1990,7 +1996,7 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.popUpContentManager = new CalloutPopUpContentManager();
 			}
@@ -2003,7 +2009,7 @@ package feathers.themes
 		
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.minWidth = this.popUpFillSize;
 				list.maxHeight = this.popUpFillSize;

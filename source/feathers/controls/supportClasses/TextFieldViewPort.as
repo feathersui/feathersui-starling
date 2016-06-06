@@ -825,16 +825,17 @@ package feathers.controls.supportClasses
 			//excluded from the render cache
 			painter.excludeFromCache(this);
 
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var starlingViewPort:Rectangle = starling.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			if(starling.supportHighResolutions)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * scaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * scaleFactor;
 			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
@@ -884,6 +885,7 @@ package feathers.controls.supportClasses
 				this._textField.y = this._paddingTop;
 			}
 
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				if(this._styleSheet)
@@ -910,19 +912,19 @@ package feathers.controls.supportClasses
 				{
 					this._textField.text = this._text;
 				}
-				this._scrollStep = this._textField.getLineMetrics(0).height * Starling.contentScaleFactor;
+				this._scrollStep = this._textField.getLineMetrics(0).height * starling.contentScaleFactor;
 			}
 
 			var calculatedVisibleWidth:Number = this._explicitVisibleWidth;
 			if(calculatedVisibleWidth != calculatedVisibleWidth)
 			{
-				if(this.stage)
+				if(this.stage !== null)
 				{
 					calculatedVisibleWidth = this.stage.stageWidth;
 				}
 				else
 				{
-					calculatedVisibleWidth = Starling.current.stage.stageWidth;
+					calculatedVisibleWidth = starling.stage.stageWidth;
 				}
 				if(calculatedVisibleWidth < this._explicitMinVisibleWidth)
 				{
@@ -973,13 +975,13 @@ package feathers.controls.supportClasses
 
 		private function addedToStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addChild(this._textFieldContainer);
+			this.stage.starling.nativeStage.addChild(this._textFieldContainer);
 			this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 
 		private function removedFromStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.removeChild(this._textFieldContainer);
+			this.stage.starling.nativeStage.removeChild(this._textFieldContainer);
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 

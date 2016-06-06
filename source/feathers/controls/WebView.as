@@ -456,11 +456,7 @@ package feathers.controls
 		 */
 		protected function refreshViewPort():void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			if(starling === null)
-			{
-				starling = Starling.current;
-			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var starlingViewPort:Rectangle = starling.viewPort;
 			var stageWebViewViewPort:Rectangle = this.stageWebView.viewPort;
 			if(!stageWebViewViewPort)
@@ -478,7 +474,7 @@ package feathers.controls
 			{
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			stageWebViewViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
 			stageWebViewViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * scaleFactor);
 			var viewPortWidth:Number = Math.round(this.actualWidth * scaleFactor * globalScaleX);

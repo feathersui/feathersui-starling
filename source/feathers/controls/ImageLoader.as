@@ -1959,12 +1959,11 @@ package feathers.controls
 		 */
 		protected function verifyCurrentStarling():void
 		{
-			if(!this.stage || Starling.current.stage === this.stage)
+			if(this.stage === null || Starling.current.stage === this.stage)
 			{
 				return;
 			}
-			var starling:Starling = stageToStarling(this.stage);
-			starling.makeCurrent();
+			this.stage.starling.makeCurrent();
 		}
 
 		/**
@@ -1972,7 +1971,8 @@ package feathers.controls
 		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
-			if(!Starling.current.contextValid)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(!starling.contextValid)
 			{
 				//this trace duplicates the behavior of AssetManager
 				trace(CONTEXT_LOST_WARNING);
@@ -2033,7 +2033,8 @@ package feathers.controls
 		 */
 		protected function replaceRawTextureData(rawData:ByteArray):void
 		{
-			if(!Starling.current.contextValid)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(!starling.contextValid)
 			{
 				//this trace duplicates the behavior of AssetManager
 				trace(CONTEXT_LOST_WARNING);

@@ -700,7 +700,8 @@ package feathers.controls.text
 			{
 				if(this._nativeFocus.parent === null)
 				{
-					Starling.current.nativeStage.addChild(this._nativeFocus);
+					var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+					starling.nativeStage.addChild(this._nativeFocus);
 				}
 				var newIndex:int = -1;
 				if(position !== null)
@@ -734,7 +735,8 @@ package feathers.controls.text
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.removeEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
-			var nativeStage:Stage = Starling.current.nativeStage;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var nativeStage:Stage = starling.nativeStage;
 			if(nativeStage.focus === this._nativeFocus)
 			{
 				//only clear the native focus when our native target has focus
@@ -941,8 +943,9 @@ package feathers.controls.text
 			this._selectionSkin.visible = showSelection;
 			if(!FocusManager.isEnabledForStage(this.stage))
 			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				//if there isn't a focus manager, we need to set focus manually
-				Starling.current.nativeStage.focus = this._nativeFocus;
+				starling.nativeStage.focus = this._nativeFocus;
 			}
 			this._nativeFocus.requestSoftKeyboard();
 			if(this._hasFocus)

@@ -1272,13 +1272,14 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this._popUpContentManager)
+			if(this._popUpContentManager === null)
 			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				if(SystemUtil.isDesktop)
 				{
 					this.popUpContentManager = new DropDownPopUpContentManager();
 				}
-				else if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+				else if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
 					this.popUpContentManager = new CalloutPopUpContentManager();
 				}
@@ -1287,7 +1288,7 @@ package feathers.controls
 					this.popUpContentManager = new VerticalCenteredPopUpContentManager();
 				}
 			}
-
+			super.initialize();
 		}
 		
 		/**

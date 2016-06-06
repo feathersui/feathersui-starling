@@ -985,7 +985,8 @@ package feathers.media
 			{
 				//in the final case, the texture hasn't been created yet.
 				this._isWaitingForTextureReady = true;
-				this._texture = Texture.fromNetStream(this._netStream, Starling.current.contentScaleFactor, onCompleteCallback);
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				this._texture = Texture.fromNetStream(this._netStream, starling.contentScaleFactor, onCompleteCallback);
 				this._texture.root.onRestore = videoTexture_onRestore;
 				//don't call play() until after Texture.fromNetStream() because
 				//the texture needs to be created first.

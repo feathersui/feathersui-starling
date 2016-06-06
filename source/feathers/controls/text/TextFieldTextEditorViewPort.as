@@ -598,7 +598,8 @@ package feathers.controls.text
 			this._textFieldSnapshotClipRect.x = 0;
 			this._textFieldSnapshotClipRect.y = 0;
 
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			var clipWidth:Number = textFieldWidth * scaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
@@ -662,11 +663,7 @@ package feathers.controls.text
 		 */
 		override protected function transformTextField():void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			if(starling === null)
-			{
-				starling = Starling.current;
-			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{

@@ -1426,20 +1426,21 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
-			if(this.textField)
+			if(this.textField !== null)
 			{
-				if(!this.textField.parent)
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				if(this.textField.parent === null)
 				{
-					Starling.current.nativeStage.addChild(this.textField);
+					starling.nativeStage.addChild(this.textField);
 				}
 				if(position !== null)
 				{
 					var nativeScaleFactor:Number = 1;
-					if(Starling.current.supportHighResolutions)
+					if(starling.supportHighResolutions)
 					{
-						nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+						nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 					}
-					var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+					var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 					var scaleX:Number = this.textField.scaleX;
 					var scaleY:Number = this.textField.scaleY;
 					var gutterPositionOffset:Number = 2;
@@ -1531,7 +1532,7 @@ package feathers.controls.text
 				}
 				if(!FocusManager.isEnabledForStage(this.stage))
 				{
-					Starling.current.nativeStage.focus = this.textField;
+					starling.nativeStage.focus = this.textField;
 				}
 				this.textField.requestSoftKeyboard();
 				if(this._textFieldHasFocus)
@@ -1554,7 +1555,8 @@ package feathers.controls.text
 			{
 				return;
 			}
-			var nativeStage:Stage = Starling.current.nativeStage;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var nativeStage:Stage = starling.nativeStage;
 			if(nativeStage.focus === this.textField)
 			{
 				//only clear the native focus when our native target has focus
@@ -1993,7 +1995,8 @@ package feathers.controls.text
 			this._textFieldSnapshotClipRect.x = 0;
 			this._textFieldSnapshotClipRect.y = 0;
 
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			var clipWidth:Number = this.actualWidth * scaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
@@ -2038,11 +2041,7 @@ package feathers.controls.text
 			{
 				smallerGlobalScale = globalScaleY;
 			}
-			var starling:Starling = stageToStarling(this.stage);
-			if(starling === null)
-			{
-				starling = Starling.current;
-			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{
@@ -2091,7 +2090,8 @@ package feathers.controls.text
 		 */
 		protected function checkIfNewSnapshotIsNeeded():void
 		{
-			var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var canUseRectangleTexture:Boolean = starling.profile !== Context3DProfile.BASELINE_CONSTRAINED;
 			if(canUseRectangleTexture)
 			{
 				this._snapshotWidth = this._textFieldSnapshotClipRect.width;
@@ -2104,7 +2104,7 @@ package feathers.controls.text
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-			textureRoot.scale != Starling.contentScaleFactor ||
+			textureRoot.scale != starling.contentScaleFactor ||
 			this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}
 
@@ -2134,8 +2134,9 @@ package feathers.controls.text
 		 */
 		protected function texture_onRestore():void
 		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			if(this.textSnapshot && this.textSnapshot.texture &&
-				this.textSnapshot.texture.scale != Starling.contentScaleFactor)
+				this.textSnapshot.texture.scale != starling.contentScaleFactor)
 			{
 				//if we've changed between scale factors, we need to recreate
 				//the texture to match the new scale factor.
@@ -2161,7 +2162,8 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 0;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
@@ -2226,10 +2228,11 @@ package feathers.controls.text
 		 */
 		protected function textEditor_addedToStageHandler(event:Event):void
 		{
-			if(!this.textField.parent)
+			if(this.textField.parent === null)
 			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				//the text field needs to be on the native stage to measure properly
-				Starling.current.nativeStage.addChild(this.textField);
+				starling.nativeStage.addChild(this.textField);
 			}
 		}
 
