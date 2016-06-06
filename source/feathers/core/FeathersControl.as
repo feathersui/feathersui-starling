@@ -2216,19 +2216,13 @@ package feathers.core
 			}
 			width = this.scaledActualWidth;
 			height = this.scaledActualHeight;
-			minWidth = this.scaledActualMinWidth;
-			minHeight = this.scaledActualMinHeight;
 			this.scaledActualWidth = this.actualWidth * scaleX;
 			this.scaledActualHeight = this.actualHeight * scaleY;
 			this.scaledActualMinWidth = this.actualMinWidth * scaleX;
 			this.scaledActualMinHeight = this.actualMinHeight * scaleY;
-			if(width !== this.scaledActualWidth || height !== this.scaledActualHeight ||
-					minWidth !== this.scaledActualMinWidth || minHeight !== this.scaledActualMinHeight)
+			if(width !== this.scaledActualWidth || height !== this.scaledActualHeight)
 			{
 				resized = true;
-			}
-			if(resized)
-			{
 				this.dispatchEventWith(Event.RESIZE);
 			}
 			return resized;
