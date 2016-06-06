@@ -275,7 +275,7 @@ package feathers.themes
 		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 2, 2);
 		protected static const TOOL_TIP_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 		protected static const CALLOUT_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
-		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 7);
+		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 12);
 		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 15);
 		protected static const STEPPER_INCREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 9, 15, 1);
 		protected static const STEPPER_DECREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 15, 1);
