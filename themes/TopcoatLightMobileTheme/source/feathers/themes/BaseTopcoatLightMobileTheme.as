@@ -172,13 +172,7 @@ package feathers.themes
 		public function BaseTopcoatLightMobileTheme()
 		{
 			super();
-			this.starling = Starling.current;
 		}
-
-		/**
-		 * The Starling instance for this theme.
-		 */
-		protected var starling:Starling;
 
 		protected var gridSize:int;
 		protected var gutterSize:int;

@@ -36,15 +36,18 @@ package feathers.themes
 		 */
 		public function StyleNameFunctionTheme()
 		{
-			this._starling = Starling.current;
+			if(this.starling === null)
+			{
+				this.starling = Starling.current;
+			}
 			this.createRegistry();
 			this._conditionalRegistry = new StyleProviderRegistry(true, createConditionalStyleProvider);
 		}
 
 		/**
-		 * @private
+		 * The Starling instance associated with this theme.
 		 */
-		protected var _starling:Starling;
+		protected var starling:Starling;
 
 		/**
 		 * @private
@@ -103,7 +106,7 @@ package feathers.themes
 		protected function starlingConditional(target:IFeathersControl):Boolean
 		{
 			var starling:Starling = target.stage !== null ? target.stage.starling : Starling.current;
-			return starling === this._starling;
+			return starling === this.starling;
 		}
 
 		/**

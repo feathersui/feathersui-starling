@@ -267,13 +267,7 @@ package feathers.themes
 		public function BaseMinimalDesktopTheme()
 		{
 			super();
-			this.starling = Starling.current;
 		}
-
-		/**
-		 * The Starling instance for this theme.
-		 */
-		protected var starling:Starling;
 
 		/**
 		 * A normal font size.

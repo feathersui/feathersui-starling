@@ -376,13 +376,7 @@ package feathers.themes
 		public function BaseMetalWorksDesktopTheme()
 		{
 			super();
-			this.starling = Starling.current;
 		}
-
-		/**
-		 * The Starling instance for this theme.
-		 */
-		protected var starling:Starling;
 
 		/**
 		 * A smaller font size for details.
