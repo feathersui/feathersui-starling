@@ -731,6 +731,7 @@ package feathers.controls.supportClasses
 			}
 			this.prepareActiveScreen();
 			var isSameInstance:Boolean = this._previousScreenInTransition === this._activeScreen;
+			this.addChild(this._activeScreen);
 			if(this._activeScreen is IFeathersControl)
 			{
 				IFeathersControl(this._activeScreen).initializeNow();
@@ -754,7 +755,6 @@ package feathers.controls.supportClasses
 				this._activeScreenExplicitMaxWidth = this._activeScreenExplicitWidth;
 				this._activeScreenExplicitMaxHeight = this._activeScreenExplicitHeight;
 			}
-			this.addChild(this._activeScreen);
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			if(this._validationQueue && !this._validationQueue.isValidating)
