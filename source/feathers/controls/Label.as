@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
@@ -921,6 +922,7 @@ package feathers.controls
 			this.textRenderer.styleNameList.add(textRendererStyleName);
 			this.addChild(DisplayObject(this.textRenderer));
 
+			this.textRenderer.initializeNow();
 			this._explicitTextRendererWidth = this.textRenderer.explicitWidth;
 			this._explicitTextRendererHeight = this.textRenderer.explicitHeight;
 			this._explicitTextRendererMinWidth = this.textRenderer.explicitMinWidth;
@@ -950,6 +952,10 @@ package feathers.controls
 				if(this.currentBackgroundSkin !== null)
 				{
 					this.addChildAt(this.currentBackgroundSkin, 0);
+					if(this.currentBackgroundSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					}
 					if(this.currentBackgroundSkin is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);

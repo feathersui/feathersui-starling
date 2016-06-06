@@ -857,6 +857,10 @@ package feathers.controls
 			if(this.currentBackground !== null)
 			{
 				this.currentBackground.visible = true;
+				if(this.currentBackground is IFeathersControl)
+				{
+					IFeathersControl(this.currentBackground).initializeNow();
+				}
 				if(this.currentBackground is IMeasureDisplayObject)
 				{
 					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackground);

@@ -860,6 +860,10 @@ package feathers.controls
 					IFeathersControl(this._content).addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				}
 				this.addChild(this._content);
+				if(this._content is IFeathersControl)
+				{
+					IFeathersControl(this._content).initializeNow();
+				}
 				if(this._content is IMeasureDisplayObject)
 				{
 					var measureContent:IMeasureDisplayObject = IMeasureDisplayObject(this._content);
@@ -1096,7 +1100,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = HorizontalAlign.CENTER;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		/**
 		 * The vertical alignment of the callout, relative to the origin.
@@ -1395,6 +1399,10 @@ package feathers.controls
 			if(this._backgroundSkin !== null)
 			{
 				this.addChildAt(this._backgroundSkin, 0);
+				if(this._backgroundSkin is IFeathersControl)
+				{
+					IFeathersControl(this._backgroundSkin).initializeNow();
+				}
 				if(this._backgroundSkin is IMeasureDisplayObject)
 				{
 					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._backgroundSkin);
@@ -2402,6 +2410,10 @@ package feathers.controls
 				this._ignoreContentResize = true;
 				this._content.width = backgroundWidth - this._paddingLeft - this._paddingRight;
 				this._content.height = backgroundHeight - this._paddingTop - this._paddingBottom;
+				if(this._content is IValidating)
+				{
+					IValidating(this._content).validate();
+				}
 				this._ignoreContentResize = oldIgnoreContentResize;
 			}
 		}

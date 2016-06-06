@@ -2220,6 +2220,10 @@ package feathers.controls
 			this.addChildAt(onTrack, 0);
 			this.onTrack = onTrack;
 
+			if(this.onTrack is IFeathersControl)
+			{
+				IFeathersControl(this.onTrack).initializeNow();
+			}
 			if(this.onTrack is IMeasureDisplayObject)
 			{
 				var measureOnTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.onTrack);
@@ -2270,6 +2274,10 @@ package feathers.controls
 			this.addChildAt(offTrack, 1);
 			this.offTrack = offTrack;
 
+			if(this.offTrack is IFeathersControl)
+			{
+				IFeathersControl(this.offTrack).initializeNow();
+			}
 			if(this.offTrack is IMeasureDisplayObject)
 			{
 				var measureOffTrack:IMeasureDisplayObject = IMeasureDisplayObject(this.offTrack);

@@ -154,5 +154,10 @@ package feathers.core
 		 * @copy feathers.core.FeathersControl#resetStyleProvider()
 		 */
 		function resetStyleProvider():void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#initializeNow()
+		 */
+		function initializeNow():void
 	}
 }

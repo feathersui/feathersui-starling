@@ -1340,7 +1340,7 @@ package feathers.controls.text
 			//force it.
 			if(!this._isInitialized)
 			{
-				this.initializeInternal();
+				this.initializeNow();
 			}
 
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
