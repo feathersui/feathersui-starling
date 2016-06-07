@@ -1708,7 +1708,11 @@ package feathers.controls
 			if(this.currentBackgroundSkin !== null)
 			{
 				this.currentBackgroundSkin.visible = true;
-				
+
+				if(this.currentBackgroundSkin is IFeathersControl)
+				{
+					IFeathersControl(this.currentBackgroundSkin).initializeNow();
+				}
 				if(this.currentBackgroundSkin is IMeasureDisplayObject)
 				{
 					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);

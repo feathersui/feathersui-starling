@@ -1927,7 +1927,7 @@ package feathers.core
 					//finished initializing. we'll have to wait.
 					return;
 				}
-				this.initializeInternal();
+				this.initializeNow();
 			}
 			if(!this.isInvalid())
 			{
@@ -2098,6 +2098,40 @@ package feathers.core
 		}
 
 		/**
+		 * If the component has not yet initialized, initializes immediately.
+		 * The <code>initialize()</code> function will be called, and the
+		 * <code>FeathersEventType.INITIALIZE</code> event will be dispatched.
+		 * Then, if the component has a style provider, it will be applied. The
+		 * component will not validate, though. To initialize and validate
+		 * immediately, call <code>validate()</code> instead.
+		 * 
+		 * @see #isInitialized
+		 * @see #initialize()
+		 * @see #event:initialize FeathersEventType.INITIALIZE
+		 * @see #styleProvider
+		 * @see #validate()
+		 */
+		public function initializeNow():void
+		{
+			if(this._isInitialized || this._isInitializing)
+			{
+				return;
+			}
+			this._isInitializing = true;
+			this.initialize();
+			this.invalidate(); //invalidate everything
+			this._isInitializing = false;
+			this._isInitialized = true;
+			this.dispatchEventWith(FeathersEventType.INITIALIZE);
+
+			if(this._styleProvider)
+			{
+				this._styleProvider.applyStyles(this);
+			}
+			this._styleNameList.addEventListener(Event.CHANGE, styleNameList_changeHandler);
+		}
+
+		/**
 		 * Sets the width and height of the control, with the option of
 		 * invalidating or not. Intended to be used when the <code>width</code>
 		 * and <code>height</code> values have not been set explicitly, and the
@@ -2205,19 +2239,13 @@ package feathers.core
 			}
 			width = this.scaledActualWidth;
 			height = this.scaledActualHeight;
-			minWidth = this.scaledActualMinWidth;
-			minHeight = this.scaledActualMinHeight;
 			this.scaledActualWidth = this.actualWidth * scaleX;
 			this.scaledActualHeight = this.actualHeight * scaleY;
 			this.scaledActualMinWidth = this.actualMinWidth * scaleX;
 			this.scaledActualMinHeight = this.actualMinHeight * scaleY;
-			if(width !== this.scaledActualWidth || height !== this.scaledActualHeight ||
-					minWidth !== this.scaledActualMinWidth || minHeight !== this.scaledActualMinHeight)
+			if(width !== this.scaledActualWidth || height !== this.scaledActualHeight)
 			{
 				resized = true;
-			}
-			if(resized)
-			{
 				this.dispatchEventWith(Event.RESIZE);
 			}
 			return resized;
@@ -2356,29 +2384,6 @@ package feathers.core
 		}
 
 		/**
-		 * @private
-		 */
-		protected function initializeInternal():void
-		{
-			if(this._isInitialized || this._isInitializing)
-			{
-				return;
-			}
-			this._isInitializing = true;
-			this.initialize();
-			this.invalidate(); //invalidate everything
-			this._isInitializing = false;
-			this._isInitialized = true;
-			this.dispatchEventWith(FeathersEventType.INITIALIZE);
-
-			if(this._styleProvider)
-			{
-				this._styleProvider.applyStyles(this);
-			}
-			this._styleNameList.addEventListener(Event.CHANGE, styleNameList_changeHandler);
-		}
-
-		/**
 		 * Default event handler for <code>FeathersEventType.FOCUS_IN</code>
 		 * that may be overridden in subclasses to perform additional actions
 		 * when the component receives focus.
@@ -2414,7 +2419,7 @@ package feathers.core
 			this._validationQueue = ValidationQueue.forStarling(starling);
 			if(!this._isInitialized)
 			{
-				this.initializeInternal();
+				this.initializeNow();
 			}
 			if(this.isInvalid())
 			{

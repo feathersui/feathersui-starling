@@ -1658,6 +1658,10 @@ package feathers.controls.renderers
 			if(this.currentBackgroundSkin !== null)
 			{
 				this.currentBackgroundSkin.visible = true;
+				if(this.currentBackgroundSkin is IFeathersControl)
+				{
+					IFeathersControl(this.currentBackgroundSkin).initializeNow();
+				}
 				if(this.currentBackgroundSkin is IMeasureDisplayObject)
 				{
 					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
@@ -1698,6 +1702,10 @@ package feathers.controls.renderers
 					if(this.content !== null)
 					{
 						this.addChild(this.content);
+						if(this.content is IFeathersControl)
+						{
+							IFeathersControl(this.content).initializeNow();
+						}
 						if(this.content is IMeasureDisplayObject)
 						{
 							var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.content);

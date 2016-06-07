@@ -756,6 +756,10 @@ package feathers.controls
 				if(this.currentBackgroundSkin !== null)
 				{
 					this.currentBackgroundSkin.starling_internal::setParent(this);
+					if(this.currentBackgroundSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					}
 					if(this.currentBackgroundSkin is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);

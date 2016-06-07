@@ -1509,6 +1509,7 @@ package feathers.controls
 			this.addChild(this.button);
 			
 			//we will use these values for measurement, if possible
+			this.button.initializeNow();
 			this.buttonExplicitWidth = this.button.explicitWidth;
 			this.buttonExplicitHeight = this.button.explicitHeight;
 			this.buttonExplicitMinWidth = this.button.explicitMinWidth;

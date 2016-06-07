@@ -929,8 +929,9 @@ package feathers.layout
 				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom,
 					minHeight - this._paddingTop - this._paddingBottom,
 					maxHeight - this._paddingTop - this._paddingBottom,
-					distributedWidth, explicitWidth - this._paddingLeft - this._paddingRight,
-					maxWidth - this._paddingLeft - this._paddingRight);
+					explicitWidth - this._paddingLeft - this._paddingRight,
+					minWidth - this._paddingLeft - this._paddingRight,
+					maxWidth - this._paddingLeft - this._paddingRight, distributedWidth);
 			}
 
 			if(needsExplicitWidth && this._distributeWidths)
@@ -1716,19 +1717,19 @@ package feathers.layout
 		 */
 		protected function validateItems(items:Vector.<DisplayObject>,
 			explicitHeight:Number, minHeight:Number, maxHeight:Number,
-			distributedWidth:Number, explicitWidth:Number, maxWidth:Number):void
+			explicitWidth:Number, minWidth:Number, maxWidth:Number, distributedWidth:Number):void
 		{
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			var containerWidth:Number = explicitWidth;
-			if(needsWidth && maxWidth < Number.POSITIVE_INFINITY)
+			if(needsWidth)
 			{
-				containerWidth = maxWidth;
+				containerWidth = minWidth;
 			}
 			var containerHeight:Number = explicitHeight;
-			if(needsHeight && maxHeight < Number.POSITIVE_INFINITY)
+			if(needsHeight)
 			{
-				containerHeight = maxHeight;
+				containerHeight = minHeight;
 			}
 			//if the alignment is justified, then we want to set the height of
 			//each item before validating because setting one dimension may
@@ -1794,7 +1795,13 @@ package feathers.layout
 							//virtualization, so we limit the width to the
 							//maximum possible value if it were the only item in
 							//the layout.
-							item.width = itemWidth;
+							//this doesn't need to be perfectly accurate because
+							//it's just a maximum
+							measureItem.maxWidth = itemWidth;
+							//we also need to clear the explicit width because,
+							//for many components, it will affect the minWidth
+							//which is used in the final calculation
+							item.width = NaN;
 						}
 						if(percentHeight === percentHeight) //!isNaN
 						{
@@ -1817,7 +1824,12 @@ package feathers.layout
 							{
 								itemHeight = itemExplicitMinHeight;
 							}
-							item.height = itemHeight;
+							//see comments above about setting maxWidth
+							measureItem.maxHeight = itemHeight;
+							//we also need to clear the explicit height because,
+							//for many components, it will affect the minHeight
+							//which is used in the final calculation
+							item.height = NaN;
 						}
 					}
 				}

@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
@@ -789,6 +790,10 @@ package feathers.controls
 			{
 				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
 				this.addRawChildAtInternal(DisplayObject(this._viewPort), 0);
+				if(this._viewPort is IFeathersControl)
+				{
+					IFeathersControl(this._viewPort).initializeNow();
+				}
 				this._explicitViewPortWidth = this._viewPort.explicitWidth;
 				this._explicitViewPortHeight = this._viewPort.explicitHeight;
 				this._explicitViewPortMinWidth = this._viewPort.explicitMinWidth;
@@ -3574,7 +3579,10 @@ package feathers.controls
 				if(this.currentBackgroundSkin !== null)
 				{
 					this.addRawChildAtInternal(this.currentBackgroundSkin, 0);
-
+					if(this.currentBackgroundSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					}
 					if(this.currentBackgroundSkin is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);

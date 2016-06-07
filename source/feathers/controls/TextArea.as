@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.IAdvancedNativeFocusOwner;
+	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.IStateContext;
@@ -19,7 +20,6 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
@@ -1352,7 +1352,10 @@ package feathers.controls
 						IStateObserver(this.currentBackgroundSkin).stateContext = this;
 					}
 					this.addChildAt(this.currentBackgroundSkin, 0);
-
+					if(this.currentBackgroundSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					}
 					if(this.currentBackgroundSkin is IMeasureDisplayObject)
 					{
 						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);

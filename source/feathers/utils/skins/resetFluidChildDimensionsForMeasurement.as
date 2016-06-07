@@ -77,7 +77,7 @@ package feathers.utils.skins
 			var childMaxHeight:Number = parentExplicitMaxHeight;
 			compilerWorkaround = childMaxHeight;
 			if(childMaxHeight !== childMaxHeight || //isNaN
-				childExplicitMaxHeight > childMaxHeight)
+				childExplicitMaxHeight < childMaxHeight)
 			{
 				childMaxHeight = childExplicitMaxHeight;
 			}

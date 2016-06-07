@@ -9,7 +9,6 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IAdvancedNativeFocusOwner;
-	import feathers.core.INativeFocusOwner;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
@@ -19,7 +18,6 @@ package feathers.controls
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundToPrecision;
 
-	import flash.display.InteractiveObject;
 	import flash.events.TimerEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Timer;
@@ -1822,6 +1820,7 @@ package feathers.controls
 			this.addChild(this.textInput);
 			
 			//we will use these values for measurement, if possible
+			this.textInput.initializeNow();
 			this.textInputExplicitWidth = this.textInput.explicitWidth;
 			this.textInputExplicitHeight = this.textInput.explicitHeight;
 			this.textInputExplicitMinWidth = this.textInput.explicitMinWidth;
