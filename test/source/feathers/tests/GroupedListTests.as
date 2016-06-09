@@ -7,6 +7,7 @@ package feathers.tests
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.tests.supportClasses.AssertViewPortBoundsLayout;
 
 	import flash.geom.Point;
 
@@ -865,6 +866,13 @@ package feathers.tests
 			});
 			this._list.validate();
 			Assert.assertTrue("GroupedList Event.RESIZE was not dispatched when item was updated with longer text and width was not explicit", hasResized);
+		}
+
+		[Test]
+		public function testViewPortBoundsValues():void
+		{
+			this._list.layout = new AssertViewPortBoundsLayout();
+			this._list.validate();
 		}
 	}
 }

@@ -6,6 +6,7 @@ package feathers.tests
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
+	import feathers.tests.supportClasses.AssertViewPortBoundsLayout;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
@@ -185,6 +186,13 @@ package feathers.tests
 			this._group.dispose();
 			Assert.assertTrue("backgroundSkin not disposed when LayoutGroup disposed.", backgroundSkin.isDisposed);
 			Assert.assertTrue("backgroundDisabledSkin not disposed when LayoutGroup disposed.", backgroundDisabledSkin.isDisposed);
+		}
+
+		[Test]
+		public function testViewPortBoundsValues():void
+		{
+			this._group.layout = new AssertViewPortBoundsLayout();
+			this._group.validate();
 		}
 	}
 }
