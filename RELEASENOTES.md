@@ -2,6 +2,11 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.0.1 - June 2016
+
+* List, GroupedList: fixed issue where ViewPortBounds minWidth and minHeight could be NaN (this broke percentWidth and percentHeight on some layouts).
+*  HorizontalLayout, VerticalLayout: fixed issue where layout could invalidate every frame when using percentages.
+
 ## 3.0.0 - June 2016
 
 See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about how to upgrade to Feathers 3.0.
