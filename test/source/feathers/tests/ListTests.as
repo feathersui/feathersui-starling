@@ -4,6 +4,7 @@ package feathers.tests
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.tests.supportClasses.AssertViewPortBoundsLayout;
 
 	import flash.geom.Point;
 
@@ -267,6 +268,13 @@ package feathers.tests
 			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect data", item1, itemRenderer1.data);
 			Assert.assertStrictlyEquals("Item renderer returned by itemToItemRenderer() has incorrect index", 1, itemRenderer1.index);
 			Assert.assertNull("itemToItemRenderer() incorrectly returned item renderer for item that should not have one", itemRenderer3);
+		}
+
+		[Test]
+		public function testViewPortBoundsValues():void
+		{
+			this._list.layout = new AssertViewPortBoundsLayout();
+			this._list.validate();
 		}
 	}
 }
