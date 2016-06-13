@@ -2,6 +2,7 @@ package
 {
 	import feathers.tests.AddOnFunctionStyleProviderTests;
 	import feathers.tests.AlertMeasurementTests;
+	import feathers.tests.AnchorLayoutTests;
 	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
@@ -251,6 +252,7 @@ package
 				TimeLabelTests,
 			
 				//layout tests
+				AnchorLayoutTests,
 				FlowLayoutTests,
 				LayoutGroupHorizontalLayoutTests,
 				LayoutGroupVerticalLayoutTests,
