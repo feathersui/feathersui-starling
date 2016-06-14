@@ -29,4 +29,4 @@ before_script:
   - cp flexunit/* third-party/flexunit/
 
 script:
-  - ant full -Dairsdk.root="$AIR_HOME" -Dflashplayer="$HOME/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger"
+  - ant full -Dairsdk.root="$AIR_HOME" -Dflashplayer="$HOME/Applications/Flash Player.app/Contents/MacOS/Flash Player Debugger"
