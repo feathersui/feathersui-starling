@@ -7,6 +7,7 @@ package
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
 	import feathers.tests.BitmapFontTextEditorFocusTests;
+	import feathers.tests.BitmapFontTextRendererTests;
 	import feathers.tests.BottomDrawerPopUpContentManagerTests;
 	import feathers.tests.ButtonFocusTests;
 	import feathers.tests.ButtonGroupDataProviderEventsTests;
@@ -97,7 +98,9 @@ package
 	import feathers.tests.TextAreaInternalStateTests;
 	import feathers.tests.TextAreaTests;
 	import feathers.tests.TextBlockTextEditorFocusTests;
+	import feathers.tests.TextBlockTextRendererTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
+	import feathers.tests.TextFieldTextRendererTests;
 	import feathers.tests.TextInputFocusTests;
 	import feathers.tests.TextInputInternalStateTests;
 	import feathers.tests.TextInputMeasurementTests;
@@ -265,6 +268,11 @@ package
 
 				//collections tests
 				ListCollectionWithArrayTests,
+
+				//text renderers
+				BitmapFontTextRendererTests,
+				TextBlockTextRendererTests,
+				TextFieldTextRendererTests,
 
 				//focus tests
 				FocusManagerEnabledTests,

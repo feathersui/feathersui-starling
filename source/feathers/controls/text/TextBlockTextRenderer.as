@@ -306,6 +306,14 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @copy feathers.core.ITextRenderer#numLines
+		 */
+		public function get numLines():int
+		{
+			return this._textLines.length;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _text:String;

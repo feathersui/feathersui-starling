@@ -256,6 +256,18 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @copy feathers.core.ITextRenderer#numLines
+		 */
+		public function get numLines():int
+		{
+			if(this.textField === null)
+			{
+				return 0;
+			}
+			return this.textField.numLines;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var currentTextFormat:TextFormat;
