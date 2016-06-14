@@ -596,10 +596,6 @@ package feathers.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this._explicitWidth == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitWidth !== this._explicitWidth)
 			{
@@ -608,6 +604,10 @@ package feathers.core
 			if(this.scaleX !== 1)
 			{
 				value /= this.scaleX;
+			}
+			if(this._explicitWidth == value)
+			{
+				return;
 			}
 			this._explicitWidth = value;
 			if(valueIsNaN)
@@ -698,10 +698,6 @@ package feathers.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this._explicitHeight == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitHeight !== this._explicitHeight)
 			{
@@ -710,6 +706,10 @@ package feathers.core
 			if(this.scaleY !== 1)
 			{
 				value /= this.scaleY;
+			}
+			if(this._explicitHeight == value)
+			{
+				return;
 			}
 			this._explicitHeight = value;
 			if(valueIsNaN)
@@ -858,10 +858,6 @@ package feathers.core
 		 */
 		public function set minWidth(value:Number):void
 		{
-			if(this._explicitMinWidth == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitMinWidth !== this._explicitMinWidth)
 			{
@@ -870,6 +866,10 @@ package feathers.core
 			if(this.scaleX !== 1)
 			{
 				value /= this.scaleX;
+			}
+			if(this._explicitMinWidth == value)
+			{
+				return;
 			}
 			var oldValue:Number = this._explicitMinWidth;
 			this._explicitMinWidth = value;
@@ -952,10 +952,6 @@ package feathers.core
 		 */
 		public function set minHeight(value:Number):void
 		{
-			if(this._explicitMinHeight == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitMinHeight !== this._explicitMinHeight)
 			{
@@ -964,6 +960,10 @@ package feathers.core
 			if(this.scaleY !== 1)
 			{
 				value /= this.scaleY;
+			}
+			if(this._explicitMinHeight == value)
+			{
+				return;
 			}
 			var oldValue:Number = this._explicitMinHeight;
 			this._explicitMinHeight = value;
