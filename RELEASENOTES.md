@@ -6,6 +6,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 * List, GroupedList: fixed issue where ViewPortBounds minWidth and minHeight could be NaN (this broke percentWidth and percentHeight on some layouts).
 *  HorizontalLayout, VerticalLayout: fixed issue where layout could invalidate every frame when using percentages.
+*  FeathersControl: fixed issue where setting width or height, then scaleX or scaleY, then trying to set original width or height would fail.
 
 ## 3.0.0 - June 2016
 
