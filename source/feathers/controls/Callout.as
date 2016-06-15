@@ -660,7 +660,7 @@ package feathers.controls
 		/**
 		 * Determines if the callout is automatically closed if a touch in the
 		 * <code>TouchPhase.BEGAN</code> phase happens outside of the callout's
-		 * bounds.
+		 * or the origin's bounds.
 		 *
 		 * <p>In the following example, the callout will not close when a touch
 		 * event with <code>TouchPhase.BEGAN</code> is detected outside the
@@ -677,7 +677,7 @@ package feathers.controls
 		/**
 		 * Determines if the callout is automatically closed if a touch in the
 		 * <code>TouchPhase.ENDED</code> phase happens outside of the callout's
-		 * bounds.
+		 * or the origin's bounds.
 		 *
 		 * <p>In the following example, the callout will not close when a touch
 		 * event with <code>TouchPhase.ENDED</code> is detected outside the
@@ -905,12 +905,22 @@ package feathers.controls
 		 *
 		 * <p>When an origin is set, the <code>arrowPosition</code> and
 		 * <code>arrowOffset</code> properties will be managed automatically by
-		 * the callout. Setting either of these values manually with either have
+		 * the callout. Setting either of these values manually will either have
 		 * no effect or unexpected behavior, so it is recommended that you
 		 * avoid modifying those properties.</p>
+		 * 
+		 * <p>Note: The <code>origin</code> is excluded when using
+		 * <code>closeOnTouchBeganOutside</code> and <code>closeOnTouchEndedOutside</code>.
+		 * In other words, when the origin is touched, and either of these
+		 * properties is <code>true</code>, the callout will not be closed. If
+		 * the callout is not displayed modally, and touching the origin opens
+		 * the callout, you should check if a callout is already visible. If a
+		 * callout is visible, close it. If no callouts are visible, show one.
+		 * However, if the callout is modal, the touch will be stopped by the
+		 * overlay before it reaches the origin, so this behavior will not apply.</p>
 		 *
 		 * <p>In general, if you use <code>Callout.show()</code>, you will
-		 * rarely need to manually manage the origin.</p>
+		 * rarely need to manually manage the <code>origin</code> property.</p>
 		 *
 		 * <p>In the following example, the callout's origin is set to a button:</p>
 		 *
@@ -919,6 +929,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see feathers.controls.Callout#show()
 		 * @see #supportedDirections
 		 * @see #arrowPosition
 		 * @see #arrowOffset
