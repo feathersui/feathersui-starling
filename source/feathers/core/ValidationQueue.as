@@ -154,10 +154,14 @@ package feathers.core
 				//it will avoid allocating objects
 				this._queue = this._queue.sort(queueSortFunction);
 			}
-			while(queueLength > 0) //rechecking length after the shift
+			//rechecking length every time because addControl() might have added
+			//a new item during the last validation.
+			//we could use an int and check the lenght again at the end of the
+			//loop, but there is little difference in performance, even with
+			//millions of items in queue.
+			while(this._queue.length > 0)
 			{
 				var item:IValidating = this._queue.shift();
-				queueLength--;
 				if(item.depth < 0)
 				{
 					//skip items that are no longer on the display list
