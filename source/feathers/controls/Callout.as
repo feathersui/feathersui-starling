@@ -21,6 +21,7 @@ package feathers.controls
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
@@ -33,6 +34,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the callout is closed.
@@ -501,8 +503,14 @@ package feathers.controls
 					xPosition = maxXPosition;
 				}
 			}
-			callout.x = xPosition;
-			callout.y = globalOrigin.y + globalOrigin.height;
+			var point:Point = Pool.getPoint(xPosition, globalOrigin.y + globalOrigin.height);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -545,8 +553,14 @@ package feathers.controls
 					xPosition = maxXPosition;
 				}
 			}
-			callout.x = xPosition;
-			callout.y = globalOrigin.y - callout.height;
+			var point:Point = Pool.getPoint(xPosition, globalOrigin.y - callout.height);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -566,7 +580,6 @@ package feathers.controls
 		protected static function positionToRightOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(RelativePosition.LEFT);
-			callout.x = globalOrigin.x + globalOrigin.width;
 			var idealYPosition:Number = globalOrigin.y;
 			if(callout._verticalAlign === VerticalAlign.MIDDLE)
 			{
@@ -590,7 +603,14 @@ package feathers.controls
 					yPosition = maxYPosition;
 				}
 			}
-			callout.y = yPosition;
+			var point:Point = Pool.getPoint(globalOrigin.x + globalOrigin.width, yPosition);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -610,7 +630,6 @@ package feathers.controls
 		protected static function positionToLeftOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(RelativePosition.RIGHT);
-			callout.x = globalOrigin.x - callout.width;
 			var idealYPosition:Number = globalOrigin.y;
 			if(callout._verticalAlign === VerticalAlign.MIDDLE)
 			{
@@ -634,7 +653,14 @@ package feathers.controls
 					yPosition = maxYPosition;
 				}
 			}
-			callout.y = yPosition;
+			var point:Point = Pool.getPoint(globalOrigin.x - callout.width, yPosition);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
