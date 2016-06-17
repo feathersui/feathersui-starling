@@ -606,5 +606,113 @@ package feathers.tests
 			this._layout.layout(items, bounds);
 			Assert.assertStrictlyEquals("TiledColumnsLayout y position of first child not correct with explicit height larger than requestedRowCount.", CHILD1_HEIGHT, item1.y);
 		}
+
+		[Test]
+		public function testTileHeightWithDistributeHeights():void
+		{
+			this._layout.useSquareTiles = false;
+			this._layout.distributeHeights = true;
+			this._layout.tileVerticalAlign = VerticalAlign.JUSTIFY;
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitHeight = 3 * CHILD1_HEIGHT;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of tile not correct with distributeHeights.",
+				3 * CHILD1_HEIGHT, item1.height);
+		}
+
+		[Test]
+		public function testTileHeightWithDistributeHeightsAndRequestedRowCount():void
+		{
+			var requestedRowCount:int = 3;
+			this._layout.useSquareTiles = false;
+			this._layout.distributeHeights = true;
+			this._layout.requestedRowCount = requestedRowCount;
+			this._layout.tileVerticalAlign = VerticalAlign.JUSTIFY;
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitHeight = 2 * CHILD1_HEIGHT;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of tile not correct with distributeHeights and requestedRowCount.",
+				2 * CHILD1_HEIGHT / requestedRowCount, item1.height);
+		}
+
+		[Test]
+		public function testThreeTileHeightWithDistributeHeightsAndNoExplicitHeight():void
+		{
+			//distributeHeights should essentially do nothing in this case
+			//because the view port height needs to be calculated
+			this._layout.useSquareTiles = false;
+			this._layout.distributeHeights = true;
+			this._layout.tileVerticalAlign = VerticalAlign.JUSTIFY;
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var item3:Quad = new Quad(CHILD3_WIDTH, CHILD3_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			this._layout.layout(items, bounds);
+			var tileHeight:Number = Math.max(CHILD1_HEIGHT, CHILD2_HEIGHT, CHILD3_HEIGHT);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of first tile not correct with distributeHeights and no explicit height.",
+				tileHeight, item1.height);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of second tile not correct with distributeHeights and no explicit height.",
+				tileHeight, item2.height);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of third tile not correct with distributeHeights and no explicit height.",
+				tileHeight, item3.height);
+		}
+
+		[Test]
+		public function testTileWidthWithDistributeHeightsAndUseSquareTiles():void
+		{
+			this._layout.useSquareTiles = true;
+			this._layout.distributeHeights = true;
+			this._layout.tileHorizontalAlign = HorizontalAlign.JUSTIFY;
+			this._layout.tileVerticalAlign = VerticalAlign.JUSTIFY;
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitHeight = 3 * CHILD1_HEIGHT;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("TiledColumnsLayout width of tile not correct with distributeHeights and useSquareTiles.",
+				3 * CHILD1_HEIGHT, item1.width);
+		}
+
+		[Test]
+		public function testTwoTilesHeightWithDistributeHeights():void
+		{
+			this._layout.useSquareTiles = false;
+			this._layout.distributeHeights = true;
+			this._layout.tileVerticalAlign = VerticalAlign.JUSTIFY;
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitHeight = 3 * CHILD1_HEIGHT;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of first tile not correct with distributeHeights.",
+				3 * CHILD1_HEIGHT / 2, item1.height);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of second tile not correct with distributeHeights.",
+				3 * CHILD1_HEIGHT / 2, item2.height);
+		}
+
+		[Test]
+		public function testTwoTilesHeightWithDistributeHeightsAndRequestedRowCount():void
+		{
+			this._layout.useSquareTiles = false;
+			this._layout.distributeHeights = true;
+			this._layout.requestedRowCount = 2;
+			this._layout.tileVerticalAlign = VerticalAlign.JUSTIFY;
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitHeight = CHILD1_HEIGHT / 2;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of first tile not correct with distributeHeights and requestedRowCount.",
+				CHILD1_HEIGHT / 4, item1.height);
+			Assert.assertStrictlyEquals("TiledColumnsLayout height of second tile not correct with distributeHeights and requestedRowCount.",
+				CHILD1_HEIGHT / 4, item2.height);
+		}
 	}
 }

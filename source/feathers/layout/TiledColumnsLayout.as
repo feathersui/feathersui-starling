@@ -751,6 +751,42 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _distributeHeights:Boolean = false;
+
+		/**
+		 * If the total height of the tiles in a column (minus padding and gap)
+		 * does not fill the entire column, the remaining space will be
+		 * distributed to each tile equally.
+		 *
+		 * <p>If the container using the layout might resize, setting
+		 * <code>requestedRowCount</code> is recommended because the tiles
+		 * will resize too, and their dimensions may not be reset.</p>
+		 *
+		 * @default false
+		 *
+		 * @see #requestedRowCount
+		 */
+		public function get distributeHeights():Boolean
+		{
+			return this._distributeHeights;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeHeights(value:Boolean):void
+		{
+			if(this._distributeHeights === value)
+			{
+				return;
+			}
+			this._distributeHeights = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _useVirtualLayout:Boolean = true;
 
 		/**
@@ -1035,10 +1071,6 @@ package feathers.layout
 			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
 				explicitHeight, maxHeight, this._paddingTop + this._paddingBottom,
 				this._verticalGap, this._requestedRowCount, itemCount);
-			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
-				explicitWidth, maxWidth, this._paddingLeft + this._paddingRight,
-				this._horizontalGap, this._requestedColumnCount, itemCount,
-				verticalTileCount);
 			if(explicitHeight === explicitHeight) //!isNaN
 			{
 				var availableHeight:Number = explicitHeight;
@@ -1055,6 +1087,19 @@ package feathers.layout
 					availableHeight = maxHeight;
 				}
 			}
+			if(this._distributeHeights)
+			{
+				//distribute remaining space
+				tileHeight = (availableHeight - this._paddingTop - this._paddingBottom - (verticalTileCount * this._verticalGap) + this._verticalGap) / verticalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileWidth = tileHeight;
+				}
+			}
+			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
+				explicitWidth, maxWidth, this._paddingLeft + this._paddingRight,
+				this._horizontalGap, this._requestedColumnCount, itemCount,
+				verticalTileCount);
 			if(explicitWidth === explicitWidth) //!isNaN
 			{
 				var availableWidth:Number = explicitWidth;
@@ -2115,7 +2160,10 @@ package feathers.layout
 			explicitHeight:Number, maxHeight:Number, paddingTopAndBottom:Number,
 			verticalGap:Number, requestedRowCount:int, totalItemCount:int):int
 		{
-
+			if(requestedRowCount > 0 && this._distributeHeights)
+			{
+				return requestedRowCount;
+			}
 			var verticalTileCount:int;
 			if(explicitHeight === explicitHeight) //!isNaN
 			{
