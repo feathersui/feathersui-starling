@@ -29,6 +29,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -193,11 +194,6 @@ package feathers.controls
 	 */
 	public class GroupedList extends Scroller implements IFocusContainer
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>GroupedList</code>
 		 * components.
@@ -2950,11 +2946,14 @@ package feathers.controls
 				}
 				if(pendingData is Object)
 				{
-					this.dataViewPort.getScrollPositionForIndex(this.pendingGroupIndex, this.pendingItemIndex, HELPER_POINT);
+					var point:Point = Pool.getPoint();
+					this.dataViewPort.getScrollPositionForIndex(this.pendingGroupIndex, this.pendingItemIndex, point);
 					this.pendingGroupIndex = -1;
 					this.pendingItemIndex = -1;
 
-					var targetHorizontalScrollPosition:Number = HELPER_POINT.x;
+					var targetHorizontalScrollPosition:Number = point.x;
+					var targetVerticalScrollPosition:Number = point.y;
+					Pool.putPoint(point);
 					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
 					{
 						targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
@@ -2963,7 +2962,6 @@ package feathers.controls
 					{
 						targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
 					}
-					var targetVerticalScrollPosition:Number = HELPER_POINT.y;
 					if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
 					{
 						targetVerticalScrollPosition = this._minVerticalScrollPosition;
@@ -3073,8 +3071,10 @@ package feathers.controls
 			}
 			if(changedSelection)
 			{
-				this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, HELPER_POINT);
-				this.scrollToPosition(HELPER_POINT.x, HELPER_POINT.y, this._keyScrollDuration);
+				var point:Point = Pool.getPoint();
+				this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, point);
+				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+				Pool.putPoint(point);
 			}
 		}
 

@@ -32,6 +32,7 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.utils.Pool;
 
 	/**
 	 * A header that displays an optional title along with a horizontal regions
@@ -200,11 +201,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -1549,9 +1545,11 @@ package feathers.controls
 					maxTitleWidth = 0;
 				}
 				this.titleTextRenderer.maxWidth = maxTitleWidth;
-				this.titleTextRenderer.measureText(HELPER_POINT);
-				var measuredTitleWidth:Number = HELPER_POINT.x;
-				var measuredTitleHeight:Number = HELPER_POINT.y;
+				var point:Point = Pool.getPoint();
+				this.titleTextRenderer.measureText(point);
+				var measuredTitleWidth:Number = point.x;
+				var measuredTitleHeight:Number = point.y;
+				Pool.putPoint(point);
 				if(measuredTitleWidth === measuredTitleWidth) //!isNaN
 				{
 					if(hasLeftItems)

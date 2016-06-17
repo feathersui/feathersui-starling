@@ -29,6 +29,7 @@ package feathers.controls.supportClasses
 	import starling.events.Event;
 	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * @private
@@ -36,7 +37,6 @@ package feathers.controls.supportClasses
 	public class TextFieldViewPort extends FeathersControl implements IViewPort
 	{
 		private static const HELPER_MATRIX:Matrix = new Matrix();
-		private static const HELPER_POINT:Point = new Point();
 
 		public function TextFieldViewPort()
 		{
@@ -827,21 +827,22 @@ package feathers.controls.supportClasses
 
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var starlingViewPort:Rectangle = starling.viewPort;
-			HELPER_POINT.x = HELPER_POINT.y = 0;
+			var point:Point = Pool.getPoint();
 			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, point);
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
-			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * scaleFactor;
-			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * scaleFactor;
+			this._textFieldContainer.x = starlingViewPort.x + point.x * scaleFactor;
+			this._textFieldContainer.y = starlingViewPort.y + point.y * scaleFactor;
 			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this._textFieldContainer.alpha = painter.state.alpha;
+			Pool.putPoint(point);
 			super.render(painter);
 		}
 

@@ -21,6 +21,7 @@ package feathers.controls
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
+	import starling.utils.Pool;
 
 	/**
 	 * Displays text using a text renderer.
@@ -30,11 +31,6 @@ package feathers.controls
 	 */
 	public class Label extends FeathersControl implements ITextBaselineControl, IToolTip
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * The default value added to the <code>styleNameList</code> of the text
 		 * renderer.
@@ -786,7 +782,8 @@ package feathers.controls
 				this._explicitTextRendererMaxWidth, this._explicitTextRendererMaxHeight);
 			this.textRenderer.maxWidth = this._explicitMaxWidth - this._paddingLeft - this._paddingRight;
 			this.textRenderer.maxHeight = this._explicitMaxHeight - this._paddingTop - this._paddingBottom;
-			this.textRenderer.measureText(HELPER_POINT);
+			var point:Point = Pool.getPoint();
+			this.textRenderer.measureText(point);
 
 			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
@@ -809,7 +806,7 @@ package feathers.controls
 				//should be small to allow wrapping or truncation
 				if(this._text && !needsWidth)
 				{
-					newMinWidth = HELPER_POINT.x;
+					newMinWidth = point.x;
 				}
 				else
 				{
@@ -835,7 +832,7 @@ package feathers.controls
 			{
 				if(this._text)
 				{
-					newMinHeight = HELPER_POINT.y;
+					newMinHeight = point.y;
 				}
 				else
 				{
@@ -862,7 +859,7 @@ package feathers.controls
 			{
 				if(this._text)
 				{
-					newWidth = HELPER_POINT.x;
+					newWidth = point.x;
 				}
 				else
 				{
@@ -881,7 +878,7 @@ package feathers.controls
 			{
 				if(this._text)
 				{
-					newHeight = HELPER_POINT.y;
+					newHeight = point.y;
 				}
 				else
 				{
@@ -894,6 +891,8 @@ package feathers.controls
 					newHeight = this.currentBackgroundSkin.height;
 				}
 			}
+
+			Pool.putPoint(point);
 
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}

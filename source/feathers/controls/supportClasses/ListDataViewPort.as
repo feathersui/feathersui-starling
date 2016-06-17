@@ -34,6 +34,7 @@ package feathers.controls.supportClasses
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * @private
@@ -43,7 +44,6 @@ package feathers.controls.supportClasses
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
-		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function ListDataViewPort()
@@ -1100,8 +1100,10 @@ package feathers.controls.supportClasses
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
 			{
-				virtualLayout.measureViewPort(itemCount, this._viewPortBounds, HELPER_POINT);
-				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, itemCount, HELPER_VECTOR);
+				var point:Point = Pool.getPoint();
+				virtualLayout.measureViewPort(itemCount, this._viewPortBounds, point);
+				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, point.x, point.y, itemCount, HELPER_VECTOR);
+				Pool.putPoint(point);
 			}
 
 			var unrenderedItemCount:int = useVirtualLayout ? HELPER_VECTOR.length : itemCount;

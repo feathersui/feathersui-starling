@@ -35,6 +35,7 @@ package feathers.controls.supportClasses
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * @private
@@ -48,7 +49,6 @@ package feathers.controls.supportClasses
 		private static const SINGLE_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-single";
 		private static const LAST_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-last";
 
-		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function GroupedListDataViewPort()
@@ -1686,9 +1686,11 @@ package feathers.controls.supportClasses
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
 			{
-				virtualLayout.measureViewPort(totalLayoutCount, this._viewPortBounds, HELPER_POINT);
-				var viewPortWidth:Number = HELPER_POINT.x;
-				var viewPortHeight:Number = HELPER_POINT.y;
+				var point:Point = Pool.getPoint();
+				virtualLayout.measureViewPort(totalLayoutCount, this._viewPortBounds, point);
+				var viewPortWidth:Number = point.x;
+				var viewPortHeight:Number = point.y;
+				Pool.putPoint(point);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, viewPortWidth, viewPortHeight, totalLayoutCount, HELPER_VECTOR);
 
 				averageItemsPerGroup /= groupCount;

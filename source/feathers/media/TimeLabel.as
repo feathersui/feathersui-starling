@@ -17,6 +17,7 @@ package feathers.media
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * A specialized label that can display the current playhead time, total
@@ -30,11 +31,6 @@ package feathers.media
 	{
 		/**
 		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-		
-		/**
-		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_TIME</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
@@ -43,7 +39,7 @@ package feathers.media
 		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DISPLAY_MODE_CURRENT_TIME:String = "currentTime";
-		
+
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.TOTAL_TIME</code>.
@@ -367,10 +363,12 @@ package feathers.media
 					return;
 				}
 
-				if(touch.phase == TouchPhase.ENDED)
+				if(touch.phase === TouchPhase.ENDED)
 				{
-					touch.getLocation(this.stage, HELPER_POINT);
-					var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+					var point:Point = Pool.getPoint();
+					touch.getLocation(this.stage, point);
+					var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
+					Pool.putPoint(point);
 					if(isInBounds)
 					{
 						this._isToggled = !this._isToggled;
