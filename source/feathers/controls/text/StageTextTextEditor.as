@@ -46,6 +46,7 @@ package feathers.controls.text
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 	import starling.utils.SystemUtil;
 
 	/**
@@ -214,26 +215,6 @@ package feathers.controls.text
 	 */
 	public class StageTextTextEditor extends FeathersControl implements IMultilineTextEditor, INativeFocusOwner
 	{
-		/**
-		 * @private
-		 */
-		private static var HELPER_MATRIX3D:Matrix3D;
-		
-		/**
-		 * @private
-		 */
-		private static var HELPER_POINT3D:Vector3D;
-		
-		/**
-		 * @private
-		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>StageTextTextEditor</code>
 		 * components.
@@ -1169,16 +1150,19 @@ package feathers.controls.text
 			}
 			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
 			{
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				if(matrixToScaleX(HELPER_MATRIX) != this._lastGlobalScaleX || matrixToScaleY(HELPER_MATRIX) != this._lastGlobalScaleY)
+				var matrix:Matrix = Pool.getMatrix();
+				this.getTransformationMatrix(this.stage, matrix);
+				if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
+					matrixToScaleY(matrix) !== this._lastGlobalScaleY)
 				{
 					//the snapshot needs to be updated because the scale has
 					//changed since the last snapshot was taken.
 					this.invalidate(INVALIDATION_FLAG_SIZE);
 					this.validate();
 				}
+				Pool.putMatrix(matrix);
 			}
-			
+
 			//we'll skip this if the text field isn't visible to avoid running
 			//that code every frame.
 			if(this.stageText && this.stageText.visible)
@@ -1581,8 +1565,11 @@ package feathers.controls.text
 				return false;
 			}
 
-			this.measure(HELPER_POINT);
-			return this.saveMeasurements(HELPER_POINT.x, HELPER_POINT.y, HELPER_POINT.x, HELPER_POINT.y);
+			var point:Point = Pool.getPoint();
+			this.measure(point);
+			var result:Boolean = this.saveMeasurements(point.x, point.y, point.x, point.y);
+			Pool.putPoint(point);
+			return result;
 		}
 
 		/**
@@ -1793,9 +1780,11 @@ package feathers.controls.text
 					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			var matrix:Matrix = Pool.getMatrix();
+			this.getTransformationMatrix(this.stage, matrix);
+			var globalScaleX:Number = matrixToScaleX(matrix);
+			var globalScaleY:Number = matrixToScaleY(matrix);
+			Pool.putMatrix(matrix);
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.textSnapshot.scaleX = 1 / globalScaleX;
@@ -1824,7 +1813,8 @@ package feathers.controls.text
 		 */
 		protected function refreshViewPortAndFontSize():void
 		{
-			HELPER_POINT.x = HELPER_POINT.y = 0;
+			var matrix:Matrix = Pool.getMatrix();
+			var point:Point = Pool.getPoint();
 			var desktopGutterPositionOffset:Number = 0;
 			var desktopGutterDimensionsOffset:Number = 0;
 			if(this._stageTextIsTextField)
@@ -1832,11 +1822,11 @@ package feathers.controls.text
 				desktopGutterPositionOffset = 2;
 				desktopGutterDimensionsOffset = 4;
 			}
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this.getTransformationMatrix(this.stage, matrix);
 			if(this._stageTextHasFocus || this._updateSnapshotOnScaleChange)
 			{
-				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(matrix);
+				var globalScaleY:Number = matrixToScaleY(matrix);
 				var smallerGlobalScale:Number = globalScaleX;
 				if(globalScaleY < smallerGlobalScale)
 				{
@@ -1851,13 +1841,17 @@ package feathers.controls.text
 			}
 			if(this.is3D)
 			{
-				HELPER_MATRIX3D = this.getTransformationMatrix3D(this.stage, HELPER_MATRIX3D);
-				HELPER_POINT3D = MatrixUtil.transformCoords3D(HELPER_MATRIX3D, -desktopGutterPositionOffset, -desktopGutterPositionOffset, 0, HELPER_POINT3D);
-				HELPER_POINT.setTo(HELPER_POINT3D.x, HELPER_POINT3D.y);
+				var matrix3D:Matrix3D = Pool.getMatrix3D();
+				var point3D:Vector3D = Pool.getPoint3D();
+				this.getTransformationMatrix3D(this.stage, matrix3D);
+				MatrixUtil.transformCoords3D(matrix3D, -desktopGutterPositionOffset, -desktopGutterPositionOffset, 0, point3D);
+				point.setTo(point3D.x, point3D.y);
+				Pool.putPoint3D(point3D);
+				Pool.putMatrix3D(matrix3D);
 			}
 			else
 			{
-				MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, -desktopGutterPositionOffset, -desktopGutterPositionOffset, point);
 			}
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
@@ -1872,8 +1866,8 @@ package feathers.controls.text
 			{
 				stageTextViewPort = new Rectangle();
 			}
-			stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
-			stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
+			stageTextViewPort.x = Math.round(starlingViewPort.x + (point.x * scaleFactor));
+			stageTextViewPort.y = Math.round(starlingViewPort.y + (point.y * scaleFactor));
 			var viewPortWidth:Number = Math.round((this.actualWidth + desktopGutterDimensionsOffset) * scaleFactor * globalScaleX);
 			if(viewPortWidth < 1 ||
 				viewPortWidth !== viewPortWidth) //isNaN
@@ -1901,7 +1895,8 @@ package feathers.controls.text
 				//immediately changes to a bullet. (Github issue #881)
 				this.stageText.fontSize = newFontSize;
 			}
-			
+			Pool.putPoint(point);
+			Pool.putMatrix(matrix);
 		}
 
 		/**
@@ -1919,14 +1914,16 @@ package feathers.controls.text
 		 */
 		protected function positionSnapshot():void
 		{
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var matrix:Matrix = Pool.getMatrix();
+			this.getTransformationMatrix(this.stage, matrix);
 			var desktopGutterPositionOffset:Number = 0;
 			if(this._stageTextIsTextField)
 			{
 				desktopGutterPositionOffset = 2;
 			}
-			this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
-			this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
+			this.textSnapshot.x = Math.round(matrix.tx) - matrix.tx - desktopGutterPositionOffset;
+			this.textSnapshot.y = Math.round(matrix.ty) - matrix.ty - desktopGutterPositionOffset;
+			Pool.putMatrix(matrix);
 		}
 
 		/**

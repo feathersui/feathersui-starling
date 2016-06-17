@@ -24,6 +24,7 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * A text editor view port for the <code>TextArea</code> component that uses
@@ -33,16 +34,6 @@ package feathers.controls.text
 	 */
 	public class TextFieldTextEditorViewPort extends TextFieldTextEditor implements ITextEditorViewPort
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextFieldTextEditorViewPort</code>
 		 * components.
@@ -603,8 +594,9 @@ package feathers.controls.text
 			var clipWidth:Number = textFieldWidth * scaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				clipWidth *= matrixToScaleX(HELPER_MATRIX);
+				var matrix:Matrix = Pool.getMatrix();
+				this.getTransformationMatrix(this.stage, matrix);
+				clipWidth *= matrixToScaleX(matrix);
 			}
 			if(clipWidth < 0)
 			{
@@ -613,7 +605,8 @@ package feathers.controls.text
 			var clipHeight:Number = textFieldHeight * scaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
-				clipHeight *= matrixToScaleY(HELPER_MATRIX);
+				clipHeight *= matrixToScaleY(matrix);
+				Pool.putMatrix(matrix);
 			}
 			if(clipHeight < 0)
 			{
@@ -670,11 +663,12 @@ package feathers.controls.text
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
-			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			var scaleX:Number = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
-			var scaleY:Number = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
+			var matrix:Matrix = Pool.getMatrix();
+			var point:Point = Pool.getPoint();
+			this.getTransformationMatrix(this.stage, matrix);
+			MatrixUtil.transformCoords(matrix, 0, 0, point);
+			var scaleX:Number = matrixToScaleX(matrix) * scaleFactor;
+			var scaleY:Number = matrixToScaleY(matrix) * scaleFactor;
 			var offsetX:Number = Math.round(this._paddingLeft * scaleX);
 			var offsetY:Number = Math.round((this._paddingTop + this._verticalScrollPosition) * scaleY);
 			var starlingViewPort:Rectangle = starling.viewPort;
@@ -683,11 +677,13 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 0;
 			}
-			this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset * scaleX);
-			this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset * scaleY);
-			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
+			this.textField.x = offsetX + Math.round(starlingViewPort.x + (point.x * scaleFactor) - gutterPositionOffset * scaleX);
+			this.textField.y = offsetY + Math.round(starlingViewPort.y + (point.y * scaleFactor) - gutterPositionOffset * scaleY);
+			this.textField.rotation = matrixToRotation(matrix) * 180 / Math.PI;
 			this.textField.scaleX = scaleX;
 			this.textField.scaleY = scaleY;
+			Pool.putPoint(point);
+			Pool.putMatrix(matrix);
 		}
 
 		/**
@@ -699,9 +695,11 @@ package feathers.controls.text
 			{
 				return;
 			}
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this.textSnapshot.x = this._paddingLeft + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-			this.textSnapshot.y = this._paddingTop + this._verticalScrollPosition + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+			var matrix:Matrix = Pool.getMatrix();
+			this.getTransformationMatrix(this.stage, matrix);
+			this.textSnapshot.x = this._paddingLeft + Math.round(matrix.tx) - matrix.tx;
+			this.textSnapshot.y = this._paddingTop + this._verticalScrollPosition + Math.round(matrix.ty) - matrix.ty;
+			Pool.putMatrix(matrix);
 		}
 
 		/**

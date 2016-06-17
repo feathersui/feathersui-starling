@@ -26,6 +26,7 @@ package feathers.core
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched after <code>initialize()</code> has been called, but before
@@ -1740,31 +1741,34 @@ package feathers.core
 			}
 			else
 			{
-				this.getTransformationMatrix(targetSpace, HELPER_MATRIX);
+				var matrix:Matrix = Pool.getMatrix();
+				this.getTransformationMatrix(targetSpace, matrix);
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, 0, 0, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, 0, this.actualHeight, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, 0, this.actualHeight, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, this.actualWidth, 0, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, this.actualWidth, 0, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, this.actualWidth, this.actualHeight, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, this.actualWidth, this.actualHeight, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
+
+				Pool.putMatrix(matrix);
 			}
 
 			resultRect.x = minX;

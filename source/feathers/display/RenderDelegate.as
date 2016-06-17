@@ -14,6 +14,7 @@ package feathers.display
 	import starling.display.DisplayObject;
 	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * Passes rendering to another display object, but provides its own separate
@@ -25,11 +26,6 @@ package feathers.display
 	 */
 	public class RenderDelegate extends DisplayObject
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-		
 		/**
 		 * @private
 		 */
@@ -75,14 +71,15 @@ package feathers.display
 		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle = null):Rectangle
 		{
 			resultRect = this._target.getBounds(this._target, resultRect);
-			this.getTransformationMatrix(targetSpace, HELPER_MATRIX);
+			var matrix:Matrix = Pool.getMatrix();
+			this.getTransformationMatrix(targetSpace, matrix);
 			var minX:Number = Number.MAX_VALUE;
 			var maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE;
 			var maxY:Number = -Number.MAX_VALUE;
 			for(var i:int = 0; i < 4; i++)
 			{
-				MatrixUtil.transformCoords(HELPER_MATRIX, i % 2 == 0 ? 0 : resultRect.width, i < 2 ? 0 : resultRect.height, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, i % 2 == 0 ? 0 : resultRect.width, i < 2 ? 0 : resultRect.height, HELPER_POINT);
 				if(HELPER_POINT.x < minX)
 				{
 					minX = HELPER_POINT.x;
@@ -100,6 +97,7 @@ package feathers.display
 					maxY = HELPER_POINT.y;
 				}
 			}
+			Pool.putMatrix(matrix);
 			resultRect.setTo(minX, minY, maxX - minX, maxY - minY);
 			return resultRect;
 		}

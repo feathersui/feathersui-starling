@@ -114,11 +114,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-
-		/**
-		 * @private
-		 */
 		protected static const STAGE_WEB_VIEW_NOT_SUPPORTED_ERROR:String = "Feathers WebView is only supported in Adobe AIR. It cannot be used in Adobe Flash Player.";
 
 		/**
@@ -461,10 +456,11 @@ package feathers.controls
 			}
 
 			var point:Point = Pool.getPoint();
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, point);
+			var matrix:Matrix = Pool.getMatrix();
+			this.getTransformationMatrix(this.stage, matrix);
+			var globalScaleX:Number = matrixToScaleX(matrix);
+			var globalScaleY:Number = matrixToScaleY(matrix);
+			MatrixUtil.transformCoords(matrix, 0, 0, point);
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{
@@ -489,6 +485,7 @@ package feathers.controls
 			stageWebViewViewPort.height = viewPortHeight;
 			this.stageWebView.viewPort = stageWebViewViewPort;
 			Pool.putPoint(point);
+			Pool.putMatrix(matrix);
 		}
 
 		/**
