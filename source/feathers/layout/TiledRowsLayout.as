@@ -1098,7 +1098,6 @@ package feathers.layout
 			{
 				//distribute remaining space
 				tileWidth = (availableWidth - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
-				trace(tileWidth, availableWidth, horizontalTileCount);
 				if(this._useSquareTiles)
 				{
 					tileHeight = tileWidth;
