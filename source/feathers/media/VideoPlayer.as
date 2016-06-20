@@ -135,6 +135,32 @@ package feathers.media
 	[Event(name="metadataReceived",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when a cue point is reached with the <code>onCuePoint</code>
+	 * callback from the <code>NetStream</code> instance.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The cue point object passed with the
+	 *   <code>onCuePoint</code> callback from the <code>NetStream</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#event:onCuePoint flash.net.NetStream onCuePoint callback
+	 *
+	 * @eventType feathers.events.MediaPlayerEventType.CUE_POINT
+	 */
+	[Event(name="metadataReceived",type="starling.events.Event")]
+
+	/**
 	 * Dispatched when the video texture is ready to be rendered. Indicates that
 	 * the <code>texture</code> property will return a
 	 * <code>starling.textures.Texture</code> that may be displayed in an
@@ -947,7 +973,9 @@ package feathers.media
 					return;
 				}
 				this._netStream = new NetStream(this._netConnection);
-				this._netStream.client = new VideoPlayerNetStreamClient(this.netStream_onMetaData);
+				this._netStream.client = new VideoPlayerNetStreamClient(
+					this.netStream_onMetaData, this.netStream_onCuePoint,
+					this.netStream_onXMPData);
 				this._netStream.addEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 				this._netStream.addEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			}
@@ -1163,6 +1191,22 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected function netStream_onCuePoint(cuePoint:Object):void
+		{
+			this.dispatchEventWith(MediaPlayerEventType.CUE_POINT, false, cuePoint);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function netStream_onXMPData(xmpData:Object):void
+		{
+			this.dispatchEventWith(MediaPlayerEventType.XMP_DATA, false, xmpData);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function netStream_ioErrorHandler(event:IOErrorEvent):void
 		{
 			this.dispatchEventWith(event.type, false, event);
@@ -1279,15 +1323,30 @@ package feathers.media
 
 dynamic class VideoPlayerNetStreamClient
 {
-	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function)
+	public function VideoPlayerNetStreamClient(onMetaDataCallback:Function,
+		onCuePointCallback:Function, onXMPDataCallback:Function)
 	{
 		this.onMetaDataCallback = onMetaDataCallback;
+		this.onCuePointCallback = onCuePointCallback;
+		this.onXMPDataCallback = onXMPDataCallback;
 	}
-	
+
 	public var onMetaDataCallback:Function;
-	
+
+	public var onCuePointCallback:Function;
+
 	public function onMetaData(metadata:Object):void
 	{
 		this.onMetaDataCallback(metadata);
+	}
+
+	public function onCuePoint(cuePoint:Object):void
+	{
+		this.onCuePointCallback(cuePoint);
+	}
+
+	public function onXMPData(xmpData:Object):void
+	{
+		this.onXMPDataCallback(xmpData);
 	}
 }
