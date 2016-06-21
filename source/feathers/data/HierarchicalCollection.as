@@ -313,6 +313,7 @@ package feathers.data
 			this.dispatchEventWith(CollectionEventType.UPDATE_ALL);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Returns the item at the specified location in the collection.
 		 */
