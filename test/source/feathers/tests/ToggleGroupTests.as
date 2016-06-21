@@ -21,6 +21,12 @@ package feathers.tests
 		[After]
 		public function cleanup():void
 		{
+			var itemCount:int = this._group.numItems;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:ToggleButton = ToggleButton(this._group.getItemAt(i));
+				item.dispose();
+			}
 			this._group = null;
 		}
 
@@ -254,6 +260,36 @@ package feathers.tests
 			Assert.assertTrue("hasItem() incorrectly returned false.", this._group.hasItem(item));
 			this._group.removeItem(item);
 			Assert.assertFalse("hasItem() incorrectly returned true.", this._group.hasItem(item));
+		}
+
+		[Test]
+		public function testDefaultNumItems():void
+		{
+			Assert.assertStrictlyEquals("The numItems property is not equal to 0",
+				0, this._group.numItems);
+		}
+
+		[Test]
+		public function testNumItemsAfterAddItem():void
+		{
+			this._group.addItem(new ToggleButton());
+			Assert.assertStrictlyEquals("The numItems property is not equal to 1 after addItem()",
+				1, this._group.numItems);
+		}
+
+		[Test(expects="RangeError")]
+		public function testGetItemAtWhenEmpty():void
+		{
+			this._group.getItemAt(0);
+		}
+
+		[Test]
+		public function testGetItemAt():void
+		{
+			var item:ToggleButton = new ToggleButton();
+			this._group.addItem(item);
+			Assert.assertStrictlyEquals("ToggleButton getItemAt() returns wrong item",
+				item, this._group.getItemAt(0));
 		}
 	}
 }

@@ -62,6 +62,8 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.color.ColorSwatchButton;
+	import feathers.controls.color.ColorSwatchItemRenderer;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
@@ -697,8 +699,8 @@ package feathers.themes
 		 */
 		protected function initializeStage():void
 		{
-			Starling.current.stage.color = PRIMARY_BACKGROUND_COLOR;
-			Starling.current.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
+			this.starling.stage.color = PRIMARY_BACKGROUND_COLOR;
+			this.starling.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
 		}
 
 		/**
@@ -1073,9 +1075,17 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_LABEL, this.setToggleSwitchOnLabelStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
-			
+
+			//color controls
+
+			//color swatch button
+			this.getStyleProviderForClass(ColorSwatchButton).defaultStyleFunction = this.setColorSwatchButtonStyles;
+
+			//color swatch item renderer
+			this.getStyleProviderForClass(ColorSwatchItemRenderer).defaultStyleFunction = this.setColorSwatchItemRendererStyles;
+
 			//media controls
-			
+
 			//play/pause toggle button
 			this.getStyleProviderForClass(PlayPauseToggleButton).defaultStyleFunction = this.setPlayPauseToggleButtonStyles;
 			this.getStyleProviderForClass(PlayPauseToggleButton).setFunctionForStyleName(PlayPauseToggleButton.ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON, this.setOverlayPlayPauseToggleButtonStyles);
@@ -1990,7 +2000,7 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.popUpContentManager = new CalloutPopUpContentManager();
 			}
@@ -2003,7 +2013,7 @@ package feathers.themes
 		
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				list.minWidth = this.popUpFillSize;
 				list.maxHeight = this.popUpFillSize;
@@ -2552,9 +2562,42 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// ColorSwatchButton
+	//-------------------------
+
+		protected function setColorSwatchButtonStyles(button:ColorSwatchButton):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.buttonUpSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
+			skin.setTextureForState(ButtonState.DISABLED, this.buttonDisabledSkinTexture);
+			skin.scale9Grid = BUTTON_SCALE9_GRID;
+			skin.width = this.controlSize;
+			skin.height = this.controlSize;
+			button.defaultSkin = skin;
+
+			button.hasLabelTextRenderer = false;
+
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
+			button.minTouchWidth = this.gridSize;
+			button.minTouchHeight = this.gridSize;
+			button.padding = this.smallGutterSize;
+		}
+
+	//-------------------------
+	// ColorSwatchItemRenderer
+	//-------------------------
+
+		protected function setColorSwatchItemRendererStyles(itemRenderer:ColorSwatchItemRenderer):void
+		{
+			itemRenderer.minWidth = this.gridSize;
+			itemRenderer.minHeight = this.gridSize;
+		}
+
+	//-------------------------
 	// PlayPauseToggleButton
 	//-------------------------
-		
+
 		protected function setPlayPauseToggleButtonStyles(button:PlayPauseToggleButton):void
 		{
 			var icon:ImageSkin = new ImageSkin(this.playPauseButtonPlayUpIconTexture);

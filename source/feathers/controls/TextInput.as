@@ -35,6 +35,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the text input's <code>text</code> property changes.
@@ -222,11 +223,6 @@ package feathers.controls
 	 */
 	public class TextInput extends FeathersControl implements ITextBaselineControl, IAdvancedNativeFocusOwner, IStateContext
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -2326,36 +2322,40 @@ package feathers.controls
 
 			var measuredContentWidth:Number = 0;
 			var measuredContentHeight:Number = 0;
-			
+
 			//if the typicalText is specified, the dimensions of the text editor
 			//can affect the final dimensions. otherwise, the background skin or
 			//prompt should be used for measurement.
 			if(this._typicalText !== null)
 			{
+				var point:Point = Pool.getPoint();
 				var oldTextEditorWidth:Number = this.textEditor.width;
 				var oldTextEditorHeight:Number = this.textEditor.height;
 				var oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
 				this._ignoreTextChanges = true;
 				this.textEditor.setSize(NaN, NaN);
 				this.textEditor.text = this._typicalText;
-				this.textEditor.measureText(HELPER_POINT);
+				this.textEditor.measureText(point);
 				this.textEditor.text = this._text;
 				this._ignoreTextChanges = oldIgnoreTextChanges;
-				measuredContentWidth = HELPER_POINT.x;
-				measuredContentHeight = HELPER_POINT.y;
+				measuredContentWidth = point.x;
+				measuredContentHeight = point.y;
+				Pool.putPoint(point);
 			}
 			if(this._prompt !== null)
 			{
+				point = Pool.getPoint();
 				this.promptTextRenderer.setSize(NaN, NaN);
-				this.promptTextRenderer.measureText(HELPER_POINT);
-				if(HELPER_POINT.x > measuredContentWidth)
+				this.promptTextRenderer.measureText(point);
+				if(point.x > measuredContentWidth)
 				{
-					measuredContentWidth = HELPER_POINT.x;
+					measuredContentWidth = point.x;
 				}
-				if(HELPER_POINT.y > measuredContentHeight)
+				if(point.y > measuredContentHeight)
 				{
-					measuredContentHeight = HELPER_POINT.y;
+					measuredContentHeight = point.y;
 				}
+				Pool.putPoint(point);
 			}
 
 			var newWidth:Number = this._explicitWidth;
@@ -2919,14 +2919,17 @@ package feathers.controls
 			{
 				return;
 			}
-			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this.stage, point);
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
 			if(isInBounds && !this._textEditorHasFocus)
 			{
-				this.textEditor.globalToLocal(HELPER_POINT, HELPER_POINT);
+				this.textEditor.globalToLocal(point, point);
 				this._isWaitingToSetFocus = false;
-				this.textEditor.setFocus(HELPER_POINT);
+				this.textEditor.setFocus(point);
 			}
+			Pool.putPoint(point);
 		}
 
 		/**
@@ -3004,8 +3007,10 @@ package feathers.controls
 				{
 					return;
 				}
-				touch.getLocation(this.stage, HELPER_POINT);
-				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+				var point:Point = Pool.getPoint();
+				touch.getLocation(this.stage, point);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
+				Pool.putPoint(point);
 				if(!isInBounds)
 				{
 					//if not in bounds on TouchPhase.ENDED, there won't be a

@@ -21,17 +21,20 @@ package feathers.controls
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the callout is closed.
@@ -493,14 +496,21 @@ package feathers.controls
 			}
 			else
 			{
-				var maxXPosition:Number = Starling.current.stage.stageWidth - callout.width - stagePaddingRight;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxXPosition:Number = stage.stageWidth - callout.width - stagePaddingRight;
 				if(maxXPosition < xPosition)
 				{
 					xPosition = maxXPosition;
 				}
 			}
-			callout.x = xPosition;
-			callout.y = globalOrigin.y + globalOrigin.height;
+			var point:Point = Pool.getPoint(xPosition, globalOrigin.y + globalOrigin.height);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -536,14 +546,21 @@ package feathers.controls
 			}
 			else
 			{
-				var maxXPosition:Number = Starling.current.stage.stageWidth - callout.width - stagePaddingRight;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxXPosition:Number = stage.stageWidth - callout.width - stagePaddingRight;
 				if(maxXPosition < xPosition)
 				{
 					xPosition = maxXPosition;
 				}
 			}
-			callout.x = xPosition;
-			callout.y = globalOrigin.y - callout.height;
+			var point:Point = Pool.getPoint(xPosition, globalOrigin.y - callout.height);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -563,7 +580,6 @@ package feathers.controls
 		protected static function positionToRightOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(RelativePosition.LEFT);
-			callout.x = globalOrigin.x + globalOrigin.width;
 			var idealYPosition:Number = globalOrigin.y;
 			if(callout._verticalAlign === VerticalAlign.MIDDLE)
 			{
@@ -580,13 +596,21 @@ package feathers.controls
 			}
 			else
 			{
-				var maxYPosition:Number = Starling.current.stage.stageHeight - callout.height - stagePaddingBottom;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxYPosition:Number = stage.stageHeight - callout.height - stagePaddingBottom;
 				if(maxYPosition < yPosition)
 				{
 					yPosition = maxYPosition;
 				}
 			}
-			callout.y = yPosition;
+			var point:Point = Pool.getPoint(globalOrigin.x + globalOrigin.width, yPosition);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -606,7 +630,6 @@ package feathers.controls
 		protected static function positionToLeftOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(RelativePosition.RIGHT);
-			callout.x = globalOrigin.x - callout.width;
 			var idealYPosition:Number = globalOrigin.y;
 			if(callout._verticalAlign === VerticalAlign.MIDDLE)
 			{
@@ -623,13 +646,21 @@ package feathers.controls
 			}
 			else
 			{
-				var maxYPosition:Number = Starling.current.stage.stageHeight - callout.height - stagePaddingBottom;
+				var stage:Stage = callout.stage !== null ? callout.stage : Starling.current.stage;
+				var maxYPosition:Number = stage.stageHeight - callout.height - stagePaddingBottom;
 				if(maxYPosition < yPosition)
 				{
 					yPosition = maxYPosition;
 				}
 			}
-			callout.y = yPosition;
+			var point:Point = Pool.getPoint(globalOrigin.x - callout.width, yPosition);
+			//we calculate the position in global coordinates, but the callout
+			//may be in a container that is offset from the global origin, so
+			//adjust for that difference.
+			callout.parent.globalToLocal(point, point);
+			callout.x = point.x;
+			callout.y = point.y;
+			Pool.putPoint(point);
 			if(callout._isValidating)
 			{
 				//no need to invalidate and need to validate again next frame
@@ -655,7 +686,7 @@ package feathers.controls
 		/**
 		 * Determines if the callout is automatically closed if a touch in the
 		 * <code>TouchPhase.BEGAN</code> phase happens outside of the callout's
-		 * bounds.
+		 * or the origin's bounds.
 		 *
 		 * <p>In the following example, the callout will not close when a touch
 		 * event with <code>TouchPhase.BEGAN</code> is detected outside the
@@ -672,7 +703,7 @@ package feathers.controls
 		/**
 		 * Determines if the callout is automatically closed if a touch in the
 		 * <code>TouchPhase.ENDED</code> phase happens outside of the callout's
-		 * bounds.
+		 * or the origin's bounds.
 		 *
 		 * <p>In the following example, the callout will not close when a touch
 		 * event with <code>TouchPhase.ENDED</code> is detected outside the
@@ -900,12 +931,22 @@ package feathers.controls
 		 *
 		 * <p>When an origin is set, the <code>arrowPosition</code> and
 		 * <code>arrowOffset</code> properties will be managed automatically by
-		 * the callout. Setting either of these values manually with either have
+		 * the callout. Setting either of these values manually will either have
 		 * no effect or unexpected behavior, so it is recommended that you
 		 * avoid modifying those properties.</p>
+		 * 
+		 * <p>Note: The <code>origin</code> is excluded when using
+		 * <code>closeOnTouchBeganOutside</code> and <code>closeOnTouchEndedOutside</code>.
+		 * In other words, when the origin is touched, and either of these
+		 * properties is <code>true</code>, the callout will not be closed. If
+		 * the callout is not displayed modally, and touching the origin opens
+		 * the callout, you should check if a callout is already visible. If a
+		 * callout is visible, close it. If no callouts are visible, show one.
+		 * However, if the callout is modal, the touch will be stopped by the
+		 * overlay before it reaches the origin, so this behavior will not apply.</p>
 		 *
 		 * <p>In general, if you use <code>Callout.show()</code>, you will
-		 * rarely need to manually manage the origin.</p>
+		 * rarely need to manually manage the <code>origin</code> property.</p>
 		 *
 		 * <p>In the following example, the callout's origin is set to a button:</p>
 		 *
@@ -914,6 +955,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see feathers.controls.Callout#show()
 		 * @see #supportedDirections
 		 * @see #arrowPosition
 		 * @see #arrowOffset
@@ -2427,7 +2469,8 @@ package feathers.controls
 			{
 				return;
 			}
-			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
+			var stage:Stage = this.stage !== null ? this.stage : Starling.current.stage;
+			this._origin.getBounds(stage, HELPER_RECT);
 			var hasGlobalBounds:Boolean = this._lastGlobalBoundsOfOrigin != null;
 			if(hasGlobalBounds && this._lastGlobalBoundsOfOrigin.equals(HELPER_RECT))
 			{
@@ -2477,7 +2520,7 @@ package feathers.controls
 					{
 						//arrow is opposite, on left side
 						this.measureWithArrowPosition(RelativePosition.LEFT);
-						rightSpace = (Starling.current.stage.stageWidth - actualWidth) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
+						rightSpace = (stage.stageWidth - actualWidth) - (this._lastGlobalBoundsOfOrigin.x + this._lastGlobalBoundsOfOrigin.width);
 						if(rightSpace >= stagePaddingRight)
 						{
 							positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
@@ -2508,7 +2551,7 @@ package feathers.controls
 					{
 						//arrow is opposite, on top side
 						this.measureWithArrowPosition(RelativePosition.TOP);
-						downSpace = (Starling.current.stage.stageHeight - this.actualHeight) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
+						downSpace = (stage.stageHeight - this.actualHeight) - (this._lastGlobalBoundsOfOrigin.y + this._lastGlobalBoundsOfOrigin.height);
 						if(downSpace >= stagePaddingBottom)
 						{
 							positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
@@ -2546,10 +2589,11 @@ package feathers.controls
 		 */
 		protected function callout_addedToStageHandler(event:Event):void
 		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
 			var priority:int = -getDisplayObjectDepthFromStage(this);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler, false, priority, true);
+			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler, false, priority, true);
 
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			//to avoid touch events bubbling up to the callout and causing it to
@@ -2565,7 +2609,8 @@ package feathers.controls
 		protected function callout_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler);
 		}
 
 		/**

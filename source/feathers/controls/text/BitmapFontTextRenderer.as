@@ -179,6 +179,19 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _numLines:int = 0;
+
+		/**
+		 * @copy feathers.core.ITextRenderer#numLines
+		 */
+		public function get numLines():int
+		{
+			return this._numLines;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textFormatForState:Object;
 		
 		/**
@@ -958,6 +971,7 @@ package feathers.controls.text
 			{
 				result = new MeasureTextResult();
 			}
+			this._numLines = 1;
 
 			var font:BitmapFont = this.currentTextFormat.font;
 			var customSize:Number = this.currentTextFormat.size;
@@ -1032,6 +1046,7 @@ package feathers.controls.text
 					widthOfWhitespaceAfterWord = 0;
 					wordLength = 0;
 					wordCountForLine = 0;
+					this._numLines++;
 					continue;
 				}
 
@@ -1105,6 +1120,7 @@ package feathers.controls.text
 						wordLength = 0;
 						isWordComplete = false;
 						wordCountForLine = 0;
+						this._numLines++;
 					}
 				}
 				if(this._wordWrap || isAligned)

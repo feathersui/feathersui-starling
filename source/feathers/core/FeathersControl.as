@@ -26,6 +26,7 @@ package feathers.core
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched after <code>initialize()</code> has been called, but before
@@ -596,10 +597,6 @@ package feathers.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this._explicitWidth == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitWidth !== this._explicitWidth)
 			{
@@ -608,6 +605,10 @@ package feathers.core
 			if(this.scaleX !== 1)
 			{
 				value /= this.scaleX;
+			}
+			if(this._explicitWidth == value)
+			{
+				return;
 			}
 			this._explicitWidth = value;
 			if(valueIsNaN)
@@ -698,10 +699,6 @@ package feathers.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this._explicitHeight == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitHeight !== this._explicitHeight)
 			{
@@ -710,6 +707,10 @@ package feathers.core
 			if(this.scaleY !== 1)
 			{
 				value /= this.scaleY;
+			}
+			if(this._explicitHeight == value)
+			{
+				return;
 			}
 			this._explicitHeight = value;
 			if(valueIsNaN)
@@ -858,10 +859,6 @@ package feathers.core
 		 */
 		public function set minWidth(value:Number):void
 		{
-			if(this._explicitMinWidth == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitMinWidth !== this._explicitMinWidth)
 			{
@@ -870,6 +867,10 @@ package feathers.core
 			if(this.scaleX !== 1)
 			{
 				value /= this.scaleX;
+			}
+			if(this._explicitMinWidth == value)
+			{
+				return;
 			}
 			var oldValue:Number = this._explicitMinWidth;
 			this._explicitMinWidth = value;
@@ -952,10 +953,6 @@ package feathers.core
 		 */
 		public function set minHeight(value:Number):void
 		{
-			if(this._explicitMinHeight == value)
-			{
-				return;
-			}
 			var valueIsNaN:Boolean = value !== value; //isNaN
 			if(valueIsNaN && this._explicitMinHeight !== this._explicitMinHeight)
 			{
@@ -964,6 +961,10 @@ package feathers.core
 			if(this.scaleY !== 1)
 			{
 				value /= this.scaleY;
+			}
+			if(this._explicitMinHeight == value)
+			{
+				return;
 			}
 			var oldValue:Number = this._explicitMinHeight;
 			this._explicitMinHeight = value;
@@ -1763,31 +1764,34 @@ package feathers.core
 			}
 			else
 			{
-				this.getTransformationMatrix(targetSpace, HELPER_MATRIX);
+				var matrix:Matrix = Pool.getMatrix();
+				this.getTransformationMatrix(targetSpace, matrix);
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, 0, 0, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, 0, this.actualHeight, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, 0, this.actualHeight, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, this.actualWidth, 0, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, this.actualWidth, 0, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(HELPER_MATRIX, this.actualWidth, this.actualHeight, HELPER_POINT);
+				MatrixUtil.transformCoords(matrix, this.actualWidth, this.actualHeight, HELPER_POINT);
 				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
 				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
 				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
 				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
+
+				Pool.putMatrix(matrix);
 			}
 
 			resultRect.x = minX;

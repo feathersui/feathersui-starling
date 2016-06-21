@@ -30,6 +30,7 @@ package feathers.tests
 			PopUpManager.root = this._customRoot;
 
 			this._popUpContentManager = new DropDownPopUpContentManager();
+			this._popUpContentManager.openCloseDuration = 0;
 		}
 
 		[After]

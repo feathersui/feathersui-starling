@@ -119,13 +119,13 @@ package feathers.utils.text
 				return new Rectangle();
 			}
 			var result:Rectangle = this._textEditor.getBounds(stage);
-			var starling:Starling = stageToStarling(stage);
+			var starling:Starling = this._textEditor.stage !== null ? this._textEditor.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			result.x *= scaleFactor;
 			result.y *= scaleFactor;
 			result.width *= scaleFactor;

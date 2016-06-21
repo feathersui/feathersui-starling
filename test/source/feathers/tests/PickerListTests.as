@@ -4,7 +4,6 @@ package feathers.tests
 	import feathers.controls.List;
 	import feathers.controls.PickerList;
 	import feathers.controls.popups.DropDownPopUpContentManager;
-	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.data.ListCollection;
 
@@ -36,7 +35,9 @@ package feathers.tests
 				{ label: "Two" },
 				{ label: "Three" },
 			]);
-			this._list.popUpContentManager = new DropDownPopUpContentManager();
+			var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
+			popUpContentManager.openCloseDuration = 0;
+			this._list.popUpContentManager = popUpContentManager;
 			this._list.buttonFactory = function():Button
 			{
 				var button:Button = new Button();

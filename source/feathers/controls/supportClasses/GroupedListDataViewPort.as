@@ -35,6 +35,7 @@ package feathers.controls.supportClasses
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * @private
@@ -48,7 +49,6 @@ package feathers.controls.supportClasses
 		private static const SINGLE_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-single";
 		private static const LAST_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-last";
 
-		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function GroupedListDataViewPort()
@@ -1434,13 +1434,30 @@ package feathers.controls.supportClasses
 
 		private function refreshViewPortBounds():void
 		{
-			this._viewPortBounds.x = this._viewPortBounds.y = 0;
+			var needsMinWidth:Boolean = this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight; //isNaN
+			this._viewPortBounds.x = 0;
+			this._viewPortBounds.y = 0;
 			this._viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this._viewPortBounds.scrollY = this._verticalScrollPosition;
 			this._viewPortBounds.explicitWidth = this._explicitVisibleWidth;
 			this._viewPortBounds.explicitHeight = this._explicitVisibleHeight;
-			this._viewPortBounds.minWidth = this._explicitMinVisibleWidth;
-			this._viewPortBounds.minHeight = this._explicitMinVisibleHeight;
+			if(needsMinWidth)
+			{
+				this._viewPortBounds.minWidth = 0;
+			}
+			else
+			{
+				this._viewPortBounds.minWidth = this._explicitMinVisibleWidth;
+			}
+			if(needsMinHeight)
+			{
+				this._viewPortBounds.minHeight = 0;
+			}
+			else
+			{
+				this._viewPortBounds.minHeight = this._explicitMinVisibleHeight;
+			}
 			this._viewPortBounds.maxWidth = this._maxVisibleWidth;
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
@@ -1669,9 +1686,11 @@ package feathers.controls.supportClasses
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
 			{
-				virtualLayout.measureViewPort(totalLayoutCount, this._viewPortBounds, HELPER_POINT);
-				var viewPortWidth:Number = HELPER_POINT.x;
-				var viewPortHeight:Number = HELPER_POINT.y;
+				var point:Point = Pool.getPoint();
+				virtualLayout.measureViewPort(totalLayoutCount, this._viewPortBounds, point);
+				var viewPortWidth:Number = point.x;
+				var viewPortHeight:Number = point.y;
+				Pool.putPoint(point);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, viewPortWidth, viewPortHeight, totalLayoutCount, HELPER_VECTOR);
 
 				averageItemsPerGroup /= groupCount;
@@ -2734,10 +2753,16 @@ package feathers.controls.supportClasses
 				var itemIndex:int = indices[1] as int;
 				var item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-				if(itemRenderer)
+				if(itemRenderer !== null)
 				{
 					itemRenderer.data = null;
 					itemRenderer.data = item;
+					if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
+						this._explicitVisibleHeight !== this._explicitVisibleHeight)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+						this.invalidateParent(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 			else //updating a whole group
@@ -2782,7 +2807,7 @@ package feathers.controls.supportClasses
 				this.invalidate(INVALIDATION_FLAG_DATA);
 
 				var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
-				if(!layout || !layout.hasVariableItemDimensions)
+				if(layout === null || !layout.hasVariableItemDimensions)
 				{
 					return;
 				}
@@ -2797,9 +2822,9 @@ package feathers.controls.supportClasses
 			for(var item:Object in this._itemRendererMap)
 			{
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-				if(!itemRenderer)
+				if(itemRenderer === null)
 				{
-					return;
+					continue;
 				}
 				itemRenderer.data = null;
 				itemRenderer.data = item;
@@ -2807,9 +2832,9 @@ package feathers.controls.supportClasses
 			for(var header:Object in this._headerRendererMap)
 			{
 				var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
-				if(!headerRenderer)
+				if(headerRenderer === null)
 				{
-					return;
+					continue;
 				}
 				headerRenderer.data = null;
 				headerRenderer.data = header;
@@ -2817,9 +2842,9 @@ package feathers.controls.supportClasses
 			for(var footer:Object in this._footerRendererMap)
 			{
 				var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
-				if(!footerRenderer)
+				if(footerRenderer === null)
 				{
-					return;
+					continue;
 				}
 				footerRenderer.data = null;
 				footerRenderer.data = footer;

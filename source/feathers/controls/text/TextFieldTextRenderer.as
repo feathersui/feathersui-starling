@@ -256,6 +256,18 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @copy feathers.core.ITextRenderer#numLines
+		 */
+		public function get numLines():int
+		{
+			if(this.textField === null)
+			{
+				return 0;
+			}
+			return this.textField.numLines;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var currentTextFormat:TextFormat;
@@ -977,7 +989,8 @@ package feathers.controls.text
 		public function set maxTextureDimensions(value:int):void
 		{
 			//check if we can use rectangle textures or not
-			if(Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(starling.profile === Context3DProfile.BASELINE_CONSTRAINED)
 			{
 				value = MathUtil.getNextPowerOfTwo(value);
 			}
@@ -1243,8 +1256,9 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this.textSnapshot)
+			if(this.textSnapshot !== null)
 			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				if(this._updateSnapshotOnScaleChange)
 				{
@@ -1252,7 +1266,7 @@ package feathers.controls.text
 					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 					if(globalScaleX != this._lastGlobalScaleX ||
 						globalScaleY != this._lastGlobalScaleY ||
-						Starling.contentScaleFactor != this._lastContentScaleFactor)
+						starling.contentScaleFactor != this._lastContentScaleFactor)
 					{
 						//the snapshot needs to be updated because the scale has
 						//changed since the last snapshot was taken.
@@ -1260,7 +1274,7 @@ package feathers.controls.text
 						this.validate();
 					}
 				}
-				var scaleFactor:Number = Starling.current.contentScaleFactor;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
 					var offsetX:Number = 0;
@@ -1398,10 +1412,11 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
-			if(!this.textField)
+			if(this.textField === null)
 			{
 				this.textField = new TextField();
-				var scaleFactor:Number = Starling.contentScaleFactor;
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				this.textField.scaleX = scaleFactor;
 				this.textField.scaleY = scaleFactor;
 				this.textField.mouseEnabled = this.textField.mouseWheelEnabled = false;
@@ -1494,7 +1509,8 @@ package feathers.controls.text
 			this.textField.autoSize = TextFieldAutoSize.LEFT;
 			this.textField.wordWrap = false;
 
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
 			if(this._useGutter)
 			{
@@ -1572,7 +1588,8 @@ package feathers.controls.text
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
 			if(this._useGutter)
 			{
@@ -1621,7 +1638,7 @@ package feathers.controls.text
 					rectangleSnapshotWidth = HELPER_RECTANGLE.width;
 					rectangleSnapshotHeight = HELPER_RECTANGLE.height;
 				}
-				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
+				var canUseRectangleTexture:Boolean = starling.profile !== Context3DProfile.BASELINE_CONSTRAINED;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
@@ -1859,7 +1876,8 @@ package feathers.controls.text
 			var texture:Texture = snapshot.texture;
 			texture.root.onRestore = function():void
 			{
-				var scaleFactor:Number = Starling.contentScaleFactor;
+				var starling:Starling = self.stage !== null ? self.stage.starling : Starling.current;
+				var scaleFactor:Number = starling.contentScaleFactor;
 				HELPER_MATRIX.identity();
 				HELPER_MATRIX.scale(scaleFactor, scaleFactor);
 				var bitmapData:BitmapData = self.drawTextFieldRegionToBitmapData(
@@ -1875,7 +1893,8 @@ package feathers.controls.text
 		protected function drawTextFieldRegionToBitmapData(textFieldX:Number, textFieldY:Number,
 			bitmapWidth:Number, bitmapHeight:Number, bitmapData:BitmapData = null):BitmapData
 		{
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			var clipWidth:Number = this._snapshotVisibleWidth - textFieldX;
 			var clipHeight:Number = this._snapshotVisibleHeight - textFieldY;
 			if(!bitmapData || bitmapData.width != bitmapWidth || bitmapData.height != bitmapHeight)
@@ -1912,7 +1931,8 @@ package feathers.controls.text
 			{
 				return;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);

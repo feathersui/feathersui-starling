@@ -17,6 +17,7 @@ package feathers.utils.touch
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Changes the <code>isSelected</code> property of the target when the
@@ -49,11 +50,6 @@ package feathers.utils.touch
 	 */
 	public class TapToSelect
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * Constructor.
 		 */
@@ -181,15 +177,17 @@ package feathers.utils.touch
 					var stage:Stage = this._target.stage;
 					if(stage !== null)
 					{
-						touch.getLocation(stage, HELPER_POINT);
+						var point:Point = Pool.getPoint();
+						touch.getLocation(stage, point);
 						if(this._target is DisplayObjectContainer)
 						{
-							var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(HELPER_POINT));
+							var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(point));
 						}
 						else
 						{
-							isInBounds = this._target === stage.hitTest(HELPER_POINT);
+							isInBounds = this._target === stage.hitTest(point);
 						}
+						Pool.putPoint(point);
 						if(isInBounds)
 						{
 							if(this._tapToDeselect)
@@ -202,7 +200,7 @@ package feathers.utils.touch
 							}
 						}
 					}
-					
+
 					//the touch has ended, so now we can start watching for a
 					//new one.
 					this._touchPointID = -1;

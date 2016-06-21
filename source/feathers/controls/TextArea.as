@@ -30,6 +30,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the text area's <code>text</code> property changes.
@@ -96,11 +97,6 @@ package feathers.controls
 	 */
 	public class TextArea extends Scroller implements IAdvancedNativeFocusOwner, IStateContext
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.AUTO</code>.
@@ -1427,18 +1423,20 @@ package feathers.controls
 			{
 				return;
 			}
-			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this.stage, point);
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
 			if(!this._textEditorHasFocus && isInBounds)
 			{
-				this.globalToLocal(HELPER_POINT, HELPER_POINT);
-				HELPER_POINT.x -= this._paddingLeft;
-				HELPER_POINT.y -= this._paddingTop;
+				this.globalToLocal(point, point);
+				point.x -= this._paddingLeft;
+				point.y -= this._paddingTop;
 				//we account for the scroll position in the text editor view
 				//port, so don't do it here!
 				this._isWaitingToSetFocus = false;
-				this.textEditorViewPort.setFocus(HELPER_POINT);
+				this.textEditorViewPort.setFocus(point);
 			}
+			Pool.putPoint(point);
 		}
 
 		/**

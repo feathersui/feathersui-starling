@@ -1824,12 +1824,10 @@ package feathers.layout
 							{
 								itemHeight = itemExplicitMinHeight;
 							}
-							//see comments above about setting maxWidth
-							measureItem.maxHeight = itemHeight;
-							//we also need to clear the explicit height because,
-							//for many components, it will affect the minHeight
-							//which is used in the final calculation
-							item.height = NaN;
+							//unlike above, where we use maxWidth, we can set
+							//the height directly because any other percentHeight
+							//values won't affect this item.
+							item.height = itemHeight;
 						}
 					}
 				}

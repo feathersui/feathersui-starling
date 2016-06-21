@@ -25,6 +25,7 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when a URL has finished loading with <code>loadURL()</code> or a
@@ -110,16 +111,6 @@ package feathers.controls
 	 */
 	public class WebView extends FeathersControl
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -456,11 +447,7 @@ package feathers.controls
 		 */
 		protected function refreshViewPort():void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			if(starling === null)
-			{
-				starling = Starling.current;
-			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var starlingViewPort:Rectangle = starling.viewPort;
 			var stageWebViewViewPort:Rectangle = this.stageWebView.viewPort;
 			if(!stageWebViewViewPort)
@@ -468,19 +455,20 @@ package feathers.controls
 				stageWebViewViewPort = new Rectangle();
 			}
 
-			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			var point:Point = Pool.getPoint();
+			var matrix:Matrix = Pool.getMatrix();
+			this.getTransformationMatrix(this.stage, matrix);
+			var globalScaleX:Number = matrixToScaleX(matrix);
+			var globalScaleY:Number = matrixToScaleY(matrix);
+			MatrixUtil.transformCoords(matrix, 0, 0, point);
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			stageWebViewViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
-			stageWebViewViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * scaleFactor);
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
+			stageWebViewViewPort.x = Math.round(starlingViewPort.x + point.x * scaleFactor);
+			stageWebViewViewPort.y = Math.round(starlingViewPort.y + point.y * scaleFactor);
 			var viewPortWidth:Number = Math.round(this.actualWidth * scaleFactor * globalScaleX);
 			if(viewPortWidth < 1 ||
 				viewPortWidth !== viewPortWidth) //isNaN
@@ -496,6 +484,8 @@ package feathers.controls
 			stageWebViewViewPort.width = viewPortWidth;
 			stageWebViewViewPort.height = viewPortHeight;
 			this.stageWebView.viewPort = stageWebViewViewPort;
+			Pool.putPoint(point);
+			Pool.putMatrix(matrix);
 		}
 
 		/**

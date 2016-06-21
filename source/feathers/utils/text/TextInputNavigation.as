@@ -45,6 +45,64 @@ package feathers.utils.text
 		}
 
 		/**
+		 * Finds the start index of the word that starts with the current
+		 * selection. If the current selection is in the whitespace between
+		 * words, returns the start index of the previous word.
+		 */
+		public static function findCurrentWordStartIndex(text:String, selectionStartIndex:int):int
+		{
+			if(selectionStartIndex <= 0)
+			{
+				return 0;
+			}
+			var nextCharIsWord:Boolean = IS_WORD.test(text.charAt(selectionStartIndex + 1));
+			for(var i:int = selectionStartIndex; i >= 0; i--)
+			{
+				var charIsWord:Boolean = IS_WORD.test(text.charAt(i));
+				if(!charIsWord && i === selectionStartIndex)
+				{
+					//this is whitespace between words
+					return findPreviousWordStartIndex(text, selectionStartIndex);
+				}
+				if(!charIsWord && nextCharIsWord)
+				{
+					return i + 1;
+				}
+				nextCharIsWord = charIsWord;
+			}
+			return 0;
+		}
+
+		/**
+		 * Finds the end index of the word that starts with the current
+		 * selection. If the current selection is in the whitespace between
+		 * words, returns the end index of the next word.
+		 */
+		public static function findCurrentWordEndIndex(text:String, selectionEndIndex:int):int
+		{
+			var textLength:int = text.length;
+			if(selectionEndIndex >= textLength - 1)
+			{
+				return textLength;
+			}
+			for(var i:int = selectionEndIndex; i < textLength; i++)
+			{
+				var charIsWord:Boolean = IS_WORD.test(text.charAt(i));
+				if(!charIsWord && i === selectionEndIndex)
+				{
+					//this is whitespace between words
+					var nextStart:int = findNextWordStartIndex(text, selectionEndIndex);
+					return findCurrentWordEndIndex(text, nextStart);
+				}
+				if(!charIsWord)
+				{
+					return i;
+				}
+			}
+			return textLength;
+		}
+
+		/**
 		 * Finds the start index of the next word that starts after the
 		 * selection.
 		 */

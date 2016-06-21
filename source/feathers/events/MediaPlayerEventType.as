@@ -63,6 +63,16 @@ package feathers.events
 		public static const METADATA_RECEIVED:String = "metadataReceived";
 
 		/**
+		 * Dispatched when the media's cue point is reached.
+		 */
+		public static const CUE_POINT:String = "cuePoint";
+
+		/**
+		 * Dispatched when the media's XMP data is read.
+		 */
+		public static const XMP_DATA:String = "xmpData";
+
+		/**
 		 * Dispatched periodically when a media player's content is loading to
 		 * indicate the current progress.
 		 */

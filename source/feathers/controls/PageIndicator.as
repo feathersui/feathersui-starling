@@ -28,6 +28,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -68,11 +69,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const SUGGESTED_BOUNDS:ViewPortBounds = new ViewPortBounds();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
@@ -930,18 +926,19 @@ package feathers.controls
 					return;
 				}
 				this.touchPointID = -1;
-				touch.getLocation(this.stage, HELPER_POINT);
-				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+				var point:Point = Pool.getPoint();
+				touch.getLocation(this.stage, point);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
 				if(isInBounds)
 				{
 					var lastPageIndex:int = this._pageCount - 1;
-					this.globalToLocal(HELPER_POINT, HELPER_POINT);
+					this.globalToLocal(point, point);
 					if(this._direction == Direction.VERTICAL)
 					{
 						if(this._interactionMode === PageIndicatorInteractionMode.PRECISE)
 						{
 							var symbolHeight:Number = this.selectedSymbol.height + (this.unselectedSymbols[0].height + this._gap) * lastPageIndex;
-							var newIndex:int = Math.round(lastPageIndex * (HELPER_POINT.y - this.symbols[0].y) / symbolHeight);
+							var newIndex:int = Math.round(lastPageIndex * (point.y - this.symbols[0].y) / symbolHeight);
 							if(newIndex < 0)
 							{
 								newIndex = 0;
@@ -954,11 +951,11 @@ package feathers.controls
 						}
 						else //previous/next
 						{
-							if(HELPER_POINT.y < this.selectedSymbol.y)
+							if(point.y < this.selectedSymbol.y)
 							{
 								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
 							}
-							if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
+							if(point.y > (this.selectedSymbol.y + this.selectedSymbol.height))
 							{
 								this.selectedIndex = Math.min(lastPageIndex, this._selectedIndex + 1);
 							}
@@ -969,7 +966,7 @@ package feathers.controls
 						if(this._interactionMode === PageIndicatorInteractionMode.PRECISE)
 						{
 							var symbolWidth:Number = this.selectedSymbol.width + (this.unselectedSymbols[0].width + this._gap) * lastPageIndex;
-							newIndex = Math.round(lastPageIndex * (HELPER_POINT.x - this.symbols[0].x) / symbolWidth);
+							newIndex = Math.round(lastPageIndex * (point.x - this.symbols[0].x) / symbolWidth);
 							if(newIndex < 0)
 							{
 								newIndex = 0;
@@ -982,17 +979,18 @@ package feathers.controls
 						}
 						else // previous/next
 						{
-							if(HELPER_POINT.x < this.selectedSymbol.x)
+							if(point.x < this.selectedSymbol.x)
 							{
 								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
 							}
-							if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
+							if(point.x > (this.selectedSymbol.x + this.selectedSymbol.width))
 							{
 								this.selectedIndex = Math.min(lastPageIndex, this._selectedIndex + 1);
 							}
 						}
 					}
 				}
+				Pool.putPoint(point);
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{

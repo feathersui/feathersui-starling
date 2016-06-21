@@ -67,6 +67,8 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.color.ColorSwatchButton;
+	import feathers.controls.color.ColorSwatchItemRenderer;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
@@ -668,7 +670,7 @@ package feathers.themes
 				this.atlas = null;
 			}
 
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, false);
 			ToolTipManager.setEnabledForStage(stage, false);
 
@@ -695,8 +697,8 @@ package feathers.themes
 		 */
 		protected function initializeStage():void
 		{
-			Starling.current.stage.color = PRIMARY_BACKGROUND_COLOR;
-			Starling.current.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
+			this.starling.stage.color = PRIMARY_BACKGROUND_COLOR;
+			this.starling.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
 		}
 
 		/**
@@ -710,7 +712,7 @@ package feathers.themes
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
 
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, true);
 			ToolTipManager.setEnabledForStage(stage, true);
 		}
@@ -1091,6 +1093,14 @@ package feathers.themes
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_LABEL, this.setToggleSwitchOffLabelStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
+
+			//color controls
+
+			//color swatch button
+			this.getStyleProviderForClass(ColorSwatchButton).defaultStyleFunction = this.setColorSwatchButtonStyles;
+
+			//color swatch item renderer
+			this.getStyleProviderForClass(ColorSwatchItemRenderer).defaultStyleFunction = this.setColorSwatchItemRendererStyles;
 
 			//media controls
 			this.getStyleProviderForClass(VideoPlayer).defaultStyleFunction = this.setVideoPlayerStyles;
@@ -2676,6 +2686,41 @@ package feathers.themes
 			track.defaultSkin = skin;
 
 			track.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// ColorSwatchButton
+	//-------------------------
+
+		protected function setColorSwatchButtonStyles(button:ColorSwatchButton):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.buttonUpSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
+			skin.setTextureForState(ButtonState.DISABLED, this.buttonDisabledSkinTexture);
+			skin.scale9Grid = BUTTON_SCALE9_GRID;
+			skin.width = this.controlSize;
+			skin.height = this.controlSize;
+			button.defaultSkin = skin;
+
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
+
+			button.padding = this.smallGutterSize;
+
+			var focusIndicatorSkin:ImageSkin = new ImageSkin(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+		}
+
+	//-------------------------
+	// ColorSwatchItemRenderer
+	//-------------------------
+
+		protected function setColorSwatchItemRendererStyles(itemRenderer:ColorSwatchItemRenderer):void
+		{
+			itemRenderer.minWidth = this.smallControlSize;
+			itemRenderer.minHeight = this.smallControlSize;
 		}
 
 	//-------------------------

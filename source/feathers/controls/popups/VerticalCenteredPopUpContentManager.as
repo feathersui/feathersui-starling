@@ -28,6 +28,7 @@ package feathers.controls.popups
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the pop-up content opens.
@@ -80,11 +81,6 @@ package feathers.controls.popups
 	 */
 	public class VerticalCenteredPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * Constructor.
 		 */
@@ -422,8 +418,10 @@ package feathers.controls.popups
 				{
 					return;
 				}
-				touch.getLocation(stage, HELPER_POINT);
-				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT);
+				var point:Point = Pool.getPoint();
+				touch.getLocation(stage, point);
+				var hitTestResult:DisplayObject = stage.hitTest(point);
+				Pool.putPoint(point);
 				var isInBounds:Boolean = false;
 				if(this.content is DisplayObjectContainer)
 				{
@@ -446,8 +444,10 @@ package feathers.controls.popups
 				{
 					return;
 				}
-				touch.getLocation(stage, HELPER_POINT);
-				hitTestResult = stage.hitTest(HELPER_POINT);
+				point = Pool.getPoint();
+				touch.getLocation(stage, point);
+				hitTestResult = stage.hitTest(point);
+				Pool.putPoint(point);
 				isInBounds = false;
 				if(this.content is DisplayObjectContainer)
 				{

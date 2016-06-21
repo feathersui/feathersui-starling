@@ -34,6 +34,7 @@ package feathers.controls.supportClasses
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * @private
@@ -43,7 +44,6 @@ package feathers.controls.supportClasses
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
-		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function ListDataViewPort()
@@ -975,13 +975,30 @@ package feathers.controls.supportClasses
 
 		private function refreshViewPortBounds():void
 		{
-			this._viewPortBounds.x = this._viewPortBounds.y = 0;
+			var needsMinWidth:Boolean = this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight; //isNaN
+			this._viewPortBounds.x = 0;
+			this._viewPortBounds.y = 0;
 			this._viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this._viewPortBounds.scrollY = this._verticalScrollPosition;
 			this._viewPortBounds.explicitWidth = this.explicitVisibleWidth;
 			this._viewPortBounds.explicitHeight = this.explicitVisibleHeight;
-			this._viewPortBounds.minWidth = this._explicitMinVisibleWidth;
-			this._viewPortBounds.minHeight = this._explicitMinVisibleHeight;
+			if(needsMinWidth)
+			{
+				this._viewPortBounds.minWidth = 0;
+			}
+			else
+			{
+				this._viewPortBounds.minWidth = this._explicitMinVisibleWidth;
+			}
+			if(needsMinHeight)
+			{
+				this._viewPortBounds.minHeight = 0;
+			}
+			else
+			{
+				this._viewPortBounds.minHeight = this._explicitMinVisibleHeight;
+			}
 			this._viewPortBounds.maxWidth = this._maxVisibleWidth;
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
@@ -1083,8 +1100,10 @@ package feathers.controls.supportClasses
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
 			{
-				virtualLayout.measureViewPort(itemCount, this._viewPortBounds, HELPER_POINT);
-				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, itemCount, HELPER_VECTOR);
+				var point:Point = Pool.getPoint();
+				virtualLayout.measureViewPort(itemCount, this._viewPortBounds, point);
+				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, point.x, point.y, itemCount, HELPER_VECTOR);
+				Pool.putPoint(point);
 			}
 
 			var unrenderedItemCount:int = useVirtualLayout ? HELPER_VECTOR.length : itemCount;
@@ -1474,12 +1493,18 @@ package feathers.controls.supportClasses
 		{
 			var item:Object = this._dataProvider.getItemAt(index);
 			var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-			if(!renderer)
+			if(renderer === null)
 			{
 				return;
 			}
 			renderer.data = null;
 			renderer.data = item;
+			if(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
+				this.explicitVisibleHeight !== this.explicitVisibleHeight)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this.invalidateParent(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		private function dataProvider_updateAllHandler(event:Event):void
@@ -1487,12 +1512,18 @@ package feathers.controls.supportClasses
 			for(var item:Object in this._rendererMap)
 			{
 				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(!renderer)
+				if(renderer === null)
 				{
-					return;
+					continue;
 				}
 				renderer.data = null;
 				renderer.data = item;
+			}
+			if(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
+				this.explicitVisibleHeight !== this.explicitVisibleHeight)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this.invalidateParent(INVALIDATION_FLAG_SIZE);
 			}
 		}
 

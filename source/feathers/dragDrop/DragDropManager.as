@@ -25,9 +25,9 @@ package feathers.dragDrop
 	/**
 	 * Handles drag and drop operations based on Starling touch events.
 	 *
-	 * @see IDragSource
-	 * @see IDropTarget
-	 * @see DragData
+	 * @see feathers.dragDrop.IDragSource
+	 * @see feathers.dragDrop.IDropTarget
+	 * @see feathers.dragDrop.DragData
 	 */
 	public class DragDropManager
 	{
@@ -156,7 +156,8 @@ package feathers.dragDrop
 			avatar = dragAvatar;
 			avatarOffsetX = dragAvatarOffsetX;
 			avatarOffsetY = dragAvatarOffsetY;
-			touch.getLocation(Starling.current.stage, HELPER_POINT);
+			var stage:Stage = DisplayObject(source).stage;
+			touch.getLocation(stage, HELPER_POINT);
 			if(avatar)
 			{
 				avatarOldTouchable = avatar.touchable;
@@ -165,8 +166,9 @@ package feathers.dragDrop
 				avatar.y = HELPER_POINT.y + avatarOffsetY;
 				PopUpManager.addPopUp(avatar, false, false);
 			}
-			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
+			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			var starling:Starling = stage.starling;
+			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
 			_dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false));
 
 			updateDropTarget(HELPER_POINT);
@@ -233,8 +235,10 @@ package feathers.dragDrop
 				avatar.touchable = avatarOldTouchable;
 				avatar = null;
 			}
-			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			var stage:Stage = DisplayObject(_dragSource).stage;
+			var starling:Starling = stage.starling;
+			stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			_dragSource = null;
 			_dragData = null;
 		}
@@ -244,7 +248,8 @@ package feathers.dragDrop
 		 */
 		protected static function updateDropTarget(location:Point):void
 		{
-			var target:DisplayObject = Starling.current.stage.hitTest(location);
+			var stage:Stage = DisplayObject(_dragSource).stage;
+			var target:DisplayObject = stage.hitTest(location);
 			while(target && !(target is IDropTarget))
 			{
 				target = target.parent;
@@ -294,7 +299,7 @@ package feathers.dragDrop
 		 */
 		protected static function stage_touchHandler(event:TouchEvent):void
 		{
-			var stage:Stage = Starling.current.stage;
+			var stage:Stage = Stage(event.currentTarget);
 			var touch:Touch = event.getTouch(stage, null, _touchPointID);
 			if(!touch)
 			{

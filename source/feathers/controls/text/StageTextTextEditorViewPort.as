@@ -530,12 +530,8 @@ package feathers.controls.text
 		override protected function refreshViewPortAndFontSize():void
 		{
 			super.refreshViewPortAndFontSize();
-			
-			var starling:Starling = stageToStarling(this.stage);
-			if(starling === null)
-			{
-				starling = Starling.current;
-			}
+
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
 			if(starling.supportHighResolutions)
 			{

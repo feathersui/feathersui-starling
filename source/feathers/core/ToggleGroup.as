@@ -47,6 +47,7 @@ package feathers.core
 		 */
 		public function ToggleGroup()
 		{
+			super();
 		}
 
 		/**
@@ -181,6 +182,14 @@ package feathers.core
 				//item (happens below in the item's onChange listener).
 				this.dispatchEventWith(Event.CHANGE);
 			}
+		}
+
+		/**
+		 * The number of items added to the group.
+		 */
+		public function get numItems():int
+		{
+			return this._items.length;
 		}
 		
 		/**
@@ -318,6 +327,22 @@ package feathers.core
 		{
 			var index:int = this._items.indexOf(item);
 			return index >= 0;
+		}
+
+		/**
+		 * Returns the item at the specified index. If the index is out of
+		 * range, a <code>RangeError</code> will be thrown.
+		 *
+		 * <p>In the following example, an item's at a specific index is returned:</p>
+		 *
+		 * <listing version="3.0">
+		 * var item:IToggle = group.getItemAt( 2 );</listing>
+		 * 
+		 * @see #numItems
+		 */
+		public function getItemAt(index:int):IToggle
+		{
+			return this._items[index];
 		}
 
 		/**

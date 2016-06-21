@@ -29,15 +29,13 @@ package feathers.controls.supportClasses
 	import starling.events.Event;
 	import starling.rendering.Painter;
 	import starling.utils.MatrixUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * @private
 	 */
 	public class TextFieldViewPort extends FeathersControl implements IViewPort
 	{
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-		private static const HELPER_POINT:Point = new Point();
-
 		public function TextFieldViewPort()
 		{
 			super();
@@ -825,22 +823,26 @@ package feathers.controls.supportClasses
 			//excluded from the render cache
 			painter.excludeFromCache(this);
 
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
-			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var starlingViewPort:Rectangle = starling.viewPort;
+			var matrix:Matrix = Pool.getMatrix();
+			var point:Point = Pool.getPoint();
+			this.parent.getTransformationMatrix(this.stage, matrix);
+			MatrixUtil.transformCoords(matrix, 0, 0, point);
 			var nativeScaleFactor:Number = 1;
-			if(Starling.current.supportHighResolutions)
+			if(starling.supportHighResolutions)
 			{
-				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
-			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * scaleFactor;
-			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * scaleFactor;
-			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
-			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
-			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
+			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
+			this._textFieldContainer.x = starlingViewPort.x + point.x * scaleFactor;
+			this._textFieldContainer.y = starlingViewPort.y + point.y * scaleFactor;
+			this._textFieldContainer.scaleX = matrixToScaleX(matrix) * scaleFactor;
+			this._textFieldContainer.scaleY = matrixToScaleY(matrix) * scaleFactor;
+			this._textFieldContainer.rotation = matrixToRotation(matrix) * 180 / Math.PI;
 			this._textFieldContainer.alpha = painter.state.alpha;
+			Pool.putPoint(point);
+			Pool.putMatrix(matrix);
 			super.render(painter);
 		}
 
@@ -884,6 +886,7 @@ package feathers.controls.supportClasses
 				this._textField.y = this._paddingTop;
 			}
 
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				if(this._styleSheet)
@@ -910,19 +913,19 @@ package feathers.controls.supportClasses
 				{
 					this._textField.text = this._text;
 				}
-				this._scrollStep = this._textField.getLineMetrics(0).height * Starling.contentScaleFactor;
+				this._scrollStep = this._textField.getLineMetrics(0).height * starling.contentScaleFactor;
 			}
 
 			var calculatedVisibleWidth:Number = this._explicitVisibleWidth;
 			if(calculatedVisibleWidth != calculatedVisibleWidth)
 			{
-				if(this.stage)
+				if(this.stage !== null)
 				{
 					calculatedVisibleWidth = this.stage.stageWidth;
 				}
 				else
 				{
-					calculatedVisibleWidth = Starling.current.stage.stageWidth;
+					calculatedVisibleWidth = starling.stage.stageWidth;
 				}
 				if(calculatedVisibleWidth < this._explicitMinVisibleWidth)
 				{
@@ -973,13 +976,13 @@ package feathers.controls.supportClasses
 
 		private function addedToStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addChild(this._textFieldContainer);
+			this.stage.starling.nativeStage.addChild(this._textFieldContainer);
 			this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 
 		private function removedFromStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.removeChild(this._textFieldContainer);
+			this.stage.starling.nativeStage.removeChild(this._textFieldContainer);
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 

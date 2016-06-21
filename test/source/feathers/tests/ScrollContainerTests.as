@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.ScrollContainer;
+	import feathers.tests.supportClasses.AssertViewPortBoundsLayout;
 
 	import org.flexunit.Assert;
 
@@ -151,6 +152,13 @@ package feathers.tests
 				child.width - this._container.width, this._container.maxHorizontalScrollPosition);
 			Assert.assertStrictlyEquals("The maxVerticalScrollPosition of the scroll container was not calculated correctly when scrolling is required.",
 				child.height - this._container.height, this._container.maxVerticalScrollPosition);
+		}
+
+		[Test]
+		public function testViewPortBoundsValues():void
+		{
+			this._container.layout = new AssertViewPortBoundsLayout();
+			this._container.validate();
 		}
 	}
 }

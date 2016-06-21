@@ -768,6 +768,42 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _distributeWidths:Boolean = false;
+
+		/**
+		 * If the total width of the tiles in a row (minus padding and gap)
+		 * does not fill the entire row, the remaining space will be distributed
+		 * to each tile equally.
+		 * 
+		 * <p>If the container using the layout might resize, setting
+		 * <code>requestedColumnCount</code> is recommended because the tiles
+		 * will resize too, and their dimensions may not be reset.</p>
+		 *
+		 * @default false
+		 * 
+		 * @see #requestedColumnCount
+		 */
+		public function get distributeWidths():Boolean
+		{
+			return this._distributeWidths;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeWidths(value:Boolean):void
+		{
+			if(this._distributeWidths === value)
+			{
+				return;
+			}
+			this._distributeWidths = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _useVirtualLayout:Boolean = true;
 
 		[Bindable(event="change")]
@@ -1007,12 +1043,17 @@ package feathers.layout
 
 			this._discoveredItemsCache.length = 0;
 			var itemCount:int = items.length;
-			var tileWidth:Number = this._useVirtualLayout ? calculatedTypicalItemWidth : 0;
-			var tileHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
-			//a virtual layout assumes that all items are the same size as
-			//the typical item, so we don't need to measure every item in
-			//that case
-			if(!this._useVirtualLayout)
+			var tileWidth:Number = 0;
+			var tileHeight:Number = 0;
+			if(this._useVirtualLayout)
+			{
+				//a virtual layout assumes that all items are the same size as
+				//the typical item, so we don't need to measure every item in
+				//that case
+				tileWidth = calculatedTypicalItemWidth;
+				tileHeight = calculatedTypicalItemHeight;
+			}
+			else
 			{
 				for(var i:int = 0; i < itemCount; i++)
 				{
@@ -1060,9 +1101,6 @@ package feathers.layout
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				explicitWidth, maxWidth, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount);
-			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
-				explicitHeight, maxHeight, this._paddingTop + this._paddingBottom,
-				this._verticalGap, this._requestedRowCount, itemCount, horizontalTileCount);
 			if(explicitWidth === explicitWidth) //!isNaN
 			{
 				var availableWidth:Number = explicitWidth;
@@ -1079,6 +1117,18 @@ package feathers.layout
 					availableWidth = maxWidth;
 				}
 			}
+			if(this._distributeWidths)
+			{
+				//distribute remaining space
+				tileWidth = (availableWidth - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileHeight = tileWidth;
+				}
+			}
+			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
+				explicitHeight, maxHeight, this._paddingTop + this._paddingBottom,
+				this._verticalGap, this._requestedRowCount, itemCount, horizontalTileCount);
 			if(explicitHeight === explicitHeight) //!isNaN
 			{
 				var availableHeight:Number = explicitHeight;
@@ -1098,7 +1148,7 @@ package feathers.layout
 
 			var totalPageContentWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
 			var totalPageContentHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap + this._paddingTop + this._paddingBottom;
-			
+
 			var startX:Number = boundsX + this._paddingLeft;
 			var startY:Number = boundsY + this._paddingTop;
 
@@ -2071,6 +2121,10 @@ package feathers.layout
 			explicitWidth:Number, maxWidth:Number, paddingLeftAndRight:Number,
 			horizontalGap:Number, requestedColumnCount:int, totalItemCount:int):int
 		{
+			if(requestedColumnCount > 0 && this._distributeWidths)
+			{
+				return requestedColumnCount;
+			}
 			var tileCount:int;
 			if(explicitWidth === explicitWidth) //!isNaN
 			{
