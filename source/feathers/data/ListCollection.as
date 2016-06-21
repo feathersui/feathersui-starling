@@ -296,6 +296,7 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * The number of items in the collection.
 		 */
