@@ -192,16 +192,16 @@ package feathers.controls.color
 				index++;
 			}
 			var primaryColors:Vector.<uint> = new <uint>
-				[
-					0x0000ff, 0x0055ff, 0x00aaff, 0x00ffff,
-					0x00ffaa, 0x00ff55, 0x00ff00, 0x55ff00,
-					0xaaff00, 0xffff00, 0xffaa00, 0xff5500,
-					0xff0000, 0xff0055, 0xff00aa, 0xff00ff,
-					0xaa00ff, 0x5500ff
-				];
+			[
+				0x0000ff, 0x0055ff, 0x00aaff, 0x00ffff,
+				0x00ffaa, 0x00ff55, 0x00ff00, 0x55ff00,
+				0xaaff00, 0xffff00, 0xffaa00, 0xff5500,
+				0xff0000, 0xff0055, 0xff00aa, 0xff00ff,
+				0xaa00ff, 0x5500ff
+			];
 			for(i = 0; i < primaryColors.length; i++)
 			{
-				var color:uint = primaryColors[i];
+				color = primaryColors[i];
 				values[index] = new ColorSwatchData(color);
 				index++;
 			}
