@@ -20,6 +20,7 @@ package feathers.controls.supportClasses
 	import flash.utils.getDefinitionByName;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import starling.errors.AbstractMethodError;
 	import starling.events.Event;
@@ -179,6 +180,7 @@ package feathers.controls.supportClasses
 					//signals not being used
 				}
 			}
+			this.screenContainer = this;
 			this.addEventListener(Event.ADDED_TO_STAGE, screenNavigator_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, screenNavigator_removedFromStageHandler);
 		}
@@ -208,6 +210,11 @@ package feathers.controls.supportClasses
 		{
 			return this._activeScreen;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var screenContainer:DisplayObjectContainer;
 
 		/**
 		 * @private
@@ -718,7 +725,7 @@ package feathers.controls.supportClasses
 			}
 			this.prepareActiveScreen();
 			var isSameInstance:Boolean = this._previousScreenInTransition === this._activeScreen;
-			this.addChild(this._activeScreen);
+			this.screenContainer.addChild(this._activeScreen);
 			if(this._activeScreen is IFeathersControl)
 			{
 				IFeathersControl(this._activeScreen).initializeNow();
@@ -885,7 +892,7 @@ package feathers.controls.supportClasses
 				{
 					var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[this._activeScreenID]);
 					this.cleanupActiveScreen();
-					this.removeChild(this._activeScreen, item.canDispose);
+					this.screenContainer.removeChild(this._activeScreen, item.canDispose);
 					if(!item.canDispose)
 					{
 						this._activeScreen.width = this._activeScreenExplicitWidth;
@@ -938,7 +945,7 @@ package feathers.controls.supportClasses
 						screen.owner = null;
 					}
 					previousScreen.removeEventListener(Event.RESIZE, activeScreen_resizeHandler);
-					this.removeChild(previousScreen, item.canDispose);
+					this.screenContainer.removeChild(previousScreen, item.canDispose);
 				}
 			}
 
