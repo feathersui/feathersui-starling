@@ -9,6 +9,7 @@ package feathers.examples.componentsExplorer
 		public static const BUTTON_GROUP:String = "buttonGroup";
 		public static const CALLOUT:String = "callout";
 		public static const CHECK:String = "check";
+		public static const COLOR_PICKER:String = "colorPicker";
 		public static const DATE_TIME_SPINNER:String = "dateTimeSpinner";
 		public static const DATE_TIME_SPINNER_SETTINGS:String = "dateTimeSpinnerSettings";
 		public static const GROUPED_LIST:String = "groupedList";

@@ -16,6 +16,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
 	import feathers.examples.componentsExplorer.screens.CheckScreen;
+	import feathers.examples.componentsExplorer.screens.ColorPickerScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListScreen;
@@ -98,6 +99,10 @@ package feathers.examples.componentsExplorer
 			var checkItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CheckScreen);
 			checkItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ScreenID.CHECK, checkItem);
+
+			var colorPickerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ColorPickerScreen);
+			colorPickerItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(ScreenID.COLOR_PICKER, colorPickerItem);
 
 			var dateTimeSpinnerSettings:DateTimeSpinnerSettings = new DateTimeSpinnerSettings();
 			var dateTimeSpinnerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerScreen);
