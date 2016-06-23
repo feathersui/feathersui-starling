@@ -4,7 +4,6 @@ package feathers.tests
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
-	import feathers.skins.ImageSkin;
 
 	import org.flexunit.Assert;
 
@@ -25,6 +24,7 @@ package feathers.tests
 		private var _navigator:StackScreenNavigator;
 		private var _screenOne:Quad;
 		private var _screenTwo:LayoutGroup;
+		private var _navigator2:StackScreenNavigator;
 
 		[Before]
 		public function prepare():void
@@ -49,6 +49,12 @@ package feathers.tests
 			this._navigator.removeFromParent(true);
 			this._navigator = null;
 
+			if(this._navigator2)
+			{
+				this._navigator2.removeFromParent(true);
+				this._navigator2 = null;
+			}
+
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
 
@@ -65,6 +71,40 @@ package feathers.tests
 				TestFeathers.starlingRoot.stage.stageWidth, this._navigator.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the StackScreenNavigator was not calculated correctly when empty with AutoSizeMode.STAGE.",
 				TestFeathers.starlingRoot.stage.stageHeight, this._navigator.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeModeStageWithoutParent():void
+		{
+			this._navigator2 = new StackScreenNavigator();
+			this._navigator2.autoSizeMode = AutoSizeMode.STAGE;
+			this._navigator2.validate();
+			Assert.assertStrictlyEquals("The width of the ScreenNavigator was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._navigator2.width);
+			Assert.assertStrictlyEquals("The height of the ScreenNavigator was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._navigator2.height);
+			Assert.assertStrictlyEquals("The minWidth of the ScreenNavigator was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._navigator2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the ScreenNavigator was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._navigator2.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeModeStageWithValidateBeforeAdd():void
+		{
+			this._navigator2 = new StackScreenNavigator();
+			this._navigator2.autoSizeMode = AutoSizeMode.STAGE;
+			this._navigator2.validate();
+			TestFeathers.starlingRoot.addChild(this._navigator2);
+			this._navigator2.validate();
+			Assert.assertStrictlyEquals("The width of the ScreenNavigator was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._navigator2.width);
+			Assert.assertStrictlyEquals("The height of the ScreenNavigator was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._navigator2.height);
+			Assert.assertStrictlyEquals("The minWidth of the ScreenNavigator was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._navigator2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the ScreenNavigator was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._navigator2.minHeight);
 		}
 
 		[Test]
