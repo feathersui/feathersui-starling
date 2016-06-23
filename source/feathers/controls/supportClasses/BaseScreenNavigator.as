@@ -971,6 +971,13 @@ package feathers.controls.supportClasses
 		 */
 		protected function screenNavigator_addedToStageHandler(event:Event):void
 		{
+			if(this._autoSizeMode === AutoSizeMode.STAGE)
+			{
+				//if we validated before being added to the stage, or if we've
+				//been removed from stage and added again, we need to be sure
+				//that the new stage dimensions are accounted for.
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 		}
 

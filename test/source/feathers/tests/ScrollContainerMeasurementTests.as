@@ -20,6 +20,7 @@ package feathers.tests
 		private static const ITEM_HEIGHT:Number = 160;
 
 		private var _container:ScrollContainer;
+		private var _container2:ScrollContainer;
 
 		[Before]
 		public function prepare():void
@@ -34,6 +35,12 @@ package feathers.tests
 		{
 			this._container.removeFromParent(true);
 			this._container = null;
+			
+			if(this._container2)
+			{
+				this._container2.removeFromParent(true);
+				this._container2 = null;
+			}
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -80,6 +87,40 @@ package feathers.tests
 				this._container.stage.stageWidth, this._container.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the scroll container was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._container.stage.stageHeight, this._container.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeModeStageWithoutParent():void
+		{
+			this._container2 = new ScrollContainer();
+			this._container2.autoSizeMode = AutoSizeMode.STAGE;
+			this._container2.validate();
+			Assert.assertStrictlyEquals("The width of the ScrollContainer was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._container2.width);
+			Assert.assertStrictlyEquals("The height of the ScrollContainer was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._container2.height);
+			Assert.assertStrictlyEquals("The minWidth of the ScrollContainer was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._container2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the ScrollContainer was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._container2.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeModeStageWithValidateBeforeAdd():void
+		{
+			this._container2 = new ScrollContainer();
+			this._container2.autoSizeMode = AutoSizeMode.STAGE;
+			this._container2.validate();
+			TestFeathers.starlingRoot.addChild(this._container2);
+			this._container2.validate();
+			Assert.assertStrictlyEquals("The width of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._container2.width);
+			Assert.assertStrictlyEquals("The height of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._container2.height);
+			Assert.assertStrictlyEquals("The minWidth of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._container2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._container2.minHeight);
 		}
 
 		[Test]

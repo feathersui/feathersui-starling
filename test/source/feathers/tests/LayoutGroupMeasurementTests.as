@@ -1,17 +1,11 @@
 package feathers.tests
 {
 	import feathers.controls.AutoSizeMode;
-	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
-	import feathers.layout.HorizontalAlign;
-	import feathers.layout.VerticalAlign;
-	import feathers.layout.VerticalLayout;
-	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
 
 	import starling.display.Quad;
-	import starling.events.Event;
 
 	public class LayoutGroupMeasurementTests
 	{
@@ -31,6 +25,7 @@ package feathers.tests
 		private static const ITEM_HEIGHT2:Number = 170;
 
 		private var _group:LayoutGroup;
+		private var _group2:LayoutGroup;
 
 		[Before]
 		public function prepare():void
@@ -45,6 +40,12 @@ package feathers.tests
 		{
 			this._group.removeFromParent(true);
 			this._group = null;
+			
+			if(this._group2)
+			{
+				this._group2.removeFromParent(true);
+				this._group2 = null;
+			}
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -126,6 +127,40 @@ package feathers.tests
 				this._group.stage.stageWidth, this._group.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
 				this._group.stage.stageHeight, this._group.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeModeStageWithoutParent():void
+		{
+			this._group2 = new LayoutGroup();
+			this._group2.autoSizeMode = AutoSizeMode.STAGE;
+			this._group2.validate();
+			Assert.assertStrictlyEquals("The width of the LayoutGroup was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._group2.width);
+			Assert.assertStrictlyEquals("The height of the LayoutGroup was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._group2.height);
+			Assert.assertStrictlyEquals("The minWidth of the LayoutGroup was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._group2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the LayoutGroup was not calculated correctly with no parent and AutoSizeMode.STAGE.",
+				0, this._group2.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeModeStageWithValidateBeforeAdd():void
+		{
+			this._group2 = new LayoutGroup();
+			this._group2.autoSizeMode = AutoSizeMode.STAGE;
+			this._group2.validate();
+			TestFeathers.starlingRoot.addChild(this._group2);
+			this._group2.validate();
+			Assert.assertStrictlyEquals("The width of the LayoutGroup was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._group2.width);
+			Assert.assertStrictlyEquals("The height of the LayoutGroup was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._group2.height);
+			Assert.assertStrictlyEquals("The minWidth of the LayoutGroup was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._group2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the LayoutGroup was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._group2.minHeight);
 		}
 
 		[Test]
