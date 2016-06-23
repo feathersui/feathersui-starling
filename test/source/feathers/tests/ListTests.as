@@ -271,6 +271,16 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNewMaskDimensionsOnAddItemToDataProvider():void
+		{
+			var mask:DisplayObject = this._list.viewPort.mask;
+			var oldMaskHeight:Number = mask.height;
+			this._list.dataProvider.addItem({ label: "New Item" });
+			this._list.validate();
+			Assert.assertTrue("List with VerticalLayout must resize mask when item is added to data provider and height is not explicit", mask.height > oldMaskHeight);
+		}
+
+		[Test]
 		public function testViewPortBoundsValues():void
 		{
 			this._list.layout = new AssertViewPortBoundsLayout();
