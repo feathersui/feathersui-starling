@@ -817,7 +817,8 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this._autoSizeMode === AutoSizeMode.STAGE)
+			if(this._autoSizeMode === AutoSizeMode.STAGE &&
+				this.stage !== null)
 			{
 				var newWidth:Number = this.stage.stageWidth;
 				var newHeight:Number = this.stage.stageHeight;

@@ -768,7 +768,8 @@ package feathers.controls
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
-			if(needsWidth && this._autoSizeMode === AutoSizeMode.STAGE)
+			if(needsWidth && this._autoSizeMode === AutoSizeMode.STAGE &&
+				this.stage !== null)
 			{
 				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
 			}
@@ -776,7 +777,8 @@ package feathers.controls
 			{
 				this.viewPortBounds.explicitWidth = this._explicitWidth;
 			}
-			if(needsHeight && this._autoSizeMode === AutoSizeMode.STAGE)
+			if(needsHeight && this._autoSizeMode === AutoSizeMode.STAGE &&
+				this.stage !== null)
 			{
 				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
 			}
