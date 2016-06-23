@@ -435,9 +435,9 @@ package feathers.controls
 			}
 			this._autoSizeMode = value;
 			this._measureViewPort = this._autoSizeMode != AutoSizeMode.STAGE;
-			if(this.stage)
+			if(this.stage !== null)
 			{
-				if(this._autoSizeMode == AutoSizeMode.STAGE)
+				if(this._autoSizeMode === AutoSizeMode.STAGE)
 				{
 					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 				}
@@ -832,8 +832,13 @@ package feathers.controls
 		 */
 		protected function scrollContainer_addedToStageHandler(event:Event):void
 		{
-			if(this._autoSizeMode == AutoSizeMode.STAGE)
+			if(this._autoSizeMode === AutoSizeMode.STAGE)
 			{
+				//if we validated before being added to the stage, or if we've
+				//been removed from stage and added again, we need to be sure
+				//that the new stage dimensions are accounted for.
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+
 				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 			}
 		}

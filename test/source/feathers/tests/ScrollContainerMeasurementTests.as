@@ -106,6 +106,24 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testAutoSizeModeStageWithValidateBeforeAdd():void
+		{
+			this._container2 = new ScrollContainer();
+			this._container2.autoSizeMode = AutoSizeMode.STAGE;
+			this._container2.validate();
+			TestFeathers.starlingRoot.addChild(this._container2);
+			this._container2.validate();
+			Assert.assertStrictlyEquals("The width of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._container2.width);
+			Assert.assertStrictlyEquals("The height of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._container2.height);
+			Assert.assertStrictlyEquals("The minWidth of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageWidth, this._container2.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the ScrollContainer was not calculated correctly after addChild() when validated before with AutoSizeMode.STAGE.",
+				TestFeathers.starlingRoot.stage.stageHeight, this._container2.minHeight);
+		}
+
+		[Test]
 		public function testAutoSizeWithChildAtOrigin():void
 		{
 			this._container.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));
