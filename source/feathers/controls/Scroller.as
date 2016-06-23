@@ -3283,7 +3283,7 @@ package feathers.controls
 				this.refreshScrollBarValues();
 			}
 
-			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || clippingInvalid)
+			if(needsMeasurement || clippingInvalid)
 			{
 				this.refreshMask();
 			}
