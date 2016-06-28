@@ -311,6 +311,32 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testNewMaskXPositionOnHorizontalScroll():void
+		{
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._scroller.validate();
+			this._scroller.horizontalScrollPosition = this._scroller.maxHorizontalScrollPosition / 2;
+			this._scroller.validate();
+			Assert.assertStrictlyEquals("The mask x position of the scroller's view port was not calculated correctly with horizontalScrollPosition > 0.",
+				this._scroller.maxHorizontalScrollPosition / 2, this._viewPort.mask.x);
+		}
+
+		[Test]
+		public function testNewMaskYPositionOnVerticalScroll():void
+		{
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.height = LARGE_VIEW_PORT_HEIGHT;
+			this._scroller.validate();
+			this._scroller.verticalScrollPosition = this._scroller.maxVerticalScrollPosition / 2;
+			this._scroller.validate();
+			Assert.assertStrictlyEquals("The mask y position of the scroller's view port was not calculated correctly with verticalScrollPosition > 0.",
+				this._scroller.maxVerticalScrollPosition / 2, this._viewPort.mask.y);
+		}
+
+		[Test]
 		public function testAutoHideBackgroundWithoutScrolling():void
 		{
 			this._scroller.backgroundSkin = new Quad(1, 1, 0xff00ff);
