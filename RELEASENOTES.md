@@ -2,6 +2,10 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.0.2 - June 2016
+
+* Scroller: Fixed issue where view port mask would not always be resized, such as when items are added to a List.
+
 ## 3.0.1 - June 2016
 
 * List, GroupedList: fixed issue where ViewPortBounds minWidth and minHeight could be NaN (this broke percentWidth and percentHeight on some layouts).
