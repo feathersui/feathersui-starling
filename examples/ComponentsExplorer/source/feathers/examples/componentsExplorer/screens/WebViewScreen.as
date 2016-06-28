@@ -59,6 +59,10 @@ package feathers.examples.componentsExplorer.screens
 			{
 				this.backButtonHandler = this.onBackButton;
 			}
+
+			//with skipUnchangedFrames, we need to call setRequiresRedraw()
+			//every frame
+			this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 
 		private function customHeaderFactory():Header
@@ -120,6 +124,11 @@ package feathers.examples.componentsExplorer.screens
 		private function onBackButton():void
 		{
 			this.dispatchEventWith(Event.COMPLETE);
+		}
+
+		private function enterFrameHandler(event:Event):void
+		{
+			this._browser.setRequiresRedraw();
 		}
 
 		private function backButton_triggeredHandler(event:Event):void
