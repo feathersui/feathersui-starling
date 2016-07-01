@@ -2210,6 +2210,9 @@ package feathers.controls.text
 					//this is faster, if we haven't resized the bitmapdata
 					var existingTexture:Texture = this.textSnapshot.texture;
 					existingTexture.root.uploadBitmapData(bitmapData);
+					//however, the image won't be notified that its
+					//texture has changed, so we need to do it manually
+					this.textSnapshot.setRequiresRedraw();
 				}
 			}
 			if(this._updateSnapshotOnScaleChange)

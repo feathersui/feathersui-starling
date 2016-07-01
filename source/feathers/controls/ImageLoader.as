@@ -2017,6 +2017,13 @@ package feathers.controls
 				}
 			}
 			this._texture.root.uploadBitmapData(bitmapData);
+			if(this.image !== null)
+			{
+				//this isn't technically required because other properties of
+				//the Image will be changed, but to avoid potential future
+				//refactoring headaches, it won't hurt to be extra careful.
+				this.image.setRequiresRedraw();
+			}
 			bitmapData.dispose();
 			
 			//if we have a cache for the textures, then the cache is the owner
