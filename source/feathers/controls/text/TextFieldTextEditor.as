@@ -2103,8 +2103,8 @@ package feathers.controls.text
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-			textureRoot.scale != starling.contentScaleFactor ||
-			this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
+				(textureRoot !== null && (textureRoot.scale !== starling.contentScaleFactor ||
+				this._snapshotWidth !== textureRoot.nativeWidth || this._snapshotHeight !== textureRoot.nativeHeight));
 		}
 
 		/**

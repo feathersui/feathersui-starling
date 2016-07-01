@@ -1516,8 +1516,8 @@ package feathers.controls.text
 				var viewPort:Rectangle = this.stageText.viewPort;
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-					textureRoot.scale != starling.contentScaleFactor ||
-					viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
+					(textureRoot !== null && (textureRoot.scale !== starling.contentScaleFactor ||
+					viewPort.width !== textureRoot.nativeWidth || viewPort.height !== textureRoot.nativeHeight));
 			}
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
