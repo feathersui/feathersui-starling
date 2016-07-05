@@ -53,6 +53,46 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when one of the tabs is triggered. The <code>data</code>
+	 * property of the event contains the item from the data provider that is
+	 * associated with the tab that was triggered.
+	 *
+	 * <p>The following example listens to <code>Event.TRIGGERED</code> on the
+	 * tab bar:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "1" },
+	 *     { label: "2" },
+	 *     { label: "3" },
+	 * ]);
+	 * tabs.addEventListener( Event.TRIGGERED, function( event:Event, data:Object ):void
+	 * {
+	 *    trace( "The tab with label \"" + data.label + "\" was triggered." );
+	 * }</listing>
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The item associated with the tab
+	 *   that was triggered.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered", type="starling.events.Event")]
+
+	/**
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
 	 * time.
 	 *
@@ -1786,6 +1826,7 @@ package feathers.controls
 		 */
 		protected function createFirstTab(item:Object):ToggleButton
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveFirstTab !== null)
 			{
 				var tab:ToggleButton = this.inactiveFirstTab;
@@ -1794,6 +1835,7 @@ package feathers.controls
 			}
 			else
 			{
+				isNewInstance = true;
 				var factory:Function = this._firstTabFactory != null ? this._firstTabFactory : this._tabFactory;
 				tab = ToggleButton(factory());
 				if(this._customFirstTabStyleName)
@@ -1813,6 +1855,13 @@ package feathers.controls
 			}
 			this._tabInitializer(tab, item);
 			this._tabToItem[tab] = item;
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the tab may be
+				//disposed by the time listeners in the initializer are called.
+				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			}
 			return tab;
 		}
 
@@ -1821,6 +1870,7 @@ package feathers.controls
 		 */
 		protected function createLastTab(item:Object):ToggleButton
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveLastTab !== null)
 			{
 				var tab:ToggleButton = this.inactiveLastTab;
@@ -1829,6 +1879,7 @@ package feathers.controls
 			}
 			else
 			{
+				isNewInstance = true;
 				var factory:Function = this._lastTabFactory != null ? this._lastTabFactory : this._tabFactory;
 				tab = ToggleButton(factory());
 				if(this._customLastTabStyleName)
@@ -1848,6 +1899,13 @@ package feathers.controls
 			}
 			this._tabInitializer(tab, item);
 			this._tabToItem[tab] = item;
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the tab may be
+				//disposed by the time listeners in the initializer are called.
+				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			}
 			return tab;
 		}
 
@@ -1856,8 +1914,10 @@ package feathers.controls
 		 */
 		protected function createTab(item:Object):ToggleButton
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveTabs.length === 0)
 			{
+				isNewInstance = true;
 				var tab:ToggleButton = ToggleButton(this._tabFactory());
 				if(this._customTabStyleName)
 				{
@@ -1877,6 +1937,13 @@ package feathers.controls
 			}
 			this._tabInitializer(tab, item);
 			this._tabToItem[tab] = item;
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the tab may be
+				//disposed by the time listeners in the initializer are called.
+				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			}
 			return tab;
 		}
 
@@ -2122,6 +2189,22 @@ package feathers.controls
 				this.focusedTabFocusIn();
 				this.showFocusedTab();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function tab_triggeredHandler(event:Event):void
+		{
+			//if this was called after dispose, ignore it
+			if(!this._dataProvider || !this.activeTabs)
+			{
+				return;
+			}
+			var tab:ToggleButton = ToggleButton(event.currentTarget);
+			var index:int = this.activeTabs.indexOf(tab);
+			var item:Object = this._dataProvider.getItemAt(index);
+			this.dispatchEventWith(Event.TRIGGERED, false, item);
 		}
 
 		/**
