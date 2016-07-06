@@ -67,7 +67,7 @@ package feathers.controls.text
 	 * @see ../../../../help/text-field-text-renderer.html How to use the Feathers TextFieldTextRenderer component
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
-	public class TextFieldTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
+	public class TextFieldTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
 		/**
 		 * @private
@@ -181,41 +181,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _text:String = "";
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem ipsum";</listing>
-		 *
-		 * @default ""
-		 *
-		 * @see #isHTML
-		 */
-		public function get text():String
+		override public function set text(value:String):void
 		{
-			return this._text;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
-		{
-			if(this._text == value)
-			{
-				return;
-			}
 			if(value === null)
 			{
 				//flash.text.TextField won't accept a null value
 				value = "";
 			}
-			this._text = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			super.text = value;
 		}
 
 		/**
@@ -496,41 +469,6 @@ package feathers.controls.text
 				gutterDimensionsOffset = 2;
 			}
 			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _wordWrap:Boolean = false;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, word wrap is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.wordWrap = true;</listing>
-		 *
-		 * @default false
-		 *
-		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#wordWrap Full description of flash.text.TextField.wordWrap in Adobe's Flash Platform API Reference
-		 */
-		public function get wordWrap():Boolean
-		{
-			return this._wordWrap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set wordWrap(value:Boolean):void
-		{
-			if(this._wordWrap == value)
-			{
-				return;
-			}
-			this._wordWrap = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1078,48 +1016,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _stateContext:IStateContext;
-
-		/**
-		 * When the text renderer observes a state context, the text renderer
-		 * may change its <code>TextFormat</code> based on the current state of
-		 * that context. Typically, a relevant component will automatically
-		 * assign itself as the state context of a text renderer, so this
-		 * property is typically meant for internal use only.
-		 *
-		 * @default null
-		 *
-		 * @see #setTextFormatForState()
-		 */
-		public function get stateContext():IStateContext
-		{
-			return this._stateContext;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateContext(value:IStateContext):void
-		{
-			if(this._stateContext === value)
-			{
-				return;
-			}
-			if(this._stateContext)
-			{
-				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this._stateContext = value;
-			if(this._stateContext)
-			{
-				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STATE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _lastGlobalScaleX:Number = 0;
 
 		/**
@@ -1238,8 +1134,6 @@ package feathers.controls.text
 			//from being garbage collected, freeing up the text field may help
 			//ease major memory pressure from native filters
 			this.textField = null;
-			
-			this.stateContext = null;
 
 			this._previousActualWidth = NaN;
 			this._previousActualHeight = NaN;
@@ -2085,14 +1979,6 @@ package feathers.controls.text
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			this.refreshSnapshot();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stateContext_stateChangeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }

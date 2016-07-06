@@ -26,9 +26,15 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.Font;
+	import flash.text.FontStyle;
+	import flash.text.FontType;
 	import flash.text.engine.ContentElement;
 	import flash.text.engine.ElementFormat;
 	import flash.text.engine.FontDescription;
+	import flash.text.engine.FontLookup;
+	import flash.text.engine.FontPosture;
+	import flash.text.engine.FontWeight;
 	import flash.text.engine.SpaceJustifier;
 	import flash.text.engine.TabStop;
 	import flash.text.engine.TextBaseline;
@@ -43,6 +49,7 @@ package feathers.controls.text
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MathUtil;
@@ -78,12 +85,18 @@ package feathers.controls.text
 	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
-	public class TextBlockTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
+	public class TextBlockTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
 		/**
 		 * @private
 		 */
+		private static var EMBEDDED_FONTS:Array;
+
+		/**
+		 * @private
+		 */
 		private static const HELPER_POINT:Point = new Point();
+
 		/**
 		 * @private
 		 */
@@ -316,40 +329,19 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _text:String;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem ipsum";</listing>
-		 *
-		 * @default null
-		 */
-		public function get text():String
-		{
-			return this._textElement ? this._text : null;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
+		override public function set text(value:String):void
 		{
 			if(this._text == value)
 			{
 				return;
 			}
-			this._text = value;
-			if(!this._textElement)
+			if(this._textElement === null)
 			{
 				this._textElement = new TextElement(value);
 			}
 			this._textElement.text = value;
 			this.content = this._textElement;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			super.text = value;
 		}
 
 		/**
@@ -389,7 +381,7 @@ package feathers.controls.text
 		 */
 		public function set content(value:ContentElement):void
 		{
-			if(this._content == value)
+			if(this._content === value)
 			{
 				return;
 			}
@@ -600,39 +592,6 @@ package feathers.controls.text
 				return;
 			}
 			this._textAlign = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _wordWrap:Boolean = false;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, word wrap is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.wordWrap = true;</listing>
-		 *
-		 * @default false
-		 */
-		public function get wordWrap():Boolean
-		{
-			return this._wordWrap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set wordWrap(value:Boolean):void
-		{
-			if(this._wordWrap == value)
-			{
-				return;
-			}
-			this._wordWrap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1167,48 +1126,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _stateContext:IStateContext;
-
-		/**
-		 * When the text renderer observes a state context, the text renderer
-		 * may change its <code>ElementFormat</code> based on the current state
-		 * of that context. Typically, a relevant component will automatically
-		 * assign itself as the state context of a text renderer, so this
-		 * property is typically meant for internal use only.
-		 *
-		 * @default null
-		 *
-		 * @see #setElementFormatForState()
-		 */
-		public function get stateContext():IStateContext
-		{
-			return this._stateContext;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateContext(value:IStateContext):void
-		{
-			if(this._stateContext === value)
-			{
-				return;
-			}
-			if(this._stateContext)
-			{
-				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this._stateContext = value;
-			if(this._stateContext)
-			{
-				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STATE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _updateSnapshotOnScaleChange:Boolean = false;
 
 		/**
@@ -1273,7 +1190,6 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			this.stateContext = null;
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.texture.dispose();
@@ -1855,7 +1771,7 @@ package feathers.controls.text
 				return;
 			}
 			var elementFormat:ElementFormat;
-			if(this._stateContext && this._elementFormatForState)
+			if(this._stateContext !== null && this._elementFormatForState !== null)
 			{
 				var currentState:String = this._stateContext.currentState;
 				if(currentState in this._elementFormatForState)
@@ -1863,18 +1779,43 @@ package feathers.controls.text
 					elementFormat = ElementFormat(this._elementFormatForState[currentState]);
 				}
 			}
-			if(!elementFormat && !this._isEnabled && this._disabledElementFormat)
+			if(elementFormat === null && !this._isEnabled && this._disabledElementFormat !== null)
 			{
 				elementFormat = this._disabledElementFormat;
 			}
-			if(!elementFormat && this._selectedElementFormat &&
+			if(elementFormat === null && this._selectedElementFormat !== null &&
 				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
 			{
 				elementFormat = this._selectedElementFormat;
 			}
-			if(!elementFormat)
+			if(elementFormat === null)
 			{
-				if(!this._elementFormat)
+				var fontStyles:TextFormat = this.getFontStyles();
+				if(fontStyles !== null)
+				{
+					var fontWeight:String = FontWeight.NORMAL;
+					if(fontStyles.bold)
+					{
+						fontWeight = FontWeight.BOLD;
+					}
+					var fontPosture:String = FontPosture.NORMAL;
+					if(fontStyles.italic)
+					{
+						fontPosture = FontPosture.ITALIC;
+					}
+					var fontLookup:String = FontLookup.DEVICE;
+					if(this.isFontEmbedded(fontStyles))
+					{
+						fontLookup = FontLookup.EMBEDDED_CFF;
+					}
+					var fontDescription:FontDescription =
+						new FontDescription(fontStyles.font, fontWeight, fontPosture, fontLookup);
+					elementFormat = new ElementFormat(fontDescription, fontStyles.size, fontStyles.color);
+				}
+			}
+			if(elementFormat === null)
+			{
+				if(this._elementFormat === null)
 				{
 					this._elementFormat = new ElementFormat();
 				}
@@ -2335,9 +2276,27 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function stateContext_stateChangeHandler(event:Event):void
+		protected function isFontEmbedded(format:TextFormat):Boolean
 		{
-			this.invalidate(INVALIDATION_FLAG_STATE);
+			if(EMBEDDED_FONTS === null)
+			{
+				EMBEDDED_FONTS = Font.enumerateFonts(false);
+			}
+
+			for each(var font:Font in EMBEDDED_FONTS)
+			{
+				var style:String = font.fontStyle;
+				var isBold:Boolean = style === FontStyle.BOLD || style === FontStyle.BOLD_ITALIC;
+				var isItalic:Boolean = style === FontStyle.ITALIC || style === FontStyle.BOLD_ITALIC;
+
+				if(format.font === font.fontName && font.fontType === FontType.EMBEDDED_CFF &&
+					format.italic === isItalic && format.bold === isBold)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

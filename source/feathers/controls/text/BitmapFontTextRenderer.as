@@ -51,7 +51,7 @@ package feathers.controls.text
 	 * @see ../../../../help/bitmap-font-text-renderer.html How to use the Feathers BitmapFontTextRenderer component
 	 * @see http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts Starling Wiki: Displaying Text with Bitmap Fonts
 	 */
-	public class BitmapFontTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
+	public class BitmapFontTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
 		/**
 		 * @private
@@ -311,39 +311,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _text:String = null;
-		
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem ipsum";</listing>
-		 *
-		 * @default null
-		 */
-		public function get text():String
-		{
-			return this._text;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
-		{
-			if(this._text == value)
-			{
-				return;
-			}
-			this._text = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-		
-		/**
-		 * @private
-		 */
 		protected var _textureSmoothing:String = TextureSmoothing.BILINEAR;
 
 		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
@@ -410,39 +377,6 @@ package feathers.controls.text
 				return;
 			}
 			this._pixelSnapping = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _wordWrap:Boolean = false;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, word wrap is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.wordWrap = true;</listing>
-		 *
-		 * @default false
-		 */
-		public function get wordWrap():Boolean
-		{
-			return _wordWrap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set wordWrap(value:Boolean):void
-		{
-			if(this._wordWrap == value)
-			{
-				return;
-			}
-			this._wordWrap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -588,61 +522,10 @@ package feathers.controls.text
 
 		/**
 		 * @private
-		 */
-		protected var _stateContext:IStateContext;
-
-		/**
-		 * When the text renderer observes a state context, the text renderer
-		 * may change its <code>BitmapFontTextFormat</code> based on the current
-		 * state of that context. Typically, a relevant component will
-		 * automatically assign itself as the state context of a text renderer,
-		 * so this property is typically meant for internal use only.
-		 *
-		 * @default null
-		 *
-		 * @see #setTextFormatForState()
-		 */
-		public function get stateContext():IStateContext
-		{
-			return this._stateContext;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateContext(value:IStateContext):void
-		{
-			if(this._stateContext === value)
-			{
-				return;
-			}
-			if(this._stateContext)
-			{
-				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this._stateContext = value;
-			if(this._stateContext)
-			{
-				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STATE);
-		}
-
-		/**
-		 * @private
 		 * This function is here to work around a bug in the Flex 4.6 SDK
 		 * compiler. For explanation, see the places where it gets called.
 		 */
 		private var _compilerWorkaround:Object;
-
-		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			this.stateContext = null;
-			super.dispose();
-		}
 
 		/**
 		 * @private
@@ -652,7 +535,7 @@ package feathers.controls.text
 			this._characterBatch.x = this._batchX;
 			super.render(painter);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -1468,14 +1351,6 @@ package feathers.controls.text
 				return this._truncationText;
 			}
 			return this._text;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stateContext_stateChangeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }
