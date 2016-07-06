@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="tabs" default="build" basedir=".">
+	
+	<!-- build.local.properties and sdk.local.proprties are optional files that
+		can be used to override the default properties. -->
+	<property file="./sdk.local.properties"/>
+	<property file="./sdk.properties"/>
+	<property file="./build.local.properties"/>
+	<property file="./build.properties"/>
+	
+	<fail unless="ios.provision.path"/>
+	<fail unless="ios.certificate.path"/>
+	<fail unless="ios.certificate.password"/>
+	
+	<fail unless="android.certificate.path"/>
+	<fail unless="android.certificate.password"/>
+
+	<target name="build" depends="build-web,build-android,build-ios"/>
+
+	<target name="prepare">
+		<delete dir="${output.path}"/>
+	</target>
+
+	<target name="build-web" depends="prepare">
+		<echo message="Building TabsWeb.swf"/>
+		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-load-config=${flashplayer.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-advanced-telemetry=true"/>
+			<arg value="-frame=two,feathers.examples.tabs.Main"/>
+			<arg value="-source-path+=source"/>
+			<arg value="-source-path+=${starling.root}"/>
+			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="-source-path+=${theme.root}"/>
+			<arg value="source/TabsWeb.as"/>
+			<arg value="-output=${output.path}/TabsWeb.swf"/>
+		</java>
+	</target>
+	<target name="build-air-swf" depends="prepare">
+		<echo message="Building Tabs.swf"/>
+		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<!-- uncomment for profiling with scout -->
+			<!--<arg value="-advanced-telemetry=true"/>-->
+			<arg value="-source-path+=source"/>
+			<arg value="-source-path+=${starling.root}"/>
+			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="-source-path+=${theme.root}"/>
+			<arg value="source/Tabs.as"/>
+			<arg value="-output=${output.path}/Tabs.swf"/>
+		</java>
+	</target>
+	<target name="build-ios" depends="build-air-swf">
+		<echo message="Packaging Tabs.ipa"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="ipa-app-store"/>
+			<!-- uncomment for actionscript sampling with scout on ios -->
+			<!--<arg value="-sampler"/>-->
+			<arg value="-provisioning-profile"/>
+			<arg value="${ios.provision.path}"/>
+			<arg value="-keystore"/>
+			<arg value="${ios.certificate.path}"/>
+			<arg value="-storetype"/>
+			<arg value="pkcs12"/>
+			<arg value="-storepass"/>
+			<arg value="${ios.certificate.password}"/>
+			<arg value="${output.path}/Tabs.ipa"/>
+			<arg value="source/Tabs-app.xml"/>
+			<arg value="-C"/>
+			<arg value="${icon.path}"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon87.png icon96.png icon100.png icon114.png icon128.png icon144.png icon180.png"/>
+			<arg value="-C"/>
+			<arg value="${launch.image.path}"/>
+			<arg line="Default.png Default-Portrait.png Default-Landscape.png Default@2x.png Default-Portrait@2x.png Default-Landscape@2x.png Default-568h@2x.png Default-375w-667h@2x.png Default-414w-736h@3x.png Default-414w-736h-Landscape@3x.png"/>
+			<arg value="-C"/>
+			<arg value="${output.path}"/>
+			<arg value="Tabs.swf"/>
+		</java>
+	</target>
+	<target name="build-android" depends="build-air-swf">
+		<echo message="Packaging Tabs.apk"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="apk-captive-runtime"/>
+			<arg value="-storetype"/>
+			<arg value="pkcs12"/>
+			<arg value="-keystore"/>
+			<arg value="${android.certificate.path}"/>
+			<arg value="-storepass"/>
+			<arg value="${android.certificate.password}"/>
+			<arg value="${output.path}/Tabs.apk"/>
+			<arg value="source/Tabs-app.xml"/>
+			<arg value="-C"/>
+			<arg value="${icon.path}"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon87.png icon96.png icon100.png icon114.png icon128.png icon144.png icon180.png"/>
+			<arg value="-C"/>
+			<arg value="${output.path}"/>
+			<arg value="Tabs.swf"/>
+		</java>
+	</target>
+	<target name="install-android">
+		<echo message="Installing Tabs.apk"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="false">
+			<arg value="-uninstallApp"/>
+			<arg value="-platform"/>
+			<arg value="android"/>
+			<arg value="-appid"/>
+			<arg value="com.feathersui.examples.Tabs"/>
+		</java>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-platform"/>
+			<arg value="android"/>
+			<arg value="-package"/>
+			<arg value="${output.path}/Tabs.apk"/>
+		</java>
+	</target>
+	<target name="install-ios">
+		<echo message="Installing Tabs.ipa"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="false">
+			<arg value="-uninstallApp"/>
+			<arg value="-platform"/>
+			<arg value="iOS"/>
+			<arg value="-appid"/>
+			<arg value="com.feathersui.examples.Tabs"/>
+		</java>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-platform"/>
+			<arg value="iOS"/>
+			<arg value="-package"/>
+			<arg value="${output.path}/Tabs.ipa"/>
+		</java>
+	</target>
+</project>
