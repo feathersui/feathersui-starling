@@ -425,6 +425,15 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/Tabs">
+			<fileset dir="${examples.root}/Tabs">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/TabsWeb.as"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/TileList">
 			<fileset dir="${examples.root}/TileList">
 				<include name="README.md"/>
