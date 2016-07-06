@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
@@ -25,6 +26,11 @@ package feathers.controls
 
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
+
+	import starling.animation.Transitions;
+
+	import starling.animation.Tween;
+	import starling.core.Starling;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -615,6 +621,127 @@ package feathers.controls
 			}
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionSkin:DisplayObject;
+
+		/**
+		 * A skin displayed over the selected tab. Its position is animated when
+		 * the selection changes.
+		 *
+		 * <p>The following example passes the tab bar a selection skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * var skin:Image = new Image(texture)
+		 * skin.scale9Grid = new Rectangle(1, 2, 4, 4);
+		 * tabs.selectionSkin = skin;</listing>
+		 *
+		 * @default null
+		 * 
+		 * @see #selectionChangeDuration
+		 * @see #selectionChangeEase
+		 */
+		public function get selectionSkin():DisplayObject
+		{
+			return this._selectionSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionSkin(value:DisplayObject):void
+		{
+			if(this._selectionSkin == value)
+			{
+				return;
+			}
+			if(this._selectionSkin !== null &&
+				this._selectionSkin.parent === this)
+			{
+				this._selectionSkin.removeFromParent(false);
+			}
+			this._selectionSkin = value;
+			if(this._selectionSkin !== null)
+			{
+				this._selectionSkin.touchable = false;
+				this.addChild(this._selectionSkin);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionChangeTween:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _selectionChangeDuration:Number = 0.25;
+
+		/**
+		 * The time, in seconds, of the animation that changes the position and
+		 * size of the <code>selectionSkin</code> skin when the selected
+		 * tab changes.
+		 *
+		 * <p>The following example customizes the duration to 500ms:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.selectionChangeDuration = 0.5;</listing>
+		 *
+		 * @default 0.25
+		 * 
+		 * @see #selectionSkin
+		 * @see #selectionChangeEase
+		 */
+		public function get selectionChangeDuration():Number
+		{
+			return this._selectionChangeDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionChangeDuration(value:Number):void
+		{
+			this._selectionChangeDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionChangeEase:Object = Transitions.EASE_OUT;
+
+		/**
+		 * The easing function used for moving and resizing the
+		 * <code>selectionSkin</code> when the selected tab changes.
+		 *
+		 * <p>In the following example, the ease of the animation that moves
+		 * the <code>selectionSkin</code> is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.selectionChangeEase = Transitions.EASE_IN_OUT;</listing>
+		 *
+		 * @default starling.animation.Transitions.EASE_OUT
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+		 * @see #selectionSkin
+		 * @see #selectionChangeDuration
+		 */
+		public function get selectionChangeEase():Object
+		{
+			return this._selectionChangeEase;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionChangeEase(value:Object):void
+		{
+			this._selectionChangeEase = value;
 		}
 
 		/**
@@ -1238,6 +1365,7 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
+			this._animateSelectionChange = false;
 			if(this._selectedIndex == value)
 			{
 				return;
@@ -1287,6 +1415,8 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
+			//we don't need to set _animateSelectionChange to false because we
+			//always call the selectedIndex setter below, which sets it;
 			if(!this._dataProvider)
 			{
 				this.selectedIndex = -1;
@@ -1520,6 +1650,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _animateSelectionChange:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			//clearing selection now so that the data provider setter won't
@@ -1527,6 +1662,50 @@ package feathers.controls
 			this._selectedIndex = -1;
 			this.dataProvider = null;
 			super.dispose();
+		}
+
+		/**
+		 * Changes the <code>selectedIndex</code> property, but animates the
+		 * <code>selectionSkin</code> to the new position, as if the user
+		 * triggered a tab.
+		 *
+		 * @see #selectedIndex
+		 */
+		public function setSelectedIndexWithAnimation(selectedIndex:int):void
+		{
+			if(this._selectedIndex == selectedIndex)
+			{
+				return;
+			}
+			this._selectedIndex = selectedIndex;
+			//set this flag before dispatching the event because the TabBar
+			//might be forced to validate in an event listener
+			this._animateSelectionChange = true;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * Changes the <code>selectedItem</code> property, but animates the
+		 * <code>selectionSkin</code> to the new position, as if the user
+		 * triggered a tab.
+		 *
+		 * @see #selectedItem
+		 * @see #selectedIndex
+		 * @see #setSelectedIndexWithAnimation()
+		 */
+		public function setSelectedItemWithAnimation(selectedItem:Object):void
+		{
+			if(this.selectedItem == selectedItem)
+			{
+				return;
+			}
+			var selectedIndex:int = -1;
+			if(this._dataProvider !== null)
+			{
+				selectedIndex = this._dataProvider.getItemIndex(selectedItem);
+			}
+			this.setSelectedIndexWithAnimation(selectedIndex);
 		}
 
 		/**
@@ -2002,11 +2181,64 @@ package feathers.controls
 			var contentHeight:Number = this._layoutResult.contentHeight;
 			//minimum dimensions are the same as the measured dimensions
 			this.saveMeasurements(contentWidth, contentHeight, contentWidth, contentHeight);
-			
+
 			//final validation to avoid juggler next frame issues
 			for each(var tab:ToggleButton in this.activeTabs)
 			{
 				tab.validate();
+			}
+			if(this._selectionSkin !== null)
+			{
+				//always on top
+				this.setChildIndex(this._selectionSkin, this.numChildren - 1);
+
+				if(this._selectionChangeTween !== null)
+				{
+					this._selectionChangeTween.advanceTime(this._selectionChangeTween.totalTime);
+				}
+				if(this._selectedIndex >= 0)
+				{
+					this._selectionSkin.visible = true;
+					tab = this.activeTabs[this._selectedIndex];
+					if(this._animateSelectionChange)
+					{
+						this._selectionChangeTween = new Tween(this._selectionSkin, this._selectionChangeDuration, this._selectionChangeEase);
+						if(this._direction === Direction.VERTICAL)
+						{
+							this._selectionChangeTween.animate("y", tab.y);
+							this._selectionChangeTween.animate("height", tab.height);
+						}
+						else //horizontal
+						{
+							this._selectionChangeTween.animate("x", tab.x);
+							this._selectionChangeTween.animate("width", tab.width);
+						}
+						this._selectionChangeTween.onComplete = selectionChangeTween_onComplete;
+						Starling.juggler.add(this._selectionChangeTween);
+					}
+					else
+					{
+						if(this._direction === DIRECTION_VERTICAL)
+						{
+							this._selectionSkin.y = tab.y;
+							this._selectionSkin.height = tab.height;
+						}
+						else //horizontal
+						{
+							this._selectionSkin.x = tab.x;
+							this._selectionSkin.width = tab.width;
+						}
+					}
+				}
+				else
+				{
+					this._selectionSkin.visible = false;
+				}
+				this._animateSelectionChange = false;
+				if(this._selectionSkin is IValidating)
+				{
+					IValidating(this._selectionSkin).validate();
+				}
 			}
 		}
 
@@ -2097,6 +2329,14 @@ package feathers.controls
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function selectionChangeTween_onComplete():void
+		{
+			this._selectionChangeTween = null;
 		}
 
 		/**
@@ -2216,7 +2456,9 @@ package feathers.controls
 			{
 				return;
 			}
-			this.selectedIndex = this.toggleGroup.selectedIndex;
+			//it should only get here if the change happened by the user
+			//triggering a tab.
+			this.setSelectedIndexWithAnimation(this.toggleGroup.selectedIndex);
 		}
 
 		/**
