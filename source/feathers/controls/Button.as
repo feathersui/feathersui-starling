@@ -91,7 +91,7 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-		
+
 		/**
 		 * The default value added to the <code>styleNameList</code> of the label.
 		 *
@@ -1309,7 +1309,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the label's text.
+		 * The font styles used to display the button's text.
 		 *
 		 * <p>In the following example, the font styles are customized:</p>
 		 *
@@ -1319,11 +1319,12 @@ package feathers.controls
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
 		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles.</p>
+		 * <code>labelFactory</code> to set more advanced styles.</p>
 		 *
 		 * @default null
 		 *
 		 * @see #disabledFontStyles
+		 * @see #setFontStylesForState()
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -1339,7 +1340,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The font styles used to display the label's text when the label is
+		 * The font styles used to display the button's text when the button is
 		 * disabled.
 		 *
 		 * <p>In the following example, the disabled font styles are customized:</p>
@@ -1350,7 +1351,7 @@ package feathers.controls
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
 		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles on the
+		 * <code>labelFactory</code> to set more advanced styles on the
 		 * text renderer.</p>
 		 *
 		 * @default null
@@ -2079,6 +2080,13 @@ package feathers.controls
 		}
 
 		/**
+		 * Gets the font styles to be used to display the button's text when the
+		 * button's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 * 
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
 		 * @see #fontStyles
@@ -2093,6 +2101,17 @@ package feathers.controls
 		}
 
 		/**
+		 * Sets the font styles to be used to display the input's text when the
+		 * button's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>fontStyles</code> property will be used instead.</p>
+		 * 
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setFontStylesForState()</code> and properties like
+		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
 		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #fontStyles
@@ -2103,7 +2122,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Gets the icon to be used by the button when its
+		 * Gets the icon to be used by the button when the button's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If a icon is not defined for a specific state, returns
@@ -2117,7 +2136,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Sets the icon to be used by the button when its
+		 * Sets the icon to be used by the button when the button's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If an icon is not defined for a specific state, the value of the

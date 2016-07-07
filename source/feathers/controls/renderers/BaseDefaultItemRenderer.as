@@ -3516,8 +3516,9 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * Gets the accessory to be used by the button when its
-		 * <code>currentState</code> property matches the specified state value.
+		 * Gets the accessory to be used by the item renderer when the item
+		 * renderer's <code>currentState</code> property matches the specified
+		 * state value.
 		 *
 		 * <p>If a accessory is not defined for a specific state, returns
 		 * <code>null</code>.</p>
@@ -3530,8 +3531,9 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * Sets the accessory to be used by the item renderer when its
-		 * <code>currentState</code> property matches the specified state value.
+		 * Sets the accessory to be used by the item renderer when the item
+		 * renderer's <code>currentState</code> property matches the specified
+		 * state value.
 		 *
 		 * <p>If an accessory is not defined for a specific state, the value of
 		 * the <code>defaultAccessory</code> property will be used instead.</p>

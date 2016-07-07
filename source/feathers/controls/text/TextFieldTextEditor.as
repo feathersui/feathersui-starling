@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
+	import feathers.core.BaseTextEditor;
 	import feathers.core.FeathersControl;
 	import feathers.core.FocusManager;
 	import feathers.core.INativeFocusOwner;
@@ -215,7 +216,7 @@ package feathers.controls.text
 	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
-	public class TextFieldTextEditor extends FeathersControl implements ITextEditor, INativeFocusOwner, IStateObserver
+	public class TextFieldTextEditor extends BaseTextEditor implements ITextEditor, INativeFocusOwner
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextFieldTextEditor</code>
@@ -309,45 +310,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _needsNewTexture:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _text:String = "";
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.text = "Lorem ipsum";</listing>
-		 *
-		 * @default ""
-		 */
-		public function get text():String
-		{
-			return this._text;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
-		{
-			if(!value)
-			{
-				//don't allow null or undefined
-				value = "";
-			}
-			if(this._text == value)
-			{
-				return;
-			}
-			this._text = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.dispatchEventWith(Event.CHANGE);
-		}
 
 		/**
 		 * @inheritDoc
@@ -1206,48 +1168,6 @@ package feathers.controls.text
 				return this.textField.selectionEndIndex;
 			}
 			return 0;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateContext:IStateContext;
-
-		/**
-		 * When the text renderer observes a state context, the text renderer
-		 * may change its <code>TextFormat</code> based on the current state of
-		 * that context. Typically, a relevant component will automatically
-		 * assign itself as the state context of a text renderer, so this
-		 * property is typically meant for internal use only.
-		 *
-		 * @default null
-		 *
-		 * @see #setTextFormatForState()
-		 */
-		public function get stateContext():IStateContext
-		{
-			return this._stateContext;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateContext(value:IStateContext):void
-		{
-			if(this._stateContext === value)
-			{
-				return;
-			}
-			if(this._stateContext)
-			{
-				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this._stateContext = value;
-			if(this._stateContext)
-			{
-				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -2388,14 +2308,6 @@ package feathers.controls.text
 		protected function textField_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
 		{
 			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_DEACTIVATE, true);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stateContext_stateChangeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }

@@ -1805,7 +1805,7 @@ package feathers.controls.text
 		 */
 		protected function refreshElementFormat():void
 		{
-			if(!this._textElement)
+			if(this._textElement === null)
 			{
 				return;
 			}
@@ -1850,7 +1850,11 @@ package feathers.controls.text
 			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
 				this.isInvalid(INVALIDATION_FLAG_STATE))
 			{
-				var textFormat:TextFormat = this._fontStyles.getTextFormatForTextRenderer(this);
+				var textFormat:TextFormat;
+				if(this._fontStyles !== null)
+				{
+					textFormat = this._fontStyles.getTextFormatForTarget(this);
+				}
 				if(textFormat !== null)
 				{
 					var fontWeight:String = FontWeight.NORMAL;
@@ -1872,7 +1876,7 @@ package feathers.controls.text
 						new FontDescription(textFormat.font, fontWeight, fontPosture, fontLookup);
 					this._fontStylesElementFormat = new ElementFormat(fontDescription, textFormat.size, textFormat.color);
 				}
-				else
+				else if(this._fontStylesElementFormat === null)
 				{
 					this._fontStylesElementFormat = new ElementFormat();
 				}
@@ -2307,9 +2311,9 @@ package feathers.controls.text
 		protected function getHorizontalAlignment():String
 		{
 			var horizontalAlign:String = this._textAlign;
-			if(horizontalAlign === null)
+			if(horizontalAlign === null && this._fontStyles !== null)
 			{
-				var format:TextFormat = this._fontStyles.getTextFormatForTextRenderer(this);
+				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
 				if(format !== null)
 				{
 					horizontalAlign = format.horizontalAlign

@@ -7,7 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
+	import feathers.core.BaseTextEditor;
 	import feathers.core.FocusManager;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.core.INativeFocusOwner;
@@ -43,6 +43,7 @@ package feathers.controls.text
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
@@ -213,7 +214,7 @@ package feathers.controls.text
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
 	 */
-	public class StageTextTextEditor extends FeathersControl implements IMultilineTextEditor, INativeFocusOwner
+	public class StageTextTextEditor extends BaseTextEditor implements IMultilineTextEditor, INativeFocusOwner
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>StageTextTextEditor</code>
@@ -278,45 +279,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _ignoreStageTextChanges:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _text:String = "";
-
-		/**
-		 * The text displayed by the input.
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textEditor.text = "Lorem ipsum";</listing>
-		 *
-		 * @default ""
-		 */
-		public function get text():String
-		{
-			return this._text;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
-		{
-			if(!value)
-			{
-				//don't allow null or undefined
-				value = "";
-			}
-			if(this._text == value)
-			{
-				return;
-			}
-			this._text = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.dispatchEventWith(starling.events.Event.CHANGE);
-		}
 
 		/**
 		 * @private
@@ -478,7 +440,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _color:uint = 0x000000;
+		protected var _color:uint = uint.MAX_VALUE;
 
 		/**
 		 * Specifies text color as a number containing three 8-bit RGB
@@ -515,7 +477,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _disabledColor:uint = 0x999999;
+		protected var _disabledColor:uint = uint.MAX_VALUE;
 
 		/**
 		 * Specifies text color when the component is disabled as a number
@@ -692,7 +654,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _fontPosture:String = FontPosture.NORMAL;
+		protected var _fontPosture:String;
 
 		/**
 		 * Specifies the font posture, using constants defined in the
@@ -729,7 +691,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _fontSize:int = 12;
+		protected var _fontSize:int = 0;
 
 		/**
 		 * The size in pixels for the current font family.
@@ -764,7 +726,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _fontWeight:String = FontWeight.NORMAL;
+		protected var _fontWeight:String = null;
 
 		/**
 		 * Specifies the font weight, using constants defined in the
@@ -1362,7 +1324,7 @@ package feathers.controls.text
 				this._measureTextField.multiline = false;
 				this._measureTextField.wordWrap = false;
 				this._measureTextField.embedFonts = false;
-				this._measureTextField.defaultTextFormat = new TextFormat(null, 11, 0x000000, false, false, false);
+				this._measureTextField.defaultTextFormat = new flash.text.TextFormat(null, 11, 0x000000, false, false, false);
 				starling.nativeStage.addChild(this._measureTextField);
 			}
 
@@ -1580,26 +1542,71 @@ package feathers.controls.text
 			this._measureTextField.displayAsPassword = this._displayAsPassword;
 			this._measureTextField.maxChars = this._maxChars;
 			this._measureTextField.restrict = this._restrict;
-			this._measureTextField.multiline = this._measureTextField.wordWrap = this._multiline;
+			this._measureTextField.multiline = this._multiline;
+			this._measureTextField.wordWrap = this._multiline;
+			var measureFormat:flash.text.TextFormat = this._measureTextField.defaultTextFormat;
+			var fontStylesFormat:starling.text.TextFormat;
+			if(this._fontStyles !== null)
+			{
+				fontStylesFormat = this._fontStyles.getTextFormatForTarget(this);
+			}
 
-			var format:TextFormat = this._measureTextField.defaultTextFormat;
-			format.color = this._color;
-			format.font = this._fontFamily;
-			format.italic = this._fontPosture == FontPosture.ITALIC;
-			format.size = this._fontSize;
-			format.bold = this._fontWeight == FontWeight.BOLD;
-			var alignValue:String = this._textAlign;
-			if(alignValue == TextFormatAlign.START)
+			if(this._fontFamily !== null)
 			{
-				alignValue = TextFormatAlign.LEFT;
+				measureFormat.font = this._fontFamily;
 			}
-			else if(alignValue == TextFormatAlign.END)
+			else if(fontStylesFormat !== null)
 			{
-				alignValue = TextFormatAlign.RIGHT;
+				measureFormat.font = fontStylesFormat.font;
 			}
-			format.align = alignValue;
-			this._measureTextField.defaultTextFormat = format;
-			this._measureTextField.setTextFormat(format);
+			else
+			{
+				measureFormat.font = null;
+			}
+
+			if(this._fontSize > 0)
+			{
+				measureFormat.size = this._fontSize;
+			}
+			else if(fontStylesFormat !== null)
+			{
+				measureFormat.size = fontStylesFormat.size;
+			}
+			else
+			{
+				measureFormat.size = 12;
+			}
+
+			if(this._fontWeight !== null)
+			{
+				measureFormat.bold = this._fontWeight === FontWeight.BOLD;
+			}
+			else if(fontStylesFormat !== null)
+			{
+				measureFormat.bold = fontStylesFormat.bold;
+			}
+			else
+			{
+				measureFormat.bold = false;
+			}
+
+			if(this._fontPosture !== null)
+			{
+				measureFormat.italic = this._fontPosture === FontPosture.ITALIC;
+			}
+			else if(fontStylesFormat !== null)
+			{
+				measureFormat.italic = fontStylesFormat.italic;
+			}
+			else
+			{
+				measureFormat.italic = false;
+			}
+			//color and alignment are ignored because they don't affect
+			//measurement
+
+			this._measureTextField.defaultTextFormat = measureFormat;
+			this._measureTextField.setTextFormat(measureFormat);
 			if(this._text.length == 0)
 			{
 				this._measureTextField.text = " ";
@@ -1624,26 +1631,107 @@ package feathers.controls.text
 				this.createStageText();
 			}
 
+			var textFormat:starling.text.TextFormat;
+			if(this._fontStyles !== null)
+			{
+				textFormat = this._fontStyles.getTextFormatForTarget(this);
+			}
 			this.stageText.autoCapitalize = this._autoCapitalize;
 			this.stageText.autoCorrect = this._autoCorrect;
 			if(this._isEnabled)
 			{
-				this.stageText.color = this._color;
+				if(this._color === uint.MAX_VALUE)
+				{
+					if(textFormat !== null)
+					{
+						this.stageText.color = textFormat.color;
+					}
+					else
+					{
+						this.stageText.color = 0x000000;
+					}
+				}
+				else
+				{
+					this.stageText.color = this._color;
+				}
 			}
-			else
+			else //disabled
 			{
-				this.stageText.color = this._disabledColor;
+				if(this._disabledColor === uint.MAX_VALUE)
+				{
+					if(this._color === uint.MAX_VALUE)
+					{
+						if(textFormat !== null)
+						{
+							this.stageText.color = textFormat.color;
+						}
+						else
+						{
+							this.stageText.color = 0x000000;
+						}
+					}
+					else
+					{
+						this.stageText.color = this._color;
+					}
+				}
+				else
+				{
+					this.stageText.color = this._disabledColor;
+				}
 			}
 			this.stageText.displayAsPassword = this._displayAsPassword;
-			this.stageText.fontFamily = this._fontFamily;
-			this.stageText.fontPosture = this._fontPosture;
-			this.stageText.fontWeight = this._fontWeight;
+			var fontFamily:String = this._fontFamily;
+			if(fontFamily === null && textFormat !== null)
+			{
+				fontFamily = textFormat.font;
+			} //default to null
+			this.stageText.fontFamily = fontFamily;
+			var fontPosture:String = this._fontPosture;
+			if(fontPosture === null)
+			{
+				if(textFormat !== null && textFormat.italic)
+				{
+					fontPosture = FontPosture.ITALIC;
+				}
+				else
+				{
+					fontPosture = FontPosture.NORMAL;
+				}
+			}
+			this.stageText.fontPosture = fontPosture;
+			var fontWeight:String = this._fontWeight;
+			if(fontWeight === null)
+			{
+				if(textFormat !== null && textFormat.bold)
+				{
+					fontWeight = FontWeight.BOLD;
+				}
+				else
+				{
+					fontWeight = FontWeight.NORMAL;
+				}
+			}
+			this.stageText.fontWeight = fontWeight;
 			this.stageText.locale = this._locale;
 			this.stageText.maxChars = this._maxChars;
 			this.stageText.restrict = this._restrict;
 			this.stageText.returnKeyLabel = this._returnKeyLabel;
 			this.stageText.softKeyboardType = this._softKeyboardType;
-			this.stageText.textAlign = this._textAlign;
+			var textAlign:String = this._fontWeight;
+			if(textAlign === null)
+			{
+				if(textFormat !== null && textFormat.horizontalAlign)
+				{
+					textAlign = textFormat.horizontalAlign;
+				}
+				else
+				{
+					textAlign = TextFormatAlign.START;
+				}
+			}
+			this.stageText.textAlign = textAlign;
 		}
 
 		/**
@@ -1887,9 +1975,22 @@ package feathers.controls.text
 			stageTextViewPort.height = viewPortHeight;
 			this.stageText.viewPort = stageTextViewPort;
 
+			var fontSize:int = 12;
+			if(this._fontSize > 0)
+			{
+				fontSize = this._fontSize;
+			}
+			else if(this._fontStyles !== null)
+			{
+				var textFormat:starling.text.TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(textFormat !== null)
+				{
+					fontSize = textFormat.size;
+				}
+			}
 			//StageText's fontSize property is an int, so we need to
 			//specifically avoid using Number here.
-			var newFontSize:int = this._fontSize * scaleFactor * smallerGlobalScale;
+			var newFontSize:int = fontSize * scaleFactor * smallerGlobalScale;
 			if(this.stageText.fontSize != newFontSize)
 			{
 				//we need to check if this value has changed because on iOS

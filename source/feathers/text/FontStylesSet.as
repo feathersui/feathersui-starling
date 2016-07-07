@@ -9,6 +9,8 @@ package feathers.text
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IStateContext;
+	import feathers.core.IStateContext;
+	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 
@@ -47,8 +49,8 @@ package feathers.text
 	 * <p>A custom component that uses one or more text renderers is expected to
 	 * provide user-facing APIs to set its font styles using
 	 * separate <code>TextFormat</code> instances. The combined set of these
-	 * format should be stored in a <code>FontStylesSet</code> and passed into
-	 * the text renderer before validation.</code>
+	 * formats should be stored in a <code>FontStylesSet</code> that can be
+	 * passed into the text renderer.</code>
 	 * 
 	 * @see feathers.core.ITextRenderer
 	 */
@@ -59,6 +61,7 @@ package feathers.text
 		 */
 		public function FontStylesSet()
 		{
+			super();
 		}
 
 		/**
@@ -222,10 +225,14 @@ package feathers.text
 		 * <code>stateContext</code>, the state of the <code>stateContext</code>
 		 * takes precedent.
 		 */
-		public function getTextFormatForTextRenderer(target:ITextRenderer):TextFormat
+		public function getTextFormatForTarget(target:IFeathersControl):TextFormat
 		{
 			var textFormat:TextFormat;
-			var stateContext:IStateContext = target.stateContext;
+			var stateContext:IStateContext;
+			if(target is IStateObserver)
+			{
+				stateContext = IStateObserver(target).stateContext;
+			}
 			if(stateContext !== null)
 			{
 				//first, look for a format defined for a specific state

@@ -24,6 +24,7 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
@@ -35,6 +36,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextFormat;
 	import starling.utils.Pool;
 
 	/**
@@ -371,6 +373,16 @@ package feathers.controls
 		public function TextInput()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
+			if(this._promptFontStylesSet === null)
+			{
+				this._promptFontStylesSet = new FontStylesSet();
+				this._promptFontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);
 		}
@@ -877,6 +889,75 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the input's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text editor being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textEditorFactory</code> to set more advanced styles on the
+		 * text editor.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #disabledFontStyles
+		 * @see #setFontStylesForState()
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the input's text when the input is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text editor being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textEditorFactory</code> to set more advanced styles on the
+		 * text editor.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -967,6 +1048,75 @@ package feathers.controls
 			}
 			this._customTextEditorStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _promptFontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the input's prompt text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.promptFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>promptFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #promptDisabledFontStyles
+		 * @see #setPromptFontStylesForState()
+		 */
+		public function get promptFontStyles():TextFormat
+		{
+			return this._promptFontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptFontStyles(value:TextFormat):void
+		{
+			this._promptFontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the input's prompt when the input is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.promptDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>promptFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #promptFontStyles
+		 */
+		public function get promptDisabledFontStyles():TextFormat
+		{
+			return this._promptFontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptDisabledFontStyles(value:TextFormat):void
+		{
+			this._promptFontStylesSet.disabledFormat = value;
 		}
 
 		/**
@@ -2080,7 +2230,91 @@ package feathers.controls
 		}
 
 		/**
-		 * Gets the skin to be used by the text input when its
+		 * Gets the font styles to be used to display the input's text when the
+		 * input's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 * 
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setFontStylesForState()
+		 * @see #fontStyles
+		 */
+		public function getFontStylesForState(state:String):TextFormat
+		{
+			if(this._fontStylesSet === null)
+			{
+				return null;
+			}
+			return this._fontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the input's text when the
+		 * input's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>fontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text editor has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setFontStylesForState()</code> and properties like
+		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function setFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._fontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
+		 * Gets the font styles to be used to display the input's prompt when
+		 * the input's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If prompt font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setPromptFontStylesForState()
+		 * @see #promptFontStyles
+		 */
+		public function getPromptFontStylesForState(state:String):TextFormat
+		{
+			if(this._promptFontStylesSet === null)
+			{
+				return null;
+			}
+			return this._promptFontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the input's prompt when
+		 * the input's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If prompt font styles are not defined for a specific state, the
+		 * value of the <code>promptFontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setPromptFontStylesForState()</code> and properties like
+		 * <code>promptFontStyles</code> and <code>promptDisabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #promptFontStyles
+		 */
+		public function setPromptFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._promptFontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
+		 * Gets the skin to be used by the text input when the input's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If a skin is not defined for a specific state, returns
@@ -2095,7 +2329,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Sets the skin to be used by the text input when its
+		 * Sets the skin to be used by the text input when the input's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If a skin is not defined for a specific state, the value of the
@@ -2119,7 +2353,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Gets the icon to be used by the text input when its
+		 * Gets the icon to be used by the text input when the input's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If a icon is not defined for a specific state, returns
@@ -2133,7 +2367,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Sets the icon to be used by the text input when its
+		 * Sets the icon to be used by the text input when the input's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If an icon is not defined for a specific state, the value of the
@@ -2601,6 +2835,7 @@ package feathers.controls
 			this.textEditor.restrict = this._restrict;
 			this.textEditor.isEditable = this._isEditable;
 			this.textEditor.isSelectable = this._isSelectable;
+			this.textEditor.fontStyles = this._fontStylesSet;
 			for(var propertyName:String in this._textEditorProperties)
 			{
 				var propertyValue:Object = this._textEditorProperties[propertyName];
@@ -2618,7 +2853,7 @@ package feathers.controls
 				return;
 			}
 			this.promptTextRenderer.text = this._prompt;
-			var displayPrompt:DisplayObject = DisplayObject(this.promptTextRenderer);
+			this.promptTextRenderer.fontStyles = this._promptFontStylesSet;
 			for(var propertyName:String in this._promptProperties)
 			{
 				var propertyValue:Object = this._promptProperties[propertyName];
@@ -3169,6 +3404,14 @@ package feathers.controls
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }
