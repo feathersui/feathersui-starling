@@ -17,6 +17,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	/**
 	 * Dispatched when the button is selected or deselected either
@@ -650,6 +651,38 @@ package feathers.controls
 		}
 
 		/**
+		 * The font styles used to display the label's text when the label is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #fontStyles
+		 */
+		public function get selectedFontStyles():TextFormat
+		{
+			return this._fontStylesSet.selectedFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.selectedFormat = value;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _defaultSelectedLabelProperties:PropertyProxy;
@@ -1087,12 +1120,12 @@ package feathers.controls
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshSelectionEvents();
 			}
-			
+
 			super.draw();
 		}
 

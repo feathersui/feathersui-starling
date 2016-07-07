@@ -21,6 +21,7 @@ package feathers.controls
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.LongPress;
@@ -33,6 +34,7 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 
 	/**
 	 * Dispatched when the button is pressed for a long time. The property
@@ -413,6 +415,11 @@ package feathers.controls
 		public function Button()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 		}
 
 		/**
@@ -1299,6 +1306,73 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the label's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the label's text when the label is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _labelFactory:Function;
 
 		/**
@@ -2005,6 +2079,30 @@ package feathers.controls
 		}
 
 		/**
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setFontStylesForState()
+		 * @see #fontStyles
+		 */
+		public function getFontStylesForState(state:String):TextFormat
+		{
+			if(this._fontStylesSet === null)
+			{
+				return null;
+			}
+			return this._fontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function setFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._fontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
 		 * Gets the icon to be used by the button when its
 		 * <code>currentState</code> property matches the specified state value.
 		 *
@@ -2543,16 +2641,17 @@ package feathers.controls
 			}
 			return this._defaultIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected function refreshLabelStyles():void
 		{
-			if(!this.labelTextRenderer)
+			if(this.labelTextRenderer === null)
 			{
 				return;
 			}
+			this.labelTextRenderer.fontStyles = this._fontStylesSet;
 			var properties:Object = this.getCurrentLabelProperties();
 			for(var propertyName:String in properties)
 			{
@@ -2927,6 +3026,14 @@ package feathers.controls
 				return;
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }

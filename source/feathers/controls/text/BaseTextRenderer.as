@@ -12,6 +12,7 @@ package feathers.controls.text
 	import feathers.core.IStateObserver;
 	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
+	import feathers.text.FontStylesSet;
 
 	import starling.events.Event;
 	import starling.text.TextFormat;
@@ -126,22 +127,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _fontStylesForState:Object;
-
-		/**
-		 * @private
-		 */
-		protected var _fontStyles:TextFormat;
+		protected var _fontStyles:FontStylesSet;
 
 		/**
 		 * @copy feathers.core.ITextRenderer#fontStyles
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #setFontStylesForState()
-		 * @see #disabledFontStyles
-		 * @see #selectedFontStyles
 		 */
-		public function get fontStyles():TextFormat
+		public function get fontStyles():FontStylesSet
 		{
 			return this._fontStyles;
 		}
@@ -149,7 +140,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set fontStyles(value:TextFormat):void
+		public function set fontStyles(value:FontStylesSet):void
 		{
 			if(this._fontStyles === value)
 			{
@@ -157,129 +148,14 @@ package feathers.controls.text
 			}
 			if(this._fontStyles !== null)
 			{
-				this._fontStyles.removeEventListener(Event.CHANGE, fontStyles_changeHandler);
+				this._fontStyles.removeEventListener(Event.CHANGE, fontStylesSet_changeHandler);
 			}
 			this._fontStyles = value;
 			if(this._fontStyles !== null)
 			{
-				this._fontStyles.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+				this._fontStyles.addEventListener(Event.CHANGE, fontStylesSet_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _disabledFontStyles:TextFormat;
-
-		/**
-		 * @copy feathers.core.ITextRenderer#disabledFontStyles
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
-		 * @see #selectedFontStyles
-		 */
-		public function get disabledFontStyles():TextFormat
-		{
-			return this._disabledFontStyles;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set disabledFontStyles(value:TextFormat):void
-		{
-			if(this._disabledFontStyles === value)
-			{
-				return;
-			}
-			if(this._disabledFontStyles !== null)
-			{
-				this._disabledFontStyles.removeEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this._disabledFontStyles = value;
-			if(this._disabledFontStyles !== null)
-			{
-				this._disabledFontStyles.addEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _selectedFontStyles:TextFormat;
-
-		/**
-		 * @copy feathers.core.ITextRenderer#selectedFontStyles
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
-		 * @see #stateContext
-		 * @see feathers.core.IToggle
-		 */
-		public function get selectedFontStyles():TextFormat
-		{
-			return this._selectedFontStyles;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set selectedFontStyles(value:TextFormat):void
-		{
-			if(this._selectedFontStyles === value)
-			{
-				return;
-			}
-			if(this._selectedFontStyles !== null)
-			{
-				this._selectedFontStyles.removeEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this._selectedFontStyles = value;
-			if(this._selectedFontStyles !== null)
-			{
-				this._selectedFontStyles.addEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @copy feathers.core.ITextRenderer#setFontStylesForState()
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #stateContext
-		 * @see #fontStyles
-		 */
-		public function setFontStylesForState(state:String, fontStyles:TextFormat):void
-		{
-			if(fontStyles !== null)
-			{
-				if(this._fontStylesForState === null)
-				{
-					this._fontStylesForState = {};
-				}
-				this._fontStylesForState[state] = fontStyles;
-				if(fontStyles !== null)
-				{
-					fontStyles.addEventListener(Event.CHANGE, fontStyles_changeHandler);
-				}
-			}
-			else
-			{
-				var oldFontStyles:TextFormat = this._fontStylesForState[state];
-				if(oldFontStyles !== null)
-				{
-					oldFontStyles.removeEventListener(Event.CHANGE, fontStyles_changeHandler);
-				}
-				delete this._fontStylesForState[state];
-			}
-			//if the context's current state is the state that we're modifying,
-			//we need to use the new value immediately.
-			if(this._stateContext !== null && this._stateContext.currentState === state)
-			{
-				this.invalidate(INVALIDATION_FLAG_STATE);
-			}
 		}
 
 		/**
@@ -288,37 +164,8 @@ package feathers.controls.text
 		override public function dispose():void
 		{
 			this.stateContext = null;
+			this.fontStyles = null;
 			super.dispose();
-		}
-
-		/**
-		 * Returns the font styles based on the current state.
-		 */
-		protected function getFontStyles():TextFormat
-		{
-			var fontStyles:TextFormat;
-			if(this._stateContext !== null && this._fontStylesForState !== null)
-			{
-				var currentState:String = this._stateContext.currentState;
-				if(currentState in this._fontStylesForState)
-				{
-					fontStyles = TextFormat(this._fontStylesForState[currentState]);
-				}
-			}
-			if(fontStyles === null && !this._isEnabled && this._disabledFontStyles !== null)
-			{
-				fontStyles = this._disabledFontStyles;
-			}
-			if(fontStyles === null && this._selectedFontStyles !== null &&
-				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
-			{
-				fontStyles = this._selectedFontStyles;
-			}
-			if(fontStyles === null)
-			{
-				fontStyles = this._fontStyles;
-			}
-			return fontStyles;
 		}
 
 		/**
@@ -332,7 +179,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function fontStyles_changeHandler(event:Event):void
+		protected function fontStylesSet_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

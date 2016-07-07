@@ -7,9 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import flash.geom.Point;
+	import feathers.text.FontStylesSet;
 
-	import starling.text.TextFormat;
+	import flash.geom.Point;
 
 	/**
 	 * Interface that handles common capabilities of rendering text.
@@ -55,65 +55,16 @@ package feathers.core
 		function get numLines():int;
 
 		/**
-		 * The font styles used to render the text.
-		 * 
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #setElementFormatForState()
+		 * The font styles used to render the text. May be ignored if more
+		 * advanced styles defined by the text renderer implementation have
+		 * been set.
 		 */
-		function get fontStyles():TextFormat;
+		function get fontStyles():FontStylesSet;
 
 		/**
 		 * @private
 		 */
-		function set fontStyles(value:TextFormat):void;
-
-		/**
-		 * The font styles used to render the text when the text renderer is
-		 * disabled.
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
-		 */
-		function get disabledFontStyles():TextFormat;
-
-		/**
-		 * @private
-		 */
-		function set disabledFontStyles(value:TextFormat):void;
-
-		/**
-		 * The font styles used to render the text when the
-		 * <code>stateContext</code> implements the <code>IToggle</code>
-		 * interface, and it is selected.
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
-		 * @see #stateContext
-		 * @see feathers.core.IToggle
-		 */
-		function get selectedFontStyles():TextFormat;
-
-		/**
-		 * @private
-		 */
-		function set selectedFontStyles(value:TextFormat):void;
-
-		/**
-		 * Sets the font styles to be used by the text renderer when the
-		 * <code>currentState</code> property of the <code>stateContext</code>
-		 * matches the specified state value.
-		 *
-		 * <p>If font styles are not defined for a specific state, the value of
-		 * the <code>fonstStyles</code> property will be used instead.</p>
-		 *
-		 * <p>If the <code>disabledFontStyles</code> property is not
-		 * <code>null</code> and the <code>isEnabled</code> property is
-		 * <code>false</code>, all other font styles will be ignored.</p>
-		 *
-		 * @see #fontStyles
-		 * @see #stateContext
-		 */
-		function setFontStylesForState(state:String, fontStyles:TextFormat):void;
+		function set fontStyles(value:FontStylesSet):void;
 
 		/**
 		 * Measures the text's bounds (without a full validation, if

@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
@@ -115,6 +116,11 @@ package feathers.controls
 		{
 			super();
 			this.isQuickHitAreaEnabled = true;
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 		}
 
 		/**
@@ -322,7 +328,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _fontStyles:TextFormat;
+		protected var _fontStylesSet:FontStylesSet;
 
 		/**
 		 * The font styles used to display the label's text.
@@ -341,36 +347,18 @@ package feathers.controls
 		 *
 		 * @see #disabledFontStyles
 		 */
-		public function get fontStyles():TextFormat
+		public function get fontStylesSet():TextFormat
 		{
-			return this._fontStyles;
+			return this._fontStylesSet.format;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set fontStyles(value:TextFormat):void
+		public function set fontStylesSet(value:TextFormat):void
 		{
-			if(this._fontStyles === value)
-			{
-				return;
-			}
-			if(this._fontStyles !== null)
-			{
-				this._fontStyles.removeEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this._fontStyles = value;
-			if(this._fontStyles !== null)
-			{
-				this._fontStyles.addEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this._fontStylesSet.format = value;
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _disabledFontStyles:TextFormat;
 
 		/**
 		 * The font styles used to display the label's text when the label is
@@ -389,11 +377,11 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #fontStyles
+		 * @see #fontStylesSet
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
-			return this._disabledFontStyles;
+			return this._fontStylesSet.disabledFormat;
 		}
 
 		/**
@@ -401,20 +389,7 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
-			if(this._disabledFontStyles === value)
-			{
-				return;
-			}
-			if(this._disabledFontStyles !== null)
-			{
-				this._disabledFontStyles.removeEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this._disabledFontStyles = value;
-			if(this._disabledFontStyles !== null)
-			{
-				this._disabledFontStyles.addEventListener(Event.CHANGE, fontStyles_changeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this._fontStylesSet.disabledFormat = value;
 		}
 
 		/**
@@ -1124,8 +1099,7 @@ package feathers.controls
 		 */
 		protected function refreshTextRendererStyles():void
 		{
-			this.textRenderer.fontStyles = this._fontStyles;
-			this.textRenderer.disabledFontStyles = this._disabledFontStyles;
+			this.textRenderer.fontStyles = this._fontStylesSet;
 			this.textRenderer.wordWrap = this._wordWrap;
 			for(var propertyName:String in this._textRendererProperties)
 			{

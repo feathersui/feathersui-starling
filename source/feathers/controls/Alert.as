@@ -19,10 +19,12 @@ package feathers.controls
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	[Exclude(name="layout",kind="property")]
 	[Exclude(name="footer",kind="property")]
@@ -234,6 +236,11 @@ package feathers.controls
 			super();
 			this.headerStyleName = DEFAULT_CHILD_STYLE_NAME_HEADER;
 			this.footerStyleName = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this.buttonGroupFactory = defaultButtonGroupFactory;
 		}
 
@@ -400,6 +407,81 @@ package feathers.controls
 			}
 			this._buttonsDataProvider = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the alert's message text.
+		 * 
+		 * <p>These styles will only apply to the alert's message. The header's
+		 * title font styles should be set directly on the header. The button
+		 * font styles should be set directly on the buttons.</p>
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>messageFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the alert's message text when the
+		 * alert is disabled.
+		 *
+		 * <p>These styles will only apply to the alert's message. The header's
+		 * title font styles should be set directly on the header. The button
+		 * font styles should be set directly on the buttons.</p>
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * alert.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>messageFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
 		}
 
 		/**
@@ -710,7 +792,8 @@ package feathers.controls
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES)
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
 
 			if(textRendererInvalid)
@@ -723,14 +806,14 @@ package feathers.controls
 				this.messageTextRenderer.text = this._message;
 			}
 
-			if(textRendererInvalid || stylesInvalid)
+			if(textRendererInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshMessageStyles();
 			}
 
 			super.draw();
 
-			if(this._icon)
+			if(this._icon !== null)
 			{
 				if(this._icon is IValidating)
 				{
@@ -997,6 +1080,7 @@ package feathers.controls
 
 			var factory:Function = this._messageFactory != null ? this._messageFactory : FeathersControl.defaultTextRendererFactory;
 			this.messageTextRenderer = ITextRenderer(factory());
+			this.messageTextRenderer.wordWrap = true;
 			var messageStyleName:String = this._customMessageStyleName != null ? this._customMessageStyleName : this.messageStyleName;
 			var uiTextRenderer:IFeathersControl = IFeathersControl(this.messageTextRenderer);
 			uiTextRenderer.styleNameList.add(messageStyleName);
@@ -1018,6 +1102,7 @@ package feathers.controls
 		 */
 		protected function refreshMessageStyles():void
 		{
+			this.messageTextRenderer.fontStyles = this._fontStylesSet;
 			for(var propertyName:String in this._messageProperties)
 			{
 				var propertyValue:Object = this._messageProperties[propertyName];
@@ -1061,6 +1146,14 @@ package feathers.controls
 		protected function icon_resizeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 	}

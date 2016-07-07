@@ -18,11 +18,14 @@ package feathers.controls.renderers
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	/**
 	 * The default renderer used for headers and footers in a GroupedList
@@ -156,6 +159,11 @@ package feathers.controls.renderers
 		public function DefaultGroupedListHeaderOrFooterRenderer()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 		}
 
 		/**
@@ -804,6 +812,73 @@ package feathers.controls.renderers
 			}
 			this._contentLoaderFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the content label's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>contentLabelFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the content label's text when the
+		 * component is disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>contentLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
 		}
 
 		/**
@@ -1789,10 +1864,11 @@ package feathers.controls.renderers
 		 */
 		protected function refreshContentLabelStyles():void
 		{
-			if(!this.contentLabel)
+			if(this.contentLabel === null)
 			{
 				return;
 			}
+			this.contentLabel.fontStyles = this._fontStylesSet;
 			for(var propertyName:String in this._contentLabelProperties)
 			{
 				var propertyValue:Object = this._contentLabelProperties[propertyName];
@@ -1873,6 +1949,14 @@ package feathers.controls.renderers
 				}
 			}
 
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**

@@ -7,14 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IStateContext;
-	import feathers.core.IStateObserver;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
-	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -47,7 +43,6 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.display.Image;
-	import starling.events.Event;
 	import starling.rendering.Painter;
 	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
@@ -139,23 +134,35 @@ package feathers.controls.text
 		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
 
 		/**
-		 * The text will be positioned to the left edge.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #textAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TEXT_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The text will be centered horizontally.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #textAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TEXT_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The text will be positioned to the right edge.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #textAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TEXT_ALIGN_RIGHT:String = "right";
 
@@ -400,6 +407,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _fontStylesElementFormat:ElementFormat;
+
+		/**
+		 * @private
+		 */
 		protected var _elementFormatForState:Object;
 
 		/**
@@ -410,6 +422,13 @@ package feathers.controls.text
 		/**
 		 * The font and styles used to draw the text. This property will be
 		 * ignored if the content is not a <code>TextElement</code> instance.
+		 * 
+		 * <p>An <code>ElementFormat</code> exposes more advanced font styles
+		 * than <code>starling.text.TextFormat</code>, so if this property is
+		 * not <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component will be ignored.
+		 * In other words, <code>ElementFormat</code> font styles will always
+		 * take precedence.</p>
 		 *
 		 * <p>In the following example, the element format is changed:</p>
 		 *
@@ -451,6 +470,13 @@ package feathers.controls.text
 		 * disabled. This property will be ignored if the content is not a
 		 * <code>TextElement</code> instance.
 		 *
+		 * <p>An <code>ElementFormat</code> exposes more advanced font styles
+		 * than <code>starling.text.TextFormat</code>, so if this property is
+		 * not <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, <code>ElementFormat</code> font styles will always
+		 * take precedence.</p>
+		 *
 		 * <p>In the following example, the disabled element format is changed:</p>
 		 *
 		 * <listing version="3.0">
@@ -491,6 +517,13 @@ package feathers.controls.text
 		 * <code>stateContext</code> implements the <code>IToggle</code>
 		 * interface, and it is selected. This property will be ignored if the
 		 * content is not a <code>TextElement</code> instance.
+		 *
+		 * <p>An <code>ElementFormat</code> exposes more advanced font styles
+		 * than <code>starling.text.TextFormat</code>, so if this property is
+		 * not <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, <code>ElementFormat</code> font styles will always
+		 * take precedence.</p>
 		 *
 		 * <p>In the following example, the selected element format is changed:</p>
 		 *
@@ -559,22 +592,28 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textAlign:String = TEXT_ALIGN_LEFT;
+		protected var _textAlign:String = null;
 
 		/**
 		 * The alignment of the text. For justified text, see the
 		 * <code>textJustifier</code> property.
+		 * 
+		 * <p>If <code>textAlign</code> is <code>null</code> the horizontal
+		 * alignment from the <code>starling.text.TextFormat</code> font styles
+		 * may be used. If no <code>starling.text.TextFormat</code> font styles
+		 * have been provided by the parent component, the alignment will
+		 * default to <code>HorizontalAlign.LEFT</code>.</p>
 		 *
-		 * <p>In the following example, the leading is changed to 20 pixels:</p>
+		 * <p>In the following example, the text alignment is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.textAlign = TextBlockTextRenderer.TEXT_ALIGN_CENTER;</listing>
+		 * textRenderer.textAlign = HorizontalAlign.CENTER;</listing>
 		 *
-		 * @default TextBlockTextRenderer.TEXT_ALIGN_LEFT
+		 * @default null
 		 *
-		 * @see #TEXT_ALIGN_LEFT
-		 * @see #TEXT_ALIGN_CENTER
-		 * @see #TEXT_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 * @see #textJustifier
 		 */
 		public function get textAlign():String
@@ -1790,42 +1829,55 @@ package feathers.controls.text
 			}
 			if(elementFormat === null)
 			{
-				var fontStyles:TextFormat = this.getFontStyles();
-				if(fontStyles !== null)
-				{
-					var fontWeight:String = FontWeight.NORMAL;
-					if(fontStyles.bold)
-					{
-						fontWeight = FontWeight.BOLD;
-					}
-					var fontPosture:String = FontPosture.NORMAL;
-					if(fontStyles.italic)
-					{
-						fontPosture = FontPosture.ITALIC;
-					}
-					var fontLookup:String = FontLookup.DEVICE;
-					if(this.isFontEmbedded(fontStyles))
-					{
-						fontLookup = FontLookup.EMBEDDED_CFF;
-					}
-					var fontDescription:FontDescription =
-						new FontDescription(fontStyles.font, fontWeight, fontPosture, fontLookup);
-					elementFormat = new ElementFormat(fontDescription, fontStyles.size, fontStyles.color);
-				}
+				elementFormat = this._elementFormat;
 			}
 			if(elementFormat === null)
 			{
-				if(this._elementFormat === null)
-				{
-					this._elementFormat = new ElementFormat();
-				}
-				elementFormat = this._elementFormat;
+				elementFormat = this.getElementFormatFromFontStyles();
 			}
 			if(this._textElement.elementFormat !== elementFormat)
 			{
 				this._textBlockChanged = true;
 				this._textElement.elementFormat = elementFormat;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getElementFormatFromFontStyles():ElementFormat
+		{
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
+				this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				var textFormat:TextFormat = this._fontStyles.getTextFormatForTextRenderer(this);
+				if(textFormat !== null)
+				{
+					var fontWeight:String = FontWeight.NORMAL;
+					if(textFormat.bold)
+					{
+						fontWeight = FontWeight.BOLD;
+					}
+					var fontPosture:String = FontPosture.NORMAL;
+					if(textFormat.italic)
+					{
+						fontPosture = FontPosture.ITALIC;
+					}
+					var fontLookup:String = FontLookup.DEVICE;
+					if(this.isFontEmbedded(textFormat))
+					{
+						fontLookup = FontLookup.EMBEDDED_CFF;
+					}
+					var fontDescription:FontDescription =
+						new FontDescription(textFormat.font, fontWeight, fontPosture, fontLookup);
+					this._fontStylesElementFormat = new ElementFormat(fontDescription, textFormat.size, textFormat.color);
+				}
+				else
+				{
+					this._fontStylesElementFormat = new ElementFormat();
+				}
+			}
+			return this._fontStylesElementFormat;
 		}
 
 		/**
@@ -2212,7 +2264,7 @@ package feathers.controls.text
 					{
 						yPosition += this._leading;
 					}
-					
+
 					yPosition += this.calculateLineAscent(line);
 					line.y = yPosition;
 					yPosition += line.totalDescent;
@@ -2226,7 +2278,7 @@ package feathers.controls.text
 			{
 				//no need to align the measurement text lines because they won't
 				//be rendered
-				this.alignTextLines(textLines, width, this._textAlign);
+				this.alignTextLines(textLines, width, this.getHorizontalAlignment());
 			}
 
 			inactiveTextLineCount = HELPER_TEXT_LINES.length;
@@ -2252,17 +2304,38 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function getHorizontalAlignment():String
+		{
+			var horizontalAlign:String = this._textAlign;
+			if(horizontalAlign === null)
+			{
+				var format:TextFormat = this._fontStyles.getTextFormatForTextRenderer(this);
+				if(format !== null)
+				{
+					horizontalAlign = format.horizontalAlign
+				}
+			}
+			if(horizontalAlign === null)
+			{
+				horizontalAlign = HorizontalAlign.LEFT;
+			}
+			return horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function alignTextLines(textLines:Vector.<TextLine>, width:Number, textAlign:String):void
 		{
 			var lineCount:int = textLines.length;
 			for(var i:int = 0; i < lineCount; i++)
 			{
 				var line:TextLine = textLines[i];
-				if(textAlign == TEXT_ALIGN_CENTER)
+				if(textAlign == HorizontalAlign.CENTER)
 				{
 					line.x = (width - line.width) / 2;
 				}
-				else if(textAlign == TEXT_ALIGN_RIGHT)
+				else if(textAlign == HorizontalAlign.RIGHT)
 				{
 					line.x = width - line.width;
 				}
