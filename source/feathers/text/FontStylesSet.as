@@ -50,9 +50,10 @@ package feathers.text
 	 * provide user-facing APIs to set its font styles using
 	 * separate <code>TextFormat</code> instances. The combined set of these
 	 * formats should be stored in a <code>FontStylesSet</code> that can be
-	 * passed into the text renderer.</code>
+	 * passed into the text renderer.</p>
 	 * 
 	 * @see feathers.core.ITextRenderer
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 	 */
 	public class FontStylesSet extends EventDispatcher
 	{
@@ -78,6 +79,8 @@ package feathers.text
 
 		/**
 		 * The default font format used to display the text.
+		 * 
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function get format():TextFormat
 		{
@@ -114,6 +117,8 @@ package feathers.text
 		 * The font styles used to display the text when the component is
 		 * disabled. If <code>null</code>, the value of the <code>format</code>
 		 * property will typically be used.
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function get disabledFormat():TextFormat
 		{
@@ -150,6 +155,8 @@ package feathers.text
 		 * The font styles used to display the text when the component is
 		 * selected. If <code>null</code>, the value of the <code>format</code>
 		 * property will typically be used.
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function get selectedFormat():TextFormat
 		{
@@ -181,6 +188,8 @@ package feathers.text
 		 * Returns the <code>TextFormat</code> for a specific state, or
 		 * <code>null</code> if the <code>TextFormat</code> has not been set
 		 * for that state.
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function getFormatForState(state:String):TextFormat
 		{
@@ -193,6 +202,10 @@ package feathers.text
 
 		/**
 		 * Sets the <code>TextFormat</code> for a specific state.
+		 * 
+		 * <p>Pass in <code>null</code> to clear the format for the state.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function setFormatForState(state:String, format:TextFormat):void
 		{
@@ -224,6 +237,8 @@ package feathers.text
 		 * state of the text renderer passed in. If the text renderer has a
 		 * <code>stateContext</code>, the state of the <code>stateContext</code>
 		 * takes precedent.
+		 * 
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function getTextFormatForTarget(target:IFeathersControl):TextFormat
 		{

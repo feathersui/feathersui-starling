@@ -2881,7 +2881,9 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #iconLabelDisabledFontStyles
+		 * @see #iconLabelSelectedFontStyles
 		 * @see #setIconLabelFontStylesForState()
 		 */
 		public function get iconLabelFontStyles():TextFormat
@@ -2915,6 +2917,7 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #iconLabelFontStyles
 		 */
 		public function get iconLabelDisabledFontStyles():TextFormat
@@ -2948,6 +2951,7 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #iconLabelFontStyles
 		 */
 		public function get iconLabelSelectedFontStyles():TextFormat
@@ -3168,7 +3172,9 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #accessoryLabelDisabledFontStyles
+		 * @see #accessoryLabelSelectedFontStyles
 		 * @see #setAccessoryLabelFontStylesForState()
 		 */
 		public function get accessoryLabelFontStyles():TextFormat
@@ -3202,6 +3208,7 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #accessoryLabelFontStyles
 		 */
 		public function get accessoryLabelDisabledFontStyles():TextFormat
@@ -3235,6 +3242,7 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #accessoryLabelFontStyles
 		 */
 		public function get accessoryLabelSelectedFontStyles():TextFormat

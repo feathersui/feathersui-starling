@@ -256,6 +256,8 @@ package feathers.core
 		 * <p>Warning: The <code>fontStyles</code> property may be ignored if
 		 * more advanced styles defined by the text renderer implementation have
 		 * been set.</p>
+		 * 
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		function get fontStyles():FontStylesSet;
 

@@ -967,6 +967,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #onLabelDisabledFontStyles
 		 * @see #onLabelSelectedFontStyles
 		 * @see #setOnLabelFontStylesForState();
@@ -1002,6 +1003,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #onLabelFontStyles
 		 */
 		public function get onLabelDisabledFontStyles():TextFormat
@@ -1035,6 +1037,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #onLabelFontStyles
 		 */
 		public function get onLabelSelectedFontStyles():TextFormat
@@ -1171,6 +1174,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #offLabelDisabledFontStyles
 		 * @see #offLabelSelectedFontStyles
 		 * @see #setOffLabelFontStylesForState();
@@ -1206,6 +1210,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #offLabelFontStyles
 		 */
 		public function get offLabelDisabledFontStyles():TextFormat
@@ -1239,6 +1244,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #offLabelFontStyles
 		 */
 		public function get offLabelSelectedFontStyles():TextFormat

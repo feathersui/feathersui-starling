@@ -345,6 +345,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #disabledFontStyles
 		 */
 		public function get fontStyles():TextFormat
@@ -377,6 +378,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #fontStyles
 		 */
 		public function get disabledFontStyles():TextFormat
