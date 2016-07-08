@@ -94,19 +94,11 @@ package feathers.themes
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
-	import flash.text.engine.CFFHinting;
-	import flash.text.engine.ElementFormat;
-	import flash.text.engine.FontDescription;
-	import flash.text.engine.FontLookup;
-	import flash.text.engine.FontPosture;
-	import flash.text.engine.FontWeight;
-	import flash.text.engine.RenderingMode;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -131,11 +123,16 @@ package feathers.themes
 		 */
 		public static const FONT_NAME:String = "SourceSansPro";
 
+		/**
+		 * The stack of fonts to use for controls that don't use embedded fonts.
+		 */
+		public static const FONT_NAME_STACK:String = "Source Sans Pro,Helvetica,_sans";
+
 		protected static const PRIMARY_BACKGROUND_COLOR:uint = 0x4a4137;
 		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
 		protected static const DARK_TEXT_COLOR:uint = 0x1a1816;
 		protected static const SELECTED_TEXT_COLOR:uint = 0xff9900;
-		protected static const DISABLED_TEXT_COLOR:uint = 0x8a8a8a;
+		protected static const LIGHT_DISABLED_TEXT_COLOR:uint = 0x8a8a8a;
 		protected static const DARK_DISABLED_TEXT_COLOR:uint = 0x383430;
 		protected static const LIST_BACKGROUND_COLOR:uint = 0x383430;
 		protected static const GROUPED_LIST_HEADER_BACKGROUND_COLOR:uint = 0x2e2a26;
@@ -164,75 +161,12 @@ package feathers.themes
 
 		protected static const HEADER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 128, 64);
 		protected static const TAB_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 0, 22, 44);
-		
-		/**
-		 * @private
-		 * The theme's custom style name for a "quiet" button's label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_QUIET_BUTTON_LABEL:String = "metal-works-mobile-quiet-button-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for a ButtonGroup button's label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_BUTTON_GROUP_BUTTON_LABEL:String = "metal-works-mobile-button-group-button-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for a tab's label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_TAB_LABEL:String = "metal-works-mobile-tab-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for a GroupedList footer's label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL:String = "metal-works-mobile-grouped-list-footer-content-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the label text renderer of an item
-		 * renderer with the "check" style.
-		 */
-		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL:String = "metal-works-mobile-check-item-renderer-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the icon label text renderer of an
-		 * item renderer with the "check" style.
-		 */
-		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL:String = "metal-works-mobile-check-item-renderer-icon-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the accessory label text renderer
-		 * of an item renderer with the "check" style.
-		 */
-		protected static const THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL:String = "metal-works-mobile-check-item-renderer-accessory-label";
 
 		/**
 		 * @private
 		 * The theme's custom style name for item renderers in a SpinnerList.
 		 */
 		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-spinner-list-item-renderer";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the SpinnerList's item renderer's label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL:String = "metal-works-mobile-spinner-list-item-renderer-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the SpinnerList's item renderer's icon label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL:String = "metal-works-mobile-spinner-list-item-renderer-icon-label";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the SpinnerList's item renderer's accessory label text renderer.
-		 */
-		protected static const THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL:String = "metal-works-mobile-spinner-list-item-renderer-accessory-label";
 
 		/**
 		 * @private
@@ -275,30 +209,12 @@ package feathers.themes
 		 * The theme's custom style name for the maximum track of a vertical slider.
 		 */
 		protected static const THEME_STYLE_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK:String = "metal-works-mobile-vertical-slider-maximum-track";
-		
-		/**
-		 * @private
-		 * The theme's custom style name for the text editor of the NumericStepper's TextInput.
-		 */
-		protected static const THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR:String = "metal-works-mobile-numeric-stepper-text-input-editor";
 
 		/**
 		 * @private
 		 * The theme's custom style name for the item renderer of the DateTimeSpinner's SpinnerLists.
 		 */
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-date-time-spinner-list-item-renderer";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the text renderer of a heading Label.
-		 */
-		protected static const THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER:String = "metal-works-mobile-heading-label-text-renderer";
-
-		/**
-		 * @private
-		 * The theme's custom style name for the text renderer of a detail Label.
-		 */
-		protected static const THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER:String = "metal-works-mobile-detail-label-text-renderer";
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -440,124 +356,139 @@ package feathers.themes
 		protected var scrollBarGutterSize:int;
 
 		/**
-		 * The FTE FontDescription used for text of a normal weight.
+		 * The font styles for standard-sized, light text.
 		 */
-		protected var regularFontDescription:FontDescription;
+		protected var lightFontStyles:TextFormat;
 
 		/**
-		 * The FTE FontDescription used for text of a bold weight.
+		 * The font styles for standard-sized, dark text.
 		 */
-		protected var boldFontDescription:FontDescription;
+		protected var darkFontStyles:TextFormat;
+
+		/**
+		 * The font styles for standard-sized, selected text.
+		 */
+		protected var selectedFontStyles:TextFormat;
+
+		/**
+		 * The font styles for standard-sized, light, disabled text.
+		 */
+		protected var lightDisabledFontStyles:TextFormat;
+
+		/**
+		 * The font styles for small, light text.
+		 */
+		protected var smallLightFontStyles:TextFormat;
+
+		/**
+		 * The font styles for small, light, disabled text.
+		 */
+		protected var smallLightDisabledFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, light text.
+		 */
+		protected var largeLightFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, dark text.
+		 */
+		protected var largeDarkFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, light, disabled text.
+		 */
+		protected var largeLightDisabledFontStyles:TextFormat;
+
+		/**
+		 * The font styles for light UI text.
+		 */
+		protected var lightUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for dark UI text.
+		 */
+		protected var darkUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for selected UI text.
+		 */
+		protected var selectedUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for light, centered UI text.
+		 */
+		protected var lightCenteredUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for light, centered, disabled UI text.
+		 */
+		protected var lightCenteredDisabledUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for light disabled UI text.
+		 */
+		protected var lightDisabledUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for dark, disabled UI text.
+		 */
+		protected var darkDisabledUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, light UI text.
+		 */
+		protected var largeLightUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, dark UI text.
+		 */
+		protected var largeDarkUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, selected UI text.
+		 */
+		protected var largeSelectedUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, light, disabled UI text.
+		 */
+		protected var largeLightUIDisabledFontStyles:TextFormat;
+
+		/**
+		 * The font styles for large, dark, disabled UI text.
+		 */
+		protected var largeDarkUIDisabledFontStyles:TextFormat;
+
+		/**
+		 * The font styles for extra-large, light UI text.
+		 */
+		protected var xlargeLightUIFontStyles:TextFormat;
+
+		/**
+		 * The font styles for extra-large, light, disabled UI text.
+		 */
+		protected var xlargeLightUIDisabledFontStyles:TextFormat;
+
+		/**
+		 * The font styles for standard-sized, light text for a text input.
+		 */
+		protected var lightInputFontStyles:TextFormat;
+
+		/**
+		 * The font styles for standard-sized, light, disabled text for a text input.
+		 */
+		protected var lightDisabledInputFontStyles:TextFormat;
 
 		/**
 		 * ScrollText uses TextField instead of FTE, so it has a separate TextFormat.
 		 */
-		protected var scrollTextTextFormat:TextFormat;
+		protected var lightScrollTextFontStyles:TextFormat;
 
 		/**
 		 * ScrollText uses TextField instead of FTE, so it has a separate disabled TextFormat.
 		 */
-		protected var scrollTextDisabledTextFormat:TextFormat;
-
-		/**
-		 * An ElementFormat used for Header components.
-		 */
-		protected var headerElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat used for Header components when disabled.
-		 */
-		protected var headerDisabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a dark tint meant for UI controls.
-		 */
-		protected var darkUIElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for UI controls.
-		 */
-		protected var lightUIElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a highlighted tint meant for selected UI controls.
-		 */
-		protected var selectedUIElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for disabled UI controls.
-		 */
-		protected var lightUIDisabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a dark tint meant for disabled UI controls.
-		 */
-		protected var darkUIDisabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a dark tint meant for larger UI controls.
-		 */
-		protected var largeUIDarkElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for larger UI controls.
-		 */
-		protected var largeUILightElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a highlighted tint meant for larger UI controls.
-		 */
-		protected var largeUISelectedElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a dark tint meant for larger disabled UI controls.
-		 */
-		protected var largeUIDarkDisabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for larger disabled UI controls.
-		 */
-		protected var largeUILightDisabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a dark tint meant for larger text.
-		 */
-		protected var largeDarkElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for larger text.
-		 */
-		protected var largeLightElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat meant for larger disabled text.
-		 */
-		protected var largeDisabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a dark tint meant for regular text.
-		 */
-		protected var darkElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for regular text.
-		 */
-		protected var lightElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat meant for regular, disabled text.
-		 */
-		protected var disabledElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat with a light tint meant for smaller text.
-		 */
-		protected var smallLightElementFormat:ElementFormat;
-
-		/**
-		 * An ElementFormat meant for smaller, disabled text.
-		 */
-		protected var smallDisabledElementFormat:ElementFormat;
+		protected var lightDisabledScrollTextFontStyles:TextFormat;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -744,38 +675,55 @@ package feathers.themes
 			this.largeFontSize = 14;
 			this.extraLargeFontSize = 18;
 
+			this.lightFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.darkFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, DARK_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightDisabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.selectedFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, SELECTED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+
+			this.smallLightFontStyles = new TextFormat(FONT_NAME, this.smallFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.smallLightDisabledFontStyles = new TextFormat(FONT_NAME, this.smallFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+
+			this.largeLightFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeDarkFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, DARK_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeLightDisabledFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+
+			this.lightUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightUIFontStyles.bold = true;
+			this.darkUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, DARK_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.darkUIFontStyles.bold = true;
+			this.selectedUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, SELECTED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.selectedUIFontStyles.bold = true;
+			this.lightDisabledUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightDisabledUIFontStyles.bold = true;
+			this.darkDisabledUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, DARK_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.darkDisabledUIFontStyles.bold = true;
+			this.lightCenteredUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.CENTER, VerticalAlign.TOP);
+			this.lightCenteredUIFontStyles.bold = true;
+			this.lightCenteredDisabledUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.CENTER, VerticalAlign.TOP);
+			this.lightCenteredDisabledUIFontStyles.bold = true;
+
+			this.largeLightUIFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeLightUIFontStyles.bold = true;
+			this.largeDarkUIFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, DARK_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeDarkUIFontStyles.bold = true;
+			this.largeSelectedUIFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, SELECTED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeSelectedUIFontStyles.bold = true;
+			this.largeLightUIDisabledFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeLightUIDisabledFontStyles.bold = true;
+			this.largeDarkUIDisabledFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, DARK_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.largeDarkUIDisabledFontStyles.bold = true;
+
+			this.xlargeLightUIFontStyles = new TextFormat(FONT_NAME, this.extraLargeFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.xlargeLightUIFontStyles.bold = true;
+			this.xlargeLightUIDisabledFontStyles = new TextFormat(FONT_NAME, this.extraLargeFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.xlargeLightUIDisabledFontStyles.bold = true;
+
+			this.lightInputFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightDisabledInputFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+
 			//these are for components that don't use FTE
-			this.scrollTextTextFormat = new TextFormat("_sans", this.regularFontSize, LIGHT_TEXT_COLOR);
-			this.scrollTextDisabledTextFormat = new TextFormat("_sans", this.regularFontSize, DISABLED_TEXT_COLOR);
-
-			this.regularFontDescription = new FontDescription(FONT_NAME, FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
-			this.boldFontDescription = new FontDescription(FONT_NAME, FontWeight.BOLD, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
-
-			this.headerElementFormat = new ElementFormat(this.boldFontDescription, this.extraLargeFontSize, LIGHT_TEXT_COLOR);
-			this.headerDisabledElementFormat = new ElementFormat(this.boldFontDescription, this.extraLargeFontSize, DISABLED_TEXT_COLOR);
-
-			this.darkUIElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, DARK_TEXT_COLOR);
-			this.lightUIElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, LIGHT_TEXT_COLOR);
-			this.selectedUIElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, SELECTED_TEXT_COLOR);
-			this.lightUIDisabledElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, DISABLED_TEXT_COLOR);
-			this.darkUIDisabledElementFormat = new ElementFormat(this.boldFontDescription, this.regularFontSize, DARK_DISABLED_TEXT_COLOR);
-
-			this.largeUIDarkElementFormat = new ElementFormat(this.boldFontDescription, this.largeFontSize, DARK_TEXT_COLOR);
-			this.largeUILightElementFormat = new ElementFormat(this.boldFontDescription, this.largeFontSize, LIGHT_TEXT_COLOR);
-			this.largeUISelectedElementFormat = new ElementFormat(this.boldFontDescription, this.largeFontSize, SELECTED_TEXT_COLOR);
-			this.largeUIDarkDisabledElementFormat = new ElementFormat(this.boldFontDescription, this.largeFontSize, DARK_DISABLED_TEXT_COLOR);
-			this.largeUILightDisabledElementFormat = new ElementFormat(this.boldFontDescription, this.largeFontSize, DISABLED_TEXT_COLOR);
-
-			this.darkElementFormat = new ElementFormat(this.regularFontDescription, this.regularFontSize, DARK_TEXT_COLOR);
-			this.lightElementFormat = new ElementFormat(this.regularFontDescription, this.regularFontSize, LIGHT_TEXT_COLOR);
-			this.disabledElementFormat = new ElementFormat(this.regularFontDescription, this.regularFontSize, DISABLED_TEXT_COLOR);
-
-			this.smallLightElementFormat = new ElementFormat(this.regularFontDescription, this.smallFontSize, LIGHT_TEXT_COLOR);
-			this.smallDisabledElementFormat = new ElementFormat(this.regularFontDescription, this.smallFontSize, DISABLED_TEXT_COLOR);
-
-			this.largeDarkElementFormat = new ElementFormat(this.regularFontDescription, this.largeFontSize, DARK_TEXT_COLOR);
-			this.largeLightElementFormat = new ElementFormat(this.regularFontDescription, this.largeFontSize, LIGHT_TEXT_COLOR);
-			this.largeDisabledElementFormat = new ElementFormat(this.regularFontDescription, this.largeFontSize, DISABLED_TEXT_COLOR);
+			this.lightScrollTextFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightDisabledScrollTextFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 		}
 
 		/**
@@ -903,7 +851,6 @@ package feathers.themes
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPopUpHeaderStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
 			//button
 			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
@@ -912,22 +859,18 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON, this.setDangerButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON, this.setBackButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON, this.setForwardButtonStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Button.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setButtonLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_QUIET_BUTTON_LABEL, this.setQuietButtonLabelStyles);
 
 			//button group
 			this.getStyleProviderForClass(ButtonGroup).defaultStyleFunction = this.setButtonGroupStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonGroupButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonGroupButtonStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_BUTTON_GROUP_BUTTON_LABEL, this.setButtonGroupButtonLabelStyles);
 
 			//callout
 			this.getStyleProviderForClass(Callout).defaultStyleFunction = this.setCalloutStyles;
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Check.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setCheckLabelStyles);
-			
+
 			//date time spinner
 			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
@@ -935,7 +878,7 @@ package feathers.themes
 			//drawers
 			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
 
-			//grouped list (see also: item renderers)
+			//grouped list
 			this.getStyleProviderForClass(GroupedList).defaultStyleFunction = this.setGroupedListStyles;
 			this.getStyleProviderForClass(GroupedList).setFunctionForStyleName(GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST, this.setInsetGroupedListStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
@@ -948,42 +891,30 @@ package feathers.themes
 
 			//header
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Header.DEFAULT_CHILD_STYLE_NAME_TITLE, this.setHeaderTitleStyles);
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER, this.setGroupedListFooterRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER, this.setInsetGroupedListHeaderRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER, this.setInsetGroupedListFooterRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL, this.setGroupedListHeaderContentLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL, this.setGroupedListFooterContentLabelStyles);
 
 			//labels
+			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Label.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setLabelTextRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER, this.setHeadingLabelTextRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER, this.setDetailLabelTextRendererStyles);
 
 			//layout group
 			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, setToolbarLayoutGroupStyles);
 
-			//list (see also: item renderers)
+			//list
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL, this.setCheckItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL, this.setCheckItemRendererIconLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL, this.setCheckItemRendererAccessoryLabelStyles);
 
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT, this.setNumericStepperTextInputStyles);
-			this.getStyleProviderForClass(TextBlockTextEditor).setFunctionForStyleName(THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR, this.setNumericStepperTextInputEditorStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON, this.setNumericStepperButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON, this.setNumericStepperButtonStyles);
 
@@ -1009,12 +940,11 @@ package feathers.themes
 
 			//radio
 			this.getStyleProviderForClass(Radio).defaultStyleFunction = this.setRadioStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Radio.DEFAULT_CHILD_STYLE_NAME_LABEL, this.setRadioLabelStyles);
 
 			//scroll container
 			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
-			
+
 			//scroll screen
 			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollScreenStyles;
 
@@ -1037,20 +967,14 @@ package feathers.themes
 			//spinner list
 			this.getStyleProviderForClass(SpinnerList).defaultStyleFunction = this.setSpinnerListStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL, this.setSpinnerListItemRendererLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL, this.setSpinnerListItemRendererIconLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL, this.setSpinnerListItemRendererAccessoryLabelStyles);
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, this.setTabStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(THEME_STYLE_NAME_TAB_LABEL, this.setTabLabelStyles);
 
 			//text input
 			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_PROMPT, this.setTextInputPromptStyles);
-			this.getStyleProviderForClass(StageTextTextEditor).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextInputTextEditorStyles);
 			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextInput.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextInputErrorCalloutStyles);
 
 			//text area
@@ -1060,7 +984,6 @@ package feathers.themes
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(TextCallout.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, this.setTextCalloutTextRendererStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -1071,8 +994,6 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSimpleButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSimpleButtonStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_LABEL, this.setToggleSwitchOffLabelStyles);
-			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_LABEL, this.setToggleSwitchOnLabelStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
 
@@ -1161,6 +1082,8 @@ package feathers.themes
 			backgroundSkin.scale9Grid = SMALL_BACKGROUND_SCALE9_GRID;
 			alert.backgroundSkin = backgroundSkin;
 
+			alert.fontStyles = this.lightFontStyles;
+
 			alert.paddingTop = this.gutterSize;
 			alert.paddingRight = this.gutterSize;
 			alert.paddingBottom = this.smallGutterSize;
@@ -1190,12 +1113,6 @@ package feathers.themes
 			button.minWidth = 2 * this.controlSize;
 		}
 
-		protected function setAlertMessageTextRendererStyles(renderer:TextBlockTextRenderer):void
-		{
-			renderer.wordWrap = true;
-			renderer.elementFormat = this.lightElementFormat;
-		}
-
 	//-------------------------
 	// Button
 	//-------------------------
@@ -1208,7 +1125,8 @@ package feathers.themes
 			button.paddingRight = this.gutterSize;
 			button.gap = this.smallControlGutterSize;
 			button.minGap = this.smallControlGutterSize;
-			button.minWidth = button.minHeight = this.controlSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
 		}
@@ -1229,13 +1147,11 @@ package feathers.themes
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			button.defaultSkin = skin;
+
+			button.fontStyles = this.darkUIFontStyles;
+			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+
 			this.setBaseButtonStyles(button);
-		}
-		
-		protected function setButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.darkUIElementFormat;
-			textRenderer.disabledElementFormat = this.darkUIDisabledElementFormat;
 		}
 
 		protected function setCallToActionButtonStyles(button:Button):void
@@ -1247,6 +1163,10 @@ package feathers.themes
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			button.defaultSkin = skin;
+
+			button.fontStyles = this.darkUIFontStyles;
+			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+
 			this.setBaseButtonStyles(button);
 		}
 
@@ -1255,7 +1175,7 @@ package feathers.themes
 			var defaultSkin:Quad = new Quad(this.controlSize, this.controlSize, 0xff00ff);
 			defaultSkin.alpha = 0;
 			button.defaultSkin = defaultSkin;
-			
+
 			var otherSkin:ImageSkin = new ImageSkin(null);
 			otherSkin.setTextureForState(ButtonState.DOWN, this.buttonDownSkinTexture);
 			otherSkin.setTextureForState(ButtonState.DISABLED, this.buttonDisabledSkinTexture);
@@ -1265,14 +1185,24 @@ package feathers.themes
 			{
 				//for convenience, this function can style both a regular button
 				//and a toggle button
+				var toggleButton:ToggleButton = ToggleButton(button);
 				otherSkin.selectedTexture = this.buttonSelectedUpSkinTexture;
-				ToggleButton(button).defaultSelectedSkin = otherSkin;
+				toggleButton.defaultSelectedSkin = otherSkin;
 			}
 			otherSkin.scale9Grid = BUTTON_SCALE9_GRID;
 			otherSkin.width = this.controlSize;
 			otherSkin.height = this.controlSize;
-			
-			button.customLabelStyleName = THEME_STYLE_NAME_QUIET_BUTTON_LABEL;
+
+			button.fontStyles = this.lightUIFontStyles;
+			button.setFontStylesForState(Button.STATE_DOWN, this.darkUIFontStyles);
+			button.setFontStylesForState(Button.STATE_DISABLED, this.lightDisabledUIFontStyles);
+			if(button is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				toggleButton.selectedFontStyles = this.darkUIFontStyles;
+				toggleButton.setFontStylesForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles);
+			}
 
 			button.paddingTop = this.smallControlGutterSize;
 			button.paddingBottom = this.smallControlGutterSize;
@@ -1282,20 +1212,6 @@ package feathers.themes
 			button.minGap = this.smallControlGutterSize;
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = button.minTouchHeight = this.gridSize;
-		}
-		
-		protected function setQuietButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightUIElementFormat;
-			textRenderer.selectedElementFormat = this.darkUIElementFormat;
-			textRenderer.setElementFormatForState(Button.STATE_DOWN, this.darkUIElementFormat);
-			textRenderer.setElementFormatForState(Button.STATE_DISABLED, this.lightUIDisabledElementFormat);
-			if(textRenderer.stateContext is ToggleButton)
-			{
-				//for convenience, this function can style both a regular button
-				//and a toggle button
-				textRenderer.setElementFormatForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkUIDisabledElementFormat);
-			}
 		}
 
 		protected function setDangerButtonStyles(button:Button):void
@@ -1307,6 +1223,10 @@ package feathers.themes
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			button.defaultSkin = skin;
+			
+			button.fontStyles = this.darkUIFontStyles;
+			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+
 			this.setBaseButtonStyles(button);
 		}
 
@@ -1319,9 +1239,12 @@ package feathers.themes
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			button.defaultSkin = skin;
-			
+
+			button.fontStyles = this.darkUIFontStyles;
+			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+
 			this.setBaseButtonStyles(button);
-			
+
 			button.paddingLeft = this.gutterSize + this.smallGutterSize;
 		}
 
@@ -1334,9 +1257,12 @@ package feathers.themes
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			button.defaultSkin = skin;
-			
+
+			button.fontStyles = this.darkUIFontStyles;
+			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+
 			this.setBaseButtonStyles(button);
-			
+
 			button.paddingRight = this.gutterSize + this.smallGutterSize;
 		}
 
@@ -1366,8 +1292,9 @@ package feathers.themes
 			skin.width = this.gridSize;
 			skin.height = this.gridSize;
 			button.defaultSkin = skin;
-			
-			button.customLabelStyleName = THEME_STYLE_NAME_BUTTON_GROUP_BUTTON_LABEL;
+
+			button.fontStyles = this.largeDarkUIFontStyles;
+			button.disabledFontStyles = this.largeDarkUIDisabledFontStyles;
 
 			button.paddingTop = this.smallGutterSize;
 			button.paddingBottom = this.smallGutterSize;
@@ -1379,12 +1306,6 @@ package feathers.themes
 			button.minHeight = this.gridSize;
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
-		}
-		
-		protected function setButtonGroupButtonLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeUIDarkElementFormat;
-			textRenderer.disabledElementFormat = this.largeUIDarkDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1459,6 +1380,9 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.checkSelectedDisabledIconTexture);
 			check.defaultIcon = icon;
 
+			check.fontStyles = this.lightUIFontStyles;
+			check.disabledFontStyles = this.lightDisabledUIFontStyles;
+
 			check.horizontalAlign = HorizontalAlign.LEFT;
 			check.gap = this.smallControlGutterSize;
 			check.minGap = this.smallControlGutterSize;
@@ -1466,12 +1390,6 @@ package feathers.themes
 			check.minHeight = this.controlSize;
 			check.minTouchWidth = this.gridSize;
 			check.minTouchHeight = this.gridSize;
-		}
-
-		protected function setCheckLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightUIElementFormat;
-			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -1487,13 +1405,14 @@ package feathers.themes
 		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
 			this.setSpinnerListItemRendererStyles(itemRenderer);
+
 			itemRenderer.accessoryPosition = RelativePosition.LEFT;
 			itemRenderer.gap = this.smallGutterSize;
 			itemRenderer.minGap = this.smallGutterSize;
 			itemRenderer.accessoryGap = this.smallGutterSize;
 			itemRenderer.minAccessoryGap = this.smallGutterSize;
 		}
-		
+
 	//-------------------------
 	// Drawers
 	//-------------------------
@@ -1534,6 +1453,9 @@ package feathers.themes
 		{
 			renderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
+			renderer.fontStyles = this.lightUIFontStyles;
+			renderer.disabledFontStyles = this.lightDisabledUIFontStyles;
+
 			renderer.horizontalAlign = HorizontalAlign.LEFT;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1544,25 +1466,14 @@ package feathers.themes
 		protected function setGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			renderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_FOOTER_BACKGROUND_COLOR);
-			
-			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
+
+			renderer.fontStyles = this.lightFontStyles;
+			renderer.disabledFontStyles = this.lightDisabledFontStyles;
 
 			renderer.horizontalAlign = HorizontalAlign.CENTER;
 			renderer.paddingTop = renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
-		}
-		
-		protected function setGroupedListHeaderContentLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightUIElementFormat;
-			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
-		}
-
-		protected function setGroupedListFooterContentLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setInsetGroupedListStyles(list:GroupedList):void
@@ -1583,7 +1494,7 @@ package feathers.themes
 			list.layout = layout;
 		}
 
-		protected function setInsetGroupedListItemRendererStyles(renderer:DefaultGroupedListItemRenderer, defaultSkinTexture:Texture, selectedAndDownSkinTexture:Texture, scale9Grid:Rectangle):void
+		protected function setInsetGroupedListItemRendererStyles(itemRenderer:DefaultGroupedListItemRenderer, defaultSkinTexture:Texture, selectedAndDownSkinTexture:Texture, scale9Grid:Rectangle):void
 		{
 			var skin:ImageSkin = new ImageSkin(defaultSkinTexture);
 			skin.selectedTexture = selectedAndDownSkinTexture;
@@ -1591,21 +1502,36 @@ package feathers.themes
 			skin.scale9Grid = scale9Grid;
 			skin.width = this.gridSize;
 			skin.height = this.gridSize;
-			renderer.defaultSkin = skin;
+			itemRenderer.defaultSkin = skin;
 
-			renderer.horizontalAlign = HorizontalAlign.LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.gap = this.gutterSize;
-			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = RelativePosition.LEFT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = RelativePosition.RIGHT;
-			renderer.minWidth = renderer.minHeight = this.gridSize;
-			renderer.minTouchWidth = renderer.minTouchHeight = this.gridSize;
+			itemRenderer.fontStyles = this.largeLightFontStyles;
+			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
+			itemRenderer.selectedFontStyles = this.largeDarkFontStyles;
+			itemRenderer.setFontStylesForState(ButtonState.DOWN, this.largeDarkFontStyles);
+
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.iconLabelSelectedFontStyles = this.darkFontStyles;
+			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles;
+			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize + this.smallGutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = this.gutterSize;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
+			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			itemRenderer.minAccessoryGap = this.gutterSize;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
+			itemRenderer.minWidth = itemRenderer.minHeight = this.gridSize;
+			itemRenderer.minTouchWidth = itemRenderer.minTouchHeight = this.gridSize;
 		}
 
 		protected function setInsetGroupedListMiddleItemRendererStyles(renderer:DefaultGroupedListItemRenderer):void
@@ -1628,36 +1554,40 @@ package feathers.themes
 			this.setInsetGroupedListItemRendererStyles(renderer, this.insetItemRendererSingleUpSkinTexture, this.insetItemRendererSingleSelectedSkinTexture, INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
 		}
 
-		protected function setInsetGroupedListHeaderRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		protected function setInsetGroupedListHeaderRendererStyles(headerRenderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
 			defaultSkin.alpha = 0;
-			renderer.backgroundSkin = defaultSkin;
+			headerRenderer.backgroundSkin = defaultSkin;
 
-			renderer.horizontalAlign = HorizontalAlign.LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.minWidth = this.controlSize;
-			renderer.minHeight = this.controlSize;
+			headerRenderer.fontStyles = this.lightUIFontStyles;
+			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles;
+
+			headerRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			headerRenderer.paddingTop = this.smallGutterSize;
+			headerRenderer.paddingBottom = this.smallGutterSize;
+			headerRenderer.paddingLeft = this.gutterSize + this.smallGutterSize;
+			headerRenderer.paddingRight = this.gutterSize;
+			headerRenderer.minWidth = this.controlSize;
+			headerRenderer.minHeight = this.controlSize;
 		}
 
-		protected function setInsetGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		protected function setInsetGroupedListFooterRendererStyles(footerRenderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
 			defaultSkin.alpha = 0;
-			renderer.backgroundSkin = defaultSkin;
+			footerRenderer.backgroundSkin = defaultSkin;
 
-			renderer.customContentLabelStyleName = THEME_STYLE_NAME_GROUPED_LIST_FOOTER_CONTENT_LABEL;
+			footerRenderer.fontStyles = this.lightFontStyles;
+			footerRenderer.disabledFontStyles = this.lightDisabledFontStyles;
 
-			renderer.horizontalAlign = HorizontalAlign.CENTER;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.minWidth = this.controlSize;
-			renderer.minHeight = this.controlSize;
+			footerRenderer.horizontalAlign = HorizontalAlign.CENTER;
+			footerRenderer.paddingTop = this.smallGutterSize;
+			footerRenderer.paddingBottom = this.smallGutterSize;
+			footerRenderer.paddingLeft = this.gutterSize + this.smallGutterSize;
+			footerRenderer.paddingRight = this.gutterSize;
+			footerRenderer.minWidth = this.controlSize;
+			footerRenderer.minHeight = this.controlSize;
 		}
 
 	//-------------------------
@@ -1666,55 +1596,42 @@ package feathers.themes
 
 		protected function setHeaderStyles(header:Header):void
 		{
-			header.minWidth = this.gridSize;
-			header.minHeight = this.gridSize;
-			header.padding = this.smallGutterSize;
-			header.gap = this.smallGutterSize;
-			header.titleGap = this.smallGutterSize;
-
 			var backgroundSkin:Image = new Image(this.headerBackgroundSkinTexture);
 			backgroundSkin.tileGrid = new Rectangle();
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
-		}
-		
-		protected function setHeaderTitleStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.headerElementFormat;
-			textRenderer.disabledElementFormat = this.headerDisabledElementFormat;
+
+			header.fontStyles = this.xlargeLightUIFontStyles;
+			header.disabledFontStyles = this.xlargeLightUIDisabledFontStyles;
+
+			header.minWidth = this.gridSize;
+			header.minHeight = this.gridSize;
+			header.padding = this.smallGutterSize;
+			header.gap = this.smallGutterSize;
+			header.titleGap = this.smallGutterSize;
 		}
 
 	//-------------------------
 	// Label
 	//-------------------------
 
-		protected function setLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
+		protected function setLabelStyles(label:Label):void
 		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
+			label.fontStyles = this.lightFontStyles;
+			label.disabledFontStyles = this.lightDisabledFontStyles;
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.customTextRendererStyleName = THEME_STYLE_NAME_HEADING_LABEL_TEXT_RENDERER;
-		}
-
-		protected function setHeadingLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
+			label.fontStyles = this.largeLightFontStyles;
+			label.disabledFontStyles = this.largeLightDisabledFontStyles;
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.customTextRendererStyleName = THEME_STYLE_NAME_DETAIL_LABEL_TEXT_RENDERER;
-		}
-
-		protected function setDetailLabelTextRendererStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.smallLightElementFormat;
-			textRenderer.disabledElementFormat = this.smallDisabledElementFormat;
+			label.fontStyles = this.smallLightFontStyles;
+			label.disabledFontStyles = this.smallLightDisabledFontStyles;
 		}
 
 	//-------------------------
@@ -1752,7 +1669,7 @@ package feathers.themes
 			list.backgroundSkin = backgroundSkin;
 		}
 
-		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		protected function setItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
 			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
 			skin.selectedTexture = this.itemRendererSelectedSkinTexture;
@@ -1760,29 +1677,44 @@ package feathers.themes
 			skin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
 			skin.width = this.gridSize;
 			skin.height = this.gridSize;
-			renderer.defaultSkin = skin;
+			itemRenderer.defaultSkin = skin;
 
-			renderer.horizontalAlign = HorizontalAlign.LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.gap = this.gutterSize;
-			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = RelativePosition.LEFT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = RelativePosition.RIGHT;
-			renderer.minWidth = this.gridSize;
-			renderer.minHeight = this.gridSize;
-			renderer.minTouchWidth = this.gridSize;
-			renderer.minTouchHeight = this.gridSize;
+			itemRenderer.fontStyles = this.largeLightFontStyles;
+			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
+			itemRenderer.selectedFontStyles = this.largeDarkFontStyles;
+			itemRenderer.setFontStylesForState(ButtonState.DOWN, this.largeDarkFontStyles);
+
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.iconLabelSelectedFontStyles = this.darkFontStyles;
+			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles;
+			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = this.gutterSize;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
+			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			itemRenderer.minAccessoryGap = this.gutterSize;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
+			itemRenderer.minWidth = this.gridSize;
+			itemRenderer.minHeight = this.gridSize;
+			itemRenderer.minTouchWidth = this.gridSize;
+			itemRenderer.minTouchHeight = this.gridSize;
 		}
-		
+
 		protected function setDrillDownItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
 			this.setItemRendererStyles(itemRenderer);
-			
+
 			itemRenderer.itemHasAccessory = false;
 
 			var accessorySkin:ImageSkin = new ImageSkin(this.listDrillDownAccessoryTexture);
@@ -1791,88 +1723,53 @@ package feathers.themes
 			itemRenderer.defaultAccessory = accessorySkin;
 		}
 
-		protected function setCheckItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		protected function setCheckItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
 			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
 			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkinTexture);
 			skin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
 			skin.width = this.gridSize;
 			skin.height = this.gridSize;
-			renderer.defaultSkin = skin;
+			itemRenderer.defaultSkin = skin;
 
 			var defaultSelectedIcon:ImageLoader = new ImageLoader();
 			defaultSelectedIcon.source = this.pickerListItemSelectedIconTexture;
-			renderer.defaultSelectedIcon = defaultSelectedIcon;
+			itemRenderer.defaultSelectedIcon = defaultSelectedIcon;
 			defaultSelectedIcon.validate();
 
 			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
 			defaultIcon.alpha = 0;
-			renderer.defaultIcon = defaultIcon;
+			itemRenderer.defaultIcon = defaultIcon;
 
-			renderer.customLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_LABEL;
-			renderer.customIconLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ICON_LABEL;
-			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_CHECK_ITEM_RENDERER_ACCESSORY_LABEL;
+			itemRenderer.fontStyles = this.largeLightFontStyles;
+			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
+			itemRenderer.setFontStylesForState(ToggleButton.STATE_DOWN, this.largeDarkFontStyles);
 
-			renderer.itemHasIcon = false;
-			renderer.horizontalAlign = HorizontalAlign.LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.gap = Number.POSITIVE_INFINITY;
-			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = RelativePosition.RIGHT;
-			renderer.accessoryGap = this.smallGutterSize;
-			renderer.minAccessoryGap = this.smallGutterSize;
-			renderer.accessoryPosition = RelativePosition.BOTTOM;
-			renderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
-			renderer.minWidth = this.gridSize;
-			renderer.minHeight = this.gridSize;
-			renderer.minTouchWidth = this.gridSize;
-			renderer.minTouchHeight = this.gridSize;
-		}
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
 
-		protected function setItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
-			textRenderer.selectedElementFormat = this.largeDarkElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
-		}
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
 
-		protected function setItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
-			textRenderer.selectedElementFormat = this.darkElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
-		}
-
-		protected function setItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
-			textRenderer.selectedElementFormat = this.darkElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.darkElementFormat);
-		}
-
-		protected function setCheckItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
-			textRenderer.setElementFormatForState(ToggleButton.STATE_DOWN, this.largeDarkElementFormat);
-		}
-
-		protected function setCheckItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
-		}
-
-		protected function setCheckItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
+			itemRenderer.itemHasIcon = false;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = Number.POSITIVE_INFINITY;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.iconPosition = RelativePosition.RIGHT;
+			itemRenderer.accessoryGap = this.smallGutterSize;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+			itemRenderer.accessoryPosition = RelativePosition.BOTTOM;
+			itemRenderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
+			itemRenderer.minWidth = this.gridSize;
+			itemRenderer.minHeight = this.gridSize;
+			itemRenderer.minTouchWidth = this.gridSize;
+			itemRenderer.minTouchHeight = this.gridSize;
 		}
 
 	//-------------------------
@@ -1907,7 +1804,8 @@ package feathers.themes
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 
 			input.textEditorFactory = stepperTextEditorFactory;
-			input.customTextEditorStyleName = THEME_STYLE_NAME_NUMERIC_STEPPER_TEXT_INPUT_EDITOR;
+			input.fontStyles = this.lightCenteredUIFontStyles;
+			input.disabledFontStyles = this.lightCenteredDisabledUIFontStyles;
 
 			input.minWidth = this.controlSize;
 			input.minHeight = this.controlSize;
@@ -1920,13 +1818,6 @@ package feathers.themes
 			input.paddingLeft = this.smallGutterSize;
 			input.isEditable = false;
 			input.isSelectable = false;
-		}
-		
-		protected function setNumericStepperTextInputEditorStyles(textEditor:TextBlockTextEditor):void
-		{
-			textEditor.elementFormat = this.lightUIElementFormat;
-			textEditor.disabledElementFormat = this.lightUIDisabledElementFormat;
-			textEditor.textAlign = TextBlockTextEditor.TEXT_ALIGN_CENTER;
 		}
 
 		protected function setNumericStepperButtonStyles(button:Button):void
@@ -1971,6 +1862,9 @@ package feathers.themes
 			header.padding = this.smallGutterSize;
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
+
+			header.fontStyles = this.xlargeLightUIFontStyles;
+			header.disabledFontStyles = this.xlargeLightUIDisabledFontStyles;
 
 			var backgroundSkin:Image = new Image(this.popUpHeaderBackgroundSkinTexture);
 			backgroundSkin.tileGrid = new Rectangle();
@@ -2132,6 +2026,9 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.radioSelectedDisabledIconTexture);
 			radio.defaultIcon = icon;
 
+			radio.fontStyles = this.lightUIFontStyles;
+			radio.disabledFontStyles = this.lightDisabledUIFontStyles;
+
 			radio.horizontalAlign = HorizontalAlign.LEFT;
 			radio.gap = this.smallControlGutterSize;
 			radio.minGap = this.smallControlGutterSize;
@@ -2139,12 +2036,6 @@ package feathers.themes
 			radio.minHeight = this.controlSize;
 			radio.minTouchWidth = this.gridSize;
 			radio.minTouchHeight = this.gridSize;
-		}
-		
-		protected function setRadioLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightUIElementFormat;
-			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -2194,8 +2085,9 @@ package feathers.themes
 		{
 			this.setScrollerStyles(text);
 
-			text.textFormat = this.scrollTextTextFormat;
-			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			text.fontStyles = this.lightScrollTextFontStyles;
+			text.disabledFontStyles = this.lightDisabledScrollTextFontStyles;
+
 			text.padding = this.gutterSize;
 			text.paddingRight = this.gutterSize + this.smallGutterSize;
 		}
@@ -2331,49 +2223,36 @@ package feathers.themes
 			list.paddingBottom = this.borderSize;
 		}
 
-		protected function setSpinnerListItemRendererStyles(renderer:DefaultListItemRenderer):void
+		protected function setSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
 			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
 			defaultSkin.alpha = 0;
-			renderer.defaultSkin = defaultSkin;
-			
-			renderer.customLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_LABEL;
-			renderer.customIconLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ICON_LABEL;
-			renderer.customAccessoryLabelStyleName = THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER_ACCESSORY_LABEL;
+			itemRenderer.defaultSkin = defaultSkin;
 
-			renderer.horizontalAlign = HorizontalAlign.LEFT;
-			renderer.paddingTop = this.smallGutterSize;
-			renderer.paddingBottom = this.smallGutterSize;
-			renderer.paddingLeft = this.gutterSize;
-			renderer.paddingRight = this.gutterSize;
-			renderer.gap = this.gutterSize;
-			renderer.minGap = this.gutterSize;
-			renderer.iconPosition = RelativePosition.LEFT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = this.gutterSize;
-			renderer.accessoryPosition = RelativePosition.RIGHT;
-			renderer.minWidth = this.gridSize;
-			renderer.minHeight = this.gridSize;
-			renderer.minTouchWidth = this.gridSize;
-			renderer.minTouchHeight = this.gridSize;
-		}
-		
-		protected function setSpinnerListItemRendererLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.largeLightElementFormat;
-			textRenderer.disabledElementFormat = this.largeDisabledElementFormat;
-		}
+			itemRenderer.fontStyles = this.largeLightFontStyles;
+			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
 
-		protected function setSpinnerListItemRendererIconLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
-		}
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
 
-		protected function setSpinnerListItemRendererAccessoryLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
+
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = this.gutterSize;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.iconPosition = RelativePosition.LEFT;
+			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			itemRenderer.minAccessoryGap = this.gutterSize;
+			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
+			itemRenderer.minWidth = this.gridSize;
+			itemRenderer.minHeight = this.gridSize;
+			itemRenderer.minTouchWidth = this.gridSize;
+			itemRenderer.minTouchHeight = this.gridSize;
 		}
 
 	//-------------------------
@@ -2396,8 +2275,10 @@ package feathers.themes
 			skin.width = this.gridSize;
 			skin.height = this.gridSize;
 			tab.defaultSkin = skin;
-			
-			tab.customLabelStyleName = THEME_STYLE_NAME_TAB_LABEL;
+
+			tab.fontStyles = this.lightUIFontStyles;
+			tab.disabledFontStyles = this.lightDisabledUIFontStyles;
+			tab.selectedFontStyles = this.darkUIFontStyles;
 
 			tab.paddingTop = this.smallGutterSize;
 			tab.paddingBottom = this.smallGutterSize;
@@ -2407,13 +2288,6 @@ package feathers.themes
 			tab.minGap = this.smallGutterSize;
 			tab.minWidth = tab.minHeight = this.gridSize;
 			tab.minTouchWidth = tab.minTouchHeight = this.gridSize;
-		}
-
-		protected function setTabLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightUIElementFormat;
-			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
-			textRenderer.selectedElementFormat = this.darkUIElementFormat;
 		}
 
 	//-------------------------
@@ -2432,21 +2306,25 @@ package feathers.themes
 			skin.width = this.wideControlSize;
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
-			
+
+			textArea.fontStyles = this.lightInputFontStyles;
+			textArea.disabledFontStyles = this.lightDisabledInputFontStyles;
+
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
-		
+
 		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
 		{
-			textEditor.textFormat = this.scrollTextTextFormat;
-			textEditor.disabledTextFormat = this.scrollTextDisabledTextFormat;
-			
 			textEditor.padding = this.smallGutterSize;
 		}
 
 		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void
 		{
 			this.setDangerCalloutStyles(callout);
+
+			callout.fontStyles = this.lightFontStyles;
+			callout.disabledFontStyles = this.lightDisabledFontStyles;
+
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
 		}
@@ -2458,11 +2336,9 @@ package feathers.themes
 		protected function setTextCalloutStyles(callout:TextCallout):void
 		{
 			this.setCalloutStyles(callout);
-		}
 
-		protected function setTextCalloutTextRendererStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
+			callout.fontStyles = this.lightFontStyles;
+			callout.disabledFontStyles = this.lightDisabledFontStyles;
 		}
 
 	//-------------------------
@@ -2480,6 +2356,12 @@ package feathers.themes
 			skin.height = this.controlSize;
 			input.backgroundSkin = skin;
 
+			input.fontStyles = this.lightInputFontStyles;
+			input.disabledFontStyles = this.lightDisabledInputFontStyles;
+
+			input.promptFontStyles = this.lightFontStyles;
+			input.promptDisabledFontStyles = this.lightDisabledFontStyles;
+
 			input.minWidth = this.controlSize;
 			input.minHeight = this.controlSize;
 			input.minTouchWidth = this.gridSize;
@@ -2496,24 +2378,14 @@ package feathers.themes
 		{
 			this.setBaseTextInputStyles(input);
 		}
-		
-		protected function setTextInputTextEditorStyles(textEditor:StageTextTextEditor):void
-		{
-			textEditor.fontFamily = "Helvetica";
-			textEditor.fontSize = this.regularFontSize;
-			textEditor.color = LIGHT_TEXT_COLOR;
-			textEditor.disabledColor = DISABLED_TEXT_COLOR;
-		}
-
-		protected function setTextInputPromptStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightElementFormat;
-			textRenderer.disabledElementFormat = this.disabledElementFormat;
-		}
 
 		protected function setTextInputErrorCalloutStyles(callout:TextCallout):void
 		{
 			this.setDangerCalloutStyles(callout);
+
+			callout.fontStyles = this.lightFontStyles;
+			callout.disabledFontStyles = this.lightDisabledFontStyles;
+
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
 		}
@@ -2534,6 +2406,11 @@ package feathers.themes
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = TrackLayoutMode.SINGLE;
+
+			toggle.offLabelFontStyles = this.lightUIFontStyles;
+			toggle.offLabelDisabledFontStyles = this.lightDisabledUIFontStyles;
+			toggle.onLabelFontStyles = this.selectedUIFontStyles;
+			toggle.onLabelDisabledFontStyles = this.lightDisabledUIFontStyles;
 		}
 
 		//see Shared section for thumb styles
@@ -2547,18 +2424,6 @@ package feathers.themes
 			skin.height = this.controlSize;
 			track.defaultSkin = skin;
 			track.hasLabelTextRenderer = false;
-		}
-
-		protected function setToggleSwitchOffLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.lightUIElementFormat;
-			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
-		}
-		
-		protected function setToggleSwitchOnLabelStyles(textRenderer:TextBlockTextRenderer):void
-		{
-			textRenderer.elementFormat = this.selectedUIElementFormat;
-			textRenderer.disabledElementFormat = this.lightUIDisabledElementFormat;
 		}
 
 	//-------------------------
@@ -2623,7 +2488,7 @@ package feathers.themes
 			button.defaultIcon = icon;
 
 			button.hasLabelTextRenderer = false;
-			
+
 			var overlaySkin:Quad = new Quad(1, 1, VIDEO_OVERLAY_COLOR);
 			overlaySkin.alpha = VIDEO_OVERLAY_ALPHA;
 			button.upSkin = overlaySkin;
@@ -2770,7 +2635,6 @@ package feathers.themes
 			track.hasLabelTextRenderer = false;
 			track.minTouchHeight = this.gridSize;
 		}
-		
 
 	}
 }
