@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.core.FeathersControl;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -28,6 +29,7 @@ package feathers.controls.supportClasses
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
 
@@ -105,12 +107,51 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		private var _textFormat:TextFormat;
+		protected var _fontStylesTextFormat:flash.text.TextFormat;
+
+		/**
+		 * @private
+		 */
+		protected var _fontStyles:FontStylesSet;
+
+		/**
+		 * Generic font styles.
+		 */
+		public function get fontStyles():FontStylesSet
+		{
+			return this._fontStyles;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:FontStylesSet):void
+		{
+			if(this._fontStyles === value)
+			{
+				return;
+			}
+			if(this._fontStyles !== null)
+			{
+				this._fontStyles.removeEventListener(Event.CHANGE, fontStylesSet_changeHandler);
+			}
+			this._fontStyles = value;
+			if(this._fontStyles !== null)
+			{
+				this._fontStyles.addEventListener(Event.CHANGE, fontStylesSet_changeHandler);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _textFormat:flash.text.TextFormat;
 
 		/**
 		 * @see feathers.controls.ScrollText#textFormat
 		 */
-		public function get textFormat():TextFormat
+		public function get textFormat():flash.text.TextFormat
 		{
 			return this._textFormat;
 		}
@@ -118,7 +159,7 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		public function set textFormat(value:TextFormat):void
+		public function set textFormat(value:flash.text.TextFormat):void
 		{
 			if(this._textFormat == value)
 			{
@@ -131,12 +172,12 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		private var _disabledTextFormat:TextFormat;
+		private var _disabledTextFormat:flash.text.TextFormat;
 
 		/**
 		 * @see feathers.controls.ScrollText#disabledTextFormat
 		 */
-		public function get disabledTextFormat():TextFormat
+		public function get disabledTextFormat():flash.text.TextFormat
 		{
 			return this._disabledTextFormat;
 		}
@@ -144,7 +185,7 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		public function set disabledTextFormat(value:TextFormat):void
+		public function set disabledTextFormat(value:flash.text.TextFormat):void
 		{
 			if(this._disabledTextFormat == value)
 			{
@@ -889,20 +930,24 @@ package feathers.controls.supportClasses
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
-				if(this._styleSheet)
+				if(this._styleSheet !== null)
 				{
 					this._textField.styleSheet = this._styleSheet;
 				}
 				else
 				{
 					this._textField.styleSheet = null;
-					if(!this._isEnabled && this._disabledTextFormat)
+					if(!this._isEnabled && this._disabledTextFormat !== null)
 					{
 						this._textField.defaultTextFormat = this._disabledTextFormat;
 					}
-					else if(this._textFormat)
+					else if(this._textFormat !== null)
 					{
 						this._textField.defaultTextFormat = this._textFormat;
+					}
+					else if(this._fontStyles !== null)
+					{
+						this._textField.defaultTextFormat = this.getTextFormatFromFontStyles();
 					}
 				}
 				if(this._isHTML)
@@ -974,6 +1019,29 @@ package feathers.controls.supportClasses
 			}
 		}
 
+		protected function getTextFormatFromFontStyles():flash.text.TextFormat
+		{
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
+				this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				var fontStylesFormat:starling.text.TextFormat;
+				if(this._fontStyles !== null)
+				{
+					fontStylesFormat = this._fontStyles.getTextFormatForTarget(this);
+				}
+				if(fontStylesFormat !== null)
+				{
+					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+				}
+				else if(this._fontStylesTextFormat === null)
+				{
+					//fallback to a default so that something is displayed
+					this._fontStylesTextFormat = new flash.text.TextFormat();
+				}
+			}
+			return this._fontStylesTextFormat;
+		}
+
 		private function addedToStageHandler(event:Event):void
 		{
 			this.stage.starling.nativeStage.addChild(this._textFieldContainer);
@@ -1005,6 +1073,11 @@ package feathers.controls.supportClasses
 		protected function textField_linkHandler(event:TextEvent):void
 		{
 			this.dispatchEventWith(Event.TRIGGERED, false, event.text);
+		}
+
+		protected function fontStylesSet_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }
