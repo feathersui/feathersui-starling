@@ -420,21 +420,27 @@ package feathers.controls.text
 		protected var _elementFormat:ElementFormat;
 
 		/**
-		 * The font and styles used to draw the text. This property will be
-		 * ignored if the content is not a <code>TextElement</code> instance.
-		 * 
-		 * <p>An <code>ElementFormat</code> exposes more advanced font styles
-		 * than <code>starling.text.TextFormat</code>, so if this property is
-		 * not <code>null</code>, any <code>starling.text.TextFormat</code> font
-		 * styles that are passed in from the parent component will be ignored.
-		 * In other words, <code>ElementFormat</code> font styles will always
-		 * take precedence.</p>
+		 * Advanced font formatting used to draw the text, if
+		 * <code>fontStyles</code> and <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the full capabilities
+		 * of Flash Text Engine are required.
 		 *
 		 * <p>In the following example, the element format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.elementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with <code>ElementFormat</code>
+		 * will always take precedence.</p>
+		 *
+		 * <p><strong>Warning:</strong> This property will be ignored if the
+		 * <code>content</code> property is customized with Flash Text Engine
+		 * rich text objects such as <code>GroupElement</code> and
+		 * <code>GraphicElement</code>.</p>
+		 * 
 		 * @default null
 		 *
 		 * @see #setElementFormatForState()
@@ -466,16 +472,11 @@ package feathers.controls.text
 		protected var _disabledElementFormat:ElementFormat;
 
 		/**
-		 * The font and styles used to draw the text when the component is
-		 * disabled. This property will be ignored if the content is not a
-		 * <code>TextElement</code> instance.
-		 *
-		 * <p>An <code>ElementFormat</code> exposes more advanced font styles
-		 * than <code>starling.text.TextFormat</code>, so if this property is
-		 * not <code>null</code>, any <code>starling.text.TextFormat</code> font
-		 * styles that are passed in from the parent component may be ignored.
-		 * In other words, <code>ElementFormat</code> font styles will always
-		 * take precedence.</p>
+		 * Advanced font formatting used to draw the text when the component
+		 * is disabled, if <code>disabledFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of Flash Text Engine are
+		 * required.
 		 *
 		 * <p>In the following example, the disabled element format is changed:</p>
 		 *
@@ -483,6 +484,17 @@ package feathers.controls.text
 		 * textRenderer.isEnabled = false;
 		 * textRenderer.disabledElementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with <code>ElementFormat</code>
+		 * will always take precedence.</p>
+		 *
+		 * <p><strong>Warning:</strong> This property will be ignored if the
+		 * <code>content</code> property is customized with Flash Text Engine
+		 * rich text objects such as <code>GroupElement</code> and
+		 * <code>GraphicElement</code>.</p>
+		 * 
 		 * @default null
 		 *
 		 * @see #elementFormat
@@ -513,23 +525,28 @@ package feathers.controls.text
 		protected var _selectedElementFormat:ElementFormat;
 
 		/**
-		 * The font and styles used to draw the text when the
-		 * <code>stateContext</code> implements the <code>IToggle</code>
-		 * interface, and it is selected. This property will be ignored if the
-		 * content is not a <code>TextElement</code> instance.
-		 *
-		 * <p>An <code>ElementFormat</code> exposes more advanced font styles
-		 * than <code>starling.text.TextFormat</code>, so if this property is
-		 * not <code>null</code>, any <code>starling.text.TextFormat</code> font
-		 * styles that are passed in from the parent component may be ignored.
-		 * In other words, <code>ElementFormat</code> font styles will always
-		 * take precedence.</p>
+		 * Advanced font formatting used to draw the text when the parent
+		 * component is selected, if <code>selectedFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of Flash Text Engine are
+		 * required.
 		 *
 		 * <p>In the following example, the selected element format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.selectedElementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with <code>ElementFormat</code>
+		 * will always take precedence.</p>
+		 *
+		 * <p><strong>Warning:</strong> This property will be ignored if the
+		 * <code>content</code> property is customized with Flash Text Engine
+		 * rich text objects such as <code>GroupElement</code> and
+		 * <code>GraphicElement</code>.</p>
+		 * 
 		 * @default null
 		 *
 		 * @see #stateContext
@@ -1386,9 +1403,12 @@ package feathers.controls.text
 		}
 
 		/**
-		 * Sets the <code>ElementFormat</code> to be used by the text renderer
-		 * when the <code>currentState</code> property of the
-		 * <code>stateContext</code> matches the specified state value. 
+		 * Sets the advanced <code>ElementFormat</code> font formatting to be
+		 * used by the text renderer when the <code>currentState</code> property
+		 * of the <code>stateContext</code> matches the specified state value.
+		 * For advanced use cases where <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the full capabilities
+		 * of Flash Text Engine are required.
 		 * 
 		 * <p>If an <code>ElementFormat</code> is not defined for a specific
 		 * state, the value of the <code>elementFormat</code> property will be
