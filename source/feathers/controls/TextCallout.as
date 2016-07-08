@@ -291,7 +291,7 @@ package feathers.controls
 		 * <p>In the following example, the font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 * callout.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
@@ -302,7 +302,7 @@ package feathers.controls
 		 *
 		 * @see #disabledFontStyles
 		 */
-		public function get fontStylesSet():TextFormat
+		public function get fontStyles():TextFormat
 		{
 			return this._fontStylesSet.format;
 		}
@@ -310,7 +310,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set fontStylesSet(value:TextFormat):void
+		public function set fontStyles(value:TextFormat):void
 		{
 			this._fontStylesSet.format = value;
 		}
@@ -322,7 +322,7 @@ package feathers.controls
 		 * <p>In the following example, the disabled font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 * callout.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
@@ -332,7 +332,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #fontStylesSet
+		 * @see #fontStyles
 		 */
 		public function get disabledFontStyles():TextFormat
 		{

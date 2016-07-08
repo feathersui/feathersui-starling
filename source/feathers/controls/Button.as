@@ -1314,7 +1314,7 @@ package feathers.controls
 		 * <p>In the following example, the font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 * button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
@@ -1346,7 +1346,7 @@ package feathers.controls
 		 * <p>In the following example, the disabled font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 * button.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
@@ -2101,7 +2101,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Sets the font styles to be used to display the input's text when the
+		 * Sets the font styles to be used to display the button's text when the
 		 * button's <code>currentState</code> property matches the specified
 		 * state value.
 		 *
@@ -2213,6 +2213,8 @@ package feathers.controls
 				this.refreshIcon();
 			}
 
+			//most components don't need to check the state before passing
+			//properties to a child component, but button is an exception
 			if(textRendererInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshLabelStyles();

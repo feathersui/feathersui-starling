@@ -347,7 +347,7 @@ package feathers.controls
 		 *
 		 * @see #disabledFontStyles
 		 */
-		public function get fontStylesSet():TextFormat
+		public function get fontStyles():TextFormat
 		{
 			return this._fontStylesSet.format;
 		}
@@ -355,7 +355,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set fontStylesSet(value:TextFormat):void
+		public function set fontStyles(value:TextFormat):void
 		{
 			this._fontStylesSet.format = value;
 		}
@@ -377,7 +377,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #fontStylesSet
+		 * @see #fontStyles
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -807,7 +807,7 @@ package feathers.controls
 				this.refreshEnabled();
 			}
 
-			if(textRendererInvalid || stylesInvalid || stateInvalid)
+			if(textRendererInvalid || stylesInvalid)
 			{
 				this.refreshTextRendererStyles();
 			}

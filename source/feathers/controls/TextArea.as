@@ -19,6 +19,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 
 	import flash.geom.Point;
 	import flash.ui.Mouse;
@@ -30,6 +31,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextFormat;
 	import starling.utils.Pool;
 
 	/**
@@ -320,7 +322,7 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT:String = "feathers-text-input-error-callout";
+		public static const DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT:String = "feathers-text-area-error-callout";
 
 		/**
 		 * @private
@@ -342,6 +344,11 @@ package feathers.controls
 		public function TextArea()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this._measureViewPort = false;
 			this.addEventListener(TouchEvent.TOUCH, textArea_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textArea_removedFromStageHandler);
@@ -799,6 +806,75 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the text area's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text editor being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textEditorFactory</code> to set more advanced styles on the
+		 * text editor.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #disabledFontStyles
+		 * @see #setFontStylesForState()
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the text area's text when the text
+		 * area is disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text editor being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textEditorFactory</code> to set more advanced styles on the
+		 * text editor.</p>
+		 *
+		 * @default null
+		 *
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -1116,6 +1192,48 @@ package feathers.controls
 		}
 
 		/**
+		 * Gets the font styles to be used to display the text area's text when
+		 * the text area's <code>currentState</code> property matches the
+		 * specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setFontStylesForState()
+		 * @see #fontStyles
+		 */
+		public function getFontStylesForState(state:String):TextFormat
+		{
+			if(this._fontStylesSet === null)
+			{
+				return null;
+			}
+			return this._fontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the text area's text when
+		 * the text area's <code>currentState</code> property matches the
+		 * specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>fontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text editor has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setFontStylesForState()</code> and properties like
+		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function setFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._fontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
 		 * Gets the skin to be used by the text area when its
 		 * <code>currentState</code> property matches the specified state value.
 		 *
@@ -1313,6 +1431,7 @@ package feathers.controls
 		 */
 		protected function refreshTextEditorProperties():void
 		{
+			this.textEditorViewPort.fontStyles = this._fontStylesSet;
 			this.textEditorViewPort.maxChars = this._maxChars;
 			this.textEditorViewPort.restrict = this._restrict;
 			this.textEditorViewPort.isEditable = this._isEditable;
@@ -1635,6 +1754,14 @@ package feathers.controls
 			{
 				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }

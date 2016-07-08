@@ -651,18 +651,18 @@ package feathers.controls
 		}
 
 		/**
-		 * The font styles used to display the label's text when the label is
-		 * disabled.
+		 * The font styles used to display the button's text when the button is
+		 * selected.
 		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
+		 * <p>In the following example, the selected font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 * button.selectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
 		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles on the
+		 * <code>labelFactory</code> to set more advanced styles on the
 		 * text renderer.</p>
 		 *
 		 * @default null

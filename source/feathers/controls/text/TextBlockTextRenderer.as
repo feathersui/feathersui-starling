@@ -1878,6 +1878,7 @@ package feathers.controls.text
 				}
 				else if(this._fontStylesElementFormat === null)
 				{
+					//fallback to a default so that something is displayed
 					this._fontStylesElementFormat = new ElementFormat();
 				}
 			}

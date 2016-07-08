@@ -825,7 +825,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 * renderer.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
@@ -856,7 +856,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the disabled font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 * renderer.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may

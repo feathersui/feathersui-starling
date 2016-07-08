@@ -424,7 +424,7 @@ package feathers.controls
 		 * <p>In the following example, the font styles are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 * alert.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
 		 *
 		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 		 * number of common font styles, but the text renderer being used may
@@ -806,7 +806,7 @@ package feathers.controls
 				this.messageTextRenderer.text = this._message;
 			}
 
-			if(textRendererInvalid || stylesInvalid || stateInvalid)
+			if(textRendererInvalid || stylesInvalid)
 			{
 				this.refreshMessageStyles();
 			}
