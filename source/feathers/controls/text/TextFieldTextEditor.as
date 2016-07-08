@@ -345,9 +345,14 @@ package feathers.controls.text
 		protected var _currentTextFormat:flash.text.TextFormat;
 
 		/**
-		 * The current <code>flash.text.TextFormat</code> used to render the
-		 * text. Updated during validation, and may be <code>null</code> before
-		 * the first validation.
+		 * For debugging purposes, the current
+		 * <code>flash.text.TextFormat</code> used to render the text. Updated
+		 * during validation, and may be <code>null</code> before the first
+		 * validation.
+		 *
+		 * <p>Do not modify this value. It is meant for testing and debugging
+		 * only. Use the parent's <code>starling.text.TextFormat</code> font
+		 * styles APIs instead.</p>
 		 */
 		public function get currentTextFormat():flash.text.TextFormat
 		{
