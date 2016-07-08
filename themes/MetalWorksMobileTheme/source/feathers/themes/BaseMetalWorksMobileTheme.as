@@ -721,7 +721,6 @@ package feathers.themes
 			this.lightInputFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.lightDisabledInputFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 
-			//these are for components that don't use FTE
 			this.lightScrollTextFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.lightDisabledScrollTextFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 		}
@@ -2393,6 +2392,12 @@ package feathers.themes
 		protected function setSearchTextInputStyles(input:TextInput):void
 		{
 			this.setBaseTextInputStyles(input);
+
+			input.fontStyles = this.lightInputFontStyles;
+			input.disabledFontStyles = this.lightDisabledInputFontStyles;
+
+			input.promptFontStyles = this.lightFontStyles;
+			input.promptDisabledFontStyles = this.lightDisabledFontStyles;
 
 			var icon:ImageSkin = new ImageSkin(this.searchIconTexture);
 			icon.setTextureForState(TextInputState.DISABLED, this.searchIconDisabledTexture);

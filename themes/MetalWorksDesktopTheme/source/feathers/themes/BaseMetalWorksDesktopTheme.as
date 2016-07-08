@@ -129,7 +129,7 @@ package feathers.themes
 		/**
 		 * The stack of fonts to use for controls that don't use embedded fonts.
 		 */
-		public static const FONT_NAME_STACK:String = "SourceSansPro";
+		public static const FONT_NAME_STACK:String = "Source Sans Pro,Helvetica,_sans";
 
 		protected static const PRIMARY_BACKGROUND_COLOR:uint = 0x4a4137;
 		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
@@ -722,7 +722,6 @@ package feathers.themes
 			this.lightCenteredDisabledUIFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.CENTER, VerticalAlign.TOP);
 			this.lightCenteredDisabledUIFontStyles.bold = true;
 
-			//these are for components that don't use FTE
 			this.lightScrollTextFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.lightDisabledScrollTextFontStyles = new TextFormat(FONT_NAME_STACK, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 		}
