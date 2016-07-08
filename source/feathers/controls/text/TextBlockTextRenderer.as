@@ -405,6 +405,20 @@ package feathers.controls.text
 		}
 
 		/**
+		 * The current <code>flash.text.engine.ElementFormat</code> used to
+		 * render the text. Updated during validation, and may be
+		 * <code>null</code> before the first validation.
+		 */
+		public function get currentElementFormat():ElementFormat
+		{
+			if(this._textElement === null)
+			{
+				return null;
+			}
+			return this._textElement.elementFormat;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _fontStylesElementFormat:ElementFormat;

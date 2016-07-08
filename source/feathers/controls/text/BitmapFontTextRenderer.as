@@ -19,6 +19,7 @@ package feathers.controls.text
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
+	import flash.text.engine.ElementFormat;
 
 	import starling.display.Image;
 	import starling.display.MeshBatch;
@@ -151,7 +152,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var currentTextFormat:BitmapFontTextFormat;
+		protected var _currentTextFormat:BitmapFontTextFormat;
+
+		/**
+		 * The current <code>feathers.text.BitmapFontTextFormat</code> used to
+		 * render the text. Updated during validation, and may be
+		 * <code>null</code> before the first validation.
+		 */
+		public function get currentTextFormat():BitmapFontTextFormat
+		{
+			return this._currentTextFormat;
+		}
 
 		/**
 		 * @private
@@ -560,22 +571,22 @@ package feathers.controls.text
 				this.refreshTextFormat();
 			}
 
-			if(!this.currentTextFormat || this._text === null)
+			if(!this._currentTextFormat || this._text === null)
 			{
 				result.setTo(0, 0);
 				return result;
 			}
 
-			var font:BitmapFont = this.currentTextFormat.font;
-			var customSize:Number = this.currentTextFormat.size;
-			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
 			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
-			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
+			var lineHeight:Number = font.lineHeight * scale + this._currentTextFormat.leading;
 			var maxLineWidth:Number = this._explicitWidth;
 			if(maxLineWidth !== maxLineWidth) //isNaN
 			{
@@ -702,7 +713,7 @@ package feathers.controls.text
 			}
 			if(needsHeight)
 			{
-				result.y = currentY + lineHeight - this.currentTextFormat.leading;
+				result.y = currentY + lineHeight - this._currentTextFormat.leading;
 			}
 			else
 			{
@@ -831,7 +842,7 @@ package feathers.controls.text
 			{
 				this._textFormatChanged = false;
 				this._characterBatch.clear();
-				if(!this.currentTextFormat || this._text === null)
+				if(!this._currentTextFormat || this._text === null)
 				{
 					this.saveMeasurements(0, 0, 0, 0);
 					return;
@@ -856,21 +867,21 @@ package feathers.controls.text
 			}
 			this._numLines = 1;
 
-			var font:BitmapFont = this.currentTextFormat.font;
-			var customSize:Number = this.currentTextFormat.size;
-			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
 			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
-			var lineHeight:Number = font.lineHeight * scale + this.currentTextFormat.leading;
+			var lineHeight:Number = font.lineHeight * scale + this._currentTextFormat.leading;
 			var offsetX:Number = font.offsetX * scale;
 			var offsetY:Number = font.offsetY * scale;
 
 			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
-			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
+			var isAligned:Boolean = this._currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
 			{
@@ -1072,7 +1083,7 @@ package feathers.controls.text
 			this._characterBatch.x = this._batchX;
 
 			result.width = maxX;
-			result.height = currentY + lineHeight - this.currentTextFormat.leading;
+			result.height = currentY + lineHeight - this._currentTextFormat.leading;
 			return result;
 		}
 
@@ -1108,7 +1119,7 @@ package feathers.controls.text
 		 */
 		protected function alignBuffer(maxLineWidth:Number, currentLineWidth:Number, skipCount:int):void
 		{
-			var align:String = this.currentTextFormat.align;
+			var align:String = this._currentTextFormat.align;
 			if(align == TextFormatAlign.CENTER)
 			{
 				this.moveBufferedCharacters(Math.round((maxLineWidth - currentLineWidth) / 2), 0, skipCount);
@@ -1180,7 +1191,7 @@ package feathers.controls.text
 			HELPER_IMAGE.scaleX = HELPER_IMAGE.scaleY = scale;
 			HELPER_IMAGE.x = x;
 			HELPER_IMAGE.y = y;
-			HELPER_IMAGE.color = this.currentTextFormat.color;
+			HELPER_IMAGE.color = this._currentTextFormat.color;
 			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
 			HELPER_IMAGE.pixelSnapping = this._pixelSnapping;
 
@@ -1235,9 +1246,9 @@ package feathers.controls.text
 				}
 				textFormat = this._textFormat;
 			}
-			if(this.currentTextFormat !== textFormat)
+			if(this._currentTextFormat !== textFormat)
 			{
-				this.currentTextFormat = textFormat;
+				this._currentTextFormat = textFormat;
 				this._textFormatChanged = true;
 			}
 		}
@@ -1259,10 +1270,10 @@ package feathers.controls.text
 				return this._text;
 			}
 
-			var font:BitmapFont = this.currentTextFormat.font;
-			var customSize:Number = this.currentTextFormat.size;
-			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
 			if(scale !== scale) //isNaN
 			{

@@ -342,7 +342,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var currentTextFormat:flash.text.TextFormat;
+		protected var _currentTextFormat:flash.text.TextFormat;
+
+		/**
+		 * The current <code>flash.text.TextFormat</code> used to render the
+		 * text. Updated during validation, and may be <code>null</code> before
+		 * the first validation.
+		 */
+		public function get currentTextFormat():flash.text.TextFormat
+		{
+			return this._textFormat;
+		}
 
 		/**
 		 * @private
@@ -1779,10 +1789,10 @@ package feathers.controls.text
 				//comparison against currentTextFormat. if we save to a member
 				//variable and compare against that instead, it works.
 				//I guess text field creates a different TextFormat object.
-				var isFormatDifferent:Boolean = this._previousTextFormat != this.currentTextFormat;
-				this._previousTextFormat = this.currentTextFormat;
+				var isFormatDifferent:Boolean = this._previousTextFormat != this._currentTextFormat;
+				this._previousTextFormat = this._currentTextFormat;
 			}
-			textField.defaultTextFormat = this.currentTextFormat;
+			textField.defaultTextFormat = this._currentTextFormat;
 			
 			if(this._isHTML)
 			{
@@ -1835,9 +1845,13 @@ package feathers.controls.text
 			}
 			if(textFormat === null)
 			{
+				textFormat = this._textFormat;
+			}
+			if(textFormat === null)
+			{
 				textFormat = this.getTextFormatFromFontStyles();
 			}
-			this.currentTextFormat = textFormat;
+			this._currentTextFormat = textFormat;
 		}
 
 		/**
