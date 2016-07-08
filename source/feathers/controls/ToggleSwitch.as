@@ -11,11 +11,13 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IStateContext;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -40,6 +42,30 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the display object's state changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
+	 *
+	 * @see #currentState
+	 */
+	[Event(name="stateChange",type="starling.events.Event")]
+
+	/**
 	 * Similar to a light switch with on and off states. Generally considered an
 	 * alternative to a check box.
 	 *
@@ -55,7 +81,7 @@ package feathers.controls
 	 * @see ../../../help/toggle-switch.html How to use the Feathers ToggleSwitch component
 	 * @see feathers.controls.Check
 	 */
-	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl
+	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl, IStateContext
 	{
 		/**
 		 * @private
@@ -324,6 +350,35 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ToggleSwitch.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _currentState:String = ToggleState.NOT_SELECTED;
+
+		/**
+		 * The current state of the toggle switch.
+		 *
+		 * @see feathers.controls.ToggleState
+		 * @see #event:stateChange feathers.events.FeathersEventType.STATE_CHANGE
+		 */
+		public function get currentState():String
+		{
+			return this._currentState;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set isEnabled(value:Boolean):void
+		{
+			if(this._isEnabled === value)
+			{
+				return;
+			}
+			super.isEnabled = value;
+			this.resetState();
 		}
 
 		/**
@@ -1152,6 +1207,7 @@ package feathers.controls
 				return;
 			}
 			this._isSelected = value;
+			this.resetState();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -2352,6 +2408,49 @@ package feathers.controls
 			mask.height = 0;
 			this.onTextRenderer.mask = mask;
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function changeState(state:String):void
+		{
+			if(this._currentState === state)
+			{
+				return;
+			}
+			this._currentState = state;
+			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function resetState():void
+		{
+			if(this._isEnabled)
+			{
+				if(this._isSelected)
+				{
+					this.changeState(ToggleState.SELECTED);
+				}
+				else
+				{
+					this.changeState(ToggleState.NOT_SELECTED);
+				}
+			}
+			else
+			{
+				if(this._isSelected)
+				{
+					this.changeState(ToggleState.SELECTED_AND_DISABLED);
+				}
+				else
+				{
+					this.changeState(ToggleState.DISABLED);
+				}
+			}
 		}
 
 		/**
