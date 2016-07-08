@@ -35,6 +35,7 @@ package feathers.controls.text
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MathUtil;
@@ -243,7 +244,22 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var currentTextFormat:TextFormat;
+		protected var _currentTextFormat:flash.text.TextFormat;
+
+		/**
+		 * The current <code>flash.text.TextFormat</code> used to render the
+		 * text. Updated during validation, and may be <code>null</code> before
+		 * the first validation.
+		 */
+		public function get currentTextFormat():flash.text.TextFormat
+		{
+			return this._textFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fontStylesTextFormat:flash.text.TextFormat;
 
 		/**
 		 * @private
@@ -253,7 +269,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textFormat:TextFormat;
+		protected var _textFormat:flash.text.TextFormat;
 
 		/**
 		 * The font and styles used to draw the text.
@@ -270,7 +286,7 @@ package feathers.controls.text
 		 * @see #selectedTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get textFormat():TextFormat
+		public function get textFormat():flash.text.TextFormat
 		{
 			return this._textFormat;
 		}
@@ -278,7 +294,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set textFormat(value:TextFormat):void
+		public function set textFormat(value:flash.text.TextFormat):void
 		{
 			if(this._textFormat == value)
 			{
@@ -291,7 +307,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _disabledTextFormat:TextFormat;
+		protected var _disabledTextFormat:flash.text.TextFormat;
 
 		/**
 		 * The font and styles used to draw the text when the component is
@@ -309,7 +325,7 @@ package feathers.controls.text
 		 * @see #selectedTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get disabledTextFormat():TextFormat
+		public function get disabledTextFormat():flash.text.TextFormat
 		{
 			return this._disabledTextFormat;
 		}
@@ -317,7 +333,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set disabledTextFormat(value:TextFormat):void
+		public function set disabledTextFormat(value:flash.text.TextFormat):void
 		{
 			if(this._disabledTextFormat == value)
 			{
@@ -330,7 +346,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _selectedTextFormat:TextFormat;
+		protected var _selectedTextFormat:flash.text.TextFormat;
 
 		/**
 		 * The font and styles used to draw the text when the
@@ -350,7 +366,7 @@ package feathers.controls.text
 		 * @see #disabledTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get selectedTextFormat():TextFormat
+		public function get selectedTextFormat():flash.text.TextFormat
 		{
 			return this._selectedTextFormat;
 		}
@@ -358,7 +374,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set selectedTextFormat(value:TextFormat):void
+		public function set selectedTextFormat(value:flash.text.TextFormat):void
 		{
 			if(this._selectedTextFormat == value)
 			{
@@ -1279,7 +1295,7 @@ package feathers.controls.text
 		 * @see #stateContext
 		 * @see #textFormat
 		 */
-		public function setTextFormatForState(state:String, textFormat:TextFormat):void
+		public function setTextFormatForState(state:String, textFormat:flash.text.TextFormat):void
 		{
 			if(textFormat)
 			{
@@ -1374,7 +1390,7 @@ package feathers.controls.text
 				else
 				{
 					this.textField.styleSheet = null;
-					this.textField.defaultTextFormat = this.currentTextFormat;
+					this.textField.defaultTextFormat = this._currentTextFormat;
 				}
 				if(this._isHTML)
 				{
@@ -1730,13 +1746,13 @@ package feathers.controls.text
 		 */
 		protected function refreshTextFormat():void
 		{
-			var textFormat:TextFormat;
+			var textFormat:flash.text.TextFormat;
 			if(this._stateContext && this._textFormatForState)
 			{
 				var currentState:String = this._stateContext.currentState;
 				if(currentState in this._textFormatForState)
 				{
-					textFormat = TextFormat(this._textFormatForState[currentState]);
+					textFormat = flash.text.TextFormat(this._textFormatForState[currentState]);
 				}
 			}
 			if(!textFormat && !this._isEnabled && this._disabledTextFormat)
@@ -1748,17 +1764,41 @@ package feathers.controls.text
 			{
 				textFormat = this._selectedTextFormat;
 			}
-			if(!textFormat)
+			if(textFormat === null)
 			{
-				//let's fall back to using Starling's embedded mini font if no
-				//text format has been specified
-				if(!this._textFormat)
-				{
-					this._textFormat = new TextFormat();
-				}
 				textFormat = this._textFormat;
 			}
-			this.currentTextFormat = textFormat;
+			if(textFormat === null)
+			{
+				textFormat = this.getTextFormatFromFontStyles();
+			}
+			this._currentTextFormat = textFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getTextFormatFromFontStyles():flash.text.TextFormat
+		{
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
+				this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				var fontStylesFormat:starling.text.TextFormat;
+				if(this._fontStyles !== null)
+				{
+					fontStylesFormat = this._fontStyles.getTextFormatForTarget(this);
+				}
+				if(fontStylesFormat !== null)
+				{
+					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+				}
+				else if(this._fontStylesTextFormat === null)
+				{
+					//fallback to a default so that something is displayed
+					this._fontStylesTextFormat = new flash.text.TextFormat();
+				}
+			}
+			return this._fontStylesTextFormat;
 		}
 
 		/**
