@@ -23,6 +23,7 @@ package feathers.controls.text
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
+	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.MathUtil;
@@ -147,6 +148,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _fontStylesTextFormat:BitmapFontTextFormat;
+
+		/**
+		 * @private
+		 */
 		protected var _currentTextFormat:BitmapFontTextFormat;
 
 		/**
@@ -228,7 +234,7 @@ package feathers.controls.text
 		{
 			return this._textFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -506,12 +512,12 @@ package feathers.controls.text
 		 */
 		public function get baseline():Number
 		{
-			if(!this._textFormat)
+			if(this._currentTextFormat === null)
 			{
 				return 0;
 			}
-			var font:BitmapFont = this._textFormat.font;
-			var formatSize:Number = this._textFormat.size;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var formatSize:Number = this._currentTextFormat.size;
 			var fontSizeScale:Number = formatSize / font.size;
 			if(fontSizeScale !== fontSizeScale) //isNaN
 			{
@@ -1085,7 +1091,7 @@ package feathers.controls.text
 
 			if(isAligned && !hasExplicitWidth)
 			{
-				var align:String = this._textFormat.align;
+				var align:String = this._currentTextFormat.align;
 				if(align == TextFormatAlign.CENTER)
 				{
 					this._batchX = (maxX - maxLineWidth) / 2;
@@ -1265,24 +1271,52 @@ package feathers.controls.text
 			}
 			if(textFormat === null)
 			{
-				//let's fall back to using Starling's embedded mini font if no
-				//text format has been specified
-				if(!this._textFormat)
-				{
-					//if it's not registered, do that first
-					if(!TextField.getBitmapFont(BitmapFont.MINI))
-					{
-						TextField.registerBitmapFont(new BitmapFont());
-					}
-					this._textFormat = new BitmapFontTextFormat(BitmapFont.MINI, NaN, 0x000000);
-				}
 				textFormat = this._textFormat;
+			}
+			if(textFormat === null)
+			{
+				textFormat = this.getTextFormatFromFontStyles();
 			}
 			if(this._currentTextFormat !== textFormat)
 			{
 				this._currentTextFormat = textFormat;
 				this._textFormatChanged = true;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getTextFormatFromFontStyles():BitmapFontTextFormat
+		{
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
+				this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				var textFormat:TextFormat;
+				if(this._fontStyles !== null)
+				{
+					textFormat = this._fontStyles.getTextFormatForTarget(this);
+				}
+				if(textFormat !== null)
+				{
+					this._fontStylesTextFormat = new BitmapFontTextFormat(
+						textFormat.font, textFormat.size, textFormat.color,
+						textFormat.horizontalAlign, textFormat.leading);
+				}
+				else if(this._fontStylesTextFormat === null)
+				{
+					//let's fall back to using Starling's embedded mini font if no
+					//text format has been specified
+
+					//if it's not registered, do that first
+					if(!TextField.getBitmapFont(BitmapFont.MINI))
+					{
+						TextField.registerBitmapFont(new BitmapFont());
+					}
+					this._fontStylesTextFormat = new BitmapFontTextFormat(BitmapFont.MINI, NaN, 0x000000);
+				}
+			}
+			return this._fontStylesTextFormat;
 		}
 
 		/**

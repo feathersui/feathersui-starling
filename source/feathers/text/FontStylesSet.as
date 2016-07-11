@@ -262,7 +262,7 @@ package feathers.text
 				//the disabled format is a convenience that can cover multiple
 				//disabled states
 				if(textFormat === null && this._disabledFormat !== null &&
-					stateContext is IFeathersControl && !IFeathersControl(target).isEnabled)
+					stateContext is IFeathersControl && !IFeathersControl(stateContext).isEnabled)
 				{
 					textFormat = this._disabledFormat;
 				}

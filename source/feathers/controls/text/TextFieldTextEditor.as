@@ -8,17 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.BaseTextEditor;
-	import feathers.core.FeathersControl;
 	import feathers.core.FocusManager;
 	import feathers.core.IFeathersControl;
 	import feathers.core.INativeFocusOwner;
-	import feathers.core.IStateContext;
-	import feathers.core.IStateObserver;
 	import feathers.core.ITextEditor;
-	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -40,11 +35,6 @@ package feathers.controls.text
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
-	import flash.text.engine.ElementFormat;
-	import flash.text.engine.FontDescription;
-	import flash.text.engine.FontLookup;
-	import flash.text.engine.FontPosture;
-	import flash.text.engine.FontWeight;
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;

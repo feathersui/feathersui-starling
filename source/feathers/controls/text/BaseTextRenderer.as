@@ -10,12 +10,10 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
-	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 	import feathers.text.FontStylesSet;
 
 	import starling.events.Event;
-	import starling.text.TextFormat;
 
 	/**
 	 * A base class for text renderers that implements some common properties.
