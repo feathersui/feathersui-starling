@@ -7,12 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IStateContext;
-	import feathers.core.IStateObserver;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
-	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -258,7 +255,7 @@ package feathers.controls.text
 		 */
 		public function get currentTextFormat():flash.text.TextFormat
 		{
-			return this._textFormat;
+			return this._currentTextFormat;
 		}
 
 		/**
@@ -1285,6 +1282,25 @@ package feathers.controls.text
 		}
 
 		/**
+		 * Gets the advanced <code>flash.text.TextFormat</code> font formatting
+		 * passed in using <code>setTextFormatForState()</code> for the
+		 * specified state.
+		 *
+		 * <p>If an <code>flash.text.TextFormat</code> is not defined for a
+		 * specific state, returns <code>null</code>.</p>
+		 *
+		 * @see #setTextFormatForState()
+		 */
+		public function getTextFormatForState(state:String):flash.text.TextFormat
+		{
+			if(this._textFormatForState === null)
+			{
+				return null;
+			}
+			return flash.text.TextFormat(this._textFormatForState[state]);
+		}
+
+		/**
 		 * Sets the <code>TextFormat</code> to be used by the text renderer when
 		 * the <code>currentState</code> property of the
 		 * <code>stateContext</code> matches the specified state value.
@@ -1752,27 +1768,42 @@ package feathers.controls.text
 		protected function refreshTextFormat():void
 		{
 			var textFormat:flash.text.TextFormat;
-			if(this._stateContext && this._textFormatForState)
+			if(this._stateContext !== null)
 			{
-				var currentState:String = this._stateContext.currentState;
-				if(currentState in this._textFormatForState)
+				if(this._textFormatForState !== null)
 				{
-					textFormat = flash.text.TextFormat(this._textFormatForState[currentState]);
+					var currentState:String = this._stateContext.currentState;
+					if(currentState in this._textFormatForState)
+					{
+						textFormat = flash.text.TextFormat(this._textFormatForState[currentState]);
+					}
+				}
+				if(textFormat === null && this._disabledTextFormat !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					textFormat = this._disabledTextFormat;
+				}
+				if(textFormat === null && this._selectedTextFormat !== null &&
+					this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+				{
+					textFormat = this._selectedTextFormat;
 				}
 			}
-			if(!textFormat && !this._isEnabled && this._disabledTextFormat)
+			else //no state context
 			{
-				textFormat = this._disabledTextFormat;
-			}
-			if(!textFormat && this._selectedTextFormat &&
-				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
-			{
-				textFormat = this._selectedTextFormat;
+				//we can still check if the text renderer is disabled to see if
+				//we should use disabledTextFormat
+				if(!this._isEnabled && this._disabledTextFormat !== null)
+				{
+					textFormat = this._disabledTextFormat;
+				}
 			}
 			if(textFormat === null)
 			{
 				textFormat = this._textFormat;
 			}
+			//flash.text.TextFormat is considered more advanced, so it gets
+			//precedence over starling.text.TextFormat font styles
 			if(textFormat === null)
 			{
 				textFormat = this.getTextFormatFromFontStyles();

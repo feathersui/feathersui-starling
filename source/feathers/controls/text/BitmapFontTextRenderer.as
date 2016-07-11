@@ -7,23 +7,18 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IStateContext;
-	import feathers.core.IStateObserver;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
-	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.BitmapFontTextFormat;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
-	import flash.text.engine.ElementFormat;
 
 	import starling.display.Image;
 	import starling.display.MeshBatch;
-	import starling.events.Event;
 	import starling.rendering.Painter;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
@@ -728,6 +723,25 @@ package feathers.controls.text
 		}
 
 		/**
+		 * Gets the advanced <code>BitmapFontTextFormat</code> font formatting
+		 * passed in using <code>setTextFormatForState()</code> for the
+		 * specified state.
+		 *
+		 * <p>If an <code>BitmapFontTextFormat</code> is not defined for a
+		 * specific state, returns <code>null</code>.</p>
+		 *
+		 * @see #setTextFormatForState()
+		 */
+		public function getTextFormatForState(state:String):BitmapFontTextFormat
+		{
+			if(this._textFormatForState === null)
+			{
+				return null;
+			}
+			return BitmapFontTextFormat(this._textFormatForState[state]);
+		}
+
+		/**
 		 * Sets the <code>BitmapFontTextFormat</code> to be used by the text
 		 * renderer when the <code>currentState</code> property of the
 		 * <code>stateContext</code> matches the specified state value.
@@ -1219,24 +1233,37 @@ package feathers.controls.text
 		protected function refreshTextFormat():void
 		{
 			var textFormat:BitmapFontTextFormat;
-			if(this._stateContext && this._textFormatForState)
+			if(this._stateContext !== null)
 			{
-				var currentState:String = this._stateContext.currentState;
-				if(currentState in this._textFormatForState)
+				if(this._textFormatForState !== null)
 				{
-					textFormat = BitmapFontTextFormat(this._textFormatForState[currentState]);
+					var currentState:String = this._stateContext.currentState;
+					if(currentState in this._textFormatForState)
+					{
+						textFormat = BitmapFontTextFormat(this._textFormatForState[currentState]);
+					}
+				}
+				if(textFormat === null && this._disabledTextFormat !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					textFormat = this._disabledTextFormat;
+				}
+				if(textFormat === null && this._selectedTextFormat !== null &&
+					this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+				{
+					textFormat = this._selectedTextFormat;
 				}
 			}
-			if(!textFormat && !this._isEnabled && this._disabledTextFormat)
+			else //no state context
 			{
-				textFormat = this._disabledTextFormat;
+				//we can still check if the text renderer is disabled to see if
+				//we should use disabledTextFormat
+				if(!this._isEnabled && this._disabledTextFormat !== null)
+				{
+					textFormat = this._disabledTextFormat;
+				}
 			}
-			if(!textFormat && this._selectedTextFormat &&
-				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
-			{
-				textFormat = this._selectedTextFormat;
-			}
-			if(!textFormat)
+			if(textFormat === null)
 			{
 				//let's fall back to using Starling's embedded mini font if no
 				//text format has been specified

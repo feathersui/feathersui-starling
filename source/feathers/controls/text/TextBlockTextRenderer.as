@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.layout.HorizontalAlign;
@@ -1422,6 +1423,25 @@ package feathers.controls.text
 		}
 
 		/**
+		 * Gets the advanced <code>ElementFormat</code> font formatting passed
+		 * in using <code>setElementFormatForState()</code> for the specified
+		 * state.
+		 *
+		 * <p>If an <code>ElementFormat</code> is not defined for a specific
+		 * state, returns <code>null</code>.</p>
+		 * 
+		 * @see #setElementFormatForState()
+		 */
+		public function getElementFormatForState(state:String):ElementFormat
+		{
+			if(this._elementFormatForState === null)
+			{
+				return null;
+			}
+			return ElementFormat(this._elementFormatForState[state]);
+		}
+
+		/**
 		 * Sets the advanced <code>ElementFormat</code> font formatting to be
 		 * used by the text renderer when the <code>currentState</code> property
 		 * of the <code>stateContext</code> matches the specified state value.
@@ -1849,27 +1869,42 @@ package feathers.controls.text
 				return;
 			}
 			var elementFormat:ElementFormat;
-			if(this._stateContext !== null && this._elementFormatForState !== null)
+			if(this._stateContext !== null)
 			{
-				var currentState:String = this._stateContext.currentState;
-				if(currentState in this._elementFormatForState)
+				if(this._elementFormatForState !== null)
 				{
-					elementFormat = ElementFormat(this._elementFormatForState[currentState]);
+					var currentState:String = this._stateContext.currentState;
+					if(currentState in this._elementFormatForState)
+					{
+						elementFormat = ElementFormat(this._elementFormatForState[currentState]);
+					}
+				}
+				if(elementFormat === null && this._disabledElementFormat !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					elementFormat = this._disabledElementFormat;
+				}
+				if(elementFormat === null && this._selectedElementFormat !== null &&
+					this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+				{
+					elementFormat = this._selectedElementFormat;
 				}
 			}
-			if(elementFormat === null && !this._isEnabled && this._disabledElementFormat !== null)
+			else //no state context
 			{
-				elementFormat = this._disabledElementFormat;
-			}
-			if(elementFormat === null && this._selectedElementFormat !== null &&
-				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
-			{
-				elementFormat = this._selectedElementFormat;
+				//we can still check if the text renderer is disabled to see if
+				//we should use disabledElementFormat
+				if(!this._isEnabled && this._disabledElementFormat !== null)
+				{
+					elementFormat = this._disabledElementFormat;
+				}
 			}
 			if(elementFormat === null)
 			{
 				elementFormat = this._elementFormat;
 			}
+			//ElementFormat is considered more advanced, so it gets precedence
+			//over starling.text.TextFormat font styles
 			if(elementFormat === null)
 			{
 				elementFormat = this.getElementFormatFromFontStyles();
