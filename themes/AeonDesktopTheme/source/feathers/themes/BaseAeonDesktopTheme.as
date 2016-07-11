@@ -1965,6 +1965,7 @@ package feathers.themes
 			skin.setTextureForState(ButtonState.HOVER, this.hScrollBarThumbHoverSkinTexture);
 			skin.setTextureForState(ButtonState.DOWN, this.hScrollBarThumbDownSkinTexture);
 			skin.scale9Grid = HORIZONTAL_SCROLL_BAR_THUMB_SCALE_9_GRID;
+			skin.minWidth = this.smallControlSize;
 			thumb.defaultSkin = skin;
 
 			thumb.defaultIcon = new Image(this.hScrollBarThumbIconTexture);
@@ -2025,6 +2026,7 @@ package feathers.themes
 			skin.setTextureForState(ButtonState.HOVER, this.vScrollBarThumbHoverSkinTexture);
 			skin.setTextureForState(ButtonState.DOWN, this.vScrollBarThumbDownSkinTexture);
 			skin.scale9Grid = VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID;
+			skin.minHeight = this.smallControlSize;
 			thumb.defaultSkin = skin;
 
 			thumb.defaultIcon = new Image(this.vScrollBarThumbIconTexture);

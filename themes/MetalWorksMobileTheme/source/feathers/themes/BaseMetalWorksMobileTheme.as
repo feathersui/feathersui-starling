@@ -2117,7 +2117,7 @@ package feathers.themes
 		{
 			var defaultSkin:Image = new Image(this.horizontalScrollBarThumbSkinTexture);
 			defaultSkin.scale9Grid = HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID;
-			defaultSkin.width = this.smallGutterSize;
+			defaultSkin.width = this.gutterSize;
 			thumb.defaultSkin = defaultSkin;
 			thumb.hasLabelTextRenderer = false;
 		}
@@ -2126,7 +2126,7 @@ package feathers.themes
 		{
 			var defaultSkin:Image = new Image(this.verticalScrollBarThumbSkinTexture);
 			defaultSkin.scale9Grid = VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID;
-			defaultSkin.height = this.smallGutterSize;
+			defaultSkin.height = this.gutterSize;
 			thumb.defaultSkin = defaultSkin;
 			thumb.hasLabelTextRenderer = false;
 		}
