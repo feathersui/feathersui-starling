@@ -541,8 +541,9 @@ package feathers.controls.text
 		protected var _selectedElementFormat:ElementFormat;
 
 		/**
-		 * Advanced font formatting used to draw the text when the parent
-		 * component is selected, if <code>selectedFontStyles</code> and
+		 * Advanced font formatting used to draw the text when the
+		 * <code>stateContext</code> is selected, if
+		 * <code>selectedFontStyles</code> and
 		 * <code>starling.text.TextFormat</code> cannot be used on the parent
 		 * component because the full capabilities of Flash Text Engine are
 		 * required.

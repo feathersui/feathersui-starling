@@ -276,12 +276,21 @@ package feathers.controls.text
 		protected var _textFormat:flash.text.TextFormat;
 
 		/**
-		 * The font and styles used to draw the text.
+		 * Advanced font formatting used to draw the text, if
+		 * <code>fontStyles</code> and <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the full capabilities
+		 * of <code>flash.text.TextField</code> are required.
 		 *
 		 * <p>In the following example, the text format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.textFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>flash.text.TextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 *
@@ -314,14 +323,23 @@ package feathers.controls.text
 		protected var _disabledTextFormat:flash.text.TextFormat;
 
 		/**
-		 * The font and styles used to draw the text when the component is
-		 * disabled.
+		 * Advanced font formatting used to draw the text when the component is
+		 * disabled, if <code>disabledFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of
+		 * <code>flash.text.TextField</code> are required.
 		 *
 		 * <p>In the following example, the disabled text format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.isEnabled = false;
 		 * textRenderer.disabledTextFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>flash.text.TextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 *
@@ -353,6 +371,13 @@ package feathers.controls.text
 		protected var _selectedTextFormat:flash.text.TextFormat;
 
 		/**
+		 * Advanced font formatting used to draw the text when the
+		 * <code>stateContext</code> is selected, if
+		 * <code>selectedFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of
+		 * <code>flash.text.TextField</code> are required.
+		 * 
 		 * The font and styles used to draw the text when the
 		 * <code>stateContext</code> implements the <code>IToggle</code>
 		 * interface, and it is selected.
@@ -361,6 +386,12 @@ package feathers.controls.text
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.selectedTextFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>flash.text.TextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 *
@@ -1311,13 +1342,14 @@ package feathers.controls.text
 		}
 
 		/**
-		 * Sets the <code>TextFormat</code> to be used by the text renderer when
-		 * the <code>currentState</code> property of the
-		 * <code>stateContext</code> matches the specified state value.
+		 * Sets the advanced <code>flash.text.TextFormat</code> font formatting
+		 * to be used by the text renderer when the <code>currentState</code>
+		 * property of the <code>stateContext</code> matches the specified state
+		 * value.
 		 *
-		 * <p>If an <code>TextFormat</code> is not defined for a specific
-		 * state, the value of the <code>textFormat</code> property will be
-		 * used instead.</p>
+		 * <p>If a <code>flash.text.TextFormat</code> is not defined for a
+		 * specific state, the value of the <code>textFormat</code> property
+		 * will be used instead.</p>
 		 *
 		 * <p>If the <code>disabledTextFormat</code> property is not
 		 * <code>null</code> and the <code>isEnabled</code> property is
