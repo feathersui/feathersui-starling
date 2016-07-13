@@ -128,6 +128,8 @@ package feathers.examples.componentsExplorer.themes
 
 		protected function setCalloutHeaderStyles(header:Header):void
 		{
+			header.fontStyles = this.largeLightFontStyles;
+			header.disabledFontStyles = this.largeLightFontStyles;
 			header.paddingBottom = this.smallGutterSize;
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
