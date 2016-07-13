@@ -22,6 +22,7 @@ package feathers.controls.text
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
+	import flash.text.FontType;
 	import flash.text.GridFitType;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
@@ -36,6 +37,7 @@ package feathers.controls.text
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MathUtil;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.TextField</code> and draws
@@ -442,8 +444,16 @@ package feathers.controls.text
 		protected var _embedFonts:Boolean = false;
 
 		/**
-		 * Determines if the TextField should use an embedded font or not. If
-		 * the specified font is not embedded, the text is not displayed.
+		 * If advanced <code>flash.text.TextFormat</code> styles are specified,
+		 * determines if the TextField should use an embedded font or not. If
+		 * the specified font is not embedded, the text may not be displayed at
+		 * all.
+		 *
+		 * <p>If the font styles are passed in from the parent component, the
+		 * text renderer will automatically detect if a font is embedded or not,
+		 * and the <code>embedFonts</code> property will be ignored if it is set
+		 * to <code>false</code>. Setting it to <code>true</code> will force the
+		 * <code>TextField</code> to always try to use embedded fonts.</p>
 		 *
 		 * <p>In the following example, the font is embedded:</p>
 		 *
@@ -1403,13 +1413,27 @@ package feathers.controls.text
 			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				this.textField.wordWrap = this._wordWrap;
-				this.textField.embedFonts = this._embedFonts;
 				if(this._styleSheet)
 				{
+					this.textField.embedFonts = this._embedFonts;
 					this.textField.styleSheet = this._styleSheet;
 				}
 				else
 				{
+					if(!this._embedFonts &&
+						this._currentTextFormat === this._fontStylesTextFormat)
+					{
+						//when font styles are passed in from the parent component, we
+						//automatically determine if the TextField should use embedded
+						//fonts, unless embedFonts is explicitly true
+						this.textField.embedFonts = SystemUtil.isEmbeddedFont(
+							this._currentTextFormat.font, this._currentTextFormat.bold,
+							this._currentTextFormat.italic, FontType.EMBEDDED);
+					}
+					else
+					{
+						this.textField.embedFonts = this._embedFonts;
+					}
 					this.textField.styleSheet = null;
 					this.textField.defaultTextFormat = this._currentTextFormat;
 				}

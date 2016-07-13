@@ -30,6 +30,7 @@ package feathers.controls.text
 	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
 	import flash.text.AntiAliasType;
+	import flash.text.FontType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -51,6 +52,7 @@ package feathers.controls.text
 	import starling.utils.MathUtil;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -446,8 +448,16 @@ package feathers.controls.text
 		protected var _embedFonts:Boolean = false;
 
 		/**
-		 * Determines if the TextField should use an embedded font or not. If
-		 * the specified font is not embedded, the text is not displayed.
+		 * If advanced <code>flash.text.TextFormat</code> styles are specified,
+		 * determines if the TextField should use an embedded font or not. If
+		 * the specified font is not embedded, the text may not be displayed at
+		 * all.
+		 *
+		 * <p>If the font styles are passed in from the parent component, the
+		 * text renderer will automatically detect if a font is embedded or not,
+		 * and the <code>embedFonts</code> property will be ignored if it is set
+		 * to <code>false</code>. Setting it to <code>true</code> will force the
+		 * <code>TextField</code> to always try to use embedded fonts.</p>
 		 *
 		 * <p>In the following example, the font is embedded:</p>
 		 *
@@ -1795,10 +1805,23 @@ package feathers.controls.text
 			textField.displayAsPassword = this._displayAsPassword;
 			textField.wordWrap = this._wordWrap;
 			textField.multiline = this._multiline;
-			textField.embedFonts = this._embedFonts;
+			if(!this._embedFonts &&
+				this._currentTextFormat === this._fontStylesTextFormat)
+			{
+				//when font styles are passed in from the parent component, we
+				//automatically determine if the TextField should use embedded
+				//fonts, unless embedFonts is explicitly true
+				this.textField.embedFonts = SystemUtil.isEmbeddedFont(
+					this._currentTextFormat.font, this._currentTextFormat.bold,
+					this._currentTextFormat.italic, FontType.EMBEDDED);
+			}
+			else
+			{
+				this.textField.embedFonts = this._embedFonts;
+			}
 			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			textField.selectable = this._isEnabled && (this._isEditable || this._isSelectable);
-			
+
 			if(textField === this.textField)
 			{
 				//for some reason, textField.defaultTextFormat always fails
@@ -1809,7 +1832,7 @@ package feathers.controls.text
 				this._previousTextFormat = this._currentTextFormat;
 			}
 			textField.defaultTextFormat = this._currentTextFormat;
-			
+
 			if(this._isHTML)
 			{
 				if(isFormatDifferent || textField.htmlText != this._text)

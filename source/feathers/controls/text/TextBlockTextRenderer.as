@@ -49,6 +49,7 @@ package feathers.controls.text
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MathUtil;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
@@ -83,11 +84,6 @@ package feathers.controls.text
 	 */
 	public class TextBlockTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
-		/**
-		 * @private
-		 */
-		private static var EMBEDDED_FONTS:Array;
-
 		/**
 		 * @private
 		 */
@@ -1942,7 +1938,7 @@ package feathers.controls.text
 						fontPosture = FontPosture.ITALIC;
 					}
 					var fontLookup:String = FontLookup.DEVICE;
-					if(this.isFontEmbedded(textFormat))
+					if(SystemUtil.isEmbeddedFont(textFormat.font, textFormat.bold, textFormat.italic, FontType.EMBEDDED_CFF))
 					{
 						fontLookup = FontLookup.EMBEDDED_CFF;
 					}
@@ -2423,32 +2419,6 @@ package feathers.controls.text
 					line.x = 0;
 				}
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function isFontEmbedded(format:TextFormat):Boolean
-		{
-			if(EMBEDDED_FONTS === null)
-			{
-				EMBEDDED_FONTS = Font.enumerateFonts(false);
-			}
-
-			for each(var font:Font in EMBEDDED_FONTS)
-			{
-				var style:String = font.fontStyle;
-				var isBold:Boolean = style === FontStyle.BOLD || style === FontStyle.BOLD_ITALIC;
-				var isItalic:Boolean = style === FontStyle.ITALIC || style === FontStyle.BOLD_ITALIC;
-
-				if(format.font === font.fontName && font.fontType === FontType.EMBEDDED_CFF &&
-					format.italic === isItalic && format.bold === isBold)
-				{
-					return true;
-				}
-			}
-
-			return false;
 		}
 	}
 }
