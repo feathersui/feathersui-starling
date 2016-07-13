@@ -7,6 +7,10 @@ author: Josh Tynjala
 
 The [`ButtonGroup`](../api-reference/feathers/controls/ButtonGroup.html) class displays a set of [buttons](button.html) displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog might populate its OK/Cancel/Yes/No/etc. buttons using a `ButtonGroup`.
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `ButtonGroup`](#skinning-a-buttongroup)
+
 ## The Basics
 
 First, let's create a `ButtonGroup` control and add it to the display list:
@@ -31,7 +35,7 @@ Like the [`List`](list.html) or [`TabBar`](tab-bar.html) components, the `Button
 
 A number of fields in each item from the collection are automatically detected by the button group. For instance, we set the `label` on each button above. Each of a button's icon states may also be used here, along with `isToggle` and `isSelected` to make them into toggling buttons.
 
-<aside class="info">For full details about which properties can be set on tabs, see the description of the [`dataProvider`](../api-reference/feathers/controls/TabBar.html#dataProvider) property.</aside>
+<aside class="info">For full details about which properties can be set on tabs, see the description of the [`dataProvider`](../api-reference/feathers/controls/buttonGroup.html#dataProvider) property.</aside>
 
 Additionally, we can add a few event listeners to each button, including `Event.TRIGGERED` and `Event.CHANGE` (using the `String` values, `triggered` and `change`). In the example above, we add a listener to `triggered`. The listener on the first item might look something like this:
 
@@ -45,7 +49,28 @@ function oneButton_triggeredHandler( event:Event ):void
 
 ## Skinning a `ButtonGroup`
 
-A button group's buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about what skin and style properties are available, see the [`ButtonGroup` API reference](../api-reference/feathers/controls/ButtonGroup.html). We'll look at a few of the most common properties below.
+A button group's buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about which properties are available, see the [`ButtonGroup` API reference](../api-reference/feathers/controls/ButtonGroup.html). We'll look at a few of the most common ways of styling a button group below.
+
+### Using a theme? Some tips for customizing an individual button group's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the button group's layout properties with an `AddOnFunctionStyleProvider`:
+
+``` code
+function setExtraButtonGroupStyles( group:ButtonGroup ):void
+{
+    group.direction = Direction.VERTICAL;
+    group.gap = 10;
+    group.padding = 12;
+}
+group.styleProvider = new AddOnFunctionStyleProvider(
+    group.styleProvider, setExtraButtonGroupStyles );
+```
+
+Our changes only affect the layout. The button group will continue to use the theme's other styles.
 
 ### Layout
 
@@ -61,31 +86,6 @@ The [`firstGap`](../api-reference/feathers/controls/ButtonGroup.html#firstGap) a
 
 With a vertical layout, each button's width will match the width of the button group. Similarly, with a horizontal layout, the buttons will fill the entire height.
 
-### Targeting a `ButtonGroup` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( ButtonGroup ).defaultStyleFunction = setButtonGroupStyles;
-```
-
-If you want to customize a specific button group to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-group.styleNameList.add( "custom-button-group" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( ButtonGroup )
-    .setFunctionForStyleName( "custom-button-group", setCustomButtonGroupStyles );
-```
-
-Trying to change the button group's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button group was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the button group's properties directly.
-
 ### Skinning the Buttons
 
 This section only explains how to access the button sub-components. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
@@ -96,7 +96,17 @@ If you're creating a [theme](themes.html), you can target the [`ButtonGroup.DEFA
 
 ``` code
 getStyleProviderForClass( Button )
-    .setFunctionForStyleName( ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, setButtonBarButtonStyles );
+    .setFunctionForStyleName( ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, setButtonGroupButtonStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setButtonGroupButtonStyles( button:Button ):void
+{
+    button.defaultSkin = new Image( texture );
+    button.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -120,20 +130,14 @@ If you are not using a theme, you can use [`buttonFactory`](../api-reference/fea
 group.buttonFactory = function():Button
 {
     var button:Button = new Button();
+
+    //skin the buttons here, if you're not using a theme
     button.defaultSkin = new Image( texture );
-    button.downSkin = new Image( texture );
-    button.defaultLabelProperties.textFormat = new TextFormat("Arial", 24, 0x323232, true );
+    button.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+
     return button;
 };
 ```
-
-In addition to the `buttonFactory`, you may use the [`buttonProperties`](../api-reference/feathers/controls/ButtonGroup.html#buttonProperties) to pass properties to the buttons. The values of these properties are shared by *all* buttons, so display objects should never be passed in using `buttonProperties`. A display object may only have one parent, so passing in a display object as a skin to every button is impossible. Other types of styles, like gap and padding, can be passed in through `buttonProperties`:
-
-``` code
-group.buttonProperties.gap = 20;
-```
-
-In general, you should only pass properties to the button group's buttons through `buttonProperties` if you need to change these values after the buttons are created. Using `buttonFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the First and Last Buttons
 

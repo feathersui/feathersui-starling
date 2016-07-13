@@ -7,6 +7,14 @@ author: Josh Tynjala
 
 The [`AutoComplete`](../api-reference/feathers/controls/AutoComplete.html) class extends the [`TextInput`](text-input.html) component to add a pop-up list of suggestions as you type.
 
+-   [The Basics](#the-basics)
+
+-   [Provide completion suggestions](#provide-completion-suggestions)
+
+-   [Customize suggestion behavior](#customize-suggestion-behavior)
+
+-   [Skinning an `AutoComplete`](#skinning-an-autocomplete)
+
 ## The Basics
 
 First, let's create an `AutoComplete` control and add it to the display list:
@@ -18,7 +26,7 @@ this.addChild( input );
 
 At this point, the `AutoComplete` will behave like a normal [`TextInput`](text-input.html) without suggestions. All properties available to a `TextInput` (like [`maxChars`](../api-reference/feathers/controls/TextInput.html#maxChars) or [`prompt`](../api-reference/feathers/controls/TextInput.html#prompt), for example) may be used with an `AutoComplete` too.
 
-## Providing suggestions for completion
+## Provide completion suggestions
 
 An [`IAutoCompleteSource`](../api-reference/feathers/data/IAutoCompleteSource.html) implementation should be passed to the [`source`](../api-reference/feathers/controls/AutoComplete.html#source) property to display suggestions for completion. Let's look at a couple of the classes that we can use to provide these suggestions.
 
@@ -121,7 +129,7 @@ source.parseResultFunction = function( result:String ):Object
 
 The `parseResultFunction` may return any type of object that may be passed to a `ListCollection`, such as an `Array` or a `Vector`.
 
-## Customizing suggestion behavior
+## Customize suggestion behavior
 
 The [`minimumAutoCompleteLength`](../api-reference/feathers/controls/AutoComplete.html#minimumAutoCompleteLength) property determines how many characters must be entered into the input before displaying suggestions:
 
@@ -141,34 +149,58 @@ This value is measured in seconds, and the default value is `0.5`.
 
 ## Skinning an `AutoComplete`
 
-An `AutoComplete` provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`AutoComplete` API reference](../api-reference/feathers/controls/AutoComplete.html).
+As mentioned above, `AutoComplete` is a subclass of `TextInput`. For more detailed information about skins and font styles available to `AutoComplete`, see [How to use the Feathers `TextInput` component](text-input.html). All styling properties are inherited by the `AutoComplete` class.
 
-As mentioned above, `AutoComplete` is a subclass of `TextInput`. For more detailed information about the skinning options available to `AutoComplete`, see [How to use the Feathers `TextInput` component](text-input.html).
+### Skinning the pop-up list
 
-### Targeting an `AutoComplete` in a theme
+This section only explains how to access the pop-up list sub-component. Please read [How to use the Feathers `List` component](list.html) for full details about the skinning properties that are available on `List` components.
 
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
+#### With a Theme
 
-``` code
-getStyleProviderForClass( AutoComplete ).defaultStyleFunction = setAutoCompleteStyles;
-```
-
-If you want to customize a specific `AutoComplete` to look different than the default, you may use a custom style name to call a different function:
+If you're creating a [theme](themes.html), you can target the [`AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST`](../api-reference/feathers/controls/AutoComplete.html#DEFAULT_CHILD_STYLE_NAME_LIST) style name.
 
 ``` code
-input.styleNameList.add( "custom-auto-complete" );
+getStyleProviderForClass( List )
+	.setFunctionForStyleName( AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, setAutoCompleteListStyles );
 ```
 
-You can set the function for the custom style name like this:
+The styling function might look like this:
 
 ``` code
-getStyleProviderForClass( AutoComplete )
-    .setFunctionForStyleName( "custom-auto-complete", setCustomAutoCompleteStyles );
+private function setAutoCompleteListStyles( list:List ):void
+{
+	list.backgroundSkin = new Image( listBackgroundTexture );
+}
 ```
 
-Trying to change the auto complete's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the `AutoComplete` was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
+You can override the default style name to use a different one in your theme, if you prefer:
 
-If you aren't using a theme, then you may set any of the auto complete's properties directly.
+``` code
+input.customListStyleName = "custom-list";
+```
+
+You can set the styling function for the [`customListStyleName`](../api-reference/feathers/controls/AutoComplete.html#customListStyleName) like this:
+
+``` code
+getStyleProviderForClass( List )
+	.setFunctionForStyleName( "custom-list", setAutoCompleteCustomListStyles );
+```
+
+#### Without a Theme
+
+If you are not using a theme, you can use [`listFactory`](../api-reference/feathers/controls/AutoComplete.html#listFactory) to provide skins for the pop-up list
+
+``` code
+input.listFactory = function():List
+{
+	var list:List = new List();
+
+	//skin the list here, if you're not using a theme
+	list.backgroundSkin = new Image( listBackgroundTexture );
+
+	return list;
+}
+```
 
 ## Related Links
 

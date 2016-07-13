@@ -5,7 +5,11 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Alert` component
 
-The [`Alert`](../api-reference/feathers/controls/Alert.html) class renders a window as a [pop-up](pop-ups.html) over all other content. Typically, an alert displays a header with a title, followed by some multiline, word-wrapped text, and a set of buttons to select different actions.
+The [`Alert`](../api-reference/feathers/controls/Alert.html) class renders a window as a [pop-up](pop-ups.html) over all other content. Typically, an alert displays a header with a title, followed by some multiline text and an optional icon. A set of buttons to select different actions appears at the bottom of the alert.
+
+-   [The Basics](#the-basics)
+-   [Skinning an Alert](#skinning-an-alert)
+-   [Closing and Disposal](#closing-and-disposal)
 
 ## The Basics
 
@@ -23,11 +27,11 @@ Then, in the listener for the button's `Event.TRIGGERED` event, we create the al
 ``` code
 function button_triggeredHandler( event:Event ):void
 {
-    var button:Button = Button( event.currentTarget );
-    var alert:Alert = Alert.show( "I have something important to say", "Warning", new ListCollection(
-    [
-        { label: "OK", triggered: okButton_triggeredHandler }
-    ]) );
+	var button:Button = Button( event.currentTarget );
+	var alert:Alert = Alert.show( "I have something important to say", "Warning", new ListCollection(
+	[
+		{ label: "OK", triggered: okButton_triggeredHandler }
+	]) );
 }
 ```
 
@@ -44,27 +48,38 @@ The event object's `data` property will contain the item from the `ButtonGroup` 
 ``` code
 function alert_closeHandler( event:Event, data:Object ):void
 {
-    if( data.label == "OK" )
-    {
-        // the OK button was clicked
-    }
+	if( data.label == "OK" )
+	{
+		// the OK button was clicked
+	}
 }
 ```
 
 Additional, optional arguments are available for `Alert.show()`. Let's take a look at those next.
 
+### Icon
+
+An optional icon may be displayed next to the alert's message. We'll use a `starling.display.Image` in the following example, but the icon may be any Starling display object:
+
+```code
+var icon:Image = new Image( iconTexture );
+Alert.show( message, title, buttons, icon );
+```
+
+Pass in the icon after the alert's buttons.
+
 ### Modality
 
-Following the button group is the `isModal` argument. This determines whether there is an overlay between the alert and the rest of the display list. When an alert is modal, the overlay blocks touches to everything that appears under the alert. If the alert isn't modal, there will be no overlay to block the touch, and anything below the alert will remain interactive.
+Following the icon is the `isModal` argument. This determines whether there is an overlay between the alert and the rest of the display list. When an alert is modal, the overlay blocks touches to everything that appears under the alert. If the alert isn't modal, there will be no overlay to block the touch, and anything below the alert will remain interactive.
 
 Alerts are displayed using the [`PopUpManager`](pop-ups.html). By default, modal overlays are managed by the `PopUpManager`, but you can give a custom overlay to all alerts (that will be different from other modal pop-ups) when you set the static property, [`overlayFactory`](../api-reference/feathers/controls/Alert.html#overlayFactory):
 
 ``` code
 Alert.overlayFactory = function():DisplayObject
 {
-    var tiledBackground:Image = new Image( texture );
-    tiledBackground.tileGrid = new Rectangle();
-    return tiledBackground;
+	var tiledBackground:Image = new Image( texture );
+	tiledBackground.tileGrid = new Rectangle();
+	return tiledBackground;
 };
 ```
 
@@ -81,9 +96,9 @@ When an alert is created with `Alert.show()`, the function stored by the [`Alert
 ``` code
 function customAlertFactory():Alert
 {
-    var alert:Alert = new Alert();
-    alert.styleNameList.add( "custom-alert" );
-    return alert;
+	var alert:Alert = new Alert();
+	alert.styleNameList.add( "custom-alert" );
+	return alert;
 };
 Alert.show( "I have something important to say", "Alert Title", new ListCollection({label: "OK"}), true, true, customAlertFactory );
 ```
@@ -92,18 +107,65 @@ If you're working with a [theme](themes.html), you can set a custom styling func
 
 ## Skinning an `Alert`
 
-The skins for an `Alert` control are divided into the header, the message text renderer, and the button group. Additionally, an alert may have background skins and various other styles. For full details about what skin and style properties are available, see the [Alert API reference](../api-reference/feathers/controls/Alert.html).
+A number of styles may be customized on an alert, including the message font styles, the background skin, and an optional icon. Additionally, alert has some sub-components that may be styled, including the header and the button group. For full details about which properties are available, see the [`Alert` API reference](../api-reference/feathers/controls/Alert.html). We'll look at a few of the most common ways of styling an alert below.
 
-### Background skins and basic styles
+### Using a theme? Some tips for customizing an individual alert's styles
 
-We'll start the skinning process by giving our alert appropriate background skins.
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the alert's message `fontStyles` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-alert.backgroundSkin = new Image( enabledTexture );
-alert.backgroundDisabledSkin = new Image( disabledTexture );
+function setExtraAlertStyles( alert:Alert ):void
+{
+	alert.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+alert.styleProvider = new AddOnFunctionStyleProvider(
+	alert.styleProvider, setExtraAlertStyles );
 ```
 
-The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the alert is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#disabledBackgroundSkin) is displayed when the alert is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled alert, it will fall back to using the `backgroundSkin` in the disabled state.
+Our changes only affect the font styles. The alert will continue to use the theme's background skins, padding, and other styles.
+
+### Font styles
+
+As we saw above, the font styles of the alert's message may be customized using the [`fontStyles`](../api-reference/feathers/controls/Alert.html#fontStyles) and [`disabledFontStyles`](../api-reference/feathers/controls/Alert.html#disabledFontStyles) properties:
+
+``` code
+alert.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+alert.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text renderer](text-renderers.html).
+
+The font styles of the alert's title may be customized on the alert's `Header` component. See [How to use the Feathers `Header` component](header.html) for details.
+
+The font styles of the alert's buttons may be customized through the alert's `ButtonGroup` component. See [How to use the Feathers `ButtonGroup` component](button-group.html) for details.
+
+### Background skin
+
+The background skin fills the full width and height of the alert. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( enabledTexture );
+skin.scale9Grid = new Rectangle( 2, 4, 3, 8 );
+alert.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
+
+A separate [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#disabledBackgroundSkin) may be provided to display when the alert is disabled:
+
+``` code
+var disabledSkin:Image = new Image( disabledTexture );
+disabledSkin.scale9Grid = new Rectangle( 2, 4, 3, 8 );
+alert.backgroundDisabledSkin = disabledSkin;
+```
+
+If the `backgroundDisabledSkin` isn't provided to a disabled alert, it will fall back to using the default `backgroundSkin` in the disabled state.
+
+### Layout
 
 Padding may be added around the edges of the alert. This padding is applied around the edges of the message text renderer, and is generally used to show a bit of the background as a border.
 
@@ -120,30 +182,11 @@ If all four padding values should be the same, you may use the [`padding`](../ap
 alert.padding = 20;
 ```
 
-### Targeting an `Alert` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
+If an optional icon is displayed, you may use the [`gap`](../api-reference/feathers/controls/Alert.html#gap) property to add some space between the message and the icon:
 
 ``` code
-getStyleProviderForClass( Alert ).defaultStyleFunction = setAlertStyles;
+alert.gap = 12;
 ```
-
-If you want to customize a specific alert to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-alert.styleNameList.add( "custom-alert" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Alert )
-    .setFunctionForStyleName( "custom-alert", setCustomAlertStyles );
-```
-
-Trying to change the alert's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the alert was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the alert's properties directly.
 
 ### Skinning the header
 
@@ -155,7 +198,17 @@ If you're creating a [theme](themes.html), you can target the [`Alert.DEFAULT_CH
 
 ``` code
 getStyleProviderForClass( Header )
-    .setFunctionForStyleName( Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, setAlertHeaderStyles );
+	.setFunctionForStyleName( Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, setAlertHeaderStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setAlertHeaderStyles( header:Header ):void
+{
+	header.backgroundSkin = new Image( headerBackgroundTexture );
+	header.fontStyles = new TextFormat( "Helvetica", 16, 0x3c3c3c );
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -168,7 +221,7 @@ You can set the styling function for the [`customHeaderStyleName`](../api-refere
 
 ``` code
 getStyleProviderForClass( Header )
-    .setFunctionForStyleName( "custom-header", setAlertCustomHeaderStyles );
+	.setFunctionForStyleName( "custom-header", setAlertCustomHeaderStyles );
 ```
 
 #### Without a Theme
@@ -178,20 +231,15 @@ If you are not using a theme, you can use [`headerFactory`](../api-reference/fea
 ``` code
 alert.headerFactory = function():Header
 {
-    var header:Header = new Header();
-    //skin the header here
-    header.backgroundSkin = new Image( headerBackgroundTexture );
-    return header;
+	var header:Header = new Header();
+
+	//skin the header here, if you're not using a theme
+	header.backgroundSkin = new Image( headerBackgroundTexture );
+	header.fontStyles = new TextFormat( "Helvetica", 16, 0x3c3c3c );
+
+	return header;
 }
 ```
-
-Alternatively, or in addition to the `headerFactory`, you may use the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) to pass skins to the header.
-
-``` code
-alert.headerProperties.backgroundSkin = new Image( headerBackgroundTexture );
-```
-
-In general, you should only pass skins to the alert's header through `headerProperties` if you need to change skins after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the buttons
 
@@ -203,7 +251,16 @@ If you're creating a [theme](themes.html), you can target the [`Alert.DEFAULT_CH
 
 ``` code
 getStyleProviderForClass( ButtonGroup )
-    .setFunctionForStyleName( Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, setAlertButtonGroupStyles );
+	.setFunctionForStyleName( Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, setAlertButtonGroupStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setAlertButtonGroupStyles( group:ButtonGroup ):void
+{
+	group.gap = 20;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -216,7 +273,7 @@ You can set the styling function for the [`customButtonGroupStyleName`](../api-r
 
 ``` code
 getStyleProviderForClass( ButtonGroup )
-    .setFunctionForStyleName( "custom-button-group", setAlertCustomButtonGroupStyles );
+	.setFunctionForStyleName( "custom-button-group", setAlertCustomButtonGroupStyles );
 ```
 
 #### Without a Theme
@@ -226,55 +283,14 @@ If you are not using a theme, you can use [`buttonGroupFactory`](../api-referenc
 ``` code
 alert.buttonGroupFactory = function():Header
 {
-    var group:ButtonGroup = new ButtonGroup();
-    //skin the button group here
-    group.gap = 20;
-    return group;
+	var group:ButtonGroup = new ButtonGroup();
+	
+	//skin the button group here, if you're not using a theme
+	group.gap = 20;
+	
+	return group;
 }
 ```
-
-Alternatively, or in addition to the `buttonGroupFactory`, you may use the [`buttonGroupProperties`](../api-reference/feathers/controls/Alert.html#buttonGroupProperties) to pass skins to the button group.
-
-``` code
-alert.buttonGroupProperties.gap = 20;
-```
-
-In general, you should only pass skins to the alert's button group through `buttonGroupProperties` if you need to change skins after the button group is created. Using `buttonGroupFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
-### Skinning the message text renderer
-
-This section only explains how to access the message text renderer sub-component. Please read [Introduction to Feathers Text Renderers](text-renderers.html) for full details about how to style different kinds of Feathers text renderers.
-
-#### With a Theme
-
-If you're creating a [theme](themes.html), you can target the [`Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE`](../api-reference/feathers/controls/Alert.html#DEFAULT_CHILD_STYLE_NAME) style name. In the following examples, we'll use a [`BitmapFontTextRenderer`](text-renderers.html), but other text renderers may be used instead, if desired.
-
-``` code
-getStyleProviderForClass( BitmapFontTextRenderer )
-    .setFunctionForStyleName( Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE, setAlertMessageStyles );
-```
-
-#### Without a Theme
-
-If you are not using a theme, you can use [`messageFactory`](../api-reference/feathers/controls/Alert.html#messageFactory) to provide skins for the alert's message:
-
-``` code
-alert.messageFactory = function():ITextRenderer
-{
-    var message:BitmapFontTextRenderer = new BitmapFontTextRenderer();
-    //skin the message here
-    message.textFormat = new BitmapFontTextFormat( bitmapFont );
-    return message;
-}
-```
-
-Alternatively, or in addition to the `messageFactory`, you may use the [`messageProperties`](../api-reference/feathers/controls/Alert.html#messageProperties) to pass properties to the text renderer.
-
-``` code
-alert.messageProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-```
-
-In general, you should only pass skins to the alert's message text renderer through `messageProperties` if you need to change skins after the message text renderer is created. Using `messageFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Customizing the `Alert` factories
 
@@ -283,10 +299,10 @@ If you're not using a theme, you can specify a factory to create the alert, incl
 ``` code
 function skinnedAlertFactory():Alert
 {
-    var alert:Alert = new Alert();
-    alert.backgroundSkin = new Image( texture );
-    // etc...
-    return alert;
+	var alert:Alert = new Alert();
+	alert.backgroundSkin = new Image( texture );
+	// etc...
+	return alert;
 };
 Alert.alertFactory = skinnedAlertFactory;
 ```
@@ -296,10 +312,10 @@ Another option is to pass an alert factory to `Alert.show()`. This allows you to
 ``` code
 function skinnedAlertFactory():Alert
 {
-    var alert:Alert = new Alert();
-    alert.backgroundSkin = new Image( texture );
-    // etc...
-    return alert;
+	var alert:Alert = new Alert();
+	alert.backgroundSkin = new Image( texture );
+	// etc...
+	return alert;
 };
 Alert.show( message, title, buttons, isModal, isCentered, skinnedAlertFactory );
 ```
@@ -308,7 +324,9 @@ You should generally always skin the alerts with a factory or with a theme inste
 
 ## Closing and disposal
 
-The alert will automatically remove itself from the display list and dispose itself when one of its buttons is triggered. To manually close and dispose the alert without triggering a button, you may simply remove the alert from its parent:
+The alert will automatically remove itself from the display list and dispose itself when one of its buttons is triggered. In most cases, you don't need to do any kind of cleanup.
+
+To manually close and dispose the alert without triggering a button, you may simply remove the alert from its parent:
 
 ``` code
 alert.removeFromParent( true );
