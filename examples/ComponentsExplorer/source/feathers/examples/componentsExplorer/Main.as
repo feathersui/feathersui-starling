@@ -30,6 +30,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.NumericStepperScreen;
 	import feathers.examples.componentsExplorer.screens.NumericStepperSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.PageIndicatorScreen;
+	import feathers.examples.componentsExplorer.screens.PanelComponentScreen;
 	import feathers.examples.componentsExplorer.screens.PickerListScreen;
 	import feathers.examples.componentsExplorer.screens.ProgressBarScreen;
 	import feathers.examples.componentsExplorer.screens.RadioScreen;
@@ -174,6 +175,10 @@ package feathers.examples.componentsExplorer
 			numericStepperItem.addPopEvent(Event.COMPLETE);
 			numericStepperItem.properties.settings = numericStepperSettings;
 			this._navigator.addScreen(ScreenID.NUMERIC_STEPPER, numericStepperItem);
+
+			var panelItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(PanelComponentScreen);
+			panelItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(ScreenID.PANEL, panelItem);
 
 			var numericStepperSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(NumericStepperSettingsScreen);
 			numericStepperSettingsItem.addPopEvent(Event.COMPLETE);

@@ -65,6 +65,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "List", screen: ScreenID.LIST },
 				{ label: "Numeric Stepper", screen: ScreenID.NUMERIC_STEPPER },
 				{ label: "Page Indicator", screen: ScreenID.PAGE_INDICATOR },
+				{ label: "Panel", screen: ScreenID.PANEL },
 				{ label: "Picker List", screen: ScreenID.PICKER_LIST },
 				{ label: "Progress Bar", screen: ScreenID.PROGRESS_BAR },
 				{ label: "Radio", screen: ScreenID.RADIO },

@@ -22,6 +22,7 @@ package feathers.examples.componentsExplorer
 		public static const NUMERIC_STEPPER:String = "numericStepper";
 		public static const NUMERIC_STEPPER_SETTINGS:String = "numericStepperSettings";
 		public static const PAGE_INDICATOR:String = "pageIndicator";
+		public static const PANEL:String = "panel";
 		public static const PICKER_LIST:String = "pickerList";
 		public static const PROGRESS_BAR:String = "progressBar";
 		public static const RADIO:String = "radio";
