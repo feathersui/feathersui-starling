@@ -210,19 +210,28 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _textFormatForState:Object;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _textFormat:BitmapFontTextFormat;
-		
+
 		/**
-		 * The font and styles used to draw the text.
+		 * Advanced font formatting used to draw the text, if
+		 * <code>fontStyles</code> and <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the other features of
+		 * bitmap fonts are required.
 		 *
 		 * <p>In the following example, the text format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>BitmapFontTextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 *
@@ -254,13 +263,22 @@ package feathers.controls.text
 		protected var _disabledTextFormat:BitmapFontTextFormat;
 
 		/**
-		 * The font and styles used to draw the text when the label is disabled.
+		 * Advanced font formatting used to draw the text when the component is
+		 * disabled, if <code>disabledFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the other features of bitmap fonts are required.
 		 *
 		 * <p>In the following example, the disabled text format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.isEnabled = false;
 		 * textRenderer.disabledTextFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>BitmapFontTextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 * 
@@ -291,14 +309,22 @@ package feathers.controls.text
 		protected var _selectedTextFormat:BitmapFontTextFormat;
 
 		/**
-		 * The font and styles used to draw the text when the
-		 * <code>stateContext</code> implements the <code>IToggle</code>
-		 * interface, and it is selected.
+		 * Advanced font formatting used to draw the text when the
+		 * <code>stateContext</code> is disabled, if
+		 * <code>selectedFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the other features of bitmap fonts are required.
 		 *
 		 * <p>In the following example, the selected text format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.selectedTextFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>BitmapFontTextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 *
@@ -324,7 +350,7 @@ package feathers.controls.text
 			this._selectedTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -748,9 +774,12 @@ package feathers.controls.text
 		}
 
 		/**
-		 * Sets the <code>BitmapFontTextFormat</code> to be used by the text
-		 * renderer when the <code>currentState</code> property of the
-		 * <code>stateContext</code> matches the specified state value.
+		 * Sets the advanced <code>BitmapFontTextFormat</code> font formatting
+		 * to be used by the text renderer when the <code>currentState</code>
+		 * property of the <code>stateContext</code> matches the specified state
+		 * value. For advanced use cases where
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because other features of bitmap fonts are required.
 		 *
 		 * <p>If an <code>BitmapFontTextFormat</code> is not defined for a
 		 * specific state, the value of the <code>textFormat</code> property
