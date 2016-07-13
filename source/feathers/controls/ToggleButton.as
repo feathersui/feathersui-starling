@@ -689,13 +689,14 @@ package feathers.controls
 		protected var _defaultSelectedLabelProperties:PropertyProxy;
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Set the <code>selectedFontStyles</code> property instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #selectedFontStyles()
 		 */
 		public function get defaultSelectedLabelProperties():Object
 		{
@@ -728,13 +729,20 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 *
+		 * DEPRECATED: Set the <code>selectedFontStyles</code> property, or call
+		 * the <code>setFontStylesForState()</code> function with
+		 * <code>ButtonState.UP_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #selectedFontStyles
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.UP_AND_SELECTED
 		 */
 		public function get selectedUpLabelProperties():Object
 		{
@@ -770,13 +778,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.DOWN_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DOWN_AND_SELECTED
 		 */
 		public function get selectedDownLabelProperties():Object
 		{
@@ -812,13 +824,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.HOVER_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.HOVER_AND_SELECTED
 		 */
 		public function get selectedHoverLabelProperties():Object
 		{
@@ -854,13 +870,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.DISABLED_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DISABLED_AND_SELECTED
 		 */
 		public function get selectedDisabledLabelProperties():Object
 		{

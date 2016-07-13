@@ -1121,13 +1121,17 @@ package feathers.controls
 		protected var _stateToLabelPropertiesFunction:Function;
 
 		/**
-		 * DEPRECATED: Call the appropriate function on the text renderer to set
-		 * different font styles for each state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with the appropriate <code>ButtonState</code> constant and pass in a
+		 * <code>starling.text.TextFormat</code> object.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState
 		 */
 		public function get stateToLabelPropertiesFunction():Function
 		{
@@ -1533,13 +1537,19 @@ package feathers.controls
 		protected var _stateToLabelProperties:Object = {};
 		
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Use the <code>fontStyles</code> property, or call the
+		 * <code>setFontStylesForState()</code> function with
+		 * <code>ButtonState.UP</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #fontStyles
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.UP
 		 */
 		public function get upLabelProperties():Object
 		{
@@ -1575,13 +1585,17 @@ package feathers.controls
 		}
 		
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.DOWN</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DOWN
 		 */
 		public function get downLabelProperties():Object
 		{
@@ -1617,13 +1631,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.HOVER</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.HOVER
 		 */
 		public function get hoverLabelProperties():Object
 		{
@@ -1659,13 +1677,18 @@ package feathers.controls
 		}
 		
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Use the <code>disabledFontStyles</code> property, or call
+		 * the <code>setFontStylesForState()</code> function with
+		 * <code>ButtonState.DISABLED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DISABLED
 		 */
 		public function get disabledLabelProperties():Object
 		{
