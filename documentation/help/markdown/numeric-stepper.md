@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`NumericStepper`](../api-reference/feathers/controls/NumericStepper.html) component displays a numeric value between a minimum and maximum. The value may be changed by pressing the increment or decrement [buttons](button.html). If editing is enabled (typically not enabled on mobile), the value may be changed by typing a value into a [text input](text-input.html).
 
+<figure>
+<img src="images/numeric-stepper.png" srcset="images/numeric-stepper@2x.png 2x" alt="Screenshot of a Feathers NumericStepper component" />
+<figcaption>A `NumericStepper` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `NumericStepper` control, set up its range of values, and add it to the display list.

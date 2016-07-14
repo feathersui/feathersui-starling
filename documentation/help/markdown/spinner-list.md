@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`SpinnerList`](../api-reference/feathers/controls/SpinnerList.html) class extends the [`List`](list.html) component to allow the user to change the selected item by scrolling. Typically, the selected item is positioned in the center of the list, and it may be visually highlighted in some way. A `SpinnerList` will often loop infinitely, repeating its items as the user scrolls.
 
+<figure>
+<img src="images/spinner-list.png" srcset="images/spinner-list@2x.png 2x" alt="Screenshot of a Feathers SpinnerList component" />
+<figcaption>A `SpinnerList` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `SpinnerList` control and add it to the display list:

@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`TextCallout`](../api-reference/feathers/controls/TextCallout.html) class is a special type of [callout](callout.html) that simply renders a string as its content.
 
+<figure>
+<img src="images/text-callout.png" srcset="images/text-callout@2x.png 2x" alt="Screenshot of a Feathers TextCallout component" />
+<figcaption>A `TextCallout` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 We create a `TextCallout` a bit differently than other components. Rather than calling a constructor, we call the static function [`TextCallout.show()`](../api-reference/feathers/controls/TextCallout.html#show()). Let's see how this works by displaying message in a `TextCallout` when we touch a button. First, let's create the button:

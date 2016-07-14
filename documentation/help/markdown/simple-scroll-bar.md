@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `SimpleScrollBar` Component
 
-The [`SimpleScrollBar`](../api-reference/feathers/controls/SimpleScrollBar.html) component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along an invisible track in either a horizontal or a vertical direction. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
+The [`SimpleScrollBar`](../api-reference/feathers/controls/SimpleScrollBar.html) component selects a numeric value in a specific range by dragging a thumb along an invisible track. A simple scroll bar may be displayed in either a horizontal or a vertical direction. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
 
 <aside class="info">Additionally, Feathers offers a [`ScrollBar`](scroll-bar.html) component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
 

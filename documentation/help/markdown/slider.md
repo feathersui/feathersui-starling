@@ -5,7 +5,12 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Slider` component
 
-The [`Slider`](../api-reference/feathers/controls/Slider.html) component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction.
+The [`Slider`](../api-reference/feathers/controls/Slider.html) component selects a numeric value in a specific range by dragging a thumb along a track. A slider may be displayed in either a horizontal or a vertical direction.
+
+<figure>
+<img src="images/slider.png" srcset="images/slider@2x.png 2x" alt="Screenshot of a Feathers Slider component" />
+<figcaption>`Slider` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
 
 ## The Basics
 

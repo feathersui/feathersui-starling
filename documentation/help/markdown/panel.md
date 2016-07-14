@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Panel`](../api-reference/feathers/controls/Panel.html) component is a container that supports layout and scrolling, similar to [`ScrollContainer`](scroll-container.html), but it also adds a header and an optional footer above and below the content, respectively. This component is useful for creating windows and dialogs and making any kind of grouping that needs a header or title.
 
+<figure>
+<img src="images/panel.png" srcset="images/panel@2x.png 2x" alt="Screenshot of a Feathers Panel component" />
+<figcaption>A `Panel` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `Panel` container and add it to the display list:

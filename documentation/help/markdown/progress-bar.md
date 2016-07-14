@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`ProgressBar`](../api-reference/feathers/controls/ProgressBar.html) class displays a visual indicator of how much of a task has been completed. It may fill up horizontally or vertically.
 
+<figure>
+<img src="images/progress-bar.png" srcset="images/progress-bar@2x.png 2x" alt="Screenshot of a Feathers ProgressBar component" />
+<figcaption>`ProgressBar` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `ProgressBar` control, set up its range of values, and add it to the display list.

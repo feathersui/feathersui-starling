@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`PickerList`](../api-reference/feathers/controls/PickerList.html) class displays a [`Button`](button.html) that may be triggered to show a [pop-up](pop-ups.html) [`List`](list.html). The way that the list is displayed may be customized for different platforms by changing the picker list's *pop-up content manager*. Several different options are available, including drop downs, callouts, and simply filling the stage vertically.
 
+<figure>
+<img src="images/picker-list.png" srcset="images/picker-list@2x.png 2x" alt="Screenshot of a Feathers PickerList component" />
+<figcaption>A `PickerList` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `PickerList` control and add it to the display list:

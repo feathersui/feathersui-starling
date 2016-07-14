@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`TabBar`](../api-reference/feathers/controls/TabBar.html) class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar's tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more "pill" shaped control that looks more like a segmented button bar than a set of tabs.
 
+<figure>
+<img src="images/tab-bar.png" srcset="images/tab-bar@2x.png 2x" alt="Screenshot of a Feathers TabBar component" />
+<figcaption>A `TabBar` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `TabBar` control, set its data provider to display a few tabs, and add it to the display list:

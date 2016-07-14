@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Label`](../api-reference/feathers/controls/Label.html) component is for displaying text. It uses a [text renderer](text-renderers.html).
 
+<figure>
+<img src="images/label.png" srcset="images/label@2x.png 2x" alt="Screenshot of a Feathers Label component" />
+<figcaption>`Label` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ### The Basics
 
 First, let's create a `Label` control, give it some text to display, and add it to the display list:

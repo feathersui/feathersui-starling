@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`List`](../api-reference/feathers/controls/List.html) class renders a series of items from a flat data source such as an `Array` or `Vector`. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers.
 
+<figure>
+<img src="images/list.png" srcset="images/list@2x.png 2x" alt="Screenshot of a Feathers List component" />
+<figcaption>A `List` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `List` control and add it to the display list:

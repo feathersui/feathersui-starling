@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Check`](../api-reference/feathers/controls/Check.html) component is actually a [`ToggleButton`](toggle-button.html) component, but it is given a different visual appearance.
 
+<figure>
+<img src="images/check.png" srcset="images/check@2x.png 2x" alt="Screenshot of Feathers a Check component" />
+<figcaption>`Check` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 A `Check` component can be created much like a `ToggleButton`:

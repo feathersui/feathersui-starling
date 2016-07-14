@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`TextInput`](../api-reference/feathers/controls/TextInput.html) class supports the editing of text. It displays a background skin and uses a [text editor](text-editors.html) to allow the user to modify the text.
 
+<figure>
+<img src="images/text-input.png" srcset="images/text-input@2x.png 2x" alt="Screenshot of a Feathers TextInput component" />
+<figcaption>`TextInput` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `TextInput` control and add it to the display list:

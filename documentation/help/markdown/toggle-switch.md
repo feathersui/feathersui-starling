@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`ToggleSwitch`](../api-reference/feathers/controls/ToggleSwitch.html) component switches between on and off states. It can be considered a stylized alternative to a [`Check`](check.html) control that is especially relevant when targeting touch screens. The thumb may be dragged from side to side, or it may be tapped to change selection.
 
+<figure>
+<img src="images/toggle-switch.png" srcset="images/toggle-switch@2x.png 2x" alt="Screenshot of a Feathers ToggleSwitch component" />
+<figcaption>`ToggleSwitch` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a toggle switch, select it, and add it to the display list.

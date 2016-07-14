@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Alert`](../api-reference/feathers/controls/Alert.html) class renders a window as a [pop-up](pop-ups.html) over all other content. Typically, an alert displays a header with a title, followed by some multiline text and an optional icon. A set of buttons to select different actions appears at the bottom of the alert.
 
+<figure>
+<img src="images/alert.png" srcset="images/alert@2x.png 2x" alt="Screenshot of Feathers a Alert component" />
+<figcaption>An `Alert` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 -   [The Basics](#the-basics)
 -   [Skinning an Alert](#skinning-an-alert)
 -   [Closing and Disposal](#closing-and-disposal)

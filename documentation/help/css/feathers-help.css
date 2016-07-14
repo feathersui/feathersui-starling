@@ -250,3 +250,14 @@ table code
 	word-wrap: break-word;
 	word-break: break-all;
 }
+
+figure
+{
+	margin: 0;
+}
+
+figure figcaption
+{
+	text-align: center;
+	font-style: italic;
+}

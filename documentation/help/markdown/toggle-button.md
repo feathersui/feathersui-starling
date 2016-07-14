@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`ToggleButton`](../api-reference/feathers/controls/ToggleButton.html) class is a [button](button.html) that may be selected and deselected when triggered. Like a button, a toggle button's skin, label, and icon can all be customized for each state, including separate styles for when the toggle button is selected and deselected.
 
+<figure>
+<img src="images/toggle-button.png" srcset="images/toggle-button@2x.png 2x" alt="Screenshot of a Feathers ToggleButton component" />
+<figcaption>`ToggleButton` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `ToggleButton` control, give it a label, and add it to the display list:

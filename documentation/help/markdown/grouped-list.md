@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`GroupedList`](../api-reference/feathers/controls/GroupedList.html) class renders groups of items from a hierarchical data source. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers, similar to the [`List`](list.html) component.
 
+<figure>
+<img src="images/grouped-list.png" srcset="images/grouped-list@2x.png 2x" alt="Screenshot of Feathers a GroupedList component" />
+<figcaption>`GroupedList` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create our `GroupedList` control and add it to the display list:

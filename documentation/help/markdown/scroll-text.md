@@ -5,7 +5,12 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ScrollText` Component
 
-The [`ScrollText`](../api-reference/feathers/controls/ScrollText.html) is designed for displaying long passages of text. With longer text, `TextFieldTextRenderer` may run into the maximum texture size limits. `BitmapFontTextRenderer` may be a good alternative, but with enough characters, then it may begin to affect performance. `ScrollText` provides the workaround of displaying text on the runtime's classic software-rendered display list.
+The [`ScrollText`](../api-reference/feathers/controls/ScrollText.html) is designed for displaying long passages of scrolling text. With longer text, `TextBlockTextRenderer` or `TextFieldTextRenderer` may use too much memory with the textures that they require. `BitmapFontTextRenderer` may be a good alternative, but with enough characters, it may begin to affect performance too. `ScrollText` provides a potential workaround by displaying text on the classic display list as an overlay above Starling.
+
+<figure>
+<img src="images/scroll-text.png" srcset="images/scroll-text@2x.png 2x" alt="Screenshot of a Feathers ScrollBar Radio" />
+<figcaption>A `ScrollText` component skinned with `MetalWorksDesktopTheme`</figcaption>
+</figure>
 
 <aside class="warn">A disadvantage of displaying text on the classic display list is that the text will **always** appear above Stage 3D content, including regular Starling display objects. There is no way to overlay Starling content above `ScrollText`.</aside>
 

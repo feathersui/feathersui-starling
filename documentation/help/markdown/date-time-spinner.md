@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`DateTimeSpinner`](../api-reference/feathers/controls/DateTimeSpinner.html) component allows the selection of date and time values using a set of [`SpinnerList`](spinner-list.html) components. It support multiple editing modes to allow users to select only the date, only the time, or both.
 
+<figure>
+<img src="images/date-time-spinner.png" srcset="images/date-time-spinner@2x.png 2x" alt="Screenshot of Feathers a DateTimeSpinner component" />
+<figcaption>A `DateTimeSpinner` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `DateTimeSpinner` control, set up its editing mode and its range of values, and add it to the display list.

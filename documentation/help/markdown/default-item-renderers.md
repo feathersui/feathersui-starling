@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) and [`DefaultGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultGroupedListItemRenderer.html) classes provide a basic way to display items from data collections in the [`List`](list.html) and [`GroupedList`](grouped-list.html) components. These default item renderers are derived from the same base class, and their functionality is virtually identical.
 
+<figure>
+<img src="images/item-renderer.png" srcset="images/item-renderer@2x.png 2x" alt="Screenshot of Feathers a DefaultListItemRenderer component" />
+<figcaption>A `DefaultListItemRenderer` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 In many of the examples below, code and descriptions will refer to the `DefaultListItemRenderer` class and the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, which are both used by the `List` component. When using a `GroupedList` component, you should substitute the `DefaultGroupedListItemRenderer` class and the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) instead.
 These item renderer types for `GroupedList` will have all of the same properties that are used in the examples below. The differences between the `List` and `GroupedList` versions of item renderers are entirely behind the scenes.
 

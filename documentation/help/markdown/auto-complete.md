@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`AutoComplete`](../api-reference/feathers/controls/AutoComplete.html) class extends the [`TextInput`](text-input.html) component to add a pop-up list of suggestions as you type.
 
+<figure>
+<img src="images/auto-complete.png" srcset="images/auto-complete@2x.png 2x" alt="Screenshot of Feathers a AutoComplete component" />
+<figcaption>A `AutoComplete` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 -   [The Basics](#the-basics)
 
 -   [Provide completion suggestions](#provide-completion-suggestions)

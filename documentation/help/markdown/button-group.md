@@ -5,7 +5,12 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ButtonGroup` component
 
-The [`ButtonGroup`](../api-reference/feathers/controls/ButtonGroup.html) class displays a set of [buttons](button.html) displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog might populate its OK/Cancel/Yes/No/etc. buttons using a `ButtonGroup`.
+The [`ButtonGroup`](../api-reference/feathers/controls/ButtonGroup.html) class displays a set of [buttons](button.html) displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog populates its OK/Cancel/Yes/No/etc. buttons using a `ButtonGroup`.
+
+<figure>
+<img src="images/button-group.png" srcset="images/button-group@2x.png 2x" alt="Screenshot of Feathers a ButtonGroup component" />
+<figcaption>A `ButtonGroup` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
 
 -   [The Basics](#the-basics)
 

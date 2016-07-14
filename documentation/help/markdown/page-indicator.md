@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`PageIndicator`](../api-reference/feathers/controls/PageIndicator.html) component displays a series of symbols, with one being highlighted, to show the user which index among a limited set is selected. Typically, it is paired with a [`List`](list.html) or a similar component that supports scrolling and paging. The user can tap the `PageIndicator` to either side of the selected symbol to navigate forward or backward.
 
+<figure>
+<img src="images/page-indicator.png" srcset="images/page-indicator@2x.png 2x" alt="Screenshot of a Feathers PageIndicator component" />
+<figcaption>A `PageIndicator` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `PageIndicator` control, give it a number of pages, and add it to the display list.

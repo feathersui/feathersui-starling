@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Button`](../api-reference/feathers/controls/Button.html) class displays a button that may be triggered by pressing and releasing. It can display an optional label and an optional icon with a variety of layout options. Buttons have separate states for each of the different touch phases. The skin and icon can be customized for each state, and the label [text renderer](text-renderers.html) may display different font styles for each state too.
 
+<figure>
+<img src="images/button.png" srcset="images/button@2x.png 2x" alt="Screenshot of a Feathers Button component" />
+<figcaption>`Button` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 -   [The Basics](#the-basics)
 
 -   [Button states](#button-states)

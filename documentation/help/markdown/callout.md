@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Callout`](../api-reference/feathers/controls/Callout.html) class renders content as a [pop-up](pop-ups.html) over all other content. Typically, a callout displays a rectangular border with an arrow or tail that points to an origin display object, such as a button. The arrow may appear on any of the callout's edges. The callout will close automatically when a touch is detected outside of the callout's bounds.
 
+<figure>
+<img src="images/callout.png" srcset="images/callout@2x.png 2x" alt="Screenshot of Feathers a Callout component" />
+<figcaption>A `Callout` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 We create a `Callout` a bit differently than other components. Rather than calling a constructor, we call the static function [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()). Let's see how this works by displaying a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) in a `Callout` when we touch a button. First, let's create the button:

@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`Header`](../api-reference/feathers/controls/Header.html) component displays an optional title and a region on the left and right sides for extra controls (usually buttons for navigation).
 
+<figure>
+<img src="images/header.png" srcset="images/header@2x.png 2x" alt="Screenshot of a Feathers Header component" />
+<figcaption>A `Header` component skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `Header` control, give it a title, and add it to the display list.

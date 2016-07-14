@@ -5,7 +5,12 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `Radio` component
 
-The [`Radio`](../api-reference/feathers/controls/Radio.html) component is a [`ToggleButton`](toggle-button.html) component that integrates with a [`ToggleGroup`](../api-reference/feathers/core/ToggleGroup.html) so that only one `Radio` in the group is selected at a time.
+The [`Radio`](../api-reference/feathers/controls/Radio.html) component is actually a [`ToggleButton`](toggle-button.html) component, but it is given a different visual appearance. Typically, multiple `Radio` instances are added to a [`ToggleGroup`](../api-reference/feathers/core/ToggleGroup.html) to ensure that only one `Radio` in the group is selected at a time.
+
+<figure>
+<img src="images/radio.png" srcset="images/radio@2x.png 2x" alt="Screenshot of a Feathers Radio component" />
+<figcaption>`Radio` components skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
 
 A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
 

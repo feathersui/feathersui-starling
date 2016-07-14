@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`SoundPlayer`](../api-reference/feathers/media/SoundPlayer.html) class provides audio playback capabilities using a `flash.media.Sound` object. Sound files may be loaded from a URL or any `Sound` object may be passed in. [Media player controls](media-player-controls.html) may be added as children to display information such as the current time or to control playback by seeking or pausing the audio. `SoundPlayer` is a subclass of [`LayoutGroup`](layout-group.html), so its children may be positioned and sized using layouts.
 
+<figure>
+<img src="images/sound-player.png" srcset="images/sound-player@2x.png 2x" alt="Screenshot of a Feathers SoundPlayer component" />
+<figcaption>A `SoundPlayer` component with controls skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `SoundPlayer` component and add it to the display list:

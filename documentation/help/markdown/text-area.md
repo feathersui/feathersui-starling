@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`TextArea`](../api-reference/feathers/controls/TextArea.html) class supports the editing of multiline, uniformly-formatted text.
 
+<figure>
+<img src="images/text-area.png" srcset="images/text-area@2x.png 2x" alt="Screenshot of a Feathers TextArea component" />
+<figcaption>A `TextArea` component skinned with `MetalWorksDesktopTheme`</figcaption>
+</figure>
+
 <aside class="info">`TextArea` is designed specifically for desktop apps, and it is *not* recommended for use in mobile touchscreen apps. Instead, on mobile, you should use a [`TextInput`](text-input.html) component with a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html) with its [`multiline`](../api-reference/feathers/controls/text/StageTextTextEditor.html#multiline) property set to `true`. The underlying `StageText` will provide its own native scroll bar.</aside>
 
 ## The Basics

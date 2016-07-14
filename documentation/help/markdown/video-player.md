@@ -7,6 +7,11 @@ author: Josh Tynjala
 
 The [`VideoPlayer`](../api-reference/feathers/media/VideoPlayer.html) class provides video playback capabilities using a `flash.net.NetStream` object. Video files may be loaded from a URL and displayed as a Starling texture. [Media player controls](media-player-controls.html) may be added as children to display information such as the current time or to control playback by seeking or pausing the audio. `VideoPlayer` is a subclass of [`LayoutGroup`](layout-group.html), so its children may be positioned and sized using layouts.
 
+<figure>
+<img src="images/video-player.png" srcset="images/video-player@2x.png 2x" alt="Screenshot of a Feathers VideoPlayer component" />
+<figcaption>A `VideoPlayer` component with controls skinned with `MetalWorksMobileTheme`</figcaption>
+</figure>
+
 ## The Basics
 
 First, let's create a `VideoPlayer` component, set its dimensions, and add it to the display list:
