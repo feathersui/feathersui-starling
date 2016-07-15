@@ -563,6 +563,10 @@ package feathers.layout
 		 */
 		public function get snapInterval():Number
 		{
+			if(this._typicalItem === null)
+			{
+				return 0;
+			}
 			return this._typicalItem.height + this._gap;
 		}
 
