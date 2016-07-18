@@ -1861,10 +1861,6 @@ package feathers.controls.text
 		 */
 		protected function refreshElementFormat():void
 		{
-			if(this._textElement === null)
-			{
-				return;
-			}
 			var elementFormat:ElementFormat;
 			if(this._stateContext !== null)
 			{
@@ -1905,6 +1901,10 @@ package feathers.controls.text
 			if(elementFormat === null)
 			{
 				elementFormat = this.getElementFormatFromFontStyles();
+			}
+			if(this._textElement === null)
+			{
+				return;
 			}
 			if(this._textElement.elementFormat !== elementFormat)
 			{

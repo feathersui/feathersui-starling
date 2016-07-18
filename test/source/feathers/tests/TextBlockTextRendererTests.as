@@ -79,6 +79,23 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testValidateWithoutTextThenSetText():void
+		{
+			var fontStyles:FontStylesSet = new FontStylesSet();
+			fontStyles.format = new TextFormat(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+			this._textRenderer.fontStyles = fontStyles;
+			this._textRenderer.validate();
+			this._textRenderer.text = "Hello World";
+			this._textRenderer.validate();
+			Assert.assertStrictlyEquals("TextBlockTextRenderer currentElementFormat.fontDescription.fontName must be equal to starling.text.TextFormat font",
+				DEFAULT_FONT_NAME, this._textRenderer.currentElementFormat.fontDescription.fontName);
+			Assert.assertStrictlyEquals("TextBlockTextRenderer currentElementFormat.fontSize must be equal to starling.text.TextFormat size",
+				DEFAULT_FONT_SIZE, this._textRenderer.currentElementFormat.fontSize);
+			Assert.assertStrictlyEquals("TextBlockTextRenderer currentElementFormat.color must be equal to starling.text.TextFormat color",
+				DEFAULT_COLOR, this._textRenderer.currentElementFormat.color);
+		}
+
+		[Test]
 		public function testGetElementFormatForStateWithoutSetElementFormatForState():void
 		{
 			Assert.assertNull("TextBlockTextRenderer getElementFormatForState() must return null if ElementFormat not provided with setElementFormatForState()",
