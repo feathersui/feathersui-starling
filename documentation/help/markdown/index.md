@@ -253,6 +253,12 @@ Item renderers are custom components used by lists to display items from the dat
 
 ## Miscellaneous
 
+-   [Feathers SDK - Use MXML with Feathers](sdk/index.html)
+
+-   [Feathers Cookbook](cookbook/index.html)
+
+-   [Feathers FAQ](faq/index.html)
+
 -   [Building the Feathers SWC from source code](build.html)
 
 -   [Feathers prerelease information](prerelease.html)
