@@ -129,7 +129,7 @@ scrollBar.minimumTrackFactory = function():Button
 
 This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The scroll bar's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK) or you can customize the style name with [`customMaximumTrackStyleName`](../api-reference/feathers/controls/ScrollBar.html#customMaximumTrackStyleName). If you aren't using a theme, then you can use [`maximumTrackFactory`](../api-reference/feathers/controls/ScrollBar.html#maximumTrackFactory) and [`maximumTrackProperties`](../api-reference/feathers/controls/ScrollBar.html#maximumTrackProperties).
+The scroll bar's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK) or you can customize the style name with [`customMaximumTrackStyleName`](../api-reference/feathers/controls/ScrollBar.html#customMaximumTrackStyleName). If you aren't using a theme, then you can use [`maximumTrackFactory`](../api-reference/feathers/controls/ScrollBar.html#maximumTrackFactory).
 
 ### Skinning the Decrement Button
 
@@ -176,7 +176,7 @@ scrollBar.decrementButtonFactory = function():Button
 
 This section only explains how to access the increment button sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The scroll bar's increment button may be skinned similarly to the decrement button. The style name to use with [themes](themes.html) is [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON) or you can customize the style name with [`customIncrementButtonStyleName`](../api-reference/feathers/controls/ScrollBar.html#customIncrementButtonStyleName). If you aren't using a theme, then you can use [`incrementButtonFactory`](../api-reference/feathers/controls/ScrollBar.html#incrementButtonFactory) and [`incrementButtonProperties`](../api-reference/feathers/controls/ScrollBar.html#incrementButtonProperties).
+The scroll bar's increment button may be skinned similarly to the decrement button. The style name to use with [themes](themes.html) is [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON) or you can customize the style name with [`customIncrementButtonStyleName`](../api-reference/feathers/controls/ScrollBar.html#customIncrementButtonStyleName). If you aren't using a theme, then you can use [`incrementButtonFactory`](../api-reference/feathers/controls/ScrollBar.html#incrementButtonFactory).
 
 ## Related Links
 

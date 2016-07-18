@@ -221,10 +221,12 @@ Our changes only affect the background skin. The list will continue to use the t
 
 ### Background skin
 
-As we saw above, we can give the list a background skin. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+As we saw above, we can give the list a background skin that fills the entire width and height of the list. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
 ``` code
-list.backgroundSkin = new Image( enabledTexture );
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+header.backgroundSkin = skin;
 ```
 
 It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
@@ -232,7 +234,9 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 We can give the list a different background when it is disabled:
 
 ``` code
-list.backgroundDisabledSkin = new Image( disabledTexture );
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
+list.backgroundDisabledSkin = skin;
 ```
 
 The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the grouped list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled grouped list, it will fall back to using the `backgroundSkin` in the disabled state.

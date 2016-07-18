@@ -102,23 +102,15 @@ tabBar.tabFactory = function():ToggleButton
 };
 ```
 
-In addition to the `tabFactory`, you may use the [`tabProperties`](../api-reference/feathers/controls/TabBar.html#tabProperties) to pass properties to the tabs. The values of these properties are shared by *all* tabs, so display objects should never be passed in using `tabProperties`. A display object may only have one parent, so passing in a display object as a skin to every tab is impossible. Other types of styles, like gap and padding, can be passed in through `tabProperties`:
-
-``` code
-tabBar.tabProperties.gap = 20;
-```
-
-In general, you should only pass properties to the tab bar's tabs through `tabProperties` if you need to change these values after the tabs are created. Using `tabFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Skinning the First and Last Tabs
 
 This section only explains how to access the first and last tab sub-components. Please read [How to use the Feathers `ToggleButton` component](toggle-button.html) for full details about the skinning properties that are available on `ToggleButton` components.
 
 The tab bar's first and last tabs will have the same skins as the other tabs by default. However, their skins may be customized separately, if desired.
 
-For the first tab, you can customize the name with [`customFirstTabStyleName`](../api-reference/feathers/controls/TabBar.html#customFirstTabStyleName). If you aren't using a theme, then you can use [`firstTabFactory`](../api-reference/feathers/controls/TabBar.html#firstTabFactory) and [`firstTabProperties`](../api-reference/feathers/controls/TabBar.html#firstTabProperties).
+For the first tab, you can customize the name with [`customFirstTabStyleName`](../api-reference/feathers/controls/TabBar.html#customFirstTabStyleName). If you aren't using a theme, then you can use [`firstTabFactory`](../api-reference/feathers/controls/TabBar.html#firstTabFactory).
 
-For the last tab, you can customize the name with [`customLastTabStyleName`](../api-reference/feathers/controls/TabBar.html#customLastTabStyleName). If you aren't using a theme, then you can use [`lastTabFactory`](../api-reference/feathers/controls/TabBar.html#lastTabFactory) and [`lastTabProperties`](../api-reference/feathers/controls/TabBar.html#lastTabProperties).
+For the last tab, you can customize the name with [`customLastTabStyleName`](../api-reference/feathers/controls/TabBar.html#customLastTabStyleName). If you aren't using a theme, then you can use [`lastTabFactory`](../api-reference/feathers/controls/TabBar.html#lastTabFactory).
 
 Separate skins for the first and last tabs are completely optional.
 

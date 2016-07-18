@@ -157,7 +157,7 @@ slider.minimumTrackFactory = function():Button
 
 This section only explains how to access the maximum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The slider's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is [`Slider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK) or you can customize the style name with [`customMaximumTrackStyleName`](../api-reference/feathers/controls/Slider.html#customMaximumTrackStyleName). If you aren't using a theme, then you can use [`maximumTrackFactory`](../api-reference/feathers/controls/Slider.html#maximumTrackFactory) and [`maximumTrackProperties`](../api-reference/feathers/controls/Slider.html#maximumTrackProperties).
+The slider's maximum track may be skinned similarly to the minimum track. The style name to use with [themes](themes.html) is [`Slider.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK) or you can customize the style name with [`customMaximumTrackStyleName`](../api-reference/feathers/controls/Slider.html#customMaximumTrackStyleName). If you aren't using a theme, then you can use [`maximumTrackFactory`](../api-reference/feathers/controls/Slider.html#maximumTrackFactory).
 
 ### No Thumb
 

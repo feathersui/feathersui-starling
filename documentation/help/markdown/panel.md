@@ -69,18 +69,7 @@ panel.headerFactory = function():Header
 }
 ```
 
-You can set any properties that you desire on the header inside this factory, including skins, if you're not using a theme.
-
-Alternatively, you could use the default header factory, which simply creates a `Header` instance, and pass in properties through the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) object.
-
-``` code
-var closeButton:Button = new Button();
-closeButton.label = "Close";
-closeButton.addEventListener( Event.TRIGGERED, closeButton_triggeredHandler );
-panel.headerProperties.rightItems = new <DisplayObject>[ closeButton ];
-```
-
-In general, you should only pass properties to the panel's header through `headerProperties` if you need to change them after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+You can set any properties that you desire on the header inside this factory (including skins, but if you're using a theme, watch out for conflicts).
 
 Remember, the panel's header does not need to be a `Header` instance. It simply needs to be a Feathers component. If you wanted to make a `Panel` with a clickable header, you could provide a `headerFactory` that returns a [`Button`](button.html):
 
@@ -116,15 +105,7 @@ panel.footerFactory = function():LayoutGroup
 }
 ```
 
-You can set any properties that you desire on the footer inside this factory, including skins. In this example, we're using a [`LayoutGroup`] with a "toolbar" alternate style name. Typically, a theme will use this style name to make a `LayoutGroup` look similar to `Header` and give it a horizontal layout (the exact behavior depends on the theme, but this is the most common behavior).
-
-Alternatively, you could use a simple footer factory that sets no properties, and pass in properties through the [`footerProperties`](../api-reference/feathers/controls/Panel.html#footerProperties) object.
-
-``` code
-panel.footerProperties.clipContent = true;
-```
-
-In general, you should only skins to the panel's footer through `footerProperties` if you need to change properties or skins after the footer is created. Using `footerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+You can set any properties that you desire on the footer inside this factory (including skins, but if you're using a theme, watch out for conflicts!). In this example, we're using a [`LayoutGroup`] with a "toolbar" alternate style name. Typically, a theme will use this style name to make a `LayoutGroup` look similar to `Header` and give it a horizontal layout (the exact behavior depends on the theme, but this is the most common behavior).
 
 ## Layout
 

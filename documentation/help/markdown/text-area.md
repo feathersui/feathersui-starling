@@ -118,14 +118,6 @@ textArea.textEditorFactory = function():ITextEditorViewPOrt
 }
 ```
 
-You may also pass properties to the text editor through [`textEditorProperties`](../api-reference/feathers/controls/TextArea.html#textEditorProperties):
-
-``` code
-textArea.textEditorProperties.textFormat = new TextFormat( "_sans", 12, 0x333333 );
-```
-
-Using the `textEditorProperties` hash is a bit slower, so if the font styles do not change, you should always use the `textEditorFactory`. The `textEditorProperties` is best for when the font styles change after the editor is initially created.
-
 ### Background and Layout
 
 In addition to changing font styles on the text editor, you can change the text area's background skin and padding. Text area has three separate background skins, but two of them are optional.

@@ -53,14 +53,6 @@ input.promptFactory = function():ITextRenderer
 }
 ```
 
-If you aren't using a theme, you can customize the prompt's text format in the factory. Alternatively, you can use the [`promptProperties`](../api-reference/feathers/controls/TextInput.html#promptProperties) object to customize properties:
-
-``` code
-input.promptProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-```
-
-Using a custom factory is better for performance and it will allow you to use code hinting in your IDE, if available.
-
 ### Focus and Selection
 
 You may programmatically set focus to the text input by calling [`setFocus()`](../api-reference/feathers/controls/TextInput.html#setFocus()):
@@ -164,16 +156,6 @@ input.textEditorFactory = function():ITextEditor
     return textEditor;
 }
 ```
-
-You may also pass properties to the text editor through [`textEditorProperties`](../api-reference/feathers/controls/TextInput.html#textEditorProperties):
-
-``` code
-input.textEditorProperties.fontFamily = "Helvetica";
-input.textEditorProperties.fontSize = 12;
-input.textEditorProperties.color = 0x333333;
-```
-
-Using the `textEditorProperties` hash is a bit slower, so if the font styles do not change at runtime, you should always use the `textEditorFactory`. The `textEditorProperties` is best for when the font styles change after the editor is initially created.
 
 ### Background and Layout
 

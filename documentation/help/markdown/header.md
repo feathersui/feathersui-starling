@@ -12,6 +12,10 @@ The [`Header`](../api-reference/feathers/controls/Header.html) component display
 <figcaption>A `Header` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `Header`](#skinning-a-header)
+
 ## The Basics
 
 First, let's create a `Header` control, give it a title, and add it to the display list.
@@ -40,15 +44,67 @@ We could add additional buttons or controls to the [`rightItems`](../api-referen
 
 ## Skinning a `Header`
 
-A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the [`Header` API reference](../api-reference/feathers/controls/Header.html). We'll look at a few of the most common properties below.
+A header offers a number of properties that may be used to customize its appearance. For full details about which properties are available, see the [`Header` API reference](../api-reference/feathers/controls/Header.html). We'll look at a few of the most common ways of styling a header below.
 
-The header has [`backgroundSkin`](../api-reference/feathers/controls/Header.html#backgroundSkin) and [`backgroundDisabledSkin`](../api-reference/feathers/controls/Header.html#backgroundDisabledSkin) properties:
+### Using a theme? Some tips for customizing an individual header's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the header's title `fontStyles` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-header.backgroundSkin = new Image( texture );
+var header:Header = new Header();
+function setExtraHeaderStyles( header:Header ):void
+{
+	header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+header.styleProvider = new AddOnFunctionStyleProvider(
+	header.styleProvider, setExtraHeaderStyles );
 ```
 
-The background stretches to fill the entire width and height of the header.
+Our changes only affect the font styles. The header will continue to use the theme's background skins, padding, and other styles.
+
+### Font styles
+
+As we saw above, font styles of the header's title may be customized using the [`fontStyles`](../api-reference/feathers/controls/Header.html#fontStyles) property.
+
+``` code
+header.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text renderer](text-renderers.html).
+
+If the header's title should use different font styles when the header is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/Header.html#disabledFontStyles) property too:
+
+``` code
+header.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+```
+
+### Background skins
+
+Let's give the header a background skin that stretches to fill the entire width and height of the header. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+header.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Header.html#backgroundSkin) property.
+
+We can give the header a different background when it is disabled:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
+header.backgroundDisabledSkin = skin;
+```
+
+The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Header.html#backgroundDisabledSkin) is displayed when the header is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled header, it will fall back to using the `backgroundSkin` in the disabled state.
+
+### Layout
 
 By default, the header's title text renderer appears in the center. The `titleAlign` property may be set to [`HorizontalAlign.LEFT`](../api-reference/feathers/layout/HorizontalAlign.html#LEFT) to position the title to the left. If the `leftItems` property is not empty, the title will still appear on the left, but it will be positioned after the left items. Similarly, we can use [`HorizontalAlign.RIGHT`](../api-reference/feathers/layout/HorizontalAlign.html#RIGHT) to align the title to the right side of the header. If the `rightItems` property is not empty, the title will still appear on the right, but it will be positioned before the right items.
 
@@ -72,22 +128,6 @@ If all four padding values should be the same, you may use the [`padding`](../ap
 
 ``` code
 header.padding = 20;
-```
-
-#### Styling a Header's title text renderer
-
-You can customize the header's title [text renderer](text-renderers.html) in two ways. You might create a custom [`titleFactory`](../api-reference/feathers/controls/Header.html#titleFactory):
-
-``` code
-header.titleFactory = function():ITextRenderer
-{
-    var titleRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
- 
-    //styles here
-    titleRenderer.textFormat = new BitmapFontTextFormat( bitmapFont );
- 
-    return titleRenderer;
-}
 ```
 
 ## Related Links
