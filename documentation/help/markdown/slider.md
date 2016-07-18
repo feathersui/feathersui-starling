@@ -71,31 +71,6 @@ If we'd like to have separate buttons for both sides of the track (one for the m
 
 When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the slider's will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is draggable.
 
-### Targeting a `Slider` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( Slider ).defaultStyleFunction = setSliderStyles;
-```
-
-If you want to customize a specific slider to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-slider.styleNameList.add( "custom-slider" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Slider )
-    .setFunctionForStyleName( "custom-slider", setCustomSliderStyles );
-```
-
-Trying to change the slider's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the slider was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the slider's properties directly.
-
 ### Skinning the Thumb
 
 This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
@@ -137,15 +112,6 @@ slider.thumbFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/Slider.html#thumbProperties) to pass skins to the thumb.
-
-``` code
-slider.thumbProperties.defaultSkin = new Image( upTexture );
-slider.thumbProperties.downSkin = new Image( downTexture );
-```
-
-In general, you should only pass skins to the slider's thumb through `thumbProperties` if you need to change skins after the thumb is created. Using `thumbFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Skinning the Minimum Track
 
 This section only explains how to access the minimum track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
@@ -186,15 +152,6 @@ slider.minimumTrackFactory = function():Button
     return button;
 }
 ```
-
-Alternatively, or in addition to the `minimumTrackFactory`, you may use the [`minimumTrackProperties`](../api-reference/feathers/controls/Slider.html#minimumTrackProperties) to pass skins to the minimum track.
-
-``` code
-slider.minimumTrackProperties.defaultSkin = new Image( upTexture );
-slider.minimumTrackProperties.downSkin = new Image( downTexture );
-```
-
-In general, you should only pass properties to the slider's minimum track through `minimumTrackProperties` if you need to change these values after the minimum track is created. Using `minimumTrackFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the Maximum Track
 

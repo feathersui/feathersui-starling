@@ -206,31 +206,6 @@ input.typicalText = "The quick brown fox jumps over the lazy dog";
 
 By default, the text input uses only its background skin for measurement. `typicalText` is useful when there is a width or height that must be based on the font styles. For instance, the [`NumericStepper`](numeric-stepper.html) component uses this property to provide the text input with a string that represents the largest possible string it might display.
 
-### Targeting a `TextInput` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( TextInput ).defaultStyleFunction = setTextInputStyles;
-```
-
-If you want to customize a specific text input to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-input.styleNameList.add( "custom-text-input" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( TextInput )
-    .setFunctionForStyleName( "custom-text-input", setCustomTextInputStyles );
-```
-
-Trying to change the text input's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the text input was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the text input's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.TextInput` API Documentation](../api-reference/feathers/controls/TextInput.html)

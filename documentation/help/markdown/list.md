@@ -163,31 +163,6 @@ list.verticalScrollPolicy = ScrollPolicy.OFF;
 
 Generally, a list will use something called *[layout virtualization](faq/layout-virtualization.html)* by default because it offers significant performance improvements. When using a virtual layout, a list will display a limited number of item renderers at a time (usually only those that are visible in the view port) to avoid using massive amounts of memory. This means that data providers can contain thousands, or even tens of thousands, of items without a large performance impact. Additionally, the list will reuse that small number of item renderers to display different items as it scrolls. This keeps the runtime from creating many temporary objects that need to be garbage collected. To learn more, see [FAQ: What is layout virtualization?](faq/layout-virtualization.html)
 
-### Targeting a `List` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( List ).defaultStyleFunction = setListStyles;
-```
-
-If you want to customize a specific list to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-list.styleNameList.add( "custom-list" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( List )
-    .setFunctionForStyleName( "custom-list", setCustomListStyles );
-```
-
-Trying to change the list's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the list was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the list's properties directly.
-
 ### Skinning the Scroll Bars
 
 This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
@@ -234,14 +209,6 @@ list.horizontalScrollBarFactory = function():ScrollBar
 }
 ```
 
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
-
-``` code
-list.horizontalScrollBarProperties.trackLayoutMode = TrackLayoutMode.SINGLE;
-```
-
-In general, you should only pass skins to the list's scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Skinning the Item Renderers
 
 This section only explains how to access the item renderer sub-components. Please read [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
@@ -282,10 +249,6 @@ list.itemRendererFactory = function():IListItemRenderer
     return renderer;
 }
 ```
-
-Alternatively, or in addition to the `itemRendererFactory`, you may use [`itemRendererProperties`](../api-reference/feathers/controls/List.html#itemRendererProperties) to pass styles to the item renderers. However, you cannot pass in display objects (such as background skins) using `itemRendererProperties`. Remember that a list usually contains multiple item renderers, and Starling display objects may not be added to more than one parent at the same time. With that in mind, more than one item renderer in a list won't be able to share the same display object as a skin.
-
-In general, you should only pass styles to the list's item renderers through `itemRendererProperties` if you need to change those styles after the item renderers have been created. Using `itemRendererFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ## Using Custom Item Renderers
 

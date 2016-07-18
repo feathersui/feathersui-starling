@@ -90,39 +90,6 @@ header.titleFactory = function():ITextRenderer
 }
 ```
 
-Alternatively, you can pass in the title's styles through the header's [`titleProperties`](../api-reference/feathers/controls/Header.html#titleProperties) property:
-
-``` code
-header.titleProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-```
-
-In general, you should only pass skins to the header's title text renderer with `titleProperties` if you need to change styles after the text renderer is created. Using `titleFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
-### Targeting a `Header` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( Header ).defaultStyleFunction = setHeaderStyles;
-```
-
-If you want to customize a specific header to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-header.styleNameList.add( "custom-header" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Header )
-    .setFunctionForStyleName( "custom-header", setCustomHeaderStyles );
-```
-
-Trying to change the header's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the header was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the header's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.Header` API Documentation](../api-reference/feathers/controls/Header.html)

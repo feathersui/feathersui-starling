@@ -82,31 +82,6 @@ pages.selectedSymbolFactory = function():DisplayObject
 
 The page indicator will automatically reuse symbols if the page count or the selected index changes.
 
-### Targeting a `PageIndicator` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( PageIndicator ).defaultStyleFunction = setPageIndicatorStyles;
-```
-
-If you want to customize the style of a specific page indicator to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-pages.styleNameList.add( "custom-page-indicator" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( PageIndicator )
-    .setFunctionForStyleName( "custom-page-indicator", setCustomPageIndicatorStyles );
-```
-
-Trying to change the page indicator's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the page indicator was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the page indicator's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.PageIndicator` API Documentation](../api-reference/feathers/controls/PageIndicator.html)

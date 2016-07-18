@@ -71,31 +71,6 @@ container.backgroundDisabledSkin = new Image( disabledTexture );
 
 The [`backgroundSkin`](../api-reference/feathers/controls/LayoutGroup.html#backgroundSkin) property provides the default background for when the container is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/LayoutGroup.html#backgroundDisabledSkin) is displayed when the group is disabled.
 
-### Targeting a LayoutGroup in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( LayoutGroup ).defaultStyleFunction = setLayoutGroupStyles;
-```
-
-If you want to customize a specific group to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-group.styleNameList.add( "custom-layout-group" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( LayoutGroup )
-    .setFunctionForStyleName( "custom-layout-group", setCustomLayoutGroupStyles );
-```
-
-Trying to change the group's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the group was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the group's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.LayoutGroup` API Documentation](../api-reference/feathers/controls/LayoutGroup.html)

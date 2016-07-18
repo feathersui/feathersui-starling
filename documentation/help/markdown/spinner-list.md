@@ -71,31 +71,6 @@ This skin will be displayed in the center of the list, positioned either horizon
 
 As mentioned above, `SpinnerList` is a subclass of `List`. For more detailed information about the skinning options available to `SpinnerList`, see [How to use the Feathers `List` component](list.html).
 
-### Targeting an `SpinnerList` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( SpinnerList ).defaultStyleFunction = setSpinnerListStyles;
-```
-
-If you want to customize a specific `SpinnerList` to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-list.styleNameList.add( "custom-spinner-list" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( SpinnerList )
-    .setFunctionForStyleName( "custom-spinner-list", setCustomSpinnerListStyles );
-```
-
-Trying to change the spinner list's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the spinner list was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the spinner list's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.SpinnerList` API Documentation](../api-reference/feathers/controls/SpinnerList.html)

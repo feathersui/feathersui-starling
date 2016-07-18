@@ -149,31 +149,6 @@ textArea.paddingLeft = 10;
 
 The dimensions of the text editor will be affected by the padding to show more of the background skin around the edges. This can allow you to reveal a border.
 
-### Targeting a `TextArea` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( TextArea ).defaultStyleFunction = setTextAreaStyles;
-```
-
-If you want to customize a specific text area to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-textArea.styleNameList.add( "custom-text-area" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( TextArea )
-    .setFunctionForStyleName( "custom-text-area", setCustomTextAreaStyles );
-```
-
-Trying to change the text area's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the text area was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the text area's properties directly.
-
 ### Skinning the Scroll Bars
 
 This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
@@ -220,15 +195,7 @@ textArea.horizontalScrollBarFactory = function():ScrollBar
 }
 ```
 
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
-
-``` code
-textArea.horizontalScrollBarProperties.trackLayoutMode = TrackLayoutMode.SINGLE;
-```
-
-In general, you should only pass skins to the text area's scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
-## Customizing Scrolling Behavior
+## Customize scrolling behavior
 
 A number of properties are available to customize scrolling behavior and the scroll bars.
 

@@ -170,31 +170,6 @@ If all four padding values should be the same, you may use the [`padding`](../ap
 panel.padding = 20;
 ```
 
-### Targeting a `Panel` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( Panel ).defaultStyleFunction = setPanelStyles;
-```
-
-If you want to customize a specific panel to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-panel.styleNameList.add( "custom-panel" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Panel )
-    .setFunctionForStyleName( "custom-panel", setCustomPanelStyles );
-```
-
-Trying to change the panel's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the panel was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the panel's properties directly.
-
 ### Skinning the Header
 
 This section only explains how to access the header sub-component. The header may be any type of Feathers control. Please read the appropriate documentation for full details about the skinning properties that are available on the component that is used for the header.
@@ -237,14 +212,6 @@ panel.headerFactory = function():Header
 }
 ```
 
-Alternatively, or in addition to the `headerFactory`, you may use the [`headerProperties`](../api-reference/feathers/controls/Panel.html#headerProperties) to pass skins to the header.
-
-``` code
-panel.headerProperties.backgroundSkin = new Image( headerBackgroundTexture );
-```
-
-In general, you should only pass skins to the panel's header through `headerProperties` if you need to change skins after the header is created. Using `headerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Skinning the Footer
 
 This section only explains how to access the footer sub-component. The footer may be any type of Feathers control. Please read the appropriate documentation for full details about the skinning properties that are available on the component that is used for the footer.
@@ -284,14 +251,6 @@ panel.footerFactory = function():ScrollContainer
     return footer;
 }
 ```
-
-Alternatively, or in addition to the `footerFactory`, you may use the [`footerProperties`](../api-reference/feathers/controls/Panel.html#footerProperties) to pass skins to the footer.
-
-``` code
-panel.footerProperties.backgroundSkin = new Image( footerBackgroundTexture );
-```
-
-In general, you should only pass skins to the panel's footer through `footerProperties` if you need to change skins after the footer is created. Using `footerFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the Scroll Bars
 
@@ -338,15 +297,7 @@ panel.horizontalScrollBarFactory = function():ScrollBar
 }
 ```
 
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
-
-``` code
-panel.horizontalScrollBarProperties.trackLayoutMode = TrackLayoutMode.SINGLE;
-```
-
-In general, you should only pass skins to the panel's scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
-## Customizing Scrolling Behavior
+## Customize scrolling behavior
 
 A number of properties are available to customize scrolling behavior and the scroll bars.
 

@@ -81,31 +81,6 @@ For full details about what skin and style properties are available, see the [`S
 
 <aside class="info">As mentioned above, `Screen` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `Screen`, see [How to use the Feathers `LayoutGroup` component](layout-group.html).</aside>
 
-### Targeting a `Screen` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( Screen ).defaultStyleFunction = setScreenStyles;
-```
-
-If you want to customize a specific screen to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-screen.styleNameList.add( "custom-screen" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Screen )
-    .setFunctionForStyleName( "custom-screen", setCustomScreenStyles );
-```
-
-Trying to change the screen's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the screen was added to the stage and initialized.
-
-If you aren't using a theme, then you may set any of the screen's properties directly. For full details about what skin and style properties are available, see the [`Screen` API reference](../api-reference/feathers/controls/Screen.html).
-
 ## Related Links
 
 -   [`feathers.controls.Screen` API Documentation](../api-reference/feathers/controls/Screen.html)

@@ -68,31 +68,6 @@ A skinned `Radio` component usually has no background (or a transparent one) and
 
 As mentioned above, `Radio` is a subclass of `ToggleButton`. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
 
-### Targeting a `Radio` in a theme
-
-If you are creating a [theme](themes.html), you can set an function for the default styles like this:
-
-``` code
-getStyleProviderForClass( Radio ).defaultStyleFunction = setRadioStyles;
-```
-
-If you want to customize a specific radio to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-radio.styleNameList.add( "custom-radio" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Radio )
-    .setFunctionForStyleName( "custom-radio", setCustomRadioStyles );
-```
-
-Trying to change the radio's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the radio was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the radio's properties directly.
-
 ## User Experience
 
 In general, a set of `Radio` controls should be used only when there are three or more choices that a user must make. If there are only two choices, a `Check` or a `ToggleSwitch` may be more appropriate. If there are so many choices that a set of `Radio` controls will fill a significant amount of space on screen, a `PickerList` is probably a better choice. The default item renderer of a `PickerList` is also a subclass of `ToggleButton`, so it's possible to style the list's items to look like radio buttons, if you prefer.

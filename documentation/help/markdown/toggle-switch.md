@@ -42,31 +42,6 @@ function toggle_changeHandler( event:Event ):void
 
 The skins for a `ToggleSwitch` control are divided into the thumb, labels for off and on text, and one or two tracks. For full details about what skin and style properties are available, see the [`ToggleSwitch` API reference](../api-reference/feathers/controls/ToggleSwitch.html). We'll look at a few of the most common properties below.
 
-### Targeting a `ToggleSwitch` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( ToggleSwitch ).defaultStyleFunction = setToggleSwitchStyles;
-```
-
-If you want to customize a specific toggle switch to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-toggle.styleNameList.add( "custom-toggle-switch" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( ToggleSwitch )
-    .setFunctionForStyleName( "custom-toggle-switch", setCustomToggleSwitchStyles );
-```
-
-Trying to change the toggle switch's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the toggle switch was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the toggle switch's properties directly.
-
 ### Skinning the Labels
 
 The on and off skins are text renderers that may be skinned separately or using default properties for both.
@@ -123,15 +98,6 @@ toggle.thumbFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/ToggleSwitch.html#thumbProperties) to pass skins to the thumb.
-
-``` code
-toggle.thumbProperties.defaultSkin = new Image( upTexture );
-toggle.thumbProperties.downSkin = new Image( downTexture );
-```
-
-In general, you should only skins to the toggle switch's thumb through `thumbProperties` if you need to change skins after the thumb is created. Using `thumbFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Track(s) and Layout
 
 The toggle switch's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ToggleSwitch.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width and height of the toggle switch.
@@ -183,20 +149,11 @@ toggle.onTrackFactory = function():Button
 }
 ```
 
-Alternatively, or in addition to the `onTrackFactory`, you may use the [`onTrackProperties`](../api-reference/feathers/controls/ToggleSwitch.html#onTrackProperties) to pass skins to the on track.
-
-``` code
-toggle.onTrackProperties.defaultSkin = new Image( upTexture );
-toggle.onTrackProperties.downSkin = new Image( downTexture );
-```
-
-In general, you should only pass properties to the toggle switch's on track through `onTrackProperties` if you need to change these values after the on track is created. Using `onTrackFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Skinning the Off Track
 
 This section only explains how to access the off track sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
 
-The toggle switch's off track may be skinned similarly to the on track. The style name to use with [themes](themes.html) is [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_OFF_TRACK) or you can customize the style name with [`customOffTrackStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customOffTrackStyleName). If you aren't using a theme, then you can use [`offTrackFactory`](../api-reference/feathers/controls/ToggleSwitch.html#offTrackFactory) and [`offTrackProperties`](../api-reference/feathers/controls/ToggleSwitch.html#offTrackProperties).
+The toggle switch's off track may be skinned similarly to the on track. The style name to use with [themes](themes.html) is [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_OFF_TRACK) or you can customize the style name with [`customOffTrackStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customOffTrackStyleName). If you aren't using a theme, then you can use [`offTrackFactory`](../api-reference/feathers/controls/ToggleSwitch.html#offTrackFactory).
 
 ## Related Links
 

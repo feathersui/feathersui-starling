@@ -63,31 +63,6 @@ progress.paddingBottom = 2;
 progress.paddingLeft = 3;
 ```
 
-### Targeting a `ProgressBar` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( ProgressBar ).defaultStyleFunction = setProgressBarStyles;
-```
-
-If you want to customize a specific progress bar to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-progress.styleNameList.add( "custom-progress-bar" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( ProgressBar )
-    .setFunctionForStyleName( "custom-progress-bar", setCustomProgressBarStyles );
-```
-
-Trying to change the progress bar's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the progress bar was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the progress bar's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.ProgressBar` API Documentation](../api-reference/feathers/controls/ProgressBar.html)

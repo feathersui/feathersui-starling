@@ -61,32 +61,7 @@ We need to set the [`selectedIndex`](../api-reference/feathers/controls/PickerLi
 
 The skins for a `PickerList` control are divided into several parts, including the button and pop-up list sub-components. For full details about what skin and style properties are available, see the [`PickerList` API reference](../api-reference/feathers/controls/PickerList.html).
 
-### Targeting a `PickerList` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( PickerList ).defaultStyleFunction = setPickerListStyles;
-```
-
-If you want to customize a specific picker list to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-list.styleNameList.add( "custom-picker-list" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( PickerList )
-    .setFunctionForStyleName( "custom-picker-list", setCustomPickerListStyles );
-```
-
-Trying to change the picker list's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the picker list was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the picker list's properties directly.
-
-### Skinning the Button
+### Skinning the button
 
 Please read [How to use the Feathers `Button` component](button.html) for full details about how to skin this component.
 
@@ -127,16 +102,6 @@ list.buttonFactory = function():Button
 };
 ```
 
-Alternatively, or in addition to the `buttonFactory`, you may use the [`buttonProperties`](../api-reference/feathers/controls/PickerList.html#buttonProperties) to pass skins to the button:
-
-``` code
-list.buttonProperties.defaultSkin = new Image( upTexture );
-list.buttonProperties.downSkin = new Image( downTexture );
-list.buttonProperties.hoverSkin = new Image( hoverTexture );
-```
-
-In general, you should only skins to the picker list's button through `buttonProperties` if you need to change skins after the button is created. Using `buttonFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
 ### Skinning the List
 
 Please read [How to use the Feathers `List` component](list.html) for full details about how to skin this component.
@@ -175,14 +140,6 @@ list.listFactory = function():List
     return list;
 };
 ```
-
-Alternatively, or in addition to the `listFactory`, you may use the [`listProperties`](../api-reference/feathers/controls/PickerList.html#listProperties) to pass skins to the list.
-
-``` code
-list.listProperties.backgroundSkin = new Image( backgroundSkinTexture );
-```
-
-In general, you should only skins to the picker list's list through `listProperties` if you need to change skins after the list is created. Using `listFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Customizing the Pop Up Behavior
 

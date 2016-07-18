@@ -61,31 +61,6 @@ The [`gap`](../api-reference/feathers/controls/TabBar.html#gap) property sets th
 
 The [`distributeTabSizes`](../api-reference/feathers/controls/TabBar.html#distributeTabSizes) property controls whether the combined size of tabs fill the entire length of the `TabBar` or if they use the minimum space required.
 
-### Targeting a `TabBar` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( TabBar ).defaultStyleFunction = setTabBarStyles;
-```
-
-If you want to customize a specific tab bar to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-tabs.styleNameList.add( "custom-tab-bar" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( TabBar )
-    .setFunctionForStyleName( "custom-tab-bar", setCustomTabBarStyles );
-```
-
-Trying to change the tab bar's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the tab bar was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the tab bar's properties directly.
-
 ### Skinning the Tabs
 
 This section only explains how to access the tab sub-components, which are simply toggle buttons. Please read [How to use the Feathers `ToggleButton` component](toggle-button.html) for full details about the skinning properties that are available on `ToggleButton` components.

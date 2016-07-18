@@ -45,31 +45,6 @@ Callouts have a number of skin and style properties to let you customize their a
 
 As mentioned above, `TextCallout` is a subclass of `Callout`. For more detailed information about the skinning options available to `TextCallout`, see [How to use the Feathers `Callout` component](callout.html).
 
-### Targeting a `TextCallout` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( TextCallout ).defaultStyleFunction = setTextCalloutStyles;
-```
-
-If you want to customize a specific callout to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-callout.styleNameList.add( "custom-text-callout" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( TextCallout )
-    .setFunctionForStyleName( "custom-text-callout", setCustomTextCalloutStyles );
-```
-
-Trying to change the callout's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the callout was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the callout's properties directly.
-
 ### Skinning a `TextCallout` without a theme
 
 If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the [`TextCallout.calloutFactory`](../api-reference/feathers/controls/TextCallout.html#calloutFactory) static property to a function that provides skins for the callout. This factory will be called any time that [`TextCallout.show()`](../api-reference/feathers/controls/TextCallout.html#show()) is used to create a callout.

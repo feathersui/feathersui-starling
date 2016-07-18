@@ -62,31 +62,6 @@ stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 
 There are two additional options for [`buttonLayoutMode`](../api-reference/feathers/controls/NumericStepper.html#buttonLayoutMode). You can use [`StepperButtonLayoutMode.SPLIT_HORIZONTAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#SPLIT_HORIZONTAL) to place the decrement button on the left side of the text input and the increment button button on the right side. Similarly, you can use [`StepperButtonLayoutMode.SPLIT_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#SPLIT_VERTICAL) to place the increment button on top of the text input and the decrement button on the bottom.
 
-### Targeting a `NumericStepper` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( NumericStepper ).defaultStyleFunction = setNumericStepperStyles;
-```
-
-If you want to customize a specific numeric stepper to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-stepper.styleNameList.add( "custom-numeric-stepper" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( NumericStepper )
-    .setFunctionForStyleName( "custom-numeric-stepper", setCustomNumericStepperStyles );
-```
-
-Trying to change the numeric stepper's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the numeric stepper was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the numeric stepper's properties directly.
-
 ### Skinning the Decrement Button
 
 This section only explains how to access the decrement button sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
@@ -127,15 +102,6 @@ stepper.decrementButtonFactory = function():Button
     return button;
 }
 ```
-
-Alternatively, or in addition to the `decrementButtonFactory`, you may use the [`decrementButtonProperties`](../api-reference/feathers/controls/NumericStepper.html#decrementButtonProperties) to pass skins to the decrement button.
-
-``` code
-stepper.decrementButtonProperties.defaultSkin = new Image( upTexture );
-stepper.decrementButtonProperties.downSkin = new Image( downTexture );
-```
-
-In general, you should only skins to the numeric stepper's decrement button through `decrementButtonProperties` if you need to change skins after the decrement button is created. Using `decrementButtonFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the Increment Button
 
@@ -190,15 +156,6 @@ stepper.textInputFactory = function():TextInput
     return input;
 }
 ```
-
-Alternatively, or in addition to the `textInputFactory`, you may use the [`textInputProperties`](../api-reference/feathers/controls/NumericStepper.html#textInputProperties) to pass skins to the text input.
-
-``` code
-stepper.textInputProperties.backgroundSkin = new Image( backgroundTexture );
-stepper.textInputProperties.padding = 20;
-```
-
-In general, you should only skins to the numeric stepper's text input through `textInputProperties` if you need to change skins after the text input is created. Using `textInputFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 <aside class="info">On mobile devices with touch screens, you should generally set [`isEditable`](../api-reference/feathers/controls/TextInput.html#isEditable) on the numeric stepper's text input to `false` because editing the text may be frustrating or confusing for users. The touch surface for the text input is very small and close to the buttons, so accuracy can be an issue. Moreover, on iOS, a clear button is displayed when a text input has focus, meaning that there will be very little space to display the text for editing.
 

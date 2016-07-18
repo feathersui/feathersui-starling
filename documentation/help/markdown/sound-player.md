@@ -119,31 +119,6 @@ player.soundTransform = new SoundTransform( 0.5 );
 
 As mentioned above, `SoundPlayer` is a subclass of `LayoutGroup`. For more detailed information about the skinning options available to `SoundPlayer`, see [How to use the Feathers `LayoutGroup` component](layout-group.html).
 
-### Targeting a `SoundPlayer` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( SoundPlayer ).defaultStyleFunction = setSoundPlayerStyles;
-```
-
-If you want to customize a specific sound player to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-player.styleNameList.add( "custom-sound-player" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( SoundPlayer )
-    .setFunctionForStyleName( "custom-sound-player", setCustomSoundPlayerStyles );
-```
-
-Trying to change the sound player's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the sound player was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the sound player's properties directly.
-
 ## Related Links
 
 -   [`feathers.media.SoundPlayer` API Documentation](../api-reference/feathers/media/SoundPlayer.html)

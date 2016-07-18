@@ -28,31 +28,6 @@ The container will automatically handle setting properties like [`direction`](..
 
 The `SimpleScrollBar` has one part that may be skinned, its thumb. A SimpleScrollBar's track is invisible. That's where the "simple" part comes from. For full details about what skin and style properties are available, see the [`SimpleScrollBar` API reference](../api-reference/feathers/controls/SimpleScrollBar.html).
 
-### Targeting a `SimpleScrollBar` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( SimpleScrollBar ).defaultStyleFunction = setSimpleScrollBarStyles;
-```
-
-If you want to customize a specific simple scroll bar to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-scrollBar.styleNameList.add( "custom-simple-scroll-bar" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( SimpleScrollBar )
-    .setFunctionForStyleName( "custom-simple-scroll-bar", setCustomSimpleScrollBarStyles );
-```
-
-Trying to change the scroll bar's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the scroll bar was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the simple scroll bar's properties directly.
-
 ### Skinning the Thumb
 
 This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
@@ -93,15 +68,6 @@ scrollBar.thumbFactory = function():Button
     return button;
 }
 ```
-
-Alternatively, or in addition to the `thumbFactory`, you may use the [`thumbProperties`](../api-reference/feathers/controls/SimpleScrollBar.html#thumbProperties) to pass skins to the thumb.
-
-``` code
-scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
-scrollBar.thumbProperties.downSkin = new Image( downTexture );
-```
-
-In general, you should only pass skins to the scroll bar's thumb through `thumbProperties` if you need to change skins after the thumb is created. Using `thumbFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ## Related Links
 

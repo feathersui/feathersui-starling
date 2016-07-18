@@ -63,31 +63,6 @@ The same [`setSkinForState()`](../api-reference/feathers/controls/BasicButton.ht
 
 Likewise, a `ToggleButton` provides the [`defaultSelectedIcon`](../api-reference/feathers/controls/ToggleButton.html#defaultSelectedIcon) property for styling the icon when selected. The [`setIconForState()`](../api-reference/feathers/controls/Button.html#setIconForState()) method may also use the extra states defined above, like `ButtonState.UP_AND_SELECTED` and `ButtonState.DOWN_AND_SELECTED`.
 
-### Targeting a `ToggleButton` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( ToggleButton ).defaultStyleFunction = setToggleButtonStyles;
-```
-
-If you want to customize a specific toggle button to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-toggle.styleNameList.add( "custom-toggle-button" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( ToggleButton )
-    .setFunctionForStyleName( "custom-toggle-button", setCustomToggleButtonStyles );
-```
-
-Trying to change the toggle button's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the toggle button's properties directly.
-
 ## Related Links
 
 -   [`feathers.controls.ToggleButton` API Documentation](../api-reference/feathers/controls/ToggleButton.html)

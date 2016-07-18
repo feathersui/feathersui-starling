@@ -61,31 +61,6 @@ scrollText.text = "<font color=\"#ff0000\">Hello world</font>";
 
 A number of other styling properties from `flash.text.TextField` are available to use with `ScrollText`, including [`antiAliasType`](../api-reference/feathers/controls/ScrollText.html#antiAliasType), [`backgroundColor`](../api-reference/feathers/controls/ScrollText.html#backgroundColor), [`borderColor`](../api-reference/feathers/controls/ScrollText.html#borderColor), [`gridFitType`](../api-reference/feathers/controls/ScrollText.html#gridFitType), [`styleSheet`](../api-reference/feathers/controls/ScrollText.html#styleSheet), [`sharpness`](../api-reference/feathers/controls/ScrollText.html#sharpness), [`thickness`](../api-reference/feathers/controls/ScrollText.html#thickness), and others. See the [`ScrollText` API documentation](../api-reference/feathers/controls/ScrollText.html) for full details.
 
-### Targeting a `ScrollText` in a theme
-
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( ScrollText ).defaultStyleFunction = setScrollTextStyles;
-```
-
-If you want to customize a specific scroll text to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-text.styleNameList.add( "custom-scroll-text" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( ScrollText )
-    .setFunctionForStyleName( "custom-scroll-text", setCustomScrollTextStyles );
-```
-
-Trying to change the scroll text's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the scroll text was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the scroll text's properties directly.
-
 ### Skinning the Scroll Bars
 
 This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
@@ -132,15 +107,7 @@ scrollText.horizontalScrollBarFactory = function():ScrollBar
 }
 ```
 
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
-
-``` code
-scrollText.horizontalScrollBarProperties.trackLayoutMode = TrackLayoutMode.SINGLE;
-```
-
-In general, you should only pass skins to the scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
-
-## Customizing Scrolling Behavior
+## Customize scrolling behavior
 
 A number of properties are available to customize scrolling behavior and the scroll bars.
 
