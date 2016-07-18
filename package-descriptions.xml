@@ -9,6 +9,9 @@
 		<package name="feathers.controls"> 
 			<shortDescription><![CDATA[User interface controls and containers.]]></shortDescription>
 		</package>
+		<package name="feathers.controls.color"> 
+			<shortDescription><![CDATA[User interface controls for working with colors.]]></shortDescription>
+		</package>
 		<package name="feathers.controls.supportClasses"> 
 			<shortDescription><![CDATA[Supporting class and interfaces used by Feathers user interface components.]]></shortDescription>
 		</package>
