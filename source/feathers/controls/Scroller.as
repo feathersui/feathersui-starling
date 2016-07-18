@@ -19,7 +19,6 @@ package feathers.controls
 	import feathers.layout.Direction;
 	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
@@ -29,6 +28,7 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 
 	import starling.animation.Transitions;
@@ -3344,8 +3344,10 @@ package feathers.controls
 				if(loopCount >= 10)
 				{
 					//if it still fails after ten tries, we've probably entered
-					//an infinite loop due to rounding errors or something
-					break;
+					//an infinite loop. it could be things like rounding errors,
+					//layout issues, or custom item renderers that don't measure
+					//correctly
+					throw new Error(getQualifiedClassName(this) + " stuck in an infinite loop during measurement and validation. This may be an issue with the layout or children, such as custom item renderers.");
 				}
 			}
 			while(this._hasViewPortBoundsChanged);
