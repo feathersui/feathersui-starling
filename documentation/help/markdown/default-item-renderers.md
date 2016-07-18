@@ -12,8 +12,15 @@ The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/Def
 <figcaption>A `DefaultListItemRenderer` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
-In many of the examples below, code and descriptions will refer to the `DefaultListItemRenderer` class and the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, which are both used by the `List` component. When using a `GroupedList` component, you should substitute the `DefaultGroupedListItemRenderer` class and the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) instead.
-These item renderer types for `GroupedList` will have all of the same properties that are used in the examples below. The differences between the `List` and `GroupedList` versions of item renderers are entirely behind the scenes.
+<aside class="info">In many of the examples below, code and descriptions will refer to the [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class and the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, which are both used by the `List` component. When using a `GroupedList` component, you should substitute the [`DefaultGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultGroupedListItemRenderer.html) class and the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface instead.
+
+Whether using a `List` or a `GroupedList`, the default item renderers will have all of the same properties that are used in the examples below. The differences are entirely behind the scenes.</aside>
+
+-   [The Basics](#the-basics)
+
+-   [Children of an item renderer](#children-of-an-item-renderer)
+
+-   [Skinning a default item renderer](#skinning-a-default-item-renderer)
 
 ## The Basics
 
@@ -30,7 +37,7 @@ list.itemRendererFactory = function():IListItemRenderer
 
 In the next section, we'll look at several examples of properties that we can set in the `itemRendererFactory`.
 
-## Children of a default item renderer
+## Children of an item renderer
 
 An item renderer provides up to three children to display data. A label, an icon, and an accessory. A label must always display a string in a [text renderer](text-renderers.html). However, both the icon and the accessory have three different ways to display data. They may display either a texture or URL in an [`ImageLoader`](image-loader.html), a string in a text renderer, or they can add an arbitrary display object, like a Feathers component, as a child.
 
@@ -99,6 +106,8 @@ renderer.iconField = "control";
 
 When using `iconField`, it's important to understand that the display object in the data provider will not be automatically disposed when the item renderer or the list is disposed. This display object may need to be used in another list later, and Feathers cannot know whether it is safe to dispose it, similar to how a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) cannot dispose its [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html). To avoid memory leaks, remember to dispose any display objects included in the list's data provider when the list is disposed. The [`dispose()`](../api-reference/feathers/data/ListCollection.html#dispose()) function on the data provider makes it easy to dispose display objects in the `ListCollection`.
 
+Finally, it's possible to skin the icon without passing it through the data provider. For example, you might want to display a checkmark as the icon when an item renderer is selected. Set the [`itemHasIcon`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#itemHasIcon) property to `false`, and you can skin the icon using [`defaultIcon`](../api-reference/feathers/controls/Button.html#defaultIcon) and [`setIconForState()`](../api-reference/feathers/controls/Button.html#setIconForState()) just like you would for a button.
+
 ### Accessory
 
 In addition to the label and the icon, the default item renderer can display a third child, an *accessory*. This is a display object that is added as a child and it is often meant to be interactive in some way. For instance, you might create a list of settings with labels on the left and some user interface controls like sliders and toggle switches on the right.
@@ -109,11 +118,64 @@ Similar to icons, for extra convenience and flexibility, an accessory may be a t
 
 Similar to `iconField`, a display object in the list's data provider that is displayed using `accessoryField` will not be automatically disposed when the item renderer or the list is disposed. See the note above about `iconField` for details.
 
+Finally, similar to `itemHasIcon`, it's possible to skin the accessory without passing it through the data provider by setting [`itemHasAccessory`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#itemHasAccessory) to `false`. You can skin the accessory using [`defaultAccessory`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#defaultAccessory) and [`setAccessoryForState()`](../api-reference/feathers/controls/renderers/setAccessoryForState.html#setAccessoryForState()).
+
 ## Skinning a default item renderer
 
-The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class is a subclass of the [`ToggleButton`](toggle-button.html) component. Like a button, the default item renderer can change its background skin based on the touch state, and it supports different background skins when selected too. Similarly, an item renderer may have both a label and an icon, and all of the layout options used by buttons for alignment, gap, and padding apply to an item renderer too. For full details about these style properties, see [How to use the Feathers `Button` component](button.html) and [How to use the Feathers `ToggleButton` component](toggle-button.html). For the full listing of all style properties available on the default item renderers, see the [`DefaultListItemRenderer` API reference](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html).
+The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class is a subclass of the [`ToggleButton`](toggle-button.html) component. Like a button, the default item renderer can change its background skin based on the touch state, and it supports different background skins when selected too. Similarly, an item renderer may have both a label and an icon, and all of the layout options used by buttons for alignment, gap, and padding apply to an item renderer too. For full details about these inherited properties, see [How to use the Feathers `Button` component](button.html) and [How to use the Feathers `ToggleButton` component](toggle-button.html). For full details about which properties are available to item renderers, see the [`DefaultListItemRenderer` API reference](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html). We'll look at a few of the most common ways of styling an item renderer below.
 
-Next, we'll look at a few of the common properties that the default item renderers add beyond what normal button's provide.
+### Using a theme? Some tips for customizing the styles of item renderers in an individual list
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize the item renderers in an individual list, you should pass a custom value to the list's [`customItemRendererStyleName`](../api-reference/feathers/controls/List.html#customItemRendererStyleName) property and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the item renderer's label `fontStyles` with an `AddOnFunctionStyleProvider`:
+
+``` code
+function setExtraItemRendererStyles( itemRenderer:DefaultListItemRenderer ):void
+{
+	button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+list.itemRendererFactory = function():IListItemRenderer
+{
+	var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	itemRenderer.styleProvider = new AddOnFunctionStyleProvider(
+		itemRenderer.styleProvider, setExtraItemRendererStyles );
+	return itemRenderer;
+};
+```
+
+Our changes only affect the font styles. The item renderer will continue to use the theme's background skins, padding, and other styles.
+
+### Font styles
+
+If the item renderer's accessory is a label set using `accessoryLabelField` or `accessoryLabelFunction`, we can customize its font styles using the [`accessoryLabelFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelFontStyles) property.
+
+``` code
+itemRenderer.accessoryLabelFontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text renderer](text-renderers.html).
+
+If the accessory label should use different font styles when the item renderer is disabled, you may set the [`accessoryLabelDisabledFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelDisabledFontStyles) property too:
+
+``` code
+itemRenderer.accessoryLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+```
+
+Finally, we can even customize the accessory label's font styles for each of the item renderer's specific states:
+
+```code
+itemRenderer.setAccessoryLabelFontStylesForState( ButtonState.DOWN,
+	new TextFormat( "Helvetica", 20, 0xcc0000 ) );
+```
+
+Using the code above, the color of the accessor label will change when the item renderer is pressed, and the state changes to `ButtonState.DOWN`.
+
+When font styles aren't available for a specific state, the item renderer will use the default `accessoryLabelFontStyles` as a fallback. For example, we haven't provided font styles for `ButtonState.HOVER`, so the default styles will be used.
+
+Similarly, if the item renderer's icon is a label set using `iconLabelField` or `iconLabelFunction`, its font styles may be customized too. Use the [`iconLabelFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconLabelFontStyles) and  [`iconLabelDisabledFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconLabelDisabledFontStyles) properties, or the [`setIconLabelFontStylesForState()`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#setIconLabelFontStylesForState()) function.
 
 ### Layout with an accessory
 
@@ -124,31 +186,6 @@ Positioning the accessory in the item renderer's layout is very similar to posit
 <aside class="info">The [`iconPosition`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryPosition) and [`gap`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#gap) properties provided by the [`Button`](button.html) superclass may also be used by item renderers to position the icon.</aside>
 
 When displaying all three children that the default item renderer supports (the label text renderer, the icon, and the accessory), you can use the [`layoutOrder`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#layoutOrder) property to customize the order that the children are positioned in the layout. By default, the label text renderer is positioned first, followed by the icon (relative to the label), and finally, the accessory is positioned last (relative to the combined bounding box of the label and the icon). Alternatively, you can change the order so that the label text renderer is positioned first, followed by the accessory (relative to the label), and the icon is positioned last (relative to the combined bounding box of the label and the accessory).
-
-### Targeting a default item renderer in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( DefaultListItemRenderer ).defaultStyleFunction = setItemRendererStyles;
-```
-
-If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-list.customItemRendererStyleName = "custom-item-renderer";
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( DefaultListItemRenderer )
-    .setFunctionForStyleName( "custom-item-renderer", customItemRendererInitializer );
-```
-
-Trying to change the item renderer's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the item renderer was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-Of you aren't using a theme, then you may set the item renderer's properties through the List's [`itemRendererFactory`](../api-reference/feathers/controls/List.html#itemRendererFactory) or [`itemRendererProperties`](../api-reference/feathers/controls/List.html#itemRendererProperties).
 
 ## Related Links
 

@@ -12,6 +12,22 @@ The [`GroupedList`](../api-reference/feathers/controls/GroupedList.html) class r
 <figcaption>`GroupedList` components skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Headers and Footers](#headers-and-footers)
+
+-   [Selection](#selection)
+
+-   [Skinning a `GroupedList`](#skinning-a-groupedlist)
+
+-   [Custom item renderers](#custom-item-renderers)
+
+-   [Custom header and footer renderers](#custom-header-and-footer-renderers)
+
+-   [Multiple item renderer factories](#multiple-item-renderer-factories)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
 ## The Basics
 
 First, let's create our `GroupedList` control and add it to the display list:
@@ -179,18 +195,51 @@ list.isSelectable = false;
 
 ## Skinning a `GroupedList`
 
-A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available, see the [`GroupedList` API reference](../api-reference/feathers/controls/GroupedList.html). We'll look at a few of the most common properties below.
+A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components, such as their font styles and touch states. For full details about which properties are available, see the [`GroupedList` API reference](../api-reference/feathers/controls/GroupedList.html). We'll look at a few of the most common ways of styling a list below.
 
-We'll start the skinning process by giving our grouped list appropriate background skins.
+### Using a theme? Some tips for customizing an individual grouped list's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the grouped list's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
+
+``` code
+var list:GroupedList = new GroupedList();
+function setExtraGroupedListStyles( list:GroupedList ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    list.backgroundSkin = skin;
+}
+list.styleProvider = new AddOnFunctionStyleProvider(
+    list.styleProvider, setExtraGroupedListStyles );
+```
+
+Our changes only affect the background skin. The list will continue to use the theme's other styles.
+
+### Background skin
+
+As we saw above, we can give the list a background skin. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
 ``` code
 list.backgroundSkin = new Image( enabledTexture );
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
+
+We can give the list a different background when it is disabled:
+
+``` code
 list.backgroundDisabledSkin = new Image( disabledTexture );
 ```
 
-The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the grouped list is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the grouped list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled grouped list, it will fall back to using the `backgroundSkin` in the disabled state.
+The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the grouped list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled grouped list, it will fall back to using the `backgroundSkin` in the disabled state.
 
-Padding may be added around the edges of the grouped list's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the grouped list's content, but the grouped list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
+### Layout
+
+Padding may be added around the edges of the grouped list's content. This padding is different than any type of padding that may be provided by the `layout` property. The layout padding is applied inside the grouped list's content, but the grouped list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
 ``` code
 list.paddingTop = 15;
@@ -204,8 +253,6 @@ If all four padding values should be the same, you may use the [`padding`](../ap
 ``` code
 list.padding = 20;
 ```
-
-### Layouts
 
 The default layout for a grouped list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a [`HorizontalLayout`](horizontal-layout.html) and customize it a bit:
 
@@ -229,31 +276,6 @@ list.verticalScrollPolicy = ScrollPolicy.OFF;
 
 Generally, a grouped list will use something called *[layout virtualization](faq/layout-virtualization.html)* by default because it offers significant performance improvements. When using a virtual layout, a grouped list will display a limited number of item renderers at a time (usually only those that are visible in the view port) to avoid using massive amounts of memory. This means that data providers can contain thousands, or even tens of thousands, of items without a large performance impact. Additionally, the grouped list will reuse that small number of item renderers to display different items as it scrolls. This keeps the runtime from creating many temporary objects that need to be garbage collected. To learn more, see [FAQ: What is layout virtualization?](faq/layout-virtualization.html)
 
-### Targeting a `GroupedList` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
-
-``` code
-getStyleProviderForClass( GroupedList ).defaultStyleFunction = setGroupedListStyles;
-```
-
-If you want to customize a specific grouped list to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-list.styleNameList.add( "custom-grouped-list" );
-```
-
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( GroupedList )
-    .setFunctionForStyleName( "custom-grouped-list", setCustomGroupedListStyles );
-```
-
-Trying to change the grouped list's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the grouped list was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the grouped list's properties directly.
-
 ### Skinning the Scroll Bars
 
 This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
@@ -267,6 +289,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+```
+
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
@@ -293,19 +324,13 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 list.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    //skin the scroll bar here
+
+    //skin the scroll bar here, if not using a theme
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```
-
-Alternatively, or in addition to the `horizontalScrollBarFactory` and `verticalScrollBarFactory`, you may use the [`horizontalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarProperties) and the [`verticalScrollBarProperties`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarProperties) to pass skins to the scroll bars.
-
-``` code
-list.horizontalScrollBarProperties.trackLayoutMode = TrackLayoutMode.SINGLE;
-```
-
-In general, you should only pass skins to the list's scroll bars through `horizontalScrollBarProperties` and `verticalScrollBarProperties` if you need to change skins after the scroll bar is created. Using `horizontalScrollBarFactory` and `verticalScrollBarFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ### Skinning the Item Renderers
 
@@ -319,6 +344,19 @@ If you are creating a [theme](themes.html), you can set a function for the defau
 
 ``` code
 getStyleProviderForClass( DefaultGroupedListItemRenderer ).defaultStyleFunction = setItemRendererStyles;
+```
+
+The styling function might look like this:
+
+``` code
+private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+{
+    var skin:ImageSkin = new ImageSkin( upTexture );
+    skin.setTextForState( ButtonState.DOWN, downTexture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    itemRenderer.defaultSkin = skin;
+    itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+}
 ```
 
 If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
@@ -344,16 +382,17 @@ If you are not using a theme, you can use [`itemRendererFactory`](../api-referen
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
     var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
-    renderer.defaultSkin = new Image( texture );
-    renderer.iconPosition = RelativePosition.TOP;
-    renderer.gap = 10;
+
+    //set item renderer styles here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( upTexture );
+    skin.setTextForState( ButtonState.DOWN, downTexture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    itemRenderer.defaultSkin = skin;
+    itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+
     return renderer;
 }
 ```
-
-Alternatively, or in addition to the `itemRendererFactory`, you may use the [`itemRendererProperties`](../api-reference/feathers/controls/GroupedList.html#itemRendererProperties) to pass styles to the item renderers. However, you cannot pass in display objects (such as background skins) using `itemRendererProperties`. Remember that a grouped list usually contains multiple item renderers, and Starling display objects may not be added to more than one parent at the same time. With that in mind, more than one item renderer in a grouped list won't be able to share the same display object as a skin.
-
-In general, you should only pass styles to the grouped list's item renderers through `itemRendererProperties` if you need to change those styles after the item renderers have been created. Using `itemRendererFactory` will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
 
 ## Custom Item Renderers
 
@@ -419,7 +458,7 @@ list.headerRendererFunction = function():IGroupedListHeaderOrFooterRenderer
 
 To customize the type or properties of footer renderers, you can use `footerRendererType` or `footerRendererFactory`.
 
-## Using Multiple Item Renderer Factories
+## Multiple item renderer factories
 
 A list may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
 
@@ -456,7 +495,7 @@ This function should accept two arguments. The first is the item from the data p
 
 `GroupedList` also provides [`setHeaderRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setItemRendererFactoryWithID()) and [`headerFactoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#headerFactoryIDFunction) for header renderers. Similarly, we can use [`setFooterRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setFooterRendererFactoryWithID()) and [`footerFactoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#footerFactoryIDFunction) for footer renderers.
 
-## Customizing Scrolling Behavior
+## Customize scrolling behavior
 
 A number of properties are available to customize scrolling behavior and the scroll bars.
 

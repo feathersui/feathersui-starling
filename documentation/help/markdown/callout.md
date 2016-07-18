@@ -12,6 +12,12 @@ The [`Callout`](../api-reference/feathers/controls/Callout.html) class renders c
 <figcaption>A `Callout` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `Callout`](#skinning-a-callout)
+
+-   [Closing and Disposal](#closing-and-disposal)
+
 ## The Basics
 
 We create a `Callout` a bit differently than other components. Rather than calling a constructor, we call the static function [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()). Let's see how this works by displaying a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) in a `Callout` when we touch a button. First, let's create the button:
@@ -79,67 +85,87 @@ If you've created a [custom theme](custom-themes.html), you can set a styling fu
 
 ## Skinning a `Callout`
 
-Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [`Callout` API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common properties below.
+Callouts have a number of skin and style properties to let you customize their appearance. For full details about which properties are available, see the [`Callout` API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common ways of styling a callout below.
 
-Let's look at the skins first.
+### Using a theme? Some tips for customizing an individual callout's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the callout's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-callout.backgroundSkin = new Image( backgroundTexture );
+function setExtraCalloutStyles( callout:Callout ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    callout.backgroundSkin = skin;
+}
+callout.styleProvider = new AddOnFunctionStyleProvider(
+    callout.styleProvider, setExtraCalloutStyles );
+```
+
+Our changes only affect the background skin. The callout will continue to use the theme's padding, gap, and other styles.
+
+### Background and arrow skins
+
+Let's look at the background skin, which is the skin that appears behind the callout's content. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( enabledTexture );
+skin.scale9Grid = new Rectangle( 2, 4, 3, 8 );
+callout.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Callout.html#backgroundSkin) property.
+
+You may also skin the callout's arrow that points to its origin. Depending on which direction to callout opens relative to the origin, the arrow may be on any of the callout's four sides.
+
+``` code
 callout.topArrowSkin = new Image( topArrowTexture );
 callout.rightArrowSkin = new Image( rightArrowTexture );
 callout.bottomArrowSkin = new Image( bottomArrowTexture );
 callout.leftArrowSkin = new Image( leftArrowTexture );
 ```
 
-The background and each of the directional arrows have separate skins. If your arrow skins need to seamlessly transition into the background while covering up part of the background's border, you might use a negative gap for each of the arrows:
+If you know that the callout will always open in one direction, you can provide a single arrow skin. Otherwise, it's a good idea to provide all four.
+
+### Layout
+
+The callout can have a gap in between the background skin and the arrow skin. In fact, this "gap" can be negative, meaning that the arrow skin will overlap the background skin. This will allow the arrow skins to seamlessly transition into the background while covering up part of the background's border:
 
 ``` code
-callout.topArrowGap = callout.rightArrowGap = callout.bottomArrowGap =
-    callout.leftArrowGap = -2;
+callout.topArrowGap = -2;
 ```
+
+Above, we set the [`topArrowGap`](../api-reference/feathers/controls/Callout.html#topArrowGap), but you can also set [`rightArrowGap`](../api-reference/feathers/controls/Callout.html#rightArrowGap), [`bottomArrowGap`](../api-reference/feathers/controls/Callout.html#bottomArrowGap), and [`leftArrowGap`](../api-reference/feathers/controls/Callout.html#leftArrowGap).
 
 Speaking of borders, you can use padding styles to ensure that the callout's edges are visible around the callout's content.
 
 ``` code
-callout.topArrowGap = 6;
-callout.rightArrowGap = 8;
-callout.bottomArrowGap = 6;
-callout.leftArrowGap = 8;
+callout.paddingTop = 6;
+callout.paddingRight = 8;
+callout.paddingBottom = 6;
+callout.paddingLeft = 8;
 ```
 
-Finally, there are static properties for the stage's padding. These ensure that callouts are positioned a certain number of pixels away from the edge of the stage.
+If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Callout.html#padding) property to quickly set them all at once:
 
 ``` code
-Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-    Callout.stagePaddingLeft = 10;
+button.padding = 6;
 ```
 
-### Targeting a `Callout` in a theme
-
-If you are creating a [theme](themes.html), you can specify a function for the default styles like this:
+Finally, there are static properties for the stage's padding. These ensure that callouts are positioned a certain number of pixels away from the edges of the stage.
 
 ``` code
-getStyleProviderForClass( Callout ).defaultStyleFunction = setCalloutStyles;
+Callout.stagePaddingTop = 8;
+Callout.stagePaddingRight = 10;
+Callout.stagePaddingBottom = 8;
+Callout.stagePaddingLeft = 10;
 ```
 
-If you want to customize a specific callout to look different than the default, you may use a custom style name to call a different function:
-
-``` code
-callout.styleNameList.add( "custom-callout" );
-```
-
-You can specify the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( Callout )
-    .setFunctionForStyleName( "custom-callout", setCustomCalloutStyles );
-```
-
-Trying to change the callout's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the callout was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the callout's properties directly.
-
-### Skinning a `Callout` without a theme
+### Using a factory to skin a `Callout` without a theme
 
 If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the [`Callout.calloutFactory`](../api-reference/feathers/controls/Callout.html#calloutFactory) static property to a function that provides skins for the callout. This factory will be called any time that [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()) is used to create a callout.
 
@@ -169,9 +195,9 @@ function skinnedCalloutFactory():Callout
 Callout.show( content, origin, directions, isModal, skinnedCalloutFactory );
 ```
 
-You should generally always skin the callouts with a factory or with a theme instead of passing the skins to the `Callout` instance returned by calling `Callout.show()`. If you skin an callout after `Callout.show()` is called, it may not be positioned or sized correctly.
+You should generally always skin the callouts with a factory or with a theme instead of passing the skins to the `Callout` instance returned by calling `Callout.show()`. If you skin an callout after `Callout.show()` is called, it may not necessarily be positioned or sized correctly.
 
-## Disposal
+## Closing and Disposal
 
 When manually closing the callout, you may call the [`close()`](../api-reference/feathers/controls/Callout.html#close()) function and pass in `true` or `false` for the `dispose` argument.
 
@@ -184,3 +210,5 @@ Finally, you may want to reuse the callout's content. By default, the callout wi
 ## Related Links
 
 -   [`feathers.controls.Callout` API Documentation](../api-reference/feathers/controls/Callout.html)
+
+-   [How to use the Feathers `TextCallout` component](text-callout.html)

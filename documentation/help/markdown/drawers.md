@@ -7,6 +7,14 @@ author: Josh Tynjala
 
 The [`Drawers`](../api-reference/feathers/controls/Drawers.html) class provides a container that supports main content in the center with "drawers", or slide-out menus, that may be opened and closed with a gesture around all four edges. Drawers may also be docked to remain open at all times, or based on the stage orientation. Drawers may be opened by listening to an event from the main content, such as one triggered by a button press.
 
+-   [The Basics](#the-basics)
+
+-   [Open drawers with events](#open-drawers-with-events)
+
+-   [Open or close drawers programatically](#open-or-close-drawers-programatically)
+
+-   [Docked drawers](#docked-drawers)
+
 ## The Basics
 
 First, let's create a `Drawers` component and add it to the display list:
@@ -90,7 +98,7 @@ For simplicity, we'll only focus on the left drawer in these code examples. Howe
 
 If you run the code right now, you will see the `StartScreen` displayed and nothing else. If you touch near the left edge of the `StartScreen`, you can drag to the right to reveal the list with the two screens. Select the Options item in the list, and the options screen will be displayed. Tap the main content to close the drawer.
 
-## Opening Drawers with Events
+## Open Drawers with Events
 
 It's often common to open a drawer with a [button](button.html). Let's add a button to header in our `StartScreen` and dispatch an event when it is triggered:
 
@@ -130,28 +138,7 @@ In production code, you probably want to make the `"showMenu"` event type into a
 
 Now, when you press the new menu button in the `StartScreen` header, the left drawer will open.
 
-## Docking Drawers
-
-If you would prefer that a drawer is open all of the time, you can "dock" it. When a drawer is docked, it cannot be closed. Think of it like a permanent side bar, rather than a menu that you can show and hide. Let's dock the drawer:
-
-``` code
-drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
-```
-
-When using [`Drawers.DOCK_MODE_BOTH`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_BOTH), you will not need a gesture or an event to open a drawer. It will remain open in all orientations.
-
-There are three other options. [`Drawers.DOCK_MODE_PORTRAIT`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_PORTRAIT) and [`Drawers.DOCK_MODE_LANDSCAPE`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_LANDSCAPE) allow you to dock a drawer, depending on the stage orientation. In one orientation, the drawer will be docked. In the other, it can be opened with a gesture or an event. The default docking value is [`Drawers.DOCK_MODE_NONE`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_NONE) where a drawer is not docked at all and must be opened with a gesture or an event.
-
-If needed, you may check the [`isLeftDrawerDocked`](../api-reference/feathers/controls/Drawers.html#isLeftDrawerDocked) property to see if a drawer is docked:
-
-``` code
-if( drawers.isLeftDrawerDocked )
-{
-    // do something
-}
-```
-
-## Opening and closing drawers in code
+## Open or close drawers programatically
 
 If you want to programmatically open or close a drawer, you can simply call a function:
 
@@ -159,7 +146,7 @@ If you want to programmatically open or close a drawer, you can simply call a fu
 drawers.toggleLeftDrawer();
 ```
 
-[`toggleLeftDrawer()`](../api-reference/feathers/controls/Drawers.html#toggleLeftDrawer() takes one argument, to specify a duration in seconds of the open or close animation. You can omit this argument, like the code above, and it will use the value of the [`openOrCloseDuration`](../api-reference/feathers/controls/Drawers.html#openOrCloseDuration) property instead.
+[`toggleLeftDrawer()`](../api-reference/feathers/controls/Drawers.html#toggleLeftDrawer()) takes one argument, to specify a duration in seconds of the open or close animation. You can omit this argument, like the code above, and it will use the value of the [`openOrCloseDuration`](../api-reference/feathers/controls/Drawers.html#openOrCloseDuration) property instead.
 
 In our example above, we might want to modify the listener for the list's `Event.CHANGE` to close the drawer after telling the [`ScreenNavigator`](screen-navigator.html) to show a different screen:
 
@@ -176,6 +163,27 @@ You may easily check the [`isLeftDrawerOpen`](../api-reference/feathers/controls
 
 ``` code
 if( drawers.isLeftDrawerOpen )
+{
+    // do something
+}
+```
+
+## Docked Drawers
+
+If you would prefer that a drawer is open all of the time, you can "dock" it. When a drawer is docked, it cannot be closed. Think of it like a permanent side bar, rather than a menu that you can show and hide. Let's dock the drawer:
+
+``` code
+drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
+```
+
+When using [`Drawers.DOCK_MODE_BOTH`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_BOTH), you will not need a gesture or an event to open a drawer. It will remain open in all orientations.
+
+There are three other options. [`Drawers.DOCK_MODE_PORTRAIT`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_PORTRAIT) and [`Drawers.DOCK_MODE_LANDSCAPE`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_LANDSCAPE) allow you to dock a drawer, depending on the stage orientation. In one orientation, the drawer will be docked. In the other, it can be opened with a gesture or an event. The default docking value is [`Drawers.DOCK_MODE_NONE`](../api-reference/feathers/controls/Drawers.html#DOCK_MODE_NONE) where a drawer is not docked at all and must be opened with a gesture or an event.
+
+If needed, you may check the [`isLeftDrawerDocked`](../api-reference/feathers/controls/Drawers.html#isLeftDrawerDocked) property to see if a drawer is docked:
+
+``` code
+if( drawers.isLeftDrawerDocked )
 {
     // do something
 }

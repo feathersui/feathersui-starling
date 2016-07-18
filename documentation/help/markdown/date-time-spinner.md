@@ -12,6 +12,10 @@ The [`DateTimeSpinner`](../api-reference/feathers/controls/DateTimeSpinner.html)
 <figcaption>A `DateTimeSpinner` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `DateTimeSpinner`](#skinning-a-datetimespinner)
+
 ## The Basics
 
 First, let's create a `DateTimeSpinner` control, set up its editing mode and its range of values, and add it to the display list.
@@ -51,32 +55,27 @@ function spinner_changeHandler( event:Event ):void
 
 ## Skinning a `DateTimeSpinner`
 
-The skins for a `DateTimeSpinner` control are divided into multiple [`SpinnerList`](spinner-list.html) components. For full details about what skin and style properties are available, see the [`DateTimeSpinner` API reference](../api-reference/feathers/controls/DateTimeSpinner.html). We'll look at a few of the most common properties below.
+The skins for a `DateTimeSpinner` control are divided into multiple [`SpinnerList`](spinner-list.html) components. For full details about which properties are available, see the [`DateTimeSpinner` API reference](../api-reference/feathers/controls/DateTimeSpinner.html). We'll look at a few of the most common properties below.
 
-### Targeting a `DateTimeSpinner` in a theme
+### Using a theme? Some tips for customizing the styles of an individual `DateTimeSpinner`
 
-If you are creating a [theme](themes.html), you can set a function for the default styles like this:
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
 
-``` code
-getStyleProviderForClass( DateTimeSpinner ).defaultStyleFunction = setDateTimeSpinnerStyles;
-```
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
 
-If you want to customize a specific `DateTimeSpinner` to look different than the default, you may use a custom style name to call a different function:
+In the following example, we customize the `scrollDuration` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-spinner.styleNameList.add( "custom-date-time-spinner" );
+var dateSpinner:DateTimeSpinner = new DateTimeSpinner();
+function setExtraDateTimeSpinnerStyles( dateSpinner:DateTimeSpinner ):void
+{
+	dateSpinner.scrollDuration = 1.0;
+}
+dateSpinner.styleProvider = new AddOnFunctionStyleProvider(
+	dateSpinner.styleProvider, setExtraDateTimeSpinnerStyles );
 ```
 
-You can set the function for the custom style name like this:
-
-``` code
-getStyleProviderForClass( DateTimeSpinner )
-    .setFunctionForStyleName( "custom-date-time-spinner", setCustomDateTimeSpinnerStyles );
-```
-
-Trying to change the spinner's styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the spinner was added to the stage and initialized. Learn to [extend an existing theme](extending-themes.html) to add custom skins.
-
-If you aren't using a theme, then you may set any of the spinner's properties directly.
+Our changes only affect the `scrollDuration` property. The `DateTimeSpinner` will continue to use the theme's skins and styles.
 
 ### Skinning the `SpinnerList` sub-components
 
@@ -88,7 +87,18 @@ If you're creating a [theme](themes.html), you can target the [`DateTimeSpinner.
 
 ``` code
 getStyleProviderForClass( SpinnerList )
-    .setFunctionForStyleName( DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_List, setDateTimeSpinnerListStyles );
+    .setFunctionForStyleName( DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, setDateTimeSpinnerListStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setDateTimeSpinnerListStyles( list:SpinnerList ):void
+{
+	var skin:Image = new Image( texture );
+	skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    list.backgroundSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -112,8 +122,12 @@ If you are not using a theme, you can use [`listFactory`](../api-reference/feath
 spinner.listFactory = function():SpinnerList
 {
     var list:SpinnerList = new SpinnerList();
-    //skin the list here
-    list.backgroundSkin = new Image( texture );
+
+    //skin the lists here, if you're not using a theme
+	var skin:Image = new Image( texture );
+	skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    list.backgroundSkin = skin;
+
     return list;
 }
 ```
@@ -121,3 +135,5 @@ spinner.listFactory = function():SpinnerList
 ## Related Links
 
 -   [`feathers.controls.DateTimeSpinner` API Documentation](../api-reference/feathers/controls/DateTimeSpinner.html)
+
+-   [How to use the Feathers `SpinnerList` component](spinner-list.html)

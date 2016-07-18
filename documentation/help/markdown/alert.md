@@ -13,7 +13,9 @@ The [`Alert`](../api-reference/feathers/controls/Alert.html) class renders a win
 </figure>
 
 -   [The Basics](#the-basics)
--   [Skinning an Alert](#skinning-an-alert)
+
+-   [Skinning an `Alert`](#skinning-an-alert)
+
 -   [Closing and Disposal](#closing-and-disposal)
 
 ## The Basics
@@ -297,7 +299,7 @@ alert.buttonGroupFactory = function():Header
 }
 ```
 
-### Customizing the `Alert` factories
+### Using a factory to skin an `Alert` without a theme
 
 If you're not using a theme, you can specify a factory to create the alert, including setting skins, in a couple of different ways. The first is to set the [`Alert.alertFactory`](../api-reference/feathers/controls/Alert.html#alertFactory) static property to a function that provides skins for the alert. This factory will be called any time that [`Alert.show()`](../api-reference/feathers/controls/Alert.html#show()) is used to create an alert.
 
@@ -325,7 +327,7 @@ function skinnedAlertFactory():Alert
 Alert.show( message, title, buttons, isModal, isCentered, skinnedAlertFactory );
 ```
 
-You should generally always skin the alerts with a factory or with a theme instead of passing the skins to the `Alert` instance returned by calling `Alert.show()`. If you skin an alert after `Alert.show()` is called, it may not be positioned or sized correctly anymore.
+You should generally always skin the alerts with a factory or with a theme instead of passing the skins to the `Alert` instance returned by calling `Alert.show()`. If you skin an alert after `Alert.show()` is called, it may not necessarily be positioned or sized correctly anymore.
 
 ## Closing and disposal
 

@@ -66,7 +66,7 @@ A [theme](themes.html) does not style a component until the component initialize
 
 As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
 
-In the following example, we customize the buttons's label `fontStyles` with an `AddOnFunctionStyleProvider`:
+In the following example, we customize the button's label `fontStyles` with an `AddOnFunctionStyleProvider`:
 
 ``` code
 var button:Button = new Button();
