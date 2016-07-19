@@ -12,6 +12,20 @@ The [`List`](../api-reference/feathers/controls/List.html) class renders a serie
 <figcaption>A `List` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Selection](#selection)
+
+-   [Skinning a `List`](#skinning-a-list)
+
+-   [Custom item renderers](#custom-item-renderers)
+
+-   [Multiple item renderer factories](#multiple-item-renderer-factories)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
+-   [Optimizing lists](#optimizing-lists)
+
 ## The Basics
 
 First, let's create a `List` control and add it to the display list:
@@ -113,18 +127,55 @@ list.allowMultipleSelection = true;
 
 ## Skinning a `List`
 
-A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components. For full details about what skin and style properties are available on a `List`, see the [`List` API reference](../api-reference/feathers/controls/List.html). We'll look at a few of the most common properties below.
+A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components, such as their font styles and backgrounds for different states. For full details about which properties are available on a `List`, see the [`List` API reference](../api-reference/feathers/controls/List.html). We'll look at a few of the most common ways of styling a list below.
 
-We'll start the skinning process by giving our list appropriate background skins.
+### Using a theme? Some tips for customizing an individual list's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the list's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-list.backgroundSkin = new Image( enabledTexture );
-list.backgroundDisabledSkin = new Image( disabledTexture );
+var list:List = new List();
+function setExtraListStyles( list:List ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    list.backgroundSkin = skin;
+}
+list.styleProvider = new AddOnFunctionStyleProvider(
+    list.styleProvider, setExtraListStyles );
 ```
 
-The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the list is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled list, it will fall back to using the `backgroundSkin` in the disabled state.
+Our changes only affect the background skin. The list will continue to use the theme's other styles.
 
-Padding may be added around the edges of the list's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the list's content, but the list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
+### Background skin
+
+As we saw above, we can give the list a background skin that fills the entire width and height of the list. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+header.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
+
+We can give the list a different background when it is disabled:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
+list.backgroundDisabledSkin = skin;
+```
+
+The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the list is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled list, it will fall back to using the `backgroundSkin` in the disabled state.
+
+### Layout
+
+Padding may be added around the edges of the list's content. This padding is different than any type of padding that may be provided by the `layout` property. The layout padding is applied inside the list's content, but the list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
 ``` code
 list.paddingTop = 15;
@@ -138,8 +189,6 @@ If all four padding values should be the same, you may use the [`padding`](../ap
 ``` code
 list.padding = 20;
 ```
-
-### Layouts
 
 The default layout for a list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a [`HorizontalLayout`](horizontal-layout.html) and customize it a bit:
 
@@ -178,6 +227,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
 ```
 
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
+```
+
 You can override the default style names to use different ones in your theme, if you prefer:
 
 ``` code
@@ -202,9 +260,10 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 list.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    scrollBar.direction = Direction.HORIZONTAL;
-    //skin the scroll bar here
+
+    //skin the scroll bar here, if not using a theme
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```
@@ -220,6 +279,19 @@ If you are creating a [theme](themes.html), you can set a function for the defau
 
 ``` code
 getStyleProviderForClass( DefaultListItemRenderer ).defaultStyleFunction = setItemRendererStyles;
+```
+
+The styling function might look like this:
+
+``` code
+private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+{
+    var skin:ImageSkin = new ImageSkin( upTexture );
+    skin.setTextForState( ButtonState.DOWN, downTexture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    itemRenderer.defaultSkin = skin;
+    itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+}
 ```
 
 If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
@@ -243,14 +315,19 @@ If you are not using a theme, you can use [`itemRendererFactory`](../api-referen
 list.itemRendererFactory = function():IListItemRenderer
 {
     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-    renderer.defaultSkin = new Image( texture );
-    renderer.iconPosition = RelativePosition.TOP;
-    renderer.gap = 10;
+
+    //set item renderer styles here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( upTexture );
+    skin.setTextForState( ButtonState.DOWN, downTexture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    itemRenderer.defaultSkin = skin;
+    itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+
     return renderer;
 }
 ```
 
-## Using Custom Item Renderers
+## Custom item renderers
 
 If the default item renderer doesn't have the features that you need, the `List` component offers the ability to use [custom item renderers](item-renderers.html) instead. Custom item renderers must be Feathers components that implement the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface.
 
@@ -319,7 +396,7 @@ function list_rendererRemoveHandler( event:Event, itemRenderer:IListItemRenderer
 }
 ```
 
-## Using Multiple Item Renderer Factories
+## Multiple item renderer factories
 
 A list may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/List.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
 
@@ -354,7 +431,7 @@ list.factoryIDFunction = function( item:Object, index:int ):String
 
 This function should accept two arguments. The first is the item from the data provider, and the second is the item's index in the data provider. We can use this index, or one of the properties of the item, to determine which item renderer factory to use. The function should return one of the `String` identifiers that we passed to `setItemRendererFactoryWithID()`.
 
-## Customizing Scrolling Behavior
+## Customize scrolling behavior
 
 A number of properties are available to customize scrolling behavior and the scroll bars.
 
@@ -416,7 +493,7 @@ The following properties are available on the default item renderer:
 
 The following properties are available on some layouts:
 
--   Avoid setting [`useVirtualLayout`](../api-reference/feathers/layout/IVirtualLayout.html#useVirtualLayout) set to `false`. When a layout is virtualized, only the item renderers that are visible will be created, with possibly an extra item renderer or two to ensure that the number of item renderers remain stable during scrolling to avoid garbage collection. This results in a significantly reduced number of display objects for Starling to loop through when rendering every frame (becoming more and more effective as the length of the list's data provider increases).
+-   Ensure that [`useVirtualLayout`](../api-reference/feathers/layout/IVirtualLayout.html#useVirtualLayout) is always set to `true`. When a layout is virtualized, only the item renderers that are visible will be created, with possibly an extra item renderer or two to ensure that the number of item renderers remain stable during scrolling to avoid garbage collection. This results in a significantly reduced number of display objects for Starling to loop through when rendering every frame (becoming more and more effective as the length of the list's data provider increases).
 
 -   Set the [`autoHideBackground`](../api-reference/feathers/controls/Scroller.html#autoHideBackground) property to `true` to automatically set the `visible` property of the background skin to `false` when the list's item renderers will completely obscure it. This results in one less display object for Starling to render and may be able to reduce draw calls in some situations. Hiding the list's background is only possible when the item renderers are fully opaque (no transparency) and when they are sized to fully cover the background of the list (with a justify alignment and no padding, for instance). If the item renderers have any transparency or don't completely cover the background, then this property should not be enabled.
 

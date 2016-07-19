@@ -195,7 +195,7 @@ list.isSelectable = false;
 
 ## Skinning a `GroupedList`
 
-A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components, such as their font styles and touch states. For full details about which properties are available, see the [`GroupedList` API reference](../api-reference/feathers/controls/GroupedList.html). We'll look at a few of the most common ways of styling a list below.
+A grouped list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components, such as their font styles and backgrounds for different states. For full details about which properties are available, see the [`GroupedList` API reference](../api-reference/feathers/controls/GroupedList.html). We'll look at a few of the most common ways of styling a list below.
 
 ### Using a theme? Some tips for customizing an individual grouped list's styles
 
@@ -298,7 +298,7 @@ getStyleProviderForClass( ScrollBar )
 The styling function for the horizontal scroll bar might look like this:
 
 ``` code
-private function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
 }
