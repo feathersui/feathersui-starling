@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/21.0">
+<application xmlns="http://ns.adobe.com/air/application/22.0">
 	<id>com.feathersui.examples.YouTubeFeeds</id>
 	<filename>YouTube Feeds</filename>
 	<name>YouTube Feeds</name>
-	<versionNumber>3.0.0</versionNumber>
+	<versionNumber>3.1.0</versionNumber>
 	<description>YouTube Feeds example application built with Feathers UI controls for Starling</description>
 	<copyright>2016 Bowler Hat LLC</copyright>
 
