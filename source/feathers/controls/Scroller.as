@@ -714,7 +714,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _pendingMovementChange:Boolean = false;
+		protected var _pendingVelocityChange:Boolean = false;
 
 		/**
 		 * @private
@@ -5386,34 +5386,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function processMovement():void
+		protected function checkForDrag():void
 		{
-			this._pendingMovementChange = false;
-			if(this._isScrollingStopped)
-			{
-				return;
-			}
-			var now:int = getTimer();
-			var timeOffset:int = now - this._previousTouchTime;
-			if(timeOffset > 0)
-			{
-				//we're keeping previous velocity updates to improve accuracy
-				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
-				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
-				{
-					this._previousVelocityX.shift();
-				}
-				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
-				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
-				{
-					this._previousVelocityY.shift();
-				}
-				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
-				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;
-				this._previousTouchTime = now;
-				this._previousTouchX = this._currentTouchX;
-				this._previousTouchY = this._currentTouchY;
-			}
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
@@ -5466,6 +5440,39 @@ package feathers.controls
 			if(this._isDraggingVertically && !this._verticalAutoScrollTween)
 			{
 				this.updateVerticalScrollFromTouchPosition(this._currentTouchY);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function saveVelocity():void
+		{
+			this._pendingVelocityChange = false;
+			if(this._isScrollingStopped)
+			{
+				return;
+			}
+			var now:int = getTimer();
+			var timeOffset:int = now - this._previousTouchTime;
+			if(timeOffset > 0)
+			{
+				//we're keeping previous velocity updates to improve accuracy
+				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
+				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityX.shift();
+				}
+				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
+				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityY.shift();
+				}
+				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
+				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;
+				this._previousTouchTime = now;
+				this._previousTouchX = this._currentTouchX;
+				this._previousTouchY = this._currentTouchY;
 			}
 		}
 
@@ -5714,9 +5721,7 @@ package feathers.controls
 		 */
 		protected function scroller_enterFrameHandler(event:Event):void
 		{
-			//we process movement every frame, even if there hasn't been any
-			//movement (because 0 needs to included in the average too)
-			this.processMovement();
+			this.saveVelocity();
 		}
 
 		/**
@@ -5732,21 +5737,23 @@ package feathers.controls
 
 			if(touch.phase === TouchPhase.MOVED)
 			{
-				//we're saving these to use in the enter frame handler because
-				//that provides a longer time offset
 				touch.getLocation(this, HELPER_POINT);
 				this._currentTouchX = HELPER_POINT.x;
 				this._currentTouchY = HELPER_POINT.y;
-				this._pendingMovementChange = true;
+				this.checkForDrag();
+				//we don't call saveVelocity() on TouchPhase.MOVED because the
+				//time interval may be very short, which could lead to
+				//inaccurate results. instead, we wait for the next frame.
+				this._pendingVelocityChange = true;
 			}
 			else if(touch.phase === TouchPhase.ENDED)
 			{
-				if(this._pendingMovementChange)
+				if(this._pendingVelocityChange)
 				{
 					//we may need to do this one last time because the enter
 					//frame listener may not have been called since the last
 					//TouchPhase.MOVED
-					this.processMovement();
+					this.saveVelocity();
 				}
 				if(!this._isDraggingHorizontally && !this._isDraggingVertically)
 				{
