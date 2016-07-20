@@ -275,7 +275,7 @@ package feathers.tests.supportClasses
 		
 		override protected function draw():void
 		{
-			if(this._resizeOnScroll)
+			if(this._resizeOnScroll && this.isInvalid(INVALIDATION_FLAG_SCROLL))
 			{
 				super.width = this.width + 1;
 				super.height = this.height + 1;
