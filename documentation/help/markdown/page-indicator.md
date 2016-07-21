@@ -12,6 +12,10 @@ The [`PageIndicator`](../api-reference/feathers/controls/PageIndicator.html) com
 <figcaption>A `PageIndicator` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `PageIndicator`](#skinning-a-pageindicator)
+
 ## The Basics
 
 First, let's create a `PageIndicator` control, give it a number of pages, and add it to the display list.
@@ -42,7 +46,27 @@ function pageIndicator_changeHandler( event:Event ):void
 
 ## Skinning a `PageIndicator`
 
-You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about what skin and style properties are available, see the [`PageIndicator` API reference](../api-reference/feathers/controls/PageIndicator.html). We'll look at a few of the most common properties below.
+You can customize the layout of a page indicator, and you can customize the appearance of a its "normal" and "selected" symbols. For full details about which properties are available, see the [`PageIndicator` API reference](../api-reference/feathers/controls/PageIndicator.html). We'll look at a few of the most common ways of styling a list below.
+
+### Using a theme? Some tips for customizing an individual page indicator's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the page indicator's `gap` with an `AddOnFunctionStyleProvider`:
+
+``` code
+var pages:PageIndicator = new PageIndicator();
+function setExtraPageIndicatorStyles( pages:PageIndicator ):void
+{
+    pages.gap = 10;
+}
+pages.styleProvider = new AddOnFunctionStyleProvider(
+    pages.styleProvider, setExtraPageIndicatorStyles );
+```
+
+Our changes only affect the gap between symbols. The page indicator will continue to use the theme's other layout styles like `gap` and alignment values.
 
 ### Layout
 
@@ -66,7 +90,7 @@ pages.verticalAlign = VerticalAlign.MIDDLE;
 
 ### Symbol Skins
 
-The symbols may be created using the [`normalSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#normalSymbolFactory) and [`selectedSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#selectedSymbolFactory) for normal and selected symbols, respectively. These functions are expected to return any Starling display objects. Below, we return Starling Images with different textures for normal and selected states:
+The symbols may be created using the [`normalSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#normalSymbolFactory) and [`selectedSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#selectedSymbolFactory) for normal and selected symbols, respectively. These functions may return any type of Starling display object. Below, we return Starling Images with different textures for normal and selected states:
 
 ``` code
 pages.normalSymbolFactory = function():DisplayObject
