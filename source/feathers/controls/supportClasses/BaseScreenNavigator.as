@@ -956,7 +956,9 @@ package feathers.controls.supportClasses
 			}
 			else if(this._nextScreenID !== null)
 			{
-				this.showScreenInternal(this._nextScreenID, this._nextScreenTransition);
+				var next:String = this._nextScreenID;
+				this._nextScreenID = null;
+				this.showScreenInternal(next, this._nextScreenTransition);
 			}
 
 			this._nextScreenID = null;
