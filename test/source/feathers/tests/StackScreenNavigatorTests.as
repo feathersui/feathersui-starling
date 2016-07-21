@@ -12,17 +12,19 @@ package feathers.tests
 
 	public class StackScreenNavigatorTests
 	{
-		private static const SCREEN_A_ID:String = "a";
-		private static const SCREEN_B_ID:String = "b";
-		private static const SCREEN_C_ID:String = "c";
-		
+		public static const SCREEN_A_ID:String = "a";
+		public static const SCREEN_B_ID:String = "b";
+		public static const SCREEN_C_ID:String = "c";
+		public static const SCREEN_D_ID:String = "d";
+		public static const SCREEN_E_ID:String = "e";
+
 		private static const EVENT_PUSH_SCREEN_B:String = "pushScreenB";
 		private static const EVENT_PUSH_SCREEN_C:String = "pushScreenC";
 		private static const EVENT_REPLACE_WITH_SCREEN_C:String = "replaceWithScreenC";
 		private static const EVENT_POP_SCREEN:String = "popScreen";
 		private static const EVENT_POP_TO_ROOT_SCREEN:String = "popToRootScreen";
 		private static const EVENT_CALL_FUNCTION:String = "callFunction";
-		
+
 		private var _navigator:StackScreenNavigator;
 		private var _functionWasCalled:Boolean = false;
 
@@ -32,7 +34,7 @@ package feathers.tests
 			this._navigator = new StackScreenNavigator();
 			TestFeathers.starlingRoot.addChild(this._navigator);
 			this._navigator.validate();
-			
+
 			this._functionWasCalled = false;
 		}
 
@@ -252,7 +254,15 @@ package feathers.tests
 			Assert.assertTrue("StackScreenNavigatorTests expected StackScreenNavigatorItem screen to be display object", this._navigator.getScreen(SCREEN_A_ID).screen is DisplayObject);
 			Assert.assertNotNull("StackScreenNavigator activeScreen.parent must not be null after pushing multiple times", this._navigator.activeScreen.parent);
 		}
-		
+
+		[Test]
+		public function testPushScreenOnInitialize():void
+		{
+			this.addScreenD();
+			this.addScreenE();
+			this._navigator.rootScreenID = SCREEN_D_ID;
+		}
+
 		private function addScreenA():void
 		{
 			var screen:Quad = new Quad(10, 10, 0xff00ff);
@@ -281,12 +291,28 @@ package feathers.tests
 			this._navigator.addScreen(SCREEN_C_ID, item);
 		}
 
+		private function addScreenD():void
+		{
+			this._navigator.addScreen(SCREEN_D_ID, new StackScreenNavigatorItem(ScreenPushOnInitialize));
+		}
+
+		private function addScreenE():void
+		{
+			this._navigator.addScreen(SCREEN_E_ID, new StackScreenNavigatorItem(ScreenInitializeOnce));
+		}
+
 		private function eventFunction():void
 		{
 			this._functionWasCalled = true;
 		}
 	}
 }
+
+import feathers.controls.Screen;
+import feathers.controls.StackScreenNavigator;
+import feathers.tests.StackScreenNavigatorTests;
+
+import flash.errors.IllegalOperationError;
 
 import starling.display.Quad;
 
@@ -301,4 +327,29 @@ class ScreenWithEventAndMethodWithSameName extends Quad
 	public function replaceWithScreenC():void {}
 	public function popScreen():void {}
 	public function popToRootScreen():void {}
+}
+
+class ScreenPushOnInitialize extends Screen
+{
+	override protected function initialize():void
+	{
+		super.initialize();
+
+		StackScreenNavigator(this.owner).pushScreen(StackScreenNavigatorTests.SCREEN_E_ID);
+	}
+}
+
+class ScreenInitializeOnce extends Screen
+{
+	private static var hasInitializedOnce:Boolean = false;
+	override protected function initialize():void
+	{
+		super.initialize();
+
+		if(hasInitializedOnce)
+		{
+			throw new IllegalOperationError("StackScreenNavigator did not clear next screen and is transitioning infinitely.");
+		}
+		hasInitializedOnce = true;
+	}
 }
