@@ -243,7 +243,7 @@ In the following example, we have a `PanelScreen` with a `Button` in its header.
     <![CDATA[
         public function goBack():void
         {
-            this.dispatchEvent( Event.COMPLETE );
+            this.dispatchEventWith( Event.COMPLETE );
         }
     ]]>
     </fx:Script>
@@ -272,7 +272,7 @@ Perhaps we'd prefer to make that `goBack()` function `private`. We can do that b
     <![CDATA[
         private function goBack():void
         {
-            this.dispatchEvent( Event.COMPLETE );
+            this.dispatchEventWith( Event.COMPLETE );
         }
     ]]>
     </fx:Script>
