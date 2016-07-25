@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.utils
 {
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.display.ScreenDensityScaleCalculator;
 	import feathers.utils.math.roundDownToNearest;
 
 	import flash.display.Stage;
@@ -148,6 +149,14 @@ package feathers.utils
 		 */
 		public function ScreenDensityScaleFactorManager(starling:Starling)
 		{
+			this._scaleSelector = new ScreenDensityScaleCalculator();
+			this._scaleSelector.addScaleForDensity(120, 0.75);	//ldpi
+			this._scaleSelector.addScaleForDensity(160, 1);		//mdpi
+			this._scaleSelector.addScaleForDensity(240, 1.5);	//hdpi
+			this._scaleSelector.addScaleForDensity(320, 2);		//xhdpi
+			this._scaleSelector.addScaleForDensity(480, 3);		//xxhdpi
+			this._scaleSelector.addScaleForDensity(640, 4);		//xxxhpi
+
 			var nativeStage:Stage = starling.nativeStage;
 			this._starling = starling;
 			this._calculatedScaleFactor = this.calculateScaleFactor();
@@ -166,7 +175,12 @@ package feathers.utils
 		 * @private
 		 */
 		protected var _calculatedScaleFactor:Number;
-		
+
+		/**
+		 * @private
+		 */
+		protected var _scaleSelector:ScreenDensityScaleCalculator;
+
 		/**
 		 * @private
 		 */
@@ -191,29 +205,7 @@ package feathers.utils
 			{
 				screenDensity *= IOS_TABLET_DENSITY_SCALE_FACTOR;
 			}
-			var bucket:ScreenDensityBucket = BUCKETS[0];
-			if(screenDensity <= bucket.density)
-			{
-				return bucket.scale;
-			}
-			var previousBucket:ScreenDensityBucket = bucket;
-			var bucketCount:int = BUCKETS.length;
-			for(var i:int = 1; i < bucketCount; i++)
-			{
-				bucket = BUCKETS[i];
-				if(screenDensity > bucket.density)
-				{
-					previousBucket = bucket;
-					continue;
-				}
-				var midDPI:Number = (bucket.density + previousBucket.density) / 2;
-				if(screenDensity < midDPI)
-				{
-					return previousBucket.scale;
-				}
-				return bucket.scale;
-			}
-			return bucket.scale;
+			return this._scaleSelector.getScale(screenDensity);
 		}
 
 		/**
@@ -235,7 +227,7 @@ package feathers.utils
 				starlingStageHeight = roundDownToNearest(starlingStageHeight, 2);
 			}
 			this._starling.stage.stageHeight = starlingStageHeight;
-			
+
 			var viewPort:Rectangle = this._starling.viewPort;
 			viewPort.width = starlingStageWidth * this._calculatedScaleFactor;
 			viewPort.height = starlingStageHeight * this._calculatedScaleFactor;
@@ -255,26 +247,3 @@ package feathers.utils
 		}
 	}
 }
-
-class ScreenDensityBucket
-{
-	public function ScreenDensityBucket(dpi:Number, scale:Number)
-	{
-		this.density = dpi;
-		this.scale = scale;
-	}
-	
-	public var density:Number;
-	public var scale:Number;
-}
-
-
-var BUCKETS:Vector.<ScreenDensityBucket> = new <ScreenDensityBucket>
-[
-	new ScreenDensityBucket(120, 0.75), //ldpi
-	new ScreenDensityBucket(160, 1), //mdpi
-	new ScreenDensityBucket(240, 1.5), //hdpi
-	new ScreenDensityBucket(320, 2), //xhdpi
-	new ScreenDensityBucket(480, 3), //xxhdpi
-	new ScreenDensityBucket(640, 4) ///xxxhpi
-];
