@@ -986,7 +986,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textAlign:String = TextFormatAlign.START;
+		protected var _textAlign:String;
 
 		/**
 		 * Indicates the paragraph alignment. Valid values are defined as
@@ -1719,7 +1719,7 @@ package feathers.controls.text
 			this.stageText.restrict = this._restrict;
 			this.stageText.returnKeyLabel = this._returnKeyLabel;
 			this.stageText.softKeyboardType = this._softKeyboardType;
-			var textAlign:String = this._fontWeight;
+			var textAlign:String = this._textAlign;
 			if(textAlign === null)
 			{
 				if(textFormat !== null && textFormat.horizontalAlign)
