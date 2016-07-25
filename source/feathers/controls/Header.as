@@ -22,6 +22,7 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.text.FontStylesSet;
+	import feathers.utils.display.ScreenDensityScaleCalculator;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.display.Stage;
@@ -86,12 +87,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const IPAD_1X_DPI:Number = 132;
-
-		/**
-		 * @private
-		 */
-		protected static const IPHONE_1X_DPI:Number = 163;
+		protected static var iOSStatusBarScaledHeight:Number;
 
 		/**
 		 * @private
@@ -1867,11 +1863,21 @@ package feathers.controls
 				return 0;
 			}
 
-			if(DeviceCapabilities.dpi % IPAD_1X_DPI === 0)
+			//this value only needs to be calculated once
+			if(iOSStatusBarScaledHeight !== iOSStatusBarScaledHeight)
 			{
-				return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPAD_1X_DPI) / starling.contentScaleFactor;
+				//uses the same mechanism as ScreenDensityScaleFactorManager,
+				//but uses different density values
+				var scaleSelector:ScreenDensityScaleCalculator = new ScreenDensityScaleCalculator();
+				scaleSelector.addScaleForDensity(168, 1); //original
+				scaleSelector.addScaleForDensity(326, 2); //retina
+				scaleSelector.addScaleForDensity(401, 3); //retina HD
+				iOSStatusBarScaledHeight = IOS_STATUS_BAR_HEIGHT * scaleSelector.getScale(DeviceCapabilities.dpi);
 			}
-			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPHONE_1X_DPI) / starling.contentScaleFactor;
+
+			//while it probably won't change, contentScaleFactor shouldn't be
+			//considered constant, so do this calculation every time
+			return iOSStatusBarScaledHeight / starling.contentScaleFactor;
 		}
 
 		/**
