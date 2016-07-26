@@ -2748,8 +2748,6 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
-			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
-			this._ignoreIconResizes = true;
 			this.refreshMaxLabelSize(false);
 			var labelRenderer:DisplayObject = null;
 			if(this._label !== null && this.labelTextRenderer)
@@ -2787,7 +2785,6 @@ package feathers.controls
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
-			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 
 		/**
@@ -2795,6 +2792,8 @@ package feathers.controls
 		 */
 		protected function refreshMaxLabelSize(forMeasurement:Boolean):void
 		{
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
@@ -2836,6 +2835,7 @@ package feathers.controls
 					}
 				}
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 		
 		/**

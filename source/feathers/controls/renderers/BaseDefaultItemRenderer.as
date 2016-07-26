@@ -4852,6 +4852,8 @@ package feathers.controls.renderers
 		 */
 		override protected function refreshMaxLabelSize(forMeasurement:Boolean):void
 		{
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
@@ -5016,6 +5018,7 @@ package feathers.controls.renderers
 				this.labelTextRenderer.maxWidth = calculatedWidth;
 				this.labelTextRenderer.maxHeight = calculatedHeight;
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 
 		/**

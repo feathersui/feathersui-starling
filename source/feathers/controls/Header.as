@@ -396,6 +396,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreItemResizing:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _leftItems:Vector.<DisplayObject>;
 
 		/**
@@ -1368,6 +1373,8 @@ package feathers.controls
 				this.refreshTitleStyles();
 			}
 
+			var oldIgnoreItemResizing:Boolean = this._ignoreItemResizing;
+			this._ignoreItemResizing = true;
 			if(leftContentInvalid)
 			{
 				if(this._leftItems)
@@ -1412,6 +1419,7 @@ package feathers.controls
 					}
 				}
 			}
+			this._ignoreItemResizing = oldIgnoreItemResizing;
 
 			if(stateInvalid || textRendererInvalid)
 			{
@@ -1494,6 +1502,8 @@ package feathers.controls
 			var hasLeftItems:Boolean = this._leftItems !== null && this._leftItems.length > 0;
 			var hasRightItems:Boolean = this._rightItems !== null && this._rightItems.length > 0;
 			var hasCenterItems:Boolean = this._centerItems !== null && this._centerItems.length > 0;
+			var oldIgnoreItemResizing:Boolean = this._ignoreItemResizing;
+			this._ignoreItemResizing = true;
 			if(hasLeftItems)
 			{
 				var itemCount:int = this._leftItems.length;
@@ -1575,6 +1585,7 @@ package feathers.controls
 					}
 				}
 			}
+			this._ignoreItemResizing = oldIgnoreItemResizing;
 
 			if(this._titleAlign === HorizontalAlign.CENTER && hasCenterItems)
 			{
@@ -2130,6 +2141,10 @@ package feathers.controls
 		 */
 		protected function item_resizeHandler(event:Event):void
 		{
+			if(this._ignoreItemResizing)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}

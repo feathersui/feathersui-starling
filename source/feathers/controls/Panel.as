@@ -1316,10 +1316,10 @@ package feathers.controls
 			var headerStyleName:String = this._customHeaderStyleName != null ? this._customHeaderStyleName : this.headerStyleName;
 			this.header = IFeathersControl(factory());
 			this.header.styleNameList.add(headerStyleName);
-			this.header.addEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 			displayHeader = DisplayObject(this.header);
 			this.addRawChild(displayHeader);
 			this._focusExtrasBefore.push(displayHeader);
+			this.header.addEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 
 			this.header.initializeNow();
 			this._explicitHeaderWidth = this.header.explicitWidth;
