@@ -1930,23 +1930,8 @@ package feathers.core
 			}
 			if(this._isValidating)
 			{
-				//we were already validating, so we can't try to validate again
-				//at the same time because there may be conflicts. let's add
-				//ourselves back to the queue so that we can try to validate
-				//when we definitely won't be validating already. if it turns
-				//out that all of the invalidation flags have been cleared when
-				//we try again (which is usually the case... unless we
-				//invalidated during validation), then we'll simply end up
-				//returning without doing anything.
-				//this makes it so that developers don't need to check if a
-				//component is validating before manually calling validate().
-				//it's more convenient because it avoids boilerplate, and it's
-				//safe because the followup attempt to validate won't add the
-				//component back to the queue.
-				if(this._validationQueue !== null)
-				{
-					this._validationQueue.addControl(this, true);
-				}
+				//we were already validating, so there's nothing to do here.
+				//the existing validation will continue.
 				return;
 			}
 			this._isValidating = true;
