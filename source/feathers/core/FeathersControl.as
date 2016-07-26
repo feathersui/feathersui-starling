@@ -1888,7 +1888,7 @@ package feathers.core
 				{
 					throw new Error(getQualifiedClassName(this) + " returned to validation queue too many times during validation. This may be an infinite loop. Try to avoid doing anything that calls invalidate() during validation.");
 				}
-				this._validationQueue.addControl(this, false);
+				this._validationQueue.addControl(this);
 				return;
 			}
 			if(isAlreadyInvalid)
@@ -1896,7 +1896,7 @@ package feathers.core
 				return;
 			}
 			this._invalidateCount = 0;
-			this._validationQueue.addControl(this, false);
+			this._validationQueue.addControl(this);
 		}
 
 		/**
@@ -2415,7 +2415,7 @@ package feathers.core
 			{
 				this._invalidateCount = 0;
 				//add to validation queue, if required
-				this._validationQueue.addControl(this, false);
+				this._validationQueue.addControl(this);
 			}
 		}
 

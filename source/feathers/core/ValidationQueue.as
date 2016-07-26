@@ -67,7 +67,6 @@ package feathers.core
 			return this._isValidating;
 		}
 
-		private var _delayedQueue:Vector.<IValidating> = new <IValidating>[];
 		private var _queue:Vector.<IValidating> = new <IValidating>[];
 
 		/**
@@ -85,21 +84,20 @@ package feathers.core
 		/**
 		 * Adds a validating component to the queue.
 		 */
-		public function addControl(control:IValidating, delayIfValidating:Boolean):void
+		public function addControl(control:IValidating):void
 		{
 			//if the juggler was purged, we need to add the queue back in.
 			if(!this._starling.juggler.contains(this))
 			{
 				this._starling.juggler.add(this);
 			}
-			var currentQueue:Vector.<IValidating> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
-			if(currentQueue.indexOf(control) >= 0)
+			if(this._queue.indexOf(control) >= 0)
 			{
 				//already queued
 				return;
 			}
-			var queueLength:int = currentQueue.length;
-			if(this._isValidating && currentQueue == this._queue)
+			var queueLength:int = this._queue.length;
+			if(this._isValidating)
 			{
 				//special case: we need to keep it sorted
 				var depth:int = control.depth;
@@ -110,7 +108,7 @@ package feathers.core
 				//the whole queue
 				for(var i:int = queueLength - 1; i >= 0; i--)
 				{
-					var otherControl:IValidating = IValidating(currentQueue[i]);
+					var otherControl:IValidating = IValidating(this._queue[i]);
 					var otherDepth:int = otherControl.depth;
 					//we can skip the overhead of calling queueSortFunction and
 					//of looking up the value we've already stored in the depth
@@ -123,13 +121,13 @@ package feathers.core
 				//add one because we're going after the last item we checked
 				//if we made it through all of them, i will be -1, and we want 0
 				i++;
-				currentQueue.insertAt(i, control);
+				this._queue.insertAt(i, control);
 			}
 			else
 			{
 				//faster than push() because push() creates a temporary rest
 				//Array that needs to be garbage collected
-				currentQueue[queueLength] = control;
+				this._queue[queueLength] = control;
 			}
 		}
 
@@ -156,7 +154,7 @@ package feathers.core
 			}
 			//rechecking length every time because addControl() might have added
 			//a new item during the last validation.
-			//we could use an int and check the lenght again at the end of the
+			//we could use an int and check the length again at the end of the
 			//loop, but there is little difference in performance, even with
 			//millions of items in queue.
 			while(this._queue.length > 0)
@@ -169,9 +167,6 @@ package feathers.core
 				}
 				item.validate();
 			}
-			var temp:Vector.<IValidating> = this._queue;
-			this._queue = this._delayedQueue;
-			this._delayedQueue = temp;
 			this._isValidating = false;
 		}
 
