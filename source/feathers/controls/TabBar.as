@@ -1451,6 +1451,124 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _iconField:String = "icon";
+
+		/**
+		 * The field in the item that contains a display object to be displayed
+		 * as an icon or other graphic next to the label in the tab.
+		 *
+		 * <p>Warning: It is your responsibility to dispose all icons
+		 * included in the data provider and accessed with <code>iconField</code>,
+		 * or any display objects returned by <code>iconFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an icon may result in a memory leak.</p>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the icon field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.iconField = "photo";</listing>
+		 *
+		 * @default "icon"
+		 *
+		 * @see #iconFunction
+		 */
+		public function get iconField():String
+		{
+			return this._iconField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconField(value:String):void
+		{
+			if(this._iconField == value)
+			{
+				return;
+			}
+			this._iconField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconFunction:Function;
+
+		/**
+		 * A function used to generate an icon for a specific tab, based on its
+		 * associated item in the data provider.
+		 *
+		 * <p>Note: This function may be called more than once for each
+		 * individual item in the tab bar's data provider. The function should
+		 * not simply return a new icon every time. This will result in the
+		 * unnecessary creation and destruction of many icons, which will
+		 * overwork the garbage collector, hurt performance, and possibly lead
+		 * to memory leaks. It's better to return a new icon the first time this
+		 * function is called for a particular item and then return the same
+		 * icon if that item is passed to this function again.</p>
+		 *
+		 * <p>Warning: It is your responsibility to dispose all icons
+		 * included in the data provider and accessed with <code>iconField</code>,
+		 * or any display objects returned by <code>iconFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an icon may result in a memory leak.</p>
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):DisplayObject</pre>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the icon function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * var cachedIcons:Dictionary = new Dictionary( true );
+		 * tabs.iconFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedIcons)
+		 *    {
+		 *        return cachedIcons[item];
+		 *    }
+		 *    var icon:Image = new Image( textureAtlas.getTexture( item.textureName ) );
+		 *    cachedIcons[item] = icon;
+		 *    return icon;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #iconField
+		 */
+		public function get iconFunction():Function
+		{
+			return this._iconFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconFunction(value:Function):void
+		{
+			if(this._iconFunction == value)
+			{
+				return;
+			}
+			this._iconFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _enabledFunction:Function;
 
 		/**
@@ -2031,7 +2149,7 @@ package feathers.controls
 				{
 					tab.label = this._labelFunction(item);
 				}
-				else if(this._labelField !== null && this._labelField in item)
+				else if(this._labelField !== null && item !== null && this._labelField in item)
 				{
 					tab.label = item[this._labelField];
 				}
@@ -2043,13 +2161,34 @@ package feathers.controls
 				{
 					tab.label = item.toString();
 				}
+				if(this._iconFunction !== null)
+				{
+					tab.defaultIcon = this._iconFunction(item);
+				}
+				else if(this._iconField !== null && item !== null && this._iconField in item)
+				{
+					tab.defaultIcon = item[this._iconField] as DisplayObject;
+				}
+				else
+				{
+					tab.defaultIcon = null;
+				}
+				for each(var field:String in DEFAULT_TAB_FIELDS)
+				{
+					if(item.hasOwnProperty(field))
+					{
+						tab[field] = item[field];
+					}
+				}
 				if(this._enabledFunction !== null)
 				{
-					tab.isEnabled = this._isEnabled && this._enabledFunction(item);
+					//we account for this._isEnabled later
+					tab.isEnabled = this._enabledFunction(item);
 				}
-				else if(this._enabledField !== null && this._enabledField in item)
+				else if(this._enabledField !== null && item !== null && this._enabledField in item)
 				{
-					tab.isEnabled = this._isEnabled && item[this._enabledField] as Boolean;
+					//we account for this._isEnabled later
+					tab.isEnabled = item[this._enabledField] as Boolean;
 				}
 				else
 				{
