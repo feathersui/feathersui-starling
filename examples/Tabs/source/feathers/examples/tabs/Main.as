@@ -1,22 +1,26 @@
 package feathers.examples.tabs
 {
-	import feathers.controls.Button;
 	import feathers.controls.TabNavigator;
 	import feathers.controls.TabNavigatorItem;
-	import feathers.themes.MetalWorksMobileTheme;
+	import feathers.examples.tabs.screens.ContactsScreen;
+	import feathers.examples.tabs.screens.MessagesScreen;
+	import feathers.examples.tabs.screens.ProfileScreen;
+	import feathers.examples.tabs.themes.TabsTheme;
 
 	import starling.display.Sprite;
 	import starling.events.Event;
 
 	public class Main extends Sprite
 	{
-		private static const ONE:String = "one";
-		private static const TWO:String = "two";
-		private static const THREE:String = "three";
-		
+		private static const MESSAGES:String = "messages";
+		private static const CONTACTS:String = "contacts";
+		private static const PROFILE:String = "profile";
+
 		public function Main()
 		{
-			new MetalWorksMobileTheme();
+			new TabsTheme();
+
+			super();
 
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
@@ -26,34 +30,31 @@ package feathers.examples.tabs
 		protected function addedToStageHandler(event:Event):void
 		{
 			this.navigator = new TabNavigator();
-			this.addFirstTab();
-			this.addSecondTab();
-			this.addThirdTab();
-			this.addChild(navigator);
+			this.addMessagesTab();
+			this.addContactsTab();
+			this.addProfileTab();
+			this.addChild(this.navigator);
 		}
 
-		private function addFirstTab():void
+		private function addMessagesTab():void
 		{
-			var screen:Button = new Button();
-			screen.label = "One";
-			var item:TabNavigatorItem = new TabNavigatorItem(screen, "One");
-			this.navigator.addScreen(ONE, item);
+			var screen:MessagesScreen = new MessagesScreen();
+			var item:TabNavigatorItem = new TabNavigatorItem(screen, "Messages");
+			this.navigator.addScreen(MESSAGES, item);
 		}
 
-		private function addSecondTab():void
+		private function addContactsTab():void
 		{
-			var screen:Button = new Button();
-			screen.label = "Two";
-			var item:TabNavigatorItem = new TabNavigatorItem(screen, "Two");
-			this.navigator.addScreen(TWO, item);
+			var screen:ContactsScreen = new ContactsScreen();
+			var item:TabNavigatorItem = new TabNavigatorItem(screen, "Contacts");
+			this.navigator.addScreen(CONTACTS, item);
 		}
 
-		private function addThirdTab():void
+		private function addProfileTab():void
 		{
-			var screen:Button = new Button();
-			screen.label = "Three";
-			var item:TabNavigatorItem = new TabNavigatorItem(screen, "Three");
-			this.navigator.addScreen(THREE, item);
+			var screen:ProfileScreen = new ProfileScreen();
+			var item:TabNavigatorItem = new TabNavigatorItem(screen, "Profile");
+			this.navigator.addScreen(PROFILE, item);
 		}
 	}
 }

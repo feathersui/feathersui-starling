@@ -11,3 +11,7 @@ In addition to Starling Framework and Feathers, this example project requires th
 ## Web Demo
 
 View the [Tabs example](http://feathersui.com/examples/tabs/) in your browser.
+
+## Credits
+
+User data randomly generated with [randomuser.me](https://randomuser.me/).
