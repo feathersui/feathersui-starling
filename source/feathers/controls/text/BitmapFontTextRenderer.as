@@ -728,6 +728,11 @@ package feathers.controls.text
 				{
 					currentX -= maxLineWidth;
 					currentY += lineHeight;
+					if(maxLineWidth === 0)
+					{
+						//we don't want to get stuck in an infinite loop!
+						break;
+					}
 				}
 			}
 			if(maxX < currentX)
@@ -1111,6 +1116,11 @@ package feathers.controls.text
 				{
 					currentX -= maxLineWidth;
 					currentY += lineHeight;
+					if(maxLineWidth === 0)
+					{
+						//we don't want to get stuck in an infinite loop!
+						break;
+					}
 				}
 			}
 			if(maxX < currentX)

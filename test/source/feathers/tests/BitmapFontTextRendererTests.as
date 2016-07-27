@@ -57,6 +57,15 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testMaxWidth0WithWordWrap():void
+		{
+			this._textRenderer.text = "Test";
+			this._textRenderer.wordWrap = true;
+			this._textRenderer.maxWidth = 0;
+			this._textRenderer.validate();
+		}
+
+		[Test]
 		public function testOneLineWithEmptyString():void
 		{
 			this._textRenderer.text = "";
