@@ -129,16 +129,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const LABEL_FIELD:String = "label";
-
-		/**
-		 * @private
-		 */
-		protected static const ENABLED_FIELD:String = "isEnabled";
-
-		/**
-		 * @private
-		 */
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
 			"defaultIcon",
@@ -1323,6 +1313,193 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _labelField:String = "label";
+
+		/**
+		 * The field in the item that contains the label text to be displayed by
+		 * the tabs. If the item does not have this field, and a
+		 * <code>labelFunction</code> is not defined, then the tabs will
+		 * default to calling <code>toString()</code> on the item.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.labelField = "text";</listing>
+		 *
+		 * @default "label"
+		 *
+		 * @see #labelFunction
+		 */
+		public function get labelField():String
+		{
+			return this._labelField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelField(value:String):void
+		{
+			if(this._labelField == value)
+			{
+				return;
+			}
+			this._labelField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _labelFunction:Function;
+
+		/**
+		 * A function used to generate label text for a specific tab. If this
+		 * function is not <code>null</code>, then the <code>labelField</code>
+		 * will be ignored.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):String</pre>
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.labelFunction = function( item:Object ):String
+		 * {
+		 *    return item.label + " (" + item.unread + ")";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #labelField
+		 */
+		public function get labelFunction():Function
+		{
+			return this._labelFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelFunction(value:Function):void
+		{
+			if(this._labelFunction == value)
+			{
+				return;
+			}
+			this._labelFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _enabledField:String = "isEnabled";
+
+		/**
+		 * The field in the item that determines if the tab is enabled. If the
+		 * item does not have this field, and a <code>enabledFunction</code> is
+		 * not defined, then the tab will default to being enabled, unless the
+		 * tab bar is not enabled. All tabs will always be disabled if the tab
+		 * bar is disabled.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the enabled field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.enabledField = "isEnabled";</listing>
+		 *
+		 * @default "enabled"
+		 *
+		 * @see #enabledFunction
+		 */
+		public function get enabledField():String
+		{
+			return this._enabledField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set enabledField(value:String):void
+		{
+			if(this._enabledField == value)
+			{
+				return;
+			}
+			this._enabledField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _enabledFunction:Function;
+
+		/**
+		 * A function used to determine if a specific tab is enabled. If this
+		 * function is not <code>null</code>, then the <code>enabledField</code>
+		 * will be ignored.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Boolean</pre>
+		 *
+		 * <p>All of the enabled fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the enabled function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.enabledFunction = function( item:Object ):Boolean
+		 * {
+		 *    return item.isEnabled;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #enabledField
+		 */
+		public function get enabledFunction():Function
+		{
+			return this._enabledFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set enabledFunction(value:Function):void
+		{
+			if(this._enabledFunction == value)
+			{
+				return;
+			}
+			this._enabledFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreSelectionChanges:Boolean = false;
 
 		/**
@@ -1850,17 +2027,29 @@ package feathers.controls
 		{
 			if(item is Object)
 			{
-				if(item.hasOwnProperty(LABEL_FIELD))
+				if(this._labelFunction !== null)
 				{
-					tab.label = item.label;
+					tab.label = this._labelFunction(item);
+				}
+				else if(this._labelField !== null && this._labelField in item)
+				{
+					tab.label = item[this._labelField];
+				}
+				else if(item is String)
+				{
+					tab.label = item as String;
 				}
 				else
 				{
 					tab.label = item.toString();
 				}
-				if(item.hasOwnProperty(ENABLED_FIELD))
+				if(this._enabledFunction !== null)
 				{
-					tab.isEnabled = item.isEnabled as Boolean;
+					tab.isEnabled = this._isEnabled && this._enabledFunction(item);
+				}
+				else if(this._enabledField !== null && this._enabledField in item)
+				{
+					tab.isEnabled = this._isEnabled && item[this._enabledField] as Boolean;
 				}
 				else
 				{
