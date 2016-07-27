@@ -123,6 +123,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`TabBar`](tab-bar.html)
 
+-   [`TabNavigator`](tab-navigator.html)
+
 -   [`TextArea`](text-area.html)
 
 -   [`TextCallout`](text-callout.html)

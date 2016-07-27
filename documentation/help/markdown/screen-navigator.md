@@ -5,11 +5,13 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `ScreenNavigator` component
 
-The [`ScreenNavigator`](../api-reference/feathers/controls/ScreenNavigator.html) class supports navigation between screens or pages. It is best suited for working with a set of screens in a flat hierarchy. For instance, each screen might be associated with a tab in a [`TabBar`](tab-bar.html).
+The [`ScreenNavigator`](../api-reference/feathers/controls/ScreenNavigator.html) class supports navigation between screens or pages. It is best suited for working with a set of screens in a flat hierarchy.
 
 Events dispatched from the active screen can be used to trigger navigation. Navigation can be enhanced with animation, called a [*transition*](transitions.html). Feathers provides a number of transitions out of the box, and a simple API lets you create custom transitions.
 
 <aside class="info">For a screen navigator that keeps a history that allows you to navigate back to previous screens, see [`StackScreenNavigator`](stack-screen-navigator.html) instead.</aside>
+
+<aside class="info">For a screen navigator that has a tab bar, see [`TabNavigator`](tab-navigator.html) instead.</aside>
 
 ## The Basics
 
