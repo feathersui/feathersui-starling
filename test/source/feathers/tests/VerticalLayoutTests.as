@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.VerticalLayoutData;
@@ -199,6 +200,31 @@ package feathers.tests
 			bounds.explicitHeight = 640;
 			this._layout.layout(items, bounds);
 			Assert.assertStrictlyEquals("VerticalLayoutData with percentWidth < 0 does not clamp to 0", 0, item1.width);
+		}
+
+		[Test]
+		public function testPercentWidthWithWrappingLabelAndMaxWidth():void
+		{
+			var viewPortMaxWidth:Number = 100;
+			var item1:Label = new Label();
+			item1.text = "I am the very model of a modern Major General";
+			item1.wordWrap = true;
+			item1.validate();
+			var unwrappedWidth:Number = item1.width;
+			var unwrappedHeight:Number = item1.height;
+			var layoutData1:VerticalLayoutData = new VerticalLayoutData();
+			layoutData1.percentWidth = 100;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.maxWidth = viewPortMaxWidth;
+			this._layout.layout(items, bounds);
+			//since we're setting maxWidth, the width may actually be smaller
+			Assert.assertTrue("VerticalLayoutData with percentWidth with a wrapping Label results in incorrect width",
+				viewPortMaxWidth >= item1.width);
+			//we're only checking that it has more than one line
+			Assert.assertTrue("VerticalLayoutData with percentWidth on a wrapping Label results in height that is too small",
+				unwrappedHeight < item1.height);
 		}
 	}
 }
