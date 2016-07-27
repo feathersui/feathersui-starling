@@ -2173,13 +2173,6 @@ package feathers.controls
 				{
 					tab.defaultIcon = null;
 				}
-				for each(var field:String in DEFAULT_TAB_FIELDS)
-				{
-					if(item.hasOwnProperty(field))
-					{
-						tab[field] = item[field];
-					}
-				}
 				if(this._enabledFunction !== null)
 				{
 					//we account for this._isEnabled later
