@@ -101,7 +101,7 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-item-renderer-label";
-		
+
 		/**
 		 * The default value added to the <code>styleNameList</code> of the icon
 		 * label, if it exists.
@@ -111,12 +111,28 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
 
 		/**
+		 * The default value added to the <code>styleNameList</code> of the icon
+		 * loader, if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LOADER:String = "feathers-item-renderer-icon-loader";
+
+		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * accessory label, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * accessory loader, if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER:String = "feathers-item-renderer-accessory-loader";
 
 		/**
 		 * @private
@@ -476,12 +492,28 @@ package feathers.controls.renderers
 		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
+		 * The value added to the <code>styleNameList</code> of the icon loader,
+		 * if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var iconLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LOADER;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
 		 * label text renderer, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the accessory
+		 * loader, if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var accessoryLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER;
 
 		/**
 		 * @private
@@ -1823,6 +1855,52 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _customIconLoaderStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's icon loader sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * item renderers.
+		 *
+		 * <p>In the following example, a custom icon loader style name is passed
+		 * to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customIconLodaerStyleName = "my-custom-icon-loader";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-icon-loader", setCustomIconLoaderStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LOADER
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #iconLoaderFactory
+		 */
+		public function get customIconLoaderStyleName():String
+		{
+			return this._customIconLoaderStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customIconLoaderStyleName(value:String):void
+		{
+			if(this._customIconLoaderStyleName == value)
+			{
+				return;
+			}
+			this._customIconLoaderStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customIconLabelStyleName:String;
 
 		/**
@@ -2323,6 +2401,52 @@ package feathers.controls.renderers
 			}
 			this._customAccessoryLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customAccessoryLoaderStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's accessory loader
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different item renderers.
+		 *
+		 * <p>In the following example, a custom accessory loader style name is
+		 * passed to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customAccessoryLoaderStyleName = "my-custom-accessory-loader";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-accessory-loader", setCustomAccessoryLoaderStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #accessoryLoaderFactory
+		 */
+		public function get customAccessoryLoaderStyleName():String
+		{
+			return this._customAccessoryLoaderStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customAccessoryLoaderStyleName(value:String):void
+		{
+			if(this._customAccessoryLoaderStyleName == value)
+			{
+				return;
+			}
+			this._customAccessoryLoaderStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -4675,6 +4799,8 @@ package feathers.controls.renderers
 				this.iconLoader = this._iconLoaderFactory();
 				this.iconLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
 				this.iconLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				var iconLoaderStyleName:String = this._customIconLoaderStyleName != null ? this._customIconLoaderStyleName : this.iconLoaderStyleName;
+				this.iconLoader.styleNameList.add(iconLoaderStyleName);
 			}
 			this.iconLoader.source = source;
 		}
@@ -4708,6 +4834,8 @@ package feathers.controls.renderers
 				this.accessoryLoader = this._accessoryLoaderFactory();
 				this.accessoryLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
 				this.accessoryLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				var accessoryLoaderStyleName:String = this._customAccessoryLoaderStyleName != null ? this._customAccessoryLoaderStyleName : this.accessoryLoaderStyleName;
+				this.accessoryLoader.styleNameList.add(accessoryLoaderStyleName);
 			}
 			this.accessoryLoader.source = source;
 		}
