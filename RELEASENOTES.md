@@ -2,6 +2,11 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.0.3 - July 2016
+
+* ImageLoader: Fixed issue where reusing the existing texture did not cause the rendered view to update when skipUnchangedFrames is true.
+* Text Renderers: Fixed issue where reusing the existing texture(s) did not cause the rendered view to update when skipUnchangedFrames is true.
+
 ## 3.0.2 - June 2016
 
 * Scroller: Fixed issue where view port mask would not always be resized, such as when items are added to a List.
