@@ -4,8 +4,8 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 3.0.3 - July 2016
 
-* ImageLoader: Fixed issue where reusing the existing texture did not cause the rendered view to update when skipUnchangedFrames is false.
-* Text Renderers: Fixed issue where reusing the texture(s) did not cause the rendered view to update when skipUnchangedFrames is false.
+* ImageLoader: Fixed issue where reusing the existing texture did not cause the rendered view to update when skipUnchangedFrames is true.
+* Text Renderers: Fixed issue where reusing the existing texture(s) did not cause the rendered view to update when skipUnchangedFrames is true.
 
 ## 3.0.2 - June 2016
 
