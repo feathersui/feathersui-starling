@@ -131,7 +131,6 @@ package feathers.controls
 		 */
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
-			"defaultIcon",
 			"upIcon",
 			"downIcon",
 			"hoverIcon",
@@ -1451,7 +1450,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _iconField:String = "icon";
+		protected var _iconField:String = "defaultIcon";
+		//I'd like to use "icon" here instead, but defaultIcon is needed for
+		//backwards compatibility...
 
 		/**
 		 * The field in the item that contains a display object to be displayed
@@ -1955,7 +1956,22 @@ package feathers.controls
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndex = -1;
+			//this flag also ensures that removing items from the ToggleGroup
+			//won't result in selection events
+			this._ignoreSelectionChanges = true;
+
+			//the tabs may contain things that shouldn't be disposed, so clean
+			//them up before super.dispose()
+			var tabCount:int = this.activeTabs.length;
+			for(var i:int = 0; i < tabCount; i++)
+			{
+				var tab:ToggleButton = this.activeTabs.shift();
+				this.destroyTab(tab);
+			}
+
+			//ensures that listeners are removed to avoid memory leaks
 			this.dataProvider = null;
+
 			super.dispose();
 		}
 
@@ -2141,9 +2157,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function defaultTabInitializer(tab:ToggleButton, item:Object):void
+		protected function commitTabData(tab:ToggleButton, item:Object):void
 		{
-			if(item is Object)
+			if(item !== null)
 			{
 				if(this._labelFunction !== null)
 				{
@@ -2169,10 +2185,6 @@ package feathers.controls
 				{
 					tab.defaultIcon = item[this._iconField] as DisplayObject;
 				}
-				else
-				{
-					tab.defaultIcon = null;
-				}
 				if(this._enabledFunction !== null)
 				{
 					//we account for this._isEnabled later
@@ -2187,12 +2199,9 @@ package feathers.controls
 				{
 					tab.isEnabled = this._isEnabled;
 				}
-				for each(var field:String in DEFAULT_TAB_FIELDS)
+				if(this._tabInitializer !== null)
 				{
-					if(item.hasOwnProperty(field))
-					{
-						tab[field] = item[field];
-					}
+					this._tabInitializer(tab, item);
 				}
 			}
 			else
@@ -2205,9 +2214,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function defaultTabInitializer(tab:ToggleButton, item:Object):void
+		{
+			if(item !== null)
+			{
+				for each(var field:String in DEFAULT_TAB_FIELDS)
+				{
+					if(item.hasOwnProperty(field))
+					{
+						tab[field] = item[field];
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function defaultTabReleaser(tab:ToggleButton, oldItem:Object):void
 		{
-			tab.label = null;
 			for each(var field:String in DEFAULT_TAB_FIELDS)
 			{
 				if(oldItem.hasOwnProperty(field))
@@ -2353,7 +2378,7 @@ package feathers.controls
 				tab.isToggle = true;
 				this.addChild(tab);
 			}
-			this._tabInitializer(tab, item);
+			this.commitTabData(tab, item);
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
@@ -2397,7 +2422,7 @@ package feathers.controls
 				tab.isToggle = true;
 				this.addChild(tab);
 			}
-			this._tabInitializer(tab, item);
+			this.commitTabData(tab, item);
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
@@ -2435,7 +2460,7 @@ package feathers.controls
 				tab = this.inactiveTabs.shift();
 				this.releaseTab(tab);
 			}
-			this._tabInitializer(tab, item);
+			this.commitTabData(tab, item);
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
@@ -2454,13 +2479,24 @@ package feathers.controls
 		{
 			var item:Object = this._tabToItem[tab];
 			delete this._tabToItem[tab];
-			if(this._tabReleaser.length === 1)
+			if(this._labelFunction !== null || this._labelField in item)
 			{
-				this._tabReleaser(tab);
+				tab.label = null;
 			}
-			else
+			if(this._iconFunction !== null || this._iconField in item)
 			{
-				this._tabReleaser(tab, item);
+				tab.defaultIcon = null;
+			}
+			if(this._tabReleaser !== null)
+			{
+				if(this._tabReleaser.length === 1)
+				{
+					this._tabReleaser(tab);
+				}
+				else
+				{
+					this._tabReleaser(tab, item);
+				}
 			}
 		}
 
