@@ -21,15 +21,47 @@ package feathers.utils
 	/**
 	 * Automatically manages the Starling view port and stage dimensions to
 	 * create an appropriate <code>contentScaleFactor</code> value for the
-	 * current mobile device using the screen density (sometimes referred to as
-	 * DPI or PPI). The stage and view port will be resized without
-	 * letterboxing. Additionally, the view port and stage will be automatically
-	 * updated if the native stage resizes or changes orientation.
-	 * 
-	 * <p>The <code>contentScaleFactor</code> values calculated by this class
-	 * are based on a combination of the screen density buckets supported by
-	 * Google Android and the native scale factors used for Apple's iPhone:</p>
-	 * 
+	 * current mobile device while filling the whole screen without letterboxing
+	 * (no black bars!). Additionally, if the mobile device changes orientation,
+	 * or if the desktop native window resizes,
+	 * <code>ScreenDensityScaleFactorManager</code> will automatically resize
+	 * Starling based on the new dimensions.
+	 *
+	 * <p>When using <code>ScreenDensityScaleFactorManager</code>, the Starling
+	 * stage dimensions will not be exactly the same on all devices. When
+	 * comparing two different phones, the stage dimensions will be similar, but
+	 * may not be perfectly equal. For example, the stage dimensions on an
+	 * Apple iPhone 5 in portrait orientation will be 320x568, but the stage
+	 * dimensions on a Google Nexus 5 will be 360x640. With this in mind, be
+	 * sure to use "fluid" layouts to account for the differences.</p>
+	 *
+	 * <p>It's also important to understand that tablets will have much larger
+	 * Starling stage dimensions than phones.
+	 * <code>ScreenDensityScaleFactorManager</code> is designed to behave more
+	 * like native apps where tablets often display extra navigation or data
+	 * that wouldn't be able to fit on a smaller phone screen. For example, on
+	 * an Apple iPad, the stage dimensions will be 768x1024. This is much larger
+	 * than the two phones we compared previously.</p>
+	 *
+	 * <p>The following example demonstrates how to instantiate
+	 * <code>ScreenDensityScaleFactorManager</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * this._starling = new Starling( RootClass, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE );
+	 * this._scaler = new ScreenDensityScaleFactorManager(this._starling);</listing>
+	 *
+	 * <strong>How <code>contentScaleFactor</code> is calculated</strong>
+	 *
+	 * <p>The device's screen density (sometimes referred to as DPI or PPI) is
+	 * used to calculate an appropriate <code>contentScaleFactor</code> value.
+	 * The calculation is inspired by native apps on Google's Android operating
+	 * system where "density-independent pixels" are used for layout. You might
+	 * consider this an advanced form of the techniques described in
+	 * <a href="http://wiki.starling-framework.org/manual/multi-resolution_development">Starling Multi-Resolution Development</a>.</p>
+	 *
+	 * <p>The following chart shows how different screen densities map to
+	 * different <code>contentScaleFactor</code> values on both iOS and Android:</p>
+	 *
 	 * <table class="innertable">
 	 * <tr><th>Android</th><th>iOS</th><th>Density</th><th>Scale Factor</th></tr>
 	 * <tr><td>ldpi</td><td></td><td>120</td><td>0.75</td></tr>
@@ -39,37 +71,70 @@ package feathers.utils
 	 * <tr><td>xxhdpi</td><td>Retina HD (&#64;3x)</td><td>480</td><td>3</td></tr>
 	 * <tr><td>xxxhdpi</td><td></td><td>640</td><td>4</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * <p>The density values in the table above are approximate. The screen
 	 * density of an iPhone 5 is 326, so it uses the scale factor from the
 	 * "xhdpi" bucket because 326 is closer to 320 than it is to 480.</p>
-	 * 
-	 * <p>Providing textures for every scale factor is optional. Textures from
-	 * another scale factor can be automatically scaled to fit the current scale
-	 * factor. For instance, since "ldpi" devices with a low screen density
-	 * typically aren't manufactured anymore, "mdpi" textures will probably be
-	 * "good enough" for these legacy devices, if your app encounters one. The
-	 * larger textures will be automatically scaled down, and the app will look
-	 * the same as it would if you were using lower resolution textures.</p>
-	 * 
-	 * <p>Special behavior has been implemented for iPads to give them scale
-	 * factors of <code>1</code> and <code>2</code>, just like native apps.
-	 * Using Android's rules for DPI buckets, non-Retina iPads would have been
-	 * "ldpi" devices (scale factor <code>0.75</code>) and Retina iPads would
-	 * have been "hdpi" devices (scale factor <code>1.5</code>. However, because
-	 * it makes more sense to make Starling use the same scale factor as native
-	 * apps on iPad, this class makes a special exception just for them.</p>
-	 * 
-	 * <p>The following example demonstrates how to use
-	 * <code>ScreenDensityScaleFactorManager</code>:</p>
-	 * 
+	 *
+	 * <p>Note: Special behavior has been implemented for iPads to give them
+	 * scale factors of <code>1</code> and <code>2</code>, just like native
+	 * apps. Using Android's rules for DPI buckets, non-Retina iPads would have
+	 * been "ldpi" devices (scale factor <code>0.75</code>) and Retina iPads
+	 * would have been "hdpi" devices (scale factor <code>1.5</code>). However,
+	 * because it makes more sense for Starling to use the same scale factor as
+	 * native apps on iPad, this class makes a special exception just for
+	 * them.</p>
+	 *
+	 * <strong>Loading Assets</strong>
+	 *
+	 * <p>After creating <code>ScreenDensityScaleFactorManager</code>, you can
+	 * use Starling's <code>contentScaleFactor</code> property to determine
+	 * which set of assets to load:</p>
+	 *
 	 * <listing version="3.0">
-	 * this._starling = new Starling( RootClass, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE );
-	 * this._scaler = new ScreenDensityScaleFactorManager(this._starling);</listing>
-	 * 
-	 * <p>When using this class, you should not attempt to manually resize the
-	 * Starling view port or stage manually. This class manages their dimensions
-	 * automatically on its own.</p>
+	 * if( Starling.current.contentScaleFactor > 1 )
+	 * {
+	 * 	assetManager.scaleFactor = 2;
+	 * 	var assets2x:File = File.applicationDirectory.resolvePath( "assets/2x" );
+	 * 	assetManager.enqueue( assets2x );
+	 * }
+	 * else
+	 * {
+	 * 	assetManager.scaleFactor = 1;
+	 * 	var assets1x:File = File.applicationDirectory.resolvePath( "assets/1x" );
+	 * 	assetManager.enqueue( assets1x );
+	 * }</listing>
+	 *
+	 * <p>Providing assets for every scale factor is optional because Starling
+	 * will automatically resize any textures that have been given a different
+	 * <code>scale</code> than the current <code>contentScaleFactor</code> when
+	 * they are rendered to the screen.</p>
+	 *
+	 * <p>For example, since "ldpi" devices with a low screen density typically
+	 * aren't manufactured anymore, it might not be worth spending time
+	 * designing a set of assets specifically for scale factor 0.75. Instead,
+	 * you can probably load the higher quality "mdpi" textures when a legacy
+	 * device is encountered where <code>ScreenDensityScaleFactorManager</code>
+	 * chooses a <code>contentScaleFactor</code> of 0.75. As long as the "mdpi"
+	 * textures are given a scale of 1 when they are created, Starling will know
+	 * how to automatically resize them on a device where the calculated
+	 * <code>contentScaleFactor</code> is lower than 1. Larger textures will
+	 * be automatically scaled down, and the app will look the same as it would
+	 * if you were using lower resolution textures. Your app will end up using a
+	 * bit more memory at runtime than strictly necessary on these devices, but
+	 * you won't need to include as many image files with your app, so its
+	 * download size will be smaller.</p>
+	 *
+	 * <p>Similarly, lower resolution textures can be scaled up on devices with
+	 * a higher <code>contentScaleFactor</code>. It is said that the human eye
+	 * starts to have difficulty perceiving every individual pixel when a
+	 * device's screen density is higher than 300 DPI. Depending on your app's
+	 * requirements, assets for scale factor 4 (and often, also scale factor 3)
+	 * may not be strictly necessary. You can often load assets for scale factor
+	 * 2 on these higher-density devices because the difference is so difficult
+	 * to see with the naked eye.</p>
+	 *
+	 * @see http://wiki.starling-framework.org/manual/multi-resolution_development Starling Multi-Resolution Development
 	 */
 	public class ScreenDensityScaleFactorManager
 	{
