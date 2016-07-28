@@ -696,7 +696,7 @@ package feathers.layout
 				//items in the container!), then we don't want to subtract the
 				//gap when calculating the row width, so default to 0.
 				var horizontalGap:Number = 0;
-				
+
 				//this first loop sets the x position of items, and it calculates
 				//the total width of all items
 				for(; i < itemCount; i++)
@@ -711,7 +711,7 @@ package feathers.layout
 					{
 						horizontalGap = this._lastHorizontalGap;
 					}
-	
+
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
 					{
 						var cachedWidth:Number = this._widthCache[i];
@@ -721,7 +721,7 @@ package feathers.layout
 					{
 						//the item is null, and the layout is virtualized, so we
 						//need to estimate the width of the item.
-						
+
 						if(this._hasVariableItemDimensions)
 						{
 							if(cachedWidth !== cachedWidth)
@@ -836,7 +836,7 @@ package feathers.layout
 					maxRowWidth = totalRowWidth;
 				}
 				rowItemCount = this._rowItems.length;
-	
+
 				if(supportsMultipleRows)
 				{
 					//in this section, we handle horizontal alignment for the
@@ -851,7 +851,7 @@ package feathers.layout
 					{
 						horizontalAlignOffsetX = Math.round((availableRowWidth - totalRowWidth) / 2);
 					}
-					if(horizontalAlignOffsetX != 0)
+					if(horizontalAlignOffsetX !== 0)
 					{
 						for(var j:int = 0; j < rowItemCount; j++)
 						{
@@ -864,7 +864,7 @@ package feathers.layout
 						}
 					}
 				}
-	
+
 				for(j = 0; j < rowItemCount; j++)
 				{
 					item = this._rowItems[j];
@@ -900,50 +900,52 @@ package feathers.layout
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._rowItems.length = 0;
-			
+
 			if(supportsMultipleRows)
 			{
-				if(needsWidth)
+				//if the maxRowWidth has changed since any row was aligned, the
+				//items in those rows may need to be shifted a bit
+				var contentRowWidth:Number = maxRowWidth;
+				if(contentRowWidth < minWidth)
 				{
-					var oldAvailableRowWidth:Number = availableRowWidth;
-					availableRowWidth = maxRowWidth;
-					if(availableRowWidth < minWidth)
+					contentRowWidth = minWidth;
+				}
+				else if(contentRowWidth > maxWidth)
+				{
+					contentRowWidth = maxWidth;
+				}
+				horizontalAlignOffsetX = 0;
+				if(this._horizontalAlign === HorizontalAlign.RIGHT)
+				{
+					horizontalAlignOffsetX = availableRowWidth - contentRowWidth;
+				}
+				else if(this._horizontalAlign === HorizontalAlign.CENTER)
+				{
+					horizontalAlignOffsetX = Math.round((availableRowWidth - contentRowWidth) / 2);
+				}
+				if(horizontalAlignOffsetX !== 0)
+				{
+					for(i = 0; i < itemCount; i++)
 					{
-						availableRowWidth = minWidth;
-					}
-					else if(availableRowWidth > maxWidth)
-					{
-						availableRowWidth = maxWidth;
-					}
-					horizontalAlignOffsetX = 0;
-					if(this._horizontalAlign === HorizontalAlign.RIGHT)
-					{
-						horizontalAlignOffsetX = oldAvailableRowWidth - availableRowWidth;
-					}
-					else if(this._horizontalAlign === HorizontalAlign.CENTER)
-					{
-						horizontalAlignOffsetX = Math.round((oldAvailableRowWidth - availableRowWidth) / 2);
-					}
-					if(horizontalAlignOffsetX !== 0)
-					{
-						for(i = 0; i < itemCount; i++)
+						item = items[i];
+						if(!item || (item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout))
 						{
-							item = items[i];
-							if(!item || (item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout))
-							{
-								continue;
-							}
-							//previously, we used the maxWidth for alignment,
-							//but the max row width may be smaller, so we need
-							//to account for the difference
-							item.x -= horizontalAlignOffsetX;
+							continue;
 						}
+						//previously, we used the maxWidth for alignment,
+						//but the max row width may be smaller, so we need
+						//to account for the difference
+						item.x -= horizontalAlignOffsetX;
 					}
 				}
 			}
 			else
 			{
-				availableRowWidth = maxRowWidth;
+				contentRowWidth = maxRowWidth;
+			}
+			if(needsWidth)
+			{
+				availableRowWidth = contentRowWidth;
 			}
 
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
@@ -963,7 +965,7 @@ package feathers.layout
 					availableHeight = maxHeight;
 				}
 			}
-			
+
 			if(totalHeight < availableHeight &&
 				this._verticalAlign != VerticalAlign.TOP)
 			{
