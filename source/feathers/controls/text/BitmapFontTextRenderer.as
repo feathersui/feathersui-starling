@@ -20,6 +20,7 @@ package feathers.controls.text
 	import starling.display.Image;
 	import starling.display.MeshBatch;
 	import starling.rendering.Painter;
+	import starling.styles.MeshStyle;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
@@ -534,6 +535,39 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _style:MeshStyle;
+
+		/**
+		 * The style that is used to render the text's mesh.
+		 *
+		 * <p>In the following example, the text renderer uses a custom style:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.style = new DistanceFieldStyle();</listing>
+		 *
+		 * @default null
+		 */
+		public function get style():MeshStyle
+		{
+			return this._style;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set style(value:MeshStyle):void
+		{
+			if(this._style == value)
+			{
+				return;
+			}
+			this._style = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get baseline():Number
@@ -865,6 +899,10 @@ package feathers.controls.text
 			{
 				this._characterBatch.pixelSnapping = this._pixelSnapping;
 				this._characterBatch.batchable = !this._useSeparateBatch;
+				if(this._style !== null)
+				{
+					this._characterBatch.style = this._style;
+				}
 			}
 
 			//sometimes, we can determine that the layout will be exactly
