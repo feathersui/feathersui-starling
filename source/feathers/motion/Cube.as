@@ -253,8 +253,8 @@ class CulledSprite3D extends Sprite3D
 {
 	override public function render(painter:Painter):void
 	{
-		Starling.current.context.setCulling(Context3DTriangleFace.BACK);
+		//this will be cleared later when the state is popped
+		painter.state.culling = Context3DTriangleFace.BACK;
 		super.render(painter);
-		Starling.current.context.setCulling(Context3DTriangleFace.NONE);
 	}
 }
