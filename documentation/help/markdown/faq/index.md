@@ -67,6 +67,10 @@ Generally, the version of Feathers that is available from the [Feathers website]
 
 Use the latest, bleeding edge code from the [Feathers Github project](https://github.com/joshtynjala/feathers) at your own risk. This code is in development, and it may be unstable at times. The newest code from the [Starling Github project](https://github.com/Gamua/Starling-Framework) may be required to use it if Feathers has begun using new features or if anything in the Starling APIs has changed. Check the [Feathers README file](https://github.com/joshtynjala/feathers/blob/master/README.md) to see which version of Starling is currently required by the unstable version of Feathers.
 
+### Does Feathers support visual debugging similar to "inspect element" in web browsers?
+
+Check out the [monsterdebugger-client-starling](https://github.com/joshtynjala/monsterdebugger-client-starling) open source project. It adds support for Starling and Feathers to [Monster Debugger](http://www.monsterdebugger.com/) by De Monsters.
+
 ## Architecture
 
 ### Why don't the Feathers components have default skins?
