@@ -1023,6 +1023,35 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _maintainTouchFocus:Boolean = false;
+
+		/**
+		 * If enabled, the text editor will remain in focus, even if something
+		 * else is touched.
+		 *
+		 * <p>In the following example, touch focus is maintained:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.maintainTouchFocus = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get maintainTouchFocus():Boolean
+		{
+			return this._maintainTouchFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maintainTouchFocus(value:Boolean):void
+		{
+			this._maintainTouchFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _lastGlobalScaleX:Number = 0;
 
 		/**
@@ -2084,6 +2113,7 @@ package feathers.controls.text
 			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
 			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.stageText.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stageText_mouseFocusChangeHandler);
 			this.invalidate();
 		}
 
@@ -2185,6 +2215,18 @@ package feathers.controls.text
 			{
 				this.removeEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_mouseFocusChangeHandler(event:FocusEvent):void
+		{
+			if(!this._maintainTouchFocus)
+			{
+				return;
+			}
+			event.preventDefault();
 		}
 
 		/**
