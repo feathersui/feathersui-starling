@@ -2505,6 +2505,13 @@ package feathers.controls
 
 			this.layoutChildren();
 
+			//the state might not change if the text input has focus when
+			//the error string changes, so check for styles too!
+			if(stateInvalid || stylesInvalid)
+			{
+				this.refreshErrorCallout();
+			}
+
 			if(sizeInvalid || focusInvalid)
 			{
 				this.refreshFocusIndicator();
@@ -2762,7 +2769,7 @@ package feathers.controls
 		 */
 		protected function createErrorCallout():void
 		{
-			if(this.callout)
+			if(this.callout !== null)
 			{
 				this.callout.removeFromParent(true);
 				this.callout = null;
@@ -2779,7 +2786,6 @@ package feathers.controls
 			this.callout.closeOnTouchBeganOutside = false;
 			this.callout.closeOnTouchEndedOutside = false;
 			this.callout.touchable = false;
-			this.callout.text = this._errorString;
 			this.callout.origin = this;
 			PopUpManager.addPopUp(this.callout, false, false);
 		}
@@ -3203,6 +3209,28 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshErrorCallout():void
+		{
+			if(this._textEditorHasFocus && this.callout === null &&
+				this._errorString !== null && this._errorString.length > 0)
+			{
+				this.createErrorCallout();
+			}
+			else if(this.callout !== null &&
+				(!this._textEditorHasFocus || this._errorString === null || this._errorString.length === 0))
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
+			if(this.callout !== null)
+			{
+				this.callout.text = this._errorString;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -3362,10 +3390,7 @@ package feathers.controls
 			}
 			this._textEditorHasFocus = true;
 			this.refreshState();
-			if(this._errorString !== null && this._errorString.length > 0)
-			{
-				this.createErrorCallout();
-			}
+			this.refreshErrorCallout();
 			if(this._focusManager !== null && this.isFocusEnabled)
 			{
 				if(this._focusManager.focus !== this)
@@ -3390,11 +3415,7 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = false;
 			this.refreshState();
-			if(this.callout)
-			{
-				this.callout.removeFromParent(true);
-				this.callout = null;
-			}
+			this.refreshErrorCallout();
 			if(this._focusManager !== null && this.isFocusEnabled)
 			{
 				if(this._focusManager.focus === this)

@@ -1314,6 +1314,13 @@ package feathers.controls
 
 			super.draw();
 
+			//the state might not change if the text input has focus when
+			//the error string changes, so check for styles too!
+			if(stateInvalid || stylesInvalid)
+			{
+				this.refreshErrorCallout();
+			}
+
 			this.doPendingActions();
 		}
 
@@ -1369,7 +1376,7 @@ package feathers.controls
 		 */
 		protected function createErrorCallout():void
 		{
-			if(this.callout)
+			if(this.callout !== null)
 			{
 				this.callout.removeFromParent(true);
 				this.callout = null;
@@ -1386,7 +1393,6 @@ package feathers.controls
 			this.callout.closeOnTouchBeganOutside = false;
 			this.callout.closeOnTouchEndedOutside = false;
 			this.callout.touchable = false;
-			this.callout.text = this._errorString;
 			this.callout.origin = this;
 			PopUpManager.addPopUp(this.callout, false, false);
 		}
@@ -1531,6 +1537,28 @@ package feathers.controls
 			else
 			{
 				this.changeState(TextInputState.DISABLED);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshErrorCallout():void
+		{
+			if(this._textEditorHasFocus && this.callout === null &&
+				this._errorString !== null && this._errorString.length > 0)
+			{
+				this.createErrorCallout();
+			}
+			else if(this.callout !== null &&
+				(!this._textEditorHasFocus || this._errorString === null || this._errorString.length === 0))
+			{
+				this.callout.removeFromParent(true);
+				this.callout = null;
+			}
+			if(this.callout !== null)
+			{
+				this.callout.text = this._errorString;
 			}
 		}
 
@@ -1713,10 +1741,7 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = true;
 			this.refreshState();
-			if(this._errorString !== null && this._errorString.length > 0)
-			{
-				this.createErrorCallout();
-			}
+			this.refreshErrorCallout();
 			this._touchPointID = -1;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager && this.isFocusEnabled && this._focusManager.focus !== this)
@@ -1740,11 +1765,7 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = false;
 			this.refreshState();
-			if(this.callout)
-			{
-				this.callout.removeFromParent(true);
-				this.callout = null;
-			}
+			this.refreshErrorCallout();
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager && this._focusManager.focus === this)
 			{
