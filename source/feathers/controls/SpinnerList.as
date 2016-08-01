@@ -427,7 +427,7 @@ package feathers.controls
 			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 			{
 				itemIndex = this.calculateNearestPageIndexForItem(itemIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
-				this.throwToPage(itemIndex, this._verticalPageIndex);
+				this.throwToPage(itemIndex, this._verticalPageIndex, this._pageThrowDuration);
 			}
 		}
 
