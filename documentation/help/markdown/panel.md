@@ -12,6 +12,12 @@ The [`Panel`](../api-reference/feathers/controls/Panel.html) component is a cont
 <figcaption>A `Panel` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `Panel`](#skinning-a-panel)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
 ## The Basics
 
 First, let's create a `Panel` container and add it to the display list:
@@ -123,18 +129,53 @@ Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.ht
 
 ## Skinning a `Panel`
 
-The skins for a `Panel` control are divided into the header, the content, and the footer. Additionally, a panel may have background skins and various other styles. For full details about what skin and style properties are available, see the [`Panel` API reference](../api-reference/feathers/controls/Panel.html). We'll look at a few of the most common properties below.
+The skins for a `Panel` control are divided into the header, the content, and the footer. Additionally, a panel may have background skins and various other styles. For full details about what skin and style properties are available, see the [`Panel` API reference](../api-reference/feathers/controls/Panel.html). We'll look at a few of the most common ways of styling a panel below.
 
-### Background Skins and Basic Styles
+### Using a theme? Some tips for customizing an individual panel's styles
 
-We'll start the skinning process by giving our panel appropriate background skins.
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the label's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-panel.backgroundSkin = new Image( enabledTexture );
-panel.backgroundDisabledSkin = new Image( disabledTexture );
+var panel:Panel = new Panel();
+function setExtraPanelStyles( panel:Panel ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 1, 3, 6 );
+    panel.backgroundSkin = skin;
+}
+panel.styleProvider = new AddOnFunctionStyleProvider(
+    panel.styleProvider, setExtraPanelStyles );
 ```
 
-The [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property provides the default background for when the panel is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the panel is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled panel, it will fall back to using the `backgroundSkin` in the disabled state.
+Our changes only affect the background skin. The panel will continue to use the theme's other styles.
+
+### Background skins
+
+As we saw above, we can give the `Panel` a background skin that stretches to fill the entire width and height of the panel. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+panel.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
+
+We can give the `Panel` a different background when it is disabled:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
+panel.backgroundDisabledSkin = skin;
+```
+
+The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the panel is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled panel, it will fall back to using the `backgroundSkin` in the disabled state.
+
+### Layout
 
 Padding may be added around the edges of the panel's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the panel's content, but the panel's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
@@ -166,6 +207,15 @@ getStyleProviderForClass( Header )
     .setFunctionForStyleName( Panel.DEFAULT_CHILD_STYLE_NAME_HEADER, setPanelHeaderStyles );
 ```
 
+The styling function might look like this:
+
+``` code
+private function setPanelHeaderStyles( header:Header ):void
+{
+    header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+```
+
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
@@ -187,8 +237,10 @@ If you are not using a theme, you can use [`headerFactory`](../api-reference/fea
 panel.headerFactory = function():Header
 {
     var header:Header = new Header();
-    //skin the header here
-    header.backgroundSkin = new Image( headerBackgroundTexture );
+
+    //skin the header here, if not using a theme
+    header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+
     return header;
 }
 ```
@@ -199,11 +251,22 @@ This section only explains how to access the footer sub-component. The footer ma
 
 #### With a Theme
 
-If you're creating a [theme](themes.html), you can target the [`Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER`](../api-reference/feathers/controls/Panel.html#DEFAULT_CHILD_STYLE_NAME_FOOTER) style name. In the following example, we'll assume that the footer is a `ScrollContainer`, but it could be any type of Feathers component.
+If you're creating a [theme](themes.html), you can target the [`Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER`](../api-reference/feathers/controls/Panel.html#DEFAULT_CHILD_STYLE_NAME_FOOTER) style name. In the following example, we'll assume that the footer is a `LayoutGroup`, but it could be any type of Feathers component.
 
 ``` code
-getStyleProviderForClass( ScrollContainer )
+getStyleProviderForClass( LayoutGroup )
     .setFunctionForStyleName( Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER, setPanelFooterStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setPanelFooterStyles( footer:LayoutGroup ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    footer.backgroundSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -224,11 +287,15 @@ getStyleProviderForClass( ScrollContainer )
 If you are not using a theme, you can use [`footerFactory`](../api-reference/feathers/controls/Panel.html#footerFactory) to provide skins for the panel's footer:
 
 ``` code
-panel.footerFactory = function():ScrollContainer
+panel.footerFactory = function():LayoutGroup
 {
-    var footer:ScrollContainer = new ScrollContainer();
-    //skin the footer here
-    footer.backgroundSkin = new Image( footerBackgroundTexture );
+    var footer:LayoutGroup = new LayoutGroup();
+
+    //skin the footer here, if not using a theme
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    footer.backgroundSkin = skin;
+
     return footer;
 }
 ```
@@ -246,6 +313,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+```
+
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
@@ -272,8 +348,10 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 panel.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
+
     //skin the scroll bar here
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```

@@ -12,6 +12,10 @@ The [`PickerList`](../api-reference/feathers/controls/PickerList.html) class dis
 <figcaption>A `PickerList` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `PickerList`](#skinning-a-pickerlist)
+
 ## The Basics
 
 First, let's create a `PickerList` control and add it to the display list:
@@ -37,7 +41,19 @@ list.dataProvider = groceryList;
 We need to tell the picker list's item renderers about the text to display, so we'll define the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField).
 
 ``` code
-list.listProperties.@itemRendererProperties.labelField = "text";
+function createItemRenderer():IListItemRenderer
+{
+    var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+    itemRenderer.labelField = "text";
+    return itemRenderer;
+}
+function createPopUpList():List
+{
+    var list:List = new List();
+    list.itemRendererFactory = createItemRenderer;
+    return list;
+}
+list.listFactory = createPopUpList;
 ```
 
 Since the selected item's label is also displayed by the picker list's button, we also need to pass a value to the [`labelField`](../api-reference/feathers/controls/PickerList.html#labelField) of the picker list.
@@ -74,6 +90,15 @@ getStyleProviderForClass( Button )
     .setFunctionForStyleName( PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, setPickerListButtonStyles );
 ```
 
+The styling function might look like this:
+
+``` code
+private function setPickerListButtonStyles( button:Button ):void
+{
+    button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+```
+
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
@@ -95,9 +120,10 @@ If you are not using a theme, you can use [`buttonFactory`](../api-reference/fea
 list.buttonFactory = function():Button
 {
     var button:Button = new Button();
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
-    button.hoverSkin = new Image( hoverTexture );
+
+    //skin the button here, if not using a theme
+    button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+
     return button;
 };
 ```
@@ -112,7 +138,18 @@ If you're creating a [theme](themes.html), you can target the [`PickerList.DEFAU
 
 ``` code
 getStyleProviderForClass( List )
-    .setFunctionForStyleName( PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, setPickerListListStyles );
+    .setFunctionForStyleName( PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, setPickerListPopUpListStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setPickerListPopUpListStyles( list:List ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    list.backgroundSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -136,7 +173,12 @@ If you are not using a theme, you can use [`listFactory`](../api-reference/feath
 list.listFactory = function():List
 {
     var list:List = new List();
-    list.backgroundSkin = new Image( backgroundSkinTexture );
+
+    //skin the pop-up list here, if not using a theme
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    list.backgroundSkin = skin;
+
     return list;
 };
 ```

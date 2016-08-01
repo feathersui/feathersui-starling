@@ -7,6 +7,18 @@ author: Josh Tynjala
 
 The [`PanelScreen`](../api-reference/feathers/controls/PanelScreen.html) component is meant to be a base class for custom screens to be displayed by [`StackScreenNavigator`](stack-screen-navigator.html) and [`ScreenNavigator`](screen-navigator.html). `PanelScreen` is based on the [`Panel`](panel.html) component, and it provides an scrolling, a header and optional footer, and optional layout.
 
+-   [The Basics](#the-basics)
+
+-   [Hardware Key Callbacks](#hardware-key-callbacks)
+
+-   [Transition Events](#transition-events)
+
+-   [Screen ID](#screen-id)
+
+-   [Skinning a `PanelScreen`](#skinning-a-panelscreen)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
 ## The Basics
 
 Just like [`Panel`](panel.html), you can add children and use layouts. Typically, you would override `initialize()` in a subclass of `PanelScreen` and add children there:
@@ -29,12 +41,12 @@ protected function initialize():void
 	for(var i:int = 0; i < 5; i++)
 	{
 	    var quad:Quad = new Quad( 100, 100, 0xff0000 );
-	    group.addChild( quad );
+	    this.addChild( quad );
 	}
 }
 ```
 
-## Hardware Key Handlers
+## Hardware Key Callbacks
 
 Some devices, such as Android phones and tablets, have hardware keys. These may include a back button, a search button, and a menu button. The `PanelScreen` class provides a way to provide callbacks for when each of these keys is pressed. These are shortcuts to avoid needing to listen to the keyboard events manually and prevent the default behavior.
 
@@ -47,7 +59,7 @@ this.backButtonHandler = function():void
 }
 ```
 
-## Events when transitions start and complete
+## Transition Events
 
 A `PanelScreen` dispatches a number of events when the screen navigator shows and hides it with a [transition](transitions.html). To avoid long delays and to keep the transition animation smooth, it's often a good idea to postpone certain actions during initialization until after the transition has completed. We can listen for these events to know when to continue initializing the screen.
 
@@ -94,7 +106,16 @@ If you're creating a [theme](themes.html), you can target the [`PanelScreen.DEFA
 
 ``` code
 getStyleProviderForClass( Header )
-    .setFunctionForStyleName( PanelScreen.DEFAULT_CHILD_STYLE_NAME_HEADER, setPanelHeaderStyles );
+    .setFunctionForStyleName( PanelScreen.DEFAULT_CHILD_STYLE_NAME_HEADER, setPanelScreenHeaderStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setPanelScreenHeaderStyles( header:Header ):void
+{
+    header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -107,7 +128,7 @@ You can set the function for the [`customHeaderStyleName`](../api-reference/feat
 
 ``` code
 getStyleProviderForClass( Header )
-    .setFunctionForStyleName( "custom-header", setPanelCustomHeaderStyles );
+    .setFunctionForStyleName( "custom-header", setPanelScreenCustomHeaderStyles );
 ```
 
 #### Without a Theme
@@ -118,8 +139,10 @@ If you are not using a theme, you can use [`headerFactory`](../api-reference/fea
 screen.headerFactory = function():Header
 {
     var header:Header = new Header();
-    //skin the header here
-    header.backgroundSkin = new Image( headerBackgroundTexture );
+
+    //skin the header here, if not using a theme
+    header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+
     return header;
 }
 ```
@@ -133,8 +156,19 @@ This section only explains how to access the footer sub-component. The footer ma
 If you're creating a [theme](themes.html), you can target the [`PanelScreen.DEFAULT_CHILD_STYLE_NAME_FOOTER`](../api-reference/feathers/controls/PanelScreen.html#DEFAULT_CHILD_STYLE_NAME_FOOTER) style name. In the following example, we'll assume that the footer is a `LayoutGroup`, but it could be any type of Feathers component.
 
 ``` code
-getStyleProviderForClass( PanelScreen )
-    .setFunctionForStyleName( PanelScreen.DEFAULT_CHILD_STYLE_NAME_FOOTER, setPanelFooterStyles );
+getStyleProviderForClass( LayoutGroup )
+    .setFunctionForStyleName( PanelScreen.DEFAULT_CHILD_STYLE_NAME_FOOTER, setPanelScreenFooterStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setPanelScreenFooterStyles( footer:LayoutGroup ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    footer.backgroundSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -147,7 +181,7 @@ You can set the function for the [`customFooterStyleName`](../api-reference/feat
 
 ``` code
 getStyleProviderForClass( LayoutGroup )
-    .setFunctionForStyleName( "custom-footer", setPanelCustomFooterStyles );
+    .setFunctionForStyleName( "custom-footer", setPanelScreenCustomFooterStyles );
 ```
 
 #### Without a Theme
@@ -158,8 +192,12 @@ If you are not using a theme, you can use [`footerFactory`](../api-reference/fea
 screen.footerFactory = function():ScrollContainer
 {
     var footer:LayoutGroup = new LayoutGroup();
-    //skin the footer here
-    footer.backgroundSkin = new Image( footerBackgroundTexture );
+
+    //skin the footer here, if not using a theme
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    footer.backgroundSkin = skin;
+
     return footer;
 }
 ```
@@ -177,6 +215,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+```
+
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
@@ -203,8 +250,10 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 screen.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    //skin the scroll bar here
+
+    //skin the scroll bar here, if not using a theme
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```

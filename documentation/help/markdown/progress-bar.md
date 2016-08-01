@@ -12,6 +12,10 @@ The [`ProgressBar`](../api-reference/feathers/controls/ProgressBar.html) class d
 <figcaption>`ProgressBar` components skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `ProgressBar`](#skinning-a-progressbar)
+
 ## The Basics
 
 First, let's create a `ProgressBar` control, set up its range of values, and add it to the display list.
@@ -34,7 +38,31 @@ progress.direction = Direction.VERTICAL;
 
 ## Skinning a `ProgressBar`
 
-A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [`ProgressBar` API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common properties below.
+A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [`ProgressBar` API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common ways of styling a progress bar below.
+
+### Using a theme? Some tips for customizing an individual progress bar's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the progress bar's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
+
+``` code
+var progress:ProgressBar = new ProgressBar();
+function setExtraProgressBarStyles( progress:ProgressBar ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 1, 3, 6 );
+    progress.backgroundSkin = skin;
+}
+progress.styleProvider = new AddOnFunctionStyleProvider(
+    progress.styleProvider, setExtraProgressBarStyles );
+```
+
+Our changes only affect the background skin. The progress bar will continue to use the theme's other styles.
+
+### Background and fill skins
 
 The [`backgroundSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundSkin) and [`fillSkin`](../api-reference/feathers/controls/ProgressBar.html#fillSkin) properties are used to customize the appearance of the progress bar.
 
@@ -54,6 +82,8 @@ For the fill skin, we want to ensure that the fill is never smaller than 20 pixe
 
 Additionally, two other skin properties, [`backgroundDisabledSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundDisabledSkin) and [`fillDisabledSkin`](../api-reference/feathers/controls/ProgressBar.html#fillDisabledSkin), may be used to give a progress bar a different appearance when it is disabled. These skins are optional. For instance, if the `backgroundDisabledSkin` is not provided, the regular `backgroundSkin` will be used when [`isEnabled`](../api-reference/feathers/core/FeathersControl.html#isEnabled) is false.
 
+### Layout
+
 Like many components, the progress bar has padding values. These can be used to add space between the edge of the background and the edge of the fill. For instance, you might want to display part of the background as a border around the fill.
 
 ``` code
@@ -61,6 +91,12 @@ progress.paddingTop = 2;
 progress.paddingRight = 3;
 progress.paddingBottom = 2;
 progress.paddingLeft = 3;
+```
+
+If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/ProgressBar.html#padding) property to quickly set them all at once:
+
+``` code
+progress.padding = 20;
 ```
 
 ## Related Links
