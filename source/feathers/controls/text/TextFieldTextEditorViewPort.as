@@ -73,7 +73,7 @@ package feathers.controls.text
 		private var _minVisibleWidth:Number = 0;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get minVisibleWidth():Number
 		{
@@ -103,7 +103,7 @@ package feathers.controls.text
 		private var _maxVisibleWidth:Number = Number.POSITIVE_INFINITY;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get maxVisibleWidth():Number
 		{
@@ -133,7 +133,7 @@ package feathers.controls.text
 		private var _visibleWidth:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get visibleWidth():Number
 		{
@@ -160,7 +160,7 @@ package feathers.controls.text
 		private var _minVisibleHeight:Number = 0;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get minVisibleHeight():Number
 		{
@@ -190,7 +190,7 @@ package feathers.controls.text
 		private var _maxVisibleHeight:Number = Number.POSITIVE_INFINITY;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get maxVisibleHeight():Number
 		{
@@ -220,7 +220,7 @@ package feathers.controls.text
 		private var _visibleHeight:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get visibleHeight():Number
 		{
@@ -241,11 +241,17 @@ package feathers.controls.text
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		/**
+		 * @private
+		 */
 		public function get contentX():Number
 		{
 			return 0;
 		}
 
+		/**
+		 * @private
+		 */
 		public function get contentY():Number
 		{
 			return 0;
@@ -257,7 +263,7 @@ package feathers.controls.text
 		protected var _scrollStep:int = 0;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get horizontalScrollStep():Number
 		{
@@ -265,7 +271,7 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get verticalScrollStep():Number
 		{
@@ -278,7 +284,7 @@ package feathers.controls.text
 		private var _horizontalScrollPosition:Number = 0;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get horizontalScrollPosition():Number
 		{
@@ -301,7 +307,7 @@ package feathers.controls.text
 		private var _verticalScrollPosition:Number = 0;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function get verticalScrollPosition():Number
 		{
