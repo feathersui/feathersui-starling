@@ -9,6 +9,16 @@ The [`Screen`](../api-reference/feathers/controls/Screen.html) component is mean
 
 <aside class="info">If you need scrolling, you should use [`ScrollScreen`](scroll-screen.html) or [`PanelScreen`](panel-screen.html) instead.</aside>
 
+-   [The Basics](#the-basics)
+
+-   [Hardware Key Callbacks](#hardware-key-callbacks)
+
+-   [Transition Events](#transition-events)
+
+-   [Screen ID](#screen-id)
+
+-   [Skinning a `Screen`](#skinning-a-screen)
+
 ## The Basics
 
 Just like [`LayoutGroup`](layout-group.html), you can add children and use layouts. Typically, you would override `initialize()` in a subclass of `Screen` and add children there:
@@ -33,7 +43,7 @@ protected function initialize():void
 }
 ```
 
-## Hardware Key Handlers
+## Hardware Key Callbacks
 
 Some devices, such as Android phones and tablets, have hardware keys. These may include a back button, a search button, and a menu button. The `Screen` class provides a way to provide callbacks for when each of these keys is pressed. These are shortcuts to avoid needing to listen to the keyboard events manually and prevent the default behavior.
 
@@ -46,7 +56,7 @@ this.backButtonHandler = function():void
 }
 ```
 
-## Events when transitions start and complete
+## Transition Events
 
 A `Screen` dispatches a number of events when the screen navigator shows and hides it with a [transition](transitions.html). To avoid long delays and to keep the transition animation smooth, it's often a good idea to postpone certain actions during initialization until after the transition has completed. We can listen for these events to know when to continue initializing the screen.
 

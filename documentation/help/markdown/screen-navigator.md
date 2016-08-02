@@ -13,6 +13,16 @@ Events dispatched from the active screen can be used to trigger navigation. Navi
 
 <aside class="info">For a screen navigator that has a tab bar, see [`TabNavigator`](tab-navigator.html) instead.</aside>
 
+-   [The Basics](#the-basics)
+
+-   [Navigation](#navigation)
+
+-   [Animated Transitions](#animated-transitions)
+
+-   [Property Injection](#property-injection)
+
+-   [Advanced Functionality](#advanced-functionality)
+
 ## The Basics
 
 First, let's create a `ScreenNavigator` component and add it to the display list:
@@ -132,7 +142,7 @@ Now, we can navigate back and forth between the two screens.
 
 We can call `setScreenIDForEvent()` as many times as needed to listen for multiple events.
 
-## Transitions
+## Animated Transitions
 
 As we learned above, we can either show a screen or we can clear the currently active screen. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a [*transition*](transitions.html).
 

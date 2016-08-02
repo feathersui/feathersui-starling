@@ -151,7 +151,7 @@ panel.styleProvider = new AddOnFunctionStyleProvider(
     panel.styleProvider, setExtraPanelStyles );
 ```
 
-Our changes only affect the background skin. The panel will continue to use the theme's other styles.
+Our changes only affect the background skin. The panel will continue to use the theme's padding and other styles.
 
 ### Background skins
 
@@ -175,7 +175,7 @@ panel.backgroundDisabledSkin = skin;
 
 The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the panel is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled panel, it will fall back to using the `backgroundSkin` in the disabled state.
 
-### Layout
+### Internal Layout
 
 Padding may be added around the edges of the panel's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the panel's content, but the panel's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 

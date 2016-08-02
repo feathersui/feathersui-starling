@@ -9,6 +9,15 @@ The [`ScrollContainer`](../api-reference/feathers/controls/ScrollContainer.html)
 
 <aside class="info">If you don't need scrolling, you should use the [`LayoutGroup`](layout-group.html) component instead.</aside>
 
+-   [The Basics](#the-basics)
+
+-   [Layout](#layout)
+
+-   [Skinning a `ScrollContainer`](#skinning-a-scrollcontainer)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
+
 ## The Basics
 
 First, let's create a `ScrollContainer` component and add it to the display list:
@@ -56,18 +65,53 @@ Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.ht
 
 ## Skinning a `ScrollContainer`
 
-The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [`ScrollContainer` API reference](../api-reference/feathers/controls/ScrollContainer.html). We'll look at a few of the most common properties below.
+The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [`ScrollContainer` API reference](../api-reference/feathers/controls/ScrollContainer.html). We'll look at a few of the most common ways of styling a scroll container below.
 
-### Background Skins and Basic Styles
+### Using a theme? Some tips for customizing an individual scroll container's styles
 
-We'll start the skinning process by giving our scroll container appropriate background skins.
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the scroll container's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
 
 ``` code
-container.backgroundSkin = new Image( enabledTexture );
-container.backgroundDisabledSkin = new Image( disabledTexture );
+var container:ScrollContainer = new ScrollContainer();
+function setExtraScrollContainerStyles( container:ScrollContainer ):void
+{
+    var skin:Image = new Image( texture );
+    skin.scale9Grid = new Rectangle( 2, 1, 3, 6 );
+    container.backgroundSkin = skin;
+}
+container.styleProvider = new AddOnFunctionStyleProvider(
+    container.styleProvider, setExtraScrollContainerStyles );
 ```
 
-The [`backgroundSkin`](../api-reference/feathers/controls/ScrollContainer.html#backgroundSkin) property provides the default background for when the container is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/ScrollContainer.html#backgroundDisabledSkin) is displayed when the container is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled container, it will fall back to using the `backgroundSkin` in the disabled state.
+Our changes only affect the background skin. The scroll container will continue to use the theme's padding and other styles.
+
+### Background Skins
+
+As we saw above, we can give the `ScrollContainer` a background skin that stretches to fill the entire width and height of the scroll container. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+container.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
+
+We can give the `ScrollContainer` a different background when it is disabled:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
+container.backgroundDisabledSkin = skin;
+```
+
+The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the scroll container is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled scroll container, it will fall back to using the `backgroundSkin` in the disabled state.
+
+### Internal Layout
 
 Padding may be added around the edges of the container's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the container's content, but the container's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
@@ -99,6 +143,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
 ```
 
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
+```
+
 You can override the default style names to use different ones in your theme, if you prefer:
 
 ``` code
@@ -123,9 +176,10 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 container.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    scrollBar.direction = Direction.HORIZONTAL;
+
     //skin the scroll bar here
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```
@@ -160,9 +214,9 @@ Finally, you can set `scrollBarDisplayMode` to [`ScrollBarDisplayMode.FIXED_FLOA
 
 The two previous properties control how scrolling works. The [`horizontalScrollPolicy`](../api-reference/feathers/controls/Scroller.html#horizontalScrollPolicy) and [`verticalScrollPolicy`](../api-reference/feathers/controls/Scroller.html#verticalScrollPolicy) properties control whether scrolling is enabled or not.
 
-The default scroll policy for both directions is [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO). If the content's width is greater than the view port's width, the panel may scroll horizontally (same for height and vertical scrolling). If not, then the panel will not scroll in that direction. In addition to the `scrollBarDisplayMode`, this can affect whether the scroll bar is visible or not.
+The default scroll policy for both directions is [`ScrollPolicy.AUTO`](../api-reference/feathers/controls/ScrollPolicy.html#AUTO). If the content's width is greater than the view port's width, the scroll container may scroll horizontally (same for height and vertical scrolling). If not, then the scroll container will not scroll in that direction. In addition to the `scrollBarDisplayMode`, this can affect whether the scroll bar is visible or not.
 
-You can completely disable scrolling in either direction, set the scroll policy to [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF). The scroll bar will not be visible, and the panel won't scroll, even if the content is larger than the view port.
+You can completely disable scrolling in either direction, set the scroll policy to [`ScrollPolicy.OFF`](../api-reference/feathers/controls/ScrollPolicy.html#OFF). The scroll bar will not be visible, and the scroll container won't scroll, even if the content is larger than the view port.
 
 Finally, you can ensure that scrolling is always enabled by setting the scroll policy to [`ScrollPolicy.ON`](../api-reference/feathers/controls/ScrollPolicy.html#ON). If combined with `hasElasticEdges` in the touch interaction mode, it will create a playful edge that always bounces back, even when the content is smaller than the view port. If using the mouse interaction mode, the scroll bar may always be visible under the same circumstances, though it may be disabled if the content is smaller than the view port.
 

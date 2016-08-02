@@ -12,7 +12,11 @@ The [`Radio`](../api-reference/feathers/controls/Radio.html) component is actual
 <figcaption>`Radio` components skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
-A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
+-   [Using `ToggleGroup`](#using-togglegroup)
+
+-   [Skinning a `Radio`](#skinning-a-radio)
+
+-   [User Experience](#user-experience)
 
 ## Using `ToggleGroup`
 

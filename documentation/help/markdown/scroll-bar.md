@@ -14,6 +14,10 @@ The [`ScrollBar`](../api-reference/feathers/controls/ScrollBar.html) component s
 
 <aside class="info">Additionally, Feathers offers a [`SimpleScrollBar`](simple-scroll-bar.html) component. This is a mobile-style scroll bar that only has a thumb to visually indicate the scroll position and range. It has no visible track nor buttons for stepping the scroll position.</aside>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `ScrollBar`](#skinning-a-scrollbar)
+
 ## The Basics
 
 You can use the `ScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) or the [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory).
@@ -46,6 +50,17 @@ getStyleProviderForClass( Button )
     .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
+The styling function might look like this:
+
+``` code
+private function setScrollBarThumbStyles( thumb:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+}
+```
+
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
@@ -66,11 +81,14 @@ If you are not using a theme, you can use [`thumbFactory`](../api-reference/feat
 ``` code
 scrollBar.thumbFactory = function():Button
 {
-    var button:Button = new Button();
-    //skin the thumb here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
-    return button;
+    var thumb:Button = new Button();
+
+    //skin the thumb here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+
+    return thumb;
 }
 ```
 
@@ -97,6 +115,17 @@ getStyleProviderForClass( Button )
     .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, setScrollBarMinimumTrackStyles );
 ```
 
+The styling function might look like this:
+
+``` code
+private function setScrollBarMinimumTrackStyles( track:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    track.defaultSkin = skin;
+}
+```
+
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
@@ -117,11 +146,14 @@ If you are not using a theme, you can use [`minimumTrackFactory`](../api-referen
 ``` code
 scrollBar.minimumTrackFactory = function():Button
 {
-    var button:Button = new Button();
-    //skin the minimum track here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
-    return button;
+    var track:Button = new Button();
+
+    //skin the minimum track here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    track.defaultSkin = skin;
+
+    return track;
 }
 ```
 
@@ -142,6 +174,17 @@ If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAUL
 ``` code
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON, setScrollBarDecrementButtonStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setScrollBarDecrementButtonStyles( button:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    button.defaultSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -165,9 +208,12 @@ If you are not using a theme, you can use [`decrementButtonFactory`](../api-refe
 scrollBar.decrementButtonFactory = function():Button
 {
     var button:Button = new Button();
-    //skin the decrement button here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
+
+    //skin the decrement button here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    button.defaultSkin = skin;
+
     return button;
 }
 ```
