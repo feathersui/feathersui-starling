@@ -1029,6 +1029,9 @@ package feathers.controls.text
 		 * If enabled, the text editor will remain in focus, even if something
 		 * else is touched.
 		 *
+		 * <p>Note: If the <code>FocusManager</code> is enabled, this property
+		 * will be ignored.</p>
+		 *
 		 * <p>In the following example, touch focus is maintained:</p>
 		 *
 		 * <listing version="3.0">
