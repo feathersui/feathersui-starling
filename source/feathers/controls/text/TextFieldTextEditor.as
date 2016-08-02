@@ -1219,6 +1219,38 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _maintainTouchFocus:Boolean = false;
+
+		/**
+		 * If enabled, the text editor will remain in focus, even if something
+		 * else is touched.
+		 * 
+		 * <p>Note: If the <code>FocusManager</code> is enabled, this property
+		 * will be ignored.</p>
+		 *
+		 * <p>In the following example, touch focus is maintained:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.maintainTouchFocus = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get maintainTouchFocus():Boolean
+		{
+			return this._maintainTouchFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maintainTouchFocus(value:Boolean):void
+		{
+			this._maintainTouchFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _updateSnapshotOnScaleChange:Boolean = false;
 
 		/**
@@ -1658,6 +1690,7 @@ package feathers.controls.text
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
+			this.textField.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, textField_mouseFocusChangeHandler);
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
@@ -2336,6 +2369,10 @@ package feathers.controls.text
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
+			if(this._maintainTouchFocus)
+			{
+				return;
+			}
 			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
 			if(!touch) //we only care about began touches
 			{
@@ -2395,6 +2432,18 @@ package feathers.controls.text
 			//the text may have changed, so we invalidate the data flag
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textField_mouseFocusChangeHandler(event:FocusEvent):void
+		{
+			if(!this._maintainTouchFocus)
+			{
+				return;
+			}
+			event.preventDefault();
 		}
 
 		/**
