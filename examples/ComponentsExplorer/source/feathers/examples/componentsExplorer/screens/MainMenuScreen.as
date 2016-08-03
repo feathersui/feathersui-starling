@@ -57,7 +57,6 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Button Group", screen: ScreenID.BUTTON_GROUP },
 				{ label: "Callout", screen: ScreenID.CALLOUT },
 				{ label: "Check", screen: ScreenID.CHECK },
-				{ label: "Color Picker", screen: ScreenID.COLOR_PICKER },
 				{ label: "Date Time Spinner", screen: ScreenID.DATE_TIME_SPINNER },
 				{ label: "Grouped List", screen: ScreenID.GROUPED_LIST },
 				{ label: "Item Renderer", screen: ScreenID.ITEM_RENDERER },
