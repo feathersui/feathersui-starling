@@ -153,6 +153,8 @@ panel.styleProvider = new AddOnFunctionStyleProvider(
 
 Our changes only affect the background skin. The panel will continue to use the theme's padding and other styles.
 
+<aside class="warn">If you want to customize the styles of the header or footer sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `headerFactory` or `footerFactory`.</aside>
+
 ### Background skins
 
 As we saw above, we can give the `Panel` a background skin that stretches to fill the entire width and height of the panel. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:

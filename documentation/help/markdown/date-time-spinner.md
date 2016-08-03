@@ -77,6 +77,8 @@ dateSpinner.styleProvider = new AddOnFunctionStyleProvider(
 
 Our changes only affect the `scrollDuration` property. The `DateTimeSpinner` will continue to use the theme's skins and styles.
 
+<aside class="warn">If you want to customize the styles of the list sub-components outside of the theme, they require their own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` inside the `listFactory`.</aside>
+
 ### Skinning the `SpinnerList` sub-components
 
 This section only explains how to access the `SpinnerList` sub-components. Please read [How to use the Feathers `SpinnerList` component](spinner-list.html) for full details about the skinning properties that are available on `SpinnerList` components.

@@ -135,6 +135,8 @@ alert.styleProvider = new AddOnFunctionStyleProvider(
 
 Our changes only affect the font styles. The alert will continue to use the theme's background skins, padding, and other styles.
 
+<aside class="warn">If you want to customize the styles of the header or button group sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `headerFactory` or `buttonGroupFactory`.</aside>
+
 ### Font styles
 
 As we saw above, the font styles of the alert's message may be customized using the [`fontStyles`](../api-reference/feathers/controls/Alert.html#fontStyles) and [`disabledFontStyles`](../api-reference/feathers/controls/Alert.html#disabledFontStyles) properties:

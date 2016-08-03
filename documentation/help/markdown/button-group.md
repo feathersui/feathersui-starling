@@ -77,6 +77,8 @@ group.styleProvider = new AddOnFunctionStyleProvider(
 
 Our changes only affect the layout. The button group will continue to use the theme's other styles.
 
+<aside class="warn">If you want to customize the styles of the buttons outside of the theme, they require their own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` inside the `buttonFactory`.</aside>
+
 ### Layout
 
 The `ButtonGroup` has a strict horizontal or vertical layout that you can customize using the [`direction`](../api-reference/feathers/controls/ButtonGroup.html#direction) property. Additionally, you can set the [`gap`](../api-reference/feathers/controls/ButtonGroup.html#gap) between buttons, including special gaps for the first and last buttons.
