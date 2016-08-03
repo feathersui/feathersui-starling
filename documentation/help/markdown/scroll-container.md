@@ -177,7 +177,7 @@ container.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
 
-    //skin the scroll bar here
+    //skin the scroll bar here, if not using a theme
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
 
     return scrollBar;

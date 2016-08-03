@@ -12,6 +12,16 @@ The [`SoundPlayer`](../api-reference/feathers/media/SoundPlayer.html) class prov
 <figcaption>A `SoundPlayer` component with controls skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Controls](#controls)
+
+-   [Layout](#layout)
+
+-   [Controlling playback programmatically](#controlling-playback-programatically)
+
+-   [Skinning a `SoundPlayer`](#skinning-a-soundplayer)
+
 ## The Basics
 
 First, let's create a `SoundPlayer` component and add it to the display list:

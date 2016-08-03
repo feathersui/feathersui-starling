@@ -12,6 +12,10 @@ The [`Slider`](../api-reference/feathers/controls/Slider.html) component selects
 <figcaption>`Slider` components skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `Slider`](#skinning-a-slider)
+
 ## The Basics
 
 First, let's create a `Slider` control, set up its range of values, and add it to the display list.
@@ -61,15 +65,53 @@ When the slider is horizontal, the minimum value is on the left and the maximum 
 
 The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [`Slider` API reference](../api-reference/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
 
+### Using a theme? Some tips for customizing an individual slider's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the slider's track padding with an `AddOnFunctionStyleProvider`:
+
+``` code
+var slider:Slider = new Slider();
+function setExtraSliderStyles( slider:Slider ):void
+{
+    slider.minimumPadding = 6;
+    slider.maximumPadding = 6;
+}
+slider.styleProvider = new AddOnFunctionStyleProvider(
+    slider.styleProvider, setExtraSliderStyles );
+```
+
+Our changes only affect the padding. The slider will continue to use the theme's other styles.
+
+<aside class="warn">If you want to customize the styles of the thumb or track sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `thumbFactory` or `minimumTrackFactory`.</aside>
+
 ### Track(s) and Layout
 
 The slider's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/Slider.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width or height of the slider (depending on the slider's direction).
 
 If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the slider) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
+``` code
+slider.trackLayoutMode = TrackLayoutMode.SPLIT;
+```
+
 `TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
 
 When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the slider's will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is draggable.
+
+``` code
+slider.trackLayoutMode = TrackLayoutMode.SINGLE;
+```
+
+Padding can be added at the beginning and end of the track to control how far the thumb may be dragged:
+
+``` code
+slider.minimumPadding = 6;
+slider.maximumPadding = 6;
+```
 
 ### Skinning the Thumb
 
@@ -82,6 +124,17 @@ If you're creating a [theme](themes.html), you can target the [`Slider.DEFAULT_C
 ``` code
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_THUMB, setSliderThumbStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setSliderThumbStyles( thumb:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -105,9 +158,12 @@ If you are not using a theme, you can use [`thumbFactory`](../api-reference/feat
 slider.thumbFactory = function():Button
 {
     var button:Button = new Button();
-    //skin the thumb here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
+
+    //skin the thumb here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+
     return button;
 }
 ```
@@ -123,6 +179,17 @@ If you're creating a [theme](themes.html), you can target the [`Slider.DEFAULT_C
 ``` code
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, setSliderMinimumTrackStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setSliderMinimumTrackStyles( track:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    track.defaultSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -145,11 +212,14 @@ If you are not using a theme, you can use [`minimumTrackFactory`](../api-referen
 ``` code
 slider.minimumTrackFactory = function():Button
 {
-    var button:Button = new Button();
-    //skin the minimum track here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
-    return button;
+    var track:Button = new Button();
+
+    //skin the minimum track here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    track.defaultSkin = skin;
+
+    return track;
 }
 ```
 

@@ -37,6 +37,39 @@ The container will automatically handle setting properties like [`direction`](..
 
 The skins for a `ScrollBar` control are divided into several parts, including the thumb, the track(s), and the increment and decrement buttons. For full details about what skin and style properties are available, see the [`ScrollBar` API reference](../api-reference/feathers/controls/ScrollBar.html).
 
+### Using a theme? Some tips for customizing an individual scroll bar's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the scroll bar's padding with an `AddOnFunctionStyleProvider`:
+
+``` code
+var scrollBar:ScrollBar = new ScrollBar();
+function setExtraScrollBarStyles( scrollBar:ScrollBar ):void
+{
+    scrollBar.paddingLeft = 6;
+    scrollBar.paddingRight = 6;
+}
+scrollBar.styleProvider = new AddOnFunctionStyleProvider(
+    scrollBar.styleProvider, setExtraScrollBarStyles );
+```
+
+Our changes only affect the padding. The scroll bar will continue to use the theme's other styles.
+
+<aside class="warn">If you want to customize the styles of the thumb, track(s), increment button, or decrement button sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `thumbFactory` or `minimumTrackFactory`.</aside>
+
+### Track(s) and Layout
+
+The scroll bar's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ScrollBar.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width and height of the scroll bar.
+
+If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the scroll bar) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+
+`TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
+
+When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the scroll bar will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is scrollable.
+
 ### Skinning the Thumb
 
 This section only explains how to access the thumb sub-component. Please read [How to use the Feathers `Button` component](button.html) for full details about the skinning properties that are available on `Button` components.
@@ -91,16 +124,6 @@ scrollBar.thumbFactory = function():Button
     return thumb;
 }
 ```
-
-### Track(s) and Layout
-
-The scroll bar's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ScrollBar.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width and height of the scroll bar.
-
-If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the scroll bar) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
-
-`TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
-
-When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the scroll bar will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is scrollable.
 
 ### Skinning the Minimum Track
 

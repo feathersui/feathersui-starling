@@ -12,6 +12,18 @@ The [`VideoPlayer`](../api-reference/feathers/media/VideoPlayer.html) class prov
 <figcaption>A `VideoPlayer` component with controls skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Controls](#controls)
+
+-   [Layout](#layout)
+
+-   [Controlling playback programmatically](#controlling-playback-programatically)
+
+-   [Loading Videos](#loading-videos)
+
+-   [Skinning a `VideoPlayer`](#skinning-a-videoplayer)
+
 ## The Basics
 
 First, let's create a `VideoPlayer` component, set its dimensions, and add it to the display list:
@@ -49,7 +61,7 @@ player.addEventListener( Event.READY, videoPlayer_readyHandler );
 
 The video texture may be accessed throught the [`texture`](../api-reference/feathers/media/VideoPlayer.html#texture) property. Until `Event.READY` is dispatched, the `texture` property of the `VideoPlayer` will be `null`.
 
-## Adding Controls
+## Controls
 
 Let's give the `VideoPlayer` some controls. First, let's create a [`LayoutGroup`](layout-group.html) to use as a toolbar for our controls:
 

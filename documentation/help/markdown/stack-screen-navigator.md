@@ -9,6 +9,16 @@ The [`StackScreenNavigator`](../api-reference/feathers/controls/StackScreenNavig
 
 Navigation can be enhanced with animation, called a [*transition*](transitions.html). Feathers provides a number of transitions out of the box, and a simple API allows anyone to create custom transitions. Separate transitions may be defined on a `StackScreenNavigator` for both push and pop actions, but an individual screen may also define its own unique transitions that are different from these defaults.
 
+-   [The Basics](#the-basics)
+
+-   [Navigation](#navigation)
+
+-   [Animated Transitions](#animated-transitions)
+
+-   [Property Injection](#property-injection)
+
+-   [Advanced Functionality](#advanced-functionality)
+
 ## The Basics
 
 First, let's create a `StackScreenNavigator` component and add it to the display list:
@@ -160,7 +170,7 @@ Now, we can navigate back and forth between the two screens.
 
 We can call `setScreenIDForPushEvent()` and `addPopEvent()` as many times as needed to listen for multiple events.
 
-## Transitions
+## Animated Transitions
 
 As we learned above, we can either push a new screen onto the top of the stack to show it, or we can pop a screen from the stack to hide it. Each of these actions can be animated, improving the user experience and adding a little bit of life to our games and apps. This animation during navigation is called a [*transition*](transitions.html), and we can specify transitions for both push and pop actions.
 

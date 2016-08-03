@@ -14,6 +14,12 @@ The [`ScrollText`](../api-reference/feathers/controls/ScrollText.html) is design
 
 <aside class="warn">A disadvantage of displaying text on the classic display list is that the text will **always** appear above Stage 3D content, including regular Starling display objects. There is no way to overlay Starling content above `ScrollText`.</aside>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `ScrollText`](#skinning-a-scrolltext)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
 ## The Basics
 
 First, let's create a `ScrollText` component, give it some text to display, and add it to the display list.
@@ -41,16 +47,45 @@ scrollText.height = 200;
 
 ## Skinning a `ScrollText`
 
-For full details about what skin and style properties are available, see the [`ScrollText` API reference](../api-reference/feathers/controls/ScrollText.html). We'll look at a few of the most common properties below.
+For full details about what skin and style properties are available, see the [`ScrollText` API reference](../api-reference/feathers/controls/ScrollText.html). We'll look at a few of the most common ways of styling a `ScrollText` below.
 
-### Font Styles
+### Using a theme? Some tips for customizing the styles of an individual `ScrollText`
 
-`ScrollText` may be styled with a [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html). You may use fonts installed on the target device or you may embed a font.
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the `fontStyles` property with an `AddOnFunctionStyleProvider`:
 
 ``` code
-scrollText.textFormat = new TextFormat( "SomeEmbeddedFont", 12, true );
-scrollText.embedFonts = true;
+var scrollText:ScrollText = new ScrollText();
+function setExtraScrollTextStyles( scrollText:ScrollText ):void
+{
+	scrollText.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+scrollText.styleProvider = new AddOnFunctionStyleProvider(
+	scrollText.styleProvider, setExtraScrollTextStyles );
 ```
+
+Our changes only affect the font styles. The `ScrollText` will continue to use the theme's padding and other styles.
+
+### Font styles
+
+As we saw above, font styles of the `ScrollText` may be customized using the [`fontStyles`](../api-reference/feathers/controls/ScrollText.html#fontStyles) property.
+
+``` code
+scrollText.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, the same as you would for a [text renderer](text-renderers.html).
+
+If the `ScrollText` should use different font styles when it is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/ScrollText.html#disabledFontStyles) property too:
+
+``` code
+scrollText.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+```
+
+### Simple HTML
 
 Use the [`isHTML`](../api-reference/feathers/controls/ScrollText.html#isHTML) property to display the text as HTML, with the same capabilities as the `htmlText` property of `flash.text.TextField`.
 
@@ -74,6 +109,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+```
+
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
@@ -100,9 +144,10 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 scrollText.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    scrollBar.direction = Direction.HORIZONTAL;
-    //skin the scroll bar here
+
+    //skin the scroll bar here, if not using a theme
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```

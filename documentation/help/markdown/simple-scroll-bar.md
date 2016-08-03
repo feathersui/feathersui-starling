@@ -7,7 +7,11 @@ author: Josh Tynjala
 
 The [`SimpleScrollBar`](../api-reference/feathers/controls/SimpleScrollBar.html) component selects a numeric value in a specific range by dragging a thumb along an invisible track. A simple scroll bar may be displayed in either a horizontal or a vertical direction. This component is designed to be used with components that support scrolling, like [`ScrollContainer`](scroll-container.html) and [`List`](list.html).
 
-<aside class="info">Additionally, Feathers offers a [`ScrollBar`](scroll-bar.html) component. This is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
+<aside class="info">Additionally, Feathers offers a [`ScrollBar`](scroll-bar.html) component. `ScrollBar` is a desktop-style scroll bar that offers a thumb, track, and two buttons for adjusting the value by a small step.</aside>
+
+-   [The Basics](#the-basics)
+
+-   [Skinning a `SimpleScrollBar`](#skinning-a-simplescrollbar)
 
 ## The Basics
 
@@ -41,6 +45,17 @@ getStyleProviderForClass( Button )
     .setFunctionForStyleName( SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
+The styling function might look like this:
+
+``` code
+private function setScrollBarThumbStyles( thumb:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+}
+```
+
 You can override the default style name to use a different one in your theme, if you prefer:
 
 ``` code
@@ -62,9 +77,12 @@ If you are not using a theme, you can use [`thumbFactory`](../api-reference/feat
 scrollBar.thumbFactory = function():Button
 {
     var button:Button = new Button();
-    //skin the thumb here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
+
+    //skin the thumb here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+
     return button;
 }
 ```
