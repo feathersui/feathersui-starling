@@ -158,6 +158,7 @@ package feathers.layout
 		 */
 		public function HorizontalLayout()
 		{
+			super();
 		}
 
 		/**
@@ -896,8 +897,12 @@ package feathers.layout
 				//we need to calculate this before validateItems() because it
 				//needs to be passed in there.
 				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth, false);
+				if(this._useVirtualLayout)
+				{
+					calculatedTypicalItemWidth = distributedWidth;
+				}
 			}
-			
+
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeWidths ||
 				this._verticalAlign != VerticalAlign.JUSTIFY ||
 				needsExplicitHeight) //isNaN
