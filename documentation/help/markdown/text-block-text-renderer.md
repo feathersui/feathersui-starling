@@ -25,16 +25,35 @@ Flash Text Engine may render a bit slower than `flash.text.TextField` sometimes.
 
 `TextBlockTextRenderer` optionally supports rich text, but it needs to be constructed manually adding multiple [`TextElement`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextElement.html) objects, each with different [`ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) values, to a [`GroupElement`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/GroupElement.html) object. You may pass the `GroupElement` to the text renderer's [`content`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#content) property. `TextBlockTextRenderer` does not support the simple subset of HTML that `TextFieldTextRenderer` can display.
 
-### How to customize font styles
+### Advanced font styles
 
-To render text with Flash Text Engine, use the [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) class.
+<aside class="info">In general, you should customize font styles on the parent component of a text renderer using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`Button`](button.html) component, you'd set the button's [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
 ``` code
-var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-textRenderer.text = "I understand equations, both the simple and quadratical";
+button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
-Font styles may be customized by passing a [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) instance to the [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#elementFormat) property:
+However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text renderer supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+
+To render text with Flash Text Engine, create a [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) of a [`Button`](button.html) component:
+
+``` code
+var button:Button = new Button();
+button.label = "Click Me";
+button.labelFactory = function():ITextRenderer
+{
+	var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
+	textRenderer.styleProvider = null;
+	
+	//set advanced font styles here
+	
+	return textRenderer;
+};
+```
+
+<aside class="info">You may need to remove the text renderer's style provider in the factory before changing font styles to avoid conflicts with the default styles set by a theme. That's why the `styleProvider` property is set to `null` in the code above.</aside>
+
+Advanced font styles may be customized by passing a [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) instance to the text renderer's [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#elementFormat) property:
 
 ``` code
 var font:FontDescription = new FontDescription(
@@ -63,7 +82,7 @@ The `TextBlockTextRenderer` defines [`TEXT_ALIGN_CENTER`](../api-reference/feath
 
 `TextBlockTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`TextBlockTextRenderer` API reference](../api-reference/feathers/controls/text/TextBlockTextRenderer.html).
 
-### How to change font styles when a parent component has multiple states
+### How to change advanced font styles when a parent component has multiple states
 
 Some components, like [`Button`](button.html) and [`TextInput`](text-input.html), have multiple states. It's possible to pass more than one `ElementFormat` to the `TextBlockTextRenderer` so that the font styles change when the parent component's state changes.
 
@@ -106,6 +125,8 @@ font.fontLookup = FontLookup.EMBEDDED_CFF;
 ```
 
 Be sure to set the [`fontLookup`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontDescription.html#fontLookup) property to [`FontLookup.EMBEDDED_CFF`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontLookup.html#EMBEDDED_CFF).
+
+<aside class="info">When setting font styles with `starling.text.TextFormat`, the `TextBlockTextRenderer` automatically detects if a font is embedded. The `fontLookup` property only needs to be set when using `flash.text.engine.ElementFormat` to provide advanced font styles.</aside>
 
 ## Related Links
 

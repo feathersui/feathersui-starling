@@ -23,22 +23,41 @@ Bitmap fonts may be scaled, but because they use bitmaps, only scaling down is r
 
 `BitmapFontTextRenderer` does not support multiple font styles in the same text renderer. A `BitmapFontTextRenderer` must use a single bitmap font to render its entire text.
 
-### How to customize font styles
+### Advanced font styles
 
-To display text with bitmap fonts, instantiate the [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html) class.
+<aside class="info">In general, you should customize font styles on the parent component of a text renderer using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`Button`](button.html) component, you'd set the button's [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
 ``` code
-var textRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
-textRenderer.text = "I am the very model of a modern Major-General";
+button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
-Font styles may be customized by passing a [`BitmapFontTextFormat`](../api-reference/feathers/text/BitmapFontTextFormat.html) instance to the [`textFormat`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html#textFormat) property.
+However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text renderer supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+
+To display text with bitmap fonts, create a [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) of a [`Button`](button.html) component:
+
+``` code
+var button:Button = new Button();
+button.label = "Click Me";
+button.labelFactory = function():ITextRenderer
+{
+	var textRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
+	textRenderer.styleProvider = null;
+	
+	//set advanced font styles here
+	
+	return textRenderer;
+};
+```
+
+<aside class="info">You may need to remove the text renderer's style provider in the factory before changing font styles to avoid conflicts with the default styles set by a theme. That's why the `styleProvider` property is set to `null` in the code above.</aside>
+
+Advanced font styles may be customized by passing a [`BitmapFontTextFormat`](../api-reference/feathers/text/BitmapFontTextFormat.html) instance to the text renderer's [`textFormat`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html#textFormat) property.
 
 ``` code
 var format:BitmapFontTextFormat = new BitmapFontTextFormat( "FontName" );
 ```
 
-Pass the font to display to the `BitmapFontTextFormat` constructor. It may be a `String` that matches the name of a font registered with [`TextField.registerBitmapFont()`](http://doc.starling-framework.org/core/starling/text/TextField.html#registerBitmapFont()), as in the example above. To use an unregistered bitmap font, we may pass in a [`starling.text.BitmapFont`](http://doc.starling-framework.org/core/starling/text/BitmapFont.html) instance instead.
+Pass the font to display to the `BitmapFontTextFormat` constructor. In the code above, we pass in the name of a font registered with [`TextField.registerBitmapFont()`](http://doc.starling-framework.org/core/starling/text/TextField.html#registerBitmapFont()). We could also pass in a [`starling.text.BitmapFont`](http://doc.starling-framework.org/core/starling/text/BitmapFont.html) instance that has not been registered.
 
 The tint of the text can be customized with the [`color`](../api-reference/feathers/text/BitmapFontTextFormat.html#color) property:
 
@@ -48,7 +67,7 @@ format.color = 0xc4c4c4;
 
 The RGB values of the tint color are multiplied with the RGB values of each of the font texture's pixels, similar to [`starling.display.BlendMode.MULTIPLY`](http://doc.starling-framework.org/current/starling/display/BlendMode.html#MULTIPLY).
 
-<aside class="info">To support the maximum range of colors, the bitmap font should be exported with completely white pixels.</aside>
+<aside class="info">To support the maximum range of colors, the bitmap font image should be exported with completely white pixels.</aside>
 
 The alignment of the text can be customized with the [`align`](../api-reference/feathers/text/BitmapFontTextFormat.html#align) property:
 
@@ -66,9 +85,9 @@ In most cases, it's not necessary to set the `size` property. The primary font s
 
 <aside class="info">Generally, to display the same bitmap font with different sizes, it's better to use separate textures, and register each size with a different font name.</aside>
 
-`BitmapFontTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`BitmapFontTextRenderer` API reference](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html).
+`BitmapFontTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`BitmapFontTextRenderer` API reference](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html) and the [`BitmapFontTextFormat` API reference](../api-reference/feathers/text/BitmapFontTextFormat.html).
 
-### How to change font styles when a parent component has multiple states
+### How to change advanced font styles when a parent component has multiple states
 
 Some components, like [`Button`](button.html) and [`TextInput`](text-input.html), have multiple states. It's possible to pass more than one `BitmapFontTextFormat` to the `BitmapFontTextRenderer` so that the font styles change when the parent component's state changes.
 

@@ -25,22 +25,34 @@ Because each passage of vector text needs to be drawn to `BitmapData`, each sepa
 
 Flash Text Engine may render a bit slower than `flash.text.TextField` sometimes. In general, this performance difference is negligible, and the more advanced capabilities of FTE are often more compelling than a minor risk of reduced performance.
 
-### How to customize font styles
+### Advanced font styles
 
-To use Flash Text Engine with `TextInput`, create an instance of the [`TextBlockTextEditor`](../api-reference/feathers/controls/text/TextBlockTextEditor.html) class.
+<aside class="info">In general, you should customize font styles on the parent component of a text editor using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`TextInput`](text-input.html) component, you'd set the input's [`fontStyles`](../api-reference/feathers/controls/TextInput.html#fontStyles) property.
 
 ``` code
+input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+```
+
+However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text editor supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+
+To use Flash Text Engine with `TextInput`, create a [`TextBlockTextEditor`](../api-reference/feathers/controls/text/TextBlockTextEditor.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
+
+``` code
+var input:TextInput = new TextInput();
 input.textEditorFactory = function():ITextEditor
 {
 	var textEditor:TextBlockTextEditor = new TextBlockTextEditor();
 	textEditor.styleProvider = null;
+
+	//set advanced font styles here
+
 	return textEditor;
 };
 ```
 
 <aside class="info">You may need to clear the text editor's style provider in the factory before changing font styles to avoid conflicts with the default styles set by a theme. That's why the `styleProvider` property is set to `null` in the code above.</aside>
 
-Many font styles may be customized using the native [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) class. Pass an instance of `ElementFormat` to the [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextEditor.html#elementFormat) property:
+Advanced font styles may be customized using the native [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) class. Pass an instance of `ElementFormat` to the text editor's [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextEditor.html#elementFormat) property:
 
 ``` code
 var fontDescription:FontDescription = new FontDescription( "Source Sans Pro", FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE );
@@ -60,7 +72,7 @@ format.alpha = 0.5;
 
 `TextBlockTextEditor` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`TextBlockTextEditor` API reference](../api-reference/feathers/controls/text/TextBlockTextEditor.html).
 
-### How to change font styles when a parent component has multiple states
+### How to change advanced font styles when a parent component has multiple states
 
 [`TextInput`](text-input.html) has multiple states, and it's possible to pass a different `ElementFormat` to the `TextBlockTextEditor` for each state. When the parent component's state changes, the font styles of the text editor will update automatically.
 
@@ -103,6 +115,8 @@ font.fontLookup = FontLookup.EMBEDDED_CFF;
 ```
 
 Be sure to set the [`fontLookup`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontDescription.html#fontLookup) property to [`FontLookup.EMBEDDED_CFF`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontLookup.html#EMBEDDED_CFF).
+
+<aside class="info">When setting font styles with `starling.text.TextFormat`, the `TextBlockTextEditor` automatically detects if a font is embedded. The `fontLookup` property only needs to be set when using `flash.text.engine.ElementFormat` to provide advanced font styles.</aside>
 
 ## Related Links
 

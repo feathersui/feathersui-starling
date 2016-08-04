@@ -25,22 +25,34 @@ This text editor displays a `StageText` on a layer above Starling when the `Text
 
 Because each passage of vector text needs to be drawn to `BitmapData`, each separate renderer requires its own separate texture on the GPU. This results in more [state changes](http://wiki.starling-framework.org/manual/performance_optimization#minimize_state_changes) and [draw calls](faq/draw-calls.html), which can create more work for the GPU, and it might hurt performance if you have many different instances of `StageTextTextEditor` on screen at the same time.
 
-### How to customize font styles
+### Advanced font styles
 
-To use `flash.text.StageText` with `TextInput`, create an instance of the [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html) class.
+<aside class="info">In general, you should customize font styles on the parent component of a text editor using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`TextInput`](text-input.html) component, you'd set the input's [`fontStyles`](../api-reference/feathers/controls/TextInput.html#fontStyles) property.
 
 ``` code
+input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+```
+
+However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text editor supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+
+To use `flash.text.StageText` with `TextInput`, create a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
+
+``` code
+var input:TextInput = new TextInput();
 input.textEditorFactory = function():ITextEditor
 {
 	var textEditor:StageTextTextEditor = new StageTextTextEditor();
 	textEditor.styleProvider = null;
+
+	//set advanced font styles here
+
 	return textEditor;
 };
 ```
 
 <aside class="info">You may need to remove the text editor's style provider in the factory before changing font styles to avoid conflicts with the default styles set by a theme. That's why the `styleProvider` property is set to `null` in the code above.</aside>
 
-Font styles may be customized using properties like [`fontFamily`](../api-reference/feathers/controls/text/StageTextTextEditor.html#fontFamily), [`fontSize`](../api-reference/feathers/controls/text/StageTextTextEditor.html#fontSize), and [`color`](../api-reference/feathers/controls/text/StageTextTextEditor.html#color). Many of the property names defined by `StageText` are duplicated on `StageTextTextEditor`:
+Advanced font styles may be customized using the text editor's properties like [`fontFamily`](../api-reference/feathers/controls/text/StageTextTextEditor.html#fontFamily), [`fontSize`](../api-reference/feathers/controls/text/StageTextTextEditor.html#fontSize), and [`color`](../api-reference/feathers/controls/text/StageTextTextEditor.html#color). Many of the property names defined by `StageText` are duplicated on `StageTextTextEditor`:
 
 ``` code
 textEditor.fontFamily = "Arial";

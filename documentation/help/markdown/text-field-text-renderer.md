@@ -29,16 +29,35 @@ Because each passage of vector text needs to be drawn to `BitmapData`, each sepa
 
 `TextFieldTextRenderer` supports [a limited subset of HTML](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#htmlText) courtesy of `flash.text.TextField`. This may be used to render richer text with multiple font styles.
 
-### How to customize font styles
+### Advanced font styles
 
-To render text with the classic Flash `TextField`, use the [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) class.
+<aside class="info">In general, you should customize font styles on the parent component of a text renderer using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`Button`](button.html) component, you'd set the button's [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
 ``` code
-var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-textRenderer.text = "About binomial theorem I'm teeming with a lot o' news";
+button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
-Font styles may be customized using the native [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) class. Pass an instance of `TextFormat` to the [`textFormat`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#textFormat) property:
+However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text renderer supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+
+To render text with the classic Flash `TextField`, create a [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) of a [`Button`](button.html) component:
+
+``` code
+var button:Button = new Button();
+button.label = "Click Me";
+button.labelFactory = function():ITextRenderer
+{
+	var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+	textRenderer.styleProvider = null;
+	
+	//set advanced font styles here
+	
+	return textRenderer;
+};
+```
+
+<aside class="info">You may need to remove the text renderer's style provider in the factory before changing font styles to avoid conflicts with the default styles set by a theme. That's why the `styleProvider` property is set to `null` in the code above.</aside>
+
+Advanced font styles may be customized using the native [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) class. Pass an instance of `TextFormat` to the text renderer's [`textFormat`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#textFormat) property:
 
 ``` code
 textRenderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0xcccccc );
@@ -62,7 +81,7 @@ textRenderer.isHTML = true;
 
 `TextFieldTextRenderer` provides a number of other advanced properties that may be customized, but aren't included in this quick introduction. For complete details about available properties, please take a look at the [`TextFieldTextRenderer` API reference](../api-reference/feathers/controls/text/TextFieldTextRenderer.html).
 
-### How to change font styles when a parent component has multiple states
+### How to change advanced font styles when a parent component has multiple states
 
 Some components, like [`Button`](button.html) and [`TextInput`](text-input.html), have multiple states. It's possible topass more than one `TextFormat` to the `TextFieldTextRenderer` so that the font styles change when the parent component's state changes.
 
@@ -104,6 +123,8 @@ textRenderer.embedFonts = true;
 ```
 
 Be sure to set the [`embedFonts`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#embedFonts) property to `true`.
+
+<aside class="info">When setting font styles with `starling.text.TextFormat`, the `TextFieldTextRenderer` automatically detects if a font is embedded. The `embedFonts` property only needs to be set when using `flash.text.TextFormat` to provide advanced font styles.</aside>
 
 ## Related Links
 
