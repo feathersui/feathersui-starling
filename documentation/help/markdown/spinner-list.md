@@ -59,11 +59,11 @@ trace( list.selectedItem.text ); //Chicken
 
 One way that `SpinnerList` behaves differently is that selection may not be disabled. A regular `List` may be used to display read-only content without selection, but the purpose of `SpinnerList` is to select an item. If you attempt to set the [`isSelectable`](../api-reference/feathers/controls/List.html#isSelectable) property to `false`, a runtime error will be thrown.
 
-## Skinning an `SpinnerList`
+## Skinning a `SpinnerList`
 
 A spinner list provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`SpinnerList` API reference](../api-reference/feathers/controls/SpinnerList.html). We'll look at a few of the most common properties below.
 
-As mentioned above, `SpinnerList` is a subclass of `List`. For more detailed information about the skinning options available to `SpinnerList`, see [How to use the Feathers `List` component](list.html).
+<aside class="info">As mentioned above, `SpinnerList` is a subclass of `List`. For more detailed information about the skinning options available to `SpinnerList`, see [How to use the Feathers `List` component](list.html).</aside>
 
 ### Using a theme? Some tips for customizing an individual spinner list's styles
 

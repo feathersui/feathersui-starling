@@ -9,6 +9,8 @@ The [`WebView`](../api-reference/feathers/controls/WebView.html) class displays 
 
 <aside class="info">The `WebView` component cannot be used in the Flash Player plugin in a web browser. It is only available in Adobe AIR applications on mobile or desktop.</aside>
 
+-   [The Basics](#the-basics)
+
 ## The Basics
 
 First, let's create a `WebView` control, resize it, and add it to the display list:

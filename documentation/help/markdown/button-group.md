@@ -65,6 +65,7 @@ As a best practice, when you want to customize an individual component, you shou
 In the following example, we customize the button group's layout properties with an `AddOnFunctionStyleProvider`:
 
 ``` code
+var group:ButtonGroup = new ButtonGroup();
 function setExtraButtonGroupStyles( group:ButtonGroup ):void
 {
     group.direction = Direction.VERTICAL;
@@ -111,7 +112,9 @@ The styling function might look like this:
 ``` code
 private function setButtonGroupButtonStyles( button:Button ):void
 {
-    button.defaultSkin = new Image( texture );
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    button.defaultSkin = skin;
     button.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 }
 ```
@@ -139,7 +142,9 @@ group.buttonFactory = function():Button
     var button:Button = new Button();
 
     //skin the buttons here, if you're not using a theme
-    button.defaultSkin = new Image( texture );
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    button.defaultSkin = skin;
     button.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 
     return button;

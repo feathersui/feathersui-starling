@@ -12,6 +12,10 @@ The [`ToggleSwitch`](../api-reference/feathers/controls/ToggleSwitch.html) compo
 <figcaption>`ToggleSwitch` components skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `ToggleSwitch`](#skinning-a-toggleswitch)
+
 ## The Basics
 
 First, let's create a toggle switch, select it, and add it to the display list.
@@ -40,22 +44,58 @@ function toggle_changeHandler( event:Event ):void
 
 ## Skinning a `ToggleSwitch`
 
-The skins for a `ToggleSwitch` control are divided into the thumb, labels for off and on text, and one or two tracks. For full details about what skin and style properties are available, see the [`ToggleSwitch` API reference](../api-reference/feathers/controls/ToggleSwitch.html). We'll look at a few of the most common properties below.
+The skins for a `ToggleSwitch` control are divided into the thumb, labels for off and on text, and one or two tracks. For full details about what skin and style properties are available, see the [`ToggleSwitch` API reference](../api-reference/feathers/controls/ToggleSwitch.html). We'll look at a few of the most common ways of styling a toggle switch below.
 
-### Skinning the Labels
+### Using a theme? Some tips for customizing an individual toggle switch's styles
 
-The on and off skins are text renderers that may be skinned separately or using default properties for both.
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
 
-``` code
-toggle.defaultLabelProperties.textFormat = new BitmapFontTextFormat( myBitmapFont );
-```
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
 
-If you wanted the on label to be different, you could use different properties for each label:
+In the following example, we customize the toggle switch label font styles with an `AddOnFunctionStyleProvider`:
 
 ``` code
-toggle.defaultLabelProperties.textFormat = new BitmapFontTextFormat( myBitmapFont );
-toggle.onLabelProperties.textFormat = new BitmapFontTextFormat( myBitmapFont, myBitmapFont.size, 0xff9900 );
+var toggle:ToggleSwitch = new ToggleSwitch();
+function setExtraToggleSwitchStyles( toggle:ToggleSwitch ):void
+{
+    toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+    toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0x000000 );
+}
+toggle.styleProvider = new AddOnFunctionStyleProvider(
+    toggle.styleProvider, setExtraToggleSwitchStyles );
 ```
+
+Our changes only affect the font styles. The toggle switch will continue to use the theme's other styles.
+
+<aside class="warn">If you want to customize the styles of the thumb or track sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `thumbFactory` or `onTrackFactory`.</aside>
+
+### Font styles
+
+As we saw above, font styles of the labels may be customized using the [`onLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#onLabelFontStyles) and [`offLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#offLabelFontStyles) properties.
+
+``` code
+toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0x000000 );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text renderer](text-renderers.html).
+
+If the labels should use different font styles when it is disabled, you may set the [`onLabelDisabledFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#onLabelDisabledFontStyles) and [`offLabelDisabledFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#offLabelDisabledFontStyles) properties too:
+
+``` code
+toggle.onLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+toggle.offLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+```
+
+### Track(s) and Layout
+
+The toggle switch's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ToggleSwitch.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width and height of the toggle switch.
+
+If we'd like to have separate buttons for both sides of the track (one for the on side and another for the off side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the toggle switch) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+
+`TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
+
+When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the toggle switch will have a on track, but it will not have a off track. The on track will fill the entire region that is draggable.
 
 ### Skinning the Thumb
 
@@ -68,6 +108,17 @@ If you're creating a [theme](themes.html), you can target the [`ToggleSwitch.DEF
 ``` code
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, setToggleSwitchThumbStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setToggleSwitchThumbStyles( thumb:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -91,22 +142,15 @@ If you are not using a theme, you can use [`thumbFactory`](../api-reference/feat
 toggle.thumbFactory = function():Button
 {
     var button:Button = new Button();
-    //skin the thumb here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
+
+    //skin the thumb here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    thumb.defaultSkin = skin;
+
     return button;
 }
 ```
-
-### Track(s) and Layout
-
-The toggle switch's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/ToggleSwitch.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width and height of the toggle switch.
-
-If we'd like to have separate buttons for both sides of the track (one for the on side and another for the off side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the toggle switch) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
-
-`TrackLayoutMode.SINGLE` is often best for cases where the track's appearance is mostly static. When you want down or hover states for the track, `TrackLayoutMode.SPLIT` works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
-
-When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the toggle switch will have a on track, but it will not have a off track. The on track will fill the entire region that is draggable.
 
 ### Skinning the On Track
 
@@ -119,6 +163,17 @@ If you're creating a [theme](themes.html), you can target the [`ToggleSwitch.DEF
 ``` code
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, setToggleSwitchOnTrackStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setToggleSwitchOnTrackStyles( track:Button ):void
+{
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    track.defaultSkin = skin;
+}
 ```
 
 You can override the default style name to use a different one in your theme, if you prefer:
@@ -142,9 +197,12 @@ If you are not using a theme, you can use [`onTrackFactory`](../api-reference/fe
 toggle.onTrackFactory = function():Button
 {
     var button:Button = new Button();
-    //skin the on track here
-    button.defaultSkin = new Image( upTexture );
-    button.downSkin = new Image( downTexture );
+
+    //skin the on track here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( texture );
+    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
+    track.defaultSkin = skin;
+
     return button;
 }
 ```

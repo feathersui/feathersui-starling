@@ -139,10 +139,10 @@ If a skin is not provided for a specific state, the button will display its `def
 
 ### Icons
 
-Finally, let's add an icon to the `Button`. Icons may be customized for each of the button's states (just like the background skin), but let's simply use one icon. In this example, we'll pass in a `starling.display.Image`:
+Let's also add an icon to the `Button`. Icons may be customized for each of the button's states (just like the background skin), but let's simply use one icon. In this example, we'll pass in a `starling.display.Image`:
 
 ``` code
-button.defaultIcon = new Image( myIcon );
+button.defaultIcon = new Image( iconTexture );
 ```
 
 This icon will be displayed for all of the button's different states.

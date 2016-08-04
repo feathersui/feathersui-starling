@@ -33,7 +33,7 @@ See [How to use the Feathers `ToggleButton` component](toggle-button.html) for a
 
 A skinned `Check` component usually has no background (or a transparent one) and the touch states of the check are displayed through the icon skins. For full details about which properties are available, see the [`Check` API reference](../api-reference/feathers/controls/Check.html).
 
-As mentioned above, `Check` is a subclass of `ToggleButton`. For more detailed information about the skinning options available to `Check`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
+<aside class="info">As mentioned above, `Check` is a subclass of `ToggleButton`. For more detailed information about the skinning options available to `Check`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).</aside>
 
 ## Related Links
 

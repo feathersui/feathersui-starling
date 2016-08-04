@@ -12,6 +12,10 @@ The [`TextCallout`](../api-reference/feathers/controls/TextCallout.html) class i
 <figcaption>A `TextCallout` component skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `TextCallout`](#skinning-a-textcallout)
+
 ## The Basics
 
 We create a `TextCallout` a bit differently than other components. Rather than calling a constructor, we call the static function [`TextCallout.show()`](../api-reference/feathers/controls/TextCallout.html#show()). Let's see how this works by displaying message in a `TextCallout` when we touch a button. First, let's create the button:
@@ -41,9 +45,19 @@ Additional arguments are available for `TextCallout.show()`, including the direc
 
 ## Skinning a `TextCallout`
 
-Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [`TextCallout` API reference](../api-reference/feathers/controls/TextCallout.html). 
+Callouts have a number of skin and style properties to let you customize their appearance. For full details about what skin and style properties are available, see the [`TextCallout` API reference](../api-reference/feathers/controls/TextCallout.html). We'll look at a few of the most common ways of styling a text input below.
 
-As mentioned above, `TextCallout` is a subclass of `Callout`. For more detailed information about the skinning options available to `TextCallout`, see [How to use the Feathers `Callout` component](callout.html).
+<aside class="info">As mentioned above, `TextCallout` is a subclass of `Callout`. For more detailed information about the skinning options available to `TextCallout`, see [How to use the Feathers `Callout` component](callout.html).</aside>
+
+### Font Styles
+
+The input's callout styles may be customized using the [`fontStyles`](../api-reference/feathers/controls/TextCallout.html#fontStyles) property.
+
+``` code
+callout.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text renderer](text-renderers.html).
 
 ### Skinning a `TextCallout` without a theme
 
@@ -53,15 +67,12 @@ If you're not using a theme, you can specify a factory to create the callout, in
 function skinnedTextCalloutFactory():TextCallout
 {
     var callout:TextCallout = new TextCallout();
-    callout.textRendererFactory = function():ITextRenderer
-    {
-        var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-        // set font styles here...
-        return textRenderer;
-    }
+
+    //set the styles here, if not using a theme
+    callout.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
     callout.backgroundSkin = new Image( myBackgroundTexture );
     callout.topArrowSkin = new Image( myTopTexture );
-    // etc...
+    
     return callout;
 };
 TextCallout.calloutFactory = skinnedTextCalloutFactory;
@@ -73,63 +84,17 @@ Another option is to pass a callout factory to `TextCallout.show()`. This allows
 function skinnedTextCalloutFactory():Callout
 {
     var callout:TextCallout = new TextCallout();
-    callout.textRendererFactory = function():ITextRenderer
-    {
-        var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-        // set font styles here...
-        return textRenderer;
-    }
+
+    callout.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
     callout.backgroundSkin = new Image( myBackgroundTexture );
     callout.topArrowSkin = new Image( myTopTexture );
-    // etc...
+
     return callout;
 };
 Callout.show( text, origin, directions, isModal, skinnedTextCalloutFactory );
 ```
 
 You should generally always skin the callouts with a factory or with a theme instead of passing the skins to the `TextCallout` instance returned by calling `TextCallout.show()`. If you skin an callout after `TextCallout.show()` is called, it may not be positioned or sized correctly.
-
-### Skinning the text renderer
-
-This section explains how to access the text renderer sub-component to set font styles.
-
-<aside class="info">In the example code below, we'll display the callout's text using [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html), which draws text using [Flash Text Engine](http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html). Different text renderers may not use the same properties names to customize their font styles. Please read [Introduction to Feathers text renderers](text-renderers.html) for more information about the different text renderers that Feathers supports, and how to use each of them.</aside>
-
-#### With a Theme
-
-If you're creating a [theme](themes.html), you can target the [`TextCallout.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER`](../api-reference/feathers/controls/TextCallout.html#DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER) style name.
-
-``` code
-getStyleProviderForClass( TextBlockTextRenderer )
-    .setFunctionForStyleName( TextCallout.DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER, setTextCalloutTextRendererStyles );
-```
-
-You can override the default style name to use a different one in your theme, if you prefer:
-
-``` code
-slider.customTextRendererStyleName = "custom-text-callout-text-renderer";
-```
-
-You can set the function for the [`customTextRendererStyleName`](../api-reference/feathers/controls/TextCallout.html#customTextRendererStyleName) like this:
-
-``` code
-getStyleProviderForClass( TextBlockTextRenderer )
-    .setFunctionForStyleName( "custom-text-callout-text-renderer", setTextCalloutCustomTextRendererStyles );
-```
-
-#### Without a Theme
-
-If you are not using a theme, you can use [`textRendererFactory`](../api-reference/feathers/controls/TextCallout.html#textRendererFactory) to provide skins for the callout's text renderer:
-
-``` code
-callout.textRendererFactory = function():ITextRenderer
-{
-    var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
-    var font:FontDescription = new FontDescription( "_sans" );
-    textRenderer.elementFormat = new ElementFormat( font, 20, 0x444444 );
-    return textRenderer;
-}
-```
 
 ## Related Links
 

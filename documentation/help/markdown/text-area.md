@@ -14,6 +14,14 @@ The [`TextArea`](../api-reference/feathers/controls/TextArea.html) class support
 
 <aside class="info">`TextArea` is designed specifically for desktop apps, and it is *not* recommended for use in mobile touchscreen apps. Instead, on mobile, you should use a [`TextInput`](text-input.html) component with a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html) with its [`multiline`](../api-reference/feathers/controls/text/StageTextTextEditor.html#multiline) property set to `true`. The underlying `StageText` will provide its own native scroll bar.</aside>
 
+-   [The Basics](#the-basics)
+
+-   [Customize input behavior](#customize-input-behavior)
+
+-   [Skinning a `TextArea`](#skinning-a-textarea)
+
+-   [Customize scrolling behavior](#customize-scrolling-behavior)
+
 ## The Basics
 
 First, let's create a `TextArea` control and add it to the display list:
@@ -70,7 +78,7 @@ textArea.addEventListener( FeathersEventType.FOCUS_OUT, textArea_focusOutHandler
 
 The [`FeathersEventType.FOCUS_IN`](../api-reference/feathers/controls/TextArea.html#event:focusIn) and [`FeathersEventType.FOCUS_OUT`](../api-reference/feathers/controls/TextArea.html#event:focusOut) events are specially dispatched by the `TextArea`, even if the [focus manager](focus.html) is not enabled.
 
-## Customizing Input Behavior
+## Customize input behavior
 
 Several properties allow you to customize a text area's behavior.
 
@@ -96,50 +104,101 @@ In the example above, we restrict to numeric values only.
 
 ## Skinning a `TextArea`
 
-A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`TextArea` API reference](../api-reference/feathers/controls/TextArea.html). We'll look at a few of the most common properties below.
+A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`TextArea` API reference](../api-reference/feathers/controls/TextArea.html). We'll look at a few of the most common ways of styling a text area below.
+
+### Using a theme? Some tips for customizing an individual text area's styles
+
+A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
+
+As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
+
+In the following example, we customize the text area's font styles with an `AddOnFunctionStyleProvider`:
+
+``` code
+var textArea:TextArea = new TextArea();
+function setExtraTextAreaStyles( textArea:TextArea ):void
+{
+    textArea.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
+}
+textArea.styleProvider = new AddOnFunctionStyleProvider(
+    textArea.styleProvider, setExtraTextAreaStyles );
+```
+
+Our changes only affect the font styles. The text area will continue to use the theme's background skin, padding, and other styles.
 
 ### Font Styles
 
-The font styles of a text area may be changed through the [text editor](text-editors.html). Each text editor displays fonts differently and has different properties, so the way to make changes to the font styles depends on each text editor.
-
-Currently, Feathers comes with only one text editor view port, [`TextFieldTextEditorViewPort`](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html). However, it's possible to create custom implementations too.
-
-`TextFieldTextEditorViewPort` places a [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) with its [`type`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#type) property set to [`TextFieldType.INPUT`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFieldType.html#INPUT) on the native stage. This text editor accepts a [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) object to pass to the `TextField` to style the text.
-
-The text editor may be styled using the [`textEditorFactory`](../api-reference/feathers/controls/TextArea.html#textEditorFactory):
+As we saw above, the text area's font styles may be customized using the [`fontStyles`](../api-reference/feathers/controls/TextArea.html#fontStyles) property.
 
 ``` code
-textArea.textEditorFactory = function():ITextEditorViewPOrt
-{
-    var textEditor:TextFieldTextEditorViewPort = new TextFieldTextEditorViewPort();
-    textEditor.styleProvider = null;
-    textEditor.textFormat = new TextFormat( "_sans", 12, 0x333333 );
-    return textEditor;
-}
+textArea.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
-### Background and Layout
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text editor](text-editors.html).
 
-In addition to changing font styles on the text editor, you can change the text area's background skin and padding. Text area has three separate background skins, but two of them are optional.
+If the text area should use different font styles when it is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/TextArea.html#disabledFontStyles) property too:
 
 ``` code
-textArea.backgroundSkin = new Image( backgroundSkinTexture );
-textArea.backgroundDisabledSkin = new Image( disabledBackgroundSkinTexture );
-textArea.backgroundFocusedSkin = new Image( focusedBackgroundSkinTexture );
+textArea.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
-The default [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) is displayed when the text area doesn't have focus and is enabled. The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgrounDisabledSkin) is displayed when the text area is not enabled, but if you don't provide a disabled background skin, the default background skin will be used. Similarly, the [`backgroundFocusedSkin`](../api-reference/feathers/controls/TextArea.html#backgroundFocusedSkin) is displayed when the text area has focus. Again, text area will fall back to the default background skin if there is no focused background skin.
+Finally, we can even customize the font styles for each of the text area's specific states:
 
-You can change the padding values on each side:
+```code
+textArea.setFontStylesForState( TextInputState.ERROR,
+    new TextFormat( "Helvetica", 20, 0xcc0000 ) );
+```
+
+Using the code above, the color of the text area's text will change when the text area displays an `errorString`, and the state changes to `TextInputState.ERROR`.
+
+When font styles aren't available for a specific state, the text area will use the default `fontStyles` as a fallback. For example, we haven't provided font styles for `TextInputState.FOCUSED`, so the default styles will be used.
+
+### Background Skin
+
+Let's give our text area its background skin. In the following example, we'll use an [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html), but the skin may be any Starling display object:
 
 ``` code
-textArea.paddingTop = 10;
-textArea.paddingRight = 10;
-textArea.paddingBottom = 10;
-textArea.paddingLeft = 10;
+var skin:ImageSkin = new ImageSkin( upTexture );
+skin.scale9Grid = new Rectangle( 2, 3, 3, 8 );
+textArea.backgroundSkin = skin;
 ```
 
-The dimensions of the text editor will be affected by the padding to show more of the background skin around the edges. This can allow you to reveal a border.
+We can change the appearance of the text area's skin when the state changes. In the next example, we provide another texture to the same `ImageSkin` for the text area's "focused" state:
+
+``` code
+skin.setTextureForState( TextInputState.FOCUSED, focusedTexture );
+```
+
+The `ImageSkin` automatically listens for changes to the text area's state and updates its appearance to match. When the text area is given focus, the `ImageSkin` will display this texture instead of the default one.
+
+We can also provide different display objects for specific states, if needed. In the next example, we have a texture for the "disabled" state that requires a different `scale9Grid` than the other textures. We can create a separate `ImageSkin` for this state:
+
+``` code
+var disabledSkin:ImageSkin = new ImageSkin( disabledTexture );
+textArea.scale9Grid = new Rectangle( 4, 2, 2, 10 );
+textArea.setSkinForState( TextInputState.DISABLED, disabledSkin );
+```
+
+Pass in skins for any state using the [`setSkinForState()`](../api-reference/feathers/controls/TextArea.html#setSkinForState()) function.
+
+If a skin is not provided for a specific state, the text area will display its `backgroundSkin`. Similarly, when using an `ImageSkin`, and a texture isn't provided for a specific state, it will display its default texture.
+
+### Layout
+
+Padding may be added on each side of the text area:
+
+``` code
+textArea.paddingTop = 5;
+textArea.paddingRight = 8;
+textArea.paddingBottom = 5;
+textArea.paddingLeft = 8;
+```
+
+If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
+
+``` code
+textArea.padding = 6;
+```
 
 ### Skinning the Scroll Bars
 
@@ -154,6 +213,15 @@ getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+```
+
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
 ```
 
 You can override the default style names to use different ones in your theme, if you prefer:
@@ -180,9 +248,10 @@ If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-
 textArea.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
-    scrollBar.direction = Direction.HORIZONTAL;
-    //skin the scroll bar here
+
+    //skin the scroll bar here, if not using a theme
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
     return scrollBar;
 }
 ```

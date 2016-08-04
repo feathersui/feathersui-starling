@@ -12,6 +12,10 @@ The [`ToggleButton`](../api-reference/feathers/controls/ToggleButton.html) class
 <figcaption>`ToggleButton` components skinned with `MetalWorksMobileTheme`</figcaption>
 </figure>
 
+-   [The Basics](#the-basics)
+
+-   [Skinning a `ToggleButton`](#skinning-a-togglebutton)
+
 ## The Basics
 
 First, let's create a `ToggleButton` control, give it a label, and add it to the display list:

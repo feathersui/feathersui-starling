@@ -70,7 +70,7 @@ trace( "radio.label:", radio.label );
 
 A skinned `Radio` component usually has no background (or a transparent one) and the touch states of the radio are displayed through the icon skins. For full details about what skin and style properties are available, see the [`Radio` API reference](../api-reference/feathers/controls/Radio.html).
 
-As mentioned above, `Radio` is a subclass of `ToggleButton`. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).
+<aside class="info">As mentioned above, `Radio` is a subclass of `ToggleButton`. For more detailed information about the skinning options available to `Radio`, see [How to use the Feathers `ToggleButton` component](toggle-button.html).</aside>
 
 ## User Experience
 
