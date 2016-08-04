@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Introduction to Feathers text editors
 
-The Flash runtimes provide more than one way to edit text, and there are multiple different approaches to rendering text on the GPU. None of these approaches are ultimately better than the others. To allow you to choose the method that works best in your app, Feathers provides APIs that allow you to choose the appropriate *text editor* for the [`TextInput`](text-input.html) component based on your project's requirements.
+The Adobe Flash runtimes provide more than one way to edit text, and there are multiple different approaches to rendering text on the GPU. None of these approaches are ultimately better than the others. To allow you to choose the method that works best in your app, Feathers provides APIs that allow you to choose the appropriate *text editor* for the [`TextInput`](text-input.html) component based on your project's requirements.
 
 Different text editors may be more appropriate for some situations than others. You should keep a number of factors in mind when choosing a text editor, including (but not necessarily limited to) the following:
 
@@ -27,13 +27,13 @@ Feathers provides four different text editors. We'll learn the capabilities of e
 
 -   [`BitmapFontTextEditor`](bitmap-font-text-editor.html) uses [bitmap fonts](http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts) to display characters as separate textured quads. This text editor is not compatible with mobile apps.
 
-Each text renderer has different capabilities, and different sets of properties for customizing font styles, so be sure to learn about each one in detail.
+Each text renderer has different capabilities, so be sure to study each one in detail to choose the best one for your project.
 
 ## The default text editor factory
 
 In many cases, most of the `TextInput` components in your app will use the same type of text editor. To keep from repeating yourself by passing the same factory (a function that creates the text editor) to each `TextInput` separately, you can specify a global *default text editor factory* to tell all `TextInput` components in your app how to create a new text editor. Then, if some of your `TextInput` components need a different text editor, you can pass them a separate factory that will override the default one.
 
-If you don't replace it, the default text editor factory returns a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html). However, when using a [theme](themes.html), you should check which text editor is selected as the default. Themes may be targeted at desktop, where there are better alternatives to `StageText`, or they may have special font requirements that require a different text editor. It is completely up to the theme which text editor it wants to use by default with `TextInput`.
+If you don't replace it, the default text editor factory returns a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html). `StageTextTextEditor` provides the best native experience on mobile devices, and it generally works well on desktop too. However, when using a [theme](themes.html), you should check which text editor the theme sets as the default. Themes will often embed a custom font, or they may have special font rendering requirements that require a different text editor. It is completely up to the theme which text editor it wants to use by default with `TextInput`.
 
 When an individual component doesn't have a custom text editor factory specified, it calls the function [`FeathersControl.defaultTextEditorFactory()`](../api-reference/feathers/core/FeathersControl.html#defaultTextEditorFactory()). This is a static variable that references a `Function`, and it can be changed to a different function, as needed. The default implementation of this function looks like this:
 
@@ -64,20 +64,19 @@ input.textEditorFactory = function():ITextEditor
 }
 ```
 
-You can even apply font styles and other properties in the factory before returning the text editor:
+You can even customize advanced font properties in the factory before returning the text editor:
 
 ``` code
 input.textEditorFactory = function():ITextEditor
 {
-    var editor:TextFieldTextEditor = new TextFieldTextEditor();
-    editor.styleProvider = null;
-    editor.textFormat = new TextFormat( "Source Sans Pro", 16, 0xffffff );
-    editor.embedFonts = true;
-    return editor;
+    var textEditor:TextFieldTextEditor = new TextFieldTextEditor();
+    textEditor.antiAliasType = AntiAliasType.NORMAL;
+    textEditor.gridFitType = GridFitType.SUBPIXEL;
+    return textEditor;
 }
 ```
 
-<aside class="warn">Be careful, if you're using a theme. To change font styles in `textEditorFactory`, you may need to set the `styleProvider` property of the text editor to `null`. The theme applies styles after the factory returns, and you don't want your font styles to be replaced.</aside>
+<aside class="warn">Be careful, if you're using a theme. When changing any styles in `textEditorFactory`, you may need to set the `styleProvider` property of the text editor to `null`. The theme applies styles after the factory returns, and there is a chance that the theme could replace those styles.</aside>
 
 ## Custom Text Editors
 
@@ -89,7 +88,9 @@ Please note that unless you find a way to take advantage of `StageText` or `Text
 
 ## Multiline Text Editors
 
-The [`TextArea`](text-area.html) component allows you edit multiline text in desktop apps. It supports text editors with an extended the [`ITextEditorViewPort`](../api-reference/feathers/controls/text/ITextEditorViewPort.html) interface. Currently, Feathers provides one text editors for `TextArea`:
+On mobile, `StageTextTextEditor` can be used to edit text with multiple word-wrapped lines. The underlying `StageText` instance will provide its own scrolling capabilities. Simply set its [`multiline`](../api-reference/feathers/controls/text/StageTextTextEditor.html#multiline) property to `true`.
+
+For desktop apps, the [`TextArea`](text-area.html) component may be used. It will work on mobile, in a pinch, but it only recommended for desktop. `TextArea` supports special text editors with an extended the [`ITextEditorViewPort`](../api-reference/feathers/controls/text/ITextEditorViewPort.html) interface. Currently, Feathers provides one text editor for `TextArea`:
 
 -   [`TextFieldTextEditorViewPort`](../api-reference/feathers/controls/text/TextFieldTextEditorViewPort.html) is similar to `TextFieldTextEditor`. It renders text using a [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html). This is the default text editor used by `TextArea`.
 

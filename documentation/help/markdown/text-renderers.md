@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Introduction to Feathers text renderers
 
-There are muliple different approaches to displaying text on the GPU, each with advantages and disadvantages. None of these approaches are ultimately better than the others. With that in mind, when Feathers needs to display text in a component, it provides APIs to allow you to choose the appropriate *text renderer* based on your project's requirements.
+There are multiple different approaches to displaying text on the GPU, each with advantages and disadvantages. None of these approaches are ultimately better than the others. With that in mind, when Feathers needs to display text in a component, it provides APIs to allow you to choose the appropriate *text renderer* based on your project's requirements.
 
 Different text renderers may be more appropriate for some situations than others. You should keep a number of factors in mind when choosing a text renderer, including (but not necessarily limited to) the following:
 
@@ -25,15 +25,15 @@ Feathers provides three different text renderers. We'll learn the capabilities o
 
 -   [`TextFieldTextRenderer`](text-field-text-renderer.html) uses the classic [`flash.text.TextField`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html) class to render text in software, and the result is drawn to [`BitmapData`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/BitmapData.html) to be uploaded as a texture to the GPU. A `TextField` can render a subset of HTML, but it offers fewer advanced layout options than Flash Text Engine. Each instance of this text renderer requires a separate texture, so it may increase draw calls if your project must display a significant amount of text on screen at once.
 
-Each text renderer has different capabilities, and different sets of properties for customizing font styles, so be sure to learn about each one in detail.
+Each text renderer has different capabilities, so be sure to study each one in detail to choose the best one for your project.
 
 ## The default text renderer factory
 
 In many cases, most of the components in your app will use the same type of text renderer. To keep from repeating yourself by passing the same factory (a function that creates the text renderer) to each component separately, you can specify a global *default text renderer factory* to tell all Feathers components in your app how to create a new text renderer. Then, if some of your components need a different text renderer, you can pass them a separate factory that will override the default one.
 
-By default, the default text renderer factory returns a [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html) that renders bitmap fonts. For games, one of the primary targets for Starling and Feathers, bitmap fonts are often a good choice because they tend to display shorter strings that change a lot.
+By default, the default text renderer factory returns a [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html) that renders bitmap fonts. For games, one of the primary targets for Starling and Feathers, bitmap fonts are often a good choice because games tend to display shorter strings that change frequently.
 
-However, when using a [theme](themes.html), you should check which text renderer is selected as the default. Themes will often embed a custom font, and it is completely up to the theme which text renderer it wants to use to render that font. Many of the Feathers example apps use vector fonts to easily support many different languages and text styles.
+However, when using a [theme](themes.html), you should check which text renderer the theme sets as the default. Themes will often embed a custom font, and it is completely up to the theme which text renderer it wants to use to render that font. Many of the Feathers example apps use vector fonts to easily support many different languages and text styles.
 
 When an individual component doesn't have a custom text renderer factory specified, it calls the function [`FeathersControl.defaultTextRendererFactory()`](../api-reference/feathers/core/FeathersControl.html#defaultTextRendererFactory()). The label of a [`Button`](button.html) text, the title of a [`Header`](header.html) title, and the on and off labels of a [`ToggleSwitch`](toggle-switch.html) are all examples of places where the default text renderer will be used if a custom text renderer is not specified.
 
@@ -66,28 +66,29 @@ button.labelFactory = function():ITextRenderer
 }
 ```
 
-You can even apply font styles and other properties in the factory before returning the text renderer:
+You can even customize advanced font properties in the factory before returning the text renderer:
 
 ``` code
 button.labelFactory = function():ITextRenderer
 {
     var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-    textRenderer.styleProvider = null;
-    textRenderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0xffffff );
-    textRenderer.embedFonts = true;
+    textRenderer.antiAliasType = AntiAliasType.NORMAL;
+    textRenderer.gridFitType = GridFitType.SUBPIXEL;
     return textRenderer;
 }
 ```
 
-<aside class="warn">Be careful, if you're using a theme. To change font styles in `labelFactory`, you should always set the `styleProvider` property of the text renderer to `null`. The theme applies styles after the factory returns, and you don't want your font styles to be replaced.</aside>
+<aside class="warn">Be careful, if you're using a theme. When changing any styles in `labelFactory`, you may want to set the `styleProvider` property of the text renderer to `null`. The theme applies styles after the factory returns, and there is a chance that the theme could replace these styles.</aside>
 
 Other components with the ability to display text may have a different name for their text renderer factories. For example, the factory for the title text renderer of a [`Header`](header.html) component is called [`titleFactory`](../api-reference/feathers/controls/Header.html#titleFactory). Check the [API reference](../api-reference/) for a specific component to learn the names of any properties that allow you to change the factories for its text renderers.
 
 ## The `Label` Component
 
-The [`Label`](label.html) component is a component designed strictly to display text and only text. It's not a text renderer, but it has one child, and that child is a text renderer. In general, if you're looking for a Feathers component to display arbitrary text, you want a `Label`. Maybe you want to display a score in a game, or to label or form field, or perhaps to display a small paragraph of text to provide some instructions. That's what `Label` is for.
+The [`Label`](label.html) component is a component designed to simply display text. It's not a text renderer. Instead, it contains a text renderer. In general, if you're looking for a Feathers component to display arbitrary text, you want a `Label`. Maybe you want to display a score in a game, or to [lace a label next to a `TextInput` in a form, or perhaps, you'd like to display a small paragraph of text to provide some instructions. That's what `Label` is for.
 
-Why not just instantiate a text renderer, such as [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html), directly? The `Label` component exists to help you abstract the choice of a text renderer away from your core application. For instance, it allows you to easily switch to a different [themes](themes.html) that has different text renderers. You can also refactor a theme more easily if you decide that you're prefer to use a different text renderer than the one that you originally selected. If you simply instantiated a text renderer directly when you wanted to display arbitrary text, you need to make changes to many classes throughout your project instead of in one place separated from the rest of your application: the theme.
+Why not just instantiate a text renderer, such as [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html), directly? The `Label` component exists to help you abstract the choice of a text renderer away from your core application. For instance, it allows you to easily switch to a different [themes](themes.html), which may use different text renderers. The `Label` component has a `fontStyles` property that accepts a `starling.text.TextFormat` object, but individual text renderers may be styled with different types of objects, like `flash.text.engine.ElementFormat` or `feathers.text.BitmapFontTextFormat`.
+
+When using `Label` components in your app, you can also refactor more easily, should you decide that you're prefer to use a different text renderer than the one that you originally chose. If you simply instantiated a text renderer directly when you wanted to display arbitrary text, you need to make changes to many classes throughout your project instead of in one place separated from the rest of your application: the theme.
 
 Put another way, you wouldn't want to do something like this when you want to add a label to a form item:
 
@@ -115,33 +116,27 @@ Unless your custom renderer is capable of drawing directly to the GPU, chances a
 
 ## Alternatives
 
-We have some other options for displaying text, including some options included in Feathers and some custom text renderers developed by the community. As with the core text renderers detailed above, these alternatives have their own advantages and disadvantages.
+We have some other options for displaying text. As with the core text renderers detailed above, these alternatives have their own advantages and disadvantages.
 
 ### Feathers `ScrollText` Component
 
-Sometimes, very long text may be too large for text renderers like `TextFieldTextRenderer` and `TextBlockTextRenderer` to display because the total width or height is so large that there isn't enough memory on the GPU to store the required textures. However, you may still want to use vector-based fonts in a `flash.text.TextField`.
+Sometimes, very long passages of text may be too large for text renderers like `TextFieldTextRenderer` and `TextBlockTextRenderer` to display because the total width or height is so large that there isn't enough memory on the GPU to store the required textures. Sometimes, you can use `BitmapFontTextRenderer` instead, since bitmap fonts don't require a larger texture to display longer text. However, that won't work if you are required to display vector fonts.
 
-In this case, you might consider using the [`ScrollText`](scroll-text.html) component instead. `ScrollText` displays a native `flash.text.TextField` overlay on the native stage above Starling and Stage 3D. Rather than being converted into a texture on the GPU, this text is rendered in software and displayed above Stage 3D on the classic display list. It may be constrained to a rectangle in Starling coordinates, clipped, and scrolled.
+In this case, you should consider using the [`ScrollText`](scroll-text.html) component. `ScrollText` displays a native `flash.text.TextField` overlay on the native stage above Starling and Stage 3D. Rather than being converted into a texture on the GPU, this text is rendered in software and displayed above Stage 3D on the classic display list. It may be constrained to a rectangle in Starling coordinates, clipped, and scrolled.
 
-There are some disadvantages, though. Because it is drawn entirely by the software renderer, it may scroll slowly on mobile devices with high screen resolutions because the CPU may not be able to keep up with rendering so much text in software. Moreover, you will not be able to display Starling content above the `ScrollText` component. `ScrollText` is not rendered by the GPU, so it is completely outside of Starling and Stage 3D. `ScrollText` is always above Starling, and nothing inside Starling can appear on top. If you want to display something above `ScrollText`, it will also need to be on the native display list. This content will not be GPU accelerated, and it may perform poorly.
-
-### firetype
-
-[firetype](http://www.max-did-it.com/index.php/projects/firetype/) is a third-party library that renders text on the GPU using polygons instead of textures. Text displayed with firetype is resolution independent and uses less CPU than software rendering. This library includes support for Starling.
-
-### Distance Field Fonts
-
-[DistanceFieldFont](http://wiki.starling-framework.org/extensions/distancefieldfont) is a third-party Starling extension that implements distance fields for bitmap fonts. Distance fields allow bitmap fonts to use less texture memory and scale up much more smoothly than standard bitmap fonts. This extension includes a Feathers text renderer.
+There are some disadvantages, though. Because it is drawn entirely by the software renderer, scrolling may not be perfectly smooth on some mobile devices because the CPU may not be able to keep up with rendering so much text in software. Additioanlly, you will not be able to display Starling content above the `ScrollText` component. `ScrollText` is not rendered by the GPU, so it is completely outside of Starling and Stage 3D. `ScrollText` is always above Starling, and nothing inside Starling can ever appear on top of it. If you want to display anything above `ScrollText`, that content will also need to be on the native display list. This content will not be GPU accelerated, and it may perform poorly.
 
 ## Related Links
 
 -   [How to use the Feathers `BitmapFontTextRenderer` component](bitmap-font-text-renderer.html)
 
--   [How to use the Feathers `TextFieldTextRenderer` component](text-field-text-renderer.html)
-
 -   [How to use the Feathers `TextBlockTextRenderer` component](text-block-text-renderer.html)
 
+-   [How to use the Feathers `TextFieldTextRenderer` component](text-field-text-renderer.html)
+
 -   [How to use the Feathers `Label` component](label.html)
+
+-   [How to use the Feathers `ScrollText` component](scroll-text.html)
 
 -   [`feathers.core.ITextRenderer` API Documentation](../api-reference/feathers/core/text/ITextRenderer.html)
 
