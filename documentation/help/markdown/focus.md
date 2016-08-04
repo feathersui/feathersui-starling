@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 In desktop apps, users expect to be able to use the Tab key to navigate between UI controls, and they expect to be able to use the keyboard to do things like press buttons or adjust sliders. Feathers provides completely optional focus management support with the [`FocusManager`](../api-reference/feathers/core/FocusManager.html) class, if your app needs these capabilities.
 
-In general, you should only enable focus management in desktop apps. Some mobile components are not optimized for focus management.
+<aside class="info">In general, you should only enable focus management in desktop apps. Some mobile components are not optimized for focus management.</aside>
 
 ## Enabling the Focus Manager
 
