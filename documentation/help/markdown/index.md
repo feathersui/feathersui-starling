@@ -251,6 +251,8 @@ Item renderers are custom components used by lists to display items from the dat
 
 -   [Drag and drop between Feathers components](drag-drop.html)
 
+-   [Adding tool-tips to Feathers components](tool-tips.html)
+
 ## Miscellaneous
 
 -   [Building the Feathers SWC from source code](build.html)
