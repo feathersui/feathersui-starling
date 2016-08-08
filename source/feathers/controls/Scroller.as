@@ -5729,6 +5729,12 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
+			if(this._touchPointID < 0)
+			{
+				//if the touch is claimed with ExclusiveTouch by a child, the
+				//listener is removed, but the current event will keep bubbling
+				return;
+			}
 			var touch:Touch = event.getTouch(this.stage, null, this._touchPointID);
 			if(touch === null)
 			{
