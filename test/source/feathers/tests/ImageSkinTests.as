@@ -2,6 +2,8 @@ package feathers.tests
 {
 	import feathers.skins.ImageSkin;
 
+	import flash.geom.Rectangle;
+
 	import org.flexunit.Assert;
 
 	import starling.textures.Texture;
@@ -14,9 +16,13 @@ package feathers.tests
 		private static const DEFAULT_COLOR:uint = 0xcccccc;
 		private static const COLOR_ONE:uint = 0x999999;
 		private static const COLOR_TWO:uint = 0x666666;
-		
+
 		private var _skin:ImageSkin;
 		private var _context:StateContext;
+
+		private var _texture1:Texture;
+		private var _texture2:Texture;
+		private var _texture3:Texture;
 
 		[Before]
 		public function prepare():void
@@ -24,7 +30,7 @@ package feathers.tests
 			this._context = new StateContext();
 			this._context.currentState = STATE_ONE;
 			TestFeathers.starlingRoot.addChild(this._context);
-			
+
 			this._skin = new ImageSkin(null);
 			this._context.addChild(this._skin);
 			this._skin.stateContext = this._context;
@@ -36,6 +42,24 @@ package feathers.tests
 			this._context.removeFromParent(true);
 			this._context = null;
 			this._skin = null;
+
+			if(this._texture1 !== null)
+			{
+				this._texture1.dispose();
+				this._texture1 = null;
+			}
+
+			if(this._texture2 !== null)
+			{
+				this._texture2.dispose();
+				this._texture2 = null;
+			}
+
+			if(this._texture3 !== null)
+			{
+				this._texture3.dispose();
+				this._texture3 = null;
+			}
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -56,60 +80,52 @@ package feathers.tests
 		[Test]
 		public function testGetTextureForState():void
 		{
-			var defaultTexture:Texture = Texture.fromColor(10, 10, 0xff00ff);
-			this._skin.defaultTexture = defaultTexture;
-			var textureOne:Texture = Texture.fromColor(10, 10, 0xff0000);
-			this._skin.setTextureForState(STATE_ONE, textureOne);
-			var textureTwo:Texture = Texture.fromColor(10, 10, 0x00ff00);
-			this._skin.setTextureForState(STATE_TWO, textureTwo);
+			this._texture1 = Texture.fromColor(10, 10, 0xff00ff);
+			this._skin.defaultTexture = this._texture1;
+			this._texture2 = Texture.fromColor(10, 10, 0xff0000);
+			this._skin.setTextureForState(STATE_ONE, this._texture2);
+			this._texture3 = Texture.fromColor(10, 10, 0x00ff00);
+			this._skin.setTextureForState(STATE_TWO, this._texture3);
 
-			Assert.assertStrictlyEquals("ImageSkin getTextureForState(STATE_ONE) does not match value passed to setTextureForState()", textureOne, this._skin.getTextureForState(STATE_ONE));
-			Assert.assertStrictlyEquals("ImageSkin getTextureForState(STATE_TWO) does not match value passed to setTextureForState()", textureTwo, this._skin.getTextureForState(STATE_TWO));
-
-			defaultTexture.dispose();
-			textureOne.dispose();
-			textureTwo.dispose();
+			Assert.assertStrictlyEquals("ImageSkin getTextureForState(STATE_ONE) does not match value passed to setTextureForState()", this._texture2, this._skin.getTextureForState(STATE_ONE));
+			Assert.assertStrictlyEquals("ImageSkin getTextureForState(STATE_TWO) does not match value passed to setTextureForState()", this._texture3, this._skin.getTextureForState(STATE_TWO));
 		}
 
 		[Test]
 		public function testDefaultTexture():void
 		{
-			var defaultTexture:Texture = Texture.fromColor(10, 10, 0xff00ff);
-			this._skin.defaultTexture = defaultTexture;
+			this._texture1 = Texture.fromColor(10, 10, 0xff00ff);
+			this._skin.defaultTexture = this._texture1;
 
-			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when texture not provided for current state", defaultTexture, this._skin.texture);
+			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when texture not provided for current state", this._texture1, this._skin.texture);
 
 			this._context.isEnabled = false;
-			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when disabled texture not provided", defaultTexture, this._skin.texture);
+			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when disabled texture not provided", this._texture1, this._skin.texture);
 
 			this._context.isEnabled = true;
 
 			this._context.currentState = STATE_ONE;
-			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when texture not provided for specific state", defaultTexture, this._skin.texture);
+			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when texture not provided for specific state", this._texture1, this._skin.texture);
 
 			this._context.currentState = STATE_TWO;
-			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when texture not provided for specific state", defaultTexture, this._skin.texture);
+			Assert.assertStrictlyEquals("ImageSkin texture is not defaultTexture when texture not provided for specific state", this._texture1, this._skin.texture);
 		}
 
 		[Test]
 		public function testCurrentTextureWithSetTextureForState():void
 		{
-			var defaultTexture:Texture = Texture.fromColor(10, 10, 0xff00ff);
-			this._skin.defaultTexture = defaultTexture;
-			var textureOne:Texture = Texture.fromColor(10, 10, 0xff0000);
-			this._skin.setTextureForState(STATE_ONE, textureOne);
-			var textureTwo:Texture = Texture.fromColor(10, 10, 0x00ff00);
-			this._skin.setTextureForState(STATE_TWO, textureTwo);
+			this._texture1 = Texture.fromColor(10, 10, 0xff00ff);
+			this._skin.defaultTexture = this._texture1;
+			this._texture2 = Texture.fromColor(10, 10, 0xff0000);
+			this._skin.setTextureForState(STATE_ONE, this._texture2);
+			this._texture3 = Texture.fromColor(10, 10, 0x00ff00);
+			this._skin.setTextureForState(STATE_TWO, this._texture3);
 
 			this._context.currentState = STATE_ONE;
-			Assert.assertStrictlyEquals("ImageSkin texture is does not match texture passed to setTextureForState() for current state", textureOne, this._skin.texture);
+			Assert.assertStrictlyEquals("ImageSkin texture is does not match texture passed to setTextureForState() for current state", this._texture2, this._skin.texture);
 
 			this._context.currentState = STATE_TWO;
-			Assert.assertStrictlyEquals("ImageSkin texture is does not match texture passed to setTextureForState() for current state", textureTwo, this._skin.texture);
-
-			defaultTexture.dispose();
-			textureOne.dispose();
-			textureTwo.dispose();
+			Assert.assertStrictlyEquals("ImageSkin texture is does not match texture passed to setTextureForState() for current state", this._texture3, this._skin.texture);
 		}
 
 		[Test]
@@ -167,6 +183,32 @@ package feathers.tests
 
 			this._context.currentState = STATE_TWO;
 			Assert.assertStrictlyEquals("ImageSkin color is does not match color passed to setColorForState() for current state", COLOR_TWO, this._skin.color);
+		}
+
+		[Test]
+		public function testClearExplicitDimensions():void
+		{
+			var textureWidth:Number = 150;
+			var textureHeight:Number = 200;
+			var explicitWidth:Number = 250;
+			var explicitHeight:Number = 300;
+			this._texture1 = Texture.fromColor(textureWidth, textureHeight, 0xff00ff);
+			this._skin.defaultTexture = this._texture1;
+			this._skin.width = explicitWidth;
+			this._skin.height = explicitHeight;
+
+			Assert.assertStrictlyEquals("ImageSkin width is does not match explicit width",
+				explicitWidth, this._skin.width);
+			Assert.assertStrictlyEquals("ImageSkin width is does not match explicit height",
+				explicitHeight, this._skin.height);
+
+			this._skin.width = NaN;
+			this._skin.height = NaN;
+
+			Assert.assertStrictlyEquals("ImageSkin width is does not match texture width",
+				textureWidth, this._skin.width);
+			Assert.assertStrictlyEquals("ImageSkin width is does not match texture height",
+				textureHeight, this._skin.height);
 		}
 	}
 }

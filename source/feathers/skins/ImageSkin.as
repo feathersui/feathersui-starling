@@ -407,7 +407,13 @@ package feathers.skins
 			{
 				super.width = value;
 			}
-			else //return to the original width of the texture
+			else if(this.texture !== null)
+			{
+				//return to the original width of the texture
+				this.scaleX = 1;
+				this.readjustSize(this.texture.frameWidth);
+			}
+			else
 			{
 				this.readjustSize();
 			}
@@ -449,7 +455,13 @@ package feathers.skins
 			{
 				super.height = value;
 			}
-			else //return to the original height of the texture
+			else if(this.texture !== null)
+			{
+				//return to the original height of the texture
+				this.scaleY = 1;
+				this.readjustSize(-1, this.texture.frameHeight);
+			}
+			else
 			{
 				this.readjustSize();
 			}
