@@ -3,6 +3,8 @@ package feathers.tests
 	import feathers.controls.ImageLoader;
 	import feathers.utils.textures.TextureCache;
 
+	import flash.geom.Rectangle;
+
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
 
@@ -227,6 +229,23 @@ package feathers.tests
 			this._loader.validate();
 
 			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width.", expectedHeight, this._loader.height);
+		}
+
+		[Test]
+		public function testIgnoreMaintainAspectRationWithScale9Grid():void
+		{
+			var textureWidth:Number = 20;
+			var textureHeight:Number = 15;
+			var updatedWidth:Number = 200;
+			this._texture = Texture.fromColor(textureWidth, textureHeight);
+			this._loader.source = this._texture;
+			this._loader.scale9Grid = new Rectangle(2, 2, 18, 11);
+			this._loader.width = updatedWidth;
+			this._loader.scaleMode = ScaleMode.SHOW_ALL;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width and using scale9Grid.",
+				textureHeight, this._loader.height);
 		}
 	}
 }
