@@ -16,6 +16,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+	[DefaultProperty("mxmlContent")]
 	/**
 	 * A tabbed container.
 	 *
@@ -303,6 +304,40 @@ package feathers.controls
 				return;
 			}
 			this._transition = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _mxmlContent:Array;
+
+		[ArrayElementType(elementType="feathers.controls.TabNavigatorItem")]
+		/**
+		 * @private
+		 */
+		public function get mxmlContent():Array
+		{
+			return this._mxmlContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set mxmlContent(value:Array):void
+		{
+			if(this._mxmlContent == value)
+			{
+				return;
+			}
+			this._mxmlContent = value;
+			this.removeAllScreens();
+			var screenCount:int = value.length;
+			for(var i:int = 0; i < screenCount; i++)
+			{
+				var screenItem:TabNavigatorItem = TabNavigatorItem(value[i]);
+				var screenID:String = screenItem.mxmlID;
+				this.addScreen(screenID, screenItem);
+			}
 		}
 
 		/**
