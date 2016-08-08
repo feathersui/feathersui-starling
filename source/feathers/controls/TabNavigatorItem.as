@@ -23,7 +23,7 @@ package feathers.controls
 		/**
 		 * Constructor.
 		 */
-		public function TabNavigatorItem(classOrFunctionOrDisplayObject:Object,
+		public function TabNavigatorItem(classOrFunctionOrDisplayObject:Object = null,
 			label:String = null, icon:DisplayObject = null)
 		{
 			if(classOrFunctionOrDisplayObject is DisplayObject)
@@ -38,7 +38,7 @@ package feathers.controls
 			{
 				this.screenFunction = classOrFunctionOrDisplayObject as Function;
 			}
-			else
+			else if(classOrFunctionOrDisplayObject !== null)
 			{
 				throw new ArgumentError("Unknown view type. Must be Class, Function, or DisplayObject.")
 			}
