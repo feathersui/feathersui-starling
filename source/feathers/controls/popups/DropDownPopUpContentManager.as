@@ -466,7 +466,9 @@ package feathers.controls.popups
 				PopUpManager.addPopUp(this._delegate, false, false);
 				this._delegate.x = content.x;
 				this._delegate.y = content.y;
-				var mask:Quad = new Quad(content.width, content.height, 0xff00ff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				mask.width = content.width;
+				mask.height = content.height;
 				this._delegate.mask = mask;
 				this._openCloseTween = new Tween(this._delegate, this._openCloseDuration, this._openCloseEase);
 				this._openCloseTweenTarget = content;
