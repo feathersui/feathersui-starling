@@ -17,6 +17,9 @@ package feathers.motion
 	 * side, and the card rotates around its center to reveal the other side.
 	 * The card may rotate up or down around the x-axis, or they may rotate left
 	 * or right around the y-axis.
+	 * 
+	 * <p>Warning: <code>Flip</code> and other transitions with 3D effects may
+	 * not be compatible with masks.</p>
 	 *
 	 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
 	 */
