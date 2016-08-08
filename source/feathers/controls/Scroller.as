@@ -19,7 +19,6 @@ package feathers.controls
 	import feathers.layout.Direction;
 	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
@@ -29,6 +28,7 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 
 	import starling.animation.Transitions;
@@ -710,6 +710,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _previousVelocityY:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		protected var _pendingVelocityChange:Boolean = false;
 
 		/**
 		 * @private
@@ -3353,8 +3358,10 @@ package feathers.controls
 				if(loopCount >= 10)
 				{
 					//if it still fails after ten tries, we've probably entered
-					//an infinite loop due to rounding errors or something
-					break;
+					//an infinite loop. it could be things like rounding errors,
+					//layout issues, or custom item renderers that don't measure
+					//correctly
+					throw new Error(getQualifiedClassName(this) + " stuck in an infinite loop during measurement and validation. This may be an issue with the layout or children, such as custom item renderers.");
 				}
 			}
 			while(this._hasViewPortBoundsChanged);
@@ -5393,6 +5400,99 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function checkForDrag():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			if((this._horizontalScrollPolicy == ScrollPolicy.ON ||
+				(this._horizontalScrollPolicy == ScrollPolicy.AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
+				!this._isDraggingHorizontally && horizontalInchesMoved >= this._minimumDragDistance)
+			{
+				if(this.horizontalScrollBar)
+				{
+					this.revealHorizontalScrollBar();
+				}
+				this._startTouchX = this._currentTouchX;
+				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
+				this._isDraggingHorizontally = true;
+				//if we haven't already started dragging in the other direction,
+				//we need to dispatch the event that says we're starting.
+				if(!this._isDraggingVertically)
+				{
+					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+					var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+					exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+					exclusiveTouch.claimTouch(this._touchPointID, this);
+					this.startScroll();
+				}
+			}
+			if((this._verticalScrollPolicy == ScrollPolicy.ON ||
+				(this._verticalScrollPolicy == ScrollPolicy.AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
+				!this._isDraggingVertically && verticalInchesMoved >= this._minimumDragDistance)
+			{
+				if(this.verticalScrollBar)
+				{
+					this.revealVerticalScrollBar();
+				}
+				this._startTouchY = this._currentTouchY;
+				this._startVerticalScrollPosition = this._verticalScrollPosition;
+				this._isDraggingVertically = true;
+				if(!this._isDraggingHorizontally)
+				{
+					exclusiveTouch = ExclusiveTouch.forStage(this.stage);
+					exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+					exclusiveTouch.claimTouch(this._touchPointID, this);
+					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+					this.startScroll();
+				}
+			}
+			if(this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+			{
+				this.updateHorizontalScrollFromTouchPosition(this._currentTouchX);
+			}
+			if(this._isDraggingVertically && !this._verticalAutoScrollTween)
+			{
+				this.updateVerticalScrollFromTouchPosition(this._currentTouchY);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function saveVelocity():void
+		{
+			this._pendingVelocityChange = false;
+			if(this._isScrollingStopped)
+			{
+				return;
+			}
+			var now:int = getTimer();
+			var timeOffset:int = now - this._previousTouchTime;
+			if(timeOffset > 0)
+			{
+				//we're keeping previous velocity updates to improve accuracy
+				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
+				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityX.shift();
+				}
+				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
+				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityY.shift();
+				}
+				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
+				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;
+				this._previousTouchTime = now;
+				this._previousTouchX = this._currentTouchX;
+				this._previousTouchY = this._currentTouchY;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function viewPort_resizeHandler(event:Event):void
 		{
 			if(this.ignoreViewPortResizing ||
@@ -5635,84 +5735,7 @@ package feathers.controls
 		 */
 		protected function scroller_enterFrameHandler(event:Event):void
 		{
-			if(this._isScrollingStopped)
-			{
-				return;
-			}
-			var now:int = getTimer();
-			var timeOffset:int = now - this._previousTouchTime;
-			if(timeOffset > 0)
-			{
-				//we're keeping previous velocity updates to improve accuracy
-				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
-				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
-				{
-					this._previousVelocityX.shift();
-				}
-				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
-				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
-				{
-					this._previousVelocityY.shift();
-				}
-				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
-				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;
-				this._previousTouchTime = now;
-				this._previousTouchX = this._currentTouchX;
-				this._previousTouchY = this._currentTouchY;
-			}
-			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
-			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
-			if((this._horizontalScrollPolicy == ScrollPolicy.ON ||
-				(this._horizontalScrollPolicy == ScrollPolicy.AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
-				!this._isDraggingHorizontally && horizontalInchesMoved >= this._minimumDragDistance)
-			{
-				if(this.horizontalScrollBar)
-				{
-					this.revealHorizontalScrollBar();
-				}
-				this._startTouchX = this._currentTouchX;
-				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
-				this._isDraggingHorizontally = true;
-				//if we haven't already started dragging in the other direction,
-				//we need to dispatch the event that says we're starting.
-				if(!this._isDraggingVertically)
-				{
-					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-					var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
-					exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
-					exclusiveTouch.claimTouch(this._touchPointID, this);
-					this.startScroll();
-				}
-			}
-			if((this._verticalScrollPolicy == ScrollPolicy.ON ||
-				(this._verticalScrollPolicy == ScrollPolicy.AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
-				!this._isDraggingVertically && verticalInchesMoved >= this._minimumDragDistance)
-			{
-				if(this.verticalScrollBar)
-				{
-					this.revealVerticalScrollBar();
-				}
-				this._startTouchY = this._currentTouchY;
-				this._startVerticalScrollPosition = this._verticalScrollPosition;
-				this._isDraggingVertically = true;
-				if(!this._isDraggingHorizontally)
-				{
-					exclusiveTouch = ExclusiveTouch.forStage(this.stage);
-					exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
-					exclusiveTouch.claimTouch(this._touchPointID, this);
-					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-					this.startScroll();
-				}
-			}
-			if(this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
-			{
-				this.updateHorizontalScrollFromTouchPosition(this._currentTouchX);
-			}
-			if(this._isDraggingVertically && !this._verticalAutoScrollTween)
-			{
-				this.updateVerticalScrollFromTouchPosition(this._currentTouchY);
-			}
+			this.saveVelocity();
 		}
 
 		/**
@@ -5720,22 +5743,38 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
+			if(this._touchPointID < 0)
+			{
+				//if the touch is claimed with ExclusiveTouch by a child, the
+				//listener is removed, but the current event will keep bubbling
+				return;
+			}
 			var touch:Touch = event.getTouch(this.stage, null, this._touchPointID);
-			if(!touch)
+			if(touch === null)
 			{
 				return;
 			}
 
-			if(touch.phase == TouchPhase.MOVED)
+			if(touch.phase === TouchPhase.MOVED)
 			{
-				//we're saving these to use in the enter frame handler because
-				//that provides a longer time offset
 				touch.getLocation(this, HELPER_POINT);
 				this._currentTouchX = HELPER_POINT.x;
 				this._currentTouchY = HELPER_POINT.y;
+				this.checkForDrag();
+				//we don't call saveVelocity() on TouchPhase.MOVED because the
+				//time interval may be very short, which could lead to
+				//inaccurate results. instead, we wait for the next frame.
+				this._pendingVelocityChange = true;
 			}
-			else if(touch.phase == TouchPhase.ENDED)
+			else if(touch.phase === TouchPhase.ENDED)
 			{
+				if(this._pendingVelocityChange)
+				{
+					//we may need to do this one last time because the enter
+					//frame listener may not have been called since the last
+					//TouchPhase.MOVED
+					this.saveVelocity();
+				}
 				if(!this._isDraggingHorizontally && !this._isDraggingVertically)
 				{
 					ExclusiveTouch.forStage(this.stage).removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);

@@ -838,10 +838,10 @@ package feathers.controls.text
 				result.width > this._explicitWidth)
 			{
 				this._characterBatch.clear();
-				var oldTextAlign:String = this.currentTextFormat.align;
-				this.currentTextFormat.align = TextFormatAlign.LEFT;
+				var oldTextAlign:String = this._currentTextFormat.align;
+				this._currentTextFormat.align = TextFormatAlign.LEFT;
 				result = super.layoutCharacters(result);
-				this.currentTextFormat.align = oldTextAlign;
+				this._currentTextFormat.align = oldTextAlign;
 			}
 			return result;
 		}
@@ -854,8 +854,8 @@ package feathers.controls.text
 			super.refreshTextFormat();
 			if(this._cursorSkin)
 			{
-				var font:BitmapFont = this.currentTextFormat.font;
-				var customSize:Number = this.currentTextFormat.size;
+				var font:BitmapFont = this._currentTextFormat.font;
+				var customSize:Number = this._currentTextFormat.size;
 				var scale:Number = customSize / font.size;
 				if(scale !== scale) //isNaN
 				{
@@ -920,16 +920,16 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-			var font:BitmapFont = this.currentTextFormat.font;
-			var customSize:Number = this.currentTextFormat.size;
-			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
 			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
-			var align:String = this.currentTextFormat.align;
+			var align:String = this._currentTextFormat.align;
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
@@ -988,17 +988,17 @@ package feathers.controls.text
 		 */
 		protected function getXPositionOfIndex(index:int):Number
 		{
-			var font:BitmapFont = this.currentTextFormat.font;
-			var customSize:Number = this.currentTextFormat.size;
-			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
 			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
 			var xPositionOffset:Number = 0;
-			var align:String = this.currentTextFormat.align;
+			var align:String = this._currentTextFormat.align;
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
@@ -1096,8 +1096,8 @@ package feathers.controls.text
 		 */
 		protected function positionSelectionBackground():void
 		{
-			var font:BitmapFont = this.currentTextFormat.font;
-			var customSize:Number = this.currentTextFormat.size;
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
 			var scale:Number = customSize / font.size;
 			if(scale !== scale) //isNaN
 			{

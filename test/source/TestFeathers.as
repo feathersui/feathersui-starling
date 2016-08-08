@@ -100,6 +100,7 @@ package
 	import feathers.tests.TextBlockTextEditorFocusTests;
 	import feathers.tests.TextBlockTextRendererTests;
 	import feathers.tests.TextFieldTextEditorFocusTests;
+	import feathers.tests.TextFieldTextEditorTests;
 	import feathers.tests.TextFieldTextRendererTests;
 	import feathers.tests.TextInputFocusTests;
 	import feathers.tests.TextInputInternalStateTests;
@@ -175,7 +176,7 @@ package
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
 				ScaleTests,
-				
+
 				//individual component tests
 				AlertMeasurementTests,
 				BasicButtonTests,
@@ -250,10 +251,10 @@ package
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				ToggleSwitchMeasurementTests,
-				
+
 				//media tests
 				TimeLabelTests,
-			
+
 				//layout tests
 				AnchorLayoutTests,
 				FlowLayoutTests,
@@ -273,6 +274,9 @@ package
 				BitmapFontTextRendererTests,
 				TextBlockTextRendererTests,
 				TextFieldTextRendererTests,
+
+				//text editors
+				TextFieldTextEditorTests,
 
 				//focus tests
 				FocusManagerEnabledTests,

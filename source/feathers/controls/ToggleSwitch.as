@@ -11,13 +11,16 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IStateContext;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
+	import feathers.text.FontStylesSet;
 
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
@@ -32,12 +35,37 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextFormat;
 	import starling.utils.SystemUtil;
 
 	/**
 	 * @copy feathers.core.IToggle#event:change
 	 */
 	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the display object's state changes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
+	 *
+	 * @see #currentState
+	 */
+	[Event(name="stateChange",type="starling.events.Event")]
 
 	/**
 	 * Similar to a light switch with on and off states. Generally considered an
@@ -55,7 +83,7 @@ package feathers.controls
 	 * @see ../../../help/toggle-switch.html How to use the Feathers ToggleSwitch component
 	 * @see feathers.controls.Check
 	 */
-	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl
+	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl, IStateContext
 	{
 		/**
 		 * @private
@@ -202,6 +230,16 @@ package feathers.controls
 		public function ToggleSwitch()
 		{
 			super();
+			if(this._onLabelFontStylesSet === null)
+			{
+				this._onLabelFontStylesSet = new FontStylesSet();
+				this._onLabelFontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
+			if(this._offLabelFontStylesSet === null)
+			{
+				this._offLabelFontStylesSet = new FontStylesSet();
+				this._offLabelFontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this.addEventListener(TouchEvent.TOUCH, toggleSwitch_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, toggleSwitch_removedFromStageHandler);
 		}
@@ -324,6 +362,35 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ToggleSwitch.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _currentState:String = ToggleState.NOT_SELECTED;
+
+		/**
+		 * The current state of the toggle switch.
+		 *
+		 * @see feathers.controls.ToggleState
+		 * @see #event:stateChange feathers.events.FeathersEventType.STATE_CHANGE
+		 */
+		public function get currentState():String
+		{
+			return this._currentState;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set isEnabled(value:Boolean):void
+		{
+			if(this._isEnabled === value)
+			{
+				return;
+			}
+			super.isEnabled = value;
+			this.resetState();
 		}
 
 		/**
@@ -882,6 +949,113 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _onLabelFontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the on label's text.
+		 *
+		 * <p>In the following example, the on label's font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>onLabelFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #onLabelDisabledFontStyles
+		 * @see #onLabelSelectedFontStyles
+		 * @see #setOnLabelFontStylesForState();
+		 */
+		public function get onLabelFontStyles():TextFormat
+		{
+			return this._onLabelFontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set onLabelFontStyles(value:TextFormat):void
+		{
+			this._onLabelFontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the on label's text when the toggle
+		 * switch is disabled.
+		 *
+		 * <p>In the following example, the on labels' disabled font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>onLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #onLabelFontStyles
+		 */
+		public function get onLabelDisabledFontStyles():TextFormat
+		{
+			return this._onLabelFontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set onLabelDisabledFontStyles(value:TextFormat):void
+		{
+			this._onLabelFontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * The font styles used to display the on label's text when the toggle
+		 * switch is selected.
+		 *
+		 * <p>In the following example, the on label's selected font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0xff0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>onLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #onLabelFontStyles
+		 */
+		public function get onLabelSelectedFontStyles():TextFormat
+		{
+			return this._onLabelFontStylesSet.selectedFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set onLabelSelectedFontStyles(value:TextFormat):void
+		{
+			this._onLabelFontStylesSet.selectedFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _onLabelFactory:Function;
 
 		/**
@@ -977,6 +1151,113 @@ package feathers.controls
 			}
 			this._customOnLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _offLabelFontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the off label's text.
+		 *
+		 * <p>In the following example, the off label's font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>offLabelFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #offLabelDisabledFontStyles
+		 * @see #offLabelSelectedFontStyles
+		 * @see #setOffLabelFontStylesForState();
+		 */
+		public function get offLabelFontStyles():TextFormat
+		{
+			return this._offLabelFontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set offLabelFontStyles(value:TextFormat):void
+		{
+			this._offLabelFontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the off label's text when the toggle
+		 * switch is disabled.
+		 *
+		 * <p>In the following example, the off labels' disabled font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>offLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #offLabelFontStyles
+		 */
+		public function get offLabelDisabledFontStyles():TextFormat
+		{
+			return this._offLabelFontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set offLabelDisabledFontStyles(value:TextFormat):void
+		{
+			this._offLabelFontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * The font styles used to display the off label's text when the toggle
+		 * switch is selected.
+		 *
+		 * <p>In the following example, the off label's selected font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0xff0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>offLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #offLabelFontStyles
+		 */
+		public function get offLabelSelectedFontStyles():TextFormat
+		{
+			return this._offLabelFontStylesSet.selectedFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set offLabelSelectedFontStyles(value:TextFormat):void
+		{
+			this._offLabelFontStylesSet.selectedFormat = value;
 		}
 
 		/**
@@ -1153,6 +1434,7 @@ package feathers.controls
 				return;
 			}
 			this._isSelected = value;
+			this.resetState();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -1909,6 +2191,90 @@ package feathers.controls
 		}
 
 		/**
+		 * Gets the font styles to be used to display the toggle switch's on
+		 * label text when the toggle switch's <code>currentState</code>
+		 * property matches the specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setOnLabelFontStylesForState()
+		 * @see #onLabelFontStyles
+		 */
+		public function getOnLabelFontStylesForState(state:String):TextFormat
+		{
+			if(this._onLabelFontStylesSet === null)
+			{
+				return null;
+			}
+			return this._onLabelFontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the toggle switch's on
+		 * label text when the toggle switch's <code>currentState</code>
+		 * property matches the specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>onLabelFontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setOnLabelFontStylesForState()</code> and properties like
+		 * <code>onLabelFontStyles</code> and <code>onLabelDisabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #onLabelFontStyles
+		 */
+		public function setOnLabelFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._onLabelFontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
+		 * Gets the font styles to be used to display the toggle switch's off
+		 * label text when the toggle switch's <code>currentState</code>
+		 * property matches the specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setOffLabelFontStylesForState()
+		 * @see #offLabelFontStyles
+		 */
+		public function getOffLabelFontStylesForState(state:String):TextFormat
+		{
+			if(this._offLabelFontStylesSet === null)
+			{
+				return null;
+			}
+			return this._offLabelFontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the toggle switch's off
+		 * label text when the toggle switch's <code>currentState</code>
+		 * property matches the specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>offLabelFontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setOffLabelFontStylesForState()</code> and properties like
+		 * <code>offLabelFontStyles</code> and <code>offLabelDisabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #offLabelFontStyles
+		 */
+		public function setOffLabelFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._offLabelFontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
@@ -2325,6 +2691,7 @@ package feathers.controls
 				offLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
+			this.offTextRenderer.stateContext = this;
 			var offLabelStyleName:String = this._customOffLabelStyleName != null ? this._customOffLabelStyleName : this.offLabelStyleName;
 			this.offTextRenderer.styleNameList.add(offLabelStyleName);
 			var mask:Quad = new Quad(1, 1, 0xff00ff);
@@ -2344,7 +2711,7 @@ package feathers.controls
 				onLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.onTextRenderer = ITextRenderer(onLabelFactory());
-
+			this.onTextRenderer.stateContext = this;
 			var onLabelStyleName:String = this._customOnLabelStyleName != null ? this._customOnLabelStyleName : this.onLabelStyleName;
 			this.onTextRenderer.styleNameList.add(onLabelStyleName);
 			mask = new Quad(1, 1, 0xff00ff);
@@ -2353,6 +2720,49 @@ package feathers.controls
 			mask.height = 0;
 			this.onTextRenderer.mask = mask;
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function changeState(state:String):void
+		{
+			if(this._currentState === state)
+			{
+				return;
+			}
+			this._currentState = state;
+			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function resetState():void
+		{
+			if(this._isEnabled)
+			{
+				if(this._isSelected)
+				{
+					this.changeState(ToggleState.SELECTED);
+				}
+				else
+				{
+					this.changeState(ToggleState.NOT_SELECTED);
+				}
+			}
+			else
+			{
+				if(this._isSelected)
+				{
+					this.changeState(ToggleState.SELECTED_AND_DISABLED);
+				}
+				else
+				{
+					this.changeState(ToggleState.DISABLED);
+				}
+			}
 		}
 
 		/**
@@ -2483,6 +2893,7 @@ package feathers.controls
 				return;
 			}
 
+			this.onTextRenderer.fontStyles = this._onLabelFontStylesSet;
 			var properties:PropertyProxy;
 			if(!this._isEnabled)
 			{
@@ -2523,6 +2934,7 @@ package feathers.controls
 				return;
 			}
 
+			this.offTextRenderer.fontStyles = this._offLabelFontStylesSet;
 			var properties:PropertyProxy;
 			if(!this._isEnabled)
 			{
@@ -2845,6 +3257,14 @@ package feathers.controls
 		protected function selectionTween_onComplete():void
 		{
 			this._toggleTween = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }

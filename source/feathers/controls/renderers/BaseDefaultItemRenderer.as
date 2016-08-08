@@ -24,6 +24,7 @@ package feathers.controls.renderers
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.events.TimerEvent;
@@ -35,6 +36,7 @@ package feathers.controls.renderers
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextFormat;
 
 	/**
 	 * An abstract class for item renderer implementations.
@@ -99,7 +101,7 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-item-renderer-label";
-		
+
 		/**
 		 * The default value added to the <code>styleNameList</code> of the icon
 		 * label, if it exists.
@@ -109,12 +111,28 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
 
 		/**
+		 * The default value added to the <code>styleNameList</code> of the icon
+		 * loader, if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LOADER:String = "feathers-item-renderer-icon-loader";
+
+		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * accessory label, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * accessory loader, if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER:String = "feathers-item-renderer-accessory-loader";
 
 		/**
 		 * @private
@@ -448,6 +466,16 @@ package feathers.controls.renderers
 		public function BaseDefaultItemRenderer()
 		{
 			super();
+			if(this._iconLabelFontStylesSet === null)
+			{
+				this._iconLabelFontStylesSet = new FontStylesSet();
+				this._iconLabelFontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
+			if(this._accessoryLabelFontStylesSet === null)
+			{
+				this._accessoryLabelFontStylesSet = new FontStylesSet();
+				this._accessoryLabelFontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this._explicitIsEnabled = this._isEnabled;
 			this.labelStyleName = DEFAULT_CHILD_STYLE_NAME_LABEL;
 			this.isFocusEnabled = false;
@@ -464,12 +492,28 @@ package feathers.controls.renderers
 		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
+		 * The value added to the <code>styleNameList</code> of the icon loader,
+		 * if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var iconLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LOADER;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
 		 * label text renderer, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the accessory
+		 * loader, if it exists.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var accessoryLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER;
 
 		/**
 		 * @private
@@ -1817,6 +1861,52 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _customIconLoaderStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's icon loader sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * item renderers.
+		 *
+		 * <p>In the following example, a custom icon loader style name is passed
+		 * to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customIconLodaerStyleName = "my-custom-icon-loader";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-icon-loader", setCustomIconLoaderStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LOADER
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #iconLoaderFactory
+		 */
+		public function get customIconLoaderStyleName():String
+		{
+			return this._customIconLoaderStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customIconLoaderStyleName(value:String):void
+		{
+			if(this._customIconLoaderStyleName == value)
+			{
+				return;
+			}
+			this._customIconLoaderStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customIconLabelStyleName:String;
 
 		/**
@@ -2317,6 +2407,52 @@ package feathers.controls.renderers
 			}
 			this._customAccessoryLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customAccessoryLoaderStyleName:String;
+
+		/**
+		 * A style name to add to the item renderer's accessory loader
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different item renderers.
+		 *
+		 * <p>In the following example, a custom accessory loader style name is
+		 * passed to the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.customAccessoryLoaderStyleName = "my-custom-accessory-loader";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
+		 *
+		 * <listing version="3.0">
+		 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-accessory-loader", setCustomAccessoryLoaderStyles );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER
+		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #accessoryLoaderFactory
+		 */
+		public function get customAccessoryLoaderStyleName():String
+		{
+			return this._customAccessoryLoaderStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customAccessoryLoaderStyleName(value:String):void
+		{
+			if(this._customAccessoryLoaderStyleName == value)
+			{
+				return;
+			}
+			this._customAccessoryLoaderStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -2857,6 +2993,113 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _iconLabelFontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the item renderer's icon label text.
+		 *
+		 * <p>In the following example, the icon label font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.iconLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>iconLabelFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #iconLabelDisabledFontStyles
+		 * @see #iconLabelSelectedFontStyles
+		 * @see #setIconLabelFontStylesForState()
+		 */
+		public function get iconLabelFontStyles():TextFormat
+		{
+			return this._iconLabelFontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelFontStyles(value:TextFormat):void
+		{
+			this._iconLabelFontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the item renderer's icon label text
+		 * when the item renderer is disabled.
+		 *
+		 * <p>In the following example, the icon label disabled font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.iconLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>iconLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #iconLabelFontStyles
+		 */
+		public function get iconLabelDisabledFontStyles():TextFormat
+		{
+			return this._iconLabelFontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelDisabledFontStyles(value:TextFormat):void
+		{
+			this._iconLabelFontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * The font styles used to display the item renderer's icon label text
+		 * when the item renderer is selected.
+		 *
+		 * <p>In the following example, the icon label selected font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.iconLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>iconLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #iconLabelFontStyles
+		 */
+		public function get iconLabelSelectedFontStyles():TextFormat
+		{
+			return this._iconLabelFontStylesSet.selectedFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelSelectedFontStyles(value:TextFormat):void
+		{
+			this._iconLabelFontStylesSet.selectedFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _iconLabelFactory:Function;
 
 		/**
@@ -3035,6 +3278,114 @@ package feathers.controls.renderers
 			this._accessoryIsFromItem = false;
 			this.replaceAccessory(null);
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryLabelFontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the item renderer's accessory label
+		 * text.
+		 *
+		 * <p>In the following example, the accessory label font styles are
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.accessoryLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>accessoryLabelFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #accessoryLabelDisabledFontStyles
+		 * @see #accessoryLabelSelectedFontStyles
+		 * @see #setAccessoryLabelFontStylesForState()
+		 */
+		public function get accessoryLabelFontStyles():TextFormat
+		{
+			return this._accessoryLabelFontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelFontStyles(value:TextFormat):void
+		{
+			this._accessoryLabelFontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the item renderer's accessory label
+		 * text when the item renderer is disabled.
+		 *
+		 * <p>In the following example, the accessory label disabled font styles
+		 * are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.accessoryLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>accessoryLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #accessoryLabelFontStyles
+		 */
+		public function get accessoryLabelDisabledFontStyles():TextFormat
+		{
+			return this._accessoryLabelFontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelDisabledFontStyles(value:TextFormat):void
+		{
+			this._accessoryLabelFontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * The font styles used to display the item renderer's accessory label
+		 * text when the item renderer is selected.
+		 *
+		 * <p>In the following example, the accessory label selected font styles
+		 * are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * itemRenderer.accessoryLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>accessoryLabelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #accessoryLabelFontStyles
+		 */
+		public function get accessoryLabelSelectedFontStyles():TextFormat
+		{
+			return this._accessoryLabelFontStylesSet.selectedFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelSelectedFontStyles(value:TextFormat):void
+		{
+			this._accessoryLabelFontStylesSet.selectedFormat = value;
 		}
 
 		/**
@@ -3522,8 +3873,95 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * Gets the accessory to be used by the button when its
+		 * Gets the font styles to be used to display the item renderer's icon
+		 * label text when the item renderer's <code>currentState</code>
+		 * property matches the specified state value.
+		 *
+		 * <p>If icon label font styles are not defined for a specific state,
+		 * returns <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setIconLabelFontStylesForState()
+		 * @see #iconLabelFontStyles
+		 */
+		public function getIconLabelFontStylesForState(state:String):TextFormat
+		{
+			if(this._iconLabelFontStylesSet === null)
+			{
+				return null;
+			}
+			return this._iconLabelFontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the icon label's text when
+		 * the item renderer's <code>currentState</code> property matches the
+		 * specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>iconLabelFontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setIconLabelFontStylesForState()</code> and properties like
+		 * <code>iconLabelFontStyles</code> and
+		 * <code>disabledIconLabelFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #iconLabelFontStyles
+		 */
+		public function setIconLabelFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._iconLabelFontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
+		 * Gets the font styles to be used to display the item renderer's
+		 * accessory label text when the item renderer's
 		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If icon label font styles are not defined for a specific state,
+		 * returns <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setAccessoryLabelFontStylesForState()
+		 * @see #accessoryLabelfontStyles
+		 */
+		public function getAccessoryLabelFontStylesForState(state:String):TextFormat
+		{
+			if(this._accessoryLabelFontStylesSet === null)
+			{
+				return null;
+			}
+			return this._accessoryLabelFontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the accessory label's text
+		 * when the item renderer's <code>currentState</code> property matches
+		 * the specified state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>accessoryLabelFontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setAccessoryLabelFontStylesForState()</code> and properties like
+		 * <code>accessoryLabelFontStyles</code> and
+		 * <code>disabledAccessoryLabelFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #accessoryLabelFontStyles
+		 */
+		public function setAccessoryLabelFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._accessoryLabelFontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
+		 * Gets the accessory to be used by the item renderer when the item
+		 * renderer's <code>currentState</code> property matches the specified
+		 * state value.
 		 *
 		 * <p>If a accessory is not defined for a specific state, returns
 		 * <code>null</code>.</p>
@@ -3536,8 +3974,9 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * Sets the accessory to be used by the item renderer when its
-		 * <code>currentState</code> property matches the specified state value.
+		 * Sets the accessory to be used by the item renderer when the item
+		 * renderer's <code>currentState</code> property matches the specified
+		 * state value.
 		 *
 		 * <p>If an accessory is not defined for a specific state, the value of
 		 * the <code>defaultAccessory</code> property will be used instead.</p>
@@ -4273,8 +4712,9 @@ package feathers.controls.renderers
 		override protected function refreshIcon():void
 		{
 			super.refreshIcon();
-			if(this.iconLabel)
+			if(this.iconLabel !== null)
 			{
+				this.iconLabel.fontStyles = this._iconLabelFontStylesSet;
 				var displayIconLabel:DisplayObject = DisplayObject(this.iconLabel);
 				for(var propertyName:String in this._iconLabelProperties)
 				{
@@ -4324,8 +4764,9 @@ package feathers.controls.renderers
 					}
 				}
 			}
-			if(this.accessoryLabel)
+			if(this.accessoryLabel !== null)
 			{
+				this.accessoryLabel.fontStyles = this._accessoryLabelFontStylesSet;
 				var displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
 				for(var propertyName:String in this._accessoryLabelProperties)
 				{
@@ -4364,6 +4805,8 @@ package feathers.controls.renderers
 				this.iconLoader = this._iconLoaderFactory();
 				this.iconLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
 				this.iconLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				var iconLoaderStyleName:String = this._customIconLoaderStyleName != null ? this._customIconLoaderStyleName : this.iconLoaderStyleName;
+				this.iconLoader.styleNameList.add(iconLoaderStyleName);
 			}
 			this.iconLoader.source = source;
 		}
@@ -4373,7 +4816,7 @@ package feathers.controls.renderers
 		 */
 		protected function refreshIconLabel(label:String):void
 		{
-			if(!this.iconLabel)
+			if(this.iconLabel === null)
 			{
 				var factory:Function = this._iconLabelFactory != null ? this._iconLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.iconLabel = ITextRenderer(factory());
@@ -4397,6 +4840,8 @@ package feathers.controls.renderers
 				this.accessoryLoader = this._accessoryLoaderFactory();
 				this.accessoryLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
 				this.accessoryLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				var accessoryLoaderStyleName:String = this._customAccessoryLoaderStyleName != null ? this._customAccessoryLoaderStyleName : this.accessoryLoaderStyleName;
+				this.accessoryLoader.styleNameList.add(accessoryLoaderStyleName);
 			}
 			this.accessoryLoader.source = source;
 		}
@@ -4406,7 +4851,7 @@ package feathers.controls.renderers
 		 */
 		protected function refreshAccessoryLabel(label:String):void
 		{
-			if(!this.accessoryLabel)
+			if(this.accessoryLabel === null)
 			{
 				var factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.accessoryLabel = ITextRenderer(factory());
@@ -4541,6 +4986,8 @@ package feathers.controls.renderers
 		 */
 		override protected function refreshMaxLabelSize(forMeasurement:Boolean):void
 		{
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
@@ -4705,6 +5152,7 @@ package feathers.controls.renderers
 				this.labelTextRenderer.maxWidth = calculatedWidth;
 				this.labelTextRenderer.maxHeight = calculatedHeight;
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 
 		/**

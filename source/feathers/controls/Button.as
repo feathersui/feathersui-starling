@@ -21,6 +21,7 @@ package feathers.controls
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.LongPress;
@@ -33,6 +34,7 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 
 	/**
 	 * Dispatched when the button is pressed for a long time. The property
@@ -89,7 +91,7 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-		
+
 		/**
 		 * The default value added to the <code>styleNameList</code> of the label.
 		 *
@@ -413,6 +415,11 @@ package feathers.controls
 		public function Button()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 		}
 
 		/**
@@ -1114,13 +1121,17 @@ package feathers.controls
 		protected var _stateToLabelPropertiesFunction:Function;
 
 		/**
-		 * DEPRECATED: Call the appropriate function on the text renderer to set
-		 * different font styles for each state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with the appropriate <code>ButtonState</code> constant and pass in a
+		 * <code>starling.text.TextFormat</code> object.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState
 		 */
 		public function get stateToLabelPropertiesFunction():Function
 		{
@@ -1299,6 +1310,76 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the button's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>labelFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #disabledFontStyles
+		 * @see #setFontStylesForState()
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the button's text when the button is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>labelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _labelFactory:Function;
 
 		/**
@@ -1456,13 +1537,19 @@ package feathers.controls
 		protected var _stateToLabelProperties:Object = {};
 		
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Use the <code>fontStyles</code> property, or call the
+		 * <code>setFontStylesForState()</code> function with
+		 * <code>ButtonState.UP</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #fontStyles
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.UP
 		 */
 		public function get upLabelProperties():Object
 		{
@@ -1498,13 +1585,17 @@ package feathers.controls
 		}
 		
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.DOWN</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DOWN
 		 */
 		public function get downLabelProperties():Object
 		{
@@ -1540,13 +1631,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.HOVER</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.HOVER
 		 */
 		public function get hoverLabelProperties():Object
 		{
@@ -1582,13 +1677,18 @@ package feathers.controls
 		}
 		
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Use the <code>disabledFontStyles</code> property, or call
+		 * the <code>setFontStylesForState()</code> function with
+		 * <code>ButtonState.DISABLED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DISABLED
 		 */
 		public function get disabledLabelProperties():Object
 		{
@@ -2005,7 +2105,49 @@ package feathers.controls
 		}
 
 		/**
-		 * Gets the icon to be used by the button when its
+		 * Gets the font styles to be used to display the button's text when the
+		 * button's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 * 
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setFontStylesForState()
+		 * @see #fontStyles
+		 */
+		public function getFontStylesForState(state:String):TextFormat
+		{
+			if(this._fontStylesSet === null)
+			{
+				return null;
+			}
+			return this._fontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the button's text when the
+		 * button's <code>currentState</code> property matches the specified
+		 * state value.
+		 *
+		 * <p>If font styles are not defined for a specific state, the value of
+		 * the <code>fontStyles</code> property will be used instead.</p>
+		 * 
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setFontStylesForState()</code> and properties like
+		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function setFontStylesForState(state:String, format:TextFormat):void
+		{
+			this._fontStylesSet.setFormatForState(state, format);
+		}
+
+		/**
+		 * Gets the icon to be used by the button when the button's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If a icon is not defined for a specific state, returns
@@ -2019,7 +2161,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Sets the icon to be used by the button when its
+		 * Sets the icon to be used by the button when the button's
 		 * <code>currentState</code> property matches the specified state value.
 		 *
 		 * <p>If an icon is not defined for a specific state, the value of the
@@ -2096,6 +2238,8 @@ package feathers.controls
 				this.refreshIcon();
 			}
 
+			//most components don't need to check the state before passing
+			//properties to a child component, but button is an exception
 			if(textRendererInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshLabelStyles();
@@ -2543,16 +2687,17 @@ package feathers.controls
 			}
 			return this._defaultIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected function refreshLabelStyles():void
 		{
-			if(!this.labelTextRenderer)
+			if(this.labelTextRenderer === null)
 			{
 				return;
 			}
+			this.labelTextRenderer.fontStyles = this._fontStylesSet;
 			var properties:Object = this.getCurrentLabelProperties();
 			for(var propertyName:String in properties)
 			{
@@ -2603,8 +2748,6 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
-			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
-			this._ignoreIconResizes = true;
 			this.refreshMaxLabelSize(false);
 			var labelRenderer:DisplayObject = null;
 			if(this._label !== null && this.labelTextRenderer)
@@ -2642,7 +2785,6 @@ package feathers.controls
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
-			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 
 		/**
@@ -2650,6 +2792,8 @@ package feathers.controls
 		 */
 		protected function refreshMaxLabelSize(forMeasurement:Boolean):void
 		{
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
@@ -2691,6 +2835,7 @@ package feathers.controls
 					}
 				}
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 		
 		/**
@@ -2927,6 +3072,14 @@ package feathers.controls
 				return;
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }

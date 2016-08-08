@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
@@ -25,6 +26,11 @@ package feathers.controls
 
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
+
+	import starling.animation.Transitions;
+
+	import starling.animation.Tween;
+	import starling.core.Starling;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -53,6 +59,46 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	[DefaultProperty("dataProvider")]
+	/**
+	 * Dispatched when one of the tabs is triggered. The <code>data</code>
+	 * property of the event contains the item from the data provider that is
+	 * associated with the tab that was triggered.
+	 *
+	 * <p>The following example listens to <code>Event.TRIGGERED</code> on the
+	 * tab bar:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "1" },
+	 *     { label: "2" },
+	 *     { label: "3" },
+	 * ]);
+	 * tabs.addEventListener( Event.TRIGGERED, function( event:Event, data:Object ):void
+	 * {
+	 *    trace( "The tab with label \"" + data.label + "\" was triggered." );
+	 * }</listing>
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The item associated with the tab
+	 *   that was triggered.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered", type="starling.events.Event")]
+
 	/**
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
 	 * time.
@@ -84,19 +130,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const LABEL_FIELD:String = "label";
-
-		/**
-		 * @private
-		 */
-		protected static const ENABLED_FIELD:String = "isEnabled";
-
-		/**
-		 * @private
-		 */
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
-			"defaultIcon",
 			"upIcon",
 			"downIcon",
 			"hoverIcon",
@@ -576,6 +611,127 @@ package feathers.controls
 			}
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionSkin:DisplayObject;
+
+		/**
+		 * A skin displayed over the selected tab. Its position is animated when
+		 * the selection changes.
+		 *
+		 * <p>The following example passes the tab bar a selection skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * var skin:Image = new Image(texture)
+		 * skin.scale9Grid = new Rectangle(1, 2, 4, 4);
+		 * tabs.selectionSkin = skin;</listing>
+		 *
+		 * @default null
+		 * 
+		 * @see #selectionChangeDuration
+		 * @see #selectionChangeEase
+		 */
+		public function get selectionSkin():DisplayObject
+		{
+			return this._selectionSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionSkin(value:DisplayObject):void
+		{
+			if(this._selectionSkin == value)
+			{
+				return;
+			}
+			if(this._selectionSkin !== null &&
+				this._selectionSkin.parent === this)
+			{
+				this._selectionSkin.removeFromParent(false);
+			}
+			this._selectionSkin = value;
+			if(this._selectionSkin !== null)
+			{
+				this._selectionSkin.touchable = false;
+				this.addChild(this._selectionSkin);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionChangeTween:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _selectionChangeDuration:Number = 0.25;
+
+		/**
+		 * The time, in seconds, of the animation that changes the position and
+		 * size of the <code>selectionSkin</code> skin when the selected
+		 * tab changes.
+		 *
+		 * <p>The following example customizes the duration to 500ms:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.selectionChangeDuration = 0.5;</listing>
+		 *
+		 * @default 0.25
+		 * 
+		 * @see #selectionSkin
+		 * @see #selectionChangeEase
+		 */
+		public function get selectionChangeDuration():Number
+		{
+			return this._selectionChangeDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionChangeDuration(value:Number):void
+		{
+			this._selectionChangeDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionChangeEase:Object = Transitions.EASE_OUT;
+
+		/**
+		 * The easing function used for moving and resizing the
+		 * <code>selectionSkin</code> when the selected tab changes.
+		 *
+		 * <p>In the following example, the ease of the animation that moves
+		 * the <code>selectionSkin</code> is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.selectionChangeEase = Transitions.EASE_IN_OUT;</listing>
+		 *
+		 * @default starling.animation.Transitions.EASE_OUT
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+		 * @see #selectionSkin
+		 * @see #selectionChangeDuration
+		 */
+		public function get selectionChangeEase():Object
+		{
+			return this._selectionChangeEase;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionChangeEase(value:Object):void
+		{
+			this._selectionChangeEase = value;
 		}
 
 		/**
@@ -1157,6 +1313,313 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _labelField:String = "label";
+
+		/**
+		 * The field in the item that contains the label text to be displayed by
+		 * the tabs. If the item does not have this field, and a
+		 * <code>labelFunction</code> is not defined, then the tabs will
+		 * default to calling <code>toString()</code> on the item.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.labelField = "text";</listing>
+		 *
+		 * @default "label"
+		 *
+		 * @see #labelFunction
+		 */
+		public function get labelField():String
+		{
+			return this._labelField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelField(value:String):void
+		{
+			if(this._labelField == value)
+			{
+				return;
+			}
+			this._labelField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _labelFunction:Function;
+
+		/**
+		 * A function used to generate label text for a specific tab. If this
+		 * function is not <code>null</code>, then the <code>labelField</code>
+		 * will be ignored.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):String</pre>
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.labelFunction = function( item:Object ):String
+		 * {
+		 *    return item.label + " (" + item.unread + ")";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #labelField
+		 */
+		public function get labelFunction():Function
+		{
+			return this._labelFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelFunction(value:Function):void
+		{
+			if(this._labelFunction == value)
+			{
+				return;
+			}
+			this._labelFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _enabledField:String = "isEnabled";
+
+		/**
+		 * The field in the item that determines if the tab is enabled. If the
+		 * item does not have this field, and a <code>enabledFunction</code> is
+		 * not defined, then the tab will default to being enabled, unless the
+		 * tab bar is not enabled. All tabs will always be disabled if the tab
+		 * bar is disabled.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the enabled field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.enabledField = "isEnabled";</listing>
+		 *
+		 * @default "enabled"
+		 *
+		 * @see #enabledFunction
+		 */
+		public function get enabledField():String
+		{
+			return this._enabledField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set enabledField(value:String):void
+		{
+			if(this._enabledField == value)
+			{
+				return;
+			}
+			this._enabledField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconField:String = "defaultIcon";
+		//I'd like to use "icon" here instead, but defaultIcon is needed for
+		//backwards compatibility...
+
+		/**
+		 * The field in the item that contains a display object to be displayed
+		 * as an icon or other graphic next to the label in the tab.
+		 *
+		 * <p>Warning: It is your responsibility to dispose all icons
+		 * included in the data provider and accessed with <code>iconField</code>,
+		 * or any display objects returned by <code>iconFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an icon may result in a memory leak.</p>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the icon field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.iconField = "photo";</listing>
+		 *
+		 * @default "icon"
+		 *
+		 * @see #iconFunction
+		 */
+		public function get iconField():String
+		{
+			return this._iconField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconField(value:String):void
+		{
+			if(this._iconField == value)
+			{
+				return;
+			}
+			this._iconField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconFunction:Function;
+
+		/**
+		 * A function used to generate an icon for a specific tab, based on its
+		 * associated item in the data provider.
+		 *
+		 * <p>Note: This function may be called more than once for each
+		 * individual item in the tab bar's data provider. The function should
+		 * not simply return a new icon every time. This will result in the
+		 * unnecessary creation and destruction of many icons, which will
+		 * overwork the garbage collector, hurt performance, and possibly lead
+		 * to memory leaks. It's better to return a new icon the first time this
+		 * function is called for a particular item and then return the same
+		 * icon if that item is passed to this function again.</p>
+		 *
+		 * <p>Warning: It is your responsibility to dispose all icons
+		 * included in the data provider and accessed with <code>iconField</code>,
+		 * or any display objects returned by <code>iconFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an icon may result in a memory leak.</p>
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):DisplayObject</pre>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the icon function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * var cachedIcons:Dictionary = new Dictionary( true );
+		 * tabs.iconFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedIcons)
+		 *    {
+		 *        return cachedIcons[item];
+		 *    }
+		 *    var icon:Image = new Image( textureAtlas.getTexture( item.textureName ) );
+		 *    cachedIcons[item] = icon;
+		 *    return icon;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #iconField
+		 */
+		public function get iconFunction():Function
+		{
+			return this._iconFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconFunction(value:Function):void
+		{
+			if(this._iconFunction == value)
+			{
+				return;
+			}
+			this._iconFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _enabledFunction:Function;
+
+		/**
+		 * A function used to determine if a specific tab is enabled. If this
+		 * function is not <code>null</code>, then the <code>enabledField</code>
+		 * will be ignored.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Boolean</pre>
+		 *
+		 * <p>All of the enabled fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the enabled function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.enabledFunction = function( item:Object ):Boolean
+		 * {
+		 *    return item.isEnabled;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #enabledField
+		 */
+		public function get enabledFunction():Function
+		{
+			return this._enabledFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set enabledFunction(value:Function):void
+		{
+			if(this._enabledFunction == value)
+			{
+				return;
+			}
+			this._enabledFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreSelectionChanges:Boolean = false;
 
 		/**
@@ -1200,6 +1663,7 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
+			this._animateSelectionChange = false;
 			if(this._selectedIndex == value)
 			{
 				return;
@@ -1249,6 +1713,8 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
+			//we don't need to set _animateSelectionChange to false because we
+			//always call the selectedIndex setter below, which sets it;
 			if(!this._dataProvider)
 			{
 				this.selectedIndex = -1;
@@ -1482,13 +1948,77 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _animateSelectionChange:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndex = -1;
+			//this flag also ensures that removing items from the ToggleGroup
+			//won't result in selection events
+			this._ignoreSelectionChanges = true;
+
+			//the tabs may contain things that shouldn't be disposed, so clean
+			//them up before super.dispose()
+			var tabCount:int = this.activeTabs.length;
+			for(var i:int = 0; i < tabCount; i++)
+			{
+				var tab:ToggleButton = this.activeTabs.shift();
+				this.destroyTab(tab);
+			}
+
+			//ensures that listeners are removed to avoid memory leaks
 			this.dataProvider = null;
+
 			super.dispose();
+		}
+
+		/**
+		 * Changes the <code>selectedIndex</code> property, but animates the
+		 * <code>selectionSkin</code> to the new position, as if the user
+		 * triggered a tab.
+		 *
+		 * @see #selectedIndex
+		 */
+		public function setSelectedIndexWithAnimation(selectedIndex:int):void
+		{
+			if(this._selectedIndex == selectedIndex)
+			{
+				return;
+			}
+			this._selectedIndex = selectedIndex;
+			//set this flag before dispatching the event because the TabBar
+			//might be forced to validate in an event listener
+			this._animateSelectionChange = true;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * Changes the <code>selectedItem</code> property, but animates the
+		 * <code>selectionSkin</code> to the new position, as if the user
+		 * triggered a tab.
+		 *
+		 * @see #selectedItem
+		 * @see #selectedIndex
+		 * @see #setSelectedIndexWithAnimation()
+		 */
+		public function setSelectedItemWithAnimation(selectedItem:Object):void
+		{
+			if(this.selectedItem == selectedItem)
+			{
+				return;
+			}
+			var selectedIndex:int = -1;
+			if(this._dataProvider !== null)
+			{
+				selectedIndex = this._dataProvider.getItemIndex(selectedItem);
+			}
+			this.setSelectedIndexWithAnimation(selectedIndex);
 		}
 
 		/**
@@ -1629,32 +2159,51 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function defaultTabInitializer(tab:ToggleButton, item:Object):void
+		protected function commitTabData(tab:ToggleButton, item:Object):void
 		{
-			if(item is Object)
+			if(item !== null)
 			{
-				if(item.hasOwnProperty(LABEL_FIELD))
+				if(this._labelFunction !== null)
 				{
-					tab.label = item.label;
+					tab.label = this._labelFunction(item);
+				}
+				else if(this._labelField !== null && item !== null && this._labelField in item)
+				{
+					tab.label = item[this._labelField];
+				}
+				else if(item is String)
+				{
+					tab.label = item as String;
 				}
 				else
 				{
 					tab.label = item.toString();
 				}
-				if(item.hasOwnProperty(ENABLED_FIELD))
+				if(this._iconFunction !== null)
 				{
-					tab.isEnabled = item.isEnabled as Boolean;
+					tab.defaultIcon = this._iconFunction(item);
+				}
+				else if(this._iconField !== null && item !== null && this._iconField in item)
+				{
+					tab.defaultIcon = item[this._iconField] as DisplayObject;
+				}
+				if(this._enabledFunction !== null)
+				{
+					//we account for this._isEnabled later
+					tab.isEnabled = this._enabledFunction(item);
+				}
+				else if(this._enabledField !== null && item !== null && this._enabledField in item)
+				{
+					//we account for this._isEnabled later
+					tab.isEnabled = item[this._enabledField] as Boolean;
 				}
 				else
 				{
 					tab.isEnabled = this._isEnabled;
 				}
-				for each(var field:String in DEFAULT_TAB_FIELDS)
+				if(this._tabInitializer !== null)
 				{
-					if(item.hasOwnProperty(field))
-					{
-						tab[field] = item[field];
-					}
+					this._tabInitializer(tab, item);
 				}
 			}
 			else
@@ -1667,9 +2216,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function defaultTabInitializer(tab:ToggleButton, item:Object):void
+		{
+			if(item !== null)
+			{
+				for each(var field:String in DEFAULT_TAB_FIELDS)
+				{
+					if(item.hasOwnProperty(field))
+					{
+						tab[field] = item[field];
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function defaultTabReleaser(tab:ToggleButton, oldItem:Object):void
 		{
-			tab.label = null;
 			for each(var field:String in DEFAULT_TAB_FIELDS)
 			{
 				if(oldItem.hasOwnProperty(field))
@@ -1788,6 +2353,7 @@ package feathers.controls
 		 */
 		protected function createFirstTab(item:Object):ToggleButton
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveFirstTab !== null)
 			{
 				var tab:ToggleButton = this.inactiveFirstTab;
@@ -1796,6 +2362,7 @@ package feathers.controls
 			}
 			else
 			{
+				isNewInstance = true;
 				var factory:Function = this._firstTabFactory != null ? this._firstTabFactory : this._tabFactory;
 				tab = ToggleButton(factory());
 				if(this._customFirstTabStyleName)
@@ -1813,8 +2380,15 @@ package feathers.controls
 				tab.isToggle = true;
 				this.addChild(tab);
 			}
-			this._tabInitializer(tab, item);
+			this.commitTabData(tab, item);
 			this._tabToItem[tab] = item;
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the tab may be
+				//disposed by the time listeners in the initializer are called.
+				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			}
 			return tab;
 		}
 
@@ -1823,6 +2397,7 @@ package feathers.controls
 		 */
 		protected function createLastTab(item:Object):ToggleButton
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveLastTab !== null)
 			{
 				var tab:ToggleButton = this.inactiveLastTab;
@@ -1831,6 +2406,7 @@ package feathers.controls
 			}
 			else
 			{
+				isNewInstance = true;
 				var factory:Function = this._lastTabFactory != null ? this._lastTabFactory : this._tabFactory;
 				tab = ToggleButton(factory());
 				if(this._customLastTabStyleName)
@@ -1848,8 +2424,15 @@ package feathers.controls
 				tab.isToggle = true;
 				this.addChild(tab);
 			}
-			this._tabInitializer(tab, item);
+			this.commitTabData(tab, item);
 			this._tabToItem[tab] = item;
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the tab may be
+				//disposed by the time listeners in the initializer are called.
+				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			}
 			return tab;
 		}
 
@@ -1858,8 +2441,10 @@ package feathers.controls
 		 */
 		protected function createTab(item:Object):ToggleButton
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveTabs.length === 0)
 			{
+				isNewInstance = true;
 				var tab:ToggleButton = ToggleButton(this._tabFactory());
 				if(this._customTabStyleName)
 				{
@@ -1877,8 +2462,15 @@ package feathers.controls
 				tab = this.inactiveTabs.shift();
 				this.releaseTab(tab);
 			}
-			this._tabInitializer(tab, item);
+			this.commitTabData(tab, item);
 			this._tabToItem[tab] = item;
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the tab may be
+				//disposed by the time listeners in the initializer are called.
+				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			}
 			return tab;
 		}
 
@@ -1889,13 +2481,24 @@ package feathers.controls
 		{
 			var item:Object = this._tabToItem[tab];
 			delete this._tabToItem[tab];
-			if(this._tabReleaser.length === 1)
+			if(this._labelFunction !== null || this._labelField in item)
 			{
-				this._tabReleaser(tab);
+				tab.label = null;
 			}
-			else
+			if(this._iconFunction !== null || this._iconField in item)
 			{
-				this._tabReleaser(tab, item);
+				tab.defaultIcon = null;
+			}
+			if(this._tabReleaser !== null)
+			{
+				if(this._tabReleaser.length === 1)
+				{
+					this._tabReleaser(tab);
+				}
+				else
+				{
+					this._tabReleaser(tab, item);
+				}
 			}
 		}
 
@@ -1937,11 +2540,64 @@ package feathers.controls
 			var contentHeight:Number = this._layoutResult.contentHeight;
 			//minimum dimensions are the same as the measured dimensions
 			this.saveMeasurements(contentWidth, contentHeight, contentWidth, contentHeight);
-			
+
 			//final validation to avoid juggler next frame issues
 			for each(var tab:ToggleButton in this.activeTabs)
 			{
 				tab.validate();
+			}
+			if(this._selectionSkin !== null)
+			{
+				//always on top
+				this.setChildIndex(this._selectionSkin, this.numChildren - 1);
+
+				if(this._selectionChangeTween !== null)
+				{
+					this._selectionChangeTween.advanceTime(this._selectionChangeTween.totalTime);
+				}
+				if(this._selectedIndex >= 0)
+				{
+					this._selectionSkin.visible = true;
+					tab = this.activeTabs[this._selectedIndex];
+					if(this._animateSelectionChange)
+					{
+						this._selectionChangeTween = new Tween(this._selectionSkin, this._selectionChangeDuration, this._selectionChangeEase);
+						if(this._direction === Direction.VERTICAL)
+						{
+							this._selectionChangeTween.animate("y", tab.y);
+							this._selectionChangeTween.animate("height", tab.height);
+						}
+						else //horizontal
+						{
+							this._selectionChangeTween.animate("x", tab.x);
+							this._selectionChangeTween.animate("width", tab.width);
+						}
+						this._selectionChangeTween.onComplete = selectionChangeTween_onComplete;
+						Starling.juggler.add(this._selectionChangeTween);
+					}
+					else
+					{
+						if(this._direction === DIRECTION_VERTICAL)
+						{
+							this._selectionSkin.y = tab.y;
+							this._selectionSkin.height = tab.height;
+						}
+						else //horizontal
+						{
+							this._selectionSkin.x = tab.x;
+							this._selectionSkin.width = tab.width;
+						}
+					}
+				}
+				else
+				{
+					this._selectionSkin.visible = false;
+				}
+				this._animateSelectionChange = false;
+				if(this._selectionSkin is IValidating)
+				{
+					IValidating(this._selectionSkin).validate();
+				}
 			}
 		}
 
@@ -2032,6 +2688,14 @@ package feathers.controls
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function selectionChangeTween_onComplete():void
+		{
+			this._selectionChangeTween = null;
 		}
 
 		/**
@@ -2129,13 +2793,31 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function tab_triggeredHandler(event:Event):void
+		{
+			//if this was called after dispose, ignore it
+			if(!this._dataProvider || !this.activeTabs)
+			{
+				return;
+			}
+			var tab:ToggleButton = ToggleButton(event.currentTarget);
+			var index:int = this.activeTabs.indexOf(tab);
+			var item:Object = this._dataProvider.getItemAt(index);
+			this.dispatchEventWith(Event.TRIGGERED, false, item);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function toggleGroup_changeHandler(event:Event):void
 		{
 			if(this._ignoreSelectionChanges)
 			{
 				return;
 			}
-			this.selectedIndex = this.toggleGroup.selectedIndex;
+			//it should only get here if the change happened by the user
+			//triggering a tab.
+			this.setSelectedIndexWithAnimation(this.toggleGroup.selectedIndex);
 		}
 
 		/**

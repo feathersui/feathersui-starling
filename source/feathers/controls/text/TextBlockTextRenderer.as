@@ -7,14 +7,11 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IStateContext;
-	import feathers.core.IStateObserver;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
-	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -26,9 +23,15 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.Font;
+	import flash.text.FontStyle;
+	import flash.text.FontType;
 	import flash.text.engine.ContentElement;
 	import flash.text.engine.ElementFormat;
 	import flash.text.engine.FontDescription;
+	import flash.text.engine.FontLookup;
+	import flash.text.engine.FontPosture;
+	import flash.text.engine.FontWeight;
 	import flash.text.engine.SpaceJustifier;
 	import flash.text.engine.TabStop;
 	import flash.text.engine.TextBaseline;
@@ -41,11 +44,12 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.display.Image;
-	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MathUtil;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
@@ -78,12 +82,13 @@ package feathers.controls.text
 	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
-	public class TextBlockTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
+	public class TextBlockTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
 		/**
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
+
 		/**
 		 * @private
 		 */
@@ -126,23 +131,35 @@ package feathers.controls.text
 		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
 
 		/**
-		 * The text will be positioned to the left edge.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
 		 *
-		 * @see #textAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TEXT_ALIGN_LEFT:String = "left";
 
 		/**
-		 * The text will be centered horizontally.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
 		 *
-		 * @see #textAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TEXT_ALIGN_CENTER:String = "center";
 
 		/**
-		 * The text will be positioned to the right edge.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
 		 *
-		 * @see #textAlign
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const TEXT_ALIGN_RIGHT:String = "right";
 
@@ -316,40 +333,19 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _text:String;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem ipsum";</listing>
-		 *
-		 * @default null
-		 */
-		public function get text():String
-		{
-			return this._textElement ? this._text : null;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
+		override public function set text(value:String):void
 		{
 			if(this._text == value)
 			{
 				return;
 			}
-			this._text = value;
-			if(!this._textElement)
+			if(this._textElement === null)
 			{
 				this._textElement = new TextElement(value);
 			}
 			this._textElement.text = value;
 			this.content = this._textElement;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			super.text = value;
 		}
 
 		/**
@@ -389,7 +385,7 @@ package feathers.controls.text
 		 */
 		public function set content(value:ContentElement):void
 		{
-			if(this._content == value)
+			if(this._content === value)
 			{
 				return;
 			}
@@ -406,6 +402,30 @@ package feathers.controls.text
 		}
 
 		/**
+		 * For debugging purposes, the current
+		 * <code>flash.text.engine.ElementFormat</code> used to render the text.
+		 * Updated during validation, and may be <code>null</code> before the
+		 * first validation.
+		 *
+		 * <p>Do not modify this value. It is meant for testing and debugging
+		 * only. Use the parent's <code>starling.text.TextFormat</code> font
+		 * styles APIs instead.</p>
+		 */
+		public function get currentElementFormat():ElementFormat
+		{
+			if(this._textElement === null)
+			{
+				return null;
+			}
+			return this._textElement.elementFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fontStylesElementFormat:ElementFormat;
+
+		/**
 		 * @private
 		 */
 		protected var _elementFormatForState:Object;
@@ -416,14 +436,27 @@ package feathers.controls.text
 		protected var _elementFormat:ElementFormat;
 
 		/**
-		 * The font and styles used to draw the text. This property will be
-		 * ignored if the content is not a <code>TextElement</code> instance.
+		 * Advanced font formatting used to draw the text, if
+		 * <code>fontStyles</code> and <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the full capabilities
+		 * of Flash Text Engine are required.
 		 *
 		 * <p>In the following example, the element format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.elementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with <code>ElementFormat</code>
+		 * will always take precedence.</p>
+		 *
+		 * <p><strong>Warning:</strong> This property will be ignored if the
+		 * <code>content</code> property is customized with Flash Text Engine
+		 * rich text objects such as <code>GroupElement</code> and
+		 * <code>GraphicElement</code>.</p>
+		 * 
 		 * @default null
 		 *
 		 * @see #setElementFormatForState()
@@ -455,9 +488,11 @@ package feathers.controls.text
 		protected var _disabledElementFormat:ElementFormat;
 
 		/**
-		 * The font and styles used to draw the text when the component is
-		 * disabled. This property will be ignored if the content is not a
-		 * <code>TextElement</code> instance.
+		 * Advanced font formatting used to draw the text when the component
+		 * is disabled, if <code>disabledFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of Flash Text Engine are
+		 * required.
 		 *
 		 * <p>In the following example, the disabled element format is changed:</p>
 		 *
@@ -465,6 +500,17 @@ package feathers.controls.text
 		 * textRenderer.isEnabled = false;
 		 * textRenderer.disabledElementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with <code>ElementFormat</code>
+		 * will always take precedence.</p>
+		 *
+		 * <p><strong>Warning:</strong> This property will be ignored if the
+		 * <code>content</code> property is customized with Flash Text Engine
+		 * rich text objects such as <code>GroupElement</code> and
+		 * <code>GraphicElement</code>.</p>
+		 * 
 		 * @default null
 		 *
 		 * @see #elementFormat
@@ -495,16 +541,29 @@ package feathers.controls.text
 		protected var _selectedElementFormat:ElementFormat;
 
 		/**
-		 * The font and styles used to draw the text when the
-		 * <code>stateContext</code> implements the <code>IToggle</code>
-		 * interface, and it is selected. This property will be ignored if the
-		 * content is not a <code>TextElement</code> instance.
+		 * Advanced font formatting used to draw the text when the
+		 * <code>stateContext</code> is selected, if
+		 * <code>selectedFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of Flash Text Engine are
+		 * required.
 		 *
 		 * <p>In the following example, the selected element format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.selectedElementFormat = new ElementFormat( new FontDescription( "Source Sans Pro" ) );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with <code>ElementFormat</code>
+		 * will always take precedence.</p>
+		 *
+		 * <p><strong>Warning:</strong> This property will be ignored if the
+		 * <code>content</code> property is customized with Flash Text Engine
+		 * rich text objects such as <code>GroupElement</code> and
+		 * <code>GraphicElement</code>.</p>
+		 * 
 		 * @default null
 		 *
 		 * @see #stateContext
@@ -567,22 +626,28 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textAlign:String = TEXT_ALIGN_LEFT;
+		protected var _textAlign:String = null;
 
 		/**
 		 * The alignment of the text. For justified text, see the
 		 * <code>textJustifier</code> property.
+		 * 
+		 * <p>If <code>textAlign</code> is <code>null</code> the horizontal
+		 * alignment from the <code>starling.text.TextFormat</code> font styles
+		 * may be used. If no <code>starling.text.TextFormat</code> font styles
+		 * have been provided by the parent component, the alignment will
+		 * default to <code>HorizontalAlign.LEFT</code>.</p>
 		 *
-		 * <p>In the following example, the leading is changed to 20 pixels:</p>
+		 * <p>In the following example, the text alignment is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.textAlign = TextBlockTextRenderer.TEXT_ALIGN_CENTER;</listing>
+		 * textRenderer.textAlign = HorizontalAlign.CENTER;</listing>
 		 *
-		 * @default TextBlockTextRenderer.TEXT_ALIGN_LEFT
+		 * @default null
 		 *
-		 * @see #TEXT_ALIGN_LEFT
-		 * @see #TEXT_ALIGN_CENTER
-		 * @see #TEXT_ALIGN_RIGHT
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
 		 * @see #textJustifier
 		 */
 		public function get textAlign():String
@@ -600,39 +665,6 @@ package feathers.controls.text
 				return;
 			}
 			this._textAlign = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _wordWrap:Boolean = false;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, word wrap is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.wordWrap = true;</listing>
-		 *
-		 * @default false
-		 */
-		public function get wordWrap():Boolean
-		{
-			return this._wordWrap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set wordWrap(value:Boolean):void
-		{
-			if(this._wordWrap == value)
-			{
-				return;
-			}
-			this._wordWrap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1167,48 +1199,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _stateContext:IStateContext;
-
-		/**
-		 * When the text renderer observes a state context, the text renderer
-		 * may change its <code>ElementFormat</code> based on the current state
-		 * of that context. Typically, a relevant component will automatically
-		 * assign itself as the state context of a text renderer, so this
-		 * property is typically meant for internal use only.
-		 *
-		 * @default null
-		 *
-		 * @see #setElementFormatForState()
-		 */
-		public function get stateContext():IStateContext
-		{
-			return this._stateContext;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateContext(value:IStateContext):void
-		{
-			if(this._stateContext === value)
-			{
-				return;
-			}
-			if(this._stateContext)
-			{
-				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this._stateContext = value;
-			if(this._stateContext)
-			{
-				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STATE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _updateSnapshotOnScaleChange:Boolean = false;
 
 		/**
@@ -1273,7 +1263,6 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			this.stateContext = null;
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.texture.dispose();
@@ -1431,9 +1420,31 @@ package feathers.controls.text
 		}
 
 		/**
-		 * Sets the <code>ElementFormat</code> to be used by the text renderer
-		 * when the <code>currentState</code> property of the
-		 * <code>stateContext</code> matches the specified state value. 
+		 * Gets the advanced <code>ElementFormat</code> font formatting passed
+		 * in using <code>setElementFormatForState()</code> for the specified
+		 * state.
+		 *
+		 * <p>If an <code>ElementFormat</code> is not defined for a specific
+		 * state, returns <code>null</code>.</p>
+		 * 
+		 * @see #setElementFormatForState()
+		 */
+		public function getElementFormatForState(state:String):ElementFormat
+		{
+			if(this._elementFormatForState === null)
+			{
+				return null;
+			}
+			return ElementFormat(this._elementFormatForState[state]);
+		}
+
+		/**
+		 * Sets the advanced <code>ElementFormat</code> font formatting to be
+		 * used by the text renderer when the <code>currentState</code> property
+		 * of the <code>stateContext</code> matches the specified state value.
+		 * For advanced use cases where <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the full capabilities
+		 * of Flash Text Engine are required.
 		 * 
 		 * <p>If an <code>ElementFormat</code> is not defined for a specific
 		 * state, the value of the <code>elementFormat</code> property will be
@@ -1850,41 +1861,99 @@ package feathers.controls.text
 		 */
 		protected function refreshElementFormat():void
 		{
-			if(!this._textElement)
+			var elementFormat:ElementFormat;
+			if(this._stateContext !== null)
+			{
+				if(this._elementFormatForState !== null)
+				{
+					var currentState:String = this._stateContext.currentState;
+					if(currentState in this._elementFormatForState)
+					{
+						elementFormat = ElementFormat(this._elementFormatForState[currentState]);
+					}
+				}
+				if(elementFormat === null && this._disabledElementFormat !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					elementFormat = this._disabledElementFormat;
+				}
+				if(elementFormat === null && this._selectedElementFormat !== null &&
+					this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+				{
+					elementFormat = this._selectedElementFormat;
+				}
+			}
+			else //no state context
+			{
+				//we can still check if the text renderer is disabled to see if
+				//we should use disabledElementFormat
+				if(!this._isEnabled && this._disabledElementFormat !== null)
+				{
+					elementFormat = this._disabledElementFormat;
+				}
+			}
+			if(elementFormat === null)
+			{
+				elementFormat = this._elementFormat;
+			}
+			//ElementFormat is considered more advanced, so it gets precedence
+			//over starling.text.TextFormat font styles
+			if(elementFormat === null)
+			{
+				elementFormat = this.getElementFormatFromFontStyles();
+			}
+			if(this._textElement === null)
 			{
 				return;
-			}
-			var elementFormat:ElementFormat;
-			if(this._stateContext && this._elementFormatForState)
-			{
-				var currentState:String = this._stateContext.currentState;
-				if(currentState in this._elementFormatForState)
-				{
-					elementFormat = ElementFormat(this._elementFormatForState[currentState]);
-				}
-			}
-			if(!elementFormat && !this._isEnabled && this._disabledElementFormat)
-			{
-				elementFormat = this._disabledElementFormat;
-			}
-			if(!elementFormat && this._selectedElementFormat &&
-				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
-			{
-				elementFormat = this._selectedElementFormat;
-			}
-			if(!elementFormat)
-			{
-				if(!this._elementFormat)
-				{
-					this._elementFormat = new ElementFormat();
-				}
-				elementFormat = this._elementFormat;
 			}
 			if(this._textElement.elementFormat !== elementFormat)
 			{
 				this._textBlockChanged = true;
 				this._textElement.elementFormat = elementFormat;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getElementFormatFromFontStyles():ElementFormat
+		{
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
+				this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				var textFormat:TextFormat;
+				if(this._fontStyles !== null)
+				{
+					textFormat = this._fontStyles.getTextFormatForTarget(this);
+				}
+				if(textFormat !== null)
+				{
+					var fontWeight:String = FontWeight.NORMAL;
+					if(textFormat.bold)
+					{
+						fontWeight = FontWeight.BOLD;
+					}
+					var fontPosture:String = FontPosture.NORMAL;
+					if(textFormat.italic)
+					{
+						fontPosture = FontPosture.ITALIC;
+					}
+					var fontLookup:String = FontLookup.DEVICE;
+					if(SystemUtil.isEmbeddedFont(textFormat.font, textFormat.bold, textFormat.italic, FontType.EMBEDDED_CFF))
+					{
+						fontLookup = FontLookup.EMBEDDED_CFF;
+					}
+					var fontDescription:FontDescription =
+						new FontDescription(textFormat.font, fontWeight, fontPosture, fontLookup);
+					this._fontStylesElementFormat = new ElementFormat(fontDescription, textFormat.size, textFormat.color);
+				}
+				else if(this._fontStylesElementFormat === null)
+				{
+					//fallback to a default so that something is displayed
+					this._fontStylesElementFormat = new ElementFormat();
+				}
+			}
+			return this._fontStylesElementFormat;
 		}
 
 		/**
@@ -2040,6 +2109,9 @@ package feathers.controls.text
 							//this is faster, if we haven't resized the bitmapdata
 							var existingTexture:Texture = snapshot.texture;
 							existingTexture.root.uploadBitmapData(bitmapData);
+							//however, the image won't be notified that its
+							//texture has changed, so we need to do it manually
+							this.textSnapshot.setRequiresRedraw();
 						}
 					}
 					if(newTexture)
@@ -2268,7 +2340,7 @@ package feathers.controls.text
 					{
 						yPosition += this._leading;
 					}
-					
+
 					yPosition += this.calculateLineAscent(line);
 					line.y = yPosition;
 					yPosition += line.totalDescent;
@@ -2282,7 +2354,7 @@ package feathers.controls.text
 			{
 				//no need to align the measurement text lines because they won't
 				//be rendered
-				this.alignTextLines(textLines, width, this._textAlign);
+				this.alignTextLines(textLines, width, this.getHorizontalAlignment());
 			}
 
 			inactiveTextLineCount = HELPER_TEXT_LINES.length;
@@ -2308,17 +2380,38 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function getHorizontalAlignment():String
+		{
+			var horizontalAlign:String = this._textAlign;
+			if(horizontalAlign === null && this._fontStyles !== null)
+			{
+				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(format !== null)
+				{
+					horizontalAlign = format.horizontalAlign
+				}
+			}
+			if(horizontalAlign === null)
+			{
+				horizontalAlign = HorizontalAlign.LEFT;
+			}
+			return horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function alignTextLines(textLines:Vector.<TextLine>, width:Number, textAlign:String):void
 		{
 			var lineCount:int = textLines.length;
 			for(var i:int = 0; i < lineCount; i++)
 			{
 				var line:TextLine = textLines[i];
-				if(textAlign == TEXT_ALIGN_CENTER)
+				if(textAlign == HorizontalAlign.CENTER)
 				{
 					line.x = (width - line.width) / 2;
 				}
-				else if(textAlign == TEXT_ALIGN_RIGHT)
+				else if(textAlign == HorizontalAlign.RIGHT)
 				{
 					line.x = width - line.width;
 				}
@@ -2327,14 +2420,6 @@ package feathers.controls.text
 					line.x = 0;
 				}
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stateContext_stateChangeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }

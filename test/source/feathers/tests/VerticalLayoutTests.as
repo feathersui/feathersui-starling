@@ -1,5 +1,6 @@
 package feathers.tests
 {
+	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.VerticalLayoutData;
@@ -199,6 +200,109 @@ package feathers.tests
 			bounds.explicitHeight = 640;
 			this._layout.layout(items, bounds);
 			Assert.assertStrictlyEquals("VerticalLayoutData with percentWidth < 0 does not clamp to 0", 0, item1.width);
+		}
+
+		[Test]
+		public function testPercentWidthWithWrappingLabelAndMaxWidth():void
+		{
+			var viewPortMaxWidth:Number = 100;
+			var item1:Label = new Label();
+			item1.text = "I am the very model of a modern Major General";
+			item1.wordWrap = true;
+			item1.validate();
+			var unwrappedWidth:Number = item1.width;
+			var unwrappedHeight:Number = item1.height;
+			var layoutData1:VerticalLayoutData = new VerticalLayoutData();
+			layoutData1.percentWidth = 100;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.maxWidth = viewPortMaxWidth;
+			this._layout.layout(items, bounds);
+			//since we're setting maxWidth, the width may actually be smaller
+			Assert.assertTrue("VerticalLayoutData with percentWidth with a wrapping Label results in incorrect width",
+				viewPortMaxWidth >= item1.width);
+			//we're only checking that it has more than one line
+			Assert.assertTrue("VerticalLayoutData with percentWidth on a wrapping Label results in height that is too small",
+				unwrappedHeight < item1.height);
+		}
+
+		[Test]
+		public function testDistributeHeights():void
+		{
+			this._layout.distributeHeights = true;
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			var item2:LayoutGroup = new LayoutGroup();
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			var itemHeight:Number = viewPortHeight / items.length;
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights results in wrong item height",
+				itemHeight, item1.height);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights results in wrong item height",
+				itemHeight, item2.height);
+		}
+
+		[Test]
+		public function testDistributeHeightsWithLargerItemHeights():void
+		{
+			this._layout.distributeHeights = true;
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.height = 720;
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.height = 800;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			var itemHeight:Number = viewPortHeight / items.length;
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights with larger item heights results in wrong item height",
+				itemHeight, item1.height);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights with larger item heights results in wrong item height",
+				itemHeight, item2.height);
+		}
+
+		[Test]
+		public function testDistributeHeightsWithoutExplicitHeight():void
+		{
+			this._layout.distributeHeights = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.height = 480;
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.height = 640;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			this._layout.layout(items, new ViewPortBounds());
+			var largerHeight:Number = Math.max(item1.height, item2.height);
+			var itemHeight:Number = largerHeight * items.length;
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and no explicit height results in wrong item height",
+				itemHeight, item1.height);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and no explicit height results in wrong item height",
+				itemHeight, item2.height);
+		}
+
+		[Test]
+		public function testDistributeHeightsWithUseVirtualLayout():void
+		{
+			this._layout.distributeHeights = true;
+			this._layout.useVirtualLayout = true;
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			var item2:LayoutGroup = new LayoutGroup();
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			var itemHeight:Number = viewPortHeight / items.length;
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and useVirtualLayout results in wrong item height",
+				itemHeight, item1.height);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and useVirtualLayout results in wrong item height",
+				itemHeight, item2.height);
 		}
 	}
 }

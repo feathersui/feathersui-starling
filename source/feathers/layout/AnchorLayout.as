@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -42,7 +44,7 @@ package feathers.layout
 	 * Positions and sizes items by anchoring their edges (or center points)
 	 * to their parent container or to other items.
 	 *
-	 * @see ../../../help/anchor-layout How to use AnchorLayout with Feathers containers
+	 * @see ../../../help/anchor-layout.html How to use AnchorLayout with Feathers containers
 	 * @see AnchorLayoutData
 	 */
 	public class AnchorLayout extends EventDispatcher implements ILayout
@@ -62,6 +64,7 @@ package feathers.layout
 		 */
 		public function AnchorLayout()
 		{
+			super();
 		}
 
 		/**
@@ -1054,110 +1057,131 @@ package feathers.layout
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = items[i] as IFeathersControl;
-				if(control)
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject)
 				{
-					if(control is ILayoutDisplayObject)
+					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+					if(!layoutItem.includeInLayout)
 					{
-						var layoutControl:ILayoutDisplayObject = ILayoutDisplayObject(control);
-						if(!layoutControl.includeInLayout)
+						continue;
+					}
+					var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+					if(layoutData !== null)
+					{
+						var left:Number = layoutData.left;
+						var hasLeftPosition:Boolean = left === left; //!isNaN
+						var leftAnchor:DisplayObject = layoutData.leftAnchorDisplayObject;
+						var right:Number = layoutData.right;
+						var rightAnchor:DisplayObject = layoutData.rightAnchorDisplayObject;
+						var hasRightPosition:Boolean = right === right; //!isNaN
+						var percentWidth:Number = layoutData.percentWidth;
+						var hasPercentWidth:Boolean = percentWidth === percentWidth; //!isNaN
+						if(needsWidth)
 						{
+							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
+							if(hasLeftPosition && leftAnchor === null &&
+								hasRightPosition && rightAnchor === null)
+							{
+								measureItem.maxWidth = maxWidth - left - right;
+							}
+							else if(hasPercentWidth)
+							{
+								if(percentWidth < 0)
+								{
+									percentWidth = 0;
+								}
+								else if(percentWidth > 100)
+								{
+									percentWidth = 100;
+								}
+								measureItem.maxWidth = percentWidth * 0.01 * containerWidth;
+							}
+						}
+						else
+						{
+							//optimization: set the child width before
+							//validation if the container width is explicit
+							//or has a maximum
+							if(hasLeftPosition && leftAnchor === null &&
+								hasRightPosition && rightAnchor === null)
+							{
+								item.width = containerWidth - left - right;
+							}
+							else if(hasPercentWidth)
+							{
+								if(percentWidth < 0)
+								{
+									percentWidth = 0;
+								}
+								else if(percentWidth > 100)
+								{
+									percentWidth = 100;
+								}
+								item.width = percentWidth * 0.01 * containerWidth;
+							}
+						}
+						var horizontalCenter:Number = layoutData.horizontalCenter;
+						var hasHorizontalCenterPosition:Boolean = horizontalCenter === horizontalCenter; //!isNaN
+
+						var top:Number = layoutData.top;
+						var hasTopPosition:Boolean = top === top; //!isNaN
+						var topAnchor:DisplayObject = layoutData.topAnchorDisplayObject;
+						var bottom:Number = layoutData.bottom;
+						var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
+						var bottomAnchor:DisplayObject = layoutData.bottomAnchorDisplayObject;
+						var percentHeight:Number = layoutData.percentHeight;
+						var hasPercentHeight:Boolean = percentHeight === percentHeight; //!isNaN
+						if(!needsHeight)
+						{
+							//optimization: set the child height before
+							//validation if the container height is explicit
+							//or has a maximum.
+							if(hasTopPosition && topAnchor === null &&
+								hasBottomPosition && bottomAnchor === null)
+							{
+								item.height = containerHeight - top - bottom;
+							}
+							else if(hasPercentHeight)
+							{
+								if(percentHeight < 0)
+								{
+									percentHeight = 0;
+								}
+								else if(percentHeight > 100)
+								{
+									percentHeight = 100;
+								}
+								item.height = percentHeight * 0.01 * containerHeight; 
+							}
+						}
+						var verticalCenter:Number = layoutData.verticalCenter;
+						var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
+
+						if((hasRightPosition && !hasLeftPosition && !hasHorizontalCenterPosition) ||
+							hasHorizontalCenterPosition)
+						{
+							if(item is IValidating)
+							{
+								IValidating(item).validate();
+							}
 							continue;
 						}
-						var layoutData:AnchorLayoutData = layoutControl.layoutData as AnchorLayoutData;
-						if(layoutData)
+						else if((hasBottomPosition && !hasTopPosition && !hasVerticalCenterPosition) ||
+							hasVerticalCenterPosition)
 						{
-							var left:Number = layoutData.left;
-							var hasLeftPosition:Boolean = left === left; //!isNaN
-							var leftAnchor:DisplayObject = layoutData.leftAnchorDisplayObject;
-							var right:Number = layoutData.right;
-							var rightAnchor:DisplayObject = layoutData.rightAnchorDisplayObject;
-							var hasRightPosition:Boolean = right === right; //!isNaN
-							var percentWidth:Number = layoutData.percentWidth;
-							var hasPercentWidth:Boolean = percentWidth === percentWidth; //!isNaN
-							if(!needsWidth)
+							if(item is IValidating)
 							{
-								//optimization: set the child width before
-								//validation if the container width is explicit
-								//or has a maximum
-								if(hasLeftPosition && leftAnchor === null &&
-									hasRightPosition && rightAnchor === null)
-								{
-									control.width = containerWidth - left - right;
-								}
-								else if(hasPercentWidth)
-								{
-									if(percentWidth < 0)
-									{
-										percentWidth = 0;
-									}
-									else if(percentWidth > 100)
-									{
-										percentWidth = 100;
-									}
-									control.width = percentWidth * 0.01 * containerWidth;
-								}
+								IValidating(item).validate();
 							}
-							var horizontalCenter:Number = layoutData.horizontalCenter;
-							var hasHorizontalCenterPosition:Boolean = horizontalCenter === horizontalCenter; //!isNaN
-
-							var top:Number = layoutData.top;
-							var hasTopPosition:Boolean = top === top; //!isNaN
-							var topAnchor:DisplayObject = layoutData.topAnchorDisplayObject;
-							var bottom:Number = layoutData.bottom;
-							var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
-							var bottomAnchor:DisplayObject = layoutData.bottomAnchorDisplayObject;
-							var percentHeight:Number = layoutData.percentHeight;
-							var hasPercentHeight:Boolean = percentHeight === percentHeight; //!isNaN
-							if(!needsHeight)
-							{
-								//optimization: set the child height before
-								//validation if the container height is explicit
-								//or has a maximum.
-								if(hasTopPosition && topAnchor === null &&
-									hasBottomPosition && bottomAnchor === null)
-								{
-									control.height = containerHeight - top - bottom;
-								}
-								else if(hasPercentHeight)
-								{
-									if(percentHeight < 0)
-									{
-										percentHeight = 0;
-									}
-									else if(percentHeight > 100)
-									{
-										percentHeight = 100;
-									}
-									control.height = percentHeight * 0.01 * containerHeight; 
-								}
-							}
-							var verticalCenter:Number = layoutData.verticalCenter;
-							var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
-
-							if((hasRightPosition && !hasLeftPosition && !hasHorizontalCenterPosition) ||
-								hasHorizontalCenterPosition)
-							{
-								control.validate();
-								continue;
-							}
-							else if((hasBottomPosition && !hasTopPosition && !hasVerticalCenterPosition) ||
-								hasVerticalCenterPosition)
-							{
-								control.validate();
-								continue;
-							}
+							continue;
 						}
 					}
-					if(force)
+				}
+				if(force || this.isReferenced(item, items))
+				{
+					if(item is IValidating)
 					{
-						control.validate();
-						continue;
-					}
-					if(this.isReferenced(DisplayObject(control), items))
-					{
-						control.validate();
-						continue;
+						IValidating(item).validate();
 					}
 				}
 			}

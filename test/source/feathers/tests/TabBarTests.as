@@ -3,6 +3,7 @@ package feathers.tests
 	import feathers.controls.TabBar;
 	import feathers.controls.ToggleButton;
 	import feathers.data.ListCollection;
+	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import flash.geom.Point;
 
@@ -18,16 +19,19 @@ package feathers.tests
 	public class TabBarTests
 	{
 		private var _tabBar:TabBar;
+		private var _icon:DisposeFlagQuad;
 
 		[Before]
 		public function prepare():void
 		{
+			this._icon = new DisposeFlagQuad();
+
 			this._tabBar = new TabBar();
 			this._tabBar.dataProvider = new ListCollection(
 			[
 				{ label: "One", name: "one" },
 				{ label: "Two" },
-				{ label: "Three", isEnabled: true, name: "three" },
+				{ label: "Three", isEnabled: true, name: "three", defaultIcon: this._icon },
 				{ label: "Four", isEnabled: false, name: "four" },
 			]);
 			this._tabBar.tabFactory = function():ToggleButton
@@ -45,6 +49,9 @@ package feathers.tests
 		{
 			this._tabBar.removeFromParent(true);
 			this._tabBar = null;
+
+			this._icon.removeFromParent(true);
+			this._icon = null;
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -260,6 +267,14 @@ package feathers.tests
 			Assert.assertFalse("Tab without isEnabled value in data provider is incorrectly enabled when TabBar is disabled", tab1.isEnabled);
 			Assert.assertFalse("Tab with isEnabled value set to true in data provider is incorrectly enabled when TabBar is disabled", tab3.isEnabled);
 			Assert.assertFalse("Tab with isEnabled value set to false in data provider is incorrectly enabled when TabBar is disabled", tab4.isEnabled);
+		}
+
+		[Test]
+		public function testIconNotDisposed():void
+		{
+			this._tabBar.validate();
+			this._tabBar.dispose();
+			Assert.assertFalse("Tab icon incorrectly disposed.", this._icon.isDisposed);
 		}
 	}
 }

@@ -952,18 +952,19 @@ package feathers.controls.supportClasses
 			}
 
 			this._isTransitionActive = false;
+			var nextTransition:Function = this._nextScreenTransition;
+			this._nextScreenTransition = null;
 			if(this._clearAfterTransition)
 			{
-				this.clearScreenInternal(this._nextScreenTransition);
+				this._clearAfterTransition = false;
+				this.clearScreenInternal(nextTransition);
 			}
 			else if(this._nextScreenID !== null)
 			{
-				this.showScreenInternal(this._nextScreenID, this._nextScreenTransition);
+				var nextScreenID:String = this._nextScreenID;
+				this._nextScreenID = null;
+				this.showScreenInternal(nextScreenID, nextTransition);
 			}
-
-			this._nextScreenID = null;
-			this._nextScreenTransition = null;
-			this._clearAfterTransition = false;
 		}
 
 		/**

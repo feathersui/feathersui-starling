@@ -158,5 +158,83 @@ package feathers.tests
 			this._layout.layout(items, bounds);
 			Assert.assertStrictlyEquals("HorizontalLayoutData with percentHeight < 0 does not clamp to 0", 0, item1.height);
 		}
+
+		[Test]
+		public function testDistributeWidths():void
+		{
+			this._layout.distributeWidths = true;
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			var item2:LayoutGroup = new LayoutGroup();
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			var itemWidth:Number = viewPortWidth / items.length;
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths results in wrong item width",
+				itemWidth, item1.width);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths results in wrong item width",
+				itemWidth, item2.width);
+		}
+
+		[Test]
+		public function testDistributeWidthsWithLargerItemWidths():void
+		{
+			this._layout.distributeWidths = true;
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.width = 720;
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.width = 820;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			var itemWidth:Number = viewPortWidth / items.length;
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and larger item width results in wrong item width",
+				itemWidth, item1.width);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and larger item width results in wrong item width",
+				itemWidth, item2.width);
+		}
+
+		[Test]
+		public function testDistributeWidthsWithoutExplicitWidth():void
+		{
+			this._layout.distributeWidths = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.width = 480;
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.width = 640;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			this._layout.layout(items, new ViewPortBounds());
+			var largerWidth:Number = Math.max(item1.width, item2.width);
+			var itemWidth:Number = largerWidth * items.length;
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and no explicit width results in wrong item width",
+				itemWidth, item1.width);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and no explicit width results in wrong item width",
+				itemWidth, item2.width);
+		}
+
+		[Test]
+		public function testDistributeWidthsWithUseVirtualLayout():void
+		{
+			this._layout.distributeWidths = true;
+			this._layout.useVirtualLayout = true;
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			var item2:LayoutGroup = new LayoutGroup();
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			var itemWidth:Number = viewPortWidth / items.length;
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and useVirtualLayout results in wrong item width",
+				itemWidth, item1.width);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and useVirtualLayout results in wrong item width",
+				itemWidth, item2.width);
+		}
 	}
 }

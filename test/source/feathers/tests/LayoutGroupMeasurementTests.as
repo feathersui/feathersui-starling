@@ -24,6 +24,9 @@ package feathers.tests
 		private static const ITEM_WIDTH2:Number = 190;
 		private static const ITEM_HEIGHT2:Number = 170;
 
+		private static const ITEM_PIVOTX:Number = 105;
+		private static const ITEM_PIVOTY:Number = 80;
+
 		private var _group:LayoutGroup;
 		private var _group2:LayoutGroup;
 
@@ -268,6 +271,28 @@ package feathers.tests
 				ITEM_WIDTH, this._group.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._group.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeChildWithPivots():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			child.pivotX = ITEM_PIVOTX;
+			child.pivotY = ITEM_PIVOTY;
+			child.x = 120;
+			child.y = 130;
+			this._group.addChild(child);
+			this._group.validate();
+			var groupWidth:Number = child.x - ITEM_PIVOTX + ITEM_WIDTH;
+			var groupHeight:Number = child.y - ITEM_PIVOTY + ITEM_HEIGHT;
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly.",
+				groupWidth, this._group.width);
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly.",
+				groupHeight, this._group.height);
+			Assert.assertStrictlyEquals("The minWidth of the layout group was not calculated correctly.",
+				groupWidth, this._group.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly.",
+				groupHeight, this._group.minHeight);
 		}
 	}
 }

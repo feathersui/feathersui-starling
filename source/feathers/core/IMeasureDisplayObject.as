@@ -10,7 +10,7 @@ package feathers.core
 	/**
 	 * A display object with extra measurement properties.
 	 */
-	public interface IMeasureDisplayObject
+	public interface IMeasureDisplayObject extends IFeathersDisplayObject
 	{
 		/**
 		 * @copy feathers.core.FeathersControl#explicitWidth

@@ -23,7 +23,8 @@ package feathers.controls
 		/**
 		 * Constructor.
 		 */
-		public function TabNavigatorItem(classOrFunctionOrDisplayObject:Object, label:String)
+		public function TabNavigatorItem(classOrFunctionOrDisplayObject:Object,
+			label:String = null, icon:DisplayObject = null)
 		{
 			if(classOrFunctionOrDisplayObject is DisplayObject)
 			{
@@ -42,6 +43,7 @@ package feathers.controls
 				throw new ArgumentError("Unknown view type. Must be Class, Function, or DisplayObject.")
 			}
 			this._label = label;
+			this._icon = icon;
 		}
 
 		/**
@@ -190,6 +192,27 @@ package feathers.controls
 		public function set label(value:String):void
 		{
 			this._label = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _icon:DisplayObject;
+
+		/**
+		 * The optional icon to display on the tab.
+		 */
+		public function get icon():DisplayObject
+		{
+			return this._icon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set icon(value:DisplayObject):void
+		{
+			this._icon = value;
 		}
 
 		/**

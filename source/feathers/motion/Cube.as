@@ -14,7 +14,10 @@ package feathers.motion
 	 * Creates animated effects, like transitions for screen navigators, that
 	 * positions a display object in 3D space as if it is on a side of a cube,
 	 * and the cube may rotate up or down around the x-axis, or it may rotate
-	 * left or right around the y-axis..
+	 * left or right around the y-axis.
+	 *
+	 * <p>Warning: <code>Cube</code> and other transitions with 3D effects may
+	 * not be compatible with masks.</p>
 	 *
 	 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
 	 */
@@ -253,8 +256,8 @@ class CulledSprite3D extends Sprite3D
 {
 	override public function render(painter:Painter):void
 	{
-		Starling.current.context.setCulling(Context3DTriangleFace.BACK);
+		//this will be cleared later when the state is popped
+		painter.state.culling = Context3DTriangleFace.BACK;
 		super.render(painter);
-		Starling.current.context.setCulling(Context3DTriangleFace.NONE);
 	}
 }

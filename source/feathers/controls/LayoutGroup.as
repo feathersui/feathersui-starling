@@ -933,8 +933,8 @@ package feathers.controls
 				{
 					IValidating(item).validate();
 				}
-				var itemMaxX:Number = item.x + item.width;
-				var itemMaxY:Number = item.y + item.height;
+				var itemMaxX:Number = item.x - item.pivotX + item.width;
+				var itemMaxY:Number = item.y - item.pivotY + item.height;
 				if(itemMaxX === itemMaxX && //!isNaN
 					itemMaxX > maxX)
 				{

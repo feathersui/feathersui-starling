@@ -4,6 +4,7 @@ package feathers.tests
 	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 
 	import flash.geom.Point;
@@ -318,6 +319,27 @@ package feathers.tests
 			var maxChildWidth:Number = Math.max(CHILD1_WIDTH, CHILD2_WIDTH);
 			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set first child.x incorrectly", bounds.minWidth - CHILD1_WIDTH, item1.x);
 			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set second child.x incorrectly", bounds.minWidth - CHILD2_WIDTH, item2.x);
+		}
+
+		[Test]
+		public function testRightAlignmentWithExplicitWidthInBetweenItemWidths():void
+		{
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var explicitWidth:Number = (CHILD1_WIDTH + CHILD2_WIDTH) / 2;
+			bounds.explicitWidth = explicitWidth;
+			this._layout.horizontalAlign = HorizontalAlign.RIGHT;
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT and larger child than explicitWidth calculated contentWidth incorrectly",
+				CHILD1_WIDTH, result.contentWidth);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT and larger child than explicitWidth calculated viewPortWidth incorrectly",
+				explicitWidth, result.viewPortWidth);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT and larger child than explicitWidth calculated larger child x incorrectly",
+				0, item1.x);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT and larger child than explicitWidth calculated smaller child x incorrectly",
+				CHILD1_WIDTH - item2.width, item2.x);
 		}
 	}
 }

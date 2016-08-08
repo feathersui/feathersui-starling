@@ -248,8 +248,8 @@ package feathers.core
 			{
 				IValidating(popUp).validate();
 			}
-			popUp.x = Math.round((stage.stageWidth - popUp.width) / 2);
-			popUp.y = Math.round((stage.stageHeight - popUp.height) / 2);
+			popUp.x = popUp.pivotX + Math.round((stage.stageWidth - popUp.width) / 2);
+			popUp.y = popUp.pivotY + Math.round((stage.stageHeight - popUp.height) / 2);
 		}
 
 		/**

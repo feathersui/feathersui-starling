@@ -142,7 +142,9 @@ class ColorFadeTween extends Tween
 		this.onComplete = this.cleanupTween;
 
 		var navigator:DisplayObjectContainer = target.parent;
-		this._overlay = new Quad(navigator.width, navigator.height, color);
+		this._overlay = new Quad(1, 1, color);
+		this._overlay.width = navigator.width;
+		this._overlay.height = navigator.height;
 		this._overlay.alpha = 0;
 		this._overlay.touchable = false;
 		navigator.addChild(this._overlay);

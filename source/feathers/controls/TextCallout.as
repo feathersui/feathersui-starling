@@ -12,11 +12,14 @@ package feathers.controls
 	import feathers.core.IToolTip;
 	import feathers.core.PopUpManager;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.EnterFrameEvent;
+	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	[Exclude(name="content",kind="property")]
 	
@@ -183,7 +186,7 @@ package feathers.controls
 			callout.validate();
 			return callout;
 		}
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -191,6 +194,11 @@ package feathers.controls
 		{
 			super();
 			this.isQuickHitAreaEnabled = true;
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 		}
 
 		/**
@@ -270,6 +278,75 @@ package feathers.controls
 			}
 			this._wordWrap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the callout's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * callout.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the callout's text when the callout is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * callout.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
 		}
 
 		/**
@@ -447,6 +524,7 @@ package feathers.controls
 		protected function refreshTextRendererStyles():void
 		{
 			this.textRenderer.wordWrap = this._wordWrap;
+			this.textRenderer.fontStyles = this._fontStylesSet;
 		}
 
 		/**
@@ -459,6 +537,14 @@ package feathers.controls
 			{
 				this.positionRelativeToOrigin();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }

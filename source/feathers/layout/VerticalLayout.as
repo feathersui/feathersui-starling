@@ -159,6 +159,7 @@ package feathers.layout
 		 */
 		public function VerticalLayout()
 		{
+			super();
 		}
 
 		/**
@@ -976,6 +977,10 @@ package feathers.layout
 				//we need to calculate this before validateItems() because it
 				//needs to be passed in there.
 				distributedHeight = this.calculateDistributedHeight(items, explicitHeight, minHeight, maxHeight, false);
+				if(this._useVirtualLayout)
+				{
+					calculatedTypicalItemHeight = distributedHeight;
+				}
 			}
 
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeHeights ||

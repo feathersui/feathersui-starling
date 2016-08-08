@@ -20,6 +20,7 @@ package feathers.core
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.getQualifiedClassName;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -1886,7 +1887,7 @@ package feathers.core
 					this._invalidationFlags[flag] = true;
 				}
 			}
-			if(!this._validationQueue || !this._isInitialized)
+			if(this._validationQueue === null || !this._isInitialized)
 			{
 				//we'll add this component to the queue later, after it has been
 				//added to the stage.
@@ -1894,12 +1895,23 @@ package feathers.core
 			}
 			if(this._isValidating)
 			{
+				//if we've already incremented this counter this time, we can
+				//return. we're already in queue.
 				if(isAlreadyDelayedInvalid)
 				{
 					return;
 				}
 				this._invalidateCount++;
-				this._validationQueue.addControl(this, this._invalidateCount >= 10);
+				//if invalidate() is called during validation, we'll be added
+				//back to the end of the queue. we'll keep trying this a certain
+				//number of times, but at some point, it needs to be considered
+				//an infinite loop or a serious bug because it affects
+				//performance.
+				if(this._invalidateCount >= 10)
+				{
+					throw new Error(getQualifiedClassName(this) + " returned to validation queue too many times during validation. This may be an infinite loop. Try to avoid doing anything that calls invalidate() during validation.");
+				}
+				this._validationQueue.addControl(this);
 				return;
 			}
 			if(isAlreadyInvalid)
@@ -1907,7 +1919,7 @@ package feathers.core
 				return;
 			}
 			this._invalidateCount = 0;
-			this._validationQueue.addControl(this, false);
+			this._validationQueue.addControl(this);
 		}
 
 		/**
@@ -1933,19 +1945,16 @@ package feathers.core
 				}
 				this.initializeNow();
 			}
+			//if we're not actually invalid, there's nothing to do here, so
+			//simply return.
 			if(!this.isInvalid())
 			{
 				return;
 			}
 			if(this._isValidating)
 			{
-				//we were already validating, and something else told us to
-				//validate. that's bad...
-				if(this._validationQueue)
-				{
-					//...so we'll just try to do it later
-					this._validationQueue.addControl(this, true);
-				}
+				//we were already validating, so there's nothing to do here.
+				//the existing validation will continue.
 				return;
 			}
 			this._isValidating = true;
@@ -2429,7 +2438,7 @@ package feathers.core
 			{
 				this._invalidateCount = 0;
 				//add to validation queue, if required
-				this._validationQueue.addControl(this, false);
+				this._validationQueue.addControl(this);
 			}
 		}
 

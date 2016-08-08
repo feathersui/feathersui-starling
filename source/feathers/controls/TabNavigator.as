@@ -464,7 +464,27 @@ package feathers.controls
 			}
 			this.tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
 			this.tabBar.dataProvider = this._tabBarDataProvider;
+			this.tabBar.labelFunction = this.getTabLabel;
+			this.tabBar.iconFunction = this.getTabIcon;
 			this.addChild(this.tabBar);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getTabLabel(id:String):String
+		{
+			var item:TabNavigatorItem = this.getScreen(id);
+			return item.label;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getTabIcon(id:String):DisplayObject
+		{
+			var item:TabNavigatorItem = this.getScreen(id);
+			return item.icon;
 		}
 
 		/**
@@ -491,6 +511,8 @@ package feathers.controls
 		 */
 		override protected function layoutChildren():void
 		{
+			var screenWidth:Number = this.actualWidth;
+			var screenHeight:Number = this.actualHeight;
 			if(this._tabBarPosition === RelativePosition.LEFT ||
 				this._tabBarPosition === RelativePosition.RIGHT)
 			{
@@ -505,6 +527,7 @@ package feathers.controls
 				{
 					this.tabBar.x = this.actualWidth - this.tabBar.width;
 				}
+				screenWidth -= this.tabBar.width;
 			}
 			else //top or bottom
 			{
@@ -519,13 +542,14 @@ package feathers.controls
 				{
 					this.tabBar.y = this.actualHeight - this.tabBar.height;
 				}
+				screenHeight -= this.tabBar.height;
 			}
 
 			if(this._tabBarPosition === RelativePosition.LEFT)
 			{
 				this.screenContainer.x = this.tabBar.width;
 			}
-			else
+			else //top, bottom, or right
 			{
 				this.screenContainer.x = 0;
 			}
@@ -533,18 +557,18 @@ package feathers.controls
 			{
 				this.screenContainer.y = this.tabBar.height;
 			}
-			else
+			else //right, left, or bottom
 			{
 				this.screenContainer.y = 0;
 			}
-			this.screenContainer.width = this.actualWidth - this.screenContainer.x;
-			this.screenContainer.height = this.actualHeight - this.screenContainer.y;
+			this.screenContainer.width = screenWidth;
+			this.screenContainer.height = screenHeight;
 			if(this._activeScreen !== null)
 			{
 				this._activeScreen.x = 0;
 				this._activeScreen.y = 0;
-				this._activeScreen.width = this.screenContainer.width;
-				this._activeScreen.height = this.screenContainer.height;
+				this._activeScreen.width = screenWidth;
+				this._activeScreen.height = screenHeight;
 			}
 		}
 

@@ -21,6 +21,8 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
+	import feathers.text.FontStylesSet;
+	import feathers.utils.display.ScreenDensityScaleCalculator;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.display.Stage;
@@ -32,6 +34,7 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.text.TextFormat;
 	import starling.utils.Pool;
 
 	/**
@@ -84,12 +87,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const IPAD_1X_DPI:Number = 132;
-
-		/**
-		 * @private
-		 */
-		protected static const IPHONE_1X_DPI:Number = 163;
+		protected static var iOSStatusBarScaledHeight:Number;
 
 		/**
 		 * @private
@@ -208,6 +206,11 @@ package feathers.controls
 		public function Header()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this.addEventListener(Event.ADDED_TO_STAGE, header_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, header_removedFromStageHandler);
 		}
@@ -389,6 +392,11 @@ package feathers.controls
 		{
 			this._disposeItems = value;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreItemResizing:Boolean = false;
 
 		/**
 		 * @private
@@ -1042,6 +1050,75 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the title's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>titleFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the title's text when the header is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>titleFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customTitleStyleName:String;
 
 		/**
@@ -1296,6 +1373,8 @@ package feathers.controls
 				this.refreshTitleStyles();
 			}
 
+			var oldIgnoreItemResizing:Boolean = this._ignoreItemResizing;
+			this._ignoreItemResizing = true;
 			if(leftContentInvalid)
 			{
 				if(this._leftItems)
@@ -1340,6 +1419,7 @@ package feathers.controls
 					}
 				}
 			}
+			this._ignoreItemResizing = oldIgnoreItemResizing;
 
 			if(stateInvalid || textRendererInvalid)
 			{
@@ -1422,6 +1502,8 @@ package feathers.controls
 			var hasLeftItems:Boolean = this._leftItems !== null && this._leftItems.length > 0;
 			var hasRightItems:Boolean = this._rightItems !== null && this._rightItems.length > 0;
 			var hasCenterItems:Boolean = this._centerItems !== null && this._centerItems.length > 0;
+			var oldIgnoreItemResizing:Boolean = this._ignoreItemResizing;
+			this._ignoreItemResizing = true;
 			if(hasLeftItems)
 			{
 				var itemCount:int = this._leftItems.length;
@@ -1503,6 +1585,7 @@ package feathers.controls
 					}
 				}
 			}
+			this._ignoreItemResizing = oldIgnoreItemResizing;
 
 			if(this._titleAlign === HorizontalAlign.CENTER && hasCenterItems)
 			{
@@ -1757,6 +1840,7 @@ package feathers.controls
 		 */
 		protected function refreshTitleStyles():void
 		{
+			this.titleTextRenderer.fontStyles = this._fontStylesSet;
 			for(var propertyName:String in this._titleProperties)
 			{
 				var propertyValue:Object = this._titleProperties[propertyName];
@@ -1790,11 +1874,21 @@ package feathers.controls
 				return 0;
 			}
 
-			if(DeviceCapabilities.dpi % IPAD_1X_DPI === 0)
+			//this value only needs to be calculated once
+			if(iOSStatusBarScaledHeight !== iOSStatusBarScaledHeight)
 			{
-				return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPAD_1X_DPI) / starling.contentScaleFactor;
+				//uses the same mechanism as ScreenDensityScaleFactorManager,
+				//but uses different density values
+				var scaleSelector:ScreenDensityScaleCalculator = new ScreenDensityScaleCalculator();
+				scaleSelector.addScaleForDensity(168, 1); //original
+				scaleSelector.addScaleForDensity(326, 2); //retina
+				scaleSelector.addScaleForDensity(401, 3); //retina HD
+				iOSStatusBarScaledHeight = IOS_STATUS_BAR_HEIGHT * scaleSelector.getScale(DeviceCapabilities.dpi);
 			}
-			return IOS_STATUS_BAR_HEIGHT * Math.floor(DeviceCapabilities.dpi / IPHONE_1X_DPI) / starling.contentScaleFactor;
+
+			//while it probably won't change, contentScaleFactor shouldn't be
+			//considered constant, so do this calculation every time
+			return iOSStatusBarScaledHeight / starling.contentScaleFactor;
 		}
 
 		/**
@@ -2029,6 +2123,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function titleProperties_onChange(proxy:PropertyProxy, propertyName:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -2039,6 +2141,10 @@ package feathers.controls
 		 */
 		protected function item_resizeHandler(event:Event):void
 		{
+			if(this._ignoreItemResizing)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}

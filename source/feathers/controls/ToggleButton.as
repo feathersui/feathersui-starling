@@ -17,6 +17,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	/**
 	 * Dispatched when the button is selected or deselected either
@@ -651,18 +652,52 @@ package feathers.controls
 		}
 
 		/**
+		 * The font styles used to display the button's text when the button is
+		 * selected.
+		 *
+		 * <p>In the following example, the selected font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.selectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>labelFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function get selectedFontStyles():TextFormat
+		{
+			return this._fontStylesSet.selectedFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.selectedFormat = value;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _defaultSelectedLabelProperties:PropertyProxy;
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Set the <code>selectedFontStyles</code> property instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #selectedFontStyles()
 		 */
 		public function get defaultSelectedLabelProperties():Object
 		{
@@ -695,13 +730,20 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 *
+		 * DEPRECATED: Set the <code>selectedFontStyles</code> property, or call
+		 * the <code>setFontStylesForState()</code> function with
+		 * <code>ButtonState.UP_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 * 
+		 * @see #selectedFontStyles
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.UP_AND_SELECTED
 		 */
 		public function get selectedUpLabelProperties():Object
 		{
@@ -737,13 +779,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.DOWN_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DOWN_AND_SELECTED
 		 */
 		public function get selectedDownLabelProperties():Object
 		{
@@ -779,13 +825,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.HOVER_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.HOVER_AND_SELECTED
 		 */
 		public function get selectedHoverLabelProperties():Object
 		{
@@ -821,13 +871,17 @@ package feathers.controls
 		}
 
 		/**
-		 * DEPRECATED: Use the appropriate API on the label text renderer to set
-		 * font styles for a particular state.
+		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
+		 * with <code>ButtonState.DISABLED_AND_SELECTED</code> and pass in a
+		 * <code>starling.text.TextFormat</code> object instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #setFontStylesForState()
+		 * @see feathers.controls.ButtonState.DISABLED_AND_SELECTED
 		 */
 		public function get selectedDisabledLabelProperties():Object
 		{
@@ -1088,12 +1142,12 @@ package feathers.controls
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshSelectionEvents();
 			}
-			
+
 			super.draw();
 		}
 

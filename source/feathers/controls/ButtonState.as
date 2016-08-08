@@ -24,39 +24,52 @@ package feathers.controls
 		 * The default, up state.
 		 */
 		public static const UP:String = "up";
-		
+
 		/**
-		 * The down state, when the mouse is pressed over the component.
+		 * The down state, when a touch begins on the component.
 		 */
 		public static const DOWN:String = "down";
-		
+
 		/**
-		 * The hover state, when the mouse is over the component.
+		 * The hover state, when the mouse is over the component. This state is
+		 * not used on a touchscreen.
 		 */
 		public static const HOVER:String = "hover";
 
 		/**
-		 * The disabled state, when the component is disabled.
+		 * The disabled state, when the component's <code>isEnabled</code>
+		 * property is <code>false</code>.
+		 * 
+		 * @see feathers.core.FeathersControl#isEnabled
 		 */
 		public static const DISABLED:String = "disabled";
 
 		/**
-		 * The up state, when selected.
+		 * Same as the up state, but the component is also selected.
+		 *
+		 * @see feathers.core.ToggleButton#isSelected
 		 */
 		public static const UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
-		 * The down state, when selected.
+		 * Same as the down state, but the component is also selected.
+		 *
+		 * @see feathers.core.ToggleButton#isSelected
 		 */
 		public static const DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
-		 * The hover state, when selected.
+		 * Same as the hover state, but the component is also selected.
+		 *
+		 * @see feathers.core.ToggleButton#isSelected
 		 */
 		public static const HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
-		 * The disabled state, when selected.
+		 * Same as the disabled state, but the component is also selected.
+		 *
+		 * @see feathers.core.ToggleButton#isSelected
+		 * @see feathers.core.FeathersControl#isEnabled
 		 */
 		public static const DISABLED_AND_SELECTED:String = "disabledAndSelected";
 	}

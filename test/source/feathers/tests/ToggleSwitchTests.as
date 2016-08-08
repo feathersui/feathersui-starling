@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.Slider;
+	import feathers.controls.ToggleState;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
 
@@ -175,6 +176,34 @@ package feathers.tests
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertFalse("The isSelected property was not changed",
 				oldSelected === this._toggle.isSelected);
+		}
+
+		[Test]
+		public function testToggleSwitchDefaultsToToggleStateNotSelected():void
+		{
+			Assert.assertStrictlyEquals("ToggleSwitch currentState does not default to ToggleState.NOT_SELECTED", ToggleState.NOT_SELECTED, this._toggle.currentState);
+		}
+
+		[Test]
+		public function testToggleSwitchDefaultsToToggleStateDisabledWhenIsEnabledIsFalse():void
+		{
+			this._toggle.isEnabled = false;
+			Assert.assertStrictlyEquals("ToggleSwitch currentState does not default to ToggleState.DISABLED when isEnabled is false", ToggleState.DISABLED, this._toggle.currentState);
+		}
+
+		[Test]
+		public function testToggleSwitchDefaultsToToggleStateSelectedWhenIsSelectedIsTrue():void
+		{
+			this._toggle.isSelected = true;
+			Assert.assertStrictlyEquals("ToggleSwitch currentState does not default to ToggleState.DISABLED when isSelected is true", ToggleState.SELECTED, this._toggle.currentState);
+		}
+
+		[Test]
+		public function testToggleSwitchDefaultsToToggleStateSelectedAndDisabledWhenIsEnabledIsFalseAndIsSelectedIsTrue():void
+		{
+			this._toggle.isEnabled = false;
+			this._toggle.isSelected = true;
+			Assert.assertStrictlyEquals("ToggleSwitch currentState does not default to ToggleState.SELECTED_AND_DISABLED when isEnabled is false and  isSelected is true", ToggleState.SELECTED_AND_DISABLED, this._toggle.currentState);
 		}
 	}
 }

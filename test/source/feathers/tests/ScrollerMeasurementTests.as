@@ -191,11 +191,11 @@ package feathers.tests
 			this._viewPort.height = VIEW_PORT_HEIGHT;
 			this._viewPort.minWidth = VIEW_PORT_MIN_WIDTH;
 			this._viewPort.minHeight = VIEW_PORT_MIN_HEIGHT;
-			this._viewPort.resizeOnScroll = true;
 			this._scroller.viewPort = this._viewPort;
 			this._scroller.validate();
 			var oldMaxHSP:Number = this._scroller.maxHorizontalScrollPosition;
 			var oldMaxVSP:Number = this._scroller.maxVerticalScrollPosition;
+			this._viewPort.resizeOnScroll = true;
 			this._scroller.verticalScrollPosition++;
 			this._scroller.validate();
 

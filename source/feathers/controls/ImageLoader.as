@@ -700,7 +700,11 @@ package feathers.controls
 		private var _scale9Grid:Rectangle;
 
 		/**
-		 * The <code>scale9Grid</code> value to use on the internal <code>Image</code>.
+		 * The <code>scale9Grid</code> value to use on the internal
+		 * <code>starling.display.Image</code>.
+		 * 
+		 * <p>If this property is not <code>null</code>, the
+		 * <code>maintainAspectRatio</code> property will be ignored.</p>
 		 *
 		 * <p>In the following example, the image loader's scale9Grid is set to a
 		 * custom value:</p>
@@ -925,7 +929,8 @@ package feathers.controls
 		 * the new dimensions have a different aspect ratio than the texture.
 		 * 
 		 * <p>If the <code>scaleContent</code> property is set to
-		 * <code>false</code>, the <code>maintainAspectRatio</code> property is
+		 * <code>false</code> or if the <code>scale9Grid</code> property is not
+		 * <code>null</code>, the <code>maintainAspectRatio</code> property is
 		 * ignored.</p>
 		 *
 		 * <p>In the following example, the image loader's aspect ratio is not
@@ -1532,7 +1537,8 @@ package feathers.controls
 				{
 					newWidth = this._currentTextureWidth * this._textureScale;
 					if(this._scaleContent && this._maintainAspectRatio &&
-						this._scaleMode !== ScaleMode.NONE)
+						this._scaleMode !== ScaleMode.NONE &&
+						this._scale9Grid === null)
 					{
 						var heightScale:Number = 1;
 						if(!needsHeight)
@@ -1567,7 +1573,8 @@ package feathers.controls
 				{
 					newHeight = this._currentTextureHeight * this._textureScale;
 					if(this._scaleContent && this._maintainAspectRatio &&
-						this._scaleMode !== ScaleMode.NONE)
+						this._scaleMode !== ScaleMode.NONE &&
+						this._scale9Grid === null)
 					{
 						var widthScale:Number = 1;
 						if(!needsWidth)
@@ -1691,7 +1698,7 @@ package feathers.controls
 			}
 			if(this._scaleContent)
 			{
-				if(this._maintainAspectRatio)
+				if(this._maintainAspectRatio && this._scale9Grid === null)
 				{
 					HELPER_RECTANGLE.x = 0;
 					HELPER_RECTANGLE.y = 0;
@@ -2017,6 +2024,13 @@ package feathers.controls
 				}
 			}
 			this._texture.root.uploadBitmapData(bitmapData);
+			if(this.image !== null)
+			{
+				//this isn't technically required because other properties of
+				//the Image will be changed, but to avoid potential future
+				//refactoring headaches, it won't hurt to be extra careful.
+				this.image.setRequiresRedraw();
+			}
 			bitmapData.dispose();
 			
 			//if we have a cache for the textures, then the cache is the owner

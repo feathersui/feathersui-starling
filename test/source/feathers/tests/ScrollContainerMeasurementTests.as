@@ -19,6 +19,9 @@ package feathers.tests
 		//note: the item height is purposefully smaller than the background height
 		private static const ITEM_HEIGHT:Number = 160;
 
+		private static const ITEM_PIVOTX:Number = 105;
+		private static const ITEM_PIVOTY:Number = 80;
+
 		private var _container:ScrollContainer;
 		private var _container2:ScrollContainer;
 
@@ -208,6 +211,28 @@ package feathers.tests
 				ITEM_WIDTH, this._container.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the scroll container was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._container.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeChildWithPivots():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			child.pivotX = ITEM_PIVOTX;
+			child.pivotY = ITEM_PIVOTY;
+			child.x = 120;
+			child.y = 130;
+			this._container.addChild(child);
+			this._container.validate();
+			var containerWidth:Number = child.x - ITEM_PIVOTX + ITEM_WIDTH;
+			var containerHeight:Number = child.y - ITEM_PIVOTY + ITEM_HEIGHT;
+			Assert.assertStrictlyEquals("The width of the scroll container was not calculated correctly.",
+				containerWidth, this._container.width);
+			Assert.assertStrictlyEquals("The height of the scroll container was not calculated correctly.",
+				containerHeight, this._container.height);
+			Assert.assertStrictlyEquals("The minWidth of the scroll container was not calculated correctly.",
+				containerWidth, this._container.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the scroll container was not calculated correctly.",
+				containerHeight, this._container.minHeight);
 		}
 	}
 }

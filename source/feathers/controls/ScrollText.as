@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.TextFieldViewPort;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
@@ -16,6 +17,7 @@ package feathers.controls
 	import flash.text.TextFormat;
 
 	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	/**
 	 * Dispatched when an anchor (<code>&lt;a&gt;</code>) element in the HTML
@@ -270,6 +272,11 @@ package feathers.controls
 		public function ScrollText()
 		{
 			super();
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 			this.textViewPort = new TextFieldViewPort();
 			this.textViewPort.addEventListener(Event.TRIGGERED, textViewPort_triggeredHandler);
 			this.viewPort = this.textViewPort;
@@ -369,10 +376,100 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _textFormat:TextFormat;
+		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font and styles used to draw the text.
+		 * The font styles used to display the label's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but <code>ScrollText</code> supports
+		 * a larger number of ways to be customized. Use the
+		 * <code>textFormat</code> property to set more advanced styles
+		 * on the text renderer. If the <code>textFormat</code> property is not
+		 * <code>null</code>, the <code>fontStyles</code> property will be
+		 * ignored.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():starling.text.TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:starling.text.TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the label's text when the label is
+		 * disabled.
+		 *
+		 * <p>If the <code>textFormat</code> property or the
+		 * <code>disabledTextFormat</code> property is not <code>null</code>,
+		 * the <code>disabledFontStyles</code> property will be ignored.</p>
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but <code>ScrollText</code> supports
+		 * a larger number of ways to be customized. Use the
+		 * <code>disabledTextFormat</code> property to set more advanced styles
+		 * on the text renderer. If the <code>disabledTextFormat</code> property
+		 * is not <code>null</code>, the <code>disabledFontStyles</code>
+		 * property will be ignored.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():starling.text.TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:starling.text.TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _textFormat:flash.text.TextFormat;
+
+		/**
+		 * Advanced font formatting used to draw the text if
+		 * <code>fontStyles</code> cannot be used.
+		 * 
+		 * <p>If this property is not <code>null</code>, the
+		 * <code>fontStyles</code> property will be ignored.</p>
+		 * 
+		 * <p>Note: It is considered best practice to use the
+		 * <code>fontStyles</code> property and
+		 * <code>starling.text.TextFormat</code> for font formatting. The
+		 * <code>textFormat</code> property is available for advanced uses where
+		 * features of <code>flash.text.TextField</code> that are not exposed by
+		 * Starling's <code>TextFormat</code> need to be customized. In most
+		 * cases, these advanced features are not required.</p>
 		 *
 		 * <p>In the following example, the text is formatted:</p>
 		 *
@@ -381,10 +478,10 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #disabledTextFormat
+		 * @see #fontStyles
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get textFormat():TextFormat
+		public function get textFormat():flash.text.TextFormat
 		{
 			return this._textFormat;
 		}
@@ -392,7 +489,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set textFormat(value:TextFormat):void
+		public function set textFormat(value:flash.text.TextFormat):void
 		{
 			if(this._textFormat == value)
 			{
@@ -405,10 +502,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _disabledTextFormat:TextFormat;
+		protected var _disabledTextFormat:flash.text.TextFormat;
 
 		/**
-		 * The font and styles used to draw the text when the component is disabled.
+		 * Advanced font formatting used to draw the text when the component is
+		 * disabled if <code>disabledFontStyles</code> cannot be used.
+		 *
+		 * <p>If this property is not <code>null</code>, the
+		 * <code>disabledFontStyles</code> property will be ignored.</p>
+		 *
+		 * <p>Note: It is considered best practice to use the
+		 * <code>fontStyles</code> and <code>disabledFontStyles</code>
+		 * properties with <code>starling.text.TextFormat</code> for font
+		 * formatting. The <code>textFormat</code> property is available for
+		 * advanced uses where features of <code>flash.text.TextField</code>
+		 * that are not exposed by Starling's <code>TextFormat</code> need to be
+		 * customized. In most cases, these advanced features are not required.</p>
 		 *
 		 * <p>In the following example, the disabled text format is changed:</p>
 		 *
@@ -418,10 +527,10 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #textFormat
+		 * @see #disabledFontStyles
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get disabledTextFormat():TextFormat
+		public function get disabledTextFormat():flash.text.TextFormat
 		{
 			return this._disabledTextFormat;
 		}
@@ -429,7 +538,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set disabledTextFormat(value:TextFormat):void
+		public function set disabledTextFormat(value:flash.text.TextFormat):void
 		{
 			if(this._disabledTextFormat == value)
 			{
@@ -1172,6 +1281,7 @@ package feathers.controls
 				this.textViewPort.thickness = this._thickness;
 				this.textViewPort.textFormat = this._textFormat;
 				this.textViewPort.disabledTextFormat = this._disabledTextFormat;
+				this.textViewPort.fontStyles = this._fontStylesSet;
 				this.textViewPort.styleSheet = this._styleSheet;
 				this.textViewPort.embedFonts = this._embedFonts;
 				this.textViewPort.paddingTop = this._textPaddingTop;
@@ -1191,6 +1301,14 @@ package feathers.controls
 		protected function textViewPort_triggeredHandler(event:Event, link:String):void
 		{
 			this.dispatchEventWith(Event.TRIGGERED, false, link);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }

@@ -7,12 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IStateContext;
-	import feathers.core.IStateObserver;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
-	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -25,6 +22,7 @@ package feathers.controls.text
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
+	import flash.text.FontType;
 	import flash.text.GridFitType;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
@@ -35,9 +33,11 @@ package feathers.controls.text
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MathUtil;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Renders text with a native <code>flash.text.TextField</code> and draws
@@ -67,7 +67,7 @@ package feathers.controls.text
 	 * @see ../../../../help/text-field-text-renderer.html How to use the Feathers TextFieldTextRenderer component
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
-	public class TextFieldTextRenderer extends FeathersControl implements ITextRenderer, IStateObserver
+	public class TextFieldTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
 		/**
 		 * @private
@@ -181,41 +181,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _text:String = "";
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, the text is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem ipsum";</listing>
-		 *
-		 * @default ""
-		 *
-		 * @see #isHTML
-		 */
-		public function get text():String
+		override public function set text(value:String):void
 		{
-			return this._text;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set text(value:String):void
-		{
-			if(this._text == value)
-			{
-				return;
-			}
 			if(value === null)
 			{
 				//flash.text.TextField won't accept a null value
 				value = "";
 			}
-			this._text = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			super.text = value;
 		}
 
 		/**
@@ -270,7 +243,27 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var currentTextFormat:TextFormat;
+		protected var _currentTextFormat:flash.text.TextFormat;
+
+		/**
+		 * For debugging purposes, the current
+		 * <code>flash.text.TextFormat</code> used to render the text. Updated
+		 * during validation, and may be <code>null</code> before the first
+		 * validation.
+		 *
+		 * <p>Do not modify this value. It is meant for testing and debugging
+		 * only. Use the parent's <code>starling.text.TextFormat</code> font
+		 * styles APIs instead.</p>
+		 */
+		public function get currentTextFormat():flash.text.TextFormat
+		{
+			return this._currentTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fontStylesTextFormat:flash.text.TextFormat;
 
 		/**
 		 * @private
@@ -280,15 +273,24 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textFormat:TextFormat;
+		protected var _textFormat:flash.text.TextFormat;
 
 		/**
-		 * The font and styles used to draw the text.
+		 * Advanced font formatting used to draw the text, if
+		 * <code>fontStyles</code> and <code>starling.text.TextFormat</code>
+		 * cannot be used on the parent component because the full capabilities
+		 * of <code>flash.text.TextField</code> are required.
 		 *
 		 * <p>In the following example, the text format is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.textFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>flash.text.TextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
 		 *
@@ -297,7 +299,7 @@ package feathers.controls.text
 		 * @see #selectedTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get textFormat():TextFormat
+		public function get textFormat():flash.text.TextFormat
 		{
 			return this._textFormat;
 		}
@@ -305,7 +307,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set textFormat(value:TextFormat):void
+		public function set textFormat(value:flash.text.TextFormat):void
 		{
 			if(this._textFormat == value)
 			{
@@ -318,11 +320,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _disabledTextFormat:TextFormat;
+		protected var _disabledTextFormat:flash.text.TextFormat;
 
 		/**
-		 * The font and styles used to draw the text when the component is
-		 * disabled.
+		 * Advanced font formatting used to draw the text when the component is
+		 * disabled, if <code>disabledFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of
+		 * <code>flash.text.TextField</code> are required.
 		 *
 		 * <p>In the following example, the disabled text format is changed:</p>
 		 *
@@ -330,13 +335,19 @@ package feathers.controls.text
 		 * textRenderer.isEnabled = false;
 		 * textRenderer.disabledTextFormat = new TextFormat( "Source Sans Pro" );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>flash.text.TextFormat</code> will always take precedence.</p>
+		 *
 		 * @default null
 		 *
 		 * @see #textFormat
 		 * @see #selectedTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get disabledTextFormat():TextFormat
+		public function get disabledTextFormat():flash.text.TextFormat
 		{
 			return this._disabledTextFormat;
 		}
@@ -344,7 +355,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set disabledTextFormat(value:TextFormat):void
+		public function set disabledTextFormat(value:flash.text.TextFormat):void
 		{
 			if(this._disabledTextFormat == value)
 			{
@@ -357,9 +368,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _selectedTextFormat:TextFormat;
+		protected var _selectedTextFormat:flash.text.TextFormat;
 
 		/**
+		 * Advanced font formatting used to draw the text when the
+		 * <code>stateContext</code> is selected, if
+		 * <code>selectedFontStyles</code> and
+		 * <code>starling.text.TextFormat</code> cannot be used on the parent
+		 * component because the full capabilities of
+		 * <code>flash.text.TextField</code> are required.
+		 * 
 		 * The font and styles used to draw the text when the
 		 * <code>stateContext</code> implements the <code>IToggle</code>
 		 * interface, and it is selected.
@@ -369,6 +387,12 @@ package feathers.controls.text
 		 * <listing version="3.0">
 		 * textRenderer.selectedTextFormat = new TextFormat( "Source Sans Pro" );</listing>
 		 *
+		 * <p><strong>Warning:</strong> If this property is not
+		 * <code>null</code>, any <code>starling.text.TextFormat</code> font
+		 * styles that are passed in from the parent component may be ignored.
+		 * In other words, advanced font styling with
+		 * <code>flash.text.TextFormat</code> will always take precedence.</p>
+		 *
 		 * @default null
 		 *
 		 * @see #stateContext
@@ -377,7 +401,7 @@ package feathers.controls.text
 		 * @see #disabledTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
-		public function get selectedTextFormat():TextFormat
+		public function get selectedTextFormat():flash.text.TextFormat
 		{
 			return this._selectedTextFormat;
 		}
@@ -385,7 +409,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set selectedTextFormat(value:TextFormat):void
+		public function set selectedTextFormat(value:flash.text.TextFormat):void
 		{
 			if(this._selectedTextFormat == value)
 			{
@@ -451,8 +475,16 @@ package feathers.controls.text
 		protected var _embedFonts:Boolean = false;
 
 		/**
-		 * Determines if the TextField should use an embedded font or not. If
-		 * the specified font is not embedded, the text is not displayed.
+		 * If advanced <code>flash.text.TextFormat</code> styles are specified,
+		 * determines if the TextField should use an embedded font or not. If
+		 * the specified font is not embedded, the text may not be displayed at
+		 * all.
+		 *
+		 * <p>If the font styles are passed in from the parent component, the
+		 * text renderer will automatically detect if a font is embedded or not,
+		 * and the <code>embedFonts</code> property will be ignored if it is set
+		 * to <code>false</code>. Setting it to <code>true</code> will force the
+		 * <code>TextField</code> to always try to use embedded fonts.</p>
 		 *
 		 * <p>In the following example, the font is embedded:</p>
 		 *
@@ -496,41 +528,6 @@ package feathers.controls.text
 				gutterDimensionsOffset = 2;
 			}
 			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _wordWrap:Boolean = false;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * <p>In the following example, word wrap is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.wordWrap = true;</listing>
-		 *
-		 * @default false
-		 *
-		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#wordWrap Full description of flash.text.TextField.wordWrap in Adobe's Flash Platform API Reference
-		 */
-		public function get wordWrap():Boolean
-		{
-			return this._wordWrap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set wordWrap(value:Boolean):void
-		{
-			if(this._wordWrap == value)
-			{
-				return;
-			}
-			this._wordWrap = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1078,48 +1075,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _stateContext:IStateContext;
-
-		/**
-		 * When the text renderer observes a state context, the text renderer
-		 * may change its <code>TextFormat</code> based on the current state of
-		 * that context. Typically, a relevant component will automatically
-		 * assign itself as the state context of a text renderer, so this
-		 * property is typically meant for internal use only.
-		 *
-		 * @default null
-		 *
-		 * @see #setTextFormatForState()
-		 */
-		public function get stateContext():IStateContext
-		{
-			return this._stateContext;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateContext(value:IStateContext):void
-		{
-			if(this._stateContext === value)
-			{
-				return;
-			}
-			if(this._stateContext)
-			{
-				this._stateContext.removeEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this._stateContext = value;
-			if(this._stateContext)
-			{
-				this._stateContext.addEventListener(FeathersEventType.STATE_CHANGE, stateContext_stateChangeHandler);
-			}
-			this.invalidate(INVALIDATION_FLAG_STATE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _lastGlobalScaleX:Number = 0;
 
 		/**
@@ -1238,8 +1193,6 @@ package feathers.controls.text
 			//from being garbage collected, freeing up the text field may help
 			//ease major memory pressure from native filters
 			this.textField = null;
-			
-			this.stateContext = null;
 
 			this._previousActualWidth = NaN;
 			this._previousActualHeight = NaN;
@@ -1370,13 +1323,33 @@ package feathers.controls.text
 		}
 
 		/**
-		 * Sets the <code>TextFormat</code> to be used by the text renderer when
-		 * the <code>currentState</code> property of the
-		 * <code>stateContext</code> matches the specified state value.
+		 * Gets the advanced <code>flash.text.TextFormat</code> font formatting
+		 * passed in using <code>setTextFormatForState()</code> for the
+		 * specified state.
 		 *
-		 * <p>If an <code>TextFormat</code> is not defined for a specific
-		 * state, the value of the <code>textFormat</code> property will be
-		 * used instead.</p>
+		 * <p>If an <code>flash.text.TextFormat</code> is not defined for a
+		 * specific state, returns <code>null</code>.</p>
+		 *
+		 * @see #setTextFormatForState()
+		 */
+		public function getTextFormatForState(state:String):flash.text.TextFormat
+		{
+			if(this._textFormatForState === null)
+			{
+				return null;
+			}
+			return flash.text.TextFormat(this._textFormatForState[state]);
+		}
+
+		/**
+		 * Sets the advanced <code>flash.text.TextFormat</code> font formatting
+		 * to be used by the text renderer when the <code>currentState</code>
+		 * property of the <code>stateContext</code> matches the specified state
+		 * value.
+		 *
+		 * <p>If a <code>flash.text.TextFormat</code> is not defined for a
+		 * specific state, the value of the <code>textFormat</code> property
+		 * will be used instead.</p>
 		 *
 		 * <p>If the <code>disabledTextFormat</code> property is not
 		 * <code>null</code> and the <code>isEnabled</code> property is
@@ -1385,7 +1358,7 @@ package feathers.controls.text
 		 * @see #stateContext
 		 * @see #textFormat
 		 */
-		public function setTextFormatForState(state:String, textFormat:TextFormat):void
+		public function setTextFormatForState(state:String, textFormat:flash.text.TextFormat):void
 		{
 			if(textFormat)
 			{
@@ -1472,15 +1445,29 @@ package feathers.controls.text
 			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				this.textField.wordWrap = this._wordWrap;
-				this.textField.embedFonts = this._embedFonts;
 				if(this._styleSheet)
 				{
+					this.textField.embedFonts = this._embedFonts;
 					this.textField.styleSheet = this._styleSheet;
 				}
 				else
 				{
+					if(!this._embedFonts &&
+						this._currentTextFormat === this._fontStylesTextFormat)
+					{
+						//when font styles are passed in from the parent component, we
+						//automatically determine if the TextField should use embedded
+						//fonts, unless embedFonts is explicitly true
+						this.textField.embedFonts = SystemUtil.isEmbeddedFont(
+							this._currentTextFormat.font, this._currentTextFormat.bold,
+							this._currentTextFormat.italic, FontType.EMBEDDED);
+					}
+					else
+					{
+						this.textField.embedFonts = this._embedFonts;
+					}
 					this.textField.styleSheet = null;
-					this.textField.defaultTextFormat = this.currentTextFormat;
+					this.textField.defaultTextFormat = this._currentTextFormat;
 				}
 				if(this._isHTML)
 				{
@@ -1836,35 +1823,74 @@ package feathers.controls.text
 		 */
 		protected function refreshTextFormat():void
 		{
-			var textFormat:TextFormat;
-			if(this._stateContext && this._textFormatForState)
+			var textFormat:flash.text.TextFormat;
+			if(this._stateContext !== null)
 			{
-				var currentState:String = this._stateContext.currentState;
-				if(currentState in this._textFormatForState)
+				if(this._textFormatForState !== null)
 				{
-					textFormat = TextFormat(this._textFormatForState[currentState]);
+					var currentState:String = this._stateContext.currentState;
+					if(currentState in this._textFormatForState)
+					{
+						textFormat = flash.text.TextFormat(this._textFormatForState[currentState]);
+					}
+				}
+				if(textFormat === null && this._disabledTextFormat !== null &&
+					this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
+				{
+					textFormat = this._disabledTextFormat;
+				}
+				if(textFormat === null && this._selectedTextFormat !== null &&
+					this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
+				{
+					textFormat = this._selectedTextFormat;
 				}
 			}
-			if(!textFormat && !this._isEnabled && this._disabledTextFormat)
+			else //no state context
 			{
-				textFormat = this._disabledTextFormat;
-			}
-			if(!textFormat && this._selectedTextFormat &&
-				this._stateContext is IToggle && IToggle(this._stateContext).isSelected)
-			{
-				textFormat = this._selectedTextFormat;
-			}
-			if(!textFormat)
-			{
-				//let's fall back to using Starling's embedded mini font if no
-				//text format has been specified
-				if(!this._textFormat)
+				//we can still check if the text renderer is disabled to see if
+				//we should use disabledTextFormat
+				if(!this._isEnabled && this._disabledTextFormat !== null)
 				{
-					this._textFormat = new TextFormat();
+					textFormat = this._disabledTextFormat;
 				}
+			}
+			if(textFormat === null)
+			{
 				textFormat = this._textFormat;
 			}
-			this.currentTextFormat = textFormat;
+			//flash.text.TextFormat is considered more advanced, so it gets
+			//precedence over starling.text.TextFormat font styles
+			if(textFormat === null)
+			{
+				textFormat = this.getTextFormatFromFontStyles();
+			}
+			this._currentTextFormat = textFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getTextFormatFromFontStyles():flash.text.TextFormat
+		{
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
+				this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				var fontStylesFormat:starling.text.TextFormat;
+				if(this._fontStyles !== null)
+				{
+					fontStylesFormat = this._fontStyles.getTextFormatForTarget(this);
+				}
+				if(fontStylesFormat !== null)
+				{
+					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+				}
+				else if(this._fontStylesTextFormat === null)
+				{
+					//fallback to a default so that something is displayed
+					this._fontStylesTextFormat = new flash.text.TextFormat();
+				}
+			}
+			return this._fontStylesTextFormat;
 		}
 
 		/**
@@ -2013,6 +2039,9 @@ package feathers.controls.text
 							//this is faster, if we haven't resized the bitmapdata
 							var existingTexture:Texture = snapshot.texture;
 							existingTexture.root.uploadBitmapData(bitmapData);
+							//however, the image won't be notified that its
+							//texture has changed, so we need to do it manually
+							this.textSnapshot.setRequiresRedraw();
 						}
 					}
 					if(newTexture)
@@ -2082,14 +2111,6 @@ package feathers.controls.text
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			this.refreshSnapshot();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stateContext_stateChangeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }

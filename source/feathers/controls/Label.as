@@ -16,11 +16,14 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.text.TextFormat;
 	import starling.utils.Pool;
 
 	/**
@@ -113,6 +116,11 @@ package feathers.controls
 		{
 			super();
 			this.isQuickHitAreaEnabled = true;
+			if(this._fontStylesSet === null)
+			{
+				this._fontStylesSet = new FontStylesSet();
+				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
 		}
 
 		/**
@@ -317,6 +325,74 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
+		/**
+		 * @private
+		 */
+		protected var _fontStylesSet:FontStylesSet;
+
+		/**
+		 * The font styles used to display the label's text.
+		 *
+		 * <p>In the following example, the font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+		 * 
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #disabledFontStyles
+		 */
+		public function get fontStyles():TextFormat
+		{
+			return this._fontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.format = value;
+		}
+
+		/**
+		 * The font styles used to display the label's text when the label is
+		 * disabled.
+		 *
+		 * <p>In the following example, the disabled font styles are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+		 *
+		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+		 * number of common font styles, but the text renderer being used may
+		 * support a larger number of ways to be customized. Use the
+		 * <code>textRendererFactory</code> to set more advanced styles on the
+		 * text renderer.</p>
+		 *
+		 * @default null
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #fontStyles
+		 */
+		public function get disabledFontStyles():TextFormat
+		{
+			return this._fontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledFontStyles(value:TextFormat):void
+		{
+			this._fontStylesSet.disabledFormat = value;
+		}
 
 		/**
 		 * @private
@@ -733,7 +809,7 @@ package feathers.controls
 				this.refreshEnabled();
 			}
 
-			if(textRendererInvalid || stylesInvalid || stateInvalid)
+			if(textRendererInvalid || stylesInvalid)
 			{
 				this.refreshTextRendererStyles();
 			}
@@ -1025,12 +1101,21 @@ package feathers.controls
 		 */
 		protected function refreshTextRendererStyles():void
 		{
+			this.textRenderer.fontStyles = this._fontStylesSet;
 			this.textRenderer.wordWrap = this._wordWrap;
 			for(var propertyName:String in this._textRendererProperties)
 			{
 				var propertyValue:Object = this._textRendererProperties[propertyName];
 				this.textRenderer[propertyName] = propertyValue;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fontStyles_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
