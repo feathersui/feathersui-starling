@@ -335,6 +335,10 @@ package feathers.controls
 		 */
 		public function initialized(document:Object, id:String):void
 		{
+			if(!id)
+			{
+				throw new Error("TabNavigatorItem must have an \"id\" in MXML.");
+			}
 			this._mxmlID = id;
 		}
 

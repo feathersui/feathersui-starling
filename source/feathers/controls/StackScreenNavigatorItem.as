@@ -408,6 +408,10 @@ package feathers.controls
 		 */
 		public function initialized(document:Object, id:String):void
 		{
+			if(!id)
+			{
+				throw new Error("StackScreenNavigatorItem must have an \"id\" in MXML.");
+			}
 			this._mxmlID = id;
 		}
 
