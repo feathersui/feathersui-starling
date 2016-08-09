@@ -17,6 +17,31 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
+	 * Dispatched when one of the tabs is triggered. The <code>data</code>
+	 * property of the event contains the <code>TabNavigatorItem</code> that is
+	 * associated with the tab that was triggered.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>TabNavigatorItem</code>
+	 *   associated with the tab that was triggered.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered", type="starling.events.Event")]
+
+	/**
 	 * A tabbed container.
 	 *
 	 * <p>The following example creates a tab navigator, adds a tab and
@@ -463,6 +488,7 @@ package feathers.controls
 				this.tabBar.direction = Direction.HORIZONTAL;
 			}
 			this.tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
+			this.tabBar.addEventListener(Event.TRIGGERED, tabBar_triggeredHandler);
 			this.tabBar.dataProvider = this._tabBarDataProvider;
 			this.tabBar.labelFunction = this.getTabLabel;
 			this.tabBar.iconFunction = this.getTabIcon;
@@ -569,6 +595,24 @@ package feathers.controls
 				this._activeScreen.y = 0;
 				this._activeScreen.width = screenWidth;
 				this._activeScreen.height = screenHeight;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function tabBar_triggeredHandler(event:Event):void
+		{
+			var id:String = this.tabBar.selectedItem as String;
+			this.dispatchEventWith(Event.TRIGGERED, this.getScreen(id));
+			if(id !== this._activeScreenID)
+			{
+				return;
+			}
+			if(this._activeScreen is StackScreenNavigator)
+			{
+				var navigator:StackScreenNavigator = StackScreenNavigator(this._activeScreen);
+				navigator.popToRootScreen();
 			}
 		}
 
