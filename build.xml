@@ -417,6 +417,14 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/Magic8Chat">
+			<fileset dir="${examples.root}/Magic8Chat">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/Magic8ChatWeb.as"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/StackScreenNavigatorExplorer">
 			<fileset dir="${examples.root}/StackScreenNavigatorExplorer">
 				<include name="README.md"/>
