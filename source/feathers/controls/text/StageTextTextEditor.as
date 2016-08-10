@@ -1251,10 +1251,16 @@ package feathers.controls.text
 					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
 				this.stageText.visible = true;
-				if(this._isEditable)
+				if(!this._isEditable)
 				{
-					this.stageText.assignFocus();
+					//assignFocus() does not work unless the StageText's
+					//editable property is true, but we want the text to be
+					//selectable. as a workaround, we temporarily set editable
+					//to true before calling assignFocus(). once the StageText
+					//has focus, we'll set it back to false.
+					this.stageText.editable = true;
 				}
+				this.stageText.assignFocus();
 			}
 			else
 			{
@@ -2169,6 +2175,11 @@ package feathers.controls.text
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
 			this._stageTextHasFocus = true;
+			if(!this._isEditable)
+			{
+				//see the other half of this hack in setFocus()
+				this.stageText.editable = false;
+			}
 			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			if(this.textSnapshot)
 			{
