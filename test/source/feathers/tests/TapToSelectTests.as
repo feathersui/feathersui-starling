@@ -237,5 +237,49 @@ package feathers.tests
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched when target was removed", hasChanged);
 			Assert.assertFalse("isSelected was incorrectly changed to true when target was removed", this._target.isSelected);
 		}
+
+		[Test]
+		public function testCustomHitTest():void
+		{
+			this._tapToSelect.customHitTest = function customHitTest(localPosition:Point):Boolean
+			{
+				return localPosition.x <= 100;
+			};
+			var hasChanged:Boolean = false;
+			this._target.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._target.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("Event.CHANGE was not dispatched when customHitTest returned true", hasChanged);
+
+			hasChanged = false;
+			//move the touch to an area where customHitTest() will return false
+			touch.globalX = 150;
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched when customHitTest returned false", hasChanged);
+
+			hasChanged = false;
+			//move the touch way outside the bounds of the target
+			touch.globalX = 1000;
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched when touch started out of bounds", hasChanged);
+		}
 	}
 }

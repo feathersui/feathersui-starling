@@ -133,6 +133,37 @@ package feathers.utils.touch
 		/**
 		 * @private
 		 */
+		protected var _customHitTest:Function;
+
+		/**
+		 * In addition to a normal call to <code>hitTest()</code>, a custom
+		 * function may impose additional rules that determine if the target
+		 * should be triggered. Called on <code>TouchPhase.BEGAN</code>.
+		 *
+		 * <p>The function must have the following signature:</p>
+		 *
+		 * <pre>function(localPosition:Point):Boolean;</pre>
+		 *
+		 * <p>The function should return <code>true</code> if the target should
+		 * be triggered, and <code>false</code> if it should not be
+		 * triggered.</p>
+		 */
+		public function get customHitTest():Function
+		{
+			return this._customHitTest;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHitTest(value:Function):void
+		{
+			this._customHitTest = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function target_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -140,7 +171,7 @@ package feathers.utils.touch
 				this._touchPointID = -1;
 				return;
 			}
-			
+
 			if(this._touchPointID >= 0)
 			{
 				//a touch has begun, so we'll ignore all other touches.
@@ -150,7 +181,7 @@ package feathers.utils.touch
 					//this should not happen.
 					return;
 				}
-				
+
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					var stage:Stage = this._target.stage;
@@ -189,7 +220,18 @@ package feathers.utils.touch
 					//phases when we don't have a saved touch ID.
 					return;
 				}
-				
+				if(this._customHitTest !== null)
+				{
+					point = Pool.getPoint();
+					touch.getLocation(DisplayObject(this._target), point);
+					isInBounds = this._customHitTest(point);
+					Pool.putPoint(point);
+					if(!isInBounds)
+					{
+						return;
+					}
+				}
+
 				//save the touch ID so that we can track this touch's phases.
 				this._touchPointID = touch.id;
 			}
