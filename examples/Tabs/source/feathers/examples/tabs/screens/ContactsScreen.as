@@ -42,6 +42,7 @@ package feathers.examples.tabs.screens
 			this.layout = new AnchorLayout();
 
 			this._list = new GroupedList();
+			this._list.isSelectable = false;
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.customItemRendererStyleName = StyleNames.MESSAGE_LIST_ITEM_RENDERER;
 			this._list.itemRendererFactory = this.createContactItemRenderer;

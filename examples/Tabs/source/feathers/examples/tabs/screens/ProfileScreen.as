@@ -3,14 +3,11 @@ package feathers.examples.tabs.screens
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
-	import feathers.controls.PanelScreen;
 	import feathers.controls.Screen;
 	import feathers.examples.tabs.themes.StyleNames;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
-
-	import starling.display.Image;
 
 	public class ProfileScreen extends Screen
 	{
@@ -18,6 +15,10 @@ package feathers.examples.tabs.screens
 		{
 			super();
 		}
+
+		private var _image:ImageLoader;
+		private var _nameLabel:Label;
+		private var _emailLabel:Label;
 
 		override protected function initialize():void
 		{
@@ -36,19 +37,19 @@ package feathers.examples.tabs.screens
 			header.layout = headerLayout;
 			this.addChild(header);
 
-			var image:ImageLoader = new ImageLoader();
-			image.styleNameList.add(StyleNames.LARGE_PROFILE_IMAGE);
-			image.source = "https://randomuser.me/api/portraits/men/67.jpg";
-			header.addChild(image);
+			this._image = new ImageLoader();
+			this._image.styleNameList.add(StyleNames.LARGE_PROFILE_IMAGE);
+			this._image.source = "https://randomuser.me/api/portraits/men/67.jpg";
+			header.addChild(this._image);
 
-			var nameLabel:Label = new Label();
-			nameLabel.styleNameList.add(Label.ALTERNATE_STYLE_NAME_HEADING);
-			nameLabel.text = "Flynn Reynolds";
-			header.addChild(nameLabel);
+			this._nameLabel = new Label();
+			this._nameLabel.styleNameList.add(Label.ALTERNATE_STYLE_NAME_HEADING);
+			this._nameLabel.text = "Flynn Reynolds";
+			header.addChild(this._nameLabel);
 
-			var emailLabel:Label = new Label();
-			emailLabel.text = "flynn.reynolds84@example.com";
-			this.addChild(emailLabel);
+			this._emailLabel = new Label();
+			this._emailLabel.text = "flynn.reynolds84@example.com";
+			this.addChild(this._emailLabel);
 		}
 	}
 }
