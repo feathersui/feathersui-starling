@@ -243,6 +243,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._defaultSkin !== null &&
 				this.currentSkin === this._defaultSkin)
 			{

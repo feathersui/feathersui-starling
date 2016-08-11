@@ -361,10 +361,20 @@ package feathers.core
 		 */
 		public function set styleProvider(value:IStyleProvider):void
 		{
-			this._styleProvider = value;
-			if(this._styleProvider && this.isInitialized)
+			if(this._styleProvider === value)
 			{
+				return;
+			}
+			if(this._applyingStyles)
+			{
+				throw new IllegalOperationError("Cannot change styleProvider while the current style provider is applying styles.")
+			}
+			this._styleProvider = value;
+			if(this._styleProvider !== null && this.isInitialized)
+			{
+				this._applyingStyles = true;
 				this._styleProvider.applyStyles(this);
+				this._applyingStyles = false;
 			}
 		}
 
@@ -458,6 +468,16 @@ package feathers.core
 		{
 			return this._isInitialized;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _applyingStyles:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _restrictedStyles:Dictionary;
 
 		/**
 		 * @private
@@ -2110,7 +2130,7 @@ package feathers.core
 			this._isInitialized = true;
 			this.dispatchEventWith(FeathersEventType.INITIALIZE);
 
-			if(this._styleProvider)
+			if(this._styleProvider !== null)
 			{
 				this._applyingStyles = true;
 				this._styleProvider.applyStyles(this);
@@ -2289,23 +2309,97 @@ package feathers.core
 			delete this._invalidationFlags[flag];
 		}
 
-		protected var _applyingStyles:Boolean = false;
-		protected var _styleFlags:Dictionary = new Dictionary(true);
-
 		/**
+		 * Used by properties that are considered "styles" to set a flag to
+		 * indicate that they have been set without using the
+		 * <code>styleProvider</code> (usually provided by a theme). If the
+		 * <code>styleProvider</code> attempts to set a restricted property,
+		 * the original value will be preserved.
 		 * 
+		 * <p>Note: calling <code>restrictStyle()</code> while the
+		 * <code>styleProvider</code> is applying styles has no effect. The flag
+		 * cannot be set at this time.</p>
+		 *
+		 * <p>The following code shows an implementation of
+		 * <code>isStyleRestricted()</code> and <code>restrictStyle()</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * private var _customStyle:Object;
+		 *
+		 * public function get customStyle():Object
+		 * {
+		 *     return this._customStyle;
+		 * }
+		 *
+		 * public function set customStyle( value:Object ):void
+		 * {
+		 *     if( this.isStyleRestricted( arguments.callee ) )
+		 *     {
+		 *         // if a style is restricted, don't set it
+		 *         return;
+		 *     }
+		 *     // the style should be restricted
+		 *     this.restrictStyle( arguments.callee );
+		 * 
+		 *     this._customStyle = value;
+		 * }</listing>
+		 * 
+		 * @see #isStyleRestricted()
 		 */
-		protected function setStyleFlag(style:Function):void
+		protected function restrictStyle(style:Function):void
 		{
-			this._styleFlags[style] = true;
+			if(this._applyingStyles)
+			{
+				return;
+			}
+			if(this._restrictedStyles === null)
+			{
+				//only create the object if it is needed
+				this._restrictedStyles = new Dictionary(true);
+			}
+			this._restrictedStyles[style] = true;
 		}
 
 		/**
+		 * Used by properties that are considered "styles" to determine if the
+		 * <code>styleProvider</code> (usually provided by a theme) is allowed
+		 * to set the property or not.
 		 *
+		 * <p>This function accepts a single parameter, which must be a function
+		 * reference. Inside the property setter, <code>arguments.callee</code>
+		 * makes an ideal value.</p>
+		 * 
+		 * <p>The following code shows an implementation of
+		 * <code>isStyleRestricted()</code> and <code>restrictStyle()</code>:</p>
+		 * 
+		 * <listing version="3.0">
+		 * private var _customStyle:Object;
+		 * 
+		 * public function get customStyle():Object
+		 * {
+		 *     return this._customStyle;
+		 * }
+		 * 
+		 * public function set customStyle( value:Object ):void
+		 * {
+		 *     if( this.isStyleRestricted( arguments.callee ) )
+		 *     {
+		 *         // if a style is restricted, don't set it
+		 *         return;
+		 *     }
+		 *     // the style should be restricted
+		 *     this.restrictStyle( arguments.callee );
+		 * 
+		 *     this._customStyle = value;
+		 * }</listing>
+		 *
+		 * @see #restrictStyle()
 		 */
-		protected function canSetStyle(style:Function):Boolean
+		protected function isStyleRestricted(style:Function):Boolean
 		{
-			return !this._applyingStyles || !(style in this._styleFlags);
+			//in most cases, the style is not restricted, and we can set it
+			return this._applyingStyles && this._restrictedStyles !== null &&
+				style in this._restrictedStyles;
 		}
 
 		/**
@@ -2458,11 +2552,17 @@ package feathers.core
 		 */
 		protected function styleNameList_changeHandler(event:Event):void
 		{
-			if(!this._styleProvider)
+			if(this._styleProvider === null)
 			{
 				return;
 			}
+			if(this._applyingStyles)
+			{
+				throw new IllegalOperationError("Cannot change styleNameList while the style provider is applying styles.");
+			}
+			this._applyingStyles = true;
 			this._styleProvider.applyStyles(this);
+			this._applyingStyles = false;
 		}
 	}
 }

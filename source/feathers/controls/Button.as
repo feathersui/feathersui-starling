@@ -818,11 +818,11 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!this.canSetStyle(arguments.callee))
+			if(this.isStyleRestricted(arguments.callee))
 			{
 				return;
 			}
-			this.setStyleFlag(arguments.callee);
+			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -858,11 +858,11 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!this.canSetStyle(arguments.callee))
+			if(this.isStyleRestricted(arguments.callee))
 			{
 				return;
 			}
-			this.setStyleFlag(arguments.callee);
+			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -898,11 +898,11 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!this.canSetStyle(arguments.callee))
+			if(this.isStyleRestricted(arguments.callee))
 			{
 				return;
 			}
-			this.setStyleFlag(arguments.callee);
+			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -938,11 +938,11 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!this.canSetStyle(arguments.callee))
+			if(this.isStyleRestricted(arguments.callee))
 			{
 				return;
 			}
-			this.setStyleFlag(arguments.callee);
+			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1361,12 +1361,11 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
-			trace(arguments.callee);
-			if(!this.canSetStyle(arguments.callee))
+			if(this.isStyleRestricted(arguments.callee))
 			{
 				return;
 			}
-			this.setStyleFlag(arguments.callee);
+			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.format = value;
 		}
 
