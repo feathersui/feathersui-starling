@@ -2148,20 +2148,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @inheritDoc
-		 */
-		override public function showFocus():void
-		{
-			if(!this._focusManager || this._focusManager.focus != this)
-			{
-				return;
-			}
-			this.selectRange(0, this._text.length);
-			super.showFocus();
-		}
-
-		/**
-		 * Focuses the text input control so that it may be edited.
+		 * Focuses the text input control so that it may be edited, and selects
+		 * all of its text. Call <code>selectRange()</code> after
+		 * <code>setFocus()</code> to select a different range.
+		 * 
+		 * @see #selectRange()
 		 */
 		public function setFocus():void
 		{
@@ -2176,6 +2167,10 @@ package feathers.controls
 			{
 				this._isWaitingToSetFocus = false;
 				this.textEditor.setFocus();
+				if(this._isEditable || this._isSelectable)
+				{
+					this.selectRange(0, this._text.length);
+				}
 			}
 			else
 			{
@@ -2814,6 +2809,12 @@ package feathers.controls
 				this._isWaitingToSetFocus = false;
 				if(!this._textEditorHasFocus)
 				{
+					if((this._isEditable || this._isSelectable) &&
+						this._pendingSelectionBeginIndex < 0)
+					{
+						this._pendingSelectionBeginIndex = 0;
+						this._pendingSelectionEndIndex = this._text.length;
+					}
 					this.textEditor.setFocus();
 				}
 			}
