@@ -2166,11 +2166,11 @@ package feathers.controls
 			if(this.textEditor)
 			{
 				this._isWaitingToSetFocus = false;
-				this.textEditor.setFocus();
 				if(this._isEditable || this._isSelectable)
 				{
 					this.selectRange(0, this._text.length);
 				}
+				this.textEditor.setFocus();
 			}
 			else
 			{
@@ -2205,7 +2205,7 @@ package feathers.controls
 			}
 			if(beginIndex < 0)
 			{
-				throw new RangeError("Expected start index >= 0. Received " + beginIndex + ".");
+				throw new RangeError("Expected begin index >= 0. Received " + beginIndex + ".");
 			}
 			if(endIndex > this._text.length)
 			{
