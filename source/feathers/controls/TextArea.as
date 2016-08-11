@@ -420,7 +420,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _pendingSelectionStartIndex:int = -1;
+		protected var _pendingSelectionBeginIndex:int = -1;
 
 		/**
 		 * @private
@@ -1095,6 +1095,38 @@ package feathers.controls
 		}
 
 		/**
+		 * @copy feathers.core.ITextEditor#selectionBeginIndex
+		 */
+		public function get selectionBeginIndex():int
+		{
+			if(this._pendingSelectionBeginIndex >= 0)
+			{
+				return this._pendingSelectionBeginIndex;
+			}
+			if(this.textEditorViewPort)
+			{
+				return this.textEditorViewPort.selectionBeginIndex;
+			}
+			return 0;
+		}
+
+		/**
+		 * @copy feathers.core.ITextEditor#selectionEndIndex
+		 */
+		public function get selectionEndIndex():int
+		{
+			if(this._pendingSelectionEndIndex >= 0)
+			{
+				return this._pendingSelectionEndIndex;
+			}
+			if(this.textEditorViewPort)
+			{
+				return this.textEditorViewPort.selectionEndIndex;
+			}
+			return 0;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		override public function showFocus():void
@@ -1145,30 +1177,30 @@ package feathers.controls
 		 * or the end index is <code>-1</code>, the text insertion position is
 		 * changed and nothing is selected.
 		 */
-		public function selectRange(startIndex:int, endIndex:int = -1):void
+		public function selectRange(beginIndex:int, endIndex:int = -1):void
 		{
 			if(endIndex < 0)
 			{
-				endIndex = startIndex;
+				endIndex = beginIndex;
 			}
-			if(startIndex < 0)
+			if(beginIndex < 0)
 			{
-				throw new RangeError("Expected start index greater than or equal to 0. Received " + startIndex + ".");
+				throw new RangeError("Expected begin index greater than or equal to 0. Received " + beginIndex + ".");
 			}
 			if(endIndex > this._text.length)
 			{
-				throw new RangeError("Expected start index less than " + this._text.length + ". Received " + endIndex + ".");
+				throw new RangeError("Expected begin index less than " + this._text.length + ". Received " + endIndex + ".");
 			}
 
 			if(this.textEditorViewPort)
 			{
-				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionBeginIndex = -1;
 				this._pendingSelectionEndIndex = -1;
-				this.textEditorViewPort.selectRange(startIndex, endIndex);
+				this.textEditorViewPort.selectRange(beginIndex, endIndex);
 			}
 			else
 			{
-				this._pendingSelectionStartIndex = startIndex;
+				this._pendingSelectionBeginIndex = beginIndex;
 				this._pendingSelectionEndIndex = endIndex;
 				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}
@@ -1423,13 +1455,13 @@ package feathers.controls
 					this.textEditorViewPort.setFocus();
 				}
 			}
-			if(this._pendingSelectionStartIndex >= 0)
+			if(this._pendingSelectionBeginIndex >= 0)
 			{
-				var startIndex:int = this._pendingSelectionStartIndex;
+				var beginIndex:int = this._pendingSelectionBeginIndex;
 				var endIndex:int = this._pendingSelectionEndIndex;
-				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionBeginIndex = -1;
 				this._pendingSelectionEndIndex = -1;
-				this.selectRange(startIndex, endIndex);
+				this.selectRange(beginIndex, endIndex);
 			}
 		}
 
