@@ -1103,7 +1103,6 @@ package feathers.controls
 			{
 				return;
 			}
-			this.selectRange(0, this._text.length);
 			super.showFocus();
 		}
 
