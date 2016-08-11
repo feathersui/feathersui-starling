@@ -99,5 +99,31 @@ package feathers.tests
 			FocusManager.setEnabledForStage(this._textInput.stage, true);
 			this.testFocusOutEventAfterSetVisibleToFalseWithoutFocusManager();
 		}
+
+		[Test]
+		public function testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithoutFocusManager():void
+		{
+			var text:String = "I am the very model of a modern major general";
+			this._textInput.text = text;
+			var selectionBeginIndex:int = -1;
+			var selectionEndIndex:int = -1;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_IN, function(event:Event):void
+			{
+				selectionBeginIndex = _textInput.selectionBeginIndex;
+				selectionEndIndex = _textInput.selectionEndIndex;
+			});
+			this._textInput.setFocus();
+			Assert.assertStrictlyEquals("TextInput selectionBeginIndex incorrect after calling setFocus()",
+				0, selectionBeginIndex);
+			Assert.assertStrictlyEquals("TextInput selectionBeginIndex incorrect after calling setFocus()",
+				text.length, selectionEndIndex);
+		}
+
+		[Test]
+		public function testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithFocusManager():void
+		{
+			FocusManager.setEnabledForStage(this._textInput.stage, true);
+			this.testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithoutFocusManager();
+		}
 	}
 }

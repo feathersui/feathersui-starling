@@ -25,7 +25,7 @@ package feathers.tests
 			TestFeathers.starlingRoot.addChild(this._textArea);
 			this._textArea.validate();
 		}
-		
+
 		private function textEditorFactory():TextFieldTextEditor
 		{
 			var textEditor:TextFieldTextEditorViewPort = new TextFieldTextEditorViewPort();
@@ -79,6 +79,32 @@ package feathers.tests
 		{
 			FocusManager.setEnabledForStage(this._textArea.stage, true);
 			this.testFocusOutEventAfterClearFocusFunctionWithoutFocusManager();
+		}
+
+		[Test]
+		public function testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithoutFocusManager():void
+		{
+			var text:String = "I am the very model of a modern major general";
+			this._textArea.text = text;
+			var selectionBeginIndex:int = -1;
+			var selectionEndIndex:int = -1;
+			this._textArea.addEventListener(FeathersEventType.FOCUS_IN, function(event:Event):void
+			{
+				selectionBeginIndex = _textArea.selectionBeginIndex;
+				selectionEndIndex = _textArea.selectionEndIndex;
+			});
+			this._textArea.setFocus();
+			Assert.assertStrictlyEquals("TextArea selectionBeginIndex incorrect after calling setFocus()",
+				0, selectionBeginIndex);
+			Assert.assertStrictlyEquals("TextArea selectionBeginIndex incorrect after calling setFocus()",
+				0, selectionEndIndex);
+		}
+
+		[Test]
+		public function testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithFocusManager():void
+		{
+			FocusManager.setEnabledForStage(this._textArea.stage, true);
+			this.testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithoutFocusManager();
 		}
 	}
 }
