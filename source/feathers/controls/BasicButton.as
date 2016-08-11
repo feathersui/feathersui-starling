@@ -27,6 +27,22 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * The skin used when no other skin is defined for the current state.
+	 * Intended to be used when multiple states should share the same skin.
+	 *
+	 * <p>The following example gives the button a default skin to use for
+	 * all states when no specific skin is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.defaultSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #setSkinForState()
+	 */
+	[Style(name="defaultSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * Dispatched when the the user taps or clicks the button. The touch must
 	 * remain within the bounds of the button on release to register as a tap
 	 * or a click. If focus management is enabled, the button may also be
@@ -216,18 +232,7 @@ package feathers.controls
 		protected var _defaultSkin:DisplayObject;
 
 		/**
-		 * The skin used when no other skin is defined for the current state.
-		 * Intended to be used when multiple states should share the same skin.
-		 *
-		 * <p>The following example gives the button a default skin to use for
-		 * all states when no specific skin is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.defaultSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #setSkinForState()
+		 * @private
 		 */
 		public function get defaultSkin():DisplayObject
 		{

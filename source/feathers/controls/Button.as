@@ -37,6 +37,112 @@ package feathers.controls
 	import starling.text.TextFormat;
 
 	/**
+	 * The font styles used to display the button's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>labelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #disabledFontStyles
+	 * @see #setFontStylesForState()
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on all
+	 * sides:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's top edge and the
+	 * button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * top edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's right edge and the
+	 * button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * right edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's bottom edge and
+	 * the button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * bottom edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's left edge and the
+	 * button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * left edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
 	 * Dispatched when the button is pressed for a long time. The property
 	 * <code>isLongPressEnabled</code> must be set to <code>true</code> before
 	 * this event will be dispatched.
@@ -753,23 +859,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on all
-		 * sides:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -793,16 +883,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's top edge and the
-		 * button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * top edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -833,16 +914,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's right edge and the
-		 * button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * right edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -873,16 +945,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's bottom edge and
-		 * the button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * bottom edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -913,16 +976,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's left edge and the
-		 * button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * left edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1333,23 +1387,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the button's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>labelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
-		 * @see #setFontStylesForState()
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
