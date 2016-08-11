@@ -1127,18 +1127,6 @@ package feathers.controls
 		}
 
 		/**
-		 * @inheritDoc
-		 */
-		override public function showFocus():void
-		{
-			if(!this._focusManager || this._focusManager.focus != this)
-			{
-				return;
-			}
-			super.showFocus();
-		}
-
-		/**
 		 * Focuses the text area control so that it may be edited.
 		 */
 		public function setFocus():void
