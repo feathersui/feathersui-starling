@@ -1,7 +1,6 @@
 package feathers.tests
 {
 	import feathers.controls.TextArea;
-	import feathers.controls.TextInput;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FocusManager;
@@ -11,9 +10,14 @@ package feathers.tests
 
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	public class TextAreaFocusTests
 	{
+		private static const SAMPLE_TEXT:String = "I am the very model of a modern major general";
+
 		private var _textArea:TextArea;
 
 		[Before]
@@ -84,8 +88,7 @@ package feathers.tests
 		[Test]
 		public function testSelectionRangeInsideFocusInListenerAfterSetFocusFunctionWithoutFocusManager():void
 		{
-			var text:String = "I am the very model of a modern major general";
-			this._textArea.text = text;
+			this._textArea.text = SAMPLE_TEXT;
 			var selectionBeginIndex:int = -1;
 			var selectionEndIndex:int = -1;
 			this._textArea.addEventListener(FeathersEventType.FOCUS_IN, function(event:Event):void
@@ -110,8 +113,7 @@ package feathers.tests
 		[Test]
 		public function testSelectionRangeAfterSetFocusThenSelectRangeFunctionWithoutFocusManager():void
 		{
-			var text:String = "I am the very model of a modern major general";
-			this._textArea.text = text;
+			this._textArea.text = SAMPLE_TEXT;
 			this._textArea.setFocus();
 			var selectionBeginIndex:int = 1;
 			var selectionEndIndex:int = 3;
@@ -127,6 +129,46 @@ package feathers.tests
 		{
 			FocusManager.setEnabledForStage(this._textArea.stage, true);
 			this.testSelectionRangeAfterSetFocusThenSelectRangeFunctionWithoutFocusManager();
+		}
+
+		[Test]
+		public function testSelectionRangeAfterTouchEventWithoutFocusManager():void
+		{
+			this._textArea.text = SAMPLE_TEXT;
+			//validate to make sure the text is passed down to the text editor
+			this._textArea.validate();
+
+			var selectionBeginIndex:int = -1;
+			var selectionEndIndex:int = -1;
+			this._textArea.addEventListener(FeathersEventType.FOCUS_IN, function(event:Event):void
+			{
+				selectionBeginIndex = _textArea.selectionBeginIndex;
+				selectionEndIndex = _textArea.selectionEndIndex;
+			});
+
+			var touch:Touch = new Touch(0);
+			touch.target = this._textArea;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 100;
+			touch.globalY = 5;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			this._textArea.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			//this touch does not move at all, so it should result in triggering
+			//the button.
+			touch.phase = TouchPhase.ENDED;
+			this._textArea.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			//we don't care what the exact index is, but it should be clear that
+			//the touch changed it to something
+			Assert.assertTrue("TextArea selectionBeginIndex and selectionEndIndex incorrect after TouchEvent.TOUCH",
+				selectionBeginIndex > 0 && selectionEndIndex < SAMPLE_TEXT.length && selectionBeginIndex === selectionEndIndex)
+		}
+
+		[Test]
+		public function testSelectionRangeAfterTouchEventWithFocusManager():void
+		{
+			FocusManager.setEnabledForStage(this._textArea.stage, true);
+			this.testSelectionRangeAfterTouchEventWithoutFocusManager();
 		}
 	}
 }
