@@ -2163,13 +2163,13 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._isEditable || this._isSelectable)
+			{
+				this.selectRange(0, this._text.length);
+			}
 			if(this.textEditor)
 			{
 				this._isWaitingToSetFocus = false;
-				if(this._isEditable || this._isSelectable)
-				{
-					this.selectRange(0, this._text.length);
-				}
 				this.textEditor.setFocus();
 			}
 			else
