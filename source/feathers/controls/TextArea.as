@@ -1180,7 +1180,9 @@ package feathers.controls
 				throw new RangeError("Expected begin index less than " + this._text.length + ". Received " + endIndex + ".");
 			}
 
-			if(this.textEditorViewPort)
+			//if it's invalid, we need to wait until validation before changing
+			//the selection
+			if(this.textEditorViewPort !== null && (this._isValidating || !this.isInvalid()))
 			{
 				this._pendingSelectionBeginIndex = -1;
 				this._pendingSelectionEndIndex = -1;
