@@ -254,6 +254,11 @@ package feathers.core
 			this._styleProvider = this.defaultStyleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, feathersControl_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, feathersControl_removedFromStageHandler);
+			if(this is IFocusDisplayObject)
+			{
+				this.addEventListener(FeathersEventType.FOCUS_IN, focusInHandler);
+				this.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
+			}
 		}
 
 		/**
@@ -1236,16 +1241,6 @@ package feathers.core
 				return;
 			}
 			this._focusManager = value;
-			if(this._focusManager)
-			{
-				this.addEventListener(FeathersEventType.FOCUS_IN, focusInHandler);
-				this.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
-			}
-			else
-			{
-				this.removeEventListener(FeathersEventType.FOCUS_IN, focusInHandler);
-				this.removeEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
-			}
 		}
 
 		/**
