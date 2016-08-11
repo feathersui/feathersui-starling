@@ -20,6 +20,7 @@ package feathers.core
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
 	import starling.core.Starling;
@@ -2111,7 +2112,9 @@ package feathers.core
 
 			if(this._styleProvider)
 			{
+				this._applyingStyles = true;
 				this._styleProvider.applyStyles(this);
+				this._applyingStyles = false;
 			}
 			this._styleNameList.addEventListener(Event.CHANGE, styleNameList_changeHandler);
 		}
@@ -2284,6 +2287,25 @@ package feathers.core
 		protected function clearInvalidationFlag(flag:String):void
 		{
 			delete this._invalidationFlags[flag];
+		}
+
+		protected var _applyingStyles:Boolean = false;
+		protected var _styleFlags:Dictionary = new Dictionary(true);
+
+		/**
+		 * 
+		 */
+		protected function setStyleFlag(style:Function):void
+		{
+			this._styleFlags[style] = true;
+		}
+
+		/**
+		 *
+		 */
+		protected function canSetStyle(style:Function):Boolean
+		{
+			return !this._applyingStyles || !(style in this._styleFlags);
 		}
 
 		/**
