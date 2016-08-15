@@ -1801,8 +1801,8 @@ package feathers.layout
 				{
 					partialPageSize = 0;
 				}
-				rowOffset = -Math.floor(partialPageSize / (tileWidth + this._verticalGap)) - 1;
-				minimum += -perPage + horizontalTileCount + rowOffset;
+				rowOffset = -Math.floor(partialPageSize / (tileHeight + this._verticalGap)) - 1;
+				minimum += -perPage + verticalTileCount + rowOffset;
 			}
 			else if(partialPageSize > 0)
 			{
