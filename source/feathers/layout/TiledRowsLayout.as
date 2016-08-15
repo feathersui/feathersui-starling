@@ -1637,9 +1637,18 @@ package feathers.layout
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				width, width, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount);
+			if(this._distributeWidths)
+			{
+				tileWidth = (width - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileHeight = tileWidth;
+				}
+			}
 			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight, 
 				height, height, this._paddingTop + this._paddingBottom, 
-				this._verticalGap, this._requestedRowCount, itemCount, horizontalTileCount);
+				this._verticalGap, this._requestedRowCount, itemCount,
+				horizontalTileCount);
 			var perPage:int = horizontalTileCount * verticalTileCount;
 			var minimumItemCount:int = perPage + 2 * verticalTileCount;
 			if(minimumItemCount > itemCount)
@@ -1723,11 +1732,11 @@ package feathers.layout
 						resultLength++;
 					}
 					rowIndex++;
-					if(rowIndex == verticalTileCount)
+					if(rowIndex === verticalTileCount)
 					{
 						rowIndex = 0;
 						columnIndex++;
-						if(columnIndex == horizontalTileCount)
+						if(columnIndex === horizontalTileCount)
 						{
 							columnIndex = 0;
 							pageStart += perPage;
@@ -1773,6 +1782,14 @@ package feathers.layout
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				width, width, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount);
+			if(this._distributeWidths)
+			{
+				tileWidth = (width - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileHeight = tileWidth;
+				}
+			}
 			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
 				height, height, this._paddingTop + this._paddingBottom,
 				this._verticalGap, this._requestedRowCount, itemCount, horizontalTileCount);
@@ -1834,7 +1851,6 @@ package feathers.layout
 				rowOffset = 0;
 			}
 
-
 			var maximum:int = minimum + minimumItemCount;
 			if(maximum > itemCount)
 			{
@@ -1882,6 +1898,14 @@ package feathers.layout
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				width, width, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount);
+			if(this._distributeWidths)
+			{
+				tileWidth = (width - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileHeight = tileWidth;
+				}
+			}
 			var verticalTileCount:int = Math.ceil((height + this._verticalGap) / (tileHeight + this._verticalGap)) + 1;
 			var minimumItemCount:int = verticalTileCount * horizontalTileCount;
 			if(minimumItemCount > itemCount)
