@@ -239,6 +239,13 @@ package feathers.events
 		public static const LOCATION_CHANGE:String = "locationChange";
 
 		/**
+		 * The <code>FeathersEventType.LOCATION_CHANGE</code> event type is used
+		 * by the Feathers <code>WebView</code> component to indicate that its
+		 * location is about to change.
+		 */
+		public static const LOCATION_CHANGING:String = "locationChanging";
+
+		/**
 		 * The <code>FeathersEventType.STATE_CHANGE</code> event type is used by
 		 * Feathers classes that implement the <code>IStateContext</code>
 		 * interface.

@@ -439,6 +439,7 @@ package feathers.controls
 			this.stageWebView.addEventListener(ErrorEvent.ERROR, stageWebView_errorHandler);
 			//we're using the string here because this class is AIR-only
 			this.stageWebView.addEventListener("locationChange", stageWebView_locationChangeHandler);
+			this.stageWebView.addEventListener("locationChanging", stageWebView_locationChangingHandler);
 			this.stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebView_completeHandler);
 		}
 
@@ -544,6 +545,14 @@ package feathers.controls
 		protected function stageWebView_locationChangeHandler(event:flash.events.Event):void
 		{
 			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGE);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function stageWebView_locationChangingHandler(event:flash.events.Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGING, false, event);
 		}
 		
 		protected function stageWebView_completeHandler(event:flash.events.Event):void
