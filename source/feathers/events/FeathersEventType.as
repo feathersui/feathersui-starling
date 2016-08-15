@@ -239,9 +239,9 @@ package feathers.events
 		public static const LOCATION_CHANGE:String = "locationChange";
 
 		/**
-		 * The <code>FeathersEventType.LOCATION_CHANGE</code> event type is used
-		 * by the Feathers <code>WebView</code> component to indicate that its
-		 * location is about to change.
+		 * The <code>FeathersEventType.LOCATION_CHANGING</code> event type is
+		 * used by the Feathers <code>WebView</code> component to indicate that
+		 * its location is about to change.
 		 */
 		public static const LOCATION_CHANGING:String = "locationChanging";
 
