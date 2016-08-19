@@ -61,6 +61,18 @@ player.addEventListener( Event.READY, videoPlayer_readyHandler );
 
 The video texture may be accessed throught the [`texture`](../api-reference/feathers/media/VideoPlayer.html#texture) property. Until `Event.READY` is dispatched, the `texture` property of the `VideoPlayer` will be `null`.
 
+Additionally, you should listen for [`Event.CLEAR`](../api-reference/feathers/media/VideoPlayer.html#event:ready):
+
+``` code
+function videoPlayer_clearHandler( event:Event ):void
+{
+	loader.source = null;
+}
+player.addEventListener( Event.CLEAR, videoPlayer_clearHandler );
+```
+
+This event is dispatched when the video texture has been disposed, and it must no longer be rendered.
+
 ## Controls
 
 Let's give the `VideoPlayer` some controls. First, let's create a [`LayoutGroup`](layout-group.html) to use as a toolbar for our controls:
