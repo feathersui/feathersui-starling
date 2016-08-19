@@ -92,6 +92,7 @@ package
 	import feathers.tests.TabBarEmptyDataProviderTests;
 	import feathers.tests.TabBarMeasurementTests;
 	import feathers.tests.TabBarTests;
+	import feathers.tests.TabNavigatorTests;
 	import feathers.tests.TapToSelectTests;
 	import feathers.tests.TapToTriggerTests;
 	import feathers.tests.TextAreaFocusTests;
@@ -240,6 +241,7 @@ package
 				TabBarTests,
 				TabBarMeasurementTests,
 				TabBarEmptyDataProviderTests,
+				TabNavigatorTests,
 				TextAreaTests,
 				TextAreaInternalStateTests,
 				TextInputTests,
