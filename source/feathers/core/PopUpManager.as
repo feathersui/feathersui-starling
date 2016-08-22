@@ -213,14 +213,15 @@ package feathers.core
 		}
 
 		/**
-		 * Determines if a pop-up is above the highest overlay (of if there is
-		 * no overlay).
+		 * Determines if a display object is above the highest modal overlay. If
+		 * there are no modals overlays, determines if a display object is a
+		 * pop-up.
 		 */
 		public static function isTopLevelPopUp(popUp:DisplayObject):Boolean
 		{
 			return PopUpManager.forStarling(Starling.current).isTopLevelPopUp(popUp);
 		}
-		
+
 		/**
 		 * Centers a pop-up on the stage. Unlike the <code>isCentered</code>
 		 * argument passed to <code>PopUpManager.addPopUp()</code>, the pop-up
