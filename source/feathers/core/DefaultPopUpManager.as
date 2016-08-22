@@ -213,6 +213,23 @@ package feathers.core
 		}
 
 		/**
+		 * @copy PopUpManager#removeAllPopUps()
+		 */
+		public function removeAllPopUps(dispose:Boolean = false):void
+		{
+			//removing pop-ups may call event listeners that add new pop-ups,
+			//and we don't want to remove the new ones or miss old ones, so
+			//create a copy of the _popUps Vector to be safe.
+			var popUps:Vector.<DisplayObject> = this._popUps.slice();
+			var popUpCount:int = popUps.length;
+			for(var i:int = 0; i < popUpCount; i++)
+			{
+				var popUp:DisplayObject = popUps[i];
+				this.removePopUp(popUp, dispose);
+			}
+		}
+
+		/**
 		 * @copy PopUpManager#isPopUp()
 		 */
 		public function isPopUp(popUp:DisplayObject):Boolean

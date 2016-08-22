@@ -53,6 +53,11 @@ package feathers.core
 		function removePopUp(popUp:DisplayObject, dispose:Boolean = false):DisplayObject;
 
 		/**
+		 * @copy PopUpManager#removeAllPopUps()
+		 */
+		function removeAllPopUps(dispose:Boolean = false):void;
+
+		/**
 		 * @copy PopUpManager#isPopUp()
 		 */
 		function isPopUp(popUp:DisplayObject):Boolean;

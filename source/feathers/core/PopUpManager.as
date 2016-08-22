@@ -203,13 +203,21 @@ package feathers.core
 		{
 			return PopUpManager.forStarling(Starling.current).addPopUp(popUp, isModal, isCentered, customOverlayFactory);
 		}
-		
+
 		/**
 		 * Removes a pop-up from the stage.
 		 */
 		public static function removePopUp(popUp:DisplayObject, dispose:Boolean = false):DisplayObject
 		{
 			return PopUpManager.forStarling(Starling.current).removePopUp(popUp, dispose);
+		}
+
+		/**
+		 * Removes all pop-ups from the stage.
+		 */
+		public static function removeAllPopUps(dispose:Boolean = false):void
+		{
+			PopUpManager.forStarling(Starling.current).removeAllPopUps(dispose);
 		}
 
 		/**
