@@ -9,9 +9,7 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
-
 	import starling.display.Sprite;
 
 	public class PopUpManagerTests
@@ -80,7 +78,7 @@ package feathers.tests
 		public function testOverlayFactory():void
 		{
 			PopUpManager.overlayFactory = this.createOverlay;
-			
+
 			this._popUp1 = new Quad(200, 200, 0xff00ff);
 			PopUpManager.addPopUp(this._popUp1, true);
 
@@ -95,12 +93,42 @@ package feathers.tests
 
 			this._popUp1 = new Quad(200, 200, 0xff00ff);
 			PopUpManager.addPopUp(this._popUp1, true);
-			
+
 			this._popUp2 = new Quad(200, 200, 0x00ff00);
 			TestFeathers.starlingRoot.addChild(this._popUp2);
 
-			Assert.assertTrue("PopUpManager.isPopUp() failed to indentify a pop-up", PopUpManager.isPopUp(this._popUp1));
-			Assert.assertFalse("PopUpManager.isPopUp() incorrectly indentified a display object that is not a pop-up", PopUpManager.isPopUp(this._popUp2));
+			Assert.assertTrue("PopUpManager.isPopUp() failed to identify a pop-up", PopUpManager.isPopUp(this._popUp1));
+			Assert.assertFalse("PopUpManager.isPopUp() incorrectly identified a display object that is not a pop-up", PopUpManager.isPopUp(this._popUp2));
+		}
+
+		[Test]
+		public function testPopUpCount():void
+		{
+			Assert.assertTrue("PopUpManager.popUpCount returned wrong value with no pop-ups",
+				0, PopUpManager.popUpCount);
+
+			this._popUp1 = new Quad(200, 200, 0xff00ff);
+			PopUpManager.addPopUp(this._popUp1, true);
+
+			Assert.assertTrue("PopUpManager.popUpCount returned wrong value after adding first pop-up",
+				1, PopUpManager.popUpCount);
+
+			this._popUp2 = new Quad(200, 200, 0x00ff00);
+			TestFeathers.starlingRoot.addChild(this._popUp2);
+
+			Assert.assertTrue("PopUpManager.popUpCount incorrectly identified a display object that is not a pop-up and returned wrong value",
+				1, PopUpManager.popUpCount);
+
+			this._feathersPopUp = new LayoutGroup();
+			PopUpManager.addPopUp(DisplayObject(this._feathersPopUp));
+
+			Assert.assertTrue("PopUpManager.popUpCount returned wrong value after adding second pop-up",
+				2, PopUpManager.popUpCount);
+
+			PopUpManager.removePopUp(this._popUp1);
+
+			Assert.assertTrue("PopUpManager.popUpCount returned wrong value after removing pop-up",
+				1, PopUpManager.popUpCount);
 		}
 
 		[Test]

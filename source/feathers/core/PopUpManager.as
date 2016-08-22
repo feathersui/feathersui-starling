@@ -160,7 +160,23 @@ package feathers.core
 		{
 			PopUpManager.forStarling(Starling.current).root = value;
 		}
-		
+
+		/**
+		 * The current number of pop-ups.
+		 *
+		 * <p>In the following example, we check the number of pop-ups:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( PopUpManager.popUpCount > 0 )
+		 * {
+		 *     // do something
+		 * }</listing>
+		 */
+		public static function get popUpCount():int
+		{
+			return PopUpManager.forStarling(Starling.current).popUpCount;
+		}
+
 		/**
 		 * Adds a pop-up to the stage.
 		 *

@@ -49,6 +49,14 @@ package feathers.core
 		protected var _popUps:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
+		 * @copy PopUpManager#popUpCount
+		 */
+		public function get popUpCount():int
+		{
+			return this._popUps.length;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _popUpToOverlay:Dictionary = new Dictionary(true);
