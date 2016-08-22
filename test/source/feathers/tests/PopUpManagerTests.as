@@ -5,6 +5,8 @@ package feathers.tests
 	import feathers.controls.ScrollContainer;
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
+	import feathers.tests.supportClasses.DisposeFlagQuad;
+	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
 
@@ -102,33 +104,131 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testIsTopLevelPopUpWithModal():void
+		{
+			this._popUp1 = new Quad(200, 200, 0xff00ff);
+			PopUpManager.addPopUp(this._popUp1, true);
+
+			Assert.assertTrue("PopUpManager.isTopLevelPopUp() failed to identify a top-level pop-up",
+				PopUpManager.isTopLevelPopUp(this._popUp1));
+
+			this._popUp2 = new Quad(200, 200, 0x00ff00);
+			PopUpManager.addPopUp(this._popUp2, true);
+
+			Assert.assertTrue("PopUpManager.isTopLevelPopUp() failed to identify a top-level pop-up",
+				PopUpManager.isTopLevelPopUp(this._popUp2));
+
+			Assert.assertFalse("PopUpManager.isTopLevelPopUp() incorrectly identified a top-level pop-up",
+				PopUpManager.isTopLevelPopUp(this._popUp1));
+		}
+
+		[Test]
+		public function testIsTopLevelPopUpWithoutModal():void
+		{
+			this._popUp1 = new Quad(200, 200, 0xff00ff);
+			PopUpManager.addPopUp(this._popUp1, false);
+
+			Assert.assertTrue("PopUpManager.isTopLevelPopUp() failed to identify a top-level pop-up",
+				PopUpManager.isTopLevelPopUp(this._popUp1));
+		}
+
+		[Test]
+		public function testIsTopLevelPopUpWithoutModalAfterModal():void
+		{
+			this._popUp1 = new Quad(200, 200, 0xff00ff);
+			PopUpManager.addPopUp(this._popUp1, true);
+
+			this._popUp2 = new Quad(200, 200, 0x00ff00);
+			PopUpManager.addPopUp(this._popUp2, false);
+
+			Assert.assertTrue("PopUpManager.isTopLevelPopUp() failed to identify a top-level pop-up",
+				PopUpManager.isTopLevelPopUp(this._popUp1));
+
+			Assert.assertTrue("PopUpManager.isTopLevelPopUp() failed to identify a top-level pop-up",
+				PopUpManager.isTopLevelPopUp(this._popUp2));
+		}
+
+		[Test]
 		public function testPopUpCount():void
 		{
-			Assert.assertTrue("PopUpManager.popUpCount returned wrong value with no pop-ups",
+			Assert.assertStrictlyEquals("PopUpManager.popUpCount returned wrong value with no pop-ups",
 				0, PopUpManager.popUpCount);
 
 			this._popUp1 = new Quad(200, 200, 0xff00ff);
 			PopUpManager.addPopUp(this._popUp1, true);
 
-			Assert.assertTrue("PopUpManager.popUpCount returned wrong value after adding first pop-up",
+			Assert.assertStrictlyEquals("PopUpManager.popUpCount returned wrong value after adding first pop-up",
 				1, PopUpManager.popUpCount);
 
 			this._popUp2 = new Quad(200, 200, 0x00ff00);
 			TestFeathers.starlingRoot.addChild(this._popUp2);
 
-			Assert.assertTrue("PopUpManager.popUpCount incorrectly identified a display object that is not a pop-up and returned wrong value",
+			Assert.assertStrictlyEquals("PopUpManager.popUpCount incorrectly identified a display object that is not a pop-up and returned wrong value",
 				1, PopUpManager.popUpCount);
 
 			this._feathersPopUp = new LayoutGroup();
 			PopUpManager.addPopUp(DisplayObject(this._feathersPopUp));
 
-			Assert.assertTrue("PopUpManager.popUpCount returned wrong value after adding second pop-up",
+			Assert.assertStrictlyEquals("PopUpManager.popUpCount returned wrong value after adding second pop-up",
 				2, PopUpManager.popUpCount);
 
 			PopUpManager.removePopUp(this._popUp1);
 
-			Assert.assertTrue("PopUpManager.popUpCount returned wrong value after removing pop-up",
+			Assert.assertStrictlyEquals("PopUpManager.popUpCount returned wrong value after removing pop-up",
 				1, PopUpManager.popUpCount);
+		}
+
+		[Test]
+		public function testRemoveAllPopUps():void
+		{
+			this._popUp1 = new DisposeFlagQuad();
+			PopUpManager.addPopUp(this._popUp1, true);
+
+			this._popUp2 = new DisposeFlagQuad();
+			PopUpManager.addPopUp(this._popUp2, true);
+
+			PopUpManager.removeAllPopUps(true);
+
+			Assert.assertStrictlyEquals("PopUpManager.popUpCount incorrect after removeAllPopUps()",
+				0, PopUpManager.popUpCount);
+
+			Assert.assertTrue("Pop up not disposed after removeAllPopUps(true)",
+				DisposeFlagQuad(this._popUp1).isDisposed);
+			Assert.assertNull("Pop up parent not null after removeAllPopUps()",
+				this._popUp1.parent);
+
+			Assert.assertTrue("Pop up not disposed after removeAllPopUps(true)",
+				DisposeFlagQuad(this._popUp2).isDisposed);
+			Assert.assertNull("Pop up parent not null after removeAllPopUps()",
+				this._popUp2.parent);
+		}
+
+		[Test]
+		public function testRemovePopUpWithoutDispose():void
+		{
+			this._popUp1 = new DisposeFlagQuad();
+			PopUpManager.addPopUp(this._popUp1, true);
+
+			PopUpManager.removePopUp(this._popUp1, false);
+
+			Assert.assertFalse("Pop up not disposed after removePopUp(false)",
+				DisposeFlagQuad(this._popUp1).isDisposed);
+			Assert.assertNull("Pop up parent not null after removePopUp(false)",
+				this._popUp1.parent);
+		}
+
+		[Test]
+		public function testRemovePopUpWithDispose():void
+		{
+			this._popUp1 = new DisposeFlagQuad();
+			PopUpManager.addPopUp(this._popUp1, true);
+
+			PopUpManager.removePopUp(this._popUp1, true);
+
+			Assert.assertTrue("Pop up not disposed after removePopUp(true)",
+				DisposeFlagQuad(this._popUp1).isDisposed);
+			Assert.assertNull("Pop up parent not null after removePopUp(true)",
+				this._popUp1.parent);
 		}
 
 		[Test]
