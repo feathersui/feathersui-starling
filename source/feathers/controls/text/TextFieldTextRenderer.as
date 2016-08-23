@@ -36,6 +36,7 @@ package feathers.controls.text
 	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.Align;
 	import starling.utils.MathUtil;
 	import starling.utils.SystemUtil;
 
@@ -1238,6 +1239,7 @@ package feathers.controls.text
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
 				}
+				offsetY += this.getVerticalAlignmentOffsetY() * scaleFactor;
 
 				var snapshotIndex:int = -1;
 				var totalBitmapWidth:Number = this._snapshotWidth;
@@ -1891,6 +1893,49 @@ package feathers.controls.text
 				}
 			}
 			return this._fontStylesTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignment():String
+		{
+			var verticalAlign:String = null;
+			if(this._fontStyles !== null)
+			{
+				var format:starling.text.TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(format !== null)
+				{
+					verticalAlign = format.verticalAlign;
+				}
+			}
+			if(verticalAlign === null)
+			{
+				verticalAlign = Align.TOP;
+			}
+			return verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignmentOffsetY():Number
+		{
+			var verticalAlign:String = this.getVerticalAlignment();
+			var textFieldTextHeight:Number = this.textField.textHeight;
+			if(textFieldTextHeight > this.actualHeight)
+			{
+				return 0;
+			}
+			if(verticalAlign === Align.BOTTOM)
+			{
+				return this.actualHeight - textFieldTextHeight;
+			}
+			else if(verticalAlign === Align.CENTER)
+			{
+				return (this.actualHeight - textFieldTextHeight) / 2;
+			}
+			return 0;
 		}
 
 		/**

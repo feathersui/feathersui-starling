@@ -49,6 +49,7 @@ package feathers.controls.text
 	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.Align;
 	import starling.utils.MathUtil;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
@@ -1989,6 +1990,49 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function getVerticalAlignment():String
+		{
+			var verticalAlign:String = null;
+			if(this._fontStyles !== null)
+			{
+				var format:starling.text.TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(format !== null)
+				{
+					verticalAlign = format.verticalAlign;
+				}
+			}
+			if(verticalAlign === null)
+			{
+				verticalAlign = Align.TOP;
+			}
+			return verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignmentOffsetY():Number
+		{
+			var verticalAlign:String = this.getVerticalAlignment();
+			var textFieldTextHeight:Number = this.textField.textHeight;
+			if(textFieldTextHeight > this.actualHeight)
+			{
+				return 0;
+			}
+			if(verticalAlign === Align.BOTTOM)
+			{
+				return this.actualHeight - textFieldTextHeight;
+			}
+			else if(verticalAlign === Align.CENTER)
+			{
+				return (this.actualHeight - textFieldTextHeight) / 2;
+			}
+			return 0;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layout(sizeInvalid:Boolean):void
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
@@ -2114,19 +2158,20 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 2 * smallerGlobalScale;
 			}
+			var verticalAlignOffsetY:Number = this.getVerticalAlignmentOffsetY();
 			if(this.is3D)
 			{
 				var matrix3D:Matrix3D = Pool.getMatrix3D();
 				var point3D:Vector3D = Pool.getPoint3D();
 				this.getTransformationMatrix3D(this.stage, matrix3D);
-				MatrixUtil.transformCoords3D(matrix3D, -gutterPositionOffset, -gutterPositionOffset, 0, point3D);
+				MatrixUtil.transformCoords3D(matrix3D, -gutterPositionOffset, -gutterPositionOffset + verticalAlignOffsetY, 0, point3D);
 				point.setTo(point3D.x, point3D.y);
 				Pool.putPoint3D(point3D);
 				Pool.putMatrix3D(matrix3D);
 			}
 			else
 			{
-				MatrixUtil.transformCoords(matrix, -gutterPositionOffset, -gutterPositionOffset, point);
+				MatrixUtil.transformCoords(matrix, -gutterPositionOffset, -gutterPositionOffset + verticalAlignOffsetY, point);
 			}
 			var starlingViewPort:Rectangle = starling.viewPort;
 			this.textField.x = Math.round(starlingViewPort.x + (point.x * scaleFactor));
@@ -2152,6 +2197,7 @@ package feathers.controls.text
 			this.getTransformationMatrix(this.stage, matrix);
 			this.textSnapshot.x = Math.round(matrix.tx) - matrix.tx;
 			this.textSnapshot.y = Math.round(matrix.ty) - matrix.ty;
+			this.textSnapshot.y += this.getVerticalAlignmentOffsetY();
 			Pool.putMatrix(matrix);
 		}
 
