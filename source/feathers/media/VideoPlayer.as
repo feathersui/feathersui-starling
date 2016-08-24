@@ -427,9 +427,9 @@ package feathers.media
 		 * <listing version="3.0">
 		 * function videoPlayer_readyHandler( event:Event ):void
 		 * {
-		 * 	var view:ImageLoader = new ImageLoader();
-		 * 	view.source = videoPlayer.texture;
-		 * 	videoPlayer.addChildAt(view, 0);
+		 *     var view:ImageLoader = new ImageLoader();
+		 *     view.source = videoPlayer.texture;
+		 *     videoPlayer.addChildAt(view, 0);
 		 * }
 		 * 
 		 * videoPlayer.addEventListener( Event.READY, videoPlayer_readyHandler );</listing>
