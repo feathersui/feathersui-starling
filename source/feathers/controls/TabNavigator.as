@@ -678,7 +678,7 @@ package feathers.controls
 		 */
 		protected function tabBar_triggeredHandler(event:Event, id:String):void
 		{
-			this.dispatchEventWith(Event.TRIGGERED, this.getScreen(id));
+			this.dispatchEventWith(Event.TRIGGERED, false, this.getScreen(id));
 			if(id !== this._activeScreenID)
 			{
 				return;
