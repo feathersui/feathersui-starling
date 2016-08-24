@@ -3661,13 +3661,20 @@
 	<xsl:template match="codeblock">
 		<xsl:variable name="product" select="./@product|./@class[contains(.,'only')] | ./@outputclass"/>
 		<xsl:if test="string-length($product)=0 or $product=concat($productName,'only')">
+			<!-- for some reason, asdoc includes all whitespace before
+				the * in documentation comments -->
+			<!-- the Feathers codebase uses tabs for indentation, and one
+				space before *, so we can remove the space -->
 			<xsl:variable name="deTabbed">
 				<xsl:call-template name="search-and-replace">
 					<xsl:with-param name="input" select="."/>
-					<xsl:with-param name="search-string" select="'&#09;'"/>
-					<xsl:with-param name="replace-string" select="'    '"/>
+					<xsl:with-param name="search-string" select="'&#09; '"/>
+					<xsl:with-param name="replace-string" select="'&#09;'"/>
 				</xsl:call-template>
 			</xsl:variable>
+			<!-- Feathers examples only use spaces so we can safely remove
+				all tabs in code blocks -->
+			<xsl:variable name="deTabbed" select="replace($deTabbed,'&#09;','')"/>
 			<xsl:variable name="listingversion" select="./@rev"/>
 			<xsl:variable name="openTag">
 				<xsl:if test="string-length($listingversion) &gt; 0">
@@ -3680,7 +3687,11 @@
 			<xsl:value-of disable-output-escaping="yes" select="$openTag"/>
 			<xsl:value-of disable-output-escaping="yes" select="'&lt;pre&gt;'"/>
 			<xsl:if test="contains($deTabbed,'~~')">
-				<xsl:call-template name="search-and-replace">	<xsl:with-param name="input" select="$deTabbed"/>	<xsl:with-param name="search-string" select="'~~'"/>	<xsl:with-param name="replace-string" select="'*'"/></xsl:call-template>
+				<xsl:call-template name="search-and-replace">
+					<xsl:with-param name="input" select="$deTabbed"/>
+					<xsl:with-param name="search-string" select="'~~'"/>
+					<xsl:with-param name="replace-string" select="'*'"/>		
+				</xsl:call-template>
 			</xsl:if>
 			<xsl:variable name="text" select="replace($deTabbed,'&lt;','&amp;lt;')"/>
 			<xsl:variable name="finaltext" select="replace($text,'&gt;','&amp;gt;')"/>
