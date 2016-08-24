@@ -43,6 +43,23 @@ package feathers.controls
 	[Style(name="defaultSkin",type="starling.display.DisplayObject")]
 
 	/**
+	 * Determines if a pressed button should remain in the down state if a
+	 * touch moves outside of the button's bounds. Useful for controls like
+	 * <code>Slider</code> and <code>ToggleSwitch</code> to keep a thumb in
+	 * the down state while it is dragged around.
+	 *
+	 * <p>The following example ensures that the button's down state remains
+	 * active when the button is pressed but the touch moves outside the
+	 * button's bounds:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.keepDownStateOnRollOut = true;</listing>
+	 * 
+	 * @default false
+	 */
+	[Style(name="keepDownStateOnRollOut",type="Boolean")]
+
+	/**
 	 * Dispatched when the the user taps or clicks the button. The touch must
 	 * remain within the bounds of the button on release to register as a tap
 	 * or a click. If focus management is enabled, the button may also be
@@ -201,17 +218,7 @@ package feathers.controls
 		protected var _keepDownStateOnRollOut:Boolean = false;
 
 		/**
-		 * Determines if a pressed button should remain in the down state if a
-		 * touch moves outside of the button's bounds. Useful for controls like
-		 * <code>Slider</code> and <code>ToggleSwitch</code> to keep a thumb in
-		 * the down state while it is dragged around.
-		 *
-		 * <p>The following example ensures that the button's down state remains
-		 * active when the button is pressed but the touch moves outside the
-		 * button's bounds:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.keepDownStateOnRollOut = true;</listing>
+		 * @private
 		 */
 		public function get keepDownStateOnRollOut():Boolean
 		{
@@ -223,6 +230,15 @@ package feathers.controls
 		 */
 		public function set keepDownStateOnRollOut(value:Boolean):void
 		{
+			if(this._keepDownStateOnRollOut === value)
+			{
+				return;
+			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._keepDownStateOnRollOut = value;
 		}
 
@@ -250,6 +266,10 @@ package feathers.controls
 			}
 			if(this.isStyleRestricted(arguments.callee))
 			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
 				return;
 			}
 			this.restrictStyle(arguments.callee);
@@ -328,6 +348,16 @@ package feathers.controls
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
+			var key:String = "setSkinForState--" + state;
+			if(this.isStyleRestricted(key))
+			{
+				if(skin !== null)
+				{
+					skin.dispose();
+				}
+				return;
+			}
+			this.restrictStyle(key);
 			var oldSkin:DisplayObject = this._stateToSkin[state] as DisplayObject;
 			if(oldSkin !== null &&
 				this.currentSkin === oldSkin)
