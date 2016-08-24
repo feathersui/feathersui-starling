@@ -2346,7 +2346,7 @@ package feathers.core
 		 * 
 		 * @see #isStyleRestricted()
 		 */
-		protected function restrictStyle(style:Function):void
+		protected function restrictStyle(key:Object):void
 		{
 			if(this._applyingStyles)
 			{
@@ -2357,7 +2357,7 @@ package feathers.core
 				//only create the object if it is needed
 				this._restrictedStyles = new Dictionary(true);
 			}
-			this._restrictedStyles[style] = true;
+			this._restrictedStyles[key] = true;
 		}
 
 		/**
@@ -2395,11 +2395,11 @@ package feathers.core
 		 *
 		 * @see #restrictStyle()
 		 */
-		protected function isStyleRestricted(style:Function):Boolean
+		protected function isStyleRestricted(key:Object):Boolean
 		{
 			//in most cases, the style is not restricted, and we can set it
 			return this._applyingStyles && this._restrictedStyles !== null &&
-				style in this._restrictedStyles;
+				key in this._restrictedStyles;
 		}
 
 		/**
