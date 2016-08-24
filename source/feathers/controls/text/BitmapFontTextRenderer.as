@@ -901,10 +901,6 @@ package feathers.controls.text
 			{
 				this._characterBatch.pixelSnapping = this._pixelSnapping;
 				this._characterBatch.batchable = !this._useSeparateBatch;
-				if(this._style !== null)
-				{
-					this._characterBatch.style = this._style;
-				}
 			}
 
 			//sometimes, we can determine that the layout will be exactly
@@ -1298,6 +1294,10 @@ package feathers.controls.text
 			HELPER_IMAGE.color = this._currentTextFormat.color;
 			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
 			HELPER_IMAGE.pixelSnapping = this._pixelSnapping;
+			if(this._style !== null)
+			{
+				HELPER_IMAGE.style = this._style;
+			}
 
 			if(painter !== null)
 			{
