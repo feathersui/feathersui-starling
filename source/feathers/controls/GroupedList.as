@@ -150,12 +150,12 @@ package feathers.controls
 	 * list.dataProvider = new HierarchicalCollection(
 	 * [
 	 *     {
-	 *     	   header: "Dairy",
-	 *     	   children:
-	 *     	   [
-	 *     	       { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
-	 *     	       { text: "Cheese", thumbnail: textureAtlas.getTexture( "cheese" ) },
-	 *     	   ]
+	 *         header: "Dairy",
+	 *         children:
+	 *         [
+	 *             { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
+	 *             { text: "Cheese", thumbnail: textureAtlas.getTexture( "cheese" ) },
+	 *         ]
 	 *     },
 	 *     {
 	 *         header: "Bakery",
