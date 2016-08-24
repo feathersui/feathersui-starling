@@ -441,9 +441,15 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the label.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * label text renderer.
+		 * 
+		 * <p>Note: the label text renderer is not a
+		 * <code>feathers.controls.Label</code>. It is an instance of one of the
+		 * <code>ITextRenderer</code> implementations.</p>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-button-label";
 

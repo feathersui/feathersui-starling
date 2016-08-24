@@ -100,9 +100,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP:String = "feathers-alert-button-group";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the message.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * message text renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_MESSAGE:String = "feathers-alert-message";
 

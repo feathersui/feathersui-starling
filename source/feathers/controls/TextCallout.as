@@ -78,6 +78,7 @@ package feathers.controls
 		 * renderer sub-component.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER:String = "feathers-text-callout-text-renderer";
 		

@@ -183,10 +183,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_ITEM:String = "feathers-header-item";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the header's
-		 * title.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * header's title text renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TITLE:String = "feathers-header-title";
 

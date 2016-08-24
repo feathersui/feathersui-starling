@@ -157,16 +157,28 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the off label.
+		 * The default value added to the <code>styleNameList</code> of the "off
+		 * label" text renderer.
+		 *
+		 * <p>Note: the "off label" text renderer is not a
+		 * <code>feathers.controls.Label</code>. It is an instance of one of the
+		 * <code>ITextRenderer</code> implementations.</p>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the on label.
+		 * The default value added to the <code>styleNameList</code> of the "on
+		 * label" text renderer.
+		 *
+		 * <p>Note: the "on label" text renderer is not a
+		 * <code>feathers.controls.Label</code>. It is an instance of one of the
+		 * <code>ITextRenderer</code> implementations.</p>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
 
