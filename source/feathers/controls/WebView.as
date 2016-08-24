@@ -78,6 +78,31 @@ package feathers.controls
 	[Event(name="locationChange",type="starling.events.Event")]
 
 	/**
+	 * Indicates that the <code>location</code> property is about to change.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>flash.events.LocationChangeEvent</code>
+	 *   dispatched by the <code>StageWebView</code>.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #location
+	 *
+	 * @eventType feathers.events.FeathersEventType.LOCATION_CHANGING
+	 */
+	[Event(name="locationChanging",type="starling.events.Event")]
+
+	/**
 	 * Indicates that an error occurred in the <code>StageWebView</code>.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -439,6 +464,7 @@ package feathers.controls
 			this.stageWebView.addEventListener(ErrorEvent.ERROR, stageWebView_errorHandler);
 			//we're using the string here because this class is AIR-only
 			this.stageWebView.addEventListener("locationChange", stageWebView_locationChangeHandler);
+			this.stageWebView.addEventListener("locationChanging", stageWebView_locationChangingHandler);
 			this.stageWebView.addEventListener(flash.events.Event.COMPLETE, stageWebView_completeHandler);
 		}
 
@@ -545,7 +571,15 @@ package feathers.controls
 		{
 			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGE);
 		}
-		
+
+		/**
+		 * @private
+		 */
+		protected function stageWebView_locationChangingHandler(event:flash.events.Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGING, false, event);
+		}
+
 		protected function stageWebView_completeHandler(event:flash.events.Event):void
 		{
 			this.dispatchEventWith(Event.COMPLETE);

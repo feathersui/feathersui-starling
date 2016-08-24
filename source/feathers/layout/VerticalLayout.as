@@ -18,6 +18,7 @@ package feathers.layout
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when a property of the layout changes, indicating that a
@@ -1790,7 +1791,12 @@ package feathers.layout
 		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
 			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
-			var maxScrollY:Number = this.calculateMaxScrollYOfIndex(index, items, x, y, width, height);
+			var point:Point = Pool.getPoint();
+			this.calculateScrollRangeOfIndex(index, items, x, y, width, height, point);
+			var minScrollY:Number = point.x;
+			var maxScrollY:Number = point.y;
+			var scrollRange:Number = maxScrollY - minScrollY;
+			Pool.putPoint(point);
 
 			if(this._useVirtualLayout)
 			{
@@ -1818,7 +1824,7 @@ package feathers.layout
 			}
 			result.x = 0;
 
-			var bottomPosition:Number = maxScrollY - (height - itemHeight);
+			var bottomPosition:Number = maxScrollY - (scrollRange - itemHeight);
 			if(scrollY >= bottomPosition && scrollY <= maxScrollY)
 			{
 				//keep the current scroll position because the item is already
@@ -1847,7 +1853,12 @@ package feathers.layout
 		 */
 		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
-			var maxScrollY:Number = this.calculateMaxScrollYOfIndex(index, items, x, y, width, height);
+			var point:Point = Pool.getPoint();
+			this.calculateScrollRangeOfIndex(index, items, x, y, width, height, point);
+			var minScrollY:Number = point.x;
+			var maxScrollY:Number = point.y;
+			var scrollRange:Number = maxScrollY - minScrollY;
+			Pool.putPoint(point);
 
 			if(this._useVirtualLayout)
 			{
@@ -1877,11 +1888,11 @@ package feathers.layout
 
 			if(this._scrollPositionVerticalAlign == VerticalAlign.MIDDLE)
 			{
-				maxScrollY -= Math.round((height - itemHeight) / 2);
+				maxScrollY -= Math.round((scrollRange - itemHeight) / 2);
 			}
 			else if(this._scrollPositionVerticalAlign == VerticalAlign.BOTTOM)
 			{
-				maxScrollY -= (height - itemHeight);
+				maxScrollY -= (scrollRange - itemHeight);
 			}
 			result.y = maxScrollY;
 
@@ -2251,7 +2262,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function calculateMaxScrollYOfIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number):Number
+		protected function calculateScrollRangeOfIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point):void
 		{
 			if(this._useVirtualLayout)
 			{
@@ -2259,7 +2270,19 @@ package feathers.layout
 				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
-
+			var headerIndicesIndex:int = -1;
+			var nextHeaderIndex:int = -1;
+			var headerCount:int = 0;
+			var lastHeaderHeight:Number = 0;
+			if(this._headerIndices && this._stickyHeader)
+			{
+				headerCount = this._headerIndices.length;
+				if(headerCount > 0)
+				{
+					headerIndicesIndex = 0;
+					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+				}
+			}
 			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
 			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
 			var positionY:Number = y + this._paddingTop;
@@ -2346,9 +2369,26 @@ package feathers.layout
 					lastHeight = itemHeight;
 				}
 				positionY += lastHeight + gap;
+				if(nextHeaderIndex === iNormalized)
+				{
+					lastHeaderHeight = lastHeight;
+					//if the sticky header is enabled, we need to find its index
+					//we look for the first header that is visible at the top of
+					//the view port. the previous one should be sticky.
+					headerIndicesIndex++;
+					if(headerIndicesIndex < headerCount)
+					{
+						nextHeaderIndex = this._headerIndices[headerIndicesIndex];
+					}
+				}
 			}
 			positionY -= (lastHeight + gap);
-			return positionY;
+			result.x = positionY - height;
+			if(this._stickyHeader)
+			{
+				positionY -= lastHeaderHeight;
+			}
+			result.y = positionY;
 		}
 
 		/**

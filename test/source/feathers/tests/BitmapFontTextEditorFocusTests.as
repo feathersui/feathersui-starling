@@ -87,6 +87,10 @@ package feathers.tests
 			this._textInput.text = "Hello World";
 			this._textInput.validate();
 			this._textInput.focusManager.focus = this._textInput;
+			//clear the automatic selection caused by giving it focus
+			this._textInput.selectRange(0, 0);
+			//and validate the commit this change
+			this._textInput.validate();
 			Starling.current.nativeStage.focus.dispatchEvent(new flash.events.Event(flash.events.Event.SELECT_ALL, true));
 			Assert.assertStrictlyEquals("selectionBeginIndex not changed after Ctrl/Cmd+A to select all",
 				0, this._textInput.selectionBeginIndex);
@@ -100,6 +104,10 @@ package feathers.tests
 			this._textInput.text = "Hello World";
 			this._textInput.validate();
 			this._textInput.focusManager.focus = this._textInput;
+			//clear the automatic selection caused by giving it focus
+			this._textInput.selectRange(0, 0);
+			//and validate the commit this change
+			this._textInput.validate();
 			Starling.current.nativeStage.focus.dispatchEvent(new flash.events.Event(flash.events.Event.SELECT_ALL, true));
 			Starling.current.nativeStage.focus.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, false, 0, Keyboard.LEFT, 0, false, false, true));
 			Assert.assertStrictlyEquals("selectionBeginIndex not changed correctly after Ctrl/Cmd+A to select all and pressing Keyboard.LEFT and shift key",
@@ -114,6 +122,10 @@ package feathers.tests
 			this._textInput.text = "Hello World";
 			this._textInput.validate();
 			this._textInput.focusManager.focus = this._textInput;
+			//clear the automatic selection caused by giving it focus
+			this._textInput.selectRange(0, 0);
+			//and validate the commit this change
+			this._textInput.validate();
 			Starling.current.nativeStage.focus.dispatchEvent(new flash.events.Event(flash.events.Event.SELECT_ALL, true));
 			Starling.current.nativeStage.focus.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, false, 0, Keyboard.LEFT, 0, false, false, false));
 			Assert.assertStrictlyEquals("selectionBeginIndex not changed correctly after Ctrl/Cmd+A to select all and pressing Keyboard.LEFT",
@@ -128,6 +140,10 @@ package feathers.tests
 			this._textInput.text = "Hello World";
 			this._textInput.validate();
 			this._textInput.focusManager.focus = this._textInput;
+			//clear the automatic selection caused by giving it focus
+			this._textInput.selectRange(0, 0);
+			//and validate the commit this change
+			this._textInput.validate();
 			Starling.current.nativeStage.focus.dispatchEvent(new flash.events.Event(flash.events.Event.SELECT_ALL, true));
 			Starling.current.nativeStage.focus.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, false, 0, Keyboard.RIGHT, 0, false, false, false));
 			Assert.assertStrictlyEquals("selectionBeginIndex not changed correctly after Ctrl/Cmd+A to select all and pressing Keyboard.RIGHT",

@@ -683,14 +683,7 @@ package feathers.controls
 		protected function refreshBackgroundSkin():void
 		{
 			var oldBackgroundSkin:DisplayObject = this.currentBackgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
-			{
-				this.currentBackgroundSkin = this._backgroundDisabledSkin;
-			}
-			else
-			{
-				this.currentBackgroundSkin = this._backgroundSkin;
-			}
+			this.currentBackgroundSkin = this.getCurrentBackgroundSkin();
 			if(this.currentBackgroundSkin !== oldBackgroundSkin)
 			{
 				this.setRequiresRedraw();
@@ -726,6 +719,18 @@ package feathers.controls
 					}
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentBackgroundSkin():DisplayObject
+		{
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
+			{
+				return this._backgroundDisabledSkin;
+			}
+			return this._backgroundSkin;
 		}
 
 		/**

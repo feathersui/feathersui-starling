@@ -38,6 +38,11 @@ package feathers.core
 		function set root(value:DisplayObjectContainer):void;
 
 		/**
+		 * @copy PopUpManager#popUpCount
+		 */
+		function get popUpCount():int;
+
+		/**
 		 * @copy PopUpManager#addPopUp()
 		 */
 		function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):DisplayObject;
@@ -46,6 +51,11 @@ package feathers.core
 		 * @copy PopUpManager#removePopUp()
 		 */
 		function removePopUp(popUp:DisplayObject, dispose:Boolean = false):DisplayObject;
+
+		/**
+		 * @copy PopUpManager#removeAllPopUps()
+		 */
+		function removeAllPopUps(dispose:Boolean = false):void;
 
 		/**
 		 * @copy PopUpManager#isPopUp()

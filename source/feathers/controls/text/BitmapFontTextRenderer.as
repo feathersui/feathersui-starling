@@ -27,6 +27,7 @@ package feathers.controls.text
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
+	import starling.utils.Align;
 	import starling.utils.MathUtil;
 
 	/**
@@ -610,6 +611,7 @@ package feathers.controls.text
 		override public function render(painter:Painter):void
 		{
 			this._characterBatch.x = this._batchX;
+			this._characterBatch.y = this.getVerticalAlignmentOffsetY();
 			super.render(painter);
 		}
 
@@ -899,10 +901,6 @@ package feathers.controls.text
 			{
 				this._characterBatch.pixelSnapping = this._pixelSnapping;
 				this._characterBatch.batchable = !this._useSeparateBatch;
-				if(this._style !== null)
-				{
-					this._characterBatch.style = this._style;
-				}
 			}
 
 			//sometimes, we can determine that the layout will be exactly
@@ -1296,6 +1294,10 @@ package feathers.controls.text
 			HELPER_IMAGE.color = this._currentTextFormat.color;
 			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
 			HELPER_IMAGE.pixelSnapping = this._pixelSnapping;
+			if(this._style !== null)
+			{
+				HELPER_IMAGE.style = this._style;
+			}
 
 			if(painter !== null)
 			{
@@ -1505,6 +1507,57 @@ package feathers.controls.text
 				return this._truncationText;
 			}
 			return this._text;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignment():String
+		{
+			var verticalAlign:String = null;
+			if(this._fontStyles !== null)
+			{
+				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(format !== null)
+				{
+					verticalAlign = format.verticalAlign;
+				}
+			}
+			if(verticalAlign === null)
+			{
+				verticalAlign = Align.TOP;
+			}
+			return verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignmentOffsetY():Number
+		{
+			var verticalAlign:String = this.getVerticalAlignment();
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var scale:Number = customSize / font.size;
+			if(scale !== scale) //isNaN
+			{
+				scale = 1;
+			}
+			var lineHeight:Number = font.lineHeight * scale + this._currentTextFormat.leading;
+			var textHeight:Number = this._numLines * lineHeight;
+			if(textHeight > this.actualHeight)
+			{
+				return 0;
+			}
+			if(verticalAlign === Align.BOTTOM)
+			{
+				return (this.actualHeight - textHeight);
+			}
+			else if(verticalAlign === Align.CENTER)
+			{
+				return (this.actualHeight - textHeight) / 2;
+			}
+			return 0;
 		}
 	}
 }
