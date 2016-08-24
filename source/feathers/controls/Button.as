@@ -1404,7 +1404,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see #defaultSkin
+		 * @see #style:defaultSkin
 		 * @see #setSkinForState()
 		 * @see feathers.controls.ButtonState.UP
 		 */
@@ -1435,7 +1435,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see #defaultSkin
+		 * @see #style:defaultSkin
 		 * @see #setSkinForState()
 		 * @see feathers.controls.ButtonState.DOWN
 		 */
@@ -1466,7 +1466,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #defaultSkin
+		 * @see #style:defaultSkin
 		 * @see #setSkinForState()
 		 * @see feathers.controls.ButtonState.HOVER
 		 */
@@ -1497,7 +1497,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see #defaultSkin
+		 * @see #style:defaultSkin
 		 * @see #setSkinForState()
 		 * @see feathers.controls.ButtonState.DISABLED
 		 */
@@ -1763,7 +1763,7 @@ package feathers.controls
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 * 
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 * @see #setFontStylesForState()
 		 * @see feathers.controls.ButtonState.UP
 		 */
@@ -2001,7 +2001,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see #defaultIcon
+		 * @see #style:defaultIcon
 		 * @see #setIconForState()
 		 * @see feathers.controls.ButtonState.UP
 		 */
@@ -2032,7 +2032,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see #defaultIcon
+		 * @see #style:defaultIcon
 		 * @see #setIconForState()
 		 * @see feathers.controls.ButtonState.DOWN
 		 */
@@ -2063,7 +2063,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #defaultIcon
+		 * @see #style:defaultIcon
 		 * @see #setIconForState()
 		 * @see feathers.controls.ButtonState.HOVER
 		 */
@@ -2094,7 +2094,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 * 
-		 * @see #defaultIcon
+		 * @see #style:defaultIcon
 		 * @see #setIconForState()
 		 * @see feathers.controls.ButtonState.DISABLED
 		 */
@@ -2329,7 +2329,7 @@ package feathers.controls
 		 * 
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 */
 		public function getFontStylesForState(state:String):TextFormat
 		{
@@ -2354,10 +2354,16 @@ package feathers.controls
 		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
 		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 */
 		public function setFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setFontStylesForState--" + state;
+			if(this.isStyleRestricted(key))
+			{
+				return;
+			}
+			this.restrictStyle(key);
 			this._fontStylesSet.setFormatForState(state, format);
 		}
 
@@ -2382,7 +2388,7 @@ package feathers.controls
 		 * <p>If an icon is not defined for a specific state, the value of the
 		 * <code>defaultIcon</code> property will be used instead.</p>
 		 *
-		 * @see #defaultIcon
+		 * @see #style:defaultIcon
 		 * @see #getIconForState()
 		 * @see feathers.controls.ButtonState
 		 */

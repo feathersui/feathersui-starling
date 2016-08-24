@@ -342,7 +342,7 @@ package feathers.controls
 		 * <p>If a skin is not defined for a specific state, the value of the
 		 * <code>defaultSkin</code> property will be used instead.</p>
 		 *
-		 * @see #defaultSkin
+		 * @see #style:defaultSkin
 		 * @see #getSkinForState()
 		 * @see feathers.controls.ButtonState
 		 */
