@@ -3678,14 +3678,16 @@
 				</xsl:if>
 			</xsl:variable>
 			<xsl:value-of disable-output-escaping="yes" select="$openTag"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;pre&gt;'"/>
 			<xsl:if test="contains($deTabbed,'~~')">
-				<pre><xsl:call-template name="search-and-replace">	<xsl:with-param name="input" select="$deTabbed"/>	<xsl:with-param name="search-string" select="'~~'"/>	<xsl:with-param name="replace-string" select="'*'"/></xsl:call-template>			</pre>
+				<xsl:call-template name="search-and-replace">	<xsl:with-param name="input" select="$deTabbed"/>	<xsl:with-param name="search-string" select="'~~'"/>	<xsl:with-param name="replace-string" select="'*'"/></xsl:call-template>
 			</xsl:if>
 			<xsl:variable name="text" select="replace($deTabbed,'&lt;','&amp;lt;')"/>
 			<xsl:variable name="finaltext" select="replace($text,'&gt;','&amp;gt;')"/>
 			<xsl:if test="not(contains($deTabbed,'~~'))">
-				<pre>	<xsl:value-of select="$finaltext"/></pre>
+				<xsl:value-of select="$finaltext"/>
 			</xsl:if>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/pre&gt;'"/>
 			<xsl:value-of disable-output-escaping="yes" select="'&lt;/div&gt;'"/>
 		</xsl:if>
 	</xsl:template>
