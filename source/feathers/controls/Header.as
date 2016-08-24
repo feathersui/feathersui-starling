@@ -187,7 +187,7 @@ package feathers.controls
 		 * header's title text renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TITLE:String = "feathers-header-title";
 

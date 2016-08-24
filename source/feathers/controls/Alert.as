@@ -104,7 +104,7 @@ package feathers.controls
 		 * message text renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_MESSAGE:String = "feathers-alert-message";
 
