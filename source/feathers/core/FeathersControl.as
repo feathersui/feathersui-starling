@@ -31,6 +31,147 @@ package feathers.core
 	import starling.utils.Pool;
 
 	/**
+	 * If this component supports focus, this optional skin will be
+	 * displayed above the component when <code>showFocus()</code> is
+	 * called. The focus indicator skin is not always displayed when the
+	 * component has focus. Typically, if the component receives focus from
+	 * a touch, the focus indicator is not displayed.
+	 *
+	 * <p>The <code>touchable</code> of this skin will always be set to
+	 * <code>false</code> so that it does not "steal" touches from the
+	 * component or its sub-components. This skin will not affect the
+	 * dimensions of the component or its hit area. It is simply a visual
+	 * indicator of focus.</p>
+	 *
+	 * <p>The implementation of this property is provided for convenience,
+	 * but it cannot be used unless a subclass implements the
+	 * <code>IFocusDisplayObject</code> interface.</p>
+	 *
+	 * <p>In the following example, the focus indicator skin is set:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.focusIndicatorSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:focusPaddingTop
+	 * @see #style:focusPaddingRight
+	 * @see #style:focusPaddingBottom
+	 * @see #style:focusPaddingLeft
+	 * @see #style:focusPadding
+	 */
+	[Style(name="focusIndicatorSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Quickly sets all focus padding properties to the same value. The
+	 * <code>focusPadding</code> getter always returns the value of
+	 * <code>focusPaddingTop</code>, but the other focus padding values may
+	 * be different.
+	 *
+	 * <p>The implementation of this property is provided for convenience,
+	 * but it cannot be used unless a subclass implements the
+	 * <code>IFocusDisplayObject</code> interface.</p>
+	 *
+	 * <p>The following example gives the button 2 pixels of focus padding
+	 * on all sides:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.focusPadding = 2;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:focusPaddingTop
+	 * @see #style:focusPaddingRight
+	 * @see #style:focusPaddingBottom
+	 * @see #style:focusPaddingLeft
+	 */
+	[Style(name="focusPadding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the object's top edge and the
+	 * top edge of the focus indicator skin. A negative value may be used
+	 * to expand the focus indicator skin outside the bounds of the object.
+	 *
+	 * <p>The implementation of this property is provided for convenience,
+	 * but it cannot be used unless a subclass implements the
+	 * <code>IFocusDisplayObject</code> interface.</p>
+	 *
+	 * <p>The following example gives the focus indicator skin -2 pixels of
+	 * padding on the top edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.focusPaddingTop = -2;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:focusPadding
+	 */
+	[Style(name="focusPaddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the object's right edge and the
+	 * right edge of the focus indicator skin. A negative value may be used
+	 * to expand the focus indicator skin outside the bounds of the object.
+	 *
+	 * <p>The implementation of this property is provided for convenience,
+	 * but it cannot be used unless a subclass implements the
+	 * <code>IFocusDisplayObject</code> interface.</p>
+	 *
+	 * <p>The following example gives the focus indicator skin -2 pixels of
+	 * padding on the right edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.focusPaddingRight = -2;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:focusPadding
+	 */
+	[Style(name="focusPaddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the object's bottom edge and the
+	 * bottom edge of the focus indicator skin. A negative value may be used
+	 * to expand the focus indicator skin outside the bounds of the object.
+	 *
+	 * <p>The implementation of this property is provided for convenience,
+	 * but it cannot be used unless a subclass implements the
+	 * <code>IFocusDisplayObject</code> interface.</p>
+	 *
+	 * <p>The following example gives the focus indicator skin -2 pixels of
+	 * padding on the bottom edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.focusPaddingBottom = -2;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:focusPadding
+	 */
+	[Style(name="focusPaddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the object's left edge and the
+	 * left edge of the focus indicator skin. A negative value may be used
+	 * to expand the focus indicator skin outside the bounds of the object.
+	 *
+	 * <p>The implementation of this property is provided for convenience,
+	 * but it cannot be used unless a subclass implements the
+	 * <code>IFocusDisplayObject</code> interface.</p>
+	 *
+	 * <p>The following example gives the focus indicator skin -2 pixels of
+	 * padding on the right edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.focusPaddingLeft = -2;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:focusPadding
+	 */
+	[Style(name="focusPaddingLeft",type="Number")]
+
+	/**
 	 * Dispatched after <code>initialize()</code> has been called, but before
 	 * the first time that <code>draw()</code> has been called.
 	 *
@@ -1402,28 +1543,7 @@ package feathers.core
 		protected var _focusIndicatorSkin:DisplayObject;
 
 		/**
-		 * If this component supports focus, this optional skin will be
-		 * displayed above the component when <code>showFocus()</code> is
-		 * called. The focus indicator skin is not always displayed when the
-		 * component has focus. Typically, if the component receives focus from
-		 * a touch, the focus indicator is not displayed.
-		 *
-		 * <p>The <code>touchable</code> of this skin will always be set to
-		 * <code>false</code> so that it does not "steal" touches from the
-		 * component or its sub-components. This skin will not affect the
-		 * dimensions of the component or its hit area. It is simply a visual
-		 * indicator of focus.</p>
-		 *
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 *
-		 * <p>In the following example, the focus indicator skin is set:</p>
-		 *
-		 * <listing version="3.0">
-		 * control.focusIndicatorSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get focusIndicatorSkin():DisplayObject
 		{
@@ -1443,6 +1563,11 @@ package feathers.core
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._focusIndicatorSkin)
 			{
 				if(this._focusIndicatorSkin.parent == this)
@@ -1472,27 +1597,7 @@ package feathers.core
 		}
 
 		/**
-		 * Quickly sets all focus padding properties to the same value. The
-		 * <code>focusPadding</code> getter always returns the value of
-		 * <code>focusPaddingTop</code>, but the other focus padding values may
-		 * be different.
-		 *
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 *
-		 * <p>The following example gives the button 2 pixels of focus padding
-		 * on all sides:</p>
-		 *
-		 * <listing version="3.0">
-		 * control.focusPadding = 2;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #focusPaddingTop
-		 * @see #focusPaddingRight
-		 * @see #focusPaddingBottom
-		 * @see #focusPaddingLeft
+		 * @private
 		 */
 		public function get focusPadding():Number
 		{
@@ -1516,21 +1621,7 @@ package feathers.core
 		protected var _focusPaddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the object's top edge and the
-		 * top edge of the focus indicator skin. A negative value may be used
-		 * to expand the focus indicator skin outside the bounds of the object.
-		 *
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 *
-		 * <p>The following example gives the focus indicator skin -2 pixels of
-		 * padding on the top edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * control.focusPaddingTop = -2;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get focusPaddingTop():Number
 		{
@@ -1542,10 +1633,15 @@ package feathers.core
 		 */
 		public function set focusPaddingTop(value:Number):void
 		{
-			if(this._focusPaddingTop == value)
+			if(this._focusPaddingTop === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._focusPaddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -1556,21 +1652,7 @@ package feathers.core
 		protected var _focusPaddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the object's right edge and the
-		 * right edge of the focus indicator skin. A negative value may be used
-		 * to expand the focus indicator skin outside the bounds of the object.
-		 *
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 *
-		 * <p>The following example gives the focus indicator skin -2 pixels of
-		 * padding on the right edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * control.focusPaddingRight = -2;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get focusPaddingRight():Number
 		{
@@ -1582,10 +1664,15 @@ package feathers.core
 		 */
 		public function set focusPaddingRight(value:Number):void
 		{
-			if(this._focusPaddingRight == value)
+			if(this._focusPaddingRight === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._focusPaddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -1596,21 +1683,7 @@ package feathers.core
 		protected var _focusPaddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the object's bottom edge and the
-		 * bottom edge of the focus indicator skin. A negative value may be used
-		 * to expand the focus indicator skin outside the bounds of the object.
-		 *
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 *
-		 * <p>The following example gives the focus indicator skin -2 pixels of
-		 * padding on the bottom edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * control.focusPaddingBottom = -2;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get focusPaddingBottom():Number
 		{
@@ -1622,10 +1695,15 @@ package feathers.core
 		 */
 		public function set focusPaddingBottom(value:Number):void
 		{
-			if(this._focusPaddingBottom == value)
+			if(this._focusPaddingBottom === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._focusPaddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -1636,21 +1714,7 @@ package feathers.core
 		protected var _focusPaddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the object's left edge and the
-		 * left edge of the focus indicator skin. A negative value may be used
-		 * to expand the focus indicator skin outside the bounds of the object.
-		 *
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 *
-		 * <p>The following example gives the focus indicator skin -2 pixels of
-		 * padding on the right edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * control.focusPaddingLeft = -2;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get focusPaddingLeft():Number
 		{
@@ -1662,10 +1726,15 @@ package feathers.core
 		 */
 		public function set focusPaddingLeft(value:Number):void
 		{
-			if(this._focusPaddingLeft == value)
+			if(this._focusPaddingLeft === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._focusPaddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}

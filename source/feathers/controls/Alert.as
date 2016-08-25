@@ -30,9 +30,132 @@ package feathers.controls
 	[Exclude(name="footer",kind="property")]
 	[Exclude(name="footerFactory",kind="property")]
 	[Exclude(name="footerProperties",kind="property")]
-	[Exclude(name="customFooterName",kind="property")]
-	[Exclude(name="customFooterStyleName",kind="property")]
+	[Exclude(name="customFooterStyleName",kind="style")]
 	[Exclude(name="createFooter",kind="method")]
+
+	/**
+	 * A style name to add to the alert's button group sub-component.
+	 * Typically used by a theme to provide different styles to different alerts.
+	 *
+	 * <p>In the following example, a custom button group style name is
+	 * passed to the alert:</p>
+	 *
+	 * <listing version="3.0">
+	 * alert.customButtonGroupStyleName = "my-custom-button-group";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ButtonGroup ).setFunctionForStyleName( "my-custom-button-group", setCustomButtonGroupStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #buttonGroupFactory
+	 */
+	[Style(name="customButtonGroupStyleName",type="String")]
+
+	/**
+	 * A style name to add to the alert's message text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different alerts.
+	 *
+	 * <p>In the following example, a custom message style name is passed
+	 * to the alert:</p>
+	 *
+	 * <listing version="3.0">
+	 * alert.customMessageStyleName = "my-custom-button-group";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-message", setCustomMessageStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_MESSAGE
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #messageFactory
+	 */
+	[Style(name="customMessageStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the alert's message text when the
+	 * alert is disabled.
+	 *
+	 * <p>These styles will only apply to the alert's message. The header's
+	 * title font styles should be set directly on the header. The button
+	 * font styles should be set directly on the buttons.</p>
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * alert.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>messageFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the alert's message text.
+	 *
+	 * <p>These styles will only apply to the alert's message. The header's
+	 * title font styles should be set directly on the header. The button
+	 * font styles should be set directly on the buttons.</p>
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * alert.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>messageFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The space, in pixels, between the alert's icon and its message text
+	 * renderer.
+	 *
+	 * <p>In the following example, the gap is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * alert.gap = 20;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * The alert's optional icon content to display next to the text.
+	 *
+	 * <p>In the following example, the icon is privated:</p>
+	 *
+	 * <listing version="3.0">
+	 * alert.icon = new Image( texture );</listing>
+	 * 
+	 * @default null
+	 */
+	[Style(name="icon",type="starling.display.DisplayObject")]
 
 	/**
 	 * Dispatched when the alert is closed. The <code>data</code> property of
@@ -132,7 +255,7 @@ package feathers.controls
 		public static var alertFactory:Function = defaultAlertFactory;
 
 		/**
-		 * Returns an overlay to display with a alert that is modal. Uses the
+		 * Returns an overlay to display with an alert that is modal. Uses the
 		 * standard <code>overlayFactory</code> of the <code>PopUpManager</code>
 		 * by default, but you can use this property to provide your own custom
 		 * overlay, if you prefer.
@@ -150,9 +273,10 @@ package feathers.controls
 		 *     quad.alpha = 0.75;
 		 *     return quad;
 		 * };</listing>
+		 * 
+		 * @default null
 		 *
 		 * @see feathers.core.PopUpManager#overlayFactory
-		 *
 		 * @see #show()
 		 */
 		public static var overlayFactory:Function;
@@ -162,6 +286,7 @@ package feathers.controls
 		 * components.
 		 *
 		 * @default null
+		 * 
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
@@ -318,7 +443,7 @@ package feathers.controls
 		protected var _icon:DisplayObject;
 
 		/**
-		 * The alert's optional icon content to display next to the text.
+		 * @private
 		 */
 		public function get icon():DisplayObject
 		{
@@ -330,10 +455,15 @@ package feathers.controls
 		 */
 		public function set icon(value:DisplayObject):void
 		{
-			if(this._icon == value)
+			if(this._icon === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			var oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
 			if(this._icon)
@@ -357,15 +487,7 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * The space, in pixels, between the alert's icon and its message text
-		 * renderer.
-		 *
-		 * <p>In the following example, the gap is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * alert.gap = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -377,10 +499,15 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this._gap === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._gap = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -417,26 +544,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the alert's message text.
-		 * 
-		 * <p>These styles will only apply to the alert's message. The header's
-		 * title font styles should be set directly on the header. The button
-		 * font styles should be set directly on the buttons.</p>
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * alert.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>messageFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -448,32 +556,16 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the alert's message text when the
-		 * alert is disabled.
-		 *
-		 * <p>These styles will only apply to the alert's message. The header's
-		 * title font styles should be set directly on the header. The button
-		 * font styles should be set directly on the buttons.</p>
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * alert.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>messageFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -485,6 +577,11 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -622,28 +719,7 @@ package feathers.controls
 		protected var _customMessageStyleName:String;
 
 		/**
-		 * A style name to add to the alert's message text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different alerts.
-		 *
-		 * <p>In the following example, a custom message style name is passed
-		 * to the alert:</p>
-		 *
-		 * <listing version="3.0">
-		 * alert.customMessageStyleName = "my-custom-button-group";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-message", setCustomMessageStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_MESSAGE
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #messageFactory
-		 * @see #messageProperties
+		 * @private
 		 */
 		public function get customMessageStyleName():String
 		{
@@ -655,10 +731,15 @@ package feathers.controls
 		 */
 		public function set customMessageStyleName(value:String):void
 		{
-			if(this._customMessageStyleName == value)
+			if(this._customMessageStyleName === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._customMessageStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
@@ -702,27 +783,7 @@ package feathers.controls
 		}
 
 		/**
-		 * A style name to add to the alert's button group sub-component.
-		 * Typically used by a theme to provide different styles to different alerts.
-		 *
-		 * <p>In the following example, a custom button group style name is
-		 * passed to the alert:</p>
-		 *
-		 * <listing version="3.0">
-		 * alert.customButtonGroupStyleName = "my-custom-button-group";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ButtonGroup ).setFunctionForStyleName( "my-custom-button-group", setCustomButtonGroupStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #buttonGroupFactory
-		 * @see #buttonGroupProperties
+		 * @private
 		 */
 		public function get customButtonGroupStyleName():String
 		{
@@ -1025,7 +1086,7 @@ package feathers.controls
 		 *
 		 * @see #header
 		 * @see #headerFactory
-		 * @see #customHeaderStyleName
+		 * @see #style:customHeaderStyleName
 		 */
 		override protected function createHeader():void
 		{
@@ -1042,7 +1103,7 @@ package feathers.controls
 		 *
 		 * @see #buttonGroupFooter
 		 * @see #buttonGroupFactory
-		 * @see #customButtonGroupStyleName
+		 * @see #style:customButtonGroupStyleName
 		 */
 		protected function createButtonGroup():void
 		{

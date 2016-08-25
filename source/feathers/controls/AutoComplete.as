@@ -29,6 +29,31 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * A style name to add to the list sub-component of the
+	 * <code>AutoComplete</code>. Typically used by a theme to provide
+	 * different styles to different <code>AutoComplete</code> instances.
+	 *
+	 * <p>In the following example, a custom list style name is passed to the
+	 * <code>AutoComplete</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.customListStyleName = "my-custom-list";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to provide
+	 * different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( List ).setFunctionForStyleName( "my-custom-list", setCustomListStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #listFactory
+	 */
+	[Style(name="customListStyleName",type="String")]
+
+	/**
 	 * Dispatched when the pop-up list is opened.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -146,7 +171,7 @@ package feathers.controls
 		 * <p>To customize the pop-up list name without subclassing, see
 		 * <code>customListStyleName</code>.</p>
 		 *
-		 * @see #customListStyleName
+		 * @see #style:customListStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var listStyleName:String = DEFAULT_CHILD_STYLE_NAME_LIST;
@@ -395,28 +420,7 @@ package feathers.controls
 		protected var _customListStyleName:String;
 
 		/**
-		 * A style name to add to the list sub-component of the
-		 * <code>AutoComplete</code>. Typically used by a theme to provide
-		 * different styles to different <code>AutoComplete</code> instances.
-		 *
-		 * <p>In the following example, a custom list style name is passed to the
-		 * <code>AutoComplete</code>:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.customListStyleName = "my-custom-list";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to provide
-		 * different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( List ).setFunctionForStyleName( "my-custom-list", setCustomListStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #listFactory
-		 * @see #listProperties
+		 * @private
 		 */
 		public function get customListStyleName():String
 		{
@@ -428,10 +432,15 @@ package feathers.controls
 		 */
 		public function set customListStyleName(value:String):void
 		{
-			if(this._customListStyleName == value)
+			if(this._customListStyleName === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._customListStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
 		}
@@ -660,7 +669,7 @@ package feathers.controls
 		 *
 		 * @see #list
 		 * @see #listFactory
-		 * @see #customListStyleName
+		 * @see #style:customListStyleName
 		 */
 		protected function createList():void
 		{

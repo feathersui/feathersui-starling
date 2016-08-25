@@ -37,6 +37,31 @@ package feathers.controls
 	import starling.text.TextFormat;
 
 	/**
+	 * A style name to add to the button's label text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different buttons.
+	 *
+	 * <p>In the following example, a custom label style name is passed to
+	 * the button:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.customLabelStyleName = "my-custom-button-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-button-label", setCustomButtonLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #labelFactory
+	 */
+	[Style(name="customLabelStyleName",type="String")]
+
+	/**
 	 * The icon used when no other icon is defined for the current state.
 	 * Intended to be used when multiple states should share the same icon.
 	 *
@@ -122,6 +147,20 @@ package feathers.controls
 	 * @see #style:minGap
 	 */
 	[Style(name="gap",type="Number")]
+
+	/**
+	 * Determines if the button's label text renderer is created or not.
+	 * Useful for button sub-components that may not display text, like
+	 * slider thumbs and tracks, or similar sub-components on scroll bars.
+	 *
+	 * <p>The following example removed the label text renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.hasLabelTextRenderer = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="hasLabelTextRenderer",type="Boolean")]
 
 	/**
 	 * The location where the button's content is aligned horizontally (on
@@ -868,16 +907,7 @@ package feathers.controls
 		protected var _hasLabelTextRenderer:Boolean = true;
 
 		/**
-		 * Determines if the button's label text renderer is created or not.
-		 * Useful for button sub-components that may not display text, like
-		 * slider thumbs and tracks, or similar sub-components on scroll bars.
-		 *
-		 * <p>The following example removed the label text renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hasLabelTextRenderer = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get hasLabelTextRenderer():Boolean
 		{
@@ -889,10 +919,15 @@ package feathers.controls
 		 */
 		public function set hasLabelTextRenderer(value:Boolean):void
 		{
-			if(this._hasLabelTextRenderer == value)
+			if(this._hasLabelTextRenderer === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._hasLabelTextRenderer = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
@@ -1649,27 +1684,7 @@ package feathers.controls
 		protected var _customLabelStyleName:String;
 
 		/**
-		 * A style name to add to the button's label text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different buttons.
-		 *
-		 * <p>In the following example, a custom label style name is passed to
-		 * the button:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.customLabelStyleName = "my-custom-button-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-button-label", setCustomButtonLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #labelFactory
+		 * @private
 		 */
 		public function get customLabelStyleName():String
 		{
@@ -1681,10 +1696,15 @@ package feathers.controls
 		 */
 		public function set customLabelStyleName(value:String):void
 		{
-			if(this._customLabelStyleName == value)
+			if(this._customLabelStyleName === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._customLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
@@ -1693,7 +1713,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _defaultLabelProperties:PropertyProxy;
-		
+
 		/**
 		 * An object that stores properties for the button's label text renderer
 		 * when no specific properties are defined for the button's current
