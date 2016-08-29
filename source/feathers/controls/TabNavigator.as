@@ -18,6 +18,31 @@ package feathers.controls
 
 	[DefaultProperty("mxmlContent")]
 	/**
+	 * Dispatched when one of the tabs is triggered. The <code>data</code>
+	 * property of the event contains the <code>TabNavigatorItem</code> that is
+	 * associated with the tab that was triggered.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The <code>TabNavigatorItem</code>
+	 *   associated with the tab that was triggered.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered", type="starling.events.Event")]
+
+	/**
 	 * A tabbed container.
 	 *
 	 * <p>The following example creates a tab navigator, adds a tab and
@@ -77,6 +102,64 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return TabNavigator.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedIndex:int = -1;
+
+		/**
+		 * The index of the currently selected tab. Returns <code>-1</code> if
+		 * no tab is selected.
+		 *
+		 * <p>In the following example, the tab navigator's selected index is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function navigator_changeHandler( event:Event ):void
+		 * {
+		 *     var navigator:TabNavigator = TabNavigator( event.currentTarget );
+		 *     var index:int = navigator.selectedIndex;
+		 *
+		 * }
+		 * navigator.addEventListener( Event.CHANGE, navigator_changeHandler );</listing>
+		 *
+		 * @default -1
+		 */
+		public function get selectedIndex():int
+		{
+			return this._selectedIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedIndex(value:int):void
+		{
+			if(this._selectedIndex === value)
+			{
+				return;
+			}
+			this._selectedIndex = value;
+			if(value < 0)
+			{
+				this.clearScreenInternal();
+			}
+			else
+			{
+				var id:String = this._tabBarDataProvider.getItemAt(this._selectedIndex) as String;
+				if(this._activeScreenID === id)
+				{
+					return;
+				}
+				this.showScreen(id);
+			}
 		}
 
 		/**
@@ -367,6 +450,10 @@ package feathers.controls
 		{
 			this.addScreenInternal(id, item);
 			this._tabBarDataProvider.addItemAt(id, index);
+			if(this._selectedIndex < 0 && this._tabBarDataProvider.length === 1)
+			{
+				this.selectedIndex = 0;
+			}
 		}
 
 		/**
@@ -422,6 +509,11 @@ package feathers.controls
 		 */
 		public function showScreen(id:String, transition:Function = null):DisplayObject
 		{
+			if(this._activeScreenID === id)
+			{
+				//if we're already showing this id, do nothing
+				return this._activeScreen;
+			}
 			if(transition === null)
 			{
 				var item:TabNavigatorItem = this.getScreen(id);
@@ -434,7 +526,15 @@ package feathers.controls
 					transition = this.transition;
 				}
 			}
-			return this.showScreenInternal(id, transition);
+			//showScreenInternal() dispatches Event.CHANGE, so we want to be
+			//sure that the selectedIndex property returns the correct value
+			this._selectedIndex = this._tabBarDataProvider.getItemIndex(id);
+			var result:DisplayObject = this.showScreenInternal(id, transition);
+			//however, we don't want to set the tab bar's selectedIndex before
+			//calling setScreenInternal() because it would cause showScreen()
+			//to be called again if we did it first
+			this.tabBar.selectedIndex = this._selectedIndex;
+			return result;
 		}
 
 		/**
@@ -498,6 +598,7 @@ package feathers.controls
 				this.tabBar.direction = Direction.HORIZONTAL;
 			}
 			this.tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
+			this.tabBar.addEventListener(Event.TRIGGERED, tabBar_triggeredHandler);
 			this.tabBar.dataProvider = this._tabBarDataProvider;
 			this.tabBar.labelFunction = this.getTabLabel;
 			this.tabBar.iconFunction = this.getTabIcon;
@@ -610,9 +711,33 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function tabBar_triggeredHandler(event:Event, id:String):void
+		{
+			this.dispatchEventWith(Event.TRIGGERED, false, this.getScreen(id));
+			if(id !== this._activeScreenID)
+			{
+				return;
+			}
+			if(this._activeScreen is StackScreenNavigator)
+			{
+				var navigator:StackScreenNavigator = StackScreenNavigator(this._activeScreen);
+				navigator.popToRootScreen();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function tabBar_changeHandler(event:Event):void
 		{
 			var id:String = this.tabBar.selectedItem as String;
+			if(this._activeScreenID === id)
+			{
+				//we're already showing this screen, so no need to do anything
+				//this probably isn't a bug because we sometimes update the
+				//tab bar's selected index after the activeScreenID is updated
+				return;
+			}
 			var transition:Function = null;
 			if(this._activeScreenID === null)
 			{

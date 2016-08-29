@@ -780,7 +780,7 @@ package feathers.controls.supportClasses
 				{
 					this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
 				}
-				if(transition !== null)
+				if(transition !== null && transition !== defaultTransition)
 				{
 					//temporarily make the active screen invisible because the
 					//transition doesn't start right away.

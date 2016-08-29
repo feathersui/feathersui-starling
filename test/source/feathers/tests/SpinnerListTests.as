@@ -22,6 +22,8 @@ package feathers.tests
 				itemRenderer.defaultSkin = new Quad(200, 200);
 				return itemRenderer;
 			};
+			this._list.selectionOverlaySkin = new Quad(200, 200);
+			this._list.height = 200;
 			TestFeathers.starlingRoot.addChild(this._list);
 			this._list.validate();
 		}
@@ -43,6 +45,7 @@ package feathers.tests
 				{ label: "Two" },
 				{ label: "Three" },
 				{ label: "Four" },
+				{ label: "Five" },
 			]);
 		}
 
@@ -79,6 +82,47 @@ package feathers.tests
 			this._list.selectedIndex = index;
 			this._list.selectedItem = {};
 			Assert.assertStrictlyEquals("SpinnerList selectedItem cannot be changed to non-item with a non-empty data provider", index, this._list.selectedIndex);
+		}
+
+		[Test]
+		public function testSetSelectedIndexChangesPageIndex():void
+		{
+			var index:int = 2;
+			this.setDataProvider();
+			this._list.selectedIndex = index;
+			this._list.validate(); //uses scrollToDisplayIndex();
+			Assert.assertStrictlyEquals("SpinnerList verticalPageIndex must change when selectedIndex changes",
+				index, this._list.verticalPageIndex);
+		}
+
+		[Test]
+		public function testRemoveItemBeforeSelectedIndexChangesPageIndex():void
+		{
+			var index:int = 2;
+			this.setDataProvider();
+			this._list.selectedIndex = index;
+			//validating here probably shouldn't be required, but SpinnerList
+			//doesn't know which direction it will scroll yet
+			this._list.validate();
+			this._list.dataProvider.removeItemAt(index - 1);
+			this._list.validate(); //uses scrollToDisplayIndex();
+			Assert.assertStrictlyEquals("SpinnerList verticalPageIndex must change when removeItemAt() before selectedIndex",
+				index - 1, this._list.verticalPageIndex);
+		}
+
+		[Test]
+		public function testAddItemAtSelectedIndexChangesPageIndex():void
+		{
+			var index:int = 2;
+			this.setDataProvider();
+			this._list.selectedIndex = index;
+			//validating here probably shouldn't be required, but SpinnerList
+			//doesn't know which direction it will scroll yet
+			this._list.validate();
+			this._list.dataProvider.addItemAt({ label: "New" }, index);
+			this._list.validate(); //uses scrollToDisplayIndex();
+			Assert.assertStrictlyEquals("SpinnerList verticalPageIndex must change when addItemAt() before selectedIndex",
+				index + 1, this._list.verticalPageIndex);
 		}
 	}
 }

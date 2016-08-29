@@ -46,6 +46,7 @@ package feathers.controls
 			}
 			this._label = label;
 			this._icon = icon;
+			this._properties = {};
 		}
 
 		/**

@@ -46,6 +46,7 @@ package feathers.controls.text
 	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.Align;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
 	import starling.utils.SystemUtil;
@@ -1251,10 +1252,16 @@ package feathers.controls.text
 					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
 				this.stageText.visible = true;
-				if(this._isEditable)
+				if(!this._isEditable)
 				{
-					this.stageText.assignFocus();
+					//assignFocus() does not work unless the StageText's
+					//editable property is true, but we want the text to be
+					//selectable. as a workaround, we temporarily set editable
+					//to true before calling assignFocus(). once the StageText
+					//has focus, we'll set it back to false.
+					this.stageText.editable = true;
 				}
+				this.stageText.assignFocus();
 			}
 			else
 			{
@@ -1962,19 +1969,20 @@ package feathers.controls.text
 				globalScaleY = 1;
 				smallerGlobalScale = 1;
 			}
+			var verticalAlignOffsetY:Number = this.getVerticalAlignmentOffsetY();
 			if(this.is3D)
 			{
 				var matrix3D:Matrix3D = Pool.getMatrix3D();
 				var point3D:Vector3D = Pool.getPoint3D();
 				this.getTransformationMatrix3D(this.stage, matrix3D);
-				MatrixUtil.transformCoords3D(matrix3D, -desktopGutterPositionOffset, -desktopGutterPositionOffset, 0, point3D);
+				MatrixUtil.transformCoords3D(matrix3D, -desktopGutterPositionOffset, -desktopGutterPositionOffset + verticalAlignOffsetY, 0, point3D);
 				point.setTo(point3D.x, point3D.y);
 				Pool.putPoint3D(point3D);
 				Pool.putMatrix3D(matrix3D);
 			}
 			else
 			{
-				MatrixUtil.transformCoords(matrix, -desktopGutterPositionOffset, -desktopGutterPositionOffset, point);
+				MatrixUtil.transformCoords(matrix, -desktopGutterPositionOffset, -desktopGutterPositionOffset + verticalAlignOffsetY, point);
 			}
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var nativeScaleFactor:Number = 1;
@@ -2058,7 +2066,8 @@ package feathers.controls.text
 				desktopGutterPositionOffset = 2;
 			}
 			this.textSnapshot.x = Math.round(matrix.tx) - matrix.tx - desktopGutterPositionOffset;
-			this.textSnapshot.y = Math.round(matrix.ty) - matrix.ty - desktopGutterPositionOffset;
+			this.textSnapshot.y = Math.round(matrix.ty) - matrix.ty - desktopGutterPositionOffset +
+				this.getVerticalAlignmentOffsetY();
 			Pool.putMatrix(matrix);
 		}
 
@@ -2123,6 +2132,48 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function getVerticalAlignment():String
+		{
+			var verticalAlign:String = null;
+			if(this._fontStyles !== null)
+			{
+				var format:starling.text.TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(format !== null)
+				{
+					verticalAlign = format.verticalAlign;
+				}
+			}
+			if(verticalAlign === null)
+			{
+				verticalAlign = Align.TOP;
+			}
+			return verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignmentOffsetY():Number
+		{
+			var verticalAlign:String = this.getVerticalAlignment();
+			if(this._measureTextField.textHeight > this.actualHeight)
+			{
+				return 0;
+			}
+			if(verticalAlign === Align.BOTTOM)
+			{
+				return (this.actualHeight - this._measureTextField.textHeight);
+			}
+			else if(verticalAlign === Align.CENTER)
+			{
+				return (this.actualHeight - this._measureTextField.textHeight) / 2;
+			}
+			return 0;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function dispatchKeyFocusChangeEvent(event:KeyboardEvent):void
 		{
 			var starling:Starling = stageToStarling(this.stage);
@@ -2169,6 +2220,11 @@ package feathers.controls.text
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
 			this._stageTextHasFocus = true;
+			if(!this._isEditable)
+			{
+				//see the other half of this hack in setFocus()
+				this.stageText.editable = false;
+			}
 			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			if(this.textSnapshot)
 			{

@@ -64,7 +64,7 @@ package feathers.tests
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			//this touch does not move at all, so it should result in triggering
-			//the button.
+			//the target.
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
@@ -90,7 +90,7 @@ package feathers.tests
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			//this touch does not move at all, so it should result in triggering
-			//the button.
+			//the target.
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched when disabled", hasTriggered);
@@ -113,7 +113,8 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			touch.globalX = 1000; //move the touch way outside the bounds of the button
+			//move the touch way outside the bounds of the target
+			touch.globalX = 1000;
 			touch.phase = TouchPhase.MOVED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			touch.phase = TouchPhase.ENDED;
@@ -141,7 +142,7 @@ package feathers.tests
 
 			this._blocker = new Quad(200, 200, 0xff0000);
 			TestFeathers.starlingRoot.addChild(this._blocker);
-			
+
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 
@@ -176,6 +177,50 @@ package feathers.tests
 			//target is removed (its stage property is null, and that is used
 			//by TapToTrigger)
 			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched when target was removed", hasTriggered);
+		}
+
+		[Test]
+		public function testCustomHitTest():void
+		{
+			this._tapToTrigger.customHitTest = function customHitTest(localPosition:Point):Boolean
+			{
+				return localPosition.x <= 100;
+			};
+			var hasTriggered:Boolean = false;
+			this._target.addEventListener(Event.TRIGGERED, function(event:Event):void
+			{
+				hasTriggered = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._target.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("Event.TRIGGERED was not dispatched when customHitTest returned true", hasTriggered);
+
+			hasTriggered = false;
+			//move the touch to an area where customHitTest() will return false
+			touch.globalX = 150;
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched when customHitTest returned false", hasTriggered);
+
+			hasTriggered = false;
+			//move the touch way outside the bounds of the target
+			touch.globalX = 1000;
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched when touch started out of bounds", hasTriggered);
 		}
 	}
 }

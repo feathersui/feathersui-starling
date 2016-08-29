@@ -1860,7 +1860,16 @@ package feathers.controls
 			//first, we check if it's iOS or not. at this time, we only need to
 			//use extra padding on iOS. android and others are fine.
 			var os:String = Capabilities.os;
-			if(os.indexOf(IOS_NAME_PREFIX) != 0 || parseInt(os.substr(IOS_NAME_PREFIX.length, 1), 10) < STATUS_BAR_MIN_IOS_VERSION)
+			if(os.indexOf(IOS_NAME_PREFIX) !== 0)
+			{
+				return 0;
+			}
+			//then, we check the major version of iOS. the extra padding is not
+			//required before version 7.
+			//the version string will always contain major and minor values, so
+			//search for the first . character.
+			os = os.substring(IOS_NAME_PREFIX.length, os.indexOf("."));
+			if(parseInt(os, 10) < STATUS_BAR_MIN_IOS_VERSION)
 			{
 				return 0;
 			}

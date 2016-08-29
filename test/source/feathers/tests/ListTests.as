@@ -300,5 +300,22 @@ package feathers.tests
 			this._list.layout = new AssertViewPortBoundsLayout();
 			this._list.validate();
 		}
+
+		[Test]
+		public function testScrollToDisplayIndexAndSetDataProviderToNull():void
+		{
+			this._list.scrollToDisplayIndex(1, 2);
+			this._list.dataProvider = null;
+			this._list.validate();
+		}
+
+		[Test]
+		public function testScrollToDisplayIndex():void
+		{
+			this._list.height = 200;
+			this._list.scrollToDisplayIndex(1);
+			this._list.validate();
+			Assert.assertTrue("List scrollToDisplayIndex() set incorrect verticalScrollPosition", this._list.verticalScrollPosition > 0)
+		}
 	}
 }

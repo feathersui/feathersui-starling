@@ -2940,13 +2940,17 @@ package feathers.controls
 		{
 			if(this.pendingGroupIndex >= 0)
 			{
-				if(this.pendingItemIndex >= 0)
+				var pendingData:Object = null;
+				if(this._dataProvider !== null)
 				{
-					var pendingData:Object = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
-				}
-				else
-				{
-					pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex);
+					if(this.pendingItemIndex >= 0)
+					{
+						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
+					}
+					else
+					{
+						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex);
+					}
 				}
 				if(pendingData is Object)
 				{

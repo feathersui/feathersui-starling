@@ -768,6 +768,46 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _distributeWidths:Boolean = false;
+
+		/**
+		 * If the total width of the tiles in a row (minus padding and gap)
+		 * does not fill the entire row, the remaining space will be distributed
+		 * to each tile equally.
+		 *
+		 * <p>If the container using the layout might resize, setting
+		 * <code>requestedColumnCount</code> is recommended because the tiles
+		 * will resize too, and their dimensions may not be reset.</p>
+		 *
+		 * <p>Note: If <code>useSquareTiles</code> is <code>true</code>, the
+		 * <code>distributeWidths</code> property will be ignored.</p>
+		 *
+		 * @default false
+		 *
+		 * @see #requestedColumnCount
+		 * @see #useSquareTiles
+		 */
+		public function get distributeWidths():Boolean
+		{
+			return this._distributeWidths;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeWidths(value:Boolean):void
+		{
+			if(this._distributeWidths === value)
+			{
+				return;
+			}
+			this._distributeWidths = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _distributeHeights:Boolean = false;
 
 		/**
@@ -1122,7 +1162,7 @@ package feathers.layout
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				explicitWidth, maxWidth, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount,
-				verticalTileCount);
+				verticalTileCount, this._distributeWidths && !this._useSquareTiles);
 			if(explicitWidth === explicitWidth) //!isNaN
 			{
 				var availableWidth:Number = explicitWidth;
@@ -1138,6 +1178,11 @@ package feathers.layout
 				{
 					availableWidth = maxWidth;
 				}
+			}
+			if(this._distributeWidths && !this._useSquareTiles)
+			{
+				//distribute remaining space
+				tileWidth = (availableWidth - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
 			}
 
 			var totalPageContentWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
@@ -1374,7 +1419,7 @@ package feathers.layout
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				explicitWidth, maxWidth, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount,
-				verticalTileCount);
+				verticalTileCount, this._distributeWidths && !this._useSquareTiles);
 			if(explicitHeight === explicitHeight) //!isNaN
 			{
 				var availableHeight:Number = explicitHeight;
@@ -1656,10 +1701,22 @@ package feathers.layout
 			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
 				height, height, this._paddingTop + this._paddingBottom,
 				this._verticalGap, this._requestedRowCount, itemCount);
+			if(this._distributeHeights)
+			{
+				tileHeight = (height - this._paddingTop - this._paddingBottom - (verticalTileCount * this._verticalGap) + this._verticalGap) / verticalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileWidth = tileHeight;
+				}
+			}
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				width, width, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount,
-				verticalTileCount);
+				verticalTileCount, this._distributeWidths && !this._useSquareTiles);
+			if(this._distributeWidths && !this._useSquareTiles)
+			{
+				tileWidth = (width - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+			}
 			var perPage:int = horizontalTileCount * verticalTileCount;
 			var minimumItemCount:int = perPage + 2 * verticalTileCount;
 			if(minimumItemCount > itemCount)
@@ -1765,10 +1822,22 @@ package feathers.layout
 			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
 				height, height, this._paddingTop + this._paddingBottom,
 				this._verticalGap, this._requestedRowCount, itemCount);
+			if(this._distributeHeights)
+			{
+				tileHeight = (height - this._paddingTop - this._paddingBottom - (verticalTileCount * this._verticalGap) + this._verticalGap) / verticalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileWidth = tileHeight;
+				}
+			}
 			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 				width, width, this._paddingLeft + this._paddingRight,
 				this._horizontalGap, this._requestedColumnCount, itemCount,
-				verticalTileCount);
+				verticalTileCount, this._distributeWidths && !this._useSquareTiles);
+			if(this._distributeWidths && !this._useSquareTiles)
+			{
+				tileWidth = (width - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+			}
 			var perPage:int = horizontalTileCount * verticalTileCount;
 			var minimumItemCount:int = perPage + 2 * verticalTileCount;
 			if(minimumItemCount > itemCount)
@@ -1808,8 +1877,8 @@ package feathers.layout
 				{
 					partialPageSize = 0;
 				}
-				rowOffset = -Math.floor(partialPageSize / (tileWidth + this._verticalGap)) - 1;
-				minimum += -perPage + horizontalTileCount + rowOffset;
+				rowOffset = -Math.floor(partialPageSize / (tileHeight + this._verticalGap)) - 1;
+				minimum += -perPage + verticalTileCount + rowOffset;
 			}
 			else if(partialPageSize > 0)
 			{
@@ -1853,11 +1922,11 @@ package feathers.layout
 						resultLength++;
 					}
 					columnIndex++;
-					if(columnIndex == horizontalTileCount)
+					if(columnIndex === horizontalTileCount)
 					{
 						columnIndex = 0;
 						rowIndex++;
-						if(rowIndex == verticalTileCount)
+						if(rowIndex === verticalTileCount)
 						{
 							rowIndex = 0;
 							pageStart += perPage;
@@ -1903,7 +1972,23 @@ package feathers.layout
 			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
 				height, height, this._paddingTop + this._paddingBottom,
 				this._verticalGap, this._requestedRowCount, itemCount);
-			var horizontalTileCount:int = Math.ceil((width + this._horizontalGap) / (tileWidth + this._horizontalGap)) + 1;
+			if(this._distributeHeights)
+			{
+				tileHeight = (height - this._paddingTop - this._paddingBottom - (verticalTileCount * this._verticalGap) + this._verticalGap) / verticalTileCount;
+				if(this._useSquareTiles)
+				{
+					tileWidth = tileHeight;
+				}
+			}
+			if(this._distributeHeights && !this._useSquareTiles)
+			{
+				var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
+					width, width, this._paddingLeft + this._paddingRight,
+					this._horizontalGap, this._requestedColumnCount, itemCount,
+					verticalTileCount, this._distributeWidths && !this._useSquareTiles);
+				tileWidth = (width - this._paddingLeft - this._paddingRight - (horizontalTileCount * this._horizontalGap) + this._horizontalGap) / horizontalTileCount;
+			}
+			horizontalTileCount = Math.ceil((width + this._horizontalGap) / (tileWidth + this._horizontalGap)) + 1;
 			var minimumItemCount:int = verticalTileCount * horizontalTileCount;
 			if(minimumItemCount > itemCount)
 			{
@@ -2116,12 +2201,20 @@ package feathers.layout
 		protected function calculateHorizontalTileCount(tileWidth:Number,
 			explicitWidth:Number, maxWidth:Number, paddingLeftAndRight:Number,
 			horizontalGap:Number, requestedColumnCount:int, totalItemCount:int,
-			verticalTileCount:int):int
+			verticalTileCount:int, distributeWidths:Boolean):int
 		{
 			//using the horizontal tile count, calculate how many rows would be
 			//required for the total number of items if there were no restrictions.
 			var defaultHorizontalTileCount:int = Math.ceil(totalItemCount / verticalTileCount);
-			
+			if(distributeWidths)
+			{
+				if(requestedColumnCount > 0 && defaultHorizontalTileCount > requestedColumnCount)
+				{
+					return requestedColumnCount;
+				}
+				return defaultHorizontalTileCount;
+			}
+
 			var tileCount:int;
 			if(explicitWidth === explicitWidth) //!isNaN
 			{

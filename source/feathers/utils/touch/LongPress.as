@@ -19,6 +19,7 @@ package feathers.utils.touch
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatches <code>FeathersEventType.LONG_PRESS</code> from the target when
@@ -220,6 +221,37 @@ package feathers.utils.touch
 		/**
 		 * @private
 		 */
+		protected var _customHitTest:Function;
+
+		/**
+		 * In addition to a normal call to <code>hitTest()</code>, a custom
+		 * function may impose additional rules that determine if the target
+		 * should be long pressed. Called on <code>TouchPhase.BEGAN</code>.
+		 *
+		 * <p>The function must have the following signature:</p>
+		 *
+		 * <pre>function(localPosition:Point):Boolean;</pre>
+		 *
+		 * <p>The function should return <code>true</code> if the target should
+		 * be long pressed, and <code>false</code> if it should not be
+		 * long pressed.</p>
+		 */
+		public function get customHitTest():Function
+		{
+			return this._customHitTest;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHitTest(value:Function):void
+		{
+			this._customHitTest = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function target_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -246,7 +278,7 @@ package feathers.utils.touch
 				else if(touch.phase == TouchPhase.ENDED)
 				{
 					this._target.removeEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
-					
+
 					//re-enable the other events
 					if(this._tapToTrigger)
 					{
@@ -272,6 +304,17 @@ package feathers.utils.touch
 					//we only care about the began phase. ignore all other
 					//phases when we don't have a saved touch ID.
 					return;
+				}
+				if(this._customHitTest !== null)
+				{
+					var point:Point = Pool.getPoint();
+					touch.getLocation(DisplayObject(this._target), point);
+					var isInBounds:Boolean = this._customHitTest(point);
+					Pool.putPoint(point);
+					if(!isInBounds)
+					{
+						return;
+					}
 				}
 
 				//save the touch ID so that we can track this touch's phases.

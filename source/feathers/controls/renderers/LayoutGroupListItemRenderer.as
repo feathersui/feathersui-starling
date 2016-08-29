@@ -11,6 +11,8 @@ package feathers.controls.renderers
 	import feathers.controls.List;
 	import feathers.skins.IStyleProvider;
 
+	import starling.display.DisplayObject;
+
 	import starling.events.Event;
 
 	/**
@@ -166,6 +168,8 @@ package feathers.controls.renderers
 			}
 			this._isSelected = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			//the state flag is needed for updating the background
+			this.invalidate(INVALIDATION_FLAG_STATE);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -188,6 +192,46 @@ package feathers.controls.renderers
 		public function set factoryID(value:String):void
 		{
 			this._factoryID = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSelectedSkin:DisplayObject;
+
+		/**
+		 * The background to display behind all content when the item renderer
+		 * is selected. The background skin is resized to fill the full width
+		 * and height of the layout group.
+		 *
+		 * <p>In the following example, the group is given a selected background
+		 * skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.backgroundSelectedSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundSelectedSkin():DisplayObject
+		{
+			return this._backgroundSelectedSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSelectedSkin(value:DisplayObject):void
+		{
+			if(this._backgroundSelectedSkin == value)
+			{
+				return;
+			}
+			if(value && value.parent)
+			{
+				value.removeFromParent();
+			}
+			this._backgroundSelectedSkin = value;
+			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
@@ -287,6 +331,22 @@ package feathers.controls.renderers
 		protected function commitData():void
 		{
 
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function getCurrentBackgroundSkin():DisplayObject
+		{
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
+			{
+				return this._backgroundDisabledSkin;
+			}
+			if(this._isSelected && this._backgroundSelectedSkin !== null)
+			{
+				return this._backgroundSelectedSkin;
+			}
+			return this._backgroundSkin;
 		}
 
 	}

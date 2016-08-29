@@ -49,6 +49,14 @@ package feathers.core
 		protected var _popUps:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
+		 * @copy PopUpManager#popUpCount
+		 */
+		public function get popUpCount():int
+		{
+			return this._popUps.length;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _popUpToOverlay:Dictionary = new Dictionary(true);
@@ -202,6 +210,23 @@ package feathers.core
 			}
 			popUp.removeFromParent(dispose);
 			return popUp;
+		}
+
+		/**
+		 * @copy PopUpManager#removeAllPopUps()
+		 */
+		public function removeAllPopUps(dispose:Boolean = false):void
+		{
+			//removing pop-ups may call event listeners that add new pop-ups,
+			//and we don't want to remove the new ones or miss old ones, so
+			//create a copy of the _popUps Vector to be safe.
+			var popUps:Vector.<DisplayObject> = this._popUps.slice();
+			var popUpCount:int = popUps.length;
+			for(var i:int = 0; i < popUpCount; i++)
+			{
+				var popUp:DisplayObject = popUps[i];
+				this.removePopUp(popUp, dispose);
+			}
 		}
 
 		/**

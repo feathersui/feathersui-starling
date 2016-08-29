@@ -3,6 +3,8 @@ package feathers.tests
 	import feathers.events.FeathersEventType;
 	import feathers.utils.touch.LongPress;
 
+	import flash.geom.Point;
+
 	import flexunit.framework.Assert;
 
 	import org.flexunit.async.Async;
@@ -160,6 +162,54 @@ package feathers.tests
 			Async.delayCall(this, function():void
 			{
 				Assert.assertFalse("FeathersEventType.LONG_PRESS was incorrectly dispatched when disabled", hasLongPressed);
+			}, 600);
+		}
+
+		[Test(async)]
+		public function testCustomHitTestReturnTrue():void
+		{
+			this._longPress.customHitTest = function customHitTest(localPosition:Point):Boolean
+			{
+				return localPosition.x <= 100;
+			};
+			var hasLongPressed:Boolean = false;
+			this._target.addEventListener(FeathersEventType.LONG_PRESS, function ():void
+			{
+				hasLongPressed = true;
+			});
+			var touch:Touch = new Touch(0);
+			touch.target = this._target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 10;
+			touch.globalY = 10;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			Async.delayCall(this, function ():void
+			{
+				Assert.assertFalse("FeathersEventType.LONG_PRESS was not dispatched when customHitTest returned true", hasLongPressed);
+			}, 600);
+		}
+
+		[Test(async)]
+		public function testCustomHitTestReturnFalse():void
+		{
+			this._longPress.customHitTest = function customHitTest(localPosition:Point):Boolean
+			{
+				return localPosition.x <= 100;
+			};
+			var hasLongPressed:Boolean = false;
+			this._target.addEventListener(FeathersEventType.LONG_PRESS, function ():void
+			{
+				hasLongPressed = true;
+			});
+			var touch:Touch = new Touch(0);
+			touch.target = this._target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 150;
+			touch.globalY = 10;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			Async.delayCall(this, function ():void
+			{
+				Assert.assertFalse("FeathersEventType.LONG_PRESS was incorrect dispatched when customHitTest returned false", hasLongPressed);
 			}, 600);
 		}
 	}

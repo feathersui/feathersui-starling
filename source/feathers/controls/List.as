@@ -1514,7 +1514,11 @@ package feathers.controls
 		{
 			if(this.pendingItemIndex >= 0)
 			{
-				var item:Object = this._dataProvider.getItemAt(this.pendingItemIndex);
+				var item:Object = null;
+				if(this._dataProvider !== null)
+				{
+					item = this._dataProvider.getItemAt(this.pendingItemIndex);
+				}
 				if(item is Object)
 				{
 					var point:Point = Pool.getPoint();

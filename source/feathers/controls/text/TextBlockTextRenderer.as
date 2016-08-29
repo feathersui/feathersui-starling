@@ -23,8 +23,6 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.Font;
-	import flash.text.FontStyle;
 	import flash.text.FontType;
 	import flash.text.engine.ContentElement;
 	import flash.text.engine.ElementFormat;
@@ -48,6 +46,7 @@ package feathers.controls.text
 	import starling.text.TextFormat;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.Align;
 	import starling.utils.MathUtil;
 	import starling.utils.SystemUtil;
 
@@ -1335,6 +1334,7 @@ package feathers.controls.text
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
 				}
+				offsetY += this.getVerticalAlignmentOffsetY() * scaleFactor;
 
 				var snapshotIndex:int = -1;
 				var totalBitmapWidth:Number = this._snapshotWidth;
@@ -2388,7 +2388,7 @@ package feathers.controls.text
 				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
 				if(format !== null)
 				{
-					horizontalAlign = format.horizontalAlign
+					horizontalAlign = format.horizontalAlign;
 				}
 			}
 			if(horizontalAlign === null)
@@ -2396,6 +2396,48 @@ package feathers.controls.text
 				horizontalAlign = HorizontalAlign.LEFT;
 			}
 			return horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignment():String
+		{
+			var verticalAlign:String = null;
+			if(this._fontStyles !== null)
+			{
+				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
+				if(format !== null)
+				{
+					verticalAlign = format.verticalAlign;
+				}
+			}
+			if(verticalAlign === null)
+			{
+				verticalAlign = Align.TOP;
+			}
+			return verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVerticalAlignmentOffsetY():Number
+		{
+			var verticalAlign:String = this.getVerticalAlignment();
+			if(this._textLineContainer.height > this.actualHeight)
+			{
+				return 0;
+			}
+			if(verticalAlign === Align.BOTTOM)
+			{
+				return (this.actualHeight - this._textLineContainer.height);
+			}
+			else if(verticalAlign === Align.CENTER)
+			{
+				return (this.actualHeight - this._textLineContainer.height) / 2;
+			}
+			return 0;
 		}
 
 		/**

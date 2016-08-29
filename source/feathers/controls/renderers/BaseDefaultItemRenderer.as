@@ -32,6 +32,7 @@ package feathers.controls.renderers
 	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -68,7 +69,7 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_DRILL_DOWN:String = "feathers-drill-down-item-renderer";
-		
+
 		/**
 		 * An alternate style name to use with the default item renderer to
 		 * allow a theme to give it a "check" style. If a theme does not provide
@@ -93,7 +94,7 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_CHECK:String = "feathers-check-item-renderer";
-		
+
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * primary label.
@@ -3999,6 +4000,17 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+			this.tapToTrigger.customHitTest = this.hitTestWithAccessory;
+			this.tapToSelect.customHitTest = this.hitTestWithAccessory;
+			this.longPress.customHitTest = this.hitTestWithAccessory;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -5374,6 +5386,27 @@ package feathers.controls.renderers
 			this.tapToSelect.isEnabled = selectionEnabled;
 			this.tapToSelect.tapToDeselect = this._isToggle;
 			this.keyToSelect.isEnabled = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hitTestWithAccessory(localPosition:Point):Boolean
+		{
+			if(this._isQuickHitAreaEnabled ||
+				this._isSelectableOnAccessoryTouch ||
+				this.currentAccessory === null ||
+				this.currentAccessory === this.accessoryLabel ||
+				this.currentAccessory === this.accessoryLoader)
+			{
+				return true;
+			}
+			if(this.currentAccessory is DisplayObjectContainer)
+			{
+				var container:DisplayObjectContainer = DisplayObjectContainer(this.currentAccessory);
+				return !container.contains(this.hitTest(localPosition));
+			}
+			return this.hitTest(localPosition) !== this.currentAccessory;
 		}
 
 		/**

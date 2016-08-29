@@ -2149,20 +2149,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @inheritDoc
-		 */
-		override public function showFocus():void
-		{
-			if(!this._focusManager || this._focusManager.focus != this)
-			{
-				return;
-			}
-			this.selectRange(0, this._text.length);
-			super.showFocus();
-		}
-
-		/**
-		 * Focuses the text input control so that it may be edited.
+		 * Focuses the text input control so that it may be edited, and selects
+		 * all of its text. Call <code>selectRange()</code> after
+		 * <code>setFocus()</code> to select a different range.
+		 * 
+		 * @see #selectRange()
 		 */
 		public function setFocus():void
 		{
@@ -2172,6 +2163,10 @@ package feathers.controls
 			if(this._textEditorHasFocus || !this.visible || this._touchPointID >= 0)
 			{
 				return;
+			}
+			if(this._isEditable || this._isSelectable)
+			{
+				this.selectRange(0, this._text.length);
 			}
 			if(this.textEditor)
 			{
@@ -2211,7 +2206,7 @@ package feathers.controls
 			}
 			if(beginIndex < 0)
 			{
-				throw new RangeError("Expected start index >= 0. Received " + beginIndex + ".");
+				throw new RangeError("Expected begin index >= 0. Received " + beginIndex + ".");
 			}
 			if(endIndex > this._text.length)
 			{
@@ -2815,6 +2810,12 @@ package feathers.controls
 				this._isWaitingToSetFocus = false;
 				if(!this._textEditorHasFocus)
 				{
+					if((this._isEditable || this._isSelectable) &&
+						this._pendingSelectionBeginIndex < 0)
+					{
+						this._pendingSelectionBeginIndex = 0;
+						this._pendingSelectionEndIndex = this._text.length;
+					}
 					this.textEditor.setFocus();
 				}
 			}
