@@ -46,6 +46,259 @@ package feathers.controls
 	import starling.utils.SystemUtil;
 
 	/**
+	 * A texture to display while a URL source is loading.
+	 *
+	 * <p>In the following example, the image loader's loading texture is
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.source = "http://example.com/example.png";
+	 * loader.loadingTexture = texture;</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:errorTexture
+	 */
+	[Style(name="loadingTexture",type="starling.textures.Texture")]
+
+	/**
+	 * A texture to display when a URL source cannot be loaded for any
+	 * reason.
+	 *
+	 * <p>In the following example, the image loader's error texture is
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.source = "http://example.com/example.png";
+	 * loader.errorTexture = texture;</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:loadingTexture
+	 */
+	[Style(name="errorTexture",type="starling.textures.Texture")]
+
+	/**
+	 * The location where the content is aligned horizontally (on
+	 * the x-axis) when its width is larger or smaller than the width of
+	 * the <code>ImageLoader</code>.
+	 *
+	 * <p>If the <code>scaleContent</code> property is set to
+	 * <code>true</code>, the <code>horizontalAlign</code> property is
+	 * ignored.</p>
+	 *
+	 * <p>The following example aligns the content to the right:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.horizontalAlign = HorizontalAlign.RIGHT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.LEFT
+	 *
+	 * @see #style:scaleContent
+	 * @see #style:scaleMode
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * Determines if the aspect ratio of the texture is maintained when the
+	 * dimensions of the <code>ImageLoader</code> are changed manually and
+	 * the new dimensions have a different aspect ratio than the texture.
+	 *
+	 * <p>If the <code>scaleContent</code> property is set to
+	 * <code>false</code> or if the <code>scale9Grid</code> property is not
+	 * <code>null</code>, the <code>maintainAspectRatio</code> property is
+	 * ignored.</p>
+	 *
+	 * <p>In the following example, the image loader's aspect ratio is not
+	 * maintained:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.maintainAspectRatio = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see #style:scaleContent
+	 * @see #style:scaleMode
+	 */
+	[Style(name="maintainAspectRatio",type="Boolean")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the image loader's padding is set to
+	 * 20 pixels on all sides:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the control's top edge and the
+	 * control's content. Value may be negative to extend the content
+	 * outside the edges of the control. Useful for skinning.
+	 *
+	 * <p>In the following example, the image loader's top padding is set
+	 * to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the control's right edge and the
+	 * control's content. Value may be negative to extend the content
+	 * outside the edges of the control. Useful for skinning.
+	 *
+	 * <p>In the following example, the image loader's right padding is set
+	 * to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the control's bottom edge and the
+	 * control's content. Value may be negative to extend the content
+	 * outside the edges of the control. Useful for skinning.
+	 *
+	 * <p>In the following example, the image loader's bottom padding is set
+	 * to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the control's left edge and the
+	 * control's content. Value may be negative to extend the content
+	 * outside the edges of the control. Useful for skinning.
+	 *
+	 * <p>In the following example, the image loader's left padding is set
+	 * to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * Determines if the content will be scaled if the dimensions of the
+	 * <code>ImageLoader</code> are changed.
+	 *
+	 * <p>In the following example, the image loader's content is not
+	 * scaled:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.scaleContent = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see #style:horizontalAlign
+	 * @see #style:verticalAlign
+	 * @see #style:maintainAspectRatio
+	 * @see #style:scaleMode
+	 */
+	[Style(name="scaleContent",type="Boolean")]
+
+	/**
+	 * Determines how the texture is scaled if <code>scaleContent</code> and
+	 * <code>maintainAspectRatio</code> are both set to <code>true</code>.
+	 * See the <code>starling.utils.ScaleMode</code> class for details about
+	 * each scaling mode.
+	 *
+	 * <p>If the <code>scaleContent</code> property is set to
+	 * <code>false</code>, or the <code>maintainAspectRatio</code> property
+	 * is set to false, the <code>scaleMode</code> property is ignored.</p>
+	 *
+	 * <p>In the following example, the image loader's aspect ratio is not
+	 * maintained:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.scaleMode = ScaleMode.NO_BORDER;</listing>
+	 *
+	 * @default starling.utils.ScaleMode.SHOW_ALL
+	 *
+	 * @see #style:scaleContent
+	 * @see #style:maintainAspectRatio
+	 * @see http://doc.starling-framework.org/core/starling/utils/ScaleMode.html starling.utils.ScaleMode
+	 */
+	[Style(name="scaleMode",type="String")]
+
+	/**
+	 * The texture smoothing value to use on the internal
+	 * <code>starling.display.Image</code>.
+	 *
+	 * <p>In the following example, the image loader's smoothing is set to a
+	 * custom value:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.textureSmoothing = TextureSmoothing.NONE;</listing>
+	 *
+	 * @default starling.textures.TextureSmoothing.BILINEAR
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
+	 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#textureSmoothing starling.display.Mesh.textureSmoothing
+	 */
+	[Style(name="textureSmoothing",type="String")]
+
+	/**
+	 * The location where the content is aligned vertically (on
+	 * the y-axis) when its height is larger or smaller than the height of
+	 * the <code>ImageLoader</code>.
+	 *
+	 * <p>If the <code>scaleContent</code> property is set to
+	 * <code>true</code>, the <code>verticalAlign</code> property is
+	 * ignored.</p>
+	 *
+	 * <p>The following example aligns the content to the bottom:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.verticalAlign = VerticalAlign.BOTTOM;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.TOP
+	 *
+	 * @see #style:scaleContent
+	 * @see #style:scaleMode
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 */
+	[Style(name="verticalAlign",type="String")]
+
+	/**
 	 * Dispatched when the source finishes loading, if the source is a URL. This
 	 * event is not dispatched when the source is a texture.
 	 *
@@ -495,18 +748,7 @@ package feathers.controls
 		protected var _loadingTexture:Texture;
 
 		/**
-		 * A texture to display while a URL source is loading.
-		 *
-		 * <p>In the following example, the image loader's loading texture is
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.source = "http://example.com/example.png";
-		 * loader.loadingTexture = texture;</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #errorTexture
+		 * @private
 		 */
 		public function get loadingTexture():Texture
 		{
@@ -518,10 +760,15 @@ package feathers.controls
 		 */
 		public function set loadingTexture(value:Texture):void
 		{
-			if(this._loadingTexture == value)
+			if(this._loadingTexture === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._loadingTexture = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -532,19 +779,7 @@ package feathers.controls
 		protected var _errorTexture:Texture;
 
 		/**
-		 * A texture to display when a URL source cannot be loaded for any
-		 * reason.
-		 *
-		 * <p>In the following example, the image loader's error texture is
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.source = "http://example.com/example.png";
-		 * loader.errorTexture = texture;</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #loadingTexture
+		 * @private
 		 */
 		public function get errorTexture():Texture
 		{
@@ -556,10 +791,15 @@ package feathers.controls
 		 */
 		public function set errorTexture(value:Texture):void
 		{
-			if(this._errorTexture == value)
+			if(this._errorTexture === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._errorTexture = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -663,18 +903,7 @@ package feathers.controls
 		private var _textureSmoothing:String = TextureSmoothing.BILINEAR;
 
 		/**
-		 * The texture smoothing value to use on the internal <code>Image</code>.
-		 *
-		 * <p>In the following example, the image loader's smoothing is set to a
-		 * custom value:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.textureSmoothing = TextureSmoothing.NONE;</listing>
-		 *
-		 * @default starling.textures.TextureSmoothing.BILINEAR
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
-		 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#textureSmoothing starling.display.Mesh.textureSmoothing
+		 * @private
 		 */
 		public function get textureSmoothing():String
 		{
@@ -686,10 +915,15 @@ package feathers.controls
 		 */
 		public function set textureSmoothing(value:String):void
 		{
-			if(this._textureSmoothing == value)
+			if(this._textureSmoothing === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._textureSmoothing = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -885,20 +1119,7 @@ package feathers.controls
 		private var _scaleContent:Boolean = true;
 
 		/**
-		 * Determines if the content will be scaled if the dimensions of the
-		 * <code>ImageLoader</code> are changed.
-		 *
-		 * <p>In the following example, the image loader's content is not
-		 * scaled:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.scaleContent = false;</listing>
-		 *
-		 * @default true
-		 *
-		 * @see #horizontalAlign
-		 * @see #verticalAlign
-		 * @see #maintainAspectRatio
+		 * @private
 		 */
 		public function get scaleContent():Boolean
 		{
@@ -910,38 +1131,26 @@ package feathers.controls
 		 */
 		public function set scaleContent(value:Boolean):void
 		{
-			if(this._scaleContent == value)
+			if(this._scaleContent === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._scaleContent = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _maintainAspectRatio:Boolean = true;
 
 		/**
-		 * Determines if the aspect ratio of the texture is maintained when the
-		 * dimensions of the <code>ImageLoader</code> are changed manually and
-		 * the new dimensions have a different aspect ratio than the texture.
-		 * 
-		 * <p>If the <code>scaleContent</code> property is set to
-		 * <code>false</code> or if the <code>scale9Grid</code> property is not
-		 * <code>null</code>, the <code>maintainAspectRatio</code> property is
-		 * ignored.</p>
-		 *
-		 * <p>In the following example, the image loader's aspect ratio is not
-		 * maintained:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.maintainAspectRatio = false;</listing>
-		 *
-		 * @default true
-		 * 
-		 * @see #scaleContent
+		 * @private
 		 */
 		public function get maintainAspectRatio():Boolean
 		{
@@ -953,10 +1162,15 @@ package feathers.controls
 		 */
 		public function set maintainAspectRatio(value:Boolean):void
 		{
-			if(this._maintainAspectRatio == value)
+			if(this._maintainAspectRatio === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._maintainAspectRatio = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -968,26 +1182,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="showAll,noBorder,none")]
 		/**
-		 * Determines how the texture is scaled if <code>scaleContent</code> and
-		 * <code>maintainAspectRatio</code> are both set to <code>true</code>.
-		 * See the <code>starling.utils.ScaleMode</code> class for details about
-		 * each scaling mode.
-		 *
-		 * <p>If the <code>scaleContent</code> property is set to
-		 * <code>false</code>, or the <code>maintainAspectRatio</code> property
-		 * is set to false, the <code>scaleMode</code> property is ignored.</p>
-		 *
-		 * <p>In the following example, the image loader's aspect ratio is not
-		 * maintained:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.scaleMode = ScaleMode.NO_BORDER;</listing>
-		 *
-		 * @default starling.utils.ScaleMode.SHOW_ALL
-		 *
-		 * @see #scaleContent
-		 * @see #maintainAspectRatio
-		 * @see http://doc.starling-framework.org/core/starling/utils/ScaleMode.html starling.utils.ScaleMode
+		 * @private
 		 */
 		public function get scaleMode():String
 		{
@@ -999,10 +1194,15 @@ package feathers.controls
 		 */
 		public function set scaleMode(value:String):void
 		{
-			if(this._scaleMode == value)
+			if(this._scaleMode === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._scaleMode = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -1014,25 +1214,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
-		 * The location where the content is aligned horizontally (on
-		 * the x-axis) when its width is larger or smaller than the width of
-		 * the <code>ImageLoader</code>.
-		 *
-		 * <p>If the <code>scaleContent</code> property is set to
-		 * <code>true</code>, the <code>horizontalAlign</code> property is
-		 * ignored.</p>
-		 *
-		 * <p>The following example aligns the content to the right:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.horizontalAlign = HorizontalAlign.RIGHT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.LEFT
-		 *
-		 * @see #scaleContent
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
@@ -1044,10 +1226,15 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			if(this._horizontalAlign == value)
+			if(this._horizontalAlign === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1059,25 +1246,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
-		 * The location where the content is aligned vertically (on
-		 * the y-axis) when its height is larger or smaller than the height of
-		 * the <code>ImageLoader</code>.
-		 *
-		 * <p>If the <code>scaleContent</code> property is set to
-		 * <code>true</code>, the <code>verticalAlign</code> property is
-		 * ignored.</p>
-		 *
-		 * <p>The following example aligns the content to the bottom:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.verticalAlign = VerticalAlign.BOTTOM;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.TOP
-		 * 
-		 * @see #scaleContent
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -1089,10 +1258,15 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1273,23 +1447,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the image loader's padding is set to
-		 * 20 pixels on all sides:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -1313,17 +1471,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the control's top edge and the
-		 * control's content. Value may be negative to extend the content
-		 * outside the edges of the control. Useful for skinning.
-		 *
-		 * <p>In the following example, the image loader's top padding is set
-		 * to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -1335,10 +1483,15 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this._paddingTop === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1349,17 +1502,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the control's right edge and the
-		 * control's content. Value may be negative to extend the content
-		 * outside the edges of the control. Useful for skinning.
-		 *
-		 * <p>In the following example, the image loader's right padding is set
-		 * to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -1371,10 +1514,15 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this._paddingRight === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1385,17 +1533,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the control's bottom edge and the
-		 * control's content. Value may be negative to extend the content
-		 * outside the edges of the control. Useful for skinning.
-		 *
-		 * <p>In the following example, the image loader's bottom padding is set
-		 * to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -1407,10 +1545,15 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1421,17 +1564,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the control's left edge and the
-		 * control's content. Value may be negative to extend the content
-		 * outside the edges of the control. Useful for skinning.
-		 *
-		 * <p>In the following example, the image loader's left padding is set
-		 * to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1443,10 +1576,15 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
