@@ -932,7 +932,11 @@ package feathers.controls.text
 
 				//...unless the text was previously truncated!
 				sizeInvalid ||= (this._lastLayoutIsTruncated && newWidth !== this._lastLayoutWidth);
+
+				//... or the text is aligned
+				sizeInvalid ||= this._currentTextFormat.align !== TextFormatAlign.LEFT;
 			}
+
 			if(dataInvalid || sizeInvalid || this._textFormatChanged)
 			{
 				this._textFormatChanged = false;
