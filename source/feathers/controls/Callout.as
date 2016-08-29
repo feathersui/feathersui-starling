@@ -37,6 +37,327 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * The position of the callout's arrow relative to the callout's
+	 * background. If the callout's <code>origin</code> is set, this value
+	 * will be managed by the callout and may change automatically if the
+	 * origin moves to a new position or if the stage resizes.
+	 *
+	 * <p>The <code>supportedDirections</code> property is related to this
+	 * one, but they have different meanings and are usually opposites. For
+	 * example, a callout on the right side of its origin will generally
+	 * display its left arrow.</p>
+	 *
+	 * <p>If you use <code>Callout.show()</code> or set the <code>origin</code>
+	 * property manually, you should avoid manually modifying the
+	 * <code>arrowPosition</code> and <code>arrowOffset</code> properties.</p>
+	 *
+	 * <p>In the following example, the callout's arrow is positioned on the
+	 * left side:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.arrowPosition = RelativePosition.LEFT;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.TOP
+	 *
+	 * @see feathers.layout.RelativePosition#TOP
+	 * @see feathers.layout.RelativePosition#RIGHT
+	 * @see feathers.layout.RelativePosition#BOTTOM
+	 * @see feathers.layout.RelativePosition#LEFT
+	 *
+	 * @see #origin
+	 * @see #supportedPositions
+	 * @see #style:arrowOffset
+	 */
+	[Style(name="arrowPosition",type="String")]
+
+	/**
+	 * The primary background to display behind the callout's content.
+	 *
+	 * <p>In the following example, the callout's background is set to an image:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The space, in pixels, between the bottom arrow skin and the
+	 * background skin. To have the arrow overlap the background, you may
+	 * use a negative gap value.
+	 *
+	 * <p>In the following example, the gap between the callout and its
+	 * bottom arrow is set to -4 pixels (perhaps to hide a border on the
+	 * callout's background):</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.bottomArrowGap = -4;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:bottomArrowSkin
+	 */
+	[Style(name="bottomArrowGap",type="Number")]
+
+	/**
+	 * The arrow skin to display on the bottom edge of the callout. This
+	 * arrow is displayed when the callout is displayed above the region it
+	 * points at.
+	 *
+	 * <p>In the following example, the callout's bottom arrow skin is set
+	 * to an image:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.bottomArrowSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:bottomArrowGap
+	 */
+	[Style(name="bottomArrowSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The horizontal alignment of the callout, relative to the origin.
+	 *
+	 * @default feathers.layout.HorizontalAlign.CENTER
+	 *
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * The space, in pixels, between the right arrow skin and the background
+	 * skin. To have the arrow overlap the background, you may use a
+	 * negative gap value.
+	 *
+	 * <p>In the following example, the gap between the callout and its
+	 * left arrow is set to -4 pixels (perhaps to hide a border on the
+	 * callout's background):</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.leftArrowGap = -4;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:leftArrowSkin
+	 */
+	[Style(name="leftArrowGap",type="Number")]
+
+	/**
+	 * The arrow skin to display on the left edge of the callout. This arrow
+	 * is displayed when the callout is displayed to the right of the region
+	 * it points at.
+	 *
+	 * <p>In the following example, the callout's left arrow skin is set
+	 * to an image:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.leftArrowSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:leftArrowGap
+	 */
+	[Style(name="leftArrowSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding of all sides of the callout
+	 * is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the callout's top edge and the
+	 * callout's content.
+	 *
+	 * <p>In the following example, the padding on the top edge of the
+	 * callout is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the callout's right edge and
+	 * the callout's content.
+	 *
+	 * <p>In the following example, the padding on the right edge of the
+	 * callout is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the callout's bottom edge and
+	 * the callout's content.
+	 *
+	 * <p>In the following example, the padding on the bottom edge of the
+	 * callout is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the callout's left edge and the
+	 * callout's content.
+	 *
+	 * <p>In the following example, the padding on the left edge of the
+	 * callout is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The space, in pixels, between the right arrow skin and the background
+	 * skin. To have the arrow overlap the background, you may use a
+	 * negative gap value.
+	 *
+	 * <p>In the following example, the gap between the callout and its
+	 * right arrow is set to -4 pixels (perhaps to hide a border on the
+	 * callout's background):</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.rightArrowGap = -4;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:rightArrowSkin
+	 */
+	[Style(name="rightArrowGap",type="Number")]
+
+	/**
+	 * The arrow skin to display on the right edge of the callout. This
+	 * arrow is displayed when the callout is displayed to the left of the
+	 * region it points at.
+	 *
+	 * <p>In the following example, the callout's right arrow skin is set
+	 * to an image:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.rightArrowSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:rightArrowGap
+	 */
+	[Style(name="rightArrowSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The space, in pixels, between the top arrow skin and the background
+	 * skin. To have the arrow overlap the background, you may use a
+	 * negative gap value.
+	 *
+	 * <p>In the following example, the gap between the callout and its
+	 * top arrow is set to -4 pixels (perhaps to hide a border on the
+	 * callout's background):</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.topArrowGap = -4;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:topArrowSkin
+	 */
+	[Style(name="topArrowGap",type="Number")]
+
+	/**
+	 * The arrow skin to display on the top edge of the callout. This arrow
+	 * is displayed when the callout is displayed below the region it points
+	 * at.
+	 *
+	 * <p>In the following example, the callout's top arrow skin is set
+	 * to an image:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.topArrowSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:topArrowGap
+	 */
+	[Style(name="topArrowSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The vertical alignment of the callout, relative to the origin.
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 */
+	[Style(name="verticalAlign",type="String")]
+
+	/**
+	 * The offset, in pixels, of the arrow skin from the horizontal center
+	 * or vertical middle of the background skin, depending on the position
+	 * of the arrow (which side it is on). This value is used to point at
+	 * the callout's origin when the callout is not perfectly centered
+	 * relative to the origin.
+	 *
+	 * <p>On the top and bottom edges, the arrow will move left for negative
+	 * values of <code>arrowOffset</code> and right for positive values. On
+	 * the left and right edges, the arrow will move up for negative values
+	 * and down for positive values.</p>
+	 *
+	 * <p>If you use <code>Callout.show()</code> or set the <code>origin</code>
+	 * property manually, you should avoid manually modifying the
+	 * <code>arrowPosition</code> and <code>arrowOffset</code> properties.</p>
+	 *
+	 * <p>In the following example, the arrow offset is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.arrowOffset = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:arrowPosition
+	 * @see #origin
+	 */
+	[Style(name="arrowOffset",type="Number")]
+
+	/**
 	 * Dispatched when the callout is closed.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -956,9 +1277,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.Callout#show()
-		 * @see #supportedDirections
-		 * @see #arrowPosition
-		 * @see #arrowOffset
+		 * @see #supportedPositions
 		 */
 		public function get origin():DisplayObject
 		{
@@ -1112,13 +1431,7 @@ package feathers.controls
 		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
 
 		/**
-		 * The horizontal alignment of the callout, relative to the origin.
-		 * 
-		 * @default feathers.layout.HorizontalAlign.CENTER
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
@@ -1134,6 +1447,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._horizontalAlign = value;
 			this._lastGlobalBoundsOfOrigin = null;
 			this.invalidate(INVALIDATION_FLAG_ORIGIN);
@@ -1145,13 +1463,7 @@ package feathers.controls
 		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		/**
-		 * The vertical alignment of the callout, relative to the origin.
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -1167,29 +1479,18 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._verticalAlign = value;
 			this._lastGlobalBoundsOfOrigin = null;
 			this.invalidate(INVALIDATION_FLAG_ORIGIN);
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding of all sides of the callout
-		 * is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -1213,16 +1514,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the callout's top edge and the
-		 * callout's content.
-		 *
-		 * <p>In the following example, the padding on the top edge of the
-		 * callout is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -1234,10 +1526,15 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this._paddingTop === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1248,16 +1545,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the callout's right edge and
-		 * the callout's content.
-		 *
-		 * <p>In the following example, the padding on the right edge of the
-		 * callout is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -1269,10 +1557,15 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this._paddingRight === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1283,16 +1576,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the callout's bottom edge and
-		 * the callout's content.
-		 *
-		 * <p>In the following example, the padding on the bottom edge of the
-		 * callout is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -1304,10 +1588,15 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1318,16 +1607,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the callout's left edge and the
-		 * callout's content.
-		 *
-		 * <p>In the following example, the padding on the left edge of the
-		 * callout is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1339,10 +1619,15 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1354,36 +1639,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left")]
 		/**
-		 * The position of the callout's arrow relative to the callout's
-		 * background. If the callout's <code>origin</code> is set, this value
-		 * will be managed by the callout and may change automatically if the
-		 * origin moves to a new position or if the stage resizes.
-		 *
-		 * <p>The <code>supportedDirections</code> property is related to this
-		 * one, but they have different meanings and are usually opposites. For
-		 * example, a callout on the right side of its origin will generally
-		 * display its left arrow.</p>
-		 *
-		 * <p>If you use <code>Callout.show()</code> or set the <code>origin</code>
-		 * property manually, you should avoid manually modifying the
-		 * <code>arrowPosition</code> and <code>arrowOffset</code> properties.</p>
-		 *
-		 * <p>In the following example, the callout's arrow is positioned on the
-		 * left side:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.arrowPosition = RelativePosition.LEFT;</listing>
-		 *
-		 * @default feathers.layout.RelativePosition.TOP
-		 *
-		 * @see feathers.layout.RelativePosition#TOP
-		 * @see feathers.layout.RelativePosition#RIGHT
-		 * @see feathers.layout.RelativePosition#BOTTOM
-		 * @see feathers.layout.RelativePosition#LEFT
-		 *
-		 * @see #origin
-		 * @see #supportedDirections
-		 * @see #arrowOffset
+		 * @private
 		 */
 		public function get arrowPosition():String
 		{
@@ -1395,10 +1651,15 @@ package feathers.controls
 		 */
 		public function set arrowPosition(value:String):void
 		{
-			if(this._arrowPosition == value)
+			if(this._arrowPosition === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._arrowPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1409,14 +1670,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The primary background to display.
-		 *
-		 * <p>In the following example, the callout's background is set to an image:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1428,10 +1682,15 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 
 			if(this._backgroundSkin !== null && this._backgroundSkin.parent === this)
 			{
@@ -1476,74 +1735,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _bottomArrowSkin:DisplayObject;
-
-		/**
-		 * The arrow skin to display on the bottom edge of the callout. This
-		 * arrow is displayed when the callout is displayed above the region it
-		 * points at.
-		 *
-		 * <p>In the following example, the callout's bottom arrow skin is set
-		 * to an image:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.bottomArrowSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 */
-		public function get bottomArrowSkin():DisplayObject
-		{
-			return this._bottomArrowSkin;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set bottomArrowSkin(value:DisplayObject):void
-		{
-			if(this._bottomArrowSkin == value)
-			{
-				return;
-			}
-
-			if(this._bottomArrowSkin !== null && this._bottomArrowSkin.parent === this)
-			{
-				this._bottomArrowSkin.removeFromParent(false);
-			}
-			this._bottomArrowSkin = value;
-			if(this._bottomArrowSkin !== null)
-			{
-				this._bottomArrowSkin.visible = false;
-				var index:int = this.getChildIndex(this._content);
-				if(index < 0)
-				{
-					this.addChild(this._bottomArrowSkin);
-				}
-				else
-				{
-					this.addChildAt(this._bottomArrowSkin, index);
-				}
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _topArrowSkin:DisplayObject;
 
 		/**
-		 * The arrow skin to display on the top edge of the callout. This arrow
-		 * is displayed when the callout is displayed below the region it points
-		 * at.
-		 *
-		 * <p>In the following example, the callout's top arrow skin is set
-		 * to an image:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.topArrowSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get topArrowSkin():DisplayObject
 		{
@@ -1555,10 +1750,15 @@ package feathers.controls
 		 */
 		public function set topArrowSkin(value:DisplayObject):void
 		{
-			if(this._topArrowSkin == value)
+			if(this._topArrowSkin === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 
 			if(this._topArrowSkin !== null && this._topArrowSkin.parent === this)
 			{
@@ -1584,74 +1784,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _leftArrowSkin:DisplayObject;
-
-		/**
-		 * The arrow skin to display on the left edge of the callout. This arrow
-		 * is displayed when the callout is displayed to the right of the region
-		 * it points at.
-		 *
-		 * <p>In the following example, the callout's left arrow skin is set
-		 * to an image:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.leftArrowSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 */
-		public function get leftArrowSkin():DisplayObject
-		{
-			return this._leftArrowSkin;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set leftArrowSkin(value:DisplayObject):void
-		{
-			if(this._leftArrowSkin == value)
-			{
-				return;
-			}
-
-			if(this._leftArrowSkin !== null && this._leftArrowSkin.parent === this)
-			{
-				this._leftArrowSkin.removeFromParent(false);
-			}
-			this._leftArrowSkin = value;
-			if(this._leftArrowSkin !== null)
-			{
-				this._leftArrowSkin.visible = false;
-				var index:int = this.getChildIndex(this._content);
-				if(index < 0)
-				{
-					this.addChild(this._leftArrowSkin);
-				}
-				else
-				{
-					this.addChildAt(this._leftArrowSkin, index);
-				}
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _rightArrowSkin:DisplayObject;
 
 		/**
-		 * The arrow skin to display on the right edge of the callout. This
-		 * arrow is displayed when the callout is displayed to the left of the
-		 * region it points at.
-		 *
-		 * <p>In the following example, the callout's right arrow skin is set
-		 * to an image:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.rightArrowSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get rightArrowSkin():DisplayObject
 		{
@@ -1663,10 +1799,15 @@ package feathers.controls
 		 */
 		public function set rightArrowSkin(value:DisplayObject):void
 		{
-			if(this._rightArrowSkin == value)
+			if(this._rightArrowSkin === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 
 			if(this._rightArrowSkin !== null && this._rightArrowSkin.parent === this)
 			{
@@ -1692,21 +1833,108 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _bottomArrowSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		public function get bottomArrowSkin():DisplayObject
+		{
+			return this._bottomArrowSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set bottomArrowSkin(value:DisplayObject):void
+		{
+			if(this._bottomArrowSkin === value)
+			{
+				return;
+			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
+
+			if(this._bottomArrowSkin !== null && this._bottomArrowSkin.parent === this)
+			{
+				this._bottomArrowSkin.removeFromParent(false);
+			}
+			this._bottomArrowSkin = value;
+			if(this._bottomArrowSkin !== null)
+			{
+				this._bottomArrowSkin.visible = false;
+				var index:int = this.getChildIndex(this._content);
+				if(index < 0)
+				{
+					this.addChild(this._bottomArrowSkin);
+				}
+				else
+				{
+					this.addChildAt(this._bottomArrowSkin, index);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _leftArrowSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		public function get leftArrowSkin():DisplayObject
+		{
+			return this._leftArrowSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set leftArrowSkin(value:DisplayObject):void
+		{
+			if(this._leftArrowSkin === value)
+			{
+				return;
+			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
+
+			if(this._leftArrowSkin !== null && this._leftArrowSkin.parent === this)
+			{
+				this._leftArrowSkin.removeFromParent(false);
+			}
+			this._leftArrowSkin = value;
+			if(this._leftArrowSkin !== null)
+			{
+				this._leftArrowSkin.visible = false;
+				var index:int = this.getChildIndex(this._content);
+				if(index < 0)
+				{
+					this.addChild(this._leftArrowSkin);
+				}
+				else
+				{
+					this.addChildAt(this._leftArrowSkin, index);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _topArrowGap:Number = 0;
 
 		/**
-		 * The space, in pixels, between the top arrow skin and the background
-		 * skin. To have the arrow overlap the background, you may use a
-		 * negative gap value.
-		 *
-		 * <p>In the following example, the gap between the callout and its
-		 * top arrow is set to -4 pixels (perhaps to hide a border on the
-		 * callout's background):</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.topArrowGap = -4;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get topArrowGap():Number
 		{
@@ -1718,10 +1946,15 @@ package feathers.controls
 		 */
 		public function set topArrowGap(value:Number):void
 		{
-			if(this._topArrowGap == value)
+			if(this._topArrowGap === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._topArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1732,18 +1965,7 @@ package feathers.controls
 		protected var _bottomArrowGap:Number = 0;
 
 		/**
-		 * The space, in pixels, between the bottom arrow skin and the
-		 * background skin. To have the arrow overlap the background, you may
-		 * use a negative gap value.
-		 *
-		 * <p>In the following example, the gap between the callout and its
-		 * bottom arrow is set to -4 pixels (perhaps to hide a border on the
-		 * callout's background):</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.bottomArrowGap = -4;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get bottomArrowGap():Number
 		{
@@ -1755,10 +1977,15 @@ package feathers.controls
 		 */
 		public function set bottomArrowGap(value:Number):void
 		{
-			if(this._bottomArrowGap == value)
+			if(this._bottomArrowGap === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._bottomArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1769,18 +1996,7 @@ package feathers.controls
 		protected var _rightArrowGap:Number = 0;
 
 		/**
-		 * The space, in pixels, between the right arrow skin and the background
-		 * skin. To have the arrow overlap the background, you may use a
-		 * negative gap value.
-		 *
-		 * <p>In the following example, the gap between the callout and its
-		 * right arrow is set to -4 pixels (perhaps to hide a border on the
-		 * callout's background):</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.rightArrowGap = -4;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get rightArrowGap():Number
 		{
@@ -1792,10 +2008,15 @@ package feathers.controls
 		 */
 		public function set rightArrowGap(value:Number):void
 		{
-			if(this._rightArrowGap == value)
+			if(this._rightArrowGap === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._rightArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1806,18 +2027,7 @@ package feathers.controls
 		protected var _leftArrowGap:Number = 0;
 
 		/**
-		 * The space, in pixels, between the right arrow skin and the background
-		 * skin. To have the arrow overlap the background, you may use a
-		 * negative gap value.
-		 *
-		 * <p>In the following example, the gap between the callout and its
-		 * left arrow is set to -4 pixels (perhaps to hide a border on the
-		 * callout's background):</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.leftArrowGap = -4;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get leftArrowGap():Number
 		{
@@ -1829,10 +2039,15 @@ package feathers.controls
 		 */
 		public function set leftArrowGap(value:Number):void
 		{
-			if(this._leftArrowGap == value)
+			if(this._leftArrowGap === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._leftArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1843,30 +2058,7 @@ package feathers.controls
 		protected var _arrowOffset:Number = 0;
 
 		/**
-		 * The offset, in pixels, of the arrow skin from the horizontal center
-		 * or vertical middle of the background skin, depending on the position
-		 * of the arrow (which side it is on). This value is used to point at
-		 * the callout's origin when the callout is not perfectly centered
-		 * relative to the origin.
-		 *
-		 * <p>On the top and bottom edges, the arrow will move left for negative
-		 * values of <code>arrowOffset</code> and right for positive values. On
-		 * the left and right edges, the arrow will move up for negative values
-		 * and down for positive values.</p>
-		 *
-		 * <p>If you use <code>Callout.show()</code> or set the <code>origin</code>
-		 * property manually, you should avoid manually modifying the
-		 * <code>arrowPosition</code> and <code>arrowOffset</code> properties.</p>
-		 *
-		 * <p>In the following example, the arrow offset is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.arrowOffset = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #arrowPosition
-		 * @see #origin
+		 * @private
 		 */
 		public function get arrowOffset():Number
 		{
@@ -1878,10 +2070,15 @@ package feathers.controls
 		 */
 		public function set arrowOffset(value:Number):void
 		{
-			if(this._arrowOffset == value)
+			if(this._arrowOffset === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._arrowOffset = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

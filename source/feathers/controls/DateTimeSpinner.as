@@ -25,6 +25,48 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
+	 * A style name to add to the date time spinner's list sub-components.
+	 * Typically used by a theme to provide different styles to different
+	 * date time spinners.
+	 *
+	 * <p>In the following example, a custom list style name is passed to
+	 * the date time spijnner:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.customListStyleName = "my-custom-spinner-list";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( SpinnerList ).setFunctionForStyleName( "my-custom-spinner-list", setCustomSpinnerListStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #listFactory
+	 */
+	[Style(name="customListStyleName",type="String")]
+
+	/**
+	 * The duration, in seconds, of the animation when the
+	 * <code>scrollToDate()</code> function is called, or when an invalid
+	 * date is selected.
+	 *
+	 * <p>In the following example, the duration of the animation that
+	 * changes the page when thrown is set to 250 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.scrollDuration = 0.25;</listing>
+	 *
+	 * @default 0.5
+	 *
+	 * @see #scrollToDate()
+	 */
+	[Style(name="scrollDuration",type="Number")]
+
+	/**
 	 * Dispatched when the spinner's value changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -232,7 +274,7 @@ package feathers.controls
 		 * <p>To customize the list style name without subclassing, see
 		 * <code>customListStyleName</code>.</p>
 		 *
-		 * @see #customListStyleName
+		 * @see #style:customListStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var listStyleName:String = DEFAULT_CHILD_STYLE_NAME_LIST;
@@ -611,19 +653,7 @@ package feathers.controls
 		protected var _scrollDuration:Number = 0.5;
 
 		/**
-		 * The duration, in seconds, of the animation when the
-		 * <code>scrollToDate()</code> function is called, or when an invalid
-		 * date is selected.
-		 *
-		 * <p>In the following example, the duration of the animation that
-		 * changes the page when thrown is set to 250 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * spinner.scrollDuration = 0.25;</listing>
-		 *
-		 * @default 0.5
-		 * 
-		 * @see #scrollToDate()
+		 * @private
 		 */
 		public function get scrollDuration():Number
 		{
@@ -635,6 +665,15 @@ package feathers.controls
 		 */
 		public function set scrollDuration(value:Number):void
 		{
+			if(this._scrollDuration === value)
+			{
+				return;
+			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._scrollDuration = value;
 		}
 
@@ -753,27 +792,7 @@ package feathers.controls
 		protected var _customListStyleName:String;
 
 		/**
-		 * A style name to add to the date time spinner's list sub-components.
-		 * Typically used by a theme to provide different styles to different
-		 * date time spinners.
-		 *
-		 * <p>In the following example, a custom list style name is passed to
-		 * the date time spijnner:</p>
-		 *
-		 * <listing version="3.0">
-		 * spinner.customListStyleName = "my-custom-spinner-list";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( SpinnerList ).setFunctionForStyleName( "my-custom-spinner-list", setCustomSpinnerListStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #listFactory
+		 * @private
 		 */
 		public function get customListStyleName():String
 		{
@@ -785,10 +804,15 @@ package feathers.controls
 		 */
 		public function set customListStyleName(value:String):void
 		{
-			if(this._customListStyleName == value)
+			if(this._customListStyleName === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			this._customListStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_SPINNER_LIST_FACTORY);
 		}
@@ -866,7 +890,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * spinner.scrollToDate( new Date(2016, 0, 1), 1.5 );</listing>
 		 * 
-		 * @see #scrollDuration
+		 * @see #style:scrollDuration
 		 */
 		public function scrollToDate(date:Date, animationDuration:Number = NaN):void
 		{

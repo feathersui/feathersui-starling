@@ -40,6 +40,94 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * The divider between the bottom drawer and the content when the bottom
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * bottom drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.bottomDrawerDivider = quad;
+	 * drawers.bottomDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #bottomDrawer
+	 */
+	[Style(name="bottomDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
+	 * The divider between the left drawer and the content when the left
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * left drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.leftDrawerDivider = quad;
+	 * drawers.leftDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #leftDrawer
+	 */
+	[Style(name="leftDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
+	 * An optional display object that appears above the content when a
+	 * drawer is open.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * overlay skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Quad = new Quad( 10, 10, 0x000000 );
+	 * skin.alpha = 0.75;
+	 * drawers.overlaySkin = skin;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="overlaySkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The divider between the right drawer and the content when the right
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * right drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.rightDrawerDivider = quad;
+	 * drawers.rightDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #rightDrawer
+	 */
+	[Style(name="rightDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
+	 * The divider between the top drawer and the content when the top
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * top drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.topDrawerDivider = quad;
+	 * drawers.topDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #topDrawer
+	 */
+	[Style(name="topDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
 	 * Dispatched when the user starts dragging the content to open or close a
 	 * drawer.
 	 *
@@ -481,18 +569,7 @@ package feathers.controls
 		protected var _overlaySkin:DisplayObject;
 
 		/**
-		 * An optional display object that appears above the content when a
-		 * drawer is open.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * overlay skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * var skin:Quad = new Quad( 10, 10, 0x000000 );
-		 * skin.alpha = 0.75;
-		 * drawers.overlaySkin = skin;</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get overlaySkin():DisplayObject
 		{
@@ -504,10 +581,15 @@ package feathers.controls
 		 */
 		public function set overlaySkin(value:DisplayObject):void
 		{
-			if(this._overlaySkin == value)
+			if(this._overlaySkin === value)
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._overlaySkin && this._overlaySkin.parent == this)
 			{
 				this.removeChild(this._overlaySkin, false);
@@ -600,20 +682,7 @@ package feathers.controls
 		protected var _topDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the top drawer and the content when the top
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * top drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.topDrawerDivider = quad;
-		 * drawers.topDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #topDrawer
+		 * @private
 		 */
 		public function get topDrawerDivider():DisplayObject
 		{
@@ -629,6 +698,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._topDrawerDivider && this._topDrawerDivider.parent == this)
 			{
 				this.removeChild(this._topDrawerDivider, false);
@@ -897,20 +971,7 @@ package feathers.controls
 		protected var _rightDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the right drawer and the content when the right
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * right drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.rightDrawerDivider = quad;
-		 * drawers.rightDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #rightDrawer
+		 * @private
 		 */
 		public function get rightDrawerDivider():DisplayObject
 		{
@@ -926,6 +987,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._rightDrawerDivider && this._rightDrawerDivider.parent == this)
 			{
 				this.removeChild(this._rightDrawerDivider, false);
@@ -1194,20 +1260,7 @@ package feathers.controls
 		protected var _bottomDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the bottom drawer and the content when the bottom
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * bottom drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.bottomDrawerDivider = quad;
-		 * drawers.bottomDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #bottomDrawer
+		 * @private
 		 */
 		public function get bottomDrawerDivider():DisplayObject
 		{
@@ -1223,6 +1276,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._bottomDrawerDivider && this._bottomDrawerDivider.parent == this)
 			{
 				this.removeChild(this._bottomDrawerDivider, false);
@@ -1491,20 +1549,7 @@ package feathers.controls
 		protected var _leftDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the left drawer and the content when the left
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * left drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.leftDrawerDivider = quad;
-		 * drawers.leftDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #leftDrawer
+		 * @private
 		 */
 		public function get leftDrawerDivider():DisplayObject
 		{
@@ -1520,6 +1565,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.isStyleRestricted(arguments.callee))
+			{
+				return;
+			}
+			this.restrictStyle(arguments.callee);
 			if(this._leftDrawerDivider && this._leftDrawerDivider.parent == this)
 			{
 				this.removeChild(this._leftDrawerDivider, false);
