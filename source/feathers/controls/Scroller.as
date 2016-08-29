@@ -2078,7 +2078,7 @@ package feathers.controls
 		 */
 		protected var _scrollBarDisplayMode:String = ScrollBarDisplayMode.FLOAT;
 
-		[Inspectable(type="String",enumeration="float,fixed,none")]
+		[Inspectable(type="String",enumeration="float,fixed,fixedFloat,none")]
 		/**
 		 * Determines how the scroll bars are displayed.
 		 *
