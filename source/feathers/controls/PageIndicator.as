@@ -141,7 +141,7 @@ package feathers.controls
 	 *
 	 * @default 0
 	 * 
-	 * @see #padding
+	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
 
@@ -156,7 +156,7 @@ package feathers.controls
 	 *
 	 * @default 0
 	 *
-	 * @see #padding
+	 * @see #style:padding
 	 */
 	[Style(name="paddingRight",type="Number")]
 
@@ -171,7 +171,7 @@ package feathers.controls
 	 *
 	 * @default 0
 	 *
-	 * @see #padding
+	 * @see #style:padding
 	 */
 	[Style(name="paddingBottom",type="Number")]
 
@@ -186,7 +186,7 @@ package feathers.controls
 	 *
 	 * @default 0
 	 *
-	 * @see #padding
+	 * @see #style:padding
 	 */
 	[Style(name="paddingLeft",type="Number")]
 

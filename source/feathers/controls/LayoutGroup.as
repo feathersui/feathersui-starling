@@ -42,6 +42,8 @@ package feathers.controls
 	 * group.backgroundDisabledSkin = new Image( texture );</listing>
 	 *
 	 * @default null
+	 * 
+	 * @see #style:backgroundSkin
 	 */
 	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
 
@@ -56,6 +58,8 @@ package feathers.controls
 	 * group.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
+	 * 
+	 * @see #style:backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
 
