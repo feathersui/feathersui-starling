@@ -1301,15 +1301,14 @@ package feathers.controls
 		 */
 		public function set customItemRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customItemRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customItemRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1518,15 +1517,14 @@ package feathers.controls
 		 */
 		public function set customFirstItemRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customFirstItemRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customFirstItemRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1646,15 +1644,14 @@ package feathers.controls
 		 */
 		public function set customLastItemRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customLastItemRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customLastItemRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1774,15 +1771,14 @@ package feathers.controls
 		 */
 		public function set customSingleItemRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customSingleItemRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customSingleItemRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1970,15 +1966,14 @@ package feathers.controls
 		 */
 		public function set customHeaderRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customHeaderRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customHeaderRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2254,15 +2249,14 @@ package feathers.controls
 		 */
 		public function set customFooterRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customFooterRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customFooterRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2559,15 +2553,14 @@ package feathers.controls
 		 */
 		public function set keyScrollDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._keyScrollDuration === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._keyScrollDuration = value;
 		}
 

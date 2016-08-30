@@ -665,15 +665,14 @@ package feathers.controls
 		 */
 		public function set scrollDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._scrollDuration === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._scrollDuration = value;
 		}
 
@@ -804,15 +803,14 @@ package feathers.controls
 		 */
 		public function set customListStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customListStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customListStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_SPINNER_LIST_FACTORY);
 		}

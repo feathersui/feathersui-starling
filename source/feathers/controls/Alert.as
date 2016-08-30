@@ -455,15 +455,18 @@ package feathers.controls
 		 */
 		public function set icon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._icon === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			var oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
 			if(this._icon)
@@ -499,15 +502,14 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._gap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._gap = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -556,11 +558,10 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.format = value;
 		}
 
@@ -577,11 +578,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -731,15 +731,14 @@ package feathers.controls
 		 */
 		public function set customMessageStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customMessageStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customMessageStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}

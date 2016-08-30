@@ -581,15 +581,18 @@ package feathers.controls
 		 */
 		public function set overlaySkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._overlaySkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			if(this._overlaySkin && this._overlaySkin.parent == this)
 			{
 				this.removeChild(this._overlaySkin, false);
@@ -694,15 +697,18 @@ package feathers.controls
 		 */
 		public function set topDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._topDrawerDivider === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			if(this._topDrawerDivider && this._topDrawerDivider.parent == this)
 			{
 				this.removeChild(this._topDrawerDivider, false);
@@ -983,15 +989,18 @@ package feathers.controls
 		 */
 		public function set rightDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._rightDrawerDivider === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			if(this._rightDrawerDivider && this._rightDrawerDivider.parent == this)
 			{
 				this.removeChild(this._rightDrawerDivider, false);
@@ -1272,15 +1281,18 @@ package feathers.controls
 		 */
 		public function set bottomDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._bottomDrawerDivider === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			if(this._bottomDrawerDivider && this._bottomDrawerDivider.parent == this)
 			{
 				this.removeChild(this._bottomDrawerDivider, false);
@@ -1561,15 +1573,18 @@ package feathers.controls
 		 */
 		public function set leftDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._leftDrawerDivider === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			if(this._leftDrawerDivider && this._leftDrawerDivider.parent == this)
 			{
 				this.removeChild(this._leftDrawerDivider, false);

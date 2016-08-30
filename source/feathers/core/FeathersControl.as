@@ -1559,15 +1559,14 @@ package feathers.core
 			{
 				throw new IllegalOperationError("Cannot set focus indicator skin on a component that does not implement feathers.core.IFocusDisplayObject");
 			}
-			if(this._focusIndicatorSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
+			if(this._focusIndicatorSkin === value)
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			if(this._focusIndicatorSkin)
 			{
 				if(this._focusIndicatorSkin.parent == this)
@@ -1633,15 +1632,14 @@ package feathers.core
 		 */
 		public function set focusPaddingTop(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._focusPaddingTop === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._focusPaddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -1664,15 +1662,14 @@ package feathers.core
 		 */
 		public function set focusPaddingRight(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._focusPaddingRight === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._focusPaddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -1695,15 +1692,14 @@ package feathers.core
 		 */
 		public function set focusPaddingBottom(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._focusPaddingBottom === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._focusPaddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -1726,15 +1722,14 @@ package feathers.core
 		 */
 		public function set focusPaddingLeft(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._focusPaddingLeft === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._focusPaddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
@@ -2379,18 +2374,31 @@ package feathers.core
 		}
 
 		/**
-		 * Used by properties that are considered "styles" to set a flag to
-		 * indicate that they have been set without using the
-		 * <code>styleProvider</code> (usually provided by a theme). If the
-		 * <code>styleProvider</code> attempts to set a restricted property,
-		 * the original value will be preserved.
+		 * Used by setters for properties that are considered "styles" to
+		 * determine if the setter has been called directly on the component or
+		 * from a <em>style provider</em>. A style provider is typically
+		 * associated with a theme. When a style is set directly on the
+		 * component (outside of a style provider), then any attempts by the
+		 * style provider to set the style later will be ignored. This allows
+		 * developers to customize a component's styles directly without
+		 * worrying about conflicts from the style provider or theme.
 		 * 
-		 * <p>Note: calling <code>restrictStyle()</code> while the
-		 * <code>styleProvider</code> is applying styles has no effect. The flag
-		 * cannot be set at this time.</p>
+		 * <p>If a style provider is currently applying styles to the component,
+		 * returns <code>true</code> if the style is restricted or false if it
+		 * may be set.</p>
+		 * 
+		 * <p>If the style setter is called outside of a style provider, marks
+		 * the style as restricted and returns <code>false</code>.</p>
+		 * 
+		 * <p>The <code>key</code> parameter should be a unique value for each
+		 * separate style. In most cases, <code>processStyleRestriction()</code>
+		 * will be called in the style property setter, so
+		 * <code>arguments.callee</code> is recommended. Alternatively, a unique
+		 * string value may be used instead.</p>
 		 *
-		 * <p>The following code shows an implementation of
-		 * <code>isStyleRestricted()</code> and <code>restrictStyle()</code>:</p>
+		 * <p>The following example shows how to use
+		 * <code>processStyleRestriction()</code> in a style property
+		 * setter:</p>
 		 *
 		 * <listing version="3.0">
 		 * private var _customStyle:Object;
@@ -2402,24 +2410,22 @@ package feathers.core
 		 *
 		 * public function set customStyle( value:Object ):void
 		 * {
-		 *     if( this.isStyleRestricted( arguments.callee ) )
+		 *     if( this.processStyleRestriction( arguments.callee ) )
 		 *     {
 		 *         // if a style is restricted, don't set it
 		 *         return;
 		 *     }
-		 *     // the style should be restricted
-		 *     this.restrictStyle( arguments.callee );
 		 * 
 		 *     this._customStyle = value;
 		 * }</listing>
-		 * 
-		 * @see #isStyleRestricted()
 		 */
-		protected function restrictStyle(key:Object):void
+		protected function processStyleRestriction(key:Object):Boolean
 		{
+			//in most cases, the style is not restricted, and we can set it
 			if(this._applyingStyles)
 			{
-				return;
+				return this._restrictedStyles !== null &&
+					key in this._restrictedStyles;
 			}
 			if(this._restrictedStyles === null)
 			{
@@ -2427,48 +2433,7 @@ package feathers.core
 				this._restrictedStyles = new Dictionary(true);
 			}
 			this._restrictedStyles[key] = true;
-		}
-
-		/**
-		 * Used by properties that are considered "styles" to determine if the
-		 * <code>styleProvider</code> (usually provided by a theme) is allowed
-		 * to set the property or not.
-		 *
-		 * <p>This function accepts a single parameter, which must be a function
-		 * reference. Inside the property setter, <code>arguments.callee</code>
-		 * makes an ideal value.</p>
-		 * 
-		 * <p>The following code shows an implementation of
-		 * <code>isStyleRestricted()</code> and <code>restrictStyle()</code>:</p>
-		 * 
-		 * <listing version="3.0">
-		 * private var _customStyle:Object;
-		 * 
-		 * public function get customStyle():Object
-		 * {
-		 *     return this._customStyle;
-		 * }
-		 * 
-		 * public function set customStyle( value:Object ):void
-		 * {
-		 *     if( this.isStyleRestricted( arguments.callee ) )
-		 *     {
-		 *         // if a style is restricted, don't set it
-		 *         return;
-		 *     }
-		 *     // the style should be restricted
-		 *     this.restrictStyle( arguments.callee );
-		 * 
-		 *     this._customStyle = value;
-		 * }</listing>
-		 *
-		 * @see #restrictStyle()
-		 */
-		protected function isStyleRestricted(key:Object):Boolean
-		{
-			//in most cases, the style is not restricted, and we can set it
-			return this._applyingStyles && this._restrictedStyles !== null &&
-				key in this._restrictedStyles;
+			return false;
 		}
 
 		/**

@@ -760,15 +760,14 @@ package feathers.controls
 		 */
 		public function set loadingTexture(value:Texture):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._loadingTexture === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._loadingTexture = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -791,15 +790,14 @@ package feathers.controls
 		 */
 		public function set errorTexture(value:Texture):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._errorTexture === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._errorTexture = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -915,15 +913,14 @@ package feathers.controls
 		 */
 		public function set textureSmoothing(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._textureSmoothing === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._textureSmoothing = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1131,15 +1128,14 @@ package feathers.controls
 		 */
 		public function set scaleContent(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._scaleContent === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._scaleContent = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -1162,15 +1158,14 @@ package feathers.controls
 		 */
 		public function set maintainAspectRatio(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._maintainAspectRatio === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._maintainAspectRatio = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -1194,15 +1189,14 @@ package feathers.controls
 		 */
 		public function set scaleMode(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._scaleMode === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._scaleMode = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
@@ -1226,15 +1220,14 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._horizontalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1258,15 +1251,14 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._verticalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1483,15 +1475,14 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingTop === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1514,15 +1505,14 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingRight === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1545,15 +1535,14 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingBottom === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1576,15 +1565,14 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingLeft === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

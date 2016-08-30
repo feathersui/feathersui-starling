@@ -473,15 +473,14 @@ package feathers.controls
 		 */
 		public function set customTextRendererStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customTextRendererStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customTextRendererStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
@@ -504,11 +503,10 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.format = value;
 		}
 
@@ -525,11 +523,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -687,16 +684,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -724,16 +723,14 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin === value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -780,15 +777,14 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingTop === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -811,15 +807,14 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingRight === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -842,15 +837,14 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingBottom === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -873,15 +867,14 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingLeft === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

@@ -919,15 +919,14 @@ package feathers.controls
 		 */
 		public function set hasLabelTextRenderer(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._hasLabelTextRenderer === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._hasLabelTextRenderer = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
@@ -951,15 +950,14 @@ package feathers.controls
 		 */
 		public function set iconPosition(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._iconPosition === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._iconPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -982,15 +980,14 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._gap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._gap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1013,15 +1010,14 @@ package feathers.controls
 		 */
 		public function set minGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._minGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._minGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1045,15 +1041,14 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._horizontalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1077,15 +1072,14 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._verticalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1127,15 +1121,14 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingTop === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1158,15 +1151,14 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingRight === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1189,15 +1181,14 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingBottom === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1220,15 +1211,14 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingLeft === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1251,15 +1241,14 @@ package feathers.controls
 		 */
 		public function set labelOffsetX(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._labelOffsetX === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._labelOffsetX = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1282,15 +1271,14 @@ package feathers.controls
 		 */
 		public function set labelOffsetY(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._labelOffsetY === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._labelOffsetY = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1313,15 +1301,14 @@ package feathers.controls
 		 */
 		public function set iconOffsetX(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._iconOffsetX === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._iconOffsetX = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1344,15 +1331,14 @@ package feathers.controls
 		 */
 		public function set iconOffsetY(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._iconOffsetY === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._iconOffsetY = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1424,7 +1410,7 @@ package feathers.controls
 			this._stateToLabelPropertiesFunction = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * The skin used for the button's up state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
@@ -1447,7 +1433,7 @@ package feathers.controls
 		{
 			return this.getSkinForState(ButtonState.UP);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1455,7 +1441,7 @@ package feathers.controls
 		{
 			this.setSkinForState(ButtonState.UP, value);
 		}
-		
+
 		/**
 		 * The skin used for the button's down state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
@@ -1478,7 +1464,7 @@ package feathers.controls
 		{
 			return this.getSkinForState(ButtonState.DOWN);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1517,7 +1503,7 @@ package feathers.controls
 		{
 			this.setSkinForState(ButtonState.HOVER, value);
 		}
-		
+
 		/**
 		 * The skin used for the button's disabled state. If <code>null</code>,
 		 * then <code>defaultSkin</code> is used instead.
@@ -1540,7 +1526,7 @@ package feathers.controls
 		{
 			return this.getSkinForState(ButtonState.DISABLED);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1599,11 +1585,10 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.format = value;
 		}
 
@@ -1620,11 +1605,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this.restrictStyle(arguments.callee);
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -1696,15 +1680,14 @@ package feathers.controls
 		 */
 		public function set customLabelStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customLabelStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customLabelStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
@@ -1936,7 +1919,7 @@ package feathers.controls
 			}
 			return value;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1977,11 +1960,7 @@ package feathers.controls
 		 */
 		public function set defaultIcon(value:DisplayObject):void
 		{
-			if(this._defaultIcon === value)
-			{
-				return;
-			}
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				if(value !== null)
 				{
@@ -1989,7 +1968,10 @@ package feathers.controls
 				}
 				return;
 			}
-			this.restrictStyle(arguments.callee);
+			if(this._defaultIcon === value)
+			{
+				return;
+			}
 			if(this._defaultIcon !== null &&
 				this.currentIcon === this._defaultIcon)
 			{
@@ -2226,15 +2208,14 @@ package feathers.controls
 		 */
 		public function set scaleWhenDown(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._scaleWhenDown === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._scaleWhenDown = value;
 		}
 
@@ -2256,15 +2237,14 @@ package feathers.controls
 		 */
 		public function set scaleWhenHovering(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._scaleWhenHovering === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._scaleWhenHovering = value;
 		}
 
@@ -2379,11 +2359,10 @@ package feathers.controls
 		public function setFontStylesForState(state:String, format:TextFormat):void
 		{
 			var key:String = "setFontStylesForState--" + state;
-			if(this.isStyleRestricted(key))
+			if(this.processStyleRestriction(key))
 			{
 				return;
 			}
-			this.restrictStyle(key);
 			this._fontStylesSet.setFormatForState(state, format);
 		}
 
@@ -2415,7 +2394,7 @@ package feathers.controls
 		public function setIconForState(state:String, icon:DisplayObject):void
 		{
 			var key:String = "setIconForState--" + state;
-			if(this.isStyleRestricted(key))
+			if(this.processStyleRestriction(key))
 			{
 				if(icon !== null)
 				{
@@ -2423,7 +2402,6 @@ package feathers.controls
 				}
 				return;
 			}
-			this.restrictStyle(key);
 			var oldIcon:DisplayObject = this._stateToIcon[state] as DisplayObject;
 			if(oldIcon !== null &&
 				this.currentIcon === oldIcon)

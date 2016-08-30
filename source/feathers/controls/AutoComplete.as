@@ -432,15 +432,14 @@ package feathers.controls
 		 */
 		public function set customListStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customListStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customListStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
 		}

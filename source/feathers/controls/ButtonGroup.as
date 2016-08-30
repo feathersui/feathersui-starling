@@ -769,15 +769,14 @@ package feathers.controls
 		 */
 		public function set direction(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._direction === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._direction = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -801,15 +800,14 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._horizontalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -833,15 +831,14 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._verticalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -864,15 +861,14 @@ package feathers.controls
 		 */
 		public function set distributeButtonSizes(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._distributeButtonSizes === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._distributeButtonSizes = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -895,15 +891,14 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._gap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._gap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -926,15 +921,14 @@ package feathers.controls
 		 */
 		public function set firstGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._firstGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._firstGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -957,15 +951,14 @@ package feathers.controls
 		 */
 		public function set lastGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._lastGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._lastGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1007,15 +1000,14 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingTop === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1038,15 +1030,14 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingRight === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1069,15 +1060,14 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingBottom === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1100,15 +1090,14 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingLeft === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1376,15 +1365,14 @@ package feathers.controls
 		 */
 		public function set customButtonStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customButtonStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customButtonStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
@@ -1407,15 +1395,14 @@ package feathers.controls
 		 */
 		public function set customFirstButtonStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customFirstButtonStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customFirstButtonStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
@@ -1438,15 +1425,14 @@ package feathers.controls
 		 */
 		public function set customLastButtonStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customLastButtonStyleName === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._customLastButtonStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}

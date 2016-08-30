@@ -230,15 +230,10 @@ package feathers.controls
 		 */
 		public function set keepDownStateOnRollOut(value:Boolean):void
 		{
-			if(this._keepDownStateOnRollOut === value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._keepDownStateOnRollOut = value;
 		}
 
@@ -260,11 +255,7 @@ package feathers.controls
 		 */
 		public function set defaultSkin(value:DisplayObject):void
 		{
-			if(this._defaultSkin === value)
-			{
-				return;
-			}
-			if(this.isStyleRestricted(arguments.callee))
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				if(value !== null)
 				{
@@ -272,7 +263,10 @@ package feathers.controls
 				}
 				return;
 			}
-			this.restrictStyle(arguments.callee);
+			if(this._defaultSkin === value)
+			{
+				return;
+			}
 			if(this._defaultSkin !== null &&
 				this.currentSkin === this._defaultSkin)
 			{
@@ -349,7 +343,7 @@ package feathers.controls
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
 			var key:String = "setSkinForState--" + state;
-			if(this.isStyleRestricted(key))
+			if(this.processStyleRestriction(key))
 			{
 				if(skin !== null)
 				{
@@ -357,7 +351,6 @@ package feathers.controls
 				}
 				return;
 			}
-			this.restrictStyle(key);
 			var oldSkin:DisplayObject = this._stateToSkin[state] as DisplayObject;
 			if(oldSkin !== null &&
 				this.currentSkin === oldSkin)

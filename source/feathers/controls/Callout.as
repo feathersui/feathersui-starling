@@ -1443,15 +1443,14 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._horizontalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._horizontalAlign = value;
 			this._lastGlobalBoundsOfOrigin = null;
 			this.invalidate(INVALIDATION_FLAG_ORIGIN);
@@ -1475,15 +1474,14 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._verticalAlign === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._verticalAlign = value;
 			this._lastGlobalBoundsOfOrigin = null;
 			this.invalidate(INVALIDATION_FLAG_ORIGIN);
@@ -1526,15 +1524,14 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingTop === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1557,15 +1554,14 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingRight === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1588,15 +1584,14 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingBottom === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1619,15 +1614,14 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._paddingLeft === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1651,15 +1645,14 @@ package feathers.controls
 		 */
 		public function set arrowPosition(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._arrowPosition === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._arrowPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1682,16 +1675,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._backgroundSkin !== null && this._backgroundSkin.parent === this)
 			{
 				this._backgroundSkin.removeFromParent(false);
@@ -1750,16 +1745,18 @@ package feathers.controls
 		 */
 		public function set topArrowSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._topArrowSkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._topArrowSkin !== null && this._topArrowSkin.parent === this)
 			{
 				this._topArrowSkin.removeFromParent(false);
@@ -1799,16 +1796,18 @@ package feathers.controls
 		 */
 		public function set rightArrowSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._rightArrowSkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._rightArrowSkin !== null && this._rightArrowSkin.parent === this)
 			{
 				this._rightArrowSkin.removeFromParent(false);
@@ -1848,16 +1847,18 @@ package feathers.controls
 		 */
 		public function set bottomArrowSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._bottomArrowSkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._bottomArrowSkin !== null && this._bottomArrowSkin.parent === this)
 			{
 				this._bottomArrowSkin.removeFromParent(false);
@@ -1897,16 +1898,18 @@ package feathers.controls
 		 */
 		public function set leftArrowSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._leftArrowSkin === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
-
 			if(this._leftArrowSkin !== null && this._leftArrowSkin.parent === this)
 			{
 				this._leftArrowSkin.removeFromParent(false);
@@ -1946,15 +1949,14 @@ package feathers.controls
 		 */
 		public function set topArrowGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._topArrowGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._topArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1977,15 +1979,14 @@ package feathers.controls
 		 */
 		public function set bottomArrowGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._bottomArrowGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._bottomArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2008,15 +2009,14 @@ package feathers.controls
 		 */
 		public function set rightArrowGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._rightArrowGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._rightArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2039,15 +2039,14 @@ package feathers.controls
 		 */
 		public function set leftArrowGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._leftArrowGap === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._leftArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2070,15 +2069,14 @@ package feathers.controls
 		 */
 		public function set arrowOffset(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._arrowOffset === value)
 			{
 				return;
 			}
-			if(this.isStyleRestricted(arguments.callee))
-			{
-				return;
-			}
-			this.restrictStyle(arguments.callee);
 			this._arrowOffset = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
