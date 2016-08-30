@@ -974,11 +974,11 @@
 								</xsl:if>
 								<xsl:if test="(string-length(./apiValueDetail/apiValueDef/apiData) or ./apiValueDetail/apiValueDef/apiValueClassifier='String') and ./apiValueDetail/apiValueDef/apiData!='unknown'">
 									<xsl:text> = </xsl:text>
-									<xsl:if test="./apiValueDetail/apiValueDef/apiValueClassifier='String'">
+									<xsl:if test="./apiValueDetail/apiValueDef/apiType/@value='String'">
 										<xsl:text>"</xsl:text>
 									</xsl:if>
 									<xsl:value-of select="./apiValueDetail/apiValueDef/apiData"/>
-									<xsl:if test="apiValueDetail/apiValueDef/apiValueClassifier='String'">
+									<xsl:if test="apiValueDetail/apiValueDef/apiType/@value='String'">
 										<xsl:text>"</xsl:text>
 									</xsl:if>
 								</xsl:if>
@@ -1276,11 +1276,11 @@
 						</xsl:if>
 						<xsl:if test="(string-length(apiValueDetail/apiValueDef/apiData) or apiValueDetail/apiValueDef/apiValueClassifier='String') and apiValueDetail/apiValueDef/apiData!='unknown'">
 							<xsl:text> = </xsl:text>
-							<xsl:if test="apiValueDetail/apiValueDef/apiValueClassifier='String'">
+							<xsl:if test="apiValueDetail/apiValueDef/apiType/@value='String'">
 								<xsl:text>"</xsl:text>
 							</xsl:if>
 							<xsl:value-of select="apiValueDetail/apiValueDef/apiData"/>
-							<xsl:if test="apiValueDetail/apiValueDef/apiValueClassifier='String'">
+							<xsl:if test="apiValueDetail/apiValueDef/apiType/@value='String'">
 								<xsl:text>"</xsl:text>
 							</xsl:if>
 						</xsl:if>
