@@ -766,7 +766,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.ButtonGroup
-		 * @see #buttonGroupProperties
 		 */
 		public function get buttonGroupFactory():Function
 		{

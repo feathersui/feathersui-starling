@@ -394,7 +394,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.List
-		 * @see #listProperties
 		 */
 		public function get listFactory():Function
 		{
