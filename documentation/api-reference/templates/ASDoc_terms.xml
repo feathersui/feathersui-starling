@@ -331,11 +331,37 @@
                            <p translate="no" class="- topic/p ">Style</p>
                         </entry>
                         <entry colname="2" colsep="1" class="- topic/entry ">
+                           <p class="- topic/p ">style</p>
+                        </entry>
+                        <entry colname="3" class="- topic/entry ">
+                           <draft-comment class="- topic/draft-comment ">
+                              <p class="- topic/p ">text for style</p>
+                           </draft-comment>
+                        </entry>
+                     </row>
+                     <row rowsep="1" class="- topic/row ">
+                        <entry colname="1" colsep="1" class="- topic/entry ">
+                           <p translate="no" class="- topic/p ">StyleStyle</p>
+                        </entry>
+                        <entry colname="2" colsep="1" class="- topic/entry ">
                            <p class="- topic/p ">Style</p>
                         </entry>
                         <entry colname="3" class="- topic/entry ">
                            <draft-comment class="- topic/draft-comment ">
                               <p class="- topic/p ">text for style</p>
+                           </draft-comment>
+                        </entry>
+                     </row>
+                     <row rowsep="1" class="- topic/row ">
+                        <entry colname="1" colsep="1" class="- topic/entry ">
+                           <p translate="no" class="- topic/p ">StyleDetail</p>
+                        </entry>
+                        <entry colname="2" colsep="1" class="- topic/entry ">
+                           <p class="- topic/p ">Style Detail</p>
+                        </entry>
+                        <entry colname="3" class="- topic/entry ">
+                           <draft-comment class="- topic/draft-comment ">
+                              <p class="- topic/p ">Text for style</p>
                            </draft-comment>
                         </entry>
                      </row>

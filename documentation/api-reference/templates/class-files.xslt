@@ -332,6 +332,11 @@
 											<xsl:with-param name="classDeprecated" select="$classDeprecated"/>
 											<xsl:with-param name="baseRef" select="$baseRef"/>
 										</xsl:call-template>
+										<!-- STYLE DETAIL -->
+										<xsl:call-template name="styleDetails">
+											<xsl:with-param name="classDeprecated" select="$classDeprecated"/>
+											<xsl:with-param name="baseRef" select="$baseRef"/>
+										</xsl:call-template>
 										<!--  CONSTANT DETAIL -->
 										<xsl:call-template name="constantDetails">
 											<xsl:with-param name="classDeprecated" select="$classDeprecated"/>
@@ -1598,12 +1603,7 @@
 							<xsl:value-of select="$nbsp"/>
 						</th>
 						<th colspan="2">
-							<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Style']]/entry[2]/p"/>
-						</th>
-						<th>
-							<xsl:call-template name="getLocalizedString">
-								<xsl:with-param name="key">Description</xsl:with-param>
-							</xsl:call-template>
+							<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'StyleStyle']]/entry[2]/p"/>
 						</th>
 						<th class="summaryTableOwnerCol">
 							<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'DefinedBy']]/entry[2]/p"/>
@@ -1621,9 +1621,6 @@
 						</xsl:variable>
 						<tr class="{$rowStyle}">
 							<td class="summaryTablePaddingCol">
-								<xsl:if test="not(ancestor::ancestors)">
-									<a name="style:{@name}"/>
-								</xsl:if>
 								<xsl:value-of select="$nbsp"/>
 							</td>
 							<td class="summaryTableInheritanceCol">
@@ -1661,427 +1658,52 @@
 											</xsl:if>
 										</xsl:when>
 										<xsl:when test="ancestor::apiClassifier">
-											<span class="signatureLink">
+											<a href="#style:{@name}" class="signatureLink">
 												<xsl:value-of select="@name"/>
-											</span>
+											</a>
 										</xsl:when>
 									</xsl:choose>
-								</div>
-							</td>
-							<td class="summaryTableDescription">
-								<xsl:if test="string-length(normalize-space(@type)) &gt; 0">
-									<span class="label">
-										<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Type']]/entry[2]/p"/>: </span>
-									<xsl:if test="string-length(@type)">
-										<xsl:choose>
-
-											<xsl:when test="ancestor::ancestors">
-												<xsl:if test="contains(@type,'.')">
-													<xsl:if test="count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0">
-														<xsl:variable name="hyperlink">
-															<xsl:call-template name="styleTypeHyperlink">
-																<xsl:with-param name="currentPackage" select="$currentPackage"/>
-																<xsl:with-param name="type" select="@type"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<a href="{$hyperlink}">
-															<xsl:value-of select="normalize-space(@type)"/>
-														</a>
-													</xsl:if>
-													<xsl:if test="not(count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0)">
-														<xsl:value-of select="normalize-space(@type)"/>
-													</xsl:if>
-												</xsl:if>
-												<xsl:variable name="baseRef">
-													<xsl:call-template name="getBaseRef">
-														<xsl:with-param name="packageName" select="$currentPackage"/>
-													</xsl:call-template>
-												</xsl:variable>
-												<xsl:variable name="gfile" select="concat($baseRef,@type,'.html')"/>
-												<xsl:if test="not(contains(@type,'.'))">
-													<xsl:if test="count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0">
-														<a href="{$gfile}">
-															<xsl:value-of select="normalize-space(@type)"/>
-														</a>
-													</xsl:if>
-													<xsl:if test="not(count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0)">
-														<xsl:value-of select="normalize-space(@type)"/>
-													</xsl:if>
-												</xsl:if>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:if test="contains(@type,'.')">
-													<xsl:if test="count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0">
-														<xsl:variable name="hyperlink">
-															<xsl:call-template name="styleTypeHyperlink">
-																<xsl:with-param name="currentPackage" select="ancestor-or-self::apiPackage/apiName"/>
-																<xsl:with-param name="type" select="@type"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<a href="{$hyperlink}">
-															<xsl:value-of select="normalize-space(@type)"/>
-														</a>
-													</xsl:if>
-													<xsl:if test="not(count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0)">
-														<xsl:value-of select="normalize-space(@type)"/>
-													</xsl:if>
-												</xsl:if>
-												<xsl:variable name="baseRef">
-													<xsl:call-template name="getBaseRef">
-														<xsl:with-param name="packageName" select="ancestor-or-self::apiPackage/apiName"/>
-													</xsl:call-template>
-												</xsl:variable>
-												<xsl:variable name="gfile" select="concat($baseRef,@type,'.html')"/>
-												<xsl:if test="not(contains(@type,'.'))">
-													<xsl:if test="count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0">
-														<a href="{$gfile}">
-															<xsl:value-of select="normalize-space(@type)"/>
-														</a>
-													</xsl:if>
-													<xsl:if test="not(count($classHeader_map//apiClassifier[@id=@type] ) &gt; 0)">
-														<xsl:value-of select="normalize-space(@type)"/>
-													</xsl:if>
-												</xsl:if>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="not(string-length(@type))">
-										<xsl:if test="@type='' or @type='*'">
-											<xsl:call-template name="getSpecialTypeLink">
-												<xsl:with-param name="type" select="'*'"/>
-												<xsl:with-param name="baseRef" select="$baseRef"/>
-											</xsl:call-template>
-										</xsl:if>
-										<xsl:if test="@type!='' and @type!='*'">
-											<xsl:value-of select="normalize-space(@type)"/>
-										</xsl:if>
-									</xsl:if>
-									<xsl:if test="string-length(normalize-space(@format)) &gt; 0 or string-length(normalize-space(@inherit)) &gt; 0">
-										<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
-									</xsl:if>
-								</xsl:if>
-								<xsl:if test="string-length(normalize-space(@format)) &gt; 0">
-									<span class="label">
-										<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Format']]/entry[2]/p"/>: </span>
-									<xsl:value-of select="normalize-space(@format)"/>
-									<xsl:if test="string-length(normalize-space(@inherit)) &gt; 0">
-										<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
-									</xsl:if>
-								</xsl:if>
-								<xsl:if test="string-length(normalize-space(@inherit)) &gt; 0">
-									<span class="label">
-										<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'CSSInheritance']]/entry[2]/p"/>: </span>
-									<xsl:value-of select="normalize-space(@inherit)"/>
-									<xsl:if test="string-length(normalize-space(@theme)) &gt; 0">
-										<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
-									</xsl:if>
-								</xsl:if>
-								
-								<xsl:if test="string-length(normalize-space(@theme)) &gt; 0">
-								  <span class="label"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Theme']]/entry[2]/p"/>: </span>
-								  <xsl:value-of select="normalize-space(@theme)"/>
-								</xsl:if>
-								<xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text>
-								<xsl:if test="@deprecatedReplacement or @deprecatedMessage">
-									<span class="label">
-										<xsl:choose>
-											<xsl:when test="@deprecatedSince!=''">
-												<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'DeprecatedSince']]/entry[2]/p"/>
-												<xsl:text> </xsl:text>
-												<xsl:value-of select="@deprecatedSince"/>
-												<xsl:if test="@deprecatedReplacement!=' '">
-													<xsl:text>: </xsl:text>
-												</xsl:if>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Deprecated']]/entry[2]/p"/>
-												<xsl:if test="@deprecatedReplacement!=''">
-													<xsl:text>:</xsl:text>
-													<xsl:text> </xsl:text>
-												</xsl:if>
-											</xsl:otherwise>
-										</xsl:choose>
-									</span>
-									<xsl:choose>
-										<xsl:when test="@deprecatedReplacement!=''">
-											<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'PleaseUse']]/entry[2]/p"/>
-											<xsl:text> </xsl:text>
-											<xsl:variable name="hyperlink">
-												<xsl:variable name="destination" select="$destination"/>
-												<xsl:variable name="h1" select="substring-after($destination,':')"/>
-												<xsl:variable name="h2" select="substring-before($destination,':')"/>
-												<xsl:variable name="file" select="concat($baseRef,translate($h2,'.','/'),'/',$h1,'.html')"/>
-												<xsl:variable name="gfile" select="concat($baseRef,$destination,'.html')"/>
-												<xsl:if test="contains($destination,'.')">
-													<xsl:value-of select="$file"/>
-												</xsl:if>
-												<xsl:if test="not(contains($destination,'.'))">
-													<xsl:value-of select="$gfile"/>
-												</xsl:if>
-											</xsl:variable>
-											<xsl:if test="contains(@deprecatedReplacement,',')">
-												<xsl:for-each select="tokenize(@deprecatedReplacement,',')">
-													<xsl:variable name="spec" select="normalize-space(.)"/>
-													<xsl:variable name="tospec">
-														<xsl:if test="contains($spec, ':')">
-															<xsl:value-of select="substring-after($spec,':')"/>
-														</xsl:if>
-														<xsl:if test="not(contains($spec, ':'))">
-															<xsl:value-of select="$spec"/>
-														</xsl:if>
-													</xsl:variable>
-													<xsl:variable name="ReplacementLink">
-														<xsl:variable name="replacement" select="$tospec"/>
-														<xsl:variable name="linkFromRootContext" select="false()"/>
-														<xsl:variable name="relativePath">
-															<xsl:call-template name="getRelativePath">
-																<xsl:with-param name="currentPath" select="$currentPackage"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="anchorPrefix" select="''"/>
-														<xsl:choose>
-															<xsl:when test="$sequence">
-																<xsl:variable name="lastToken">
-																	<xsl:call-template name="lastIndexOf">
-																		<xsl:with-param name="string" select="$replacement"/>
-																		<xsl:with-param name="char" select="'.'"/>
-																	</xsl:call-template>
-																</xsl:variable>
-																<xsl:variable name="firstPassToken" select="substring-before($replacement,concat('.',$lastToken))"/>
-																<xsl:choose>
-																	<xsl:when test="string-length($firstPassToken) &gt; 0">
-																		<xsl:if test="$linkFromRootContext = false()">
-																			<xsl:value-of select="$relativePath"/>
-																		</xsl:if>
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<xsl:if test="$linkFromRootContext = true()">
-																			<xsl:value-of select="translate($currentPackage,'.','/')"/>
-																			<xsl:text>/</xsl:text>
-																		</xsl:if>
-																	</xsl:otherwise>
-																</xsl:choose>
-																<xsl:value-of select="concat(translate($replacement,'.','/'),'.html')"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:variable name="lastToken">
-																	<xsl:call-template name="lastIndexOf">
-																		<xsl:with-param name="string" select="$replacement"/>
-																		<xsl:with-param name="char" select="'.'"/>
-																	</xsl:call-template>
-																</xsl:variable>
-																<xsl:variable name="firstPassToken" select="substring-before($replacement,concat('.',$lastToken))"/>
-																<xsl:variable name="className">
-																	<xsl:call-template name="lastIndexOf">
-																		<xsl:with-param name="string" select="$firstPassToken"/>
-																		<xsl:with-param name="char" select="'.'"/>
-																	</xsl:call-template>
-																</xsl:variable>
-																<xsl:variable name="packageName" select="substring-before($firstPassToken,concat('.',$className))"/>
-																<xsl:choose>
-																	<xsl:when test="string-length($packageName) &gt; 0">
-																		<xsl:if test="$linkFromRootContext = false()">
-																			<xsl:value-of select="$relativePath"/>
-																		</xsl:if>
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<xsl:if test="$linkFromRootContext = true()">
-																			<xsl:value-of select="translate($currentPackage,'.','/')"/>
-																			<xsl:text>/</xsl:text>
-																		</xsl:if>
-																	</xsl:otherwise>
-																</xsl:choose>
-																<xsl:choose>
-																	<xsl:when test="string-length($firstPassToken) &gt; 0">
-																		<xsl:value-of select="concat(translate($firstPassToken,'.','/'),'.html')"/>
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<xsl:if test="$linkFromRootContext = true()">
-																			<xsl:value-of select="$apihtml"/>
-																		</xsl:if>
-																	</xsl:otherwise>
-																</xsl:choose>
-																<xsl:value-of select="concat('#', $anchorPrefix, $lastToken)"/>
-															</xsl:otherwise>
-														</xsl:choose>
-													</xsl:variable>
-													<A href="{$hyperlink}{$ReplacementLink}">
-														<xsl:value-of select="$spec"/>
-													</A>
-													<xsl:if test="position() != last()">
-														<xsl:text>, </xsl:text>
-													</xsl:if>
-												</xsl:for-each>
-											</xsl:if>
-											<xsl:variable name="linkpath">
-												<xsl:variable name="replacement" select="@deprecatedReplacement/."/>
-												<xsl:variable name="currentPackage" select="ancestor-or-self::apiPackage/apiName"/>
-												<xsl:variable name="anchorPrefix" select="concat(local-name(),':')"/>
-												<xsl:variable name="replacement" select="@deprecatedReplacement/."/>
-												<xsl:variable name="linkFromRootContext" select="false()"/>
-												<xsl:variable name="relativePath">
-													<xsl:call-template name="getRelativePath">
-														<xsl:with-param name="currentPath" select="$currentPackage"/>
-													</xsl:call-template>
-												</xsl:variable>
-												<xsl:variable name="anchorPrefix" select="'style:'"/>
-												<xsl:choose>
-													<xsl:when test="$sequence">
-														<xsl:variable name="lastToken">
-															<xsl:call-template name="lastIndexOf">
-																<xsl:with-param name="string" select="$replacement"/>
-																<xsl:with-param name="char" select="'.'"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="firstPassToken" select="substring-before($replacement,concat('.',$lastToken))"/>
-														<xsl:choose>
-															<xsl:when test="string-length($firstPassToken) &gt; 0">
-																<xsl:if test="$linkFromRootContext = false()">
-																	<xsl:value-of select="$relativePath"/>
-																</xsl:if>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:if test="$linkFromRootContext = true()">
-																	<xsl:value-of select="translate($currentPackage,'.','/')"/>
-																	<xsl:text>/</xsl:text>
-																</xsl:if>
-															</xsl:otherwise>
-														</xsl:choose>
-														<xsl:value-of select="concat(translate($replacement,'.','/'),'.html')"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:variable name="lastToken">
-															<xsl:call-template name="lastIndexOf">
-																<xsl:with-param name="string" select="$replacement"/>
-																<xsl:with-param name="char" select="'.'"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="firstPassToken" select="substring-before($replacement,concat('.',$lastToken))"/>
-														<xsl:variable name="className">
-															<xsl:call-template name="lastIndexOf">
-																<xsl:with-param name="string" select="$firstPassToken"/>
-																<xsl:with-param name="char" select="'.'"/>
-															</xsl:call-template>
-														</xsl:variable>
-														<xsl:variable name="packageName" select="substring-before($firstPassToken,concat('.',$className))"/>
-														<xsl:choose>
-															<xsl:when test="string-length($packageName) &gt; 0">
-																<xsl:if test="$linkFromRootContext = false()">
-																	<xsl:value-of select="$relativePath"/>
-																</xsl:if>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:if test="$linkFromRootContext = true()">
-																	<xsl:value-of select="translate($currentPackage,'.','/')"/>
-																	<xsl:text>/</xsl:text>
-																</xsl:if>
-															</xsl:otherwise>
-														</xsl:choose>
-														<xsl:choose>
-															<xsl:when test="string-length($firstPassToken) &gt; 0">
-																<xsl:value-of select="concat(translate($firstPassToken,'.','/'),'.html')"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:if test="$linkFromRootContext = true()">
-																	<xsl:value-of select="$apihtml"/>
-																</xsl:if>
-															</xsl:otherwise>
-														</xsl:choose>
-														<xsl:value-of select="concat('#', $anchorPrefix, $lastToken)"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:variable>
-											<xsl:if test="not(contains(@deprecatedReplacement,','))">
-												<xsl:choose>
-													<xsl:when test="ancestor::ancestors">
-														<A href="{$hyperlink}{$linkpath}">
-															<xsl:value-of select="@deprecatedReplacement/."/>
-														</A>
-													</xsl:when>
-													<xsl:otherwise>
-														<A href="{$linkpath}">
-															<xsl:value-of select="@deprecatedReplacement/."/>
-														</A>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:if>
-										</xsl:when>
-										<xsl:when test="@deprecatedMessage!=''">
-											<xsl:variable name="description">
-												<apiDesc>
-													<xsl:value-of select="@deprecatedMessage/."/>
-												</apiDesc>
-											</xsl:variable>
-											<xsl:for-each select="$description/apiDesc">
-												<xsl:call-template name="processTags"/>
-											</xsl:for-each>
-										</xsl:when>
-									</xsl:choose>
-									<xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text>
-								</xsl:if>
-								<xsl:call-template name="shortDescriptionReview"/>
-								<xsl:variable name="styleText">
-									<xsl:variable name="asCustomsText">
-										<xsl:value-of select="prolog/asCustoms/review"/>
-									</xsl:variable>
-									<xsl:if test="string-length($asCustomsText) &gt; 0">
-										<xsl:if test="$config/options/@showReview='true'">
-											<h2>
-												<font color="red">Review Needed</font>
-											</h2>
-										</xsl:if>
-										<xsl:value-of select="$asCustomsText"/>
-									</xsl:if>
-									<xsl:for-each select="./description">
-										<xsl:apply-templates/>
-									</xsl:for-each>
-									<xsl:if test="./description/@conref">
-										<xsl:call-template name="getConRefText">
-											<xsl:with-param name="conref" select="./description/@conref"/>
-											<xsl:with-param name="descriptionType" select="local-name(./description)"/>
-											<xsl:with-param name="entryType" select="'style'"/>
+									<xsl:if test="@type">
+										<xsl:text> : </xsl:text>
+										<xsl:call-template name="getSimpleClassName">
+											<xsl:with-param name="fullClassName" select="@type"/>
 										</xsl:call-template>
 									</xsl:if>
-								</xsl:variable>
-								<xsl:variable name="finalStyleText">
-									<xsl:choose>
-										<xsl:when test="ancestor::ancestors">
+								</div>
+
+								<div class="summaryTableDescription">
+									<xsl:apply-templates select="apiValueDetail/apiValueDef/apiDeprecated"/>
+									<xsl:apply-templates select="deprecated"/>
+
+									  <xsl:if test="./apiValueDetail/apiValueDef/apiIsOverride">
+										<xsl:text>[</xsl:text>
+										<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Override']]/entry[2]/p"/>
+										<xsl:text>] </xsl:text>
+									  </xsl:if>
+									<xsl:if test="not(deprecated)">
+										<xsl:if test="./apiValueDetail/apiValueDef/apiStatic">
+											<xsl:text>[</xsl:text>
+											<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'static']]/entry[2]/p"/>
+											<xsl:text>] </xsl:text>
+										</xsl:if>
+										<xsl:if test="./apiValueDetail/apiValueDef/apiValueAccess/@value and not(./apiValueDetail/apiValueDef/apiValueAccess/@value='readwrite')">
+											<xsl:text>[</xsl:text>
+											<xsl:variable name="value" select="./apiValueDetail/apiValueDef/apiValueAccess/@value"/>
+											<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = $value]]/entry[2]/p"/>
+											<xsl:text>-</xsl:text>
+											<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'only']]/entry[2]/p"/>
+											<xsl:text>] </xsl:text>
+										</xsl:if>
+										<xsl:variable name="description">
 											<xsl:call-template name="getFirstSentence">
-												<xsl:with-param name="inText" select="$styleText"/>
+												<xsl:with-param name="inText" select="./description"/>
 											</xsl:call-template>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="$styleText"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:if test="string-length($finalStyleText) &gt; 0">
-									<xsl:call-template name="deTilda">
-										<xsl:with-param name="inText" select="$finalStyleText"/>
-									</xsl:call-template>
-								</xsl:if>
-								<xsl:if test="not (ancestor::ancestors)">
-									<xsl:if test="default">
-										<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'DefaultValueIs']]/entry[2]/p"/>
-										<code>
-											<xsl:text> </xsl:text>
-											<xsl:value-of select="normalize-space(default/.)"/>
-										</code>
-										<xsl:text>.</xsl:text>
+										</xsl:variable>
+										<xsl:for-each select="$description">
+											<xsl:call-template name="processTags"/>
+										</xsl:for-each>
 									</xsl:if>
-								</xsl:if>
-								<xsl:if test="string-length(normalize-space(@states)) &gt; 0">
-									<p/>
-									<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Style_States_1']]/entry[2]/p"/>
-									<code> </code>
-									<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Style_States_2']]/entry[2]/p"/>
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="normalize-space(@states)"/>
-									<xsl:text>.</xsl:text>
-								</xsl:if>
-								<xsl:call-template name="sees">
-									<xsl:with-param name="currentPackage" select="$currentPackage"/>
-								</xsl:call-template>	
+								</div>
 							</td>
 							<td class="summaryTableOwnerCol">
 								<xsl:choose>
@@ -3791,6 +3413,87 @@
 			</xsl:apply-templates>
 		</xsl:if>
 	</xsl:template>
+	<xsl:template name="styleDetails">
+		<xsl:param name="title" select="$asdoc_terms/row[entry[1][p/text() = 'StyleDetail']]/entry[2]/p"/>
+		<xsl:param name="classDeprecated" select="'false'"/>
+		<xsl:param name="baseRef"/>
+		<xsl:if test="count(prolog/asMetadata[styles/style]) &gt; 0">
+			<div class="detailSectionHeader">
+				<xsl:value-of select="$title"/>
+			</div>
+			<xsl:apply-templates select="prolog/asMetadata[styles/style]" mode="detail">
+				<xsl:sort select="@name" order="ascending" lang="en-US"/>
+				<xsl:with-param name="classDeprecated" select="$classDeprecated"/>
+				<xsl:with-param name="baseRef" select="$baseRef"/>
+			</xsl:apply-templates>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="style" mode="detail">
+		<xsl:param name="classDeprecated" select="'false'"/>
+		<xsl:param name="isMethod" select="true()"/>
+		<xsl:param name="className" select="''"/>
+		<xsl:param name="baseRef"/>
+		<xsl:variable name="name" select="@name"/>
+		<xsl:variable name="type" select="@type"/>
+		<a name="style:{$name}"/>
+		<table class="detailHeader" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="detailHeaderName">
+					<xsl:choose>
+						<xsl:when test="$prog_language_name='javascript'"/>
+						<xsl:otherwise>
+							<xsl:if test="prolog/asMetadata/apiVersion/apiPlatform[@name='AIR'] and not (prolog/asMetadata/apiVersion/apiPlatform[@name='Flash'])">
+								<xsl:call-template name="insertAIRIcon">
+									<xsl:with-param name="baseRef" select="$baseRef"/>
+								</xsl:call-template>
+								<xsl:value-of select="$nbsp"/>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:value-of select="$name"/>
+				</td>
+				<td class="detailHeaderType">
+					<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Style']]/entry[2]/p"/>
+				</td>
+				<xsl:if test="position()!=1">
+					<td class="detailHeaderRule">
+						<xsl:value-of select="$nbsp"/>
+					</td>
+				</xsl:if>
+			</tr>
+		</table>
+		<div class="detailBody">
+			<code>
+				<xsl:value-of select="$name"/>
+				<xsl:if test="@type">
+					<xsl:text>:</xsl:text>
+					<xsl:call-template name="getSimpleClassName">
+						<xsl:with-param name="fullClassName" select="@type"/>
+					</xsl:call-template>
+				</xsl:if>
+			</code>
+			<xsl:if test="$classDeprecated!='true'">
+				<xsl:call-template name="description">
+					<xsl:with-param name="classDeprecated" select="$classDeprecated"/>
+					<xsl:with-param name="addParagraphTags" select="true()"/>
+				</xsl:call-template>
+				<xsl:for-each select="description">
+					<xsl:call-template name="processTags"/>
+				</xsl:for-each>
+			</xsl:if>
+			<xsl:if test="./default">
+				<p>
+					<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'DefaultValueIs']]/entry[2]/p"/>
+					<xsl:text> </xsl:text>
+					<code>
+						<xsl:value-of select="normalize-space(./default/.)"/>
+					</code>
+					<xsl:text>.</xsl:text>
+				</p>
+			</xsl:if>
+			<xsl:call-template name="sees"/>
+		</div>
+	</xsl:template>
 	<xsl:template match="apiOperation | apiConstructor" mode="summary">
 		<xsl:param name="classDeprecated" select="'false'"/>
 		<xsl:param name="baseRef" select="''"/>
@@ -5111,7 +4814,7 @@
 			</xsl:if>
 			<xsl:value-of select="$asCustomsText"/>
 		</xsl:if>
-		<xsl:for-each select="./apiDesc | ./*/apiDesc">
+		<xsl:for-each select="./apiDesc | ./*/apiDesc | ./description">
 			<xsl:variable name="entryType">
 				<xsl:choose>
 					<xsl:when test="self::apiClassifier">
