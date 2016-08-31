@@ -3477,9 +3477,6 @@
 					<xsl:with-param name="classDeprecated" select="$classDeprecated"/>
 					<xsl:with-param name="addParagraphTags" select="true()"/>
 				</xsl:call-template>
-				<xsl:for-each select="description">
-					<xsl:call-template name="processTags"/>
-				</xsl:for-each>
 			</xsl:if>
 			<xsl:if test="./default">
 				<p>
