@@ -549,6 +549,10 @@ package feathers.controls
 		 * using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR</code>.
 		 *
+		 * <p>To customize the text editor style name without subclassing, see
+		 * <code>customTextEditorStyleName</code>.</p>
+		 *
+		 * @see #style:customTextEditorStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textEditorStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR;
@@ -560,6 +564,10 @@ package feathers.controls
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT</code>.
 		 *
+		 * <p>To customize the error callout style name without subclassing, see
+		 * <code>customErrorCalloutStyleName</code>.</p>
+		 *
+		 * @see #style:customErrorCalloutStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var errorCalloutStyleName:String = DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT;

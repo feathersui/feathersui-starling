@@ -527,6 +527,11 @@ package feathers.controls
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TITLE</code>.
 		 *
+		 * <p>To customize the title text renderer style name without
+		 * subclassing, see <code>customTitleStyleName</code>.</p>
+		 *
+		 * @see #style:customTitleStyleName
+		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var titleStyleName:String = DEFAULT_CHILD_STYLE_NAME_TITLE;

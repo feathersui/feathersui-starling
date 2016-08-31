@@ -168,8 +168,15 @@ package feathers.controls.renderers
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the content
-		 * label text renderer.
+		 * label text renderer. This variable is <code>protected</code> so that
+		 * sub-classes can customize the label text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL</code>.
 		 *
+		 * <p>To customize the content label text renderer style name without
+		 * subclassing, see <code>customContentLabelStyleName</code>.</p>
+		 *
+		 * @see #customContentLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var contentLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL;

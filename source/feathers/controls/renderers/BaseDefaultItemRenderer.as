@@ -486,32 +486,61 @@ package feathers.controls.renderers
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the icon label
-		 * text renderer, if it exists.
+		 * text renderer, if it exists. This variable is <code>protected</code>
+		 * so that sub-classes can customize the icon label text renderer style
+		 * name in their constructors instead of using the default style name
+		 * defined by <code>DEFAULT_CHILD_STYLE_NAME_ICON_LABEL</code>.
 		 *
+		 * <p>To customize the icon label text renderer style name without
+		 * subclassing, see <code>customIconLabelStyleName</code>.</p>
+		 *
+		 * @see #customIconLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the icon loader,
-		 * if it exists.
+		 * if it exists. This variable is <code>protected</code>
+		 * so that sub-classes can customize the icon loader style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ICON_LOADER</code>.
 		 *
+		 * <p>To customize the icon loader style name without subclassing, see
+		 * <code>customIconLoaderStyleName</code>.</p>
+		 *
+		 * @see #customIconLoaderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var iconLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LOADER;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
-		 * label text renderer, if it exists.
+		 * label text renderer, if it exists. This variable is
+		 * <code>protected</code> so that sub-classes can customize the
+		 * accessory label text renderer style name in their constructors
+		 * instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL</code>.
 		 *
+		 * <p>To customize the accessory label text renderer style name without
+		 * subclassing, see <code>customAccessoryLabelStyleName</code>.</p>
+		 *
+		 * @see #customAccessoryLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
-		 * loader, if it exists.
+		 * loader, if it exists. This variable is <code>protected</code> so that
+		 * sub-classes can customize the accessory loader style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER</code>.
 		 *
+		 * <p>To customize the accessory loader style name without subclassing,
+		 * see <code>customAccessoryLoaderStyleName</code>.</p>
+		 *
+		 * @see #customAccessoryLoaderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER;

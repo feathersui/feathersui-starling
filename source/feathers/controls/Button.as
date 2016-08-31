@@ -830,10 +830,15 @@ package feathers.controls
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_LABEL</code>.
 		 *
+		 * <p>To customize the label text renderer style name without
+		 * subclassing, see <code>customLabelStyleName</code>.</p>
+		 *
+		 * @see #style:customLabelStyleName
+		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var labelStyleName:String = DEFAULT_CHILD_STYLE_NAME_LABEL;
-		
+
 		/**
 		 * The text renderer for the button's label.
 		 *
@@ -844,7 +849,7 @@ package feathers.controls
 		 * @see #createLabel()
 		 */
 		protected var labelTextRenderer:ITextRenderer;
-		
+
 		/**
 		 * The currently visible icon. The value will be <code>null</code> if
 		 * there is no currently visible icon.

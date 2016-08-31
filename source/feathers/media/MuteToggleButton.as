@@ -125,10 +125,10 @@ package feathers.media
 		 * instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER</code>.
 		 *
-		 * <p>To customize the pop-up list name without subclassing, see
-		 * <code>customListStyleName</code>.</p>
+		 * <p>To customize the volume slider style name without subclassing, see
+		 * <code>customVolumeSliderStyleName</code>.</p>
 		 *
-		 * @see #customListStyleName
+		 * @see #customVolumeSliderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var volumeSliderStyleName:String = DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER;
