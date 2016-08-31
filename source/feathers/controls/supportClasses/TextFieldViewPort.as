@@ -19,6 +19,7 @@ package feathers.controls.supportClasses
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
+	import flash.text.FontType;
 	import flash.text.GridFitType;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
@@ -32,6 +33,7 @@ package feathers.controls.supportClasses
 	import starling.text.TextFormat;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * @private
@@ -142,6 +144,11 @@ package feathers.controls.supportClasses
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		private var _currentTextFormat:flash.text.TextFormat;
 
 		/**
 		 * @private
@@ -911,6 +918,7 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid)
 			{
+				this.refreshTextFormat();
 				this._textField.antiAliasType = this._antiAliasType;
 				this._textField.background = this._background;
 				this._textField.backgroundColor = this._backgroundColor;
@@ -918,7 +926,6 @@ package feathers.controls.supportClasses
 				this._textField.borderColor = this._borderColor;
 				this._textField.condenseWhite = this._condenseWhite;
 				this._textField.displayAsPassword = this._displayAsPassword;
-				this._textField.embedFonts = this._embedFonts;
 				this._textField.gridFitType = this._gridFitType;
 				this._textField.sharpness = this._sharpness;
 				this._textField.thickness = this._thickness;
@@ -932,23 +939,27 @@ package feathers.controls.supportClasses
 			{
 				if(this._styleSheet !== null)
 				{
+					this._textField.embedFonts = this._embedFonts;
 					this._textField.styleSheet = this._styleSheet;
 				}
 				else
 				{
+					if(!this._embedFonts &&
+						this._currentTextFormat === this._fontStylesTextFormat)
+					{
+						//when font styles are passed in from the parent component, we
+						//automatically determine if the TextField should use embedded
+						//fonts, unless embedFonts is explicitly true
+						this._textField.embedFonts = SystemUtil.isEmbeddedFont(
+							this._currentTextFormat.font, this._currentTextFormat.bold,
+							this._currentTextFormat.italic, FontType.EMBEDDED);
+					}
+					else
+					{
+						this._textField.embedFonts = this._embedFonts;
+					}
 					this._textField.styleSheet = null;
-					if(!this._isEnabled && this._disabledTextFormat !== null)
-					{
-						this._textField.defaultTextFormat = this._disabledTextFormat;
-					}
-					else if(this._textFormat !== null)
-					{
-						this._textField.defaultTextFormat = this._textFormat;
-					}
-					else if(this._fontStyles !== null)
-					{
-						this._textField.defaultTextFormat = this.getTextFormatFromFontStyles();
-					}
+					this._textField.defaultTextFormat = this._currentTextFormat;
 				}
 				if(this._isHTML)
 				{
@@ -1016,6 +1027,22 @@ package feathers.controls.supportClasses
 				scrollRect.x = this._horizontalScrollPosition;
 				scrollRect.y = this._verticalScrollPosition;
 				this._textFieldContainer.scrollRect = scrollRect;
+			}
+		}
+
+		protected function refreshTextFormat():void
+		{
+			if(!this._isEnabled && this._disabledTextFormat !== null)
+			{
+				this._currentTextFormat = this._disabledTextFormat;
+			}
+			else if(this._textFormat !== null)
+			{
+				this._currentTextFormat = this._textFormat;
+			}
+			else if(this._fontStyles !== null)
+			{
+				this._currentTextFormat = this.getTextFormatFromFontStyles();
 			}
 		}
 
