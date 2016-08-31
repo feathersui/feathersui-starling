@@ -89,6 +89,13 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * button.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
 	 *
+	 * <p>Alternatively, you may use <code>setFontStylesForState()</code> with
+	 * <code>ButtonState.DISABLED</code> to set the same font styles:</p>
+	 *
+	 * <listing version="3.0">
+	 * var fontStyles:TextFormat = new TextFormat( "Helvetica", 20, 0x999999 );
+	 * button.setFontStylesForState( ButtonState.DISABLED, fontStyles );</listing>
+	 *
 	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
 	 * number of common font styles, but the text renderer being used may
 	 * support a larger number of ways to be customized. Use the
@@ -99,6 +106,7 @@ package feathers.controls
 	 *
 	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 	 * @see #style:fontStyles
+	 * @see #setFontStylesForState()
 	 */
 	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
 
