@@ -44,6 +44,480 @@ package feathers.controls
 	import starling.utils.MathUtil;
 
 	/**
+	 * If <code>true</code>, the background's <code>visible</code> property
+	 * will be set to <code>false</code> when the scroll position is greater
+	 * than or equal to the minimum scroll position and less than or equal
+	 * to the maximum scroll position. The background will be visible when
+	 * the content is extended beyond the scrolling bounds, such as when
+	 * <code>hasElasticEdges</code> is <code>true</code>.
+	 *
+	 * <p>If the content is not fully opaque, this setting should not be
+	 * enabled.</p>
+	 *
+	 * <p>This setting may be enabled to potentially improve performance.</p>
+	 *
+	 * <p>In the following example, the background is automatically hidden:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.autoHideBackground = true;</listing>
+	 *
+	 * @default false
+	 * 
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="autoHideBackground",type="Boolean")]
+
+	/**
+	 * The default background to display.
+	 *
+	 * <p>In the following example, the scroller is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundDisabledSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A background to display when the container is disabled.
+	 *
+	 * <p>In the following example, the scroller is given a disabled background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * If true, the viewport will be clipped to the scroller's bounds. In
+	 * other words, anything appearing outside the scroller's bounds will
+	 * not be visible.
+	 *
+	 * <p>To improve performance, turn off clipping and place other display
+	 * objects over the edges of the scroller to hide the content that
+	 * bleeds outside of the scroller's bounds.</p>
+	 *
+	 * <p>In the following example, clipping is disabled:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.clipContent = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="clipContent",type="Boolean")]
+
+	/**
+	 * A style name to add to the container's horizontal scroll bar
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different containers.
+	 *
+	 * <p>In the following example, a custom horizontal scroll bar style
+	 * name is passed to the scroller:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.customHorizontalScrollBarStyleName = "my-custom-horizontal-scroll-bar";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( SimpleScrollBar ).setFunctionForStyleName( "my-custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #horizontalScrollBarFactory
+	 */
+	[Style(name="customHorizontalScrollBarStyleName",type="String")]
+
+	/**
+	 * A style name to add to the container's vertical scroll bar
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different containers.
+	 *
+	 * <p>In the following example, a custom vertical scroll bar style name
+	 * is passed to the scroller:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.customVerticalScrollBarStyleName = "my-custom-vertical-scroll-bar";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( SimpleScrollBar ).setFunctionForStyleName( "my-custom-vertical-scroll-bar", setCustomVerticalScrollBarStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #verticalScrollBarFactory
+	 */
+	[Style(name="customVerticalScrollBarStyleName",type="String")]
+
+	/**
+	 * This value is used to decelerate the scroller when "thrown". The
+	 * velocity of a throw is multiplied by this value once per millisecond
+	 * to decelerate. A value greater than <code>0</code> and less than
+	 * <code>1</code> is expected.
+	 *
+	 * <p>In the following example, deceleration rate is lowered to adjust
+	 * the behavior of a throw:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.decelerationRate = DecelerationRate.FAST;</listing>
+	 *
+	 * @default feathers.controls.DecelerationRate.NORMAL
+	 *
+	 * @see feathers.controls.DecelerationRate#NORMAL
+	 * @see feathers.controls.DecelerationRate#FAST
+	 */
+	[Style(name="decelerationRate",type="Number")]
+
+	/**
+	 * If the scroll position goes outside the minimum or maximum bounds
+	 * when the scroller's content is being actively dragged, the scrolling
+	 * will be constrained using this multiplier. A value of <code>0</code>
+	 * means that the scroller will not go beyond its minimum or maximum
+	 * bounds. A value of <code>1</code> means that going beyond the minimum
+	 * or maximum bounds is completely unrestrained.
+	 *
+	 * <p>In the following example, the elasticity of dragging beyond the
+	 * scroller's edges is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.elasticity = 0.5;</listing>
+	 *
+	 * @default 0.33
+	 *
+	 * @see #style:hasElasticEdges
+	 * @see #style:throwElasticity
+	 */
+	[Style(name="elasticity",type="Number")]
+
+	/**
+	 * The duration, in seconds, of the animation when a the scroller snaps
+	 * back to the minimum or maximum position after going out of bounds.
+	 *
+	 * <p>In the following example, the duration of the animation that snaps
+	 * the content back after pulling it beyond the edge is set to 750
+	 * milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.elasticSnapDuration = 0.75;</listing>
+	 *
+	 * @default 0.5
+	 * 
+	 * @see #style:hasElasticEdges
+	 */
+	[Style(name="elasticSnapDuration",type="Number")]
+
+	/**
+	 * Determines if the scrolling can go beyond the edges of the viewport.
+	 *
+	 * <p>In the following example, elastic edges are disabled:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.hasElasticEdges = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see #style:elasticity
+	 * @see #style:throwElasticity
+	 */
+	[Style(name="hasElasticEdges",type="Boolean")]
+
+	/**
+	 * The duration, in seconds, of the animation when a scroll bar fades
+	 * out.
+	 *
+	 * <p>In the following example, the duration of the animation that hides
+	 * the scroll bars is set to 500 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.hideScrollBarAnimationDuration = 0.5;</listing>
+	 *
+	 * @default 0.2
+	 * 
+	 * @see #style:scrollBarDisplayMode
+	 */
+	[Style(name="hideScrollBarAnimationDuration",type="Number")]
+
+	/**
+	 * The easing function used for hiding the scroll bars, if applicable.
+	 *
+	 * <p>In the following example, the ease of the animation that hides
+	 * the scroll bars is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.hideScrollBarAnimationEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @default starling.animation.Transitions.EASE_OUT
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 *
+	 * @see #style:scrollBarDisplayMode
+	 */
+	[Style(name="hideScrollBarAnimationEase",type="Object")]
+
+	/**
+	 * Determines how the user may interact with the scroller.
+	 *
+	 * <p>In the following example, the interaction mode is optimized for mouse:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.interactionMode = ScrollInteractionMode.MOUSE;</listing>
+	 *
+	 * @default feathers.controls.ScrollInteractionMode.TOUCH
+	 *
+	 * @see feathers.controls.ScrollInteractionMode#TOUCH
+	 * @see feathers.controls.ScrollInteractionMode#MOUSE
+	 * @see feathers.controls.ScrollInteractionMode#TOUCH_AND_SCROLL_BARS
+	 */
+	[Style(name="interactionMode",type="String")]
+
+	/**
+	 * The duration, in seconds, of the animation when the mouse wheel
+	 * initiates a scroll action.
+	 *
+	 * <p>In the following example, the duration of the animation that runs
+	 * when the mouse wheel is scrolled is set to 500 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.mouseWheelScrollDuration = 0.5;</listing>
+	 *
+	 * @default 0.35
+	 */
+	[Style(name="mouseWheelScrollDuration",type="Number")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the container's top edge and the
+	 * container's content.
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the container's right edge and
+	 * the container's content.
+	 *
+	 * <p>In the following example, the right padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the container's bottom edge and
+	 * the container's content.
+	 *
+	 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the container's left edge and the
+	 * container's content.
+	 *
+	 * <p>In the following example, the left padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The duration, in seconds, of the animation when the scroller is
+	 * thrown to a page.
+	 *
+	 * <p>In the following example, the duration of the animation that
+	 * changes the page when thrown is set to 250 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.pageThrowDuration = 0.25;</listing>
+	 *
+	 * @default 0.5
+	 */
+	[Style(name="pageThrowDuration",type="Number")]
+
+	/**
+	 * The duration, in seconds, that the scroll bars will be shown when
+	 * calling <code>revealScrollBars()</code>
+	 *
+	 * @default 1.0
+	 *
+	 * @see #revealScrollBars()
+	 */
+	[Style(name="revealScrollBarsDuration",type="Number")]
+
+	/**
+	 * Determines how the scroll bars are displayed.
+	 *
+	 * <p>In the following example, the scroll bars are fixed:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;</listing>
+	 *
+	 * @default feathers.controls.ScrollBarDisplayMode.FLOAT
+	 *
+	 * @see feathers.controls.ScrollBarDisplayMode#FLOAT
+	 * @see feathers.controls.ScrollBarDisplayMode#FIXED
+	 * @see feathers.controls.ScrollBarDisplayMode#FIXED_FLOAT
+	 * @see feathers.controls.ScrollBarDisplayMode#NONE
+	 */
+	[Style(name="scrollBarDisplayMode",type="String")]
+
+	/**
+	 * If enabled, the scroll position will always be adjusted to the nearest
+	 * pixel on the physical screen. Depending on the value of Starling's
+	 * <code>contentScaleFactor</code>, this may or may not result in an integer
+	 * value for the scroll position.
+	 *
+	 * <p>In the following example, the scroll position is not snapped to pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.snapScrollPositionsToPixels = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="snapScrollPositionsToPixels",type="Boolean")]
+
+	/**
+	 * Determines if scrolling will snap to the nearest page.
+	 *
+	 * <p>In the following example, the scroller snaps to the nearest page:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.snapToPages = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="snapToPages",type="Boolean")]
+
+	/**
+	 * The easing function used for "throw" animations.
+	 *
+	 * <p>In the following example, the ease of throwing animations is
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.throwEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 */
+	[Style(name="throwEase",type="Object")]
+
+	/**
+	 * If the scroll position goes outside the minimum or maximum bounds
+	 * when the scroller's content is "thrown", the scrolling will be
+	 * constrained using this multiplier. A value of <code>0</code> means
+	 * that the scroller will not go beyond its minimum or maximum bounds.
+	 * A value of <code>1</code> means that going beyond the minimum or
+	 * maximum bounds is completely unrestrained.
+	 *
+	 * <p>In the following example, the elasticity of throwing beyond the
+	 * scroller's edges is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.throwElasticity = 0.1;</listing>
+	 *
+	 * @default 0.05
+	 *
+	 * @see #style:hasElasticEdges
+	 * @see #style:elasticity
+	 */
+	[Style(name="throwElasticity",type="Number")]
+
+	/**
+	 * If <code>true</code>, the duration of a "throw" animation will be the
+	 * same no matter the value of the throw's initial velocity. This value
+	 * may be set to <code>false</code> to have the scroller calculate a
+	 * variable duration based on the velocity of the throw.
+	 *
+	 * <p>It may seem unintuitive, but using the same fixed duration for any
+	 * velocity is recommended if you are looking to closely match the
+	 * behavior of native scrolling on iOS.</p>
+	 *
+	 * <p>In the following example, the behavior of a "throw" animation is
+	 * changed:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.useFixedThrowDuration = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see #style:decelerationRate
+	 */
+	[Style(name="useFixedThrowDuration",type="Boolean")]
+
+	/**
+	 * Determines where the vertical scroll bar will be positioned.
+	 *
+	 * <p>In the following example, the scroll bars is positioned on the left:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.verticalScrollBarPosition = RelativePosition.LEFT;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.RIGHT
+	 *
+	 * @see feathers.layout.RelativePosition#RIGHT
+	 * @see feathers.layout.RelativePosition#LEFT
+	 */
+	[Style(name="verticalScrollBarPosition",type="String")]
+
+	/**
 	 * Dispatched when the scroller scrolls in either direction or when the view
 	 * port's scrolling bounds have changed. Listen for <code>FeathersEventType.SCROLL_START</code>
 	 * to know when scrolling starts as a result of user interaction or when
@@ -551,7 +1025,7 @@ package feathers.controls
 		 * <p>To customize the horizontal scroll bar style name without
 		 * subclassing, see <code>customHorizontalScrollBarStyleName</code>.</p>
 		 *
-		 * @see #customHorizontalScrollBarStyleName
+		 * @see #style:customHorizontalScrollBarStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var horizontalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
@@ -566,7 +1040,7 @@ package feathers.controls
 		 * <p>To customize the vertical scroll bar style name without
 		 * subclassing, see <code>customVerticalScrollBarStyleName</code>.</p>
 		 *
-		 * @see #customVerticalScrollBarStyleName
+		 * @see #style:customVerticalScrollBarStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var verticalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
@@ -868,14 +1342,7 @@ package feathers.controls
 		protected var _snapToPages:Boolean = false;
 
 		/**
-		 * Determines if scrolling will snap to the nearest page.
-		 *
-		 * <p>In the following example, the scroller snaps to the nearest page:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.snapToPages = true;</listing>
-		 *
-		 * @default false
+		 * @private
 		 */
 		public function get snapToPages():Boolean
 		{
@@ -887,7 +1354,11 @@ package feathers.controls
 		 */
 		public function set snapToPages(value:Boolean):void
 		{
-			if(this._snapToPages == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._snapToPages === value)
 			{
 				return;
 			}
@@ -929,7 +1400,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.IScrollBar
-		 * @see #horizontalScrollBarProperties
 		 */
 		public function get horizontalScrollBarFactory():Function
 		{
@@ -955,28 +1425,7 @@ package feathers.controls
 		protected var _customHorizontalScrollBarStyleName:String;
 
 		/**
-		 * A style name to add to the container's horizontal scroll bar
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different containers.
-		 *
-		 * <p>In the following example, a custom horizontal scroll bar style
-		 * name is passed to the scroller:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.customHorizontalScrollBarStyleName = "my-custom-horizontal-scroll-bar";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( SimpleScrollBar ).setFunctionForStyleName( "my-custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #horizontalScrollBarFactory
-		 * @see #horizontalScrollBarProperties
+		 * @private
 		 */
 		public function get customHorizontalScrollBarStyleName():String
 		{
@@ -988,7 +1437,11 @@ package feathers.controls
 		 */
 		public function set customHorizontalScrollBarStyleName(value:String):void
 		{
-			if(this._customHorizontalScrollBarStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customHorizontalScrollBarStyleName === value)
 			{
 				return;
 			}
@@ -1083,17 +1536,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="right,left")]
 		/**
-		 * Determines where the vertical scroll bar will be positioned.
-		 *
-		 * <p>In the following example, the scroll bars is positioned on the left:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.verticalScrollBarPosition = RelativePosition.LEFT;</listing>
-		 *
-		 * @default feathers.layout.RelativePosition.RIGHT
-		 *
-		 * @see feathers.layout.RelativePosition#RIGHT
-		 * @see feathers.layout.RelativePosition#LEFT
+		 * @private
 		 */
 		public function get verticalScrollBarPosition():String
 		{
@@ -1105,7 +1548,11 @@ package feathers.controls
 		 */
 		public function set verticalScrollBarPosition(value:String):void
 		{
-			if(this._verticalScrollBarPosition == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalScrollBarPosition === value)
 			{
 				return;
 			}
@@ -1142,7 +1589,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.IScrollBar
-		 * @see #verticalScrollBarProperties
 		 */
 		public function get verticalScrollBarFactory():Function
 		{
@@ -1168,28 +1614,7 @@ package feathers.controls
 		protected var _customVerticalScrollBarStyleName:String;
 
 		/**
-		 * A style name to add to the container's vertical scroll bar
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different containers.
-		 *
-		 * <p>In the following example, a custom vertical scroll bar style name
-		 * is passed to the scroller:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.customVerticalScrollBarStyleName = "my-custom-vertical-scroll-bar";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( SimpleScrollBar ).setFunctionForStyleName( "my-custom-vertical-scroll-bar", setCustomVerticalScrollBarStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #verticalScrollBarFactory
-		 * @see #verticalScrollBarProperties
+		 * @private
 		 */
 		public function get customVerticalScrollBarStyleName():String
 		{
@@ -1201,7 +1626,11 @@ package feathers.controls
 		 */
 		public function set customVerticalScrollBarStyleName(value:String):void
 		{
-			if(this._customVerticalScrollBarStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customVerticalScrollBarStyleName === value)
 			{
 				return;
 			}
@@ -1827,20 +2256,7 @@ package feathers.controls
 		protected var _clipContent:Boolean = true;
 
 		/**
-		 * If true, the viewport will be clipped to the scroller's bounds. In
-		 * other words, anything appearing outside the scroller's bounds will
-		 * not be visible.
-		 *
-		 * <p>To improve performance, turn off clipping and place other display
-		 * objects over the edges of the scroller to hide the content that
-		 * bleeds outside of the scroller's bounds.</p>
-		 *
-		 * <p>In the following example, clipping is disabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.clipContent = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get clipContent():Boolean
 		{
@@ -1852,7 +2268,11 @@ package feathers.controls
 		 */
 		public function set clipContent(value:Boolean):void
 		{
-			if(this._clipContent == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._clipContent === value)
 			{
 				return;
 			}
@@ -1974,17 +2394,7 @@ package feathers.controls
 		protected var _hasElasticEdges:Boolean = true;
 
 		/**
-		 * Determines if the scrolling can go beyond the edges of the viewport.
-		 *
-		 * <p>In the following example, elastic edges are disabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.hasElasticEdges = false;</listing>
-		 *
-		 * @default true
-		 *
-		 * @see #elasticity
-		 * @see #throwElasticity
+		 * @private
 		 */
 		public function get hasElasticEdges():Boolean
 		{
@@ -1996,6 +2406,10 @@ package feathers.controls
 		 */
 		public function set hasElasticEdges(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._hasElasticEdges = value;
 		}
 
@@ -2005,23 +2419,7 @@ package feathers.controls
 		protected var _elasticity:Number = 0.33;
 
 		/**
-		 * If the scroll position goes outside the minimum or maximum bounds
-		 * when the scroller's content is being actively dragged, the scrolling
-		 * will be constrained using this multiplier. A value of <code>0</code>
-		 * means that the scroller will not go beyond its minimum or maximum
-		 * bounds. A value of <code>1</code> means that going beyond the minimum
-		 * or maximum bounds is completely unrestrained.
-		 *
-		 * <p>In the following example, the elasticity of dragging beyond the
-		 * scroller's edges is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.elasticity = 0.5;</listing>
-		 *
-		 * @default 0.33
-		 *
-		 * @see #hasElasticEdges
-		 * @see #throwElasticity
+		 * @private
 		 */
 		public function get elasticity():Number
 		{
@@ -2033,6 +2431,10 @@ package feathers.controls
 		 */
 		public function set elasticity(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._elasticity = value;
 		}
 
@@ -2042,23 +2444,7 @@ package feathers.controls
 		protected var _throwElasticity:Number = 0.05;
 
 		/**
-		 * If the scroll position goes outside the minimum or maximum bounds
-		 * when the scroller's content is "thrown", the scrolling will be
-		 * constrained using this multiplier. A value of <code>0</code> means
-		 * that the scroller will not go beyond its minimum or maximum bounds.
-		 * A value of <code>1</code> means that going beyond the minimum or
-		 * maximum bounds is completely unrestrained.
-		 *
-		 * <p>In the following example, the elasticity of throwing beyond the
-		 * scroller's edges is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.throwElasticity = 0.1;</listing>
-		 *
-		 * @default 0.05
-		 *
-		 * @see #hasElasticEdges
-		 * @see #elasticity
+		 * @private
 		 */
 		public function get throwElasticity():Number
 		{
@@ -2070,6 +2456,10 @@ package feathers.controls
 		 */
 		public function set throwElasticity(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._throwElasticity = value;
 		}
 
@@ -2080,19 +2470,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="float,fixed,none")]
 		/**
-		 * Determines how the scroll bars are displayed.
-		 *
-		 * <p>In the following example, the scroll bars are fixed:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;</listing>
-		 *
-		 * @default feathers.controls.ScrollBarDisplayMode.FLOAT
-		 *
-		 * @see feathers.controls.ScrollBarDisplayMode#FLOAT
-		 * @see feathers.controls.ScrollBarDisplayMode#FIXED
-		 * @see feathers.controls.ScrollBarDisplayMode#FIXED_FLOAT
-		 * @see feathers.controls.ScrollBarDisplayMode#NONE
+		 * @private
 		 */
 		public function get scrollBarDisplayMode():String
 		{
@@ -2104,7 +2482,11 @@ package feathers.controls
 		 */
 		public function set scrollBarDisplayMode(value:String):void
 		{
-			if(this._scrollBarDisplayMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._scrollBarDisplayMode === value)
 			{
 				return;
 			}
@@ -2119,18 +2501,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="touch,mouse,touchAndScrollBars")]
 		/**
-		 * Determines how the user may interact with the scroller.
-		 *
-		 * <p>In the following example, the interaction mode is optimized for mouse:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.interactionMode = ScrollInteractionMode.MOUSE;</listing>
-		 *
-		 * @default feathers.controls.ScrollInteractionMode.TOUCH
-		 *
-		 * @see feathers.controls.ScrollInteractionMode#TOUCH
-		 * @see feathers.controls.ScrollInteractionMode#MOUSE
-		 * @see feathers.controls.ScrollInteractionMode#TOUCH_AND_SCROLL_BARS
+		 * @private
 		 */
 		public function get interactionMode():String
 		{
@@ -2142,7 +2513,11 @@ package feathers.controls
 		 */
 		public function set interactionMode(value:String):void
 		{
-			if(this._interactionMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._interactionMode === value)
 			{
 				return;
 			}
@@ -2191,14 +2566,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The default background to display.
-		 *
-		 * <p>In the following example, the scroller is given a background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -2210,11 +2578,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
 			{
 				this.removeRawChildInternal(this._backgroundSkin);
@@ -2230,14 +2605,7 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the container is disabled.
-		 *
-		 * <p>In the following example, the scroller is given a disabled background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -2249,11 +2617,18 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundDisabledSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
 			{
 				this.removeRawChildInternal(this._backgroundDisabledSkin);
@@ -2269,24 +2644,7 @@ package feathers.controls
 		protected var _autoHideBackground:Boolean = false;
 
 		/**
-		 * If <code>true</code>, the background's <code>visible</code> property
-		 * will be set to <code>false</code> when the scroll position is greater
-		 * than or equal to the minimum scroll position and less than or equal
-		 * to the maximum scroll position. The background will be visible when
-		 * the content is extended beyond the scrolling bounds, such as when
-		 * <code>hasElasticEdges</code> is <code>true</code>.
-		 *
-		 * <p>If the content is not fully opaque, this setting should not be
-		 * enabled.</p>
-		 *
-		 * <p>This setting may be enabled to potentially improve performance.</p>
-		 *
-		 * <p>In the following example, the background is automatically hidden:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.autoHideBackground = true;</listing>
-		 *
-		 * @default false
+		 * @private
 		 */
 		public function get autoHideBackground():Boolean
 		{
@@ -2298,7 +2656,11 @@ package feathers.controls
 		 */
 		public function set autoHideBackground(value:Boolean):void
 		{
-			if(this._autoHideBackground == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._autoHideBackground === value)
 			{
 				return;
 			}
@@ -2366,22 +2728,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -2405,15 +2752,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the container's top edge and the
-		 * container's content.
-		 *
-		 * <p>In the following example, the top padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -2425,7 +2764,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -2439,15 +2782,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the container's right edge and
-		 * the container's content.
-		 *
-		 * <p>In the following example, the right padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -2459,7 +2794,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -2473,15 +2812,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the container's bottom edge and
-		 * the container's content.
-		 *
-		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -2493,7 +2824,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -2507,15 +2842,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the container's left edge and the
-		 * container's content.
-		 *
-		 * <p>In the following example, the left padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -2527,7 +2854,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -2551,16 +2882,7 @@ package feathers.controls
 		protected var _hideScrollBarAnimationDuration:Number = 0.2;
 
 		/**
-		 * The duration, in seconds, of the animation when a scroll bar fades
-		 * out.
-		 *
-		 * <p>In the following example, the duration of the animation that hides
-		 * the scroll bars is set to 500 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.hideScrollBarAnimationDuration = 0.5;</listing>
-		 *
-		 * @default 0.2
+		 * @private
 		 */
 		public function get hideScrollBarAnimationDuration():Number
 		{
@@ -2572,6 +2894,10 @@ package feathers.controls
 		 */
 		public function set hideScrollBarAnimationDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._hideScrollBarAnimationDuration = value;
 		}
 
@@ -2581,17 +2907,7 @@ package feathers.controls
 		protected var _hideScrollBarAnimationEase:Object = Transitions.EASE_OUT;
 
 		/**
-		 * The easing function used for hiding the scroll bars, if applicable.
-		 *
-		 * <p>In the following example, the ease of the animation that hides
-		 * the scroll bars is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.hideScrollBarAnimationEase = Transitions.EASE_IN_OUT;</listing>
-		 *
-		 * @default starling.animation.Transitions.EASE_OUT
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+		 * @private
 		 */
 		public function get hideScrollBarAnimationEase():Object
 		{
@@ -2603,6 +2919,10 @@ package feathers.controls
 		 */
 		public function set hideScrollBarAnimationEase(value:Object):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._hideScrollBarAnimationEase = value;
 		}
 
@@ -2612,17 +2932,7 @@ package feathers.controls
 		protected var _elasticSnapDuration:Number = 0.5;
 
 		/**
-		 * The duration, in seconds, of the animation when a the scroller snaps
-		 * back to the minimum or maximum position after going out of bounds.
-		 *
-		 * <p>In the following example, the duration of the animation that snaps
-		 * the content back after pulling it beyond the edge is set to 750
-		 * milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.elasticSnapDuration = 0.75;</listing>
-		 *
-		 * @default 0.5
+		 * @private
 		 */
 		public function get elasticSnapDuration():Number
 		{
@@ -2634,6 +2944,10 @@ package feathers.controls
 		 */
 		public function set elasticSnapDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._elasticSnapDuration = value;
 		}
 
@@ -2650,21 +2964,7 @@ package feathers.controls
 		protected var _decelerationRate:Number = DecelerationRate.NORMAL;
 
 		/**
-		 * This value is used to decelerate the scroller when "thrown". The
-		 * velocity of a throw is multiplied by this value once per millisecond
-		 * to decelerate. A value greater than <code>0</code> and less than
-		 * <code>1</code> is expected.
-		 *
-		 * <p>In the following example, deceleration rate is lowered to adjust
-		 * the behavior of a throw:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.decelerationRate = DecelerationRate.FAST;</listing>
-		 *
-		 * @default feathers.controls.DecelerationRate.NORMAL
-		 *
-		 * @see feathers.controls.DecelerationRate#NORMAL
-		 * @see feathers.controls.DecelerationRate#FAST
+		 * @private
 		 */
 		public function get decelerationRate():Number
 		{
@@ -2676,7 +2976,11 @@ package feathers.controls
 		 */
 		public function set decelerationRate(value:Number):void
 		{
-			if(this._decelerationRate == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._decelerationRate === value)
 			{
 				return;
 			}
@@ -2698,25 +3002,7 @@ package feathers.controls
 		protected var _useFixedThrowDuration:Boolean = true;
 
 		/**
-		 * If <code>true</code>, the duration of a "throw" animation will be the
-		 * same no matter the value of the throw's initial velocity. This value
-		 * may be set to <code>false</code> to have the scroller calculate a
-		 * variable duration based on the velocity of the throw.
-		 *
-		 * <p>It may seem unintuitive, but using the same fixed duration for any
-		 * velocity is recommended if you are looking to closely match the
-		 * behavior of native scrolling on iOS.</p>
-		 *
-		 * <p>In the following example, the behavior of a "throw" animation is
-		 * changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.useFixedThrowDuration = false;</listing>
-		 *
-		 * @default true
-		 *
-		 * @see #decelerationRate
-		 * @see #pageThrowDuration
+		 * @private
 		 */
 		public function get useFixedThrowDuration():Boolean
 		{
@@ -2728,6 +3014,10 @@ package feathers.controls
 		 */
 		public function set useFixedThrowDuration(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._useFixedThrowDuration = value;
 		}
 
@@ -2737,16 +3027,7 @@ package feathers.controls
 		protected var _pageThrowDuration:Number = 0.5;
 
 		/**
-		 * The duration, in seconds, of the animation when the scroller is
-		 * thrown to a page.
-		 *
-		 * <p>In the following example, the duration of the animation that
-		 * changes the page when thrown is set to 250 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.pageThrowDuration = 0.25;</listing>
-		 *
-		 * @default 0.5
+		 * @private
 		 */
 		public function get pageThrowDuration():Number
 		{
@@ -2758,6 +3039,10 @@ package feathers.controls
 		 */
 		public function set pageThrowDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._pageThrowDuration = value;
 		}
 
@@ -2767,16 +3052,7 @@ package feathers.controls
 		protected var _mouseWheelScrollDuration:Number = 0.35;
 
 		/**
-		 * The duration, in seconds, of the animation when the mouse wheel
-		 * initiates a scroll action.
-		 *
-		 * <p>In the following example, the duration of the animation that runs
-		 * when the mouse wheel is scrolled is set to 500 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.mouseWheelScrollDuration = 0.5;</listing>
-		 *
-		 * @default 0.35
+		 * @private
 		 */
 		public function get mouseWheelScrollDuration():Number
 		{
@@ -2788,6 +3064,10 @@ package feathers.controls
 		 */
 		public function set mouseWheelScrollDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._mouseWheelScrollDuration = value;
 		}
 
@@ -2832,15 +3112,7 @@ package feathers.controls
 		protected var _throwEase:Object = defaultThrowEase;
 
 		/**
-		 * The easing function used for "throw" animations.
-		 *
-		 * <p>In the following example, the ease of throwing animations is
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.throwEase = Transitions.EASE_IN_OUT;</listing>
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+		 * @private
 		 */
 		public function get throwEase():Object
 		{
@@ -2852,6 +3124,10 @@ package feathers.controls
 		 */
 		public function set throwEase(value:Object):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(value == null)
 			{
 				value = defaultThrowEase;
@@ -2865,15 +3141,7 @@ package feathers.controls
 		protected var _snapScrollPositionsToPixels:Boolean = true;
 
 		/**
-		 * If enabled, the scroll position will always be adjusted to whole
-		 * pixels.
-		 *
-		 * <p>In the following example, the scroll position is not snapped to pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.snapScrollPositionsToPixels = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get snapScrollPositionsToPixels():Boolean
 		{
@@ -2885,7 +3153,11 @@ package feathers.controls
 		 */
 		public function set snapScrollPositionsToPixels(value:Boolean):void
 		{
-			if(this._snapScrollPositionsToPixels == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._snapScrollPositionsToPixels === value)
 			{
 				return;
 			}
@@ -2988,12 +3260,7 @@ package feathers.controls
 		protected var _revealScrollBarsDuration:Number = 1.0;
 
 		/**
-		 * The duration, in seconds, that the scroll bars will be shown when
-		 * calling <code>revealScrollBars()</code>
-		 *
-		 * @default 1.0
-		 *
-		 * @see #revealScrollBars()
+		 * @private
 		 */
 		public function get revealScrollBarsDuration():Number
 		{
@@ -3005,6 +3272,10 @@ package feathers.controls
 		 */
 		public function set revealScrollBarsDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._revealScrollBarsDuration = value;
 		}
 
