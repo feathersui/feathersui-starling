@@ -111,6 +111,114 @@ package feathers.controls
 	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
 
 	/**
+	 * The icon used for the button's disabled state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.disabledIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.DISABLED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.DISABLED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#DISABLED
+	 */
+	[Style(name="disabledIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's disabled state. If <code>null</code>,
+	 * then <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.disabledSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.DISABLED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DISABLED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#DISABLED
+	 */
+	[Style(name="disabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the button's down state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.downIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.DOWN</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.DOWN, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#DOWN
+	 */
+	[Style(name="downIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's down state. If <code>null</code>, then
+	 * <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.downSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.DOWN</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DOWN, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#DOWN
+	 */
+	[Style(name="downSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * The font styles used to display the button's text.
 	 *
 	 * <p>In the following example, the font styles are customized:</p>
@@ -188,21 +296,58 @@ package feathers.controls
 	[Style(name="horizontalAlign",type="String")]
 
 	/**
-	 * The location where the button's content is aligned vertically (on
-	 * the y-axis).
+	 * The icon used for the button's hover state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
 	 *
-	 * <p>The following example aligns the button's content to the top:</p>
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the hover state:</p>
 	 *
 	 * <listing version="3.0">
-	 * button.verticalAlign = VerticalAlign.TOP;</listing>
+	 * button.hoverIcon = new Image( texture );</listing>
 	 *
-	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.HOVER</code> to set the same icon:</p>
 	 *
-	 * @see feathers.layout.VerticalAlign#TOP
-	 * @see feathers.layout.VerticalAlign#MIDDLE
-	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.HOVER, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#HOVER
 	 */
-	[Style(name="verticalAlign",type="String")]
+	[Style(name="hoverIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's hover state. If <code>null</code>, then
+	 * <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the hover state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.hoverSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.HOVER</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.HOVER, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#HOVER
+	 */
+	[Style(name="hoverSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * Offsets the x position of the icon by a certain number of pixels.
@@ -430,6 +575,77 @@ package feathers.controls
 	 * @see #style:scaleWhenDown
 	 */
 	[Style(name="scaleWhenHovering",type="Number")]
+
+	/**
+	 * The icon used for the button's up state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the up state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.upIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.UP</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.UP, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#UP
+	 */
+	[Style(name="upIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's up state. If <code>null</code>, then
+	 * <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the up state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.upSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.UP</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.UP, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#UP
+	 */
+	[Style(name="upSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The location where the button's content is aligned vertically (on
+	 * the y-axis).
+	 *
+	 * <p>The following example aligns the button's content to the top:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.verticalAlign = VerticalAlign.TOP;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 */
+	[Style(name="verticalAlign",type="String")]
 
 	/**
 	 * Dispatched when the button is pressed for a long time. The property
@@ -1425,22 +1641,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's up state. If <code>null</code>, then
-		 * <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.upSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #style:defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.UP
+		 * @private
 		 */
 		public function get upSkin():DisplayObject
 		{
@@ -1456,22 +1657,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's down state. If <code>null</code>, then
-		 * <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.downSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #style:defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.DOWN
+		 * @private
 		 */
 		public function get downSkin():DisplayObject
 		{
@@ -1487,22 +1673,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's hover state. If <code>null</code>, then
-		 * <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hoverSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #style:defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.HOVER
+		 * @private
 		 */
 		public function get hoverSkin():DisplayObject
 		{
@@ -1518,22 +1689,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's disabled state. If <code>null</code>,
-		 * then <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #style:defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.DISABLED
+		 * @private
 		 */
 		public function get disabledSkin():DisplayObject
 		{
@@ -1781,7 +1937,7 @@ package feathers.controls
 		 * 
 		 * @see #style:fontStyles
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.UP
+		 * @see feathers.controls.ButtonState#UP
 		 */
 		public function get upLabelProperties():Object
 		{
@@ -1827,7 +1983,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 * 
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.DOWN
+		 * @see feathers.controls.ButtonState#DOWN
 		 */
 		public function get downLabelProperties():Object
 		{
@@ -1873,7 +2029,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.HOVER
+		 * @see feathers.controls.ButtonState#HOVER
 		 */
 		public function get hoverLabelProperties():Object
 		{
@@ -1920,7 +2076,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.DISABLED
+		 * @see feathers.controls.ButtonState#DISABLED
 		 */
 		public function get disabledLabelProperties():Object
 		{
@@ -2003,22 +2159,7 @@ package feathers.controls
 		protected var _stateToIcon:Object = {};
 
 		/**
-		 * The icon used for the button's up state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.upIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #style:defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.UP
+		 * @private
 		 */
 		public function get upIcon():DisplayObject
 		{
@@ -2034,22 +2175,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's down state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.downIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #style:defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.DOWN
+		 * @private
 		 */
 		public function get downIcon():DisplayObject
 		{
@@ -2065,22 +2191,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's hover state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hoverIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #style:defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.HOVER
+		 * @private
 		 */
 		public function get hoverIcon():DisplayObject
 		{
@@ -2096,22 +2207,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's disabled state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #style:defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.DISABLED
+		 * @private
 		 */
 		public function get disabledIcon():DisplayObject
 		{
