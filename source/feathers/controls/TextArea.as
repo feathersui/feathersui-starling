@@ -35,6 +35,179 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * A display object displayed behind the text area's content when it
+	 * is disabled.
+	 *
+	 * <p>In the following example, the text area's disabled background skin
+	 * is specified:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.isEnabled = false;
+	 * textArea.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.DISABLED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * textArea.setSkinForState( TextInputState.DISABLED, skin );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A display object displayed behind the text area's content when it
+	 * has focus.
+	 *
+	 * <p>In the following example, the text area's focused background skin is
+	 * specified:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.backgroundFocusedSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.FOCUSED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * textArea.setSkinForState( TextInputState.FOCUSED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 */
+	[Style(name="backgroundFocusedSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the text area's error state. If <code>null</code>,
+	 * then <code>backgroundSkin</code> is used instead.
+	 *
+	 * <p>The following example gives the text area a skin for the error state:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.backgroundErrorSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.ERROR</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * textArea.setSkinForState( TextInputState.ERROR, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 */
+	[Style(name="backgroundErrorSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A style name to add to the text area's error callout sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * text areas.
+	 *
+	 * <p>In the following example, a custom error callout style name
+	 * is passed to the text area:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.customErrorCalloutStyleName = "my-custom-text-area-error-callout";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-area-error-callout", setCustomTextAreaErrorCalloutStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customErrorCalloutStyleName",type="String")]
+
+	/**
+	 * A style name to add to the text area's text editor sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * text areas.
+	 *
+	 * <p>In the following example, a custom text editor style name is
+	 * passed to the text area:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.customTextEditorStyleName = "my-custom-text-area-text-editor";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( TextFieldTextEditorViewPort ).setFunctionForStyleName( "my-custom-text-area-text-editor", setCustomTextAreaTextEditorStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #textEditorFactory
+	 */
+	[Style(name="customTextEditorStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the text area's text when the text
+	 * area is disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setFontStylesForState()</code> with
+	 * <code>TextInputState.DISABLED</code> to set the same font styles:</p>
+	 *
+	 * <listing version="3.0">
+	 * var fontStyles:TextFormat = new TextFormat( "Helvetica", 20, 0x999999 );
+	 * textArea.setFontStylesForState( TextInputState.DISABLED, fontStyles );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text editor being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textEditorFactory</code> to set more advanced styles on the
+	 * text editor.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 * @see #setFontStylesForState()
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the text area's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text editor being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textEditorFactory</code> to set more advanced styles on the
+	 * text editor.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 * @see #setFontStylesForState()
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
 	 * Dispatched when the text area's <code>text</code> property changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -697,17 +870,7 @@ package feathers.controls
 		protected var _stateToSkin:Object = {};
 
 		/**
-		 * A display object displayed behind the text area's content when it
-		 * is disabled.
-		 *
-		 * <p>In the following example, the text area's disabled background skin
-		 * is specified:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.isEnabled = false;
-		 * textArea.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		override public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -723,16 +886,7 @@ package feathers.controls
 		}
 
 		/**
-		 * A display object displayed behind the text area's content when it
-		 * has focus.
-		 *
-		 * <p>In the following example, the text area's focused background skin is
-		 * specified:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.backgroundFocusedSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
@@ -748,15 +902,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the text area's error state. If <code>null</code>,
-		 * then <code>backgroundSkin</code> is used instead.
-		 *
-		 * <p>The following example gives the text area a skin for the error state:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.backgroundErrorSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundErrorSkin():DisplayObject
 		{
@@ -809,24 +955,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the text area's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text editor being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textEditorFactory</code> to set more advanced styles on the
-		 * text editor.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
-		 * @see #setFontStylesForState()
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -838,28 +967,15 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the text area's text when the text
-		 * area is disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text editor being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textEditorFactory</code> to set more advanced styles on the
-		 * text editor.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -871,6 +987,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -929,27 +1049,7 @@ package feathers.controls
 		protected var _customTextEditorStyleName:String;
 
 		/**
-		 * A style name to add to the text area's text editor sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * text areas.
-		 *
-		 * <p>In the following example, a custom text editor style name is
-		 * passed to the text area:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.customTextEditorStyleName = "my-custom-text-area-text-editor";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( TextFieldTextEditorViewPort ).setFunctionForStyleName( "my-custom-text-area-text-editor", setCustomTextAreaTextEditorStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #textEditorFactory
+		 * @private
 		 */
 		public function get customTextEditorStyleName():String
 		{
@@ -961,7 +1061,11 @@ package feathers.controls
 		 */
 		public function set customTextEditorStyleName(value:String):void
 		{
-			if(this._customTextEditorStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTextEditorStyleName === value)
 			{
 				return;
 			}
@@ -1055,26 +1159,7 @@ package feathers.controls
 		protected var _customErrorCalloutStyleName:String;
 
 		/**
-		 * A style name to add to the text area's error callout sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * text areas.
-		 *
-		 * <p>In the following example, a custom error callout style name
-		 * is passed to the text area:</p>
-		 *
-		 * <listing version="3.0">
-		 * textArea.customErrorCalloutStyleName = "my-custom-text-area-error-callout";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-area-error-callout", setCustomTextAreaErrorCalloutStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customErrorCalloutStyleName():String
 		{
@@ -1086,7 +1171,11 @@ package feathers.controls
 		 */
 		public function set customErrorCalloutStyleName(value:String):void
 		{
-			if(this._customErrorCalloutStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customErrorCalloutStyleName === value)
 			{
 				return;
 			}
@@ -1253,6 +1342,11 @@ package feathers.controls
 		 */
 		public function setFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
 			this._fontStylesSet.setFormatForState(state, format);
 		}
 
@@ -1284,6 +1378,15 @@ package feathers.controls
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
+			var key:String = "setSkinForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				if(skin !== null)
+				{
+					skin.dispose();
+				}
+				return;
+			}
 			if(skin !== null)
 			{
 				this._stateToSkin[state] = skin;

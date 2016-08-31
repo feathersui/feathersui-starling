@@ -17,6 +17,96 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
+	 * A style name to add to the navigator's tab bar sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * navigators.
+	 *
+	 * <p>In the following example, a custom tab bar style name is passed
+	 * to the navigator:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.customTabBarStyleName = "my-custom-tab-bar";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( TabBar ).setFunctionForStyleName( "my-custom-tab-bar", setCustomTabBarStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TAB_BAR
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #tabBarFactory
+	 */
+	[Style(name="customTabBarStyleName",type="String")]
+
+	/**
+	 * The location of the tab bar.
+	 *
+	 * <p>The following example positions the tab bar on the top of the
+	 * navigator:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.tabBarPosition = RelativePosition.TOP;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.BOTTOM
+	 *
+	 * @see feathers.layout.RelativePosition#TOP
+	 * @see feathers.layout.RelativePosition#RIGHT
+	 * @see feathers.layout.RelativePosition#BOTTOM
+	 * @see feathers.layout.RelativePosition#LEFT
+	 */
+	[Style(name="tabBarPosition",type="String")]
+
+	/**
+	 * Typically used to provide some kind of animation or visual effect,
+	 * this function is called when a new screen is shown.
+	 *
+	 * <p>In the following example, the tab navigator is given a
+	 * transition that fades in the new screen on top of the old screen:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.transition = Fade.createFadeInTransition();</listing>
+	 *
+	 * <p>A number of animated transitions may be found in the
+	 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+	 * However, you are not limited to only these transitions. It's possible
+	 * to create custom transitions too.</p>
+	 *
+	 * <p>A custom transition function should have the following signature:</p>
+	 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+	 *
+	 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+	 * arguments may be <code>null</code>, but never both. The
+	 * <code>oldScreen</code> argument will be <code>null</code> when the
+	 * first screen is displayed or when a new screen is displayed after
+	 * clearing the screen. The <code>newScreen</code> argument will
+	 * be null when clearing the screen.</p>
+	 *
+	 * <p>The <code>completeCallback</code> function <em>must</em> be called
+	 * when the transition effect finishes.This callback indicate to the
+	 * tab navigator that the transition has finished. This function has
+	 * the following signature:</p>
+	 *
+	 * <pre>function(cancelTransition:Boolean = false):void</pre>
+	 *
+	 * <p>The first argument defaults to <code>false</code>, meaning that
+	 * the transition completed successfully. In most cases, this callback
+	 * may be called without arguments. If a transition is cancelled before
+	 * completion (perhaps through some kind of user interaction), and the
+	 * previous screen should be restored, pass <code>true</code> as the
+	 * first argument to the callback to inform the tab navigator that
+	 * the transition is cancelled.</p>
+	 *
+	 * @default null
+	 *
+	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+	 * @see #showScreen()
+	 */
+	[Style(name="transition",type="Function")]
+
+	/**
 	 * Dispatched when one of the tabs is triggered. The <code>data</code>
 	 * property of the event contains the <code>TabNavigatorItem</code> that is
 	 * associated with the tab that was triggered.
@@ -171,7 +261,7 @@ package feathers.controls
 		 * <p>To customize the tab bar style name without subclassing, see
 		 * <code>customTabBarStyleName</code>.</p>
 		 *
-		 * @see #customTabBarStyleName
+		 * @see #style:customTabBarStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var tabBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB_BAR;
@@ -241,27 +331,7 @@ package feathers.controls
 		protected var _customTabBarStyleName:String;
 
 		/**
-		 * A style name to add to the navigator's tab bar sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * navigators.
-		 *
-		 * <p>In the following example, a custom tab bar style name is passed
-		 * to the navigator:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.customTabBarStyleName = "my-custom-tab-bar";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( TabBar ).setFunctionForStyleName( "my-custom-tab-bar", setCustomTabBarStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TAB_BAR
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #tabBarFactory
+		 * @private
 		 */
 		public function get customTabBarStyleName():String
 		{
@@ -273,6 +343,10 @@ package feathers.controls
 		 */
 		public function set customTabBarStyleName(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._customTabBarStyleName === value)
 			{
 				return;
@@ -288,20 +362,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left")]
 		/**
-		 * The location of the tab bar.
-		 *
-		 * <p>The following example positions the tab bar on the top of the
-		 * navigator:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.tabBarPosition = RelativePosition.TOP;</listing>
-		 *
-		 * @default feathers.layout.RelativePosition.BOTTOM
-		 *
-		 * @see feathers.layout.RelativePosition#TOP
-		 * @see feathers.layout.RelativePosition#RIGHT
-		 * @see feathers.layout.RelativePosition#BOTTOM
-		 * @see feathers.layout.RelativePosition#LEFT
+		 * @private
 		 */
 		public function get tabBarPosition():String
 		{
@@ -313,6 +374,10 @@ package feathers.controls
 		 */
 		public function set tabBarPosition(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._tabBarPosition === value)
 			{
 				return;
@@ -327,49 +392,7 @@ package feathers.controls
 		protected var _transition:Function;
 
 		/**
-		 * Typically used to provide some kind of animation or visual effect,
-		 * this function is called when a new screen is shown.
-		 *
-		 * <p>In the following example, the tab navigator is given a
-		 * transition that fades in the new screen on top of the old screen:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.transition = Fade.createFadeInTransition();</listing>
-		 *
-		 * <p>A number of animated transitions may be found in the
-		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
-		 * However, you are not limited to only these transitions. It's possible
-		 * to create custom transitions too.</p>
-		 *
-		 * <p>A custom transition function should have the following signature:</p>
-		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
-		 *
-		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
-		 * arguments may be <code>null</code>, but never both. The
-		 * <code>oldScreen</code> argument will be <code>null</code> when the
-		 * first screen is displayed or when a new screen is displayed after
-		 * clearing the screen. The <code>newScreen</code> argument will
-		 * be null when clearing the screen.</p>
-		 *
-		 * <p>The <code>completeCallback</code> function <em>must</em> be called
-		 * when the transition effect finishes.This callback indicate to the
-		 * tab navigator that the transition has finished. This function has
-		 * the following signature:</p>
-		 *
-		 * <pre>function(cancelTransition:Boolean = false):void</pre>
-		 *
-		 * <p>The first argument defaults to <code>false</code>, meaning that
-		 * the transition completed successfully. In most cases, this callback
-		 * may be called without arguments. If a transition is cancelled before
-		 * completion (perhaps through some kind of user interaction), and the
-		 * previous screen should be restored, pass <code>true</code> as the
-		 * first argument to the callback to inform the tab navigator that
-		 * the transition is cancelled.</p>
-		 *
-		 * @default null
-		 *
-		 * @see #showScreen()
-		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+		 * @private
 		 */
 		public function get transition():Function
 		{
@@ -381,7 +404,7 @@ package feathers.controls
 		 */
 		public function set transition(value:Function):void
 		{
-			if(this._transition == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
@@ -539,7 +562,7 @@ package feathers.controls
 		 *
 		 * @see #tabBar
 		 * @see #tabBarFactory
-		 * @see #customTabBarStyleName
+		 * @see #style:customTabBarStyleName
 		 */
 		protected function createTabBar():void
 		{
