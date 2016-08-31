@@ -40,6 +40,540 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * The skin used for the input's disabled state. If <code>null</code>,
+	 * then <code>backgroundSkin</code> is used instead.
+	 *
+	 * <p>The following example gives the input a skin for the disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.DISABLED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * input.setSkinForState( TextInputState.DISABLED, skin );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.TextInputState#DISABLED
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the input's enabled state. If <code>null</code>,
+	 * then <code>backgroundSkin</code> is used instead.
+	 *
+	 * <p>The following example gives the input a skin for the enabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.backgroundEnabledSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.ENABLED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * input.setSkinForState( TextInputState.ENABLED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.TextInputState#ENABLED
+	 */
+	[Style(name="backgroundEnabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the input's error state. If <code>null</code>,
+	 * then <code>backgroundSkin</code> is used instead.
+	 *
+	 * <p>The following example gives the input a skin for the error state:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.backgroundErrorSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.ERROR</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * input.setSkinForState( TextInputState.ERROR, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.TextInputState#ERROR
+	 */
+	[Style(name="backgroundErrorSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the input's focused state. If <code>null</code>,
+	 * then <code>backgroundSkin</code> is used instead.
+	 *
+	 * <p>The following example gives the input a skin for the focused state:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.backgroundFocusedSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>TextInputState.FOCUSED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * input.setSkinForState( TextInputState.FOCUSED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.TextInputState#FOCUSED
+	 */
+	[Style(name="backgroundFocusedSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used when no other skin is defined for the current state.
+	 * Intended for use when multiple states should use the same skin.
+	 *
+	 * <p>The following example gives the input a default skin to use for
+	 * all states when no specific skin is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #setSkinForState()
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A style name to add to the text input's error callout sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * text inputs.
+	 *
+	 * <p>In the following example, a custom error callout style name
+	 * is passed to the text input:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.customErrorCalloutStyleName = "my-custom-text-input-error-callout";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-input-error-callout", setCustomTextInputErrorCalloutStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customErrorCalloutStyleName",type="String")]
+
+	/**
+	 * A style name to add to the text input's prompt text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different text inputs.
+	 *
+	 * <p>In the following example, a custom prompt text renderer style name
+	 * is passed to the text input:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.customPromptStyleName = "my-custom-text-input-prompt";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-text-input-prompt", setCustomTextInputPromptStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_PROMPT
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #promptFactory
+	 */
+	[Style(name="customPromptStyleName",type="String")]
+
+	/**
+	 * A style name to add to the text input's text editor sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * text inputs.
+	 *
+	 * <p>In the following example, a custom text editor style name is
+	 * passed to the text input:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.customTextEditorStyleName = "my-custom-text-input-text-editor";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( StageTextTextEditor ).setFunctionForStyleName( "my-custom-text-input-text-editor", setCustomTextInputTextEditorStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #textEditorFactory
+	 */
+	[Style(name="customTextEditorStyleName",type="String")]
+
+	/**
+	 * The icon used when no other icon is defined for the current state.
+	 * Intended for use when multiple states should use the same icon.
+	 *
+	 * <p>The following example gives the input a default icon to use for
+	 * all states when no specific icon is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.defaultIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #setIconForState()
+	 */
+	[Style(name="defaultIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The font styles used to display the input's text when the input is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setFontStylesForState()</code> with
+	 * <code>TextInputState.DISABLED</code> to set the same font styles:</p>
+	 *
+	 * <listing version="3.0">
+	 * var fontStyles:TextFormat = new TextFormat( "Helvetica", 20, 0x999999 );
+	 * input.setFontStylesForState( TextInputState.DISABLED, fontStyles );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text editor being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textEditorFactory</code> to set more advanced styles on the
+	 * text editor.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 * @see #setFontStylesForState()
+	 * @see feathers.controls.TextInputState#DISABLED
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The icon used for the input's disabled state. If <code>null</code>,
+	 * then <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>The following example gives the input an icon for the disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.disabledIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>TextInputState.DISABLED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * input.setIconForState( TextInputState.DISABLED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.TextInputState#DISABLED
+	 */
+	[Style(name="disabledIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the input's enabled state. If <code>null</code>,
+	 * then <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>The following example gives the input an icon for the enabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.enabledIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>TextInputState.ENABLED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * input.setIconForState( TextInputState.ENABLED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.TextInputState#ENABLED
+	 */
+	[Style(name="enabledIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the input's error state. If <code>null</code>,
+	 * then <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>The following example gives the input an icon for the error state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.errorIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>TextInputState.ERROR</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * input.setIconForState( TextInputState.ERROR, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.TextInputState#ERROR
+	 */
+	[Style(name="errorIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the input's focused state. If <code>null</code>,
+	 * then <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>The following example gives the input an icon for the focused state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.focusedIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>TextInputState.FOCUSED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * input.setIconForState( TextInputState.FOCUSED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.TextInputState#FOCUSED
+	 */
+	[Style(name="focusedIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The font styles used to display the input's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text editor being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textEditorFactory</code> to set more advanced styles on the
+	 * text editor.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 * @see #setFontStylesForState()
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The space, in pixels, between the icon and the text editor, if an
+	 * icon exists.
+	 *
+	 * <p>The following example creates a gap of 50 pixels between the icon
+	 * and the text editor:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.defaultIcon = new Image( texture );
+	 * button.gap = 50;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the text input's padding is set to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the input's top edge and the
+	 * input's content.
+	 *
+	 * <p>In the following example, the text input's top padding is set to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the input's right edge and the
+	 * input's content.
+	 *
+	 * <p>In the following example, the text input's right padding is set to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the input's bottom edge and
+	 * the input's content.
+	 *
+	 * <p>In the following example, the text input's bottom padding is set to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the input's left edge and the
+	 * input's content.
+	 *
+	 * <p>In the following example, the text input's left padding is set to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The font styles used to display the input's prompt when the input is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.promptDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>promptFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:promptFontStyles
+	 * @see #setPromptFontStylesForState()
+	 */
+	[Style(name="promptDisabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the input's prompt text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.promptFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>promptFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:promptDisabledFontStyles
+	 * @see #setPromptFontStylesForState()
+	 */
+	[Style(name="promptFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * If not <code>null</code>, the dimensions of the
+	 * <code>typicalText</code> will be used in the calculation of the text
+	 * input's full dimensions. If the text input's dimensions haven't been
+	 * set explicitly, it's calculated dimensions will be at least large
+	 * enough to display the <code>typicalText</code>. Other children, such
+	 * as the background skin and the prompt text renderer may also affect
+	 * the dimensions of the text input, allowing it to, potentially, be
+	 * bigger than the rendered <code>typicalText</code>.
+	 *
+	 * <p>In the following example, the text input's typical text is
+	 * updated:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.text = "We want to allow the text input to show all of this text";</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="typicalText",type="String")]
+
+	/**
+	 * The location where the text editor is aligned vertically (on
+	 * the y-axis).
+	 *
+	 * <p>The following example aligns the text editor to the top:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.verticalAlign = VerticalAlign.TOP;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 * @see feathers.layout.VerticalAlign#JUSTIFY
+	 */
+	[Style(name="verticalAlign",type="String")]
+
+	/**
 	 * Dispatched when the text input's <code>text</code> property changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -433,6 +967,10 @@ package feathers.controls
 		 * using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR</code>.
 		 *
+		 * <p>To customize the text editor style name without subclassing, see
+		 * <code>customTextEditorStyleName</code>.</p>
+		 *
+		 * @see #style:customTextEditorStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textEditorStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR;
@@ -444,6 +982,10 @@ package feathers.controls
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_PROMPT</code>.
 		 *
+		 * <p>To customize the prompt text renderer style name without
+		 * subclassing, see <code>customPromptStyleName</code>.</p>
+		 *
+		 * @see #style:customPromptStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var promptStyleName:String = DEFAULT_CHILD_STYLE_NAME_PROMPT;
@@ -455,6 +997,10 @@ package feathers.controls
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT</code>.
 		 *
+		 * <p>To customize the error callout style name without subclassing, see
+		 * <code>customErrorCalloutStyleName</code>.</p>
+		 *
+		 * @see #style:customErrorCalloutStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var errorCalloutStyleName:String = DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT;
@@ -628,22 +1174,7 @@ package feathers.controls
 		protected var _typicalText:String = null;
 
 		/**
-		 * If not <code>null</code>, the dimensions of the
-		 * <code>typicalText</code> will be used in the calculation of the text
-		 * input's full dimensions. If the text input's dimensions haven't been
-		 * set explicitly, it's calculated dimensions will be at least large
-		 * enough to display the <code>typicalText</code>. Other children, such
-		 * as the background skin and the prompt text renderer may also affect
-		 * the dimensions of the text input, allowing it to, potentially, be
-		 * bigger than the rendered <code>typicalText</code>.
-		 *
-		 * <p>In the following example, the text input's typical text is
-		 * updated:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.text = "We want to allow the text input to show all of this text";</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get typicalText():String
 		{
@@ -655,6 +1186,10 @@ package feathers.controls
 		 */
 		public function set typicalText(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._typicalText === value)
 			{
 				return;
@@ -892,24 +1427,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the input's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text editor being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textEditorFactory</code> to set more advanced styles on the
-		 * text editor.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
-		 * @see #setFontStylesForState()
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -921,28 +1439,15 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the input's text when the input is
-		 * disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text editor being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textEditorFactory</code> to set more advanced styles on the
-		 * text editor.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -954,6 +1459,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -1012,27 +1521,7 @@ package feathers.controls
 		protected var _customTextEditorStyleName:String;
 
 		/**
-		 * A style name to add to the text input's text editor sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * text inputs.
-		 *
-		 * <p>In the following example, a custom text editor style name is
-		 * passed to the text input:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.customTextEditorStyleName = "my-custom-text-input-text-editor";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( StageTextTextEditor ).setFunctionForStyleName( "my-custom-text-input-text-editor", setCustomTextInputTextEditorStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #textEditorFactory
+		 * @private
 		 */
 		public function get customTextEditorStyleName():String
 		{
@@ -1044,7 +1533,11 @@ package feathers.controls
 		 */
 		public function set customTextEditorStyleName(value:String):void
 		{
-			if(this._customTextEditorStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTextEditorStyleName === value)
 			{
 				return;
 			}
@@ -1058,24 +1551,7 @@ package feathers.controls
 		protected var _promptFontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the input's prompt text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.promptFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>promptFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #promptDisabledFontStyles
-		 * @see #setPromptFontStylesForState()
+		 * @private
 		 */
 		public function get promptFontStyles():TextFormat
 		{
@@ -1087,28 +1563,15 @@ package feathers.controls
 		 */
 		public function set promptFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._promptFontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the input's prompt when the input is
-		 * disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.promptDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>promptFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #promptFontStyles
+		 * @private
 		 */
 		public function get promptDisabledFontStyles():TextFormat
 		{
@@ -1120,6 +1583,10 @@ package feathers.controls
 		 */
 		public function set promptDisabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._promptFontStylesSet.disabledFormat = value;
 		}
 
@@ -1182,27 +1649,7 @@ package feathers.controls
 		protected var _customPromptStyleName:String;
 
 		/**
-		 * A style name to add to the text input's prompt text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different text inputs.
-		 *
-		 * <p>In the following example, a custom prompt text renderer style name
-		 * is passed to the text input:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.customPromptStyleName = "my-custom-text-input-prompt";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-text-input-prompt", setCustomTextInputPromptStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_PROMPT
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #promptFactory
+		 * @private
 		 */
 		public function get customPromptStyleName():String
 		{
@@ -1214,7 +1661,11 @@ package feathers.controls
 		 */
 		public function set customPromptStyleName(value:String):void
 		{
-			if(this._customPromptStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customPromptStyleName === value)
 			{
 				return;
 			}
@@ -1309,26 +1760,7 @@ package feathers.controls
 		protected var _customErrorCalloutStyleName:String;
 
 		/**
-		 * A style name to add to the text input's error callout sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * text inputs.
-		 *
-		 * <p>In the following example, a custom error callout style name
-		 * is passed to the text input:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.customErrorCalloutStyleName = "my-custom-text-input-error-callout";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Callout ).setFunctionForStyleName( "my-custom-text-input-error-callout", setCustomTextInputErrorCalloutStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customErrorCalloutStyleName():String
 		{
@@ -1340,7 +1772,11 @@ package feathers.controls
 		 */
 		public function set customErrorCalloutStyleName(value:String):void
 		{
-			if(this._customErrorCalloutStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customErrorCalloutStyleName === value)
 			{
 				return;
 			}
@@ -1384,18 +1820,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The skin used when no other skin is defined for the current state.
-		 * Intended for use when multiple states should use the same skin.
-		 *
-		 * <p>The following example gives the input a default skin to use for
-		 * all states when no specific skin is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #setSkinForState()
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1407,6 +1832,10 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._backgroundSkin === value)
 			{
 				return;
@@ -1421,15 +1850,7 @@ package feathers.controls
 		protected var _stateToSkin:Object = {};
 
 		/**
-		 * The skin used for the input's enabled state. If <code>null</code>,
-		 * then <code>backgroundSkin</code> is used instead.
-		 *
-		 * <p>The following example gives the input a skin for the enabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.backgroundEnabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundEnabledSkin():DisplayObject
 		{
@@ -1445,15 +1866,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the input's focused state. If <code>null</code>,
-		 * then <code>backgroundSkin</code> is used instead.
-		 *
-		 * <p>The following example gives the input a skin for the focused state:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.backgroundFocusedSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
@@ -1469,15 +1882,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the input's error state. If <code>null</code>,
-		 * then <code>backgroundSkin</code> is used instead.
-		 *
-		 * <p>The following example gives the input a skin for the error state:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.backgroundErrorSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundErrorSkin():DisplayObject
 		{
@@ -1493,15 +1898,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the input's disabled state. If <code>null</code>,
-		 * then <code>backgroundSkin</code> is used instead.
-		 *
-		 * <p>The following example gives the input a skin for the disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -1566,18 +1963,7 @@ package feathers.controls
 		protected var _defaultIcon:DisplayObject;
 
 		/**
-		 * The icon used when no other icon is defined for the current state.
-		 * Intended for use when multiple states should use the same icon.
-		 *
-		 * <p>The following example gives the input a default icon to use for
-		 * all states when no specific icon is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.defaultIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #setIconForState()
+		 * @private
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -1589,6 +1975,10 @@ package feathers.controls
 		 */
 		public function set defaultIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._defaultIcon === value)
 			{
 				return;
@@ -1603,15 +1993,7 @@ package feathers.controls
 		protected var _stateToIcon:Object = {};
 
 		/**
-		 * The icon used for the input's enabled state. If <code>null</code>,
-		 * then <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>The following example gives the input an icon for the enabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.enabledIcon = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get enabledIcon():DisplayObject
 		{
@@ -1627,15 +2009,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the input's disabled state. If <code>null</code>,
-		 * then <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>The following example gives the input an icon for the disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledIcon = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get disabledIcon():DisplayObject
 		{
@@ -1651,15 +2025,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the input's focused state. If <code>null</code>,
-		 * then <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>The following example gives the input an icon for the focused state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.focusedIcon = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get focusedIcon():DisplayObject
 		{
@@ -1675,15 +2041,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the input's error state. If <code>null</code>,
-		 * then <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>The following example gives the input an icon for the error state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.errorIcon = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get errorIcon():DisplayObject
 		{
@@ -1736,17 +2094,7 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * The space, in pixels, between the icon and the text editor, if an
-		 * icon exists.
-		 *
-		 * <p>The following example creates a gap of 50 pixels between the icon
-		 * and the text editor:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.defaultIcon = new Image( texture );
-		 * button.gap = 50;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -1758,7 +2106,11 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -1767,23 +2119,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the text input's padding is set to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -1807,16 +2143,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the input's top edge and the
-		 * input's content.
-		 *
-		 * <p>In the following example, the text input's top padding is set to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -1828,7 +2155,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -1842,16 +2173,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the input's right edge and the
-		 * input's content.
-		 *
-		 * <p>In the following example, the text input's right padding is set to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -1863,7 +2185,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -1877,16 +2203,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the input's bottom edge and
-		 * the input's content.
-		 *
-		 * <p>In the following example, the text input's bottom padding is set to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -1898,7 +2215,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -1912,16 +2233,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the input's left edge and the
-		 * input's content.
-		 *
-		 * <p>In the following example, the text input's left padding is set to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1933,7 +2245,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -1948,24 +2264,11 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
-		 * The location where the text editor is aligned vertically (on
-		 * the y-axis).
-		 *
-		 * <p>The following example aligns the text editor to the top:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.verticalAlign = VerticalAlign.TOP;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 * @see feathers.layout.VerticalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
-			return _verticalAlign;
+			return this._verticalAlign;
 		}
 
 		/**
@@ -1973,7 +2276,11 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -2267,6 +2574,11 @@ package feathers.controls
 		 */
 		public function setFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
 			this._fontStylesSet.setFormatForState(state, format);
 		}
 
@@ -2309,6 +2621,11 @@ package feathers.controls
 		 */
 		public function setPromptFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setPromptFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
 			this._promptFontStylesSet.setFormatForState(state, format);
 		}
 
@@ -2340,6 +2657,15 @@ package feathers.controls
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
+			var key:String = "setSkinForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				if(skin !== null)
+				{
+					skin.dispose();
+				}
+				return;
+			}
 			if(skin !== null)
 			{
 				this._stateToSkin[state] = skin;
@@ -2377,6 +2703,15 @@ package feathers.controls
 		 */
 		public function setIconForState(state:String, icon:DisplayObject):void
 		{
+			var key:String = "setIconForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				if(icon !== null)
+				{
+					icon.dispose();
+				}
+				return;
+			}
 			if(icon !== null)
 			{
 				this._stateToIcon[state] = icon;
