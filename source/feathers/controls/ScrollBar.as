@@ -159,6 +159,11 @@ package feathers.controls
 	 * vertically. When this value changes, the scroll bar's width and
 	 * height values do not change automatically.
 	 *
+	 * <p>Note: When using a <code>SimpleScrollBar</code> with a scrolling
+	 * container, the container will automatically set the correct
+	 * <code>direction</code> value. Generally, you should not need to set this
+	 * style manually.</p>
+	 *
 	 * <p>In the following example, the direction is changed to vertical:</p>
 	 *
 	 * <listing version="3.0">

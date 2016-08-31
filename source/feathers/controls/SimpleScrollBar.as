@@ -31,6 +31,129 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * A style name to add to the scroll bar's thumb sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * scroll bars.
+	 *
+	 * <p>In the following example, a custom thumb style name is passed
+	 * to the scroll bar:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.customThumbStyleName = "my-custom-thumb";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #thumbFactory
+	 */
+	[Style(name="customThumbStyleName",type="String")]
+
+	/**
+	 * Determines if the scroll bar's thumb can be dragged horizontally or
+	 * vertically. When this value changes, the scroll bar's width and
+	 * height values do not change automatically.
+	 * 
+	 * <p>Note: When using a <code>SimpleScrollBar</code> with a scrolling
+	 * container, the container will automatically set the correct
+	 * <code>direction</code> value. Generally, you should not need to set this
+	 * style manually.</p>
+	 *
+	 * <p>In the following example, the direction is changed to vertical:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.direction = Direction.VERTICAL;</listing>
+	 *
+	 * @default feathers.layout.Direction.HORIZONTAL
+	 *
+	 * @see feathers.layout.Direction#HORIZONTAL
+	 * @see feathers.layout.Direction#VERTICAL
+	 */
+	[Style(name="direction",type="String")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding is changed to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, above the thumb.
+	 *
+	 * <p>In the following example, the top padding is changed to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, to the right of the thumb.
+	 *
+	 * <p>In the following example, the right padding is changed to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, below the thumb.
+	 *
+	 * <p>In the following example, the bottom padding is changed to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, to the left of the thumb.
+	 *
+	 * <p>In the following example, the left padding is changed to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
 	 * Dispatched when the scroll bar's value changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -109,15 +232,11 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * list.horizontalScrollBarFactory = function():IScrollBar
 	 * {
-	 *     var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-	 *     scrollBar.direction = Direction.HORIZONTAL;
-	 *     return scrollBar;
+	 *     return new SimpleScrollBar();
 	 * };
 	 * list.verticalScrollBarFactory = function():IScrollBar
 	 * {
-	 *     var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-	 *     scrollBar.direction = Direction.VERTICAL;
-	 *     return scrollBar;
+	 *     return new SimpleScrollBar();
 	 * };</listing>
 	 *
 	 * @see ../../../help/simple-scroll-bar.html How to use the Feathers SimpleScrollBar component
@@ -199,7 +318,7 @@ package feathers.controls
 		 * <p>To customize the thumb style name without subclassing, see
 		 * <code>customThumbStyleName</code>.</p>
 		 *
-		 * @see #customThumbStyleName
+		 * @see #style:customThumbStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
@@ -254,19 +373,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
-		 * Determines if the scroll bar's thumb can be dragged horizontally or
-		 * vertically. When this value changes, the scroll bar's width and
-		 * height values do not change automatically.
-		 *
-		 * <p>In the following example, the direction is changed to vertical:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.direction = Direction.VERTICAL;</listing>
-		 *
-		 * @default feathers.layout.Direction.HORIZONTAL
-		 *
-		 * @see feathers.layout.Direction#HORIZONTAL
-		 * @see feathers.layout.Direction#VERTICAL
+		 * @private
 		 */
 		public function get direction():String
 		{
@@ -278,7 +385,11 @@ package feathers.controls
 		 */
 		public function set direction(value:String):void
 		{
-			if(this._direction == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._direction === value)
 			{
 				return;
 			}
@@ -463,22 +574,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding is changed to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -502,14 +598,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, above the thumb.
-		 *
-		 * <p>In the following example, the top padding is changed to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -521,7 +610,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -535,14 +628,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, to the right of the thumb.
-		 *
-		 * <p>In the following example, the right padding is changed to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -554,7 +640,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -568,14 +658,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, below the thumb.
-		 *
-		 * <p>In the following example, the bottom padding is changed to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -587,7 +670,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -601,14 +688,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, to the left of the thumb.
-		 *
-		 * <p>In the following example, the left padding is changed to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -620,7 +700,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -723,7 +807,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.BasicButton
-		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
 		{
@@ -749,28 +832,7 @@ package feathers.controls
 		protected var _customThumbStyleName:String;
 
 		/**
-		 * A style name to add to the scroll bar's thumb sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * scroll bars.
-		 *
-		 * <p>In the following example, a custom thumb style name is passed
-		 * to the scroll bar:</p>
-		 *
-		 * <listing version="3.0">
-		 * scrollBar.customThumbStyleName = "my-custom-thumb";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #thumbFactory
-		 * @see #thumbProperties
+		 * @private
 		 */
 		public function get customThumbStyleName():String
 		{
@@ -782,7 +844,11 @@ package feathers.controls
 		 */
 		public function set customThumbStyleName(value:String):void
 		{
-			if(this._customThumbStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customThumbStyleName === value)
 			{
 				return;
 			}
@@ -1067,7 +1133,7 @@ package feathers.controls
 		 *
 		 * @see #thumb
 		 * @see #thumbFactory
-		 * @see #customThumbStyleName
+		 * @see #style:customThumbStyleName
 		 */
 		protected function createThumb():void
 		{

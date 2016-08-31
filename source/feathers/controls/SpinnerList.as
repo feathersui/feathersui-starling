@@ -23,6 +23,25 @@ package feathers.controls
 	import starling.events.KeyboardEvent;
 
 	/**
+	 * An optional skin to display in the horizontal or vertical center of
+	 * the list to highlight the currently selected item. If the list
+	 * scrolls vertically, the <code>selectionOverlaySkin</code> will fill
+	 * the entire width of the list, and it will be positioned in the
+	 * vertical center. If the list scrolls horizontally, the
+	 * <code>selectionOverlaySkin</code> will fill the entire height of the
+	 * list, and it will be positioned in the horizontal center.
+	 *
+	 * <p>The following example gives the spinner list a selection overlay
+	 * skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.selectionOverlaySkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="selectionOverlaySkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * A customized <code>List</code> component where scrolling updates the
 	 * the selected item. Layouts may loop infinitely.
 	 *
@@ -214,21 +233,7 @@ package feathers.controls
 		protected var _selectionOverlaySkin:DisplayObject;
 
 		/**
-		 * An optional skin to display in the horizontal or vertical center of
-		 * the list to highlight the currently selected item. If the list
-		 * scrolls vertically, the <code>selectionOverlaySkin</code> will fill
-		 * the entire width of the list, and it will be positioned in the
-		 * vertical center. If the list scrolls horizontally, the
-		 * <code>selectionOverlaySkin</code> will fill the entire height of the
-		 * list, and it will be positioned in the horizontal center.
-		 *
-		 * <p>The following example gives the spinner list a selection overlay
-		 * skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.selectionOverlaySkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get selectionOverlaySkin():DisplayObject
 		{
@@ -240,7 +245,15 @@ package feathers.controls
 		 */
 		public function set selectionOverlaySkin(value:DisplayObject):void
 		{
-			if(this._selectionOverlaySkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._selectionOverlaySkin === value)
 			{
 				return;
 			}
