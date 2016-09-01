@@ -5,6 +5,10 @@ author: Josh Tynjala
 ---
 # Why does my Feathers app throw "Error #1056: Cannot create property `elementFormat`"?
 
+<aside class="info">Before Feathers 3.1, different [text renderers](../text-renderers.html) each had unique ways to set font styles. For instance, [`TextBlockTextRenderer`](../text-block-text-renderer.html) used `flash.text.engine.ElementFormat`, but [`TextFieldTextRenderer`](../text-field-text-renderer.html) used `flash.text.TextFormat` instead. Today, the architecture has been redesigned to allow developers to set font styles on any text renderer using [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html).
+
+If you are using Feathers 3.1 or newer, **this document is considered obsolete**. It remains available to assist developers who need to support legacy apps that are still using older versions of Feathers.</aside>
+
 This error usually pops up when we try to ask a component in our application to use a different [text renderer](../text-renderers.html) (or a different [text editor](../text-editors.html)) than the [theme](../themes.html) expects. A theme will usually standardize on one type of text renderer for all components, so when we try to use a different one, it doesn't know that it should set font styles in a different way.
 
 Sometimes, though, we need to use a different text renderer than the theme uses as its default. Feathers certainly allows mixing and matching text renderers, but we need to tell the theme about what we're doing. We have a couple of options.

@@ -5,6 +5,10 @@ author: Josh Tynjala
 ---
 # When I try to change a Feathers component's skins, why do I always see the default skins?
 
+<aside class="info">Before Feathers 3.1, you needed to use an [`AddOnFunctionStyleProvider`](../../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) or [extend the theme](../extending-themes.html) to customize a component's styles outside of a theme. Today, the architecture has been redesigned to allow developers to set styles anywhere, and the theme will not be allowed to replace them.
+
+If you are using Feathers 3.1 or newer, **this document is considered obsolete**. It remains available to assist developers who need to support legacy apps that are still using older versions of Feathers.</aside>
+
 If you're using a [theme](../themes.html), the theme won't pass any skins to a component until the component initializes. This usually happens when the component is added to the stage. If you try to pass skins to the component before it has initialized, the theme may end up replacing them.
 
 There are two primary ways to modify a component's styles when using a theme.

@@ -107,11 +107,11 @@ You can call `component.validate()` to force a component to immediately measure 
 
 ### When I try to change a component's skins, why do I always see the theme's skins?
 
-If you want a component to use different skins than the theme's default style, you should [extend the theme](../extending-themes.html). Please see [this detailed explanation](cannot-change-skins.html) for more information.
+Before Feathers 3.1, it was possible for the theme to replace styles that you set on a component before the component initialized. However, the architecture has been redesigned so that components will ignore a theme's styles if they are customized outside of the theme before initialization. If you are supporting a legacy application using a version of Feathers before 3.1, please see [this detailed explanation](cannot-change-skins.html) for more information.
 
 ### Why does my Feathers app throw "Error #1056: Cannot create property `elementFormat`"?
 
-This error usually pops up when we try to ask a component in our application to use a different [text renderer](../text-renderers.html) (or a different [text editor](../text-editors.html)) than the [theme](../themes.html) expects. You either need to remove the component's style provider or [extend the theme](../extending-themes.html). Please see [this detailed explanation](cannot-create-property-element-format.html) for more information.
+Before Feathers 3.1, different [text renderers](../text-renderers.html) each had unique ways of setting font styles that were not compatible. If you passed the wrong type of object to a text renderer, an error like this could occur. However, all text renderers now support customizing font styles using `starling.text.TextFormat`. If you are supporting a legacy application using a version of Feathers before 3.1, please see [this detailed explanation](cannot-create-property-element-format.html) for more information.
 
 ### Why are there so many draw calls? Aren't those bad?
 
