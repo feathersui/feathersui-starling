@@ -47,28 +47,28 @@ package feathers.controls
 		/**
 		 * Same as the up state, but the component is also selected.
 		 *
-		 * @see feathers.core.ToggleButton#isSelected
+		 * @see feathers.controls.ToggleButton#isSelected
 		 */
 		public static const UP_AND_SELECTED:String = "upAndSelected";
 
 		/**
 		 * Same as the down state, but the component is also selected.
 		 *
-		 * @see feathers.core.ToggleButton#isSelected
+		 * @see feathers.controls.ToggleButton#isSelected
 		 */
 		public static const DOWN_AND_SELECTED:String = "downAndSelected";
 
 		/**
 		 * Same as the hover state, but the component is also selected.
 		 *
-		 * @see feathers.core.ToggleButton#isSelected
+		 * @see feathers.controls.ToggleButton#isSelected
 		 */
 		public static const HOVER_AND_SELECTED:String = "hoverAndSelected";
 
 		/**
 		 * Same as the disabled state, but the component is also selected.
 		 *
-		 * @see feathers.core.ToggleButton#isSelected
+		 * @see feathers.controls.ToggleButton#isSelected
 		 * @see feathers.core.FeathersControl#isEnabled
 		 */
 		public static const DISABLED_AND_SELECTED:String = "disabledAndSelected";

@@ -764,7 +764,10 @@ package feathers.controls
 				this._toggleGroup.addItem(this);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected var _defaultSelectedSkin:DisplayObject;
 
 		/**

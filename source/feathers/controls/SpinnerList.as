@@ -447,6 +447,58 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function dataProvider_removeItemHandler(event:Event, index:int):void
+		{
+			super.dataProvider_removeItemHandler(event, index);
+			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+			{
+				var itemIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+				if(itemIndex > this._dataProvider.length)
+				{
+					itemIndex -= this._dataProvider.length;
+				}
+				this.scrollToDisplayIndex(itemIndex, 0);
+			}
+			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+			{
+				itemIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+				if(itemIndex > this._dataProvider.length)
+				{
+					itemIndex -= this._dataProvider.length;
+				}
+				this.scrollToDisplayIndex(itemIndex, 0);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function dataProvider_addItemHandler(event:Event, index:int):void
+		{
+			super.dataProvider_addItemHandler(event, index);
+			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+			{
+				var itemIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+				if(itemIndex > this._dataProvider.length)
+				{
+					itemIndex -= this._dataProvider.length;
+				}
+				this.scrollToDisplayIndex(itemIndex, 0);
+			}
+			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+			{
+				itemIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+				if(itemIndex > this._dataProvider.length)
+				{
+					itemIndex -= this._dataProvider.length;
+				}
+				this.scrollToDisplayIndex(itemIndex, 0);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			if(!this._dataProvider)
