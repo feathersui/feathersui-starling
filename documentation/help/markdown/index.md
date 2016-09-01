@@ -209,13 +209,15 @@ If the built-in layouts don't provide what you need, Feathers containers support
 
 Some tutorials on how to skin components and how to use Feathers themes.
 
--   [Introduction to Themes](themes.html)
-
 -   [Skinning Feathers Components](skinning.html)
+
+-   [Introduction to Themes](themes.html)
 
 -   [Extending Themes](extending-themes.html)
 
 -   [Creating Custom Themes](custom-themes.html)
+
+-   [An in-depth look at Feathers style providers](style-providers.html)
 
 -   [Managing Assets in Feathers Themes](theme-assets.html)
 
