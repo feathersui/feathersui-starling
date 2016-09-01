@@ -322,7 +322,7 @@ package feathers.controls
 		 * <p>To customize the text renderer style name without subclassing, see
 		 * <code>customTextRendererStyleName</code>.</p>
 		 *
-		 * @see #customTextRendererStyleName
+		 * @see #style:customTextRendererStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER;

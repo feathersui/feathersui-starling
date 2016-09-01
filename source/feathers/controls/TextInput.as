@@ -2545,7 +2545,7 @@ package feathers.controls
 		 * 
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 */
 		public function getFontStylesForState(state:String):TextFormat
 		{
@@ -2570,7 +2570,7 @@ package feathers.controls
 		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
 		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 */
 		public function setFontStylesForState(state:String, format:TextFormat):void
 		{

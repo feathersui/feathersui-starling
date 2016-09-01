@@ -111,7 +111,7 @@ package feathers.controls
 	 * @default 0
 	 *
 	 * @see #style:outerPadding
-	 * @see feathers.controls.Scroller#paddingTop
+	 * @see feathers.controls.Scroller#style:paddingTop
 	 */
 	[Style(name="outerPaddingTop",type="Number")]
 

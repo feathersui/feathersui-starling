@@ -121,14 +121,14 @@ package feathers.media
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * pop-up volume slider. This variable is <code>protected</code> so that
-		 * sub-classes can customize the list style name in their constructors
-		 * instead of using the default style name defined by
+		 * sub-classes can customize the volume slider style name in their
+		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER</code>.
 		 *
 		 * <p>To customize the volume slider style name without subclassing, see
 		 * <code>customVolumeSliderStyleName</code>.</p>
 		 *
-		 * @see #customVolumeSliderStyleName
+		 * @see #style:customVolumeSliderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var volumeSliderStyleName:String = DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER;
@@ -314,7 +314,6 @@ package feathers.media
 		 *
 		 * @see feathers.media.VolumeSlider
 		 * @see #showVolumeSliderOnHover
-		 * @see #volumeSliderProperties
 		 */
 		public function get volumeSliderFactory():Function
 		{
@@ -362,7 +361,6 @@ package feathers.media
 		 * @see #DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #volumeSliderFactory
-		 * @see #volumeSliderProperties
 		 */
 		public function get customVolumeSliderStyleName():String
 		{
@@ -469,7 +467,7 @@ package feathers.media
 		protected var _isClosePopUpPending:Boolean = false;
 
 		/**
-		 * Opens the pop-up list, if it isn't already open.
+		 * Opens the pop-up volume slider, if it isn't already open.
 		 */
 		public function openPopUp():void
 		{
@@ -491,7 +489,7 @@ package feathers.media
 		}
 
 		/**
-		 * Closes the pop-up list, if it is open.
+		 * Closes the pop-up volume slider, if it is open.
 		 */
 		public function closePopUp():void
 		{
@@ -507,9 +505,9 @@ package feathers.media
 			}
 			this._isClosePopUpPending = false;
 			this.slider.validate();
-			//don't clean up anything from openList() in closeList(). The list
-			//may be closed by removing it from the PopUpManager, which would
-			//result in closeList() never being called.
+			//don't clean up anything from openPopUp() in closePopUp(). The
+			//pop-up may be closed by removing it from the PopUpManager, which
+			//would result in closePopUp() never being called.
 			//instead, clean up in the Event.REMOVED_FROM_STAGE listener.
 			this._popUpContentManager.close();
 		}
@@ -573,15 +571,14 @@ package feathers.media
 		}
 
 		/**
-		 * Creates and adds the <code>list</code> sub-component and
+		 * Creates and adds the volume slider sub-component and
 		 * removes the old instance, if one exists.
 		 *
 		 * <p>Meant for internal use, and subclasses may override this function
 		 * with a custom implementation.</p>
 		 *
-		 * @see #list
-		 * @see #listFactory
-		 * @see #customListStyleName
+		 * @see #volumeSliderFactory
+		 * @see #style:customVolumeSliderStyleName
 		 */
 		protected function createVolumeSlider():void
 		{
