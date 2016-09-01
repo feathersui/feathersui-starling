@@ -3435,6 +3435,7 @@
 		<xsl:param name="baseRef"/>
 		<xsl:variable name="name" select="@name"/>
 		<xsl:variable name="type" select="@type"/>
+		<a name="{$name}"/>
 		<a name="style:{$name}"/>
 		<table class="detailHeader" cellpadding="0" cellspacing="0">
 			<tr>
