@@ -150,11 +150,11 @@ package feathers.controls
 	 * button.disabledSkin = new Image( texture );</listing>
 	 *
 	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
-	 * <code>ButtonState.DISABLED</code> to set the same icon:</p>
+	 * <code>ButtonState.DISABLED</code> to set the same skin:</p>
 	 *
 	 * <listing version="3.0">
-	 * var icon:Image = new Image( texture );
-	 * button.setSkinForState( ButtonState.DISABLED, icon );</listing>
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DISABLED, skin );</listing>
 	 *
 	 * @default null
 	 *
@@ -204,11 +204,11 @@ package feathers.controls
 	 * button.downSkin = new Image( texture );</listing>
 	 *
 	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
-	 * <code>ButtonState.DOWN</code> to set the same icon:</p>
+	 * <code>ButtonState.DOWN</code> to set the same skin:</p>
 	 *
 	 * <listing version="3.0">
-	 * var icon:Image = new Image( texture );
-	 * button.setSkinForState( ButtonState.DOWN, icon );</listing>
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DOWN, skin );</listing>
 	 *
 	 * @default null
 	 *
@@ -335,11 +335,11 @@ package feathers.controls
 	 * button.hoverSkin = new Image( texture );</listing>
 	 *
 	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
-	 * <code>ButtonState.HOVER</code> to set the same icon:</p>
+	 * <code>ButtonState.HOVER</code> to set the same skin:</p>
 	 *
 	 * <listing version="3.0">
-	 * var icon:Image = new Image( texture );
-	 * button.setSkinForState( ButtonState.HOVER, icon );</listing>
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.HOVER, skin );</listing>
 	 *
 	 * @default null
 	 *
@@ -616,11 +616,11 @@ package feathers.controls
 	 * button.upSkin = new Image( texture );</listing>
 	 *
 	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
-	 * <code>ButtonState.UP</code> to set the same icon:</p>
+	 * <code>ButtonState.UP</code> to set the same skin:</p>
 	 *
 	 * <listing version="3.0">
-	 * var icon:Image = new Image( texture );
-	 * button.setSkinForState( ButtonState.UP, icon );</listing>
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.UP, skin );</listing>
 	 *
 	 * @default null
 	 *
