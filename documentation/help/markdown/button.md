@@ -62,7 +62,7 @@ A number of styles may be customized on a button, including the font styles, the
 
 ### Font styles
 
-The font styles of the button's label text rendere may be customized using the [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
+The font styles of the button's label text renderer may be customized using the [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
 ``` code
 button.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
