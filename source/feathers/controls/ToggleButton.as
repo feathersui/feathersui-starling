@@ -904,7 +904,7 @@ package feathers.controls
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 * 
-		 * @see #selectedFontStyles()
+		 * @see #selectedFontStyles
 		 */
 		public function get defaultSelectedLabelProperties():Object
 		{
