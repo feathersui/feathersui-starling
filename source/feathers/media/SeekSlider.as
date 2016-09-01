@@ -18,6 +18,21 @@ package feathers.media
 	import starling.events.Event;
 
 	/**
+	 * An optional skin that acts similar to the fill skin of a progress bar
+	 * that displays the download progres of the media.
+	 *
+	 * <p>In the following example, the progress skin is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * skin.scale9Grid = new Rectangle( 2, 3, 6, 1 );
+	 * slider.progressSkin = skin;</listing>
+	 * 
+	 * @default null
+	 */
+	[Style(name="progressSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * A specialized slider that displays and controls the current position of
 	 * the playhead of a media player.
 	 *
@@ -240,7 +255,7 @@ package feathers.media
 		protected var _progressSkin:DisplayObject;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get progressSkin():DisplayObject
 		{
@@ -252,6 +267,14 @@ package feathers.media
 		 */
 		public function set progressSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._progressSkin == value)
 			{
 				return;

@@ -20,6 +20,44 @@ package feathers.media
 	import starling.utils.Pool;
 
 	/**
+	 * When the value of <code>displayMode</code> is
+	 * <code>MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>, this text is
+	 * inserted between the two times to separate them.
+	 *
+	 * @default " / "
+	 *
+	 * @see feathers.media.MediaTimeMode#CURRENT_AND_TOTAL_TIMES
+	 */
+	[Style(name="delimiter",type="String")]
+
+	/**
+	 * Determines how the time is displayed by the label.
+	 *
+	 * @default feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES
+	 *
+	 * @see feathers.media.MediaTimeMode#CURRENT_AND_TOTAL_TIMES
+	 * @see feathers.media.MediaTimeMode#CURRENT_TIME
+	 * @see feathers.media.MediaTimeMode#TOTAL_TIME
+	 * @see feathers.media.MediaTimeMode#REMAINING_TIME
+	 */
+	[Style(name="displayMode",type="String")]
+
+	/**
+	 * If the <code>displayMode</code> property is set to
+	 * <code>MediaTimeMode.CURRENT_TIME</code> or
+	 * <code>MediaTimeMode.REMAINING_TIME</code>, and this property
+	 * is set to <code>true</code>, the label will switch to displaying the
+	 * current time and the remaining time, if tapped or clicked. If the
+	 * <code>displayMode</code> property is not set to one of the specified
+	 * values, this property is ignored.
+	 *
+	 * @default false
+	 *
+	 * @see #style:displayMode
+	 */
+	[Style(name="toggleDisplayMode",type="Boolean")]
+
+	/**
 	 * A specialized label that can display the current playhead time, total
 	 * time, remaining time, or a combined current and total time for a media
 	 * player.
@@ -144,13 +182,7 @@ package feathers.media
 		protected var _delimiter:String = " / ";
 
 		/**
-		 * When the value of <code>displayMode</code> is
-		 * <code>MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>, this text is
-		 * inserted between the two times to separate them.
-		 *
-		 * @default " / "
-		 * 
-		 * @see feathers.media.MediaTimeMode#CURRENT_AND_TOTAL_TIMES
+		 * @private
 		 */
 		public function get delimiter():String
 		{
@@ -162,7 +194,11 @@ package feathers.media
 		 */
 		public function set delimiter(value:String):void
 		{
-			if(this._delimiter == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._delimiter === value)
 			{
 				return;
 			}
@@ -177,14 +213,7 @@ package feathers.media
 
 		[Inspectable(type="String",enumeration="currentAndTotalTimes,currentTime,totalTime,remainingTime")]
 		/**
-		 * Determines how the time is displayed by the label.
-		 *
-		 * @default feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES
-		 * 
-		 * @see feathers.media.MediaTimeMode#CURRENT_AND_TOTAL_TIMES
-		 * @see feathers.media.MediaTimeMode#CURRENT_TIME
-		 * @see feathers.media.MediaTimeMode#TOTAL_TIME
-		 * @see feathers.media.MediaTimeMode#REMAINING_TIME
+		 * @private
 		 */
 		public function get displayMode():String
 		{
@@ -196,7 +225,11 @@ package feathers.media
 		 */
 		public function set displayMode(value:String):void
 		{
-			if(this._displayMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._displayMode === value)
 			{
 				return;
 			}
@@ -223,17 +256,7 @@ package feathers.media
 		protected var _toggleDisplayMode:Boolean = false;
 
 		/**
-		 * If the <code>displayMode</code> property is set to
-		 * <code>MediaTimeMode.CURRENT_TIME</code> or
-		 * <code>MediaTimeMode.REMAINING_TIME</code>, and this property
-		 * is set to <code>true</code>, the label will switch to displaying the
-		 * current time and the remaining time, if tapped or clicked. If the
-		 * <code>displayMode</code> property is not set to one of the specified
-		 * values, this property is ignored.
-		 *
-		 * @default false
-		 * 
-		 * @see #displayMode
+		 * @private
 		 */
 		public function get toggleDisplayMode():Boolean
 		{
@@ -245,7 +268,11 @@ package feathers.media
 		 */
 		public function set toggleDisplayMode(value:Boolean):void
 		{
-			if(this._toggleDisplayMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._toggleDisplayMode === value)
 			{
 				return;
 			}
