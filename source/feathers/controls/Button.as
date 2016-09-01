@@ -1716,6 +1716,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see #fontStyles
 		 */
 		public function get defaultLabelProperties():Object
 		{
@@ -1725,7 +1726,7 @@ package feathers.controls
 			}
 			return this._defaultLabelProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1751,7 +1752,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _stateToLabelProperties:Object = {};
-		
+
 		/**
 		 * DEPRECATED: Use the <code>fontStyles</code> property, or call the
 		 * <code>setFontStylesForState()</code> function with
