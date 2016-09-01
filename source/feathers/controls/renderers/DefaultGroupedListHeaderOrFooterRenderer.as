@@ -28,6 +28,222 @@ package feathers.controls.renderers
 	import starling.text.TextFormat;
 
 	/**
+	 * A background to behind the component's content.
+	 *
+	 * <p>In the following example, the header renderers is given a
+	 * background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundDisabledSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A background to display when the component is disabled.
+	 *
+	 * <p>In the following example, the header renderers is given a
+	 * disabled background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A style name to add to the renderer's label text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different renderers.
+	 *
+	 * <p>In the following example, a custom label style name is passed to
+	 * the renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.customContentLabelStyleName = "my-custom-header-or-footer-renderer-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-or-footer-label", setCustomHeaderOrFooterLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #contentLabelFactory
+	 */
+	[Style(name="customContentLabelStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the content label's text when the
+	 * component is disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>contentLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the content label's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>contentLabelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The location where the renderer's content is aligned horizontally
+	 * (on the x-axis).
+	 *
+	 * <p>In the following example, the horizontal alignment is changed to
+	 * right:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.horizontalAlign = HorizontalAlign.RIGHT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.LEFT
+	 *
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 * @see feathers.layout.HorizontalAlign#JUSTIFY
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding on all four sides is set to 20
+	 * pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.padding = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the component's top edge and
+	 * the component's content.
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the component's right edge
+	 * and the component's content.
+	 *
+	 * <p>In the following example, the right padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the component's bottom edge
+	 * and the component's content.
+	 *
+	 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the component's left edge
+	 * and the component's content.
+	 *
+	 * <p>In the following example, the left padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The location where the renderer's content is aligned vertically (on
+	 * the y-axis).
+	 *
+	 * <p>In the following example, the vertical alignment is changed to
+	 * bottom:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.verticalAlign = VerticalAlign.BOTTOM;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 * @see feathers.layout.VerticalAlign#JUSTIFY
+	 */
+	[Style(name="verticalAlign",type="String")]
+
+	/**
 	 * The default renderer used for headers and footers in a GroupedList
 	 * control.
 	 *
@@ -176,7 +392,7 @@ package feathers.controls.renderers
 		 * <p>To customize the content label text renderer style name without
 		 * subclassing, see <code>customContentLabelStyleName</code>.</p>
 		 *
-		 * @see #customContentLabelStyleName
+		 * @see #style:customContentLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var contentLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL;
@@ -326,21 +542,7 @@ package feathers.controls.renderers
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
-		 * The location where the renderer's content is aligned horizontally
-		 * (on the x-axis).
-		 *
-		 * <p>In the following example, the horizontal alignment is changed to
-		 * right:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.horizontalAlign = HorizontalAlign.RIGHT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.LEFT
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
-		 * @see feathers.layout.HorizontalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
@@ -352,7 +554,11 @@ package feathers.controls.renderers
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			if(this._horizontalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalAlign === value)
 			{
 				return;
 			}
@@ -367,21 +573,7 @@ package feathers.controls.renderers
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
-		 * The location where the renderer's content is aligned vertically (on
-		 * the y-axis).
-		 *
-		 * <p>In the following example, the vertical alignment is changed to
-		 * bottom:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.verticalAlign = VerticalAlign.BOTTOM;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 * @see feathers.layout.VerticalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -393,7 +585,11 @@ package feathers.controls.renderers
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -827,22 +1023,7 @@ package feathers.controls.renderers
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the content label's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>contentLabelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -854,28 +1035,15 @@ package feathers.controls.renderers
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the content label's text when the
-		 * component is disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>contentLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -887,6 +1055,10 @@ package feathers.controls.renderers
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -943,27 +1115,7 @@ package feathers.controls.renderers
 		protected var _customContentLabelStyleName:String;
 
 		/**
-		 * A style name to add to the renderer's label text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different renderers.
-		 *
-		 * <p>In the following example, a custom label style name is passed to
-		 * the renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.customContentLabelStyleName = "my-custom-header-or-footer-renderer-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-or-footer-label", setCustomHeaderOrFooterLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #contentLabelFactory
+		 * @private
 		 */
 		public function get customContentLabelStyleName():String
 		{
@@ -975,7 +1127,11 @@ package feathers.controls.renderers
 		 */
 		public function set customContentLabelStyleName(value:String):void
 		{
-			if(this._customContentLabelStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customContentLabelStyleName === value)
 			{
 				return;
 			}
@@ -1130,15 +1286,7 @@ package feathers.controls.renderers
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * A background to behind the component's content.
-		 *
-		 * <p>In the following example, the header renderers is given a
-		 * background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1150,11 +1298,18 @@ package feathers.controls.renderers
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -1174,15 +1329,7 @@ package feathers.controls.renderers
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the component is disabled.
-		 *
-		 * <p>In the following example, the header renderers is given a
-		 * disabled background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -1194,11 +1341,18 @@ package feathers.controls.renderers
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundDisabledSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -1213,17 +1367,7 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.padding = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -1247,15 +1391,7 @@ package feathers.controls.renderers
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the component's top edge and
-		 * the component's content.
-		 *
-		 * <p>In the following example, the top padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -1267,7 +1403,11 @@ package feathers.controls.renderers
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -1281,15 +1421,7 @@ package feathers.controls.renderers
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the component's right edge
-		 * and the component's content.
-		 *
-		 * <p>In the following example, the right padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -1301,7 +1433,11 @@ package feathers.controls.renderers
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -1315,15 +1451,7 @@ package feathers.controls.renderers
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the component's bottom edge
-		 * and the component's content.
-		 *
-		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -1335,7 +1463,11 @@ package feathers.controls.renderers
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -1349,15 +1481,7 @@ package feathers.controls.renderers
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the component's left edge
-		 * and the component's content.
-		 * 
-		 * <p>In the following example, the left padding is set to 20 pixels:</p>
-		 * 
-		 * <listing version="3.0">
-		 * renderer.paddingLeft = 20;</listing>
-		 * 
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1369,7 +1493,11 @@ package feathers.controls.renderers
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}

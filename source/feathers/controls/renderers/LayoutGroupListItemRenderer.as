@@ -16,6 +16,21 @@ package feathers.controls.renderers
 	import starling.events.Event;
 
 	/**
+	 * The background to display behind all content when the item renderer
+	 * is selected. The background skin is resized to fill the full width
+	 * and height of the layout group.
+	 *
+	 * <p>In the following example, the group is given a selected background
+	 * skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.backgroundSelectedSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="backgroundSelectedSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * Based on <code>LayoutGroup</code>, this component is meant as a base
 	 * class for creating a custom item renderer for a <code>List</code>
 	 * component.
@@ -192,17 +207,7 @@ package feathers.controls.renderers
 		protected var _backgroundSelectedSkin:DisplayObject;
 
 		/**
-		 * The background to display behind all content when the item renderer
-		 * is selected. The background skin is resized to fill the full width
-		 * and height of the layout group.
-		 *
-		 * <p>In the following example, the group is given a selected background
-		 * skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.backgroundSelectedSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSelectedSkin():DisplayObject
 		{
@@ -214,7 +219,15 @@ package feathers.controls.renderers
 		 */
 		public function set backgroundSelectedSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSelectedSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSelectedSkin === value)
 			{
 				return;
 			}

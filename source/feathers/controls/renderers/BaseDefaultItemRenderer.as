@@ -40,6 +40,383 @@ package feathers.controls.renderers
 	import starling.text.TextFormat;
 
 	/**
+	 * The location of the accessory, relative to one of the other children.
+	 * Use <code>RelativePosition.MANUAL</code> to position the accessory
+	 * from the top-left corner.
+	 *
+	 * <p>In the following example, the accessory is placed on the bottom:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.accessoryPosition = RelativePosition.BOTTOM;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.RIGHT
+	 *
+	 * @see feathers.layout.RelativePosition#TOP
+	 * @see feathers.layout.RelativePosition#RIGHT
+	 * @see feathers.layout.RelativePosition#BOTTOM
+	 * @see feathers.layout.RelativePosition#LEFT
+	 * @see feathers.layout.RelativePosition#MANUAL
+	 * @see #style:layoutOrder
+	 * @see #style:iconPosition
+	 */
+	[Style(name="accessoryPosition",type="String")]
+
+	/**
+	 * Offsets the x position of the accessory by a certain number of pixels.
+	 *
+	 * <p>In the following example, the accessory x position is adjusted by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.accessoryOffsetX = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:accessoryOffsetY
+	 */
+	[Style(name="accessoryOffsetX",type="Number")]
+
+	/**
+	 * Offsets the y position of the accessory by a certain number of pixels.
+	 *
+	 * <p>In the following example, the accessory y position is adjusted by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.accessoryOffsetY = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:accessoryOffsetX
+	 */
+	[Style(name="accessoryOffsetY",type="Number")]
+
+	/**
+	 * The space, in pixels, between the accessory and the other child it is
+	 * positioned relative to. Applies to either horizontal or vertical
+	 * spacing, depending on the value of <code>accessoryPosition</code>. If
+	 * the value is <code>NaN</code>, the value of the <code>gap</code>
+	 * property will be used instead.
+	 *
+	 * <p>If <code>accessoryGap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
+	 * the accessory and the component it is relative to will be positioned
+	 * as far apart as possible.</p>
+	 *
+	 * <p>In the following example, the accessory gap is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.accessoryGap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 * @see #style:accessoryPosition
+	 */
+	[Style(name="accessoryGap",type="Number")]
+
+	/**
+	 * A style name to add to the item renderer's accessory loader
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different item renderers.
+	 *
+	 * <p>In the following example, a custom accessory loader style name is
+	 * passed to the item renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.customAccessoryLoaderStyleName = "my-custom-accessory-loader";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-accessory-loader", setCustomAccessoryLoaderStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #accessoryLoaderFactory
+	 */
+	[Style(name="customAccessoryLoaderStyleName",type="String")]
+
+	/**
+	 * A style name to add to the item renderer's accessory label text
+	 * renderer sub-component. Typically used by a theme to provide
+	 * different styles to different item renderers.
+	 *
+	 * <p>In the following example, a custom accessory label style name is
+	 * passed to the item renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.customAccessoryLabelStyleName = "my-custom-accessory-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-accessory-label", setCustomAccessoryLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #accessoryLabelFactory
+	 */
+	[Style(name="customAccessoryLabelStyleName",type="String")]
+
+	/**
+	 * A style name to add to the item renderer's icon loader sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * item renderers.
+	 *
+	 * <p>In the following example, a custom icon loader style name is passed
+	 * to the item renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.customIconLodaerStyleName = "my-custom-icon-loader";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-icon-loader", setCustomIconLoaderStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LOADER
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #iconLoaderFactory
+	 */
+	[Style(name="customIconLoaderStyleName",type="String")]
+
+	/**
+	 * A style name to add to the item renderer's icon label text renderer
+	 * sub-component. Typically used by a theme to provide  different styles
+	 * to different item renderers.
+	 *
+	 * <p>In the following example, a custom icon label style name is passed
+	 * to the item renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.customIconLabelStyleName = "my-custom-icon-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-icon-label", setCustomIconLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #iconLabelFactory
+	 */
+	[Style(name="customIconLabelStyleName",type="String")]
+
+	/**
+	 * The accessory's position will be based on which other child (the
+	 * label or the icon) the accessory should be relative to.
+	 *
+	 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
+	 * if <code>accessoryPosition</code> is set to <code>RelativePosition.MANUAL</code>.</p>
+	 *
+	 * <p>In the following example, the layout order is changed:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;</listing>
+	 *
+	 * @default feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY
+	 *
+	 * @see feathers.controls.ItemRendererLayoutOrder#LABEL_ICON_ACCESSORY
+	 * @see feathers.controls.ItemRendererLayoutOrder#LABEL_ACCESSORY_ICON
+	 * @see #style:accessoryPosition
+	 * @see #style:iconPosition
+	 */
+	[Style(name="layoutOrder",type="String")]
+
+	/**
+	 * If the value of the <code>accessoryGap</code> property is
+	 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
+	 * fill as much space as possible, the final calculated value will not be
+	 * smaller than the value of the <code>minAccessoryGap</code> property.
+	 * If the value of <code>minAccessoryGap</code> is <code>NaN</code>, the
+	 * value of the <code>minGap</code> property will be used instead.
+	 *
+	 * <p>The following example ensures that the gap is never smaller than
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.gap = Number.POSITIVE_INFINITY;
+	 * button.minGap = 20;</listing>
+	 *
+	 * <listing version="3.0">
+	 * renderer.accessoryGap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:accessoryGap
+	 */
+	[Style(name="minAccessoryGap",type="Number")]
+
+	/**
+	 * The font styles used to display the item renderer's icon label text.
+	 *
+	 * <p>In the following example, the icon label font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.iconLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>iconLabelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:iconLabelDisabledFontStyles
+	 * @see #style:iconLabelSelectedFontStyles
+	 * @see #setIconLabelFontStylesForState()
+	 */
+	[Style(name="iconLabelFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the item renderer's icon label text
+	 * when the item renderer is disabled.
+	 *
+	 * <p>In the following example, the icon label disabled font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.iconLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>iconLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:iconLabelFontStyles
+	 * @see #setIconLabelFontStylesForState()
+	 */
+	[Style(name="iconLabelDisabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the item renderer's icon label text
+	 * when the item renderer is selected.
+	 *
+	 * <p>In the following example, the icon label selected font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.iconLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>iconLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:iconLabelFontStyles
+	 * @see #setIconLabelFontStylesForState()
+	 */
+	[Style(name="iconLabelSelectedFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the item renderer's accessory label
+	 * text.
+	 *
+	 * <p>In the following example, the accessory label font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.accessoryLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>accessoryLabelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:accessoryLabelDisabledFontStyles
+	 * @see #style:accessoryLabelSelectedFontStyles
+	 * @see #setAccessoryLabelFontStylesForState()
+	 */
+	[Style(name="accessoryLabelFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the item renderer's accessory label
+	 * text when the item renderer is disabled.
+	 *
+	 * <p>In the following example, the accessory label disabled font styles
+	 * are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.accessoryLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>accessoryLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #accessoryLabelFontStyles
+	 * @see #setAccessoryLabelFontStylesForState()
+	 */
+	[Style(name="accessoryLabelDisabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the item renderer's accessory label
+	 * text when the item renderer is selected.
+	 *
+	 * <p>In the following example, the accessory label selected font styles
+	 * are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.accessoryLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>accessoryLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #accessoryLabelFontStyles
+	 * @see #setAccessoryLabelFontStylesForState()
+	 */
+	[Style(name="accessoryLabelSelectedFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * If true, the down state (and subsequent state changes) will be delayed
+	 * to improve the user experience when scrolling on a touch screen. Without
+	 * the delay, the down state will appear immediately and then disappear once
+	 * touch-based scrolling begins. This might be described as flickering,
+	 * which is typically undesirable.
+	 *
+	 * <p>In the following example, the state delay timer is disabled:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.useStateDelayTimer = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="useStateDelayTimer",type="Boolean")]
+
+	/**
 	 * An abstract class for item renderer implementations.
 	 */
 	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
@@ -494,7 +871,7 @@ package feathers.controls.renderers
 		 * <p>To customize the icon label text renderer style name without
 		 * subclassing, see <code>customIconLabelStyleName</code>.</p>
 		 *
-		 * @see #customIconLabelStyleName
+		 * @see #style:customIconLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
@@ -509,7 +886,7 @@ package feathers.controls.renderers
 		 * <p>To customize the icon loader style name without subclassing, see
 		 * <code>customIconLoaderStyleName</code>.</p>
 		 *
-		 * @see #customIconLoaderStyleName
+		 * @see #style:customIconLoaderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var iconLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LOADER;
@@ -525,7 +902,7 @@ package feathers.controls.renderers
 		 * <p>To customize the accessory label text renderer style name without
 		 * subclassing, see <code>customAccessoryLabelStyleName</code>.</p>
 		 *
-		 * @see #customAccessoryLabelStyleName
+		 * @see #style:customAccessoryLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
@@ -540,7 +917,7 @@ package feathers.controls.renderers
 		 * <p>To customize the accessory loader style name without subclassing,
 		 * see <code>customAccessoryLoaderStyleName</code>.</p>
 		 *
-		 * @see #customAccessoryLoaderStyleName
+		 * @see #style:customAccessoryLoaderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLoaderStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER;
@@ -714,15 +1091,7 @@ package feathers.controls.renderers
 		protected var _useStateDelayTimer:Boolean = true;
 
 		/**
-		 * If true, the down state (and subsequent state changes) will be
-		 * delayed to make scrolling look nicer.
-		 *
-		 * <p>In the following example, the state delay timer is disabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.useStateDelayTimer = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get useStateDelayTimer():Boolean
 		{
@@ -734,6 +1103,10 @@ package feathers.controls.renderers
 		 */
 		public function set useStateDelayTimer(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._useStateDelayTimer = value;
 		}
 
@@ -963,23 +1336,7 @@ package feathers.controls.renderers
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,manual")]
 		/**
-		 * The location of the accessory, relative to one of the other children.
-		 * Use <code>RelativePosition.MANUAL</code> to position the accessory
-		 * from the top-left corner.
-		 *
-		 * <p>In the following example, the accessory is placed on the bottom:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.accessoryPosition = RelativePosition.BOTTOM;</listing>
-		 *
-		 * @default feathers.layout.RelativePosition.RIGHT
-		 *
-		 * @see feathers.layout.RelativePosition#TOP
-		 * @see feathers.layout.RelativePosition#RIGHT
-		 * @see feathers.layout.RelativePosition#BOTTOM
-		 * @see feathers.layout.RelativePosition#LEFT
-		 * @see feathers.layout.RelativePosition#MANUAL
-		 * @see #layoutOrder
+		 * @private
 		 */
 		public function get accessoryPosition():String
 		{
@@ -991,7 +1348,11 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryPosition(value:String):void
 		{
-			if(this._accessoryPosition == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._accessoryPosition === value)
 			{
 				return;
 			}
@@ -1006,23 +1367,7 @@ package feathers.controls.renderers
 
 		[Inspectable(type="String",enumeration="labelIconAccessory,labelAccessoryIcon")]
 		/**
-		 * The accessory's position will be based on which other child (the
-		 * label or the icon) the accessory should be relative to.
-		 *
-		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>RelativePosition.MANUAL</code>.</p>
-		 *
-		 * <p>In the following example, the layout order is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;</listing>
-		 *
-		 * @default feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY
-		 *
-		 * @see feathers.controls.ItemRendererLayoutOrder#LABEL_ICON_ACCESSORY
-		 * @see feathers.controls.ItemRendererLayoutOrder#LABEL_ACCESSORY_ICON
-		 * @see #accessoryPosition
-		 * @see #iconPosition
+		 * @private
 		 */
 		public function get layoutOrder():String
 		{
@@ -1034,7 +1379,11 @@ package feathers.controls.renderers
 		 */
 		public function set layoutOrder(value:String):void
 		{
-			if(this._layoutOrder == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._layoutOrder === value)
 			{
 				return;
 			}
@@ -1048,16 +1397,7 @@ package feathers.controls.renderers
 		protected var _accessoryOffsetX:Number = 0;
 
 		/**
-		 * Offsets the x position of the accessory by a certain number of pixels.
-		 *
-		 * <p>In the following example, the accessory x position is adjusted by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.accessoryOffsetX = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #accessoryOffsetY
+		 * @private
 		 */
 		public function get accessoryOffsetX():Number
 		{
@@ -1069,7 +1409,11 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryOffsetX(value:Number):void
 		{
-			if(this._accessoryOffsetX == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._accessoryOffsetX === value)
 			{
 				return;
 			}
@@ -1083,16 +1427,7 @@ package feathers.controls.renderers
 		protected var _accessoryOffsetY:Number = 0;
 
 		/**
-		 * Offsets the y position of the accessory by a certain number of pixels.
-		 *
-		 * <p>In the following example, the accessory y position is adjusted by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.accessoryOffsetY = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #accessoryOffsetX
+		 * @private
 		 */
 		public function get accessoryOffsetY():Number
 		{
@@ -1104,7 +1439,11 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryOffsetY(value:Number):void
 		{
-			if(this._accessoryOffsetY == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._accessoryOffsetY === value)
 			{
 				return;
 			}
@@ -1118,25 +1457,7 @@ package feathers.controls.renderers
 		protected var _accessoryGap:Number = NaN;
 
 		/**
-		 * The space, in pixels, between the accessory and the other child it is
-		 * positioned relative to. Applies to either horizontal or vertical
-		 * spacing, depending on the value of <code>accessoryPosition</code>. If
-		 * the value is <code>NaN</code>, the value of the <code>gap</code>
-		 * property will be used instead.
-		 *
-		 * <p>If <code>accessoryGap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
-		 * the accessory and the component it is relative to will be positioned
-		 * as far apart as possible.</p>
-		 *
-		 * <p>In the following example, the accessory gap is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * renderer.accessoryGap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #gap
-		 * @see #accessoryPosition
+		 * @private
 		 */
 		public function get accessoryGap():Number
 		{
@@ -1148,7 +1469,11 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryGap(value:Number):void
 		{
-			if(this._accessoryGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._accessoryGap === value)
 			{
 				return;
 			}
@@ -1162,26 +1487,7 @@ package feathers.controls.renderers
 		protected var _minAccessoryGap:Number = NaN;
 
 		/**
-		 * If the value of the <code>accessoryGap</code> property is
-		 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
-		 * fill as much space as possible, the final calculated value will not be
-		 * smaller than the value of the <code>minAccessoryGap</code> property.
-		 * If the value of <code>minAccessoryGap</code> is <code>NaN</code>, the
-		 * value of the <code>minGap</code> property will be used instead.
-		 *
-		 * <p>The following example ensures that the gap is never smaller than
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.gap = Number.POSITIVE_INFINITY;
-		 * button.minGap = 20;</listing>
-		 *
-		 * <listing version="3.0">
-		 * renderer.accessoryGap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #accessoryGap
+		 * @private
 		 */
 		public function get minAccessoryGap():Number
 		{
@@ -1193,7 +1499,11 @@ package feathers.controls.renderers
 		 */
 		public function set minAccessoryGap(value:Number):void
 		{
-			if(this._minAccessoryGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._minAccessoryGap === value)
 			{
 				return;
 			}
@@ -1888,27 +2198,7 @@ package feathers.controls.renderers
 		protected var _customIconLoaderStyleName:String;
 
 		/**
-		 * A style name to add to the item renderer's icon loader sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * item renderers.
-		 *
-		 * <p>In the following example, a custom icon loader style name is passed
-		 * to the item renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.customIconLodaerStyleName = "my-custom-icon-loader";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-icon-loader", setCustomIconLoaderStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LOADER
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #iconLoaderFactory
+		 * @private
 		 */
 		public function get customIconLoaderStyleName():String
 		{
@@ -1920,7 +2210,11 @@ package feathers.controls.renderers
 		 */
 		public function set customIconLoaderStyleName(value:String):void
 		{
-			if(this._customIconLoaderStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customIconLoaderStyleName === value)
 			{
 				return;
 			}
@@ -1934,27 +2228,7 @@ package feathers.controls.renderers
 		protected var _customIconLabelStyleName:String;
 
 		/**
-		 * A style name to add to the item renderer's icon label text renderer
-		 * sub-component. Typically used by a theme to provide  different styles
-		 * to different item renderers.
-		 *
-		 * <p>In the following example, a custom icon label style name is passed
-		 * to the item renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.customIconLabelStyleName = "my-custom-icon-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-icon-label", setCustomIconLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #iconLabelFactory
+		 * @private
 		 */
 		public function get customIconLabelStyleName():String
 		{
@@ -1966,7 +2240,11 @@ package feathers.controls.renderers
 		 */
 		public function set customIconLabelStyleName(value:String):void
 		{
-			if(this._customIconLabelStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customIconLabelStyleName === value)
 			{
 				return;
 			}
@@ -2393,27 +2671,7 @@ package feathers.controls.renderers
 		protected var _customAccessoryLabelStyleName:String;
 
 		/**
-		 * A style name to add to the item renderer's accessory label text
-		 * renderer sub-component. Typically used by a theme to provide
-		 * different styles to different item renderers.
-		 *
-		 * <p>In the following example, a custom accessory label style name is
-		 * passed to the item renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.customAccessoryLabelStyleName = "my-custom-accessory-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-accessory-label", setCustomAccessoryLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #accessoryLabelFactory
+		 * @private
 		 */
 		public function get customAccessoryLabelStyleName():String
 		{
@@ -2425,7 +2683,11 @@ package feathers.controls.renderers
 		 */
 		public function set customAccessoryLabelStyleName(value:String):void
 		{
-			if(this._customAccessoryLabelStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customAccessoryLabelStyleName === value)
 			{
 				return;
 			}
@@ -2439,27 +2701,7 @@ package feathers.controls.renderers
 		protected var _customAccessoryLoaderStyleName:String;
 
 		/**
-		 * A style name to add to the item renderer's accessory loader
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different item renderers.
-		 *
-		 * <p>In the following example, a custom accessory loader style name is
-		 * passed to the item renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.customAccessoryLoaderStyleName = "my-custom-accessory-loader";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ImageLoader ).setFunctionForStyleName( "my-custom-accessory-loader", setCustomAccessoryLoaderStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #accessoryLoaderFactory
+		 * @private
 		 */
 		public function get customAccessoryLoaderStyleName():String
 		{
@@ -2471,7 +2713,11 @@ package feathers.controls.renderers
 		 */
 		public function set customAccessoryLoaderStyleName(value:String):void
 		{
-			if(this._customAccessoryLoaderStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customAccessoryLoaderStyleName === value)
 			{
 				return;
 			}
@@ -3020,25 +3266,7 @@ package feathers.controls.renderers
 		protected var _iconLabelFontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the item renderer's icon label text.
-		 *
-		 * <p>In the following example, the icon label font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.iconLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>iconLabelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #iconLabelDisabledFontStyles
-		 * @see #iconLabelSelectedFontStyles
-		 * @see #setIconLabelFontStylesForState()
+		 * @private
 		 */
 		public function get iconLabelFontStyles():TextFormat
 		{
@@ -3050,29 +3278,15 @@ package feathers.controls.renderers
 		 */
 		public function set iconLabelFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._iconLabelFontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the item renderer's icon label text
-		 * when the item renderer is disabled.
-		 *
-		 * <p>In the following example, the icon label disabled font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.iconLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>iconLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #iconLabelFontStyles
+		 * @private
 		 */
 		public function get iconLabelDisabledFontStyles():TextFormat
 		{
@@ -3084,29 +3298,15 @@ package feathers.controls.renderers
 		 */
 		public function set iconLabelDisabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._iconLabelFontStylesSet.disabledFormat = value;
 		}
 
 		/**
-		 * The font styles used to display the item renderer's icon label text
-		 * when the item renderer is selected.
-		 *
-		 * <p>In the following example, the icon label selected font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.iconLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>iconLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #iconLabelFontStyles
+		 * @private
 		 */
 		public function get iconLabelSelectedFontStyles():TextFormat
 		{
@@ -3118,6 +3318,10 @@ package feathers.controls.renderers
 		 */
 		public function set iconLabelSelectedFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._iconLabelFontStylesSet.selectedFormat = value;
 		}
 
@@ -3310,26 +3514,7 @@ package feathers.controls.renderers
 		protected var _accessoryLabelFontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the item renderer's accessory label
-		 * text.
-		 *
-		 * <p>In the following example, the accessory label font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.accessoryLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>accessoryLabelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #accessoryLabelDisabledFontStyles
-		 * @see #accessoryLabelSelectedFontStyles
-		 * @see #setAccessoryLabelFontStylesForState()
+		 * @private
 		 */
 		public function get accessoryLabelFontStyles():TextFormat
 		{
@@ -3341,29 +3526,15 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryLabelFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._accessoryLabelFontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the item renderer's accessory label
-		 * text when the item renderer is disabled.
-		 *
-		 * <p>In the following example, the accessory label disabled font styles
-		 * are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.accessoryLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>accessoryLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #accessoryLabelFontStyles
+		 * @private
 		 */
 		public function get accessoryLabelDisabledFontStyles():TextFormat
 		{
@@ -3375,29 +3546,15 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryLabelDisabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._accessoryLabelFontStylesSet.disabledFormat = value;
 		}
 
 		/**
-		 * The font styles used to display the item renderer's accessory label
-		 * text when the item renderer is selected.
-		 *
-		 * <p>In the following example, the accessory label selected font styles
-		 * are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * itemRenderer.accessoryLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>accessoryLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #accessoryLabelFontStyles
+		 * @private
 		 */
 		public function get accessoryLabelSelectedFontStyles():TextFormat
 		{
@@ -3409,6 +3566,10 @@ package feathers.controls.renderers
 		 */
 		public function set accessoryLabelSelectedFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._accessoryLabelFontStylesSet.selectedFormat = value;
 		}
 
