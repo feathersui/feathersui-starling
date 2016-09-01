@@ -67,31 +67,9 @@ Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.ht
 
 The skins for a `ScrollContainer` control are mainly the background skins and some basic styles, and the scroll bars may be skinned too. For full details about what skin and style properties are available, see the [`ScrollContainer` API reference](../api-reference/feathers/controls/ScrollContainer.html). We'll look at a few of the most common ways of styling a scroll container below.
 
-### Using a theme? Some tips for customizing an individual scroll container's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the scroll container's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var container:ScrollContainer = new ScrollContainer();
-function setExtraScrollContainerStyles( container:ScrollContainer ):void
-{
-    var skin:Image = new Image( texture );
-    skin.scale9Grid = new Rectangle( 2, 1, 3, 6 );
-    container.backgroundSkin = skin;
-}
-container.styleProvider = new AddOnFunctionStyleProvider(
-    container.styleProvider, setExtraScrollContainerStyles );
-```
-
-Our changes only affect the background skin. The scroll container will continue to use the theme's padding and other styles.
-
 ### Background Skins
 
-As we saw above, we can give the `ScrollContainer` a background skin that stretches to fill the entire width and height of the scroll container. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+We can give the `ScrollContainer` a background skin that stretches to fill the entire width and height of the scroll container. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
 ``` code
 var skin:Image = new Image( texture );

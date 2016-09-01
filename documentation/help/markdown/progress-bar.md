@@ -40,28 +40,6 @@ progress.direction = Direction.VERTICAL;
 
 A progress bar provides a number of properties that can be used to customize its appearance. For full details about what skin and style properties are available, see the [`ProgressBar` API reference](../api-reference/feathers/controls/ProgressBar.html). We'll look at a few of the most common ways of styling a progress bar below.
 
-### Using a theme? Some tips for customizing an individual progress bar's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the progress bar's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var progress:ProgressBar = new ProgressBar();
-function setExtraProgressBarStyles( progress:ProgressBar ):void
-{
-    var skin:Image = new Image( texture );
-    skin.scale9Grid = new Rectangle( 2, 1, 3, 6 );
-    progress.backgroundSkin = skin;
-}
-progress.styleProvider = new AddOnFunctionStyleProvider(
-    progress.styleProvider, setExtraProgressBarStyles );
-```
-
-Our changes only affect the background skin. The progress bar will continue to use the theme's other styles.
-
 ### Background and fill skins
 
 The [`backgroundSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundSkin) and [`fillSkin`](../api-reference/feathers/controls/ProgressBar.html#fillSkin) properties are used to customize the appearance of the progress bar.

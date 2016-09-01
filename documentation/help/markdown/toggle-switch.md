@@ -46,32 +46,9 @@ function toggle_changeHandler( event:Event ):void
 
 The skins for a `ToggleSwitch` control are divided into the thumb, labels for off and on text, and one or two tracks. For full details about what skin and style properties are available, see the [`ToggleSwitch` API reference](../api-reference/feathers/controls/ToggleSwitch.html). We'll look at a few of the most common ways of styling a toggle switch below.
 
-### Using a theme? Some tips for customizing an individual toggle switch's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the toggle switch label font styles with an `AddOnFunctionStyleProvider`:
-
-``` code
-var toggle:ToggleSwitch = new ToggleSwitch();
-function setExtraToggleSwitchStyles( toggle:ToggleSwitch ):void
-{
-    toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
-    toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0x000000 );
-}
-toggle.styleProvider = new AddOnFunctionStyleProvider(
-    toggle.styleProvider, setExtraToggleSwitchStyles );
-```
-
-Our changes only affect the font styles. The toggle switch will continue to use the theme's other styles.
-
-<aside class="warn">If you want to customize the styles of the thumb or track sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `thumbFactory` or `onTrackFactory`.</aside>
-
 ### Font styles
 
-As we saw above, font styles of the labels may be customized using the [`onLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#onLabelFontStyles) and [`offLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#offLabelFontStyles) properties.
+The font styles of the on and off labels may be customized using the [`onLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#onLabelFontStyles) and [`offLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#offLabelFontStyles) properties, respectively.
 
 ``` code
 toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );

@@ -41,29 +41,9 @@ Set the [`wordWrap`](../api-reference/feathers/controls/Label.as#wordWrap) prope
 
 A number of styles may be customized on a label, including the font styles, the background skin, and padding. For full details about which properties are available, see the [`Label` API reference](../api-reference/feathers/controls/Label.html). We'll look at a few of the most common ways of styling a label below.
 
-### Using a theme? Some tips for customizing an individual label's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the label's `fontStyles` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var label:Label = new Label();
-function setExtraLabelStyles( label:Label ):void
-{
-	label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
-}
-label.styleProvider = new AddOnFunctionStyleProvider(
-	label.styleProvider, setExtraLabelStyles );
-```
-
-Our changes only affect the font styles. The label will continue to use the theme's background skins, padding, and other styles.
-
 ### Font styles
 
-As we saw above, font styles of the label may be customized using the [`fontStyles`](../api-reference/feathers/controls/Label.html#fontStyles) property.
+The font styles of the label may be customized using the [`fontStyles`](../api-reference/feathers/controls/Label.html#fontStyles) property.
 
 ``` code
 label.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );

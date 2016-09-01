@@ -57,28 +57,6 @@ function spinner_changeHandler( event:Event ):void
 
 The skins for a `DateTimeSpinner` control are divided into multiple [`SpinnerList`](spinner-list.html) components. For full details about which properties are available, see the [`DateTimeSpinner` API reference](../api-reference/feathers/controls/DateTimeSpinner.html). We'll look at a few of the most common properties below.
 
-### Using a theme? Some tips for customizing the styles of an individual `DateTimeSpinner`
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the `scrollDuration` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var dateSpinner:DateTimeSpinner = new DateTimeSpinner();
-function setExtraDateTimeSpinnerStyles( dateSpinner:DateTimeSpinner ):void
-{
-	dateSpinner.scrollDuration = 1.0;
-}
-dateSpinner.styleProvider = new AddOnFunctionStyleProvider(
-	dateSpinner.styleProvider, setExtraDateTimeSpinnerStyles );
-```
-
-Our changes only affect the `scrollDuration` property. The `DateTimeSpinner` will continue to use the theme's skins and styles.
-
-<aside class="warn">If you want to customize the styles of the list sub-components outside of the theme, they require their own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` inside the `listFactory`.</aside>
-
 ### Skinning the `SpinnerList` sub-components
 
 This section only explains how to access the `SpinnerList` sub-components. Please read [How to use the Feathers `SpinnerList` component](spinner-list.html) for full details about the skinning properties that are available on `SpinnerList` components.

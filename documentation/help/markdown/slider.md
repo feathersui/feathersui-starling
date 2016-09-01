@@ -65,29 +65,6 @@ When the slider is horizontal, the minimum value is on the left and the maximum 
 
 The skins for a `Slider` control are divided into the thumb and one or two tracks. For full details about what skin and style properties are available, see the [`Slider` API reference](../api-reference/feathers/controls/Slider.html). We'll look at a few of the most common properties below.
 
-### Using a theme? Some tips for customizing an individual slider's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the slider's track padding with an `AddOnFunctionStyleProvider`:
-
-``` code
-var slider:Slider = new Slider();
-function setExtraSliderStyles( slider:Slider ):void
-{
-    slider.minimumPadding = 6;
-    slider.maximumPadding = 6;
-}
-slider.styleProvider = new AddOnFunctionStyleProvider(
-    slider.styleProvider, setExtraSliderStyles );
-```
-
-Our changes only affect the padding. The slider will continue to use the theme's other styles.
-
-<aside class="warn">If you want to customize the styles of the thumb or track sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `thumbFactory` or `minimumTrackFactory`.</aside>
-
 ### Track(s) and Layout
 
 The slider's track is made from either one or two buttons, depending on the value of the [`trackLayoutMode`](../api-reference/feathers/controls/Slider.html#trackLayoutMode) property. The default value of this property is [`TrackLayoutMode.SINGLE`](../api-reference/feathers/controls/TrackLayoutMode.html#SINGLE), which creates a single track that fills the entire width or height of the slider (depending on the slider's direction).

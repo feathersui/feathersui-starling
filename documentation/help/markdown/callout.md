@@ -87,30 +87,9 @@ If you've created a [custom theme](custom-themes.html), you can set a styling fu
 
 Callouts have a number of skin and style properties to let you customize their appearance. For full details about which properties are available, see the [`Callout` API reference](../api-reference/feathers/controls/Callout.html). We'll look at a few of the most common ways of styling a callout below.
 
-### Using a theme? Some tips for customizing an individual callout's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the callout's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
-
-``` code
-function setExtraCalloutStyles( callout:Callout ):void
-{
-    var skin:Image = new Image( texture );
-    skin.scale9Grid = new Rectangle( 2, 3, 1, 6 );
-    callout.backgroundSkin = skin;
-}
-callout.styleProvider = new AddOnFunctionStyleProvider(
-    callout.styleProvider, setExtraCalloutStyles );
-```
-
-Our changes only affect the background skin. The callout will continue to use the theme's padding, gap, and other styles.
-
 ### Background and arrow skins
 
-Let's look at the background skin, which is the skin that appears behind the callout's content. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+Let's give the callout a background skin that appears behind the content and stretches to fill the entire width and height of the callout. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
 ``` code
 var skin:Image = new Image( enabledTexture );

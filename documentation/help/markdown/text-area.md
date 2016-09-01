@@ -106,29 +106,9 @@ In the example above, we restrict to numeric values only.
 
 A text area provides a number of properties to customize its appearance. For full details about what skin and style properties are available, see the [`TextArea` API reference](../api-reference/feathers/controls/TextArea.html). We'll look at a few of the most common ways of styling a text area below.
 
-### Using a theme? Some tips for customizing an individual text area's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the text area's font styles with an `AddOnFunctionStyleProvider`:
-
-``` code
-var textArea:TextArea = new TextArea();
-function setExtraTextAreaStyles( textArea:TextArea ):void
-{
-    textArea.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
-}
-textArea.styleProvider = new AddOnFunctionStyleProvider(
-    textArea.styleProvider, setExtraTextAreaStyles );
-```
-
-Our changes only affect the font styles. The text area will continue to use the theme's background skin, padding, and other styles.
-
 ### Font Styles
 
-As we saw above, the text area's font styles may be customized using the [`fontStyles`](../api-reference/feathers/controls/TextArea.html#fontStyles) property.
+The text area's font styles may be customized using the [`fontStyles`](../api-reference/feathers/controls/TextArea.html#fontStyles) property.
 
 ``` code
 textArea.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );

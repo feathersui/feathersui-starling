@@ -56,28 +56,6 @@ function stepper_changeHandler( event:Event ):void
 
 The skins for a `NumericStepper` control are divided into three parts. There are the increment and decrement buttons and the text input. There are a few different layout modes that control where the buttons are placed relative to the text input. For full details about what skin and style properties are available, see the [`NumericStepper` API reference](../api-reference/feathers/controls/NumericStepper.html). We'll look at a few of the most common properties below.
 
-### Using a theme? Some tips for customizing an individual numeric stepper's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the numeric stepper's `buttonLayoutMode` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var stepper:NumericStepper = new NumericStepper();
-function setExtraNumericStepperStyles( stepper:NumericStepper ):void
-{
-    stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_VERTICAL;
-}
-stepper.styleProvider = new AddOnFunctionStyleProvider(
-    stepper.styleProvider, setExtraNumericStepperStyles );
-```
-
-Our changes only affect the layout of the buttons. The numeric stepper will continue to use the theme's other styles.
-
-<aside class="warn">If you want to customize the styles of the buttons or text input sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `incrementButtonFactory` or `textInputFactory`.</aside>
-
 ### Layout
 
 The numeric stepper's layout can be customized to place the buttons in different locations. In the example below, we place the buttons on the right side of the text input, stacked vertically, like you see with many desktop numeric steppers using [`StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#RIGHT_SIDE_VERTICAL):

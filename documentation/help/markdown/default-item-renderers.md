@@ -124,30 +124,6 @@ Finally, similar to `itemHasIcon`, it's possible to skin the accessory without p
 
 The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class is a subclass of the [`ToggleButton`](toggle-button.html) component. Like a button, the default item renderer can change its background skin based on the touch state, and it supports different background skins when selected too. Similarly, an item renderer may have both a label and an icon, and all of the layout options used by buttons for alignment, gap, and padding apply to an item renderer too. For full details about these inherited properties, see [How to use the Feathers `Button` component](button.html) and [How to use the Feathers `ToggleButton` component](toggle-button.html). For full details about which properties are available to item renderers, see the [`DefaultListItemRenderer` API reference](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html). We'll look at a few of the most common ways of styling an item renderer below.
 
-### Using a theme? Some tips for customizing the styles of item renderers in an individual list
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize the item renderers in an individual list, you should pass a custom value to the list's [`customItemRendererStyleName`](../api-reference/feathers/controls/List.html#customItemRendererStyleName) property and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the item renderer's label `fontStyles` with an `AddOnFunctionStyleProvider`:
-
-``` code
-function setExtraItemRendererStyles( itemRenderer:DefaultListItemRenderer ):void
-{
-	button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
-}
-list.itemRendererFactory = function():IListItemRenderer
-{
-	var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-	itemRenderer.styleProvider = new AddOnFunctionStyleProvider(
-		itemRenderer.styleProvider, setExtraItemRendererStyles );
-	return itemRenderer;
-};
-```
-
-Our changes only affect the font styles. The item renderer will continue to use the theme's background skins, padding, and other styles.
-
 ### Font styles
 
 If the item renderer's accessory is a label set using `accessoryLabelField` or `accessoryLabelFunction`, we can customize its font styles using the [`accessoryLabelFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelFontStyles) property.

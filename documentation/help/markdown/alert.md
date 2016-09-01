@@ -116,30 +116,9 @@ If you're working with a [theme](themes.html), you can set a custom styling func
 
 A number of styles may be customized on an alert, including the message font styles, the background skin, and an optional icon. Additionally, alert has some sub-components that may be styled, including the header and the button group. For full details about which properties are available, see the [`Alert` API reference](../api-reference/feathers/controls/Alert.html). We'll look at a few of the most common ways of styling an alert below.
 
-### Using a theme? Some tips for customizing an individual alert's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the alert's message `fontStyles` with an `AddOnFunctionStyleProvider`:
-
-``` code
-function setExtraAlertStyles( alert:Alert ):void
-{
-	alert.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
-}
-alert.styleProvider = new AddOnFunctionStyleProvider(
-	alert.styleProvider, setExtraAlertStyles );
-```
-
-Our changes only affect the font styles. The alert will continue to use the theme's background skins, padding, and other styles.
-
-<aside class="warn">If you want to customize the styles of the header or button group sub-components outside of the theme, each requires its own, separate `AddOnFunctionStyleProvider`. Create the `AddOnFunctionStyleProvider` for a sub-component inside its factory, such as `headerFactory` or `buttonGroupFactory`.</aside>
-
 ### Font styles
 
-As we saw above, the font styles of the alert's message may be customized using the [`fontStyles`](../api-reference/feathers/controls/Alert.html#fontStyles) and [`disabledFontStyles`](../api-reference/feathers/controls/Alert.html#disabledFontStyles) properties:
+The font styles of the alert's message may be customized using the [`fontStyles`](../api-reference/feathers/controls/Alert.html#fontStyles) and [`disabledFontStyles`](../api-reference/feathers/controls/Alert.html#disabledFontStyles) properties:
 
 ``` code
 alert.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );

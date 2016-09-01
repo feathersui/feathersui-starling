@@ -129,31 +129,9 @@ list.allowMultipleSelection = true;
 
 A list has a background skin and a layout. Much of the ability to customize the appearance of a list exists inside the item renderer components, such as their font styles and backgrounds for different states. For full details about which properties are available on a `List`, see the [`List` API reference](../api-reference/feathers/controls/List.html). We'll look at a few of the most common ways of styling a list below.
 
-### Using a theme? Some tips for customizing an individual list's styles
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the list's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var list:List = new List();
-function setExtraListStyles( list:List ):void
-{
-    var skin:Image = new Image( texture );
-    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
-    list.backgroundSkin = skin;
-}
-list.styleProvider = new AddOnFunctionStyleProvider(
-    list.styleProvider, setExtraListStyles );
-```
-
-Our changes only affect the background skin. The list will continue to use the theme's other styles.
-
 ### Background skin
 
-As we saw above, we can give the list a background skin that fills the entire width and height of the list. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+We can give the list a background skin that fills the entire width and height of the list. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
 ``` code
 var skin:Image = new Image( texture );

@@ -66,31 +66,9 @@ Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.ht
 
 The `LayoutGroup` control are mainly the background skins. For full details about which properties are available, see the [`LayoutGroup` API reference](../api-reference/feathers/controls/LayoutGroup.html). We'll look at a few of the most common ways of styling a `LayoutGroup` below.
 
-### Using a theme? Some tips for customizing styles of an individual `LayoutGroup`
-
-A [theme](themes.html) does not style a component until the component initializes. This is typically when the component is added to stage. If you try to pass skins or font styles to the component before the theme has been applied, they may be replaced by the theme! Let's learn how to avoid that.
-
-As a best practice, when you want to customize an individual component, you should add a custom value to the component's [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) and [extend the theme](extending-themes.html). However, it's also possible to use an [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) outside of the theme, if you prefer. This class will call a function after the theme has applied its styles, so that you can make a few tweaks to the default styles.
-
-In the following example, we customize the group's `backgroundSkin` with an `AddOnFunctionStyleProvider`:
-
-``` code
-var group:LayoutGroup = new LayoutGroup();
-function setExtraLayoutGroupStyles( group:LayoutGroup ):void
-{
-	var skin:Image = new Image( texture );
-	skin.scale9Grid = new Rectangle( 2, 1, 3, 6 );
-	group.backgroundSkin = skin;
-}
-group.styleProvider = new AddOnFunctionStyleProvider(
-	group.styleProvider, setExtraLayoutGroupStyles );
-```
-
-Our changes only affect the background skin. The group will continue to use any other styles from the theme.
-
 ### Background skins
 
-As we saw above, we can give the `LayoutGroup` a background skin that stretches to fill the entire width and height of the group. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+We can give the `LayoutGroup` a background skin that stretches to fill the entire width and height of the group. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
 ``` code
 var skin:Image = new Image( texture );
