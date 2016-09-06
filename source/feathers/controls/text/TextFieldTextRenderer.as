@@ -269,6 +269,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _currentVerticalAlign:String;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlignOffsetY:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _textFormatForState:Object;
 
 		/**
@@ -1239,7 +1249,7 @@ package feathers.controls.text
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
 				}
-				offsetY += this.getVerticalAlignmentOffsetY() * scaleFactor;
+				offsetY += this._verticalAlignOffsetY * scaleFactor;
 
 				var snapshotIndex:int = -1;
 				var totalBitmapWidth:Number = this._snapshotWidth;
@@ -1411,6 +1421,7 @@ package feathers.controls.text
 
 			this._hasMeasured = false;
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+			this._verticalAlignOffsetY = this.getVerticalAlignOffsetY();
 
 			this.layout(sizeInvalid);
 		}
@@ -1866,6 +1877,11 @@ package feathers.controls.text
 			{
 				textFormat = this.getTextFormatFromFontStyles();
 			}
+			else
+			{
+				//if using flash.text.TextFormat, vertical align is always top
+				this._currentVerticalAlign = Align.TOP;
+			}
 			this._currentTextFormat = textFormat;
 		}
 
@@ -1885,11 +1901,13 @@ package feathers.controls.text
 				if(fontStylesFormat !== null)
 				{
 					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+					this._currentVerticalAlign = fontStylesFormat.verticalAlign;
 				}
 				else if(this._fontStylesTextFormat === null)
 				{
 					//fallback to a default so that something is displayed
 					this._fontStylesTextFormat = new flash.text.TextFormat();
+					this._currentVerticalAlign = Align.TOP;
 				}
 			}
 			return this._fontStylesTextFormat;
@@ -1898,40 +1916,18 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function getVerticalAlignment():String
+		protected function getVerticalAlignOffsetY():Number
 		{
-			var verticalAlign:String = null;
-			if(this._fontStyles !== null)
-			{
-				var format:starling.text.TextFormat = this._fontStyles.getTextFormatForTarget(this);
-				if(format !== null)
-				{
-					verticalAlign = format.verticalAlign;
-				}
-			}
-			if(verticalAlign === null)
-			{
-				verticalAlign = Align.TOP;
-			}
-			return verticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function getVerticalAlignmentOffsetY():Number
-		{
-			var verticalAlign:String = this.getVerticalAlignment();
 			var textFieldTextHeight:Number = this.textField.textHeight;
 			if(textFieldTextHeight > this.actualHeight)
 			{
 				return 0;
 			}
-			if(verticalAlign === Align.BOTTOM)
+			if(this._currentVerticalAlign === Align.BOTTOM)
 			{
 				return this.actualHeight - textFieldTextHeight;
 			}
-			else if(verticalAlign === Align.CENTER)
+			else if(this._currentVerticalAlign === Align.CENTER)
 			{
 				return (this.actualHeight - textFieldTextHeight) / 2;
 			}

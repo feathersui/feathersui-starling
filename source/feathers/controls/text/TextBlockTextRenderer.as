@@ -427,6 +427,21 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _currentVerticalAlign:String;
+
+		/**
+		 * @private
+		 */
+		protected var _currentHorizontalAlign:String;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlignOffsetY:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _elementFormatForState:Object;
 
 		/**
@@ -1334,7 +1349,7 @@ package feathers.controls.text
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
 				}
-				offsetY += this.getVerticalAlignmentOffsetY() * scaleFactor;
+				offsetY += this._verticalAlignOffsetY * scaleFactor;
 
 				var snapshotIndex:int = -1;
 				var totalBitmapWidth:Number = this._snapshotWidth;
@@ -1508,6 +1523,7 @@ package feathers.controls.text
 			this.commit();
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+			this._verticalAlignOffsetY = this.getVerticalAlignOffsetY();
 
 			this.layout(sizeInvalid);
 		}
@@ -1902,6 +1918,15 @@ package feathers.controls.text
 			{
 				elementFormat = this.getElementFormatFromFontStyles();
 			}
+			else
+			{
+				//if using ElementFormat, vertical align is always top
+				this._currentVerticalAlign = Align.TOP;
+			}
+			if(this._textAlign !== null)
+			{
+				this._currentHorizontalAlign = this._textAlign;
+			}
 			if(this._textElement === null)
 			{
 				return;
@@ -1946,11 +1971,15 @@ package feathers.controls.text
 					var fontDescription:FontDescription =
 						new FontDescription(textFormat.font, fontWeight, fontPosture, fontLookup);
 					this._fontStylesElementFormat = new ElementFormat(fontDescription, textFormat.size, textFormat.color);
+					this._currentVerticalAlign = textFormat.verticalAlign;
+					this._currentHorizontalAlign = textFormat.horizontalAlign;
 				}
 				else if(this._fontStylesElementFormat === null)
 				{
 					//fallback to a default so that something is displayed
 					this._fontStylesElementFormat = new ElementFormat();
+					this._currentVerticalAlign = Align.TOP;
+					this._currentHorizontalAlign = Align.LEFT;
 				}
 			}
 			return this._fontStylesElementFormat;
@@ -2354,7 +2383,7 @@ package feathers.controls.text
 			{
 				//no need to align the measurement text lines because they won't
 				//be rendered
-				this.alignTextLines(textLines, width, this.getHorizontalAlignment());
+				this.alignTextLines(textLines, width, this._currentHorizontalAlign);
 			}
 
 			inactiveTextLineCount = HELPER_TEXT_LINES.length;
@@ -2380,60 +2409,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function getHorizontalAlignment():String
+		protected function getVerticalAlignOffsetY():Number
 		{
-			var horizontalAlign:String = this._textAlign;
-			if(horizontalAlign === null && this._fontStyles !== null)
-			{
-				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
-				if(format !== null)
-				{
-					horizontalAlign = format.horizontalAlign;
-				}
-			}
-			if(horizontalAlign === null)
-			{
-				horizontalAlign = HorizontalAlign.LEFT;
-			}
-			return horizontalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function getVerticalAlignment():String
-		{
-			var verticalAlign:String = null;
-			if(this._fontStyles !== null)
-			{
-				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
-				if(format !== null)
-				{
-					verticalAlign = format.verticalAlign;
-				}
-			}
-			if(verticalAlign === null)
-			{
-				verticalAlign = Align.TOP;
-			}
-			return verticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function getVerticalAlignmentOffsetY():Number
-		{
-			var verticalAlign:String = this.getVerticalAlignment();
 			if(this._textLineContainer.height > this.actualHeight)
 			{
 				return 0;
 			}
-			if(verticalAlign === Align.BOTTOM)
+			if(this._currentVerticalAlign === Align.BOTTOM)
 			{
 				return (this.actualHeight - this._textLineContainer.height);
 			}
-			else if(verticalAlign === Align.CENTER)
+			else if(this._currentVerticalAlign === Align.CENTER)
 			{
 				return (this.actualHeight - this._textLineContainer.height) / 2;
 			}

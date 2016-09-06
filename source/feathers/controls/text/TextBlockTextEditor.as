@@ -1047,7 +1047,7 @@ package feathers.controls.text
 			var cursorX:Number = this.getXPositionOfCharIndex(index);
 			cursorX = int(cursorX - (this._cursorSkin.width / 2));
 			this._cursorSkin.x = cursorX;
-			this._cursorSkin.y = this.getVerticalAlignmentOffsetY();
+			this._cursorSkin.y = this._verticalAlignOffsetY;
 			if(this._textLines.length > 0)
 			{
 				var line:TextLine = this._textLines[0];
@@ -1142,7 +1142,7 @@ package feathers.controls.text
 			}
 			this._selectionSkin.x = startX;
 			this._selectionSkin.width = endX - startX;
-			this._selectionSkin.y = this.getVerticalAlignmentOffsetY();
+			this._selectionSkin.y = this._verticalAlignOffsetY;
 			if(this._textLines.length > 0)
 			{
 				var line:TextLine = this._textLines[0];
