@@ -631,7 +631,7 @@ package feathers.controls
 			this._listCollection = new ListCollection();
 			if(!this._popUpContentManager)
 			{
-				this.popUpContentManager = new DropDownPopUpContentManager();
+				this._popUpContentManager = new DropDownPopUpContentManager();
 			}
 		}
 

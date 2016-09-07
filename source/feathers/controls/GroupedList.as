@@ -2907,7 +2907,7 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			var hasLayout:Boolean = this._layout != null;
+			var hasLayout:Boolean = this._layout !== null;
 
 			super.initialize();
 
@@ -2927,7 +2927,7 @@ package feathers.controls
 				{
 					//so that the elastic edges work even when the max scroll
 					//position is 0, similar to iOS.
-					this.verticalScrollPolicy = ScrollPolicy.ON;
+					this._verticalScrollPolicy = ScrollPolicy.ON;
 				}
 
 				var layout:VerticalLayout = new VerticalLayout();
@@ -2937,7 +2937,7 @@ package feathers.controls
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.verticalAlign = VerticalAlign.TOP;
 				layout.stickyHeader = !this._styleNameList.contains(ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST);
-				this.layout = layout;
+				this._layout = layout;
 			}
 		}
 

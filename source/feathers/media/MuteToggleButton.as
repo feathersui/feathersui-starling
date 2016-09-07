@@ -537,12 +537,12 @@ package feathers.media
 		 */
 		override protected function initialize():void
 		{
-			if(!this._popUpContentManager)
+			if(this._popUpContentManager === null)
 			{
 				var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
 				popUpContentManager.fitContentMinWidthToOrigin = false;
 				popUpContentManager.primaryDirection = DropDownPopUpContentManager.PRIMARY_DIRECTION_UP;
-				this.popUpContentManager = popUpContentManager;
+				this._popUpContentManager = popUpContentManager;
 			}
 			super.initialize();
 		}

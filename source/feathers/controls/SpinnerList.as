@@ -274,7 +274,7 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(this._layout == null)
+			if(this._layout === null)
 			{
 				if(this._hasElasticEdges &&
 					this._verticalScrollPolicy === ScrollPolicy.AUTO &&
@@ -282,7 +282,7 @@ package feathers.controls
 				{
 					//so that the elastic edges work even when the max scroll
 					//position is 0, similar to iOS.
-					this.verticalScrollPolicy = ScrollPolicy.ON;
+					this._verticalScrollPolicy = ScrollPolicy.ON;
 				}
 
 				var layout:VerticalSpinnerLayout = new VerticalSpinnerLayout();
@@ -291,7 +291,7 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
-				this.layout = layout;
+				this._layout = layout;
 			}
 
 			super.initialize();

@@ -840,11 +840,11 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.layout)
+			if(this._layout === null)
 			{
 				var layout:VerticalLayout = new VerticalLayout();
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-				this.layout = layout;
+				this._layout = layout;
 			}
 			super.initialize();
 		}

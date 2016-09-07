@@ -1298,7 +1298,7 @@ package feathers.controls
 			}
 			this.button.hideFocus();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1309,20 +1309,20 @@ package feathers.controls
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				if(SystemUtil.isDesktop)
 				{
-					this.popUpContentManager = new DropDownPopUpContentManager();
+					this._popUpContentManager = new DropDownPopUpContentManager();
 				}
 				else if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
-					this.popUpContentManager = new CalloutPopUpContentManager();
+					this._popUpContentManager = new CalloutPopUpContentManager();
 				}
 				else
 				{
-					this.popUpContentManager = new VerticalCenteredPopUpContentManager();
+					this._popUpContentManager = new VerticalCenteredPopUpContentManager();
 				}
 			}
 			super.initialize();
 		}
-		
+
 		/**
 		 * @private
 		 */

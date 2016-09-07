@@ -40,9 +40,9 @@ package feathers.media
 		 */
 		override protected function initialize():void
 		{
-			if(!this._layout)
+			if(this._layout === null)
 			{
-				this.layout = new AnchorLayout();
+				this._layout = new AnchorLayout();
 			}
 			super.initialize();
 		}
