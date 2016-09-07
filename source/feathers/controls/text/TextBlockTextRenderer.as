@@ -1323,9 +1323,9 @@ package feathers.controls.text
 			if(this.textSnapshot !== null)
 			{
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				if(this._updateSnapshotOnScaleChange)
 				{
+					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 					if(globalScaleX != this._lastGlobalScaleX ||
