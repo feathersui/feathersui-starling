@@ -24,6 +24,19 @@ package feathers.media
 	import starling.events.TouchPhase;
 
 	/**
+	 * A manager that handles the details of how to display the pop-up
+	 * volume slider.
+	 *
+	 * <p>In the following example, a pop-up content manager is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.popUpContentManager = new CalloutPopUpContentManager();</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="popUpContentManager",type="feathers.controls.popups.IPopUpContentManager")]
+
+	/**
 	 * Dispatched when the pop-up volume slider is opened.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -203,15 +216,7 @@ package feathers.media
 		protected var _popUpContentManager:IPopUpContentManager;
 
 		/**
-		 * A manager that handles the details of how to display the pop-up
-		 * volume slider.
-		 *
-		 * <p>In the following example, a pop-up content manager is provided:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.popUpContentManager = new CalloutPopUpContentManager();</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get popUpContentManager():IPopUpContentManager
 		{
@@ -223,7 +228,11 @@ package feathers.media
 		 */
 		public function set popUpContentManager(value:IPopUpContentManager):void
 		{
-			if(this._popUpContentManager == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._popUpContentManager === value)
 			{
 				return;
 			}

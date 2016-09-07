@@ -54,6 +54,18 @@ package feathers.controls
 	[Style(name="customListStyleName",type="String")]
 
 	/**
+	 * A manager that handles the details of how to display the pop-up list.
+	 *
+	 * <p>In the following example, a pop-up content manager is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.popUpContentManager = new CalloutPopUpContentManager();</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="popUpContentManager",type="feathers.controls.popups.IPopUpContentManager")]
+
+	/**
 	 * Dispatched when the pop-up list is opened.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -326,14 +338,7 @@ package feathers.controls
 		protected var _popUpContentManager:IPopUpContentManager;
 
 		/**
-		 * A manager that handles the details of how to display the pop-up list.
-		 *
-		 * <p>In the following example, a pop-up content manager is provided:</p>
-		 *
-		 * <listing version="3.0">
-		 * input.popUpContentManager = new CalloutPopUpContentManager();</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get popUpContentManager():IPopUpContentManager
 		{
@@ -345,7 +350,11 @@ package feathers.controls
 		 */
 		public function set popUpContentManager(value:IPopUpContentManager):void
 		{
-			if(this._popUpContentManager == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._popUpContentManager === value)
 			{
 				return;
 			}
