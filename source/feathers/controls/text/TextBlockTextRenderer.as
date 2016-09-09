@@ -1695,7 +1695,7 @@ package feathers.controls.text
 			}
 			//on the other hand, sizeInvalid will always indicate that the
 			//snapshot dimensions need to be revisited
-			if(sizeInvalid)
+			if(contentStateChanged || sizeInvalid)
 			{
 				this.calculateSnapshotDimensions();
 			}
