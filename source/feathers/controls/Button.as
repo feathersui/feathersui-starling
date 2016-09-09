@@ -959,6 +959,36 @@ package feathers.controls
 		protected var labelTextRenderer:ITextRenderer;
 
 		/**
+		 * @private
+		 */
+		protected var _explicitLabelWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMaxHeight:Number;
+
+		/**
 		 * The currently visible icon. The value will be <code>null</code> if
 		 * there is no currently visible icon.
 		 *
@@ -2443,7 +2473,7 @@ package feathers.controls
 			if(this._label !== null && this.labelTextRenderer)
 			{
 				labelRenderer = this.labelTextRenderer;
-				this.refreshMaxLabelSize(true);
+				this.refreshLabelTextRendererDimensions(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
 			
@@ -2746,6 +2776,12 @@ package feathers.controls
 					IStateObserver(this.labelTextRenderer).stateContext = this;
 				}
 				this.addChild(DisplayObject(this.labelTextRenderer));
+				this._explicitLabelWidth = this.labelTextRenderer.explicitWidth;
+				this._explicitLabelHeight = this.labelTextRenderer.explicitHeight;
+				this._explicitLabelMinWidth = this.labelTextRenderer.explicitMinWidth;
+				this._explicitLabelMinHeight = this.labelTextRenderer.explicitMinHeight;
+				this._explicitLabelMaxWidth = this.labelTextRenderer.explicitMaxWidth;
+				this._explicitLabelMaxHeight = this.labelTextRenderer.explicitMaxHeight;
 			}
 		}
 
@@ -2915,7 +2951,7 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
-			this.refreshMaxLabelSize(false);
+			this.refreshLabelTextRendererDimensions(false);
 			var labelRenderer:DisplayObject = null;
 			if(this._label !== null && this.labelTextRenderer)
 			{
@@ -2957,13 +2993,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshMaxLabelSize(forMeasurement:Boolean):void
+		protected function refreshLabelTextRendererDimensions(forMeasurement:Boolean):void
 		{
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
+			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
+			if(this._label === null || this.labelTextRenderer === null)
+			{
+				return;
 			}
 			var calculatedWidth:Number = this.actualWidth;
 			var calculatedHeight:Number = this.actualHeight;
@@ -2980,31 +3021,66 @@ package feathers.controls
 					calculatedHeight = this._explicitMaxHeight;
 				}
 			}
-			if(this._label != null && this.labelTextRenderer)
+			calculatedWidth -= (this._paddingLeft + this._paddingRight);
+			calculatedHeight -= (this._paddingTop + this._paddingBottom);
+			if(this.currentIcon !== null)
 			{
-				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
-				this.labelTextRenderer.maxHeight = calculatedHeight - this._paddingTop - this._paddingBottom;
-				if(this.currentIcon)
+				var adjustedGap:Number = this._gap;
+				if(adjustedGap == Number.POSITIVE_INFINITY)
 				{
-					var adjustedGap:Number = this._gap;
-					if(adjustedGap == Number.POSITIVE_INFINITY)
-					{
-						adjustedGap = this._minGap;
-					}
-					if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE ||
-						this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE)
-					{
-						this.labelTextRenderer.maxWidth -= (this.currentIcon.width + adjustedGap);
-					}
-					if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
-					{
-						this.labelTextRenderer.maxHeight -= (this.currentIcon.height + adjustedGap);
-					}
+					adjustedGap = this._minGap;
+				}
+				if(this._iconPosition === RelativePosition.LEFT || this._iconPosition === RelativePosition.LEFT_BASELINE ||
+					this._iconPosition === RelativePosition.RIGHT || this._iconPosition === RelativePosition.RIGHT_BASELINE)
+				{
+					calculatedWidth -= (this.currentIcon.width + adjustedGap);
+				}
+				if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
+				{
+					calculatedHeight -= (this.currentIcon.height + adjustedGap);
 				}
 			}
-			this._ignoreIconResizes = oldIgnoreIconResizes;
+			if(calculatedWidth < 0)
+			{
+				calculatedWidth = 0;
+			}
+			if(calculatedHeight < 0)
+			{
+				calculatedHeight = 0;
+			}
+			if(calculatedWidth > this._explicitLabelMaxWidth)
+			{
+				calculatedWidth = this._explicitLabelMaxWidth;
+			}
+			if(calculatedHeight > this._explicitLabelMaxHeight)
+			{
+				calculatedHeight = this._explicitLabelMaxHeight;
+			}
+			if(forMeasurement)
+			{
+				this.labelTextRenderer.width = this._explicitLabelWidth;
+				this.labelTextRenderer.height = this._explicitLabelHeight;
+				this.labelTextRenderer.minWidth = this._explicitLabelMinWidth;
+				this.labelTextRenderer.minHeight = this._explicitLabelMinHeight;
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
+
+			}
+			else
+			{
+				//setting all of these dimensions explicitly means that the text
+				//renderer won't measure itself again when it validates, which
+				//helps performance. we'll reset them when the button needs to
+				//measure itself.
+				this.labelTextRenderer.width = calculatedWidth;
+				this.labelTextRenderer.height = calculatedHeight;
+				this.labelTextRenderer.minWidth = calculatedWidth;
+				this.labelTextRenderer.minHeight = calculatedHeight;
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
+			}
 		}
-		
+
 		/**
 		 * @private
 		 */

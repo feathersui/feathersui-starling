@@ -4228,10 +4228,10 @@ package feathers.controls.renderers
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
 			var labelRenderer:ITextRenderer = null;
-			if(this._label !== null && this.labelTextRenderer)
+			if(this._label !== null && this.labelTextRenderer !== null)
 			{
 				labelRenderer = this.labelTextRenderer;
-				this.refreshMaxLabelSize(true);
+				this.refreshLabelTextRendererDimensions(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
 			
@@ -5084,7 +5084,7 @@ package feathers.controls.renderers
 			this._ignoreAccessoryResizes = true;
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
-			this.refreshMaxLabelSize(false);
+			this.refreshLabelTextRendererDimensions(false);
 			var labelRenderer:DisplayObject = null;
 			if(this._label !== null && this.labelTextRenderer)
 			{
@@ -5180,7 +5180,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		override protected function refreshMaxLabelSize(forMeasurement:Boolean):void
+		override protected function refreshLabelTextRendererDimensions(forMeasurement:Boolean):void
 		{
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
@@ -5343,10 +5343,38 @@ package feathers.controls.renderers
 			{
 				calculatedHeight = 0;
 			}
-			if(this.labelTextRenderer)
+			if(calculatedWidth > this._explicitLabelMaxWidth)
 			{
-				this.labelTextRenderer.maxWidth = calculatedWidth;
-				this.labelTextRenderer.maxHeight = calculatedHeight;
+				calculatedWidth = this._explicitLabelMaxWidth;
+			}
+			if(calculatedHeight > this._explicitLabelMaxHeight)
+			{
+				calculatedHeight = this._explicitLabelMaxHeight;
+			}
+			if(this.labelTextRenderer !== null)
+			{
+				if(forMeasurement)
+				{
+					this.labelTextRenderer.width = this._explicitLabelWidth;
+					this.labelTextRenderer.height = this._explicitLabelHeight;
+					this.labelTextRenderer.minWidth = this._explicitLabelMinWidth;
+					this.labelTextRenderer.minHeight = this._explicitLabelMinHeight;
+					this.labelTextRenderer.maxWidth = calculatedWidth;
+					this.labelTextRenderer.maxHeight = calculatedHeight;
+				}
+				else
+				{
+					//setting all of these dimensions explicitly means that the
+					//text renderer won't measure itself again when it
+					//validates, which helps performance. we'll reset them when
+					//the item renderer needs to measure itself.
+					this.labelTextRenderer.width = calculatedWidth;
+					this.labelTextRenderer.height = calculatedHeight;
+					this.labelTextRenderer.minWidth = calculatedWidth;
+					this.labelTextRenderer.minHeight = calculatedHeight;
+					this.labelTextRenderer.maxWidth = calculatedWidth;
+					this.labelTextRenderer.maxHeight = calculatedHeight;
+				}
 			}
 			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
