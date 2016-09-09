@@ -1924,9 +1924,9 @@ package feathers.controls.text
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var scaleFactor:Number = starling.contentScaleFactor;
 			//these are getting put into an int later, so we don't want it
-			//to possibly round down and cut off part of the text. 
-			var rectangleSnapshotWidth:Number = Math.ceil(this.actualWidth * scaleFactor);
-			var rectangleSnapshotHeight:Number = Math.ceil(this.actualHeight * scaleFactor);
+			//to possibly round down and cut off part of the text.
+			var rectangleSnapshotWidth:Number = Math.ceil(this.textField.width);
+			var rectangleSnapshotHeight:Number = Math.ceil(this.textField.height);
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
