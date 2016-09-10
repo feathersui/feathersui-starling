@@ -1949,8 +1949,9 @@ package feathers.controls.text
 				rectangleSnapshotHeight = HELPER_RECTANGLE.height;
 			}
 			var point:Point = Pool.getPoint();
-			calculateSnapshotTextureDimensions(rectangleSnapshotWidth, rectangleSnapshotHeight,
-				this._maxTextureDimensions, starling, point);
+			calculateSnapshotTextureDimensions(rectangleSnapshotWidth,
+				rectangleSnapshotHeight, this._maxTextureDimensions,
+				starling.profile !== Context3DProfile.BASELINE_CONSTRAINED, point);
 			//the full dimensions of the texture
 			this._snapshotWidth = point.x;
 			this._snapshotHeight = point.y;

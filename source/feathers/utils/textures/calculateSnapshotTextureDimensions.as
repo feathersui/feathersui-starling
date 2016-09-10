@@ -7,10 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.textures
 {
-	import flash.display3D.Context3DProfile;
 	import flash.geom.Point;
 
-	import starling.core.Starling;
 	import starling.utils.MathUtil;
 
 	/**
@@ -20,15 +18,10 @@ package feathers.utils.textures
 	 * <code>Context3DProfile.BASELINE_CONSTRAINED</code>, will calculate
 	 * power-of-two dimensions for the texture.
 	 */
-	public function calculateSnapshotTextureDimensions(width:Number, height:Number, maximum:Number = 2048, starling:Starling = null, result:Point = null):Point
+	public function calculateSnapshotTextureDimensions(width:Number, height:Number, maximum:Number, supportsRectangleTexture:Boolean, result:Point = null):Point
 	{
 		var snapshotWidth:Number = width;
 		var snapshotHeight:Number = height;
-		if(starling === null)
-		{
-			starling = Starling.current;
-		}
-		var supportsRectangleTexture:Boolean = starling.profile !== Context3DProfile.BASELINE_CONSTRAINED;
 		if(!supportsRectangleTexture)
 		{
 			if(snapshotWidth > maximum)
