@@ -487,7 +487,6 @@ package feathers.themes
 			this.getStyleProviderForClass(Alert).defaultStyleFunction = this.setAlertStyles;
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_ALERT_BUTTON_GROUP_LAST_BUTTON, this.setAlertButtonGroupLastButtonStyles);
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setHeaderWithoutBackgroundStyles);
 
 			//auto complete
@@ -504,7 +503,7 @@ package feathers.themes
 
 			//button group
 			this.getStyleProviderForClass(ButtonGroup).defaultStyleFunction = this.setButtonGroupStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonGroupButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setButtonStyles);
 
 			//callout
@@ -734,14 +733,27 @@ package feathers.themes
 
 		protected function setAlertButtonGroupButtonStyles(button:Button):void
 		{
-			this.setButtonStyles(button);
-			button.minWidth = this.controlSize * 2;
-		}
+			var skin:ImageSkin = new ImageSkin(this.buttonUpTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.buttonDownTexture);
+			skin.setTextureForState(ButtonState.DISABLED, this.buttonDisabledTexture);
+			if(button is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				skin.selectedTexture = this.toggleButtonSelectedUpTexture;
+				skin.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.toggleButtonSelectedDisabledTexture);
+			}
+			skin.scale9Grid = BUTTON_SCALE9_GRID;
+			skin.width = this.controlSize;
+			skin.height = this.controlSize;
+			skin.minWidth = this.controlSize * 2;
+			skin.minHeight = this.controlSize;
+			button.defaultSkin = skin;
 
-		protected function setAlertButtonGroupLastButtonStyles(button:Button):void
-		{
-			this.setCallToActionButtonStyles(button);
-			button.minWidth = this.controlSize * 2;
+			button.fontStyles = this.darkFontStyles;
+			button.disabledFontStyles = this.darkDisabledFontStyles;
+
+			this.setBaseButtonStyles(button);
 		}
 
 	//-------------------------
@@ -762,8 +774,6 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
-			button.minWidth = this.controlSize;
-			button.minHeight = this.controlSize;
 			button.paddingBottom = this.smallGutterSize;
 			button.paddingTop = this.smallGutterSize;
 			button.paddingRight = this.gutterSize;
@@ -884,8 +894,32 @@ package feathers.themes
 
 		protected function setButtonGroupStyles(group:ButtonGroup):void
 		{
-			group.minWidth = this.wideControlSize;
 			group.gap = this.smallGutterSize;
+		}
+
+		protected function setButtonGroupButtonStyles(button:Button):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.buttonUpTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.buttonDownTexture);
+			skin.setTextureForState(ButtonState.DISABLED, this.buttonDisabledTexture);
+			if(button is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				skin.selectedTexture = this.toggleButtonSelectedUpTexture;
+				skin.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.toggleButtonSelectedDisabledTexture);
+			}
+			skin.scale9Grid = BUTTON_SCALE9_GRID;
+			skin.width = this.wideControlSize;
+			skin.height = this.controlSize;
+			skin.minWidth = this.wideControlSize;
+			skin.minHeight = this.controlSize;
+			button.defaultSkin = skin;
+
+			button.fontStyles = this.darkFontStyles;
+			button.disabledFontStyles = this.darkDisabledFontStyles;
+
+			this.setBaseButtonStyles(button);
 		}
 
 	//-------------------------
@@ -959,7 +993,6 @@ package feathers.themes
 			itemRenderer.minGap = this.extraSmallGutterSize;
 			itemRenderer.accessoryGap = this.extraSmallGutterSize;
 			itemRenderer.minAccessoryGap = this.extraSmallGutterSize;
-			itemRenderer.minWidth = this.controlSize;
 			itemRenderer.accessoryPosition = RelativePosition.LEFT;
 		}
 
@@ -1140,10 +1173,8 @@ package feathers.themes
 				layout.gap = this.smallGutterSize;
 				group.layout = layout;
 			}
-			group.minWidth = this.controlSize;
-			group.minHeight = this.controlSize;
 
-			group.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
+			group.backgroundSkin = new Quad(this.controlSize, this.controlSize, COLOR_BACKGROUND_LIGHT);
 		}
 
 	//-------------------------
@@ -1169,8 +1200,6 @@ package feathers.themes
 			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
 			itemRenderer.minAccessoryGap = this.gutterSize;
 			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
-			itemRenderer.minWidth = this.controlSize;
-			itemRenderer.minHeight = this.controlSize;
 			itemRenderer.minTouchWidth = this.controlSize;
 			itemRenderer.minTouchHeight = this.controlSize;
 		}
@@ -1183,6 +1212,8 @@ package feathers.themes
 			skin.scale9Grid = LIST_ITEM_SCALE9_GRID;
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
+			skin.minWidth = this.controlSize;
+			skin.minHeight = this.controlSize;
 			itemRenderer.defaultSkin = skin;
 
 			itemRenderer.fontStyles = this.darkFontStyles;
@@ -1215,14 +1246,14 @@ package feathers.themes
 			skin.scale9Grid = TEXT_INPUT_SCALE9_GRID;
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
+			skin.minWidth = this.controlSize;
+			skin.minHeight = this.controlSize;
 			input.backgroundSkin = skin;
 
 			input.textEditorFactory = stepperTextEditorFactory;
 			input.fontStyles = this.darkCenteredFontStyles;
 			input.disabledFontStyles = this.darkCenteredDisabledFontStyles;
 
-			input.minWidth = this.controlSize;
-			input.minHeight = this.controlSize;
 			input.padding = this.smallGutterSize;
 			input.isEditable = false;
 			input.isSelectable = false;
@@ -1349,8 +1380,9 @@ package feathers.themes
 		{
 			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
-				list.minWidth = this.wideControlSize;
-				list.maxHeight = this.wideControlSize;
+				var tabletSkin:Quad = new Quad(this.wideControlSize, this.wideControlSize);
+				tabletSkin.alpha = 0;
+				list.backgroundSkin = tabletSkin;
 			}
 			else //phone
 			{
@@ -1488,10 +1520,8 @@ package feathers.themes
 				layout.gap = this.smallGutterSize;
 				container.layout = layout;
 			}
-			container.minWidth = this.controlSize;
-			container.minHeight = this.controlSize;
 
-			container.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
+			container.backgroundSkin = new Quad(this.controlSize, this.controlSize, COLOR_BACKGROUND_LIGHT);
 		}
 
 	//-------------------------
@@ -1533,7 +1563,7 @@ package feathers.themes
 			var defaultSkin:Image = new Image(this.horizontalSimpleScrollBarThumbTexture);
 			defaultSkin.scale9Grid = HORIZONTAL_SIMPLE_SCROLL_BAR_SCALE9_GRID;
 			thumb.defaultSkin = defaultSkin;
-			
+
 			thumb.hasLabelTextRenderer = false;
 		}
 
@@ -1542,7 +1572,7 @@ package feathers.themes
 			var defaultSkin:Image = new Image(this.verticalSimpleScrollBarThumbTexture);
 			defaultSkin.scale9Grid = VERTICAL_SIMPLE_SCROLL_BAR_SCALE9_GRID;
 			thumb.defaultSkin = defaultSkin;
-			
+
 			thumb.hasLabelTextRenderer = false;
 		}
 
@@ -1562,7 +1592,7 @@ package feathers.themes
 
 		protected function setSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 		{
-			var defaultSkin:Quad = new Quad(1, 1, 0xff00ff);
+			var defaultSkin:Quad = new Quad(this.gridSize, this.gridSize, 0xff00ff);
 			defaultSkin.alpha = 0;
 			itemRenderer.defaultSkin = defaultSkin;
 
@@ -1589,8 +1619,6 @@ package feathers.themes
 			itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
 			itemRenderer.minAccessoryGap = this.smallGutterSize;
 			itemRenderer.accessoryPosition = RelativePosition.RIGHT;
-			itemRenderer.minWidth = this.gridSize;
-			itemRenderer.minHeight = this.gridSize;
 		}
 
 	//-------------------------
@@ -1678,6 +1706,8 @@ package feathers.themes
 			skin.scale9Grid = TAB_SCALE9_GRID;
 			skin.width = this.controlSize;
 			skin.height = this.gridSize;
+			skin.minWidth = this.controlSize;
+			skin.minHeight = this.gridSize;
 			tab.defaultSkin = skin;
 
 			tab.fontStyles = this.darkFontStyles;
@@ -1687,8 +1717,6 @@ package feathers.themes
 
 			tab.paddingLeft = this.gutterSize;
 			tab.paddingRight = this.gutterSize;
-			tab.minWidth = this.controlSize;
-			tab.minHeight = this.gridSize;
 		}
 
 	//-------------------------
@@ -1737,8 +1765,6 @@ package feathers.themes
 
 		protected function setBaseTextInputStyles(input:TextInput):void
 		{
-			input.minWidth = this.wideControlSize;
-			input.minHeight = this.controlSize;
 			input.paddingTop = this.smallGutterSize;
 			input.paddingRight = this.gutterSize;
 			input.paddingBottom = this.smallGutterSize;
@@ -1755,6 +1781,8 @@ package feathers.themes
 			skin.scale9Grid = TEXT_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
+			skin.minWidth = this.wideControlSize;
+			skin.minHeight = this.controlSize;
 			input.backgroundSkin = skin;
 
 			input.fontStyles = this.darkScrollTextFontStyles;
@@ -1774,6 +1802,8 @@ package feathers.themes
 			skin.scale9Grid = SEARCH_INPUT_SCALE9_GRID;
 			skin.width = this.wideControlSize;
 			skin.height = this.controlSize;
+			skin.minWidth = this.wideControlSize;
+			skin.minHeight = this.controlSize;
 			input.backgroundSkin = skin;
 
 			var icon:Image = new Image(this.searchIconTexture);
