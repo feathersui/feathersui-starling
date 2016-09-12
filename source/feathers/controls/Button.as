@@ -2953,9 +2953,8 @@ package feathers.controls
 		{
 			this.refreshLabelTextRendererDimensions(false);
 			var labelRenderer:DisplayObject = null;
-			if(this._label !== null && this.labelTextRenderer)
+			if(this._label !== null && this.labelTextRenderer !== null)
 			{
-				this.labelTextRenderer.validate();
 				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
 			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != RelativePosition.MANUAL;
@@ -3064,7 +3063,7 @@ package feathers.controls
 				this.labelTextRenderer.minHeight = this._explicitLabelMinHeight;
 				this.labelTextRenderer.maxWidth = calculatedWidth;
 				this.labelTextRenderer.maxHeight = calculatedHeight;
-
+				this.labelTextRenderer.validate();
 			}
 			else
 			{
@@ -3072,12 +3071,15 @@ package feathers.controls
 				//renderer won't measure itself again when it validates, which
 				//helps performance. we'll reset them when the button needs to
 				//measure itself.
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
+				this.labelTextRenderer.validate();
+				calculatedWidth = this.labelTextRenderer.width;
+				calculatedHeight = this.labelTextRenderer.height;
 				this.labelTextRenderer.width = calculatedWidth;
 				this.labelTextRenderer.height = calculatedHeight;
 				this.labelTextRenderer.minWidth = calculatedWidth;
 				this.labelTextRenderer.minHeight = calculatedHeight;
-				this.labelTextRenderer.maxWidth = calculatedWidth;
-				this.labelTextRenderer.maxHeight = calculatedHeight;
 			}
 		}
 
