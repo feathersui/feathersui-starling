@@ -5,19 +5,19 @@ author: Josh Tynjala
 ---
 # Introduction to Feathers themes
 
-A Feathers *theme* is class that packages up the skinning code for multiple UI components in one location. Skins are registered globally, and when any Feathers component is instantiated, it will be automatically skinned. It's easy to drop a theme into your new Feathers app, and have it skin every component in the same style. If you need a custom skin for any individual component (even one that looks wildly different than the default), it's easy to exclude the component from the theme. If you like the default styles, but you want to make some tweaks, Feathers provides mechanisms for extending a theme.
+A Feathers *theme* is class that packages up the styling code for multiple UI components in one location. Style providers are registered globally, and when any Feathers component is initialized, it will be styled automatically. It's easy to drop a theme into your new Feathers app, and have it skin every component in the same style. If you need a custom skin for any individual component (even one that looks wildly different than the default), you can easily exclude the component from the theme completely. If you like the default styles, but you want to make some tweaks, Feathers can do that too!
 
 <picture><img src="images/themes.jpg" srcset="images/themes@2x.png 2x" alt="Screenshot of multiple Feathers themes side-by-side" /></picture>
 
-Themes are not required, of course. You can skin any Feathers component manually, if you prefer (we'll learn how to exclude a component from the theme later). However, the main advantage of a theme is to keep styling code from being mixed up with things like the play mechanics of a game or the business logic of a productivity app. Themes help you to reduce clutter by organizing your code. Plus, pre-made themes are a great way to get started if you want to focus on your app's functionality before you start worrying about skinning. You may even be able to swap themes with little impact on the rest of your project, if you decide to stick with pre-made themes for an app that doesn't need its own custom design.
+Themes are not required, of course. You can skin any Feathers component manually by setting its style properties directly, if you prefer. However, the main advantage of a theme is to keep your styling code from getting mixed up with things like the business logic of your productivity app or the gameplay mechanics of a your hot new shoot-em-up. Themes help you to reduce clutter by organizing your code. Plus, pre-made themes are a great way to get started if you want to focus on your app's functionality before you start worrying about the appearance of components. You may even be able to swap themes with little impact on the rest of your project, if you decide to stick with pre-made themes for an app that doesn't need its own custom design.
 
-A number of sample themes are available in the `themes` directory included with Feathers. Just grab the compiled SWC file for the theme you'd like to use, and drop it into your project. Instantiate the theme when your app first starts up by adding only a single line of code. Any component that you instantiate will be skinned automatically. We'll see an example in a moment.
+A number of sample themes are available in the `themes` directory included with Feathers. Just grab the compiled SWC file for the theme you'd like to use, and drop it into your project. Instantiate the theme when your app first starts up by adding only a single line of code. Any component that you add to the app will be skinned automatically. We'll see a simple example in a moment.
 
-## Initializing a Theme
+## Initialize a Theme
 
 In the following example, we'll use the example `MetalWorksMobileTheme` included in the *themes* directory that comes with the Feathers UI library.
 
-In our project's root Starling display object, let's instantiate the theme in the constructor.
+In our project's root Starling display object, let's instantiate the theme right away in the constructor.
 
 ``` code
 import starling.display.Sprite;
@@ -33,7 +33,7 @@ public class Main extends Sprite
 }
 ```
 
-<aside class="info">By creating the theme before the `super()` call, the theme can skin the root component, if needed.</aside>
+<aside class="info">By creating the theme before the `super()` call, the theme can skin the root component too, if needed.</aside>
 
 To test it out, let's create a button. First, listen for `Event.ADDED_TO_STAGE`:
 
@@ -61,60 +61,46 @@ button.y = 150;
 this.addChild( button );
 ```
 
-That's it! When we pass the button to `addChild()`, the theme will detect the button and give it some skins. Anything else that we add to the display list after this will be skinned too.
+That's it! When we pass the button to `addChild()`, the theme will detect the button and give it some skins. Any other components that we add to the display list after this will be skinned too.
 
-Most of the example projects included with the Feathers library use themes. Take a look in the *examples* directory to see the source code for these projects to see how they initialize their themes in the context of a larger app. Check out the *themes* directory for several different example themes, for both mobile and desktop.
+Most of the example projects included with the Feathers library use themes. Take a look in the *examples* directory to see the source code for these projects, and learn how they initialize their themes in the context of a larger app. Check out the *themes* directory for several different example themes, for both mobile and desktop.
 
-## Customizing a specific component instance
+## Customize a specific component instance
 
-If you've chosen to use a theme, it's best to stay within the theme architecture when you want to customize a specific component instance's skins. If you try to set skin/style properties in the same place that you create a component, you may discover that the theme replaces your choices. Something like this might not work:
+If you've chosen to use a theme, it's considered best practice to keep all of your styling code inside the theme, just to keep things organized. However, it's certainly possible to customize styles on any component in your app so that they're different than the theme's defaults. Let's customize a button's font styles:
 
 ``` code
 var button:Button = new Button();
-button.iconPosition = RelativePosition.TOP;
-button.defaultIcon = new Image(texture);
+button.label = "Click Me";
+button.fontStyles = new TextFormat( "_sans", 20, 0x4c4c4c );
 this.addChild(button);
 ```
 
-The theme doesn't set skins right away after the constructor is called. It waits until the component initializes. Usually, that happens when the component is added to the stage. In the code above, our `iconPosition` and `defaultIcon` properties may be changed by the theme because we're setting them too early!
+The button's background skin, padding, and other styles will still be set by the theme, but the text will display with our custom [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html).
 
-There are a few ways to work within the theme architecture.
+<aside class="info">In previous versions of Feathers, customizing styles outside of the theme was a bit cumbersome, in comparison. Simply setting a style property could result in the theme replacing it at a later time. Starting with Feathers 3.1, style properties may be set without conflict.</aside>
 
-### Set the style provider to `null` to skin manually
+### Replace a component's styles completely
+
+There are a couple of different ways to tell a component not to use the default styles from the theme.
+
+#### Opt-out of the theme by clearing the style provider
 
 The most drastic thing we can do is tell a component not to use the theme at all, by setting its `styleProvider` property to `null`:
 
 ``` code
 var button:Button = new Button();
-button.styleProvider = null;
-button.iconPosition = RelativePosition.TOP;
-button.defaultIcon = new Image(texture);
+button.styleProvider = null; //no theme!
+button.label = "Click Me";
+button.fontStyles = new TextFormat( "_sans", 20, 0x4c4c4c );
+button.defaultSkin = new Quad( 100, 30, 0xcccccc );
+button.padding = 10;
 this.addChild(button);
 ```
 
 When we remove the style provider, we can be sure that the theme won't make any changes. However, without a style provider, things like padding, layouts, and fonts will need to be set manually as well. This option is all or nothing.
 
-### Use `AddOnFunctionStyleProvider` to make changes after the theme is applied
-
-Completely removing the theme from a component may undesireable. Maybe we want to keep some of the theme's styles, but tweak others. We can do that using the [`AddOnFunctionStyleProvider`](../api-reference/feathers/skins/AddOnFunctionStyleProvider.html) class:
-
-``` code
-function setExtraStyles( button:Button ):void
-{
-    button.iconPosition = RelativePosition.TOP;
-    button.defaultIcon = new Image( texture );
-}
- 
-var button:Button = new Button();
-button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );
-this.addChild( button );
-```
-
-An `AddOnFunctionStyleProvider` will apply the theme's style first, and then it will call an extra function that allows us to safely make changes to a component's styles without worrying that the theme will replace anything.
-
-We pass two things to the `AddOnFunctionStyleProvider`. First, the button's original style provider that sets the theme's styles. Then, our extra function to call after the theme's styles are applied.
-
-### Extend the theme with a custom style name
+#### Extend the theme with a custom style name
 
 Finally, the best practice is to [extend the theme](extending-themes.html). This usually involves subclassing the existing theme so that you can add a new *style name* for the component that you want to customize. Putting all of your skinning code in the theme keeps things more organized, and you'll avoid cluttering up every corner of your app with random styling code.
 
@@ -149,5 +135,7 @@ Obviously, if you create a [custom theme](custom-themes.html) for your applicati
 -   [Extending Feathers example themes](extending-themes.html)
 
 -   [Creating custom Feathers themes](custom-themes.html)
+
+-   [An in-depth look at Feathers style providers](style-providers.html)
 
 -   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)

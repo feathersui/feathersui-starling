@@ -9,7 +9,7 @@ Using one of the example [themes](themes.html) included with Feathers, we can qu
 
 Whatever our needs, eventually, we may need to make some style tweaks. Maybe we need to add icons to various buttons or we need to provide some alternate skins for certain components. Often, it's best to [create a theme from scratch](custom-themes.html). Other times, we might like how an existing theme looks, but we need to make a few minor tweaks here and there. The example themes included with Feathers are designed with basic extensibility in mind. Let's learn to modify the themes to add some extra custom styles.
 
-<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how to do basic skinning without themes. You'll get an introduction to style providers, which are the foundation of a theme's architecture.</aside>
+<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how to do basic skinning without themes.</aside>
 
 ## Adding an alternate style function
 
@@ -47,11 +47,8 @@ protected function setCustomButtonStyles( button:Button ):void
 {
     button.defaultSkin = new Quad( 200, 60, 0xff0000 );
     button.downSkin = new Quad( 200, 60, 0x000000 );
-    button.labelFactory = function():ITextRenderer
-    {
-        return new TextFieldTextRenderer();
-    };
-    button.defaultLabelProperties.textFormat = new TextFormat( "_sans", 36, 0xffffff );
+    button.fontStyles = new TextFormat( "_sans", 36, 0xffffff );
+    button.padding = 10;
 }
 ```
 
@@ -146,5 +143,7 @@ You can set the `defaultStyleFunction` on the `StyleNameFunctionStyleProvider`. 
 -   [Skinning Feathers components](skinning.html)
 
 -   [Introduction to Feathers Themes](themes.html)
+
+-   [An in-depth look at Feathers style providers](style-providers.html)
 
 -   [Creating custom Feathers Themes](custom-themes.html)

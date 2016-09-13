@@ -95,11 +95,8 @@ button1.styleProvider = null;
 //now, we can set our own custom skins
 button1.defaultSkin = new Quad( 200, 60, 0xff0000 );
 button1.downSkin = new Quad( 200, 60, 0x000000 );
-button.labelFactory = function():ITextRenderer
-{
-    return new TextFieldTextRenderer();
-};
-button1.defaultLabelProperties.textFormat = new TextFormat( "_sans", 36, 0xffffff );
+button1.fontStyles = new TextFormat( "_sans", 36, 0xffffff );
+button1.padding = 10;
  
 this.addChild( button1 );
 ```

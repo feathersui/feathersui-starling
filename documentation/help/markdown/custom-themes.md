@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 Many apps, including games, require heavy branding that involves styling every Feathers component with custom skins and fonts. In these cases, the example themes included with Feathers won't offer enough customization options to match the designer's vision. We will need a custom theme, built from scratch.
 
-<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how to do basic skinning without themes. You'll get an introduction to style providers, which are the foundation of a theme's architecture.</aside>
+<aside class="info">If you haven't read [Skinning Feathers components](skinning.html) yet, start there first to learn about how to do basic skinning without themes.</aside>
 
 ## Creating a theme class
 
@@ -149,8 +149,7 @@ private function setButtonStyles( button:Button ):void
 	button.padding = 20;
 	button.gap = 15;
 
-	button.defaultLabelProperties.elementFormat =
-		new ElementFormat( new FontDescription( "_sans" ), 18, 0x333333 );
+	button.fontStyles = new TextFormat( "_sans", 18, 0x333333 );
 }
 ```
 
@@ -194,8 +193,7 @@ private function setDangerButtonStyles( button:Button ):void
 	button.padding = 20;
 	button.gap = 15;
 
-	button.defaultLabelProperties.elementFormat =
-		new ElementFormat( new FontDescription( "_sans" ), 18, 0x333333 );
+	button.fontStyles = new TextFormat( "_sans", 18, 0x333333 );
 }
 ```
 
@@ -318,4 +316,4 @@ var fontSize:Number = 18 * this.scale;
 
 -   [Extending Feathers example themes](extending-themes.html)
 
--   [Migrating legacy themes to Feathers 2.0](migrating-themes.html)
+-   [An in-depth look at Feathers style providers](style-providers.html)

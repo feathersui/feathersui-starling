@@ -45,20 +45,6 @@ input.prompt = "Password";
 
 Simply set the [`prompt`](../api-reference/feathers/controls/TextInput.html#prompt) property to any `String` to display it inside the text input.
 
-The prompt is a standard [text renderer](text-renderers.html), and it may be customized with the [`promptFactory`](../api-reference/feathers/controls/TextInput.html#promptFactory) property:
-
-``` code
-input.promptFactory = function():ITextRenderer
-{
-    var textRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
- 
-    // customize properties and styleshere
-    textRenderer.textFormat = new BitmapFontTextFormat( bitmapFont );
- 
-    return textRenderer;
-}
-```
-
 ### Focus and Selection
 
 You may programmatically set focus to the text input by calling [`setFocus()`](../api-reference/feathers/controls/TextInput.html#setFocus()):
@@ -166,6 +152,17 @@ input.setFontStylesForState( TextInputState.ERROR,
 Using the code above, the color of the input's text will change when the input displays an `errorString`, and the state changes to `TextInputState.ERROR`.
 
 When font styles aren't available for a specific state, the input will use the default `fontStyles` as a fallback. For example, we haven't provided font styles for `TextInputState.FOCUSED`, so the default styles will be used.
+
+The font styles of the prompt [text renderer](text-renderers.html) may be customized separately:
+
+``` code
+input.promptFontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+input.promptDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
+input.setPromptFontStylesForState( TextInputState.ERROR,
+    new TextFormat( "Helvetica", 20, 0xcc0000 ) );
+```
+
+See the [`promptFontStyles`](../api-reference/feathers/controls/TextInput.html#promptFontStyles) and [`promptDisabledFontStyles`](../api-reference/feathers/controls/TextInput.html#promptDisabledFontStyles) properties, and the [`setPromptFontStylesForState()`](../api-reference/feathers/controls/TextInput.html#setPromptFontStylesForState()) function for details.
 
 ### Background Skin
 
