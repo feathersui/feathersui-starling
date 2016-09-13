@@ -41,6 +41,8 @@ There are a number of places where you can get help with Feathers issues or to a
 
 ## Upgrades
 
+-   [Feathers 3.1 Migration Guide](migration-guide-3.1.html)
+
 -   [Feathers 3.0 Migration Guide](migration-guide-3.0.html)
 
 ## Core Concepts
