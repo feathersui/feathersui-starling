@@ -47,6 +47,40 @@ A component's `styleNameList` is used by [Feathers themes](themes.html) to provi
 
 For more information about component style names, please read [Introduction to Feathers Themes](themes.html).
 
+## `processStyleRestriction()`
+
+Properties that affect the visual appearance of a Feathers component are called "styles". When a style is set outside of a [theme](themes.html), the component needs to set a flag that ensures that the theme cannot replace the style's new value. The `processStyleRestriction()` method should be called inside the style's setter function to determine if a style should be ignored or not.
+
+``` code
+public function set customStyle(value:Object):void
+{
+	if(this.processStyleRestriction(arguments.callee))
+	{
+		return;
+	}
+	// handle the new value here
+}
+```
+
+Calling `processStyleRestriction()` requires one argument to identify the style uniquely. Any object is allowed, but a reference to the setter function with `arguments.callee` works very nicely.
+
+Display objects, such as for a background skins, should be disposed if the style property is considered restricted. Otherwise, you may have memory leaks.
+
+``` code
+public function set customStyle(value:DisplayObject):void
+{
+	if(this.processStyleRestriction(arguments.callee))
+	{
+		if(value != null)
+		{
+			value.dispose();
+		}
+		return;
+	}
+	// handle the new value here
+}
+```
+
 ## Variables and properties for width and height
 
 The `FeathersControl` class provides a number of useful variables and properties for its dimensions. Fully understanding what each one is used for and when they should be changed or accessed is important for maximizing the performance of custom Feathers components and getting the most out of the framework's architecture.
