@@ -18,6 +18,7 @@ package feathers.controls
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.errors.IllegalOperationError;
 	import flash.events.ErrorEvent;
@@ -2061,7 +2062,12 @@ package feathers.controls
 					}
 					catch(error:Error)
 					{
-						//no need to do anything in response
+						//we tried to stop the Loader, but it failed for some
+						//reason. by adding this listener, we ensure that the
+						//BitmapData gets cleaned up and doesn't use too much
+						//memory if a ton of images are loading super fast, one
+						//after the other.
+						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, closedLoader_completeHandler);
 					}
 				}
 				this.loader = null;
@@ -2429,7 +2435,7 @@ package feathers.controls
 			this.cleanupLoaders(false);
 
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			
+
 			//attempt to reuse the existing texture so that we don't need to
 			//create a new one.
 			var canReuseTexture:Boolean = this._texture &&
@@ -2485,6 +2491,18 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
 			this.dispatchEventWith(starling.events.Event.SECURITY_ERROR, false, event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function closedLoader_completeHandler(event:flash.events.Event):void
+		{
+			var loaderInfo:LoaderInfo = LoaderInfo(event.currentTarget);
+			loaderInfo.removeEventListener(flash.events.Event.COMPLETE, closedLoader_completeHandler);
+			var loader:Loader = loaderInfo.loader;
+			var bitmap:Bitmap = Bitmap(loader.content);
+			bitmap.bitmapData.dispose();
 		}
 
 		/**
