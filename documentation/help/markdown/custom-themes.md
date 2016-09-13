@@ -259,57 +259,6 @@ private function initialize():void
 }
 ```
 
-## Scaling skins by DPI
-
-The example themes included with Feathers provide a single set of textures to skin components at 326 DPI (264 on tablets), the 2x Retina scale on iOS. These themes use the DPI of the current device to scale the skins to the same physical dimensions (as in inches or centimeters) on all devices. It's an easy way to limit yourself to one set of assets. Let's see how to set up scaling using this method.
-
-<aside class="info">There are many possible ways to handle scaling, and using the DPI is only one solution. Alternatively, one could use the techniques described in <a href="http://wiki.starling-framework.org/manual/multi-resolution_development">Multi-Resolution Development</a> from the Starling Manual. Using separate textures for each scale factor is fully supported by Feathers, if you prefer.</aside>
-
-The example themes each define the following constants:
-
-``` code
-private static const ORIGINAL_DPI_IPHONE_RETINA:int = 326;
-private static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
-```
-
-These are used in a function named `initializeScale()`:
-
-``` code
-private function initializeScale():void
-{
-	var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
-	var originalDPI:Number = ORIGINAL_DPI_IPHONE_RETINA;
-	if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-	{
-		this._originalDPI = ORIGINAL_DPI_IPAD_RETINA;
-	}
-	this.scale = scaledDPI / this._originalDPI;
-}
-```
-
-This function can be copied verbatim into most themes. You will also want to add a member variable named `scale`:
-
-``` code
-private var scale:Number = 1;
-```
-
-We can call `initializeScale()` at the beginning of the `initialize()` function:
-
-``` code
-private function initialize():void
-{
-	this.initializeScale();
-	this.initializeGlobals();
-	this.initializeStyleProviders();
-}
-```
-
-When setting pixel values like the width and height of components, padding values, and font sizes, you can multiply by the `scale` value:
-
-``` code
-var fontSize:Number = 18 * this.scale;
-```
-
 ## Related Links
 
 -   [Introduction to Feathers themes](themes.html)
