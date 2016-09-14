@@ -168,6 +168,12 @@ package feathers.themes
 
 		/**
 		 * @private
+		 * The theme's custom style name for item renderers in a PickerList.
+		 */
+		protected static const THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-tablet-picker-list-item-renderer";
+
+		/**
+		 * @private
 		 * The theme's custom style name for buttons in an Alert's button group.
 		 */
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metal-works-mobile-alert-button-group-button";
@@ -931,6 +937,7 @@ package feathers.themes
 			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListPopUpListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -1899,13 +1906,7 @@ package feathers.themes
 
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				var tabletSkin:Quad = new Quad(this.popUpFillSize, this.popUpFillSize);
-				tabletSkin.alpha = 0;
-				list.backgroundSkin = tabletSkin;
-			}
-			else //phone
+			if(!DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
 				//the pop-up list should be a SpinnerList in this case, but we
 				//should provide a reasonable fallback skin if the listFactory
@@ -1920,14 +1921,63 @@ package feathers.themes
 				backgroundSkin.minHeight = this.gridSize;
 				list.backgroundSkin = backgroundSkin;
 				list.padding = this.smallGutterSize;
-
-				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-				layout.requestedRowCount = 4;
-				list.layout = layout;
 			}
 
-			list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK;
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.requestedRowCount = 4;
+			list.layout = layout;
+
+			list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setPickerListItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkinTexture);
+			skin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
+			skin.width = this.popUpFillSize;
+			skin.height = this.gridSize;
+			skin.minWidth = this.popUpFillSize;
+			skin.minHeight = this.gridSize;
+			itemRenderer.defaultSkin = skin;
+
+			var defaultSelectedIcon:ImageLoader = new ImageLoader();
+			defaultSelectedIcon.source = this.pickerListItemSelectedIconTexture;
+			itemRenderer.defaultSelectedIcon = defaultSelectedIcon;
+			defaultSelectedIcon.validate();
+
+			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
+			defaultIcon.alpha = 0;
+			itemRenderer.defaultIcon = defaultIcon;
+
+			itemRenderer.fontStyles = this.largeLightFontStyles;
+			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
+			itemRenderer.setFontStylesForState(ToggleButton.STATE_DOWN, this.largeDarkFontStyles);
+
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+
+			itemRenderer.itemHasIcon = false;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = Number.POSITIVE_INFINITY;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.iconPosition = RelativePosition.RIGHT;
+			itemRenderer.accessoryGap = this.smallGutterSize;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+			itemRenderer.accessoryPosition = RelativePosition.BOTTOM;
+			itemRenderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
+			itemRenderer.minTouchWidth = this.gridSize;
+			itemRenderer.minTouchHeight = this.gridSize;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void

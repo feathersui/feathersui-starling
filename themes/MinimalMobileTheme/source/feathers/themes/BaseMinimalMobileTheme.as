@@ -148,6 +148,12 @@ package feathers.themes
 		 */
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "minimal-mobile-date-time-spinner-list-item-renderer";
 
+		/**
+		 * @private
+		 * The theme's custom style name for item renderers in a PickerList.
+		 */
+		protected static const THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER:String = "minimal-mobile-tablet-picker-list-item-renderer";
+
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
 		protected static const DEFAULT_SCALE_9_GRID:Rectangle = new Rectangle(4, 4, 1, 1);
@@ -697,6 +703,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListPopUpListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER, this.setTabletPickerListItemRendererStyles);
 			
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -1552,25 +1559,78 @@ package feathers.themes
 
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK;
 			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
-				var tabletSkin:Quad = new Quad(this.popUpFillSize, this.popUpFillSize);
-				tabletSkin.alpha = 0;
-				list.backgroundSkin = tabletSkin;
+				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
-			else //phone
-			{
-				//the pop-up list should be a SpinnerList in this case, but we
-				//should provide a reasonable fallback skin if the listFactory
-				//on the PickerList returns a List instead. we don't want the
-				//List to be too big for the BottomDrawerPopUpContentManager
 
-				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-				layout.requestedRowCount = 4;
-				list.layout = layout;
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.requestedRowCount = 4;
+			list.layout = layout;
+		}
+
+		protected function setTabletPickerListItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
+		{
+			var defaultSkin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			defaultSkin.scale9Grid = ITEM_RENDERER_SCALE_9_GRID;
+			defaultSkin.width = this.popUpFillSize;
+			defaultSkin.height = this.gridSize;
+			defaultSkin.minWidth = this.popUpFillSize;
+			defaultSkin.minHeight = this.gridSize;
+			itemRenderer.defaultSkin = defaultSkin;
+
+			//different scale9Grid, so needs a separate skin
+			var otherSkin:ImageSkin = new ImageSkin(this.itemRendererDownSkinTexture);
+			otherSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			otherSkin.width = this.popUpFillSize;
+			otherSkin.height = this.gridSize;
+			otherSkin.minWidth = this.popUpFillSize;
+			otherSkin.minHeight = this.gridSize;
+			itemRenderer.setSkinForState(ButtonState.DOWN, otherSkin);
+
+			var defaultSelectedIcon:ImageLoader = new ImageLoader();
+			defaultSelectedIcon.source = this.checkItemRendererSelectedIconTexture;
+			itemRenderer.defaultSelectedIcon = defaultSelectedIcon;
+
+			var frame:Rectangle = this.checkItemRendererSelectedIconTexture.frame;
+			if(frame)
+			{
+				var iconWidth:Number = frame.width;
+				var iconHeight:Number = frame.height;
 			}
+			else
+			{
+				iconWidth = this.checkItemRendererSelectedIconTexture.width;
+				iconHeight = this.checkItemRendererSelectedIconTexture.height;
+			}
+			var defaultIcon:Quad = new Quad(iconWidth, iconHeight, 0xff00ff);
+			defaultIcon.alpha = 0;
+			itemRenderer.defaultIcon = defaultIcon;
+
+			itemRenderer.fontStyles = this.primaryFontStyles;
+			itemRenderer.disabledFontStyles = this.disabledFontStyles;
+			itemRenderer.iconLabelFontStyles = this.primaryFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles;
+			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles;
+
+			itemRenderer.itemHasIcon = false;
+
+			itemRenderer.paddingTop = this.smallGutterSize;
+			itemRenderer.paddingBottom = this.smallGutterSize;
+			itemRenderer.paddingLeft = this.gutterSize;
+			itemRenderer.paddingRight = this.gutterSize;
+			itemRenderer.gap = Number.POSITIVE_INFINITY;
+			itemRenderer.minGap = this.gutterSize;
+			itemRenderer.iconPosition = RelativePosition.RIGHT;
+			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			itemRenderer.accessoryGap = this.smallGutterSize;
+			itemRenderer.minAccessoryGap = this.smallGutterSize;
+			itemRenderer.accessoryPosition = RelativePosition.BOTTOM;
+			itemRenderer.layoutOrder = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
+			itemRenderer.minTouchWidth = this.gridSize;
+			itemRenderer.minTouchHeight = this.gridSize;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void

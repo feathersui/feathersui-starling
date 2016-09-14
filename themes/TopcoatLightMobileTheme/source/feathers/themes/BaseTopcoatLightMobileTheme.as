@@ -161,6 +161,7 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "topcoat-light-mobile-date-time-spinner-list-item-renderer";
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER:String = "topcoat-light-mobile-pop-up-drawer";
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER_HEADER:String = "topcoat-light-mobile-pop-up-drawer-header";
+		protected static const THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER:String = "topcoat-light-mobile-tablet-picker-list-item-renderer";
 
 		public function BaseTopcoatLightMobileTheme()
 		{
@@ -568,6 +569,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(Panel).setFunctionForStyleName(THEME_STYLE_NAME_POP_UP_DRAWER, this.setPickerListPopUpDrawerStyles);
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(THEME_STYLE_NAME_POP_UP_DRAWER_HEADER, this.setHeaderStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER, this.setTabletPickerListItemRendererStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -1380,11 +1382,9 @@ package feathers.themes
 		{
 			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
 			{
-				var tabletSkin:Quad = new Quad(this.wideControlSize, this.wideControlSize);
-				tabletSkin.alpha = 0;
-				list.backgroundSkin = tabletSkin;
+				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
-			else //phone
+			else
 			{
 				//the pop-up list should be a SpinnerList in this case, but we
 				//should provide a reasonable fallback skin if the listFactory
@@ -1392,14 +1392,36 @@ package feathers.themes
 				//List to be too big for the BottomDrawerPopUpContentManager
 
 				list.padding = this.smallGutterSize;
-
-				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-				layout.requestedRowCount = 4;
-				list.layout = layout;
 			}
 
-			list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK;
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.requestedRowCount = 4;
+			list.layout = layout;
+		}
+
+		protected function setTabletPickerListItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpTexture);
+			skin.selectedTexture = this.itemRendererSelectedTexture;
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererDownTexture);
+			skin.scale9Grid = LIST_ITEM_SCALE9_GRID;
+			skin.width = this.controlSize;
+			skin.height = this.controlSize;
+			skin.minWidth = this.popUpFillSize;
+			skin.minHeight = this.controlSize;
+			itemRenderer.defaultSkin = skin;
+
+			itemRenderer.fontStyles = this.darkFontStyles;
+			itemRenderer.disabledFontStyles = this.darkDisabledFontStyles;
+
+			itemRenderer.iconLabelFontStyles = this.smallDarkFontStyles;
+			itemRenderer.iconLabelDisabledFontStyles = this.smallDarkDisabledFontStyles;
+
+			itemRenderer.accessoryLabelFontStyles = this.smallDarkFontStyles;
+			itemRenderer.accessoryLabelDisabledFontStyles = this.smallDarkDisabledFontStyles;
+
+			this.setBaseItemRendererStyles(itemRenderer);
 		}
 
 		protected function setPickerListPopUpDrawerStyles(panel:Panel):void
