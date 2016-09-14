@@ -2,6 +2,10 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.0.4 - September 2016
+
+* Header: fixed issue where extra padding for status bar did not work on iOS 10.
+
 ## 3.0.3 - July 2016
 
 * ImageLoader: Fixed issue where reusing the existing texture did not cause the rendered view to update when skipUnchangedFrames is true.
