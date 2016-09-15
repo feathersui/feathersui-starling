@@ -2052,7 +2052,7 @@ package feathers.controls
 						//BitmapData gets cleaned up and doesn't use too much
 						//memory if a ton of images are loading super fast, one
 						//after the other.
-						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, closedLoader_completeHandler);
+						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
 					}
 				}
 				this.loader = null;
@@ -2481,10 +2481,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function closedLoader_completeHandler(event:flash.events.Event):void
+		protected function orphanedLoader_completeHandler(event:flash.events.Event):void
 		{
 			var loaderInfo:LoaderInfo = LoaderInfo(event.currentTarget);
-			loaderInfo.removeEventListener(flash.events.Event.COMPLETE, closedLoader_completeHandler);
+			loaderInfo.removeEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
 			var loader:Loader = loaderInfo.loader;
 			var bitmap:Bitmap = Bitmap(loader.content);
 			bitmap.bitmapData.dispose();
