@@ -1584,22 +1584,7 @@ package feathers.controls
 		override public function dispose():void
 		{
 			this._isRestoringTexture = false;
-			if(this.loader)
-			{
-				this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-				this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
-				this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
-				this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-				try
-				{
-					this.loader.close();
-				}
-				catch(error:Error)
-				{
-					//no need to do anything in response
-				}
-				this.loader = null;
-			}
+			this.cleanupLoaders(true);
 			this.cleanupTexture();
 			super.dispose();
 		}
