@@ -10,8 +10,13 @@ package feathers.skins
 	import feathers.core.IFeathersControl;
 
 	/**
-	 * Wraps an existing style provider to call an additional function after
-	 * the existing style provider applies its styles.
+	 * Wraps an existing style provider to call an additional function before or
+	 * after the existing style provider applies its styles.
+	 * 
+	 * <p>Starting with Feathers 3.1, "style" properties that are set outside a
+	 * style provider won't be replaced by the style provider, so
+	 * <code>AddOnFunctionStyleProvider</code> may only be useful in rare
+	 * cases.</p> 
 	 *
 	 * <p>Expected usage is to replace a component's existing style provider:</p>
 	 * <listing version="3.0">
@@ -24,8 +29,6 @@ package feathers.skins
 	 * }
 	 * button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );
 	 * this.addChild( button );</listing>
-	 *
-	 * @see ../../../help/skinning.html Skinning Feathers components
 	 */
 	public class AddOnFunctionStyleProvider implements IStyleProvider
 	{
