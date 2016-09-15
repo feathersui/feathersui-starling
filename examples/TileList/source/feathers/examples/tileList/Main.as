@@ -15,7 +15,6 @@ package feathers.examples.tileList
 	import feathers.layout.RelativePosition;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.layout.VerticalAlign;
-	import feathers.skins.AddOnFunctionStyleProvider;
 	import feathers.themes.MinimalMobileTheme;
 
 	import starling.events.Event;
@@ -73,8 +72,21 @@ package feathers.examples.tileList
 
 			this._list = new List();
 			this._list.itemRendererFactory = tileListItemRendererFactory;
-			this._list.styleProvider = new AddOnFunctionStyleProvider(
-				this._list.styleProvider, setListStyles);
+			this._list.snapToPages = true;
+			this._list.scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
+			this._list.horizontalScrollPolicy = ScrollPolicy.ON;
+			this._list.verticalScrollPolicy = ScrollPolicy.OFF;
+
+			var listLayout:TiledRowsLayout = new TiledRowsLayout();
+			listLayout.paging = TiledRowsLayout.PAGING_HORIZONTAL;
+			listLayout.useSquareTiles = false;
+			listLayout.tileHorizontalAlign = HorizontalAlign.JUSTIFY;
+			listLayout.tileVerticalAlign = HorizontalAlign.JUSTIFY;
+			listLayout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			listLayout.verticalAlign = VerticalAlign.TOP;
+			listLayout.requestedColumnCount = 4;
+			listLayout.distributeWidths = true;
+			this._list.layout = listLayout;
 
 			//we listen to the scroll event to update the page indicator
 			this._list.addEventListener(Event.SCROLL, list_scrollHandler);
@@ -104,44 +116,15 @@ package feathers.examples.tileList
 		
 		protected function tileListItemRendererFactory():IListItemRenderer
 		{
-			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-			renderer.labelField = "label";
-			renderer.iconSourceField = "texture";
-			renderer.styleProvider = new AddOnFunctionStyleProvider(
-				renderer.styleProvider, setItemRendererStyles);
-			return renderer;
-		}
-		
-		protected function setListStyles(list:List):void
-		{
-			//we could put this into a theme subclass, but we're using an
-			//AddOnFunctionStyleProvider for convenience
-			list.snapToPages = true;
-			list.scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
-			list.horizontalScrollPolicy = ScrollPolicy.ON;
-			list.verticalScrollPolicy = ScrollPolicy.OFF;
-
-			var listLayout:TiledRowsLayout = new TiledRowsLayout();
-			listLayout.paging = TiledRowsLayout.PAGING_HORIZONTAL;
-			listLayout.useSquareTiles = false;
-			listLayout.tileHorizontalAlign = HorizontalAlign.JUSTIFY;
-			listLayout.tileVerticalAlign = HorizontalAlign.JUSTIFY;
-			listLayout.horizontalAlign = HorizontalAlign.CENTER;
-			listLayout.verticalAlign = VerticalAlign.TOP;
-			list.layout = listLayout;
-		}
-
-		protected function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
-		{
-			//similar to above, we're setting styles with an
-			//AddOnFunctionStyleProvider for convenience
-			
+			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			itemRenderer.labelField = "label";
+			itemRenderer.iconSourceField = "texture";
 			itemRenderer.iconPosition = RelativePosition.TOP;
-			
 			itemRenderer.horizontalAlign = HorizontalAlign.CENTER;
 			itemRenderer.verticalAlign = VerticalAlign.BOTTOM;
-			
 			itemRenderer.maxWidth = 80;
+			itemRenderer.gap = 2;
+			return itemRenderer;
 		}
 
 		protected function list_scrollHandler(event:Event):void
