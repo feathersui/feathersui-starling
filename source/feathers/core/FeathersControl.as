@@ -2430,7 +2430,7 @@ package feathers.core
 			if(this._restrictedStyles === null)
 			{
 				//only create the object if it is needed
-				this._restrictedStyles = new Dictionary(true);
+				this._restrictedStyles = new Dictionary();
 			}
 			this._restrictedStyles[key] = true;
 			return false;
