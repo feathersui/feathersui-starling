@@ -2041,19 +2041,13 @@ package feathers.controls
 				this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 				if(close)
 				{
-					try
-					{
-						this.loader.close();
-					}
-					catch(error:Error)
-					{
-						//we tried to stop the Loader, but it failed for some
-						//reason. by adding this listener, we ensure that the
-						//BitmapData gets cleaned up and doesn't use too much
-						//memory if a ton of images are loading super fast, one
-						//after the other.
-						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
-					}
+					//when using ImageDecodingPolicy.ON_LOAD, calling close()
+					//seems to cause the image data to get stuck in memory,
+					//unable to be garbage collected!
+					//to clean up the memory, we need to wait for Event.COMPLETE
+					//to dispose the BitmapData and call unload(). we can't do
+					//either of those things here.
+					this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
 				}
 				this.loader = null;
 			}
@@ -2488,6 +2482,9 @@ package feathers.controls
 			var loader:Loader = loaderInfo.loader;
 			var bitmap:Bitmap = Bitmap(loader.content);
 			bitmap.bitmapData.dispose();
+			//we could call unloadAndStop() and force the garbage collector to
+			//run, but that could hurt performance, so let it happen naturally.
+			loader.unload();
 		}
 
 		/**
