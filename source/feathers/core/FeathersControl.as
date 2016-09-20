@@ -257,11 +257,6 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
-
-		/**
-		 * @private
-		 */
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
