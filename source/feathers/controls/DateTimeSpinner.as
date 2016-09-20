@@ -882,6 +882,11 @@ package feathers.controls
 		 * <code>scrollDuration</code> property is used instead. The duration is
 		 * measured in seconds.
 		 *
+		 * <p>Note: The <code>value</code> property will not be updated
+		 * immediately when calling <code>scrollToDate()</code>. Similar to how
+		 * the animation won't start until the next validation, the
+		 * <code>value</code> property will be updated at the same time.</p>
+		 *
 		 * <p>In the following example, we scroll to a specific date with
 		 * animation of 1.5 seconds:</p>
 		 *
