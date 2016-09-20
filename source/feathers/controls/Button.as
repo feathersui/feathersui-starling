@@ -35,6 +35,7 @@ package feathers.controls
 	import starling.events.KeyboardEvent;
 	import starling.rendering.Painter;
 	import starling.text.TextFormat;
+	import starling.utils.Pool;
 
 	/**
 	 * A style name to add to the button's label text renderer
@@ -1017,13 +1018,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _scaleMatrix:Matrix;
-		
-		/**
-		 * @private
-		 */
 		protected var _label:String = null;
-		
+
 		/**
 		 * The text displayed on the button.
 		 *
@@ -1038,7 +1034,7 @@ package feathers.controls
 		{
 			return this._label;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -2249,19 +2245,13 @@ package feathers.controls
 			}
 			if(scale !== 1)
 			{
-				if(this._scaleMatrix === null)
-				{
-					this._scaleMatrix = new Matrix();
-				}
-				else
-				{
-					this._scaleMatrix.identity();
-				}
+				var matrix:Matrix = Pool.getMatrix();
 				//scale first, then translate... issue #1455
-				this._scaleMatrix.scale(scale, scale);
-				this._scaleMatrix.translate(Math.round((1 - scale) / 2 * this.actualWidth),
+				matrix.scale(scale, scale);
+				matrix.translate(Math.round((1 - scale) / 2 * this.actualWidth),
 					Math.round((1 - scale) / 2 * this.actualHeight));
-				painter.state.transformModelviewMatrix(this._scaleMatrix);
+				painter.state.transformModelviewMatrix(matrix);
+				Pool.putMatrix(matrix);
 			}
 			super.render(painter);
 		}
