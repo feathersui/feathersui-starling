@@ -5659,6 +5659,10 @@ package feathers.controls
 		 */
 		protected function checkForDrag():void
 		{
+			if(this._isScrollingStopped)
+			{
+				return;
+			}
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);

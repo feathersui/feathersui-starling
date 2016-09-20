@@ -344,5 +344,75 @@ package feathers.tests
 			this._scroller.validate();
 			Assert.assertTrue("Background is incorrectly hidden.", this._scroller.backgroundSkin.visible);
 		}
+
+		[Test(async,timeout="1500")]
+		public function testStopScrollingOnThrow():void
+		{
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+			this._scroller.scrollToPosition(LARGE_VIEW_PORT_WIDTH - BACKGROUND_WIDTH, 0, 1.0);
+			this._scroller.validate();
+			var stopScrollPosition:Number = 0;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(this, function():void
+			{
+				stopScrollPosition = _scroller.horizontalScrollPosition;
+				scroller.stopScrolling();
+			}, 500);
+			Async.delayCall(this, function():void
+			{
+				Assert.assertStrictlyEquals("After scrollToPosition(), stopScrolling() did not stop scrolling before duration complete. Scroll position does not match.",
+					stopScrollPosition, scroller.horizontalScrollPosition);
+			}, 1000);
+		}
+
+		[Test(async)]
+		public function testStopScrollingOnDrag():void
+		{
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+
+			var stopScrollPosition:Number = 0;
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(this, function():void
+			{
+				touch.globalX = HORIZONTAL_DRAG_OFFSET; //move the touch a bit to drag
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+				scroller.stopScrolling();
+				stopScrollPosition = scroller.horizontalScrollPosition;
+
+				Async.delayCall(self, function():void
+				{
+					touch.globalX = 2 * HORIZONTAL_DRAG_OFFSET; //drag more
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					touch.phase = TouchPhase.ENDED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Assert.assertStrictlyEquals("After touch drag, stopScrolling() did not stop scrolling if dragged further. Scroll position does not match.",
+						stopScrollPosition, scroller.horizontalScrollPosition);
+				}, 25);
+			}, 25);
+		}
 	}
 }
