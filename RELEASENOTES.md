@@ -2,6 +2,88 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.1.0 - In Development
+
+* New Component: TabNavigator to display a TabBar that switches between screens, similar to a ScreenNavigator.
+* Font Styles: all components support starling.text.TextFormat for font styling. For advanced needs, text renderers can still use low-level ElementFormat/TextFormat objects which take precedence.
+* Style Properties: some properties are now considered styles, and a theme cannot replace their values if they are set outside of the theme first. No more AddOnFunctionStyleProvider, validation, or extending the theme required.
+* Architecture: Attempts to use stage.starling instead of Starling.current, if possible. Brings better compatibility with multiple Starling instances.
+* Architecture: switched many places to use starling.utils.Pool instead of static helper objects.
+* AnchorLayout: fixed issue where maxWidth wasn't used when explicitWidth was not set.
+* BitmapFontTextRenderer: fixed infinite loop when wordWrap is true and maxWidth is 0.
+* BitmapFontTextRenderer: added style property to support a custom MeshStyle.
+* BitmapFontTextRenderer: fixed issue where resizing larger would not change position of aligned text.
+* Button: fixed issue where header would invalidate too often if icon dimensions change.
+* Button: fixed alignment when using scaleWhenDown or scaleWhenHovering.
+* Callout: is positioned in parent's coordinate space, instead of stage coordinate space.
+* ColorFade: fixed issue where Quad could be given a width or height of 0 in its constructor, which causes a runtime error.
+* Cube: fixed issue with culling that caused screen to overlap incorrectly during transition.
+* Default Item Renderers: added customIconLoaderStyleName and customAccessoryLoaderStyleName for icon and accessory ImageLoaders.
+* Default Item Renderers: uses customHitTest on TapToTrigger, TapToSelect, and LongPress to exclude accessory from touches (instead of old custom implementation).
+* DropDownPopUpContentManager: fixed issue where Quad could be given a width or height of 0 in its constructor, which causes a runtime error.
+* FeathersControl: runtime error is thrown if a component is repeatedly added to validation queue in the same frame.
+* FeathersControl: instead of adding listeners for FeathersEventType.FOCUS_IN and FeathersEventType.FOCUS_OUT when focusManager is set, adds listeners automatically if component implements IFocusDisplayObject.
+* FlowLayout: fixed issue where horizontal alignment did not account for items larger than the width of the view port.
+* GroupedList, List: fixed issue where calling scrollToDisplayIndex() would result in a runtime error if dataProvider is null.
+* Header: uses ScreenDensityScaleCalculator to calculate extra padding on iOS when app is not full screen.
+* Header: fixed issue where header would invalidate too often if item dimensions change.
+* HorizontalLayout: fixed issue where distributeWidths did not work correctly when useVirtualLayout is true.
+* HorizontalSpinnerLayout, VerticalSpinnerLayout: fixed runtime error in snapInterval property when typicalItem is null.
+* ImageLoader: fixed issue where scale9Grid incorrectly allowed maintainAspectRatio to remain in effect.
+* ImageLoader: does not call close() on flash.display.Loader because this can cause a memory leak when using ImageDecodingPolicy.ON_LOAD. Instead, switches to different Event.COMPLETE listener to dispose BitmapData and unload image.
+* ImageSkin: fixed issue where skin would not resize correctly after setting explicit dimensions and then clearing them.
+* ITextRenderer: added numLines getter that returns the number of lines of text that are wrapped.
+* ITextRenderer, ITextEditor: added fontStyles property that accepts a FontStylesSet. This is not meant to be used by application developers, but custom component authors. Application developers should set font styles on the parent component instead of text renderer/editor.
+* LayoutGroup Item Renderers: added backgroundSelectedSkin to optionally customize background when selected.
+* LayoutGroup, ScreenNavigator, ScrollContainer: StackScreenNavigator: fixed issue where AutoSizeMode.STAGE would be ignored if the navigator validated before being added to the stage.
+* LayoutGroup, ScrollContainer: the default layout (when the layout property is null) now accounts for pivotX and pivotY during measurement.
+* MultiStarlingStyleNameFunctionTheme: moved to feathers-compat.
+* Panel: fixed issue where header would invalidate too often if header dimensions changes.
+* PopUpManager: now accounts for pivotX and pivotY when centering a pop-up.
+* PopUpManager: added popUpCount property to indicate how many pop-ups are currently open.
+* PopUpManager: added removeAllPoUps() function to remove all open pop-ups.
+* ScreenDensityScaleCalculator: pulled out calculation of scale factor using DPI from ScreenDensityScaleFactorManager into separate class that can be used elsewhere.
+* ScreenNavigator, StackScreenNavigator: the default transition (which has no effect) now happens immediately instead of waiting for next frame the way that animated transitions are treated.
+* Scroller: fixed issue where final touch movement would not be included in drag on TouchPhase.ENDED.
+* Scroller: runtime error is thrown if measurement of view port gets into an infinite loop. Previously, it broke out of the loop, but performance would suffer.
+* Scroller: checks for drag start on TouchPhase.MOVED so that the Quad touch blocker appears faster and the view port does not receive invalid touches. Continues to update velocity on Event.ENTER_FRAME.
+* Scroller: fixed issue where a runtime error was thrown when a bubbling TouchEvent continued after removing the listener.
+* SpinnerList: fixed issue where pageThrowDuration property was ignored when scrolling horizontally.
+* SpinnerList: fixed issue where scroll position was not updated after removing or adding item before the selected item.
+* StackScreenNavigator: fixed issue where navigator could transition infinitely because state was not cleared correctly.
+* StageTextTextEditor, TextFieldTextEditor: fixed issue where the texture would be updated too frequently because the wrong texture dimensions were used for comparison.
+* StageTextTextEditor, TextFieldTextEditor: added maintainTouchFocus property that will keep the text editor in focus if something else is touched. On mobile, this will keep the soft keyboard open. Requires AIR 22.
+* StageTextTextEditor: fixed issue where StageText could not always be hidden when isEditable is false.
+* StyleNameFunctionTheme: has a property for the Starling instance it is associated with.
+* StyleNameFunctionTheme: automatically supports multiple Starling instances. Create a new instance of the theme when a new instance of Starling is current.
+* TabBar: dispatches Event.TRIGGERED when a tab is triggered. The event's data property references the item from the data provider.
+* TabBar: added selectedSkin property to display an animated overlay over the tabs to indicate selection.
+* TabBar: added setSelectedIndexWithAnimation() to animate the selectedSkin on programatic selection changes (always animated on user changes).
+* TabBar: added labelField, labelFunction, iconField, iconFunction, enabledField and enabledFunction. These are no longer controlled by tabInitializer property.
+* TabBar: icon from ListCollection is not disposed, and dispose() function on ListCollection should be used.
+* TapToTrigger, TapToSelect, LongPress: added customHitTest property to allow items to be excluded or other custom behavior.
+* TextArea: no longer changes selection range when given focus because Flex and HTML textarea element don't do that.
+* TextArea: exposed selectionBeginIndex and selectionEndIndex properties, similar to TextInput.
+* TextArea: fixed issue where calling selectRange() immediately after setFocus() would incorrectly change selection.
+* TextArea, TextInput: fixed issue where changing errorString while input has focus would not change visibility of TextCallout (such as when setting to null).
+* TextBlockTextRenderer, TextBlockTextEditor, TextFieldTextRenderer, TextFieldTextEditor: uses SystemUtil.isEmbeddedFont() to determine if font styles are embedded when using starling.text.TextFormat.
+* TextBlockTextRenderer, TextFieldTextRenderer: optimize render() function to avoid calling getTransformationMatrix() unless required.
+* TextBlockTextRenderer, TextFieldTextRenderer: uses smallest texture possible, even when dimensions are explicit to save memory and optimize performance (so that resizing larger doesn't cause a new texture to be required).
+* TextInput: calling setFocus() programatically will select all text, for consistency with Flex.
+* TextInput: fixed issue where incorrect selection range would be reported in FeathersEventType.FOCUS_IN listener.
+* TextInput: fixed issue where selection range would not be set if text editor did not exist yet.
+* Text Renderers, Text Editors: when using starling.text.TextFormat, supports vertical alignment.
+* TiledColumnsLayout, TiledRowsLayout: added distributeWidths and distributeHeights properties.
+* ToggleGroup: added numItems property and getItemAt() method.
+* ToggleSwitch: implemented IStateContext with states defined in feathers.controls.ToggleState class.
+* ValidationQueue: no longer keeps a delayed queue that will be validated a frame later because FeathersControl throws an error in the cases where it was used.
+* VerticalLayout: fixed issue where distributeHeights did not work correctly when useVirtualLayout is true.
+* VerticalLayout: fixed issue where scroll position calculation did not account for sticky header on GroupedList.
+* VideoPlayer: added events for MediaPlayerEventType.CUE_POINT and MediaPlayerEventType.XMP_DATA for NetStream's onCuePoint and onXMPData.
+* WebView: added FeathersEventType.LOCATION_CHANGING.
+* New Example: Tabs, a demonstration of the new TabNavigator component.
+* New Example: Magic8Chat, a mobile chat application.
+
 ## 3.0.4 - September 2016
 
 * Header: fixed issue where extra padding for status bar did not work on iOS 10.
