@@ -558,11 +558,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_RECT:Rectangle = new Rectangle();
-
-		/**
-		 * @private
-		 */
 		protected static const FUZZY_CONTENT_DIMENSIONS_PADDING:Number = 0.000001;
 
 		/**
@@ -2665,20 +2660,23 @@ package feathers.controls
 				return;
 			}
 			var stage:Stage = this.stage !== null ? this.stage : Starling.current.stage;
-			this._origin.getBounds(stage, HELPER_RECT);
+			var rect:Rectangle = Pool.getRectangle();
+			this._origin.getBounds(stage, rect);
 			var hasGlobalBounds:Boolean = this._lastGlobalBoundsOfOrigin != null;
-			if(hasGlobalBounds && this._lastGlobalBoundsOfOrigin.equals(HELPER_RECT))
+			if(hasGlobalBounds && this._lastGlobalBoundsOfOrigin.equals(rect))
 			{
+				Pool.putRectangle(rect);
 				return;
 			}
 			if(!hasGlobalBounds)
 			{
 				this._lastGlobalBoundsOfOrigin = new Rectangle();
 			}
-			this._lastGlobalBoundsOfOrigin.x = HELPER_RECT.x;
-			this._lastGlobalBoundsOfOrigin.y = HELPER_RECT.y;
-			this._lastGlobalBoundsOfOrigin.width = HELPER_RECT.width;
-			this._lastGlobalBoundsOfOrigin.height = HELPER_RECT.height;
+			this._lastGlobalBoundsOfOrigin.x = rect.x;
+			this._lastGlobalBoundsOfOrigin.y = rect.y;
+			this._lastGlobalBoundsOfOrigin.width = rect.width;
+			this._lastGlobalBoundsOfOrigin.height = rect.height;
+			Pool.putRectangle(rect);
 
 			var supportedPositions:Vector.<String> = this._supportedPositions;
 			if(supportedPositions === null)

@@ -38,6 +38,7 @@ package feathers.controls.popups
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the pop-up content opens.
@@ -88,11 +89,6 @@ package feathers.controls.popups
 	 */
 	public class DropDownPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
-
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.BOTTOM</code>.
@@ -703,11 +699,13 @@ package feathers.controls.popups
 		 */
 		protected function stage_enterFrameHandler(event:Event):void
 		{
-			this.source.getBounds(this.source.stage, HELPER_RECTANGLE);
-			if(HELPER_RECTANGLE.x != this._lastGlobalX || HELPER_RECTANGLE.y != this._lastGlobalY)
+			var rect:Rectangle = Pool.getRectangle();
+			this.source.getBounds(this.source.stage, rect);
+			if(rect.x !== this._lastGlobalX || rect.y !== this._lastGlobalY)
 			{
 				this.layout();
 			}
+			Pool.putRectangle(rect);
 		}
 
 		/**
