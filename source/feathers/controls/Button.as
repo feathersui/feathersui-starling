@@ -2257,9 +2257,10 @@ package feathers.controls
 				{
 					this._scaleMatrix.identity();
 				}
+				//scale first, then translate... issue #1455
+				this._scaleMatrix.scale(scale, scale);
 				this._scaleMatrix.translate(Math.round((1 - scale) / 2 * this.actualWidth),
 					Math.round((1 - scale) / 2 * this.actualHeight));
-				this._scaleMatrix.scale(scale, scale);
 				painter.state.transformModelviewMatrix(this._scaleMatrix);
 			}
 			super.render(painter);
