@@ -433,11 +433,11 @@ package feathers.themes
 				//if anything is keeping a reference to the texture, we don't
 				//want it to keep a reference to the theme too.
 				this.atlas.texture.root.onRestore = null;
-				
+
 				this.atlas.dispose();
 				this.atlas = null;
 			}
-			TextField.unregisterBitmapFont(FONT_NAME);
+			TextField.unregisterCompositor(FONT_NAME);
 
 			//don't forget to call super.dispose()!
 			super.dispose();

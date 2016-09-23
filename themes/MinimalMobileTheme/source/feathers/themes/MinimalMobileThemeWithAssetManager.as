@@ -143,7 +143,7 @@ package feathers.themes
 		{
 			var font:BitmapFont = TextField.getBitmapFont(FONT_TEXTURE_NAME);
 			//for convenience, let's also register it using this name
-			TextField.registerBitmapFont(font, FONT_NAME);
+			TextField.registerCompositor(font, FONT_NAME);
 		}
 
 		/**

@@ -1411,7 +1411,8 @@ package feathers.controls.text
 					//if it's not registered, do that first
 					if(!TextField.getBitmapFont(BitmapFont.MINI))
 					{
-						TextField.registerBitmapFont(new BitmapFont());
+						var font:BitmapFont = new BitmapFont();
+						TextField.registerCompositor(font, font.name);
 					}
 					this._fontStylesTextFormat = new BitmapFontTextFormat(BitmapFont.MINI, NaN, 0x000000);
 					this._currentVerticalAlign = Align.TOP;
