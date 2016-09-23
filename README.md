@@ -11,8 +11,8 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Help](http://feathersui.com/help/)
-* [API Reference](http://feathersui.com/api-reference/)
+* [Beta Help](http://feathersui.com/beta/help/)
+* [Beta API Reference](http://feathersui.com/beta/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/BowlerHatLLC/feathers)
 
@@ -26,7 +26,7 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 
 * Adobe AIR 23.0 for desktop or mobile apps
 * Adobe Flash Player 19.0 for web browsers
-* Starling Framework from Github
+* Starling Framework 2.1
 
 ## Downloads
 
