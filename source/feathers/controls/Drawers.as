@@ -76,6 +76,54 @@ package feathers.controls
 	[Style(name="leftDrawerDivider",type="starling.display.DisplayObject")]
 
 	/**
+	 * Determines whether the drawer opens above the content or below it.
+	 *
+	 * <p>In the following example, the drawers are opened above the
+	 * content:</p>
+	 *
+	 * <listing version="3.0">
+	 * drawers.openMode = RelativeDepth.ABOVE;</listing>
+	 *
+	 * @default feathers.layout.RelativeDepth#BELOW
+	 *
+	 * @see feathers.layout.RelativeDepth#BELOW
+	 * @see feathers.layout.RelativeDepth#ABOVE
+	 */
+	[Style(name="openMode",type="String")]
+
+	/**
+	 * The duration, in seconds, of the animation when a drawer opens or
+	 * closes.
+	 *
+	 * <p>In the following example, the duration of the animation that opens
+	 * or closes a drawer is set to 500 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.openOrCloseDuration = 0.5;</listing>
+	 *
+	 * @default 0.25
+	 *
+	 * @see #style:openOrCloseEase
+	 */
+	[Style(name="openOrCloseDuration",type="Number")]
+
+	/**
+	 * The easing function used for opening or closing the drawers.
+	 *
+	 * <p>In the following example, the ease of the animation that opens and
+	 * closes a drawer is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * drawrs.openOrCloseEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @default starling.animation.Transitions.EASE_OUT
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 * @see #style:openOrCloseDuration
+	 */
+	[Style(name="openOrCloseEase",type="Object")]
+
+	/**
 	 * An optional display object that appears above the content when a
 	 * drawer is open.
 	 *
@@ -1875,18 +1923,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="below,above")]
 		/**
-		 * Determines whether the drawer opens above the content or below it.
-		 *
-		 * <p>In the following example, the drawers are opened above the
-		 * content:</p>
-		 *
-		 * <listing version="3.0">
-		 * drawers.openMode = RelativeDepth.ABOVE;</listing>
-		 *
-		 * @default feathers.layout.RelativeDepth#BELOW
-		 *
-		 * @see feathers.layout.RelativeDepth#BELOW
-		 * @see feathers.layout.RelativeDepth#ABOVE
+		 * @private
 		 */
 		public function get openMode():String
 		{
@@ -1902,6 +1939,10 @@ package feathers.controls
 			if(value === OPEN_MODE_ABOVE)
 			{
 				value = RelativeDepth.ABOVE;
+			}
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
 			}
 			if(this._openMode == value)
 			{
@@ -2223,18 +2264,7 @@ package feathers.controls
 		protected var _openOrCloseDuration:Number = 0.25;
 
 		/**
-		 * The duration, in seconds, of the animation when a drawer opens or
-		 * closes.
-		 *
-		 * <p>In the following example, the duration of the animation that opens
-		 * or closes a drawer is set to 500 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.openOrCloseDuration = 0.5;</listing>
-		 *
-		 * @default 0.25
-		 *
-		 * @see #openOrCloseEase
+		 * @private
 		 */
 		public function get openOrCloseDuration():Number
 		{
@@ -2246,6 +2276,10 @@ package feathers.controls
 		 */
 		public function set openOrCloseDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._openOrCloseDuration = value;
 		}
 
@@ -2255,18 +2289,7 @@ package feathers.controls
 		protected var _openOrCloseEase:Object = Transitions.EASE_OUT;
 
 		/**
-		 * The easing function used for opening or closing the drawers.
-		 *
-		 * <p>In the following example, the ease of the animation that opens and
-		 * closes a drawer is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * drawrs.openOrCloseEase = Transitions.EASE_IN_OUT;</listing>
-		 *
-		 * @default starling.animation.Transitions.EASE_OUT
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
-		 * @see #openOrCloseDuration
+		 * @private
 		 */
 		public function get openOrCloseEase():Object
 		{
@@ -2278,6 +2301,10 @@ package feathers.controls
 		 */
 		public function set openOrCloseEase(value:Object):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._openOrCloseEase = value;
 		}
 
