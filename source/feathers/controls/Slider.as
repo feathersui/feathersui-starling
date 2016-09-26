@@ -33,6 +33,212 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * A style name to add to the slider's maximum track sub-component.
+	 * Typically used by a theme to provide different skins to different
+	 * sliders.
+	 *
+	 * <p>In the following example, a custom maximum track style name is
+	 * passed to the slider:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.customMaximumTrackStyleName = "my-custom-maximum-track";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-maximum-track", setCustomMaximumTrackStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #maximumTrackFactory
+	 */
+	[Style(name="customMaximumTrackStyleName",type="String")]
+
+	/**
+	 * A style name to add to the slider's minimum track sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * sliders.
+	 *
+	 * <p>In the following example, a custom minimum track style name is
+	 * passed to the slider:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.customMinimumTrackStyleName = "my-custom-minimum-track";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-minimum-track", setCustomMinimumTrackStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #minimumTrackFactory
+	 */
+	[Style(name="customMinimumTrackStyleName",type="String")]
+
+	/**
+	 * A style name to add to the slider's thumb sub-component. Typically
+	 * used by a theme to provide different styles to different sliders.
+	 *
+	 * <p>In the following example, a custom thumb style name is passed
+	 * to the slider:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.customThumbStyleName = "my-custom-thumb";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #thumbFactory
+	 */
+	[Style(name="customThumbStyleName",type="String")]
+
+	/**
+	 * Determines if the slider's thumb can be dragged horizontally or
+	 * vertically. When this value changes, the slider's width and height
+	 * values do not change automatically.
+	 *
+	 * <p>In the following example, the direction is changed to vertical:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.direction = Direction.VERTICAL;</listing>
+	 *
+	 * @default feathers.layout.Direction.HORIZONTAL
+	 *
+	 * @see feathers.layout.Direction#HORIZONTAL
+	 * @see feathers.layout.Direction#VERTICAL
+	 */
+	[Style(name="direction",type="String")]
+
+	/**
+	 * The space, in pixels, between the maximum position of the thumb and
+	 * the maximum edge of the track. May be negative to extend the range
+	 * of the thumb.
+	 *
+	 * <p>In the following example, maximum padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.maximumPadding = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:minimumPadding
+	 */
+	[Style(name="maximumPadding",type="Number")]
+
+	/**
+	 * The space, in pixels, between the minimum position of the thumb and
+	 * the minimum edge of the track. May be negative to extend the range of
+	 * the thumb.
+	 *
+	 * <p>In the following example, minimum padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.minimumPadding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:maximumPadding
+	 */
+	[Style(name="minimumPadding",type="Number")]
+
+	/**
+	 * Determines if the thumb should be displayed.
+	 *
+	 * <p>In the following example, the thumb is hidden:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.showThumb = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="showThumb",type="Boolean")]
+
+	/**
+	 * Offsets the position of the thumb by a certain number of pixels in a
+	 * direction perpendicular to the track. This does not affect the
+	 * measurement of the slider. The slider will measure itself as if the
+	 * thumb were not offset from its original position.
+	 *
+	 * <p>In the following example, the thumb is offset by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.thumbOffset = 20;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="thumbOffset",type="Number")]
+
+	/**
+	 * Determines how the slider's value changes when the track is touched.
+	 *
+	 * <p>If <code>showThumb</code> is set to <code>false</code>, the slider
+	 * will always behave as if <code>trackInteractionMode</code> has been
+	 * set to <code>TrackInteractionMode.TO_VALUE</code>. In other
+	 * words, the value of <code>trackInteractionMode</code> may be ignored
+	 * if the thumb is hidden.</p>
+	 *
+	 * <p>In the following example, the slider's track interaction is changed:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.trackScaleMode = TrackInteractionMode.BY_PAGE;</listing>
+	 *
+	 * @default TrackInteractionMode.TO_VALUE
+	 *
+	 * @see feathers.controls.TrackInteractionMode#TO_VALUE
+	 * @see feathers.controls.TrackInteractionMode#BY_PAGE
+	 * @see #page
+	 */
+	[Style(name="trackInteractionMode",type="String")]
+
+	/**
+	 * Determines how the minimum and maximum track skins are positioned and
+	 * sized.
+	 *
+	 * <p>In the following example, the slider is given two tracks:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
+	 *
+	 * @default feathers.controls.TrackLayoutMode.SINGLE
+	 *
+	 * @see feathers.controls.TrackLayoutMode#SINGLE
+	 * @see feathers.controls.TrackLayoutMode#SPLIT
+	 * @see #style:trackScaleMode
+	 */
+	[Style(name="trackLayoutMode",type="String")]
+
+	/**
+	 * Determines how the minimum and maximum track skins are positioned and
+	 * sized.
+	 *
+	 * <p>In the following example, the slider's track layout is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * slider.trackScaleMode = TrackScaleMode.EXACT_FIT;</listing>
+	 *
+	 * @default feathers.controls.TrackScaleMode.DIRECTIONAL
+	 *
+	 * @see feathers.controls.TrackScaleMode#DIRECTIONAL
+	 * @see feathers.controls.TrackScaleMode#EXACT_FIT
+	 * @see #style:trackLayoutMode
+	 */
+	[Style(name="trackScaleMode",type="String")]
+
+	/**
 	 * Dispatched when the slider's value changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -303,7 +509,7 @@ package feathers.controls
 		 * <p>To customize the minimum track style name without subclassing, see
 		 * <code>customMinimumTrackStyleName</code>.</p>
 		 *
-		 * @see #customMinimumTrackStyleName
+		 * @see #style:customMinimumTrackStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var minimumTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
@@ -318,7 +524,7 @@ package feathers.controls
 		 * <p>To customize the maximum track style name without subclassing, see
 		 * <code>customMaximumTrackStyleName</code>.</p>
 		 *
-		 * @see #customMaximumTrackStyleName
+		 * @see #style:customMaximumTrackStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var maximumTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
@@ -332,7 +538,7 @@ package feathers.controls
 		 * <p>To customize the thumb style name without subclassing, see
 		 * <code>customThumbStyleName</code>.</p>
 		 *
-		 * @see #customThumbStyleName
+		 * @see #style:customThumbStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
@@ -414,7 +620,7 @@ package feathers.controls
 		{
 			return Slider.globalStyleProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -422,31 +628,23 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
-		 * Determines if the slider's thumb can be dragged horizontally or
-		 * vertically. When this value changes, the slider's width and height
-		 * values do not change automatically.
-		 *
-		 * <p>In the following example, the direction is changed to vertical:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.direction = Direction.VERTICAL;</listing>
-		 *
-		 * @default feathers.layout.Direction.HORIZONTAL
-		 *
-		 * @see feathers.layout.Direction#HORIZONTAL
-		 * @see feathers.layout.Direction#VERTICAL
+		 * @private
 		 */
 		public function get direction():String
 		{
 			return this._direction;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set direction(value:String):void
 		{
-			if(this._direction == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._direction === value)
 			{
 				return;
 			}
@@ -456,12 +654,12 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _value:Number = 0;
-		
+
 		[Bindable(event="change")]
 		/**
 		 * The value of the slider, between the minimum and maximum.
@@ -664,7 +862,7 @@ package feathers.controls
 		 *
 		 * @see #value
 		 * @see #page
-		 * @see #trackInteractionMode
+		 * @see #style:trackInteractionMode
 		 */
 		public function get page():Number
 		{
@@ -700,33 +898,30 @@ package feathers.controls
 		 * @default true
 		 */
 		public var liveDragging:Boolean = true;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _showThumb:Boolean = true;
-		
+
 		/**
-		 * Determines if the thumb should be displayed.
-		 *
-		 * <p>In the following example, the thumb is hidden:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.showThumb = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get showThumb():Boolean
 		{
 			return this._showThumb;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set showThumb(value:Boolean):void
 		{
-			if(this._showThumb == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._showThumb === value)
 			{
 				return;
 			}
@@ -740,18 +935,7 @@ package feathers.controls
 		protected var _thumbOffset:Number = 0;
 
 		/**
-		 *
-		 * Offsets the position of the thumb by a certain number of pixels in a
-		 * direction perpendicular to the track. This does not affect the
-		 * measurement of the slider. The slider will measure itself as if the
-		 * thumb were not offset from its original position.
-		 *
-		 * <p>In the following example, the thumb is offset by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.thumbOffset = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get thumbOffset():Number
 		{
@@ -763,7 +947,11 @@ package feathers.controls
 		 */
 		public function set thumbOffset(value:Number):void
 		{
-			if(this._thumbOffset == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._thumbOffset === value)
 			{
 				return;
 			}
@@ -777,16 +965,7 @@ package feathers.controls
 		protected var _minimumPadding:Number = 0;
 
 		/**
-		 * The space, in pixels, between the minimum position of the thumb and
-		 * the minimum edge of the track. May be negative to extend the range of
-		 * the thumb.
-		 *
-		 * <p>In the following example, minimum padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.minimumPadding = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get minimumPadding():Number
 		{
@@ -798,7 +977,11 @@ package feathers.controls
 		 */
 		public function set minimumPadding(value:Number):void
 		{
-			if(this._minimumPadding == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._minimumPadding === value)
 			{
 				return;
 			}
@@ -812,16 +995,7 @@ package feathers.controls
 		protected var _maximumPadding:Number = 0;
 
 		/**
-		 * The space, in pixels, between the maximum position of the thumb and
-		 * the maximum edge of the track. May be negative to extend the range
-		 * of the thumb.
-		 *
-		 * <p>In the following example, maximum padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.maximumPadding = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get maximumPadding():Number
 		{
@@ -833,7 +1007,11 @@ package feathers.controls
 		 */
 		public function set maximumPadding(value:Number):void
 		{
-			if(this._maximumPadding == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._maximumPadding === value)
 			{
 				return;
 			}
@@ -848,18 +1026,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="single,split")]
 		/**
-		 * Determines how the minimum and maximum track skins are positioned and
-		 * sized.
-		 *
-		 * <p>In the following example, the slider is given two tracks:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
-		 *
-		 * @default feathers.controls.TrackLayoutMode.SINGLE
-		 *
-		 * @see feathers.controls.TrackLayoutMode#SINGLE
-		 * @see feathers.controls.TrackLayoutMode#SPLIT
+		 * @private
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -875,7 +1042,11 @@ package feathers.controls
 			{
 				value = TrackLayoutMode.SPLIT;
 			}
-			if(this._trackLayoutMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._trackLayoutMode === value)
 			{
 				return;
 			}
@@ -890,19 +1061,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="exactFit,directional")]
 		/**
-		 * Determines how the minimum and maximum track skins are positioned and
-		 * sized.
-		 *
-		 * <p>In the following example, the slider's track layout is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.trackScaleMode = TrackScaleMode.EXACT_FIT;</listing>
-		 *
-		 * @default feathers.controls.TrackScaleMode.DIRECTIONAL
-		 *
-		 * @see feathers.controls.TrackScaleMode#DIRECTIONAL
-		 * @see feathers.controls.TrackScaleMode#EXACT_FIT
-		 * @see #trackLayoutMode
+		 * @private
 		 */
 		public function get trackScaleMode():String
 		{
@@ -914,7 +1073,11 @@ package feathers.controls
 		 */
 		public function set trackScaleMode(value:String):void
 		{
-			if(this._trackScaleMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._trackScaleMode === value)
 			{
 				return;
 			}
@@ -929,24 +1092,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="toValue,byPage")]
 		/**
-		 * Determines how the slider's value changes when the track is touched.
-		 *
-		 * <p>If <code>showThumb</code> is set to <code>false</code>, the slider
-		 * will always behave as if <code>trackInteractionMode</code> has been
-		 * set to <code>TrackInteractionMode.TO_VALUE</code>. In other
-		 * words, the value of <code>trackInteractionMode</code> may be ignored
-		 * if the thumb is hidden.</p>
-		 *
-		 * <p>In the following example, the slider's track interaction is changed:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.trackScaleMode = TrackInteractionMode.BY_PAGE;</listing>
-		 *
-		 * @default TrackInteractionMode.TO_VALUE
-		 *
-		 * @see feathers.controls.TrackInteractionMode#TO_VALUE
-		 * @see feathers.controls.TrackInteractionMode#BY_PAGE
-		 * @see #page
+		 * @private
 		 */
 		public function get trackInteractionMode():String
 		{
@@ -958,6 +1104,10 @@ package feathers.controls
 		 */
 		public function set trackInteractionMode(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._trackInteractionMode = value;
 		}
 
@@ -1064,28 +1214,7 @@ package feathers.controls
 		protected var _customMinimumTrackStyleName:String;
 
 		/**
-		 * A style name to add to the slider's minimum track sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * sliders.
-		 *
-		 * <p>In the following example, a custom minimum track style name is
-		 * passed to the slider:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.customMinimumTrackStyleName = "my-custom-minimum-track";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-minimum-track", setCustomMinimumTrackStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #minimumTrackFactory
-		 * @see #minimumTrackProperties
+		 * @private
 		 */
 		public function get customMinimumTrackStyleName():String
 		{
@@ -1097,7 +1226,11 @@ package feathers.controls
 		 */
 		public function set customMinimumTrackStyleName(value:String):void
 		{
-			if(this._customMinimumTrackStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customMinimumTrackStyleName === value)
 			{
 				return;
 			}
@@ -1238,28 +1371,7 @@ package feathers.controls
 		protected var _customMaximumTrackStyleName:String;
 
 		/**
-		 * A style name to add to the slider's maximum track sub-component.
-		 * Typically used by a theme to provide different skins to different
-		 * sliders.
-		 *
-		 * <p>In the following example, a custom maximum track style name is
-		 * passed to the slider:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.customMaximumTrackStyleName = "my-custom-maximum-track";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-maximum-track", setCustomMaximumTrackStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #maximumTrackFactory
-		 * @see #maximumTrackProperties
+		 * @private
 		 */
 		public function get customMaximumTrackStyleName():String
 		{
@@ -1271,7 +1383,11 @@ package feathers.controls
 		 */
 		public function set customMaximumTrackStyleName(value:String):void
 		{
-			if(this._customMaximumTrackStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customMaximumTrackStyleName === value)
 			{
 				return;
 			}
@@ -1412,27 +1528,7 @@ package feathers.controls
 		protected var _customThumbStyleName:String;
 
 		/**
-		 * A style name to add to the slider's thumb sub-component. Typically
-		 * used by a theme to provide different styles to different sliders.
-		 *
-		 * <p>In the following example, a custom thumb style name is passed
-		 * to the slider:</p>
-		 *
-		 * <listing version="3.0">
-		 * slider.customThumbStyleName = "my-custom-thumb";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #thumbFactory
-		 * @see #thumbProperties
+		 * @private
 		 */
 		public function get customThumbStyleName():String
 		{
@@ -1444,19 +1540,23 @@ package feathers.controls
 		 */
 		public function set customThumbStyleName(value:String):void
 		{
-			if(this._customThumbStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customThumbStyleName === value)
 			{
 				return;
 			}
 			this._customThumbStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _thumbProperties:PropertyProxy;
-		
+
 		/**
 		 * An object that stores properties for the slider's thumb, and the
 		 * properties will be passed down to the thumb when the slider
@@ -2001,7 +2101,7 @@ package feathers.controls
 		 *
 		 * @see #thumb
 		 * @see #thumbFactory
-		 * @see #customThumbStyleName
+		 * @see #style:customThumbStyleName
 		 */
 		protected function createThumb():void
 		{
@@ -2030,7 +2130,7 @@ package feathers.controls
 		 *
 		 * @see #minimumTrack
 		 * @see #minimumTrackFactory
-		 * @see #customMinimumTrackStyleName
+		 * @see #style:customMinimumTrackStyleName
 		 */
 		protected function createMinimumTrack():void
 		{
@@ -2082,7 +2182,7 @@ package feathers.controls
 		 *
 		 * @see #maximumTrack
 		 * @see #maximumTrackFactory
-		 * @see #customMaximumTrackStyleName
+		 * @see #style:customMaximumTrackStyleName
 		 */
 		protected function createMaximumTrack():void
 		{

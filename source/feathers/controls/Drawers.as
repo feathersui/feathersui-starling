@@ -40,6 +40,142 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * The divider between the bottom drawer and the content when the bottom
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * bottom drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.bottomDrawerDivider = quad;
+	 * drawers.bottomDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #bottomDrawer
+	 */
+	[Style(name="bottomDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
+	 * The divider between the left drawer and the content when the left
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * left drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.leftDrawerDivider = quad;
+	 * drawers.leftDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #leftDrawer
+	 */
+	[Style(name="leftDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
+	 * Determines whether the drawer opens above the content or below it.
+	 *
+	 * <p>In the following example, the drawers are opened above the
+	 * content:</p>
+	 *
+	 * <listing version="3.0">
+	 * drawers.openMode = RelativeDepth.ABOVE;</listing>
+	 *
+	 * @default feathers.layout.RelativeDepth#BELOW
+	 *
+	 * @see feathers.layout.RelativeDepth#BELOW
+	 * @see feathers.layout.RelativeDepth#ABOVE
+	 */
+	[Style(name="openMode",type="String")]
+
+	/**
+	 * The duration, in seconds, of the animation when a drawer opens or
+	 * closes.
+	 *
+	 * <p>In the following example, the duration of the animation that opens
+	 * or closes a drawer is set to 500 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.openOrCloseDuration = 0.5;</listing>
+	 *
+	 * @default 0.25
+	 *
+	 * @see #style:openOrCloseEase
+	 */
+	[Style(name="openOrCloseDuration",type="Number")]
+
+	/**
+	 * The easing function used for opening or closing the drawers.
+	 *
+	 * <p>In the following example, the ease of the animation that opens and
+	 * closes a drawer is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * drawrs.openOrCloseEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @default starling.animation.Transitions.EASE_OUT
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 * @see #style:openOrCloseDuration
+	 */
+	[Style(name="openOrCloseEase",type="Object")]
+
+	/**
+	 * An optional display object that appears above the content when a
+	 * drawer is open.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * overlay skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Quad = new Quad( 10, 10, 0x000000 );
+	 * skin.alpha = 0.75;
+	 * drawers.overlaySkin = skin;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="overlaySkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The divider between the right drawer and the content when the right
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * right drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.rightDrawerDivider = quad;
+	 * drawers.rightDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #rightDrawer
+	 */
+	[Style(name="rightDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
+	 * The divider between the top drawer and the content when the top
+	 * drawer is docked.
+	 *
+	 * <p>In the following example, a <code>Quad</code> is added as the
+	 * top drawer divider:</p>
+	 *
+	 * <listing version="3.0">
+	 * var divider:Quad = new Quad( 2, 2, 0x999999 );
+	 * drawers.topDrawerDivider = quad;
+	 * drawers.topDrawerDockMode = Orientation.BOTH</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #topDrawer
+	 */
+	[Style(name="topDrawerDivider",type="starling.display.DisplayObject")]
+
+	/**
 	 * Dispatched when the user starts dragging the content to open or close a
 	 * drawer.
 	 *
@@ -482,18 +618,7 @@ package feathers.controls
 		protected var _overlaySkin:DisplayObject;
 
 		/**
-		 * An optional display object that appears above the content when a
-		 * drawer is open.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * overlay skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * var skin:Quad = new Quad( 10, 10, 0x000000 );
-		 * skin.alpha = 0.75;
-		 * drawers.overlaySkin = skin;</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get overlaySkin():DisplayObject
 		{
@@ -505,7 +630,15 @@ package feathers.controls
 		 */
 		public function set overlaySkin(value:DisplayObject):void
 		{
-			if(this._overlaySkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._overlaySkin === value)
 			{
 				return;
 			}
@@ -601,20 +734,7 @@ package feathers.controls
 		protected var _topDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the top drawer and the content when the top
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * top drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.topDrawerDivider = quad;
-		 * drawers.topDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #topDrawer
+		 * @private
 		 */
 		public function get topDrawerDivider():DisplayObject
 		{
@@ -626,6 +746,14 @@ package feathers.controls
 		 */
 		public function set topDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._topDrawerDivider === value)
 			{
 				return;
@@ -898,20 +1026,7 @@ package feathers.controls
 		protected var _rightDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the right drawer and the content when the right
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * right drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.rightDrawerDivider = quad;
-		 * drawers.rightDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #rightDrawer
+		 * @private
 		 */
 		public function get rightDrawerDivider():DisplayObject
 		{
@@ -923,6 +1038,14 @@ package feathers.controls
 		 */
 		public function set rightDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._rightDrawerDivider === value)
 			{
 				return;
@@ -1195,20 +1318,7 @@ package feathers.controls
 		protected var _bottomDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the bottom drawer and the content when the bottom
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * bottom drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.bottomDrawerDivider = quad;
-		 * drawers.bottomDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #bottomDrawer
+		 * @private
 		 */
 		public function get bottomDrawerDivider():DisplayObject
 		{
@@ -1220,6 +1330,14 @@ package feathers.controls
 		 */
 		public function set bottomDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._bottomDrawerDivider === value)
 			{
 				return;
@@ -1492,20 +1610,7 @@ package feathers.controls
 		protected var _leftDrawerDivider:DisplayObject;
 
 		/**
-		 * The divider between the left drawer and the content when the left
-		 * drawer is docked.
-		 *
-		 * <p>In the following example, a <code>Quad</code> is added as the
-		 * left drawer divider:</p>
-		 *
-		 * <listing version="3.0">
-		 * var divider:Quad = new Quad( 2, 2, 0x999999 );
-		 * drawers.leftDrawerDivider = quad;
-		 * drawers.leftDrawerDockMode = Orientation.BOTH</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #leftDrawer
+		 * @private
 		 */
 		public function get leftDrawerDivider():DisplayObject
 		{
@@ -1517,6 +1622,14 @@ package feathers.controls
 		 */
 		public function set leftDrawerDivider(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._leftDrawerDivider === value)
 			{
 				return;
@@ -1811,18 +1924,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="below,above")]
 		/**
-		 * Determines whether the drawer opens above the content or below it.
-		 *
-		 * <p>In the following example, the drawers are opened above the
-		 * content:</p>
-		 *
-		 * <listing version="3.0">
-		 * drawers.openMode = RelativeDepth.ABOVE;</listing>
-		 *
-		 * @default feathers.layout.RelativeDepth#BELOW
-		 *
-		 * @see feathers.layout.RelativeDepth#BELOW
-		 * @see feathers.layout.RelativeDepth#ABOVE
+		 * @private
 		 */
 		public function get openMode():String
 		{
@@ -1838,6 +1940,10 @@ package feathers.controls
 			if(value === OPEN_MODE_ABOVE)
 			{
 				value = RelativeDepth.ABOVE;
+			}
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
 			}
 			if(this._openMode == value)
 			{
@@ -2159,18 +2265,7 @@ package feathers.controls
 		protected var _openOrCloseDuration:Number = 0.25;
 
 		/**
-		 * The duration, in seconds, of the animation when a drawer opens or
-		 * closes.
-		 *
-		 * <p>In the following example, the duration of the animation that opens
-		 * or closes a drawer is set to 500 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.openOrCloseDuration = 0.5;</listing>
-		 *
-		 * @default 0.25
-		 *
-		 * @see #openOrCloseEase
+		 * @private
 		 */
 		public function get openOrCloseDuration():Number
 		{
@@ -2182,6 +2277,10 @@ package feathers.controls
 		 */
 		public function set openOrCloseDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._openOrCloseDuration = value;
 		}
 
@@ -2191,18 +2290,7 @@ package feathers.controls
 		protected var _openOrCloseEase:Object = Transitions.EASE_OUT;
 
 		/**
-		 * The easing function used for opening or closing the drawers.
-		 *
-		 * <p>In the following example, the ease of the animation that opens and
-		 * closes a drawer is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * drawrs.openOrCloseEase = Transitions.EASE_IN_OUT;</listing>
-		 *
-		 * @default starling.animation.Transitions.EASE_OUT
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
-		 * @see #openOrCloseDuration
+		 * @private
 		 */
 		public function get openOrCloseEase():Object
 		{
@@ -2214,6 +2302,10 @@ package feathers.controls
 		 */
 		public function set openOrCloseEase(value:Object):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._openOrCloseEase = value;
 		}
 

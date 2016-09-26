@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
@@ -35,6 +36,338 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+
+	/**
+	 * A style name to add to the first tab in this tab bar. Typically used
+	 * by a theme to provide different styles to the first tab.
+	 *
+	 * <p>In the following example, a custom first tab style name is
+	 * provided to the tab bar:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.customFirstTabStyleName = "my-custom-first-tab";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-first-tab", setCustomFirstTabStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #style:customTabStyleName
+	 * @see #style:customLastTabStyleName
+	 */
+	[Style(name="customFirstTabStyleName",type="String")]
+
+	/**
+	 * A style name to add to the last tab in this tab bar. Typically used
+	 * by a theme to provide different styles to the last tab.
+	 *
+	 * <p>In the following example, a custom last tab style name is provided
+	 * to the tab bar:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.customLastTabStyleName = "my-custom-last-tab";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-last-tab", setCustomLastTabStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #style:customTabStyleName
+	 * @see #style:customFirstTabStyleName
+	 */
+	[Style(name="customLastTabStyleName",type="String")]
+
+	/**
+	 * A style name to add to all tabs in this tab bar. Typically used by a
+	 * theme to provide different styles to different tab bars.
+	 *
+	 * <p>In the following example, a custom tab style name is provided to
+	 * the tab bar:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.customTabStyleName = "my-custom-tab";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-tab", setCustomTabStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TAB
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #style:customFirstTabStyleName
+	 * @see #style:customLastTabStyleName
+	 */
+	[Style(name="customTabStyleName",type="String")]
+
+	/**
+	 * The tab bar layout is either vertical or horizontal.
+	 *
+	 * <p>In the following example, the tab bar's direction is set to
+	 * vertical:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.direction = Direction.VERTICAL;</listing>
+	 *
+	 * @default feathers.layout.Direction.HORIZONTAL
+	 *
+	 * @see feathers.layout.Direction#HORIZONTAL
+	 * @see feathers.layout.Direction#VERTICAL
+	 */
+	[Style(name="direction",type="String")]
+
+	/**
+	 * If <code>true</code>, the tabs will be equally sized in the direction
+	 * of the layout. In other words, if the tab bar is horizontal, each tab
+	 * will have the same width, and if the tab bar is vertical, each tab
+	 * will have the same height. If <code>false</code>, the tabs will be
+	 * sized to their ideal dimensions.
+	 *
+	 * <p>The following example aligns the tabs to the middle without distributing them:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.direction = Direction.VERTICAL;
+	 * tabs.verticalAlign = VerticalAlign.MIDDLE;
+	 * tabs.distributeTabSizes = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="distributeTabSizes",type="Boolean")]
+
+	/**
+	 * Space, in pixels, between the first two tabs. If <code>NaN</code>,
+	 * the default <code>gap</code> property will be used.
+	 *
+	 * <p>The following example sets the gap between the first and second
+	 * tab to a different value than the standard gap:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.firstGap = 30;
+	 * tabs.gap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 * @see #style:lastGap
+	 */
+	[Style(name="firstGap",type="Number")]
+
+	/**
+	 * Space, in pixels, between tabs.
+	 *
+	 * <p>In the following example, the tab bar's gap is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.gap = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:firstGap
+	 * @see #style:lastGap
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * Determines how the tabs are horizontally aligned within the bounds
+	 * of the tab bar (on the x-axis).
+	 *
+	 * <p>The following example aligns the tabs to the left:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.horizontalAlign = HorizontalAlign.LEFT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.JUSTIFY
+	 *
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 * @see feathers.layout.HorizontalAlign#JUSTIFY
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * Space, in pixels, between the last two tabs. If <code>NaN</code>,
+	 * the default <code>gap</code> property will be used.
+	 *
+	 * <p>The following example sets the gap between the last and next to last
+	 * tab to a different value than the standard gap:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.lastGap = 30;
+	 * tabs.gap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 * @see #style:firstGap
+	 */
+	[Style(name="lastGap",type="Number")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding of all sides of the tab bar
+	 * is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the tab bar's top edge and the
+	 * tabs.
+	 *
+	 * <p>In the following example, the padding on the top edge of the
+	 * tab bar is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the tab bar's right edge and
+	 * the tabs.
+	 *
+	 * <p>In the following example, the padding on the right edge of the
+	 * tab bar is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the tab bar's bottom edge and
+	 * the tabs.
+	 *
+	 * <p>In the following example, the padding on the bottom edge of the
+	 * tab bar is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the tab bar's left edge and the
+	 * tabs.
+	 *
+	 * <p>In the following example, the padding on the left edge of the
+	 * tab bar is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The time, in seconds, of the animation that changes the position and
+	 * size of the <code>selectionSkin</code> skin when the selected
+	 * tab changes.
+	 *
+	 * <p>The following example customizes the duration to 500ms:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.selectionChangeDuration = 0.5;</listing>
+	 *
+	 * @default 0.25
+	 *
+	 * @see #style:selectionSkin
+	 * @see #style:selectionChangeEase
+	 */
+	[Style(name="selectionChangeDuration",type="Number")]
+
+	/**
+	 * The easing function used for moving and resizing the
+	 * <code>selectionSkin</code> when the selected tab changes.
+	 *
+	 * <p>In the following example, the ease of the animation that moves
+	 * the <code>selectionSkin</code> is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.selectionChangeEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @default starling.animation.Transitions.EASE_OUT
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 * @see #style:selectionSkin
+	 * @see #style:selectionChangeDuration
+	 */
+	[Style(name="selectionChangeEase",type="Object")]
+
+	/**
+	 * A skin displayed over the selected tab. Its position is animated when
+	 * the selection changes.
+	 *
+	 * <p>The following example passes the tab bar a selection skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image(texture)
+	 * skin.scale9Grid = new Rectangle(1, 2, 4, 4);
+	 * tabs.selectionSkin = skin;</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:selectionChangeDuration
+	 * @see #style:selectionChangeEase
+	 */
+	[Style(name="selectionSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Determines how the tabs are vertically aligned within the bounds
+	 * of the tab bar (on the y-axis).
+	 *
+	 * <p>The following example aligns the tabs to the top:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.verticalAlign = VerticalAlign.TOP;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.JUSTIFY
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 * @see feathers.layout.VerticalAlign#JUSTIFY
+	 */
+	[Style(name="verticalAlign",type="String")]
 
 	/**
 	 * Dispatched when the selected tab changes.
@@ -120,7 +453,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/tab-bar.html How to use the Feathers TabBar component
 	 */
-	public class TabBar extends FeathersControl implements IFocusDisplayObject
+	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -295,7 +628,7 @@ package feathers.controls
 		 * <p>To customize the tab style name without subclassing, see
 		 * <code>customTabStyleName</code>.</p>
 		 *
-		 * @see #customTabStyleName
+		 * @see #style:customTabStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var tabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
@@ -308,9 +641,9 @@ package feathers.controls
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TAB</code>.
 		 *
 		 * <p>To customize the first tab name without subclassing, see
-		 * <code>customFirstTabName</code>.</p>
+		 * <code>customFirstTabStyleName</code>.</p>
 		 *
-		 * @see #customFirstTabName
+		 * @see #style:customFirstTabStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var firstTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
@@ -323,9 +656,9 @@ package feathers.controls
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TAB</code>.
 		 *
 		 * <p>To customize the last tab name without subclassing, see
-		 * <code>customLastTabName</code>.</p>
+		 * <code>customLastTabStyleName</code>.</p>
 		 *
-		 * @see #customLastTabName
+		 * @see #style:customLastTabStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var lastTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
@@ -502,18 +835,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
-		 * The tab bar layout is either vertical or horizontal.
-		 *
-		 * <p>In the following example, the tab bar's direction is set to
-		 * vertical:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.direction = Direction.VERTICAL;</listing>
-		 *
-		 * @default feathers.layout.Direction.HORIZONTAL
-		 *
-		 * @see feathers.layout.Direction#HORIZONTAL
-		 * @see feathers.layout.Direction#VERTICAL
+		 * @private
 		 */
 		public function get direction():String
 		{
@@ -525,7 +847,11 @@ package feathers.controls
 		 */
 		public function set direction(value:String):void
 		{
-			if(this._direction == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._direction === value)
 			{
 				return;
 			}
@@ -540,20 +866,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
-		 * Determines how the tabs are horizontally aligned within the bounds
-		 * of the tab bar (on the x-axis).
-		 *
-		 * <p>The following example aligns the tabs to the left:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.horizontalAlign = HorizontalAlign.LEFT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.JUSTIFY
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
-		 * @see feathers.layout.HorizontalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
@@ -565,7 +878,11 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			if(this._horizontalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalAlign === value)
 			{
 				return;
 			}
@@ -580,20 +897,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
-		 * Determines how the tabs are vertically aligned within the bounds
-		 * of the tab bar (on the y-axis).
-		 *
-		 * <p>The following example aligns the tabs to the top:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.verticalAlign = VerticalAlign.TOP;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.JUSTIFY
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 * @see feathers.layout.VerticalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -605,7 +909,11 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -619,20 +927,7 @@ package feathers.controls
 		protected var _selectionSkin:DisplayObject;
 
 		/**
-		 * A skin displayed over the selected tab. Its position is animated when
-		 * the selection changes.
-		 *
-		 * <p>The following example passes the tab bar a selection skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * var skin:Image = new Image(texture)
-		 * skin.scale9Grid = new Rectangle(1, 2, 4, 4);
-		 * tabs.selectionSkin = skin;</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #selectionChangeDuration
-		 * @see #selectionChangeEase
+		 * @private
 		 */
 		public function get selectionSkin():DisplayObject
 		{
@@ -644,7 +939,15 @@ package feathers.controls
 		 */
 		public function set selectionSkin(value:DisplayObject):void
 		{
-			if(this._selectionSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._selectionSkin === value)
 			{
 				return;
 			}
@@ -673,19 +976,7 @@ package feathers.controls
 		protected var _selectionChangeDuration:Number = 0.25;
 
 		/**
-		 * The time, in seconds, of the animation that changes the position and
-		 * size of the <code>selectionSkin</code> skin when the selected
-		 * tab changes.
-		 *
-		 * <p>The following example customizes the duration to 500ms:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.selectionChangeDuration = 0.5;</listing>
-		 *
-		 * @default 0.25
-		 * 
-		 * @see #selectionSkin
-		 * @see #selectionChangeEase
+		 * @private
 		 */
 		public function get selectionChangeDuration():Number
 		{
@@ -697,6 +988,10 @@ package feathers.controls
 		 */
 		public function set selectionChangeDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._selectionChangeDuration = value;
 		}
 
@@ -706,20 +1001,7 @@ package feathers.controls
 		protected var _selectionChangeEase:Object = Transitions.EASE_OUT;
 
 		/**
-		 * The easing function used for moving and resizing the
-		 * <code>selectionSkin</code> when the selected tab changes.
-		 *
-		 * <p>In the following example, the ease of the animation that moves
-		 * the <code>selectionSkin</code> is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.selectionChangeEase = Transitions.EASE_IN_OUT;</listing>
-		 *
-		 * @default starling.animation.Transitions.EASE_OUT
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
-		 * @see #selectionSkin
-		 * @see #selectionChangeDuration
+		 * @private
 		 */
 		public function get selectionChangeEase():Object
 		{
@@ -731,6 +1013,10 @@ package feathers.controls
 		 */
 		public function set selectionChangeEase(value:Object):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._selectionChangeEase = value;
 		}
 
@@ -740,20 +1026,7 @@ package feathers.controls
 		protected var _distributeTabSizes:Boolean = true;
 
 		/**
-		 * If <code>true</code>, the tabs will be equally sized in the direction
-		 * of the layout. In other words, if the tab bar is horizontal, each tab
-		 * will have the same width, and if the tab bar is vertical, each tab
-		 * will have the same height. If <code>false</code>, the tabs will be
-		 * sized to their ideal dimensions.
-		 *
-		 * <p>The following example aligns the tabs to the middle without distributing them:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.direction = Direction.VERTICAL;
-		 * tabs.verticalAlign = VerticalAlign.MIDDLE;
-		 * tabs.distributeTabSizes = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get distributeTabSizes():Boolean
 		{
@@ -765,7 +1038,11 @@ package feathers.controls
 		 */
 		public function set distributeTabSizes(value:Boolean):void
 		{
-			if(this._distributeTabSizes == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._distributeTabSizes === value)
 			{
 				return;
 			}
@@ -779,14 +1056,7 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * Space, in pixels, between tabs.
-		 *
-		 * <p>In the following example, the tab bar's gap is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.gap = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -798,7 +1068,11 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -812,20 +1086,7 @@ package feathers.controls
 		protected var _firstGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the first two tabs. If <code>NaN</code>,
-		 * the default <code>gap</code> property will be used.
-		 *
-		 * <p>The following example sets the gap between the first and second
-		 * tab to a different value than the standard gap:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.firstGap = 30;
-		 * tabs.gap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #gap
-		 * @see #lastGap
+		 * @private
 		 */
 		public function get firstGap():Number
 		{
@@ -837,7 +1098,11 @@ package feathers.controls
 		 */
 		public function set firstGap(value:Number):void
 		{
-			if(this._firstGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._firstGap === value)
 			{
 				return;
 			}
@@ -851,20 +1116,7 @@ package feathers.controls
 		protected var _lastGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the last two tabs. If <code>NaN</code>,
-		 * the default <code>gap</code> property will be used.
-		 *
-		 * <p>The following example sets the gap between the last and next to last
-		 * tab to a different value than the standard gap:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.lastGap = 30;
-		 * tabs.gap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #gap
-		 * @see #firstGap
+		 * @private
 		 */
 		public function get lastGap():Number
 		{
@@ -876,7 +1128,11 @@ package feathers.controls
 		 */
 		public function set lastGap(value:Number):void
 		{
-			if(this._lastGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._lastGap === value)
 			{
 				return;
 			}
@@ -885,23 +1141,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding of all sides of the tab bar
-		 * is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -925,16 +1165,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the tab bar's top edge and the
-		 * tabs.
-		 *
-		 * <p>In the following example, the padding on the top edge of the
-		 * tab bar is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -946,7 +1177,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -960,16 +1195,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the tab bar's right edge and
-		 * the tabs.
-		 *
-		 * <p>In the following example, the padding on the right edge of the
-		 * tab bar is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -981,7 +1207,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -995,16 +1225,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the tab bar's bottom edge and
-		 * the tabs.
-		 *
-		 * <p>In the following example, the padding on the bottom edge of the
-		 * tab bar is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -1016,7 +1237,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -1030,16 +1255,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the tab bar's left edge and the
-		 * tabs.
-		 *
-		 * <p>In the following example, the padding on the left edge of the
-		 * tab bar is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1051,7 +1267,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -1065,11 +1285,16 @@ package feathers.controls
 		protected var _tabFactory:Function = defaultTabFactory;
 
 		/**
-		 * Creates a new tab. A tab must be an instance of <code>ToggleButton</code>.
-		 * This factory can be used to change properties on the tabs when they
-		 * are first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on a tab.
+		 * Creates each tab. A tab must be an instance of
+		 * <code>ToggleButton</code>. This factory can be used to change
+		 * properties on the tabs when they are first created. For instance, if
+		 * you are skinning Feathers components without a theme, you might use
+		 * this factory to set skins and other styles on a tab.
+		 * 
+		 * <p>Optionally, the first tab and the last tab may be different than
+		 * the other tabs in the middle. Use the <code>firstTabFactory</code>
+		 * and/or the <code>lastTabFactory</code> to customize one or both of
+		 * these tabs.</p> 
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1118,13 +1343,14 @@ package feathers.controls
 		protected var _firstTabFactory:Function;
 
 		/**
-		 * Creates a new first tab. If the <code>firstTabFactory</code> is
-		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
-		 * The first tab must be an instance of <code>ToggleButton</code>. This
-		 * factory can be used to change properties on the first tab when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the first tab.
+		 * If not <code>null</code>, creates the first tab. If the
+		 * <code>firstTabFactory</code> is <code>null</code>, then the tab bar
+		 * will use the <code>tabFactory</code>. The first tab must be an
+		 * instance of <code>ToggleButton</code>. This factory can be used to
+		 * change properties on the first tab when it is initially created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the first
+		 * tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1173,13 +1399,14 @@ package feathers.controls
 		protected var _lastTabFactory:Function;
 
 		/**
-		 * Creates a new last tab. If the <code>lastTabFactory</code> is
-		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
-		 * The last tab must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the last tab when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the last tab.
+		 * If not <code>null</code>, creates the last tab. If the
+		 * <code>lastTabFactory</code> is <code>null</code>, then the tab bar
+		 * will use the <code>tabFactory</code>. The last tab must be an
+		 * instance of <code>ToggleButton</code>. This factory can be used to
+		 * change properties on the last tab when it is initially created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the last
+		 * tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1729,25 +1956,7 @@ package feathers.controls
 		protected var _customTabStyleName:String;
 
 		/**
-		 * A style name to add to all tabs in this tab bar. Typically used by a
-		 * theme to provide different styles to different tab bars.
-		 *
-		 * <p>In the following example, a custom tab style name is provided to
-		 * the tab bar:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.customTabStyleName = "my-custom-tab";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-tab", setCustomTabStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TAB
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customTabStyleName():String
 		{
@@ -1759,7 +1968,11 @@ package feathers.controls
 		 */
 		public function set customTabStyleName(value:String):void
 		{
-			if(this._customTabStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTabStyleName === value)
 			{
 				return;
 			}
@@ -1773,24 +1986,7 @@ package feathers.controls
 		protected var _customFirstTabStyleName:String;
 
 		/**
-		 * A style name to add to the first tab in this tab bar. Typically used
-		 * by a theme to provide different styles to the first tab.
-		 *
-		 * <p>In the following example, a custom first tab style name is
-		 * provided to the tab bar:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.customFirstTabStyleName = "my-custom-first-tab";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-first-tab", setCustomFirstTabStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customFirstTabStyleName():String
 		{
@@ -1802,7 +1998,11 @@ package feathers.controls
 		 */
 		public function set customFirstTabStyleName(value:String):void
 		{
-			if(this._customFirstTabStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customFirstTabStyleName === value)
 			{
 				return;
 			}
@@ -1816,24 +2016,7 @@ package feathers.controls
 		protected var _customLastTabStyleName:String;
 
 		/**
-		 * A style name to add to the last tab in this tab bar. Typically used
-		 * by a theme to provide different styles to the last tab.
-		 *
-		 * <p>In the following example, a custom last tab style name is provided
-		 * to the tab bar:</p>
-		 *
-		 * <listing version="3.0">
-		 * tabs.customLastTabStyleName = "my-custom-last-tab";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-last-tab", setCustomLastTabStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customLastTabStyleName():String
 		{
@@ -1845,7 +2028,11 @@ package feathers.controls
 		 */
 		public function set customLastTabStyleName(value:String):void
 		{
-			if(this._customLastTabStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customLastTabStyleName === value)
 			{
 				return;
 			}

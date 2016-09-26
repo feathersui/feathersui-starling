@@ -19,6 +19,310 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.text.TextFormat;
 
+	[Exclude(name="defaultSelectedLabelProperties",kind="property")]
+	[Exclude(name="selectedUpLabelProperties",kind="property")]
+	[Exclude(name="selectedDownLabelProperties",kind="property")]
+	[Exclude(name="selectedHoverLabelProperties",kind="property")]
+	[Exclude(name="selectedDisabledLabelProperties",kind="property")]
+
+	/**
+	 * The icon used when no other icon is defined for the current state
+	 * when the button is selected. Has a higher priority than
+	 * <code>defaultIcon</code>, but a lower priority than other selected
+	 * icons.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a default icon to use for
+	 * all selected states when no specific icon is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.defaultSelectedIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 */
+	[Style(name="defaultSelectedIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used when no other skin is defined for the current state
+	 * when the button is selected. Has a higher priority than
+	 * <code>defaultSkin</code>, but a lower priority than other selected
+	 * skins.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a default skin to use for
+	 * all selected states when no specific skin is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.defaultSelectedSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 */
+	[Style(name="defaultSelectedSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the button's disabled state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+	 * is used instead. If <code>defaultSelectedIcon</code> is also
+	 * <code>null</code>, then <code>defaultIcon</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the selected disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedDisabledIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.DISABLED_AND_SELECTED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.DISABLED_AND_SELECTED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #style:defaultSelectedIcon
+	 * @see feathers.controls.ButtonState#DISABLED_AND_SELECTED
+	 */
+	[Style(name="selectedDisabledIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's disabled state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
+	 * is used instead. If <code>defaultSelectedSkin</code> is also
+	 * <code>null</code>, then <code>defaultSkin</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the selected disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedDisabledSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.DISABLED_AND_SELECTED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DISABLED_AND_SELECTED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #style:defaultSelectedSkin
+	 * @see feathers.controls.ButtonState#DISABLED_AND_SELECTED
+	 */
+	[Style(name="selectedDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The font styles used to display the button's text when the button is
+	 * selected.
+	 *
+	 * <p>In the following example, the selected font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>labelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="selectedFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The icon used for the button's hover state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+	 * is used instead. If <code>defaultSelectedIcon</code> is also
+	 * <code>null</code>, then <code>defaultIcon</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the selected hover state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedHoverIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.HOVER_AND_SELECTED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.HOVER_AND_SELECTED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #style:defaultSelectedIcon
+	 * @see feathers.controls.ButtonState#HOVER_AND_SELECTED
+	 */
+	[Style(name="selectedHoverIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's hover state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
+	 * is used instead. If <code>defaultSelectedSkin</code> is also
+	 * <code>null</code>, then <code>defaultSkin</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the selected hover state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedHoverSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.HOVER_AND_SELECTED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.HOVER_AND_SELECTED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #style:defaultSelectedSkin
+	 * @see feathers.controls.ButtonState#HOVER_AND_SELECTED
+	 */
+	[Style(name="selectedHoverSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the button's down state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+	 * is used instead. If <code>defaultSelectedIcon</code> is also
+	 * <code>null</code>, then <code>defaultIcon</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the selected down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedDownIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.DOWN_AND_SELECTED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.DOWN_AND_SELECTED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #style:defaultSelectedIcon
+	 * @see feathers.controls.ButtonState#DOWN_AND_SELECTED
+	 */
+	[Style(name="selectedDownIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's down state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
+	 * is used instead. If <code>defaultSelectedSkin</code> is also
+	 * <code>null</code>, then <code>defaultSkin</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the selected down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedDownSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.DOWN_AND_SELECTED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DOWN_AND_SELECTED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #style:defaultSelectedSkin
+	 * @see feathers.controls.ButtonState#DOWN_AND_SELECTED
+	 */
+	[Style(name="selectedDownSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the button's up state when the button is
+	 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+	 * is used instead. If <code>defaultSelectedIcon</code> is also
+	 * <code>null</code>, then <code>defaultIcon</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the selected up state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedUpIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.UP_AND_SELECTED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.UP_AND_SELECTED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #style:defaultSelectedIcon
+	 * @see feathers.controls.ButtonState#UP_AND_SELECTED
+	 */
+	[Style(name="selectedUpIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's up state when the button is selected.
+	 * If <code>null</code>, then <code>defaultSelectedSkin</code> is used
+	 * instead. If <code>defaultSelectedSkin</code> is also
+	 * <code>null</code>, then <code>defaultSkin</code> is used.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the selected up state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.selectedUpSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.UP_AND_SELECTED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.UP_AND_SELECTED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #style:defaultSelectedSkin
+	 * @see feathers.controls.ButtonState#UP_AND_SELECTED
+	 */
+	[Style(name="selectedUpSkin",type="starling.display.DisplayObject")]
+
 	/**
 	 * Dispatched when the button is selected or deselected either
 	 * programmatically or as a result of user interaction. The value of the
@@ -467,31 +771,14 @@ package feathers.controls
 				this._toggleGroup.addItem(this);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected var _defaultSelectedSkin:DisplayObject;
 
 		/**
-		 * The skin used when no other skin is defined for the current state
-		 * when the button is selected. Has a higher priority than
-		 * <code>defaultSkin</code>, but a lower priority than other selected
-		 * skins.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a default skin to use for
-		 * all selected states when no specific skin is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.defaultSelectedSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultSkin
-		 * @see #selectedUpSkin
-		 * @see #selectedDownSkin
-		 * @see #selectedHoverSkin
-		 * @see #selectedDisabledSkin
+		 * @private
 		 */
 		public function get defaultSelectedSkin():DisplayObject
 		{
@@ -503,6 +790,14 @@ package feathers.controls
 		 */
 		public function set defaultSelectedSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._defaultSelectedSkin === value)
 			{
 				return;
@@ -520,24 +815,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's up state when the button is selected.
-		 * If <code>null</code>, then <code>defaultSelectedSkin</code> is used
-		 * instead. If <code>defaultSelectedSkin</code> is also
-		 * <code>null</code>, then <code>defaultSkin</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the selected up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedUpSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultSkin
-		 * @see #defaultSelectedSkin
-		 * @see feathers.controls.ButtonState.UP_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedUpSkin():DisplayObject
 		{
@@ -553,24 +831,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's down state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
-		 * is used instead. If <code>defaultSelectedSkin</code> is also
-		 * <code>null</code>, then <code>defaultSkin</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the selected down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedDownSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultSkin
-		 * @see #defaultSelectedSkin
-		 * @see feathers.controls.ButtonState.DOWN_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedDownSkin():DisplayObject
 		{
@@ -586,24 +847,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's hover state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
-		 * is used instead. If <code>defaultSelectedSkin</code> is also
-		 * <code>null</code>, then <code>defaultSkin</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the selected hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedHoverSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultSkin
-		 * @see #defaultSelectedSkin
-		 * @see feathers.controls.ButtonState.HOVER_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedHoverSkin():DisplayObject
 		{
@@ -619,24 +863,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The skin used for the button's disabled state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
-		 * is used instead. If <code>defaultSelectedSkin</code> is also
-		 * <code>null</code>, then <code>defaultSkin</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the selected disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultSkin
-		 * @see #defaultSelectedSkin
-		 * @see feathers.controls.ButtonState.DISABLED_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedDisabledSkin():DisplayObject
 		{
@@ -652,24 +879,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The font styles used to display the button's text when the button is
-		 * selected.
-		 *
-		 * <p>In the following example, the selected font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>labelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get selectedFontStyles():TextFormat
 		{
@@ -681,6 +891,10 @@ package feathers.controls
 		 */
 		public function set selectedFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.selectedFormat = value;
 		}
 
@@ -697,7 +911,7 @@ package feathers.controls
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 * 
-		 * @see #selectedFontStyles()
+		 * @see #selectedFontStyles
 		 */
 		public function get defaultSelectedLabelProperties():Object
 		{
@@ -743,7 +957,7 @@ package feathers.controls
 		 * 
 		 * @see #selectedFontStyles
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.UP_AND_SELECTED
+		 * @see feathers.controls.ButtonState#UP_AND_SELECTED
 		 */
 		public function get selectedUpLabelProperties():Object
 		{
@@ -789,7 +1003,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.DOWN_AND_SELECTED
+		 * @see feathers.controls.ButtonState#DOWN_AND_SELECTED
 		 */
 		public function get selectedDownLabelProperties():Object
 		{
@@ -835,7 +1049,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.HOVER_AND_SELECTED
+		 * @see feathers.controls.ButtonState#HOVER_AND_SELECTED
 		 */
 		public function get selectedHoverLabelProperties():Object
 		{
@@ -881,7 +1095,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.DISABLED_AND_SELECTED
+		 * @see feathers.controls.ButtonState#DISABLED_AND_SELECTED
 		 */
 		public function get selectedDisabledLabelProperties():Object
 		{
@@ -922,27 +1136,7 @@ package feathers.controls
 		protected var _defaultSelectedIcon:DisplayObject;
 
 		/**
-		 * The icon used when no other icon is defined for the current state
-		 * when the button is selected. Has a higher priority than
-		 * <code>defaultIcon</code>, but a lower priority than other selected
-		 * icons.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a default icon to use for
-		 * all selected states when no specific icon is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.defaultSelectedIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #selectedUpIcon
-		 * @see #selectedDownIcon
-		 * @see #selectedHoverIcon
-		 * @see #selectedDisabledIcon
+		 * @private
 		 */
 		public function get defaultSelectedIcon():DisplayObject
 		{
@@ -954,6 +1148,14 @@ package feathers.controls
 		 */
 		public function set defaultSelectedIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._defaultSelectedIcon === value)
 			{
 				return;
@@ -971,24 +1173,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's up state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
-		 * is used instead. If <code>defaultSelectedIcon</code> is also
-		 * <code>null</code>, then <code>defaultIcon</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the selected up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedUpIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #defaultSelectedIcon
-		 * @see ButtonState.UP_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedUpIcon():DisplayObject
 		{
@@ -1004,24 +1189,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's down state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
-		 * is used instead. If <code>defaultSelectedIcon</code> is also
-		 * <code>null</code>, then <code>defaultIcon</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the selected down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedDownIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #defaultSelectedIcon
-		 * @see ButtonState.DOWN_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedDownIcon():DisplayObject
 		{
@@ -1037,24 +1205,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's hover state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
-		 * is used instead. If <code>defaultSelectedIcon</code> is also
-		 * <code>null</code>, then <code>defaultIcon</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the selected hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedHoverIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #defaultSelectedIcon
-		 * @see ButtonState.HOVER_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedHoverIcon():DisplayObject
 		{
@@ -1070,24 +1221,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's disabled state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
-		 * is used instead. If <code>defaultSelectedIcon</code> is also
-		 * <code>null</code>, then <code>defaultIcon</code> is used.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the selected disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.selectedDisabledIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #defaultSelectedIcon
-		 * @see ButtonState.DISABLED_AND_SELECTED
+		 * @private
 		 */
 		public function get selectedDisabledIcon():DisplayObject
 		{

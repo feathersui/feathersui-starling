@@ -24,17 +24,12 @@ package feathers.skins
 	 * component that is being skinned.
 	 * 
 	 * <listing version="3.0">
-	 * function setButtonSkin( button:Button ):void
-	 * {
-	 *     var skin:ImageSkin = new ImageSkin( upTexture );
-	 *     skin.setTextureForState( ButtonState.DOWN, downTexture );
-	 *     skin.setTextureForState( ButtonState.HOVER, hoverTexture );
-	 *     button.defaultSkin = skin;
-	 * }
-	 * 
 	 * var button:Button = new Button();
 	 * button.label = "Click Me";
-	 * button.styleProvider = new AddOnFunctionStyleProvider( setButtonSkin, button.styleProvider );
+	 * var skin:ImageSkin = new ImageSkin( upTexture );
+	 * skin.setTextureForState( ButtonState.DOWN, downTexture );
+	 * skin.setTextureForState( ButtonState.HOVER, hoverTexture );
+	 * button.defaultSkin = skin;
 	 * this.addChild( button );</listing>
 	 * 
 	 * @see starling.display.Image

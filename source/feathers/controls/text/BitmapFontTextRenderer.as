@@ -155,6 +155,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _currentVerticalAlign:String;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlignOffsetY:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _currentTextFormat:BitmapFontTextFormat;
 
 		/**
@@ -611,7 +621,7 @@ package feathers.controls.text
 		override public function render(painter:Painter):void
 		{
 			this._characterBatch.x = this._batchX;
-			this._characterBatch.y = this.getVerticalAlignmentOffsetY();
+			this._characterBatch.y = this._verticalAlignOffsetY;
 			super.render(painter);
 		}
 
@@ -932,7 +942,11 @@ package feathers.controls.text
 
 				//...unless the text was previously truncated!
 				sizeInvalid ||= (this._lastLayoutIsTruncated && newWidth !== this._lastLayoutWidth);
+
+				//... or the text is aligned
+				sizeInvalid ||= this._currentTextFormat.align !== TextFormatAlign.LEFT;
 			}
+
 			if(dataInvalid || sizeInvalid || this._textFormatChanged)
 			{
 				this._textFormatChanged = false;
@@ -949,6 +963,7 @@ package feathers.controls.text
 			}
 			this.saveMeasurements(this._lastLayoutWidth, this._lastLayoutHeight,
 				this._lastLayoutWidth, this._lastLayoutHeight);
+			this._verticalAlignOffsetY = this.getVerticalAlignOffsetY();
 		}
 
 		/**
@@ -1356,6 +1371,11 @@ package feathers.controls.text
 			{
 				textFormat = this.getTextFormatFromFontStyles();
 			}
+			else
+			{
+				//when using BitmapFontTextFormat, vertical align is always top
+				this._currentVerticalAlign = Align.TOP;
+			}
 			if(this._currentTextFormat !== textFormat)
 			{
 				this._currentTextFormat = textFormat;
@@ -1381,6 +1401,7 @@ package feathers.controls.text
 					this._fontStylesTextFormat = new BitmapFontTextFormat(
 						textFormat.font, textFormat.size, textFormat.color,
 						textFormat.horizontalAlign, textFormat.leading);
+					this._currentVerticalAlign = textFormat.verticalAlign;
 				}
 				else if(this._fontStylesTextFormat === null)
 				{
@@ -1390,9 +1411,11 @@ package feathers.controls.text
 					//if it's not registered, do that first
 					if(!TextField.getBitmapFont(BitmapFont.MINI))
 					{
-						TextField.registerBitmapFont(new BitmapFont());
+						var font:BitmapFont = new BitmapFont();
+						TextField.registerCompositor(font, font.name);
 					}
 					this._fontStylesTextFormat = new BitmapFontTextFormat(BitmapFont.MINI, NaN, 0x000000);
+					this._currentVerticalAlign = Align.TOP;
 				}
 			}
 			return this._fontStylesTextFormat;
@@ -1512,30 +1535,8 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function getVerticalAlignment():String
+		protected function getVerticalAlignOffsetY():Number
 		{
-			var verticalAlign:String = null;
-			if(this._fontStyles !== null)
-			{
-				var format:TextFormat = this._fontStyles.getTextFormatForTarget(this);
-				if(format !== null)
-				{
-					verticalAlign = format.verticalAlign;
-				}
-			}
-			if(verticalAlign === null)
-			{
-				verticalAlign = Align.TOP;
-			}
-			return verticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function getVerticalAlignmentOffsetY():Number
-		{
-			var verticalAlign:String = this.getVerticalAlignment();
 			var font:BitmapFont = this._currentTextFormat.font;
 			var customSize:Number = this._currentTextFormat.size;
 			var scale:Number = customSize / font.size;
@@ -1549,11 +1550,11 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-			if(verticalAlign === Align.BOTTOM)
+			if(this._currentVerticalAlign === Align.BOTTOM)
 			{
 				return (this.actualHeight - textHeight);
 			}
-			else if(verticalAlign === Align.CENTER)
+			else if(this._currentVerticalAlign === Align.CENTER)
 			{
 				return (this.actualHeight - textHeight) / 2;
 			}

@@ -39,6 +39,440 @@ package feathers.controls
 	import starling.utils.SystemUtil;
 
 	/**
+	 * A style name to add to the toggle switch's on label text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different buttons.
+	 *
+	 * <p>In the following example, a custom on label style name is passed
+	 * to the toggle switch:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.customOnLabelStyleName = "my-custom-toggle-on-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toggle-on-label", setCustomToggleSwitchOnLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ON_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #onLabelFactory
+	 */
+	[Style(name="customOnLabelStyleName",type="String")]
+
+	/**
+	 * A style name to add to the toggle switch's on track sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * toggle switches.
+	 *
+	 * <p>In the following example, a custom on track style name is passed to
+	 * the toggle switch:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.customOnTrackStyleName = "my-custom-on-track";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-on-track", setCustomOnTrackStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ON_TRACK
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #onTrackFactory
+	 */
+	[Style(name="customOnTrackStyleName",type="String")]
+
+	/**
+	 * A style name to add to the toggle switch's off label text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different toggle switches.
+	 *
+	 * <p>In the following example, a custom off label style name is passed
+	 * to the toggle switch:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.customOffLabelStyleName = "my-custom-toggle-off-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toggle-off-label", setCustomToggleSwitchOffLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_OFF_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #offLabelFactory
+	 */
+	[Style(name="customOffLabelStyleName",type="String")]
+
+	/**
+	 * A style name to add to the toggle switch's off track sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * toggle switches.
+	 *
+	 * <p>In the following example, a custom off track style name is passed
+	 * to the toggle switch:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.customOffTrackStyleName = "my-custom-off-track";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-off-track", setCustomOffTrackStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_OFF_TRACK
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #offTrackFactory
+	 */
+	[Style(name="customOffTrackStyleName",type="String")]
+
+	/**
+	 * A style name to add to the toggle switch's thumb sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * toggle switches.
+	 *
+	 * <p>In the following example, a custom thumb style name is passed to
+	 * the toggle switch:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.customThumbStyleName = "my-custom-thumb";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #thumbFactory
+	 */
+	[Style(name="customThumbStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the on label's text when the toggle
+	 * switch is disabled.
+	 *
+	 * <p>In the following example, the on labels' disabled font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.onLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>onLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:onLabelFontStyles
+	 */
+	[Style(name="onLabelDisabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the on label's text.
+	 *
+	 * <p>In the following example, the on label's font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>onLabelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:onLabelDisabledFontStyles
+	 * @see #style:onLabelSelectedFontStyles
+	 * @see #setOnLabelFontStylesForState();
+	 */
+	[Style(name="onLabelFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the on label's text when the toggle
+	 * switch is selected.
+	 *
+	 * <p>In the following example, the on label's selected font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.onLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0xff0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>onLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:onLabelFontStyles
+	 */
+	[Style(name="onLabelSelectedFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The text to display in the "on" label text renderer.
+	 *
+	 * <p>In the following example, the toggle switch's "on" label text is
+	 * updated:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.onText = "on";</listing>
+	 *
+	 * @default "ON"
+	 *
+	 * @see #style:offText
+	 */
+	[Style(name="onText",type="String")]
+
+	/**
+	 * The font styles used to display the off label's text when the toggle
+	 * switch is disabled.
+	 *
+	 * <p>In the following example, the off labels' disabled font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.offLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>offLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:offLabelFontStyles
+	 */
+	[Style(name="offLabelDisabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the off label's text.
+	 *
+	 * <p>In the following example, the off label's font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>offLabelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:offLabelDisabledFontStyles
+	 * @see #style:offLabelSelectedFontStyles
+	 * @see #setOffLabelFontStylesForState();
+	 */
+	[Style(name="offLabelFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the off label's text when the toggle
+	 * switch is selected.
+	 *
+	 * <p>In the following example, the off label's selected font styles are
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.offLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0xff0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>offLabelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:offLabelFontStyles
+	 */
+	[Style(name="offLabelSelectedFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The text to display in the "off" label text renderer.
+	 *
+	 * <p>In the following example, the toggle switch's off label text is
+	 * updated:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.offText = "off";</listing>
+	 *
+	 * @default "OFF"
+	 * 
+	 * @see #style:onText
+	 */
+	[Style(name="offText",type="String")]
+
+	/**
+	 * The minimum space, in pixels, between the switch's left edge and the
+	 * switch's content.
+	 *
+	 * <p>In the following example, the toggle switch's left padding is
+	 * set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:paddingRight
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the switch's right edge and the
+	 * switch's content.
+	 *
+	 * <p>In the following example, the toggle switch's right padding is
+	 * set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * Determines if the labels should be drawn. The onTrackSkin and
+	 * offTrackSkin backgrounds may include the text instead.
+	 *
+	 * <p>In the following example, the toggle switch's labels are hidden:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.showLabels = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="showLabels",type="Boolean")]
+
+	/**
+	 * Determines if the thumb should be displayed. This stops interaction
+	 * while still displaying the background.
+	 *
+	 * <p>In the following example, the toggle switch's thumb is hidden:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.showThumb = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="showThumb",type="Boolean")]
+
+	/**
+	 * The duration, in seconds, of the animation when the toggle switch
+	 * is toggled and animates the position of the thumb.
+	 *
+	 * <p>In the following example, the duration of the toggle switch thumb
+	 * animation is updated:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.toggleDuration = 0.5;</listing>
+	 *
+	 * @default 0.15
+	 */
+	[Style(name="toggleDuration",type="Number")]
+
+	/**
+	 * The easing function used for toggle animations.
+	 *
+	 * <p>In the following example, the easing function used by the toggle
+	 * switch's thumb animation is updated:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.toggleEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @default starling.animation.Transitions.EASE_OUT
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 */
+	[Style(name="toggleEase",type="Object")]
+
+	/**
+	 * Determines if the <code>isSelected</code> property of the thumb
+	 * is updated to match the <code>isSelected</code> property of the
+	 * toggle switch, if the class used to create the thumb implements the
+	 * <code>IToggle</code> interface. Useful for skinning to provide a
+	 * different appearance for the thumb based on whether the toggle switch
+	 * is selected or not.
+	 *
+	 * <p>In the following example, the thumb selection is toggled:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.toggleThumbSelection = true;</listing>
+	 *
+	 * @default false
+	 *
+	 * @see feathers.core.IToggle
+	 * @see feathers.controls.ToggleButton
+	 */
+	[Style(name="toggleThumbSelection",type="Boolean")]
+
+	/**
+	 * Determines how the on and off track skins are positioned and sized.
+	 *
+	 * <p>In the following example, the toggle switch's track layout mode is
+	 * updated to use two tracks:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
+	 *
+	 * @default feathers.controls.TrackLayoutMode.SINGLE
+	 *
+	 * @see feathers.controls.TrackLayoutMode#SINGLE
+	 * @see feathers.controls.TrackLayoutMode#SPLIT
+	 * @see #style:trackScaleMode
+	 */
+	[Style(name="trackLayoutMode",type="String")]
+
+	/**
+	 * Determines how the on and off track skins are positioned and sized.
+	 *
+	 * <p>In the following example, the toggle switch's track scale is
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toggle.trackScaleMode = TrackScaleMode.EXACT_FIT;</listing>
+	 *
+	 * @default feathers.controls.TrackScaleMode.DIRECTIONAL
+	 *
+	 * @see feathers.controls.TrackScaleMode#DIRECTIONAL
+	 * @see feathers.controls.TrackScaleMode#EXACT_FIT
+	 * @see #style:trackLayoutMode
+	 */
+	[Style(name="trackScaleMode",type="String")]
+
+	/**
 	 * @copy feathers.core.IToggle#event:change
 	 */
 	[Event(name="change",type="starling.events.Event")]
@@ -157,16 +591,28 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the off label.
+		 * The default value added to the <code>styleNameList</code> of the "off
+		 * label" text renderer.
+		 *
+		 * <p>Note: the "off label" text renderer is not a
+		 * <code>feathers.controls.Label</code>. It is an instance of one of the
+		 * <code>ITextRenderer</code> implementations.</p>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the on label.
+		 * The default value added to the <code>styleNameList</code> of the "on
+		 * label" text renderer.
+		 *
+		 * <p>Note: the "on label" text renderer is not a
+		 * <code>feathers.controls.Label</code>. It is an instance of one of the
+		 * <code>ITextRenderer</code> implementations.</p>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
 
@@ -251,6 +697,10 @@ package feathers.controls
 		 * their constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_ON_LABEL</code>.
 		 *
+		 * <p>To customize the "on" label text renderer style name without
+		 * subclassing, see <code>customOnLabelStyleName</code>.</p>
+		 *
+		 * @see #style:customOnLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var onLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ON_LABEL;
@@ -262,6 +712,10 @@ package feathers.controls
 		 * their constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_OFF_LABEL</code>.
 		 *
+		 * <p>To customize the "off" label text renderer style name without
+		 * subclassing, see <code>customOffLabelStyleName</code>.</p>
+		 *
+		 * @see #style:customOffLabelStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var offLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_OFF_LABEL;
@@ -276,7 +730,7 @@ package feathers.controls
 		 * <p>To customize the on track style name without subclassing, see
 		 * <code>customOnTrackStyleName</code>.</p>
 		 *
-		 * @see #customOnTrackStyleName
+		 * @see #style:customOnTrackStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var onTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_ON_TRACK;
@@ -291,7 +745,7 @@ package feathers.controls
 		 * <p>To customize the off track style name without subclassing, see
 		 * <code>customOffTrackStyleName</code>.</p>
 		 *
-		 * @see #customOffTrackStyleName
+		 * @see #style:customOffTrackStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var offTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_OFF_TRACK;
@@ -305,7 +759,7 @@ package feathers.controls
 		 * <p>To customize the thumb style name without subclassing, see
 		 * <code>customThumbStyleName</code>.</p>
 		 *
-		 * @see #customThumbStyleName
+		 * @see #style:customThumbStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
@@ -399,16 +853,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the switch's right edge and the
-		 * switch's content.
-		 *
-		 * <p>In the following example, the toggle switch's right padding is
-		 * set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -420,7 +865,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -434,16 +883,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the switch's left edge and the
-		 * switch's content.
-		 *
-		 * <p>In the following example, the toggle switch's left padding is
-		 * set to 20 pixels:</p>
-		 * 
-		 * <listing version="3.0">
-		 * toggle.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -455,7 +895,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -469,15 +913,7 @@ package feathers.controls
 		protected var _showLabels:Boolean = true;
 
 		/**
-		 * Determines if the labels should be drawn. The onTrackSkin and
-		 * offTrackSkin backgrounds may include the text instead.
-		 *
-		 * <p>In the following example, the toggle switch's labels are hidden:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.showLabels = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get showLabels():Boolean
 		{
@@ -489,7 +925,11 @@ package feathers.controls
 		 */
 		public function set showLabels(value:Boolean):void
 		{
-			if(this._showLabels == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._showLabels === value)
 			{
 				return;
 			}
@@ -503,15 +943,7 @@ package feathers.controls
 		protected var _showThumb:Boolean = true;
 
 		/**
-		 * Determines if the thumb should be displayed. This stops interaction
-		 * while still displaying the background.
-		 *
-		 * <p>In the following example, the toggle switch's thumb is hidden:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.showThumb = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get showThumb():Boolean
 		{
@@ -523,7 +955,11 @@ package feathers.controls
 		 */
 		public function set showThumb(value:Boolean):void
 		{
-			if(this._showThumb == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._showThumb === value)
 			{
 				return;
 			}
@@ -538,18 +974,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="single,split")]
 		/**
-		 * Determines how the on and off track skins are positioned and sized.
-		 *
-		 * <p>In the following example, the toggle switch's track layout mode is
-		 * updated to use two tracks:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.trackLayoutMode = TrackLayoutMode.SPLIT;</listing>
-		 *
-		 * @default feathers.controls.TrackLayoutMode.SINGLE
-		 *
-		 * @see feathers.controls.TrackLayoutMode#SINGLE
-		 * @see feathers.controls.TrackLayoutMode#SPLIT
+		 * @private
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -565,7 +990,11 @@ package feathers.controls
 			{
 				value = TrackLayoutMode.SPLIT;
 			}
-			if(this._trackLayoutMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._trackLayoutMode === value)
 			{
 				return;
 			}
@@ -580,19 +1009,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="exactFit,directional")]
 		/**
-		 * Determines how the on and off track skins are positioned and sized.
-		 *
-		 * <p>In the following example, the toggle switch's track scale is
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.trackScaleMode = TrackScaleMode.EXACT_FIT;</listing>
-		 *
-		 * @default feathers.controls.TrackScaleMode.DIRECTIONAL
-		 *
-		 * @see feathers.controls.TrackScaleMode#DIRECTIONAL
-		 * @see feathers.controls.TrackScaleMode#EXACT_FIT
-		 * @see #trackLayoutMode
+		 * @private
 		 */
 		public function get trackScaleMode():String
 		{
@@ -604,7 +1021,11 @@ package feathers.controls
 		 */
 		public function set trackScaleMode(value:String):void
 		{
-			if(this._trackScaleMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._trackScaleMode === value)
 			{
 				return;
 			}
@@ -642,9 +1063,6 @@ package feathers.controls
 		 * @see #onLabelFactory
 		 * @see #offLabelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see #onLabelProperties
-		 * @see #offLabelProperties
-		 * @see #disabledLabelProperties
 		 */
 		public function get defaultLabelProperties():Object
 		{
@@ -706,7 +1124,6 @@ package feathers.controls
 		 * @see #onLabelFactory
 		 * @see #offLabelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
 		 */
 		public function get disabledLabelProperties():Object
 		{
@@ -768,7 +1185,6 @@ package feathers.controls
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
 		 */
 		public function get onLabelProperties():Object
 		{
@@ -830,7 +1246,6 @@ package feathers.controls
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see #defaultLabelProperties
 		 */
 		public function get offLabelProperties():Object
 		{
@@ -886,7 +1301,7 @@ package feathers.controls
 		 */
 		public function set labelAlign(value:String):void
 		{
-			if(this._labelAlign == value)
+			if(this._labelAlign === value)
 			{
 				return;
 			}
@@ -952,25 +1367,7 @@ package feathers.controls
 		protected var _onLabelFontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the on label's text.
-		 *
-		 * <p>In the following example, the on label's font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>onLabelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #onLabelDisabledFontStyles
-		 * @see #onLabelSelectedFontStyles
-		 * @see #setOnLabelFontStylesForState();
+		 * @private
 		 */
 		public function get onLabelFontStyles():TextFormat
 		{
@@ -982,29 +1379,15 @@ package feathers.controls
 		 */
 		public function set onLabelFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._onLabelFontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the on label's text when the toggle
-		 * switch is disabled.
-		 *
-		 * <p>In the following example, the on labels' disabled font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.onLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>onLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #onLabelFontStyles
+		 * @private
 		 */
 		public function get onLabelDisabledFontStyles():TextFormat
 		{
@@ -1016,29 +1399,15 @@ package feathers.controls
 		 */
 		public function set onLabelDisabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._onLabelFontStylesSet.disabledFormat = value;
 		}
 
 		/**
-		 * The font styles used to display the on label's text when the toggle
-		 * switch is selected.
-		 *
-		 * <p>In the following example, the on label's selected font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.onLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0xff0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>onLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #onLabelFontStyles
+		 * @private
 		 */
 		public function get onLabelSelectedFontStyles():TextFormat
 		{
@@ -1050,6 +1419,10 @@ package feathers.controls
 		 */
 		public function set onLabelSelectedFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._onLabelFontStylesSet.selectedFormat = value;
 		}
 
@@ -1113,27 +1486,7 @@ package feathers.controls
 		protected var _customOnLabelStyleName:String;
 
 		/**
-		 * A style name to add to the toggle switch's on label text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different buttons.
-		 *
-		 * <p>In the following example, a custom on label style name is passed
-		 * to the toggle switch:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.customOnLabelStyleName = "my-custom-toggle-on-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toggle-on-label", setCustomToggleSwitchOnLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ON_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #onLabelFactory
+		 * @private
 		 */
 		public function get customOnLabelStyleName():String
 		{
@@ -1145,7 +1498,11 @@ package feathers.controls
 		 */
 		public function set customOnLabelStyleName(value:String):void
 		{
-			if(this._customOnLabelStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customOnLabelStyleName === value)
 			{
 				return;
 			}
@@ -1159,25 +1516,7 @@ package feathers.controls
 		protected var _offLabelFontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the off label's text.
-		 *
-		 * <p>In the following example, the off label's font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>offLabelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #offLabelDisabledFontStyles
-		 * @see #offLabelSelectedFontStyles
-		 * @see #setOffLabelFontStylesForState();
+		 * @private
 		 */
 		public function get offLabelFontStyles():TextFormat
 		{
@@ -1189,29 +1528,15 @@ package feathers.controls
 		 */
 		public function set offLabelFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._offLabelFontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the off label's text when the toggle
-		 * switch is disabled.
-		 *
-		 * <p>In the following example, the off labels' disabled font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.offLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>offLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #offLabelFontStyles
+		 * @private
 		 */
 		public function get offLabelDisabledFontStyles():TextFormat
 		{
@@ -1223,29 +1548,15 @@ package feathers.controls
 		 */
 		public function set offLabelDisabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._offLabelFontStylesSet.disabledFormat = value;
 		}
 
 		/**
-		 * The font styles used to display the off label's text when the toggle
-		 * switch is selected.
-		 *
-		 * <p>In the following example, the off label's selected font styles are
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.offLabelSelectedFontStyles = new TextFormat( "Helvetica", 20, 0xff0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>offLabelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #offLabelFontStyles
+		 * @private
 		 */
 		public function get offLabelSelectedFontStyles():TextFormat
 		{
@@ -1257,6 +1568,10 @@ package feathers.controls
 		 */
 		public function set offLabelSelectedFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._offLabelFontStylesSet.selectedFormat = value;
 		}
 
@@ -1320,27 +1635,7 @@ package feathers.controls
 		protected var _customOffLabelStyleName:String;
 
 		/**
-		 * A style name to add to the toggle switch's off label text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different toggle switches.
-		 *
-		 * <p>In the following example, a custom off label style name is passed
-		 * to the toggle switch:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.customOffLabelStyleName = "my-custom-toggle-off-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toggle-off-label", setCustomToggleSwitchOffLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_OFF_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #offLabelFactory
+		 * @private
 		 */
 		public function get customOffLabelStyleName():String
 		{
@@ -1352,7 +1647,11 @@ package feathers.controls
 		 */
 		public function set customOffLabelStyleName(value:String):void
 		{
-			if(this._customOffLabelStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customOffLabelStyleName === value)
 			{
 				return;
 			}
@@ -1445,22 +1744,7 @@ package feathers.controls
 		protected var _toggleThumbSelection:Boolean = false;
 
 		/**
-		 * Determines if the <code>isSelected</code> property of the thumb
-		 * is updated to match the <code>isSelected</code> property of the
-		 * toggle switch, if the class used to create the thumb implements the
-		 * <code>IToggle</code> interface. Useful for skinning to provide a
-		 * different appearance for the thumb based on whether the toggle switch
-		 * is selected or not.
-		 *
-		 * <p>In the following example, the thumb selection is toggled:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.toggleThumbSelection = true;</listing>
-		 *
-		 * @default false
-		 *
-		 * @see feathers.core.IToggle
-		 * @see feathers.controls.ToggleButton
+		 * @private
 		 */
 		public function get toggleThumbSelection():Boolean
 		{
@@ -1472,7 +1756,11 @@ package feathers.controls
 		 */
 		public function set toggleThumbSelection(value:Boolean):void
 		{
-			if(this._toggleThumbSelection == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._toggleThumbSelection === value)
 			{
 				return;
 			}
@@ -1486,16 +1774,7 @@ package feathers.controls
 		protected var _toggleDuration:Number = 0.15;
 
 		/**
-		 * The duration, in seconds, of the animation when the toggle switch
-		 * is toggled and animates the position of the thumb.
-		 *
-		 * <p>In the following example, the duration of the toggle switch thumb
-		 * animation is updated:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.toggleDuration = 0.5;</listing>
-		 *
-		 * @default 0.15
+		 * @private
 		 */
 		public function get toggleDuration():Number
 		{
@@ -1507,6 +1786,10 @@ package feathers.controls
 		 */
 		public function set toggleDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._toggleDuration = value;
 		}
 
@@ -1516,17 +1799,7 @@ package feathers.controls
 		protected var _toggleEase:Object = Transitions.EASE_OUT;
 
 		/**
-		 * The easing function used for toggle animations.
-		 *
-		 * <p>In the following example, the easing function used by the toggle
-		 * switch's thumb animation is updated:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.toggleEase = Transitions.EASE_IN_OUT;</listing>
-		 *
-		 * @default starling.animation.Transitions.EASE_OUT
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+		 * @private
 		 */
 		public function get toggleEase():Object
 		{
@@ -1538,6 +1811,10 @@ package feathers.controls
 		 */
 		public function set toggleEase(value:Object):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._toggleEase = value;
 		}
 
@@ -1547,15 +1824,7 @@ package feathers.controls
 		protected var _onText:String = "ON";
 
 		/**
-		 * The text to display in the ON label.
-		 *
-		 * <p>In the following example, the toggle switch's on label text is
-		 * updated:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.onText = "on";</listing>
-		 *
-		 * @default "ON"
+		 * @private
 		 */
 		public function get onText():String
 		{
@@ -1571,7 +1840,11 @@ package feathers.controls
 			{
 				value = "";
 			}
-			if(this._onText == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._onText === value)
 			{
 				return;
 			}
@@ -1585,15 +1858,7 @@ package feathers.controls
 		protected var _offText:String = "OFF";
 
 		/**
-		 * The text to display in the OFF label.
-		 *
-		 * <p>In the following example, the toggle switch's off label text is
-		 * updated:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.offText = "off";</listing>
-		 *
-		 * @default "OFF"
+		 * @private
 		 */
 		public function get offText():String
 		{
@@ -1609,7 +1874,11 @@ package feathers.controls
 			{
 				value = "";
 			}
-			if(this._offText == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._offText === value)
 			{
 				return;
 			}
@@ -1703,28 +1972,7 @@ package feathers.controls
 		protected var _customOnTrackStyleName:String;
 
 		/**
-		 * A style name to add to the toggle switch's on track sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * toggle switches.
-		 *
-		 * <p>In the following example, a custom on track style name is passed to
-		 * the toggle switch:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.customOnTrackStyleName = "my-custom-on-track";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-on-track", setCustomOnTrackStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_ON_TRACK
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #onTrackFactory
-		 * @see #onTrackProperties
+		 * @private
 		 */
 		public function get customOnTrackStyleName():String
 		{
@@ -1736,7 +1984,11 @@ package feathers.controls
 		 */
 		public function set customOnTrackStyleName(value:String):void
 		{
-			if(this._customOnTrackStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customOnTrackStyleName === value)
 			{
 				return;
 			}
@@ -1875,28 +2127,7 @@ package feathers.controls
 		protected var _customOffTrackStyleName:String;
 
 		/**
-		 * A style name to add to the toggle switch's off track sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * toggle switches.
-		 *
-		 * <p>In the following example, a custom off track style name is passed
-		 * to the toggle switch:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.customOffTrackStyleName = "my-custom-off-track";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-off-track", setCustomOffTrackStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_OFF_TRACK
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #offTrackFactory
-		 * @see #offTrackProperties
+		 * @private
 		 */
 		public function get customOffTrackStyleName():String
 		{
@@ -1908,7 +2139,11 @@ package feathers.controls
 		 */
 		public function set customOffTrackStyleName(value:String):void
 		{
-			if(this._customOffTrackStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customOffTrackStyleName === value)
 			{
 				return;
 			}
@@ -2046,28 +2281,7 @@ package feathers.controls
 		protected var _customThumbStyleName:String;
 
 		/**
-		 * A style name to add to the toggle switch's thumb sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * toggle switches.
-		 *
-		 * <p>In the following example, a custom thumb style name is passed to
-		 * the toggle switch:</p>
-		 *
-		 * <listing version="3.0">
-		 * toggle.customThumbStyleName = "my-custom-thumb";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #thumbFactory
-		 * @see #thumbProperties
+		 * @private
 		 */
 		public function get customThumbStyleName():String
 		{
@@ -2079,7 +2293,11 @@ package feathers.controls
 		 */
 		public function set customThumbStyleName(value:String):void
 		{
-			if(this._customThumbStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customThumbStyleName === value)
 			{
 				return;
 			}
@@ -2540,7 +2758,7 @@ package feathers.controls
 		 *
 		 * @see #thumb
 		 * @see #thumbFactory
-		 * @see #customThumbStyleName
+		 * @see #style:customThumbStyleName
 		 */
 		protected function createThumb():void
 		{
@@ -2569,7 +2787,7 @@ package feathers.controls
 		 *
 		 * @see #onTrack
 		 * @see #onTrackFactory
-		 * @see #customOnTrackStyleName
+		 * @see #style:customOnTrackStyleName
 		 */
 		protected function createOnTrack():void
 		{
@@ -2620,7 +2838,7 @@ package feathers.controls
 		 *
 		 * @see #offTrack
 		 * @see #offTrackFactory
-		 * @see #customOffTrackStyleName
+		 * @see #style:customOffTrackStyleName
 		 */
 		protected function createOffTrack():void
 		{

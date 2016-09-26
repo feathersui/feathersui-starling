@@ -14,6 +14,7 @@ package feathers.controls.text
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 	import feathers.utils.math.roundUpToNearest;
+	import feathers.utils.textures.calculateSnapshotTextureDimensions;
 
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DProfile;
@@ -38,6 +39,7 @@ package feathers.controls.text
 	import starling.textures.Texture;
 	import starling.utils.Align;
 	import starling.utils.MathUtil;
+	import starling.utils.Pool;
 	import starling.utils.SystemUtil;
 
 	/**
@@ -265,6 +267,16 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _fontStylesTextFormat:flash.text.TextFormat;
+
+		/**
+		 * @private
+		 */
+		protected var _currentVerticalAlign:String;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlignOffsetY:Number = 0;
 
 		/**
 		 * @private
@@ -1213,9 +1225,9 @@ package feathers.controls.text
 			if(this.textSnapshot !== null)
 			{
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				if(this._updateSnapshotOnScaleChange)
 				{
+					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 					if(globalScaleX != this._lastGlobalScaleX ||
@@ -1239,7 +1251,7 @@ package feathers.controls.text
 					offsetX = this._textSnapshotOffsetX / scaleFactor;
 					offsetY = this._textSnapshotOffsetY / scaleFactor;
 				}
-				offsetY += this.getVerticalAlignmentOffsetY() * scaleFactor;
+				offsetY += this._verticalAlignOffsetY * scaleFactor;
 
 				var snapshotIndex:int = -1;
 				var totalBitmapWidth:Number = this._snapshotWidth;
@@ -1411,6 +1423,7 @@ package feathers.controls.text
 
 			this._hasMeasured = false;
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+			this._verticalAlignOffsetY = this.getVerticalAlignOffsetY();
 
 			this.layout(sizeInvalid);
 		}
@@ -1602,90 +1615,15 @@ package feathers.controls.text
 			{
 				this.textField.width = this.actualWidth + gutterDimensionsOffset;
 				this.textField.height = this.actualHeight + gutterDimensionsOffset;
-				//these are getting put into an int later, so we don't want it
-				//to possibly round down and cut off part of the text. 
-				var rectangleSnapshotWidth:Number = Math.ceil(this.actualWidth * scaleFactor);
-				var rectangleSnapshotHeight:Number = Math.ceil(this.actualHeight * scaleFactor);
-				if(this._updateSnapshotOnScaleChange)
-				{
-					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					rectangleSnapshotWidth *= matrixToScaleX(HELPER_MATRIX);
-					rectangleSnapshotHeight *= matrixToScaleY(HELPER_MATRIX);
-				}
-				if(rectangleSnapshotWidth >= 1 && rectangleSnapshotHeight >= 1 &&
-					this._nativeFilters && this._nativeFilters.length > 0)
-				{
-					HELPER_MATRIX.identity();
-					HELPER_MATRIX.scale(scaleFactor, scaleFactor);
-					var bitmapData:BitmapData = new BitmapData(rectangleSnapshotWidth, rectangleSnapshotHeight, true, 0x00ff00ff);
-					bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-					this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
-					bitmapData.dispose();
-					bitmapData = null;
-					this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
-					this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
-					rectangleSnapshotWidth = HELPER_RECTANGLE.width;
-					rectangleSnapshotHeight = HELPER_RECTANGLE.height;
-				}
-				var canUseRectangleTexture:Boolean = starling.profile !== Context3DProfile.BASELINE_CONSTRAINED;
-				if(canUseRectangleTexture)
-				{
-					if(rectangleSnapshotWidth > this._maxTextureDimensions)
-					{
-						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + (rectangleSnapshotWidth % this._maxTextureDimensions);
-					}
-					else
-					{
-						this._snapshotWidth = rectangleSnapshotWidth;
-					}
-				}
-				else
-				{
-					if(rectangleSnapshotWidth > this._maxTextureDimensions)
-					{
-						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
-					}
-					else
-					{
-						this._snapshotWidth = MathUtil.getNextPowerOfTwo(rectangleSnapshotWidth);
-					}
-				}
-				if(canUseRectangleTexture)
-				{
-					if(rectangleSnapshotHeight > this._maxTextureDimensions)
-					{
-						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + (rectangleSnapshotHeight % this._maxTextureDimensions);
-					}
-					else
-					{
-						this._snapshotHeight = rectangleSnapshotHeight;
-					}
-				}
-				else
-				{
-					if(rectangleSnapshotHeight > this._maxTextureDimensions)
-					{
-						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
-					}
-					else
-					{
-						this._snapshotHeight = MathUtil.getNextPowerOfTwo(rectangleSnapshotHeight);
-					}
-				}
-				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
-				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-					(textureRoot && (textureRoot.scale != scaleFactor ||
-					this._snapshotWidth != textureRoot.nativeWidth || this._snapshotHeight != textureRoot.nativeHeight));
-				this._snapshotVisibleWidth = rectangleSnapshotWidth;
-				this._snapshotVisibleHeight = rectangleSnapshotHeight;
+				this.calculateSnapshotDimensions();
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
 			//changing maxWidth or something for measurement, we check against
 			//the previous actualWidth/Height used for the snapshot.
 			if(stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture ||
-				this.actualWidth != this._previousActualWidth ||
-				this.actualHeight != this._previousActualHeight)
+				this.actualWidth !== this._previousActualWidth ||
+				this.actualHeight !== this._previousActualHeight)
 			{
 				this._previousActualWidth = this.actualWidth;
 				this._previousActualHeight = this.actualHeight;
@@ -1866,6 +1804,11 @@ package feathers.controls.text
 			{
 				textFormat = this.getTextFormatFromFontStyles();
 			}
+			else
+			{
+				//if using flash.text.TextFormat, vertical align is always top
+				this._currentVerticalAlign = Align.TOP;
+			}
 			this._currentTextFormat = textFormat;
 		}
 
@@ -1885,11 +1828,13 @@ package feathers.controls.text
 				if(fontStylesFormat !== null)
 				{
 					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+					this._currentVerticalAlign = fontStylesFormat.verticalAlign;
 				}
 				else if(this._fontStylesTextFormat === null)
 				{
 					//fallback to a default so that something is displayed
 					this._fontStylesTextFormat = new flash.text.TextFormat();
+					this._currentVerticalAlign = Align.TOP;
 				}
 			}
 			return this._fontStylesTextFormat;
@@ -1898,40 +1843,18 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function getVerticalAlignment():String
+		protected function getVerticalAlignOffsetY():Number
 		{
-			var verticalAlign:String = null;
-			if(this._fontStyles !== null)
-			{
-				var format:starling.text.TextFormat = this._fontStyles.getTextFormatForTarget(this);
-				if(format !== null)
-				{
-					verticalAlign = format.verticalAlign;
-				}
-			}
-			if(verticalAlign === null)
-			{
-				verticalAlign = Align.TOP;
-			}
-			return verticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function getVerticalAlignmentOffsetY():Number
-		{
-			var verticalAlign:String = this.getVerticalAlignment();
 			var textFieldTextHeight:Number = this.textField.textHeight;
 			if(textFieldTextHeight > this.actualHeight)
 			{
 				return 0;
 			}
-			if(verticalAlign === Align.BOTTOM)
+			if(this._currentVerticalAlign === Align.BOTTOM)
 			{
 				return this.actualHeight - textFieldTextHeight;
 			}
-			else if(verticalAlign === Align.CENTER)
+			else if(this._currentVerticalAlign === Align.CENTER)
 			{
 				return (this.actualHeight - textFieldTextHeight) / 2;
 			}
@@ -1991,6 +1914,56 @@ package feathers.controls.text
 			HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
 			return bitmapData;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateSnapshotDimensions():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
+			//these are getting put into an int later, so we don't want it
+			//to possibly round down and cut off part of the text.
+			var rectangleSnapshotWidth:Number = Math.ceil(this.textField.width);
+			var rectangleSnapshotHeight:Number = Math.ceil(this.textField.height);
+			if(this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				rectangleSnapshotWidth *= matrixToScaleX(HELPER_MATRIX);
+				rectangleSnapshotHeight *= matrixToScaleY(HELPER_MATRIX);
+			}
+			if(rectangleSnapshotWidth >= 1 && rectangleSnapshotHeight >= 1 &&
+				this._nativeFilters !== null && this._nativeFilters.length > 0)
+			{
+				HELPER_MATRIX.identity();
+				HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+				var bitmapData:BitmapData = new BitmapData(rectangleSnapshotWidth, rectangleSnapshotHeight, true, 0x00ff00ff);
+				bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+				this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
+				bitmapData.dispose();
+				bitmapData = null;
+				this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
+				this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
+				rectangleSnapshotWidth = HELPER_RECTANGLE.width;
+				rectangleSnapshotHeight = HELPER_RECTANGLE.height;
+			}
+			var point:Point = Pool.getPoint();
+			calculateSnapshotTextureDimensions(rectangleSnapshotWidth,
+				rectangleSnapshotHeight, this._maxTextureDimensions,
+				starling.profile !== Context3DProfile.BASELINE_CONSTRAINED, point);
+			//the full dimensions of the texture
+			this._snapshotWidth = point.x;
+			this._snapshotHeight = point.y;
+			//the clipping dimensions of the texture, if it is next power-of-two
+			this._snapshotVisibleWidth = rectangleSnapshotWidth;
+			this._snapshotVisibleHeight = rectangleSnapshotHeight;
+			Pool.putPoint(point);
+
+			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+			this._needsNewTexture = this._needsNewTexture || this.textSnapshot === null ||
+				(textureRoot !== null && (textureRoot.scale !== scaleFactor ||
+				this._snapshotWidth !== textureRoot.nativeWidth || this._snapshotHeight !== textureRoot.nativeHeight));
 		}
 
 		/**

@@ -20,6 +20,173 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
+	 * A style name to add to the panel's header sub-component. Typically
+	 * used by a theme to provide different styles to different panels.
+	 *
+	 * <p>In the following example, a custom header style name is passed to
+	 * the panel:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.customHeaderStyleName = "my-custom-header";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default (this example assumes that the
+	 * header is a <code>Header</code>, but it can be any
+	 * <code>IFeathersControl</code>):</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Header ).setFunctionForStyleName( "my-custom-header", setCustomHeaderStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_HEADER
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #headerFactory
+	 */
+	[Style(name="customHeaderStyleName",type="String")]
+
+	/**
+	 * A style name to add to the panel's footer sub-component. Typically
+	 * used by a theme to provide different styles to different panels.
+	 *
+	 * <p>In the following example, a custom footer style name is passed to
+	 * the panel:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.customFooterStyleName = "my-custom-footer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default (this example assumes that the
+	 * footer is a <code>ScrollContainer</code>, but it can be any
+	 * <code>IFeathersControl</code>):</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ScrollContainer ).setFunctionForStyleName( "my-custom-footer", setCustomFooterStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_FOOTER
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #footerFactory
+	 */
+	[Style(name="customFooterStyleName",type="String")]
+
+	/**
+	 * Quickly sets all outer padding properties to the same value. The
+	 * <code>outerPadding</code> getter always returns the value of
+	 * <code>outerPaddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPadding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPaddingTop
+	 * @see #style:outerPaddingRight
+	 * @see #style:outerPaddingBottom
+	 * @see #style:outerPaddingLeft
+	 * @see feathers.controls.Scroller#style:padding
+	 */
+	[Style(name="outerPadding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the panel's top edge and the
+	 * panel's header.
+	 *
+	 * <p>Note: The <code>paddingTop</code> property applies to the
+	 * middle content only, and it does not affect the header. Use
+	 * <code>outerPaddingTop</code> if you want to include padding above
+	 * the header. <code>outerPaddingTop</code> and <code>paddingTop</code>
+	 * may be used simultaneously to define padding around the outer edges
+	 * of the panel and additional padding around its middle content.</p>
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPaddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingTop
+	 */
+	[Style(name="outerPaddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the panel's right edge and the
+	 * panel's header, middle content, and footer.
+	 *
+	 * <p>Note: The <code>paddingRight</code> property applies to the middle
+	 * content only, and it does not affect the header or footer. Use
+	 * <code>outerPaddingRight</code> if you want to include padding around
+	 * the header and footer too. <code>outerPaddingRight</code> and
+	 * <code>paddingRight</code> may be used simultaneously to define
+	 * padding around the outer edges of the panel plus additional padding
+	 * around its middle content.</p>
+	 *
+	 * <p>In the following example, the right outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPaddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingRight
+	 */
+	[Style(name="outerPaddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the panel's bottom edge and the
+	 * panel's footer.
+	 *
+	 * <p>Note: The <code>paddingBottom</code> property applies to the
+	 * middle content only, and it does not affect the footer. Use
+	 * <code>outerPaddingBottom</code> if you want to include padding below
+	 * the footer. <code>outerPaddingBottom</code> and <code>paddingBottom</code>
+	 * may be used simultaneously to define padding around the outer edges
+	 * of the panel and additional padding around its middle content.</p>
+	 *
+	 * <p>In the following example, the bottom outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPaddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingBottom
+	 */
+	[Style(name="outerPaddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the panel's left edge and the
+	 * panel's header, middle content, and footer.
+	 *
+	 * <p>Note: The <code>paddingLeft</code> property applies to the middle
+	 * content only, and it does not affect the header or footer. Use
+	 * <code>outerPaddingLeft</code> if you want to include padding around
+	 * the header and footer too. <code>outerPaddingLeft</code> and
+	 * <code>paddingLeft</code> may be used simultaneously to define padding
+	 * around the outer edges of the panel and additional padding around its
+	 * middle content.</p>
+	 *
+	 * <p>In the following example, the left outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.outerPaddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingLeft
+	 */
+	[Style(name="outerPaddingLeft",type="Number")]
+
+	/**
 	 * A container with layout, optional scrolling, a header, and an optional
 	 * footer.
 	 *
@@ -315,7 +482,7 @@ package feathers.controls
 		 * <p>To customize the header style name without subclassing, see
 		 * <code>customHeaderStyleName</code>.</p>
 		 *
-		 * @see #customHeaderStyleName
+		 * @see #style:customHeaderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var headerStyleName:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
@@ -330,7 +497,7 @@ package feathers.controls
 		 * <p>To customize the footer style name without subclassing, see
 		 * <code>customFooterStyleName</code>.</p>
 		 *
-		 * @see #customFooterStyleName
+		 * @see #style:customFooterStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var footerStyleName:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
@@ -510,7 +677,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.Header
-		 * @see #headerProperties
 		 */
 		public function get headerFactory():Function
 		{
@@ -539,29 +705,7 @@ package feathers.controls
 		protected var _customHeaderStyleName:String;
 
 		/**
-		 * A style name to add to the panel's header sub-component. Typically
-		 * used by a theme to provide different styles to different panels.
-		 *
-		 * <p>In the following example, a custom header style name is passed to
-		 * the panel:</p>
-		 *
-		 * <listing version="3.0">
-		 * panel.customHeaderStyleName = "my-custom-header";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default (this example assumes that the
-		 * header is a <code>Header</code>, but it can be any
-		 * <code>IFeathersControl</code>):</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Header ).setFunctionForStyleName( "my-custom-header", setCustomHeaderStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_HEADER
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #headerFactory
-		 * @see #headerProperties
+		 * @private
 		 */
 		public function get customHeaderStyleName():String
 		{
@@ -573,7 +717,11 @@ package feathers.controls
 		 */
 		public function set customHeaderStyleName(value:String):void
 		{
-			if(this._customHeaderStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customHeaderStyleName === value)
 			{
 				return;
 			}
@@ -698,7 +846,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl
-		 * @see #footerProperties
 		 */
 		public function get footerFactory():Function
 		{
@@ -727,29 +874,7 @@ package feathers.controls
 		protected var _customFooterStyleName:String;
 
 		/**
-		 * A style name to add to the panel's footer sub-component. Typically
-		 * used by a theme to provide different styles to different panels.
-		 *
-		 * <p>In the following example, a custom footer style name is passed to
-		 * the panel:</p>
-		 *
-		 * <listing version="3.0">
-		 * panel.customFooterStyleName = "my-custom-footer";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default (this example assumes that the
-		 * footer is a <code>ScrollContainer</code>, but it can be any
-		 * <code>IFeathersControl</code>):</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( ScrollContainer ).setFunctionForStyleName( "my-custom-footer", setCustomFooterStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_FOOTER
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #footerFactory
-		 * @see #footerProperties
+		 * @private
 		 */
 		public function get customFooterStyleName():String
 		{
@@ -761,7 +886,11 @@ package feathers.controls
 		 */
 		public function set customFooterStyleName(value:String):void
 		{
-			if(this._customFooterStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customFooterStyleName === value)
 			{
 				return;
 			}
@@ -875,23 +1004,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all outer padding properties to the same value. The
-		 * <code>outerPadding</code> getter always returns the value of
-		 * <code>outerPaddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the outer padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * panel.outerPadding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #outerPaddingTop
-		 * @see #outerPaddingRight
-		 * @see #outerPaddingBottom
-		 * @see #outerPaddingLeft
-		 * @see feathers.controls.Scroller#padding
+		 * @private
 		 */
 		public function get outerPadding():Number
 		{
@@ -915,24 +1028,7 @@ package feathers.controls
 		protected var _outerPaddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the panel's top edge and the
-		 * panel's header.
-		 *
-		 * <p>Note: The <code>paddingTop</code> property applies to the
-		 * middle content only, and it does not affect the header. Use
-		 * <code>outerPaddingTop</code> if you want to include padding above
-		 * the header. <code>outerPaddingTop</code> and <code>paddingTop</code>
-		 * may be used simultaneously to define padding around the outer edges
-		 * of the panel and additional padding around its middle content.</p>
-		 *
-		 * <p>In the following example, the top padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * panel.outerPaddingTop = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see feathers.controls.Scroller#paddingTop
+		 * @private
 		 */
 		public function get outerPaddingTop():Number
 		{
@@ -944,7 +1040,11 @@ package feathers.controls
 		 */
 		public function set outerPaddingTop(value:Number):void
 		{
-			if(this._outerPaddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingTop === value)
 			{
 				return;
 			}
@@ -958,25 +1058,7 @@ package feathers.controls
 		protected var _outerPaddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the panel's right edge and the
-		 * panel's header, middle content, and footer.
-		 *
-		 * <p>Note: The <code>paddingRight</code> property applies to the middle
-		 * content only, and it does not affect the header or footer. Use
-		 * <code>outerPaddingRight</code> if you want to include padding around
-		 * the header and footer too. <code>outerPaddingRight</code> and
-		 * <code>paddingRight</code> may be used simultaneously to define
-		 * padding around the outer edges of the panel plus additional padding
-		 * around its middle content.</p>
-		 *
-		 * <p>In the following example, the right outer padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * panel.outerPaddingRight = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see feathers.controls.Scroller#paddingRight
+		 * @private
 		 */
 		public function get outerPaddingRight():Number
 		{
@@ -988,7 +1070,11 @@ package feathers.controls
 		 */
 		public function set outerPaddingRight(value:Number):void
 		{
-			if(this._outerPaddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingRight === value)
 			{
 				return;
 			}
@@ -1002,24 +1088,7 @@ package feathers.controls
 		protected var _outerPaddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the panel's bottom edge and the
-		 * panel's footer.
-		 *
-		 * <p>Note: The <code>paddingBottom</code> property applies to the
-		 * middle content only, and it does not affect the footer. Use
-		 * <code>outerPaddingBottom</code> if you want to include padding below
-		 * the footer. <code>outerPaddingBottom</code> and <code>paddingBottom</code>
-		 * may be used simultaneously to define padding around the outer edges
-		 * of the panel and additional padding around its middle content.</p>
-		 *
-		 * <p>In the following example, the bottom outer padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * panel.outerPaddingBottom = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see feathers.controls.Scroller#paddingBottom
+		 * @private
 		 */
 		public function get outerPaddingBottom():Number
 		{
@@ -1031,7 +1100,11 @@ package feathers.controls
 		 */
 		public function set outerPaddingBottom(value:Number):void
 		{
-			if(this._outerPaddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingBottom === value)
 			{
 				return;
 			}
@@ -1045,25 +1118,7 @@ package feathers.controls
 		protected var _outerPaddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the panel's left edge and the
-		 * panel's header, middle content, and footer.
-		 *
-		 * <p>Note: The <code>paddingLeft</code> property applies to the middle
-		 * content only, and it does not affect the header or footer. Use
-		 * <code>outerPaddingLeft</code> if you want to include padding around
-		 * the header and footer too. <code>outerPaddingLeft</code> and
-		 * <code>paddingLeft</code> may be used simultaneously to define padding
-		 * around the outer edges of the panel and additional padding around its
-		 * middle content.</p>
-		 *
-		 * <p>In the following example, the left outer padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * scroller.outerPaddingLeft = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see feathers.controls.Scroller#paddingLeft
+		 * @private
 		 */
 		public function get outerPaddingLeft():Number
 		{
@@ -1075,7 +1130,11 @@ package feathers.controls
 		 */
 		public function set outerPaddingLeft(value:Number):void
 		{
-			if(this._outerPaddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingLeft === value)
 			{
 				return;
 			}
@@ -1299,7 +1358,7 @@ package feathers.controls
 		 *
 		 * @see #header
 		 * @see #headerFactory
-		 * @see #customHeaderStyleName
+		 * @see #style:customHeaderStyleName
 		 */
 		protected function createHeader():void
 		{
@@ -1337,7 +1396,7 @@ package feathers.controls
 		 *
 		 * @see #footer
 		 * @see #footerFactory
-		 * @see #customFooterStyleName
+		 * @see #style:customFooterStyleName
 		 */
 		protected function createFooter():void
 		{

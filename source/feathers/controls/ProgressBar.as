@@ -19,6 +19,197 @@ package feathers.controls
 	import starling.display.DisplayObject;
 
 	/**
+	 * The primary background to display in the progress bar. The background
+	 * skin is displayed below the fill skin, and the fill skin is affected
+	 * by the padding, and the background skin may be seen around the edges.
+	 *
+	 * <p>The original width or height of the background skin will be one
+	 * of the values used to calculate the width or height of the progress
+	 * bar, if the <code>width</code> and <code>height</code> properties are
+	 * not set explicitly. The fill skin and padding values will also be
+	 * used.</p>
+	 *
+	 * <p>If the background skin is a Feathers component, the
+	 * <code>minWidth</code> or <code>minHeight</code> properties will be
+	 * one of the values used to calculate the width or height of the
+	 * progress bar. If the background skin is a regular Starling display
+	 * object, the original width and height of the display object will be
+	 * used to calculate the minimum dimensions instead.</p>
+	 *
+	 * <p>In the following example, the progress bar is given a background
+	 * skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundDisabledSkin
+	 * @see #style:fillSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A background to display when the progress bar is disabled.
+	 *
+	 * <p>In the following example, the progress bar is given a disabled
+	 * background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 * @see #style:fillDisabledSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Determines the direction that the progress bar fills. When this value
+	 * changes, the progress bar's width and height values do not change
+	 * automatically.
+	 *
+	 * <p>In the following example, the direction is set to vertical:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.direction = Direction.VERTICAL;</listing>
+	 *
+	 * @default feathers.layout.Direction.HORIZONTAL
+	 *
+	 * @see feathers.layout.Direction#HORIZONTAL
+	 * @see feathers.layout.Direction#VERTICAL
+	 */
+	[Style(name="direction",type="String")]
+
+	/**
+	 * The primary fill to display in the progress bar. The fill skin is
+	 * displayed over the background skin, with padding around the edges of
+	 * the fill skin to reveal the background skin behind.
+	 *
+	 * <p>Note: The size of the <code>fillSkin</code>, at the time that it
+	 * is passed to the setter, will be used used as the size of the fill
+	 * when the progress bar is set to the minimum value. In other words,
+	 * if the fill of a horizontal progress bar with a value from 0 to 100
+	 * should be virtually invisible when the value is 0, then the
+	 * <code>fillSkin</code> should have a width of 0 when you pass it in.
+	 * On the other hand, if you're using an <code>Image</code> with a
+	 * <code>scale9Grid</code> as the skin, it may require a minimum width
+	 * before the image parts begin to overlap. In that case, the
+	 * <code>Image</code> instance passed to the <code>fillSkin</code>
+	 * setter should have a <code>width</code> value that is the same as
+	 * that minimum width value where the image parts do not overlap.</p>
+	 *
+	 * <p>In the following example, the progress bar is given a fill
+	 * skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.fillSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:fillDisabledSkin
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="fillSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A fill to display when the progress bar is disabled.
+	 *
+	 * <p>In the following example, the progress bar is given a disabled fill
+	 * skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.fillDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:fillSkin
+	 * @see #style:backgroundDisabledSkin
+	 */
+	[Style(name="fillDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the progress bar's top edge and
+	 * the progress bar's content.
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the progress bar's right edge
+	 * and the progress bar's content.
+	 *
+	 * <p>In the following example, the right padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the progress bar's bottom edge
+	 * and the progress bar's content.
+	 *
+	 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the progress bar's left edge
+	 * and the progress bar's content.
+	 *
+	 * <p>In the following example, the left padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * progress.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
 	 * Displays the progress of a task over time. Non-interactive.
 	 *
 	 * <p>The following example creates a progress bar:</p>
@@ -88,19 +279,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
-		 * Determines the direction that the progress bar fills. When this value
-		 * changes, the progress bar's width and height values do not change
-		 * automatically.
-		 *
-		 * <p>In the following example, the direction is set to vertical:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.direction = Direction.VERTICAL;</listing>
-		 *
-		 * @default feathers.layout.Direction.HORIZONTAL
-		 *
-		 * @see feathers.layout.Direction#HORIZONTAL
-		 * @see feathers.layout.Direction#VERTICAL
+		 * @private
 		 */
 		public function get direction():String
 		{
@@ -112,7 +291,11 @@ package feathers.controls
 		 */
 		public function set direction(value:String):void
 		{
-			if(this._direction == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._direction === value)
 			{
 				return;
 			}
@@ -276,30 +459,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The primary background to display in the progress bar. The background
-		 * skin is displayed below the fill skin, and the fill skin is affected
-		 * by the padding, and the background skin may be seen around the edges. 
-		 * 
-		 * <p>The original width or height of the background skin will be one
-		 * of the values used to calculate the width or height of the progress
-		 * bar, if the <code>width</code> and <code>height</code> properties are
-		 * not set explicitly. The fill skin and padding values will also be
-		 * used.</p>
-		 * 
-		 * <p>If the background skin is a Feathers component, the
-		 * <code>minWidth</code> or <code>minHeight</code> properties will be
-		 * one of the values used to calculate the width or height of the
-		 * progress bar. If the background skin is a regular Starling display
-		 * object, the original width and height of the display object will be
-		 * used to calculate the minimum dimensions instead.</p>
-		 *
-		 * <p>In the following example, the progress bar is given a background
-		 * skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -311,11 +471,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -335,17 +502,7 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the progress bar is disabled.
-		 *
-		 * <p>In the following example, the progress bar is given a disabled
-		 * background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #backgroundSkin
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -357,11 +514,18 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundDisabledSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -398,30 +562,7 @@ package feathers.controls
 		protected var _fillSkin:DisplayObject;
 
 		/**
-		 * The primary fill to display in the progress bar. The fill skin is
-		 * displayed over the background skin, with padding around the edges of
-		 * the fill skin to reveal the background skin behind. 
-		 *
-		 * <p>Note: The size of the <code>fillSkin</code>, at the time that it
-		 * is passed to the setter, will be used used as the size of the fill
-		 * when the progress bar is set to the minimum value. In other words,
-		 * if the fill of a horizontal progress bar with a value from 0 to 100
-		 * should be virtually invisible when the value is 0, then the
-		 * <code>fillSkin</code> should have a width of 0 when you pass it in.
-		 * On the other hand, if you're using an <code>Image</code> with a
-		 * <code>scale9Grid</code> as the skin, it may require a minimum width
-		 * before the image parts begin to overlap. In that case, the
-		 * <code>Image</code> instance passed to the <code>fillSkin</code>
-		 * setter should have a <code>width</code> value that is the same as
-		 * that minimum width value where the image parts do not overlap.</p>
-		 *
-		 * <p>In the following example, the progress bar is given a fill
-		 * skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.fillSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get fillSkin():DisplayObject
 		{
@@ -433,11 +574,18 @@ package feathers.controls
 		 */
 		public function set fillSkin(value:DisplayObject):void
 		{
-			if(this._fillSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._fillSkin === value)
 			{
 				return;
 			}
-
 			if(this._fillSkin && this._fillSkin != this._fillDisabledSkin)
 			{
 				this.removeChild(this._fillSkin);
@@ -457,17 +605,7 @@ package feathers.controls
 		protected var _fillDisabledSkin:DisplayObject;
 
 		/**
-		 * A fill to display when the progress bar is disabled.
-		 *
-		 * <p>In the following example, the progress bar is given a disabled fill
-		 * skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.fillDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #fillSkin
+		 * @private
 		 */
 		public function get fillDisabledSkin():DisplayObject
 		{
@@ -479,11 +617,18 @@ package feathers.controls
 		 */
 		public function set fillDisabledSkin(value:DisplayObject):void
 		{
-			if(this._fillDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._fillDisabledSkin === value)
 			{
 				return;
 			}
-
 			if(this._fillDisabledSkin && this._fillDisabledSkin != this._fillSkin)
 			{
 				this.removeChild(this._fillDisabledSkin);
@@ -498,22 +643,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -537,15 +667,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the progress bar's top edge and
-		 * the progress bar's content.
-		 *
-		 * <p>In the following example, the top padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -557,7 +679,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -571,15 +697,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the progress bar's right edge
-		 * and the progress bar's content.
-		 *
-		 * <p>In the following example, the right padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -591,7 +709,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -605,15 +727,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the progress bar's bottom edge
-		 * and the progress bar's content.
-		 *
-		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -625,7 +739,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -639,15 +757,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the progress bar's left edge
-		 * and the progress bar's content.
-		 *
-		 * <p>In the following example, the left padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * progress.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -659,7 +769,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}

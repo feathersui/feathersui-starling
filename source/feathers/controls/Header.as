@@ -38,6 +38,299 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * A display object displayed behind the header's content.
+	 *
+	 * <p>In the following example, the header's background skin is set to
+	 * a <code>Quad</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.backgroundSkin = new Quad( 10, 10, 0xff0000 );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundDisabledSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A background to display when the header is disabled. If the property
+	 * is <code>null</code>, the value of the <code>backgroundSkin</code>
+	 * property will be used instead.
+	 *
+	 * <p>In the following example, the header's disabled background skin is
+	 * set to a <code>Quad</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.backgroundDisabledSkin = new Quad( 10, 10, 0x999999 );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A style name to add to the header's title text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different headers.
+	 *
+	 * <p>In the following example, a custom title style name is passed to
+	 * the header:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.customTitleStyleName = "my-custom-header-title";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-title", setCustomHeaderTitleStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TITLE
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #titleFactory
+	 */
+	[Style(name="customTitleStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the title's text when the header is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>titleFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the title's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>titleFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the header's padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the header's top edge and the
+	 * header's content.
+	 *
+	 * <p>In the following example, the header's top padding is set to 20
+	 * pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the header's right edge and the
+	 * header's content.
+	 *
+	 * <p>In the following example, the header's right padding is set to 20
+	 * pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the header's bottom edge and
+	 * the header's content.
+	 *
+	 * <p>In the following example, the header's bottom padding is set to 20
+	 * pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the header's left edge and the
+	 * header's content.
+	 *
+	 * <p>In the following example, the header's left padding is set to 20
+	 * pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * Space, in pixels, between items. The same value is used with the
+	 * <code>leftItems</code> and <code>rightItems</code>.
+	 *
+	 * <p>Set the <code>titleGap</code> to make the gap on the left and
+	 * right of the title use a different value.</p>
+	 *
+	 * <p>In the following example, the header's gap between items is set to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.gap = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:titleGap
+	 * @see #leftItems
+	 * @see #rightItems
+	 * @see #centerItems
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * The preferred horizontal position of the title.
+	 *
+	 * <p>If <code>titleAlign</code> is set to
+	 * <code>HorizontalAlign.LEFT</code>, but <code>leftItems</code> is not
+	 * empty, the title will be positioned slightly to the right of the
+	 * left items. If <code>centerItems</code> is also not empty, the title
+	 * will not be displayed.</p>
+	 *
+	 * <p>If <code>titleAlign</code> is set to
+	 * <code>HorizontalAlign.RIGHT</code>, but <code>rightItems</code> is
+	 * not empty, the title will be positioned slightly to the left of the
+	 * right items. If <code>centerItems</code> is also not empty, the title
+	 * will not be displayed.</p>
+	 *
+	 * <p>If <code>titleAlign</code> is set to
+	 * <code>HorizontalAlign.CENTER</code>, but <code>centerItems</code> is
+	 * not <code>null</code>, the title will not be displayed.</p>
+	 *
+	 * <p>In the following example, the header's title alignment is set to
+	 * prefer the left side:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.titleAlign = HorizontalAlign.LEFT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.CENTER
+	 *
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 */
+	[Style(name="titleAlign",type="String")]
+
+	/**
+	 * Space, in pixels, between the title and the left or right groups of
+	 * items. If <code>NaN</code> (the default), the default <code>gap</code>
+	 * property is used instead.
+	 *
+	 * <p>In the following example, the header's title gap is set to 20
+	 * pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.titleGap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 */
+	[Style(name="titleGap",type="Number")]
+
+	/**
+	 * If enabled, the header's top padding will be increased to account for
+	 * the height of the OS status bar when the app is rendered under the OS
+	 * status bar. The header will not add extra padding to apps that aren't
+	 * rendered under the OS status bar.
+	 *
+	 * <p>iOS started rendering apps that aren't full screen under the OS
+	 * status bar in version 7.</p>
+	 *
+	 * <p>In the following example, the header's padding will account for
+	 * the iOS status bar height:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.useExtraPaddingForOSStatusBar = true;</listing>
+	 *
+	 * @default false;
+	 *
+	 * @see #style:paddingTop
+	 */
+	[Style(name="useExtraPaddingForOSStatusBar",type="Boolean")]
+
+	/**
+	 * The alignment of the items vertically, on the y-axis.
+	 *
+	 * <p>In the following example, the header's vertical alignment is set
+	 * to the middle:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.verticalAlign = VerticalAlign.MIDDLE;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 */
+	[Style(name="verticalAlign",type="String")]
+
+	/**
 	 * A header that displays an optional title along with a horizontal regions
 	 * on the sides for additional UI controls. The left side is typically for
 	 * navigation (to display a back button, for example) and the right for
@@ -183,10 +476,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_STYLE_NAME_ITEM:String = "feathers-header-item";
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the header's
-		 * title.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * header's title text renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TITLE:String = "feathers-header-title";
 
@@ -232,6 +526,11 @@ package feathers.controls
 		 * sub-classes can customize the title text renderer style name in their
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TITLE</code>.
+		 *
+		 * <p>To customize the title text renderer style name without
+		 * subclassing, see <code>customTitleStyleName</code>.</p>
+		 *
+		 * @see #style:customTitleStyleName
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
@@ -588,22 +887,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the header's padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -627,16 +911,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the header's top edge and the
-		 * header's content.
-		 *
-		 * <p>In the following example, the header's top padding is set to 20
-		 * pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -648,7 +923,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -662,16 +941,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the header's right edge and the
-		 * header's content.
-		 *
-		 * <p>In the following example, the header's right padding is set to 20
-		 * pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -683,7 +953,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -697,16 +971,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the header's bottom edge and
-		 * the header's content.
-		 *
-		 * <p>In the following example, the header's bottom padding is set to 20
-		 * pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -718,7 +983,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -732,16 +1001,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the header's left edge and the
-		 * header's content.
-		 *
-		 * <p>In the following example, the header's left padding is set to 20
-		 * pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -753,7 +1013,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -767,23 +1031,7 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * Space, in pixels, between items. The same value is used with the
-		 * <code>leftItems</code> and <code>rightItems</code>.
-		 *
-		 * <p>Set the <code>titleGap</code> to make the gap on the left and
-		 * right of the title use a different value.</p>
-		 *
-		 * <p>In the following example, the header's gap between items is set to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.gap = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #titleGap
-		 * @see #leftItems
-		 * @see #rightItems
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -795,7 +1043,11 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -809,19 +1061,7 @@ package feathers.controls
 		protected var _titleGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the title and the left or right groups of
-		 * items. If <code>NaN</code> (the default), the default <code>gap</code>
-		 * property is used instead.
-		 *
-		 * <p>In the following example, the header's title gap is set to 20
-		 * pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.titleGap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #gap
+		 * @private
 		 */
 		public function get titleGap():Number
 		{
@@ -833,7 +1073,11 @@ package feathers.controls
 		 */
 		public function set titleGap(value:Number):void
 		{
-			if(this._titleGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._titleGap === value)
 			{
 				return;
 			}
@@ -847,23 +1091,7 @@ package feathers.controls
 		protected var _useExtraPaddingForOSStatusBar:Boolean = false;
 
 		/**
-		 * If enabled, the header's top padding will be increased to account for
-		 * the height of the OS status bar when the app is rendered under the OS
-		 * status bar. The header will not add extra padding to apps that aren't
-		 * rendered under the OS status bar.
-		 *
-		 * <p>iOS started rendering apps that aren't full screen under the OS
-		 * status bar in version 7.</p>
-		 *
-		 * <p>In the following example, the header's padding will account for
-		 * the iOS status bar height:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.useExtraPaddingForOSStatusBar = true;</listing>
-		 *
-		 * @default false;
-		 *
-		 * @see #paddingTop
+		 * @private
 		 */
 		public function get useExtraPaddingForOSStatusBar():Boolean
 		{
@@ -875,7 +1103,11 @@ package feathers.controls
 		 */
 		public function set useExtraPaddingForOSStatusBar(value:Boolean):void
 		{
-			if(this._useExtraPaddingForOSStatusBar == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._useExtraPaddingForOSStatusBar === value)
 			{
 				return;
 			}
@@ -890,19 +1122,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
-		 * The alignment of the items vertically, on the y-axis.
-		 *
-		 * <p>In the following example, the header's vertical alignment is set
-		 * to the middle:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.verticalAlign = VerticalAlign.MIDDLE;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -914,7 +1134,11 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -963,15 +1187,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * A display object displayed behind the header's content.
-		 *
-		 * <p>In the following example, the header's background skin is set to
-		 * a <code>Quad</code>:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.backgroundSkin = new Quad( 10, 10, 0xff0000 );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -983,11 +1199,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -1007,17 +1230,7 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the header is disabled. If the property
-		 * is <code>null</code>, the value of the <code>backgroundSkin</code>
-		 * property will be used instead.
-		 *
-		 * <p>In the following example, the header's disabled background skin is
-		 * set to a <code>Quad</code>:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.backgroundDisabledSkin = new Quad( 10, 10, 0x999999 );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -1029,11 +1242,18 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundDisabledSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -1053,22 +1273,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the title's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>titleFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -1080,28 +1285,15 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the title's text when the header is
-		 * disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>titleFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -1113,6 +1305,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -1122,27 +1318,7 @@ package feathers.controls
 		protected var _customTitleStyleName:String;
 
 		/**
-		 * A style name to add to the header's title text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different headers.
-		 *
-		 * <p>In the following example, a custom title style name is passed to
-		 * the header:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.customTitleStyleName = "my-custom-header-title";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-header-title", setCustomHeaderTitleStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TITLE
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #titleFactory
+		 * @private
 		 */
 		public function get customTitleStyleName():String
 		{
@@ -1154,7 +1330,11 @@ package feathers.controls
 		 */
 		public function set customTitleStyleName(value:String):void
 		{
-			if(this._customTitleStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTitleStyleName === value)
 			{
 				return;
 			}
@@ -1240,35 +1420,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="center,left,right")]
 		/**
-		 * The preferred horizontal position of the title.
-		 * 
-		 * <p>If <code>titleAlign</code> is set to
-		 * <code>HorizontalAlign.LEFT</code>, but <code>leftItems</code> is not
-		 * empty, the title will be positioned slightly to the right of the
-		 * left items. If <code>centerItems</code> is also not empty, the title
-		 * will not be displayed.</p>
-		 *
-		 * <p>If <code>titleAlign</code> is set to
-		 * <code>HorizontalAlign.RIGHT</code>, but <code>rightItems</code> is
-		 * not empty, the title will be positioned slightly to the left of the
-		 * right items. If <code>centerItems</code> is also not empty, the title
-		 * will not be displayed.</p>
-		 * 
-		 * <p>If <code>titleAlign</code> is set to
-		 * <code>HorizontalAlign.CENTER</code>, but <code>centerItems</code> is
-		 * not <code>null</code>, the title will not be displayed.</p>
-		 *
-		 * <p>In the following example, the header's title alignment is set to
-		 * prefer the left side:</p>
-		 *
-		 * <listing version="3.0">
-		 * header.titleAlign = HorizontalAlign.LEFT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.CENTER
-		 *
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @private
 		 */
 		public function get titleAlign():String
 		{
@@ -1288,7 +1440,11 @@ package feathers.controls
 			{
 				value = HorizontalAlign.RIGHT;
 			}
-			if(this._titleAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._titleAlign === value)
 			{
 				return;
 			}

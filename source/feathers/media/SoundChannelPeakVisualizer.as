@@ -17,6 +17,18 @@ package feathers.media
 	import starling.events.Event;
 
 	/**
+	 * The gap, in pixels, between the bars.
+	 *
+	 * <p>In the following example, the gap is set to 10 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * control.gap = 10;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
 	 * A visualization of the left and right peaks of the
 	 * <code>flash.media.SoundChannel</code> from a <code>SoundPlayer</code>
 	 * component.
@@ -33,12 +45,13 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
 		public function SoundChannelPeakVisualizer()
 		{
+			super();
 		}
 
 		/**
@@ -65,7 +78,7 @@ package feathers.media
 		protected var _gap:Number = 0;
 
 		/**
-		 * The gap, in pixels, between the bars.
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -77,7 +90,11 @@ package feathers.media
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}

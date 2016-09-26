@@ -16,6 +16,159 @@ package feathers.controls
 
 	[DefaultProperty("mxmlContent")]
 	/**
+	 * Typically used to provide some kind of animation or visual effect,
+	 * this function that is called when the screen navigator pushes a new
+	 * screen onto the stack.
+	 *
+	 * <p>In the following example, the screen navigator is given a push
+	 * transition that slides the screens to the left:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.pushTransition = Slide.createSlideLeftTransition();</listing>
+	 *
+	 * <p>A number of animated transitions may be found in the
+	 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+	 * However, you are not limited to only these transitions. It's possible
+	 * to create custom transitions too.</p>
+	 *
+	 * <p>A custom transition function should have the following signature:</p>
+	 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+	 *
+	 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+	 * arguments may be <code>null</code>, but never both. The
+	 * <code>oldScreen</code> argument will be <code>null</code> when the
+	 * first screen is displayed or when a new screen is displayed after
+	 * clearing the screen. The <code>newScreen</code> argument will
+	 * be null when clearing the screen.</p>
+	 *
+	 * <p>The <code>completeCallback</code> function <em>must</em> be called
+	 * when the transition effect finishes. This callback indicate to the
+	 * screen navigator that the transition has finished. This function has
+	 * the following signature:</p>
+	 *
+	 * <pre>function(cancelTransition:Boolean = false):void</pre>
+	 *
+	 * <p>The first argument defaults to <code>false</code>, meaning that
+	 * the transition completed successfully. In most cases, this callback
+	 * may be called without arguments. If a transition is cancelled before
+	 * completion (perhaps through some kind of user interaction), and the
+	 * previous screen should be restored, pass <code>true</code> as the
+	 * first argument to the callback to inform the screen navigator that
+	 * the transition is cancelled.</p>
+	 *
+	 * @default null
+	 *
+	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+	 * @see #pushScreen()
+	 * @see #popTransition
+	 * @see #popToRootTransition
+	 */
+	[Style(name="pushTransition",type="Function")]
+
+	/**
+	 * Typically used to provide some kind of animation or visual effect,
+	 * this function that is called when the screen navigator pops a screen
+	 * from the top of the stack.
+	 *
+	 * <p>In the following example, the screen navigator is given a pop
+	 * transition that slides the screens to the right:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.popTransition = Slide.createSlideRightTransition();</listing>
+	 *
+	 * <p>A number of animated transitions may be found in the
+	 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+	 * However, you are not limited to only these transitions. It's possible
+	 * to create custom transitions too.</p>
+	 *
+	 * <p>A custom transition function should have the following signature:</p>
+	 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+	 *
+	 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+	 * arguments may be <code>null</code>, but never both. The
+	 * <code>oldScreen</code> argument will be <code>null</code> when the
+	 * first screen is displayed or when a new screen is displayed after
+	 * clearing the screen. The <code>newScreen</code> argument will
+	 * be null when clearing the screen.</p>
+	 *
+	 * <p>The <code>completeCallback</code> function <em>must</em> be called
+	 * when the transition effect finishes. This callback indicate to the
+	 * screen navigator that the transition has finished. This function has
+	 * the following signature:</p>
+	 *
+	 * <pre>function(cancelTransition:Boolean = false):void</pre>
+	 *
+	 * <p>The first argument defaults to <code>false</code>, meaning that
+	 * the transition completed successfully. In most cases, this callback
+	 * may be called without arguments. If a transition is cancelled before
+	 * completion (perhaps through some kind of user interaction), and the
+	 * previous screen should be restored, pass <code>true</code> as the
+	 * first argument to the callback to inform the screen navigator that
+	 * the transition is cancelled.</p>
+	 *
+	 * @default null
+	 *
+	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+	 * @see #popScreen()
+	 * @see #pushTransition
+	 * @see #popToRootTransition
+	 */
+	[Style(name="popTransition",type="Function")]
+
+	/**
+	 * Typically used to provide some kind of animation or visual effect, a
+	 * function that is called when the screen navigator clears its stack,
+	 * to show the first screen that was pushed onto the stack.
+	 *
+	 * <p>If this property is <code>null</code>, the value of the
+	 * <code>popTransition</code> property will be used instead.</p>
+	 *
+	 * <p>In the following example, a custom pop to root transition is
+	 * passed to the screen navigator:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.popToRootTransition = Fade.createFadeInTransition();</listing>
+	 *
+	 * <p>A number of animated transitions may be found in the
+	 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+	 * However, you are not limited to only these transitions. It's possible
+	 * to create custom transitions too.</p>
+	 *
+	 * <p>A custom transition function should have the following signature:</p>
+	 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+	 *
+	 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+	 * arguments may be <code>null</code>, but never both. The
+	 * <code>oldScreen</code> argument will be <code>null</code> when the
+	 * first screen is displayed or when a new screen is displayed after
+	 * clearing the screen. The <code>newScreen</code> argument will
+	 * be null when clearing the screen.</p>
+	 *
+	 * <p>The <code>completeCallback</code> function <em>must</em> be called
+	 * when the transition effect finishes. This callback indicate to the
+	 * screen navigator that the transition has finished. This function has
+	 * the following signature:</p>
+	 *
+	 * <pre>function(cancelTransition:Boolean = false):void</pre>
+	 *
+	 * <p>The first argument defaults to <code>false</code>, meaning that
+	 * the transition completed successfully. In most cases, this callback
+	 * may be called without arguments. If a transition is cancelled before
+	 * completion (perhaps through some kind of user interaction), and the
+	 * previous screen should be restored, pass <code>true</code> as the
+	 * first argument to the callback to inform the screen navigator that
+	 * the transition is cancelled.</p>
+	 *
+	 * @default null
+	 *
+	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+	 * @see #popToRootScreen()
+	 * @see #pushTransition
+	 * @see #popTransition
+	 */
+	[Style(name="popToRootTransition",type="Function")]
+
+	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
 	 *
@@ -89,50 +242,7 @@ package feathers.controls
 		protected var _pushTransition:Function;
 
 		/**
-		 * Typically used to provide some kind of animation or visual effect,
-		 * this function that is called when the screen navigator pushes a new
-		 * screen onto the stack. 
-		 *
-		 * <p>In the following example, the screen navigator is given a push
-		 * transition that slides the screens to the left:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.pushTransition = Slide.createSlideLeftTransition();</listing>
-		 *
-		 * <p>A number of animated transitions may be found in the
-		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
-		 * However, you are not limited to only these transitions. It's possible
-		 * to create custom transitions too.</p>
-		 *
-		 * <p>A custom transition function should have the following signature:</p>
-		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
-		 *
-		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
-		 * arguments may be <code>null</code>, but never both. The
-		 * <code>oldScreen</code> argument will be <code>null</code> when the
-		 * first screen is displayed or when a new screen is displayed after
-		 * clearing the screen. The <code>newScreen</code> argument will
-		 * be null when clearing the screen.</p>
-		 *
-		 * <p>The <code>completeCallback</code> function <em>must</em> be called
-		 * when the transition effect finishes. This callback indicate to the
-		 * screen navigator that the transition has finished. This function has
-		 * the following signature:</p>
-		 *
-		 * <pre>function(cancelTransition:Boolean = false):void</pre>
-		 *
-		 * <p>The first argument defaults to <code>false</code>, meaning that
-		 * the transition completed successfully. In most cases, this callback
-		 * may be called without arguments. If a transition is cancelled before
-		 * completion (perhaps through some kind of user interaction), and the
-		 * previous screen should be restored, pass <code>true</code> as the
-		 * first argument to the callback to inform the screen navigator that
-		 * the transition is cancelled.</p>
-		 *
-		 * @default null
-		 *
-		 * @see #pushScreen()
-		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+		 * @private
 		 */
 		public function get pushTransition():Function
 		{
@@ -144,7 +254,7 @@ package feathers.controls
 		 */
 		public function set pushTransition(value:Function):void
 		{
-			if(this._pushTransition == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
@@ -157,50 +267,7 @@ package feathers.controls
 		protected var _popTransition:Function;
 
 		/**
-		 * Typically used to provide some kind of animation or visual effect,
-		 * this function that is called when the screen navigator pops a screen
-		 * from the top of the stack.
-		 *
-		 * <p>In the following example, the screen navigator is given a pop
-		 * transition that slides the screens to the right:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.popTransition = Slide.createSlideRightTransition();</listing>
-		 *
-		 * <p>A number of animated transitions may be found in the
-		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
-		 * However, you are not limited to only these transitions. It's possible
-		 * to create custom transitions too.</p>
-		 *
-		 * <p>A custom transition function should have the following signature:</p>
-		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
-		 *
-		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
-		 * arguments may be <code>null</code>, but never both. The
-		 * <code>oldScreen</code> argument will be <code>null</code> when the
-		 * first screen is displayed or when a new screen is displayed after
-		 * clearing the screen. The <code>newScreen</code> argument will
-		 * be null when clearing the screen.</p>
-		 *
-		 * <p>The <code>completeCallback</code> function <em>must</em> be called
-		 * when the transition effect finishes. This callback indicate to the
-		 * screen navigator that the transition has finished. This function has
-		 * the following signature:</p>
-		 *
-		 * <pre>function(cancelTransition:Boolean = false):void</pre>
-		 *
-		 * <p>The first argument defaults to <code>false</code>, meaning that
-		 * the transition completed successfully. In most cases, this callback
-		 * may be called without arguments. If a transition is cancelled before
-		 * completion (perhaps through some kind of user interaction), and the
-		 * previous screen should be restored, pass <code>true</code> as the
-		 * first argument to the callback to inform the screen navigator that
-		 * the transition is cancelled.</p>
-		 *
-		 * @default null
-		 *
-		 * @see #popScreen()
-		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+		 * @private
 		 */
 		public function get popTransition():Function
 		{
@@ -212,7 +279,7 @@ package feathers.controls
 		 */
 		public function set popTransition(value:Function):void
 		{
-			if(this._popTransition == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
@@ -225,54 +292,7 @@ package feathers.controls
 		protected var _popToRootTransition:Function = null;
 
 		/**
-		 * Typically used to provide some kind of animation or visual effect, a
-		 * function that is called when the screen navigator clears its stack,
-		 * to show the first screen that was pushed onto the stack.
-		 *
-		 * <p>If this property is <code>null</code>, the value of the
-		 * <code>popTransition</code> property will be used instead.</p>
-		 *
-		 * <p>In the following example, a custom pop to root transition is
-		 * passed to the screen navigator:</p>
-		 *
-		 * <listing version="3.0">
-		 * navigator.popToRootTransition = Fade.createFadeInTransition();</listing>
-		 *
-		 * <p>A number of animated transitions may be found in the
-		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
-		 * However, you are not limited to only these transitions. It's possible
-		 * to create custom transitions too.</p>
-		 *
-		 * <p>A custom transition function should have the following signature:</p>
-		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
-		 *
-		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
-		 * arguments may be <code>null</code>, but never both. The
-		 * <code>oldScreen</code> argument will be <code>null</code> when the
-		 * first screen is displayed or when a new screen is displayed after
-		 * clearing the screen. The <code>newScreen</code> argument will
-		 * be null when clearing the screen.</p>
-		 *
-		 * <p>The <code>completeCallback</code> function <em>must</em> be called
-		 * when the transition effect finishes. This callback indicate to the
-		 * screen navigator that the transition has finished. This function has
-		 * the following signature:</p>
-		 *
-		 * <pre>function(cancelTransition:Boolean = false):void</pre>
-		 *
-		 * <p>The first argument defaults to <code>false</code>, meaning that
-		 * the transition completed successfully. In most cases, this callback
-		 * may be called without arguments. If a transition is cancelled before
-		 * completion (perhaps through some kind of user interaction), and the
-		 * previous screen should be restored, pass <code>true</code> as the
-		 * first argument to the callback to inform the screen navigator that
-		 * the transition is cancelled.</p>
-		 *
-		 * @default null
-		 *
-		 * @see #popTransition
-		 * @see #popToRootScreen()
-		 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
+		 * @private
 		 */
 		public function get popToRootTransition():Function
 		{
@@ -284,7 +304,7 @@ package feathers.controls
 		 */
 		public function set popToRootTransition(value:Function):void
 		{
-			if(this._popToRootTransition == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}

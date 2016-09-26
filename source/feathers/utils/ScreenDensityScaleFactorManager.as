@@ -95,15 +95,15 @@ package feathers.utils
 	 * <listing version="3.0">
 	 * if( Starling.current.contentScaleFactor > 1 )
 	 * {
-	 * 	assetManager.scaleFactor = 2;
-	 * 	var assets2x:File = File.applicationDirectory.resolvePath( "assets/2x" );
-	 * 	assetManager.enqueue( assets2x );
+	 *     assetManager.scaleFactor = 2;
+	 *     var assets2x:File = File.applicationDirectory.resolvePath( "assets/2x" );
+	 *     assetManager.enqueue( assets2x );
 	 * }
 	 * else
 	 * {
-	 * 	assetManager.scaleFactor = 1;
-	 * 	var assets1x:File = File.applicationDirectory.resolvePath( "assets/1x" );
-	 * 	assetManager.enqueue( assets1x );
+	 *     assetManager.scaleFactor = 1;
+	 *     var assets1x:File = File.applicationDirectory.resolvePath( "assets/1x" );
+	 *     assetManager.enqueue( assets1x );
 	 * }</listing>
 	 * 
 	 * <p>Providing assets for every scale factor is optional because Starling

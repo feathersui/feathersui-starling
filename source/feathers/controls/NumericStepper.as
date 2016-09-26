@@ -30,6 +30,161 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * How the buttons are positioned relative to the text input.
+	 *
+	 * <p>In the following example, the button layout is set to place the
+	 * buttons on the right side, stacked vertically, for a desktop
+	 * appearance:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.buttonLayoutMode = NumericStepper.StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;</listing>
+	 *
+	 * @default feathers.controls.StepperButtonLayoutMode.SPLIT_HORIZONTAL
+	 *
+	 * @see feathers.controls.StepperButtonLayoutMode#SPLIT_HORIZONTAL
+	 * @see feathers.controls.StepperButtonLayoutMode#SPLIT_VERTICAL
+	 * @see feathers.controls.StepperButtonLayoutMode#RIGHT_SIDE_VERTICAL
+	 */
+	[Style(name="buttonLayoutMode",type="String")]
+
+	/**
+	 * The gap, in pixels, between the numeric stepper's increment and
+	 * decrement buttons when they are both positioned on the same side. If
+	 * the buttons are split between two sides, this value is not used.
+	 *
+	 * <p>In the following example, the gap between buttons is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
+	 * stepper.buttonGap = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:textInputGap
+	 * @see #style:buttonLayoutMode
+	 */
+	[Style(name="buttonGap",type="Number")]
+
+	/**
+	 * A style name to add to the numeric stepper's decrement button
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different numeric steppers.
+	 *
+	 * <p>In the following example, a custom decrement button style name is
+	 * passed to the stepper:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.customDecrementButtonStyleName = "my-custom-decrement-button";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-decrement-button", setCustomDecrementButtonStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #decrementButtonFactory
+	 */
+	[Style(name="customDecrementButtonStyleName",type="String")]
+
+	/**
+	 * A style name to add to the numeric stepper's increment button
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different numeric steppers.
+	 *
+	 * <p>In the following example, a custom increment button style name is
+	 * passed to the stepper:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.customIncrementButtonStyleName = "my-custom-increment-button";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-increment-button", setCustomIncrementButtonStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #incrementButtonFactory
+	 */
+	[Style(name="customIncrementButtonStyleName",type="String")]
+
+	/**
+	 * A style name to add to the numeric stepper's text input sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * text inputs.
+	 *
+	 * <p>In the following example, a custom text input style name is passed
+	 * to the stepper:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.customTextInputStyleName = "my-custom-text-input";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( TextInput ).setFunctionForStyleName( "my-custom-text-input", setCustomTextInputStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #textInputFactory
+	 */
+	[Style(name="customTextInputStyleName",type="String")]
+
+	/**
+	 * The text displayed by the decrement button. Often, there is no text
+	 * displayed on this button and an icon is used instead.
+	 *
+	 * <p>In the following example, the decrement button's label is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.decrementButtonLabel = "-";</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="decrementButtonLabel",type="String")]
+
+	/**
+	 * The text displayed by the increment button. Often, there is no text
+	 * displayed on this button and an icon is used instead.
+	 *
+	 * <p>In the following example, the increment button's label is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.incrementButtonLabel = "+";</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="incrementButtonLabel",type="String")]
+
+	/**
+	 * The gap, in pixels, between the numeric stepper's text input and its
+	 * buttons. If the buttons are split, this gap is used on both sides. If
+	 * the buttons both appear on the same side, the gap is used only on
+	 * that side.
+	 *
+	 * <p>In the following example, the gap between the text input and buttons is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * stepper.textInputGap = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:buttonGap
+	 * @see #style:buttonLayoutMode
+	 */
+	[Style(name="textInputGap",type="Number")]
+
+	/**
 	 * Dispatched when the stepper's value changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -195,7 +350,7 @@ package feathers.controls
 		 * <p>To customize the decrement button name without subclassing, see
 		 * <code>customDecrementButtonStyleName</code>.</p>
 		 *
-		 * @see #customDecrementButtonStyleName
+		 * @see #style:customDecrementButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var decrementButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON;
@@ -210,7 +365,7 @@ package feathers.controls
 		 * <p>To customize the increment button name without subclassing, see
 		 * <code>customIncrementButtonStyleName</code>.</p>
 		 *
-		 * @see #customIncrementButtonStyleName
+		 * @see #style:customIncrementButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var incrementButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON;
@@ -225,7 +380,7 @@ package feathers.controls
 		 * <p>To customize the text input name without subclassing, see
 		 * <code>customTextInputStyleName</code>.</p>
 		 *
-		 * @see #customTextInputStyleName
+		 * @see #style:customTextInputStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textInputStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT;
@@ -615,20 +770,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="splitHorizontal,splitVertical,rightSideVertical")]
 		/**
-		 * How the buttons are positioned relative to the text input.
-		 *
-		 * <p>In the following example, the button layout is set to place the
-		 * buttons on the right side, stacked vertically, for a desktop
-		 * appearance:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.buttonLayoutMode = NumericStepper.StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;</listing>
-		 *
-		 * @default feathers.controls.StepperButtonLayoutMode.SPLIT_HORIZONTAL
-		 *
-		 * @see feathers.controls.StepperButtonLayoutMode#SPLIT_HORIZONTAL
-		 * @see feathers.controls.StepperButtonLayoutMode#SPLIT_VERTICAL
-		 * @see feathers.controls.StepperButtonLayoutMode#RIGHT_SIDE_VERTICAL
+		 * @private
 		 */
 		public function get buttonLayoutMode():String
 		{
@@ -640,7 +782,11 @@ package feathers.controls
 		 */
 		public function set buttonLayoutMode(value:String):void
 		{
-			if(this._buttonLayoutMode == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._buttonLayoutMode === value)
 			{
 				return;
 			}
@@ -654,20 +800,7 @@ package feathers.controls
 		protected var _buttonGap:Number = 0;
 
 		/**
-		 * The gap, in pixels, between the numeric stepper's increment and
-		 * decrement buttons when they are both positioned on the same side. If
-		 * the buttons are split between two sides, this value is not used.
-		 *
-		 * <p>In the following example, the gap between buttons is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
-		 * stepper.buttonGap = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #textInputGap
-		 * @see #buttonLayoutMode
+		 * @private
 		 */
 		public function get buttonGap():Number
 		{
@@ -679,7 +812,11 @@ package feathers.controls
 		 */
 		public function set buttonGap(value:Number):void
 		{
-			if(this._buttonGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._buttonGap === value)
 			{
 				return;
 			}
@@ -693,20 +830,7 @@ package feathers.controls
 		protected var _textInputGap:Number = 0;
 
 		/**
-		 * The gap, in pixels, between the numeric stepper's text input and its
-		 * buttons. If the buttons are split, this gap is used on both sides. If
-		 * the buttons both appear on the same side, the gap is used only on
-		 * that side.
-		 *
-		 * <p>In the following example, the gap between the text input and buttons is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.textInputGap = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #buttonGap
-		 * @see #buttonLayoutMode
+		 * @private
 		 */
 		public function get textInputGap():Number
 		{
@@ -718,7 +842,11 @@ package feathers.controls
 		 */
 		public function set textInputGap(value:Number):void
 		{
-			if(this._textInputGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._textInputGap === value)
 			{
 				return;
 			}
@@ -757,7 +885,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.Button
-		 * @see #decrementButtonProperties
 		 */
 		public function get decrementButtonFactory():Function
 		{
@@ -783,28 +910,7 @@ package feathers.controls
 		protected var _customDecrementButtonStyleName:String;
 
 		/**
-		 * A style name to add to the numeric stepper's decrement button
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different numeric steppers.
-		 *
-		 * <p>In the following example, a custom decrement button style name is
-		 * passed to the stepper:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.customDecrementButtonStyleName = "my-custom-decrement-button";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-decrement-button", setCustomDecrementButtonStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #decrementButtonFactory
-		 * @see #decrementButtonProperties
+		 * @private
 		 */
 		public function get customDecrementButtonStyleName():String
 		{
@@ -816,7 +922,11 @@ package feathers.controls
 		 */
 		public function set customDecrementButtonStyleName(value:String):void
 		{
-			if(this._customDecrementButtonStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customDecrementButtonStyleName === value)
 			{
 				return;
 			}
@@ -906,15 +1016,7 @@ package feathers.controls
 		protected var _decrementButtonLabel:String = null;
 
 		/**
-		 * The text displayed by the decrement button. Often, there is no text
-		 * displayed on this button and an icon is used instead.
-		 *
-		 * <p>In the following example, the decrement button's label is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.decrementButtonLabel = "-";</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get decrementButtonLabel():String
 		{
@@ -926,7 +1028,11 @@ package feathers.controls
 		 */
 		public function set decrementButtonLabel(value:String):void
 		{
-			if(this._decrementButtonLabel == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._decrementButtonLabel === value)
 			{
 				return;
 			}
@@ -965,7 +1071,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.Button
-		 * @see #incrementButtonProperties
 		 */
 		public function get incrementButtonFactory():Function
 		{
@@ -991,28 +1096,7 @@ package feathers.controls
 		protected var _customIncrementButtonStyleName:String;
 
 		/**
-		 * A style name to add to the numeric stepper's increment button
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different numeric steppers.
-		 *
-		 * <p>In the following example, a custom increment button style name is
-		 * passed to the stepper:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.customIncrementButtonStyleName = "my-custom-increment-button";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-increment-button", setCustomIncrementButtonStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #incrementButtonFactory
-		 * @see #incrementButtonProperties
+		 * @private
 		 */
 		public function get customIncrementButtonStyleName():String
 		{
@@ -1024,7 +1108,11 @@ package feathers.controls
 		 */
 		public function set customIncrementButtonStyleName(value:String):void
 		{
-			if(this._customIncrementButtonStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customIncrementButtonStyleName === value)
 			{
 				return;
 			}
@@ -1114,15 +1202,7 @@ package feathers.controls
 		protected var _incrementButtonLabel:String = null;
 
 		/**
-		 * The text displayed by the increment button. Often, there is no text
-		 * displayed on this button and an icon is used instead.
-		 *
-		 * <p>In the following example, the increment button's label is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.incrementButtonLabel = "+";</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get incrementButtonLabel():String
 		{
@@ -1134,7 +1214,11 @@ package feathers.controls
 		 */
 		public function set incrementButtonLabel(value:String):void
 		{
-			if(this._incrementButtonLabel == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._incrementButtonLabel === value)
 			{
 				return;
 			}
@@ -1172,7 +1256,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.TextInput
-		 * @see #textInputProperties
 		 */
 		public function get textInputFactory():Function
 		{
@@ -1198,28 +1281,7 @@ package feathers.controls
 		protected var _customTextInputStyleName:String;
 
 		/**
-		 * A style name to add to the numeric stepper's text input sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * text inputs.
-		 *
-		 * <p>In the following example, a custom text input style name is passed
-		 * to the stepper:</p>
-		 *
-		 * <listing version="3.0">
-		 * stepper.customTextInputStyleName = "my-custom-text-input";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( TextInput ).setFunctionForStyleName( "my-custom-text-input", setCustomTextInputStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #textInputFactory
-		 * @see #textInputProperties
+		 * @private
 		 */
 		public function get customTextInputStyleName():String
 		{
@@ -1231,7 +1293,11 @@ package feathers.controls
 		 */
 		public function set customTextInputStyleName(value:String):void
 		{
-			if(this._customTextInputStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTextInputStyleName === value)
 			{
 				return;
 			}
@@ -1742,7 +1808,7 @@ package feathers.controls
 		 *
 		 * @see #decrementButton
 		 * @see #decrementButtonFactory
-		 * @see #customDecrementButtonStyleName
+		 * @see #style:customDecrementButtonStyleName
 		 */
 		protected function createDecrementButton():void
 		{
@@ -1769,7 +1835,7 @@ package feathers.controls
 		 *
 		 * @see #incrementButton
 		 * @see #incrementButtonFactory
-		 * @see #customIncrementButtonStyleName
+		 * @see #style:customIncrementButtonStyleName
 		 */
 		protected function createIncrementButton():void
 		{
@@ -1796,7 +1862,7 @@ package feathers.controls
 		 *
 		 * @see #textInput
 		 * @see #textInputFactory
-		 * @see #customTextInputStyleName
+		 * @see #style:customTextInputStyleName
 		 */
 		protected function createTextInput():void
 		{

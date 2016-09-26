@@ -68,6 +68,7 @@ package
 	import feathers.tests.ProgressBarMeasurementTests;
 	import feathers.tests.ProgressBarTests;
 	import feathers.tests.RadioTests;
+	import feathers.tests.RestrictedStyleTests;
 	import feathers.tests.ScaleTests;
 	import feathers.tests.ScreenNavigatorMeasurementTests;
 	import feathers.tests.ScreenNavigatorTests;
@@ -177,6 +178,7 @@ package
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
 				ScaleTests,
+				RestrictedStyleTests,
 
 				//individual component tests
 				AlertMeasurementTests,

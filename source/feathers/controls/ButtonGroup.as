@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
@@ -28,6 +29,284 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+
+	/**
+	 * A style name to add to all buttons in this button group. Typically
+	 * used by a theme to provide different styles to different button groups.
+	 *
+	 * <p>The following example provides a custom button style name:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.customButtonStyleName = "my-custom-button";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customButtonStyleName",type="String")]
+
+	/**
+	 * A style name to add to the first button in this button group.
+	 * Typically used by a theme to provide different styles to the first
+	 * button.
+	 *
+	 * <p>The following example provides a custom first button style name:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.customFirstButtonStyleName = "my-custom-first-button";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-first-button", setCustomFirstButtonStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customFirstButtonStyleName",type="String")]
+
+	/**
+	 * A style name to add to the last button in this button group.
+	 * Typically used by a theme to provide different styles to the last
+	 * button.
+	 *
+	 * <p>The following example provides a custom last button style name:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.customLastButtonStyleName = "my-custom-last-button";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-last-button", setCustomLastButtonStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customLastButtonStyleName",type="String")]
+
+	/**
+	 * The button group layout is either vertical or horizontal.
+	 *
+	 * <p>If the <code>direction</code> is
+	 * <code>Direction.HORIZONTAL</code> and
+	 * <code>distributeButtonSizes</code> is <code>false</code>, the buttons
+	 * may be displayed in multiple rows, if they won't fit in one row
+	 * horizontally.</p>
+	 *
+	 * <p>The following example sets the layout direction of the buttons
+	 * to line them up horizontally:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.direction = Direction.HORIZONTAL;</listing>
+	 *
+	 * @default feathers.layout.Direction.VERTICAL
+	 *
+	 * @see feathers.layout.Direction#HORIZONTAL
+	 * @see feathers.layout.Direction#VERTICAL
+	 */
+	[Style(name="direction",type="String")]
+
+	/**
+	 * If <code>true</code>, the buttons will be equally sized in the
+	 * direction of the layout. In other words, if the button group is
+	 * horizontal, each button will have the same width, and if the button
+	 * group is vertical, each button will have the same height. If
+	 * <code>false</code>, the buttons will be sized to their ideal
+	 * dimensions.
+	 *
+	 * <p>The following example doesn't distribute the button sizes:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.distributeButtonSizes = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="distributeButtonSizes",type="Boolean")]
+
+	/**
+	 * Space, in pixels, between the first two buttons. If <code>NaN</code>,
+	 * the default <code>gap</code> property will be used.
+	 *
+	 * <p>The following example sets the gap between the first and second
+	 * button to a different value than the standard gap:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.firstGap = 30;
+	 * group.gap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 * @see #style:lastGap
+	 */
+	[Style(name="firstGap",type="Number")]
+
+	/**
+	 * Space, in pixels, between buttons.
+	 *
+	 * <p>The following example sets the gap used for the button layout to
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.gap = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:firstGap
+	 * @see #style:lastGap
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * Determines how the buttons are horizontally aligned within the bounds
+	 * of the button group (on the x-axis).
+	 *
+	 * <p>The following example aligns the group's content to the left:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.horizontalAlign = HorizontalAlign.LEFT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.JUSTIFY
+	 *
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 * @see feathers.layout.HorizontalAlign#JUSTIFY
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * Space, in pixels, between the last two buttons. If <code>NaN</code>,
+	 * the default <code>gap</code> property will be used.
+	 *
+	 * <p>The following example sets the gap between the last and next to last
+	 * button to a different value than the standard gap:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.lastGap = 30;
+	 * group.gap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 * @see #style:firstGap
+	 */
+	[Style(name="lastGap",type="Number")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding of all sides of the group
+	 * is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the group's top edge and the
+	 * group's buttons.
+	 *
+	 * <p>In the following example, the padding on the top edge of the
+	 * group is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the group's right edge and the
+	 * group's buttons.
+	 *
+	 * <p>In the following example, the padding on the right edge of the
+	 * group is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the group's bottom edge and the
+	 * group's buttons.
+	 *
+	 * <p>In the following example, the padding on the bottom edge of the
+	 * group is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the group's left edge and the
+	 * group's buttons.
+	 *
+	 * <p>In the following example, the padding on the left edge of the
+	 * group is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * Determines how the buttons are vertically aligned within the bounds
+	 * of the button group (on the y-axis).
+	 *
+	 * <p>The following example aligns the group's content to the top:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.verticalAlign = VerticalAlign.TOP;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.JUSTIFY
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 * @see feathers.layout.VerticalAlign#JUSTIFY
+	 */
+	[Style(name="verticalAlign",type="String")]
 
 	/**
 	 * Dispatched when one of the buttons is triggered. The <code>data</code>
@@ -88,7 +367,7 @@ package feathers.controls
 	 * @see ../../../help/button-group.html How to use the Feathers ButtonGroup component
 	 * @see feathers.controls.TabBar
 	 */
-	public class ButtonGroup extends FeathersControl
+	public class ButtonGroup extends FeathersControl implements ITextBaselineControl
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ButtonGroup</code>
@@ -288,7 +567,7 @@ package feathers.controls
 		 * <p>To customize the button style name without subclassing, see
 		 * <code>customButtonStyleName</code>.</p>
 		 *
-		 * @see #customButtonStyleName
+		 * @see #style:customButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var buttonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
@@ -299,7 +578,7 @@ package feathers.controls
 		 * <p>To customize the first button name without subclassing, see
 		 * <code>customFirstButtonStyleName</code>.</p>
 		 *
-		 * @see #customFirstButtonStyleName
+		 * @see #style:customFirstButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var firstButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
@@ -310,7 +589,7 @@ package feathers.controls
 		 * <p>To customize the last button style name without subclassing, see
 		 * <code>customLastButtonStyleName</code>.</p>
 		 *
-		 * @see #customLastButtonStyleName
+		 * @see #style:customLastButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var lastButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
@@ -480,24 +759,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
-		 * The button group layout is either vertical or horizontal.
-		 * 
-		 * <p>If the <code>direction</code> is
-		 * <code>Direction.HORIZONTAL</code> and
-		 * <code>distributeButtonSizes</code> is <code>false</code>, the buttons
-		 * may be displayed in multiple rows, if they won't fit in one row
-		 * horizontally.</p>
-		 *
-		 * <p>The following example sets the layout direction of the buttons
-		 * to line them up horizontally:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.direction = Direction.HORIZONTAL;</listing>
-		 *
-		 * @default feathers.layout.Direction.VERTICAL
-		 *
-		 * @see feathers.layout.Direction#HORIZONTAL
-		 * @see feathers.layout.Direction#VERTICAL
+		 * @private
 		 */
 		public function get direction():String
 		{
@@ -509,7 +771,11 @@ package feathers.controls
 		 */
 		public function set direction(value:String):void
 		{
-			if(this._direction == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._direction === value)
 			{
 				return;
 			}
@@ -524,20 +790,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
-		 * Determines how the buttons are horizontally aligned within the bounds
-		 * of the button group (on the x-axis).
-		 *
-		 * <p>The following example aligns the group's content to the left:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.horizontalAlign = HorizontalAlign.LEFT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.JUSTIFY
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
-		 * @see feathers.layout.HorizontalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
@@ -549,7 +802,11 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			if(this._horizontalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalAlign === value)
 			{
 				return;
 			}
@@ -564,20 +821,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
-		 * Determines how the buttons are vertically aligned within the bounds
-		 * of the button group (on the y-axis).
-		 *
-		 * <p>The following example aligns the group's content to the top:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.verticalAlign = VerticalAlign.TOP;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.JUSTIFY
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 * @see feathers.layout.VerticalAlign#JUSTIFY
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -589,7 +833,11 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -603,19 +851,7 @@ package feathers.controls
 		protected var _distributeButtonSizes:Boolean = true;
 
 		/**
-		 * If <code>true</code>, the buttons will be equally sized in the
-		 * direction of the layout. In other words, if the button group is
-		 * horizontal, each button will have the same width, and if the button
-		 * group is vertical, each button will have the same height. If
-		 * <code>false</code>, the buttons will be sized to their ideal
-		 * dimensions.
-		 *
-		 * <p>The following example doesn't distribute the button sizes:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.distributeButtonSizes = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get distributeButtonSizes():Boolean
 		{
@@ -627,7 +863,11 @@ package feathers.controls
 		 */
 		public function set distributeButtonSizes(value:Boolean):void
 		{
-			if(this._distributeButtonSizes == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._distributeButtonSizes === value)
 			{
 				return;
 			}
@@ -641,15 +881,7 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * Space, in pixels, between buttons.
-		 *
-		 * <p>The following example sets the gap used for the button layout to
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.gap = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -661,7 +893,11 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -675,20 +911,7 @@ package feathers.controls
 		protected var _firstGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the first two buttons. If <code>NaN</code>,
-		 * the default <code>gap</code> property will be used.
-		 *
-		 * <p>The following example sets the gap between the first and second
-		 * button to a different value than the standard gap:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.firstGap = 30;
-		 * group.gap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #gap
-		 * @see #lastGap
+		 * @private
 		 */
 		public function get firstGap():Number
 		{
@@ -700,7 +923,11 @@ package feathers.controls
 		 */
 		public function set firstGap(value:Number):void
 		{
-			if(this._firstGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._firstGap === value)
 			{
 				return;
 			}
@@ -714,20 +941,7 @@ package feathers.controls
 		protected var _lastGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the last two buttons. If <code>NaN</code>,
-		 * the default <code>gap</code> property will be used.
-		 *
-		 * <p>The following example sets the gap between the last and next to last
-		 * button to a different value than the standard gap:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.lastGap = 30;
-		 * group.gap = 20;</listing>
-		 *
-		 * @default NaN
-		 *
-		 * @see #gap
-		 * @see #firstGap
+		 * @private
 		 */
 		public function get lastGap():Number
 		{
@@ -739,7 +953,11 @@ package feathers.controls
 		 */
 		public function set lastGap(value:Number):void
 		{
-			if(this._lastGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._lastGap === value)
 			{
 				return;
 			}
@@ -748,23 +966,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding of all sides of the group
-		 * is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -788,16 +990,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the group's top edge and the
-		 * group's buttons.
-		 *
-		 * <p>In the following example, the padding on the top edge of the
-		 * group is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -809,7 +1002,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -823,16 +1020,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the group's right edge and the
-		 * group's buttons.
-		 *
-		 * <p>In the following example, the padding on the right edge of the
-		 * group is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -844,7 +1032,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -858,16 +1050,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the group's bottom edge and the
-		 * group's buttons.
-		 *
-		 * <p>In the following example, the padding on the bottom edge of the
-		 * group is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -879,7 +1062,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -893,16 +1080,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the group's left edge and the
-		 * group's buttons.
-		 *
-		 * <p>In the following example, the padding on the left edge of the
-		 * group is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -914,7 +1092,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -928,11 +1110,17 @@ package feathers.controls
 		protected var _buttonFactory:Function = defaultButtonFactory;
 
 		/**
-		 * Creates a new button. A button must be an instance of <code>Button</code>.
-		 * This factory can be used to change properties on the buttons when
-		 * they are first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on a button.
+		 * Creates each button in the group. A button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the buttons when they are first created. For instance, if you are
+		 * skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on a button.
+		 *
+		 * <p>Optionally, the first button and the last button may be different
+		 * than the other buttons that are in the middle. Use the
+		 * <code>firstButtonFactory</code> and/or the
+		 * <code>lastButtonFactory</code> to customize one or both of these
+		 * buttons.</p>
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -979,13 +1167,14 @@ package feathers.controls
 		protected var _firstButtonFactory:Function;
 
 		/**
-		 * Creates a new first button. If the <code>firstButtonFactory</code> is
-		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
-		 * The first button must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the first button when
-		 * it is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the first button.
+		 * If not <code>null</code>, creates the first button. If the
+		 * <code>firstButtonFactory</code> is <code>null</code>, then the button
+		 * group will use the <code>buttonFactory</code>. The first button must
+		 * be an instance of <code>Button</code>. This factory can be used to
+		 * change properties on the first button when it is initially created.
+		 * For instance, if you are skinning Feathers components without a
+		 * theme, you might use this factory to set skins and other styles on
+		 * the first button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1032,13 +1221,14 @@ package feathers.controls
 		protected var _lastButtonFactory:Function;
 
 		/**
-		 * Creates a new last button. If the <code>lastButtonFactory</code> is
-		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
-		 * The last button must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the last button when
-		 * it is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the last button.
+		 * If not <code>null</code>, creates the last button. If the
+		 * <code>lastButtonFactory</code> is <code>null</code>, then the button
+		 * group will use the <code>buttonFactory</code>. The last button must
+		 * be an instance of <code>Button</code>. This factory can be used to
+		 * change properties on the last button when it is initially created.
+		 * For instance, if you are skinning Feathers components without a
+		 * theme, you might use this factory to set skins and other styles on
+		 * the last button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1173,24 +1363,7 @@ package feathers.controls
 		protected var _customButtonStyleName:String;
 
 		/**
-		 * A style name to add to all buttons in this button group. Typically
-		 * used by a theme to provide different styles to different button groups.
-		 *
-		 * <p>The following example provides a custom button style name:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.customButtonStyleName = "my-custom-button";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customButtonStyleName():String
 		{
@@ -1202,7 +1375,11 @@ package feathers.controls
 		 */
 		public function set customButtonStyleName(value:String):void
 		{
-			if(this._customButtonStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customButtonStyleName === value)
 			{
 				return;
 			}
@@ -1216,24 +1393,7 @@ package feathers.controls
 		protected var _customFirstButtonStyleName:String;
 
 		/**
-		 * A style name to add to the first button in this button group.
-		 * Typically used by a theme to provide different styles to the first
-		 * button.
-		 *
-		 * <p>The following example provides a custom first button style name:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.customFirstButtonStyleName = "my-custom-first-button";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-first-button", setCustomFirstButtonStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customFirstButtonStyleName():String
 		{
@@ -1245,7 +1405,11 @@ package feathers.controls
 		 */
 		public function set customFirstButtonStyleName(value:String):void
 		{
-			if(this._customFirstButtonStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customFirstButtonStyleName === value)
 			{
 				return;
 			}
@@ -1259,24 +1423,7 @@ package feathers.controls
 		protected var _customLastButtonStyleName:String;
 
 		/**
-		 * A style name to add to the last button in this button group.
-		 * Typically used by a theme to provide different styles to the last
-		 * button.
-		 *
-		 * <p>The following example provides a custom last button style name:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.customLastButtonStyleName = "my-custom-last-button";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-last-button", setCustomLastButtonStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customLastButtonStyleName():String
 		{
@@ -1288,7 +1435,11 @@ package feathers.controls
 		 */
 		public function set customLastButtonStyleName(value:String):void
 		{
-			if(this._customLastButtonStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customLastButtonStyleName === value)
 			{
 				return;
 			}

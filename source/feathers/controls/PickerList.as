@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
@@ -33,6 +34,88 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.SystemUtil;
+
+	/**
+	 * A style name to add to the picker list's button sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * picker lists.
+	 *
+	 * <p>In the following example, a custom button style name is passed to
+	 * the picker list:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.customButtonStyleName = "my-custom-button";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #buttonFactory
+	 */
+	[Style(name="customButtonStyleName",type="String")]
+
+	/**
+	 * A style name to add to the picker list's list sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * picker lists.
+	 *
+	 * <p>In the following example, a custom list style name is passed to the
+	 * picker list:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.customListStyleName = "my-custom-list";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to provide
+	 * different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( List ).setFunctionForStyleName( "my-custom-list", setCustomListStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #listFactory
+	 */
+	[Style(name="customListStyleName",type="String")]
+
+	/**
+	 * A manager that handles the details of how to display the pop-up list.
+	 *
+	 * <p>In the following example, a pop-up content manager is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.popUpContentManager = new CalloutPopUpContentManager();</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="popUpContentManager",type="feathers.controls.popups.IPopUpContentManager")]
+
+	/**
+	 * Determines if the <code>isSelected</code> property of the picker
+	 * list's button sub-component is toggled when the list is opened and
+	 * closed, if the class used to create the thumb implements the
+	 * <code>IToggle</code> interface. Useful for skinning to provide a
+	 * different appearance for the button based on whether the list is open
+	 * or not.
+	 *
+	 * <p>In the following example, the button is toggled on open and close:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.toggleButtonOnOpenAndClose = true;</listing>
+	 *
+	 * @default false
+	 *
+	 * @see feathers.core.IToggle
+	 * @see feathers.controls.ToggleButton
+	 */
+	[Style(name="toggleButtonOnOpenAndClose",type="Boolean")]
 
 	/**
 	 * Dispatched when the pop-up list is opened.
@@ -135,7 +218,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/picker-list.html How to use the Feathers PickerList component
 	 */
-	public class PickerList extends FeathersControl implements IFocusDisplayObject
+	public class PickerList extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -205,7 +288,7 @@ package feathers.controls
 		 * <p>To customize the button style name without subclassing, see
 		 * <code>customButtonStyleName</code>.</p>
 		 *
-		 * @see #customButtonStyleName
+		 * @see #style:customButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var buttonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
@@ -220,7 +303,7 @@ package feathers.controls
 		 * <p>To customize the pop-up list name without subclassing, see
 		 * <code>customListStyleName</code>.</p>
 		 *
-		 * @see #customListStyleName
+		 * @see #style:customListStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var listStyleName:String = DEFAULT_CHILD_STYLE_NAME_LIST;
@@ -596,33 +679,30 @@ package feathers.controls
 			this._labelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _popUpContentManager:IPopUpContentManager;
-		
+
 		/**
-		 * A manager that handles the details of how to display the pop-up list.
-		 *
-		 * <p>In the following example, a pop-up content manager is provided:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.popUpContentManager = new CalloutPopUpContentManager();</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get popUpContentManager():IPopUpContentManager
 		{
 			return this._popUpContentManager;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set popUpContentManager(value:IPopUpContentManager):void
 		{
-			if(this._popUpContentManager == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._popUpContentManager === value)
 			{
 				return;
 			}
@@ -641,7 +721,7 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -710,7 +790,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.Button
-		 * @see #buttonProperties
 		 */
 		public function get buttonFactory():Function
 		{
@@ -736,28 +815,7 @@ package feathers.controls
 		protected var _customButtonStyleName:String;
 
 		/**
-		 * A style name to add to the picker list's button sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * picker lists.
-		 *
-		 * <p>In the following example, a custom button style name is passed to
-		 * the picker list:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.customButtonStyleName = "my-custom-button";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #buttonFactory
-		 * @see #buttonProperties
+		 * @private
 		 */
 		public function get customButtonStyleName():String
 		{
@@ -769,14 +827,18 @@ package feathers.controls
 		 */
 		public function set customButtonStyleName(value:String):void
 		{
-			if(this._customButtonStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customButtonStyleName === value)
 			{
 				return;
 			}
 			this._customButtonStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -884,7 +946,6 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.controls.List
-		 * @see #listProperties
 		 */
 		public function get listFactory():Function
 		{
@@ -910,28 +971,7 @@ package feathers.controls
 		protected var _customListStyleName:String;
 
 		/**
-		 * A style name to add to the picker list's list sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * picker lists.
-		 *
-		 * <p>In the following example, a custom list style name is passed to the
-		 * picker list:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.customListStyleName = "my-custom-list";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to provide
-		 * different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( List ).setFunctionForStyleName( "my-custom-list", setCustomListStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_LIST
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #listFactory
-		 * @see #listProperties
+		 * @private
 		 */
 		public function get customListStyleName():String
 		{
@@ -943,19 +983,23 @@ package feathers.controls
 		 */
 		public function set customListStyleName(value:String):void
 		{
-			if(this._customListStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customListStyleName === value)
 			{
 				return;
 			}
 			this._customListStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _listProperties:PropertyProxy;
-		
+
 		/**
 		 * An object that stores properties for the picker's pop-up list
 		 * sub-component, and the properties will be passed down to the pop-up
@@ -1033,22 +1077,7 @@ package feathers.controls
 		protected var _toggleButtonOnOpenAndClose:Boolean = false;
 
 		/**
-		 * Determines if the <code>isSelected</code> property of the picker
-		 * list's button sub-component is toggled when the list is opened and
-		 * closed, if the class used to create the thumb implements the
-		 * <code>IToggle</code> interface. Useful for skinning to provide a
-		 * different appearance for the button based on whether the list is open
-		 * or not.
-		 *
-		 * <p>In the following example, the button is toggled on open and close:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.toggleButtonOnOpenAndClose = true;</listing>
-		 *
-		 * @default false
-		 *
-		 * @see feathers.core.IToggle
-		 * @see feathers.controls.ToggleButton
+		 * @private
 		 */
 		public function get toggleButtonOnOpenAndClose():Boolean
 		{
@@ -1060,7 +1089,11 @@ package feathers.controls
 		 */
 		public function set toggleButtonOnOpenAndClose(value:Boolean):void
 		{
-			if(this._toggleButtonOnOpenAndClose == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._toggleButtonOnOpenAndClose === value)
 			{
 				return;
 			}
@@ -1269,7 +1302,7 @@ package feathers.controls
 			}
 			this.button.hideFocus();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1280,20 +1313,20 @@ package feathers.controls
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				if(SystemUtil.isDesktop)
 				{
-					this.popUpContentManager = new DropDownPopUpContentManager();
+					this._popUpContentManager = new DropDownPopUpContentManager();
 				}
 				else if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
-					this.popUpContentManager = new CalloutPopUpContentManager();
+					this._popUpContentManager = new CalloutPopUpContentManager();
 				}
 				else
 				{
-					this.popUpContentManager = new VerticalCenteredPopUpContentManager();
+					this._popUpContentManager = new VerticalCenteredPopUpContentManager();
 				}
 			}
 			super.initialize();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1486,7 +1519,7 @@ package feathers.controls
 		 *
 		 * @see #button
 		 * @see #buttonFactory
-		 * @see #customButtonStyleName
+		 * @see #style:customButtonStyleName
 		 */
 		protected function createButton():void
 		{
@@ -1526,7 +1559,7 @@ package feathers.controls
 		 *
 		 * @see #list
 		 * @see #listFactory
-		 * @see #customListStyleName
+		 * @see #style:customListStyleName
 		 */
 		protected function createList():void
 		{

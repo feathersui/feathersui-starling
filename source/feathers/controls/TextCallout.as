@@ -22,7 +22,87 @@ package feathers.controls
 	import starling.text.TextFormat;
 
 	[Exclude(name="content",kind="property")]
-	
+
+	/**
+	 * A style name to add to the callout's text renderer sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * callouts.
+	 *
+	 * <p>In the following example, a custom text renderer style name is
+	 * passed to the callout:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.customTextRendererStyleName = "my-custom-text-callout-text-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-text-callout-text-renderer", setCustomTextCalloutTextRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #textRendererFactory
+	 */
+	[Style(name="customTextRendererStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the callout's text when the callout is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textRendererFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the callout's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * callout.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textRendererFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the text is not wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.wordWrap = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
 	/**
 	 * Dispatched when the callout is closed.
 	 *
@@ -78,9 +158,10 @@ package feathers.controls
 		 * renderer sub-component.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER:String = "feathers-text-callout-text-renderer";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Label</code>
 		 * components.
@@ -135,7 +216,7 @@ package feathers.controls
 			callout.closeOnKeys = new <uint>[Keyboard.BACK, Keyboard.ESCAPE];
 			return callout;
 		}
-		
+
 		/**
 		 * Creates a callout that displays some text, and then positions and
 		 * sizes it automatically based on an origin rectangle and the specified
@@ -216,6 +297,10 @@ package feathers.controls
 		 * their constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER</code>.
 		 *
+		 * <p>To customize the text renderer style name without subclassing, see
+		 * <code>customTextRendererStyleName</code>.</p>
+		 *
+		 * @see #style:customTextRendererStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER;
@@ -252,15 +337,7 @@ package feathers.controls
 		protected var _wordWrap:Boolean = true;
 
 		/**
-		 * Determines if the text wraps to the next line when it reaches the
-		 * width (or max width) of the component.
-		 *
-		 * <p>In the following example, the text is not wrapped:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.wordWrap = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -272,7 +349,11 @@ package feathers.controls
 		 */
 		public function set wordWrap(value:Boolean):void
 		{
-			if(this._wordWrap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._wordWrap === value)
 			{
 				return;
 			}
@@ -286,22 +367,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the callout's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -313,28 +379,15 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the callout's text when the callout is
-		 * disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * callout.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -346,6 +399,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -405,27 +462,7 @@ package feathers.controls
 		protected var _customTextRendererStyleName:String;
 
 		/**
-		 * A style name to add to the callout's text renderer sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * callouts.
-		 *
-		 * <p>In the following example, a custom text renderer style name is
-		 * passed to the callout:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.customTextRendererStyleName = "my-custom-text-callout-text-renderer";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-text-callout-text-renderer", setCustomTextCalloutTextRendererStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #textRendererFactory
+		 * @private
 		 */
 		public function get customTextRendererStyleName():String
 		{
@@ -437,7 +474,11 @@ package feathers.controls
 		 */
 		public function set customTextRendererStyleName(value:String):void
 		{
-			if(this._customTextRendererStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTextRendererStyleName === value)
 			{
 				return;
 			}
@@ -493,6 +534,7 @@ package feathers.controls
 		 *
 		 * @see #textRenderer
 		 * @see #textRendererFactory
+		 * @see #style:customTextRendererStyleName
 		 */
 		protected function createTextRenderer():void
 		{

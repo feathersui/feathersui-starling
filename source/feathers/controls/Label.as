@@ -27,6 +27,194 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * A background to display when the label is disabled.
+	 *
+	 * <p>In the following example, the label is given a disabled background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #backgroundSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The default background to display behind the label's text.
+	 *
+	 * <p>In the following example, the label is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #backgroundDisabledSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A style name to add to the label's text renderer sub-component.
+	 * Typically used by a theme to provide different styles to different
+	 * labels.
+	 *
+	 * <p>In the following example, a custom text renderer style name is
+	 * passed to the label:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.customTextRendererStyleName = "my-custom-label-text-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-label-text-renderer", setCustomLabelTextRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #textRendererFactory
+	 */
+	[Style(name="customTextRendererStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the label's text when the label is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textRendererFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the label's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>textRendererFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the label's top edge and the
+	 * label's text.
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the label's right edge and
+	 * the label's text.
+	 *
+	 * <p>In the following example, the right padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the label's bottom edge and
+	 * the label's text.
+	 *
+	 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the label's left edge and the
+	 * label's text.
+	 *
+	 * <p>In the following example, the left padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the label's text is wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * label.wordWrap = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
+	/**
 	 * Displays text using a text renderer.
 	 *
 	 * @see ../../../help/label.html How to use the Feathers Label component
@@ -39,6 +227,7 @@ package feathers.controls
 		 * renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER:String = "feathers-label-text-renderer";
 
@@ -130,6 +319,10 @@ package feathers.controls
 		 * instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER</code>.
 		 *
+		 * <p>To customize the text renderer style name without subclassing, see
+		 * <code>customTextRendererStyleName</code>.</p>
+		 *
+		 * @see #style:customTextRendererStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER;
@@ -189,15 +382,7 @@ package feathers.controls
 		protected var _wordWrap:Boolean = false;
 
 		/**
-		 * Determines if the text wraps to the next line when it reaches the
-		 * width (or max width) of the component.
-		 *
-		 * <p>In the following example, the label's text is wrapped:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.wordWrap = true;</listing>
-		 *
-		 * @default false
+		 * @private
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -209,7 +394,11 @@ package feathers.controls
 		 */
 		public function set wordWrap(value:Boolean):void
 		{
-			if(this._wordWrap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._wordWrap === value)
 			{
 				return;
 			}
@@ -285,27 +474,7 @@ package feathers.controls
 		protected var _customTextRendererStyleName:String;
 
 		/**
-		 * A style name to add to the label's text renderer sub-component.
-		 * Typically used by a theme to provide different styles to different
-		 * labels.
-		 *
-		 * <p>In the following example, a custom text renderer style name is
-		 * passed to the label:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.customTextRendererStyleName = "my-custom-label-text-renderer";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-label-text-renderer", setCustomLabelTextRendererStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_TEXT_RENDERER
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #textRendererFactory
+		 * @private
 		 */
 		public function get customTextRendererStyleName():String
 		{
@@ -317,7 +486,11 @@ package feathers.controls
 		 */
 		public function set customTextRendererStyleName(value:String):void
 		{
-			if(this._customTextRendererStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customTextRendererStyleName === value)
 			{
 				return;
 			}
@@ -331,22 +504,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the label's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 * 
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -358,28 +516,15 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the label's text when the label is
-		 * disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>textRendererFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -391,6 +536,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -536,14 +685,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The default background to display behind the label's text.
-		 *
-		 * <p>In the following example, the label is given a background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -555,11 +697,18 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-
 			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -575,14 +724,7 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the label is disabled.
-		 *
-		 * <p>In the following example, the label is given a disabled background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -594,11 +736,14 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
 				return;
 			}
-
 			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -609,22 +754,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -648,15 +778,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the label's top edge and the
-		 * label's text.
-		 *
-		 * <p>In the following example, the top padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -668,7 +790,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -682,15 +808,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the label's right edge and
-		 * the label's text.
-		 *
-		 * <p>In the following example, the right padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -702,7 +820,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -716,15 +838,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the label's bottom edge and
-		 * the label's text.
-		 *
-		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -736,7 +850,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -750,15 +868,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the label's left edge and the
-		 * label's text.
-		 *
-		 * <p>In the following example, the left padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * label.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -770,7 +880,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}

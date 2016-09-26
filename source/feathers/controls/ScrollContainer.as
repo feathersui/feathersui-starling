@@ -23,6 +23,22 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
+	 * Controls the way that the container's children are positioned and
+	 * sized.
+	 *
+	 * <p>The following example tells the container to use a horizontal layout:</p>
+	 *
+	 * <listing version="3.0">
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * container.layout = layout;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="layout",type="feathers.layout.ILayout")]
+
+	/**
 	 * Dispatched when the container is scrolled.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -371,18 +387,7 @@ package feathers.controls
 		protected var _layout:ILayout;
 
 		/**
-		 * Controls the way that the container's children are positioned and
-		 * sized.
-		 *
-		 * <p>The following example tells the container to use a horizontal layout:</p>
-		 *
-		 * <listing version="3.0">
-		 * var layout:HorizontalLayout = new HorizontalLayout();
-		 * layout.gap = 20;
-		 * layout.padding = 20;
-		 * container.layout = layout;</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get layout():ILayout
 		{
@@ -394,7 +399,11 @@ package feathers.controls
 		 */
 		public function set layout(value:ILayout):void
 		{
-			if(this._layout == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._layout === value)
 			{
 				return;
 			}

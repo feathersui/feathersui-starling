@@ -30,6 +30,61 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * A style name to add to all item renderers in this list. Typically
+	 * used by a theme to provide different skins to different lists.
+	 *
+	 * <p>The following example sets the item renderer name:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.customItemRendererStyleName = "my-custom-item-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component name to provide
+	 * different skins than the default style:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( DefaultListItemRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomItemRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customItemRendererStyleName",type="String")]
+
+	/**
+	 * The duration, in seconds, of the animation when the selected item is
+	 * changed by keyboard navigation and the item scrolls into view.
+	 *
+	 * <p>In the following example, the duration of the animation that
+	 * scrolls the list to a new selected item is set to 500 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.keyScrollDuration = 0.5;</listing>
+	 *
+	 * @default 0.25
+	 */
+	[Style(name="keyScrollDuration",type="Number")]
+
+	/**
+	 * The layout algorithm used to position and, optionally, size the
+	 * list's items.
+	 *
+	 * <p>By default, if no layout is provided by the time that the list
+	 * initializes, a vertical layout with options targeted at touch screens
+	 * is created.</p>
+	 *
+	 * <p>The following example tells the list to use a horizontal layout:</p>
+	 *
+	 * <listing version="3.0">
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * list.layout = layout;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="layout",type="feathers.layout.ILayout")]
+
+	/**
 	 * Dispatched when the selected item changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -421,22 +476,7 @@ package feathers.controls
 		protected var _layout:ILayout;
 
 		/**
-		 * The layout algorithm used to position and, optionally, size the
-		 * list's items.
-		 *
-		 * <p>By default, if no layout is provided by the time that the list
-		 * initializes, a vertical layout with options targeted at touch screens
-		 * is created.</p>
-		 *
-		 * <p>The following example tells the list to use a horizontal layout:</p>
-		 *
-		 * <listing version="3.0">
-		 * var layout:HorizontalLayout = new HorizontalLayout();
-		 * layout.gap = 20;
-		 * layout.padding = 20;
-		 * list.layout = layout;</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get layout():ILayout
 		{
@@ -448,6 +488,10 @@ package feathers.controls
 		 */
 		public function set layout(value:ILayout):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._layout == value)
 			{
 				return;
@@ -1146,23 +1190,7 @@ package feathers.controls
 		protected var _customItemRendererStyleName:String;
 
 		/**
-		 * A style name to add to all item renderers in this list. Typically
-		 * used by a theme to provide different skins to different lists.
-		 *
-		 * <p>The following example sets the item renderer name:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.customItemRendererStyleName = "my-custom-item-renderer";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( DefaultListItemRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomItemRendererStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
 		public function get customItemRendererStyleName():String
 		{
@@ -1174,7 +1202,11 @@ package feathers.controls
 		 */
 		public function set customItemRendererStyleName(value:String):void
 		{
-			if(this._customItemRendererStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customItemRendererStyleName === value)
 			{
 				return;
 			}
@@ -1278,16 +1310,7 @@ package feathers.controls
 		protected var _keyScrollDuration:Number = 0.25;
 
 		/**
-		 * The duration, in seconds, of the animation when the selected item is
-		 * changed by keyboard navigation and the item scrolls into view.
-		 *
-		 * <p>In the following example, the duration of the animation that
-		 * scrolls the list to a new selected item is set to 500 milliseconds:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.keyScrollDuration = 0.5;</listing>
-		 *
-		 * @default 0.25
+		 * @private
 		 */
 		public function get keyScrollDuration():Number
 		{
@@ -1299,6 +1322,10 @@ package feathers.controls
 		 */
 		public function set keyScrollDuration(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._keyScrollDuration = value;
 		}
 
@@ -1441,16 +1468,16 @@ package feathers.controls
 			this.layout = null;
 			super.dispose();
 		}
-		
+
 		/**
 		 * @private
 		 */
 		override protected function initialize():void
 		{
-			var hasLayout:Boolean = this._layout != null;
+			var hasLayout:Boolean = this._layout !== null;
 
 			super.initialize();
-			
+
 			if(!this.dataViewPort)
 			{
 				this.viewPort = this.dataViewPort = new ListDataViewPort();
@@ -1466,7 +1493,7 @@ package feathers.controls
 				{
 					//so that the elastic edges work even when the max scroll
 					//position is 0, similar to iOS.
-					this.verticalScrollPolicy = ScrollPolicy.ON;
+					this._verticalScrollPolicy = ScrollPolicy.ON;
 				}
 
 				var layout:VerticalLayout = new VerticalLayout();
@@ -1475,10 +1502,10 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.verticalAlign = VerticalAlign.TOP;
-				this.layout = layout;
+				this._layout = layout;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */

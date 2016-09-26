@@ -27,6 +27,147 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * The skin used when no other skin is defined for the current state.
+	 * Intended to be used when multiple states should share the same skin.
+	 *
+	 * <p>The following example gives the button a default skin to use for
+	 * all states when no specific skin is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.defaultSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #setSkinForState()
+	 */
+	[Style(name="defaultSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's disabled state. If <code>null</code>,
+	 * then <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.disabledSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.DISABLED</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DISABLED, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#DISABLED
+	 */
+	[Style(name="disabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's down state. If <code>null</code>, then
+	 * <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.downSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.DOWN</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.DOWN, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#DOWN
+	 */
+	[Style(name="downSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The skin used for the button's hover state. If <code>null</code>, then
+	 * <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the hover state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.hoverSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.HOVER</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.HOVER, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#HOVER
+	 */
+	[Style(name="hoverSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Determines if a pressed button should remain in the down state if a
+	 * touch moves outside of the button's bounds. Useful for controls like
+	 * <code>Slider</code> and <code>ToggleSwitch</code> to keep a thumb in
+	 * the down state while it is dragged around.
+	 *
+	 * <p>The following example ensures that the button's down state remains
+	 * active when the button is pressed but the touch moves outside the
+	 * button's bounds:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.keepDownStateOnRollOut = true;</listing>
+	 * 
+	 * @default false
+	 */
+	[Style(name="keepDownStateOnRollOut",type="Boolean")]
+
+	/**
+	 * The skin used for the button's up state. If <code>null</code>, then
+	 * <code>defaultSkin</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToSkinFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a skin for the up state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.upSkin = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setSkinForState()</code> with
+	 * <code>ButtonState.UP</code> to set the same skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Image = new Image( texture );
+	 * button.setSkinForState( ButtonState.UP, skin );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultSkin
+	 * @see #setSkinForState()
+	 * @see feathers.controls.ButtonState#UP
+	 */
+	[Style(name="upSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * Dispatched when the the user taps or clicks the button. The touch must
 	 * remain within the bounds of the button on release to register as a tap
 	 * or a click. If focus management is enabled, the button may also be
@@ -185,17 +326,7 @@ package feathers.controls
 		protected var _keepDownStateOnRollOut:Boolean = false;
 
 		/**
-		 * Determines if a pressed button should remain in the down state if a
-		 * touch moves outside of the button's bounds. Useful for controls like
-		 * <code>Slider</code> and <code>ToggleSwitch</code> to keep a thumb in
-		 * the down state while it is dragged around.
-		 *
-		 * <p>The following example ensures that the button's down state remains
-		 * active when the button is pressed but the touch moves outside the
-		 * button's bounds:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.keepDownStateOnRollOut = true;</listing>
+		 * @private
 		 */
 		public function get keepDownStateOnRollOut():Boolean
 		{
@@ -207,6 +338,10 @@ package feathers.controls
 		 */
 		public function set keepDownStateOnRollOut(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._keepDownStateOnRollOut = value;
 		}
 
@@ -216,18 +351,7 @@ package feathers.controls
 		protected var _defaultSkin:DisplayObject;
 
 		/**
-		 * The skin used when no other skin is defined for the current state.
-		 * Intended to be used when multiple states should share the same skin.
-		 *
-		 * <p>The following example gives the button a default skin to use for
-		 * all states when no specific skin is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.defaultSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #setSkinForState()
+		 * @private
 		 */
 		public function get defaultSkin():DisplayObject
 		{
@@ -239,6 +363,14 @@ package feathers.controls
 		 */
 		public function set defaultSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._defaultSkin === value)
 			{
 				return;
@@ -253,6 +385,70 @@ package feathers.controls
 			}
 			this._defaultSkin = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get upSkin():DisplayObject
+		{
+			return this.getSkinForState(ButtonState.UP);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set upSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(ButtonState.UP, value);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get downSkin():DisplayObject
+		{
+			return this.getSkinForState(ButtonState.DOWN);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set downSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(ButtonState.DOWN, value);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get hoverSkin():DisplayObject
+		{
+			return this.getSkinForState(ButtonState.HOVER);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hoverSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(ButtonState.HOVER, value);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get disabledSkin():DisplayObject
+		{
+			return this.getSkinForState(ButtonState.DISABLED);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledSkin(value:DisplayObject):void
+		{
+			this.setSkinForState(ButtonState.DISABLED, value);
 		}
 
 		/**
@@ -312,12 +508,21 @@ package feathers.controls
 		 * <p>If a skin is not defined for a specific state, the value of the
 		 * <code>defaultSkin</code> property will be used instead.</p>
 		 *
-		 * @see #defaultSkin
+		 * @see #style:defaultSkin
 		 * @see #getSkinForState()
 		 * @see feathers.controls.ButtonState
 		 */
 		public function setSkinForState(state:String, skin:DisplayObject):void
 		{
+			var key:String = "setSkinForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				if(skin !== null)
+				{
+					skin.dispose();
+				}
+				return;
+			}
 			var oldSkin:DisplayObject = this._stateToSkin[state] as DisplayObject;
 			if(oldSkin !== null &&
 				this.currentSkin === oldSkin)

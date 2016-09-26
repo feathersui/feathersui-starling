@@ -31,6 +31,204 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * The symbols may be positioned vertically or horizontally.
+	 *
+	 * <p>In the following example, the direction is changed to vertical:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.direction = Direction.VERTICAL;</listing>
+	 *
+	 * @default feathers.layout.Direction.HORIZONTAL
+	 *
+	 * @see feathers.layout.Direction#HORIZONTAL
+	 * @see feathers.layout.Direction#VERTICAL
+	 */
+	[Style(name="direction",type="String")]
+
+	/**
+	 * The spacing, in pixels, between symbols.
+	 *
+	 * <p>In the following example, the gap between symbols is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.gap = 20;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * The alignment of the symbols on the horizontal axis.
+	 *
+	 * <p>In the following example, the symbols are horizontally aligned to
+	 * the right:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.horizontalAlign = HorizontalAlign.RIGHT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.CENTER
+	 *
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * Determines how the selected index changes on touch.
+	 *
+	 * <p>In the following example, the interaction mode is changed to precise:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.direction = PageIndicatorInteractionMode.PRECISE;</listing>
+	 *
+	 * @default feathers.controls.PageIndicatorInteractionMode.PREVIOUS_NEXT
+	 *
+	 * @see feathers.controls.PageIndicatorInteractionMode#PREVIOUS_NEXT
+	 * @see feathers.controls.PageIndicatorInteractionMode#PRECISE
+	 */
+	[Style(name="interactionMode",type="String")]
+
+	/**
+	 * A function used to create a normal symbol. May be any Starling
+	 * display object.
+	 *
+	 * <p>This function should have the following signature:</p>
+	 * <pre>function():DisplayObject</pre>
+	 *
+	 * <p>In the following example, a custom normal symbol factory is provided
+	 * to the page indicator:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.normalSymbolFactory = function():DisplayObject
+	 * {
+	 *     return new Image( texture );
+	 * };</listing>
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html starling.display.DisplayObject
+	 * @see #style:selectedSymbolFactory
+	 */
+	[Style(name="normalSymbolFactory",type="Function")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the top edge of the component
+	 * and the top edge of the content.
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the right edge of the component
+	 * and the right edge of the content.
+	 *
+	 * <p>In the following example, the right padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the bottom edge of the component
+	 * and the bottom edge of the content.
+	 *
+	 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the left edge of the component
+	 * and the left edge of the content.
+	 *
+	 * <p>In the following example, the left padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * A function used to create a selected symbol. May be any Starling
+	 * display object.
+	 *
+	 * <p>This function should have the following signature:</p>
+	 * <pre>function():DisplayObject</pre>
+	 *
+	 * <p>In the following example, a custom selected symbol factory is provided
+	 * to the page indicator:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.selectedSymbolFactory = function():DisplayObject
+	 * {
+	 *     return new Image( texture );
+	 * };</listing>
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html starling.display.DisplayObject
+	 * @see #style:normalSymbolFactory
+	 */
+	[Style(name="selectedSymbolFactory",type="Function")]
+
+	/**
+	 * The alignment of the symbols on the vertical axis.
+	 *
+	 * <p>In the following example, the symbols are vertically aligned to
+	 * the bottom:</p>
+	 *
+	 * <listing version="3.0">
+	 * pages.verticalAlign = VerticalAlign.BOTTOM;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 */
+	[Style(name="verticalAlign",type="String")]
+
+	/**
 	 * Dispatched when the selected item changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -337,17 +535,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="previousNext,precise")]
 		/**
-		 * Determines how the selected index changes on touch.
-		 *
-		 * <p>In the following example, the interaction mode is changed to precise:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.direction = PageIndicatorInteractionMode.PRECISE;</listing>
-		 *
-		 * @default feathers.controls.PageIndicatorInteractionMode.PREVIOUS_NEXT
-		 *
-		 * @see feathers.controls.PageIndicatorInteractionMode#PREVIOUS_NEXT
-		 * @see feathers.controls.PageIndicatorInteractionMode#PRECISE
+		 * @private
 		 */
 		public function get interactionMode():String
 		{
@@ -359,6 +547,10 @@ package feathers.controls
 		 */
 		public function set interactionMode(value:String):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._interactionMode = value;
 		}
 
@@ -374,17 +566,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
-		 * The symbols may be positioned vertically or horizontally.
-		 *
-		 * <p>In the following example, the direction is changed to vertical:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.direction = Direction.VERTICAL;</listing>
-		 *
-		 * @default feathers.layout.Direction.HORIZONTAL
-		 *
-		 * @see feathers.layout.Direction#HORIZONTAL
-		 * @see feathers.layout.Direction#VERTICAL
+		 * @private
 		 */
 		public function get direction():String
 		{
@@ -396,7 +578,11 @@ package feathers.controls
 		 */
 		public function set direction(value:String):void
 		{
-			if(this._direction == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._direction === value)
 			{
 				return;
 			}
@@ -411,19 +597,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
-		 * The alignment of the symbols on the horizontal axis.
-		 *
-		 * <p>In the following example, the symbols are horizontally aligned to
-		 * the right:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.horizontalAlign = HorizontalAlign.RIGHT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.CENTER
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
@@ -435,7 +609,11 @@ package feathers.controls
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			if(this._horizontalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalAlign === value)
 			{
 				return;
 			}
@@ -450,19 +628,7 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
-		 * The alignment of the symbols on the vertical axis.
-		 *
-		 * <p>In the following example, the symbols are vertically aligned to
-		 * the bottom:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.verticalAlign = VerticalAlign.BOTTOM;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
@@ -474,7 +640,11 @@ package feathers.controls
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -488,14 +658,7 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * The spacing, in pixels, between symbols.
-		 *
-		 * <p>In the following example, the gap between symbols is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.gap = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -507,7 +670,11 @@ package feathers.controls
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -516,22 +683,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>In the following example, the padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -555,15 +707,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the top edge of the component
-		 * and the top edge of the content.
-		 *
-		 * <p>In the following example, the top padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -575,7 +719,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -589,15 +737,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the right edge of the component
-		 * and the right edge of the content.
-		 *
-		 * <p>In the following example, the right padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -609,7 +749,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -623,15 +767,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the bottom edge of the component
-		 * and the bottom edge of the content.
-		 *
-		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -643,7 +779,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -657,15 +797,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the left edge of the component
-		 * and the left edge of the content.
-		 *
-		 * <p>In the following example, the left padding is set to 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -677,7 +809,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -691,23 +827,7 @@ package feathers.controls
 		protected var _normalSymbolFactory:Function = defaultNormalSymbolFactory;
 
 		/**
-		 * A function used to create a normal symbol. May be any Starling
-		 * display object.
-		 *
-		 * <p>This function should have the following signature:</p>
-		 * <pre>function():DisplayObject</pre>
-		 *
-		 * <p>In the following example, a custom normal symbol factory is provided
-		 * to the page indicator:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.normalSymbolFactory = function():DisplayObject
-		 * {
-		 *     return new Image( texture );
-		 * };</listing>
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html starling.display.DisplayObject
-		 * @see #selectedSymbolFactory
+		 * @private
 		 */
 		public function get normalSymbolFactory():Function
 		{
@@ -719,7 +839,11 @@ package feathers.controls
 		 */
 		public function set normalSymbolFactory(value:Function):void
 		{
-			if(this._normalSymbolFactory == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._normalSymbolFactory === value)
 			{
 				return;
 			}
@@ -733,23 +857,7 @@ package feathers.controls
 		protected var _selectedSymbolFactory:Function = defaultSelectedSymbolFactory;
 
 		/**
-		 * A function used to create a selected symbol. May be any Starling
-		 * display object.
-		 *
-		 * <p>This function should have the following signature:</p>
-		 * <pre>function():DisplayObject</pre>
-		 *
-		 * <p>In the following example, a custom selected symbol factory is provided
-		 * to the page indicator:</p>
-		 *
-		 * <listing version="3.0">
-		 * pages.selectedSymbolFactory = function():DisplayObject
-		 * {
-		 *     return new Image( texture );
-		 * };</listing>
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html starling.display.DisplayObject
-		 * @see #normalSymbolFactory
+		 * @private
 		 */
 		public function get selectedSymbolFactory():Function
 		{
@@ -761,7 +869,11 @@ package feathers.controls
 		 */
 		public function set selectedSymbolFactory(value:Function):void
 		{
-			if(this._selectedSymbolFactory == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._selectedSymbolFactory === value)
 			{
 				return;
 			}

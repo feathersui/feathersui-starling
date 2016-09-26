@@ -35,6 +35,518 @@ package feathers.controls
 	import starling.events.KeyboardEvent;
 	import starling.rendering.Painter;
 	import starling.text.TextFormat;
+	import starling.utils.Pool;
+
+	[Exclude(name="stateToIconFunction",kind="property")]
+	[Exclude(name="stateToLabelPropertiesFunction",kind="property")]
+	[Exclude(name="stateToSkinFunction",kind="property")]
+	[Exclude(name="upLabelProperties",kind="property")]
+	[Exclude(name="downLabelProperties",kind="property")]
+	[Exclude(name="hoverLabelProperties",kind="property")]
+	[Exclude(name="disabledLabelProperties",kind="property")]
+
+	/**
+	 * A style name to add to the button's label text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different buttons.
+	 *
+	 * <p>In the following example, a custom label style name is passed to
+	 * the button:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.customLabelStyleName = "my-custom-button-label";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-button-label", setCustomButtonLabelStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_LABEL
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #labelFactory
+	 */
+	[Style(name="customLabelStyleName",type="String")]
+
+	/**
+	 * The icon used when no other icon is defined for the current state.
+	 * Intended to be used when multiple states should share the same icon.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button a default icon to use for
+	 * all states when no specific icon is available:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.defaultIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #setIconForState()
+	 */
+	[Style(name="defaultIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The font styles used to display the button's text when the button is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setFontStylesForState()</code> with
+	 * <code>ButtonState.DISABLED</code> to set the same font styles:</p>
+	 *
+	 * <listing version="3.0">
+	 * var fontStyles:TextFormat = new TextFormat( "Helvetica", 20, 0x999999 );
+	 * button.setFontStylesForState( ButtonState.DISABLED, fontStyles );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>labelFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 * @see #setFontStylesForState()
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The icon used for the button's disabled state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the disabled state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.disabledIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.DISABLED</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.DISABLED, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#DISABLED
+	 */
+	[Style(name="disabledIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used for the button's down state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.downIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.DOWN</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.DOWN, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#DOWN
+	 */
+	[Style(name="downIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The font styles used to display the button's text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>labelFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:disabledFontStyles
+	 * @see #setFontStylesForState()
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The space, in pixels, between the icon and the label. Applies to
+	 * either horizontal or vertical spacing, depending on the value of
+	 * <code>iconPosition</code>.
+	 *
+	 * <p>If <code>gap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
+	 * the label and icon will be positioned as far apart as possible. In
+	 * other words, they will be positioned at the edges of the button,
+	 * adjusted for padding.</p>
+	 *
+	 * <p>The following example creates a gap of 50 pixels between the label
+	 * and the icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.label = "Click Me";
+	 * button.defaultIcon = new Image( texture );
+	 * button.gap = 50;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:iconPosition
+	 * @see #style:minGap
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * Determines if the button's label text renderer is created or not.
+	 * Useful for button sub-components that may not display text, like
+	 * slider thumbs and tracks, or similar sub-components on scroll bars.
+	 *
+	 * <p>The following example removed the label text renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.hasLabelTextRenderer = false;</listing>
+	 *
+	 * @default true
+	 */
+	[Style(name="hasLabelTextRenderer",type="Boolean")]
+
+	/**
+	 * The location where the button's content is aligned horizontally (on
+	 * the x-axis).
+	 *
+	 * <p>The following example aligns the button's content to the left:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.horizontalAlign = HorizontalAlign.LEFT;</listing>
+	 *
+	 * @default feathers.layout.HorizontalAlign.CENTER
+	 *
+	 * @see feathers.layout.HorizontalAlign#LEFT
+	 * @see feathers.layout.HorizontalAlign#CENTER
+	 * @see feathers.layout.HorizontalAlign#RIGHT
+	 */
+	[Style(name="horizontalAlign",type="String")]
+
+	/**
+	 * The icon used for the button's hover state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the hover state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.hoverIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.HOVER</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.HOVER, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#HOVER
+	 */
+	[Style(name="hoverIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * Offsets the x position of the icon by a certain number of pixels.
+	 * This does not affect the measurement of the button. The button will
+	 * measure itself as if the icon were not offset from its original
+	 * position.
+	 *
+	 * <p>The following example offsets the x position of the button's icon
+	 * by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.iconOffsetX = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:iconOffsetY
+	 */
+	[Style(name="iconOffsetX",type="Number")]
+
+	/**
+	 * Offsets the y position of the icon by a certain number of pixels.
+	 * This does not affect the measurement of the button. The button will
+	 * measure itself as if the icon were not offset from its original
+	 * position.
+	 *
+	 * <p>The following example offsets the y position of the button's icon
+	 * by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.iconOffsetY = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:iconOffsetX
+	 */
+	[Style(name="iconOffsetY",type="Number")]
+
+	/**
+	 * The location of the icon, relative to the label.
+	 *
+	 * <p>The following example positions the icon to the right of the
+	 * label:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.label = "Click Me";
+	 * button.defaultIcon = new Image( texture );
+	 * button.iconPosition = RelativePosition.RIGHT;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.LEFT
+	 *
+	 * @see feathers.layout.RelativePosition#TOP
+	 * @see feathers.layout.RelativePosition#RIGHT
+	 * @see feathers.layout.RelativePosition#BOTTOM
+	 * @see feathers.layout.RelativePosition#LEFT
+	 * @see feathers.layout.RelativePosition#RIGHT_BASELINE
+	 * @see feathers.layout.RelativePosition#LEFT_BASELINE
+	 * @see feathers.layout.RelativePosition#MANUAL
+	 */
+	[Style(name="iconPosition",type="String")]
+
+	/**
+	 * Offsets the x position of the label by a certain number of pixels.
+	 * This does not affect the measurement of the button. The button will
+	 * measure itself as if the label were not offset from its original
+	 * position.
+	 *
+	 * <p>The following example offsets the x position of the button's label
+	 * by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.labelOffsetX = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:labelOffsetY
+	 */
+	[Style(name="labelOffsetX",type="Number")]
+
+	/**
+	 * Offsets the y position of the label by a certain number of pixels.
+	 * This does not affect the measurement of the button. The button will
+	 * measure itself as if the label were not offset from its original
+	 * position.
+	 *
+	 * <p>The following example offsets the y position of the button's label
+	 * by 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.labelOffsetY = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:labelOffsetX
+	 */
+	[Style(name="labelOffsetY",type="Number")]
+
+	/**
+	 * If the value of the <code>gap</code> property is
+	 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
+	 * fill as much space as possible, the final calculated value will not be
+	 * smaller than the value of the <code>minGap</code> property.
+	 *
+	 * <p>The following example ensures that the gap is never smaller than
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.gap = Number.POSITIVE_INFINITY;
+	 * button.minGap = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:gap
+	 */
+	[Style(name="minGap",type="Number")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on all
+	 * sides:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's top edge and the
+	 * button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * top edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's right edge and the
+	 * button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * right edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's bottom edge and
+	 * the button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * bottom edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the button's left edge and the
+	 * button's content.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on the
+	 * left edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * The button renders at this scale in the down state.
+	 *
+	 * <p>The following example scales the button in the down state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.scaleWhenDown = 0.9;</listing>
+	 *
+	 * @default 1
+	 * 
+	 * @see #style:scaleWhenHovering
+	 */
+	[Style(name="scaleWhenDown",type="Number")]
+
+	/**
+	 * The button renders at this scale in the hover state.
+	 *
+	 * <p>The following example scales the button in the hover state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.scaleWhenHovering = 0.9;</listing>
+	 *
+	 * @default 1
+	 *
+	 * @see #style:scaleWhenDown
+	 */
+	[Style(name="scaleWhenHovering",type="Number")]
+
+	/**
+	 * The icon used for the button's up state. If <code>null</code>, then
+	 * <code>defaultIcon</code> is used instead.
+	 *
+	 * <p>This property will be ignored if a function is passed to the
+	 * <code>stateToIconFunction</code> property.</p>
+	 *
+	 * <p>The following example gives the button an icon for the up state:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.upIcon = new Image( texture );</listing>
+	 *
+	 * <p>Alternatively, you may use <code>setIconForState()</code> with
+	 * <code>ButtonState.UP</code> to set the same icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * var icon:Image = new Image( texture );
+	 * button.setIconForState( ButtonState.UP, icon );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:defaultIcon
+	 * @see #setIconForState()
+	 * @see feathers.controls.ButtonState#UP
+	 */
+	[Style(name="upIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The location where the button's content is aligned vertically (on
+	 * the y-axis).
+	 *
+	 * <p>The following example aligns the button's content to the top:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.verticalAlign = VerticalAlign.TOP;</listing>
+	 *
+	 * @default feathers.layout.VerticalAlign.MIDDLE
+	 *
+	 * @see feathers.layout.VerticalAlign#TOP
+	 * @see feathers.layout.VerticalAlign#MIDDLE
+	 * @see feathers.layout.VerticalAlign#BOTTOM
+	 */
+	[Style(name="verticalAlign",type="String")]
 
 	/**
 	 * Dispatched when the button is pressed for a long time. The property
@@ -93,9 +605,15 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the label.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * label text renderer.
+		 * 
+		 * <p>Note: the label text renderer is not a
+		 * <code>feathers.controls.Label</code>. It is an instance of one of the
+		 * <code>ITextRenderer</code> implementations.</p>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-button-label";
 
@@ -429,10 +947,15 @@ package feathers.controls
 		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_LABEL</code>.
 		 *
+		 * <p>To customize the label text renderer style name without
+		 * subclassing, see <code>customLabelStyleName</code>.</p>
+		 *
+		 * @see #style:customLabelStyleName
+		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var labelStyleName:String = DEFAULT_CHILD_STYLE_NAME_LABEL;
-		
+
 		/**
 		 * The text renderer for the button's label.
 		 *
@@ -443,7 +966,37 @@ package feathers.controls
 		 * @see #createLabel()
 		 */
 		protected var labelTextRenderer:ITextRenderer;
-		
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitLabelMaxHeight:Number;
+
 		/**
 		 * The currently visible icon. The value will be <code>null</code> if
 		 * there is no currently visible icon.
@@ -473,13 +1026,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _scaleMatrix:Matrix;
-		
-		/**
-		 * @private
-		 */
 		protected var _label:String = null;
-		
+
 		/**
 		 * The text displayed on the button.
 		 *
@@ -494,7 +1042,7 @@ package feathers.controls
 		{
 			return this._label;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -514,16 +1062,7 @@ package feathers.controls
 		protected var _hasLabelTextRenderer:Boolean = true;
 
 		/**
-		 * Determines if the button's label text renderer is created or not.
-		 * Useful for button sub-components that may not display text, like
-		 * slider thumbs and tracks, or similar sub-components on scroll bars.
-		 *
-		 * <p>The following example removed the label text renderer:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hasLabelTextRenderer = false;</listing>
-		 *
-		 * @default true
+		 * @private
 		 */
 		public function get hasLabelTextRenderer():Boolean
 		{
@@ -535,14 +1074,18 @@ package feathers.controls
 		 */
 		public function set hasLabelTextRenderer(value:Boolean):void
 		{
-			if(this._hasLabelTextRenderer == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._hasLabelTextRenderer === value)
 			{
 				return;
 			}
 			this._hasLabelTextRenderer = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -550,83 +1093,53 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,rightBaseline,leftBaseline,manual")]
 		/**
-		 * The location of the icon, relative to the label.
-		 *
-		 * <p>The following example positions the icon to the right of the
-		 * label:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.label = "Click Me";
-		 * button.defaultIcon = new Image( texture );
-		 * button.iconPosition = RelativePosition.RIGHT;</listing>
-		 *
-		 * @default feathers.layout.RelativePosition.LEFT
-		 *
-		 * @see feathers.layout.RelativePosition#TOP
-		 * @see feathers.layout.RelativePosition#RIGHT
-		 * @see feathers.layout.RelativePosition#BOTTOM
-		 * @see feathers.layout.RelativePosition#LEFT
-		 * @see feathers.layout.RelativePosition#RIGHT_BASELINE
-		 * @see feathers.layout.RelativePosition#LEFT_BASELINE
-		 * @see feathers.layout.RelativePosition#MANUAL
+		 * @private
 		 */
 		public function get iconPosition():String
 		{
 			return this._iconPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set iconPosition(value:String):void
 		{
-			if(this._iconPosition == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._iconPosition === value)
 			{
 				return;
 			}
 			this._iconPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _gap:Number = 0;
-		
+
 		/**
-		 * The space, in pixels, between the icon and the label. Applies to
-		 * either horizontal or vertical spacing, depending on the value of
-		 * <code>iconPosition</code>.
-		 * 
-		 * <p>If <code>gap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
-		 * the label and icon will be positioned as far apart as possible. In
-		 * other words, they will be positioned at the edges of the button,
-		 * adjusted for padding.</p>
-		 *
-		 * <p>The following example creates a gap of 50 pixels between the label
-		 * and the icon:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.label = "Click Me";
-		 * button.defaultIcon = new Image( texture );
-		 * button.gap = 50;</listing>
-		 *
-		 * @default 0
-		 * 
-		 * @see #iconPosition
-		 * @see #minGap
+		 * @private
 		 */
 		public function get gap():Number
 		{
 			return this._gap;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -640,21 +1153,7 @@ package feathers.controls
 		protected var _minGap:Number = 0;
 
 		/**
-		 * If the value of the <code>gap</code> property is
-		 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
-		 * fill as much space as possible, the final calculated value will not be
-		 * smaller than the value of the <code>minGap</code> property.
-		 *
-		 * <p>The following example ensures that the gap is never smaller than
-		 * 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.gap = Number.POSITIVE_INFINITY;
-		 * button.minGap = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #gap
+		 * @private
 		 */
 		public function get minGap():Number
 		{
@@ -666,14 +1165,18 @@ package feathers.controls
 		 */
 		public function set minGap(value:Number):void
 		{
-			if(this._minGap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._minGap === value)
 			{
 				return;
 			}
 			this._minGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -681,38 +1184,30 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
-		 * The location where the button's content is aligned horizontally (on
-		 * the x-axis).
-		 *
-		 * <p>The following example aligns the button's content to the left:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.horizontalAlign = HorizontalAlign.LEFT;</listing>
-		 *
-		 * @default feathers.layout.HorizontalAlign.CENTER
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @private
 		 */
 		public function get horizontalAlign():String
 		{
 			return this._horizontalAlign;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			if(this._horizontalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalAlign === value)
 			{
 				return;
 			}
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -720,31 +1215,23 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
-		 * The location where the button's content is aligned vertically (on
-		 * the y-axis).
-		 *
-		 * <p>The following example aligns the button's content to the top:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.verticalAlign = VerticalAlign.TOP;</listing>
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @private
 		 */
 		public function get verticalAlign():String
 		{
 			return _verticalAlign;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set verticalAlign(value:String):void
 		{
-			if(this._verticalAlign == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
 			{
 				return;
 			}
@@ -753,23 +1240,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on all
-		 * sides:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.padding = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
+		 * @private
 		 */
 		public function get padding():Number
 		{
@@ -793,16 +1264,7 @@ package feathers.controls
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's top edge and the
-		 * button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * top edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingTop = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingTop():Number
 		{
@@ -814,7 +1276,11 @@ package feathers.controls
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
 			{
 				return;
 			}
@@ -828,16 +1294,7 @@ package feathers.controls
 		protected var _paddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's right edge and the
-		 * button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * right edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingRight = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingRight():Number
 		{
@@ -849,7 +1306,11 @@ package feathers.controls
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
 			{
 				return;
 			}
@@ -863,16 +1324,7 @@ package feathers.controls
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's bottom edge and
-		 * the button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * bottom edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingBottom = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingBottom():Number
 		{
@@ -884,7 +1336,11 @@ package feathers.controls
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
 			{
 				return;
 			}
@@ -898,16 +1354,7 @@ package feathers.controls
 		protected var _paddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the button's left edge and the
-		 * button's content.
-		 *
-		 * <p>The following example gives the button 20 pixels of padding on the
-		 * left edge only:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.paddingLeft = 20;</listing>
-		 *
-		 * @default 0
+		 * @private
 		 */
 		public function get paddingLeft():Number
 		{
@@ -919,7 +1366,11 @@ package feathers.controls
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
 			{
 				return;
 			}
@@ -933,20 +1384,7 @@ package feathers.controls
 		protected var _labelOffsetX:Number = 0;
 
 		/**
-		 * Offsets the x position of the label by a certain number of pixels.
-		 * This does not affect the measurement of the button. The button will
-		 * measure itself as if the label were not offset from its original
-		 * position.
-		 *
-		 * <p>The following example offsets the x position of the button's label
-		 * by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.labelOffsetX = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #labelOffsetY
+		 * @private
 		 */
 		public function get labelOffsetX():Number
 		{
@@ -958,7 +1396,11 @@ package feathers.controls
 		 */
 		public function set labelOffsetX(value:Number):void
 		{
-			if(this._labelOffsetX == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._labelOffsetX === value)
 			{
 				return;
 			}
@@ -972,20 +1414,7 @@ package feathers.controls
 		protected var _labelOffsetY:Number = 0;
 
 		/**
-		 * Offsets the y position of the label by a certain number of pixels.
-		 * This does not affect the measurement of the button. The button will
-		 * measure itself as if the label were not offset from its original
-		 * position.
-		 *
-		 * <p>The following example offsets the y position of the button's label
-		 * by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.labelOffsetY = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #labelOffsetX
+		 * @private
 		 */
 		public function get labelOffsetY():Number
 		{
@@ -997,7 +1426,11 @@ package feathers.controls
 		 */
 		public function set labelOffsetY(value:Number):void
 		{
-			if(this._labelOffsetY == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._labelOffsetY === value)
 			{
 				return;
 			}
@@ -1011,20 +1444,7 @@ package feathers.controls
 		protected var _iconOffsetX:Number = 0;
 
 		/**
-		 * Offsets the x position of the icon by a certain number of pixels.
-		 * This does not affect the measurement of the button. The button will
-		 * measure itself as if the icon were not offset from its original
-		 * position.
-		 *
-		 * <p>The following example offsets the x position of the button's icon
-		 * by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.iconOffsetX = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #iconOffsetY
+		 * @private
 		 */
 		public function get iconOffsetX():Number
 		{
@@ -1036,7 +1456,11 @@ package feathers.controls
 		 */
 		public function set iconOffsetX(value:Number):void
 		{
-			if(this._iconOffsetX == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._iconOffsetX === value)
 			{
 				return;
 			}
@@ -1050,20 +1474,7 @@ package feathers.controls
 		protected var _iconOffsetY:Number = 0;
 
 		/**
-		 * Offsets the y position of the icon by a certain number of pixels.
-		 * This does not affect the measurement of the button. The button will
-		 * measure itself as if the icon were not offset from its original
-		 * position.
-		 *
-		 * <p>The following example offsets the y position of the button's icon
-		 * by 20 pixels:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.iconOffsetY = 20;</listing>
-		 *
-		 * @default 0
-		 *
-		 * @see #iconOffsetX
+		 * @private
 		 */
 		public function get iconOffsetY():Number
 		{
@@ -1075,7 +1486,11 @@ package feathers.controls
 		 */
 		public function set iconOffsetY(value:Number):void
 		{
-			if(this._iconOffsetY == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._iconOffsetY === value)
 			{
 				return;
 			}
@@ -1150,130 +1565,6 @@ package feathers.controls
 			this._stateToLabelPropertiesFunction = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
-		/**
-		 * The skin used for the button's up state. If <code>null</code>, then
-		 * <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.upSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.UP
-		 */
-		public function get upSkin():DisplayObject
-		{
-			return this.getSkinForState(ButtonState.UP);
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set upSkin(value:DisplayObject):void
-		{
-			this.setSkinForState(ButtonState.UP, value);
-		}
-		
-		/**
-		 * The skin used for the button's down state. If <code>null</code>, then
-		 * <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.downSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.DOWN
-		 */
-		public function get downSkin():DisplayObject
-		{
-			return this.getSkinForState(ButtonState.DOWN);
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set downSkin(value:DisplayObject):void
-		{
-			this.setSkinForState(ButtonState.DOWN, value);
-		}
-
-		/**
-		 * The skin used for the button's hover state. If <code>null</code>, then
-		 * <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hoverSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.HOVER
-		 */
-		public function get hoverSkin():DisplayObject
-		{
-			return this.getSkinForState(ButtonState.HOVER);
-		}
-
-		/**
-		 * @private
-		 */
-		public function set hoverSkin(value:DisplayObject):void
-		{
-			this.setSkinForState(ButtonState.HOVER, value);
-		}
-		
-		/**
-		 * The skin used for the button's disabled state. If <code>null</code>,
-		 * then <code>defaultSkin</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToSkinFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a skin for the disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #defaultSkin
-		 * @see #setSkinForState()
-		 * @see feathers.controls.ButtonState.DISABLED
-		 */
-		public function get disabledSkin():DisplayObject
-		{
-			return this.getSkinForState(ButtonState.DISABLED);
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set disabledSkin(value:DisplayObject):void
-		{
-			this.setSkinForState(ButtonState.DISABLED, value);
-		}
 
 		/**
 		 * @private
@@ -1313,23 +1604,7 @@ package feathers.controls
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
-		 * The font styles used to display the button's text.
-		 *
-		 * <p>In the following example, the font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>labelFactory</code> to set more advanced styles.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #disabledFontStyles
-		 * @see #setFontStylesForState()
+		 * @private
 		 */
 		public function get fontStyles():TextFormat
 		{
@@ -1341,28 +1616,15 @@ package feathers.controls
 		 */
 		public function set fontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.format = value;
 		}
 
 		/**
-		 * The font styles used to display the button's text when the button is
-		 * disabled.
-		 *
-		 * <p>In the following example, the disabled font styles are customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
-		 *
-		 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
-		 * number of common font styles, but the text renderer being used may
-		 * support a larger number of ways to be customized. Use the
-		 * <code>labelFactory</code> to set more advanced styles on the
-		 * text renderer.</p>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @private
 		 */
 		public function get disabledFontStyles():TextFormat
 		{
@@ -1374,6 +1636,10 @@ package feathers.controls
 		 */
 		public function set disabledFontStyles(value:TextFormat):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			this._fontStylesSet.disabledFormat = value;
 		}
 
@@ -1433,27 +1699,7 @@ package feathers.controls
 		protected var _customLabelStyleName:String;
 
 		/**
-		 * A style name to add to the button's label text renderer
-		 * sub-component. Typically used by a theme to provide different styles
-		 * to different buttons.
-		 *
-		 * <p>In the following example, a custom label style name is passed to
-		 * the button:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.customLabelStyleName = "my-custom-button-label";</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component style name to
-		 * provide different styles than the default:</p>
-		 *
-		 * <listing version="3.0">
-		 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-button-label", setCustomButtonLabelStyles );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #DEFAULT_CHILD_STYLE_NAME_LABEL
-		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #labelFactory
+		 * @private
 		 */
 		public function get customLabelStyleName():String
 		{
@@ -1465,7 +1711,11 @@ package feathers.controls
 		 */
 		public function set customLabelStyleName(value:String):void
 		{
-			if(this._customLabelStyleName == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customLabelStyleName === value)
 			{
 				return;
 			}
@@ -1477,7 +1727,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _defaultLabelProperties:PropertyProxy;
-		
+
 		/**
 		 * An object that stores properties for the button's label text renderer
 		 * when no specific properties are defined for the button's current
@@ -1500,6 +1750,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see #fontStyles
 		 */
 		public function get defaultLabelProperties():Object
 		{
@@ -1509,7 +1760,7 @@ package feathers.controls
 			}
 			return this._defaultLabelProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1535,7 +1786,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _stateToLabelProperties:Object = {};
-		
+
 		/**
 		 * DEPRECATED: Use the <code>fontStyles</code> property, or call the
 		 * <code>setFontStylesForState()</code> function with
@@ -1547,9 +1798,9 @@ package feathers.controls
 		 * Feathers according to the standard
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 * 
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.UP
+		 * @see feathers.controls.ButtonState#UP
 		 */
 		public function get upLabelProperties():Object
 		{
@@ -1595,7 +1846,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 * 
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.DOWN
+		 * @see feathers.controls.ButtonState#DOWN
 		 */
 		public function get downLabelProperties():Object
 		{
@@ -1641,7 +1892,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.HOVER
+		 * @see feathers.controls.ButtonState#HOVER
 		 */
 		public function get hoverLabelProperties():Object
 		{
@@ -1688,7 +1939,7 @@ package feathers.controls
 		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 *
 		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState.DISABLED
+		 * @see feathers.controls.ButtonState#DISABLED
 		 */
 		public function get disabledLabelProperties():Object
 		{
@@ -1700,7 +1951,7 @@ package feathers.controls
 			}
 			return value;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1727,34 +1978,28 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _defaultIcon:DisplayObject;
-		
+
 		/**
-		 * The icon used when no other icon is defined for the current state.
-		 * Intended to be used when multiple states should share the same icon.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button a default icon to use for
-		 * all states when no specific icon is available:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.defaultIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #setIconForState()
+		 * @private
 		 */
 		public function get defaultIcon():DisplayObject
 		{
 			return this._defaultIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set defaultIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._defaultIcon === value)
 			{
 				return;
@@ -1775,30 +2020,15 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _stateToIcon:Object = {};
-		
+
 		/**
-		 * The icon used for the button's up state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the up state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.upIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.UP
+		 * @private
 		 */
 		public function get upIcon():DisplayObject
 		{
 			return this.getIconForState(ButtonState.UP);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1806,30 +2036,15 @@ package feathers.controls
 		{
 			return this.setIconForState(ButtonState.UP, value);
 		}
-		
+
 		/**
-		 * The icon used for the button's down state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.downIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.DOWN
+		 * @private
 		 */
 		public function get downIcon():DisplayObject
 		{
 			return this.getIconForState(ButtonState.DOWN);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1839,22 +2054,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The icon used for the button's hover state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.hoverIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 *
-		 * @see #defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.HOVER
+		 * @private
 		 */
 		public function get hoverIcon():DisplayObject
 		{
@@ -1868,30 +2068,15 @@ package feathers.controls
 		{
 			return this.setIconForState(ButtonState.HOVER, value);
 		}
-		
+
 		/**
-		 * The icon used for the button's disabled state. If <code>null</code>, then
-		 * <code>defaultIcon</code> is used instead.
-		 *
-		 * <p>This property will be ignored if a function is passed to the
-		 * <code>stateToIconFunction</code> property.</p>
-		 *
-		 * <p>The following example gives the button an icon for the disabled state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.disabledIcon = new Image( texture );</listing>
-		 *
-		 * @default null
-		 * 
-		 * @see #defaultIcon
-		 * @see #setIconForState()
-		 * @see feathers.controls.ButtonState.DISABLED
+		 * @private
 		 */
 		public function get disabledIcon():DisplayObject
 		{
 			return this.getIconForState(ButtonState.DISABLED);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1983,14 +2168,7 @@ package feathers.controls
 		protected var _scaleWhenDown:Number = 1;
 
 		/**
-		 * The button renders at this scale in the down state.
-		 *
-		 * <p>The following example scales the button in the down state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.scaleWhenDown = 0.9;</listing>
-		 *
-		 * @default 1
+		 * @private
 		 */
 		public function get scaleWhenDown():Number
 		{
@@ -2002,6 +2180,14 @@ package feathers.controls
 		 */
 		public function set scaleWhenDown(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._scaleWhenDown === value)
+			{
+				return;
+			}
 			this._scaleWhenDown = value;
 		}
 
@@ -2011,14 +2197,7 @@ package feathers.controls
 		protected var _scaleWhenHovering:Number = 1;
 
 		/**
-		 * The button renders at this scale in the hover state.
-		 *
-		 * <p>The following example scales the button in the hover state:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.scaleWhenHovering = 0.9;</listing>
-		 *
-		 * @default 1
+		 * @private
 		 */
 		public function get scaleWhenHovering():Number
 		{
@@ -2030,6 +2209,14 @@ package feathers.controls
 		 */
 		public function set scaleWhenHovering(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._scaleWhenHovering === value)
+			{
+				return;
+			}
 			this._scaleWhenHovering = value;
 		}
 
@@ -2066,18 +2253,13 @@ package feathers.controls
 			}
 			if(scale !== 1)
 			{
-				if(this._scaleMatrix === null)
-				{
-					this._scaleMatrix = new Matrix();
-				}
-				else
-				{
-					this._scaleMatrix.identity();
-				}
-				this._scaleMatrix.translate(Math.round((1 - scale) / 2 * this.actualWidth),
+				var matrix:Matrix = Pool.getMatrix();
+				//scale first, then translate... issue #1455
+				matrix.scale(scale, scale);
+				matrix.translate(Math.round((1 - scale) / 2 * this.actualWidth),
 					Math.round((1 - scale) / 2 * this.actualHeight));
-				this._scaleMatrix.scale(scale, scale);
-				painter.state.transformModelviewMatrix(this._scaleMatrix);
+				painter.state.transformModelviewMatrix(matrix);
+				Pool.putMatrix(matrix);
 			}
 			super.render(painter);
 		}
@@ -2114,7 +2296,7 @@ package feathers.controls
 		 * 
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 */
 		public function getFontStylesForState(state:String):TextFormat
 		{
@@ -2139,10 +2321,15 @@ package feathers.controls
 		 * <code>fontStyles</code> and <code>disabledFontStyles</code>.</p>
 		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
-		 * @see #fontStyles
+		 * @see #style:fontStyles
 		 */
 		public function setFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
 			this._fontStylesSet.setFormatForState(state, format);
 		}
 
@@ -2167,12 +2354,21 @@ package feathers.controls
 		 * <p>If an icon is not defined for a specific state, the value of the
 		 * <code>defaultIcon</code> property will be used instead.</p>
 		 *
-		 * @see #defaultIcon
+		 * @see #style:defaultIcon
 		 * @see #getIconForState()
 		 * @see feathers.controls.ButtonState
 		 */
 		public function setIconForState(state:String, icon:DisplayObject):void
 		{
+			var key:String = "setIconForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				if(icon !== null)
+				{
+					icon.dispose();
+				}
+				return;
+			}
 			var oldIcon:DisplayObject = this._stateToIcon[state] as DisplayObject;
 			if(oldIcon !== null &&
 				this.currentIcon === oldIcon)
@@ -2276,7 +2472,7 @@ package feathers.controls
 			if(this._label !== null && this.labelTextRenderer)
 			{
 				labelRenderer = this.labelTextRenderer;
-				this.refreshMaxLabelSize(true);
+				this.refreshLabelTextRendererDimensions(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
 			
@@ -2579,6 +2775,12 @@ package feathers.controls
 					IStateObserver(this.labelTextRenderer).stateContext = this;
 				}
 				this.addChild(DisplayObject(this.labelTextRenderer));
+				this._explicitLabelWidth = this.labelTextRenderer.explicitWidth;
+				this._explicitLabelHeight = this.labelTextRenderer.explicitHeight;
+				this._explicitLabelMinWidth = this.labelTextRenderer.explicitMinWidth;
+				this._explicitLabelMinHeight = this.labelTextRenderer.explicitMinHeight;
+				this._explicitLabelMaxWidth = this.labelTextRenderer.explicitMaxWidth;
+				this._explicitLabelMaxHeight = this.labelTextRenderer.explicitMaxHeight;
 			}
 		}
 
@@ -2748,11 +2950,10 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
-			this.refreshMaxLabelSize(false);
+			this.refreshLabelTextRendererDimensions(false);
 			var labelRenderer:DisplayObject = null;
-			if(this._label !== null && this.labelTextRenderer)
+			if(this._label !== null && this.labelTextRenderer !== null)
 			{
-				this.labelTextRenderer.validate();
 				labelRenderer = DisplayObject(this.labelTextRenderer);
 			}
 			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != RelativePosition.MANUAL;
@@ -2790,13 +2991,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshMaxLabelSize(forMeasurement:Boolean):void
+		protected function refreshLabelTextRendererDimensions(forMeasurement:Boolean):void
 		{
 			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
 			this._ignoreIconResizes = true;
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
+			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
+			if(this._label === null || this.labelTextRenderer === null)
+			{
+				return;
 			}
 			var calculatedWidth:Number = this.actualWidth;
 			var calculatedHeight:Number = this.actualHeight;
@@ -2813,31 +3019,69 @@ package feathers.controls
 					calculatedHeight = this._explicitMaxHeight;
 				}
 			}
-			if(this._label != null && this.labelTextRenderer)
+			calculatedWidth -= (this._paddingLeft + this._paddingRight);
+			calculatedHeight -= (this._paddingTop + this._paddingBottom);
+			if(this.currentIcon !== null)
 			{
-				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
-				this.labelTextRenderer.maxHeight = calculatedHeight - this._paddingTop - this._paddingBottom;
-				if(this.currentIcon)
+				var adjustedGap:Number = this._gap;
+				if(adjustedGap == Number.POSITIVE_INFINITY)
 				{
-					var adjustedGap:Number = this._gap;
-					if(adjustedGap == Number.POSITIVE_INFINITY)
-					{
-						adjustedGap = this._minGap;
-					}
-					if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.LEFT_BASELINE ||
-						this._iconPosition == RelativePosition.RIGHT || this._iconPosition == RelativePosition.RIGHT_BASELINE)
-					{
-						this.labelTextRenderer.maxWidth -= (this.currentIcon.width + adjustedGap);
-					}
-					if(this._iconPosition == RelativePosition.TOP || this._iconPosition == RelativePosition.BOTTOM)
-					{
-						this.labelTextRenderer.maxHeight -= (this.currentIcon.height + adjustedGap);
-					}
+					adjustedGap = this._minGap;
+				}
+				if(this._iconPosition === RelativePosition.LEFT || this._iconPosition === RelativePosition.LEFT_BASELINE ||
+					this._iconPosition === RelativePosition.RIGHT || this._iconPosition === RelativePosition.RIGHT_BASELINE)
+				{
+					calculatedWidth -= (this.currentIcon.width + adjustedGap);
+				}
+				if(this._iconPosition === RelativePosition.TOP || this._iconPosition === RelativePosition.BOTTOM)
+				{
+					calculatedHeight -= (this.currentIcon.height + adjustedGap);
 				}
 			}
-			this._ignoreIconResizes = oldIgnoreIconResizes;
+			if(calculatedWidth < 0)
+			{
+				calculatedWidth = 0;
+			}
+			if(calculatedHeight < 0)
+			{
+				calculatedHeight = 0;
+			}
+			if(calculatedWidth > this._explicitLabelMaxWidth)
+			{
+				calculatedWidth = this._explicitLabelMaxWidth;
+			}
+			if(calculatedHeight > this._explicitLabelMaxHeight)
+			{
+				calculatedHeight = this._explicitLabelMaxHeight;
+			}
+			if(forMeasurement)
+			{
+				this.labelTextRenderer.width = this._explicitLabelWidth;
+				this.labelTextRenderer.height = this._explicitLabelHeight;
+				this.labelTextRenderer.minWidth = this._explicitLabelMinWidth;
+				this.labelTextRenderer.minHeight = this._explicitLabelMinHeight;
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
+				this.labelTextRenderer.validate();
+			}
+			else
+			{
+				//setting all of these dimensions explicitly means that the text
+				//renderer won't measure itself again when it validates, which
+				//helps performance. we'll reset them when the button needs to
+				//measure itself.
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
+				this.labelTextRenderer.validate();
+				calculatedWidth = this.labelTextRenderer.width;
+				calculatedHeight = this.labelTextRenderer.height;
+				this.labelTextRenderer.width = calculatedWidth;
+				this.labelTextRenderer.height = calculatedHeight;
+				this.labelTextRenderer.minWidth = calculatedWidth;
+				this.labelTextRenderer.minHeight = calculatedHeight;
+			}
 		}
-		
+
 		/**
 		 * @private
 		 */

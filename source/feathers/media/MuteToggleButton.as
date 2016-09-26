@@ -24,6 +24,19 @@ package feathers.media
 	import starling.events.TouchPhase;
 
 	/**
+	 * A manager that handles the details of how to display the pop-up
+	 * volume slider.
+	 *
+	 * <p>In the following example, a pop-up content manager is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.popUpContentManager = new CalloutPopUpContentManager();</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="popUpContentManager",type="feathers.controls.popups.IPopUpContentManager")]
+
+	/**
 	 * Dispatched when the pop-up volume slider is opened.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -121,14 +134,14 @@ package feathers.media
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * pop-up volume slider. This variable is <code>protected</code> so that
-		 * sub-classes can customize the list style name in their constructors
-		 * instead of using the default style name defined by
+		 * sub-classes can customize the volume slider style name in their
+		 * constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER</code>.
 		 *
-		 * <p>To customize the pop-up list name without subclassing, see
-		 * <code>customListStyleName</code>.</p>
+		 * <p>To customize the volume slider style name without subclassing, see
+		 * <code>customVolumeSliderStyleName</code>.</p>
 		 *
-		 * @see #customListStyleName
+		 * @see #style:customVolumeSliderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var volumeSliderStyleName:String = DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER;
@@ -203,15 +216,7 @@ package feathers.media
 		protected var _popUpContentManager:IPopUpContentManager;
 
 		/**
-		 * A manager that handles the details of how to display the pop-up
-		 * volume slider.
-		 *
-		 * <p>In the following example, a pop-up content manager is provided:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.popUpContentManager = new CalloutPopUpContentManager();</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get popUpContentManager():IPopUpContentManager
 		{
@@ -223,7 +228,11 @@ package feathers.media
 		 */
 		public function set popUpContentManager(value:IPopUpContentManager):void
 		{
-			if(this._popUpContentManager == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._popUpContentManager === value)
 			{
 				return;
 			}
@@ -314,7 +323,6 @@ package feathers.media
 		 *
 		 * @see feathers.media.VolumeSlider
 		 * @see #showVolumeSliderOnHover
-		 * @see #volumeSliderProperties
 		 */
 		public function get volumeSliderFactory():Function
 		{
@@ -362,7 +370,6 @@ package feathers.media
 		 * @see #DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #volumeSliderFactory
-		 * @see #volumeSliderProperties
 		 */
 		public function get customVolumeSliderStyleName():String
 		{
@@ -469,7 +476,7 @@ package feathers.media
 		protected var _isClosePopUpPending:Boolean = false;
 
 		/**
-		 * Opens the pop-up list, if it isn't already open.
+		 * Opens the pop-up volume slider, if it isn't already open.
 		 */
 		public function openPopUp():void
 		{
@@ -491,7 +498,7 @@ package feathers.media
 		}
 
 		/**
-		 * Closes the pop-up list, if it is open.
+		 * Closes the pop-up volume slider, if it is open.
 		 */
 		public function closePopUp():void
 		{
@@ -507,9 +514,9 @@ package feathers.media
 			}
 			this._isClosePopUpPending = false;
 			this.slider.validate();
-			//don't clean up anything from openList() in closeList(). The list
-			//may be closed by removing it from the PopUpManager, which would
-			//result in closeList() never being called.
+			//don't clean up anything from openPopUp() in closePopUp(). The
+			//pop-up may be closed by removing it from the PopUpManager, which
+			//would result in closePopUp() never being called.
 			//instead, clean up in the Event.REMOVED_FROM_STAGE listener.
 			this._popUpContentManager.close();
 		}
@@ -539,12 +546,12 @@ package feathers.media
 		 */
 		override protected function initialize():void
 		{
-			if(!this._popUpContentManager)
+			if(this._popUpContentManager === null)
 			{
 				var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
 				popUpContentManager.fitContentMinWidthToOrigin = false;
 				popUpContentManager.primaryDirection = DropDownPopUpContentManager.PRIMARY_DIRECTION_UP;
-				this.popUpContentManager = popUpContentManager;
+				this._popUpContentManager = popUpContentManager;
 			}
 			super.initialize();
 		}
@@ -573,15 +580,14 @@ package feathers.media
 		}
 
 		/**
-		 * Creates and adds the <code>list</code> sub-component and
+		 * Creates and adds the volume slider sub-component and
 		 * removes the old instance, if one exists.
 		 *
 		 * <p>Meant for internal use, and subclasses may override this function
 		 * with a custom implementation.</p>
 		 *
-		 * @see #list
-		 * @see #listFactory
-		 * @see #customListStyleName
+		 * @see #volumeSliderFactory
+		 * @see #style:customVolumeSliderStyleName
 		 */
 		protected function createVolumeSlider():void
 		{

@@ -580,6 +580,9 @@ package feathers.controls
 			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGING, false, event);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function stageWebView_completeHandler(event:flash.events.Event):void
 		{
 			this.dispatchEventWith(Event.COMPLETE);

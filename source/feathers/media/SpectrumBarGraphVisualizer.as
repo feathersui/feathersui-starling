@@ -19,6 +19,42 @@ package feathers.media
 	import starling.events.Event;
 
 	/**
+	 * The number of bars to display in the graph.
+	 *
+	 * <p>In the following example, 32 bars are displayed:</p>
+	 *
+	 * <listing version="3.0">
+	 * graph.barCount = 32;</listing>
+	 *
+	 * @default 16
+	 */
+	[Style(name="barCount",type="Number")]
+
+	/**
+	 * The color of the bars in the graph.
+	 *
+	 * <p>In the following example, the bar color is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * graph.color = 0xff0000;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="color",type="Number")]
+
+	/**
+	 * The gap, in pixels, between the bars in the graph.
+	 *
+	 * <p>In the following example, the gap is set to 10 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * graph.gap = 10;</listing>
+	 *
+	 * @default 0
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
 	 * A visualization of the audio spectrum of the runtime's currently playing
 	 * audio content.
 	 *
@@ -82,7 +118,7 @@ package feathers.media
 		protected var _barCount:int = 16;
 
 		/**
-		 * The number of bars displayed by the visualizer.
+		 * @private
 		 */
 		public function get barCount():int
 		{
@@ -94,6 +130,10 @@ package feathers.media
 		 */
 		public function set barCount(value:int):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(value > MAX_BAR_COUNT)
 			{
 				value = MAX_BAR_COUNT;
@@ -116,7 +156,7 @@ package feathers.media
 		protected var _gap:Number = 0;
 
 		/**
-		 * The gap, in pixels, between the bars.
+		 * @private
 		 */
 		public function get gap():Number
 		{
@@ -128,7 +168,11 @@ package feathers.media
 		 */
 		public function set gap(value:Number):void
 		{
-			if(this._gap == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap === value)
 			{
 				return;
 			}
@@ -142,7 +186,7 @@ package feathers.media
 		protected var _color:uint = 0x000000;
 
 		/**
-		 * The color of the bars.
+		 * @private
 		 */
 		public function get color():uint
 		{
@@ -154,7 +198,11 @@ package feathers.media
 		 */
 		public function set color(value:uint):void
 		{
-			if(this._color == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._color === value)
 			{
 				return;
 			}

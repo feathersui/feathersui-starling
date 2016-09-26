@@ -1055,7 +1055,7 @@ package feathers.controls.text
 			var cursorX:Number = this.getXPositionOfIndex(index);
 			cursorX = int(cursorX - (this._cursorSkin.width / 2));
 			this._cursorSkin.x = cursorX;
-			this._cursorSkin.y = this.getVerticalAlignmentOffsetY();
+			this._cursorSkin.y = this._verticalAlignOffsetY;
 
 			//then we update the scroll to always show the cursor
 			var minScrollX:Number = cursorX + this._cursorSkin.width - this.actualWidth;
@@ -1116,7 +1116,7 @@ package feathers.controls.text
 			}
 			this._selectionSkin.x = startX;
 			this._selectionSkin.width = endX - startX;
-			this._selectionSkin.y = this.getVerticalAlignmentOffsetY();
+			this._selectionSkin.y = this._verticalAlignOffsetY;
 			this._selectionSkin.height = font.lineHeight * scale;
 		}
 

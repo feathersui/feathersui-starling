@@ -33,6 +33,70 @@ package feathers.controls
 
 	[DefaultProperty("mxmlContent")]
 	/**
+	 * The background to display behind all content when the layout group is
+	 * disabled. The background skin is resized to fill the full width and
+	 * height of the layout group.
+	 *
+	 * <p>In the following example, the group is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The default background to display behind all content. The background
+	 * skin is resized to fill the full width and height of the layout
+	 * group.
+	 *
+	 * <p>In the following example, the group is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:backgroundDisabledSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * If true, the group will be clipped to its bounds. In other words,
+	 * anything appearing beyond the edges of the group will be masked or
+	 * hidden.
+	 *
+	 * <p>Since <code>LayoutGroup</code> is designed to be a light
+	 * container focused on performance, clipping is disabled by default.</p>
+	 *
+	 * <p>In the following example, clipping is enabled:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.clipContent = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="clipContent",type="Boolean")]
+
+	/**
+	 * Controls the way that the group's children are positioned and sized.
+	 *
+	 * <p>The following example tells the group to use a horizontal layout:</p>
+	 *
+	 * <listing version="3.0">
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * container.layout = layout;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="layout",type="feathers.layout.ILayout")]
+
+	/**
 	 * A generic container that supports layout. For a container that supports
 	 * scrolling and more robust skinning options, see <code>ScrollContainer</code>.
 	 *
@@ -163,17 +227,7 @@ package feathers.controls
 		protected var _layout:ILayout;
 
 		/**
-		 * Controls the way that the group's children are positioned and sized.
-		 *
-		 * <p>The following example tells the group to use a horizontal layout:</p>
-		 *
-		 * <listing version="3.0">
-		 * var layout:HorizontalLayout = new HorizontalLayout();
-		 * layout.gap = 20;
-		 * layout.padding = 20;
-		 * container.layout = layout;</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get layout():ILayout
 		{
@@ -185,6 +239,10 @@ package feathers.controls
 		 */
 		public function set layout(value:ILayout):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._layout == value)
 			{
 				return;
@@ -255,19 +313,7 @@ package feathers.controls
 		protected var _clipContent:Boolean = false;
 
 		/**
-		 * If true, the group will be clipped to its bounds. In other words,
-		 * anything appearing beyond the edges of the group will be masked or
-		 * hidden.
-		 *
-		 * <p>Since <code>LayoutGroup</code> is designed to be a light
-		 * container focused on performance, clipping is disabled by default.</p>
-		 *
-		 * <p>In the following example, clipping is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.clipContent = true;</listing>
-		 *
-		 * @default false
+		 * @private
 		 */
 		public function get clipContent():Boolean
 		{
@@ -279,7 +325,11 @@ package feathers.controls
 		 */
 		public function set clipContent(value:Boolean):void
 		{
-			if(this._clipContent == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._clipContent === value)
 			{
 				return;
 			}
@@ -332,16 +382,7 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * The default background to display behind all content. The background
-		 * skin is resized to fill the full width and height of the layout
-		 * group.
-		 *
-		 * <p>In the following example, the group is given a background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.backgroundSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -353,11 +394,19 @@ package feathers.controls
 		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
 			{
 				return;
 			}
-			if(value && value.parent)
+			if(value !== null && value.parent !== null)
 			{
 				value.removeFromParent();
 			}
@@ -371,16 +420,7 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * The background to display behind all content when the layout group is
-		 * disabled. The background skin is resized to fill the full width and
-		 * height of the layout group.
-		 *
-		 * <p>In the following example, the group is given a background skin:</p>
-		 *
-		 * <listing version="3.0">
-		 * group.backgroundDisabledSkin = new Image( texture );</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -392,11 +432,19 @@ package feathers.controls
 		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundDisabledSkin === value)
 			{
 				return;
 			}
-			if(value && value.parent)
+			if(value !== null && value.parent !== null)
 			{
 				value.removeFromParent();
 			}
