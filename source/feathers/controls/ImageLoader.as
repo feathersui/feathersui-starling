@@ -47,6 +47,22 @@ package feathers.controls
 	import starling.utils.SystemUtil;
 
 	/**
+	 * The tint value to use on the internal
+	 * <code>starling.display.Image</code>.
+	 *
+	 * <p>In the following example, the image loader's texture color is
+	 * customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.color = 0xff00ff;</listing>
+	 *
+	 * @default 0xffffff
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/display/Image.html#color starling.display.Image.color
+	 */
+	[Style(name="color",type="uint")]
+
+	/**
 	 * A texture to display while a URL source is loading.
 	 *
 	 * <p>In the following example, the image loader's loading texture is
@@ -216,6 +232,41 @@ package feathers.controls
 	[Style(name="paddingLeft",type="Number")]
 
 	/**
+	 * The <code>pixelSnapping</code> value to use on the internal
+	 * <code>starling.display.Image</code>.
+	 *
+	 * <p>In the following example, the image loader's pixelSnapping is
+	 * disabled:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.pixelSnapping = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#pixelSnapping starling.display.Mesh.pixelSnapping
+	 */
+	[Style(name="pixelSnapping",type="Boolean")]
+
+	/**
+	 * The <code>scale9Grid</code> value to use on the internal
+	 * <code>starling.display.Image</code>.
+	 *
+	 * <p>If this property is not <code>null</code>, the
+	 * <code>maintainAspectRatio</code> property will be ignored.</p>
+	 *
+	 * <p>In the following example, the image loader's scale9Grid is set to a
+	 * custom value:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.scale9Grid = Rectangle(2, 3, 7, 12);</listing>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/display/Image.html#scale9Grid starling.display.Image.scale9Grid
+	 */
+	[Style(name="scale9Grid",type="flash.geom.Rectangle")]
+
+	/**
 	 * Determines if the content will be scaled if the dimensions of the
 	 * <code>ImageLoader</code> are changed.
 	 *
@@ -274,6 +325,22 @@ package feathers.controls
 	 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#textureSmoothing starling.display.Mesh.textureSmoothing
 	 */
 	[Style(name="textureSmoothing",type="String")]
+
+	/**
+	 * The <code>tileGrid</code> value to use on the internal
+	 * <code>starling.display.Image</code>.
+	 *
+	 * <p>In the following example, the image loader's tileGrid is set to a
+	 * custom value:</p>
+	 *
+	 * <listing version="3.0">
+	 * loader.tileGrid = Rectangle();</listing>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/display/Image.html#tileGrid starling.display.Image.tileGrid
+	 */
+	[Style(name="tileGrid",type="flash.geom.Rectangle")]
 
 	/**
 	 * The location where the content is aligned vertically (on
@@ -832,8 +899,10 @@ package feathers.controls
 		private var _textureScale:Number = 1;
 
 		/**
-		 * Scales the texture dimensions during measurement. Useful for UI that
-		 * should scale based on screen density or resolution.
+		 * Scales the texture dimensions during measurement, but does not set
+		 * the texture's scale factor. Useful for UI that should scale based on
+		 * screen density or resolution without accounting for
+		 * <code>contentScaleFactor</code>.
 		 *
 		 * <p>In the following example, the image loader's texture scale is
 		 * customized:</p>
@@ -932,21 +1001,7 @@ package feathers.controls
 		private var _scale9Grid:Rectangle;
 
 		/**
-		 * The <code>scale9Grid</code> value to use on the internal
-		 * <code>starling.display.Image</code>.
-		 * 
-		 * <p>If this property is not <code>null</code>, the
-		 * <code>maintainAspectRatio</code> property will be ignored.</p>
-		 *
-		 * <p>In the following example, the image loader's scale9Grid is set to a
-		 * custom value:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.scale9Grid = Rectangle(2, 3, 7, 12);</listing>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#scale9Grid starling.display.Image.scale9Grid
+		 * @private
 		 */
 		public function get scale9Grid():Rectangle
 		{
@@ -972,17 +1027,7 @@ package feathers.controls
 		private var _tileGrid:Rectangle;
 
 		/**
-		 * The <code>tileGrid</code> value to use on the internal <code>Image</code>.
-		 *
-		 * <p>In the following example, the image loader's tileGrid is set to a
-		 * custom value:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.tileGrid = Rectangle();</listing>
-		 *
-		 * @default null
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#tileGrid starling.display.Image.tileGrid
+		 * @private
 		 */
 		public function get tileGrid():Rectangle
 		{
@@ -1008,17 +1053,7 @@ package feathers.controls
 		private var _pixelSnapping:Boolean = true;
 
 		/**
-		 * The <code>pixelSnapping</code> value to use on the internal <code>Image</code>.
-		 *
-		 * <p>In the following example, the image loader's pixelSnapping is
-		 * disabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.pixelSnapping = false;</listing>
-		 *
-		 * @default true
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/Mesh.html#pixelSnapping starling.display.Mesh.pixelSnapping
+		 * @private
 		 */
 		public function get pixelSnapping():Boolean
 		{
@@ -1044,17 +1079,7 @@ package feathers.controls
 		private var _color:uint = 0xffffff;
 
 		/**
-		 * The tint value to use on the internal <code>Image</code>.
-		 *
-		 * <p>In the following example, the image loader's texture color is
-		 * customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * loader.color = 0xff00ff;</listing>
-		 *
-		 * @default 0xffffff
-		 *
-		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#color starling.display.Image.color
+		 * @private
 		 */
 		public function get color():uint
 		{
@@ -1066,7 +1091,11 @@ package feathers.controls
 		 */
 		public function set color(value:uint):void
 		{
-			if(this._color == value)
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._color === value)
 			{
 				return;
 			}
