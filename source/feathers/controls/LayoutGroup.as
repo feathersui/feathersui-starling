@@ -81,6 +81,21 @@ package feathers.controls
 	[Style(name="clipContent",type="Boolean")]
 
 	/**
+	 * Controls the way that the group's children are positioned and sized.
+	 *
+	 * <p>The following example tells the group to use a horizontal layout:</p>
+	 *
+	 * <listing version="3.0">
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * container.layout = layout;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="layout",type="feathers.layout.ILayout")]
+
+	/**
 	 * A generic container that supports layout. For a container that supports
 	 * scrolling and more robust skinning options, see <code>ScrollContainer</code>.
 	 *
@@ -206,17 +221,7 @@ package feathers.controls
 		protected var _layout:ILayout;
 
 		/**
-		 * Controls the way that the group's children are positioned and sized.
-		 *
-		 * <p>The following example tells the group to use a horizontal layout:</p>
-		 *
-		 * <listing version="3.0">
-		 * var layout:HorizontalLayout = new HorizontalLayout();
-		 * layout.gap = 20;
-		 * layout.padding = 20;
-		 * container.layout = layout;</listing>
-		 *
-		 * @default null
+		 * @private
 		 */
 		public function get layout():ILayout
 		{
@@ -228,6 +233,10 @@ package feathers.controls
 		 */
 		public function set layout(value:ILayout):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._layout == value)
 			{
 				return;
