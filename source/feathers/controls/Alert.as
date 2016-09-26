@@ -255,10 +255,13 @@ package feathers.controls
 		public static var alertFactory:Function = defaultAlertFactory;
 
 		/**
-		 * Returns an overlay to display with an alert that is modal. Uses the
-		 * standard <code>overlayFactory</code> of the <code>PopUpManager</code>
-		 * by default, but you can use this property to provide your own custom
-		 * overlay, if you prefer.
+		 * Creates overlays for modal alerts. When this property is
+		 * <code>null</code>, uses the <code>overlayFactory</code> defined by
+		 * <code>PopUpManager</code> instead.
+		 * 
+		 * <p>Note: Specific, individual alerts may have custom overlays that
+		 * are different than the default by passing a different overlay factory
+		 * to <code>Alert.show()</code>.</p>
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>

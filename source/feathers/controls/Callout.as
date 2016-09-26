@@ -1279,6 +1279,9 @@ package feathers.controls
 			return this._origin;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set origin(value:DisplayObject):void
 		{
 			if(this._origin == value)

@@ -39,6 +39,8 @@ package feathers.controls.renderers
 	import starling.events.TouchPhase;
 	import starling.text.TextFormat;
 
+	[Exclude(name="stateToAccessoryFunction",kind="property")]
+
 	/**
 	 * The location of the accessory, relative to one of the other children.
 	 * Use <code>RelativePosition.MANUAL</code> to position the accessory
@@ -1060,7 +1062,7 @@ package feathers.controls.renderers
 		protected var _factoryID:String;
 
 		/**
-		 * @inheritDoc
+		 * @copy feathers.controls.renderers.IListItemRenderer#factoryID
 		 */
 		public function get factoryID():String
 		{

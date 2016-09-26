@@ -37,6 +37,14 @@ package feathers.controls
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
 
+	[Exclude(name="stateToIconFunction",kind="property")]
+	[Exclude(name="stateToLabelPropertiesFunction",kind="property")]
+	[Exclude(name="stateToSkinFunction",kind="property")]
+	[Exclude(name="upLabelProperties",kind="property")]
+	[Exclude(name="downLabelProperties",kind="property")]
+	[Exclude(name="hoverLabelProperties",kind="property")]
+	[Exclude(name="disabledLabelProperties",kind="property")]
+
 	/**
 	 * A style name to add to the button's label text renderer
 	 * sub-component. Typically used by a theme to provide different styles

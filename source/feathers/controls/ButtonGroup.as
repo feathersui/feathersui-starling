@@ -1109,11 +1109,17 @@ package feathers.controls
 		protected var _buttonFactory:Function = defaultButtonFactory;
 
 		/**
-		 * Creates a new button. A button must be an instance of <code>Button</code>.
-		 * This factory can be used to change properties on the buttons when
-		 * they are first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on a button.
+		 * Creates each button in the group. A button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the buttons when they are first created. For instance, if you are
+		 * skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on a button.
+		 *
+		 * <p>Optionally, the first button and the last button may be different
+		 * than the other buttons that are in the middle. Use the
+		 * <code>firstButtonFactory</code> and/or the
+		 * <code>lastButtonFactory</code> to customize one or both of these
+		 * buttons.</p>
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1160,7 +1166,7 @@ package feathers.controls
 		protected var _firstButtonFactory:Function;
 
 		/**
-		 * If not <code>null</code>, creates a new first button. If the
+		 * If not <code>null</code>, creates the first button. If the
 		 * <code>firstButtonFactory</code> is <code>null</code>, then the button
 		 * group will use the <code>buttonFactory</code>. The first button must
 		 * be an instance of <code>Button</code>. This factory can be used to
@@ -1214,7 +1220,7 @@ package feathers.controls
 		protected var _lastButtonFactory:Function;
 
 		/**
-		 * If not <code>null</code>, creates a new last button. If the
+		 * If not <code>null</code>, creates the last button. If the
 		 * <code>lastButtonFactory</code> is <code>null</code>, then the button
 		 * group will use the <code>buttonFactory</code>. The last button must
 		 * be an instance of <code>Button</code>. This factory can be used to

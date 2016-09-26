@@ -1284,11 +1284,16 @@ package feathers.controls
 		protected var _tabFactory:Function = defaultTabFactory;
 
 		/**
-		 * Creates a new tab. A tab must be an instance of <code>ToggleButton</code>.
-		 * This factory can be used to change properties on the tabs when they
-		 * are first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on a tab.
+		 * Creates each tab. A tab must be an instance of
+		 * <code>ToggleButton</code>. This factory can be used to change
+		 * properties on the tabs when they are first created. For instance, if
+		 * you are skinning Feathers components without a theme, you might use
+		 * this factory to set skins and other styles on a tab.
+		 * 
+		 * <p>Optionally, the first tab and the last tab may be different than
+		 * the other tabs in the middle. Use the <code>firstTabFactory</code>
+		 * and/or the <code>lastTabFactory</code> to customize one or both of
+		 * these tabs.</p> 
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1337,13 +1342,14 @@ package feathers.controls
 		protected var _firstTabFactory:Function;
 
 		/**
-		 * Creates a new first tab. If the <code>firstTabFactory</code> is
-		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
-		 * The first tab must be an instance of <code>ToggleButton</code>. This
-		 * factory can be used to change properties on the first tab when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the first tab.
+		 * If not <code>null</code>, creates the first tab. If the
+		 * <code>firstTabFactory</code> is <code>null</code>, then the tab bar
+		 * will use the <code>tabFactory</code>. The first tab must be an
+		 * instance of <code>ToggleButton</code>. This factory can be used to
+		 * change properties on the first tab when it is initially created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the first
+		 * tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1392,13 +1398,14 @@ package feathers.controls
 		protected var _lastTabFactory:Function;
 
 		/**
-		 * Creates a new last tab. If the <code>lastTabFactory</code> is
-		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
-		 * The last tab must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the last tab when it
-		 * is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the last tab.
+		 * If not <code>null</code>, creates the last tab. If the
+		 * <code>lastTabFactory</code> is <code>null</code>, then the tab bar
+		 * will use the <code>tabFactory</code>. The last tab must be an
+		 * instance of <code>ToggleButton</code>. This factory can be used to
+		 * change properties on the last tab when it is initially created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the last
+		 * tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1947,6 +1954,7 @@ package feathers.controls
 		protected var _customTabStyleName:String;
 
 		/**
+		 * @private
 		 */
 		public function get customTabStyleName():String
 		{

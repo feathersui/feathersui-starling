@@ -382,6 +382,7 @@ package feathers.controls
 		protected var _wordWrap:Boolean = false;
 
 		/**
+		 * @private
 		 */
 		public function get wordWrap():Boolean
 		{

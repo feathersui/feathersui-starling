@@ -19,6 +19,12 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.text.TextFormat;
 
+	[Exclude(name="defaultSelectedLabelProperties",kind="property")]
+	[Exclude(name="selectedUpLabelProperties",kind="property")]
+	[Exclude(name="selectedDownLabelProperties",kind="property")]
+	[Exclude(name="selectedHoverLabelProperties",kind="property")]
+	[Exclude(name="selectedDisabledLabelProperties",kind="property")]
+
 	/**
 	 * The icon used when no other icon is defined for the current state
 	 * when the button is selected. Has a higher priority than
