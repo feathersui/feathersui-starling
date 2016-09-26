@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
@@ -365,7 +366,7 @@ package feathers.controls
 	 * @see ../../../help/button-group.html How to use the Feathers ButtonGroup component
 	 * @see feathers.controls.TabBar
 	 */
-	public class ButtonGroup extends FeathersControl
+	public class ButtonGroup extends FeathersControl implements ITextBaselineControl
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ButtonGroup</code>
@@ -1159,13 +1160,14 @@ package feathers.controls
 		protected var _firstButtonFactory:Function;
 
 		/**
-		 * Creates a new first button. If the <code>firstButtonFactory</code> is
-		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
-		 * The first button must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the first button when
-		 * it is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the first button.
+		 * If not <code>null</code>, creates a new first button. If the
+		 * <code>firstButtonFactory</code> is <code>null</code>, then the button
+		 * group will use the <code>buttonFactory</code>. The first button must
+		 * be an instance of <code>Button</code>. This factory can be used to
+		 * change properties on the first button when it is initially created.
+		 * For instance, if you are skinning Feathers components without a
+		 * theme, you might use this factory to set skins and other styles on
+		 * the first button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1212,13 +1214,14 @@ package feathers.controls
 		protected var _lastButtonFactory:Function;
 
 		/**
-		 * Creates a new last button. If the <code>lastButtonFactory</code> is
-		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
-		 * The last button must be an instance of <code>Button</code>. This
-		 * factory can be used to change properties on the last button when
-		 * it is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use this factory to set skins
-		 * and other styles on the last button.
+		 * If not <code>null</code>, creates a new last button. If the
+		 * <code>lastButtonFactory</code> is <code>null</code>, then the button
+		 * group will use the <code>buttonFactory</code>. The last button must
+		 * be an instance of <code>Button</code>. This factory can be used to
+		 * change properties on the last button when it is initially created.
+		 * For instance, if you are skinning Feathers components without a
+		 * theme, you might use this factory to set skins and other styles on
+		 * the last button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
