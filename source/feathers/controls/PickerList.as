@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
@@ -216,7 +217,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/picker-list.html How to use the Feathers PickerList component
 	 */
-	public class PickerList extends FeathersControl implements IFocusDisplayObject
+	public class PickerList extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{
 		/**
 		 * @private

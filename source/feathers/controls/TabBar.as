@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
@@ -451,7 +452,7 @@ package feathers.controls
 	 *
 	 * @see ../../../help/tab-bar.html How to use the Feathers TabBar component
 	 */
-	public class TabBar extends FeathersControl implements IFocusDisplayObject
+	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{
 		/**
 		 * @private
