@@ -202,6 +202,24 @@ package feathers.controls
 	[Style(name="keyScrollDuration",type="Number")]
 
 	/**
+	 * The layout algorithm used to position and, optionally, size the
+	 * list's items.
+	 *
+	 * <p>By default, if no layout is provided by the time that the list
+	 * initializes, a vertical layout with options targeted at touch screens
+	 * is created.</p>
+	 *
+	 * <p>The following example tells the list to use a horizontal layout:</p>
+	 *
+	 * <listing version="3.0">
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * list.layout = layout;</listing>
+	 */
+	[Style(name="layout",type="feathers.layout.ILayout")]
+
+	/**
 	 * Dispatched when the selected item changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -734,20 +752,7 @@ package feathers.controls
 		protected var _layout:ILayout;
 
 		/**
-		 * The layout algorithm used to position and, optionally, size the
-		 * list's items.
-		 *
-		 * <p>By default, if no layout is provided by the time that the list
-		 * initializes, a vertical layout with options targeted at touch screens
-		 * is created.</p>
-		 *
-		 * <p>The following example tells the list to use a horizontal layout:</p>
-		 *
-		 * <listing version="3.0">
-		 * var layout:HorizontalLayout = new HorizontalLayout();
-		 * layout.gap = 20;
-		 * layout.padding = 20;
-		 * list.layout = layout;</listing>
+		 * @private
 		 */
 		public function get layout():ILayout
 		{
@@ -759,6 +764,10 @@ package feathers.controls
 		 */
 		public function set layout(value:ILayout):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._layout == value)
 			{
 				return;
