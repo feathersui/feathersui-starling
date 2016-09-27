@@ -6,12 +6,14 @@ package feathers.examples.gallery
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.ScrollPolicy;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
+	import feathers.utils.textures.TextureCache;
 
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -45,6 +47,17 @@ package feathers.examples.gallery
 		protected var message:Label;
 		protected var apiLoader:URLLoader;
 		protected var fadeTween:Tween;
+		protected var textureCache:TextureCache;
+
+		override public function dispose():void
+		{
+			if(this.textureCache)
+			{
+				this.textureCache.dispose();
+				this.textureCache = null;
+			}
+			super.dispose();
+		}
 
 		override protected function initialize():void
 		{
@@ -56,6 +69,8 @@ package feathers.examples.gallery
 			this.autoSizeMode = AutoSizeMode.STAGE;
 			this.layout = new AnchorLayout();
 
+			this.textureCache = new TextureCache(30);
+
 			this.apiLoader = new URLLoader();
 			this.apiLoader.addEventListener(flash.events.Event.COMPLETE, apiLoader_completeListener);
 			this.apiLoader.addEventListener(IOErrorEvent.IO_ERROR, apiLoader_errorListener);
@@ -65,41 +80,48 @@ package feathers.examples.gallery
 			var listLayout:HorizontalLayout = new HorizontalLayout();
 			listLayout.verticalAlign = VerticalAlign.JUSTIFY;
 			listLayout.hasVariableItemDimensions = true;
-			
+
 			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			listLayoutData.left = 0;
 			listLayoutData.right = 0;
 			listLayoutData.bottom = 0;
-			
+
 			this.list = new List();
 			this.list.styleNameList.add(THUMBNAIL_LIST_NAME);
 			this.list.layout = listLayout;
 			this.list.horizontalScrollPolicy = ScrollPolicy.ON;
 			this.list.snapScrollPositionsToPixels = true;
-			this.list.itemRendererType = GalleryItemRenderer;
+			this.list.itemRendererFactory = itemRendererFactory;
 			this.list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
 			this.list.height = 100;
 			this.list.layoutData = listLayoutData;
 			this.addChild(this.list);
-			
+
 			var imageLayoutData:AnchorLayoutData = new AnchorLayoutData(0, 0, 0, 0);
 			imageLayoutData.bottomAnchorDisplayObject = this.list;
-			
+
 			this.selectedImage = new ImageLoader();
 			this.selectedImage.layoutData = imageLayoutData;
 			this.selectedImage.addEventListener(starling.events.Event.COMPLETE, loader_completeHandler);
 			this.selectedImage.addEventListener(FeathersEventType.ERROR, loader_errorHandler);
 			this.addChild(this.selectedImage);
-			
+
 			var messageLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			messageLayoutData.horizontalCenter = 0;
 			messageLayoutData.verticalCenter = 0;
 			messageLayoutData.verticalCenterAnchorDisplayObject = this.selectedImage;
-			
+
 			this.message = new Label();
 			this.message.text = "Loading...";
 			this.message.layoutData = messageLayoutData;
 			this.addChild(this.message);
+		}
+
+		protected function itemRendererFactory():IListItemRenderer
+		{
+			var itemRenderer:GalleryItemRenderer = new GalleryItemRenderer();
+			itemRenderer.textureCache = this.textureCache;
+			return itemRenderer;
 		}
 
 		protected function list_changeHandler(event:starling.events.Event):void

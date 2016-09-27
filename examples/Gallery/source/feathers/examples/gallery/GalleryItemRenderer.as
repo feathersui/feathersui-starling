@@ -5,6 +5,8 @@ package feathers.examples.gallery
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.textures.TextureCache;
+	import feathers.utils.touch.TapToSelect;
 
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
@@ -21,16 +23,6 @@ package feathers.examples.gallery
 	{
 		/**
 		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
 		 * This will only work in a single list. If this item renderer needs to
 		 * be used by multiple lists, this data should be stored differently.
 		 */
@@ -41,20 +33,14 @@ package feathers.examples.gallery
 		 */
 		public function GalleryItemRenderer()
 		{
+			//optimization: this item renderer doesn't have interactive children
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler)
 		}
 
 		/**
 		 * @private
 		 */
 		protected var image:ImageLoader;
-
-		/**
-		 * @private
-		 */
-		protected var touchPointID:int = -1;
 
 		/**
 		 * @private
@@ -151,6 +137,11 @@ package feathers.examples.gallery
 		/**
 		 * @private
 		 */
+		private var _tapToSelect:TapToSelect;
+
+		/**
+		 * @private
+		 */
 		private var _data:GalleryItem;
 
 		/**
@@ -170,7 +161,6 @@ package feathers.examples.gallery
 			{
 				return;
 			}
-			this.touchPointID = -1;
 			this._data = GalleryItem(value);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -204,13 +194,43 @@ package feathers.examples.gallery
 		/**
 		 * @private
 		 */
+		private var _textureCache:TextureCache;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get textureCache():TextureCache
+		{
+			return this._textureCache;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textureCache(value:TextureCache):void
+		{
+			if(this._textureCache == value)
+			{
+				return;
+			}
+			this._textureCache = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
+			super.initialize();
+
 			this.image = new ImageLoader();
 			this.image.textureQueueDuration = 0.25;
 			this.image.addEventListener(Event.COMPLETE, image_completeHandler);
 			this.image.addEventListener(FeathersEventType.ERROR, image_errorHandler);
 			this.addChild(this.image);
+
+			this._tapToSelect = new TapToSelect(this);
 		}
 
 		/**
@@ -219,8 +239,8 @@ package feathers.examples.gallery
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+
+			this.image.textureCache = this._textureCache;
 
 			if(dataInvalid)
 			{
@@ -342,68 +362,8 @@ package feathers.examples.gallery
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
-		{
-			this.touchPointID = -1;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function touchHandler(event:TouchEvent):void
-		{
-			var touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
-			if(this.touchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-
-					touch.getLocation(this, HELPER_POINT);
-					if(this.hitTest(HELPER_POINT) !== null && !this._isSelected)
-					{
-						this.isSelected = true;
-					}
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function owner_scrollStartHandler(event:Event):void
 		{
-			this.touchPointID = -1;
 			this.image.delayTextureCreation = true;
 		}
 
