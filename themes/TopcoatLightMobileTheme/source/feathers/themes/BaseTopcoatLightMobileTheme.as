@@ -492,7 +492,7 @@ package feathers.themes
 
 			//auto complete
 			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
-			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setAutoCompleteListStyles);
+			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
 
 			//button
 			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
@@ -694,6 +694,17 @@ package feathers.themes
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 		}
 
+		protected function setDropDownListStyles(list:List):void
+		{
+			var backgroundSkin:Quad = new Quad(10, 10, COLOR_SPINNER_LIST_BACKGROUND);
+			list.backgroundSkin = backgroundSkin;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.maxRowCount = 4;
+			list.layout = layout;
+		}
+
 	//-------------------------
 	// Alert
 	//-------------------------
@@ -756,18 +767,6 @@ package feathers.themes
 			button.disabledFontStyles = this.darkDisabledFontStyles;
 
 			this.setBaseButtonStyles(button);
-		}
-
-	//-------------------------
-	// AutoComplete
-	//-------------------------
-
-		protected function setAutoCompleteListStyles(list:List):void
-		{
-			this.setScrollerStyles(list);
-
-			list.maxHeight = this.wideControlSize;
-			list.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 	//-------------------------
@@ -1384,20 +1383,7 @@ package feathers.themes
 			{
 				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
-			else
-			{
-				//the pop-up list should be a SpinnerList in this case, but we
-				//should provide a reasonable fallback skin if the listFactory
-				//on the PickerList returns a List instead. we don't want the
-				//List to be too big for the BottomDrawerPopUpContentManager
-
-				list.padding = this.smallGutterSize;
-			}
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-			layout.requestedRowCount = 4;
-			list.layout = layout;
+			this.setDropDownListStyles(list);
 		}
 
 		protected function setTabletPickerListItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void

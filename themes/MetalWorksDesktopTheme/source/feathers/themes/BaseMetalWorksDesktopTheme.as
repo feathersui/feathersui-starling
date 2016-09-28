@@ -1085,6 +1085,7 @@ package feathers.themes
 		protected function setDropDownListStyles(list:List):void
 		{
 			this.setListStyles(list);
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.useVirtualLayout = true;
 			layout.padding = 0;
@@ -1092,8 +1093,8 @@ package feathers.themes
 			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 			layout.verticalAlign = VerticalAlign.TOP;
 			layout.resetTypicalItemDimensionsOnMeasure = true;
+			layout.maxRowCount = 5;
 			list.layout = layout;
-			list.maxHeight = this.wideControlSize;
 		}
 
 	//-------------------------
@@ -1611,10 +1612,14 @@ package feathers.themes
 
 			var backgroundSkin:Image = new Image(this.listBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = DEFAULT_SCALE9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
 			list.backgroundSkin = backgroundSkin;
 
 			var backgroundDisabledSkin:Image = new Image(this.backgroundDisabledSkinTexture);
 			backgroundDisabledSkin.scale9Grid = DEFAULT_SCALE9_GRID;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
 
 			list.verticalScrollPolicy = ScrollPolicy.AUTO;
@@ -1905,6 +1910,8 @@ package feathers.themes
 			button.horizontalAlign = HorizontalAlign.LEFT;
 			button.iconPosition = RelativePosition.RIGHT;
 		}
+
+		//for the PickerList's pop-up list, see setDropDownListStyles()
 
 	//-------------------------
 	// ProgressBar

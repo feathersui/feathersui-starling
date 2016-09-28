@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.themes
 {
 	import feathers.controls.Alert;
+	import feathers.controls.AutoComplete;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ButtonState;
@@ -855,6 +856,10 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPopUpHeaderStyles);
 
+			//auto-complete
+			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
+
 			//button
 			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON, this.setCallToActionButtonStyles);
@@ -1066,6 +1071,22 @@ package feathers.themes
 
 			button.minTouchWidth = this.gridSize;
 			button.minTouchHeight = this.gridSize;
+		}
+
+		protected function setDropDownListStyles(list:List):void
+		{
+			var backgroundSkin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			backgroundSkin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
+			backgroundSkin.width = this.gridSize;
+			backgroundSkin.height = this.gridSize;
+			backgroundSkin.minWidth = this.gridSize;
+			backgroundSkin.minHeight = this.gridSize;
+			list.backgroundSkin = backgroundSkin;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.maxRowCount = 4;
+			list.layout = layout;
 		}
 
 	//-------------------------
@@ -1906,28 +1927,7 @@ package feathers.themes
 
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			if(!DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				//the pop-up list should be a SpinnerList in this case, but we
-				//should provide a reasonable fallback skin if the listFactory
-				//on the PickerList returns a List instead. we don't want the
-				//List to be too big for the BottomDrawerPopUpContentManager
-
-				var backgroundSkin:ImageSkin = new ImageSkin(this.backgroundSkinTexture);
-				backgroundSkin.scale9Grid = DEFAULT_BACKGROUND_SCALE9_GRID;
-				backgroundSkin.width = this.gridSize;
-				backgroundSkin.height = this.gridSize;
-				backgroundSkin.minWidth = this.gridSize;
-				backgroundSkin.minHeight = this.gridSize;
-				list.backgroundSkin = backgroundSkin;
-				list.padding = this.smallGutterSize;
-			}
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-			layout.requestedRowCount = 4;
-			list.layout = layout;
-
+			this.setDropDownListStyles(list);
 			list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 		}
 
