@@ -1746,6 +1746,7 @@ package feathers.controls
 			{
 				IToggle(this.button).isSelected = true;
 			}
+			this.list.revealScrollBars();
 			this.dispatchEventWith(Event.OPEN);
 		}
 

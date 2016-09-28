@@ -307,7 +307,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testMaxRowCount():void
+		public function testSmallerMaxRowCount():void
 		{
 			this._layout.maxRowCount = 2;
 			var item1:LayoutGroup = new LayoutGroup();
@@ -319,14 +319,14 @@ package feathers.tests
 			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
 			var bounds:ViewPortBounds = new ViewPortBounds();
 			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
-			Assert.assertStrictlyEquals("VerticalLayout with maxRowCount results in wrong view port height",
+			Assert.assertStrictlyEquals("VerticalLayout with smaller maxRowCount results in wrong view port height",
 				200, result.viewPortHeight);
-			Assert.assertStrictlyEquals("VerticalLayout with maxRowCount results in wrong content height",
+			Assert.assertStrictlyEquals("VerticalLayout with smaller maxRowCount results in wrong content height",
 				300, result.contentHeight);
 		}
 
 		[Test]
-		public function testMaxRowCountAndUseVirtualLayout():void
+		public function testSmallerMaxRowCountAndUseVirtualLayout():void
 		{
 			this._layout.maxRowCount = 2;
 			this._layout.useVirtualLayout = true;
@@ -340,9 +340,49 @@ package feathers.tests
 			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
 			var bounds:ViewPortBounds = new ViewPortBounds();
 			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
-			Assert.assertStrictlyEquals("VerticalLayout with maxRowCount and useVirtualLayout results in wrong view port height",
+			Assert.assertStrictlyEquals("VerticalLayout with smaller maxRowCount and useVirtualLayout results in wrong view port height",
 				200, result.viewPortHeight);
-			Assert.assertStrictlyEquals("VerticalLayout with maxRowCount and useVirtualLayout results in wrong content height",
+			Assert.assertStrictlyEquals("VerticalLayout with smaller maxRowCount and useVirtualLayout results in wrong content height",
+				300, result.contentHeight);
+		}
+
+		[Test]
+		public function testLargerMaxRowCount():void
+		{
+			this._layout.maxRowCount = 4;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayout with larger maxRowCount results in wrong view port height",
+				300, result.viewPortHeight);
+			Assert.assertStrictlyEquals("VerticalLayout with larger maxRowCount results in wrong content height",
+				300, result.contentHeight);
+		}
+
+		[Test]
+		public function testLargerMaxRowCountAndUseVirtualLayout():void
+		{
+			this._layout.maxRowCount = 4;
+			this._layout.useVirtualLayout = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			this._layout.typicalItem = item1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayout with larger maxRowCount and useVirtualLayout results in wrong view port height",
+				300, result.viewPortHeight);
+			Assert.assertStrictlyEquals("VerticalLayout with larger maxRowCount and useVirtualLayout results in wrong content height",
 				300, result.contentHeight);
 		}
 	}
