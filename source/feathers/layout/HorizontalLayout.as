@@ -552,6 +552,8 @@ package feathers.layout
 		 * columns as possible.
 		 *
 		 * @default 0
+		 * 
+		 * @see #maxColumnCount
 		 */
 		public function get requestedColumnCount():int
 		{
@@ -572,6 +574,43 @@ package feathers.layout
 				return;
 			}
 			this._requestedColumnCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxColumnCount:int = 0;
+
+		/**
+		 * The maximum number of columns to display. If the explicit width of
+		 * the view port is set or if the <code>requestedColumnCount</code> is
+		 * set, then this value will be ignored. If the view port's minimum
+		 * and/or maximum width are set, the actual number of visible columns
+		 * may be adjusted to meet those requirements. Set this value to
+		 * <code>0</code> to display as many columns as possible.
+		 *
+		 * @default 0
+		 */
+		public function get maxColumnCount():int
+		{
+			return this._maxColumnCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxColumnCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("maxColumnCount requires a value >= 0");
+			}
+			if(this._maxColumnCount === value)
+			{
+				return;
+			}
+			this._maxColumnCount = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -938,6 +977,7 @@ package feathers.layout
 			var positionX:Number = boundsX + this._paddingLeft;
 			var itemCount:int = items.length;
 			var totalItemCount:int = itemCount;
+			var maxColumnAvailableWidth:Number = Number.POSITIVE_INFINITY;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				//if the layout is virtualized, and the items all have the same
@@ -965,6 +1005,11 @@ package feathers.layout
 			//the total width of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
+				if(!this._useVirtualLayout && this._maxColumnCount > 0 &&
+					this._maxColumnCount === i)
+				{
+					maxColumnAvailableWidth = positionX;
+				}
 				var item:DisplayObject = items[i];
 				//if we're trimming some items at the beginning, we need to
 				//adjust i to account for the missing items in the array
@@ -1129,6 +1174,17 @@ package feathers.layout
 				else
 				{
 					availableWidth = totalWidth;
+					if(this._maxColumnCount > 0)
+					{
+						if(this._useVirtualLayout)
+						{
+							maxColumnAvailableWidth = (calculatedTypicalItemWidth + this._gap) * this._maxColumnCount - this._gap + this._paddingLeft + this._paddingRight;
+						}
+						if(maxColumnAvailableWidth < availableWidth)
+						{
+							availableWidth = maxColumnAvailableWidth;
+						}
+					}
 				}
 				if(availableWidth < minWidth)
 				{
@@ -1351,11 +1407,19 @@ package feathers.layout
 			{
 				if(this._requestedColumnCount > 0)
 				{
-					var resultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+					var resultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight;
 				}
 				else
 				{
 					resultWidth = positionX + this._paddingLeft + this._paddingRight;
+					if(this._maxColumnCount > 0)
+					{
+						var maxColumnResultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._maxColumnCount - this._gap + this._paddingLeft + this._paddingRight;
+						if(maxColumnResultWidth < resultWidth)
+						{
+							resultWidth = maxColumnResultWidth;
+						}
+					}
 				}
 				if(resultWidth < minWidth)
 				{

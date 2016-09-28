@@ -642,6 +642,8 @@ package feathers.layout
 		 * rows as possible.
 		 *
 		 * @default 0
+		 *
+		 * @see #maxRowCount
 		 */
 		public function get requestedRowCount():int
 		{
@@ -662,6 +664,43 @@ package feathers.layout
 				return;
 			}
 			this._requestedRowCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxRowCount:int = 0;
+
+		/**
+		 * The maximum number of rows to display. If the explicit height of the
+		 * view port is set or if <code>requestedRowCount</code> is set, then
+		 * this value will be ignored. If the view port's minimum and/or maximum
+		 * height are set, the actual number of visible rows may be adjusted to
+		 * meet those requirements. Set this value to <code>0</code> to display
+		 * as many rows as possible.
+		 *
+		 * @default 0
+		 */
+		public function get maxRowCount():int
+		{
+			return this._maxRowCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxRowCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("maxRowCount requires a value >= 0");
+			}
+			if(this._maxRowCount == value)
+			{
+				return;
+			}
+			this._maxRowCount = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -1000,6 +1039,7 @@ package feathers.layout
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
 			var totalItemCount:int = itemCount;
+			var maxRowAvailableHeight:Number = Number.POSITIVE_INFINITY;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				//if the layout is virtualized, and the items all have the same
@@ -1037,16 +1077,21 @@ package feathers.layout
 					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
 				}
 			}
-			
+
 			//this first loop sets the y position of items, and it calculates
 			//the total height of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
+				if(!this._useVirtualLayout && this._maxRowCount > 0 &&
+					this._maxRowCount === i)
+				{
+					maxRowAvailableHeight = positionY;
+				}
 				var item:DisplayObject = items[i];
 				//if we're trimming some items at the beginning, we need to
 				//adjust i to account for the missing items in the array
 				var iNormalized:int = i + indexOffset;
-				
+
 				if(nextHeaderIndex === iNormalized)
 				{
 					//if the sticky header is enabled, we need to find its index
@@ -1240,6 +1285,17 @@ package feathers.layout
 				else
 				{
 					availableHeight = totalHeight;
+					if(this._maxRowCount > 0)
+					{
+						if(this._useVirtualLayout)
+						{
+							maxRowAvailableHeight = this._maxRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+						}
+						if(maxRowAvailableHeight < availableHeight)
+						{
+							availableHeight = maxRowAvailableHeight;
+						}
+					}
 				}
 				if(availableHeight < minHeight)
 				{
@@ -1487,6 +1543,14 @@ package feathers.layout
 				else
 				{
 					resultHeight = positionY;
+					if(this._maxRowCount > 0)
+					{
+						var maxRowResultHeight:Number = (calculatedTypicalItemHeight + this._gap) * this._maxRowCount - this._gap;
+						if(maxRowResultHeight < resultHeight)
+						{
+							resultHeight = maxRowResultHeight;
+						}
+					}
 				}
 				resultHeight += this._paddingTop + this._paddingBottom;
 				if(resultHeight < minHeight)
