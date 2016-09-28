@@ -1828,6 +1828,16 @@ package feathers.controls
 			{
 				newHeight = maxContentHeight;
 				newHeight += this._paddingTop + this._paddingBottom;
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
+				{
+					newHeight = this.currentBackgroundSkin.height;
+				}
+				//normally, padding is included before before the background
+				//skin's dimensions, but this is special extra padding that
+				//should simply be added on top of the normal measurement. if
+				//the explicit height of the background is large enough, this
+				//extra padding could be swallowed instead.
 				if(extraPaddingTop > 0)
 				{
 					//account for the minimum height before adding the padding
@@ -1837,13 +1847,8 @@ package feathers.controls
 					}
 					newHeight += extraPaddingTop;
 				}
-				if(this.currentBackgroundSkin !== null &&
-					this.currentBackgroundSkin.height > newHeight)
-				{
-					newHeight = this.currentBackgroundSkin.height;
-				}
 			}
-			
+
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
@@ -1863,21 +1868,12 @@ package feathers.controls
 					}
 				}
 			}
-			
+
 			var newMinHeight:Number = this._explicitMinHeight;
 			if(needsMinHeight)
 			{
 				newMinHeight = maxContentHeight;
 				newMinHeight += this._paddingTop + this._paddingBottom;
-				if(extraPaddingTop > 0)
-				{
-					//account for the minimum height before adding the padding
-					if(newMinHeight < this._explicitMinHeight)
-					{
-						newMinHeight = this._explicitMinHeight;
-					}
-					newMinHeight += extraPaddingTop;
-				}
 				if(this.currentBackgroundSkin !== null)
 				{
 					if(measureSkin !== null)
@@ -1891,6 +1887,12 @@ package feathers.controls
 					{
 						newMinHeight = this._explicitBackgroundMinHeight;
 					}
+				}
+				//set note above about why the extra padding is included after
+				//the background skin
+				if(extraPaddingTop > 0)
+				{
+					newMinHeight += extraPaddingTop;
 				}
 			}
 
