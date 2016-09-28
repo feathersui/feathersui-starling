@@ -461,7 +461,7 @@ package feathers.themes
 				this.atlas.dispose();
 				this.atlas = null;
 			}
-			TextField.unregisterBitmapFont(FONT_NAME);
+			TextField.unregisterCompositor(FONT_NAME);
 
 			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, false);

@@ -97,7 +97,7 @@ package feathers.themes
 		protected function initializeBitmapFont():void
 		{
 			var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture(FONT_TEXTURE_NAME), XML(new FONT_XML()));
-			TextField.registerBitmapFont(bitmapFont, FONT_NAME);
+			TextField.registerCompositor(bitmapFont, FONT_NAME);
 		}
 
 		/**
