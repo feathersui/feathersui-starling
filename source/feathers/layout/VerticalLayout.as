@@ -1039,6 +1039,7 @@ package feathers.layout
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
 			var totalItemCount:int = itemCount;
+			var requestedRowAvailableHeight:Number = 0;
 			var maxRowAvailableHeight:Number = Number.POSITIVE_INFINITY;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
@@ -1082,10 +1083,16 @@ package feathers.layout
 			//the total height of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				if(!this._useVirtualLayout && this._maxRowCount > 0 &&
-					this._maxRowCount === i)
+				if(!this._useVirtualLayout)
 				{
-					maxRowAvailableHeight = positionY;
+					if(this._maxRowCount > 0 && this._maxRowCount === i)
+					{
+						maxRowAvailableHeight = positionY;
+					}
+					if(this._requestedRowCount > 0 && this._requestedRowCount === i)
+					{
+						requestedRowAvailableHeight = positionY;
+					}
 				}
 				var item:DisplayObject = items[i];
 				//if we're trimming some items at the beginning, we need to
@@ -1244,6 +1251,10 @@ package feathers.layout
 				var header:DisplayObject = items[nextHeaderIndex];
 				this.positionStickyHeader(header, scrollY, stickyHeaderMaxY);
 			}
+			if(!this._useVirtualLayout && this._requestedRowCount > itemCount)
+			{
+				requestedRowAvailableHeight = this._requestedRowCount * positionY / itemCount;
+			}
 
 			//this array will contain all items that are not null. see the
 			//comment above where the discoveredItemsCache is initialized for
@@ -1280,7 +1291,14 @@ package feathers.layout
 				availableHeight = totalHeight;
 				if(this._requestedRowCount > 0)
 				{
-					availableHeight = this._requestedRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+					if(this._useVirtualLayout)
+					{
+						availableHeight = this._requestedRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+					}
+					else
+					{
+						availableHeight = requestedRowAvailableHeight;
+					}
 				}
 				else
 				{

@@ -977,6 +977,7 @@ package feathers.layout
 			var positionX:Number = boundsX + this._paddingLeft;
 			var itemCount:int = items.length;
 			var totalItemCount:int = itemCount;
+			var requestedColumnAvailableWidth:Number = 0;
 			var maxColumnAvailableWidth:Number = Number.POSITIVE_INFINITY;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
@@ -1005,10 +1006,16 @@ package feathers.layout
 			//the total width of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				if(!this._useVirtualLayout && this._maxColumnCount > 0 &&
-					this._maxColumnCount === i)
+				if(!this._useVirtualLayout)
 				{
-					maxColumnAvailableWidth = positionX;
+					if(this._maxColumnCount > 0 && this._maxColumnCount === i)
+					{
+						maxColumnAvailableWidth = positionX;
+					}
+					if(this._requestedColumnCount > 0 && this._requestedColumnCount === i)
+					{
+						requestedColumnAvailableWidth = positionX;
+					}
 				}
 				var item:DisplayObject = items[i];
 				//if we're trimming some items at the beginning, we need to
@@ -1134,6 +1141,10 @@ package feathers.layout
 					positionX = positionX - this._gap + this._lastGap;
 				}
 			}
+			if(!this._useVirtualLayout && this._requestedColumnCount > itemCount)
+			{
+				requestedColumnAvailableWidth = this._requestedColumnCount * positionX / itemCount;
+			}
 
 			//this array will contain all items that are not null. see the
 			//comment above where the discoveredItemsCache is initialized for
@@ -1169,7 +1180,14 @@ package feathers.layout
 			{
 				if(this._requestedColumnCount > 0)
 				{
-					availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+					if(this._useVirtualLayout)
+					{
+						availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+					}
+					else
+					{
+						availableWidth = requestedColumnAvailableWidth;
+					}
 				}
 				else
 				{
