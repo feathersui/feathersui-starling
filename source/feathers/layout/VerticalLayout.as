@@ -2330,18 +2330,9 @@ package feathers.layout
 							this._discoveredItemsCache[i] = null;
 							needsAnotherPass = true;
 						}
-						else
-						{
-							var itemMaxHeight:Number = feathersItem.maxHeight;
-							if(itemHeight > itemMaxHeight)
-							{
-								itemHeight = itemMaxHeight;
-								remainingHeight -= itemHeight;
-								totalPercentHeight -= percentHeight;
-								this._discoveredItemsCache[i] = null;
-								needsAnotherPass = true;
-							}
-						}
+						//we don't check maxHeight here because it is used in
+						//validateItems() for performance optimization, so it
+						//isn't a real maximum
 					}
 					layoutItem.height = itemHeight;
 					if(layoutItem is IValidating)

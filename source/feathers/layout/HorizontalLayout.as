@@ -2130,18 +2130,9 @@ package feathers.layout
 							this._discoveredItemsCache[i] = null;
 							needsAnotherPass = true;
 						}
-						else
-						{
-							var itemMaxWidth:Number = feathersItem.maxWidth;
-							if(itemWidth > itemMaxWidth)
-							{
-								itemWidth = itemMaxWidth;
-								remainingWidth -= itemWidth;
-								totalPercentWidth -= percentWidth;
-								this._discoveredItemsCache[i] = null;
-								needsAnotherPass = true;
-							}
-						}
+						//we don't check maxWidth here because it is used in
+						//validateItems() for performance optimization, so it
+						//isn't a real maximum
 					}
 					layoutItem.width = itemWidth;
 					if(layoutItem is IValidating)
