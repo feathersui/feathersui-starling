@@ -3,11 +3,13 @@ package feathers.tests
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
+	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 
 	public class HorizontalLayoutTests
 	{
@@ -235,6 +237,180 @@ package feathers.tests
 				itemWidth, item1.width);
 			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and useVirtualLayout results in wrong item width",
 				itemWidth, item2.width);
+		}
+
+		[Test]
+		public function testSmallerMaxColumnCount():void
+		{
+			this._layout.maxColumnCount = 2;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller maxColumnCount results in wrong view port width",
+				200, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller maxColumnCount results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testSmallerMaxColumnCountAndUseVirtualLayout():void
+		{
+			this._layout.maxColumnCount = 2;
+			this._layout.useVirtualLayout = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			this._layout.typicalItem = item1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller maxColumnCount and useVirtualLayout results in wrong view port width",
+				200, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller maxColumnCount and useVirtualLayout results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testLargerMaxColumnCount():void
+		{
+			this._layout.maxColumnCount = 4;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger maxColumnCount results in wrong view port width",
+				300, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger maxColumnCount results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testLargerMaxColumnCountAndUseVirtualLayout():void
+		{
+			this._layout.maxColumnCount = 4;
+			this._layout.useVirtualLayout = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			this._layout.typicalItem = item1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger maxColumnCount and useVirtualLayout results in wrong view port width",
+				300, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger maxColumnCount and useVirtualLayout results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testSmallerRequestedColumnCount():void
+		{
+			this._layout.requestedColumnCount = 2;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller requestedColumnCount results in wrong view port width",
+				200, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller requestedColumnCount results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testSmallerRequestedColumnCountAndUseVirtualLayout():void
+		{
+			this._layout.requestedColumnCount = 2;
+			this._layout.useVirtualLayout = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			this._layout.typicalItem = item1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller requestedColumnCount and useVirtualLayout results in wrong view port width",
+				200, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with smaller requestedColumnCount and useVirtualLayout results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testLargerRequestedColumnCount():void
+		{
+			this._layout.requestedColumnCount = 4;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger requestedColumnCount results in wrong view port width",
+				400, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger requestedColumnCount results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testLargerRequestedColumnCountAndUseVirtualLayout():void
+		{
+			this._layout.requestedColumnCount = 4;
+			this._layout.useVirtualLayout = true;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.setSize(100, 100);
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.setSize(100, 100);
+			var item3:LayoutGroup = new LayoutGroup();
+			item3.setSize(100, 100);
+			this._layout.typicalItem = item1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger requestedColumnCount and useVirtualLayout results in wrong view port width",
+				400, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with larger requestedColumnCount and useVirtualLayout results in wrong content width",
+				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testChildWithCalculatedMinHeightAndPercentHeight():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.layoutData = new HorizontalLayoutData(100, 100);
+			var child:Quad = new Quad(100, 100, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout without explicit view port height and child with percentHeight and calculated minHeight results in wrong view port height",
+				100, result.viewPortHeight);
 		}
 	}
 }

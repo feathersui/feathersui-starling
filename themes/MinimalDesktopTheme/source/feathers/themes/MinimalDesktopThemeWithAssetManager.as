@@ -137,7 +137,7 @@ package feathers.themes
 		protected function initializeBitmapFont():void
 		{
 			var font:BitmapFont = TextField.getBitmapFont(FONT_TEXTURE_NAME);
-			TextField.registerBitmapFont(font, FONT_NAME);
+			TextField.registerCompositor(font, FONT_NAME);
 		}
 
 		/**

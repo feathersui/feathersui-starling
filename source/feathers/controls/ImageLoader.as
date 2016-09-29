@@ -735,7 +735,7 @@ package feathers.controls
 			{
 				this.removeFromTextureQueue();
 			}
-			
+
 			var oldTexture:Texture;
 			//we should try to reuse the existing texture, if possible.
 			if(this._isTextureOwner && value && !(value is Texture))
@@ -744,12 +744,12 @@ package feathers.controls
 				this._isTextureOwner = false;
 			}
 			this.cleanupTexture();
-			
+
 			//the source variable needs to be set after cleanupTexture() is
 			//called because cleanupTexture() needs to know the old source if
 			//a TextureCache is in use.
 			this._source = value;
-			
+
 			if(oldTexture)
 			{
 				this._texture = oldTexture;
@@ -1666,7 +1666,9 @@ package feathers.controls
 		{
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
 			{
 				return false;
 			}
@@ -1743,7 +1745,35 @@ package feathers.controls
 				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
-			return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
+				{
+					newMinWidth = this._currentTextureWidth * this._textureScale;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+			}
+
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
+				{
+					newMinHeight = this._currentTextureHeight * this._textureScale;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+			}
+
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 
 		/**

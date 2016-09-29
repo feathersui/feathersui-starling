@@ -565,6 +565,8 @@ package feathers.layout
 		 * columns as possible.
 		 *
 		 * @default 0
+		 * 
+		 * @see #maxColumnCount
 		 */
 		public function get requestedColumnCount():int
 		{
@@ -585,6 +587,43 @@ package feathers.layout
 				return;
 			}
 			this._requestedColumnCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxColumnCount:int = 0;
+
+		/**
+		 * The maximum number of columns to display. If the explicit width of
+		 * the view port is set or if the <code>requestedColumnCount</code> is
+		 * set, then this value will be ignored. If the view port's minimum
+		 * and/or maximum width are set, the actual number of visible columns
+		 * may be adjusted to meet those requirements. Set this value to
+		 * <code>0</code> to display as many columns as possible.
+		 *
+		 * @default 0
+		 */
+		public function get maxColumnCount():int
+		{
+			return this._maxColumnCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxColumnCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("maxColumnCount requires a value >= 0");
+			}
+			if(this._maxColumnCount === value)
+			{
+				return;
+			}
+			this._maxColumnCount = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -960,6 +999,8 @@ package feathers.layout
 			var positionX:Number = boundsX + this._paddingLeft;
 			var itemCount:int = items.length;
 			var totalItemCount:int = itemCount;
+			var requestedColumnAvailableWidth:Number = 0;
+			var maxColumnAvailableWidth:Number = Number.POSITIVE_INFINITY;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				//if the layout is virtualized, and the items all have the same
@@ -987,6 +1028,17 @@ package feathers.layout
 			//the total width of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
+				if(!this._useVirtualLayout)
+				{
+					if(this._maxColumnCount > 0 && this._maxColumnCount === i)
+					{
+						maxColumnAvailableWidth = positionX;
+					}
+					if(this._requestedColumnCount > 0 && this._requestedColumnCount === i)
+					{
+						requestedColumnAvailableWidth = positionX;
+					}
+				}
 				var item:DisplayObject = items[i];
 				//if we're trimming some items at the beginning, we need to
 				//adjust i to account for the missing items in the array
@@ -1036,7 +1088,8 @@ package feathers.layout
 				{
 					//we get here if the item isn't null. it is never null if
 					//the layout isn't virtualized.
-					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+					if(layoutItem !== null && !layoutItem.includeInLayout)
 					{
 						continue;
 					}
@@ -1051,6 +1104,21 @@ package feathers.layout
 						itemWidth = item.width;
 					}
 					var itemHeight:Number = item.height;
+					if(layoutItem !== null && item is IFeathersControl)
+					{
+						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
+						if(layoutData !== null &&
+							layoutData.percentHeight === layoutData.percentHeight) //!isNaN
+						{
+							//this was calculated during validation, but not
+							//used yet, but we need it for the maxItemHeight
+							var itemMinHeight:Number = IFeathersControl(item).minHeight;
+							if(itemMinHeight > itemHeight)
+							{
+								itemHeight = itemMinHeight
+							}
+						}
+					}
 					if(this._useVirtualLayout)
 					{
 						if(this._hasVariableItemDimensions)
@@ -1111,6 +1179,10 @@ package feathers.layout
 					positionX = positionX - this._gap + this._lastGap;
 				}
 			}
+			if(!this._useVirtualLayout && this._requestedColumnCount > itemCount)
+			{
+				requestedColumnAvailableWidth = this._requestedColumnCount * positionX / itemCount;
+			}
 
 			//this array will contain all items that are not null. see the
 			//comment above where the discoveredItemsCache is initialized for
@@ -1146,11 +1218,29 @@ package feathers.layout
 			{
 				if(this._requestedColumnCount > 0)
 				{
-					availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+					if(this._useVirtualLayout)
+					{
+						availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+					}
+					else
+					{
+						availableWidth = requestedColumnAvailableWidth;
+					}
 				}
 				else
 				{
 					availableWidth = totalWidth;
+					if(this._maxColumnCount > 0)
+					{
+						if(this._useVirtualLayout)
+						{
+							maxColumnAvailableWidth = (calculatedTypicalItemWidth + this._gap) * this._maxColumnCount - this._gap + this._paddingLeft + this._paddingRight;
+						}
+						if(maxColumnAvailableWidth < availableWidth)
+						{
+							availableWidth = maxColumnAvailableWidth;
+						}
+					}
 				}
 				if(availableWidth < minWidth)
 				{
@@ -1193,8 +1283,8 @@ package feathers.layout
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
-				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
-				if(layoutItem && !layoutItem.includeInLayout)
+				layoutItem = item as ILayoutDisplayObject;
+				if(layoutItem !== null && !layoutItem.includeInLayout)
 				{
 					continue;
 				}
@@ -1209,10 +1299,10 @@ package feathers.layout
 				}
 				else
 				{
-					if(layoutItem)
+					if(layoutItem !== null)
 					{
-						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
-						if(layoutData)
+						layoutData = layoutItem.layoutData as HorizontalLayoutData;
+						if(layoutData !== null)
 						{
 							//in this section, we handle percentage width if
 							//VerticalLayoutData is available.
@@ -1231,7 +1321,7 @@ package feathers.layout
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
-									var itemMinHeight:Number = feathersItem.minHeight;
+									itemMinHeight = feathersItem.minHeight;
 									if(itemHeight < itemMinHeight)
 									{
 										itemHeight = itemMinHeight;
@@ -1373,11 +1463,19 @@ package feathers.layout
 			{
 				if(this._requestedColumnCount > 0)
 				{
-					var resultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+					var resultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight;
 				}
 				else
 				{
 					resultWidth = positionX + this._paddingLeft + this._paddingRight;
+					if(this._maxColumnCount > 0)
+					{
+						var maxColumnResultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._maxColumnCount - this._gap + this._paddingLeft + this._paddingRight;
+						if(maxColumnResultWidth < resultWidth)
+						{
+							resultWidth = maxColumnResultWidth;
+						}
+					}
 				}
 				if(resultWidth < minWidth)
 				{
@@ -2054,18 +2152,9 @@ package feathers.layout
 							this._discoveredItemsCache[i] = null;
 							needsAnotherPass = true;
 						}
-						else
-						{
-							var itemMaxWidth:Number = feathersItem.maxWidth;
-							if(itemWidth > itemMaxWidth)
-							{
-								itemWidth = itemMaxWidth;
-								remainingWidth -= itemWidth;
-								totalPercentWidth -= percentWidth;
-								this._discoveredItemsCache[i] = null;
-								needsAnotherPass = true;
-							}
-						}
+						//we don't check maxWidth here because it is used in
+						//validateItems() for performance optimization, so it
+						//isn't a real maximum
 					}
 					layoutItem.width = itemWidth;
 					if(layoutItem is IValidating)

@@ -461,7 +461,7 @@ package feathers.themes
 				this.atlas.dispose();
 				this.atlas = null;
 			}
-			TextField.unregisterBitmapFont(FONT_NAME);
+			TextField.unregisterCompositor(FONT_NAME);
 
 			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, false);
@@ -866,7 +866,7 @@ package feathers.themes
 			scroller.scrollBarDisplayMode = ScrollBarDisplayMode.FIXED;
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
-			
+
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
 			scroller.focusIndicatorSkin = focusIndicatorSkin;
@@ -876,7 +876,16 @@ package feathers.themes
 		protected function setDropDownListStyles(list:List):void
 		{
 			this.setListStyles(list);
-			list.maxHeight = this.wideControlSize;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.useVirtualLayout = true;
+			layout.padding = 0;
+			layout.gap = 0;
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.verticalAlign = VerticalAlign.TOP;
+			layout.resetTypicalItemDimensionsOnMeasure = true;
+			layout.maxRowCount = 5;
+			list.layout = layout;
 		}
 
 	//-------------------------
@@ -1421,14 +1430,14 @@ package feathers.themes
 
 			var backgroundSkin:Image = new Image(this.listBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
-			backgroundSkin.width = this.gridSize;
-			backgroundSkin.height = this.gridSize;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
 			list.backgroundSkin = backgroundSkin;
 
 			var backgroundDisabledSkin:Image = new Image(this.buttonDisabledSkinTexture);
 			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
-			backgroundDisabledSkin.width = this.gridSize;
-			backgroundDisabledSkin.height = this.gridSize;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
 
 			list.padding = this.borderSize;
@@ -1684,6 +1693,8 @@ package feathers.themes
 			button.iconPosition = RelativePosition.RIGHT;
 			button.horizontalAlign =  HorizontalAlign.LEFT;
 		}
+
+		//for the PickerList's pop-up list, see setDropDownListStyles()
 
 	//-------------------------
 	// ProgressBar

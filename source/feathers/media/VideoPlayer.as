@@ -1148,6 +1148,9 @@ package feathers.media
 			this._isWaitingForTextureReady = false;
 			//the texture is ready to be displayed
 			this.dispatchEventWith(Event.READY);
+			//in many cases, the layout will be affected by the new texture
+			//dimensions, so invalidate immediately
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			var bytesTotal:Number = this._netStream.bytesTotal;
 			if(this._bytesTotal === 0 && bytesTotal > 0)
 			{

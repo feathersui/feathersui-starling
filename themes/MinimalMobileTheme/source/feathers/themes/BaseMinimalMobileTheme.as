@@ -622,6 +622,7 @@ package feathers.themes
 
 			//auto-complete
 			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
 
 			//button
 			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
@@ -812,6 +813,17 @@ package feathers.themes
 		{
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
+		}
+
+		protected function setDropDownListStyles(list:List):void
+		{
+			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+			list.backgroundSkin = backgroundSkin;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			layout.maxRowCount = 4;
+			list.layout = layout;
 		}
 
 	//-------------------------
@@ -1564,10 +1576,7 @@ package feathers.themes
 				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
 
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-			layout.requestedRowCount = 4;
-			list.layout = layout;
+			this.setDropDownListStyles(list);
 		}
 
 		protected function setTabletPickerListItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void

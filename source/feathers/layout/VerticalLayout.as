@@ -655,6 +655,8 @@ package feathers.layout
 		 * rows as possible.
 		 *
 		 * @default 0
+		 *
+		 * @see #maxRowCount
 		 */
 		public function get requestedRowCount():int
 		{
@@ -675,6 +677,43 @@ package feathers.layout
 				return;
 			}
 			this._requestedRowCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxRowCount:int = 0;
+
+		/**
+		 * The maximum number of rows to display. If the explicit height of the
+		 * view port is set or if <code>requestedRowCount</code> is set, then
+		 * this value will be ignored. If the view port's minimum and/or maximum
+		 * height are set, the actual number of visible rows may be adjusted to
+		 * meet those requirements. Set this value to <code>0</code> to display
+		 * as many rows as possible.
+		 *
+		 * @default 0
+		 */
+		public function get maxRowCount():int
+		{
+			return this._maxRowCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxRowCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("maxRowCount requires a value >= 0");
+			}
+			if(this._maxRowCount == value)
+			{
+				return;
+			}
+			this._maxRowCount = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -1021,6 +1060,8 @@ package feathers.layout
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
 			var totalItemCount:int = itemCount;
+			var requestedRowAvailableHeight:Number = 0;
+			var maxRowAvailableHeight:Number = Number.POSITIVE_INFINITY;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				//if the layout is virtualized, and the items all have the same
@@ -1058,16 +1099,27 @@ package feathers.layout
 					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
 				}
 			}
-			
+
 			//this first loop sets the y position of items, and it calculates
 			//the total height of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
+				if(!this._useVirtualLayout)
+				{
+					if(this._maxRowCount > 0 && this._maxRowCount === i)
+					{
+						maxRowAvailableHeight = positionY;
+					}
+					if(this._requestedRowCount > 0 && this._requestedRowCount === i)
+					{
+						requestedRowAvailableHeight = positionY;
+					}
+				}
 				var item:DisplayObject = items[i];
 				//if we're trimming some items at the beginning, we need to
 				//adjust i to account for the missing items in the array
 				var iNormalized:int = i + indexOffset;
-				
+
 				if(nextHeaderIndex === iNormalized)
 				{
 					//if the sticky header is enabled, we need to find its index
@@ -1138,12 +1190,28 @@ package feathers.layout
 				{
 					//we get here if the item isn't null. it is never null if
 					//the layout isn't virtualized.
-					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+					if(layoutItem !== null && !layoutItem.includeInLayout)
 					{
 						continue;
 					}
 					item.y = item.pivotY + positionY;
 					var itemWidth:Number = item.width;
+					if(layoutItem !== null && item is IFeathersControl)
+					{
+						var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
+						if(layoutData !== null &&
+							layoutData.percentWidth === layoutData.percentWidth) //!isNaN
+						{
+							//this was calculated during validation, but not
+							//used yet, but we need it for the maxItemWidth
+							var itemMinWidth:Number = IFeathersControl(item).minWidth;
+							if(itemMinWidth > itemWidth)
+							{
+								itemWidth = itemMinWidth
+							}
+						}
+					}
 					var itemHeight:Number;
 					if(hasDistributedHeight)
 					{
@@ -1220,6 +1288,10 @@ package feathers.layout
 				var header:DisplayObject = items[nextHeaderIndex];
 				this.positionStickyHeader(header, scrollY, stickyHeaderMaxY);
 			}
+			if(!this._useVirtualLayout && this._requestedRowCount > itemCount)
+			{
+				requestedRowAvailableHeight = this._requestedRowCount * positionY / itemCount;
+			}
 
 			//this array will contain all items that are not null. see the
 			//comment above where the discoveredItemsCache is initialized for
@@ -1256,11 +1328,29 @@ package feathers.layout
 				availableHeight = totalHeight;
 				if(this._requestedRowCount > 0)
 				{
-					availableHeight = this._requestedRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+					if(this._useVirtualLayout)
+					{
+						availableHeight = this._requestedRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+					}
+					else
+					{
+						availableHeight = requestedRowAvailableHeight;
+					}
 				}
 				else
 				{
 					availableHeight = totalHeight;
+					if(this._maxRowCount > 0)
+					{
+						if(this._useVirtualLayout)
+						{
+							maxRowAvailableHeight = this._maxRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+						}
+						if(maxRowAvailableHeight < availableHeight)
+						{
+							availableHeight = maxRowAvailableHeight;
+						}
+					}
 				}
 				if(availableHeight < minHeight)
 				{
@@ -1303,8 +1393,8 @@ package feathers.layout
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
-				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
-				if(layoutItem && !layoutItem.includeInLayout)
+				layoutItem = item as ILayoutDisplayObject;
+				if(layoutItem !== null && !layoutItem.includeInLayout)
 				{
 					continue;
 				}
@@ -1319,10 +1409,10 @@ package feathers.layout
 				}
 				else
 				{
-					if(layoutItem)
+					if(layoutItem !== null)
 					{
-						var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
-						if(layoutData)
+						layoutData = layoutItem.layoutData as VerticalLayoutData;
+						if(layoutData !== null)
 						{
 							//in this section, we handle percentage width if
 							//VerticalLayoutData is available.
@@ -1341,7 +1431,7 @@ package feathers.layout
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
-									var itemMinWidth:Number = feathersItem.minWidth;
+									itemMinWidth = feathersItem.minWidth;
 									if(itemWidth < itemMinWidth)
 									{
 										itemWidth = itemMinWidth;
@@ -1508,6 +1598,14 @@ package feathers.layout
 				else
 				{
 					resultHeight = positionY;
+					if(this._maxRowCount > 0)
+					{
+						var maxRowResultHeight:Number = (calculatedTypicalItemHeight + this._gap) * this._maxRowCount - this._gap;
+						if(maxRowResultHeight < resultHeight)
+						{
+							resultHeight = maxRowResultHeight;
+						}
+					}
 				}
 				resultHeight += this._paddingTop + this._paddingBottom;
 				if(resultHeight < minHeight)
@@ -2253,18 +2351,9 @@ package feathers.layout
 							this._discoveredItemsCache[i] = null;
 							needsAnotherPass = true;
 						}
-						else
-						{
-							var itemMaxHeight:Number = feathersItem.maxHeight;
-							if(itemHeight > itemMaxHeight)
-							{
-								itemHeight = itemMaxHeight;
-								remainingHeight -= itemHeight;
-								totalPercentHeight -= percentHeight;
-								this._discoveredItemsCache[i] = null;
-								needsAnotherPass = true;
-							}
-						}
+						//we don't check maxHeight here because it is used in
+						//validateItems() for performance optimization, so it
+						//isn't a real maximum
 					}
 					layoutItem.height = itemHeight;
 					if(layoutItem is IValidating)
