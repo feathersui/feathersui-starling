@@ -1066,7 +1066,8 @@ package feathers.layout
 				{
 					//we get here if the item isn't null. it is never null if
 					//the layout isn't virtualized.
-					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+					if(layoutItem !== null && !layoutItem.includeInLayout)
 					{
 						continue;
 					}
@@ -1081,6 +1082,21 @@ package feathers.layout
 						itemWidth = item.width;
 					}
 					var itemHeight:Number = item.height;
+					if(layoutItem !== null && item is IFeathersControl)
+					{
+						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
+						if(layoutData !== null &&
+							layoutData.percentHeight === layoutData.percentHeight) //!isNaN
+						{
+							//this was calculated during validation, but not
+							//used yet, but we need it for the maxItemHeight
+							var itemMinHeight:Number = IFeathersControl(item).minHeight;
+							if(itemMinHeight > itemHeight)
+							{
+								itemHeight = itemMinHeight
+							}
+						}
+					}
 					if(this._useVirtualLayout)
 					{
 						if(this._hasVariableItemDimensions)
@@ -1245,8 +1261,8 @@ package feathers.layout
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
-				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
-				if(layoutItem && !layoutItem.includeInLayout)
+				layoutItem = item as ILayoutDisplayObject;
+				if(layoutItem !== null && !layoutItem.includeInLayout)
 				{
 					continue;
 				}
@@ -1261,10 +1277,10 @@ package feathers.layout
 				}
 				else
 				{
-					if(layoutItem)
+					if(layoutItem !== null)
 					{
-						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
-						if(layoutData)
+						layoutData = layoutItem.layoutData as HorizontalLayoutData;
+						if(layoutData !== null)
 						{
 							//in this section, we handle percentage width if
 							//VerticalLayoutData is available.
@@ -1283,7 +1299,7 @@ package feathers.layout
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
-									var itemMinHeight:Number = feathersItem.minHeight;
+									itemMinHeight = feathersItem.minHeight;
 									if(itemHeight < itemMinHeight)
 									{
 										itemHeight = itemMinHeight;
