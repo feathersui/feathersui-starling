@@ -465,5 +465,19 @@ package feathers.tests
 			Assert.assertStrictlyEquals("VerticalLayout with larger requestedRowCount and useVirtualLayout results in wrong content height",
 				300, result.contentHeight);
 		}
+
+		[Test]
+		public function testChildWithCalculatedMinWidthAndPercentWidth():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.layoutData = new VerticalLayoutData(100, 100);
+			var child:Quad = new Quad(100, 100, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayout without explicit view port width and child with percentWidth and calculated minWidth results in wrong view port width",
+				100, result.viewPortWidth);
+		}
 	}
 }

@@ -9,6 +9,7 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 
 	public class HorizontalLayoutTests
 	{
@@ -396,6 +397,20 @@ package feathers.tests
 				400, result.viewPortWidth);
 			Assert.assertStrictlyEquals("HorizontalLayout with larger requestedColumnCount and useVirtualLayout results in wrong content width",
 				300, result.contentWidth);
+		}
+
+		[Test]
+		public function testChildWithCalculatedMinHeightAndPercentHeight():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.layoutData = new HorizontalLayoutData(100, 100);
+			var child:Quad = new Quad(100, 100, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout without explicit view port height and child with percentHeight and calculated minHeight results in wrong view port height",
+				100, result.viewPortHeight);
 		}
 	}
 }
