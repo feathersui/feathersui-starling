@@ -1055,7 +1055,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				this._cursorSkin.height = this._elementFormat.fontSize;
+				this._cursorSkin.height = this.currentElementFormat.fontSize;
 			}
 
 			//then we update the scroll to always show the cursor
@@ -1150,7 +1150,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				this._selectionSkin.height = this._elementFormat.fontSize;
+				this._selectionSkin.height = this.currentElementFormat.fontSize;
 			}
 		}
 
