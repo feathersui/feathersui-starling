@@ -1,7 +1,6 @@
 package feathers.tests
 {
 	import feathers.controls.LayoutGroup;
-	import feathers.core.FeathersControl;
 
 	import org.flexunit.Assert;
 

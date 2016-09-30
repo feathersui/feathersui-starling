@@ -15,9 +15,6 @@ package feathers.examples.gallery
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
 	public class GalleryItemRenderer extends FeathersControl implements IListItemRenderer
 	{

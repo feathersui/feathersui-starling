@@ -15,7 +15,6 @@ package feathers.examples.componentsExplorer.screens
 
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	[Event(name="complete",type="starling.events.Event")]
 	[Event(name="change",type="starling.events.Event")]

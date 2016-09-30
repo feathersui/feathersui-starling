@@ -12,7 +12,6 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.motion.Iris;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class IrisTransitionScreen extends PanelScreen

@@ -24,7 +24,6 @@ package feathers.examples.youtube.screens
 	import flash.system.Capabilities;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.Stage;
 	import starling.events.Event;

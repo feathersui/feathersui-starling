@@ -1,8 +1,6 @@
 package feathers.examples.drawersExplorer.views
 {
 	import feathers.controls.Button;
-	import feathers.controls.Check;
-	import feathers.controls.Drawers;
 	import feathers.controls.List;
 	import feathers.controls.Panel;
 	import feathers.controls.PickerList;

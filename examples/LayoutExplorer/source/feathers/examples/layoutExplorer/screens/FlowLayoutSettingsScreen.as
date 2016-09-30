@@ -10,7 +10,6 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.examples.layoutExplorer.data.FlowLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 

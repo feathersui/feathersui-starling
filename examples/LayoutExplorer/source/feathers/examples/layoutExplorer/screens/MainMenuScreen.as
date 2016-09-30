@@ -12,7 +12,6 @@ package feathers.examples.layoutExplorer.screens
 
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	[Event(name="showAnchor",type="starling.events.Event")]
 

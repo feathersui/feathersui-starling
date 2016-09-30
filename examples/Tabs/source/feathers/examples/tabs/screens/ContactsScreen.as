@@ -11,8 +11,6 @@ package feathers.examples.tabs.screens
 	import feathers.layout.AnchorLayoutData;
 	import feathers.utils.textures.TextureCache;
 
-	import flash.display3D.textures.Texture;
-
 	public class ContactsScreen extends PanelScreen
 	{
 		public function ContactsScreen()

@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.popups
 {
-	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
@@ -24,9 +23,7 @@ package feathers.controls.popups
 	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
-
 	import starling.animation.Tween;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;

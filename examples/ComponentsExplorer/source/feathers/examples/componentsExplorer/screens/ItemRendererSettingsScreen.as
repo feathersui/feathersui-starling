@@ -7,7 +7,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
-	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.data.HierarchicalCollection;
 	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;

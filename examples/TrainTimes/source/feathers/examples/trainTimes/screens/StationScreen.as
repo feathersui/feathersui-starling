@@ -4,11 +4,9 @@ package feathers.examples.trainTimes.screens
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.examples.trainTimes.controls.StationListItemRenderer;
 	import feathers.examples.trainTimes.model.StationData;
-	import feathers.examples.trainTimes.themes.TrainTimesTheme;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;

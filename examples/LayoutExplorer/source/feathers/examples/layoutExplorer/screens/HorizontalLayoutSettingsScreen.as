@@ -11,7 +11,6 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalAlign;
-	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
 
 	import starling.display.DisplayObject;

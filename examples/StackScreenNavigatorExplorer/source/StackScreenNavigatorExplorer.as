@@ -1,7 +1,6 @@
 package
 {
 	import feathers.examples.navigator.Main;
-	import feathers.examples.navigator.Main;
 	import feathers.utils.ScreenDensityScaleFactorManager;
 
 	import flash.display.Loader;
@@ -15,7 +14,6 @@ package
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 

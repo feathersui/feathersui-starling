@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;

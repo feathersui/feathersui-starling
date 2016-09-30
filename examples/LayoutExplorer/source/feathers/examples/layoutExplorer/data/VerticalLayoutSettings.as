@@ -2,7 +2,6 @@ package feathers.examples.layoutExplorer.data
 {
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
-	import feathers.layout.VerticalLayout;
 
 	public class VerticalLayoutSettings
 	{

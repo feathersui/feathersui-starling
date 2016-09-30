@@ -3,7 +3,6 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollPolicy;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;

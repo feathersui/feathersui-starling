@@ -48,7 +48,7 @@ package feathers.examples.video
 		protected var _fullScreenItem:NativeMenuItem;
 		protected var _fileToOpen:File;
 		
-		private function addedToStageHandler(event:starling.events.Event):void
+		private function addedToStageHandler(event:Event):void
 		{
 			this.createMenu();
 			

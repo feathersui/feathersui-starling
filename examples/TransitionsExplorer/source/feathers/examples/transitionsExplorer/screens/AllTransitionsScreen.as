@@ -10,7 +10,6 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.layout.AnchorLayoutData;
 
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	public class AllTransitionsScreen extends PanelScreen
 	{

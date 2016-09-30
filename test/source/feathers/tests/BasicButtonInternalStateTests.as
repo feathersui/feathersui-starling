@@ -1,6 +1,5 @@
 package feathers.tests
 {
-	import feathers.controls.Button;
 	import feathers.controls.ButtonState;
 
 	import flash.geom.Point;
@@ -8,7 +7,6 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;

@@ -4,7 +4,6 @@ package feathers.tests
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ViewPortBounds;
 
 	import org.flexunit.Assert;

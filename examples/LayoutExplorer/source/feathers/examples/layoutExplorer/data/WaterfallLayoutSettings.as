@@ -1,7 +1,6 @@
 package feathers.examples.layoutExplorer.data
 {
 	import feathers.layout.HorizontalAlign;
-	import feathers.layout.WaterfallLayout;
 
 	public class WaterfallLayoutSettings
 	{

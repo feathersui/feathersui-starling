@@ -2,13 +2,11 @@ package feathers.tests
 {
 	import feathers.layout.HorizontalSpinnerLayout;
 	import feathers.layout.LayoutBoundsResult;
-	import feathers.layout.VerticalSpinnerLayout;
 	import feathers.layout.ViewPortBounds;
 
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 
 	public class HorizontalSpinnerLayoutTests

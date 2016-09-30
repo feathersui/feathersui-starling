@@ -2,8 +2,6 @@ package feathers.tests
 {
 	import feathers.skins.ImageSkin;
 
-	import flash.geom.Rectangle;
-
 	import org.flexunit.Assert;
 
 	import starling.textures.Texture;
@@ -216,8 +214,6 @@ package feathers.tests
 import feathers.core.FeathersControl;
 import feathers.core.IStateContext;
 import feathers.events.FeathersEventType;
-
-import starling.events.EventDispatcher;
 
 class StateContext extends FeathersControl implements IStateContext
 {

@@ -3,7 +3,6 @@ package feathers.tests
 	import feathers.controls.BasicButton;
 	import feathers.core.IFeathersControl;
 	import feathers.skins.AddOnFunctionStyleProvider;
-	import feathers.skins.FunctionStyleProvider;
 	import feathers.tests.supportClasses.CustomStyleProvider;
 
 	import org.flexunit.Assert;

@@ -1,7 +1,7 @@
 package feathers.tests.supportClasses
 {
-	import feathers.core.FeathersControl;
 	import feathers.controls.supportClasses.IViewPort;
+	import feathers.core.FeathersControl;
 
 	public class ScrollerViewPort extends FeathersControl implements IViewPort
 	{

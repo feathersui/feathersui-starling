@@ -2,13 +2,11 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Callout;
-	import feathers.controls.Callout;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.RelativePosition;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 

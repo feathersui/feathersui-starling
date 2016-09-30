@@ -1,6 +1,5 @@
 package feathers.examples.layoutExplorer.data
 {
-	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 

@@ -20,7 +20,6 @@ package feathers.examples.youtube.screens
 	import flash.net.URLRequest;
 
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	[Event(name="listVideos",type="starling.events.Event")]
 

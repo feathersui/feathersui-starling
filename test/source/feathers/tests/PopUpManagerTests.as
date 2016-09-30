@@ -6,7 +6,6 @@ package feathers.tests
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
-	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
 
