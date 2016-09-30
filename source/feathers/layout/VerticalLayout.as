@@ -1176,21 +1176,6 @@ package feathers.layout
 					}
 					item.y = item.pivotY + positionY;
 					var itemWidth:Number = item.width;
-					if(layoutItem !== null && item is IFeathersControl)
-					{
-						var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
-						if(layoutData !== null &&
-							layoutData.percentWidth === layoutData.percentWidth) //!isNaN
-						{
-							//this was calculated during validation, but not
-							//used yet, but we need it for the maxItemWidth
-							var itemMinWidth:Number = IFeathersControl(item).minWidth;
-							if(itemMinWidth > itemWidth)
-							{
-								itemWidth = itemMinWidth
-							}
-						}
-					}
 					var itemHeight:Number;
 					if(hasDistributedHeight)
 					{
@@ -1391,7 +1376,7 @@ package feathers.layout
 				{
 					if(layoutItem !== null)
 					{
-						layoutData = layoutItem.layoutData as VerticalLayoutData;
+						var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
 						if(layoutData !== null)
 						{
 							//in this section, we handle percentage width if
@@ -1411,7 +1396,7 @@ package feathers.layout
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
-									itemMinWidth = feathersItem.minWidth;
+									var itemMinWidth:Number = feathersItem.minWidth;
 									//we try to respect the minWidth, but not
 									//when it's larger than 100%
 									if(itemMinWidth > availableWidthMinusPadding)
@@ -2012,13 +1997,7 @@ package feathers.layout
 			explicitHeight:Number, minHeight:Number, maxHeight:Number,
 			distributedHeight:Number):void
 		{
-			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
-			var containerWidth:Number = explicitWidth;
-			if(needsWidth)
-			{
-				containerWidth = minWidth;
-			}
 			var containerHeight:Number = explicitHeight;
 			if(needsHeight)
 			{
@@ -2069,7 +2048,7 @@ package feathers.layout
 							{
 								percentWidth = 100;
 							}
-							var itemWidth:Number = containerWidth * percentWidth / 100;
+							var itemWidth:Number = explicitWidth * percentWidth / 100;
 							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 							//we use the explicitMinWidth to make an accurate
 							//measurement, and we'll use the component's
@@ -2080,10 +2059,25 @@ package feathers.layout
 							{
 								itemWidth = itemExplicitMinWidth;
 							}
-							//unlike below, where we use maxHeight, we can set
-							//the width directly because any other percentWidth
-							//values won't affect this item.
+							if(itemWidth > maxWidth)
+							{
+								itemWidth = maxWidth;
+							}
+							//unlike below, where we set maxHeight, we can set
+							//the width explicitly here
+							//in fact, it's required because we need to make
+							//an accurate measurement of the total view port
+							//width
 							item.width = itemWidth;
+							//if itemWidth is NaN, we need to set a maximum
+							//width instead. this is important for items where
+							//the height becomes larger when their width becomes
+							//smaller (such as word-wrapped text)
+							if(measureItem.explicitWidth !== measureItem.explicitWidth && //isNaN
+								measureItem.maxWidth > maxWidth)
+							{
+								measureItem.maxWidth = maxWidth;
+							}
 						}
 						if(percentHeight === percentHeight) //!isNaN
 						{

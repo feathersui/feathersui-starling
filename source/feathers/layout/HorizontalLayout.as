@@ -1082,21 +1082,6 @@ package feathers.layout
 						itemWidth = item.width;
 					}
 					var itemHeight:Number = item.height;
-					if(layoutItem !== null && item is IFeathersControl)
-					{
-						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
-						if(layoutData !== null &&
-							layoutData.percentHeight === layoutData.percentHeight) //!isNaN
-						{
-							//this was calculated during validation, but not
-							//used yet, but we need it for the maxItemHeight
-							var itemMinHeight:Number = IFeathersControl(item).minHeight;
-							if(itemMinHeight > itemHeight)
-							{
-								itemHeight = itemMinHeight
-							}
-						}
-					}
 					if(this._useVirtualLayout)
 					{
 						if(this._hasVariableItemDimensions)
@@ -1280,7 +1265,7 @@ package feathers.layout
 				{
 					if(layoutItem !== null)
 					{
-						layoutData = layoutItem.layoutData as HorizontalLayoutData;
+						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
 						if(layoutData !== null)
 						{
 							//in this section, we handle percentage width if
@@ -1300,7 +1285,7 @@ package feathers.layout
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
-									itemMinHeight = feathersItem.minHeight;
+									var itemMinHeight:Number = feathersItem.minHeight;
 									//we try to respect the minWidth, but not
 									//when it's larger than 100%
 									if(itemMinHeight > availableHeightMinusPadding)
@@ -1814,11 +1799,6 @@ package feathers.layout
 			{
 				containerWidth = minWidth;
 			}
-			var containerHeight:Number = explicitHeight;
-			if(needsHeight)
-			{
-				containerHeight = minHeight;
-			}
 			//if the alignment is justified, then we want to set the height of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
@@ -1901,7 +1881,7 @@ package feathers.layout
 							{
 								percentHeight = 100;
 							}
-							var itemHeight:Number = containerHeight * percentHeight / 100;
+							var itemHeight:Number = explicitHeight * percentHeight / 100;
 							measureItem = IMeasureDisplayObject(item);
 							//we use the explicitMinHeight to make an accurate
 							//measurement, and we'll use the component's
@@ -1912,10 +1892,25 @@ package feathers.layout
 							{
 								itemHeight = itemExplicitMinHeight;
 							}
-							//unlike above, where we use maxWidth, we can set
-							//the height directly because any other percentHeight
-							//values won't affect this item.
+							if(itemHeight > maxHeight)
+							{
+								itemHeight = maxHeight;
+							}
+							//unlike above, where we set maxWidth, we can set
+							//the height explicitly here
+							//in fact, it's required because we need to make
+							//an accurate measurement of the total view port
+							//height
 							item.height = itemHeight;
+							//if itemWidth is NaN, we need to set a maximum
+							//width instead. this is important for items where
+							//the height becomes larger when their width becomes
+							//smaller (such as word-wrapped text)
+							if(measureItem.explicitHeight !== measureItem.explicitHeight && //isNaN
+								measureItem.maxHeight > maxHeight)
+							{
+								measureItem.maxHeight = maxHeight;
+							}
 						}
 					}
 				}
