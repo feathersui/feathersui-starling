@@ -7,7 +7,6 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 
 	public class VerticalSpinnerLayoutTests

@@ -9,9 +9,7 @@ package feathers.text
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IStateContext;
-	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
-	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 
 	import starling.events.Event;

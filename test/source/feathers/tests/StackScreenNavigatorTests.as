@@ -6,9 +6,7 @@ package feathers.tests
 	import flexunit.framework.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
-	import starling.events.Event;
 
 	public class StackScreenNavigatorTests
 	{

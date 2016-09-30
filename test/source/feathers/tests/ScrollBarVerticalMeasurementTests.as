@@ -2,7 +2,6 @@ package feathers.tests
 {
 	import feathers.controls.BasicButton;
 	import feathers.controls.ScrollBar;
-	import feathers.controls.Slider;
 	import feathers.controls.TrackLayoutMode;
 	import feathers.layout.Direction;
 

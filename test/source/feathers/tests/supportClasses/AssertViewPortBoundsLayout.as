@@ -9,7 +9,6 @@ package feathers.tests.supportClasses
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.EventDispatcher;
 
 	public class AssertViewPortBoundsLayout extends EventDispatcher implements ILayout

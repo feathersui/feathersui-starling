@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.utils.text
 {
 	import feathers.core.IIMETextEditor;
-	import feathers.utils.display.stageToStarling;
 
 	import flash.display.Sprite;
 	import flash.events.IMEEvent;

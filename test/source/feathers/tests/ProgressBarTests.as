@@ -1,6 +1,5 @@
 package feathers.tests
 {
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.ProgressBar;
 
 	import org.flexunit.Assert;

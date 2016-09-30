@@ -12,7 +12,6 @@ package feathers.controls.renderers
 	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	/**

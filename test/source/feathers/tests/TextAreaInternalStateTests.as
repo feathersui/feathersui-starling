@@ -1,9 +1,7 @@
 package feathers.tests
 {
-	import feathers.controls.TextInput;
 	import feathers.controls.TextInputState;
 	import feathers.core.FocusManager;
-	import feathers.events.FeathersEventType;
 
 	import org.flexunit.Assert;
 

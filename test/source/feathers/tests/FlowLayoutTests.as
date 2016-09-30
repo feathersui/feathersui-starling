@@ -1,9 +1,7 @@
 package feathers.tests
 {
-	import feathers.controls.LayoutGroup;
 	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
-	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 
@@ -12,7 +10,6 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Quad;
 
 	public class FlowLayoutTests

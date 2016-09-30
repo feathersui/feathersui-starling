@@ -1,7 +1,6 @@
 package feathers.tests
 {
 	import feathers.controls.Button;
-	import feathers.controls.Slider;
 	import feathers.controls.ToggleState;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;

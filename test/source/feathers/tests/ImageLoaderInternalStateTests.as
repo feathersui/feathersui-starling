@@ -1,7 +1,5 @@
 package feathers.tests
 {
-	import feathers.controls.ImageLoader;
-
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
 

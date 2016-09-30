@@ -13,7 +13,6 @@ package feathers.tests
 	import org.flexunit.async.Async;
 
 	import starling.core.Starling;
-
 	import starling.display.Quad;
 	import starling.events.Event;
 

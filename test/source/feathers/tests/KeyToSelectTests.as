@@ -9,7 +9,6 @@ package feathers.tests
 	import org.flexunit.Assert;
 
 	import starling.display.Stage;
-
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 

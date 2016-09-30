@@ -9,7 +9,6 @@ package feathers.controls.text
 {
 	import feathers.controls.Scroller;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
