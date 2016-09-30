@@ -182,7 +182,10 @@ package feathers.tests
 			this._loader.scaleMode = ScaleMode.NONE;
 			this._loader.validate();
 
-			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when using ScaleMode.NONE and setting larger explicit height.", textureSize, this._loader.width);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when using ScaleMode.NONE and setting larger explicit height.",
+				textureSize, this._loader.width);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect minWidth when using ScaleMode.NONE and setting larger explicit height.",
+				textureSize, this._loader.minWidth);
 		}
 
 		[Test]
@@ -195,8 +198,11 @@ package feathers.tests
 			this._loader.width = loaderWidth;
 			this._loader.scaleMode = ScaleMode.NONE;
 			this._loader.validate();
-			
-			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when using ScaleMode.NONE and setting larger explicit width.", textureSize, this._loader.height);
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when using ScaleMode.NONE and setting larger explicit width.",
+				textureSize, this._loader.height);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect minHeight when using ScaleMode.NONE and setting larger explicit width.",
+				textureSize, this._loader.minHeight);
 		}
 
 		[Test]
@@ -212,7 +218,10 @@ package feathers.tests
 			this._loader.scaleMode = ScaleMode.SHOW_ALL;
 			this._loader.validate();
 
-			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when setting explicit height larger than texture height.", expectedWidth, this._loader.width);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when setting explicit height larger than texture height.",
+				expectedWidth, this._loader.width);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect minWidth when setting explicit height larger than texture height.",
+				expectedWidth, this._loader.minWidth);
 		}
 
 		[Test]
@@ -228,7 +237,10 @@ package feathers.tests
 			this._loader.scaleMode = ScaleMode.SHOW_ALL;
 			this._loader.validate();
 
-			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width.", expectedHeight, this._loader.height);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width.",
+				expectedHeight, this._loader.height);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect minHeight when setting explicit width larger than texture width.",
+				expectedHeight, this._loader.minHeight);
 		}
 
 		[Test]
