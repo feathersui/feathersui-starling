@@ -1,21 +1,14 @@
 package feathers.examples.magic8.themes
 {
-	import feathers.controls.ImageLoader;
-	import feathers.controls.List;
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
-	import feathers.layout.VerticalAlign;
-	import feathers.layout.VerticalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
 
-	import flash.text.ReturnKeyLabel;
-
 	import starling.display.Image;
-
 	import starling.textures.Texture;
 
 	public class Magic8ChatTheme extends MetalWorksMobileTheme
@@ -94,7 +87,8 @@ package feathers.examples.magic8.themes
 		private function setChatInputTextEditorStyles(textEditor:StageTextTextEditor):void
 		{
 			textEditor.maintainTouchFocus = true;
-			textEditor.returnKeyLabel = ReturnKeyLabel.GO;
+			//flash.text.ReturnKeyLabel doesn't exist in Flash Player, only AIR
+			textEditor.returnKeyLabel = "go";
 		}
 	}
 }
