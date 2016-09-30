@@ -412,5 +412,22 @@ package feathers.tests
 			Assert.assertStrictlyEquals("HorizontalLayout without explicit view port height and child with percentHeight and calculated minHeight results in wrong view port height",
 				100, result.viewPortHeight);
 		}
+
+		[Test]
+		public function testChildWithCalculatedMinHeightAndPercentHeightWithExplicitHeight():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.layoutData = new HorizontalLayoutData(100, 100);
+			var child:Quad = new Quad(100, 100, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitHeight = 50;
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with explicit view port height and child with percentWidth and calculated minHeight results in wrong view port height",
+				50, result.viewPortHeight);
+			Assert.assertStrictlyEquals("HorizontalLayout with explicit view port height and child with percentWidth and calculated minHeight results in wrong child height",
+				50, item1.height);
+		}
 	}
 }

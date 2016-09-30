@@ -1369,6 +1369,7 @@ package feathers.layout
 				}
 			}
 
+			var availableWidthMinusPadding:Number = availableWidth - this._paddingLeft - this._paddingRight;
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
@@ -1384,7 +1385,7 @@ package feathers.layout
 				{
 					//if we justify items horizontally, we can skip percent width
 					item.x = item.pivotX + boundsX + this._paddingLeft;
-					item.width = availableWidth - this._paddingLeft - this._paddingRight;
+					item.width = availableWidthMinusPadding;
 				}
 				else
 				{
@@ -1406,11 +1407,17 @@ package feathers.layout
 								{
 									percentWidth = 100;
 								}
-								itemWidth = percentWidth * (availableWidth - this._paddingLeft - this._paddingRight) / 100;
+								itemWidth = percentWidth * availableWidthMinusPadding / 100;
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
 									itemMinWidth = feathersItem.minWidth;
+									//we try to respect the minWidth, but not
+									//when it's larger than 100%
+									if(itemMinWidth > availableWidthMinusPadding)
+									{
+										itemMinWidth = availableWidthMinusPadding;
+									}
 									if(itemWidth < itemMinWidth)
 									{
 										itemWidth = itemMinWidth;
