@@ -1672,34 +1672,44 @@ package feathers.controls
 				return false;
 			}
 
+			var heightScale:Number = 1;
+			var widthScale:Number = 1;
+			if(this._scaleContent && this._maintainAspectRatio &&
+				this._scaleMode !== ScaleMode.NONE &&
+				this._scale9Grid === null)
+			{
+				if(!needsHeight)
+				{
+					heightScale = this._explicitHeight / (this._currentTextureHeight * this._textureScale);
+				}
+				else if(this._explicitMaxHeight < this._currentTextureHeight)
+				{
+					heightScale = this._explicitMaxHeight / (this._currentTextureHeight * this._textureScale);
+				}
+				else if(this._explicitMinHeight > this._currentTextureHeight)
+				{
+					heightScale = this._explicitMinHeight / (this._currentTextureHeight * this._textureScale);
+				}
+				if(!needsWidth)
+				{
+					widthScale = this._explicitWidth / (this._currentTextureWidth * this._textureScale);
+				}
+				else if(this._explicitMaxWidth < this._currentTextureWidth)
+				{
+					widthScale = this._explicitMaxWidth / (this._currentTextureWidth * this._textureScale);
+				}
+				else if(this._explicitMinWidth > this._currentTextureWidth)
+				{
+					widthScale = this._explicitMinWidth / (this._currentTextureWidth * this._textureScale);
+				}
+			}
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
-					newWidth = this._currentTextureWidth * this._textureScale;
-					if(this._scaleContent && this._maintainAspectRatio &&
-						this._scaleMode !== ScaleMode.NONE &&
-						this._scale9Grid === null)
-					{
-						var heightScale:Number = 1;
-						if(!needsHeight)
-						{
-							heightScale = this._explicitHeight / (this._currentTextureHeight * this._textureScale);
-						}
-						else if(this._explicitMaxHeight < this._currentTextureHeight)
-						{
-							heightScale = this._explicitMaxHeight / (this._currentTextureHeight * this._textureScale);
-						}
-						else if(this._explicitMinHeight > this._currentTextureHeight)
-						{
-							heightScale = this._explicitMinHeight / (this._currentTextureHeight * this._textureScale);
-						}
-						if(heightScale !== 1)
-						{
-							newWidth *= heightScale;
-						}
-					}
+					newWidth = this._currentTextureWidth * this._textureScale * heightScale;
 				}
 				else
 				{
@@ -1713,29 +1723,7 @@ package feathers.controls
 			{
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
-					newHeight = this._currentTextureHeight * this._textureScale;
-					if(this._scaleContent && this._maintainAspectRatio &&
-						this._scaleMode !== ScaleMode.NONE &&
-						this._scale9Grid === null)
-					{
-						var widthScale:Number = 1;
-						if(!needsWidth)
-						{
-							widthScale = this._explicitWidth / (this._currentTextureWidth * this._textureScale);
-						}
-						else if(this._explicitMaxWidth < this._currentTextureWidth)
-						{
-							widthScale = this._explicitMaxWidth / (this._currentTextureWidth * this._textureScale);
-						}
-						else if(this._explicitMinWidth > this._currentTextureWidth)
-						{
-							widthScale = this._explicitMinWidth / (this._currentTextureWidth * this._textureScale);
-						}
-						if(widthScale !== 1)
-						{
-							newHeight *= widthScale;
-						}
-					}
+					newHeight = this._currentTextureHeight * this._textureScale * widthScale;
 				}
 				else
 				{
@@ -1744,12 +1732,27 @@ package feathers.controls
 				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
+			//this ensures that an ImageLoader can recover from width or height
+			//being set to 0 by percentWidth or percentHeight
+			if(needsHeight && needsMinHeight)
+			{
+				//if no height values are set, use the original texture width
+				//for the minWidth
+				heightScale = 1;
+			}
+			if(needsWidth && needsMinWidth)
+			{
+				//if no width values are set, use the original texture height
+				//for the minHeight
+				widthScale = 1;
+			}
+
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
 				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
-					newMinWidth = this._currentTextureWidth * this._textureScale;
+					newMinWidth = this._currentTextureWidth * this._textureScale * heightScale;
 				}
 				else
 				{
@@ -1763,7 +1766,7 @@ package feathers.controls
 			{
 				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
-					newMinHeight = this._currentTextureHeight * this._textureScale;
+					newMinHeight = this._currentTextureHeight * this._textureScale * widthScale;
 				}
 				else
 				{
