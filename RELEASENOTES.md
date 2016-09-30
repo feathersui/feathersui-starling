@@ -15,6 +15,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * BitmapFontTextRenderer: fixed issue where resizing larger would not change position of aligned text.
 * Button: fixed issue where header would invalidate too often if icon dimensions change.
 * Button: fixed alignment when using scaleWhenDown or scaleWhenHovering.
+* ButtonBar: implements ITextBaselineControl to expose button baseline.
 * Callout: is positioned in parent's coordinate space, instead of stage coordinate space.
 * ColorFade: fixed issue where Quad could be given a width or height of 0 in its constructor, which causes a runtime error.
 * Cube: fixed issue with culling that caused screen to overlap incorrectly during transition.
@@ -27,9 +28,15 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * GroupedList, List: fixed issue where calling scrollToDisplayIndex() would result in a runtime error if dataProvider is null.
 * Header: uses ScreenDensityScaleCalculator to calculate extra padding on iOS when app is not full screen.
 * Header: fixed issue where header would invalidate too often if item dimensions change.
-* HorizontalLayout: fixed issue where distributeWidths did not work correctly when useVirtualLayout is true.
+* Header: fixed issue where extra status bar padding for iOS might not be calculated correctly if background skin height is large enough.
+* HorizontalLayout, VerticalLayout: fixed issue where distributeWidths and distributeHeights did not work correctly when useVirtualLayout is true.
+* HorizontalLayout, VerticalLayout: fixed issue where percentHeight or percentWidth might not be used during measurement.
+* HorizontalLayout, VerticalLayout: fixed issue where maxWidth or maxHeight would be incorrectly limited.
+* HorizontalLayout, VerticalLayout: fixed issue where requestedRowCount and requestedColumnCount did not work correctly when useVirtualLayout is false.
+* HorizontalLayout, VerticalLayout: added maxColumnCount and maxRowCount properties.
 * HorizontalSpinnerLayout, VerticalSpinnerLayout: fixed runtime error in snapInterval property when typicalItem is null.
 * ImageLoader: fixed issue where scale9Grid incorrectly allowed maintainAspectRatio to remain in effect.
+* ImageLoader: fixed issue where a layout with percentWidth and percentHeight might not work because minimum dimensions were not calculated correctly.
 * ImageLoader: does not call close() on flash.display.Loader because this can cause a memory leak when using ImageDecodingPolicy.ON_LOAD. Instead, switches to different Event.COMPLETE listener to dispose BitmapData and unload image.
 * ImageSkin: fixed issue where skin would not resize correctly after setting explicit dimensions and then clearing them.
 * ITextRenderer: added numLines getter that returns the number of lines of text that are wrapped.
@@ -39,6 +46,8 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * LayoutGroup, ScrollContainer: the default layout (when the layout property is null) now accounts for pivotX and pivotY during measurement.
 * MultiStarlingStyleNameFunctionTheme: moved to feathers-compat.
 * Panel: fixed issue where header would invalidate too often if header dimensions changes.
+* PickerList: calls revealScrollBars() on pop-up list when opened to show whether scrolling is possible.
+* PickerList: implements ITextBaselineControl to expose button baseline.
 * PopUpManager: now accounts for pivotX and pivotY when centering a pop-up.
 * PopUpManager: added popUpCount property to indicate how many pop-ups are currently open.
 * PopUpManager: added removeAllPoUps() function to remove all open pop-ups.
@@ -61,6 +70,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * TabBar: added setSelectedIndexWithAnimation() to animate the selectedSkin on programatic selection changes (always animated on user changes).
 * TabBar: added labelField, labelFunction, iconField, iconFunction, enabledField and enabledFunction. These are no longer controlled by tabInitializer property.
 * TabBar: icon from ListCollection is not disposed, and dispose() function on ListCollection should be used.
+* TabBar: implements ITextBaselineControl to expose tab baseline.
 * TapToTrigger, TapToSelect, LongPress: added customHitTest property to allow items to be excluded or other custom behavior.
 * TextArea: no longer changes selection range when given focus because Flex and HTML textarea element don't do that.
 * TextArea: exposed selectionBeginIndex and selectionEndIndex properties, similar to TextInput.
@@ -77,9 +87,9 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * ToggleGroup: added numItems property and getItemAt() method.
 * ToggleSwitch: implemented IStateContext with states defined in feathers.controls.ToggleState class.
 * ValidationQueue: no longer keeps a delayed queue that will be validated a frame later because FeathersControl throws an error in the cases where it was used.
-* VerticalLayout: fixed issue where distributeHeights did not work correctly when useVirtualLayout is true.
 * VerticalLayout: fixed issue where scroll position calculation did not account for sticky header on GroupedList.
 * VideoPlayer: added events for MediaPlayerEventType.CUE_POINT and MediaPlayerEventType.XMP_DATA for NetStream's onCuePoint and onXMPData.
+* VideoPlayer: invalidates layout after Event.READY so that it might resize, if needed.
 * WebView: added FeathersEventType.LOCATION_CHANGING.
 * New Example: Tabs, a demonstration of the new TabNavigator component.
 * New Example: Magic8Chat, a mobile chat application.
