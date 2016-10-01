@@ -61,6 +61,7 @@ package feathers.examples.youtube.screens
 			this.layout = new AnchorLayout();
 			
 			this._thumbnail = new ImageLoader();
+			this._thumbnail.minWidth = 0;
 			this._thumbnail.scaleMode = ScaleMode.NO_BORDER;
 			this._thumbnail.layoutData = new AnchorLayoutData(0, 0, NaN, 0);
 			this.addChild(this._thumbnail);
