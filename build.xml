@@ -421,6 +421,7 @@
 			<fileset dir="${examples.root}/Magic8Chat">
 				<include name="README.md"/>
 				<include name="source/**"/>
+				<include name="assets/**"/>
 				<exclude name="source/Magic8ChatWeb.as"/>
 			</fileset>
 		</copy>
