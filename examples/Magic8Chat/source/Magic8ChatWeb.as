@@ -41,7 +41,7 @@ package
 			DeviceCapabilities.dpi = 326;
 			
 			Starling.multitouchEnabled = true;
-			var MainType:Class = getDefinitionByName("feathers.examples.tabs.Main") as Class;
+			var MainType:Class = getDefinitionByName("feathers.examples.magic8.Main") as Class;
 			this._starling = new Starling(MainType, this.stage, new Rectangle(0, 0, 960, 640));
 			this._starling.supportHighResolutions = true;
 			this._starling.skipUnchangedFrames = true;
