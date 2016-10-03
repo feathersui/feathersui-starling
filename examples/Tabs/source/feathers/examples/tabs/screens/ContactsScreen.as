@@ -55,7 +55,7 @@ package feathers.examples.tabs.screens
 						{
 							name: "Andy Johnston",
 							email: "itsandy1981@example.com",
-							photo: "https://randomuser.me/api/portraits/men/92.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/men92.jpg"
 						},
 					]
 				},
@@ -66,12 +66,12 @@ package feathers.examples.tabs.screens
 						{
 							name: "Denise Kim",
 							email: "kim.denise@example.com",
-							photo: "https://randomuser.me/api/portraits/women/83.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/women83.jpg"
 						},
 						{
 							name: "Dylan Curtis",
 							email: "curtis1987@example.com",
-							photo: "https://randomuser.me/api/portraits/men/87.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/men87.jpg"
 						},
 					]
 				},
@@ -82,12 +82,12 @@ package feathers.examples.tabs.screens
 						{
 							name: "Pat Brewer",
 							email: "pbrewer19@example.com",
-							photo: "https://randomuser.me/api/portraits/women/79.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/women79.jpg"
 						},
 						{
 							name: "Pearl Boyd",
 							email: "pearl.boyd@example.com",
-							photo: "https://randomuser.me/api/portraits/women/69.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/women69.jpg"
 						},
 					]
 				},
@@ -98,7 +98,7 @@ package feathers.examples.tabs.screens
 						{
 							name: "Robin Taylor",
 							email: "robintaylor@example.com",
-							photo: "https://randomuser.me/api/portraits/women/89.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/women89.jpg"
 						},
 					]
 				},
@@ -109,7 +109,7 @@ package feathers.examples.tabs.screens
 						{
 							name: "Savannah Flores",
 							email: "saflo79@example.com",
-							photo: "https://randomuser.me/api/portraits/women/53.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/women53.jpg"
 						},
 					]
 				},
@@ -120,7 +120,7 @@ package feathers.examples.tabs.screens
 						{
 							name: "Wayne Adams",
 							email: "superwayne@example.com",
-							photo: "https://randomuser.me/api/portraits/men/36.jpg"
+							photo: "http://feathersui.com/examples/tabs/images/men36.jpg"
 						},
 					]
 				},

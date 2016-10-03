@@ -50,22 +50,22 @@ package feathers.examples.tabs.screens
 				{
 					name: "Patsy Brewer",
 					message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-					photo: "https://randomuser.me/api/portraits/women/79.jpg"
+					photo: "http://feathersui.com/examples/tabs/images/women79.jpg"
 				},
 				{
 					name: "Wayne Adams",
 					message: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-					photo: "https://randomuser.me/api/portraits/men/36.jpg"
+					photo: "http://feathersui.com/examples/tabs/images/men36.jpg"
 				},
 				{
 					name: "Andy Johnston",
 					message: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-					photo: "https://randomuser.me/api/portraits/men/92.jpg"
+					photo: "http://feathersui.com/examples/tabs/images/men92.jpg"
 				},
 				{
 					name: "Pearl Boyd",
 					message: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-					photo: "https://randomuser.me/api/portraits/women/69.jpg"
+					photo: "http://feathersui.com/examples/tabs/images/women69.jpg"
 				},
 			]);
 		}

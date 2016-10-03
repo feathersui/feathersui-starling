@@ -39,7 +39,7 @@ package feathers.examples.tabs.screens
 
 			this._image = new ImageLoader();
 			this._image.styleNameList.add(StyleNames.LARGE_PROFILE_IMAGE);
-			this._image.source = "https://randomuser.me/api/portraits/men/67.jpg";
+			this._image.source = "http://feathersui.com/examples/tabs/images/men67.jpg";
 			header.addChild(this._image);
 
 			this._nameLabel = new Label();
