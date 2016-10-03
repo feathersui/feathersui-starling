@@ -697,10 +697,10 @@ package feathers.layout
 					percentWidth = 100;
 				}
 				var itemWidth:Number = percentWidth * 0.01 * viewPortWidth;
-				if(uiItem)
+				if(uiItem !== null)
 				{
-					var minWidth:Number = uiItem.minWidth;
-					var maxWidth:Number = uiItem.maxWidth;
+					var minWidth:Number = uiItem.explicitMinWidth;
+					var maxWidth:Number = uiItem.explicitMaxWidth;
 					if(itemWidth < minWidth)
 					{
 						itemWidth = minWidth;
@@ -827,10 +827,10 @@ package feathers.layout
 					percentHeight = 100;
 				}
 				var itemHeight:Number = percentHeight * 0.01 * viewPortHeight;
-				if(uiItem)
+				if(uiItem !== null)
 				{
-					var minHeight:Number = uiItem.minHeight;
-					var maxHeight:Number = uiItem.maxHeight;
+					var minHeight:Number = uiItem.explicitMinHeight;
+					var maxHeight:Number = uiItem.explicitMaxHeight;
 					if(itemHeight < minHeight)
 					{
 						itemHeight = minHeight;
