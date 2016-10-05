@@ -7,6 +7,8 @@ package feathers.examples.magic8
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.controls.text.StageTextTextEditor;
+	import feathers.core.ITextEditor;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.magic8.data.ChatMessage;
@@ -105,8 +107,18 @@ package feathers.examples.magic8
 
 			this._input = new TextInput();
 			this._input.prompt = "Ask a yes or no question...";
-			this._input.styleNameList.add(StyleNames.CHAT_INPUT);
 			this._input.layoutData = new HorizontalLayoutData(100);
+			this._input.textEditorFactory = function():ITextEditor
+			{
+				var textEditor:StageTextTextEditor = new StageTextTextEditor();
+				textEditor.maintainTouchFocus = true;
+				//flash.text.ReturnKeyLabel doesn't exist in Flash Player, so
+				//we can't use the constant here.
+				//we use ReturnKeyLabel.GO because the default label doesn't
+				//dispatch an event for Keyboard.ENTER on all platforms.
+				textEditor.returnKeyLabel = "go";
+				return textEditor;
+			};
 			this._input.addEventListener(FeathersEventType.ENTER, input_enterHandler);
 			this._input.addEventListener(Event.CHANGE, input_changeHandler);
 			controls.addChild(this._input);

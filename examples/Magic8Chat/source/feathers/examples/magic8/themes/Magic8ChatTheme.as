@@ -1,8 +1,6 @@
 package feathers.examples.magic8.themes
 {
-	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
@@ -19,7 +17,6 @@ package feathers.examples.magic8.themes
 		[Embed(source="/../assets/images/question@2x.png")]
 		private static const QUESTION_ICON:Class;
 
-		private static const THEME_STYLE_NAME_CHAT_INPUT_TEXT_EDITOR:String = "magic8Ball-chat-input-text-editor";
 		private static const THEME_STYLE_NAME_MESSAGE_ITEM_RENDERER_LABEL:String = "magic8Ball-message-item-renderer-label";
 
 		public function Magic8ChatTheme()
@@ -40,8 +37,6 @@ package feathers.examples.magic8.themes
 		override protected function initializeStyleProviders():void
 		{
 			super.initializeStyleProviders();
-			this.getStyleProviderForClass(TextInput)
-				.setFunctionForStyleName(StyleNames.CHAT_INPUT, this.setChatInputStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer)
 				.setFunctionForStyleName(StyleNames.USER_MESSAGE_ITEM_RENDERER, this.setUserMessageItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer)
@@ -76,19 +71,6 @@ package feathers.examples.magic8.themes
 		private function setMessageItemRendererLabelStyles(text:TextBlockTextRenderer):void
 		{
 			text.wordWrap = true;
-		}
-
-		private function setChatInputStyles(input:TextInput):void
-		{
-			this.setTextInputStyles(input);
-			input.customTextEditorStyleName = THEME_STYLE_NAME_CHAT_INPUT_TEXT_EDITOR;
-		}
-
-		private function setChatInputTextEditorStyles(textEditor:StageTextTextEditor):void
-		{
-			textEditor.maintainTouchFocus = true;
-			//flash.text.ReturnKeyLabel doesn't exist in Flash Player, only AIR
-			textEditor.returnKeyLabel = "go";
 		}
 	}
 }
