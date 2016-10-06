@@ -229,6 +229,57 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testPercentWidthWithExplicitMinWidth():void
+		{
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.minWidth = 400;
+			var layoutData1:VerticalLayoutData = new VerticalLayoutData(50, NaN);
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayoutData with percentWidth and larger item explicitMinWidth results in incorrect item width",
+				400, item1.width);
+		}
+
+		[Test]
+		public function testPercentHeightWithExplicitMinHeight():void
+		{
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.minHeight = 400;
+			var layoutData1:VerticalLayoutData = new VerticalLayoutData(NaN, 50);
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayoutData with percentHeight and larger item explicitMinHeight results in incorrect item height",
+				400, item1.height);
+		}
+
+		[Test]
+		public function testPercentWidthWithExplicitMaxWidth():void
+		{
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.maxWidth = 250;
+			var layoutData1:VerticalLayoutData = new VerticalLayoutData(50, NaN);
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayoutData with percentWidth and smaller item explicitMaxWidth results in incorrect item width",
+				250, item1.width);
+		}
+
+		[Test]
 		public function testDistributeHeights():void
 		{
 			this._layout.distributeHeights = true;

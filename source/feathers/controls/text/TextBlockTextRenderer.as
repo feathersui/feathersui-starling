@@ -1540,7 +1540,6 @@ package feathers.controls.text
 			this.commit();
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			this._verticalAlignOffsetY = this.getVerticalAlignOffsetY();
 
 			this.layout(sizeInvalid);
 		}
@@ -1691,6 +1690,7 @@ package feathers.controls.text
 					//these values
 					this._savedTextLinesWidth = HELPER_RESULT.width;
 					this._savedTextLinesHeight = HELPER_RESULT.height;
+					this._verticalAlignOffsetY = this.getVerticalAlignOffsetY();
 				}
 			}
 			//on the other hand, sizeInvalid will always indicate that the

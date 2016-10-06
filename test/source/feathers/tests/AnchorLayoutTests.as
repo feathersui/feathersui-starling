@@ -123,6 +123,78 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testPercentWidthWithExplicitMinWidth():void
+		{
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.minWidth = 400;
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 50;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayoutData with percentWidth and larger item explicitMinWidth results in incorrect item width",
+				400, item1.width);
+		}
+
+		[Test]
+		public function testPercentHeightWithExplicitMinHeight():void
+		{
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.minHeight = 400;
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentHeight = 50;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayoutData with percentHeight and larger item explicitMinHeight results in incorrect item height",
+				400, item1.height);
+		}
+
+		[Test]
+		public function testPercentWidthWithExplicitMaxWidth():void
+		{
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.maxWidth = 250;
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 50;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayoutData with percentWidth and smaller item explicitMaxWidth results in incorrect item width",
+				250, item1.width);
+		}
+
+		[Test]
+		public function testPercentHeightWithExplicitMaxHeight():void
+		{
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.maxHeight = 250;
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentHeight = 50;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayoutData with percentHeight and larger item explicitMaxHeight results in incorrect item height",
+				250, item1.height);
+		}
+
+		[Test]
 		public function testPercentWidthWithWrappingLabelAndMaxWidth():void
 		{
 			var viewPortMaxWidth:Number = 100;

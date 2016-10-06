@@ -1307,7 +1307,7 @@ package feathers.layout
 								if(item is IFeathersControl)
 								{
 									var feathersItem:IFeathersControl = IFeathersControl(item);
-									var itemMinHeight:Number = feathersItem.minHeight;
+									var itemMinHeight:Number = feathersItem.explicitMinHeight;
 									//we try to respect the minWidth, but not
 									//when it's larger than 100%
 									if(itemMinHeight > availableHeightMinusPadding)
@@ -1320,7 +1320,7 @@ package feathers.layout
 									}
 									else
 									{
-										var itemMaxHeight:Number = feathersItem.maxHeight;
+										var itemMaxHeight:Number = feathersItem.explicitMaxHeight;
 										if(itemHeight > itemMaxHeight)
 										{
 											itemHeight = itemMaxHeight;
@@ -2076,6 +2076,10 @@ package feathers.layout
 						var percentWidth:Number = layoutData.percentWidth;
 						if(percentWidth === percentWidth) //!isNaN
 						{
+							if(percentWidth < 0)
+							{
+								percentWidth = 0;
+							}
 							if(layoutItem is IFeathersControl)
 							{
 								var feathersItem:IFeathersControl = IFeathersControl(layoutItem);
@@ -2134,11 +2138,15 @@ package feathers.layout
 					}
 					layoutData = HorizontalLayoutData(layoutItem.layoutData);
 					percentWidth = layoutData.percentWidth;
+					if(percentWidth < 0)
+					{
+						percentWidth = 0;
+					}
 					var itemWidth:Number = percentToPixels * percentWidth;
 					if(layoutItem is IFeathersControl)
 					{
 						feathersItem = IFeathersControl(layoutItem);
-						var itemMinWidth:Number = feathersItem.minWidth;
+						var itemMinWidth:Number = feathersItem.explicitMinWidth;
 						if(itemMinWidth > remainingWidth)
 						{
 							//we try to respect the item's minimum width, but if
