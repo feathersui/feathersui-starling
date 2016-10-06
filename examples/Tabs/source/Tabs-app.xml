@@ -53,6 +53,17 @@
 			<true/>
 			<key>UIStatusBarStyle</key>
 			<string>UIStatusBarStyleLightContent</string>
+			<key>NSAppTransportSecurity</key>
+			<dict>
+				<key>NSExceptionDomains</key>
+				<dict>
+					<key>feathersui.com</key>
+					<dict>
+						<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+						<true/>
+					</dict>
+				</dict>
+			</dict>
 		]]> 
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
