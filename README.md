@@ -1,4 +1,4 @@
-# Feathers UI 3.1.0-beta
+# Feathers UI 3.1.0-beta2
 
 ---
 

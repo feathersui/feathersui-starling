@@ -10,6 +10,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Architecture: Attempts to use stage.starling instead of Starling.current, if possible. Brings better compatibility with multiple Starling instances.
 * Architecture: switched many places to use starling.utils.Pool instead of static helper objects.
 * AnchorLayout: fixed issue where maxWidth wasn't used when explicitWidth was not set.
+* AnchorLayout, HorizontalLayout, VerticalLayout: with percentWidth and percentHeight, explicitMinWidth and explicitMinHeight will be used as the final minimum bounds instead of calculated minimums sent to saveMeasurements().
 * BitmapFontTextRenderer: fixed infinite loop when wordWrap is true and maxWidth is 0.
 * BitmapFontTextRenderer: added style property to support a custom MeshStyle.
 * BitmapFontTextRenderer: fixed issue where resizing larger would not change position of aligned text.
