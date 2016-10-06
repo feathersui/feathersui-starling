@@ -11,7 +11,3 @@ In addition to Starling Framework and Feathers, this example project requires th
 Additionally, you will need a [Flickr API key](https://www.flickr.com/services/apps/create/apply/). Pass in this API key by defining a conditional constant named `CONFIG::FLICKR_API_KEY`. If you are compiling with an IDE, conditional constants are usually defined somewhere in your project's settings. On the command line, you may use the `-define` compiler argument:
 
 	-define+=CONFIG::FLICKR_API_KEY,'your flickr api key'
-
-## Web Demo
-
-View the [Gallery Example](http://feathersui.com/examples/gallery/) in your browser.

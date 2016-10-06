@@ -8,7 +8,6 @@
 		<ant dir="${basedir}/ComponentsExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/DrawersExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/DragAndDrop" target="build" inheritAll="false" useNativeBasedir="true"/>
-		<ant dir="${basedir}/Gallery" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Magic8Chat" target="build-web" inheritAll="false" useNativeBasedir="true"/>
