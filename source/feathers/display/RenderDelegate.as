@@ -107,11 +107,11 @@ package feathers.display
 		 */
 		override public function render(painter:Painter):void
 		{
-			this._target.setRequiresRedraw();
-			var oldAlpha:Number = this._target.alpha;
-			this._target.alpha = this.alpha;
+			var oldCacheEnabled:Boolean = painter.cacheEnabled;
+			painter.cacheEnabled = false;
 			this._target.render(painter);
-			this._target.alpha = oldAlpha;
+			painter.cacheEnabled = oldCacheEnabled;
+			painter.excludeFromCache(this);
 		}
 	}
 }
