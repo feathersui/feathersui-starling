@@ -1358,6 +1358,7 @@ package feathers.controls.text
 				this.textField.removeEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 				this.textField.removeEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
 				this.textField.removeEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+				this.textField.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, textField_softKeyboardActivatingHandler);
 				this.textField.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
 				this.textField.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
 			}
@@ -1693,6 +1694,7 @@ package feathers.controls.text
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
 			this.textField.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, textField_mouseFocusChangeHandler);
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, textField_softKeyboardActivatingHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
 			//when adding more events here, don't forget to remove them when the
@@ -2513,6 +2515,14 @@ package feathers.controls.text
 		protected function textField_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
 		{
 			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATE, true);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textField_softKeyboardActivatingHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATING, true);
 		}
 
 		/**

@@ -216,6 +216,15 @@ package feathers.events
 		public static const SOFT_KEYBOARD_ACTIVATE:String = "softKeyboardActivate";
 
 		/**
+		 * The <code>FeathersEventType.SOFT_KEYBOARD_ACTIVATING</code> event type
+		 * is used by Feathers text editors when they are about to activate a device's soft
+		 * keyboard.
+		 *
+		 * @see feathers.core.ITextEditor
+		 */
+		public static const SOFT_KEYBOARD_ACTIVATING:String = "softKeyboardActivating";
+
+		/**
 		 * The <code>FeathersEventType.SOFT_KEYBOARD_DEACTIVATE</code> event type
 		 * is used by Feathers text editors when they deactivate a device's soft
 		 * keyboard.
