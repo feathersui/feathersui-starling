@@ -138,7 +138,7 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-date-time-spinner-list";
-		
+
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE_AND_TIME</code>.
@@ -767,9 +767,11 @@ package feathers.controls
 		 * theme, you might use this factory to style the list sub-components.
 		 * 
 		 * <p><strong>Warning:</strong> The <code>itemRendererFactory</code>
-		 * property of the <code>SpinnerList</code> should not be set in the
+		 * and <code>customItemRendererStyleName</code> properties of the
+		 * <code>SpinnerList</code> should not be set in the
 		 * <code>listFactory</code>. Instead, set the
-		 * <code>itemRendererFactory</code> property of the
+		 * <code>itemRendererFactory</code> and
+		 * <code>customItemRendererStyleName</code> properties of the
 		 * <code>DateTimeSpinner</code>.</p>
 		 *
 		 * <p>The factory should have the following function signature:</p>
@@ -987,17 +989,17 @@ package feathers.controls
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
 			var spinnerListFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SPINNER_LIST_FACTORY);
-			
+
 			if(this._todayLabel)
 			{
 				this._lastValidate = new Date();
 			}
-			
+
 			if(localeInvalid || editingModeInvalid)
 			{
 				this.refreshLocale();
 			}
-			
+
 			if(localeInvalid || editingModeInvalid || spinnerListFactoryInvalid)
 			{
 				this.refreshLists(editingModeInvalid || spinnerListFactoryInvalid, localeInvalid);
@@ -1125,7 +1127,12 @@ package feathers.controls
 			//we'll set the data provider later, when we know what range
 			//of years we need
 			this.yearsList.itemRendererFactory = this.yearsListItemRendererFactory;
-			this.yearsList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.yearsList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.yearsList.addEventListener(Event.CHANGE, yearsList_changeHandler);
 			this.listGroup.addChild(this.yearsList);
 		}
@@ -1156,7 +1163,12 @@ package feathers.controls
 			this.monthsList.dataProvider = monthsCollection;
 			this.monthsList.typicalItem = this._longestMonthNameIndex;
 			this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
-			this.monthsList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.monthsList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.monthsList.addEventListener(Event.CHANGE, monthsList_changeHandler);
 			this.listGroup.addChildAt(this.monthsList, 0);
 		}
@@ -1186,7 +1198,12 @@ package feathers.controls
 			datesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 			this.datesList.dataProvider = datesCollection;
 			this.datesList.itemRendererFactory = this.datesListItemRendererFactory;
-			this.datesList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.datesList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.datesList.addEventListener(Event.CHANGE, datesList_changeHandler);
 			this.listGroup.addChildAt(this.datesList, 0);
 		}
@@ -1212,7 +1229,12 @@ package feathers.controls
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.hoursList.styleNameList.add(listStyleName);
 			this.hoursList.itemRendererFactory = this.hoursListItemRendererFactory;
-			this.hoursList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.hoursList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.hoursList.addEventListener(Event.CHANGE, hoursList_changeHandler);
 			this.listGroup.addChild(this.hoursList);
 		}
@@ -1242,7 +1264,12 @@ package feathers.controls
 			minutesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 			this.minutesList.dataProvider = minutesCollection;
 			this.minutesList.itemRendererFactory = this.minutesListItemRendererFactory;
-			this.minutesList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.minutesList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.minutesList.addEventListener(Event.CHANGE, minutesList_changeHandler);
 			this.listGroup.addChild(this.minutesList);
 		}
@@ -1294,7 +1321,12 @@ package feathers.controls
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.dateAndTimeDatesList.styleNameList.add(listStyleName);
 			this.dateAndTimeDatesList.itemRendererFactory = this.dateAndTimeDatesListItemRendererFactory;
-			this.dateAndTimeDatesList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.dateAndTimeDatesList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.dateAndTimeDatesList.addEventListener(Event.CHANGE, dateAndTimeDatesList_changeHandler);
 			this.dateAndTimeDatesList.typicalItem = {};
 			this.listGroup.addChildAt(this.dateAndTimeDatesList, 0);
