@@ -135,11 +135,24 @@ package feathers.controls
 	/**
 	 * A tabbed container.
 	 *
-	 * <p>The following example creates a tab navigator, adds a tab and
-	 * displays it:</p>
+	 * <p>The following example creates a tab navigator, adds a couple of tabs
+	 * and displays the navigator:</p>
 	 *
 	 * <listing version="3.0">
+	 * var navigator:TabNavigator = new TabNavigator();
+	 * navigator.addScreen( "newsFeed", new TabNavigatorItem( NewsFeedTab, "News" ) );
+	 * navigator.addScreen( "profile", new TabNavigatorItem( ProfileTab, "Profile" ) );
+	 * this.addChild( navigator );
 	 * </listing>
+	 *
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
 	 *
 	 * @see ../../../help/tab-navigator.html How to use the Feathers TabNavigator component
 	 * @see feathers.controls.TabNavigatorItem
