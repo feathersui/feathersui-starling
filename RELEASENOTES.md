@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.1.0 - In Development
+## 3.1.0 - October 2016
 
 * New Component: TabNavigator to display a TabBar that switches between screens, similar to a ScreenNavigator.
 * Font Styles: all components support starling.text.TextFormat for font styling. For advanced needs, text renderers can still use low-level ElementFormat/TextFormat objects which take precedence.
@@ -20,6 +20,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Callout: is positioned in parent's coordinate space, instead of stage coordinate space.
 * ColorFade: fixed issue where Quad could be given a width or height of 0 in its constructor, which causes a runtime error.
 * Cube: fixed issue with culling that caused screen to overlap incorrectly during transition.
+* DateTimeSpinner: added customItemRendererStyleName.
 * Default Item Renderers: added customIconLoaderStyleName and customAccessoryLoaderStyleName for icon and accessory ImageLoaders.
 * Default Item Renderers: uses customHitTest on TapToTrigger, TapToSelect, and LongPress to exclude accessory from touches (instead of old custom implementation).
 * DropDownPopUpContentManager: fixed issue where Quad could be given a width or height of 0 in its constructor, which causes a runtime error.
