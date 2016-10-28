@@ -47,7 +47,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._browser = new WebView();
 			this._browser.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this._browser.addEventListener("locationChange", webView_locationChangeHandler);
+			this._browser.addEventListener(FeathersEventType.LOCATION_CHANGE, webView_locationChangeHandler);
 			this.addChild(this._browser);
 
 			this.headerFactory = this.customHeaderFactory;
