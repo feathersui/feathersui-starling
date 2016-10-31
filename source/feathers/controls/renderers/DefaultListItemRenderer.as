@@ -27,14 +27,14 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_DRILL_DOWN:String = "feathers-drill-down-item-renderer";
-		
+
 		/**
 		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_CHECK
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_CHECK:String = "feathers-check-item-renderer";
-		
+
 		/**
 		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_LABEL
 		 *

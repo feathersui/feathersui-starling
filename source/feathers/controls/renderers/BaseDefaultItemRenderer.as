@@ -1758,6 +1758,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):String</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):String</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):String</pre>
+		 *
 		 * <p>All of the label fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>labelFunction</code></li>
@@ -1874,6 +1882,14 @@ package feathers.controls.renderers
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
+		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):DisplayObject</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):DisplayObject</pre>
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -2018,6 +2034,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):Object</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):Object</pre>
+		 *
 		 * <p>The return value is a valid value for the <code>source</code>
 		 * property of an <code>ImageLoader</code> component.</p>
 		 *
@@ -2147,6 +2171,14 @@ package feathers.controls.renderers
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):String</pre>
+		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):String</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):String</pre>
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -2342,6 +2374,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):DisplayObject</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):DisplayObject</pre>
+		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>accessorySourceFunction</code></li>
@@ -2489,6 +2529,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):Object</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):Object</pre>
+		 *
 		 * <p>The return value is a valid value for the <code>source</code>
 		 * property of an <code>ImageLoader</code> component.</p>
 		 *
@@ -2620,6 +2668,14 @@ package feathers.controls.renderers
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):String</pre>
+		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):String</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):String</pre>
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -2795,6 +2851,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):DisplayObject</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):DisplayObject</pre>
+		 *
 		 * <p>All of the skin fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>skinSourceFunction</code></li>
@@ -2936,6 +3000,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):Object</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):Object</pre>
+		 *
 		 * <p>The return value is a valid value for the <code>source</code>
 		 * property of an <code>ImageLoader</code> component.</p>
 		 *
@@ -3041,6 +3113,14 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Boolean</pre>
 		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):Boolean</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):Boolean</pre>
+		 *
 		 * <p>All of the selectable fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>selectableFunction</code></li>
@@ -3135,6 +3215,14 @@ package feathers.controls.renderers
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Boolean</pre>
+		 *
+		 * <p>If the item renderer is an <code>IListItemRenderer</code>, the
+		 * function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, index:int ):Boolean</pre>
+		 *
+		 * <p>If the item renderer is an <code>IGroupedListItemRenderer</code>,
+		 * the function may optionally have the following signature instead:</p>
+		 * <pre>function( item:Object, groupIndex:int, itemIndex:int ):Boolean</pre>
 		 *
 		 * <p>All of the enabled fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -3806,7 +3894,20 @@ package feathers.controls.renderers
 		{
 			if(this._labelFunction !== null)
 			{
-				var labelResult:Object = this._labelFunction(item);
+				var labelResult:Object;
+				if(this is IListItemRenderer && this._labelFunction.length === 2)
+				{
+					labelResult = this._labelFunction(item, IListItemRenderer(this).index);
+				}
+				else if(this is IGroupedListItemRenderer && this._labelFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					labelResult = this._labelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
+				}
+				else
+				{
+					labelResult = this._labelFunction(item);
+				}
 				if(labelResult is String)
 				{
 					return labelResult as String;
@@ -3857,21 +3958,47 @@ package feathers.controls.renderers
 		 */
 		protected function itemToIcon(item:Object):DisplayObject
 		{
-			if(this._iconSourceFunction != null)
+			if(this._iconSourceFunction !== null)
 			{
-				var source:Object = this._iconSourceFunction(item);
+				var source:Object;
+				if(this is IListItemRenderer && this._iconSourceFunction.length === 2)
+				{
+					source = this._iconSourceFunction(item, IListItemRenderer(this).index);
+				}
+				else if(this is IGroupedListItemRenderer && this._iconSourceFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					source = this._iconSourceFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
+				}
+				else
+				{
+					source = this._iconSourceFunction(item);
+				}
 				this.refreshIconSource(source);
 				return this.iconLoader;
 			}
-			else if(this._iconSourceField != null && item && item.hasOwnProperty(this._iconSourceField))
+			else if(this._iconSourceField !== null && item !== null && item.hasOwnProperty(this._iconSourceField))
 			{
 				source = item[this._iconSourceField];
 				this.refreshIconSource(source);
 				return this.iconLoader;
 			}
-			else if(this._iconLabelFunction != null)
+			else if(this._iconLabelFunction !== null)
 			{
-				var labelResult:Object = this._iconLabelFunction(item);
+				var labelResult:Object;
+				if(this is IListItemRenderer && this._iconLabelFunction.length === 2)
+				{
+					labelResult = this._iconLabelFunction(item, IListItemRenderer(this).index);
+				}
+				else if(this is IGroupedListItemRenderer && this._iconLabelFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					labelResult = this._iconLabelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
+				}
+				else
+				{
+					labelResult = this._iconLabelFunction(item);
+				}
 				if(labelResult is String)
 				{
 					this.refreshIconLabel(labelResult as String);
@@ -3882,7 +4009,7 @@ package feathers.controls.renderers
 				}
 				return DisplayObject(this.iconLabel);
 			}
-			else if(this._iconLabelField != null && item && item.hasOwnProperty(this._iconLabelField))
+			else if(this._iconLabelField !== null && item !== null && item.hasOwnProperty(this._iconLabelField))
 			{
 				labelResult = item[this._iconLabelField];
 				if(labelResult is String)
@@ -3895,11 +4022,20 @@ package feathers.controls.renderers
 				}
 				return DisplayObject(this.iconLabel);
 			}
-			else if(this._iconFunction != null)
+			else if(this._iconFunction !== null)
 			{
+				if(this is IListItemRenderer && this._iconFunction.length === 2)
+				{
+					return this._iconFunction(item, IListItemRenderer(this).index) as DisplayObject;
+				}
+				else if(this is IGroupedListItemRenderer && this._iconFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					return this._iconFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
+				}
 				return this._iconFunction(item) as DisplayObject;
 			}
-			else if(this._iconField != null && item && item.hasOwnProperty(this._iconField))
+			else if(this._iconField !== null && item !== null && item.hasOwnProperty(this._iconField))
 			{
 				return item[this._iconField] as DisplayObject;
 			}
@@ -3923,21 +4059,47 @@ package feathers.controls.renderers
 		 */
 		protected function itemToAccessory(item:Object):DisplayObject
 		{
-			if(this._accessorySourceFunction != null)
+			if(this._accessorySourceFunction !== null)
 			{
-				var source:Object = this._accessorySourceFunction(item);
+				var source:Object;
+				if(this is IListItemRenderer && this._accessorySourceFunction.length === 2)
+				{
+					source = this._accessorySourceFunction(item, IListItemRenderer(this).index);
+				}
+				else if(this is IGroupedListItemRenderer && this._accessorySourceFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					source = this._accessorySourceFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
+				}
+				else
+				{
+					source = this._accessorySourceFunction(item);
+				}
 				this.refreshAccessorySource(source);
 				return this.accessoryLoader;
 			}
-			else if(this._accessorySourceField != null && item && item.hasOwnProperty(this._accessorySourceField))
+			else if(this._accessorySourceField !== null && item !== null && item.hasOwnProperty(this._accessorySourceField))
 			{
 				source = item[this._accessorySourceField];
 				this.refreshAccessorySource(source);
 				return this.accessoryLoader;
 			}
-			else if(this._accessoryLabelFunction != null)
+			else if(this._accessoryLabelFunction !== null)
 			{
-				var labelResult:Object = this._accessoryLabelFunction(item);
+				var labelResult:Object;
+				if(this is IListItemRenderer && this._accessoryLabelFunction.length === 2)
+				{
+					labelResult = this._accessoryLabelFunction(item, IListItemRenderer(this).index);
+				}
+				else if(this is IGroupedListItemRenderer && this._accessoryLabelFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					labelResult = this._accessoryLabelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
+				}
+				else
+				{
+					labelResult = this._accessoryLabelFunction(item);
+				}
 				if(labelResult is String)
 				{
 					this.refreshAccessoryLabel(labelResult as String);
@@ -3948,7 +4110,7 @@ package feathers.controls.renderers
 				}
 				return DisplayObject(this.accessoryLabel);
 			}
-			else if(this._accessoryLabelField != null && item && item.hasOwnProperty(this._accessoryLabelField))
+			else if(this._accessoryLabelField !== null && item !== null && item.hasOwnProperty(this._accessoryLabelField))
 			{
 				labelResult = item[this._accessoryLabelField];
 				if(labelResult is String)
@@ -3961,11 +4123,20 @@ package feathers.controls.renderers
 				}
 				return DisplayObject(this.accessoryLabel);
 			}
-			else if(this._accessoryFunction != null)
+			else if(this._accessoryFunction !== null)
 			{
+				if(this is IListItemRenderer && this._accessoryFunction.length === 2)
+				{
+					return this._accessoryFunction(item, IListItemRenderer(this).index) as DisplayObject;
+				}
+				else if(this is IGroupedListItemRenderer && this._accessoryFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					return this._accessoryFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
+				}
 				return this._accessoryFunction(item) as DisplayObject;
 			}
-			else if(this._accessoryField != null && item && item.hasOwnProperty(this._accessoryField))
+			else if(this._accessoryField !== null && item !== null && item.hasOwnProperty(this._accessoryField))
 			{
 				return item[this._accessoryField] as DisplayObject;
 			}
@@ -3987,23 +4158,45 @@ package feathers.controls.renderers
 		 */
 		protected function itemToSkin(item:Object):DisplayObject
 		{
-			if(this._skinSourceFunction != null)
+			if(this._skinSourceFunction !== null)
 			{
-				var source:Object = this._skinSourceFunction(item);
+				var source:Object;
+				if(this is IListItemRenderer && this._skinSourceFunction.length === 2)
+				{
+					source = this._skinSourceFunction(item, IListItemRenderer(this).index);
+				}
+				else if(this is IGroupedListItemRenderer && this._skinSourceFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					source = this._skinSourceFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
+				}
+				else
+				{
+					source = this._skinSourceFunction(item);
+				}
 				this.refreshSkinSource(source);
 				return this.skinLoader;
 			}
-			else if(this._skinSourceField != null && item && item.hasOwnProperty(this._skinSourceField))
+			else if(this._skinSourceField !== null && item !== null && item.hasOwnProperty(this._skinSourceField))
 			{
 				source = item[this._skinSourceField];
 				this.refreshSkinSource(source);
 				return this.skinLoader;
 			}
-			else if(this._skinFunction != null)
+			else if(this._skinFunction !== null)
 			{
+				if(this is IListItemRenderer && this._skinFunction.length === 2)
+				{
+					return this._skinFunction(item, IListItemRenderer(this).index) as DisplayObject;
+				}
+				else if(this is IGroupedListItemRenderer && this._skinFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					return this._skinFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
+				}
 				return this._skinFunction(item) as DisplayObject;
 			}
-			else if(this._skinField != null && item && item.hasOwnProperty(this._skinField))
+			else if(this._skinField !== null && item !== null && item.hasOwnProperty(this._skinField))
 			{
 				return item[this._skinField] as DisplayObject;
 			}
@@ -4023,15 +4216,23 @@ package feathers.controls.renderers
 		 */
 		protected function itemToSelectable(item:Object):Boolean
 		{
-			if(this._selectableFunction != null)
+			if(this._selectableFunction !== null)
 			{
+				if(this is IListItemRenderer && this._selectableFunction.length === 2)
+				{
+					return this._selectableFunction(item, IListItemRenderer(this).index) as Boolean;
+				}
+				else if(this is IGroupedListItemRenderer && this._selectableFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					return this._selectableFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as Boolean;
+				}
 				return this._selectableFunction(item) as Boolean;
 			}
-			else if(this._selectableField != null && item && item.hasOwnProperty(this._selectableField))
+			else if(this._selectableField !== null && item !== null && item.hasOwnProperty(this._selectableField))
 			{
 				return item[this._selectableField] as Boolean;
 			}
-
 			return true;
 		}
 
@@ -4047,11 +4248,20 @@ package feathers.controls.renderers
 		 */
 		protected function itemToEnabled(item:Object):Boolean
 		{
-			if(this._enabledFunction != null)
+			if(this._enabledFunction !== null)
 			{
+				if(this is IListItemRenderer && this._enabledFunction.length === 2)
+				{
+					return this._enabledFunction(item, IListItemRenderer(this).index) as Boolean;
+				}
+				else if(this is IGroupedListItemRenderer && this._enabledFunction.length === 3)
+				{
+					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					return this._enabledFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as Boolean;
+				}
 				return this._enabledFunction(item) as Boolean;
 			}
-			else if(this._enabledField != null && item && item.hasOwnProperty(this._enabledField))
+			else if(this._enabledField !== null && item !== null && item.hasOwnProperty(this._enabledField))
 			{
 				return item[this._enabledField] as Boolean;
 			}
