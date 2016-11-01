@@ -3992,7 +3992,7 @@ package feathers.controls.renderers
 				}
 				else if(this is IGroupedListItemRenderer && this._iconLabelFunction.length === 3)
 				{
-					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					groupItemRenderer = IGroupedListItemRenderer(this);
 					labelResult = this._iconLabelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
 				}
 				else
@@ -4030,7 +4030,7 @@ package feathers.controls.renderers
 				}
 				else if(this is IGroupedListItemRenderer && this._iconFunction.length === 3)
 				{
-					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					groupItemRenderer = IGroupedListItemRenderer(this);
 					return this._iconFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
 				}
 				return this._iconFunction(item) as DisplayObject;
@@ -4093,7 +4093,7 @@ package feathers.controls.renderers
 				}
 				else if(this is IGroupedListItemRenderer && this._accessoryLabelFunction.length === 3)
 				{
-					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					groupItemRenderer = IGroupedListItemRenderer(this);
 					labelResult = this._accessoryLabelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
 				}
 				else
@@ -4131,7 +4131,7 @@ package feathers.controls.renderers
 				}
 				else if(this is IGroupedListItemRenderer && this._accessoryFunction.length === 3)
 				{
-					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					groupItemRenderer = IGroupedListItemRenderer(this);
 					return this._accessoryFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
 				}
 				return this._accessoryFunction(item) as DisplayObject;
@@ -4191,7 +4191,7 @@ package feathers.controls.renderers
 				}
 				else if(this is IGroupedListItemRenderer && this._skinFunction.length === 3)
 				{
-					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
+					groupItemRenderer = IGroupedListItemRenderer(this);
 					return this._skinFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
 				}
 				return this._skinFunction(item) as DisplayObject;
