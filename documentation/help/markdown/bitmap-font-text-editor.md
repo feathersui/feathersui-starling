@@ -56,7 +56,7 @@ Font styles may be customized by passing a [`BitmapFontTextFormat`](../api-refer
 var format:BitmapFontTextFormat = new BitmapFontTextFormat( "FontName" );
 ```
 
-Pass the font to display to the `BitmapFontTextFormat` constructor. In the code above, we pass in the name of a font registered with [`TextField.registerBitmapFont()`](http://doc.starling-framework.org/core/starling/text/TextField.html#registerBitmapFont()). We could also pass in a [`starling.text.BitmapFont`](http://doc.starling-framework.org/core/starling/text/BitmapFont.html) instance that has not been registered.
+Pass the font to display to the `BitmapFontTextFormat` constructor. In the code above, we pass in the name of a font registered with [`TextField.registerCompositor()`](http://doc.starling-framework.org/core/starling/text/TextField.html#registerCompositor()). We could also pass in a [`starling.text.BitmapFont`](http://doc.starling-framework.org/core/starling/text/BitmapFont.html) instance that has not been registered.
 
 The tint of the text can be customized with the [`color`](../api-reference/feathers/text/BitmapFontTextFormat.html#color) property:
 
