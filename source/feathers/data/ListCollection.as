@@ -429,8 +429,6 @@ package feathers.data
 				this._localData = null;
 				this._localDataDescriptor = null;
 			}
-			this.dispatchEventWith(Event.CHANGE);
-			this.dispatchEventWith(CollectionEventType.RESET);
 		}
 
 		/**
