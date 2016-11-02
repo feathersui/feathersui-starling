@@ -317,6 +317,7 @@ package feathers.controls.supportClasses
 			{
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -328,6 +329,7 @@ package feathers.controls.supportClasses
 			{
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -1486,6 +1488,18 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
+			layout.resetVariableVirtualCache();
+		}
+
+		private function dataProvider_filterChangeHandler(event:Event):void
+		{
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			//we don't know exactly which indices have changed, so reset the
+			//whole cache.
 			layout.resetVariableVirtualCache();
 		}
 

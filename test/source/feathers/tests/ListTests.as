@@ -238,6 +238,27 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testFilterSelectedIndex():void
+		{
+			this._list.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var selectedItem:Object = this._list.dataProvider.getItemAt(1);
+			this._list.dataProvider.filterFunction = function(item:Object):Boolean
+			{
+				return item !== selectedItem;
+			};
+			Assert.assertTrue("Event.CHANGE must be dispatched when item is filtered", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not changed to -1 when selected item is filtered",
+				-1, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not changed to null when selected item is filtered",
+				null, this._list.selectedItem);
+		}
+
+		[Test]
 		public function testDisposeWithoutChangeEvent():void
 		{
 			this._list.selectedIndex = 1;

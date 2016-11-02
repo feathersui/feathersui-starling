@@ -577,6 +577,7 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -586,6 +587,7 @@ package feathers.controls
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -972,12 +974,12 @@ package feathers.controls
 			}
 			return result;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _itemRendererType:Class = DefaultListItemRenderer;
-		
+
 		/**
 		 * The class used to instantiate item renderers. Must implement the
 		 * <code>IListItemRenderer</code> interface.
@@ -999,7 +1001,7 @@ package feathers.controls
 		{
 			return this._itemRendererType;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1009,7 +1011,7 @@ package feathers.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1018,7 +1020,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _itemRendererFactories:Object;
-		
+
 		/**
 		 * @private
 		 */
@@ -1699,6 +1701,46 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			if(this._selectedIndex === -1)
+			{
+				return;
+			}
+			var selectionChanged:Boolean = false;
+			var newIndices:Vector.<int> = new <int>[];
+			var pushIndex:int = 0;
+			var count:int = this._selectedIndices.length;
+			for(var i:int = 0; i < count; i++)
+			{
+				var index:int = this._selectedIndices.getItemAt(i) as int;
+				var item:Object = this._dataProvider.dataDescriptor.getItemAt(this._dataProvider.data, index);
+				var newIndex:int = this._dataProvider.getItemIndex(item);
+				if(newIndex >= 0)
+				{
+					if(newIndex !== index)
+					{
+						//the item was not filtered, but it moved to a new index
+						selectionChanged = true;
+					}
+					newIndices[pushIndex] = newIndex;
+					pushIndex++;
+				}
+				else
+				{
+					//the item is filtered, so it should not be selected
+					selectionChanged = true;
+				}
+			}
+			if(selectionChanged)
+			{
+				this._selectedIndices.data = newIndices;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
 			if(this._selectedIndex == -1)
@@ -1711,7 +1753,7 @@ package feathers.controls
 				this._selectedIndices.removeItemAt(indexOfIndex);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
