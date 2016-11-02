@@ -317,10 +317,40 @@ package feathers.data
 
 		/**
 		 * A function to determine if each item in the collection should be
-		 * filtered.
+		 * included or excluded from visibility through APIs like
+		 * <code>length</code> and <code>getItemAt()</code>.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Boolean</pre>
+		 *
+		 * <p>In the following example, the filter function is based on the
+		 * text of a <code>TextInput</code> component:</p>
+		 *
+		 * <listing version="3.0">
+		 * var collection:ListCollection = new ListCollection( data );
+		 * 
+		 * var list:List = new List();
+		 * list.dataProvider = collection;
+		 * this.addChild( list);
+		 * 
+		 * var input:TextInput = new TextInput();
+		 * input.addEventListener( Event.CHANGE, function():void
+		 * {
+		 *    if( input.text.length === 0 )
+		 *    {
+		 *        collection.filterFunction = null;
+		 *        return;
+		 *    }
+		 *    collection.filterFunction = function( item:Object ):Boolean
+		 *    {
+		 *        var itemText:String = item.label.toLowerCase();
+		 *        var filterText:String = input.text.toLowerCase();
+		 *        return itemText.indexOf( filterText ) >= 0;
+		 *    };
+		 * } );
+		 * this.addChild( input );</listing>
+		 *
+		 * @default null
 		 */
 		public function get filterFunction():Function
 		{
