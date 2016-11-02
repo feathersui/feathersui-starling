@@ -31,7 +31,7 @@ Bitmap fonts may be scaled, but because they use bitmaps, only scaling down is r
 button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
-However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text renderer supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+However, `starling.text.TextFormat` object does not always expose every unique font styling feature that a text renderer supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
 
 To display text with bitmap fonts, create a [`BitmapFontTextRenderer`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) of a [`Button`](button.html) component:
 
