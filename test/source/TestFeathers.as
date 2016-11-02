@@ -212,7 +212,7 @@ package
 				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
-				LayoutGroupMeasurementTests,*/
+				LayoutGroupMeasurementTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
