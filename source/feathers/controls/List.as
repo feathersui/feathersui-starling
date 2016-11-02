@@ -692,7 +692,7 @@ package feathers.controls
 		{
 			return this._selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -881,6 +881,11 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _selectedItems:Vector.<Object> = new <Object>[];
+
+		/**
 		 * The currently selected item. The getter returns an empty
 		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
 		 * items are selected, the getter creates a new
@@ -916,7 +921,7 @@ package feathers.controls
 		 */
 		public function get selectedItems():Vector.<Object>
 		{
-			return this.getSelectedItems(new <Object>[]);
+			return this._selectedItems;
 		}
 
 		/**
@@ -953,7 +958,7 @@ package feathers.controls
 		 */
 		public function getSelectedItems(result:Vector.<Object> = null):Vector.<Object>
 		{
-			if(result)
+			if(result !== null)
 			{
 				result.length = 0;
 			}
@@ -1710,15 +1715,15 @@ package feathers.controls
 			var selectionChanged:Boolean = false;
 			var newIndices:Vector.<int> = new <int>[];
 			var pushIndex:int = 0;
-			var count:int = this._selectedIndices.length;
+			var count:int = this._selectedItems.length;
 			for(var i:int = 0; i < count; i++)
 			{
-				var index:int = this._selectedIndices.getItemAt(i) as int;
-				var item:Object = this._dataProvider.dataDescriptor.getItemAt(this._dataProvider.data, index);
-				var newIndex:int = this._dataProvider.getItemIndex(item);
+				var selectedItem:Object = this._selectedItems[i];
+				var oldIndex:int = this._selectedIndices.getItemAt(i) as int;
+				var newIndex:int = this._dataProvider.getItemIndex(selectedItem);
 				if(newIndex >= 0)
 				{
-					if(newIndex !== index)
+					if(newIndex !== oldIndex)
 					{
 						//the item was not filtered, but it moved to a new index
 						selectionChanged = true;
@@ -1759,6 +1764,7 @@ package feathers.controls
 		 */
 		protected function selectedIndices_changeHandler(event:Event):void
 		{
+			this.getSelectedItems(this._selectedItems);
 			if(this._selectedIndices.length > 0)
 			{
 				this._selectedIndex = this._selectedIndices.getItemAt(0) as int;
