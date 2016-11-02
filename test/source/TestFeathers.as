@@ -52,6 +52,7 @@ package
 	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
+	import feathers.tests.ListCollectionFilterTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListFactoryIDFunctionTests;
 	import feathers.tests.ListRendererAddRemoveTests;
@@ -211,7 +212,7 @@ package
 				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
-				LayoutGroupMeasurementTests,
+				LayoutGroupMeasurementTests,*/
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
@@ -273,6 +274,7 @@ package
 
 				//collections tests
 				ListCollectionWithArrayTests,
+				ListCollectionFilterTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,

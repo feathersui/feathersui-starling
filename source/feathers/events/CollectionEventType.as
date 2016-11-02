@@ -29,6 +29,13 @@ package feathers.events
 		public static const RESET:String = "reset";
 
 		/**
+		 * Dispatched when a filter has been applied to or removed from the
+		 * collection. The underlying source remains the same, but zero or more
+		 * items may have been removed or added.
+		 */
+		public static const FILTER_CHANGE:String = "filterChange";
+
+		/**
 		 * Dispatched when an item is added to the collection.
 		 */
 		public static const ADD_ITEM:String = "addItem";
