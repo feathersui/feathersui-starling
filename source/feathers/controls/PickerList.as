@@ -1310,15 +1310,16 @@ package feathers.controls
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				if(SystemUtil.isDesktop)
 				{
-					this._popUpContentManager = new DropDownPopUpContentManager();
+					//must pass to setter so that listeners are added
+					this.popUpContentManager = new DropDownPopUpContentManager();
 				}
 				else if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
-					this._popUpContentManager = new CalloutPopUpContentManager();
+					this.popUpContentManager = new CalloutPopUpContentManager();
 				}
 				else
 				{
-					this._popUpContentManager = new VerticalCenteredPopUpContentManager();
+					this.popUpContentManager = new VerticalCenteredPopUpContentManager();
 				}
 			}
 			super.initialize();
