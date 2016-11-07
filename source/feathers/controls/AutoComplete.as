@@ -640,7 +640,8 @@ package feathers.controls
 			this._listCollection = new ListCollection();
 			if(!this._popUpContentManager)
 			{
-				this._popUpContentManager = new DropDownPopUpContentManager();
+				//must pass to setter so that listeners are added
+				this.popUpContentManager = new DropDownPopUpContentManager();
 			}
 		}
 
