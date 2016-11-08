@@ -29,16 +29,11 @@ Using the picker list's [`listFactory`](../../api-reference/feathers/controls/Pi
 
 ``` code
 var pickerList:PickerList = new PickerList();
-pickerList.listFactory = function():List
+pickerList.itemRendererFactory = function():IListItemRenderer
 {
-	var list:List = new List(); //we may want to use SpinnerList instead
-	list.itemRendererFactory = function():IListItemRenderer
-	{
-		var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-		itemRenderer.fontStyles = new TextFormat( "Arial", 20, 0x3c3c3c );
-		return itemRenderer;
-	};
-	return button;
+	var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	itemRenderer.fontStyles = new TextFormat( "Arial", 20, 0x3c3c3c );
+	return itemRenderer;
 };
 ```
 
