@@ -61,6 +61,27 @@ package feathers.controls
 	[Style(name="customButtonStyleName",type="String")]
 
 	/**
+	 * A style name to add to all item renderers in the pop-up list. Typically
+	 * used by a theme to provide different skins to different lists.
+	 *
+	 * <p>The following example sets the item renderer name:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.customItemRendererStyleName = "my-custom-item-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component name to provide
+	 * different skins than the default style:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( DefaultListItemRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomItemRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customItemRendererStyleName",type="String")]
+
+	/**
 	 * A style name to add to the picker list's list sub-component.
 	 * Typically used by a theme to provide different styles to different
 	 * picker lists.
@@ -203,7 +224,7 @@ package feathers.controls
 	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 	 * ]);
 	 * 
-	 * list.listProperties.itemRendererFactory = function():IListItemRenderer
+	 * list.itemRendererFactory = function():IListItemRenderer
 	 * {
 	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 	 *     renderer.labelField = "text";
@@ -439,12 +460,12 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _ignoreSelectionChanges:Boolean = false;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _selectedIndex:int = -1;
-		
+
 		/**
 		 * The index of the currently selected item. Returns <code>-1</code> if
 		 * no item is selected.
@@ -732,9 +753,7 @@ package feathers.controls
 		 * <p>The following example provides a typical item:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.typicalItem = { text: "A typical item", thumbnail: texture };
-		 * list.itemRendererProperties.labelField = "text";
-		 * list.itemRendererProperties.iconSourceField = "thumbnail";</listing>
+		 * list.typicalItem = { text: "A typical item", thumbnail: texture };</listing>
 		 *
 		 * @default null
 		 */
@@ -1109,6 +1128,80 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _itemRendererFactory:Function = null;
+
+		/**
+		 * A function called that is expected to return a new item renderer.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IListItemRenderer</pre>
+		 *
+		 * <p>The following example provides a factory for the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 */
+		public function get itemRendererFactory():Function
+		{
+			return this._itemRendererFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererFactory(value:Function):void
+		{
+			if(this._itemRendererFactory === value)
+			{
+				return;
+			}
+			this._itemRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customItemRendererStyleName:String;
+
+		/**
+		 * @private
+		 */
+		public function get customItemRendererStyleName():String
+		{
+			return this._customItemRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customItemRendererStyleName(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customItemRendererStyleName === value)
+			{
+				return;
+			}
+			this._customItemRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get baseline():Number
@@ -1347,7 +1440,7 @@ package feathers.controls
 			{
 				this.createList();
 			}
-			
+
 			if(buttonFactoryInvalid || stylesInvalid || selectionInvalid)
 			{
 				//this section asks the button to auto-size again, if our
@@ -1373,7 +1466,7 @@ package feathers.controls
 			{
 				this.refreshListProperties();
 			}
-			
+
 			if(listFactoryInvalid || dataInvalid)
 			{
 				var oldIgnoreSelectionChanges:Boolean = this._ignoreSelectionChanges;
@@ -1381,7 +1474,7 @@ package feathers.controls
 				this.list.dataProvider = this._dataProvider;
 				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			}
-			
+
 			if(buttonFactoryInvalid || listFactoryInvalid || stateInvalid)
 			{
 				this.button.isEnabled = this._isEnabled;
@@ -1574,12 +1667,23 @@ package feathers.controls
 			this.list = List(factory());
 			this.list.focusOwner = this;
 			this.list.styleNameList.add(listStyleName);
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets customItemRendererStyleName and our
+			//value is null. if our value is not null, we'll use it.
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.list.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
+			if(this._itemRendererFactory !== null)
+			{
+				this.list.itemRendererFactory = this._itemRendererFactory;
+			}
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
 			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */
