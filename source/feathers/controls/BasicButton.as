@@ -322,13 +322,7 @@ package feathers.controls
 		protected var _keepDownStateOnRollOut:Boolean = false;
 
 		/**
-		 * If <code>true</code>, the button state will remain as
-		 * <code>ButtonState.DOWN</code> until <code>TouchPhase.ENDED</code>. If
-		 * <code>false</code>, and the touch leaves the bounds of the button
-		 * after <code>TouchPhase.BEGAN</code>, the button state will change to
-		 * <code>ButtonState.UP</code>.
-		 *
-		 * @default false
+		 * @private
 		 */
 		public function get keepDownStateOnRollOut():Boolean
 		{
