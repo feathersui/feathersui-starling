@@ -250,6 +250,21 @@ package feathers.controls.text
 		public static var globalStyleProvider:IStyleProvider;
 
 		/**
+		 * @private
+		 * The minimum position of the StageText view port. A runtime will be
+		 * thrown if the x or y position is smaller than this value.
+		 */
+		protected static const MIN_VIEW_PORT_POSITION:Number = -8192;
+
+		/**
+		 * @private
+		 * The maximum position of the StageText view port. A runtime will be
+		 * thrown if the x or y position (including width and height) is larger
+		 * than this value.
+		 */
+		protected static const MAX_VIEW_PORT_POSITION:Number = 8191;
+
+		/**
 		 * Constructor.
 		 */
 		public function StageTextTextEditor()
@@ -2020,8 +2035,6 @@ package feathers.controls.text
 			{
 				stageTextViewPort = new Rectangle();
 			}
-			stageTextViewPort.x = Math.round(starlingViewPort.x + (point.x * scaleFactor));
-			stageTextViewPort.y = Math.round(starlingViewPort.y + (point.y * scaleFactor));
 			var viewPortWidth:Number = Math.round((this.actualWidth + desktopGutterDimensionsOffset) * scaleFactor * globalScaleX);
 			if(viewPortWidth < 1 ||
 				viewPortWidth !== viewPortWidth) //isNaN
@@ -2036,6 +2049,26 @@ package feathers.controls.text
 			}
 			stageTextViewPort.width = viewPortWidth;
 			stageTextViewPort.height = viewPortHeight;
+			var viewPortX:Number = Math.round(starlingViewPort.x + (point.x * scaleFactor));
+			if((viewPortX + viewPortWidth) > MAX_VIEW_PORT_POSITION)
+			{
+				viewPortX = MAX_VIEW_PORT_POSITION - viewPortWidth;
+			}
+			else if(viewPortX < MIN_VIEW_PORT_POSITION)
+			{
+				viewPortX = MIN_VIEW_PORT_POSITION;
+			}
+			var viewPortY:Number = Math.round(starlingViewPort.y + (point.y * scaleFactor));
+			if((viewPortY + viewPortHeight) > MAX_VIEW_PORT_POSITION)
+			{
+				viewPortY = MAX_VIEW_PORT_POSITION - viewPortHeight;
+			}
+			else if(viewPortY < MIN_VIEW_PORT_POSITION)
+			{
+				viewPortY = MIN_VIEW_PORT_POSITION;
+			}
+			stageTextViewPort.x = viewPortX;
+			stageTextViewPort.y = viewPortY;
 			this.stageText.viewPort = stageTextViewPort;
 
 			var fontSize:int = 12;
