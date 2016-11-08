@@ -44,7 +44,7 @@ package feathers.controls.supportClasses
 	public class GroupedListDataViewPort extends FeathersControl implements IViewPort
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
-		
+
 		private static const FIRST_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-first";
 		private static const SINGLE_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-single";
 		private static const LAST_ITEM_RENDERER_FACTORY_ID:String = "GroupedListDataViewPort-last";
@@ -1850,7 +1850,7 @@ package feathers.controls.supportClasses
 					}
 					else
 					{
-						throw new IllegalOperationError("GroupedListDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
+						throw new IllegalOperationError("GroupedListDataViewPort: item renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 					}
 				}
 				itemRenderer.visible = true;
@@ -1884,7 +1884,15 @@ package feathers.controls.supportClasses
 				var activeHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.activeHeaderRenderers;
 				var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.inactiveHeaderRenderers;
 				activeHeaderRenderers[activeHeaderRenderers.length] = headerRenderer;
-				inactiveHeaderRenderers.removeAt(inactiveHeaderRenderers.indexOf(headerRenderer));
+				var inactiveIndex:int = inactiveHeaderRenderers.indexOf(headerRenderer);
+				if(inactiveIndex >= 0)
+				{
+					inactiveHeaderRenderers.removeAt(inactiveIndex);
+				}
+				else
+				{
+					throw new IllegalOperationError("GroupedListDataViewPort: header renderer map contains bad data. This may be caused by duplicate headers in the data provider, which is not allowed.");
+				}
 				headerRenderer.visible = true;
 				this._layoutItems[layoutIndex] = DisplayObject(headerRenderer);
 			}
@@ -1914,7 +1922,15 @@ package feathers.controls.supportClasses
 				var activeFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.activeFooterRenderers;
 				var inactiveFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.inactiveFooterRenderers;
 				activeFooterRenderers[activeFooterRenderers.length] = footerRenderer;
-				inactiveFooterRenderers.removeAt(inactiveFooterRenderers.indexOf(footerRenderer));
+				var inactiveIndex:int = inactiveFooterRenderers.indexOf(footerRenderer);
+				if(inactiveIndex >= 0)
+				{
+					inactiveFooterRenderers.removeAt(inactiveIndex);
+				}
+				else
+				{
+					throw new IllegalOperationError("GroupedListDataViewPort: footer renderer map contains bad data. This may be caused by duplicate footers in the data provider, which is not allowed.");
+				}
 				footerRenderer.visible = true;
 				this._layoutItems[layoutIndex] = DisplayObject(footerRenderer);
 			}
