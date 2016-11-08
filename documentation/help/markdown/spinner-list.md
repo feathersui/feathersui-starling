@@ -40,8 +40,13 @@ list.dataProvider = new ListCollection(
 We'll set up the label and icon in the item renderer the same way too:
 
 ``` code
-list.itemRendererProperties.labelField = "text";
-list.itemRendererProperties.iconSourceField = "thumbnail";
+list.itemRendererFactory = function():IListItemRenderer
+{
+    var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+    itemRenderer.labelField = "text";
+    itemRenderer.iconSourceField = "thumbnail";
+    return itemRenderer;
+};
 ```
 
 We can listen for selection changes with [`Event.CHANGE`](../api-reference/feathers/controls/List.html#event:change):

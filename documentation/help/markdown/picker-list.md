@@ -41,19 +41,12 @@ list.dataProvider = groceryList;
 We need to tell the picker list's item renderers about the text to display, so we'll define the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField).
 
 ``` code
-function createItemRenderer():IListItemRenderer
+list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
     itemRenderer.labelField = "text";
     return itemRenderer;
 }
-function createPopUpList():List
-{
-    var list:List = new List();
-    list.itemRendererFactory = createItemRenderer;
-    return list;
-}
-list.listFactory = createPopUpList;
 ```
 
 Since the selected item's label is also displayed by the picker list's button, we also need to pass a value to the [`labelField`](../api-reference/feathers/controls/PickerList.html#labelField) of the picker list.

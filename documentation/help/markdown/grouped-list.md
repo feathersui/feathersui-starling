@@ -87,8 +87,13 @@ Start by taking a moment to review one of the items from the data provider:
 The item's `text` property contains a string, and the `thumbnail` property contains a texture. We can tell the default item renderer to use the values from these two properties to display two children: a label and an icon.
 
 ``` code
-list.itemRendererProperties.labelField = "text";
-list.itemRendererProperties.iconSourceField = "thumbnail";
+list.itemRendererFactory = function():IGroupedListItemRenderer
+{
+	var itemRenderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
+	itemRenderer.labelField = "text";
+	itemRenderer.iconSourceField = "thumbnail";
+	return itemRenderer;
+};
 ```
 
 When using the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField), the default item renderer will automatically create a [text renderer](text-renderers.html) to display the string. Similarly, when you use the [`iconSourceField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField), the item renderer will automatically create an [`ImageLoader`](image-loader.html) to display the texture. You may also use `iconSourceField` to ask the `ImageLoader` to display an image loaded from a URL instead of a texture. The value is passed to the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property of the `ImageLoader`.
@@ -130,19 +135,12 @@ For footers, a grouped list provides [`footerField`](../api-reference/feathers/c
 Once the header or footer renderer has its data, it may need to drill down further into the properties, similar to an item renderer. The default header and footer renderer has a [`contentLabelField`](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField) property that is similar to the item renderer's `labelField` property.
 
 ``` code
-list.headerRendererProperties.contentLabelField = "text";
-```
-
-The default behavior of the default header or footer renderer is simply to call `toString()` on its data, so if you simply set the `header` property to a `String` instance, you don't need to specify a `contentLabelField` at all:
-
-``` code
+list.headerRendererFactory = function():IGroupedListHeaderRenderer
 {
-    header: "Bakery",
-    children:
-    [
-        { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
-    ]
-}
+	var headerRenderer:DefaultGroupedListHeaderOrFooterRenderer = new DefaultGroupedListHeaderOrFooterRenderer();
+	headerRenderer.contentLabelField = "text";
+	return headerRenderer;
+};
 ```
 
 Check the [`DefaultGroupedListHeaderOrFooterRenderer` API reference](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html) for full details about how to display other types of children (instead of a text renderer) in the default header or footer renderer.
