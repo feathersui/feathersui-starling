@@ -4,6 +4,8 @@ package feathers.examples.trainTimes.screens
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.examples.trainTimes.model.TimeData;
 	import feathers.layout.AnchorLayout;
@@ -57,12 +59,19 @@ package feathers.examples.trainTimes.screens
 			this._list.styleNameList.add(CHILD_STYLE_NAME_TIMES_LIST);
 			this._list.dataProvider = new ListCollection(NORTH_TIMES);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this._list.itemRendererProperties.labelFunction = list_labelFunction;
+			this._list.itemRendererFactory = this.customItemRendererFactory;
 			this.addChild(this._list);
 
 			this.headerFactory = this.customHeaderFactory;
 
 			this.backButtonHandler = this.onBackButton;
+		}
+
+		private function customItemRendererFactory():IListItemRenderer
+		{
+			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			itemRenderer.labelFunction = list_labelFunction;
+			return itemRenderer;
 		}
 
 		private function customHeaderFactory():Header
