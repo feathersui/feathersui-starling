@@ -2,10 +2,13 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.core.FocusManager;
+	import feathers.events.FeathersEventType;
 
 	import flash.ui.Keyboard;
 
 	import org.flexunit.Assert;
+
+	import starling.display.ButtonState;
 
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -35,6 +38,57 @@ package feathers.tests
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 			Assert.assertFalse("FocusManager not disabled on cleanup.", FocusManager.isEnabledForStage(TestFeathers.starlingRoot.stage));
+		}
+
+		[Test]
+		public function testDownStateOnKeyDown():void
+		{
+			FocusManager.focus = this._target;
+			var hasChangedState:Boolean = false;
+			this._target.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				hasChangedState = true;
+			});
+			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, 0, Keyboard.SPACE));
+			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_UP, 0, Keyboard.SPACE));
+			Assert.assertTrue("FeathersEventType.STATE_CHANGE was not dispatched",
+				hasChangedState);
+			Assert.assertTrue("Button currentState must be ButtonState.DOWN",
+				ButtonState.DOWN, this._target.currentState);
+		}
+
+		[Test]
+		public function testUpStateOnKeyUp():void
+		{
+			FocusManager.focus = this._target;
+			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, 0, Keyboard.SPACE));
+			var hasChangedState:Boolean = false;
+			this._target.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				hasChangedState = true;
+			});
+			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_UP, 0, Keyboard.SPACE));
+			Assert.assertTrue("FeathersEventType.STATE_CHANGE was not dispatched",
+				hasChangedState);
+			Assert.assertTrue("Button currentState must be ButtonState.UP",
+				ButtonState.UP, this._target.currentState);
+		}
+
+		[Test]
+		public function testUpStateOnCancelKey():void
+		{
+			FocusManager.focus = this._target;
+			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, 0, Keyboard.SPACE));
+			var hasChangedState:Boolean = false;
+			this._target.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				hasChangedState = true;
+			});
+			this._target.stage.dispatchEvent(new KeyboardEvent(KeyboardEvent.KEY_DOWN, 0, Keyboard.ESCAPE));
+			Assert.assertTrue("FeathersEventType.STATE_CHANGE was not dispatched",
+				hasChangedState);
+			Assert.assertTrue("Button currentState must be ButtonState.UP",
+				ButtonState.UP, this._target.currentState);
 		}
 
 		[Test]

@@ -120,6 +120,7 @@ package
 	import feathers.tests.ToggleSwitchMeasurementTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
+	import feathers.tests.TouchToStateTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
@@ -308,6 +309,7 @@ package
 				TapToTriggerTests,
 				TapToSelectTests,
 				LongPressTests,
+				TouchToStateTests,
 				KeyToSelectTests,
 				KeyToTriggerTests,
 				TokenListTests,

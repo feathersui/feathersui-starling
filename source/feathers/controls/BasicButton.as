@@ -17,6 +17,7 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.TapToTrigger;
+	import feathers.utils.touch.TouchToState;
 
 	import flash.geom.Point;
 
@@ -246,8 +247,6 @@ package feathers.controls
 		{
 			super();
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(Event.REMOVED_FROM_STAGE, basicButton_removedFromStageHandler);
-			this.addEventListener(TouchEvent.TOUCH, basicButton_touchHandler);
 		}
 
 		/**
@@ -261,15 +260,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var tapToTrigger:TapToTrigger;
+		protected var touchToState:TouchToState;
 
 		/**
-		 * The saved ID of the currently active touch. The value will be
-		 * <code>-1</code> if there is no currently active touch.
-		 *
-		 * <p>For internal use in subclasses.</p>
+		 * @private
 		 */
-		protected var touchPointID:int = -1;
+		protected var tapToTrigger:TapToTrigger;
 
 		/**
 		 * @private
@@ -316,7 +312,7 @@ package feathers.controls
 			}
 			else
 			{
-				this.resetTouchState();
+				this.changeState(ButtonState.DISABLED);
 			}
 		}
 
@@ -326,7 +322,13 @@ package feathers.controls
 		protected var _keepDownStateOnRollOut:Boolean = false;
 
 		/**
-		 * @private
+		 * If <code>true</code>, the button state will remain as
+		 * <code>ButtonState.DOWN</code> until <code>TouchPhase.ENDED</code>. If
+		 * <code>false</code>, and the touch leaves the bounds of the button
+		 * after <code>TouchPhase.BEGAN</code>, the button state will change to
+		 * <code>ButtonState.UP</code>.
+		 *
+		 * @default false
 		 */
 		public function get keepDownStateOnRollOut():Boolean
 		{
@@ -343,6 +345,10 @@ package feathers.controls
 				return;
 			}
 			this._keepDownStateOnRollOut = value;
+			if(this.touchToState !== null)
+			{
+				this.touchToState.keepDownStateOnRollOut = value;
+			}
 		}
 
 		/**
@@ -562,6 +568,16 @@ package feathers.controls
 					skin.dispose();
 				}
 			}
+			if(this.touchToState !== null)
+			{
+				//setting the target to null will remove listeners and do any
+				//other clean up that is needed
+				this.touchToState.target = null;
+			}
+			if(this.tapToTrigger !== null)
+			{
+				this.tapToTrigger.target = null;
+			}
 			super.dispose();
 		}
 
@@ -571,6 +587,11 @@ package feathers.controls
 		override protected function initialize():void
 		{
 			super.initialize();
+			if(!this.touchToState)
+			{
+				this.touchToState = new TouchToState(this, this.changeState);
+			}
+			this.touchToState.keepDownStateOnRollOut = this._keepDownStateOnRollOut;
 			if(!this.tapToTrigger)
 			{
 				this.tapToTrigger = new TapToTrigger(this);
@@ -816,6 +837,10 @@ package feathers.controls
 		 */
 		protected function changeState(state:String):void
 		{
+			if(!this._isEnabled)
+			{
+				state = ButtonState.DISABLED;
+			}
 			if(this._currentState === state)
 			{
 				return;
@@ -823,90 +848,6 @@ package feathers.controls
 			this._currentState = state;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function resetTouchState(touch:Touch = null):void
-		{
-			this.touchPointID = -1;
-			if(this._isEnabled)
-			{
-				this.changeState(ButtonState.UP);
-			}
-			else
-			{
-				this.changeState(ButtonState.DISABLED);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function basicButton_removedFromStageHandler(event:Event):void
-		{
-			this.resetTouchState();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function basicButton_touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				this.touchPointID = -1;
-				return;
-			}
-
-			if(this.touchPointID >= 0)
-			{
-				var touch:Touch = event.getTouch(this, null, this.touchPointID);
-				if(!touch)
-				{
-					//this should never happen
-					return;
-				}
-
-				touch.getLocation(this.stage, HELPER_POINT);
-				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
-				if(touch.phase === TouchPhase.MOVED)
-				{
-					if(isInBounds || this._keepDownStateOnRollOut)
-					{
-						this.changeState(ButtonState.DOWN);
-					}
-					else
-					{
-						this.changeState(ButtonState.UP);
-					}
-				}
-				else if(touch.phase === TouchPhase.ENDED)
-				{
-					this.resetTouchState(touch);
-				}
-				return;
-			}
-			else //if we get here, we don't have a saved touch ID yet
-			{
-				touch = event.getTouch(this, TouchPhase.BEGAN);
-				if(touch)
-				{
-					this.changeState(ButtonState.DOWN);
-					this.touchPointID = touch.id;
-					return;
-				}
-				touch = event.getTouch(this, TouchPhase.HOVER);
-				if(touch)
-				{
-					this.changeState(ButtonState.HOVER);
-					return;
-				}
-
-				//end of hover
-				this.changeState(ButtonState.UP);
-			}
 		}
 	}
 }

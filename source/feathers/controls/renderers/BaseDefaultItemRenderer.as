@@ -26,6 +26,8 @@ package feathers.controls.renderers
 	import feathers.layout.VerticalAlign;
 	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
+	import feathers.utils.touch.DelayedDownTouchToState;
+	import feathers.utils.touch.TouchToState;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -830,11 +832,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected static var DOWN_STATE_DELAY_MS:int = 250;
-
-		/**
-		 * @private
-		 */
 		protected static function defaultLoaderFactory():ImageLoader
 		{
 			return new ImageLoader();
@@ -1076,16 +1073,6 @@ package feathers.controls.renderers
 		{
 			this._factoryID = value;
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _delayedCurrentState:String;
-
-		/**
-		 * @private
-		 */
-		protected var _stateDelayTimer:Timer;
 
 		/**
 		 * @private
@@ -3868,15 +3855,6 @@ package feathers.controls.renderers
 			{
 				this.replaceSkin(null);
 			}
-			if(this._stateDelayTimer)
-			{
-				if(this._stateDelayTimer.running)
-				{
-					this._stateDelayTimer.stop();
-				}
-				this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-				this._stateDelayTimer = null;
-			}
 			super.dispose();
 		}
 
@@ -4398,10 +4376,15 @@ package feathers.controls.renderers
 		 */
 		override protected function initialize():void
 		{
+			if(this.touchToState === null && this._useStateDelayTimer)
+			{
+				this.touchToState = new DelayedDownTouchToState(this, this.changeState);
+			}
 			super.initialize();
 			this.tapToTrigger.customHitTest = this.hitTestWithAccessory;
 			this.tapToSelect.customHitTest = this.hitTestWithAccessory;
 			this.longPress.customHitTest = this.hitTestWithAccessory;
+			this.touchToState.customHitTest = this.hitTestWithAccessory;
 		}
 
 		/**
@@ -4599,37 +4582,10 @@ package feathers.controls.renderers
 		 */
 		override protected function changeState(value:String):void
 		{
-			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
+			if(this._isEnabled && !this._isToggle &&
+				(!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
 			{
 				value = ButtonState.UP;
-			}
-			if(this._useStateDelayTimer)
-			{
-				if(this._stateDelayTimer && this._stateDelayTimer.running)
-				{
-					this._delayedCurrentState = value;
-					return;
-				}
-
-				if(value == ButtonState.DOWN)
-				{
-					if(this._currentState === value)
-					{
-						return;
-					}
-					this._delayedCurrentState = value;
-					if(this._stateDelayTimer)
-					{
-						this._stateDelayTimer.reset();
-					}
-					else
-					{
-						this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-						this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-					}
-					this._stateDelayTimer.start();
-					return;
-				}
 			}
 			super.changeState(value);
 		}
@@ -4942,13 +4898,7 @@ package feathers.controls.renderers
 				return;
 			}
 			this._isEnabled = value;
-			if(!this._isEnabled)
-			{
-				this.touchable = false;
-				this._currentState = ButtonState.DISABLED;
-				this.touchPointID = -1;
-			}
-			else
+			if(this._isEnabled)
 			{
 				//might be in another state for some reason
 				//let's only change to up if needed
@@ -4957,6 +4907,11 @@ package feathers.controls.renderers
 					this._currentState = ButtonState.UP;
 				}
 				this.touchable = true;
+			}
+			else
+			{
+				this._currentState = ButtonState.DISABLED;
+				this.touchable = false;
 			}
 			this.setInvalidationFlag(INVALIDATION_FLAG_STATE);
 			this.dispatchEventWith(FeathersEventType.STATE_CHANGE);
@@ -5853,17 +5808,6 @@ package feathers.controls.renderers
 				}
 			}
 
-			if(this.touchPointID < 0 && this.accessoryTouchPointID < 0)
-			{
-				return;
-			}
-			this.resetTouchState();
-			if(this._stateDelayTimer && this._stateDelayTimer.running)
-			{
-				this._stateDelayTimer.stop();
-			}
-			this._delayedCurrentState = null;
-
 			if(this.accessoryTouchPointID >= 0)
 			{
 				this._owner.stopScrolling();
@@ -5894,34 +5838,6 @@ package feathers.controls.renderers
 		protected function itemRenderer_removedFromStageHandler(event:Event):void
 		{
 			this.accessoryTouchPointID = -1;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
-		{
-			super.changeState(this._delayedCurrentState);
-			this._delayedCurrentState = null;
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function basicButton_touchHandler(event:TouchEvent):void
-		{
-			if(this.currentAccessory && !this._isSelectableOnAccessoryTouch && this.currentAccessory != this.accessoryLabel && this.currentAccessory != this.accessoryLoader && this.touchPointID < 0)
-			{
-				//ignore all touches on accessories that are not labels or
-				//loaders. return to up state.
-				var touch:Touch = event.getTouch(this.currentAccessory);
-				if(touch)
-				{
-					this.changeState(ButtonState.UP);
-					return;
-				}
-			}
-			super.basicButton_touchHandler(event);
 		}
 
 		/**
