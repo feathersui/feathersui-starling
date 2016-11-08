@@ -53,7 +53,7 @@ package feathers.examples.trainTimes.themes
 
 		protected static const TIMES_LIST_ITEM_RENDERER_NAME:String = "traintimes-times-list-item-renderer";
 
-		protected static const HEADER_SCALE9_GRID:Rectangle = new Rectangle(0, 0, 2, 2);
+		protected static const HEADER_SCALE9_GRID:Rectangle = new Rectangle(1, 1, 1, 1);
 		protected static const HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(3, 0, 7, 4);
 		protected static const VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(0, 3, 4, 7);
 
