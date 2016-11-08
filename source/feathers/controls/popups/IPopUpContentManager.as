@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.popups
 {
+	import feathers.core.IFeathersEventDispatcher;
+
 	import starling.display.DisplayObject;
 
 	/**
@@ -56,7 +58,7 @@ package feathers.controls.popups
 	/**
 	 * Automatically manages pop-up content layout and positioning.
 	 */
-	public interface IPopUpContentManager
+	public interface IPopUpContentManager extends IFeathersEventDispatcher
 	{
 		/**
 		 * Indicates if the pop-up content is open or not.
