@@ -1403,17 +1403,18 @@ package feathers.controls
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				if(SystemUtil.isDesktop)
 				{
-					//must pass to setter so that listeners are added
-					this.popUpContentManager = new DropDownPopUpContentManager();
+					this._popUpContentManager = new DropDownPopUpContentManager();
 				}
 				else if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
-					this.popUpContentManager = new CalloutPopUpContentManager();
+					this._popUpContentManager = new CalloutPopUpContentManager();
 				}
 				else
 				{
-					this.popUpContentManager = new VerticalCenteredPopUpContentManager();
+					this._popUpContentManager = new VerticalCenteredPopUpContentManager();
 				}
+				this._popUpContentManager.addEventListener(Event.OPEN, popUpContentManager_openHandler);
+				this._popUpContentManager.addEventListener(Event.CLOSE, popUpContentManager_closeHandler);
 			}
 			super.initialize();
 		}
