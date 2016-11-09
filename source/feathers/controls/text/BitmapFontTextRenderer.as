@@ -1027,7 +1027,7 @@ package feathers.controls.text
 					this.addCharacterToBatch(charData, currentX + charData.xOffset * scale, currentY + charData.yOffset * scale, scale);
 				}
 
-				currentX += offsetX + customLetterSpacing;
+				currentX += customLetterSpacing + (i < charCount - 1) ? offsetX : charData.width * scale;
 				previousCharID = charID;
 			}
 			currentX = currentX - customLetterSpacing;
