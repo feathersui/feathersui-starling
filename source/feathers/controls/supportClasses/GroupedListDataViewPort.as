@@ -54,11 +54,7 @@ package feathers.controls.supportClasses
 		public function GroupedListDataViewPort()
 		{
 			super();
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
-
-		private var touchPointID:int = -1;
 
 		private var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
 
@@ -319,8 +315,6 @@ package feathers.controls.supportClasses
 		private var _headerIndices:Vector.<int> = new <int>[];
 		private var _footerIndices:Vector.<int> = new <int>[];
 
-		private var _isScrolling:Boolean = false;
-
 		private var _owner:GroupedList;
 
 		public function get owner():GroupedList
@@ -330,19 +324,7 @@ package feathers.controls.supportClasses
 
 		public function set owner(value:GroupedList):void
 		{
-			if(this._owner == value)
-			{
-				return;
-			}
-			if(this._owner)
-			{
-				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
-			}
 			this._owner = value;
-			if(this._owner)
-			{
-				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
-			}
 		}
 
 		private var _updateForDataReset:Boolean = false;
@@ -2652,11 +2634,6 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_scrollStartHandler(event:Event):void
-		{
-			this._isScrolling = true;
-		}
-
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -2957,7 +2934,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
-			if(!this._isSelectable || this._isScrolling)
+			if(!this._isSelectable || this._owner.isScrolling)
 			{
 				renderer.isSelected = false;
 				return;
@@ -2969,40 +2946,6 @@ package feathers.controls.supportClasses
 			else
 			{
 				this.setSelectedLocation(-1, -1);
-			}
-		}
-
-		private function removedFromStageHandler(event:Event):void
-		{
-			this.touchPointID = -1;
-		}
-
-		private function touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				this.touchPointID = -1;
-				return;
-			}
-
-			if(this.touchPointID >= 0)
-			{
-				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
-				if(!touch)
-				{
-					return;
-				}
-				this.touchPointID = -1;
-			}
-			else
-			{
-				touch = event.getTouch(this, TouchPhase.BEGAN);
-				if(!touch)
-				{
-					return;
-				}
-				this.touchPointID = touch.id;
-				this._isScrolling = false;
 			}
 		}
 	}
