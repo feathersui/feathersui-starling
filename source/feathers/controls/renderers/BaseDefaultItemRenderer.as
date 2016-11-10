@@ -996,6 +996,14 @@ package feathers.controls.renderers
 		 */
 		override public function set defaultIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._defaultIcon === value)
 			{
 				return;
@@ -1010,6 +1018,14 @@ package feathers.controls.renderers
 		 */
 		override public function set defaultSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._defaultSkin === value)
 			{
 				return;
