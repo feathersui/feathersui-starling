@@ -1485,7 +1485,7 @@ package feathers.controls.text
 			{
 				var charID:int = this._text.charCodeAt(i);
 				var charData:BitmapChar = font.getChar(charID);
-				if(!charData)
+				if(charData === null)
 				{
 					continue;
 				}
@@ -1495,7 +1495,10 @@ package feathers.controls.text
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
-				currentX += currentKerning + charData.xAdvance * scale;
+				var charWidth:Number = charData.width * scale; 
+				//add only the width of the character and not the xAdvance
+				//because the final character doesn't have whitespace after it
+				currentX += currentKerning + charWidth;
 				if(currentX > width)
 				{
 					//floating point errors can cause unnecessary truncation,
@@ -1505,22 +1508,26 @@ package feathers.controls.text
 					if(difference > FUZZY_MAX_WIDTH_PADDING)
 					{
 						truncationIndex = i;
+						//add the extra whitespace back to the end because we'll
+						//be appending the truncation text (...)
+						currentX += (charData.xAdvance * scale) - charWidth;
 						break;
 					}
 				}
-				currentX += customLetterSpacing;
+				//add the extra whitespace to the end for the next character
+				currentX += customLetterSpacing + (charData.xAdvance * scale) - charWidth;
 				previousCharID = charID;
 			}
 
 			if(truncationIndex >= 0)
 			{
-				//first measure the size of the truncation text
+				//first add the width of the truncation text (...)
 				charCount = this._truncationText.length;
 				for(i = 0; i < charCount; i++)
 				{
 					charID = this._truncationText.charCodeAt(i);
 					charData = font.getChar(charID);
-					if(!charData)
+					if(charData === null)
 					{
 						continue;
 					}
@@ -1534,14 +1541,18 @@ package feathers.controls.text
 					previousCharID = charID;
 				}
 				currentX -= customLetterSpacing;
+				if(charData !== null)
+				{
+					currentX -= (charData.xAdvance - charData.width) * scale;
+				}
 
 				//then work our way backwards until we fit into the width
 				for(i = truncationIndex; i >= 0; i--)
 				{
 					charID = this._text.charCodeAt(i);
-					previousCharID = i > 0 ? this._text.charCodeAt(i - 1) : NaN;
+					previousCharID = (i > 0) ? this._text.charCodeAt(i - 1) : NaN;
 					charData = font.getChar(charID);
-					if(!charData)
+					if(charData === null)
 					{
 						continue;
 					}
