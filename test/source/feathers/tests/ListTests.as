@@ -294,7 +294,7 @@ package feathers.tests
 		[Test]
 		public function testResizeOnUpdateItemAtWithLongerText():void
 		{
-			this._list.dataProvider.getItemAt(1).label = "I am the very model of a modern major general";
+			this._list.dataProvider.getItemAt(1).label = "I am the very model of a modern major general. I've information vegetable, animal, and mineral.";
 			this._list.dataProvider.updateItemAt(1);
 			var hasResized:Boolean = false;
 			this._list.addEventListener(Event.RESIZE, function(event:Event):void
