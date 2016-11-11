@@ -7,8 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.keyboard
 {
+	import feathers.controls.ButtonState;
 	import feathers.core.IFocusDisplayObject;
-	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 
 	import flash.ui.Keyboard;
@@ -18,54 +18,33 @@ package feathers.utils.keyboard
 	import starling.events.KeyboardEvent;
 
 	/**
-	 * Changes the <code>isSelected</code> property of the target when a key is
-	 * pressed and released while the target has focus. The target will
-	 * dispatch <code>Event.CHANGE</code>. Conveniently handles all
-	 * <code>KeyboardEvent</code> listeners automatically.
+	 * Changes a target's state when a key is pressed or released on the
+	 * keyboard. Conveniently handles all <code>KeyboardEvent</code> listeners
+	 * automatically.
 	 *
-	 * <p>In the following example, a custom component will be selected when a
-	 * key is pressed and released:</p>
-	 *
-	 * <listing version="3.0">
-	 * public class CustomComponent extends FeathersControl implements IFocusDisplayObject
-	 * {
-	 *     public function CustomComponent()
-	 *     {
-	 *         super();
-	 *         this._keyToSelect = new KeyToSelect(this);
-	 *         this._keyToSelect.keyCode = Keyboard.SPACE;
-	 *     }
-	 *     
-	 *     private var _keyToSelect:KeyToSelect;
-	 * // ...</listing>
-	 *
-	 * <p>Note: When combined with a <code>KeyToTrigger</code> instance, the
-	 * <code>KeyToSelect</code> instance should be created second because
-	 * <code>Event.TRIGGERED</code> should be dispatched before
-	 * <code>Event.CHANGE</code>.</p>
-	 *
-	 * @see feathers.utils.touch.KeyToTrigger
-	 * @see feathers.utils.touch.TapToSelect
+	 * @see feathers.utils.touch.TouchToState
 	 */
-	public class KeyToSelect
+	public class KeyToState
 	{
 		/**
 		 * Constructor.
 		 */
-		public function KeyToSelect(target:IToggle = null)
+		public function KeyToState(target:IFocusDisplayObject = null, callback:Function = null)
 		{
 			this.target = target;
+			this.callback = callback;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _target:IToggle;
+		protected var _target:IFocusDisplayObject;
 
 		/**
-		 * The target component that should be selected when a key is pressed.
+		 * The target component that should change state when a key is pressed
+		 * or released.
 		 */
-		public function get target():IToggle
+		public function get target():IFocusDisplayObject
 		{
 			return this._target;
 		}
@@ -73,7 +52,7 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
-		public function set target(value:IToggle):void
+		public function set target(value:IFocusDisplayObject):void
 		{
 			if(this._target === value)
 			{
@@ -81,7 +60,7 @@ package feathers.utils.keyboard
 			}
 			if(value !== null && !(value is IFocusDisplayObject))
 			{
-				throw new ArgumentError("Target of KeyToSelect must implement IFocusDisplayObject");
+				throw new ArgumentError("Target of KeyToState must implement IFocusDisplayObject");
 			}
 			if(this._target)
 			{
@@ -101,11 +80,43 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _callback:Function;
+
+		/**
+		 * The function to call when the state is changed.
+		 *
+		 * <p>The callback is expected to have the following signature:</p>
+		 * <pre>function(currentState:String):void</pre>
+		 */
+		public function get callback():Function
+		{
+			return this._callback;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set callback(value:Function):void
+		{
+			if(this._callback === value)
+			{
+				return;
+			}
+			this._callback = value;
+			if(this._callback !== null)
+			{
+				this._callback(this._currentState);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _keyCode:uint = Keyboard.SPACE;
 
 		/**
-		 * The key that will select the target, when pressed.
-		 * 
+		 * The key that will trigger the target, when pressed.
+		 *
 		 * @default flash.ui.Keyboard.SPACE
 		 */
 		public function get keyCode():uint
@@ -127,7 +138,7 @@ package feathers.utils.keyboard
 		protected var _cancelKeyCode:uint = Keyboard.ESCAPE;
 
 		/**
-		 * The key that will cancel the selection if the key is down.
+		 * The key that will cancel the trigger if the key is down.
 		 *
 		 * @default flash.ui.Keyboard.ESCAPE
 		 */
@@ -147,34 +158,10 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
-		protected var _keyToDeselect:Boolean = false;
-
-		/**
-		 * May be set to <code>true</code> to allow the target to be deselected
-		 * when the key is pressed.
-		 *
-		 * @default false
-		 */
-		public function get keyToDeselect():Boolean
-		{
-			return this._keyToDeselect;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set keyToDeselect(value:Boolean):void
-		{
-			this._keyToDeselect = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _isEnabled:Boolean = true;
 
 		/**
-		 * May be set to <code>false</code> to disable selection temporarily
+		 * May be set to <code>false</code> to disable state changes temporarily
 		 * until set back to <code>true</code>.
 		 */
 		public function get isEnabled():Boolean
@@ -193,6 +180,81 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _currentState:String = ButtonState.UP;
+
+		/**
+		 * @private
+		 */
+		protected var _upState:String = ButtonState.UP;
+
+		/**
+		 * The value for the "up" state.
+		 *
+		 * @default feathers.controls.ButtonState.UP
+		 */
+		public function get upState():String
+		{
+			return this._upState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set upState(value:String):void
+		{
+			this._upState = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _downState:String = ButtonState.DOWN;
+
+		/**
+		 * The value for the "down" state.
+		 *
+		 * @default feathers.controls.ButtonState.DOWN
+		 */
+		public function get downState():String
+		{
+			return this._downState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set downState(value:String):void
+		{
+			this._downState = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function changeState(value:String):void
+		{
+			if(this._currentState === value)
+			{
+				return;
+			}
+			this._currentState = value;
+			if(this._callback !== null)
+			{
+				this._callback(value);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function resetState():void
+		{
+			this.changeState(this._upState);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function target_focusInHandler(event:Event):void
 		{
 			this._target.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
@@ -205,6 +267,7 @@ package feathers.utils.keyboard
 		{
 			this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+			this.resetState();
 		}
 
 		/**
@@ -214,6 +277,7 @@ package feathers.utils.keyboard
 		{
 			this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+			this.resetState();
 		}
 
 		/**
@@ -228,10 +292,12 @@ package feathers.utils.keyboard
 			if(event.keyCode === this._cancelKeyCode)
 			{
 				this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this.resetState();
 			}
 			else if(event.keyCode === this._keyCode)
 			{
 				this._target.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this.changeState(this._downState);
 			}
 		}
 
@@ -254,14 +320,7 @@ package feathers.utils.keyboard
 			{
 				return;
 			}
-			if(this._keyToDeselect)
-			{
-				this._target.isSelected = !this._target.isSelected;
-			}
-			else
-			{
-				this._target.isSelected = true;
-			}
+			this.resetState();
 		}
 	}
 }

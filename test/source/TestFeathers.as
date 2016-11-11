@@ -52,6 +52,7 @@ package
 	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
+	import feathers.tests.ListCollectionFilterTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListFactoryIDFunctionTests;
 	import feathers.tests.ListRendererAddRemoveTests;
@@ -119,6 +120,7 @@ package
 	import feathers.tests.ToggleSwitchMeasurementTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
+	import feathers.tests.TouchToStateTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
@@ -273,6 +275,7 @@ package
 
 				//collections tests
 				ListCollectionWithArrayTests,
+				ListCollectionFilterTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,
@@ -306,6 +309,7 @@ package
 				TapToTriggerTests,
 				TapToSelectTests,
 				LongPressTests,
+				TouchToStateTests,
 				KeyToSelectTests,
 				KeyToTriggerTests,
 				TokenListTests,

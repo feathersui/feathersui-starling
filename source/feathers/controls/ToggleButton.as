@@ -1249,6 +1249,16 @@ package feathers.controls
 			{
 				this._defaultSelectedIcon.dispose();
 			}
+			if(this.keyToSelect !== null)
+			{
+				//setting the target to null will remove listeners and do any
+				//other clean up that is needed
+				this.keyToSelect.target = null;
+			}
+			if(this.tapToSelect !== null)
+			{
+				this.tapToSelect.target = null;
+			}
 			super.dispose();
 		}
 

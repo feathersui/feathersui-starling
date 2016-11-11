@@ -22,6 +22,7 @@ package feathers.controls
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
+	import feathers.utils.keyboard.KeyToState;
 	import feathers.utils.keyboard.KeyToTrigger;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.LongPress;
@@ -926,7 +927,7 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -1017,6 +1018,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var keyToTrigger:KeyToTrigger;
+
+		/**
+		 * @private
+		 */
+		protected var keyToState:KeyToState;
 
 		/**
 		 * @private
@@ -2283,6 +2289,16 @@ package feathers.controls
 					icon.dispose();
 				}
 			}
+			if(this.keyToState !== null)
+			{
+				//setting the target to null will remove listeners and do any
+				//other clean up that is needed
+				this.keyToState.target = null;
+			}
+			if(this.keyToTrigger !== null)
+			{
+				this.keyToTrigger.target = null;
+			}
 			super.dispose();
 		}
 
@@ -2395,17 +2411,21 @@ package feathers.controls
 		override protected function initialize():void
 		{
 			super.initialize();
-			if(!this.keyToTrigger)
+			if(this.keyToState === null)
+			{
+				this.keyToState = new KeyToState(this, this.changeState);
+			}
+			if(this.keyToTrigger === null)
 			{
 				this.keyToTrigger = new KeyToTrigger(this);
 			}
-			if(!this.longPress)
+			if(this.longPress === null)
 			{
 				this.longPress = new LongPress(this);
-				this.longPress.tapToTrigger = this.tapToTrigger;
 			}
+			this.longPress.tapToTrigger = this.tapToTrigger;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -3241,69 +3261,6 @@ package feathers.controls
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function focusInHandler(event:Event):void
-		{
-			super.focusInHandler(event);
-			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function focusOutHandler(event:Event):void
-		{
-			super.focusOutHandler(event);
-			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-
-			if(this.touchPointID >= 0)
-			{
-				this.touchPointID = -1;
-				if(this._isEnabled)
-				{
-					this.changeState(ButtonState.UP);
-				}
-				else
-				{
-					this.changeState(ButtonState.DISABLED);
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
-		{
-			if(event.keyCode === Keyboard.ESCAPE)
-			{
-				this.touchPointID = -1;
-				this.changeState(ButtonState.UP);
-			}
-			if(this.touchPointID >= 0 || event.keyCode !== Keyboard.SPACE)
-			{
-				return;
-			}
-			this.touchPointID = int.MAX_VALUE;
-			this.changeState(ButtonState.DOWN);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stage_keyUpHandler(event:KeyboardEvent):void
-		{
-			if(this.touchPointID !== int.MAX_VALUE || event.keyCode !== Keyboard.SPACE)
-			{
-				return;
-			}
-			this.resetTouchState();
 		}
 
 		/**

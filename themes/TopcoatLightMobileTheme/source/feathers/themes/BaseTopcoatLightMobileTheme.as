@@ -1337,17 +1337,18 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.popUpContentManager = new CalloutPopUpContentManager();
-			}
-			else
+			if(DeviceCapabilities.isPhone(this.starling.nativeStage))
 			{
 				list.listFactory = pickerListSpinnerListFactory;
 
 				var popUpContentManager:BottomDrawerPopUpContentManager = new BottomDrawerPopUpContentManager();
 				popUpContentManager.customPanelStyleName = THEME_STYLE_NAME_POP_UP_DRAWER;
 				list.popUpContentManager = popUpContentManager;
+			}
+			else
+			{
+				list.popUpContentManager = new CalloutPopUpContentManager();
+				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
 		}
 
@@ -1378,10 +1379,6 @@ package feathers.themes
 
 		protected function setPickerListListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
-			}
 			this.setDropDownListStyles(list);
 		}
 

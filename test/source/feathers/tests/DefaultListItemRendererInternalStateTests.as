@@ -31,6 +31,7 @@ package feathers.tests
 			this._itemRenderer.index = 0;
 			this._itemRenderer.data = {};
 			this._itemRenderer.useStateDelayTimer = false;
+			this._itemRenderer.paddingLeft = 100;
 			TestFeathers.starlingRoot.addChild(this._itemRenderer);
 		}
 
@@ -166,8 +167,10 @@ package feathers.tests
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			this._itemRenderer.validate();
-			Assert.assertStrictlyEquals("Item Renderer state is not ButtonState.HOVER on TouchPhase.HOVER", ButtonState.HOVER, this._itemRenderer.currentState);
-			Assert.assertStrictlyEquals("Item Renderer accessory does not match accessory set with setAccessoryForState() when currentState is ButtonState.HOVER and accessory not provided for this state", hoverAccessory, this._itemRenderer.currentAccessoryInternal);
+			Assert.assertStrictlyEquals("Item Renderer state is not ButtonState.HOVER on TouchPhase.HOVER",
+				ButtonState.HOVER, this._itemRenderer.currentState);
+			Assert.assertStrictlyEquals("Item Renderer accessory does not match accessory set with setAccessoryForState() when currentState is ButtonState.HOVER and accessory not provided for this state",
+				hoverAccessory, this._itemRenderer.currentAccessoryInternal);
 
 			touch.phase = TouchPhase.BEGAN;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));

@@ -288,6 +288,36 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testCenterAlignmentWithExplicitWidthLargerThanSumOfItems():void
+		{
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 2 * CHILD1_WIDTH + CHILD2_WIDTH;
+			this._layout.horizontalAlign = HorizontalAlign.CENTER;
+			this._layout.layout(items, bounds);
+			var totalChildWidth:Number = CHILD1_WIDTH + CHILD2_WIDTH;
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.CENTER set first child.x incorrectly", Math.round((bounds.explicitWidth - totalChildWidth) / 2), item1.x);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.CENTER set second child.x incorrectly", Math.round((bounds.explicitWidth - totalChildWidth) / 2) + CHILD1_WIDTH, item2.x);
+		}
+
+		[Test]
+		public function testCenterAlignmentWithMaxWidthLargerThanItems():void
+		{
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.maxWidth = CHILD1_WIDTH + (CHILD2_WIDTH / 2);
+			this._layout.horizontalAlign = HorizontalAlign.CENTER;
+			this._layout.layout(items, bounds);
+			var maxChildWidth:Number = Math.max(CHILD1_WIDTH, CHILD2_WIDTH);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.CENTER set first child.x incorrectly", Math.round((maxChildWidth - CHILD1_WIDTH) / 2), item1.x);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.CENTER set second child.x incorrectly", Math.round((maxChildWidth - CHILD2_WIDTH) / 2), item2.x);
+		}
+
+		[Test]
 		public function testRightAlignmentWithMaxWidthLargerThanItems():void
 		{
 			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
@@ -337,6 +367,21 @@ package feathers.tests
 				0, item1.x);
 			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT and larger child than explicitWidth calculated smaller child x incorrectly",
 				CHILD1_WIDTH - item2.width, item2.x);
+		}
+
+		[Test]
+		public function testRightAlignmentWithExplicitWidthLargerThanSumOfItems():void
+		{
+			var item1:Quad = new Quad(CHILD1_WIDTH, CHILD1_HEIGHT, 0xff00ff);
+			var item2:Quad = new Quad(CHILD2_WIDTH, CHILD2_HEIGHT, 0xff00ff);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 2 * CHILD1_WIDTH + CHILD2_WIDTH;
+			this._layout.horizontalAlign = HorizontalAlign.RIGHT;
+			this._layout.layout(items, bounds);
+			var totalChildWidth:Number = CHILD1_WIDTH + CHILD2_WIDTH;
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set first child.x incorrectly", bounds.explicitWidth - totalChildWidth, item1.x);
+			Assert.assertStrictlyEquals("FlowLayout with HorizontalAlign.RIGHT set second child.x incorrectly", bounds.explicitWidth - totalChildWidth + CHILD1_WIDTH, item2.x);
 		}
 	}
 }

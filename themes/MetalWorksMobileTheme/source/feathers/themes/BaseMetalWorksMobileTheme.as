@@ -1913,21 +1913,22 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.popUpContentManager = new CalloutPopUpContentManager();
-			}
-			else
+			trace(DeviceCapabilities.isPhone(this.starling.nativeStage));
+			if(DeviceCapabilities.isPhone(this.starling.nativeStage))
 			{
 				list.listFactory = pickerListSpinnerListFactory;
 				list.popUpContentManager = new BottomDrawerPopUpContentManager();
+			}
+			else //tablet or desktop
+			{
+				list.popUpContentManager = new CalloutPopUpContentManager();
+				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
 		}
 
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
 			this.setDropDownListStyles(list);
-			list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 		}
 
 		protected function setPickerListItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void

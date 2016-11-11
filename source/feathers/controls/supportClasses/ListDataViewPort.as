@@ -49,11 +49,7 @@ package feathers.controls.supportClasses
 		public function ListDataViewPort()
 		{
 			super();
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
-
-		private var touchPointID:int = -1;
 
 		private var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
 
@@ -272,8 +268,6 @@ package feathers.controls.supportClasses
 
 		private var _layoutIndexOffset:int = 0;
 
-		private var _isScrolling:Boolean = false;
-
 		private var _owner:List;
 
 		public function get owner():List
@@ -283,19 +277,7 @@ package feathers.controls.supportClasses
 
 		public function set owner(value:List):void
 		{
-			if(this._owner == value)
-			{
-				return;
-			}
-			if(this._owner)
-			{
-				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
-			}
 			this._owner = value;
-			if(this._owner)
-			{
-				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
-			}
 		}
 
 		private var _updateForDataReset:Boolean = false;
@@ -317,6 +299,7 @@ package feathers.controls.supportClasses
 			{
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -328,6 +311,7 @@ package feathers.controls.supportClasses
 			{
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -1437,11 +1421,6 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_scrollStartHandler(event:Event):void
-		{
-			this._isScrolling = true;
-		}
-
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1486,6 +1465,18 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
+			layout.resetVariableVirtualCache();
+		}
+
+		private function dataProvider_filterChangeHandler(event:Event):void
+		{
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			//we don't know exactly which indices have changed, so reset the
+			//whole cache.
 			layout.resetVariableVirtualCache();
 		}
 
@@ -1571,7 +1562,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			var renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
-			if(!this._isSelectable || this._isScrolling)
+			if(!this._isSelectable || this._owner.isScrolling)
 			{
 				renderer.isSelected = false;
 				return;
@@ -1603,40 +1594,6 @@ package feathers.controls.supportClasses
 		private function selectedIndices_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-		}
-
-		private function removedFromStageHandler(event:Event):void
-		{
-			this.touchPointID = -1;
-		}
-
-		private function touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				this.touchPointID = -1;
-				return;
-			}
-
-			if(this.touchPointID >= 0)
-			{
-				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
-				if(!touch)
-				{
-					return;
-				}
-				this.touchPointID = -1;
-			}
-			else
-			{
-				touch = event.getTouch(this, TouchPhase.BEGAN);
-				if(!touch)
-				{
-					return;
-				}
-				this.touchPointID = touch.id;
-				this._isScrolling = false;
-			}
 		}
 	}
 }

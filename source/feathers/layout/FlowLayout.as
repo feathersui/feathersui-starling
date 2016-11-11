@@ -916,7 +916,7 @@ package feathers.layout
 			//this cache
 			this._rowItems.length = 0;
 
-			if(supportsMultipleRows)
+			if(supportsMultipleRows && (needsWidth || explicitWidth < maxRowWidth))
 			{
 				//if the maxRowWidth has changed since any row was aligned, the
 				//items in those rows may need to be shifted a bit

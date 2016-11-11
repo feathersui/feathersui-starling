@@ -681,12 +681,18 @@ package feathers.controls.text
 			var wordCountForLine:int = 0;
 			var line:String = "";
 			var word:String = "";
+			var charData:BitmapChar = null;
 			for(var i:int = 0; i < charCount; i++)
 			{
 				var charID:int = this._text.charCodeAt(i);
-				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+				if(charID === CHARACTER_ID_LINE_FEED || charID === CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
-					currentX = currentX - customLetterSpacing;
+					//remove whitespace after the final character in the line
+					currentX -= customLetterSpacing;
+					if(charData !== null)
+					{
+						currentX -= (charData.xAdvance - charData.width) * scale;
+					}
 					if(currentX < 0)
 					{
 						currentX = 0;
@@ -704,8 +710,8 @@ package feathers.controls.text
 					continue;
 				}
 
-				var charData:BitmapChar = font.getChar(charID);
-				if(!charData)
+				charData = font.getChar(charID);
+				if(charData === null)
 				{
 					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
 					continue;
@@ -720,13 +726,16 @@ package feathers.controls.text
 				var xAdvance:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
-					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
-					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
+					var currentCharIsWhitespace:Boolean = charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB;
+					var previousCharIsWhitespace:Boolean = previousCharID === CHARACTER_ID_SPACE || previousCharID === CHARACTER_ID_TAB;
 					if(currentCharIsWhitespace)
 					{
 						if(!previousCharIsWhitespace)
 						{
-							widthOfWhitespaceAfterWord = 0;
+							//this is the spacing after the last character
+							//that isn't whitespace
+							var previousCharData:BitmapChar = font.getChar(previousCharID);
+							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
 						}
 						widthOfWhitespaceAfterWord += xAdvance;
 					}
@@ -738,7 +747,8 @@ package feathers.controls.text
 						word = "";
 					}
 
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + xAdvance) > maxLineWidth)
+					var charWidth:Number = charData.width * scale;
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + charWidth) > maxLineWidth)
 					{
 						//we're just reusing this variable to avoid creating a
 						//new one. it'll be reset to 0 in a moment.
@@ -760,7 +770,12 @@ package feathers.controls.text
 				previousCharID = charID;
 				word += String.fromCharCode(charID);
 			}
-			currentX = currentX - customLetterSpacing;
+			//remove whitespace after the final character in the final line
+			currentX -= customLetterSpacing;
+			if(charData !== null)
+			{
+				currentX -= (charData.xAdvance - charData.width) * scale;
+			}
 			if(currentX < 0)
 			{
 				currentX = 0;
@@ -1022,14 +1037,20 @@ package feathers.controls.text
 			var widthOfWhitespaceAfterWord:Number = 0;
 			var wordLength:int = 0;
 			var wordCountForLine:int = 0;
+			var charData:BitmapChar = null;
 			var charCount:int = textToDraw ? textToDraw.length : 0;
 			for(var i:int = 0; i < charCount; i++)
 			{
 				isWordComplete = false;
 				var charID:int = textToDraw.charCodeAt(i);
-				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+				if(charID === CHARACTER_ID_LINE_FEED || charID === CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
-					currentX = currentX - customLetterSpacing;
+					//remove whitespace after the final character in the line
+					currentX -= customLetterSpacing;
+					if(charData !== null)
+					{
+						currentX -= (charData.xAdvance - charData.width) * scale;
+					}
 					if(currentX < 0)
 					{
 						currentX = 0;
@@ -1054,8 +1075,8 @@ package feathers.controls.text
 					continue;
 				}
 
-				var charData:BitmapChar = font.getChar(charID);
-				if(!charData)
+				charData = font.getChar(charID);
+				if(charData === null)
 				{
 					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
 					continue;
@@ -1070,13 +1091,16 @@ package feathers.controls.text
 				var xAdvance:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
-					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
-					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
+					var currentCharIsWhitespace:Boolean = charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB;
+					var previousCharIsWhitespace:Boolean = previousCharID === CHARACTER_ID_SPACE || previousCharID === CHARACTER_ID_TAB;
 					if(currentCharIsWhitespace)
 					{
 						if(!previousCharIsWhitespace)
 						{
-							widthOfWhitespaceAfterWord = 0;
+							//this is the spacing after the last character
+							//that isn't whitespace
+							var previousCharData:BitmapChar = font.getChar(previousCharID);
+							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
 						}
 						widthOfWhitespaceAfterWord += xAdvance;
 					}
@@ -1100,7 +1124,8 @@ package feathers.controls.text
 					//floating point errors can cause unnecessary line breaks,
 					//so we're going to be a little bit fuzzy on the greater
 					//than check. such tiny numbers shouldn't break anything.
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + xAdvance) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
+					var charWidth:Number = charData.width * scale;
+					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + charWidth) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
 					{
 						if(isAligned)
 						{
@@ -1148,7 +1173,12 @@ package feathers.controls.text
 				currentX += xAdvance + customLetterSpacing;
 				previousCharID = charID;
 			}
+			//remove whitespace after the final character in the final line
 			currentX = currentX - customLetterSpacing;
+			if(charData !== null)
+			{
+				currentX -= (charData.xAdvance - charData.width) * scale;
+			}
 			if(currentX < 0)
 			{
 				currentX = 0;
@@ -1214,7 +1244,7 @@ package feathers.controls.text
 				var charLocation:CharLocation = CHARACTER_BUFFER[i];
 				var charData:BitmapChar = charLocation.char;
 				var charID:int = charData.charID;
-				if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
+				if(charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB)
 				{
 					countToRemove++;
 				}
@@ -1455,7 +1485,7 @@ package feathers.controls.text
 			{
 				var charID:int = this._text.charCodeAt(i);
 				var charData:BitmapChar = font.getChar(charID);
-				if(!charData)
+				if(charData === null)
 				{
 					continue;
 				}
@@ -1465,7 +1495,10 @@ package feathers.controls.text
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
-				currentX += currentKerning + charData.xAdvance * scale;
+				var charWidth:Number = charData.width * scale; 
+				//add only the width of the character and not the xAdvance
+				//because the final character doesn't have whitespace after it
+				currentX += currentKerning + charWidth;
 				if(currentX > width)
 				{
 					//floating point errors can cause unnecessary truncation,
@@ -1475,22 +1508,26 @@ package feathers.controls.text
 					if(difference > FUZZY_MAX_WIDTH_PADDING)
 					{
 						truncationIndex = i;
+						//add the extra whitespace back to the end because we'll
+						//be appending the truncation text (...)
+						currentX += (charData.xAdvance * scale) - charWidth;
 						break;
 					}
 				}
-				currentX += customLetterSpacing;
+				//add the extra whitespace to the end for the next character
+				currentX += customLetterSpacing + (charData.xAdvance * scale) - charWidth;
 				previousCharID = charID;
 			}
 
 			if(truncationIndex >= 0)
 			{
-				//first measure the size of the truncation text
+				//first add the width of the truncation text (...)
 				charCount = this._truncationText.length;
 				for(i = 0; i < charCount; i++)
 				{
 					charID = this._truncationText.charCodeAt(i);
 					charData = font.getChar(charID);
-					if(!charData)
+					if(charData === null)
 					{
 						continue;
 					}
@@ -1504,14 +1541,18 @@ package feathers.controls.text
 					previousCharID = charID;
 				}
 				currentX -= customLetterSpacing;
+				if(charData !== null)
+				{
+					currentX -= (charData.xAdvance - charData.width) * scale;
+				}
 
 				//then work our way backwards until we fit into the width
 				for(i = truncationIndex; i >= 0; i--)
 				{
 					charID = this._text.charCodeAt(i);
-					previousCharID = i > 0 ? this._text.charCodeAt(i - 1) : NaN;
+					previousCharID = (i > 0) ? this._text.charCodeAt(i - 1) : NaN;
 					charData = font.getChar(charID);
-					if(!charData)
+					if(charData === null)
 					{
 						continue;
 					}

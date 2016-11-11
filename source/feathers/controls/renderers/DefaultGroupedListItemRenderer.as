@@ -55,7 +55,7 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
-		
+
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
@@ -388,12 +388,12 @@ package feathers.controls.renderers
 		{
 			return DefaultGroupedListItemRenderer.globalStyleProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _groupIndex:int = -1;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -401,7 +401,7 @@ package feathers.controls.renderers
 		{
 			return this._groupIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -459,7 +459,7 @@ package feathers.controls.renderers
 		{
 			return GroupedList(this._owner);
 		}
-		
+
 		/**
 		 * @private
 		 */

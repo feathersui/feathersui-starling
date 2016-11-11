@@ -1557,24 +1557,20 @@ package feathers.themes
 		{
 			list.toggleButtonOnOpenAndClose = true;
 			list.buttonFactory = pickerListButtonFactory;
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.popUpContentManager = new CalloutPopUpContentManager();
-			}
-			else
+			if(DeviceCapabilities.isPhone(this.starling.nativeStage))
 			{
 				list.listFactory = pickerListSpinnerListFactory;
 				list.popUpContentManager = new BottomDrawerPopUpContentManager();
+			}
+			else //tablet or desktop
+			{
+				list.popUpContentManager = new CalloutPopUpContentManager();
+				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
 		}
 
 		protected function setPickerListPopUpListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
-			}
-
 			this.setDropDownListStyles(list);
 		}
 

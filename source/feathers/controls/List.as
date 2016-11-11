@@ -578,6 +578,7 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -587,6 +588,7 @@ package feathers.controls
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
@@ -692,7 +694,7 @@ package feathers.controls
 		{
 			return this._selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -884,6 +886,11 @@ package feathers.controls
 
 		[Bindable(event="change")]
 		/**
+		 * @private
+		 */
+		protected var _selectedItems:Vector.<Object> = new <Object>[];
+
+		/**
 		 * The currently selected item. The getter returns an empty
 		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
 		 * items are selected, the getter creates a new
@@ -919,7 +926,7 @@ package feathers.controls
 		 */
 		public function get selectedItems():Vector.<Object>
 		{
-			return this.getSelectedItems(new <Object>[]);
+			return this._selectedItems;
 		}
 
 		/**
@@ -957,7 +964,7 @@ package feathers.controls
 		 */
 		public function getSelectedItems(result:Vector.<Object> = null):Vector.<Object>
 		{
-			if(result)
+			if(result !== null)
 			{
 				result.length = 0;
 			}
@@ -978,12 +985,12 @@ package feathers.controls
 			}
 			return result;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _itemRendererType:Class = DefaultListItemRenderer;
-		
+
 		/**
 		 * The class used to instantiate item renderers. Must implement the
 		 * <code>IListItemRenderer</code> interface.
@@ -1005,7 +1012,7 @@ package feathers.controls
 		{
 			return this._itemRendererType;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1015,7 +1022,7 @@ package feathers.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1024,7 +1031,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _itemRendererFactories:Object;
-		
+
 		/**
 		 * @private
 		 */
@@ -1160,9 +1167,7 @@ package feathers.controls
 		 * <p>The following example provides a typical item:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.typicalItem = { text: "A typical item", thumbnail: texture };
-		 * list.itemRendererProperties.labelField = "text";
-		 * list.itemRendererProperties.iconSourceField = "thumbnail";</listing>
+		 * list.typicalItem = { text: "A typical item", thumbnail: texture };</listing>
 		 *
 		 * @default null
 		 */
@@ -1705,6 +1710,46 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			if(this._selectedIndex === -1)
+			{
+				return;
+			}
+			var selectionChanged:Boolean = false;
+			var newIndices:Vector.<int> = new <int>[];
+			var pushIndex:int = 0;
+			var count:int = this._selectedItems.length;
+			for(var i:int = 0; i < count; i++)
+			{
+				var selectedItem:Object = this._selectedItems[i];
+				var oldIndex:int = this._selectedIndices.getItemAt(i) as int;
+				var newIndex:int = this._dataProvider.getItemIndex(selectedItem);
+				if(newIndex >= 0)
+				{
+					if(newIndex !== oldIndex)
+					{
+						//the item was not filtered, but it moved to a new index
+						selectionChanged = true;
+					}
+					newIndices[pushIndex] = newIndex;
+					pushIndex++;
+				}
+				else
+				{
+					//the item is filtered, so it should not be selected
+					selectionChanged = true;
+				}
+			}
+			if(selectionChanged)
+			{
+				this._selectedIndices.data = newIndices;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
 			if(this._selectedIndex == -1)
@@ -1717,12 +1762,13 @@ package feathers.controls
 				this._selectedIndices.removeItemAt(indexOfIndex);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected function selectedIndices_changeHandler(event:Event):void
 		{
+			this.getSelectedItems(this._selectedItems);
 			if(this._selectedIndices.length > 0)
 			{
 				this._selectedIndex = this._selectedIndices.getItemAt(0) as int;

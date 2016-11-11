@@ -88,6 +88,29 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testRemoveBeforeInteractiveChangeEvent():void
+		{
+			var beforeIsSelected:Boolean = this._button.isSelected;
+			var hasChanged:Boolean = false;
+			this._button.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.removeFromParent(false);
+			Assert.assertFalse("Event.CHANGE most not be dispatched after removed from stage", hasChanged);
+			Assert.assertTrue("This isSelected property must not be changed after removed from stage", beforeIsSelected === this._button.isSelected);
+		}
+
+		[Test]
 		public function testSetIsToggleToFalse():void
 		{
 			this._button.isToggle = false;
