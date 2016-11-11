@@ -4,11 +4,13 @@ package feathers.tests
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 
 	import org.flexunit.Assert;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 
 	public class AnchorLayoutTests
 	{
@@ -243,6 +245,127 @@ package feathers.tests
 			//we're only checking that it has more than one line
 			Assert.assertTrue("AnchorLayoutData with left and right on a wrapping Label results in height that is too small",
 				unwrappedHeight < item1.height);
+		}
+
+		[Test]
+		public function testChildWithCalculatedMinDimensionsAndPercentDimensions():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 100;
+			layoutData1.percentHeight = 100;
+			item1.layoutData = layoutData1;
+			var child:Quad = new Quad(100, 150, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port width and child with percentWidth and calculated minWidth results in wrong view port width",
+				100, result.viewPortWidth);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port height and child with percentHeight and calculated minHeight results in wrong view port height",
+				150, result.viewPortHeight);
+		}
+
+		[Test]
+		public function testChildWithExplicitMinWidthAndPercentWidth():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 100;
+			layoutData1.percentHeight = 100;
+			item1.layoutData = layoutData1;
+			var child:Quad = new Quad(100, 100, 0xff00ff);
+			item1.minWidth = 200;
+			item1.minHeight = 250;
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port width and child with percentWidth and explicit minWidth results in wrong view port width",
+				200, result.viewPortWidth);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port width and child with percentWidth and explicit minWidth results in wrong child width",
+				200, item1.width);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port height and child with percentHeight and explicit minHeight results in wrong view port height",
+				250, result.viewPortHeight);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port height and child with percentHeight and explicit minHeight results in wrong child height",
+				250, item1.height);
+		}
+
+		[Test]
+		public function testChildWithCalculatedMinWidthAndPercentWidthWithExplicitWidth():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 100;
+			layoutData1.percentHeight = 100;
+			item1.layoutData = layoutData1;
+			var child:Quad = new Quad(100, 100, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 50;
+			bounds.explicitHeight = 75;
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port width and child with percentWidth and calculated minWidth results in wrong view port width",
+				50, result.viewPortWidth);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port width and child with percentWidth and calculated minWidth results in wrong child width",
+				50, item1.width);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port height and child with percentHeight and calculated minHeight results in wrong view port height",
+				75, result.viewPortHeight);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port height and child with percentHeight and calculated minHeight results in wrong child height",
+				75, item1.height);
+		}
+
+
+		[Test]
+		public function testChildWithCalculatedMinWidthAndPercentWidthWithViewPortMinWidth():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 100;
+			layoutData1.percentHeight = 100;
+			item1.layoutData = layoutData1;
+			var child:Quad = new Quad(100, 150, 0xff00ff);
+			item1.addChild(child);
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.minWidth = 10;
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port minWidth and child with percentWidth and calculated minWidth results in wrong view port width",
+				100, result.viewPortWidth);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port minWidth and child with percentWidth and calculated minWidth results in wrong child width",
+				100, item1.width);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port minWidth and child with percentHeight and calculated minHeight results in wrong view port height",
+				150, result.viewPortHeight);
+			Assert.assertStrictlyEquals("AnchorLayout with explicit view port minWidth and child with percentHeight and calculated minHeight results in wrong child height",
+				150, item1.height);
+		}
+
+		[Test]
+		public function testChildWithCalculatedWidthAndSmallerCalculatedMinWidthAndPercentWidth():void
+		{
+			var item1:LayoutGroup = new LayoutGroup();
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.percentWidth = 100;
+			layoutData1.percentHeight = 100;
+			item1.layoutData = layoutData1;
+			var child:LayoutGroup = new LayoutGroup();
+			child.width = 100;
+			child.height = 150;
+			child.minWidth = 50;
+			child.minHeight = 50;
+			item1.backgroundSkin = child;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port width and child with percentWidth, calculated width, and calculated minWidth results in wrong view port width",
+				100, result.viewPortWidth);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port width and child with percentWidth, calculated width, and calculated minWidth results in wrong child width",
+				100, item1.width);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port height and child with percentHeight, calculated height, and calculated minHeight results in wrong view port height",
+				150, result.viewPortHeight);
+			Assert.assertStrictlyEquals("AnchorLayout without explicit view port height and child with percentHeight, calculated height, and calculated minHeight results in wrong child height",
+				150, item1.height);
 		}
 	}
 }
