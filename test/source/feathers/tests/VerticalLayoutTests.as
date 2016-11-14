@@ -438,6 +438,19 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testRequestedRowCountWithZeroItems():void
+		{
+			this._layout.requestedRowCount = 3;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("VerticalLayout with requestedRowCount and zero items results in wrong view port height",
+				0, result.viewPortHeight);
+			Assert.assertStrictlyEquals("VerticalLayout with requestedRowCount and zero items results in wrong content height",
+				0, result.contentHeight);
+		}
+
+		[Test]
 		public function testSmallerRequestedRowCount():void
 		{
 			this._layout.requestedRowCount = 2;

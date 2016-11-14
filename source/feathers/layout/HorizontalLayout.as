@@ -1166,7 +1166,14 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout && this._requestedColumnCount > itemCount)
 			{
-				requestedColumnAvailableWidth = this._requestedColumnCount * positionX / itemCount;
+				if(itemCount > 0)
+				{
+					requestedColumnAvailableWidth = this._requestedColumnCount * positionX / itemCount;
+				}
+				else
+				{
+					requestedColumnAvailableWidth = 0;
+				}
 			}
 
 			//this array will contain all items that are not null. see the
