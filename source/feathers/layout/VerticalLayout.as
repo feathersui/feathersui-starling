@@ -1254,7 +1254,14 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout && this._requestedRowCount > itemCount)
 			{
-				requestedRowAvailableHeight = this._requestedRowCount * positionY / itemCount;
+				if(itemCount > 0)
+				{
+					requestedRowAvailableHeight = this._requestedRowCount * positionY / itemCount;
+				}
+				else
+				{
+					requestedRowAvailableHeight = 0;
+				}
 			}
 
 			//this array will contain all items that are not null. see the

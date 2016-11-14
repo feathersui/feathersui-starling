@@ -371,6 +371,19 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testRequestedColumnCountWithZeroItems():void
+		{
+			this._layout.requestedColumnCount = 3;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("HorizontalLayout with requestedColumnCount and zero items results in wrong view port width",
+				0, result.viewPortWidth);
+			Assert.assertStrictlyEquals("HorizontalLayout with requestedColumnCount and zero items results in wrong content width",
+				0, result.contentWidth);
+		}
+
+		[Test]
 		public function testSmallerRequestedColumnCount():void
 		{
 			this._layout.requestedColumnCount = 2;
