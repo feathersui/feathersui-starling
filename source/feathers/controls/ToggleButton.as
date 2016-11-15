@@ -1343,6 +1343,29 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function getCurrentLabelProperties():Object
+		{
+			if(this._stateToLabelPropertiesFunction === null)
+			{
+				//we use the currentState getter here instead of the variable
+				//because the variable does not keep track of the selection
+				var result:Object = this._stateToLabelProperties[this.currentState];
+				if(result !== null)
+				{
+					return result;
+				}
+				if(this._isSelected && this._defaultSelectedLabelProperties !== null)
+				{
+					return this._defaultSelectedLabelProperties;
+				}
+				return this._defaultLabelProperties;
+			}
+			return super.getCurrentIcon();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSelectionEvents():void
 		{
 			this.tapToSelect.isEnabled = this._isEnabled && this._isToggle;
