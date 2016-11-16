@@ -4,6 +4,13 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 3.1.1 - November 2016
 
+* AnchorLayout: fixed issue where using percentWidth would result in an error about maxWidth being NaN.
+* DefaultListItemRenderer: fixed issue where defaultSkin and defaultIcon properties were not treated correctly as styles.
+* FlowLayout: fixed issue where alignment to the center or right was not correct when container has explicit width.
+* Header: accounts for new Capabilities.os value on some recent iOS devices when calculating extra padding for status bar when not full screen.
+* HorizontalLayout, VerticalLayout fixed issue where using requestedColumnCount/requestedRowCount would result in incorrect view port dimensions if layout contained zero items.
+* ToggleButton: fixed issue where defaultLabelProperties, selectedUpLabelProperties, and other selected label properties were ignored.
+
 ## 3.1.0 - October 2016
 
 * New Component: TabNavigator to display a TabBar that switches between screens, similar to a ScreenNavigator.
