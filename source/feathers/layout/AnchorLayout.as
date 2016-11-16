@@ -313,21 +313,6 @@ package feathers.layout
 		protected function measureItemHorizontally(item:ILayoutDisplayObject, layoutData:AnchorLayoutData):Number
 		{
 			var itemWidth:Number = item.width;
-			if(layoutData && item is IFeathersControl)
-			{
-				var percentWidth:Number = layoutData.percentWidth;
-				//for some reason, if we don't call a function right here,
-				//compiling with the flex 4.6 SDK will throw a VerifyError
-				//for a stack overflow.
-				//we could change the === check back to !isNaN() instead, but
-				//isNaN() can allocate an object, so we should call a different
-				//function without allocation.
-				this.doNothing();
-				if(percentWidth === percentWidth) //!isNaN
-				{
-					itemWidth = IFeathersControl(item).minWidth;
-				}
-			}
 			var displayItem:DisplayObject = DisplayObject(item);
 			var left:Number = this.getLeftOffset(displayItem);
 			var right:Number = this.getRightOffset(displayItem);
@@ -1082,6 +1067,7 @@ package feathers.layout
 							if(hasLeftPosition && leftAnchor === null &&
 								hasRightPosition && rightAnchor === null)
 							{
+								measureItem.width = NaN;
 								measureItem.maxWidth = maxWidth - left - right;
 							}
 							else if(hasPercentWidth)
@@ -1094,7 +1080,8 @@ package feathers.layout
 								{
 									percentWidth = 100;
 								}
-								measureItem.maxWidth = percentWidth * 0.01 * containerWidth;
+								measureItem.width = NaN;
+								measureItem.maxWidth = percentWidth * 0.01 * maxWidth;
 							}
 						}
 						else
