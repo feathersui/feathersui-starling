@@ -2,6 +2,8 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.1.1 - November 2016
+
 ## 3.1.0 - October 2016
 
 * New Component: TabNavigator to display a TabBar that switches between screens, similar to a ScreenNavigator.
