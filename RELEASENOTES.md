@@ -10,6 +10,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Header: accounts for new Capabilities.os value on some recent iOS devices when calculating extra padding for status bar when not full screen.
 * HorizontalLayout, VerticalLayout fixed issue where using requestedColumnCount/requestedRowCount would result in incorrect view port dimensions if layout contained zero items.
 * TextBlockTextRenderer, TextBlockTextEditor: fixed issue where text would not be clipped sometimes if truncation is disabled.
+* TextBlockTextRenderer: fixed issue where center or bottom alignment was offset incorrectly.
 * ToggleButton: fixed issue where defaultLabelProperties, selectedUpLabelProperties, and other selected label properties were ignored.
 
 ## 3.1.0 - October 2016
