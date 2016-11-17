@@ -2467,17 +2467,17 @@ package feathers.controls.text
 		 */
 		protected function getVerticalAlignOffsetY():Number
 		{
-			if(this._textLineContainer.height > this.actualHeight)
+			if(this._savedTextLinesHeight > this.actualHeight)
 			{
 				return 0;
 			}
 			if(this._currentVerticalAlign === Align.BOTTOM)
 			{
-				return (this.actualHeight - this._textLineContainer.height);
+				return (this.actualHeight - this._savedTextLinesHeight);
 			}
 			else if(this._currentVerticalAlign === Align.CENTER)
 			{
-				return (this.actualHeight - this._textLineContainer.height) / 2;
+				return (this.actualHeight - this._savedTextLinesHeight) / 2;
 			}
 			return 0;
 		}
