@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to change font styles in a `AutoComplete` component
 
-A [`AutoComplete`](../picker-list.html) component displays its own text like a `TextInput`, and it has a pop-up list sub-component. The pop-up list contains item renderers that typically display some text. Both the `AutoComplete` and the item renderers may have different font styles, and we'll look at how to change those outside of the theme.
+A [`AutoComplete`](../auto-complete.html) component displays its own text like a `TextInput`, and it has a pop-up list sub-component. The pop-up list contains item renderers that typically display some text. Both the `AutoComplete` and the item renderers may have different font styles, and we'll look at how to change those outside of the theme.
 
 ## The main input font styles
 
@@ -33,7 +33,7 @@ input.listFactory = function():List
 		itemRenderer.fontStyles = new TextFormat( "Arial", 20, 0x3c3c3c );
 		return itemRenderer;
 	};
-	return button;
+	return list;
 };
 ```
 
