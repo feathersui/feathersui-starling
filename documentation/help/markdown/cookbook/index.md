@@ -72,3 +72,7 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 -   [How to change font styles in a `TabBar` component](tab-bar-font-styles.html)
 
 -   [How to set additional properties on the tabs in a `TabBar`](tab-bar-add-new-tab-properties.html)
+
+## `TabNavigator`
+
+-   [How to change font styles in a `TabNavigator` component](tab-navigator-font-styles.html)
