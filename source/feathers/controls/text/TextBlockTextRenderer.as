@@ -2015,8 +2015,22 @@ package feathers.controls.text
 			var scaleFactor:Number = starling.contentScaleFactor;
 			//these are getting put into an int later, so we don't want it
 			//to possibly round down and cut off part of the text. 
-			var rectangleSnapshotWidth:Number = Math.ceil(this._savedTextLinesWidth * scaleFactor);
-			var rectangleSnapshotHeight:Number = Math.ceil(this._savedTextLinesHeight * scaleFactor);
+			if(this._savedTextLinesWidth < this.actualWidth)
+			{
+				var rectangleSnapshotWidth:Number = Math.ceil(this._savedTextLinesWidth * scaleFactor);
+			}
+			else
+			{
+				rectangleSnapshotWidth = Math.ceil(this.actualWidth * scaleFactor);
+			}
+			if(this._savedTextLinesHeight < this.actualHeight)
+			{
+				var rectangleSnapshotHeight:Number = Math.ceil(this._savedTextLinesHeight * scaleFactor);
+			}
+			else
+			{
+				rectangleSnapshotHeight = Math.ceil(this.actualHeight * scaleFactor);
+			}
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
