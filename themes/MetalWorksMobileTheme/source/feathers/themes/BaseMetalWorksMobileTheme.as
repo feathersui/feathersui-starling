@@ -1913,7 +1913,6 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			trace(DeviceCapabilities.isPhone(this.starling.nativeStage));
 			if(DeviceCapabilities.isPhone(this.starling.nativeStage))
 			{
 				list.listFactory = pickerListSpinnerListFactory;
