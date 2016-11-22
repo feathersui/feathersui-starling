@@ -52,6 +52,11 @@
 			<true/>
 			<key>UIStatusBarStyle</key>
 			<string>UIStatusBarStyleLightContent</string>
+			<key>NSAppTransportSecurity</key>
+			<dict>
+				<key>NSAllowsArbitraryLoads</key>
+				<true/>
+			</dict>
 		]]> 
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
