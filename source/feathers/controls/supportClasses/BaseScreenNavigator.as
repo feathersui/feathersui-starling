@@ -874,6 +874,10 @@ package feathers.controls.supportClasses
 				{
 					this._activeScreen.height = this.actualHeight;
 				}
+				if(this._activeScreen is IValidating)
+				{
+					IValidating(this._activeScreen).validate();
+				}
 			}
 		}
 
