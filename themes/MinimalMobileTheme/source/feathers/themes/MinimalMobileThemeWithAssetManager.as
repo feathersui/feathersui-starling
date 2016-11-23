@@ -38,6 +38,73 @@ package feathers.themes
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the theme's assets fail to load due to an IO error.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The URL that could not be loaded.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.IO_ERROR
+	 */
+	[Event(name="ioError",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the theme's assets fail to load due to a security error.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The URL that could not be loaded.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.SECURITY_ERROR
+	 */
+	[Event(name="securityError",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the theme's assets fail to load due to a parsing error.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The name of the asset that could not be
+	 *   parsed.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.PARSE_ERROR
+	 */
+	[Event(name="parseError",type="starling.events.Event")]
+
+	/**
 	 * The "Minimal" theme for mobile Feathers apps.
 	 *
 	 * <p>This version of the theme requires loading assets at runtime. To use
@@ -193,7 +260,18 @@ package feathers.themes
 				//restore the old scale factor, just in case
 				this.assetManager.scaleFactor = oldScaleFactor;
 			}
+			this.assetManager.addEventListener(Event.IO_ERROR, assetManager_errorHandler);
+			this.assetManager.addEventListener(Event.SECURITY_ERROR, assetManager_errorHandler);
+			this.assetManager.addEventListener(Event.PARSE_ERROR, assetManager_errorHandler);
 			this.assetManager.loadQueue(assetManager_onProgress);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function assetManager_errorHandler(event:Event):void
+		{
+			this.dispatchEventWith(event.type, false, event.data);
 		}
 	}
 }
