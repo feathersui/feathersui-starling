@@ -2187,12 +2187,11 @@ package feathers.controls
 				this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
 					bitmapData.height / this._scaleFactor, true, false, false,
 					this._scaleFactor, this._textureFormat);
-				var sourceURL:String = this._source as String;
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
-					sourceURL, this._textureFormat, this._scaleFactor);
+					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
 				{
-					this._textureCache.addTexture(sourceURL, this._texture, true);
+					this._textureCache.addTexture(this._source as String, this._texture, true);
 				}
 			}
 			this._texture.root.uploadBitmapData(bitmapData);
@@ -2255,12 +2254,11 @@ package feathers.controls
 			else
 			{
 				this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
-				var sourceURL:String = this._source as String;
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
-					sourceURL, this._textureFormat, this._scaleFactor);
+					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
 				{
-					this._textureCache.addTexture(sourceURL, this._texture, true);
+					this._textureCache.addTexture(this._source as String, this._texture, true);
 				}
 			}
 			rawData.clear();
@@ -2396,7 +2394,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function createTextureOnRestore(texture:Texture, source:String,
+		protected function createTextureOnRestore(texture:Texture, source:Object,
 			format:String, scaleFactor:Number):Function
 		{
 			return function():void
