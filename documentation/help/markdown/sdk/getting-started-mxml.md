@@ -55,7 +55,7 @@ Let's add a [`Button`](../button.html) as a child of the `Application`:
  
     <f:Button label="Click Me"/>
 
-</f:LayoutGroup>
+</f:Application>
 ```
 
 It's as simple as adding a `<f:Button/>` element as a child of the `<f:Application/>` element. As you can see, we've set the `label` property of the `Button` using an XML attribute.
