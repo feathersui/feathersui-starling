@@ -3536,7 +3536,7 @@ package feathers.controls
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var needsMeasurement:Boolean = (scrollInvalid && this._viewPort.requiresMeasurementOnScroll) ||
-				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid;
+				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || stateInvalid;
 			this.refreshViewPort(needsMeasurement);
 			if(oldMaxHorizontalScrollPosition != this._maxHorizontalScrollPosition)
 			{
