@@ -1456,6 +1456,18 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			//we don't dispose it if the header is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
+			{
+				this._backgroundSkin.dispose();
+			}
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
+			{
+				this._backgroundDisabledSkin.dispose();
+			}
 			if(this._disposeItems)
 			{
 				for each(var item:DisplayObject in this._leftItems)

@@ -230,9 +230,11 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(value && value.parent)
+			if(this._backgroundSelectedSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSelectedSkin)
 			{
-				value.removeFromParent();
+				this.removeCurrentBackgroundSkin(this._backgroundSelectedSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSelectedSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);

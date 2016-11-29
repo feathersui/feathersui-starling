@@ -634,11 +634,15 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin.starling_internal::setParent(null);
 			}
-			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
+			//we don't dispose it if the group is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
 			}
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent !== this)
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
 			{
 				this._backgroundDisabledSkin.dispose();
 			}

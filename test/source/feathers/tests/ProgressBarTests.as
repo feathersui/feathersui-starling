@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.ProgressBar;
+	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import org.flexunit.Assert;
 
@@ -53,6 +54,25 @@ package feathers.tests
 			this._progress.maximum = 10;
 			this._progress.value = 12;
 			Assert.assertEquals("Setting value larger than maximum not changed to maximum.", this._progress.maximum, this._progress.value);
+		}
+
+		[Test]
+		public function testSkinsDisposed():void
+		{
+			var backgroundSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._progress.backgroundSkin = backgroundSkin;
+			var backgroundDisabledSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._progress.backgroundDisabledSkin = backgroundDisabledSkin;
+			var fillSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._progress.fillSkin = fillSkin;
+			var fillDisabledSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._progress.fillDisabledSkin = fillDisabledSkin;
+			this._progress.validate();
+			this._progress.dispose();
+			Assert.assertTrue("backgroundSkin not disposed when ProgressBar disposed.", backgroundSkin.isDisposed);
+			Assert.assertTrue("backgroundDisabledSkin not disposed when ProgressBar disposed.", backgroundDisabledSkin.isDisposed);
+			Assert.assertTrue("fillSkin not disposed when ProgressBar disposed.", backgroundSkin.isDisposed);
+			Assert.assertTrue("fillDisabledSkin not disposed when ProgressBar disposed.", backgroundDisabledSkin.isDisposed);
 		}
 	}
 }

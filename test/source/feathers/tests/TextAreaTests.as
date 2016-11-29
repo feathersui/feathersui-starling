@@ -34,11 +34,14 @@ package feathers.tests
 			this._input.backgroundDisabledSkin = backgroundDisabledSkin;
 			var backgroundFocusedSkin:DisposeFlagQuad = new DisposeFlagQuad();
 			this._input.backgroundFocusedSkin = backgroundFocusedSkin;
+			var backgroundErrorSkin:DisposeFlagQuad = new DisposeFlagQuad();
+			this._input.backgroundErrorSkin = backgroundErrorSkin;
 			this._input.validate();
 			this._input.dispose();
 			Assert.assertTrue("backgroundSkin not disposed when TextArea disposed.", backgroundSkin.isDisposed);
 			Assert.assertTrue("backgroundDisabledSkin not disposed when TextArea disposed.", backgroundDisabledSkin.isDisposed);
 			Assert.assertTrue("backgroundFocusedSkin not disposed when TextArea disposed.", backgroundFocusedSkin.isDisposed);
+			Assert.assertTrue("backgroundErrorSkin not disposed when TextArea disposed.", backgroundErrorSkin.isDisposed);
 		}
 	}
 }

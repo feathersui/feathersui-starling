@@ -3299,14 +3299,16 @@ package feathers.controls
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			starling.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			starling.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
-			
-			//we don't dispose it if the text input is the parent because it'll
+
+			//we don't dispose it if the scroller is the parent because it'll
 			//already get disposed in super.dispose()
-			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
 			}
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent !== this)
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
 			{
 				this._backgroundDisabledSkin.dispose();
 			}
