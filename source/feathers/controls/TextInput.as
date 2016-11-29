@@ -1863,6 +1863,14 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._backgroundSkin !== null &&
+				this.currentBackground === this._backgroundSkin)
+			{
+				//if this skin needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentBackground(this._backgroundSkin);
+				this.currentBackground = null;
+			}
 			this._backgroundSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
@@ -2689,6 +2697,15 @@ package feathers.controls
 				}
 				return;
 			}
+			var oldSkin:DisplayObject = this._stateToSkin[state] as DisplayObject;
+			if(oldSkin !== null &&
+				this.currentBackground === oldSkin)
+			{
+				//if this skin needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentBackground(oldSkin);
+				this.currentBackground = null;
+			}
 			if(skin !== null)
 			{
 				this._stateToSkin[state] = skin;
@@ -3241,21 +3258,13 @@ package feathers.controls
 			this.currentBackground = this.getCurrentSkin();
 			if(this.currentBackground !== oldSkin)
 			{
-				if(oldSkin)
-				{
-					if(oldSkin is IStateObserver)
-					{
-						IStateObserver(oldSkin).stateContext = null;
-					}
-					this.removeChild(oldSkin, false);
-				}
-				if(this.currentBackground)
+				this.removeCurrentBackground(oldSkin);
+				if(this.currentBackground !== null)
 				{
 					if(this.currentBackground is IStateObserver)
 					{
 						IStateObserver(this.currentBackground).stateContext = this;
 					}
-					this.addChildAt(this.currentBackground, 0);
 					if(this.currentBackground is IFeathersControl)
 					{
 						IFeathersControl(this.currentBackground).initializeNow();
@@ -3279,7 +3288,39 @@ package feathers.controls
 						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
+					this.addChildAt(this.currentBackground, 0);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackground(skin:DisplayObject):void
+		{
+			if(skin === null)
+			{
+				return;
+			}
+			if(skin is IStateObserver)
+			{
+				IStateObserver(skin).stateContext = null;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
+				}
+				skin.removeFromParent(false);
 			}
 		}
 

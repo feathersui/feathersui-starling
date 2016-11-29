@@ -709,9 +709,10 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
+			if(this._backgroundSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSkin)
 			{
-				this.removeChild(this._backgroundSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundSkin);
 				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSkin = value;
@@ -744,9 +745,10 @@ package feathers.controls
 				}
 				return;
 			}
-			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackgroundSkin == this._backgroundDisabledSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundDisabledSkin);
 				this.currentBackgroundSkin = null;
 			}
 			this._backgroundDisabledSkin = value;
@@ -1131,16 +1133,12 @@ package feathers.controls
 			{
 				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			if(this.currentBackgroundSkin != newCurrentBackgroundSkin)
+			if(this.currentBackgroundSkin !== newCurrentBackgroundSkin)
 			{
-				if(this.currentBackgroundSkin !== null)
-				{
-					this.removeChild(this.currentBackgroundSkin);
-				}
+				this.removeCurrentBackgroundSkin(this.currentBackgroundSkin);
 				this.currentBackgroundSkin = newCurrentBackgroundSkin;
 				if(this.currentBackgroundSkin !== null)
 				{
-					this.addChildAt(this.currentBackgroundSkin, 0);
 					if(this.currentBackgroundSkin is IFeathersControl)
 					{
 						IFeathersControl(this.currentBackgroundSkin).initializeNow();
@@ -1164,12 +1162,35 @@ package feathers.controls
 						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
+					this.addChildAt(this.currentBackgroundSkin, 0);
 				}
 			}
-			if(this.currentBackgroundSkin !== null)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
 			{
-				//force it to the bottom
-				this.setChildIndex(this.currentBackgroundSkin, 0);
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
+				}
+				skin.removeFromParent(false);
 			}
 		}
 

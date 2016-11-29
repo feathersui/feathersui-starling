@@ -1196,6 +1196,16 @@ package feathers.controls
 				}
 				if(this._content.parent === this)
 				{
+					this._content.width = this._explicitContentWidth;
+					this._content.height = this._explicitContentHeight;
+					if(this._content is IMeasureDisplayObject)
+					{
+						var measureContent:IMeasureDisplayObject = IMeasureDisplayObject(this._content);
+						measureContent.minWidth = this._explicitContentMinWidth;
+						measureContent.minHeight = this._explicitContentMinHeight;
+						measureContent.maxWidth = this._explicitContentMaxWidth;
+						measureContent.maxHeight = this._explicitContentMaxHeight;
+					}
 					this._content.removeFromParent(false);
 				}
 			}
@@ -1213,7 +1223,7 @@ package feathers.controls
 				}
 				if(this._content is IMeasureDisplayObject)
 				{
-					var measureContent:IMeasureDisplayObject = IMeasureDisplayObject(this._content);
+					measureContent = IMeasureDisplayObject(this._content);
 					this._explicitContentWidth = measureContent.explicitWidth;
 					this._explicitContentHeight = measureContent.explicitHeight;
 					this._explicitContentMinWidth = measureContent.explicitMinWidth;
@@ -1687,19 +1697,30 @@ package feathers.controls
 			}
 			if(this._backgroundSkin !== null && this._backgroundSkin.parent === this)
 			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				this._backgroundSkin.width = this._explicitBackgroundSkinWidth;
+				this._backgroundSkin.height = this._explicitBackgroundSkinHeight;
+				if(this._backgroundSkin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._backgroundSkin);
+					measureSkin.minWidth = this._explicitBackgroundSkinMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundSkinMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundSkinMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundSkinMaxHeight;
+				}
 				this._backgroundSkin.removeFromParent(false);
 			}
 			this._backgroundSkin = value;
 			if(this._backgroundSkin !== null)
 			{
-				this.addChildAt(this._backgroundSkin, 0);
 				if(this._backgroundSkin is IFeathersControl)
 				{
 					IFeathersControl(this._backgroundSkin).initializeNow();
 				}
 				if(this._backgroundSkin is IMeasureDisplayObject)
 				{
-					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._backgroundSkin);
+					measureSkin = IMeasureDisplayObject(this._backgroundSkin);
 					this._explicitBackgroundSkinWidth = measureSkin.explicitWidth;
 					this._explicitBackgroundSkinHeight = measureSkin.explicitHeight;
 					this._explicitBackgroundSkinMinWidth = measureSkin.explicitMinWidth;
@@ -1716,6 +1737,7 @@ package feathers.controls
 					this._explicitBackgroundSkinMaxWidth = this._explicitBackgroundSkinWidth;
 					this._explicitBackgroundSkinMaxHeight = this._explicitBackgroundSkinHeight;
 				}
+				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

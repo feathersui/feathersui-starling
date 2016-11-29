@@ -483,16 +483,13 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			if(this._backgroundSkin !== null &&
+				this.currentBackground === this._backgroundSkin)
 			{
-				this.removeChild(this._backgroundSkin);
+				this.removeCurrentBackground(this._backgroundSkin);
+				this.currentBackground = null;
 			}
 			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
-			{
-				this._backgroundSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -526,16 +523,13 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackground === this._backgroundDisabledSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.removeCurrentBackground(this._backgroundDisabledSkin);
+				this.currentBackground = null;
 			}
 			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -952,48 +946,69 @@ package feathers.controls
 		 */
 		protected function refreshBackground():void
 		{
+			var oldBackground:DisplayObject = this.currentBackground;
 			this.currentBackground = this._backgroundSkin;
-			if(this._backgroundDisabledSkin !== null)
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
 			{
-				if(this._isEnabled)
+				this.currentBackground = this._backgroundDisabledSkin;
+			}
+			if(oldBackground !== this.currentBackground)
+			{
+				this.removeCurrentBackground(oldBackground);
+				if(this.currentBackground !== null)
 				{
-					this._backgroundDisabledSkin.visible = false;
-				}
-				else
-				{
-					this.currentBackground = this._backgroundDisabledSkin;
-					if(this._backgroundSkin !== null)
+					if(this.currentBackground is IFeathersControl)
 					{
-						this._backgroundSkin.visible = false;
+						IFeathersControl(this.currentBackground).initializeNow();
 					}
+					if(this.currentBackground is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackground);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackground.width;
+						this._explicitBackgroundHeight = this.currentBackground.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
+					}
+					this.addChildAt(this.currentBackground, 0);
 				}
 			}
-			if(this.currentBackground !== null)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackground(skin:DisplayObject):void
+		{
+			if(skin === null)
 			{
-				this.currentBackground.visible = true;
-				if(this.currentBackground is IFeathersControl)
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
 				{
-					IFeathersControl(this.currentBackground).initializeNow();
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
 				}
-				if(this.currentBackground is IMeasureDisplayObject)
-				{
-					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackground);
-					this._explicitBackgroundWidth = measureSkin.explicitWidth;
-					this._explicitBackgroundHeight = measureSkin.explicitHeight;
-					this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
-					this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
-					this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
-					this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
-				}
-				else
-				{
-					this._explicitBackgroundWidth = this.currentBackground.width;
-					this._explicitBackgroundHeight = this.currentBackground.height;
-					this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
-					this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
-					this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
-					this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
-				}
+				skin.removeFromParent(false);
 			}
 		}
 
@@ -1041,7 +1056,7 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this.currentBackground)
+			if(this.currentBackground !== null)
 			{
 				this.currentBackground.width = this.actualWidth;
 				this.currentBackground.height = this.actualHeight;

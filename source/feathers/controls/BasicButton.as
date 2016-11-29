@@ -814,6 +814,18 @@ package feathers.controls
 			}
 			if(skin.parent === this)
 			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitSkinWidth;
+				skin.height = this._explicitSkinHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitSkinMinWidth;
+					measureSkin.minHeight = this._explicitSkinMinHeight;
+					measureSkin.maxWidth = this._explicitSkinMaxWidth;
+					measureSkin.maxHeight = this._explicitSkinMaxHeight;
+				}
 				this.removeChild(skin, false);
 			}
 		}
