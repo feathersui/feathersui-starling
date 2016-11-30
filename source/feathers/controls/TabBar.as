@@ -2197,6 +2197,7 @@ package feathers.controls
 				return;
 			}
 			this._selectedIndex = selectedIndex;
+			this.refreshSelectedItem();
 			//set this flag before dispatching the event because the TabBar
 			//might be forced to validate in an event listener
 			this._animateSelectionChange = true;
