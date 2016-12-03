@@ -33,10 +33,10 @@ package feathers.tests
 		[Before]
 		public function prepare():void
 		{
-			TextField.registerBitmapFont(new BitmapFont(), DEFAULT_FONT_NAME);
-			TextField.registerBitmapFont(new BitmapFont(), DISABLED_FONT_NAME);
-			TextField.registerBitmapFont(new BitmapFont(), SELECTED_FONT_NAME);
-			TextField.registerBitmapFont(new BitmapFont(), STATE_FONT_NAME);
+			TextField.registerCompositor(new BitmapFont(), DEFAULT_FONT_NAME);
+			TextField.registerCompositor(new BitmapFont(), DISABLED_FONT_NAME);
+			TextField.registerCompositor(new BitmapFont(), SELECTED_FONT_NAME);
+			TextField.registerCompositor(new BitmapFont(), STATE_FONT_NAME);
 
 			this._textRenderer = new BitmapFontTextRenderer();
 			TestFeathers.starlingRoot.addChild(this._textRenderer);
@@ -48,10 +48,10 @@ package feathers.tests
 			this._textRenderer.removeFromParent(true);
 			this._textRenderer = null;
 
-			TextField.unregisterBitmapFont(DEFAULT_FONT_NAME);
-			TextField.unregisterBitmapFont(DISABLED_FONT_NAME);
-			TextField.unregisterBitmapFont(SELECTED_FONT_NAME);
-			TextField.unregisterBitmapFont(STATE_FONT_NAME);
+			TextField.unregisterCompositor(DEFAULT_FONT_NAME);
+			TextField.unregisterCompositor(DISABLED_FONT_NAME);
+			TextField.unregisterCompositor(SELECTED_FONT_NAME);
+			TextField.unregisterCompositor(STATE_FONT_NAME);
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}

@@ -13,6 +13,7 @@ The document explains how to build the Feathers SDK from a binary distribution. 
 
 * A *binary distribution* of the Feathers SDK
 * [Apache Ant](http://ant.apache.org/)
+* Java 8 (update 101 or newer)
 
 ## Build Steps
 
@@ -24,7 +25,7 @@ The document explains how to build the Feathers SDK from a binary distribution. 
 
     If you want to target a specific version of Flash Player and AIR, you may modify the command to specify the required versions:
 
-        ant -f installer.xml -Dflash.sdk.version=15.0 -Dair.sdk.version=15.0
+        ant -f installer.xml -Dflash.sdk.version=22.0 -Dair.sdk.version=22.0
 
 1. When prompted to install each dependency, type `y` and press Enter.
 

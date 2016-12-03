@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.BasicButton;
 	import feathers.controls.ButtonState;
+	import feathers.events.FeathersEventType;
 	import feathers.tests.supportClasses.DisposeFlagQuad;
 
 	import flash.geom.Point;
@@ -66,6 +67,27 @@ package feathers.tests
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
+		}
+
+		[Test]
+		public function testRemovedBeforeTriggered():void
+		{
+			var hasTriggered:Boolean = false;
+			this._button.addEventListener(Event.TRIGGERED, function(event:Event):void
+			{
+				hasTriggered = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.removeFromParent(false)
+			Assert.assertFalse("Event.TRIGGERED must not be dispatched after removed from stage", hasTriggered);
 		}
 
 		[Test]
@@ -136,6 +158,15 @@ package feathers.tests
 		[Test]
 		public function testButtonStateHoverOnTouchPhaseHover():void
 		{
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.HOVER)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
 			var position:Point = new Point(10, 10);
 			var target:DisplayObject = this._button.stage.hitTest(position);
 			var touch:Touch = new Touch(0);
@@ -145,7 +176,10 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.HOVER on TouchPhase.HOVER", ButtonState.HOVER, this._button.currentState);
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.HOVER on TouchPhase.HOVER",
+				ButtonState.HOVER, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.HOVER",
+				hasDispatchedStateChange);
 		}
 
 		[Test]
@@ -160,12 +194,51 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.UP)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, new <Touch>[]));
-			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP when TouchPhase.HOVER ends", ButtonState.UP, this._button.currentState);
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP when TouchPhase.HOVER ends",
+				ButtonState.UP, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.UP",
+				hasDispatchedStateChange);
 		}
 
 		[Test]
 		public function testButtonStateDownOnTouchPhaseBegan():void
+		{
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.DOWN)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.DOWN on TouchPhase.BEGAN",
+				ButtonState.DOWN, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.DOWN",
+				hasDispatchedStateChange);
+		}
+
+		[Test]
+		public function testButtonStateUpOnRemovedFromStage():void
 		{
 			var position:Point = new Point(10, 10);
 			var target:DisplayObject = this._button.stage.hitTest(position);
@@ -176,7 +249,45 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.DOWN on TouchPhase.BEGAN", ButtonState.DOWN, this._button.currentState);
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.UP)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
+			this._button.removeFromParent(false);
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP on removed from stage",
+				ButtonState.UP, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.UP",
+				hasDispatchedStateChange);
+		}
+
+		[Test]
+		public function testButtonStateDisabledOnTouchWhenIsEnabledIsFalse():void
+		{
+			this._button.isEnabled = false;
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				hasDispatchedStateChange = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.removeFromParent(false);
+			Assert.assertStrictlyEquals("Button currentState must not change from ButtonState.DISABLED when touch occurs and isEnabled is false",
+				ButtonState.DISABLED, this._button.currentState);
+			Assert.assertFalse("Button must not dispatch FeathersEventType.STATE_CHANGE when state is isEnabled and touch occurs",
+				hasDispatchedStateChange);
 		}
 
 		[Test]
@@ -191,11 +302,23 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.UP)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
 			touch.phase = TouchPhase.MOVED;
 			touch.globalX = 1000;
 			touch.globalY = position.y;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP on TouchPhase.MOVED when position is outside button", ButtonState.UP, this._button.currentState);
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP on TouchPhase.MOVED when position is outside button",
+				ButtonState.UP, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.UP",
+				hasDispatchedStateChange);
 		}
 
 		[Test]
@@ -214,10 +337,22 @@ package feathers.tests
 			touch.globalX = 1000;
 			touch.globalY = position.y;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.DOWN)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
 			touch.globalX = 10;
 			touch.globalY = position.y;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.DOWN on TouchPhase.MOVED when position moves outside button then back inside", ButtonState.DOWN, this._button.currentState);
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.DOWN on TouchPhase.MOVED when position moves outside button then back inside",
+				ButtonState.DOWN, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.DOWN",
+				hasDispatchedStateChange);
 		}
 
 		[Test]
@@ -233,11 +368,19 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				hasDispatchedStateChange = true;
+			});
 			touch.phase = TouchPhase.MOVED;
 			touch.globalX = 1000;
 			touch.globalY = position.y;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertStrictlyEquals("Button currentState was incorrectly changed from ButtonState.DOWN on TouchPhase.MOVED when position is outside button and keepDownStateOnRollOut is true", ButtonState.DOWN, this._button.currentState);
+			Assert.assertStrictlyEquals("Button currentState was incorrectly changed from ButtonState.DOWN on TouchPhase.MOVED when position is outside button and keepDownStateOnRollOut is true",
+				ButtonState.DOWN, this._button.currentState);
+			Assert.assertFalse("Button must not dispatch FeathersEventType.STATE_CHANGE when keepDownStateOnRollOut is true and state does not changed on roll out",
+				hasDispatchedStateChange);
 		}
 
 		[Test]
@@ -252,9 +395,21 @@ package feathers.tests
 			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			var hasDispatchedStateChange:Boolean = false;
+			this._button.addEventListener(FeathersEventType.STATE_CHANGE, function(event:Event):void
+			{
+				var button:BasicButton = BasicButton(event.currentTarget);
+				if(button.currentState === ButtonState.UP)
+				{
+					hasDispatchedStateChange = true;
+				}
+			});
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP on TouchPhase.ENDED", ButtonState.UP, this._button.currentState);
+			Assert.assertStrictlyEquals("Button currentState was not changed to ButtonState.UP on TouchPhase.ENDED",
+				ButtonState.UP, this._button.currentState);
+			Assert.assertTrue("Button must dispatch FeathersEventType.STATE_CHANGE when state is changed to ButtonState.UP",
+				hasDispatchedStateChange);
 		}
 
 		[Test]

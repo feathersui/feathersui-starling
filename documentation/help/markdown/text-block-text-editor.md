@@ -33,7 +33,7 @@ Flash Text Engine may render a bit slower than `flash.text.TextField` sometimes.
 input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
-However, `starling.text.TextFormat` object does not always expose the every font styling feature that a text editor supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
+However, `starling.text.TextFormat` object does not always expose every unique font styling feature that a text editor supports. The next section demostrates how to set advanced font styles that may not be exposed through this class.</aside>
 
 To use Flash Text Engine with `TextInput`, create a [`TextBlockTextEditor`](../api-reference/feathers/controls/text/TextBlockTextEditor.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
 

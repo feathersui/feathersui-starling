@@ -1248,6 +1248,16 @@ package feathers.controls
 			{
 				this._defaultSelectedIcon.dispose();
 			}
+			if(this.keyToSelect !== null)
+			{
+				//setting the target to null will remove listeners and do any
+				//other clean up that is needed
+				this.keyToSelect.target = null;
+			}
+			if(this.tapToSelect !== null)
+			{
+				this.tapToSelect.target = null;
+			}
 			super.dispose();
 		}
 
@@ -1326,6 +1336,29 @@ package feathers.controls
 					return this._defaultSelectedIcon;
 				}
 				return this._defaultIcon;
+			}
+			return super.getCurrentIcon();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function getCurrentLabelProperties():Object
+		{
+			if(this._stateToLabelPropertiesFunction === null)
+			{
+				//we use the currentState getter here instead of the variable
+				//because the variable does not keep track of the selection
+				var result:Object = this._stateToLabelProperties[this.currentState];
+				if(result !== null)
+				{
+					return result;
+				}
+				if(this._isSelected && this._defaultSelectedLabelProperties !== null)
+				{
+					return this._defaultSelectedLabelProperties;
+				}
+				return this._defaultLabelProperties;
 			}
 			return super.getCurrentIcon();
 		}

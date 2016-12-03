@@ -359,7 +359,6 @@ package feathers.controls.text
 			{
 				this._textElement = new TextElement(value);
 			}
-			this._textElement.text = value;
 			this.content = this._textElement;
 			super.text = value;
 		}
@@ -2015,8 +2014,22 @@ package feathers.controls.text
 			var scaleFactor:Number = starling.contentScaleFactor;
 			//these are getting put into an int later, so we don't want it
 			//to possibly round down and cut off part of the text. 
-			var rectangleSnapshotWidth:Number = Math.ceil(this._savedTextLinesWidth * scaleFactor);
-			var rectangleSnapshotHeight:Number = Math.ceil(this._savedTextLinesHeight * scaleFactor);
+			if(this._savedTextLinesWidth < this.actualWidth)
+			{
+				var rectangleSnapshotWidth:Number = Math.ceil(this._savedTextLinesWidth * scaleFactor);
+			}
+			else
+			{
+				rectangleSnapshotWidth = Math.ceil(this.actualWidth * scaleFactor);
+			}
+			if(this._savedTextLinesHeight < this.actualHeight)
+			{
+				var rectangleSnapshotHeight:Number = Math.ceil(this._savedTextLinesHeight * scaleFactor);
+			}
+			else
+			{
+				rectangleSnapshotHeight = Math.ceil(this.actualHeight * scaleFactor);
+			}
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
@@ -2227,23 +2240,24 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this._text)
+			var newText:String = this._text;
+			if(newText !== null && newText.length > 0)
 			{
-				this._textElement.text = this._text;
-				if(this._text !== null && this._text.charAt(this._text.length - 1) == " ")
+				if(newText.charAt(newText.length - 1) === " ")
 				{
 					//add an invisible control character because FTE apparently
 					//doesn't think that it's important to include trailing
 					//spaces in its width measurement.
-					this._textElement.text += String.fromCharCode(3);
+					newText += String.fromCharCode(3);
 				}
 			}
 			else
 			{
 				//similar to above. this hack ensures that the baseline is
 				//measured properly when the text is an empty string.
-				this._textElement.text = String.fromCharCode(3);
+				newText = String.fromCharCode(3);
 			}
+			this._textElement.text = newText;
 		}
 
 		/**
@@ -2253,45 +2267,24 @@ package feathers.controls.text
 			textLineParent:DisplayObjectContainer, width:Number, height:Number,
 			result:MeasureTextResult = null):MeasureTextResult
 		{
-			var wasTruncated:Boolean = false;
-			this.refreshTextElementText();
-			HELPER_TEXT_LINES.length = 0;
-			var maxLineWidth:Number = 0;
-			var yPosition:Number = 0;
 			var lineCount:int = textLines.length;
-			var lastLine:TextLine;
-			var cacheIndex:int = lineCount;
-			for(var i:int = 0; i < lineCount; i++)
-			{
-				var line:TextLine = textLines[i];
-				if(line.validity === TextLineValidity.VALID)
-				{
-					lastLine = line;
-					continue;
-				}
-				else
-				{
-					//we're using this value in the next loop
-					line = lastLine;
-					if(lastLine !== null)
-					{
-						yPosition = lastLine.y;
-						lastLine = null;
-					}
-					cacheIndex = i;
-					break;
-				}
-			}
 			//copy the invalid text lines over to the helper vector so that we
 			//can reuse them
-			for(; i < lineCount; i++)
+			HELPER_TEXT_LINES.length = 0;
+			for(var i:int = 0; i < lineCount; i++)
 			{
-				HELPER_TEXT_LINES[int(i - cacheIndex)] = textLines[i];
+				HELPER_TEXT_LINES[i] = textLines[i];
 			}
-			textLines.length = cacheIndex;
+			textLines.length = 0;
 
+			this.refreshTextElementText();
+
+			var wasTruncated:Boolean = false;
+			var maxLineWidth:Number = 0;
+			var yPosition:Number = 0;
 			if(width >= 0)
 			{
+				var line:TextLine = null;
 				var lineStartIndex:int = 0;
 				var canTruncate:Boolean = this._truncateToFit && this._textElement && !this._wordWrap;
 				var pushIndex:int = textLines.length;
@@ -2349,7 +2342,7 @@ package feathers.controls.text
 						var truncatedTextLength:int = lineLength - this._truncationOffset;
 						//we want to start at this line so that the previous
 						//lines don't become invalid.
-						this._textElement.text = this._text.substr(lineStartIndex, truncatedTextLength) + this._truncationText;
+						var truncatedText:String =  this._text.substr(lineStartIndex, truncatedTextLength) + this._truncationText;
 						var lineBreakIndex:int = this._text.indexOf(LINE_FEED, lineStartIndex);
 						if(lineBreakIndex < 0)
 						{
@@ -2357,8 +2350,9 @@ package feathers.controls.text
 						}
 						if(lineBreakIndex >= 0)
 						{
-							this._textElement.text += this._text.substr(lineBreakIndex);
+							truncatedText += this._text.substr(lineBreakIndex);
 						}
+						this._textElement.text = truncatedText;
 						line = this.textBlock.recreateTextLine(line, null, lineWidth, 0, true);
 						if(truncatedTextLength <= 0)
 						{
@@ -2453,17 +2447,17 @@ package feathers.controls.text
 		 */
 		protected function getVerticalAlignOffsetY():Number
 		{
-			if(this._textLineContainer.height > this.actualHeight)
+			if(this._savedTextLinesHeight > this.actualHeight)
 			{
 				return 0;
 			}
 			if(this._currentVerticalAlign === Align.BOTTOM)
 			{
-				return (this.actualHeight - this._textLineContainer.height);
+				return (this.actualHeight - this._savedTextLinesHeight);
 			}
 			else if(this._currentVerticalAlign === Align.CENTER)
 			{
-				return (this.actualHeight - this._textLineContainer.height) / 2;
+				return (this.actualHeight - this._savedTextLinesHeight) / 2;
 			}
 			return 0;
 		}

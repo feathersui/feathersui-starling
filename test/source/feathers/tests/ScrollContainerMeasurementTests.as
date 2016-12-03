@@ -234,5 +234,29 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The minHeight of the scroll container was not calculated correctly.",
 				containerHeight, this._container.minHeight);
 		}
+
+		[Test]
+		public function testRemoveChildToResizeSkin():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._container.addChild(child);
+			this._container.backgroundSkin = new Quad(10, 10, 0xff00ff);
+			this._container.backgroundDisabledSkin = new Quad(10, 10, 0xff00ff);
+			this._container.validate();
+			//the child's dimensions were large enough to make container bigger
+			//than the skin's dimensions
+			this._container.removeChild(child);
+			//switch to a different skin before validation
+			this._container.isEnabled = false;
+			this._container.validate();
+			//now switch back to the original skin, and the dimensions could
+			//be wrong if they weren't restored
+			this._container.isEnabled = true;
+			this._container.validate();
+			Assert.assertStrictlyEquals("The width of the ScrollContainer was not calculated correctly after changing to a different skin and removing larger child.",
+				10, this._container.width);
+			Assert.assertStrictlyEquals("The height of the ScrollContainer was not calculated correctly after changing to a different skin and removing larger child.",
+				10, this._container.height);
+		}
 	}
 }

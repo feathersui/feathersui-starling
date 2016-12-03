@@ -7,7 +7,13 @@ author: Josh Tynjala
 
 Simple and targeted tutorials about [Feathers](../index.html) designed to demonstrate how to use or extend the components to implement specific common behaviors.
 
+## `AutoComplete`
+
+-   [How to change font styles in an `AutoComplete` component](auto-complete-font-styles.html)
+
 ## `ButtonGroup`
+
+-   [How to change font styles in an `ButtonGroup` component](button-group-font-styles.html)
 
 -   [How to set additional properties on the buttons in a `ButtonGroup`](button-group-add-new-button-properties.html)
 
@@ -31,11 +37,21 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 
 -   [How to dispatch a long press event from a custom item renderer](item-renderer-long-press.html)
 
-## Header
+## `DateTimeSpinner`
+
+-   [How to change font styles in a `DateTimeSpinner` component](date-time-spinner-font-styles.html)
+
+## `GroupedList`
+
+-   [How to change font styles in a `GroupedList` component](grouped-list-font-styles.html)
+
+## `Header`
 
 -   [How to show or hide a header when scrolling a list or container](header-show-hide-on-scroll.html)
 
-## List
+## `List`
+
+-   [How to change font styles in a `List` component](list-font-styles.html)
 
 -   [How to disable some item renderers in a `List` component](list-disable-some-item-renderers.html)
 
@@ -43,12 +59,20 @@ Simple and targeted tutorials about [Feathers](../index.html) designed to demons
 
 -   [How to display a context menu with Feathers](context-menu.html)
 
-## Screen Navigator
+## `PickerList`
+
+-   [How to change font styles in a `PickerList` component](picker-list-font-styles.html)
+
+## `ScreenNavigator`
 
 -   [How to save the state of a screen in a `ScreenNavigator` and restore it later](screen-navigator-saving-state.html)
 
 ## `TabBar`
 
+-   [How to change font styles in a `TabBar` component](tab-bar-font-styles.html)
+
 -   [How to set additional properties on the tabs in a `TabBar`](tab-bar-add-new-tab-properties.html)
 
+## `TabNavigator`
 
+-   [How to change font styles in a `TabNavigator` component](tab-navigator-font-styles.html)

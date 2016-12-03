@@ -638,9 +638,12 @@ package feathers.controls
 			super.initialize();
 
 			this._listCollection = new ListCollection();
-			if(!this._popUpContentManager)
+			if(this._popUpContentManager === null)
 			{
+				//must pass to setter so that listeners are added
 				this._popUpContentManager = new DropDownPopUpContentManager();
+				this._popUpContentManager.addEventListener(Event.OPEN, popUpContentManager_openHandler);
+				this._popUpContentManager.addEventListener(Event.CLOSE, popUpContentManager_closeHandler);
 			}
 		}
 

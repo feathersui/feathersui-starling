@@ -5,6 +5,8 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -98,7 +100,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list = new List();
 
 			this._listItem = { text: "Primary Text" };
-			this._list.itemRendererProperties.labelField = "text";
+			this._list.itemRendererFactory = this.customItemRendererFactory;
 			this._list.dataProvider = new ListCollection([this._listItem]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.isSelectable = false;
@@ -116,8 +118,10 @@ package feathers.examples.componentsExplorer.screens
 			}
 		}
 
-		override protected function draw():void
+		private function customItemRendererFactory():IListItemRenderer
 		{
+			var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			itemRenderer.labelField = "text";
 			if(this.settings.hasIcon)
 			{
 				switch(this.settings.iconType)
@@ -125,7 +129,7 @@ package feathers.examples.componentsExplorer.screens
 					case ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL:
 					{
 						this._listItem.iconText = "Icon Text";
-						this._list.itemRendererProperties.iconLabelField = "iconText";
+						itemRenderer.iconLabelField = "iconText";
 
 						//clear these in case this setting has changed
 						delete this._listItem.iconTexture;
@@ -135,7 +139,7 @@ package feathers.examples.componentsExplorer.screens
 					case ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE:
 					{
 						this._listItem.iconTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
-						this._list.itemRendererProperties.iconSourceField = "iconTexture";
+						itemRenderer.iconSourceField = "iconTexture";
 
 						//clear these in case this setting has changed
 						delete this._listItem.iconText;
@@ -145,7 +149,7 @@ package feathers.examples.componentsExplorer.screens
 					default:
 					{
 						this._listItem.icon = new ToggleSwitch();
-						this._list.itemRendererProperties.iconField = "icon";
+						itemRenderer.iconField = "icon";
 
 						//clear these in case this setting has changed
 						delete this._listItem.iconText;
@@ -153,7 +157,7 @@ package feathers.examples.componentsExplorer.screens
 
 					}
 				}
-				this._list.itemRendererProperties.iconPosition = this.settings.iconPosition;
+				itemRenderer.iconPosition = this.settings.iconPosition;
 			}
 			if(this.settings.hasAccessory)
 			{
@@ -162,7 +166,7 @@ package feathers.examples.componentsExplorer.screens
 					case ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL:
 					{
 						this._listItem.accessoryText = "Accessory Text";
-						this._list.itemRendererProperties.accessoryLabelField = "accessoryText";
+						itemRenderer.accessoryLabelField = "accessoryText";
 
 						//clear these in case this setting has changed
 						delete this._listItem.accessoryTexture;
@@ -172,49 +176,41 @@ package feathers.examples.componentsExplorer.screens
 					case ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE:
 					{
 						this._listItem.accessoryTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
-						this._list.itemRendererProperties.accessorySourceField = "accessoryTexture";
+						itemRenderer.accessorySourceField = "accessoryTexture";
 						break;
 					}
 					default:
 					{
 						this._listItem.accessory = new ToggleSwitch();
-						this._list.itemRendererProperties.accessoryField = "accessory";
+						itemRenderer.accessoryField = "accessory";
 
 						//clear these in case this setting has changed
 						delete this._listItem.accessoryText;
 						delete this._listItem.accessoryTexture;
 					}
 				}
-				this._list.itemRendererProperties.accessoryPosition = this.settings.accessoryPosition;
+				itemRenderer.accessoryPosition = this.settings.accessoryPosition;
 			}
 			if(this.settings.useInfiniteGap)
 			{
-				this._list.itemRendererProperties.gap = Number.POSITIVE_INFINITY;
+				itemRenderer.gap = Number.POSITIVE_INFINITY;
 			}
 			else
 			{
-				this._list.itemRendererProperties.gap = this._itemRendererGap;
+				itemRenderer.gap = this._itemRendererGap;
 			}
 			if(this.settings.useInfiniteAccessoryGap)
 			{
-				this._list.itemRendererProperties.accessoryGap = Number.POSITIVE_INFINITY;
+				itemRenderer.accessoryGap = Number.POSITIVE_INFINITY;
 			}
 			else
 			{
-				this._list.itemRendererProperties.accessoryGap = this._itemRendererGap;
+				itemRenderer.accessoryGap = this._itemRendererGap;
 			}
-			this._list.itemRendererProperties.horizontalAlign = this.settings.horizontalAlign;
-			this._list.itemRendererProperties.verticalAlign = this.settings.verticalAlign;
-			this._list.itemRendererProperties.layoutOrder = this.settings.layoutOrder;
-
-			//ideally, styles like gap, accessoryGap, horizontalAlign,
-			//verticalAlign, layoutOrder, iconPosition, and accessoryPosition
-			//will be handled in the theme.
-			//this is a special case because this screen is designed to
-			//configure those styles at runtime
-
-			//never forget to call super.draw()!
-			super.draw();
+			itemRenderer.horizontalAlign = this.settings.horizontalAlign;
+			itemRenderer.verticalAlign = this.settings.verticalAlign;
+			itemRenderer.layoutOrder = this.settings.layoutOrder;
+			return itemRenderer;
 		}
 
 		private function customHeaderFactory():Header

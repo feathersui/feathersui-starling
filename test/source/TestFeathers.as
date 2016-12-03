@@ -38,6 +38,7 @@ package
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.HeaderInternalStateTests;
 	import feathers.tests.HeaderMeasurementTests;
+	import feathers.tests.HeaderTests;
 	import feathers.tests.HorizontalLayoutTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -47,11 +48,13 @@ package
 	import feathers.tests.KeyToSelectTests;
 	import feathers.tests.KeyToTriggerTests;
 	import feathers.tests.LabelMeasurementTests;
+	import feathers.tests.LabelTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
+	import feathers.tests.ListCollectionFilterTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListFactoryIDFunctionTests;
 	import feathers.tests.ListRendererAddRemoveTests;
@@ -119,6 +122,7 @@ package
 	import feathers.tests.ToggleSwitchMeasurementTests;
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
+	import feathers.tests.TouchToStateTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
@@ -204,10 +208,12 @@ package
 				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
+				HeaderTests,
 				HeaderMeasurementTests,
 				HeaderInternalStateTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
+				LabelTests,
 				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
@@ -273,6 +279,7 @@ package
 
 				//collections tests
 				ListCollectionWithArrayTests,
+				ListCollectionFilterTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,
@@ -306,6 +313,7 @@ package
 				TapToTriggerTests,
 				TapToSelectTests,
 				LongPressTests,
+				TouchToStateTests,
 				KeyToSelectTests,
 				KeyToTriggerTests,
 				TokenListTests,

@@ -2590,9 +2590,10 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
+			if(this._backgroundSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSkin)
 			{
-				this.removeRawChildInternal(this._backgroundSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundSkin);
 				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSkin = value;
@@ -2629,9 +2630,10 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundDisabledSkin)
 			{
-				this.removeRawChildInternal(this._backgroundDisabledSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundDisabledSkin);
 				this.currentBackgroundSkin = null;
 			}
 			this._backgroundDisabledSkin = value;
@@ -3297,14 +3299,16 @@ package feathers.controls
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			starling.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			starling.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
-			
-			//we don't dispose it if the text input is the parent because it'll
+
+			//we don't dispose it if the scroller is the parent because it'll
 			//already get disposed in super.dispose()
-			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
 			}
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent !== this)
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
 			{
 				this._backgroundDisabledSkin.dispose();
 			}
@@ -3534,7 +3538,7 @@ package feathers.controls
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var needsMeasurement:Boolean = (scrollInvalid && this._viewPort.requiresMeasurementOnScroll) ||
-				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid;
+				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || stateInvalid;
 			this.refreshViewPort(needsMeasurement);
 			if(oldMaxHorizontalScrollPosition != this._maxHorizontalScrollPosition)
 			{
@@ -3830,20 +3834,16 @@ package feathers.controls
 		protected function refreshBackgroundSkin():void
 		{
 			var newCurrentBackgroundSkin:DisplayObject = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
 			{
 				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			if(this.currentBackgroundSkin != newCurrentBackgroundSkin)
+			if(this.currentBackgroundSkin !== newCurrentBackgroundSkin)
 			{
-				if(this.currentBackgroundSkin)
-				{
-					this.removeRawChildInternal(this.currentBackgroundSkin);
-				}
+				this.removeCurrentBackgroundSkin(this.currentBackgroundSkin);
 				this.currentBackgroundSkin = newCurrentBackgroundSkin;
 				if(this.currentBackgroundSkin !== null)
 				{
-					this.addRawChildAtInternal(this.currentBackgroundSkin, 0);
 					if(this.currentBackgroundSkin is IFeathersControl)
 					{
 						IFeathersControl(this.currentBackgroundSkin).initializeNow();
@@ -3867,12 +3867,35 @@ package feathers.controls
 						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
+					this.addRawChildAtInternal(this.currentBackgroundSkin, 0);
 				}
 			}
-			if(this.currentBackgroundSkin !== null)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
 			{
-				//force it to the bottom
-				this.setRawChildIndexInternal(this.currentBackgroundSkin, 0);
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
+				}
+				this.removeRawChildInternal(skin);
 			}
 		}
 

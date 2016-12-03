@@ -514,7 +514,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 
 			//date time spinner
-			this.getStyleProviderForClass(SpinnerList).setFunctionForStyleName(DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDateTimeSpinnerListStyles);
+			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
 
 			//drawers
@@ -978,10 +978,9 @@ package feathers.themes
 	// DateTimeSpinner
 	//-------------------------
 
-		protected function setDateTimeSpinnerListStyles(list:SpinnerList):void
+		protected function setDateTimeSpinnerStyles(spinner:DateTimeSpinner):void
 		{
-			this.setSpinnerListStyles(list);
-			list.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
+			spinner.customItemRendererStyleName = THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER;
 		}
 
 		protected function setDateTimeSpinnerListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
@@ -1338,17 +1337,18 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.popUpContentManager = new CalloutPopUpContentManager();
-			}
-			else
+			if(DeviceCapabilities.isPhone(this.starling.nativeStage))
 			{
 				list.listFactory = pickerListSpinnerListFactory;
 
 				var popUpContentManager:BottomDrawerPopUpContentManager = new BottomDrawerPopUpContentManager();
 				popUpContentManager.customPanelStyleName = THEME_STYLE_NAME_POP_UP_DRAWER;
 				list.popUpContentManager = popUpContentManager;
+			}
+			else
+			{
+				list.popUpContentManager = new CalloutPopUpContentManager();
+				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
 			}
 		}
 
@@ -1379,10 +1379,6 @@ package feathers.themes
 
 		protected function setPickerListListStyles(list:List):void
 		{
-			if(DeviceCapabilities.isTablet(this.starling.nativeStage))
-			{
-				list.customItemRendererStyleName = THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER;
-			}
 			this.setDropDownListStyles(list);
 		}
 

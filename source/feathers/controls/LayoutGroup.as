@@ -358,9 +358,11 @@ package feathers.controls
 			{
 				return;
 			}
-			if(value !== null && value.parent !== null)
+			if(this._backgroundSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSkin)
 			{
-				value.removeFromParent();
+				this.removeCurrentBackgroundSkin(this._backgroundSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
@@ -396,9 +398,11 @@ package feathers.controls
 			{
 				return;
 			}
-			if(value !== null && value.parent !== null)
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundDisabledSkin)
 			{
-				value.removeFromParent();
+				this.removeCurrentBackgroundSkin(this._backgroundDisabledSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundDisabledSkin = value;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
@@ -630,11 +634,15 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin.starling_internal::setParent(null);
 			}
-			if(this._backgroundSkin && this._backgroundSkin.parent !== this)
+			//we don't dispose it if the group is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
 			{
 				this._backgroundSkin.dispose();
 			}
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent !== this)
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
 			{
 				this._backgroundDisabledSkin.dispose();
 			}
@@ -734,14 +742,9 @@ package feathers.controls
 			this.currentBackgroundSkin = this.getCurrentBackgroundSkin();
 			if(this.currentBackgroundSkin !== oldBackgroundSkin)
 			{
-				this.setRequiresRedraw();
-				if(oldBackgroundSkin !== null)
-				{
-					oldBackgroundSkin.starling_internal::setParent(null);
-				}
+				this.removeCurrentBackgroundSkin(oldBackgroundSkin);
 				if(this.currentBackgroundSkin !== null)
 				{
-					this.currentBackgroundSkin.starling_internal::setParent(this);
 					if(this.currentBackgroundSkin is IFeathersControl)
 					{
 						IFeathersControl(this.currentBackgroundSkin).initializeNow();
@@ -765,7 +768,36 @@ package feathers.controls
 						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
+					this.currentBackgroundSkin.starling_internal::setParent(this);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
+			{
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
+				}
+				this.setRequiresRedraw();
+				skin.starling_internal::setParent(null);
 			}
 		}
 

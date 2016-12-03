@@ -12,8 +12,9 @@ The document explains how to build the Feathers SDK from source code.
 ## Requirements
 
 * [Apache Ant](http://ant.apache.org)
-* playerglobal.swc for Flash Player 11.5 (Download from [Archived Flash Player versions](https://helpx.adobe.com/flash-player/kb/archived-flash-player-versions.html))
-* Adobe AIR SDK 3.5 *without* the ASC 2.0 compiler (Download from [Archived Adobe AIR SDK versions](https://helpx.adobe.com/air/kb/archived-air-sdk-version.html))
+* Java 8 (update 101 or newer)
+* playerglobal.swc for Flash Player 19.0 (Download from [Archived Flash Player versions](https://helpx.adobe.com/flash-player/kb/archived-flash-player-versions.html))
+* Adobe AIR SDK 19.0 *without* the ASC 2.0 compiler (Download from [Archived Adobe AIR SDK versions](https://helpx.adobe.com/air/kb/archived-air-sdk-version.html))
 * Adobe Flash Player projector content debugger (Download from [Adobe Flash Player Downloads](https://www.adobe.com/support/flashplayer/downloads.html))
 
 Note: When you prepare the Feathers SDK for use in an IDE as the final step, you will be allowed to target newer versions of Flash Player and AIR. These older versions of Flash Player and AIR are only required when building the source code.

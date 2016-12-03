@@ -244,5 +244,30 @@ package feathers.tests
 				Assert.assertTrue("Item was not included when calling dispose() on ListCollection", item.isDisposed);
 			}
 		}
+
+		[Test]
+		public function testDisposeWithFilterFunction():void
+		{
+			var itemCount:int = this._collection.length;
+			this._collection.filterFunction = function(item:Object):Boolean
+			{
+				return item.label.charAt(0) === "O";
+			};
+			var filteredCount:int = this._collection.length;
+			Assert.assertFalse("Filtered collection length must change", itemCount === filteredCount);
+			var disposedCount:int = 0;
+			this._collection.dispose(function(item:Object):void
+			{
+				item.isDisposed = true;
+				disposedCount++;
+			});
+			Assert.assertStrictlyEquals("Incorrect number of items disposed when calling dispose() on ListCollection",
+				itemCount, disposedCount);
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:Object = this._collection.getItemAt(i);
+				Assert.assertTrue("Item was not included when calling dispose() on ListCollection", item.isDisposed);
+			}
+		}
 	}
 }

@@ -143,5 +143,28 @@ package feathers.tests
 			Assert.assertStrictlyEquals("Label minWidth not equal to simple background width", BACKGROUND_WIDTH2, this.label.minWidth);
 			Assert.assertStrictlyEquals("Label minHeight not equal to simple background height", BACKGROUND_HEIGHT2, this.label.minHeight);
 		}
+
+		[Test]
+		public function testChangeTextToResizeSkin():void
+		{
+			this.label.text = "I am the very model of a modern major general";
+			this.label.backgroundSkin = new Quad(10, 10, 0xff00ff);
+			this.label.backgroundDisabledSkin = new Quad(10, 10, 0xff00ff);
+			this.label.validate();
+			//the text's dimensions were large enough to make label bigger than
+			//the skin's dimensions
+			this.label.text = "";
+			//switch to a different skin before validation
+			this.label.isEnabled = false;
+			this.label.validate();
+			//now switch back to the original skin, and the dimensions could
+			//be wrong if they weren't restored
+			this.label.isEnabled = true;
+			this.label.validate();
+			Assert.assertStrictlyEquals("The width of the Label was not calculated correctly after changing to a different skin and changing text dimensions.",
+				10, this.label.width);
+			Assert.assertStrictlyEquals("The height of the Label was not calculated correctly after changing to a different skin and changing text dimensions",
+				10, this.label.height);
+		}
 	}
 }

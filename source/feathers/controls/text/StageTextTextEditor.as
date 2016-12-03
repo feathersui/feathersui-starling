@@ -142,6 +142,29 @@ package feathers.controls.text
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the soft keyboard is about to activate. Not all text
+	 * editors will activate a soft keyboard.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_ACTIVATING
+	 */
+	[Event(name="softKeyboardActivating",type="starling.events.Event")]
+
+	/**
 	 * Dispatched when the soft keyboard is activated. Not all text editors will
 	 * activate a soft keyboard.
 	 *
@@ -225,6 +248,21 @@ package feathers.controls.text
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
+
+		/**
+		 * @private
+		 * The minimum position of the StageText view port. A runtime will be
+		 * thrown if the x or y position is smaller than this value.
+		 */
+		protected static const MIN_VIEW_PORT_POSITION:Number = -8192;
+
+		/**
+		 * @private
+		 * The maximum position of the StageText view port. A runtime will be
+		 * thrown if the x or y position (including width and height) is larger
+		 * than this value.
+		 */
+		protected static const MAX_VIEW_PORT_POSITION:Number = 8191;
 
 		/**
 		 * Constructor.
@@ -1107,6 +1145,48 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 * The default value doesn't use the constant because it's available in
+		 * AIR only, and not Flash Player.
+		 */
+		protected var _clearButtonMode:String = "whileEditing";
+
+		/**
+		 * Determines when the clear button is displayed by the
+		 * <code>StageText</code> object.
+		 *
+		 * <p>In the following example, the snapshot will be updated when the
+		 * text editor is scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 * 
+		 * <p>Requires <code>-swf-version=34</code> or newer.</p>
+		 *
+		 * @default false
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#clearButtonMode Full description of flash.text.StageText.clearButtonMode in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageTextClearButtonMode.html Full description of flash.text.StageTextClearButtonMode in Adobe's Flash Platform API Reference
+		 */
+		public function get clearButtonMode():String
+		{
+			return this._clearButtonMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set clearButtonMode(value:String):void
+		{
+			if(this._clearButtonMode == value)
+			{
+				return;
+			}
+			this._clearButtonMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
 		 */
 		override public function dispose():void
 		{
@@ -1771,6 +1851,10 @@ package feathers.controls.text
 				}
 			}
 			this.stageText.textAlign = textAlign;
+			if("clearButtonMode" in this.stageText)
+			{
+				this.stageText.clearButtonMode = this._clearButtonMode;
+			}
 		}
 
 		/**
@@ -1997,8 +2081,6 @@ package feathers.controls.text
 			{
 				stageTextViewPort = new Rectangle();
 			}
-			stageTextViewPort.x = Math.round(starlingViewPort.x + (point.x * scaleFactor));
-			stageTextViewPort.y = Math.round(starlingViewPort.y + (point.y * scaleFactor));
 			var viewPortWidth:Number = Math.round((this.actualWidth + desktopGutterDimensionsOffset) * scaleFactor * globalScaleX);
 			if(viewPortWidth < 1 ||
 				viewPortWidth !== viewPortWidth) //isNaN
@@ -2013,6 +2095,26 @@ package feathers.controls.text
 			}
 			stageTextViewPort.width = viewPortWidth;
 			stageTextViewPort.height = viewPortHeight;
+			var viewPortX:Number = Math.round(starlingViewPort.x + (point.x * scaleFactor));
+			if((viewPortX + viewPortWidth) > MAX_VIEW_PORT_POSITION)
+			{
+				viewPortX = MAX_VIEW_PORT_POSITION - viewPortWidth;
+			}
+			else if(viewPortX < MIN_VIEW_PORT_POSITION)
+			{
+				viewPortX = MIN_VIEW_PORT_POSITION;
+			}
+			var viewPortY:Number = Math.round(starlingViewPort.y + (point.y * scaleFactor));
+			if((viewPortY + viewPortHeight) > MAX_VIEW_PORT_POSITION)
+			{
+				viewPortY = MAX_VIEW_PORT_POSITION - viewPortHeight;
+			}
+			else if(viewPortY < MIN_VIEW_PORT_POSITION)
+			{
+				viewPortY = MIN_VIEW_PORT_POSITION;
+			}
+			stageTextViewPort.x = viewPortX;
+			stageTextViewPort.y = viewPortY;
 			this.stageText.viewPort = stageTextViewPort;
 
 			var fontSize:int = 12;
@@ -2087,6 +2189,7 @@ package feathers.controls.text
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
 			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, stageText_softKeyboardActivatingHandler);
 			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.stage = null;
 			this.stageText.dispose();
@@ -2123,6 +2226,7 @@ package feathers.controls.text
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, stageText_softKeyboardActivatingHandler);
 			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
 			this.stageText.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stageText_mouseFocusChangeHandler);
@@ -2335,6 +2439,14 @@ package feathers.controls.text
 		protected function stageText_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
 		{
 			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATE, true);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardActivatingHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATING, true);
 		}
 
 		/**

@@ -35,4 +35,4 @@ All Feathers components have a [`toolTip`](../api-reference/feathers/core/Feathe
 
 ## Related Links
 
--   [`feathers.core.FocusManager` API Documentation](../api-reference/feathers/core/FocusManager.html)
+-   [`feathers.core.ToolTipManager` API Documentation](../api-reference/feathers/core/ToolTipManager.html)
