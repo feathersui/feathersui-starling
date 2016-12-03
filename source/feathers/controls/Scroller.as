@@ -1559,6 +1559,36 @@ package feathers.controls
 			this._verticalScrollBarPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+		/**
+		 * @private
+		 */
+		protected var _horizontalScrollBarPosition:String = RelativePosition.BOTTOM;
+
+		[Inspectable(type="String",enumeration="bottom,top")]
+		/**
+		 * @private
+		 */
+		public function get horizontalScrollBarPosition():String
+		{
+			return this._horizontalScrollBarPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalScrollBarPosition(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalScrollBarPosition === value)
+			{
+				return;
+			}
+			this._horizontalScrollBarPosition = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 
 		/**
 		 * @private
@@ -4563,7 +4593,14 @@ package feathers.controls
 					this._hasHorizontalScrollBar = true;
 					if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED)
 					{
-						this._bottomViewPortOffset += this.horizontalScrollBar.height;
+						if(this._horizontalScrollBarPosition == RelativePosition.TOP)
+						{
+							this._topViewPortOffset += this.horizontalScrollBar.height;
+						}
+						else
+						{
+							this._bottomViewPortOffset += this.horizontalScrollBar.height;
+						}
 					}
 				}
 				else
@@ -4733,8 +4770,15 @@ package feathers.controls
 
 			if(this.horizontalScrollBar !== null)
 			{
+				if(this._horizontalScrollBarPosition === RelativePosition.TOP)
+				{
+					this.horizontalScrollBar.y = this._paddingTop;
+				}
+				else
+				{
+					this.horizontalScrollBar.y = this._topViewPortOffset + visibleHeight;
+				}
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
-				this.horizontalScrollBar.y = this._topViewPortOffset + visibleHeight;
 				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
