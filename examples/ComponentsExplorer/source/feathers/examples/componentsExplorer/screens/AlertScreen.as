@@ -86,6 +86,10 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "OK" },
 				{ label: "Cancel" }
 			]));
+			//when the enter key is pressed, treat it as OK
+			alert.acceptButtonIndex = 0;
+			//when the back or escape key is pressed, treat it as cancel
+			alert.cancelButtonIndex = 1;
 			alert.addEventListener(Event.CLOSE, alert_closeHandler);
 		}
 
@@ -93,11 +97,11 @@ package feathers.examples.componentsExplorer.screens
 		{
 			if(data)
 			{
-				trace("alert closed with button:", data.label);
+				trace("alert closed with item:", data.label);
 			}
 			else
 			{
-				trace("alert closed without button");
+				trace("alert closed without item");
 			}
 		}
 	}
