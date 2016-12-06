@@ -721,6 +721,28 @@ package feathers.controls
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when a pull view is activated.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The pull view that was activated.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.UPDATE
+	 */
+	[Event(name="update",type="starling.events.Event")]
+
+	/**
 	 * Allows horizontal and vertical scrolling of a <em>view port</em>. Not
 	 * meant to be used as a standalone container or component. Generally meant
 	 * to be the super class of another component that needs to support
@@ -1214,6 +1236,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _verticalAutoScrollTween:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalPullTween:Tween;
 
 		/**
 		 * @private
@@ -2041,6 +2068,11 @@ package feathers.controls
 			this._verticalMouseWheelScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalPullPosition:Number = 0;
 
 		/**
 		 * @private
@@ -3279,6 +3311,82 @@ package feathers.controls
 				return;
 			}
 			this._revealScrollBarsDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isTopPullActive:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _topPullView:DisplayObject = null;
+
+		/**
+		 * A view that is displayed at the top of the scroller's view port when
+		 * dragging down. When it is pulled down completed and released,
+		 * <code>topPullEventType</code> will be dispatched.
+		 * 
+		 * @default null
+		 *
+		 * @see #topPullEventType
+		 */
+		public function get topPullView():DisplayObject
+		{
+			return this._topPullView;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set topPullView(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._topPullView !== null && this._topPullView.parent === this)
+			{
+				this.removeRawChildInternal(this._topPullView, false);
+			}
+			this._topPullView = value;
+			if(this._topPullView !== null)
+			{
+				this._topPullView.visible = false;
+				this.addRawChildInternal(this._topPullView);
+			}
+			else
+			{
+				this._isTopPullActive = false;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _topPullEventType:String = Event.UPDATE;
+
+		/**
+		 * An event of this type will be dispatched when the
+		 * <code>topPullView</code> is activated by dragging it down by its
+		 * complete height and releasing.
+		 * 
+		 * @default starling.events.Event.UPDATE
+		 * 
+		 * @see #topPullView
+		 */
+		public function get topPullEventType():String
+		{
+			return this._topPullEventType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set topPullEventType(value:String):void
+		{
+			this._topPullEventType = value;
 		}
 
 		/**
@@ -4731,6 +4839,47 @@ package feathers.controls
 				this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
 			}
 
+			if(this._topPullView !== null)
+			{
+				this._topPullView.x = (this.actualWidth - this._topPullView.width) / 2;
+				//if the animation is active, we don't want to interrupt it.
+				//if the user starts dragging, the animation will be stopped.
+				if(this._verticalPullTween === null)
+				{
+					var topPullViewHeight:Number = this._topPullView.height;
+					var adjustedMinVerticalScrollPosition:Number = this._minVerticalScrollPosition;
+					if(this._isTopPullActive && this._hasElasticEdges)
+					{
+						adjustedMinVerticalScrollPosition -= topPullViewHeight;
+					}
+					var topPullViewOffset:Number = 0;
+					if(this._verticalScrollPosition < adjustedMinVerticalScrollPosition &&
+						!(this._verticalScrollPosition > this._verticalPullPosition))
+					{
+						//if the scroll position is less than the pull position,
+						//then prefer the scroll position
+						topPullViewOffset = this._verticalScrollPosition;
+					}
+					else if(this._isTopPullActive || this._verticalPullPosition < adjustedMinVerticalScrollPosition)
+					{
+						//we also check for isTopPullActive because the pull
+						//position can be equal to the minimum scroll position
+						topPullViewOffset = this._verticalPullPosition;
+					}
+					if(topPullViewOffset < 0)
+					{
+						this._topPullView.y = this._topViewPortOffset - topPullViewHeight - topPullViewOffset;
+						this._topPullView.visible = true;
+					}
+					else
+					{
+						this._topPullView.visible = false;
+					}
+				}
+				var index:int = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
+				this.setRawChildIndexInternal(this._topPullView, index + 1);
+			}
+
 			if(this.horizontalScrollBar !== null)
 			{
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
@@ -4877,6 +5026,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function getRawChildIndexInternal(child:DisplayObject):int
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).getRawChildIndex(child);
+			}
+			return this.getChildIndex(child);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function setRawChildIndexInternal(child:DisplayObject, index:int):void
 		{
 			if(this is IScrollContainer)
@@ -4926,27 +5087,57 @@ package feathers.controls
 		{
 			var offset:Number = this._startTouchY - touchY;
 			var position:Number = this._startVerticalScrollPosition + offset;
-			if(position < this._minVerticalScrollPosition)
+			var adjustedMinScrollPosition:Number = this._minVerticalScrollPosition;
+			if(this._isTopPullActive && this._hasElasticEdges)
 			{
-				if(this._hasElasticEdges)
+				adjustedMinScrollPosition -= this._topPullView.height;
+			}
+			this._verticalPullPosition = 0;
+			if(position < adjustedMinScrollPosition)
+			{
+				//first, calculate the position as if elastic edges were enabled
+				position = position - (position - adjustedMinScrollPosition) * (1 - this._elasticity);
+				if(position < adjustedMinScrollPosition)
 				{
-					position -= (position - this._minVerticalScrollPosition) * (1 - this._elasticity);
+					//then, save that value if it's less than the minimum so
+					//that it can be used for the pull view
+					this._verticalPullPosition = position;
 				}
-				else
+				if(!this._hasElasticEdges)
 				{
-					position = this._minVerticalScrollPosition;
+					//if elastic edges aren't enabled, use the minimum
+					position = adjustedMinScrollPosition;
 				}
 			}
 			else if(position > this._maxVerticalScrollPosition)
 			{
 				if(this._hasElasticEdges)
 				{
-					position -= (position - this._maxVerticalScrollPosition) * (1 - this._elasticity);
+					position = position - (position - this._maxVerticalScrollPosition) * (1 - this._elasticity);
 				}
 				else
 				{
 					position = this._maxVerticalScrollPosition;
 				}
+			}
+			if(this._isTopPullActive)
+			{
+				//if the top pull view is active, never allow it to be hidden by
+				//scrolling up
+				var idealPosition:Number = -this._topPullView.height;
+				if(idealPosition < this._verticalPullPosition)
+				{
+					this._verticalPullPosition = idealPosition;
+				}
+			}
+			if(this._verticalPullPosition !== 0)
+			{
+				if(this._verticalPullTween !== null)
+				{
+					Starling.juggler.remove(this._verticalPullTween);
+					this._verticalPullTween = null;
+				}
+				this.invalidate(INVALIDATION_FLAG_SCROLL);
 			}
 			this.verticalScrollPosition = position;
 		}
@@ -5158,10 +5349,15 @@ package feathers.controls
 		 */
 		protected function finishScrollingVertically():void
 		{
-			var targetVerticalScrollPosition:Number = NaN;
-			if(this._verticalScrollPosition < this._minVerticalScrollPosition)
+			var adjustedMinScrollPosition:Number = this._minVerticalScrollPosition;
+			if(this._isTopPullActive && this._hasElasticEdges)
 			{
-				targetVerticalScrollPosition = this._minVerticalScrollPosition;
+				adjustedMinScrollPosition -= this._topPullView.height;
+			}
+			var targetVerticalScrollPosition:Number = NaN;
+			if(this._verticalScrollPosition < adjustedMinScrollPosition)
+			{
+				targetVerticalScrollPosition = adjustedMinScrollPosition;
 			}
 			else if(this._verticalScrollPosition > this._maxVerticalScrollPosition)
 			{
@@ -5182,6 +5378,28 @@ package feathers.controls
 			else
 			{
 				this.throwTo(NaN, targetVerticalScrollPosition, this._elasticSnapDuration);
+			}
+
+			if(this._topPullView !== null &&
+				this._verticalPullPosition < adjustedMinScrollPosition)
+			{
+				if(this._verticalPullTween !== null)
+				{
+					Starling.juggler.remove(this._verticalPullTween);
+					this._verticalPullTween = null;
+				}
+				var yPosition:Number = this._topViewPortOffset;
+				if(!this._isTopPullActive)
+				{
+					yPosition -= this._topPullView.height;
+				}
+				if(this._topPullView.y !== yPosition)
+				{
+					this._verticalPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
+					this._verticalPullTween.animate("y", yPosition);
+					this._verticalPullTween.onComplete = verticalPullTween_onComplete;
+					Starling.juggler.add(this._verticalPullTween);
+				}
 			}
 		}
 
@@ -5457,15 +5675,20 @@ package feathers.controls
 		 */
 		protected function refreshVerticalAutoScrollTweenEndRatio():void
 		{
+			var adjustedMinVerticalScrollPosition:Number = this._minVerticalScrollPosition;
+			if(this._isTopPullActive && this._hasElasticEdges)
+			{
+				adjustedMinVerticalScrollPosition -= this._topPullView.height;
+			}
 			var distance:Number = Math.abs(this._targetVerticalScrollPosition - this._startVerticalScrollPosition);
 			var ratioOutOfBounds:Number = 0;
 			if(this._targetVerticalScrollPosition > this._maxVerticalScrollPosition)
 			{
 				ratioOutOfBounds = (this._targetVerticalScrollPosition - this._maxVerticalScrollPosition) / distance;
 			}
-			else if(this._targetVerticalScrollPosition < this._minVerticalScrollPosition)
+			else if(this._targetVerticalScrollPosition < adjustedMinVerticalScrollPosition)
 			{
-				ratioOutOfBounds = (this._minVerticalScrollPosition - this._targetVerticalScrollPosition) / distance;
+				ratioOutOfBounds = (adjustedMinVerticalScrollPosition - this._targetVerticalScrollPosition) / distance;
 			}
 			if(ratioOutOfBounds > 0)
 			{
@@ -5712,7 +5935,8 @@ package feathers.controls
 				}
 			}
 			if((this._verticalScrollPolicy == ScrollPolicy.ON ||
-				(this._verticalScrollPolicy == ScrollPolicy.AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
+				(this._verticalScrollPolicy == ScrollPolicy.AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition) ||
+				this._topPullView !== null) &&
 				!this._isDraggingVertically && verticalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.verticalScrollBar)
@@ -5905,6 +6129,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function verticalPullTween_onComplete():void
+		{
+			this._verticalPullTween = null;
+			if(!this._isTopPullActive)
+			{
+				this._verticalPullPosition = 0;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function horizontalScrollBarHideTween_onComplete():void
 		{
 			this._horizontalScrollBarHideTween = null;
@@ -6067,6 +6303,16 @@ package feathers.controls
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
 				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+
+				if(!this._isTopPullActive && this._isDraggingVertically &&
+					this._topPullView !== null && this._topPullEventType !== null &&
+					-this._verticalPullPosition >= this._topPullView.height)
+				{
+					this._isTopPullActive = true;
+					this._topPullView.addEventListener(Event.COMPLETE, topPullView_completeHandler);
+					this.dispatchEventWith(this._topPullEventType, false, this._topPullView);
+				}
+
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
 				if(this._horizontalScrollPosition < this._minHorizontalScrollPosition ||
@@ -6075,7 +6321,12 @@ package feathers.controls
 					isFinishingHorizontally = true;
 					this.finishScrollingHorizontally();
 				}
-				if(this._verticalScrollPosition < this._minVerticalScrollPosition ||
+				var adjustedMinVerticalScrollPosition:Number = this._minVerticalScrollPosition;
+				if(this._isTopPullActive && this._hasElasticEdges)
+				{
+					adjustedMinVerticalScrollPosition -= this._topPullView.height;
+				}
+				if(this._verticalScrollPosition < adjustedMinVerticalScrollPosition ||
 					this._verticalScrollPosition > this._maxVerticalScrollPosition)
 				{
 					isFinishingVertically = true;
@@ -6473,6 +6724,15 @@ package feathers.controls
 			{
 				this.horizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function topPullView_completeHandler(event:Event):void
+		{
+			this._isTopPullActive = false;
+			this.finishScrollingVertically();
 		}
 	}
 }
