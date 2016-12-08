@@ -157,6 +157,8 @@ package feathers.controls.text
 	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class TextBlockTextEditor extends TextBlockTextRenderer implements IIMETextEditor, INativeFocusOwner
 	{

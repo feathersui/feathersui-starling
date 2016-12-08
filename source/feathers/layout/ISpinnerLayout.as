@@ -11,6 +11,8 @@ package feathers.layout
 	 * A layout for the <code>SpinnerList</code> component.
 	 *
 	 * @see feathers.controls.SpinnerList
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public interface ISpinnerLayout extends ILayout
 	{

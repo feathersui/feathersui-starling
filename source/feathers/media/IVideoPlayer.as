@@ -35,6 +35,8 @@ package feathers.media
 
 	/**
 	 * An interface media players that play video content.
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public interface IVideoPlayer extends IAudioPlayer
 	{

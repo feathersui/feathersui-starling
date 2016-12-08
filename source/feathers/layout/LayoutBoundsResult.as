@@ -9,6 +9,8 @@ package feathers.layout
 {
 	/**
 	 * Calculated bounds for layout.
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class LayoutBoundsResult
 	{

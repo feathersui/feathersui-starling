@@ -22,6 +22,8 @@ package feathers.motion.transitions
 	 *
 	 * @see feathers.controls.ScreenNavigator
 	 * @see feathers.controls.TabBar
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TabBarSlideTransitionManager
 	{

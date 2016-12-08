@@ -365,6 +365,8 @@ package feathers.controls
 	 * this.addChild( button );</listing>
 	 *
 	 * @see ../../../help/toggle-button.html How to use the Feathers ToggleButton component
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class ToggleButton extends Button implements IGroupedToggle
 	{

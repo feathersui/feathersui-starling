@@ -120,6 +120,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/layout-group.html How to use the Feathers LayoutGroup component
 	 * @see feathers.controls.ScrollContainer
+	 *
+	 * @productversion Feathers 1.2.0
 	 */
 	public class LayoutGroup extends FeathersControl
 	{

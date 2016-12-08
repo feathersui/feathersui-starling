@@ -185,6 +185,8 @@ package feathers.data
 	/**
 	 * Wraps a two-dimensional data source with a common API for use with UI
 	 * controls that support this type of data.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class HierarchicalCollection extends EventDispatcher
 	{

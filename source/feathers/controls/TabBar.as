@@ -449,6 +449,8 @@ package feathers.controls
 	 * this.addChild( tabs );</listing>
 	 *
 	 * @see ../../../help/tab-bar.html How to use the Feathers TabBar component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{

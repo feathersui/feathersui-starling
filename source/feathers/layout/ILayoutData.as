@@ -31,6 +31,8 @@ package feathers.layout
 
 	/**
 	 * Extra data used by layout algorithms.
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface ILayoutData extends IFeathersEventDispatcher
 	{

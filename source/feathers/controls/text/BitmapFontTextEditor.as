@@ -147,6 +147,8 @@ package feathers.controls.text
 	 * @see feathers.controls.TextInput
 	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts Starling Wiki: Displaying Text with Bitmap Fonts
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor, INativeFocusOwner
 	{

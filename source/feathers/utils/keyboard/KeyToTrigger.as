@@ -43,8 +43,10 @@ package feathers.utils.keyboard
 	 * <code>Event.CHANGE</code>.</p>
 	 *
 	 * @see http://doc.starling-framework.org/current/starling/events/Event.html#TRIGGERED starling.events.Event.TRIGGERED
-	 * @see feathers.utils.touch.KeyToSelect
+	 * @see feathers.utils.keyboard.KeyToSelect
 	 * @see feathers.utils.touch.TapToTrigger
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class KeyToTrigger
 	{

@@ -39,6 +39,8 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 * Used internally by List. Not meant to be used on its own.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ListDataViewPort extends FeathersControl implements IViewPort
 	{

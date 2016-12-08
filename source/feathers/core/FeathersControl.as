@@ -251,6 +251,8 @@ package feathers.core
 	 * and with optional support for layouts, see <code>LayoutGroup</code>.</p>
 	 *
 	 * @see feathers.controls.LayoutGroup
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class FeathersControl extends Sprite implements IFeathersControl, ILayoutDisplayObject
 	{

@@ -37,6 +37,8 @@ package feathers.events
 	 * objects are nested, the inner object will always have precedence.
 	 * However, from a usability perspective, this is generally the expected
 	 * behavior, so this restriction isn't expected to cause any issues.</p>
+	 *
+	 * @productversion Feathers 1.2.0
 	 */
 	public class ExclusiveTouch extends EventDispatcher
 	{

@@ -247,6 +247,8 @@ package feathers.controls
 	 * this.addChild( spinner );</listing>
 	 *
 	 * @see ../../../help/date-time-spinner.html How to use the Feathers DateTimeSpinner component
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class DateTimeSpinner extends FeathersControl
 	{

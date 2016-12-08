@@ -30,6 +30,8 @@ package feathers.controls.text
 	 * <code>flash.text.TextField</code>.
 	 *
 	 * @see feathers.controls.TextArea
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class TextFieldTextEditorViewPort extends TextFieldTextEditor implements ITextEditorViewPort
 	{

@@ -495,6 +495,8 @@ package feathers.controls
 	 * var loader:ImageLoader = new ImageLoader();
 	 * loader.source = Texture.fromBitmap( bitmap );
 	 * this.addChild( loader );</listing>
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ImageLoader extends FeathersControl
 	{

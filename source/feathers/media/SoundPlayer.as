@@ -182,6 +182,8 @@ package feathers.media
 	 * Controls playback of audio with a <code>flash.media.Sound</code> object.
 	 * 
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class SoundPlayer extends BaseTimedMediaPlayer implements IAudioPlayer, IProgressiveMediaPlayer
 	{

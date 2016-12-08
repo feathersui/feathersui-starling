@@ -755,6 +755,8 @@ package feathers.controls
 	 * and containers. With that in mind, no code example is included here.</p>
 	 *
 	 * @see feathers.controls.ScrollContainer
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class Scroller extends FeathersControl implements IFocusDisplayObject
 	{

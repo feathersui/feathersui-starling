@@ -9,11 +9,15 @@ package feathers.controls
 {
 	/**
 	 * Layout modes for components with a thumb that is dragged along a track.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class TrackLayoutMode
 	{
 		/**
 		 * The component has only one track, that fills its full length.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const SINGLE:String = "single";
 
@@ -30,6 +34,8 @@ package feathers.controls
 		 * consider using a display object that is capable of resizing without
 		 * distortion, such as an <code>Image</code> with a
 		 * <code>scale9Grid</code> or a <code>tileGrid</code>.</p>
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const SPLIT:String = "split";
 	}

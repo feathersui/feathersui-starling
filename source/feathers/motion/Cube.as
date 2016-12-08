@@ -20,6 +20,8 @@ package feathers.motion
 	 * not be compatible with masks.</p>
 	 *
 	 * @see ../../../help/transitions.html#cube Transitions for Feathers screen navigators: Cube
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class Cube
 	{

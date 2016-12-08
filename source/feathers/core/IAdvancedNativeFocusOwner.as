@@ -15,6 +15,8 @@ package feathers.core
 	 * to give focus to its native focus object.
 	 *
 	 * @see ../../../help/focus.html
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public interface IAdvancedNativeFocusOwner extends INativeFocusOwner
 	{

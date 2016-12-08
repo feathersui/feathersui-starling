@@ -32,6 +32,8 @@ package feathers.core
 	 *
 	 * @see ../../../help/focus.html Keyboard focus management in Feathers
 	 * @see feathers.core.FocusManager
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class DefaultFocusManager implements IFocusManager
 	{

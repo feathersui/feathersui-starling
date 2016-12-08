@@ -9,6 +9,8 @@ package feathers.utils.text
 {
 	/**
 	 * Functions for navigating text inputs with the keyboard.
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class TextInputNavigation
 	{

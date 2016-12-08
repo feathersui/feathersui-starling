@@ -110,6 +110,8 @@ package feathers.media
 	/**
 	 * An abstract superclass for media players that should implement the
 	 * <code>feathers.media.ITimedMediaPlayer</code> interface.
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class BaseTimedMediaPlayer extends BaseMediaPlayer implements ITimedMediaPlayer
 	{

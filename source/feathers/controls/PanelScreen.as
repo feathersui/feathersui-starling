@@ -145,6 +145,8 @@ package feathers.controls
 	 * @see ../../../panel-screen.html How to use the Feathers PanelScreen component
 	 * @see feathers.controls.StackScreenNavigator
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class PanelScreen extends Panel implements IScreen
 	{

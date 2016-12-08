@@ -11,6 +11,8 @@ package feathers.media
 
 	/**
 	 * A base interface for all types of media players.
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public interface IMediaPlayer extends IFeathersEventDispatcher
 	{

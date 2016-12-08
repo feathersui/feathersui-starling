@@ -36,6 +36,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see feathers.controls.StackScreenNavigator
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class StackScreenNavigatorItem implements IScreenNavigatorItem
 	{

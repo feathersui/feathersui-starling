@@ -16,6 +16,8 @@ package feathers.motion
 	 * animates the `alpha` property of a display object to fade it in or out.
 	 *
 	 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class Fade
 	{

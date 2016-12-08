@@ -17,6 +17,8 @@ package feathers.core
 	 * Manages touch and keyboard focus.
 	 *
 	 * @see ../../../help/focus.html Keyboard focus management in Feathers
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class FocusManager
 	{

@@ -73,6 +73,8 @@ package feathers.layout
 	 * Positions items from left to right in a single row.
 	 *
 	 * @see ../../../help/horizontal-layout.html How to use HorizontalLayout with Feathers containers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{

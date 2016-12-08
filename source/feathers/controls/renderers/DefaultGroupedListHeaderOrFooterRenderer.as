@@ -248,6 +248,8 @@ package feathers.controls.renderers
 	 * control.
 	 *
 	 * @see feathers.controls.GroupedList
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{

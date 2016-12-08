@@ -150,6 +150,8 @@ package feathers.controls
 	 * beta to stable.</p>
 	 *
 	 * @see ../../../help/text-callout.html How to use the Feathers Callout component
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class TextCallout extends Callout implements IToolTip
 	{

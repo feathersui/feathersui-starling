@@ -26,6 +26,8 @@ package feathers.core
 	 * interfaces.</p>
 	 *
 	 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html Full description of starling.display.DisplayObject in Gamua's Starling Framework API Reference
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface IFeathersDisplayObject extends IFeathersEventDispatcher
 	{

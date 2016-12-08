@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.math
 {
-	
 	/**
 	 * Forces a numeric value into a specified range.
 	 * 
@@ -15,8 +14,8 @@ package feathers.utils.math
 	 * @param minimum	The minimum bound of the range.
 	 * @param maximum	The maximum bound of the range.
 	 * @return			A value within the specified range.
-	 * 
-	 * @author Josh Tynjala (joshblog.net)
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public function clamp(value:Number, minimum:Number, maximum:Number):Number
 	{

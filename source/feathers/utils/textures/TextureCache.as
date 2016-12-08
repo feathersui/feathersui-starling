@@ -56,6 +56,8 @@ package feathers.utils.textures
 	 * };</listing>
 	 * 
 	 * @see feathers.controls.ImageLoader#textureCache
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class TextureCache
 	{

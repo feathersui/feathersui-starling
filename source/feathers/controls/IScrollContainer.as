@@ -20,6 +20,8 @@ package feathers.controls
 	 *
 	 * @see feathers.controls.Scroller
 	 * @see feathers.controls.ScrollContainer
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public interface IScrollContainer extends IFeathersControl
 	{

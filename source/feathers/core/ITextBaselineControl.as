@@ -9,6 +9,8 @@ package feathers.core
 {
 	/**
 	 * A UI control with text that has a baseline.
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public interface ITextBaselineControl extends IFeathersControl
 	{

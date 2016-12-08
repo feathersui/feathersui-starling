@@ -15,6 +15,8 @@ package feathers.core
 	 * Interface that handles common capabilities of rendering text.
 	 *
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface ITextRenderer extends IStateObserver, IFeathersControl, ITextBaselineControl
 	{

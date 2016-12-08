@@ -13,6 +13,8 @@ package feathers.controls
 	 * automatically set the <code>direction</code> property when an
 	 * <code>IDirectionalScrollBar</code> is returned by its scroll bar
 	 * factories.
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public interface IDirectionalScrollBar extends IScrollBar
 	{

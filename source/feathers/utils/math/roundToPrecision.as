@@ -16,6 +16,8 @@ package feathers.utils.math
 	 * @return		the rounded number, or the original input if no rounding is needed
 	 * 
 	 * @see Math#round
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public function roundToPrecision(number:Number, precision:int = 0):Number
 	{

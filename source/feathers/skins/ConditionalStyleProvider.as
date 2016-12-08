@@ -11,6 +11,8 @@ package feathers.skins
 
 	/**
 	 * A style provider that chooses between two different style providers.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class ConditionalStyleProvider implements IStyleProvider
 	{

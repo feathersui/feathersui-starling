@@ -211,6 +211,8 @@ package feathers.controls
 	 * }</listing>
 	 *
 	 * @see ../../../help/alert.html How to use the Feathers Alert component
+	 * 
+	 * @productversion Feathers 1.2.0
 	 */
 	public class Alert extends Panel
 	{

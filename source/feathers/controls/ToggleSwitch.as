@@ -516,6 +516,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/toggle-switch.html How to use the Feathers ToggleSwitch component
 	 * @see feathers.controls.Check
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject, ITextBaselineControl, IStateContext
 	{

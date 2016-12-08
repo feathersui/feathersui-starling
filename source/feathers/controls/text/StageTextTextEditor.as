@@ -237,6 +237,8 @@ package feathers.controls.text
 	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class StageTextTextEditor extends BaseTextEditor implements IMultilineTextEditor, INativeFocusOwner
 	{

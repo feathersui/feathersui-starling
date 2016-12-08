@@ -19,6 +19,8 @@ package feathers.utils.touch
 	 * Similar to <code>TouchToState</code>, but delays the "down" state by a
 	 * specified number of seconds. Useful for delayed state changes in
 	 * scrolling containers.
+	 *
+	 * @productversion Feathers 3.2.0
 	 */
 	public class DelayedDownTouchToState extends TouchToState
 	{

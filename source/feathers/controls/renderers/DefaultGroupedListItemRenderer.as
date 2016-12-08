@@ -18,6 +18,8 @@ package feathers.controls.renderers
 	 * object (with shortcuts for including a second image or a second label).
 	 * 
 	 * @see feathers.controls.GroupedList
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DefaultGroupedListItemRenderer extends BaseDefaultItemRenderer implements IGroupedListItemRenderer
 	{

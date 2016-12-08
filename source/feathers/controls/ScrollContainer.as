@@ -86,6 +86,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/scroll-container.html How to use the Feathers ScrollContainer component
 	 * @see feathers.controls.LayoutGroup
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer
 	{

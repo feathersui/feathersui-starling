@@ -13,6 +13,8 @@ package feathers.core
 	 * pass focus to the native focus.
 	 * 
 	 * @see ../../../help/focus.html
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public interface INativeFocusOwner extends IFocusDisplayObject
 	{

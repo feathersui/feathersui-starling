@@ -46,6 +46,8 @@ package feathers.themes
 	 * it has fully initialized. Attempting to create Feathers components before
 	 * the theme has dispatched <code>Event.COMPLETE</code> may result in no
 	 * skins or even runtime errors.
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public interface IAsyncTheme extends IFeathersEventDispatcher
 	{

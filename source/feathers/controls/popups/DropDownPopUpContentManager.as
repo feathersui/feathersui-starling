@@ -83,6 +83,8 @@ package feathers.controls.popups
 
 	/**
 	 * Displays pop-up content as a desktop-style drop-down.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DropDownPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{

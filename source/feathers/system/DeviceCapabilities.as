@@ -13,6 +13,8 @@ package feathers.system
 	/**
 	 * Using values from the Stage and Capabilities classes, makes educated
 	 * guesses about the physical size of the device this code is running on.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DeviceCapabilities
 	{

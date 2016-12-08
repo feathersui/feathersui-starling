@@ -11,6 +11,12 @@ package feathers.utils.skins
 
 	import starling.display.DisplayObject;
 
+	/**
+	 * Updates the dimensions of a component's for measurement if the child
+	 * should fill the entire width and height of its parent.
+	 *
+	 * @productversion Feathers 3.0.0
+	 */
 	public function resetFluidChildDimensionsForMeasurement(child:DisplayObject,
 		parentExplicitWidth:Number, parentExplicitHeight:Number,
 		parentExplicitMinWidth:Number, parentExplicitMinHeight:Number,

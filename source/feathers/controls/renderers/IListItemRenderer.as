@@ -36,6 +36,8 @@ package feathers.controls.renderers
 
 	/**
 	 * Interface to implement a renderer for a list item.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IListItemRenderer extends IToggle
 	{

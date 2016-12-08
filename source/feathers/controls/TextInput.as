@@ -779,6 +779,8 @@ package feathers.controls
 	 * @see feathers.core.ITextEditor
 	 * @see feathers.controls.AutoComplete
 	 * @see feathers.controls.TextArea
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TextInput extends FeathersControl implements ITextBaselineControl, IAdvancedNativeFocusOwner, IStateContext
 	{

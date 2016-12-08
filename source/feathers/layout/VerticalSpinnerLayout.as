@@ -45,6 +45,8 @@ package feathers.layout
 	 * top to bottom in a single column and repeats infinitely.
 	 *
 	 * @see ../../../help/vertical-spinner-layout.html How to use VerticalSpinnerLayout with the Feathers SpinnerList component
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class VerticalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{

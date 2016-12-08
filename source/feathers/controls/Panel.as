@@ -213,6 +213,8 @@ package feathers.controls
 	 * panel.addChild( noButton );</listing>
 	 *
 	 * @see ../../../help/panel.html How to use the Feathers Panel component
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class Panel extends ScrollContainer implements IFocusExtras
 	{

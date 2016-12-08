@@ -16,6 +16,8 @@ package feathers.text
 	 * Customizes a bitmap font for use by a <code>BitmapFontTextRenderer</code>.
 	 * 
 	 * @see feathers.controls.text.BitmapFontTextRenderer
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class BitmapFontTextFormat
 	{

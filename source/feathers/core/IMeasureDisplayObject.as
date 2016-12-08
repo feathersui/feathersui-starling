@@ -9,6 +9,8 @@ package feathers.core
 {
 	/**
 	 * A display object with extra measurement properties.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public interface IMeasureDisplayObject extends IFeathersDisplayObject
 	{

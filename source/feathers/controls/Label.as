@@ -219,6 +219,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/label.html How to use the Feathers Label component
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Label extends FeathersControl implements ITextBaselineControl, IToolTip
 	{

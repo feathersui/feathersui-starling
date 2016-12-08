@@ -16,6 +16,8 @@ package feathers.core
 	 * would be a container with "chrome", such as <code>feathers.controls.Panel</code>.
 	 *
 	 * @see ../../../help/focus.html Keyboard focus management in Feathers
+	 *
+	 * @productversion Feathers 1.2.0
 	 */
 	public interface IFocusExtras
 	{

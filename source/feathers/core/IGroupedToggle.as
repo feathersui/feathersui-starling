@@ -11,6 +11,8 @@ package feathers.core
 	 * A toggle associated with a specific group.
 	 *
 	 * @see ToggleGroup
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IGroupedToggle extends IToggle
 	{

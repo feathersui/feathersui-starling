@@ -15,6 +15,8 @@ package feathers.core
 	 *
 	 * @see feathers.controls.TextInput
 	 * @see ../../../help/text-editors Introduction to Feathers text editors
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public interface IMultilineTextEditor extends ITextEditor
 	{

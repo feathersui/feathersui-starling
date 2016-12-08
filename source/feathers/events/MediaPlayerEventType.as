@@ -21,6 +21,8 @@ package feathers.events
 	 *     trace( mediaPlayer.currentTime );
 	 * }
 	 * mediaPlayer.addEventListener( MediaPlayerEventType.CURRENT_TIME_CHANGE, listener );</listing>
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class MediaPlayerEventType
 	{

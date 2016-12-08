@@ -28,6 +28,8 @@ package feathers.dragDrop
 	 * @see feathers.dragDrop.IDragSource
 	 * @see feathers.dragDrop.IDropTarget
 	 * @see feathers.dragDrop.DragData
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DragDropManager
 	{

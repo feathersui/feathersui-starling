@@ -16,6 +16,8 @@ package feathers.utils.display
 	 * depth of <code>1</code>, and it increases with each new level. If the
 	 * object does not have a reference to the stage, the depth will always be
 	 * <code>-1</code>, even if the object has a parent.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public function getDisplayObjectDepthFromStage(target:DisplayObject):int
 	{

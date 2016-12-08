@@ -34,6 +34,8 @@ package feathers.controls
 	 * component.
 	 *
 	 * @see Scroller
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IScrollBar extends IRange
 	{

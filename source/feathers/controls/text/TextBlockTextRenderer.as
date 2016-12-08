@@ -82,6 +82,8 @@ package feathers.controls.text
 	 * @see ../../../../help/text-block-text-renderer.html How to use the Feathers TextBlockTextRenderer component
 	 * @see http://help.adobe.com/en_US/as3/dev/WS9dd7ed846a005b294b857bfa122bd808ea6-8000.html Using the Flash Text Engine in ActionScript 3.0 Developer's Guide
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public class TextBlockTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{

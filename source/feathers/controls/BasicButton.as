@@ -223,6 +223,8 @@ package feathers.controls
 	 * icon, see <code>feathers.controls.Button</code> instead.
 	 * 
 	 * @see feathers.controls.Button
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class BasicButton extends FeathersControl implements IStateContext
 	{

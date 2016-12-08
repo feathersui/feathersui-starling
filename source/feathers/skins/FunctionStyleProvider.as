@@ -26,6 +26,8 @@ package feathers.skins
 	 * this.addChild( button );</listing>
 	 *
 	 * @see ../../../help/skinning.html Skinning Feathers components
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class FunctionStyleProvider implements IStyleProvider
 	{

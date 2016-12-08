@@ -304,6 +304,8 @@ package feathers.controls
 	 * the left drawer.</p>
 	 *
 	 * @see ../../../help/drawers.html How to use the Feathers Drawers component
+	 *
+	 * @productversion Feathers 1.2.0
 	 */
 	public class Drawers extends FeathersControl
 	{

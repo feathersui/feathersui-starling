@@ -20,6 +20,8 @@ package feathers.controls.renderers
 	 * Interface to implement a renderer for a grouped list header or footer.
 	 * 
 	 * @see feathers.controls.GroupedList
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IGroupedListHeaderOrFooterRenderer extends IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{

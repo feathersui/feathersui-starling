@@ -45,6 +45,8 @@ package feathers.layout
 	 * left to right in a single row and repeats infinitely.
 	 *
 	 * @see ../../../help/horizontal-spinner-layout.html How to use HorizontalSpinnerLayout with the Feathers SpinnerList component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class HorizontalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{

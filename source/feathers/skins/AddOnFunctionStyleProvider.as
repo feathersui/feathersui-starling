@@ -29,6 +29,8 @@ package feathers.skins
 	 * }
 	 * button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );
 	 * this.addChild( button );</listing>
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class AddOnFunctionStyleProvider implements IStyleProvider
 	{

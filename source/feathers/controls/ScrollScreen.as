@@ -145,6 +145,8 @@ package feathers.controls
 	 * @see ../../../help/scroll-screen.html How to use the Feathers ScrollScreen component
 	 * @see feathers.controls.StackScreenNavigator
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public class ScrollScreen extends ScrollContainer implements IScreen
 	{

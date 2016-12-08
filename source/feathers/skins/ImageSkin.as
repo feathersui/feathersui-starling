@@ -33,6 +33,8 @@ package feathers.skins
 	 * this.addChild( button );</listing>
 	 * 
 	 * @see starling.display.Image
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class ImageSkin extends Image implements IMeasureDisplayObject, IStateObserver
 	{

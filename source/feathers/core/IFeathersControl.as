@@ -82,6 +82,8 @@ package feathers.core
 	/**
 	 * Basic interface for Feathers UI controls. A Feathers control must also
 	 * be a Starling display object.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IFeathersControl extends IValidating, IMeasureDisplayObject
 	{

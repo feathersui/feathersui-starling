@@ -31,6 +31,8 @@ package feathers.core
 
 	/**
 	 * An object with multiple states.
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public interface IStateContext extends IFeathersEventDispatcher
 	{

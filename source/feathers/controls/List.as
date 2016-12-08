@@ -223,6 +223,8 @@ package feathers.controls
 	 * @see ../../../help/item-renderers.html Creating custom item renderers for the Feathers List and GroupedList components
 	 * @see feathers.controls.GroupedList
 	 * @see feathers.controls.SpinnerList
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class List extends Scroller implements IFocusContainer
 	{

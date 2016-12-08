@@ -47,6 +47,8 @@ package feathers.utils.touch
 	 * @see http://doc.starling-framework.org/current/starling/events/Event.html#TRIGGERED starling.events.Event.TRIGGERED
 	 * @see feathers.utils.touch.TapToSelect
 	 * @see feathers.utils.touch.LongPress
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class TapToTrigger
 	{

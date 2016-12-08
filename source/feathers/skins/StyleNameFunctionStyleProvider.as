@@ -58,6 +58,8 @@ package feathers.skins
 	 * this.addChild( alternateButton );</listing>
 	 *
 	 * @see ../../../help/skinning.html Skinning Feathers components
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class StyleNameFunctionStyleProvider implements IStyleProvider
 	{

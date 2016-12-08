@@ -241,6 +241,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/simple-scroll-bar.html How to use the Feathers SimpleScrollBar component
 	 * @see feathers.controls.ScrollBar
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class SimpleScrollBar extends FeathersControl implements IDirectionalScrollBar
 	{

@@ -10,7 +10,9 @@ package feathers.dragDrop
 	/**
 	 * Stores data associated with a drag and drop operation.
 	 *
-	 * @see DragDropManager
+	 * @see feathers.dragDrop.DragDropManager
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DragData
 	{

@@ -23,6 +23,8 @@ package feathers.utils.keyboard
 	 * automatically.
 	 *
 	 * @see feathers.utils.touch.TouchToState
+	 *
+	 * @productversion Feathers 3.2.0
 	 */
 	public class KeyToState
 	{

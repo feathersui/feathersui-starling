@@ -45,6 +45,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/radio.html How to use the Feathers Radio component
 	 * @see feathers.core.ToggleGroup
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Radio extends ToggleButton implements IGroupedToggle
 	{

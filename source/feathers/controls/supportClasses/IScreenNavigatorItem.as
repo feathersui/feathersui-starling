@@ -15,6 +15,8 @@ package feathers.controls.supportClasses
 	 * <code>BaseScreenNavigator</code>.
 	 *
 	 * @see BaseScreenNavigator
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public interface IScreenNavigatorItem
 	{

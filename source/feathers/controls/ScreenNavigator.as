@@ -78,6 +78,8 @@ package feathers.controls
 	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component
 	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 	 * @see feathers.controls.ScreenNavigatorItem
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ScreenNavigator extends BaseScreenNavigator
 	{

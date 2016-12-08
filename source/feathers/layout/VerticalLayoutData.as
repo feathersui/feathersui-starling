@@ -21,6 +21,8 @@ package feathers.layout
 	 *
 	 * @see VerticalLayout
 	 * @see ILayoutDisplayObject
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public class VerticalLayoutData extends EventDispatcher implements ILayoutData
 	{

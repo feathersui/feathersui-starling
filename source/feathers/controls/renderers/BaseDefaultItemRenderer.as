@@ -422,6 +422,8 @@ package feathers.controls.renderers
 
 	/**
 	 * An abstract class for item renderer implementations.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
 	{

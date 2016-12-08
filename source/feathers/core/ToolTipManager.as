@@ -18,6 +18,8 @@ package feathers.core
 	 *
 	 * @see ../../../help/tool-tips.html Tool tips in Feathers
 	 * @see feathers.core.FeathersControl#toolTip
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class ToolTipManager
 	{
@@ -25,7 +27,7 @@ package feathers.core
 		 * @private
 		 */
 		protected static const STAGE_TO_MANAGER:Dictionary = new Dictionary(true);
-		
+
 		/**
 		 * Returns the active tool tip manager for the specified Starling stage.
 		 * May return <code>null</code> if tool tip management has not been

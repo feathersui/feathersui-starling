@@ -222,6 +222,8 @@ package feathers.controls
 	 * this.addChild( progress );</listing>
 	 *
 	 * @see ../../../help/progress-bar.html How to use the Feathers ProgressBar component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ProgressBar extends FeathersControl
 	{

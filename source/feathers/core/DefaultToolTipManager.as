@@ -24,6 +24,8 @@ package feathers.core
 	 *
 	 * @see ../../../help/tool-tips.html Tool tips in Feathers
 	 * @see feathers.core.ToolTipManager
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class DefaultToolTipManager implements IToolTipManager
 	{

@@ -21,6 +21,8 @@ package feathers.layout
 	 *
 	 * @see HorizontalLayout
 	 * @see ILayoutDisplayObject
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public class HorizontalLayoutData extends EventDispatcher implements ILayoutData
 	{

@@ -38,6 +38,8 @@ package feathers.layout
 
 	/**
 	 * Interface providing layout capabilities for containers.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface ILayout extends IFeathersEventDispatcher
 	{

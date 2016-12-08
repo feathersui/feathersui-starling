@@ -46,6 +46,8 @@ package feathers.layout
 	 * decreases.
 	 *
 	 * @see ../../../help/tiled-columns-layout.html How to use TiledColumnsLayout with Feathers containers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TiledColumnsLayout extends EventDispatcher implements IVirtualLayout
 	{

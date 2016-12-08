@@ -9,7 +9,13 @@ package feathers.controls.supportClasses
 {
 	import feathers.core.IFeathersControl;
 
-	[ExcludeClass]
+	/**
+	 * Interface used for the view port of scrolling containers.
+	 * 
+	 * @see feathers.controls.Scroller
+	 *
+	 * @productversion Feathers 1.0.0
+	 */
 	public interface IViewPort extends IFeathersControl
 	{
 		function get visibleWidth():Number;

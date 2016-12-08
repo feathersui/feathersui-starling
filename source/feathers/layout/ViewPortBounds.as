@@ -10,6 +10,8 @@ package feathers.layout
 	/**
 	 * Used by layout algorithms for determining the bounds in which to position
 	 * and size items.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ViewPortBounds
 	{

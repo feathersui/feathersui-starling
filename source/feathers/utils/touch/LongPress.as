@@ -51,6 +51,8 @@ package feathers.utils.touch
 	 * @see feathers.events.FeathersEventType.LONG_PRESS
 	 * @see feathers.utils.touch.TapToTrigger
 	 * @see feathers.utils.touch.TapToSelect
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class LongPress
 	{

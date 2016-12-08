@@ -354,6 +354,8 @@ package feathers.controls
 	 * this.addChild( header );</listing>
 	 *
 	 * @see ../../../help/header.html How to use the Feathers Header component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Header extends FeathersControl
 	{

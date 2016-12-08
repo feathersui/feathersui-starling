@@ -78,6 +78,8 @@ package feathers.controls.popups
 	 * Displays a pop-up at the center of the stage, filling the vertical space.
 	 * The content will be sized horizontally so that it is no larger than the
 	 * the width or height of the stage (whichever is smaller).
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class VerticalCenteredPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{

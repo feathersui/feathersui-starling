@@ -12,6 +12,8 @@ package feathers.data
 	 * <code>ListCollection</code>.
 	 * 
 	 * @see ListCollection
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IListCollectionDataDescriptor
 	{

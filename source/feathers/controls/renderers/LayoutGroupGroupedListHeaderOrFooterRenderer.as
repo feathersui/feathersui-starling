@@ -30,6 +30,8 @@ package feathers.controls.renderers
 	 * Create <code>AnchorLayoutData</code> objects to define the constraints.</p>
 	 *
 	 * @see feathers.controls.GroupedList
+	 *
+	 * @productversion Feathers 1.2.0
 	 */
 	public class LayoutGroupGroupedListHeaderOrFooterRenderer extends LayoutGroup implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{

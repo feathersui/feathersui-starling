@@ -37,6 +37,8 @@ package feathers.data
 	 * <code>AutoComplete</code> component.
 	 *
 	 * @see feathers.controls.AutoComplete
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public interface IAutoCompleteSource extends IFeathersEventDispatcher
 	{

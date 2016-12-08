@@ -38,6 +38,8 @@ package feathers.media
 
 	/**
 	 * A media player that loads its content progressively.
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public interface IProgressiveMediaPlayer extends IMediaPlayer
 	{

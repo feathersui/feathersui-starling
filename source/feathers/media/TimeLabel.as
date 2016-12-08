@@ -64,6 +64,8 @@ package feathers.media
 	 *
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class TimeLabel extends Label implements IMediaPlayerControl
 	{

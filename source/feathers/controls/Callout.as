@@ -403,6 +403,8 @@ package feathers.controls
 	 * }</listing>
 	 *
 	 * @see ../../../help/callout.html How to use the Feathers Callout component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Callout extends FeathersControl
 	{

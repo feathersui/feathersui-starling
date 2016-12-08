@@ -17,6 +17,8 @@ package feathers.utils.textures
 	 * must be split into multiple textures. If Starling's profile is
 	 * <code>Context3DProfile.BASELINE_CONSTRAINED</code>, will calculate
 	 * power-of-two dimensions for the texture.
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public function calculateSnapshotTextureDimensions(width:Number, height:Number, maximum:Number, supportsRectangleTexture:Boolean, result:Point = null):Point
 	{

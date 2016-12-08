@@ -44,8 +44,10 @@ package feathers.utils.keyboard
 	 * <code>Event.TRIGGERED</code> should be dispatched before
 	 * <code>Event.CHANGE</code>.</p>
 	 *
-	 * @see feathers.utils.touch.KeyToTrigger
+	 * @see feathers.utils.keyboard.KeyToTrigger
 	 * @see feathers.utils.touch.TapToSelect
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class KeyToSelect
 	{

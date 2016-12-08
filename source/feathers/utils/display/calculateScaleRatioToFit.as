@@ -11,6 +11,8 @@ package feathers.utils.display
 	 * Calculates a scale value to maintain aspect ratio and fit inside the
 	 * required bounds (with the possibility of a bit of empty space on the
 	 * edges).
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public function calculateScaleRatioToFit(originalWidth:Number, originalHeight:Number, targetWidth:Number, targetHeight:Number):Number
 	{

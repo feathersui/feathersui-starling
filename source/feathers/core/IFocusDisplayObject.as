@@ -55,6 +55,8 @@ package feathers.core
 	 * A component that can receive focus if a focus manager is enabled.
 	 *
 	 * @see ../../../help/focus.html Keyboard focus management in Feathers
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface IFocusDisplayObject extends IFeathersDisplayObject
 	{

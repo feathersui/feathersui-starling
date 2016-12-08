@@ -141,6 +141,8 @@ package feathers.controls
 	 * @see ../../../help/screen.html How to use the Feathers Screen component
 	 * @see feathers.controls.StackScreenNavigator
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Screen extends LayoutGroup implements IScreen
 	{

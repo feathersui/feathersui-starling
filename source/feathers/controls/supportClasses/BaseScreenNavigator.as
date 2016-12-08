@@ -120,6 +120,8 @@ package feathers.controls.supportClasses
 	 *
 	 * @see feathers.controls.StackScreenNavigator
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class BaseScreenNavigator extends FeathersControl
 	{

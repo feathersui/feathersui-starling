@@ -73,6 +73,8 @@ package feathers.controls
 	 * this.addChild( list );</listing>
 	 *
 	 * @see ../../../help/spinner-list.html How to use the Feathers SpinnerList component
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class SpinnerList extends List
 	{

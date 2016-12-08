@@ -34,6 +34,8 @@ package feathers.media
 	 * component.
 	 *
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class SoundChannelPeakVisualizer extends FeathersControl implements IMediaPlayerControl
 	{

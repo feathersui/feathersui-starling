@@ -20,6 +20,8 @@ package feathers.events
 	 *     trace( "creation complete" );
 	 * }
 	 * component.addEventListener( FeathersEventType.CREATION_COMPLETE, listener );</listing>
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class FeathersEventType
 	{

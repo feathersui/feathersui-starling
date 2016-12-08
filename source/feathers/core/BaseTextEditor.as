@@ -14,6 +14,8 @@ package feathers.core
 
 	/**
 	 * A base class for text editors that implements some common properties.
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class BaseTextEditor extends FeathersControl implements IStateObserver
 	{

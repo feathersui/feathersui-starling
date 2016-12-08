@@ -20,6 +20,8 @@ package feathers.events
 	 *     trace( "add item" );
 	 * }
 	 * collection.addEventListener( CollectionEventType.ADD_ITEM, listener );</listing>
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class CollectionEventType
 	{

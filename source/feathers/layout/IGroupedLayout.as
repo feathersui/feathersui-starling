@@ -12,6 +12,8 @@ package feathers.layout
 	 * each group.
 	 * 
 	 * @see feathers.controls.GroupedList
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public interface IGroupedLayout extends ILayout
 	{

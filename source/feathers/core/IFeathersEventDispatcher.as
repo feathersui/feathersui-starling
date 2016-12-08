@@ -18,6 +18,8 @@ package feathers.core
 	 * interfaces.</p>
 	 *
 	 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html starling.events.EventDispatcher
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface IFeathersEventDispatcher
 	{

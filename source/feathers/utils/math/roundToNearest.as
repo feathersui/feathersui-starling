@@ -16,6 +16,8 @@ package feathers.utils.math
 	 * @return	the rounded number
 	 * 
 	 * @see Math#round
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public function roundToNearest(number:Number, nearest:Number = 1):Number
 	{

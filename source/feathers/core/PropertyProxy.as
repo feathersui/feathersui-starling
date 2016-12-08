@@ -18,6 +18,8 @@ package feathers.core
 	 * <code>&#64;</code> notation. Placing an <code>&#64;</code> before a property name
 	 * is like saying, "If this nested <code>PropertyProxy</code> doesn't exist
 	 * yet, create one. If it does, use the existing one."</p>
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public final dynamic class PropertyProxy extends Proxy
 	{

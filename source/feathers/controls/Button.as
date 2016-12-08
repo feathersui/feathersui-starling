@@ -597,6 +597,8 @@ package feathers.controls
 	 * this.addChild( button );</listing>
 	 *
 	 * @see ../../../help/button.html How to use the Feathers Button component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Button extends BasicButton implements IFocusDisplayObject, ITextBaselineControl
 	{

@@ -46,6 +46,8 @@ package feathers.layout
 	 *
 	 * @see ../../../help/anchor-layout.html How to use AnchorLayout with Feathers containers
 	 * @see AnchorLayoutData
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class AnchorLayout extends EventDispatcher implements ILayout
 	{

@@ -18,6 +18,8 @@ package feathers.media
 	 * displayed normally or in full-screen mode.
 	 * 
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class FullScreenToggleButton extends ToggleButton implements IMediaPlayerControl
 	{

@@ -39,6 +39,8 @@ package feathers.core
 	 * may be selected at a time.
 	 * 
 	 * @see IToggle
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ToggleGroup extends EventDispatcher
 	{

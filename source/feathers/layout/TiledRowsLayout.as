@@ -46,6 +46,8 @@ package feathers.layout
 	 * decreases.
 	 *
 	 * @see ../../../help/tiled-rows-layout.html How to use TiledRowsLayout with Feathers containers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TiledRowsLayout extends EventDispatcher implements IVirtualLayout
 	{
