@@ -269,6 +269,21 @@ package feathers.controls
 	[Style(name="hideScrollBarAnimationEase",type="Object")]
 
 	/**
+	 * Determines where the horizontal scroll bar will be positioned.
+	 *
+	 * <p>In the following example, the scroll bars is positioned on the top:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.horizontalScrollBarPosition = RelativePosition.TOP;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.BOTTOM
+	 *
+	 * @see feathers.layout.RelativePosition#TOP
+	 * @see feathers.layout.RelativePosition#BOTTOM
+	 */
+	[Style(name="horizontalScrollBarPosition",type="String")]
+
+	/**
 	 * Determines how the user may interact with the scroller.
 	 *
 	 * <p>In the following example, the interaction mode is optimized for mouse:</p>
