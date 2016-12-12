@@ -550,6 +550,19 @@ package feathers.controls
 	[Style(name="verticalAlign",type="String")]
 
 	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the button's text is wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.wordWrap = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
+	/**
 	 * Dispatched when the button is pressed for a long time. The property
 	 * <code>isLongPressEnabled</code> must be set to <code>true</code> before
 	 * this event will be dispatched.
@@ -1649,6 +1662,32 @@ package feathers.controls
 				return;
 			}
 			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _wordWrap:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -2922,6 +2961,7 @@ package feathers.controls
 				return;
 			}
 			this.labelTextRenderer.fontStyles = this._fontStylesSet;
+			this.labelTextRenderer.wordWrap = this._wordWrap;
 			var properties:Object = this.getCurrentLabelProperties();
 			for(var propertyName:String in properties)
 			{

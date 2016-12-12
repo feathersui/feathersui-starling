@@ -331,6 +331,19 @@ package feathers.controls
 	[Style(name="verticalAlign",type="String")]
 
 	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the header's title is wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * header.wordWrap = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
+	/**
 	 * A header that displays an optional title along with a horizontal regions
 	 * on the sides for additional UI controls. The left side is typically for
 	 * navigation (to display a back button, for example) and the right for
@@ -1316,6 +1329,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _wordWrap:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._wordWrap === value)
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customTitleStyleName:String;
 
 		/**
@@ -2035,6 +2078,7 @@ package feathers.controls
 		protected function refreshTitleStyles():void
 		{
 			this.titleTextRenderer.fontStyles = this._fontStylesSet;
+			this.titleTextRenderer.wordWrap = this._wordWrap;
 			for(var propertyName:String in this._titleProperties)
 			{
 				var propertyValue:Object = this._titleProperties[propertyName];

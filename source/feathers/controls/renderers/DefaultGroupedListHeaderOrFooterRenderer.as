@@ -244,6 +244,19 @@ package feathers.controls.renderers
 	[Style(name="verticalAlign",type="String")]
 
 	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the renderer's text is wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.wordWrap = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
+	/**
 	 * The default renderer used for headers and footers in a GroupedList
 	 * control.
 	 *
@@ -1062,6 +1075,32 @@ package feathers.controls.renderers
 				return;
 			}
 			this._fontStylesSet.disabledFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _wordWrap:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -2039,6 +2078,7 @@ package feathers.controls.renderers
 				return;
 			}
 			this.contentLabel.fontStyles = this._fontStylesSet;
+			this.contentLabel.wordWrap = this._wordWrap;
 			for(var propertyName:String in this._contentLabelProperties)
 			{
 				var propertyValue:Object = this._contentLabelProperties[propertyName];
