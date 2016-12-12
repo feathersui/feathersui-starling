@@ -2280,6 +2280,22 @@ package feathers.controls
 		}
 
 		/**
+		 * The number of text lines displayed by the button. The component may
+		 * contain multiple text lines if the text contains line breaks or if
+		 * the <code>wordWrap</code> property is enabled.
+		 *
+		 * @see #wordWrap
+		 */
+		public function get numLines():int
+		{
+			if(this.labelTextRenderer === null)
+			{
+				return 0;
+			}
+			return this.labelTextRenderer.numLines;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _ignoreIconResizes:Boolean = false;

@@ -1541,6 +1541,22 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * The number of text lines displayed by the renderer. The component may
+		 * contain multiple text lines if the text contains line breaks or if
+		 * the <code>wordWrap</code> property is enabled.
+		 *
+		 * @see #wordWrap
+		 */
+		public function get numLines():int
+		{
+			if(this.contentLabel === null)
+			{
+				return 0;
+			}
+			return this.contentLabel.numLines;
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void
