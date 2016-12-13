@@ -608,6 +608,7 @@ package feathers.core
 		 */
 		protected var _isInitialized:Boolean = false;
 
+		[Bindable(event="initialize")]
 		/**
 		 * Determines if the component has been initialized yet. The
 		 * <code>initialize()</code> function is called one time only, when the
@@ -722,6 +723,7 @@ package feathers.core
 		 */
 		protected var scaledActualWidth:Number = 0;
 
+		[Bindable(event="resize")]
 		/**
 		 * The width of the component, in pixels. This could be a value that was
 		 * set explicitly, or the component will automatically resize if no
@@ -824,6 +826,7 @@ package feathers.core
 		 */
 		protected var scaledActualHeight:Number = 0;
 
+		[Bindable(event="resize")]
 		/**
 		 * The height of the component, in pixels. This could be a value that
 		 * was set explicitly, or the component will automatically resize if no
@@ -1302,6 +1305,7 @@ package feathers.core
 		 */
 		protected var _includeInLayout:Boolean = true;
 
+		[Bindable(event="layoutDataChange")]
 		/**
 		 * @inheritDoc
 		 *
@@ -1330,6 +1334,7 @@ package feathers.core
 		 */
 		protected var _layoutData:ILayoutData;
 
+		[Bindable(event="layoutDataChange")]
 		/**
 		 * @inheritDoc
 		 *
@@ -1776,6 +1781,7 @@ package feathers.core
 		 */
 		protected var _hasValidated:Boolean = false;
 
+		[Bindable(event="creationComplete")]
 		/**
 		 * Determines if the component has been initialized and validated for
 		 * the first time.
