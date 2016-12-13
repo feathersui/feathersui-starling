@@ -550,6 +550,19 @@ package feathers.controls
 	[Style(name="verticalAlign",type="String")]
 
 	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the button's text is wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.wordWrap = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
+	/**
 	 * Dispatched when the button is pressed for a long time. The property
 	 * <code>isLongPressEnabled</code> must be set to <code>true</code> before
 	 * this event will be dispatched.
@@ -597,6 +610,8 @@ package feathers.controls
 	 * this.addChild( button );</listing>
 	 *
 	 * @see ../../../help/button.html How to use the Feathers Button component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Button extends BasicButton implements IFocusDisplayObject, ITextBaselineControl
 	{
@@ -1652,6 +1667,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private var _wordWrap:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _labelFactory:Function;
 
 		/**
@@ -2236,6 +2277,22 @@ package feathers.controls
 				return this.scaledActualHeight;
 			}
 			return this.scaleY * (this.labelTextRenderer.y + this.labelTextRenderer.baseline);
+		}
+
+		/**
+		 * The number of text lines displayed by the button. The component may
+		 * contain multiple text lines if the text contains line breaks or if
+		 * the <code>wordWrap</code> property is enabled.
+		 *
+		 * @see #wordWrap
+		 */
+		public function get numLines():int
+		{
+			if(this.labelTextRenderer === null)
+			{
+				return 0;
+			}
+			return this.labelTextRenderer.numLines;
 		}
 
 		/**
@@ -2920,6 +2977,7 @@ package feathers.controls
 				return;
 			}
 			this.labelTextRenderer.fontStyles = this._fontStylesSet;
+			this.labelTextRenderer.wordWrap = this._wordWrap;
 			var properties:Object = this.getCurrentLabelProperties();
 			for(var propertyName:String in properties)
 			{

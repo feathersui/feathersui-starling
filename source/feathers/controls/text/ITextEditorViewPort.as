@@ -14,6 +14,8 @@ package feathers.controls.text
 	 * Handles the editing of multiline text.
 	 *
 	 * @see feathers.controls.TextArea
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface ITextEditorViewPort extends ITextEditor, IViewPort
 	{

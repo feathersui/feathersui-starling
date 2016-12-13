@@ -244,10 +244,25 @@ package feathers.controls.renderers
 	[Style(name="verticalAlign",type="String")]
 
 	/**
+	 * Determines if the text wraps to the next line when it reaches the
+	 * width (or max width) of the component.
+	 *
+	 * <p>In the following example, the renderer's text is wrapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.wordWrap = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="wordWrap",type="Boolean")]
+
+	/**
 	 * The default renderer used for headers and footers in a GroupedList
 	 * control.
 	 *
 	 * @see feathers.controls.GroupedList
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{
@@ -1065,6 +1080,32 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		private var _wordWrap:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _contentLabelFactory:Function;
 
 		/**
@@ -1310,16 +1351,13 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			if(this._backgroundSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSkin)
 			{
-				this.removeChild(this._backgroundSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
-			{
-				this._backgroundSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1353,16 +1391,13 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundDisabledSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundDisabledSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1506,10 +1541,39 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * The number of text lines displayed by the renderer. The component may
+		 * contain multiple text lines if the text contains line breaks or if
+		 * the <code>wordWrap</code> property is enabled.
+		 *
+		 * @see #wordWrap
+		 */
+		public function get numLines():int
+		{
+			if(this.contentLabel === null)
+			{
+				return 0;
+			}
+			return this.contentLabel.numLines;
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void
 		{
+			//we don't dispose it if the renderer is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
+			{
+				this._backgroundSkin.dispose();
+			}
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
+			{
+				this._backgroundDisabledSkin.dispose();
+			}
+
 			//the content may have come from outside of this class. it's up
 			//to that code to dispose of the content. in fact, if we disposed
 			//of it here, we might screw something up!
@@ -1854,45 +1918,69 @@ package feathers.controls.renderers
 		 */
 		protected function refreshBackgroundSkin():void
 		{
+			var oldBackgroundSkin:DisplayObject = this.currentBackgroundSkin;
 			this.currentBackgroundSkin = this._backgroundSkin;
 			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
 			{
-				if(this._backgroundSkin !== null)
-				{
-					this._backgroundSkin.visible = false;
-				}
 				this.currentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			else if(this._backgroundDisabledSkin !== null)
+			if(oldBackgroundSkin !== this.currentBackgroundSkin)
 			{
-				this._backgroundDisabledSkin.visible = false;
+				this.removeCurrentBackgroundSkin(oldBackgroundSkin);
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(this.currentBackgroundSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					}
+					if(this.currentBackgroundSkin is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
+					}
+					this.addChildAt(this.currentBackgroundSkin, 0);
+				}
 			}
-			if(this.currentBackgroundSkin !== null)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
 			{
-				this.currentBackgroundSkin.visible = true;
-				if(this.currentBackgroundSkin is IFeathersControl)
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
 				{
-					IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
 				}
-				if(this.currentBackgroundSkin is IMeasureDisplayObject)
-				{
-					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
-					this._explicitBackgroundWidth = measureSkin.explicitWidth;
-					this._explicitBackgroundHeight = measureSkin.explicitHeight;
-					this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
-					this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
-					this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
-					this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
-				}
-				else
-				{
-					this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
-					this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
-					this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
-					this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
-					this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
-					this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
-				}
+				skin.removeFromParent(false);
 			}
 		}
 
@@ -2006,6 +2094,7 @@ package feathers.controls.renderers
 				return;
 			}
 			this.contentLabel.fontStyles = this._fontStylesSet;
+			this.contentLabel.wordWrap = this._wordWrap;
 			for(var propertyName:String in this._contentLabelProperties)
 			{
 				var propertyValue:Object = this._contentLabelProperties[propertyName];

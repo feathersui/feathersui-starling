@@ -38,6 +38,7 @@ package
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.HeaderInternalStateTests;
 	import feathers.tests.HeaderMeasurementTests;
+	import feathers.tests.HeaderTests;
 	import feathers.tests.HorizontalLayoutTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -47,6 +48,7 @@ package
 	import feathers.tests.KeyToSelectTests;
 	import feathers.tests.KeyToTriggerTests;
 	import feathers.tests.LabelMeasurementTests;
+	import feathers.tests.LabelTests;
 	import feathers.tests.LayoutGroupHorizontalLayoutTests;
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupMeasurementTests;
@@ -206,10 +208,12 @@ package
 				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
+				HeaderTests,
 				HeaderMeasurementTests,
 				HeaderInternalStateTests,
 				ImageLoaderTests,
 				ImageLoaderInternalStateTests,
+				LabelTests,
 				LabelMeasurementTests,
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,

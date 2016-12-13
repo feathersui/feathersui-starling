@@ -12,6 +12,8 @@ package feathers.controls
 	 *
 	 * @see feathers.core.IToggle
 	 * @see feathers.controls.ToggleSwitch
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class ToggleState
 	{
@@ -21,6 +23,8 @@ package feathers.controls
 		 * <code>isSelected</code> property will be <code>false</code>.
 		 *
 		 * @see feathers.core.IToggle
+		 *
+		 * @productversion Feathers 3.1.0
 		 */
 		public static const NOT_SELECTED:String = "notSelected";
 
@@ -30,6 +34,8 @@ package feathers.controls
 		 * <code>isSelected</code> property will be <code>true</code>.
 		 *
 		 * @see feathers.core.IToggle
+		 *
+		 * @productversion Feathers 3.1.0
 		 */
 		public static const SELECTED:String = "selected";
 
@@ -40,6 +46,8 @@ package feathers.controls
 		 * <code>isEnabled</code> property will be <code>false</code>.
 		 *
 		 * @see feathers.core.IToggle
+		 *
+		 * @productversion Feathers 3.1.0
 		 */
 		public static const DISABLED:String = "disabled";
 
@@ -50,6 +58,8 @@ package feathers.controls
 		 * <code>isEnabled</code> property will be <code>false</code>.
 		 *
 		 * @see feathers.core.IToggle
+		 *
+		 * @productversion Feathers 3.1.0
 		 */
 		public static const SELECTED_AND_DISABLED:String = "selectedAndDisabled";
 	}

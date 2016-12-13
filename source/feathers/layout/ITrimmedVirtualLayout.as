@@ -10,6 +10,8 @@ package feathers.layout
 	/**
 	 * Optimizes a virtual layout by skipping a specific number of items before
 	 * and after the set that is passed to <code>layout()</code>.
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface ITrimmedVirtualLayout extends IVirtualLayout
 	{

@@ -36,6 +36,8 @@ package feathers.core
 	/**
 	 * A list of space-delimited tokens. Obviously, since they are delimited by
 	 * spaces, tokens cannot contain spaces.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TokenList extends EventDispatcher
 	{

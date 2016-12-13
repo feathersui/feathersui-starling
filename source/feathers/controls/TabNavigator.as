@@ -156,6 +156,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/tab-navigator.html How to use the Feathers TabNavigator component
 	 * @see feathers.controls.TabNavigatorItem
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class TabNavigator extends BaseScreenNavigator
 	{

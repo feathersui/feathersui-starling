@@ -365,6 +365,8 @@ package feathers.controls
 	 * this.addChild( button );</listing>
 	 *
 	 * @see ../../../help/toggle-button.html How to use the Feathers ToggleButton component
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class ToggleButton extends Button implements IGroupedToggle
 	{
@@ -1337,6 +1339,29 @@ package feathers.controls
 					return this._defaultSelectedIcon;
 				}
 				return this._defaultIcon;
+			}
+			return super.getCurrentIcon();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function getCurrentLabelProperties():Object
+		{
+			if(this._stateToLabelPropertiesFunction === null)
+			{
+				//we use the currentState getter here instead of the variable
+				//because the variable does not keep track of the selection
+				var result:Object = this._stateToLabelProperties[this.currentState];
+				if(result !== null)
+				{
+					return result;
+				}
+				if(this._isSelected && this._defaultSelectedLabelProperties !== null)
+				{
+					return this._defaultSelectedLabelProperties;
+				}
+				return this._defaultLabelProperties;
 			}
 			return super.getCurrentIcon();
 		}

@@ -11,6 +11,8 @@ package feathers.core
 	 * A display object that supports validation. Display objects of this type
 	 * will delay updating after property changes until just before Starling
 	 * renders the display list to avoid running redundant code.
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public interface IValidating extends IFeathersDisplayObject
 	{

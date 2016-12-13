@@ -9,11 +9,15 @@ package feathers.controls
 {
 	/**
 	 * How the track is sized perpendicular to the direction it is dragged.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class TrackScaleMode
 	{
 		/**
 		 * The track dimensions fill the full width and height of the component.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const EXACT_FIT:String = "exactFit";
 
@@ -23,6 +27,8 @@ package feathers.controls
 		 * direction is vertical, the height of the track will fill the full
 		 * height of the component. The other edge will not be scaled, and its
 		 * preferred size will be used instead.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const DIRECTIONAL:String = "directional";
 	}

@@ -11,6 +11,8 @@ package feathers.core
 	 * A component that can receive focus with children that can receive focus.
 	 *
 	 * @see ../../../help/focus.html Keyboard focus management in Feathers
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public interface IFocusContainer extends IFocusDisplayObject
 	{

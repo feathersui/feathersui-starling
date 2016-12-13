@@ -47,6 +47,8 @@ package feathers.layout
 	 * smallest possible total height.
 	 *
 	 * @see ../../../help/waterfall-layout.html How to use WaterfallLayout with Feathers containers
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class WaterfallLayout extends EventDispatcher implements IVariableVirtualLayout
 	{

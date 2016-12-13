@@ -323,6 +323,8 @@ package feathers.controls
 	 * this.addChild( slider );</listing>
 	 *
 	 * @see ../../../help/slider.html How to use the Feathers Slider component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Slider extends FeathersControl implements IDirectionalScrollBar, IFocusDisplayObject
 	{

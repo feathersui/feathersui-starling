@@ -21,6 +21,8 @@ package feathers.motion
 	 * objects should be fully opaque.</p>
 	 *
 	 * @see ../../../help/transitions.html#iris Transitions for Feathers screen navigators: Iris
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class Iris
 	{

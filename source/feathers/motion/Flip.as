@@ -22,6 +22,8 @@ package feathers.motion
 	 * not be compatible with masks.</p>
 	 *
 	 * @see ../../../help/transitions.html#flip Transitions for Feathers screen navigators: Flip
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class Flip
 	{

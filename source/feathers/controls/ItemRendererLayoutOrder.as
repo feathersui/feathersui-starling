@@ -12,6 +12,8 @@ package feathers.controls
 	 * 
 	 * @see feathers.controls.DefaultListItemRenderer
 	 * @see feathers.controls.DefaultGroupedListItemRenderer
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class ItemRendererLayoutOrder
 	{
@@ -20,12 +22,16 @@ package feathers.controls
 		 * to the label, then the icon relative to both. Best used when the
 		 * accessory should be between the label and the icon or when the icon
 		 * position shouldn't be affected by the accessory.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const LABEL_ACCESSORY_ICON:String = "labelAccessoryIcon";
 
 		/**
 		 * The layout order will be the label first, then the icon relative to
 		 * label, then the accessory relative to both.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
 	}

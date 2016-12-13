@@ -12,6 +12,8 @@ package feathers.data
 	 * hierarchical collections.
 	 *
 	 * @see HierarchicalCollection
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IHierarchicalCollectionDataDescriptor
 	{

@@ -239,6 +239,8 @@ package feathers.controls.text
 	 * @see feathers.controls.TextInput
 	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TextFieldTextEditor extends BaseTextEditor implements ITextEditor, INativeFocusOwner
 	{

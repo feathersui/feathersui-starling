@@ -17,6 +17,8 @@ package feathers.controls.text
 
 	/**
 	 * A base class for text renderers that implements some common properties.
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class BaseTextRenderer extends FeathersControl implements IStateObserver
 	{

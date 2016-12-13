@@ -67,7 +67,9 @@ package feathers.dragDrop
 	/**
 	 * An object that can initiate drag actions with the drag and drop manager.
 	 *
-	 * @see DragDropManager
+	 * @see feathers.dragDrop.DragDropManager
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IDragSource
 	{

@@ -16,6 +16,8 @@ package feathers.data
 	 * 
 	 * @see ListCollection
 	 * @see IListCollectionDataDescriptor
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class XMLListListCollectionDataDescriptor implements IListCollectionDataDescriptor
 	{

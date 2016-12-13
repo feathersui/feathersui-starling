@@ -20,6 +20,8 @@ package feathers.utils.text
 
 	/**
 	 * @private
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class TextEditorIMEClient extends Sprite implements IIMEClient
 	{

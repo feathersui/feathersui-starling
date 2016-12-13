@@ -19,6 +19,8 @@ package feathers.motion
 	 * down, or left.
 	 *
 	 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class Reveal
 	{

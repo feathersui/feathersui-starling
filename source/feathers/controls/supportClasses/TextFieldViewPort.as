@@ -37,6 +37,9 @@ package feathers.controls.supportClasses
 
 	/**
 	 * @private
+	 * Used internally by ScrollText. Not meant to be used on its own.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TextFieldViewPort extends FeathersControl implements IViewPort
 	{

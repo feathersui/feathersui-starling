@@ -80,6 +80,8 @@ package feathers.controls.popups
 	/**
 	 * Displays pop-up content as a mobile-style drawer that opens from the
 	 * bottom of the stage.
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class BottomDrawerPopUpContentManager extends EventDispatcher implements IPersistentPopUpContentManager, IPopUpContentManagerWithPrompt
 	{

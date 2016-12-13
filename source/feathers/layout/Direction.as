@@ -9,16 +9,22 @@ package feathers.layout
 {
 	/**
 	 * Constants that define a direction.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class Direction
 	{
 		/**
 		 * The object will be oriented vertically.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const VERTICAL:String = "vertical";
 
 		/**
 		 * The object will be oriented horizontally.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const HORIZONTAL:String = "horizontal";
 	}

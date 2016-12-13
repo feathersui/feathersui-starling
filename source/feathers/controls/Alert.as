@@ -20,7 +20,13 @@ package feathers.controls
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
+
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
+
+	import starling.core.Starling;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -205,6 +211,8 @@ package feathers.controls
 	 * }</listing>
 	 *
 	 * @see ../../../help/alert.html How to use the Feathers Alert component
+	 * 
+	 * @productversion Feathers 1.2.0
 	 */
 	public class Alert extends Panel
 	{
@@ -372,6 +380,7 @@ package feathers.controls
 				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
 			}
 			this.buttonGroupFactory = defaultButtonGroupFactory;
+			this.addEventListener(Event.ADDED_TO_STAGE, alert_addedToStageHandler);
 		}
 
 		/**
@@ -541,6 +550,76 @@ package feathers.controls
 			}
 			this._buttonsDataProvider = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _acceptButtonIndex:int;
+
+		/**
+		 * The index of the button in the <code>buttonsDataProvider</code> to
+		 * trigger when <code>Keyboard.ENTER</code> is pressed.
+		 * 
+		 * <p>In the following example, the <code>acceptButtonIndex</code> is
+		 * set to the first button in the data provider.</p>
+		 *
+		 * <listing version="3.0">
+		 * var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
+		 * [
+		 *     { label: "OK" }
+		 * ]));
+		 * alert.acceptButtonIndex = 0;</listing>
+		 *
+		 * @default -1
+		 */
+		public function get acceptButtonIndex():int
+		{
+			return this._acceptButtonIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set acceptButtonIndex(value:int):void
+		{
+			this._acceptButtonIndex = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _cancelButtonIndex:int;
+
+		/**
+		 * The index of the button in the <code>buttonsDataProvider</code> to
+		 * trigger when <code>Keyboard.ESCAPE</code> or
+		 * <code>Keyboard.BACK</code> is pressed.
+		 *
+		 * <p>In the following example, the <code>cancelButtonIndex</code> is
+		 * set to the second button in the data provider.</p>
+		 *
+		 * <listing version="3.0">
+		 * var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
+		 * [
+		 *     { label: "OK" },
+		 *     { label: "Cancel" },
+		 * ]));
+		 * alert.cancelButtonIndex = 1;</listing>
+		 * 
+		 * @default -1
+		 */
+		public function get cancelButtonIndex():int
+		{
+			return this._cancelButtonIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set cancelButtonIndex(value:int):void
+		{
+			this._cancelButtonIndex = value;
 		}
 
 		/**
@@ -1199,11 +1278,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function buttonsFooter_triggeredHandler(event:Event, data:Object):void
+		protected function closeAlert(item:Object):void
 		{
 			this.removeFromParent();
-			this.dispatchEventWith(Event.CLOSE, false, data);
+			this.dispatchEventWith(Event.CLOSE, false, item);
 			this.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function buttonsFooter_triggeredHandler(event:Event, data:Object):void
+		{
+			this.closeAlert(data);
 		}
 
 		/**
@@ -1220,6 +1307,59 @@ package feathers.controls
 		protected function fontStyles_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function alert_addedToStageHandler(event:Event):void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this);
+			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, alert_nativeStage_keyDownHandler, false, priority, true);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, alert_removedFromStageHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function alert_removedFromStageHandler(event:Event):void
+		{
+			this.removeEventListener(Event.REMOVED_FROM_STAGE, alert_removedFromStageHandler);
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, alert_nativeStage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function alert_nativeStage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//someone else already handled this one
+				return;
+			}
+			var keyCode:uint = event.keyCode;
+			if(this._acceptButtonIndex !== -1 && keyCode === Keyboard.ENTER)
+			{
+				//don't let the OS handle the event
+				event.preventDefault();
+				var item:Object = this._buttonsDataProvider.getItemAt(this._acceptButtonIndex);
+				this.closeAlert(item);
+				return;
+			}
+			if(this._cancelButtonIndex !== -1 &&
+				(keyCode === Keyboard.BACK || keyCode === Keyboard.ESCAPE))
+			{
+				//don't let the OS handle the event
+				event.preventDefault();
+				item = this._buttonsDataProvider.getItemAt(this._cancelButtonIndex);
+				this.closeAlert(item);
+				return;
+			}
 		}
 
 	}

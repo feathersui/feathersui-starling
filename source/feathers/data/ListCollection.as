@@ -188,6 +188,8 @@ package feathers.data
 	 * @see ArrayListCollectionDataDescriptor
 	 * @see VectorListCollectionDataDescriptor
 	 * @see XMLListListCollectionDataDescriptor
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ListCollection extends EventDispatcher
 	{

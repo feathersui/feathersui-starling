@@ -9,11 +9,15 @@ package feathers.controls
 {
 	/**
 	 * Deceleration rate, per millisecond.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class DecelerationRate
 	{
 		/**
 		 * The default deceleration rate per millisecond.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const NORMAL:Number = 0.998;
 
@@ -21,6 +25,8 @@ package feathers.controls
 		 * Decelerates a bit faster than the normal amount.
 		 * 
 		 * @see #NORMAL
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const FAST:Number = 0.99;
 	}

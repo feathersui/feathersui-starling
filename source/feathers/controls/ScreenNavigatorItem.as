@@ -34,6 +34,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/screen-navigator.html How to use the Feathers ScreenNavigator component
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ScreenNavigatorItem implements IScreenNavigatorItem, IMXMLObject
 	{

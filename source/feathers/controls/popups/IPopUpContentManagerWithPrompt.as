@@ -10,6 +10,8 @@ package feathers.controls.popups
 	/**
 	 * A custom <code>IPopUpContentManager</code> that has a prompt that may
 	 * be customized by the parent component.
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public interface IPopUpContentManagerWithPrompt extends IPopUpContentManager
 	{

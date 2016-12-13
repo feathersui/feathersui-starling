@@ -22,6 +22,8 @@ package feathers.core
 	 * The default <code>IPopUpManager</code> implementation.
 	 *
 	 * @see PopUpManager
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public class DefaultPopUpManager implements IPopUpManager
 	{

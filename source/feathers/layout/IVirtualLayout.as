@@ -16,6 +16,8 @@ package feathers.layout
 	 * the visible items need to be created. Useful in lists with dozens or
 	 * hundreds of items are needed, but only a small subset of the items are
 	 * visible at any given moment.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IVirtualLayout extends ILayout
 	{

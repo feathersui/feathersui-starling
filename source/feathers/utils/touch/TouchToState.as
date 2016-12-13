@@ -26,7 +26,9 @@ package feathers.utils.touch
 	 * automatically. Useful for custom item renderers that should be change
 	 * state based on touch.
 	 * 
-	 * @see feathers.utils.touch.KeyToState
+	 * @see feathers.utils.keyboard.KeyToState
+	 *
+	 * @productversion Feathers 3.2.0
 	 */
 	public class TouchToState
 	{

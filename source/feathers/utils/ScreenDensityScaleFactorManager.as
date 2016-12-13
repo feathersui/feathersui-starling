@@ -136,6 +136,8 @@ package feathers.utils
 	 * to see with the naked eye.</p>
 	 * 
 	 * @see http://wiki.starling-framework.org/manual/multi-resolution_development Starling Multi-Resolution Development
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class ScreenDensityScaleFactorManager
 	{

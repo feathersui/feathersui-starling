@@ -34,6 +34,8 @@ package feathers.data
 	 *         ]
 	 *     }
 	 * ]</pre>
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ArrayChildrenHierarchicalCollectionDataDescriptor implements IHierarchicalCollectionDataDescriptor
 	{

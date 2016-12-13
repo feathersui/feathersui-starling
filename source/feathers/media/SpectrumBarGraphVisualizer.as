@@ -59,6 +59,8 @@ package feathers.media
 	 * audio content.
 	 *
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class SpectrumBarGraphVisualizer extends FeathersControl implements IMediaPlayerControl
 	{

@@ -14,6 +14,8 @@ package feathers.core
 	 * Interface for pop-up management.
 	 *
 	 * @see feathers.core.PopUpManager
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public interface IPopUpManager
 	{

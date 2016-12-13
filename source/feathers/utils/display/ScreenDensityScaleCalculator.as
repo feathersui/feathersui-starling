@@ -12,6 +12,8 @@ package feathers.utils.display
 	/**
 	 * Selects a value for <code>contentScaleFactor</code> based on the screen
 	 * density (sometimes called DPI or PPI).
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class ScreenDensityScaleCalculator
 	{

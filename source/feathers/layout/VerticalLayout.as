@@ -75,6 +75,8 @@ package feathers.layout
 	 * Positions items from top to bottom in a single column.
 	 *
 	 * @see ../../../help/vertical-layout.html How to use VerticalLayout with Feathers containers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
 	{

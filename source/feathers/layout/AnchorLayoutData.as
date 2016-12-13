@@ -22,6 +22,8 @@ package feathers.layout
 	 *
 	 * @see AnchorLayout
 	 * @see ILayoutDisplayObject
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class AnchorLayoutData extends EventDispatcher implements ILayoutData
 	{

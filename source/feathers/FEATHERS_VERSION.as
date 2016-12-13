@@ -16,6 +16,8 @@ package feathers
 	 * stable release of Feathers SDK 2.2 would use the following value:
 	 * <code>2.2.0+sdk</code>. The beta version of Feathers SDK 2.2 would use
 	 * the following value: <code>2.2.0-beta+sdk</code>.
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
-	public const FEATHERS_VERSION:String = "3.1.0+sdk";
+	public const FEATHERS_VERSION:String = "3.2.0-prerelease+sdk";
 }

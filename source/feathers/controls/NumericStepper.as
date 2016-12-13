@@ -223,6 +223,8 @@ package feathers.controls
 	 * this.addChild( stepper );</listing>
 	 *
 	 * @see ../../../help/numeric-stepper.html How to use the Feathers NumericStepper component
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class NumericStepper extends FeathersControl implements IRange, IAdvancedNativeFocusOwner, ITextBaselineControl
 	{

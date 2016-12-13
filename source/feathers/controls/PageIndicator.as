@@ -255,6 +255,8 @@ package feathers.controls
 	 * another UI control, using a highlighted symbol.
 	 *
 	 * @see ../../../help/page-indicator.html How to use the Feathers PageIndicator component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class PageIndicator extends FeathersControl
 	{

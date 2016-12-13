@@ -219,6 +219,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/label.html How to use the Feathers Label component
 	 * @see ../../../help/text-renderers.html Introduction to Feathers text renderers
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Label extends FeathersControl implements ITextBaselineControl, IToolTip
 	{
@@ -416,6 +418,22 @@ package feathers.controls
 				return this.scaledActualHeight;
 			}
 			return this.scaleY * (this.textRenderer.y + this.textRenderer.baseline);
+		}
+
+		/**
+		 * The number of text lines displayed by the label. The component may
+		 * contain multiple text lines if the text contains line breaks or if
+		 * the <code>wordWrap</code> property is enabled.
+		 * 
+		 * @see #wordWrap
+		 */
+		public function get numLines():int
+		{
+			if(this.textRenderer === null)
+			{
+				return 0;
+			}
+			return this.textRenderer.numLines;
 		}
 
 		/**
@@ -709,9 +727,10 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
+			if(this._backgroundSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSkin)
 			{
-				this.removeChild(this._backgroundSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundSkin);
 				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSkin = value;
@@ -744,9 +763,10 @@ package feathers.controls
 				}
 				return;
 			}
-			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackgroundSkin == this._backgroundDisabledSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.removeCurrentBackgroundSkin(this._backgroundDisabledSkin);
 				this.currentBackgroundSkin = null;
 			}
 			this._backgroundDisabledSkin = value;
@@ -890,6 +910,26 @@ package feathers.controls
 			}
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			//we don't dispose it if the label is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin !== null &&
+				this._backgroundSkin.parent !== this)
+			{
+				this._backgroundSkin.dispose();
+			}
+			if(this._backgroundDisabledSkin !== null &&
+				this._backgroundDisabledSkin.parent !== this)
+			{
+				this._backgroundDisabledSkin.dispose();
+			}
+			super.dispose();
 		}
 
 		/**
@@ -1131,16 +1171,12 @@ package feathers.controls
 			{
 				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			if(this.currentBackgroundSkin != newCurrentBackgroundSkin)
+			if(this.currentBackgroundSkin !== newCurrentBackgroundSkin)
 			{
-				if(this.currentBackgroundSkin !== null)
-				{
-					this.removeChild(this.currentBackgroundSkin);
-				}
+				this.removeCurrentBackgroundSkin(this.currentBackgroundSkin);
 				this.currentBackgroundSkin = newCurrentBackgroundSkin;
 				if(this.currentBackgroundSkin !== null)
 				{
-					this.addChildAt(this.currentBackgroundSkin, 0);
 					if(this.currentBackgroundSkin is IFeathersControl)
 					{
 						IFeathersControl(this.currentBackgroundSkin).initializeNow();
@@ -1164,12 +1200,35 @@ package feathers.controls
 						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
 						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
 					}
+					this.addChildAt(this.currentBackgroundSkin, 0);
 				}
 			}
-			if(this.currentBackgroundSkin !== null)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
 			{
-				//force it to the bottom
-				this.setChildIndex(this.currentBackgroundSkin, 0);
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
+				}
+				skin.removeFromParent(false);
 			}
 		}
 

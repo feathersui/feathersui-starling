@@ -14,6 +14,8 @@ package feathers.controls
 	 *
 	 * @see feathers.controls.StackScreenNavigator
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IScreen extends IFeathersControl
 	{

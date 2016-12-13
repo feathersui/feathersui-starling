@@ -69,6 +69,8 @@ package feathers.controls.text
 	 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 	 * @see ../../../../help/text-field-text-renderer.html How to use the Feathers TextFieldTextRenderer component
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TextFieldTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{

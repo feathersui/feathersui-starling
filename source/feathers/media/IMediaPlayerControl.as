@@ -13,6 +13,8 @@ package feathers.media
 	 * @see feathers.media.IMediaPlayer
 	 * @see feathers.media.IAudioPlayer
 	 * @see feathers.media.IVideoPlayer
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public interface IMediaPlayerControl
 	{

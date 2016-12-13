@@ -46,6 +46,8 @@ package feathers.layout
 	 * will change in height as the number of items increases or decreases.
 	 *
 	 * @see ../../../help/flow-layout.html How to use FlowLayout with Feathers containers
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class FlowLayout extends EventDispatcher implements IVariableVirtualLayout
 	{

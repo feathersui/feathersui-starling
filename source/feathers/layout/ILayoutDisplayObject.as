@@ -19,6 +19,8 @@ package feathers.layout
 	/**
 	 * A display object that may be associated with extra data for use with
 	 * advanced layouts.
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public interface ILayoutDisplayObject extends IFeathersDisplayObject
 	{

@@ -148,6 +148,8 @@ package feathers.core
 	 *
 	 * @see feathers.controls.TextInput
 	 * @see ../../../help/text-editors.html Introduction to Feathers text editors
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface ITextEditor extends IFeathersControl, ITextBaselineControl
 	{

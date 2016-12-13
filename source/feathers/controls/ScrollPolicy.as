@@ -9,6 +9,8 @@ package feathers.controls
 {
 	/**
 	 * Constants that define whether a container allows scrolling or not.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class ScrollPolicy
 	{
@@ -19,6 +21,8 @@ package feathers.controls
 		 * than zero. If the scroll bar display mode is fixed, the scroll bar
 		 * will only be visible when the maximum scroll position is greater than
 		 * zero.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const AUTO:String = "auto";
 
@@ -27,6 +31,8 @@ package feathers.controls
 		 * elastic edges will always be active, even when the maximum scroll
 		 * position is zero. If the scroll bar display mode is fixed, the scroll
 		 * bar will always be visible.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const ON:String = "on";
 
@@ -34,6 +40,8 @@ package feathers.controls
 		 * The scroller does not scroll at all, even if the content is larger
 		 * than the view port's bounds. If the scroll bar display mode is fixed
 		 * or float, the scroll bar will never be visible.
+		 *
+		 * @productversion Feathers 3.0.0
 		 */
 		public static const OFF:String = "off";
 	}

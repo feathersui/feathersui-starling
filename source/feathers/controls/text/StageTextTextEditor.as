@@ -237,6 +237,8 @@ package feathers.controls.text
 	 * @see ../../../../help/text-editors.html Introduction to Feathers text editors
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class StageTextTextEditor extends BaseTextEditor implements IMultilineTextEditor, INativeFocusOwner
 	{
@@ -1145,6 +1147,48 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 * The default value doesn't use the constant because it's available in
+		 * AIR only, and not Flash Player.
+		 */
+		protected var _clearButtonMode:String = "whileEditing";
+
+		/**
+		 * Determines when the clear button is displayed by the
+		 * <code>StageText</code> object.
+		 *
+		 * <p>In the following example, the snapshot will be updated when the
+		 * text editor is scaled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 * 
+		 * <p>Requires <code>-swf-version=34</code> or newer.</p>
+		 *
+		 * @default false
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#clearButtonMode Full description of flash.text.StageText.clearButtonMode in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageTextClearButtonMode.html Full description of flash.text.StageTextClearButtonMode in Adobe's Flash Platform API Reference
+		 */
+		public function get clearButtonMode():String
+		{
+			return this._clearButtonMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set clearButtonMode(value:String):void
+		{
+			if(this._clearButtonMode == value)
+			{
+				return;
+			}
+			this._clearButtonMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
 		 */
 		override public function dispose():void
 		{
@@ -1809,6 +1853,10 @@ package feathers.controls.text
 				}
 			}
 			this.stageText.textAlign = textAlign;
+			if("clearButtonMode" in this.stageText)
+			{
+				this.stageText.clearButtonMode = this._clearButtonMode;
+			}
 		}
 
 		/**

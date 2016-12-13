@@ -185,6 +185,8 @@ package feathers.controls
 	 * @see ../../../help/stack-screen-navigator.html How to use the Feathers StackScreenNavigator component
 	 * @see ../../../help/transitions.html Transitions for Feathers screen navigators
 	 * @see feathers.controls.StackScreenNavigatorItem
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class StackScreenNavigator extends BaseScreenNavigator
 	{

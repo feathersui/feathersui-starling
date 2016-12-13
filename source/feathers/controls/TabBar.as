@@ -450,6 +450,8 @@ package feathers.controls
 	 * this.addChild( tabs );</listing>
 	 *
 	 * @see ../../../help/tab-bar.html How to use the Feathers TabBar component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{
@@ -775,6 +777,7 @@ package feathers.controls
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
@@ -785,6 +788,7 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
@@ -1889,14 +1893,20 @@ package feathers.controls
 		public function set selectedIndex(value:int):void
 		{
 			this._animateSelectionChange = false;
-			if(this._selectedIndex == value)
+			if(this._selectedIndex === value)
 			{
 				return;
 			}
 			this._selectedIndex = value;
+			this.refreshSelectedItem();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedItem:Object = null;
 
 		/**
 		 * The currently selected item from the data provider. Returns
@@ -1925,12 +1935,7 @@ package feathers.controls
 		 */
 		public function get selectedItem():Object
 		{
-			var index:int = this.selectedIndex;
-			if(!this._dataProvider || index < 0 || index >= this._dataProvider.length)
-			{
-				return null;
-			}
-			return this._dataProvider.getItemAt(index);
+			return this._selectedItem;
 		}
 
 		/**
@@ -1938,14 +1943,34 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
+			if(this._selectedItem === value)
+			{
+				return;
+			}
 			//we don't need to set _animateSelectionChange to false because we
 			//always call the selectedIndex setter below, which sets it;
-			if(!this._dataProvider)
+			if(this._dataProvider === null)
 			{
 				this.selectedIndex = -1;
 				return;
 			}
-			this.selectedIndex = this._dataProvider.getItemIndex(value);
+			var newIndex:int = this._dataProvider.getItemIndex(value);
+			if(newIndex === -1)
+			{
+				this.selectedIndex = -1;
+			}
+			else if(this._selectedIndex !== newIndex)
+			{
+				this.selectedIndex = newIndex;
+			}
+			else
+			{
+				//it's possible for the item to change, but not the index
+				this._animateSelectionChange = false;
+				this._selectedItem = value;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+				this.dispatchEventWith(Event.CHANGE);
+			}
 		}
 
 		/**
@@ -2176,6 +2201,7 @@ package feathers.controls
 				return;
 			}
 			this._selectedIndex = selectedIndex;
+			this.refreshSelectedItem();
 			//set this flag before dispatching the event because the TabBar
 			//might be forced to validate in an event listener
 			this._animateSelectionChange = true;
@@ -2870,6 +2896,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshSelectedItem():void
+		{
+			if(this._selectedIndex === -1)
+			{
+				this._selectedItem = null;
+			}
+			else
+			{
+				this._selectedItem = this._dataProvider.getItemAt(this._selectedIndex);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -3030,7 +3071,7 @@ package feathers.controls
 				//the same item is selected, but its index has changed.
 				this.selectedIndex -= 1;
 			}
-			else if(this._selectedIndex == index)
+			else if(this._selectedIndex === index)
 			{
 				var oldIndex:int = this._selectedIndex;
 				var newIndex:int = oldIndex;
@@ -3039,11 +3080,12 @@ package feathers.controls
 				{
 					newIndex = maxIndex;
 				}
-				if(oldIndex == newIndex)
+				if(oldIndex === newIndex)
 				{
 					//we're keeping the same selected index, but the selected
 					//item will change, so we need to manually dispatch the
 					//change event
+					this.refreshSelectedItem();
 					this.invalidate(INVALIDATION_FLAG_SELECTED);
 					this.dispatchEventWith(Event.CHANGE);
 				}
@@ -3066,7 +3108,7 @@ package feathers.controls
 			{
 				//the data provider has changed drastically. we should reset the
 				//selection to the first item.
-				if(this._selectedIndex != 0)
+				if(this._selectedIndex !== 0)
 				{
 					this.selectedIndex = 0;
 				}
@@ -3075,6 +3117,7 @@ package feathers.controls
 					//we're keeping the same selected index, but the selected
 					//item will change, so we need to manually dispatch the
 					//change event
+					this.refreshSelectedItem();
 					this.invalidate(INVALIDATION_FLAG_SELECTED);
 					this.dispatchEventWith(Event.CHANGE);
 				}
@@ -3091,13 +3134,43 @@ package feathers.controls
 		 */
 		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
-			if(this._selectedIndex == index)
+			if(this._selectedIndex === index)
 			{
 				//we're keeping the same selected index, but the selected
 				//item will change, so we need to manually dispatch the
 				//change event
+				this.refreshSelectedItem();
 				this.invalidate(INVALIDATION_FLAG_SELECTED);
 				this.dispatchEventWith(Event.CHANGE);
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			var oldIndex:int = this._dataProvider.getItemIndex(this._selectedItem);
+			if(oldIndex === -1)
+			{
+				//the selected item was filtered
+				var newIndex:int = this._selectedIndex;
+				var maxIndex:int = this._dataProvider.length - 1;
+				if(newIndex > maxIndex)
+				{
+					//try to keep the same selectedIndex, but if use the last
+					//index if needed
+					newIndex = maxIndex;
+				}
+				if(newIndex !== -1)
+				{
+					this.selectedItem = this._dataProvider.getItemAt(newIndex);
+				}
+				else
+				{
+					this.selectedIndex = -1;
+				}
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}

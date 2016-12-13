@@ -17,6 +17,8 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 * Used internally by ScrollContainer. Not meant to be used on its own.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class LayoutViewPort extends LayoutGroup implements IViewPort
 	{

@@ -56,6 +56,8 @@ package feathers.data
 	 * provided to parse other formats.</p>
 	 *
 	 * @see feathers.controls.AutoComplete
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class URLAutoCompleteSource extends EventDispatcher implements IAutoCompleteSource
 	{

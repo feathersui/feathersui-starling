@@ -57,6 +57,8 @@ package feathers.controls.popups
 
 	/**
 	 * Automatically manages pop-up content layout and positioning.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IPopUpContentManager extends IFeathersEventDispatcher
 	{

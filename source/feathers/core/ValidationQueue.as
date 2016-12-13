@@ -13,6 +13,11 @@ package feathers.core
 	import starling.core.Starling;
 
 	[ExcludeClass]
+	/**
+	 * @private
+	 *
+	 * @productversion Feathers 1.0.0
+	 */
 	public final class ValidationQueue implements IAnimatable
 	{
 		/**

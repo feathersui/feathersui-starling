@@ -64,6 +64,8 @@ package feathers.controls.popups
 	 *
 	 * @see feathers.controls.PickerList
 	 * @see feathers.controls.Callout
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class CalloutPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{

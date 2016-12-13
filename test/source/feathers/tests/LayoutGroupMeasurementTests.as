@@ -294,5 +294,29 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly.",
 				groupHeight, this._group.minHeight);
 		}
+
+		[Test]
+		public function testRemoveChildToResizeSkin():void
+		{
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			this._group.addChild(child);
+			this._group.backgroundSkin = new Quad(10, 10, 0xff00ff);
+			this._group.backgroundDisabledSkin = new Quad(10, 10, 0xff00ff);
+			this._group.validate();
+			//the child's dimensions were large enough to make group bigger
+			//than the skin's dimensions
+			this._group.removeChild(child);
+			//switch to a different skin before validation
+			this._group.isEnabled = false;
+			this._group.validate();
+			//now switch back to the original skin, and the dimensions could
+			//be wrong if they weren't restored
+			this._group.isEnabled = true;
+			this._group.validate();
+			Assert.assertStrictlyEquals("The width of the LayoutGroup was not calculated correctly after changing to a different skin and removing larger child.",
+				10, this._group.width);
+			Assert.assertStrictlyEquals("The height of the LayoutGroup was not calculated correctly after changing to a different skin and removing larger child.",
+				10, this._group.height);
+		}
 	}
 }

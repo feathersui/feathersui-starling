@@ -366,6 +366,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/button-group.html How to use the Feathers ButtonGroup component
 	 * @see feathers.controls.TabBar
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class ButtonGroup extends FeathersControl implements ITextBaselineControl
 	{

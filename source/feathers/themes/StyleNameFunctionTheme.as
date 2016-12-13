@@ -23,6 +23,8 @@ package feathers.themes
 	 * @see feathers.skins.StyleNameFunctionStyleProvider
 	 * @see ../../../help/skinning.html Skinning Feathers components
 	 * @see ../../../help/custom-themes.html Creating custom Feathers themes
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class StyleNameFunctionTheme extends EventDispatcher
 	{

@@ -1913,7 +1913,6 @@ package feathers.themes
 
 		protected function setPickerListStyles(list:PickerList):void
 		{
-			trace(DeviceCapabilities.isPhone(this.starling.nativeStage));
 			if(DeviceCapabilities.isPhone(this.starling.nativeStage))
 			{
 				list.listFactory = pickerListSpinnerListFactory;
@@ -2030,30 +2029,14 @@ package feathers.themes
 
 			var fillSkin:Image = new Image(this.buttonUpSkinTexture);
 			fillSkin.scale9Grid = BUTTON_SCALE9_GRID;
-			if(progress.direction == Direction.VERTICAL)
-			{
-				fillSkin.width = this.smallControlSize;
-				fillSkin.height = this.smallControlSize;
-			}
-			else
-			{
-				fillSkin.width = this.smallControlSize;
-				fillSkin.height = this.smallControlSize;
-			}
+			fillSkin.width = this.smallControlSize;
+			fillSkin.height = this.smallControlSize;
 			progress.fillSkin = fillSkin;
 
 			var fillDisabledSkin:Image = new Image(this.buttonDisabledSkinTexture);
 			fillDisabledSkin.scale9Grid = BUTTON_SCALE9_GRID;
-			if(progress.direction == Direction.VERTICAL)
-			{
-				fillDisabledSkin.width = this.smallControlSize;
-				fillDisabledSkin.height = this.smallControlSize;
-			}
-			else
-			{
-				fillDisabledSkin.width = this.smallControlSize;
-				fillDisabledSkin.height = this.smallControlSize;
-			}
+			fillDisabledSkin.width = this.smallControlSize;
+			fillDisabledSkin.height = this.smallControlSize;
 			progress.fillDisabledSkin = fillDisabledSkin;
 		}
 

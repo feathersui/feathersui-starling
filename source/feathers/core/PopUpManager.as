@@ -15,6 +15,8 @@ package feathers.core
 
 	/**
 	 * Adds a display object as a pop-up above all content.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class PopUpManager
 	{

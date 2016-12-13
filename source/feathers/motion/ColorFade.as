@@ -17,6 +17,8 @@ package feathers.motion
 	 * fade a display object to a solid color.
 	 *
 	 * @see ../../../help/transitions.html#colorfade Transitions for Feathers screen navigators: ColorFade
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class ColorFade
 	{

@@ -40,6 +40,8 @@ package feathers.data
 	 *
 	 * @see feathers.controls.AutoComplete
 	 * @see feathers.data.ListCollection
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class LocalAutoCompleteSource extends EventDispatcher implements IAutoCompleteSource
 	{

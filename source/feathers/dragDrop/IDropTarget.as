@@ -136,7 +136,9 @@ package feathers.dragDrop
 	 * A display object that can accept data dropped by the drag and drop
 	 * manager.
 	 *
-	 * @see DragDropManager
+	 * @see feathers.dragDrop.DragDropManager
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IDropTarget
 	{

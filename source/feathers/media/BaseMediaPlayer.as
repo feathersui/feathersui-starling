@@ -18,6 +18,8 @@ package feathers.media
 	/**
 	 * An abstract superclass for media players that should implement the
 	 * <code>feathers.media.IMediaPlayer</code> interface.
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class BaseMediaPlayer extends LayoutGroup implements IMediaPlayer
 	{

@@ -17,6 +17,8 @@ package feathers.motion
 	 * effect animates clipping rectangles.
 	 *
 	 * @see ../../../help/transitions.html#wipe Transitions for Feathers screen navigators: Wipe
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class Wipe
 	{

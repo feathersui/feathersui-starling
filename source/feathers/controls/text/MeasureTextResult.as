@@ -9,6 +9,8 @@ package feathers.controls.text
 {
 	/**
 	 * The result of text measurement.
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class MeasureTextResult
 	{

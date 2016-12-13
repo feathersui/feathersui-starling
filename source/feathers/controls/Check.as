@@ -29,6 +29,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/check.html How to use the Feathers Check component
 	 * @see feathers.controls.ToggleSwitch
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class Check extends ToggleButton
 	{

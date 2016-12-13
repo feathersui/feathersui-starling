@@ -24,6 +24,8 @@ package feathers.text
 	/**
 	 * A StageText replacement for Flash Player with matching properties, since
 	 * StageText is only available in AIR.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public final class StageTextField extends EventDispatcher
 	{

@@ -36,6 +36,8 @@ package feathers.controls.renderers
 
 	/**
 	 * Interface to implement a renderer for a grouped list item.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IGroupedListItemRenderer extends IToggle
 	{

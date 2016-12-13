@@ -15,6 +15,8 @@ package feathers.events
 	 * Events used by the <code>DragDropManager</code>.
 	 *
 	 * @see feathers.dragDrop.DragDropManager
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class DragDropEvent extends Event
 	{

@@ -9,6 +9,9 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IValidating;
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
@@ -16,13 +19,48 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundUpToNearest;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.globalization.DateTimeFormatter;
 	import flash.globalization.DateTimeNameStyle;
 	import flash.globalization.DateTimeStyle;
 	import flash.globalization.LocaleID;
 
+	import starling.display.DisplayObject;
+
 	import starling.events.Event;
+
+	/**
+	 * The background to display behind all content when the date time spinner
+	 * is disabled. The background skin is resized to fill the full width and
+	 * height of the date time spinner, and the lists are centered.
+	 *
+	 * <p>In the following example, the spinner is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.backgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundSkin
+	 */
+	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The default background to display behind all content. The background
+	 * skin is resized to fill the full width and height of the date time
+	 * spinner, and the lists are centered.
+	 *
+	 * <p>In the following example, the spinner is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:backgroundDisabledSkin
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * A style name to add to the date time spinner's item renderer
@@ -72,6 +110,86 @@ package feathers.controls
 	 * @see #listFactory
 	 */
 	[Style(name="customListStyleName",type="String")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the date time spinner's top edge and
+	 * the its content.
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the date time spinner's right edge
+	 * and the its content.
+	 *
+	 * <p>In the following example, the right padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the date time spinner's bottom edge
+	 * and the its content.
+	 *
+	 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the date time spinner's left edge
+	 * and the its content.
+	 *
+	 * <p>In the following example, the left padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * spinner.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
 
 	/**
 	 * The duration, in seconds, of the animation when the
@@ -129,6 +247,8 @@ package feathers.controls
 	 * this.addChild( spinner );</listing>
 	 *
 	 * @see ../../../help/date-time-spinner.html How to use the Feathers DateTimeSpinner component
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class DateTimeSpinner extends FeathersControl
 	{
@@ -914,6 +1034,260 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitBackgroundWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var currentBackgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		public function get backgroundSkin():DisplayObject
+		{
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
+			{
+				return;
+			}
+			if(this._backgroundSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundSkin)
+			{
+				this.removeCurrentBackgroundSkin(this._backgroundSkin);
+				this.currentBackgroundSkin = null;
+			}
+			this._backgroundSkin = value;
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundDisabledSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		public function get backgroundDisabledSkin():DisplayObject
+		{
+			return this._backgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundDisabledSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundDisabledSkin === value)
+			{
+				return;
+			}
+			if(this._backgroundDisabledSkin !== null &&
+				this.currentBackgroundSkin === this._backgroundDisabledSkin)
+			{
+				this.removeCurrentBackgroundSkin(this._backgroundDisabledSkin);
+				this.currentBackgroundSkin = null;
+			}
+			this._backgroundDisabledSkin = value;
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop === value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight === value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom === value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft === value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _amString:String;
 
 		/**
@@ -966,9 +1340,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			//we don't dispose it if the group is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._backgroundSkin !== null && this._backgroundSkin.parent !== this)
+			{
+				this._backgroundSkin.dispose();
+			}
+			if(this._backgroundDisabledSkin !== null && this._backgroundDisabledSkin.parent !== this)
+			{
+				this._backgroundDisabledSkin.dispose();
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
-			if(!this.listGroup)
+			if(this.listGroup === null)
 			{
 				var groupLayout:HorizontalLayout = new HorizontalLayout();
 				groupLayout.horizontalAlign = HorizontalAlign.CENTER;
@@ -984,6 +1376,8 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
+			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var editingModeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_EDITING_MODE);
 			var localeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LOCALE);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -993,6 +1387,11 @@ package feathers.controls
 			if(this._todayLabel)
 			{
 				this._lastValidate = new Date();
+			}
+
+			if(skinInvalid || stateInvalid)
+			{
+				this.refreshBackgroundSkin();
 			}
 
 			if(localeInvalid || editingModeInvalid)
@@ -1036,13 +1435,188 @@ package feathers.controls
 				return false;
 			}
 
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
+			if(this.currentBackgroundSkin is IValidating)
+			{
+				IValidating(this.currentBackgroundSkin).validate();
+			}
+
 			this.listGroup.width = this._explicitWidth;
 			this.listGroup.height = this._explicitHeight;
 			this.listGroup.minWidth = this._explicitMinWidth;
 			this.listGroup.minHeight = this._explicitMinHeight;
-			this.listGroup.validate();
-			return this.saveMeasurements(this.listGroup.width, this.listGroup.height,
-				this.listGroup.minWidth, this.listGroup.minHeight);
+			this.listGroup.validate();//minimum dimensions
+
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(measureBackground !== null)
+				{
+					newMinWidth = measureBackground.minWidth;
+				}
+				else if(this.currentBackgroundSkin !== null)
+				{
+					newMinWidth = this._explicitBackgroundMinWidth;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				var listsMinWidth:Number = this.listGroup.minWidth;
+				listsMinWidth += this._paddingLeft + this._paddingRight;
+				if(listsMinWidth > newMinWidth)
+				{
+					newMinWidth = listsMinWidth;
+				}
+			}
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(measureBackground !== null)
+				{
+					newMinHeight = measureBackground.minHeight;
+				}
+				else if(this.currentBackgroundSkin !== null)
+				{
+					newMinHeight = this._explicitBackgroundMinHeight;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				var listsMinHeight:Number = this.listGroup.minHeight;
+				listsMinHeight += this._paddingTop + this._paddingBottom;
+				if(listsMinHeight > newMinHeight)
+				{
+					newMinHeight = listsMinHeight;
+				}
+			}
+
+			//current dimensions
+			var newWidth:Number = this._explicitWidth;
+			if(needsWidth)
+			{
+				if(this.currentBackgroundSkin !== null)
+				{
+					newWidth = this.currentBackgroundSkin.width;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+				var listsWidth:Number = this.listGroup.width + this._paddingLeft + this._paddingRight;
+				if(listsWidth > newWidth)
+				{
+					newWidth = listsWidth;
+				}
+			}
+			var newHeight:Number = this._explicitHeight;
+			if(needsHeight)
+			{
+				if(this.currentBackgroundSkin !== null)
+				{
+					newHeight = this.currentBackgroundSkin.height;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+				var listsHeight:Number = this.listGroup.height + this._paddingTop + this._paddingBottom;
+				if(listsHeight > newHeight)
+				{
+					newHeight = listsHeight;
+				}
+			}
+
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
+		}
+
+		/**
+		 * Choose the appropriate background skin based on the control's current
+		 * state.
+		 */
+		protected function refreshBackgroundSkin():void
+		{
+			var oldBackgroundSkin:DisplayObject = this.currentBackgroundSkin;
+			this.currentBackgroundSkin = this.getCurrentBackgroundSkin();
+			if(this.currentBackgroundSkin !== oldBackgroundSkin)
+			{
+				this.removeCurrentBackgroundSkin(oldBackgroundSkin);
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(this.currentBackgroundSkin is IFeathersControl)
+					{
+						IFeathersControl(this.currentBackgroundSkin).initializeNow();
+					}
+					if(this.currentBackgroundSkin is IMeasureDisplayObject)
+					{
+						var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this.currentBackgroundSkin);
+						this._explicitBackgroundWidth = measureSkin.explicitWidth;
+						this._explicitBackgroundHeight = measureSkin.explicitHeight;
+						this._explicitBackgroundMinWidth = measureSkin.explicitMinWidth;
+						this._explicitBackgroundMinHeight = measureSkin.explicitMinHeight;
+						this._explicitBackgroundMaxWidth = measureSkin.explicitMaxWidth;
+						this._explicitBackgroundMaxHeight = measureSkin.explicitMaxHeight;
+					}
+					else
+					{
+						this._explicitBackgroundWidth = this.currentBackgroundSkin.width;
+						this._explicitBackgroundHeight = this.currentBackgroundSkin.height;
+						this._explicitBackgroundMinWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMinHeight = this._explicitBackgroundHeight;
+						this._explicitBackgroundMaxWidth = this._explicitBackgroundWidth;
+						this._explicitBackgroundMaxHeight = this._explicitBackgroundHeight;
+					}
+					this.addChildAt(this.currentBackgroundSkin, 0);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
+		{
+			if(skin === null)
+			{
+				return;
+			}
+			if(skin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				skin.width = this._explicitBackgroundWidth;
+				skin.height = this._explicitBackgroundHeight;
+				if(skin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(skin);
+					measureSkin.minWidth = this._explicitBackgroundMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
+				}
+				this.setRequiresRedraw();
+				skin.removeFromParent(false);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentBackgroundSkin():DisplayObject
+		{
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
+			{
+				return this._backgroundDisabledSkin;
+			}
+			return this._backgroundSkin;
 		}
 
 		/**
@@ -1789,8 +2363,17 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			this.listGroup.width = this.actualWidth;
-			this.listGroup.height = this.actualHeight;
+			if(this.currentBackgroundSkin !== null &&
+				(this.currentBackgroundSkin.width !== this.actualWidth ||
+				this.currentBackgroundSkin.height !== this.actualHeight))
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+			}
+			this.listGroup.x = this._paddingLeft;
+			this.listGroup.y = this._paddingTop;
+			this.listGroup.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.listGroup.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 			this.listGroup.validate();
 		}
 

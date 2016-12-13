@@ -47,6 +47,8 @@ package feathers.utils.touch
 	 * 
 	 * @see feathers.utils.touch.TapToTrigger
 	 * @see feathers.utils.touch.LongPress
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class TapToSelect
 	{

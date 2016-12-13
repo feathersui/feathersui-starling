@@ -120,6 +120,8 @@ package feathers.controls.supportClasses
 	 *
 	 * @see feathers.controls.StackScreenNavigator
 	 * @see feathers.controls.ScreenNavigator
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class BaseScreenNavigator extends FeathersControl
 	{
@@ -875,6 +877,10 @@ package feathers.controls.supportClasses
 				if(this._activeScreen.height != this.actualHeight)
 				{
 					this._activeScreen.height = this.actualHeight;
+				}
+				if(this._activeScreen is IValidating)
+				{
+					IValidating(this._activeScreen).validate();
 				}
 			}
 		}

@@ -133,6 +133,8 @@ package feathers.controls
 	 * be used with Adobe Flash Player in a web browser.</p>
 	 *
 	 * @see ../../../help/web-view.html How to use the Feathers WebView component
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class WebView extends FeathersControl
 	{

@@ -16,6 +16,8 @@ package feathers.motion
 	 * right, down, or left.
 	 *
 	 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class Slide
 	{

@@ -11,6 +11,8 @@ package feathers.skins
 
 	/**
 	 * Used by themes to create and manage style providers for component classes.
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public class StyleProviderRegistry
 	{

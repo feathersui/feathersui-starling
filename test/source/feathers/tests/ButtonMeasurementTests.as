@@ -361,5 +361,28 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The minHeight of the Button was not calculated correctly with background skin, padding, and gap.",
 				LARGE_BACKGROUND_HEIGHT, this._button.minHeight);
 		}
+
+		[Test]
+		public function testChangeTextToResizeSkin():void
+		{
+			this._button.label = "I am the very model of a modern major general";
+			this.addSmallSimpleBackground();
+			this._button.disabledSkin = new Quad(SMALL_BACKGROUND_WIDTH, SMALL_BACKGROUND_HEIGHT, 0xff00ff);
+			this._button.validate();
+			//the text's dimensions were large enough to make button bigger than
+			//the skin's dimensions
+			this._button.label = "";
+			//switch to a different skin before validation
+			this._button.isEnabled = false;
+			this._button.validate();
+			//now switch back to the original skin, and the dimensions could
+			//be wrong if they weren't restored
+			this._button.isEnabled = true;
+			this._button.validate();
+			Assert.assertStrictlyEquals("The width of the Button was not calculated correctly after changing to a different skin and changing label dimensions.",
+				SMALL_BACKGROUND_WIDTH, this._button.width);
+			Assert.assertStrictlyEquals("The height of the Button was not calculated correctly after changing to a different skin and changing label dimensions",
+				SMALL_BACKGROUND_HEIGHT, this._button.height);
+		}
 	}
 }

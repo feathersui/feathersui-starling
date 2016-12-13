@@ -31,6 +31,8 @@ package feathers.core
 
 	/**
 	 * An interface for something that may be selected.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IToggle extends IFeathersControl
 	{

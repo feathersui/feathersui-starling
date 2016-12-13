@@ -44,8 +44,10 @@ package feathers.utils.keyboard
 	 * <code>Event.TRIGGERED</code> should be dispatched before
 	 * <code>Event.CHANGE</code>.</p>
 	 *
-	 * @see feathers.utils.touch.KeyToTrigger
+	 * @see feathers.utils.keyboard.KeyToTrigger
 	 * @see feathers.utils.touch.TapToSelect
+	 *
+	 * @productversion Feathers 3.0.0
 	 */
 	public class KeyToSelect
 	{
@@ -56,6 +58,11 @@ package feathers.utils.keyboard
 		{
 			this.target = target;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _stage:Stage;
 
 		/**
 		 * @private
@@ -83,14 +90,22 @@ package feathers.utils.keyboard
 			{
 				throw new ArgumentError("Target of KeyToSelect must implement IFocusDisplayObject");
 			}
-			if(this._target)
+			if(this._stage !== null)
+			{
+				//if the target changes while the old target has focus, remove
+				//the listeners to avoid possible errors
+				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage = null;
+			}
+			if(this._target !== null)
 			{
 				this._target.removeEventListener(FeathersEventType.FOCUS_IN, target_focusInHandler);
 				this._target.removeEventListener(FeathersEventType.FOCUS_OUT, target_focusOutHandler);
 				this._target.removeEventListener(Event.REMOVED_FROM_STAGE, target_removedFromStageHandler);
 			}
 			this._target = value;
-			if(this._target)
+			if(this._target !== null)
 			{
 				this._target.addEventListener(FeathersEventType.FOCUS_IN, target_focusInHandler);
 				this._target.addEventListener(FeathersEventType.FOCUS_OUT, target_focusOutHandler);
@@ -195,7 +210,8 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusInHandler(event:Event):void
 		{
-			this._target.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this._stage = this._target.stage;
+			this._stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
@@ -203,8 +219,12 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusOutHandler(event:Event):void
 		{
-			this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+			if(this._stage !== null)
+			{
+				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage = null;
+			}
 		}
 
 		/**
@@ -212,8 +232,12 @@ package feathers.utils.keyboard
 		 */
 		protected function target_removedFromStageHandler(event:Event):void
 		{
-			this._target.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+			if(this._stage !== null)
+			{
+				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage = null;
+			}
 		}
 
 		/**
@@ -227,11 +251,11 @@ package feathers.utils.keyboard
 			}
 			if(event.keyCode === this._cancelKeyCode)
 			{
-				this._target.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 			}
 			else if(event.keyCode === this._keyCode)
 			{
-				this._target.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 			}
 		}
 
@@ -250,7 +274,7 @@ package feathers.utils.keyboard
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-			if(this._target.stage !== stage)
+			if(this._stage !== stage)
 			{
 				return;
 			}

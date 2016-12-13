@@ -11,6 +11,8 @@ package feathers.skins
 
 	/**
 	 * Sets skin and style properties on a Feathers UI component.
+	 *
+	 * @productversion Feathers 2.0.0
 	 */
 	public interface IStyleProvider
 	{

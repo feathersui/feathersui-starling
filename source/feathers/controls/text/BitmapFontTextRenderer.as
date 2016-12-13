@@ -49,6 +49,8 @@ package feathers.controls.text
 	 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 	 * @see ../../../../help/bitmap-font-text-renderer.html How to use the Feathers BitmapFontTextRenderer component
 	 * @see http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts Starling Wiki: Displaying Text with Bitmap Fonts
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class BitmapFontTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{

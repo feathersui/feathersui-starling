@@ -273,6 +273,8 @@ package feathers.media
 	 * Controls playback of video with a <code>flash.net.NetStream</code> object.
 	 *
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class VideoPlayer extends BaseTimedMediaPlayer implements IVideoPlayer, IProgressiveMediaPlayer
 	{

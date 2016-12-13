@@ -15,6 +15,8 @@ package feathers.controls.popups
 	 * would keep its pop-up open after a list item is selected or triggered.
 	 * The manager will provide its own custom UI to close itself, such as a
 	 * close button.</p>
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public interface IPersistentPopUpContentManager extends IPopUpContentManager
 	{

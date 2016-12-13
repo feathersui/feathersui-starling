@@ -52,6 +52,8 @@ package feathers.text
 	 * 
 	 * @see feathers.core.ITextRenderer
 	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class FontStylesSet extends EventDispatcher
 	{

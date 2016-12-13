@@ -36,6 +36,8 @@ package feathers.controls
 	 * component.
 	 *
 	 * @see Scroller
+	 *
+	 * @productversion Feathers 1.3.0
 	 */
 	public interface IRange extends IFeathersControl
 	{

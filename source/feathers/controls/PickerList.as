@@ -238,6 +238,8 @@ package feathers.controls
 	 * this.addChild( list );</listing>
 	 *
 	 * @see ../../../help/picker-list.html How to use the Feathers PickerList component
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class PickerList extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{

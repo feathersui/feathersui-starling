@@ -25,6 +25,8 @@ package feathers.controls.text
 	 * API that doesn't expose things like scroll position.</p>
 	 *
 	 * @see feathers.controls.TextArea
+	 *
+	 * @productversion Feathers 2.3.0
 	 */
 	public class StageTextTextEditorViewPort extends StageTextTextEditor implements ITextEditorViewPort
 	{

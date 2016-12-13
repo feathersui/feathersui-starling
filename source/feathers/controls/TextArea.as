@@ -269,6 +269,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/text-area.html How to use the Feathers TextArea component
 	 * @see feathers.controls.TextInput
+	 *
+	 * @productversion Feathers 1.1.0
 	 */
 	public class TextArea extends Scroller implements IAdvancedNativeFocusOwner, IStateContext
 	{

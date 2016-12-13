@@ -39,6 +39,8 @@ package feathers.layout
 
 	/**
 	 * A virtual layout that supports variable item dimensions.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public interface IVariableVirtualLayout extends IVirtualLayout
 	{

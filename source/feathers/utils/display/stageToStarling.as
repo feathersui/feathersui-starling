@@ -13,6 +13,8 @@ package feathers.utils.display
 	/**
 	 * Finds the Starling instance that controls a particular
 	 * <code>starling.display.Stage</code>.
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public function stageToStarling(stage:Stage):Starling
 	{

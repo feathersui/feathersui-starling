@@ -18,6 +18,8 @@ package feathers.motion
 	 * cover the content below it.
 	 *
 	 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class Cover
 	{

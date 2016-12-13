@@ -19,6 +19,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/tab-navigator.html How to use the Feathers TabNavigator component
 	 * @see feathers.controls.TabNavigator
+	 *
+	 * @productversion Feathers 3.1.0
 	 */
 	public class TabNavigatorItem implements IScreenNavigatorItem, IMXMLObject
 	{

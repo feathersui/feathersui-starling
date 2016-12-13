@@ -23,6 +23,8 @@ package feathers.display
 	 * <p>Touching the delegate does not pass touches to the target. The
 	 * delegate is a separate display object. However, interacting with the
 	 * target may affect the rendering of the delegate.</p>
+	 *
+	 * @productversion Feathers 2.2.0
 	 */
 	public class RenderDelegate extends DisplayObject
 	{

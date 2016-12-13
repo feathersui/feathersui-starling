@@ -131,6 +131,8 @@ package feathers.controls
 	 *
 	 * @see ../../../help/auto-complete.html How to use the Feathers AutoComplete component
 	 * @see feathers.controls.TextInput
+	 *
+	 * @productversion Feathers 2.1.0
 	 */
 	public class AutoComplete extends TextInput
 	{

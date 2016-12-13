@@ -40,6 +40,8 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 * Used internally by GroupedList. Not meant to be used on its own.
+	 *
+	 * @productversion Feathers 1.0.0
 	 */
 	public class GroupedListDataViewPort extends FeathersControl implements IViewPort
 	{
