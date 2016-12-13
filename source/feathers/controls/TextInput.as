@@ -3710,7 +3710,8 @@ package feathers.controls
 				touch = event.getTouch(this, TouchPhase.HOVER);
 				if(touch)
 				{
-					if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
+					if((this._isEditable || this._isSelectable) &&
+						Mouse.supportsNativeCursor && !this._oldMouseCursor)
 					{
 						this._oldMouseCursor = Mouse.cursor;
 						Mouse.cursor = MouseCursor.IBEAM;
