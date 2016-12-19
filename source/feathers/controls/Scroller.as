@@ -5112,14 +5112,6 @@ package feathers.controls
 				this.currentBackgroundSkin.height = this.actualHeight;
 			}
 
-			if(this.horizontalScrollBar !== null)
-			{
-				this.horizontalScrollBar.validate();
-			}
-			if(this.verticalScrollBar !== null)
-			{
-				this.verticalScrollBar.validate();
-			}
 			if(this._touchBlocker !== null)
 			{
 				this._touchBlocker.x = this._leftViewPortOffset;
@@ -5142,7 +5134,24 @@ package feathers.controls
 			}
 
 			this.layoutPullViews();
+			this.layoutScrollBars();
+		}
 
+		/**
+		 * @private
+		 */
+		protected function layoutScrollBars():void
+		{
+			var visibleWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+			var visibleHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+			if(this.horizontalScrollBar !== null)
+			{
+				this.horizontalScrollBar.validate();
+			}
+			if(this.verticalScrollBar !== null)
+			{
+				this.verticalScrollBar.validate();
+			}
 			if(this.horizontalScrollBar !== null)
 			{
 				if(this._horizontalScrollBarPosition === RelativePosition.TOP)
