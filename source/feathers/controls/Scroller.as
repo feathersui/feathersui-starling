@@ -3411,6 +3411,8 @@ package feathers.controls
 		{
 			if(this._topPullView !== null)
 			{
+				this._topPullView.mask.dispose();
+				this._leftPullView.mask = null;
 				this._topPullView.removeEventListener(Event.COMPLETE, topPullView_completeHandler);
 				if(this._topPullView.parent === this)
 				{
@@ -3420,6 +3422,7 @@ package feathers.controls
 			this._topPullView = value;
 			if(this._topPullView !== null)
 			{
+				this._topPullView.mask = new Quad(1, 1, 0xff00ff);
 				this._topPullView.visible = false;
 				this.addRawChildInternal(this._topPullView);
 			}
@@ -3487,6 +3490,8 @@ package feathers.controls
 		{
 			if(this._rightPullView !== null)
 			{
+				this._rightPullView.mask.dispose();
+				this._rightPullView.mask = null;
 				this._rightPullView.removeEventListener(Event.COMPLETE, rightPullView_completeHandler);
 				if(this._rightPullView.parent === this)
 				{
@@ -3496,6 +3501,7 @@ package feathers.controls
 			this._rightPullView = value;
 			if(this._rightPullView !== null)
 			{
+				this._rightPullView.mask = new Quad(1, 1, 0xff00ff);
 				this._rightPullView.visible = false;
 				this.addRawChildInternal(this._rightPullView);
 			}
@@ -3563,6 +3569,8 @@ package feathers.controls
 		{
 			if(this._bottomPullView !== null)
 			{
+				this._bottomPullView.mask.dispose();
+				this._bottomPullView.mask = null;
 				this._bottomPullView.removeEventListener(Event.COMPLETE, bottomPullView_completeHandler);
 				if(this._bottomPullView.parent === this)
 				{
@@ -3572,6 +3580,7 @@ package feathers.controls
 			this._bottomPullView = value;
 			if(this._bottomPullView !== null)
 			{
+				this._bottomPullView.mask = new Quad(1, 1, 0xff00ff);
 				this._bottomPullView.visible = false;
 				this.addRawChildInternal(this._bottomPullView);
 			}
@@ -3639,6 +3648,8 @@ package feathers.controls
 		{
 			if(this._leftPullView !== null)
 			{
+				this._leftPullView.mask.dispose();
+				this._leftPullView.mask = null;
 				this._leftPullView.removeEventListener(Event.COMPLETE, leftPullView_completeHandler);
 				if(this._leftPullView.parent === this)
 				{
@@ -3648,6 +3659,7 @@ package feathers.controls
 			this._leftPullView = value;
 			if(this._leftPullView !== null)
 			{
+				this._leftPullView.mask = new Quad(1, 1, 0xff00ff);
 				this._leftPullView.visible = false;
 				this.addRawChildInternal(this._leftPullView);
 			}
@@ -5247,6 +5259,7 @@ package feathers.controls
 					{
 						this._topPullView.y = this._topViewPortOffset - topPullViewHeight - topPullViewOffset;
 						this._topPullView.visible = true;
+						this.refreshTopPullViewMask();
 					}
 					else
 					{
@@ -5286,6 +5299,7 @@ package feathers.controls
 					{
 						this._rightPullView.x = this.actualWidth - this._rightViewPortOffset - rightPullViewOffset;
 						this._rightPullView.visible = true;
+						this.refreshRightPullViewMask();
 					}
 					else
 					{
@@ -5325,6 +5339,7 @@ package feathers.controls
 					{
 						this._bottomPullView.y = this.actualHeight - this._bottomViewPortOffset - bottomPullViewOffset;
 						this._bottomPullView.visible = true;
+						this.refreshBottomPullViewMask();
 					}
 					else
 					{
@@ -5365,6 +5380,7 @@ package feathers.controls
 					{
 						this._leftPullView.x = this._leftViewPortOffset - leftPullViewWidth - leftPullViewOffset;
 						this._leftPullView.visible = true;
+						this.refreshLeftPullViewMask();
 					}
 					else
 					{
@@ -5374,6 +5390,94 @@ package feathers.controls
 				index = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
 				this.setRawChildIndexInternal(this._leftPullView, index + 1);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTopPullViewMask():void
+		{
+			var pullViewHeight:Number = this._topPullView.height;
+			var mask:DisplayObject = this._topPullView.mask;
+			var maskHeight:Number = pullViewHeight + this._topPullView.y;
+			if(maskHeight < 0)
+			{
+				maskHeight = 0;
+			}
+			else if(maskHeight > pullViewHeight)
+			{
+				maskHeight = pullViewHeight;
+			}
+			mask.width = this._topPullView.width;
+			mask.height = maskHeight;
+			mask.x = 0;
+			mask.y = pullViewHeight - maskHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshRightPullViewMask():void
+		{
+			var pullViewWidth:Number = this._rightPullView.width;
+			var mask:DisplayObject = this._rightPullView.mask;
+			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - this._rightPullView.x;
+			if(maskWidth < 0)
+			{
+				maskWidth = 0;
+			}
+			else if(maskWidth > pullViewWidth)
+			{
+				maskWidth = pullViewWidth;
+			}
+			mask.width = maskWidth;
+			mask.height = this._rightPullView.height;
+			mask.x = 0;
+			mask.y = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshBottomPullViewMask():void
+		{
+			var pullViewHeight:Number = this._bottomPullView.height;
+			var mask:DisplayObject = this._bottomPullView.mask;
+			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - this._bottomPullView.y;
+			if(maskHeight < 0)
+			{
+				maskHeight = 0;
+			}
+			else if(maskHeight > pullViewHeight)
+			{
+				maskHeight = pullViewHeight;
+			}
+			mask.width = this._bottomPullView.width;
+			mask.height = maskHeight;
+			mask.x = 0;
+			mask.y = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshLeftPullViewMask():void
+		{
+			var pullViewWidth:Number = this._leftPullView.width;
+			var mask:DisplayObject = this._leftPullView.mask;
+			var maskWidth:Number = pullViewWidth + this._leftPullView.x;
+			if(maskWidth < 0)
+			{
+				maskWidth = 0;
+			}
+			else if(maskWidth > pullViewWidth)
+			{
+				maskWidth = pullViewWidth;
+			}
+			mask.width = maskWidth;
+			mask.height = this._leftPullView.height;
+			mask.x = pullViewWidth - maskWidth;
+			mask.y = 0;
 		}
 
 		/**
@@ -5932,6 +6036,7 @@ package feathers.controls
 				{
 					this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
 					this._topPullTween.animate("y", yPosition);
+					this._topPullTween.onUpdate = this.refreshTopPullViewMask;
 					this._topPullTween.onComplete = topPullTween_onComplete;
 					Starling.juggler.add(this._topPullTween);
 				}
@@ -5953,6 +6058,7 @@ package feathers.controls
 				{
 					this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
 					this._bottomPullTween.animate("y", yPosition);
+					this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
 					this._bottomPullTween.onComplete = bottomPullTween_onComplete;
 					Starling.juggler.add(this._bottomPullTween);
 				}
@@ -5981,6 +6087,7 @@ package feathers.controls
 				{
 					this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
 					this._leftPullTween.animate("x", xPosition);
+					this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
 					this._leftPullTween.onComplete = leftPullTween_onComplete;
 					Starling.juggler.add(this._leftPullTween);
 				}
@@ -6002,6 +6109,7 @@ package feathers.controls
 				{
 					this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
 					this._rightPullTween.animate("x", xPosition);
+					this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
 					this._rightPullTween.onComplete = rightPullTween_onComplete;
 					Starling.juggler.add(this._rightPullTween);
 				}
@@ -6756,6 +6864,7 @@ package feathers.controls
 			if(!this._isTopPullActive)
 			{
 				this._verticalPullOffset = 0;
+				this.invalidate(INVALIDATION_FLAG_SCROLL);
 			}
 		}
 
@@ -6768,6 +6877,7 @@ package feathers.controls
 			if(!this._isRightPullActive)
 			{
 				this._horizontalPullOffset = 0;
+				this.invalidate(INVALIDATION_FLAG_SCROLL);
 			}
 		}
 
@@ -6780,6 +6890,7 @@ package feathers.controls
 			if(!this._isBottomPullActive)
 			{
 				this._verticalPullOffset = 0;
+				this.invalidate(INVALIDATION_FLAG_SCROLL);
 			}
 		}
 
@@ -6792,6 +6903,7 @@ package feathers.controls
 			if(!this._isLeftPullActive)
 			{
 				this._horizontalPullOffset = 0;
+				this.invalidate(INVALIDATION_FLAG_SCROLL);
 			}
 		}
 
