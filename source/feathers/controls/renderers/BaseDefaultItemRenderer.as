@@ -4815,7 +4815,7 @@ package feathers.controls.renderers
 		{
 			//we need to use strict equality here because the data can be
 			//non-strictly equal to null
-			if(this._data !== null && this._owner)
+			if(this._data !== null)
 			{
 				if(this._itemHasLabel)
 				{
@@ -4982,9 +4982,9 @@ package feathers.controls.renderers
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
 			}
 
-			if(this.iconLoader)
+			if(this.iconLoader !== null)
 			{
-				this.iconLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
+				this.iconLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner !== null && this._owner.isScrolling;
 			}
 		}
 
@@ -5035,9 +5035,9 @@ package feathers.controls.renderers
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
 			}
 
-			if(this.accessoryLoader)
+			if(this.accessoryLoader !== null)
 			{
-				this.accessoryLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
+				this.accessoryLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner !== null && this._owner.isScrolling;
 			}
 		}
 
@@ -5081,9 +5081,9 @@ package feathers.controls.renderers
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
 			}
 
-			if(this.skinLoader)
+			if(this.skinLoader !== null)
 			{
-				this.skinLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
+				this.skinLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner !== null && this._owner.isScrolling;
 			}
 		}
 
