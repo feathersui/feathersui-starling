@@ -1988,20 +1988,26 @@ package feathers.layout
 		protected function calculateDistributedWidth(items:Vector.<DisplayObject>, explicitWidth:Number, minWidth:Number, maxWidth:Number, measureItems:Boolean):Number
 		{
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var maxItemWidth:Number = 0;
+			var includedItemCount:int = 0;
 			var itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				includedItemCount++;
+				var itemWidth:Number = item.width;
+				if(itemWidth > maxItemWidth)
+				{
+					maxItemWidth = itemWidth;
+				}
+			}
 			if(measureItems && needsWidth)
 			{
-				var maxItemWidth:Number = 0;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var item:DisplayObject = items[i];
-					var itemWidth:Number = item.width;
-					if(itemWidth > maxItemWidth)
-					{
-						maxItemWidth = itemWidth;
-					}
-				}
-				explicitWidth = maxItemWidth * itemCount + this._paddingLeft + this._paddingRight + this._gap * (itemCount - 1);
+				explicitWidth = maxItemWidth * includedItemCount + this._paddingLeft + this._paddingRight + this._gap * (includedItemCount - 1);
 				var needsRecalculation:Boolean = false;
 				if(explicitWidth > maxWidth)
 				{
@@ -2023,16 +2029,16 @@ package feathers.layout
 			{
 				availableSpace = maxWidth;
 			}
-			availableSpace = availableSpace - this._paddingLeft - this._paddingRight - this._gap * (itemCount - 1);
-			if(itemCount > 1 && this._firstGap === this._firstGap) //!isNaN
+			availableSpace = availableSpace - this._paddingLeft - this._paddingRight - this._gap * (includedItemCount - 1);
+			if(includedItemCount > 1 && this._firstGap === this._firstGap) //!isNaN
 			{
 				availableSpace += this._gap - this._firstGap;
 			}
-			if(itemCount > 2 && this._lastGap === this._lastGap) //!isNaN
+			if(includedItemCount > 2 && this._lastGap === this._lastGap) //!isNaN
 			{
 				availableSpace += this._gap - this._lastGap;
 			}
-			return availableSpace / itemCount;
+			return availableSpace / includedItemCount;
 		}
 
 		/**

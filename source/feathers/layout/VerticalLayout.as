@@ -2187,20 +2187,26 @@ package feathers.layout
 		protected function calculateDistributedHeight(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number, measureItems:Boolean):Number
 		{
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			var includedItemCount:int = 0;
+			var maxItemHeight:Number = 0;
 			var itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				includedItemCount++;
+				var itemHeight:Number = item.height;
+				if(itemHeight > maxItemHeight)
+				{
+					maxItemHeight = itemHeight;
+				}
+			}
 			if(measureItems && needsHeight)
 			{
-				var maxItemHeight:Number = 0;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var item:DisplayObject = items[i];
-					var itemHeight:Number = item.height;
-					if(itemHeight > maxItemHeight)
-					{
-						maxItemHeight = itemHeight;
-					}
-				}
-				explicitHeight = maxItemHeight * itemCount + this._paddingTop + this._paddingBottom + this._gap * (itemCount - 1);
+				explicitHeight = maxItemHeight * includedItemCount + this._paddingTop + this._paddingBottom + this._gap * (includedItemCount - 1);
 				var needsRecalculation:Boolean = false;
 				if(explicitHeight > maxHeight)
 				{
@@ -2222,16 +2228,16 @@ package feathers.layout
 			{
 				availableSpace = maxHeight;
 			}
-			availableSpace = availableSpace - this._paddingTop - this._paddingBottom - this._gap * (itemCount - 1);
-			if(itemCount > 1 && this._firstGap === this._firstGap) //!isNaN
+			availableSpace = availableSpace - this._paddingTop - this._paddingBottom - this._gap * (includedItemCount - 1);
+			if(includedItemCount > 1 && this._firstGap === this._firstGap) //!isNaN
 			{
 				availableSpace += this._gap - this._firstGap;
 			}
-			if(itemCount > 2 && this._lastGap === this._lastGap) //!isNaN
+			if(includedItemCount > 2 && this._lastGap === this._lastGap) //!isNaN
 			{
 				availableSpace += this._gap - this._lastGap;
 			}
-			return availableSpace / itemCount;
+			return availableSpace / includedItemCount;
 		}
 
 		/**
