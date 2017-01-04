@@ -94,14 +94,22 @@ package feathers.text
 			{
 				return;
 			}
-			if(this._format !== null)
+			if(value === null && this._format !== null)
 			{
 				this._format.removeEventListener(Event.CHANGE, format_changeHandler);
+				this._format = null;
 			}
-			this._format = value;
-			if(this._format !== null)
+			else if(value !== null)
 			{
-				this._format.addEventListener(Event.CHANGE, format_changeHandler);
+				if(this._format === null)
+				{
+					this._format = value.clone();
+					this._format.addEventListener(Event.CHANGE, format_changeHandler);
+				}
+				else
+				{
+					this._format.copyFrom(value);
+				}
 			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -132,14 +140,22 @@ package feathers.text
 			{
 				return;
 			}
-			if(this._disabledFormat !== null)
+			if(value === null && this._disabledFormat !== null)
 			{
 				this._disabledFormat.removeEventListener(Event.CHANGE, format_changeHandler);
+				this._disabledFormat = null;
 			}
-			this._disabledFormat = value;
-			if(this._disabledFormat !== null)
+			else if(value !== null)
 			{
-				this._disabledFormat.addEventListener(Event.CHANGE, format_changeHandler);
+				if(this._disabledFormat === null)
+				{
+					this._disabledFormat = value.clone();
+					this._disabledFormat.addEventListener(Event.CHANGE, format_changeHandler);
+				}
+				else
+				{
+					this._disabledFormat.copyFrom(value);
+				}
 			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -170,14 +186,22 @@ package feathers.text
 			{
 				return;
 			}
-			if(this._selectedFormat !== null)
+			if(value === null && this._selectedFormat !== null)
 			{
 				this._selectedFormat.removeEventListener(Event.CHANGE, format_changeHandler);
+				this._selectedFormat = null;
 			}
-			this._selectedFormat = value;
-			if(this._selectedFormat !== null)
+			else if(value !== null)
 			{
-				this._selectedFormat.addEventListener(Event.CHANGE, format_changeHandler);
+				if(this._selectedFormat === null)
+				{
+					this._selectedFormat = value.clone();
+					this._selectedFormat.addEventListener(Event.CHANGE, format_changeHandler);
+				}
+				else
+				{
+					this._selectedFormat.copyFrom(value);
+				}
 			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -205,28 +229,38 @@ package feathers.text
 		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
-		public function setFormatForState(state:String, format:TextFormat):void
+		public function setFormatForState(state:String, value:TextFormat):void
 		{
-			if(format !== null)
+			var oldFormat:TextFormat = null;
+			if(value !== null)
 			{
 				if(this._stateToFormat === null)
 				{
 					this._stateToFormat = {};
 				}
-				this._stateToFormat[state] = format;
-				if(format !== null)
+				else
 				{
-					format.addEventListener(Event.CHANGE, format_changeHandler);
+					oldFormat = TextFormat(this._stateToFormat[state]);
+				}
+				if(oldFormat === null)
+				{
+					oldFormat = value.clone();
+					oldFormat.addEventListener(Event.CHANGE, format_changeHandler);
+					this._stateToFormat[state] = oldFormat;
+				}
+				else
+				{
+					oldFormat.copyFrom(value);
 				}
 			}
-			else
+			else if(this._stateToFormat !== null)
 			{
-				var oldFormat:TextFormat = TextFormat(this._stateToFormat[state]);
+				oldFormat = TextFormat(this._stateToFormat[state]);
 				if(oldFormat !== null)
 				{
 					oldFormat.removeEventListener(Event.CHANGE, format_changeHandler);
+					delete this._stateToFormat[state];
 				}
-				delete this._stateToFormat[state];
 			}
 		}
 
