@@ -4,7 +4,7 @@ package feathers.tests
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
 
-	import flexunit.framework.Assert;
+	import org.flexunit.Assert;
 
 	import starling.display.Quad;
 
@@ -118,7 +118,19 @@ package feathers.tests
 			this.addScreenB();
 			this._navigator.showScreen(SCREEN_A_ID);
 			this._navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, removeScreenA);
-			this._navigator.showScreen(SCREEN_B_ID);
+			this._navigator.clearScreen();
+			Assert.assertFalse(this._navigator.hasScreen(SCREEN_A_ID));
+		}
+
+		[Test]
+		public function testRemoveAllScreensOnTransitionCompleteEvent():void
+		{
+			this.addScreenA();
+			this.addScreenB();
+			this._navigator.showScreen(SCREEN_A_ID);
+			this._navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, removeAllScreens);
+			this._navigator.clearScreen();
+			Assert.assertFalse(this._navigator.hasScreen(SCREEN_A_ID));
 		}
 
 		[Test]
@@ -129,7 +141,7 @@ package feathers.tests
 			this._navigator.addScreen(SCREEN_A_ID, item);
 			this._navigator.showScreen(SCREEN_A_ID);
 		}
-		
+
 		private function addScreenA():void
 		{
 			var screen:Quad = new Quad(10, 10, 0xff00ff);
@@ -145,7 +157,7 @@ package feathers.tests
 			var item:ScreenNavigatorItem = new ScreenNavigatorItem(screen);
 			this._navigator.addScreen(SCREEN_B_ID, item);
 		}
-		
+
 		private function eventFunction():void
 		{
 			this._functionWasCalled = true;
@@ -154,6 +166,11 @@ package feathers.tests
 		private function removeScreenA():void
 		{
 			this._navigator.removeScreen(SCREEN_A_ID);
+		}
+
+		private function removeAllScreens():void
+		{
+			this._navigator.removeAllScreens();
 		}
 	}
 }
