@@ -1889,6 +1889,8 @@ package feathers.core
 		{
 			this._isDisposed = true;
 			this._validationQueue = null;
+			this.layoutData = null;
+			this._styleNameList.removeEventListeners();
 			super.dispose();
 		}
 
