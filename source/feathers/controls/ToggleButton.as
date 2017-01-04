@@ -713,6 +713,11 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.isToggle = true;
 		 * button.isSelected = true;</listing>
+		 * 
+		 * <p><strong>Warning:</strong> Do not listen to
+		 * <code>Event.TRIGGERED</code> to be notified when the
+		 * <code>isSelected</code> property changes. You must listen to
+		 * <code>Event.CHANGE</code>.</p>
 		 *
 		 * @default false
 		 *
