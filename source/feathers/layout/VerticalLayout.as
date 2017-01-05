@@ -950,6 +950,39 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _headerScrollPositionVerticalAlign:String = VerticalAlign.TOP;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * When the scroll position is calculated for a header (specified by a
+		 * <code>GroupedList</code> or another component with the
+		 * <code>headerIndicies</code> property, an attempt will be made to
+		 * align the header to this position.
+		 *
+		 * @default feathers.layout.VerticalAlign.TOP
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see #headerIndices
+		 * @see #scrollPositionVerticalAlign
+		 */
+		public function get headerScrollPositionVerticalAlign():String
+		{
+			return this._headerScrollPositionVerticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerScrollPositionVerticalAlign(value:String):void
+		{
+			this._headerScrollPositionVerticalAlign = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get requiresLayoutOnScroll():Boolean
@@ -1985,11 +2018,17 @@ package feathers.layout
 			}
 			result.x = 0;
 
-			if(this._scrollPositionVerticalAlign == VerticalAlign.MIDDLE)
+			var verticalAlign:String = this._scrollPositionVerticalAlign;
+			if(this._headerIndices !== null &&
+				this._headerIndices.indexOf(index) !== -1)
+			{
+				verticalAlign = this._headerScrollPositionVerticalAlign;
+			}
+			if(verticalAlign === VerticalAlign.MIDDLE)
 			{
 				maxScrollY -= Math.round((scrollRange - itemHeight) / 2);
 			}
-			else if(this._scrollPositionVerticalAlign == VerticalAlign.BOTTOM)
+			else if(verticalAlign === VerticalAlign.BOTTOM)
 			{
 				maxScrollY -= (scrollRange - itemHeight);
 			}
@@ -2497,8 +2536,14 @@ package feathers.layout
 			}
 			positionY -= (lastHeight + gap);
 			result.x = positionY - height;
-			if(this._stickyHeader)
+			if(this._stickyHeader &&
+				this._headerIndices !== null &&
+				this._headerIndices.indexOf(index) === -1)
 			{
+				//if the headers are sticky, adjust the scroll range if we're
+				//scrolling to an item because the sticky header should not hide
+				//the item
+				//unlike items, though, headers have a full scroll range
 				positionY -= lastHeaderHeight;
 			}
 			result.y = positionY;
