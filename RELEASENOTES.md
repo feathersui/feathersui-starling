@@ -2,6 +2,10 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.1.2 - January 2017
+
+* FontStylesSet: Clones or copies properties from starling.text.TextFormat to avoid memory leak.
+
 ## 3.1.1 - November 2016
 
 * AnchorLayout: fixed issue where using percentWidth would result in an error about maxWidth being NaN.
