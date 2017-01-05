@@ -120,6 +120,22 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testAutoSizeContentWithoutContent():void
+		{
+			this._drawers.autoSizeMode = AutoSizeMode.CONTENT;
+			this._drawers.validate();
+
+			Assert.assertStrictlyEquals("The width of the Drawers was not calculated correctly based on empty content.",
+				0, this._drawers.width);
+			Assert.assertStrictlyEquals("The height of the Drawers was not calculated correctly based on empty content.",
+				0, this._drawers.height);
+			Assert.assertStrictlyEquals("The minWidth of the Drawers was not calculated correctly based on empty content.",
+				0, this._drawers.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the Drawers was not calculated correctly based on empty content.",
+				0, this._drawers.minHeight);
+		}
+
+		[Test]
 		public function testAutoSizeContent():void
 		{
 			this.addContent();
