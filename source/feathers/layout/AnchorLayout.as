@@ -16,6 +16,7 @@ package feathers.layout
 
 	import starling.display.DisplayObject;
 	import starling.events.EventDispatcher;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when a property of the layout changes, indicating that a
@@ -55,11 +56,6 @@ package feathers.layout
 		 * @private
 		 */
 		protected static const CIRCULAR_REFERENCE_ERROR:String = "It is impossible to create this layout due to a circular reference in the AnchorLayoutData.";
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -110,10 +106,11 @@ package feathers.layout
 			{
 				this.validateItems(items, explicitWidth, explicitHeight,
 					maxWidth, maxHeight, true);
-				this.measureViewPort(items, viewPortWidth, viewPortHeight, HELPER_POINT);
+				var point:Point = Pool.getPoint();
+				this.measureViewPort(items, viewPortWidth, viewPortHeight, point);
 				if(needsWidth)
 				{
-					viewPortWidth = HELPER_POINT.x;
+					viewPortWidth = point.x;
 					if(viewPortWidth < minWidth)
 					{
 						viewPortWidth = minWidth;
@@ -125,7 +122,7 @@ package feathers.layout
 				}
 				if(needsHeight)
 				{
-					viewPortHeight = HELPER_POINT.y;
+					viewPortHeight = point.y;
 					if(viewPortHeight < minHeight)
 					{
 						viewPortHeight = minHeight;
@@ -135,6 +132,7 @@ package feathers.layout
 						viewPortHeight = maxHeight;
 					}
 				}
+				Pool.putPoint(point);
 			}
 			else
 			{
@@ -144,16 +142,18 @@ package feathers.layout
 
 			this.layoutWithBounds(items, boundsX, boundsY, viewPortWidth, viewPortHeight);
 
-			this.measureContent(items, viewPortWidth, viewPortHeight, HELPER_POINT);
+			point = Pool.getPoint();
+			this.measureContent(items, viewPortWidth, viewPortHeight, point);
 
 			if(!result)
 			{
 				result = new LayoutBoundsResult();
 			}
-			result.contentWidth = HELPER_POINT.x;
-			result.contentHeight = HELPER_POINT.y;
+			result.contentWidth = point.x;
+			result.contentHeight = point.y;
 			result.viewPortWidth = viewPortWidth;
 			result.viewPortHeight = viewPortHeight;
+			Pool.putPoint(point);
 			return result;
 		}
 
@@ -182,15 +182,15 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function measureViewPort(items:Vector.<DisplayObject>, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
+		protected function measureViewPort(items:Vector.<DisplayObject>,
+			viewPortWidth:Number, viewPortHeight:Number, result:Point):Point
 		{
 			this._helperVector1.length = 0;
 			this._helperVector2.length = 0;
-			HELPER_POINT.x = 0;
-			HELPER_POINT.y = 0;
+			result.setTo(0, 0);
 			var mainVector:Vector.<DisplayObject> = items;
 			var otherVector:Vector.<DisplayObject> = this._helperVector1;
-			this.measureVector(items, otherVector, HELPER_POINT);
+			this.measureVector(items, otherVector, result);
 			var currentLength:Number = otherVector.length;
 			while(currentLength > 0)
 			{
@@ -204,7 +204,7 @@ package feathers.layout
 					mainVector = this._helperVector2;
 					otherVector = this._helperVector1;
 				}
-				this.measureVector(mainVector, otherVector, HELPER_POINT);
+				this.measureVector(mainVector, otherVector, result);
 				var oldLength:Number = currentLength;
 				currentLength = otherVector.length;
 				if(oldLength == currentLength)
@@ -216,11 +216,6 @@ package feathers.layout
 			}
 			this._helperVector1.length = 0;
 			this._helperVector2.length = 0;
-
-			if(!result)
-			{
-				result = HELPER_POINT.clone();
-			}
 			return result;
 		}
 
@@ -701,6 +696,11 @@ package feathers.layout
 				{
 					itemWidth = viewPortWidth;
 				}
+				if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+					uiItem.explicitMaxWidth < itemWidth)
+				{
+					itemWidth = uiItem.explicitMaxWidth;
+				}
 				item.width = itemWidth;
 			}
 			var left:Number = layoutData.left;
@@ -735,7 +735,13 @@ package feathers.layout
 					{
 						leftRightWidth -= (leftAnchorDisplayObject.x - leftAnchorDisplayObject.pivotX + leftAnchorDisplayObject.width);
 					}
-					item.width = leftRightWidth - right - left;
+					itemWidth = leftRightWidth - right - left;
+					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+						uiItem.explicitMaxWidth < itemWidth)
+					{
+						itemWidth = uiItem.explicitMaxWidth;
+					}
+					item.width = itemWidth;
 				}
 				else if(hasHorizontalCenterPosition)
 				{
@@ -758,7 +764,13 @@ package feathers.layout
 					{
 						xPositionOfRight = viewPortWidth - right;
 					}
-					item.width = 2 * (xPositionOfRight - xPositionOfCenter);
+					itemWidth = 2 * (xPositionOfRight - xPositionOfCenter);
+					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+						uiItem.explicitMaxWidth < itemWidth)
+					{
+						itemWidth = uiItem.explicitMaxWidth;
+					}
+					item.width = itemWidth;
 					item.x = item.pivotX + viewPortWidth - right - item.width;
 				}
 				else
@@ -787,7 +799,13 @@ package feathers.layout
 
 				if(hasLeftPosition)
 				{
-					item.width = 2 * (xPositionOfCenter - item.x + item.pivotX);
+					itemWidth = 2 * (xPositionOfCenter - item.x + item.pivotX);
+					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+						uiItem.explicitMaxWidth < itemWidth)
+					{
+						itemWidth = uiItem.explicitMaxWidth;
+					}
+					item.width = itemWidth;
 				}
 				else
 				{
@@ -831,6 +849,11 @@ package feathers.layout
 				{
 					itemHeight = viewPortHeight;
 				}
+				if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+					uiItem.explicitMaxHeight < itemHeight)
+				{
+					itemHeight = uiItem.explicitMaxHeight;
+				}
 				item.height = itemHeight;
 			}
 			var top:Number = layoutData.top;
@@ -865,7 +888,13 @@ package feathers.layout
 					{
 						topBottomHeight -= (topAnchorDisplayObject.y - topAnchorDisplayObject.pivotY + topAnchorDisplayObject.height);
 					}
-					item.height = topBottomHeight - bottom - top;
+					itemHeight = topBottomHeight - bottom - top;
+					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+						uiItem.explicitMaxHeight < itemHeight)
+					{
+						itemHeight = uiItem.explicitMaxHeight;
+					}
+					item.height = itemHeight;
 				}
 				else if(hasVerticalCenterPosition)
 				{
@@ -888,7 +917,13 @@ package feathers.layout
 					{
 						yPositionOfBottom = viewPortHeight - bottom;
 					}
-					item.height = 2 * (yPositionOfBottom - yPositionOfCenter);
+					itemHeight = 2 * (yPositionOfBottom - yPositionOfCenter);
+					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+						uiItem.explicitMaxHeight < itemHeight)
+					{
+						itemHeight = uiItem.explicitMaxHeight;
+					}
+					item.height = itemHeight;
 					item.y = item.pivotY + viewPortHeight - bottom - item.height;
 				}
 				else
@@ -917,7 +952,13 @@ package feathers.layout
 
 				if(hasTopPosition)
 				{
-					item.height = 2 * (yPositionOfCenter - item.y + item.pivotY);
+					itemHeight = 2 * (yPositionOfCenter - item.y + item.pivotY);
+					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+						uiItem.explicitMaxHeight < itemHeight)
+					{
+						itemHeight = uiItem.explicitMaxHeight;
+					}
+					item.height = itemHeight;
 				}
 				else
 				{
@@ -1063,9 +1104,9 @@ package feathers.layout
 						var hasRightPosition:Boolean = right === right; //!isNaN
 						var percentWidth:Number = layoutData.percentWidth;
 						var hasPercentWidth:Boolean = percentWidth === percentWidth; //!isNaN
+						var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 						if(needsWidth)
 						{
-							var measureItem:IMeasureDisplayObject = IMeasureDisplayObject(item);
 							if(hasLeftPosition && leftAnchor === null &&
 								hasRightPosition && rightAnchor === null)
 							{
@@ -1094,7 +1135,13 @@ package feathers.layout
 							if(hasLeftPosition && leftAnchor === null &&
 								hasRightPosition && rightAnchor === null)
 							{
-								item.width = containerWidth - left - right;
+								var itemWidth:Number = containerWidth - left - right;
+								if(measureItem.explicitMaxWidth === measureItem.explicitMaxWidth &&
+									measureItem.explicitMaxWidth < itemWidth)
+								{
+									itemWidth = measureItem.explicitMaxWidth;
+								}
+								item.width = itemWidth;
 							}
 							else if(hasPercentWidth)
 							{
@@ -1106,7 +1153,13 @@ package feathers.layout
 								{
 									percentWidth = 100;
 								}
-								item.width = percentWidth * 0.01 * containerWidth;
+								itemWidth = percentWidth * 0.01 * containerWidth;
+								if(measureItem.explicitMaxWidth === measureItem.explicitMaxWidth &&
+									measureItem.explicitMaxWidth < itemWidth)
+								{
+									itemWidth = measureItem.explicitMaxWidth;
+								}
+								item.width = itemWidth;
 							}
 						}
 						var horizontalCenter:Number = layoutData.horizontalCenter;
@@ -1128,7 +1181,13 @@ package feathers.layout
 							if(hasTopPosition && topAnchor === null &&
 								hasBottomPosition && bottomAnchor === null)
 							{
-								item.height = containerHeight - top - bottom;
+								var itemHeight:Number = containerHeight - top - bottom; 
+								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight &&
+									measureItem.explicitMaxHeight < itemHeight)
+								{
+									itemHeight = measureItem.explicitMaxHeight;
+								}
+								item.height = itemHeight;
 							}
 							else if(hasPercentHeight)
 							{
@@ -1140,7 +1199,13 @@ package feathers.layout
 								{
 									percentHeight = 100;
 								}
-								item.height = percentHeight * 0.01 * containerHeight; 
+								itemHeight = percentHeight * 0.01 * containerHeight;
+								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight &&
+									measureItem.explicitMaxHeight < itemHeight)
+								{
+									itemHeight = measureItem.explicitMaxHeight;
+								}
+								item.height = itemHeight;
 							}
 						}
 						var verticalCenter:Number = layoutData.verticalCenter;
