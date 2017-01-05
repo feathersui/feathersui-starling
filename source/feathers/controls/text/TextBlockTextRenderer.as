@@ -1398,11 +1398,6 @@ package feathers.controls.text
 						}
 						snapshot.x = xPosition / scaleFactor;
 						snapshot.y = yPosition / scaleFactor;
-						if(this._updateSnapshotOnScaleChange)
-						{
-							snapshot.x /= this._lastGlobalScaleX;
-							snapshot.y /= this._lastGlobalScaleX;
-						}
 						snapshotIndex++;
 						yPosition += currentBitmapHeight;
 						totalBitmapHeight -= currentBitmapHeight;
@@ -2175,8 +2170,10 @@ package feathers.controls.text
 					{
 						snapshot.scaleX = 1 / globalScaleX;
 						snapshot.scaleY = 1 / globalScaleY;
-						snapshot.x /= globalScaleX;
-						snapshot.y /= globalScaleY;
+					}
+					else
+					{
+						snapshot.scale = 1;
 					}
 					snapshotIndex++;
 					yPosition += currentBitmapHeight;
