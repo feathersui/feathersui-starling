@@ -282,8 +282,8 @@ package feathers.data
 		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
 		 * 
 		 * <p>Alternatively, the item can dispatch an event when one of its
-		 * properties has changed, and item renderers can listen for that event
-		 * and update themselves automatically.</p>
+		 * properties has changed, and  a custom item renderer can listen for
+		 * that event and update itself automatically.</p>
 		 * 
 		 * @see #updateAll()
 		 */
@@ -301,8 +301,8 @@ package feathers.data
 		 * <code>CollectionEventType.UPDATE_ALL</code> event.
 		 *
 		 * <p>Alternatively, the item can dispatch an event when one of its
-		 * properties has changed, and item renderers can listen for that event
-		 * and update themselves automatically.</p>
+		 * properties has changed, and  a custom item renderer can listen for
+		 * that event and update itself automatically.</p>
 		 *
 		 * @see #updateItemAt()
 		 */
