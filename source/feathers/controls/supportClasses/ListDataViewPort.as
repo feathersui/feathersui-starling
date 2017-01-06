@@ -1490,6 +1490,9 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
+			//in order to display the same item with modified properties, this
+			//hack tricks the item renderer into thinking that it has been given
+			//a different item to render.
 			renderer.data = null;
 			renderer.data = item;
 			if(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
@@ -1502,22 +1505,19 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_updateAllHandler(event:Event):void
 		{
-			for(var item:Object in this._rendererMap)
+			//we're treating this similar to the RESET event because enough
+			//users are treating UPDATE_ALL similarly. technically, UPDATE_ALL
+			//is supposed to affect only existing items, but it's confusing when
+			//new items are added and not displayed.
+			this._updateForDataReset = true;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
 			{
-				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(renderer === null)
-				{
-					continue;
-				}
-				renderer.data = null;
-				renderer.data = item;
+				return;
 			}
-			if(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
-				this.explicitVisibleHeight !== this.explicitVisibleHeight)
-			{
-				this.invalidate(INVALIDATION_FLAG_SIZE);
-				this.invalidateParent(INVALIDATION_FLAG_SIZE);
-			}
+			layout.resetVariableVirtualCache();
 		}
 
 		private function layout_changeHandler(event:Event):void

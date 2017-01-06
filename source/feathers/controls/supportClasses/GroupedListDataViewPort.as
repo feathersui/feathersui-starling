@@ -2750,6 +2750,9 @@ package feathers.controls.supportClasses
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 				if(itemRenderer !== null)
 				{
+					//in order to display the same item with modified properties, this
+					//hack tricks the item renderer into thinking that it has been given
+					//a different item to render.
 					itemRenderer.data = null;
 					itemRenderer.data = item;
 					if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
@@ -2814,36 +2817,19 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_updateAllHandler(event:Event):void
 		{
-			for(var item:Object in this._itemRendererMap)
+			//we're treating this similar to the RESET event because enough
+			//users are treating UPDATE_ALL similarly. technically, UPDATE_ALL
+			//is supposed to affect only existing items, but it's confusing when
+			//new items are added and not displayed.
+			this._updateForDataReset = true;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
 			{
-				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-				if(itemRenderer === null)
-				{
-					continue;
-				}
-				itemRenderer.data = null;
-				itemRenderer.data = item;
+				return;
 			}
-			for(var header:Object in this._headerRendererMap)
-			{
-				var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
-				if(headerRenderer === null)
-				{
-					continue;
-				}
-				headerRenderer.data = null;
-				headerRenderer.data = header;
-			}
-			for(var footer:Object in this._footerRendererMap)
-			{
-				var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
-				if(footerRenderer === null)
-				{
-					continue;
-				}
-				footerRenderer.data = null;
-				footerRenderer.data = footer;
-			}
+			layout.resetVariableVirtualCache();
 		}
 
 		private function layout_changeHandler(event:Event):void
