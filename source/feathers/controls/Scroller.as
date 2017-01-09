@@ -3462,6 +3462,39 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _topPullViewDisplayMode:String = PullViewDisplayMode.DRAG;
+
+		/**
+		 * Indicates whether the top pull view may be dragged with the content,
+		 * or if its position is fixed to the edge of the scroller.
+		 *
+		 * @default feathers.controls.PullViewDisplayMode.DRAG
+		 *
+		 * @see feathers.controls.PullViewDisplayMode#DRAG
+		 * @see feathers.controls.PullViewDisplayMode#FIXED
+		 * @see #topPullView
+		 */
+		public function get topPullViewDisplayMode():String
+		{
+			return this._topPullViewDisplayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set topPullViewDisplayMode(value:String):void
+		{
+			if(this._topPullViewDisplayMode === value)
+			{
+				return;
+			}
+			this._topPullViewDisplayMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isRightPullActive:Boolean = false;
 
 		/**
@@ -3536,6 +3569,39 @@ package feathers.controls
 		public function set rightPullEventType(value:String):void
 		{
 			this._rightPullEventType = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _rightPullViewDisplayMode:String = PullViewDisplayMode.DRAG;
+
+		/**
+		 * Indicates whether the right pull view may be dragged with the
+		 * content, or if its position is fixed to the edge of the scroller.
+		 *
+		 * @default feathers.controls.PullViewDisplayMode.DRAG
+		 *
+		 * @see feathers.controls.PullViewDisplayMode#DRAG
+		 * @see feathers.controls.PullViewDisplayMode#FIXED
+		 * @see #rightPullView
+		 */
+		public function get rightPullViewDisplayMode():String
+		{
+			return this._rightPullViewDisplayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set rightPullViewDisplayMode(value:String):void
+		{
+			if(this._rightPullViewDisplayMode === value)
+			{
+				return;
+			}
+			this._rightPullViewDisplayMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -3620,6 +3686,39 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _bottomPullViewDisplayMode:String = PullViewDisplayMode.DRAG;
+
+		/**
+		 * Indicates whether the bottom pull view may be dragged with the
+		 * content, or if its position is fixed to the edge of the scroller.
+		 *
+		 * @default feathers.controls.PullViewDisplayMode.DRAG
+		 *
+		 * @see feathers.controls.PullViewDisplayMode#DRAG
+		 * @see feathers.controls.PullViewDisplayMode#FIXED
+		 * @see #bottomPullView
+		 */
+		public function get bottomPullViewDisplayMode():String
+		{
+			return this._bottomPullViewDisplayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set bottomPullViewDisplayMode(value:String):void
+		{
+			if(this._bottomPullViewDisplayMode === value)
+			{
+				return;
+			}
+			this._bottomPullViewDisplayMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isLeftPullActive:Boolean = false;
 
 		/**
@@ -3694,6 +3793,39 @@ package feathers.controls
 		public function set leftPullEventType(value:String):void
 		{
 			this._leftPullEventType = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _leftPullViewDisplayMode:String = PullViewDisplayMode.DRAG;
+
+		/**
+		 * Indicates whether the left pull view may be dragged with the content,
+		 * or if its position is fixed to the edge of the scroller.
+		 *
+		 * @default feathers.controls.PullViewDisplayMode.DRAG
+		 *
+		 * @see feathers.controls.PullViewDisplayMode#DRAG
+		 * @see feathers.controls.PullViewDisplayMode#FIXED
+		 * @see #leftPullView
+		 */
+		public function get leftPullViewDisplayMode():String
+		{
+			return this._leftPullViewDisplayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set leftPullViewDisplayMode(value:String):void
+		{
+			if(this._leftPullViewDisplayMode === value)
+			{
+				return;
+			}
+			this._leftPullViewDisplayMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -5228,6 +5360,7 @@ package feathers.controls
 		 */
 		protected function layoutPullViews():void
 		{
+			var viewPortIndex:int = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
 			if(this._topPullView !== null)
 			{
 				if(this._topPullView is IValidating)
@@ -5257,7 +5390,14 @@ package feathers.controls
 					}
 					if(topPullViewOffset < 0)
 					{
-						this._topPullView.y = this._topViewPortOffset - topPullViewHeight - topPullViewOffset;
+						if(this._topPullViewDisplayMode === PullViewDisplayMode.FIXED)
+						{
+							this._topPullView.y = this._topViewPortOffset;
+						}
+						else
+						{
+							this._topPullView.y = this._topViewPortOffset - topPullViewHeight - topPullViewOffset;
+						}
 						this._topPullView.visible = true;
 						this.refreshTopPullViewMask();
 					}
@@ -5266,8 +5406,28 @@ package feathers.controls
 						this._topPullView.visible = false;
 					}
 				}
-				var index:int = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
-				this.setRawChildIndexInternal(this._topPullView, index + 1);
+				var pullViewIndex:int = this.getRawChildIndexInternal(this._topPullView);
+				if(this._topPullViewDisplayMode === PullViewDisplayMode.FIXED &&
+					this._hasElasticEdges)
+				{
+					//if fixed and elastic, the pull view should appear below
+					//the view port
+					if(viewPortIndex < pullViewIndex)
+					{
+						this.setRawChildIndexInternal(this._topPullView, viewPortIndex);
+						viewPortIndex++;
+					}
+				}
+				else
+				{
+					//otherwise, it should appear above
+					if(viewPortIndex > pullViewIndex)
+					{
+						this.removeRawChildInternal(this._topPullView);
+						this.addRawChildAtInternal(this._topPullView, viewPortIndex);
+						viewPortIndex--;
+					}
+				}
 			}
 			if(this._rightPullView !== null)
 			{
@@ -5297,7 +5457,14 @@ package feathers.controls
 					}
 					if(rightPullViewOffset > 0)
 					{
-						this._rightPullView.x = this.actualWidth - this._rightViewPortOffset - rightPullViewOffset;
+						if(this._rightPullViewDisplayMode === PullViewDisplayMode.FIXED)
+						{
+							this._rightPullView.x = this.actualWidth - this._rightViewPortOffset - this._rightPullView.width;
+						}
+						else
+						{
+							this._rightPullView.x = this.actualWidth - this._rightViewPortOffset - rightPullViewOffset;
+						}
 						this._rightPullView.visible = true;
 						this.refreshRightPullViewMask();
 					}
@@ -5306,8 +5473,28 @@ package feathers.controls
 						this._rightPullView.visible = false;
 					}
 				}
-				index = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
-				this.setRawChildIndexInternal(this._rightPullView, index + 1);
+				pullViewIndex = this.getRawChildIndexInternal(this._rightPullView);
+				if(this._rightPullViewDisplayMode === PullViewDisplayMode.FIXED &&
+					this._hasElasticEdges)
+				{
+					//if fixed and elastic, the pull view should appear below
+					//the view port
+					if(viewPortIndex < pullViewIndex)
+					{
+						this.setRawChildIndexInternal(this._rightPullView, viewPortIndex);
+						viewPortIndex++;
+					}
+				}
+				else
+				{
+					//otherwise, it should appear above
+					if(viewPortIndex > pullViewIndex)
+					{
+						this.removeRawChildInternal(this._rightPullView);
+						this.addRawChildAtInternal(this._rightPullView, viewPortIndex);
+						viewPortIndex--;
+					}
+				}
 			}
 			if(this._bottomPullView !== null)
 			{
@@ -5337,7 +5524,14 @@ package feathers.controls
 					}
 					if(bottomPullViewOffset > 0)
 					{
-						this._bottomPullView.y = this.actualHeight - this._bottomViewPortOffset - bottomPullViewOffset;
+						if(this._bottomPullViewDisplayMode === PullViewDisplayMode.FIXED)
+						{
+							this._bottomPullView.y = this.actualHeight - this._bottomViewPortOffset - this._bottomPullView.height;
+						}
+						else
+						{
+							this._bottomPullView.y = this.actualHeight - this._bottomViewPortOffset - bottomPullViewOffset;
+						}
 						this._bottomPullView.visible = true;
 						this.refreshBottomPullViewMask();
 					}
@@ -5346,8 +5540,28 @@ package feathers.controls
 						this._bottomPullView.visible = false;
 					}
 				}
-				index = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
-				this.setRawChildIndexInternal(this._bottomPullView, index + 1);
+				pullViewIndex = this.getRawChildIndexInternal(this._bottomPullView);
+				if(this._bottomPullViewDisplayMode === PullViewDisplayMode.FIXED &&
+					this._hasElasticEdges)
+				{
+					//if fixed and elastic, the pull view should appear below
+					//the view port
+					if(viewPortIndex < pullViewIndex)
+					{
+						this.setRawChildIndexInternal(this._bottomPullView, viewPortIndex);
+						viewPortIndex++;
+					}
+				}
+				else
+				{
+					//otherwise, it should appear above
+					if(viewPortIndex > pullViewIndex)
+					{
+						this.removeRawChildInternal(this._bottomPullView);
+						this.addRawChildAtInternal(this._bottomPullView, viewPortIndex);
+						viewPortIndex--;
+					}
+				}
 			}
 			if(this._leftPullView !== null)
 			{
@@ -5378,7 +5592,14 @@ package feathers.controls
 					}
 					if(leftPullViewOffset < 0)
 					{
-						this._leftPullView.x = this._leftViewPortOffset - leftPullViewWidth - leftPullViewOffset;
+						if(this._leftPullViewDisplayMode === PullViewDisplayMode.FIXED)
+						{
+							this._leftPullView.x = this._leftViewPortOffset;
+						}
+						else
+						{
+							this._leftPullView.x = this._leftViewPortOffset - leftPullViewWidth - leftPullViewOffset;
+						}
 						this._leftPullView.visible = true;
 						this.refreshLeftPullViewMask();
 					}
@@ -5387,8 +5608,26 @@ package feathers.controls
 						this._leftPullView.visible = false;
 					}
 				}
-				index = this.getRawChildIndexInternal(DisplayObject(this._viewPort));
-				this.setRawChildIndexInternal(this._leftPullView, index + 1);
+				pullViewIndex = this.getRawChildIndexInternal(this._leftPullView);
+				if(this._leftPullViewDisplayMode === PullViewDisplayMode.FIXED &&
+					this._hasElasticEdges)
+				{
+					//if fixed and elastic, the pull view should appear below
+					//the view port
+					if(viewPortIndex < pullViewIndex)
+					{
+						this.setRawChildIndexInternal(this._leftPullView, viewPortIndex);
+					}
+				}
+				else
+				{
+					//otherwise, it should appear above
+					if(viewPortIndex > pullViewIndex)
+					{
+						this.removeRawChildInternal(this._leftPullView);
+						this.addRawChildAtInternal(this._leftPullView, viewPortIndex);
+					}
+				}
 			}
 		}
 
@@ -5397,9 +5636,9 @@ package feathers.controls
 		 */
 		protected function refreshTopPullViewMask():void
 		{
-			var pullViewHeight:Number = this._topPullView.height;
+			var pullViewHeight:Number = this._topPullView.height / this._topPullView.scaleY;
 			var mask:DisplayObject = this._topPullView.mask;
-			var maskHeight:Number = pullViewHeight + this._topPullView.y;
+			var maskHeight:Number = pullViewHeight + (this._topPullView.y / this._topPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -5408,7 +5647,7 @@ package feathers.controls
 			{
 				maskHeight = pullViewHeight;
 			}
-			mask.width = this._topPullView.width;
+			mask.width = this._topPullView.width / this._topPullView.scaleX;
 			mask.height = maskHeight;
 			mask.x = 0;
 			mask.y = pullViewHeight - maskHeight;
@@ -5419,9 +5658,9 @@ package feathers.controls
 		 */
 		protected function refreshRightPullViewMask():void
 		{
-			var pullViewWidth:Number = this._rightPullView.width;
+			var pullViewWidth:Number = this._rightPullView.width / this._rightPullView.scaleX;
 			var mask:DisplayObject = this._rightPullView.mask;
-			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - this._rightPullView.x;
+			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - (this._rightPullView.x / this._rightPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
@@ -5431,7 +5670,7 @@ package feathers.controls
 				maskWidth = pullViewWidth;
 			}
 			mask.width = maskWidth;
-			mask.height = this._rightPullView.height;
+			mask.height = this._rightPullView.height / this._rightPullView.scaleY;
 			mask.x = 0;
 			mask.y = 0;
 		}
@@ -5441,9 +5680,9 @@ package feathers.controls
 		 */
 		protected function refreshBottomPullViewMask():void
 		{
-			var pullViewHeight:Number = this._bottomPullView.height;
+			var pullViewHeight:Number = this._bottomPullView.height / this._bottomPullView.scaleY;
 			var mask:DisplayObject = this._bottomPullView.mask;
-			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - this._bottomPullView.y;
+			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - (this._bottomPullView.y / this._bottomPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -5452,7 +5691,7 @@ package feathers.controls
 			{
 				maskHeight = pullViewHeight;
 			}
-			mask.width = this._bottomPullView.width;
+			mask.width = this._bottomPullView.width / this._bottomPullView.scaleX;
 			mask.height = maskHeight;
 			mask.x = 0;
 			mask.y = 0;
@@ -5463,9 +5702,9 @@ package feathers.controls
 		 */
 		protected function refreshLeftPullViewMask():void
 		{
-			var pullViewWidth:Number = this._leftPullView.width;
+			var pullViewWidth:Number = this._leftPullView.width / this._leftPullView.scaleX;
 			var mask:DisplayObject = this._leftPullView.mask;
-			var maskWidth:Number = pullViewWidth + this._leftPullView.x;
+			var maskWidth:Number = pullViewWidth + (this._leftPullView.x / this._leftPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
@@ -5475,7 +5714,7 @@ package feathers.controls
 				maskWidth = pullViewWidth;
 			}
 			mask.width = maskWidth;
-			mask.height = this._leftPullView.height;
+			mask.height = this._leftPullView.height / this._leftPullView.scaleY;
 			mask.x = pullViewWidth - maskWidth;
 			mask.y = 0;
 		}
@@ -6027,18 +6266,25 @@ package feathers.controls
 					Starling.juggler.remove(this._topPullTween);
 					this._topPullTween = null;
 				}
-				var yPosition:Number = this._topViewPortOffset;
-				if(!this._isTopPullActive)
+				if(this._topPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
-					yPosition -= this._topPullView.height;
+					var yPosition:Number = this._topViewPortOffset;
+					if(!this._isTopPullActive)
+					{
+						yPosition -= this._topPullView.height;
+					}
+					if(this._topPullView.y !== yPosition)
+					{
+						this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
+						this._topPullTween.animate("y", yPosition);
+						this._topPullTween.onUpdate = this.refreshTopPullViewMask;
+						this._topPullTween.onComplete = this.topPullTween_onComplete;
+						Starling.juggler.add(this._topPullTween);
+					}
 				}
-				if(this._topPullView.y !== yPosition)
+				else
 				{
-					this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
-					this._topPullTween.animate("y", yPosition);
-					this._topPullTween.onUpdate = this.refreshTopPullViewMask;
-					this._topPullTween.onComplete = topPullTween_onComplete;
-					Starling.juggler.add(this._topPullTween);
+					this.topPullTween_onComplete();
 				}
 			}
 			if(this._bottomPullView !== null &&
@@ -6049,18 +6295,25 @@ package feathers.controls
 					Starling.juggler.remove(this._bottomPullTween);
 					this._bottomPullTween = null;
 				}
-				yPosition = this.actualHeight - this._bottomViewPortOffset;
-				if(this._isBottomPullActive)
+				if(this._bottomPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
-					yPosition -= this._bottomPullView.height;
+					yPosition = this.actualHeight - this._bottomViewPortOffset;
+					if(this._isBottomPullActive)
+					{
+						yPosition -= this._bottomPullView.height;
+					}
+					if(this._bottomPullView.y !== yPosition)
+					{
+						this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
+						this._bottomPullTween.animate("y", yPosition);
+						this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
+						this._bottomPullTween.onComplete = this.bottomPullTween_onComplete;
+						Starling.juggler.add(this._bottomPullTween);
+					}
 				}
-				if(this._bottomPullView.y !== yPosition)
+				else
 				{
-					this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
-					this._bottomPullTween.animate("y", yPosition);
-					this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
-					this._bottomPullTween.onComplete = bottomPullTween_onComplete;
-					Starling.juggler.add(this._bottomPullTween);
+					this.bottomPullTween_onComplete();
 				}
 			}
 		}
@@ -6078,18 +6331,25 @@ package feathers.controls
 					Starling.juggler.remove(this._leftPullTween);
 					this._leftPullTween = null;
 				}
-				var xPosition:Number = this._leftViewPortOffset;
-				if(!this._isLeftPullActive)
+				if(this._leftPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
-					xPosition -= this._leftPullView.width;
+					var xPosition:Number = this._leftViewPortOffset;
+					if(!this._isLeftPullActive)
+					{
+						xPosition -= this._leftPullView.width;
+					}
+					if(this._leftPullView.x !== xPosition)
+					{
+						this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
+						this._leftPullTween.animate("x", xPosition);
+						this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
+						this._leftPullTween.onComplete = this.leftPullTween_onComplete;
+						Starling.juggler.add(this._leftPullTween);
+					}
 				}
-				if(this._leftPullView.x !== xPosition)
+				else
 				{
-					this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
-					this._leftPullTween.animate("x", xPosition);
-					this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
-					this._leftPullTween.onComplete = leftPullTween_onComplete;
-					Starling.juggler.add(this._leftPullTween);
+					this.leftPullTween_onComplete();
 				}
 			}
 			if(this._rightPullView !== null &&
@@ -6100,18 +6360,25 @@ package feathers.controls
 					Starling.juggler.remove(this._rightPullTween);
 					this._rightPullTween = null;
 				}
-				xPosition = this.actualWidth - this._rightViewPortOffset;
-				if(this._isRightPullActive)
+				if(this._rightPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
-					xPosition -= this._rightPullView.width;
+					xPosition = this.actualWidth - this._rightViewPortOffset;
+					if(this._isRightPullActive)
+					{
+						xPosition -= this._rightPullView.width;
+					}
+					if(this._rightPullView.x !== xPosition)
+					{
+						this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
+						this._rightPullTween.animate("x", xPosition);
+						this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
+						this._rightPullTween.onComplete = this.rightPullTween_onComplete;
+						Starling.juggler.add(this._rightPullTween);
+					}
 				}
-				if(this._rightPullView.x !== xPosition)
+				else
 				{
-					this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
-					this._rightPullTween.animate("x", xPosition);
-					this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
-					this._rightPullTween.onComplete = rightPullTween_onComplete;
-					Starling.juggler.add(this._rightPullTween);
+					this.rightPullTween_onComplete();
 				}
 			}
 		}
