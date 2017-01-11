@@ -3386,7 +3386,7 @@ package feathers.controls
 		 *
 		 * <strong>Events</strong>
 		 * 
-		 * <p>The scroller will dispatch code>FeathersEventType.PULLING</code>
+		 * <p>The scroller will dispatch <code>FeathersEventType.PULLING</code>
 		 * on the pull view as it is dragged into view. The event's
 		 * <code>data</code> property will be a value between <code>0</code> and
 		 * <code>1</code> to indicate how far the pull view has been dragged so
@@ -3513,7 +3513,7 @@ package feathers.controls
 		 *
 		 * <strong>Events</strong>
 		 *
-		 * <p>The scroller will dispatch code>FeathersEventType.PULLING</code>
+		 * <p>The scroller will dispatch <code>FeathersEventType.PULLING</code>
 		 * on the pull view as it is dragged into view. The event's
 		 * <code>data</code> property will be a value between <code>0</code> and
 		 * <code>1</code> to indicate how far the pull view has been dragged so
@@ -3640,7 +3640,7 @@ package feathers.controls
 		 *
 		 * <strong>Events</strong>
 		 *
-		 * <p>The scroller will dispatch code>FeathersEventType.PULLING</code>
+		 * <p>The scroller will dispatch <code>FeathersEventType.PULLING</code>
 		 * on the pull view as it is dragged into view. The event's
 		 * <code>data</code> property will be a value between <code>0</code> and
 		 * <code>1</code> to indicate how far the pull view has been dragged so
@@ -3767,7 +3767,7 @@ package feathers.controls
 		 *
 		 * <strong>Events</strong>
 		 *
-		 * <p>The scroller will dispatch code>FeathersEventType.PULLING</code>
+		 * <p>The scroller will dispatch <code>FeathersEventType.PULLING</code>
 		 * on the pull view as it is dragged into view. The event's
 		 * <code>data</code> property will be a value between <code>0</code> and
 		 * <code>1</code> to indicate how far the pull view has been dragged so
