@@ -31,6 +31,7 @@ package feathers.controls.text
 	import flash.text.engine.FontLookup;
 	import flash.text.engine.FontPosture;
 	import flash.text.engine.FontWeight;
+	import flash.text.engine.Kerning;
 	import flash.text.engine.SpaceJustifier;
 	import flash.text.engine.TabStop;
 	import flash.text.engine.TextBaseline;
@@ -625,17 +626,27 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _leading:Number = 0;
+		protected var _currentLeading:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _leading:Number = NaN;
 
 		/**
 		 * The amount of vertical space, in pixels, between lines.
+		 *
+		 * <p>If <code>leading</code> is <code>NaN</code> the leading from the
+		 * <code>starling.text.TextFormat</code> font styles may be used. If no
+		 * <code>starling.text.TextFormat</code> font styles have been provided
+		 * by the parent component, the leading will default to <code>0</code>.</p>
 		 *
 		 * <p>In the following example, the leading is changed to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.leading = 20;</listing>
 		 *
-		 * @default 0
+		 * @default NaN
 		 */
 		public function get leading():Number
 		{
@@ -1875,10 +1886,17 @@ package feathers.controls.text
 			{
 				//if using ElementFormat, vertical align is always top
 				this._currentVerticalAlign = Align.TOP;
+				//these are defaults in case textAlign and leading are not set
+				this._currentHorizontalAlign = Align.CENTER;
+				this._currentLeading = 0;
 			}
 			if(this._textAlign !== null)
 			{
 				this._currentHorizontalAlign = this._textAlign;
+			}
+			if(this._leading === this._leading) //!isNaN
+			{
+				this._currentLeading = this._leading;
 			}
 			if(this._textElement === null)
 			{
@@ -1924,6 +1942,15 @@ package feathers.controls.text
 					var fontDescription:FontDescription =
 						new FontDescription(textFormat.font, fontWeight, fontPosture, fontLookup);
 					this._fontStylesElementFormat = new ElementFormat(fontDescription, textFormat.size, textFormat.color);
+					if(textFormat.kerning)
+					{
+						this._fontStylesElementFormat.kerning = Kerning.ON;
+					}
+					else
+					{
+						this._fontStylesElementFormat.kerning = Kerning.OFF;
+					}
+					this._currentLeading = textFormat.leading;
 					this._currentVerticalAlign = textFormat.verticalAlign;
 					this._currentHorizontalAlign = textFormat.horizontalAlign;
 				}
@@ -1931,6 +1958,7 @@ package feathers.controls.text
 				{
 					//fallback to a default so that something is displayed
 					this._fontStylesElementFormat = new ElementFormat();
+					this._currentLeading = 0;
 					this._currentVerticalAlign = Align.TOP;
 					this._currentHorizontalAlign = Align.LEFT;
 				}
@@ -2360,7 +2388,7 @@ package feathers.controls.text
 					}
 					if(pushIndex > 0)
 					{
-						yPosition += this._leading;
+						yPosition += this._currentLeading;
 					}
 
 					if(line.width > maxLineWidth)
