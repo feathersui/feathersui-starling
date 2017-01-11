@@ -5430,7 +5430,7 @@ package feathers.controls
 						var scrollRatio:Number = (this._minVerticalScrollPosition - this._verticalScrollPosition) / pullViewSize;
 						if(scrollRatio > finalRatio)
 						{
-							scrollRatio = finalRatio;
+							finalRatio = scrollRatio;
 						}
 					}
 					if(this._isTopPullActive && finalRatio < 1)
@@ -5497,7 +5497,11 @@ package feathers.controls
 					finalRatio = this._rightPullViewRatio;
 					if(this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
 					{
-						finalRatio = (this._horizontalScrollPosition - this._maxHorizontalScrollPosition) / pullViewSize;
+						scrollRatio = (this._horizontalScrollPosition - this._maxHorizontalScrollPosition) / pullViewSize;
+						if(scrollRatio > finalRatio)
+						{
+							finalRatio = scrollRatio;
+						}
 					}
 					if(this._isRightPullActive && finalRatio < 1)
 					{
@@ -5635,7 +5639,11 @@ package feathers.controls
 					{
 						//if the scroll position is less than the pull position,
 						//then prefer the scroll position
-						finalRatio = (this._minHorizontalScrollPosition - this._horizontalScrollPosition) / pullViewSize;
+						scrollRatio = (this._minHorizontalScrollPosition - this._horizontalScrollPosition) / pullViewSize;
+						if(scrollRatio > finalRatio)
+						{
+							finalRatio = scrollRatio;
+						}
 					}
 					if(this._isLeftPullActive && finalRatio < 1)
 					{
@@ -5923,7 +5931,7 @@ package feathers.controls
 						this.leftPullViewRatio = (adjustedMinScrollPosition - position) / this._leftPullView.width;
 					}
 				}
-				if(this._rightPullView !== null)
+				if(this._rightPullView !== null && !this._isRightPullActive)
 				{
 					this.rightPullViewRatio = 0;
 				}
@@ -5948,7 +5956,7 @@ package feathers.controls
 						this.rightPullViewRatio = (position - adjustedMaxScrollPosition) / this._rightPullView.width;
 					}
 				}
-				if(this._leftPullView !== null)
+				if(this._leftPullView !== null && !this._isLeftPullActive)
 				{
 					this.leftPullViewRatio = 0;
 				}
@@ -5960,11 +5968,11 @@ package feathers.controls
 			}
 			else
 			{
-				if(this._leftPullView !== null)
+				if(this._leftPullView !== null && !this._isLeftPullActive)
 				{
 					this.leftPullViewRatio = 0;
 				}
-				if(this._rightPullView !== null)
+				if(this._rightPullView !== null && !this._isRightPullActive)
 				{
 					this.rightPullViewRatio = 0;
 				}
@@ -6025,7 +6033,7 @@ package feathers.controls
 						this.topPullViewRatio = (adjustedMinScrollPosition - position) / this._topPullView.height;
 					}
 				}
-				if(this._bottomPullView !== null)
+				if(this._bottomPullView !== null && !this._isBottomPullActive)
 				{
 					this.bottomPullViewRatio = 0;
 				}
@@ -6050,7 +6058,7 @@ package feathers.controls
 						this.bottomPullViewRatio = (position - adjustedMaxScrollPosition) / this._bottomPullView.height
 					}
 				}
-				if(this._topPullView !== null)
+				if(this._topPullView !== null && !this._isTopPullActive)
 				{
 					this.topPullViewRatio = 0;
 				}
@@ -6062,11 +6070,11 @@ package feathers.controls
 			}
 			else
 			{
-				if(this._topPullView !== null)
+				if(this._topPullView !== null && !this._isTopPullActive)
 				{
 					this.topPullViewRatio = 0;
 				}
-				if(this._bottomPullView !== null)
+				if(this._bottomPullView !== null && !this._isBottomPullActive)
 				{
 					this.bottomPullViewRatio = 0;
 				}
