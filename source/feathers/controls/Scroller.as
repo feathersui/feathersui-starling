@@ -7839,6 +7839,26 @@ package feathers.controls
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
 			}
+			if(this._topPullTween)
+			{
+				Starling.juggler.remove(this._topPullTween);
+				this._topPullTween = null;
+			}
+			if(this._rightPullTween)
+			{
+				Starling.juggler.remove(this._rightPullTween);
+				this._rightPullTween = null;
+			}
+			if(this._bottomPullTween)
+			{
+				Starling.juggler.remove(this._bottomPullTween);
+				this._bottomPullTween = null;
+			}
+			if(this._leftPullTween)
+			{
+				Starling.juggler.remove(this._leftPullTween);
+				this._leftPullTween = null;
+			}
 
 			//if we stopped the animation while the list was outside the scroll
 			//bounds, then let's account for that
