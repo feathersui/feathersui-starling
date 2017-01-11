@@ -5927,7 +5927,8 @@ package feathers.controls
 				{
 					this.rightPullViewRatio = 0;
 				}
-				if(!this._hasElasticEdges)
+				if(!this._hasElasticEdges ||
+					(this._isRightPullActive && this._minHorizontalScrollPosition === this._maxHorizontalScrollPosition))
 				{
 					//if elastic edges aren't enabled, use the minimum
 					position = adjustedMinScrollPosition;
@@ -5951,7 +5952,8 @@ package feathers.controls
 				{
 					this.leftPullViewRatio = 0;
 				}
-				if(!this._hasElasticEdges)
+				if(!this._hasElasticEdges ||
+					(this._isLeftPullActive && this._minHorizontalScrollPosition === this._maxHorizontalScrollPosition))
 				{
 					position = adjustedMaxScrollPosition;
 				}
@@ -6027,7 +6029,8 @@ package feathers.controls
 				{
 					this.bottomPullViewRatio = 0;
 				}
-				if(!this._hasElasticEdges)
+				if(!this._hasElasticEdges ||
+					(this._isBottomPullActive && this._minVerticalScrollPosition === this._maxVerticalScrollPosition))
 				{
 					//if elastic edges aren't enabled, use the minimum
 					position = adjustedMinScrollPosition;
@@ -6051,7 +6054,8 @@ package feathers.controls
 				{
 					this.topPullViewRatio = 0;
 				}
-				if(!this._hasElasticEdges)
+				if(!this._hasElasticEdges ||
+					(this._isTopPullActive && this._minVerticalScrollPosition === this._maxVerticalScrollPosition))
 				{
 					position = adjustedMaxScrollPosition;
 				}
@@ -7007,7 +7011,8 @@ package feathers.controls
 			var verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 			if((this._horizontalScrollPolicy == ScrollPolicy.ON ||
 				(this._horizontalScrollPolicy == ScrollPolicy.AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition) ||
-				this._leftPullView !== null || this._rightPullView !== null) &&
+				(this._leftPullView !== null && (this._currentTouchX > this._startTouchX || this._horizontalScrollPosition < this._minHorizontalScrollPosition)) ||
+				(this._rightPullView !== null && (this._currentTouchX < this._startTouchX || this._horizontalScrollPosition > this._minHorizontalScrollPosition))) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.horizontalScrollBar)
@@ -7030,7 +7035,8 @@ package feathers.controls
 			}
 			if((this._verticalScrollPolicy == ScrollPolicy.ON ||
 				(this._verticalScrollPolicy == ScrollPolicy.AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition) ||
-				this._topPullView !== null || this._bottomPullView !== null) &&
+				(this._topPullView !== null && (this._currentTouchY > this._startTouchY || this._verticalScrollPosition < this._minVerticalScrollPosition)) ||
+				(this._bottomPullView !== null && (this._currentTouchY < this._startTouchY || this._verticalScrollPosition > this._minVerticalScrollPosition))) &&
 				!this._isDraggingVertically && verticalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.verticalScrollBar)
