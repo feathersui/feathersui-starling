@@ -264,5 +264,11 @@ package feathers.events
 		 * @see feathers.core.IStateContext
 		 */
 		public static const STATE_CHANGE:String = "stageChange";
+
+		/**
+		 * The <code>FeathersEventType.PULLING</code> event type is used by
+		 * Feathers scrolling containers to notify pull views of changes.
+		 */
+		public static const PULLING:String = "pulling";
 	}
 }
