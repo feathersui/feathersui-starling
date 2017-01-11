@@ -1433,6 +1433,7 @@ package feathers.controls.text
 					this._fontStylesTextFormat = new BitmapFontTextFormat(
 						textFormat.font, textFormat.size, textFormat.color,
 						textFormat.horizontalAlign, textFormat.leading);
+					this._fontStylesTextFormat.isKerningEnabled = textFormat.kerning;
 					this._currentVerticalAlign = textFormat.verticalAlign;
 				}
 				else if(this._fontStylesTextFormat === null)
