@@ -270,7 +270,7 @@ package feathers.controls
 		 */
 		private static const SUGGESTED_BOUNDS:ViewPortBounds = new ViewPortBounds();
 
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL")]
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
@@ -282,7 +282,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL")]
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
@@ -294,7 +294,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -306,7 +306,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -318,7 +318,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -330,7 +330,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -342,7 +342,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -354,7 +354,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -366,7 +366,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.controls.PageIndicatorInteractionMode.PREVIOUS_NEXT")]
+		[Deprecated(replacement="feathers.controls.PageIndicatorInteractionMode.PREVIOUS_NEXT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.PageIndicatorInteractionMode.PREVIOUS_NEXT</code>.
@@ -378,7 +378,7 @@ package feathers.controls
 		 */
 		public static const INTERACTION_MODE_PREVIOUS_NEXT:String = "previousNext";
 
-		[Deprecated(replacement="feathers.controls.PageIndicatorInteractionMode.PRECISE")]
+		[Deprecated(replacement="feathers.controls.PageIndicatorInteractionMode.PRECISE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.PageIndicatorInteractionMode.PRECISE</code>.

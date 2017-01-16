@@ -80,7 +80,7 @@ package feathers.layout
 	 */
 	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
 	{
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -92,7 +92,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -104,7 +104,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -116,7 +116,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -128,7 +128,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -140,7 +140,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -152,7 +152,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.

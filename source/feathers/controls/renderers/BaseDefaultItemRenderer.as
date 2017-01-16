@@ -518,7 +518,7 @@ package feathers.controls.renderers
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LOADER:String = "feathers-item-renderer-accessory-loader";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.UP")]
+		[Deprecated(replacement="feathers.controls.ButtonState.UP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
@@ -530,7 +530,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_UP:String = "up";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.DOWN")]
+		[Deprecated(replacement="feathers.controls.ButtonState.DOWN",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
@@ -542,7 +542,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_DOWN:String = "down";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.HOVER")]
+		[Deprecated(replacement="feathers.controls.ButtonState.HOVER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
@@ -554,7 +554,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_HOVER:String = "hover";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED")]
+		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
@@ -566,7 +566,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.UP_AND_SELECTED")]
+		[Deprecated(replacement="feathers.controls.ButtonState.UP_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP_AND_SELECTED</code>.
@@ -578,7 +578,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.DOWN_AND_SELECTED")]
+		[Deprecated(replacement="feathers.controls.ButtonState.DOWN_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN_AND_SELECTED</code>.
@@ -590,7 +590,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.HOVER_AND_SELECTED")]
+		[Deprecated(replacement="feathers.controls.ButtonState.HOVER_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER_AND_SELECTED</code>.
@@ -602,7 +602,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED_AND_SELECTED")]
+		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
@@ -614,7 +614,7 @@ package feathers.controls.renderers
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
@@ -626,7 +626,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
@@ -638,7 +638,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
@@ -650,7 +650,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
@@ -662,7 +662,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
@@ -674,7 +674,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
@@ -686,7 +686,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
@@ -698,7 +698,7 @@ package feathers.controls.renderers
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -710,7 +710,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -722,7 +722,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -734,7 +734,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -746,7 +746,7 @@ package feathers.controls.renderers
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -758,7 +758,7 @@ package feathers.controls.renderers
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -770,7 +770,7 @@ package feathers.controls.renderers
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
@@ -782,7 +782,7 @@ package feathers.controls.renderers
 		 */
 		public static const ACCESSORY_POSITION_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
@@ -794,7 +794,7 @@ package feathers.controls.renderers
 		 */
 		public static const ACCESSORY_POSITION_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
@@ -806,7 +806,7 @@ package feathers.controls.renderers
 		 */
 		public static const ACCESSORY_POSITION_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
@@ -818,7 +818,7 @@ package feathers.controls.renderers
 		 */
 		public static const ACCESSORY_POSITION_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
@@ -830,7 +830,7 @@ package feathers.controls.renderers
 		 */
 		public static const ACCESSORY_POSITION_MANUAL:String = "manual";
 
-		[Deprecated(replacement="feathers.controls.ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON")]
+		[Deprecated(replacement="feathers.controls.ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON</code>.
@@ -842,7 +842,7 @@ package feathers.controls.renderers
 		 */
 		public static const LAYOUT_ORDER_LABEL_ACCESSORY_ICON:String = "labelAccessoryIcon";
 
-		[Deprecated(replacement="feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY")]
+		[Deprecated(replacement="feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY</code>.
@@ -1602,7 +1602,7 @@ package feathers.controls.renderers
 		 */
 		protected var _stateToAccessoryFunction:Function;
 
-		[Deprecated(replacement="feathers.skins.ImageSkin")]
+		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0",message="Pass a feathers.skins.ImageSkin the defaultAccessory property.")]
 		/**
 		 * @private
 		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,

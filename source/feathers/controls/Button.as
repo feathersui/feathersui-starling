@@ -747,7 +747,7 @@ package feathers.controls
 		 */
 		public static const ALTERNATE_STYLE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.UP")]
+		[Deprecated(replacement="feathers.controls.ButtonState.UP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
@@ -759,7 +759,7 @@ package feathers.controls
 		 */
 		public static const STATE_UP:String = "up";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.DOWN")]
+		[Deprecated(replacement="feathers.controls.ButtonState.DOWN",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
@@ -771,7 +771,7 @@ package feathers.controls
 		 */
 		public static const STATE_DOWN:String = "down";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.HOVER")]
+		[Deprecated(replacement="feathers.controls.ButtonState.HOVER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
@@ -783,7 +783,7 @@ package feathers.controls
 		 */
 		public static const STATE_HOVER:String = "hover";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED")]
+		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
@@ -795,7 +795,7 @@ package feathers.controls
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
@@ -807,7 +807,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
@@ -819,7 +819,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
@@ -831,7 +831,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
@@ -843,7 +843,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
@@ -855,7 +855,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
@@ -867,7 +867,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
@@ -879,7 +879,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -891,7 +891,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 		
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -903,7 +903,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -915,7 +915,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
-		[Deprecated(replacement="feathers.layout.VerticalALign.TOP")]
+		[Deprecated(replacement="feathers.layout.VerticalALign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -927,7 +927,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.VerticalALign.MIDDLE")]
+		[Deprecated(replacement="feathers.layout.VerticalALign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -939,7 +939,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
-		[Deprecated(replacement="feathers.layout.VerticalALign.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.VerticalALign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -1541,7 +1541,7 @@ package feathers.controls
 		 */
 		protected var _stateToIconFunction:Function;
 
-		[Deprecated(replacement="feathers.skins.ImageSkin")]
+		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0",message="Pass a feathers.skins.ImageSkin the defaultIcon property.")]
 		/**
 		 * @private
 		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
@@ -1575,7 +1575,7 @@ package feathers.controls
 		 */
 		protected var _stateToLabelPropertiesFunction:Function;
 
-		[Deprecated(replacement="setFontStylesForState")]
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0",message="Pass starling.text.TextFormat objects to the setFontStylesForState() method.")]
 		/**
 		 * @private
 		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
@@ -1613,7 +1613,7 @@ package feathers.controls
 		 */
 		protected var _stateToSkinFunction:Function;
 
-		[Deprecated(replacement="feathers.skins.ImageSkin")]
+		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0",message="Pass a feathers.skins.ImageSkin the defaultSkin property.")]
 		/**
 		 * @private
 		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
@@ -1857,7 +1857,7 @@ package feathers.controls
 		 */
 		protected var _stateToLabelProperties:Object = {};
 
-		[Deprecated(replacement="setFontStylesForState")]
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Use the <code>fontStyles</code> property, or call the
@@ -1907,7 +1907,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		[Deprecated(replacement="setFontStylesForState")]
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
@@ -1955,7 +1955,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		[Deprecated(replacement="setFontStylesForState")]
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
@@ -2003,7 +2003,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		[Deprecated(replacement="disabledFontStyles")]
+		[Deprecated(replacement="disabledFontStyles",since="3.1.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Use the <code>disabledFontStyles</code> property, or call

@@ -129,7 +129,7 @@ package feathers.controls.text
 		 */
 		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -141,7 +141,7 @@ package feathers.controls.text
 		 */
 		public static const TEXT_ALIGN_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -153,7 +153,7 @@ package feathers.controls.text
 		 */
 		public static const TEXT_ALIGN_CENTER:String = "center";
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.

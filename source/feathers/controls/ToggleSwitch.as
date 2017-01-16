@@ -548,7 +548,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_OFF_TRACK_FACTORY:String = "offTrackFactory";
 
-		[Deprecated]
+		[Deprecated(since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Removed with no replacement.
@@ -560,7 +560,7 @@ package feathers.controls
 		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
 
-		[Deprecated]
+		[Deprecated(since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Removed with no replacement.
@@ -572,7 +572,7 @@ package feathers.controls
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE")]
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
@@ -584,7 +584,7 @@ package feathers.controls
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT")]
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
@@ -1288,7 +1288,7 @@ package feathers.controls
 		 */
 		protected var _labelAlign:String = "middle";
 
-		[Deprecated]
+		[Deprecated(since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Removed with no replacement.

@@ -794,7 +794,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY:String = "errorCalloutFactory";
 
-		[Deprecated(replacement="feathers.controls.TextInputState.ENABLED")]
+		[Deprecated(replacement="feathers.controls.TextInputState.ENABLED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.ENABLED</code>.
@@ -806,7 +806,7 @@ package feathers.controls
 		 */
 		public static const STATE_ENABLED:String = "enabled";
 
-		[Deprecated(replacement="feathers.controls.TextInputState.DISABLED")]
+		[Deprecated(replacement="feathers.controls.TextInputState.DISABLED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.DISABLED</code>.
@@ -818,7 +818,7 @@ package feathers.controls
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
-		[Deprecated(replacement="feathers.controls.TextInputState.FOCUSED")]
+		[Deprecated(replacement="feathers.controls.TextInputState.FOCUSED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.FOCUSED</code>.
@@ -876,7 +876,7 @@ package feathers.controls
 		 */
 		public static const ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -888,7 +888,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -900,7 +900,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -912,7 +912,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
-		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY")]
+		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
@@ -1958,7 +1958,7 @@ package feathers.controls
 		 */
 		protected var _stateToSkinFunction:Function;
 
-		[Deprecated(replacement="feathers.skins.ImageSkin")]
+		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
@@ -2103,7 +2103,7 @@ package feathers.controls
 		 */
 		protected var _stateToIconFunction:Function;
 
-		[Deprecated(replacement="feathers.skins.ImageSkin")]
+		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0")]
 		/**
 		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
 		 * and pass to the <code>defaultIcon</code> property.

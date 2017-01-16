@@ -227,7 +227,7 @@ package feathers.controls
 	 */
 	public class ProgressBar extends FeathersControl
 	{
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL")]
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
@@ -239,7 +239,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL")]
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.

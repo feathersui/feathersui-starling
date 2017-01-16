@@ -318,7 +318,7 @@ package feathers.controls
 		 */
 		public static var globalStyleProvider:IStyleProvider;
 
-		[Deprecated(replacement="feathers.layout.Orientation.PORTRAIT")]
+		[Deprecated(replacement="feathers.layout.Orientation.PORTRAIT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.PORTRAIT</code>.
@@ -330,7 +330,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_PORTRAIT:String = "portrait";
 
-		[Deprecated(replacement="feathers.layout.Orientation.LANDSCAPE")]
+		[Deprecated(replacement="feathers.layout.Orientation.LANDSCAPE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.LANDSCAPE</code>.
@@ -342,7 +342,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_LANDSCAPE:String = "landscape";
 
-		[Deprecated(replacement="feathers.layout.Orientation.BOTH")]
+		[Deprecated(replacement="feathers.layout.Orientation.BOTH",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.BOTH</code>.
@@ -354,7 +354,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_BOTH:String = "both";
 
-		[Deprecated(replacement="feathers.layout.Orientation.NONE")]
+		[Deprecated(replacement="feathers.layout.Orientation.NONE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.NONE</code>.
@@ -366,7 +366,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_NONE:String = "none";
 
-		[Deprecated(replacement="feathers.layout.RelativeDepth.ABOVE")]
+		[Deprecated(replacement="feathers.layout.RelativeDepth.ABOVE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativeDepth.ABOVE</code>.
@@ -378,7 +378,7 @@ package feathers.controls
 		 */
 		public static const OPEN_MODE_ABOVE:String = "overlay";
 
-		[Deprecated(replacement="feathers.layout.RelativeDepth.BELOW")]
+		[Deprecated(replacement="feathers.layout.RelativeDepth.BELOW",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativeDepth.BELOW</code>.
@@ -390,7 +390,7 @@ package feathers.controls
 		 */
 		public static const OPEN_MODE_BELOW:String = "below";
 
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE")]
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
@@ -402,7 +402,7 @@ package feathers.controls
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT")]
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
@@ -414,7 +414,7 @@ package feathers.controls
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
-		[Deprecated(replacement="feathers.controls.DragGesture.EDGE")]
+		[Deprecated(replacement="feathers.controls.DragGesture.EDGE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.EDGE</code>.
@@ -426,7 +426,7 @@ package feathers.controls
 		 */
 		public static const OPEN_GESTURE_DRAG_CONTENT_EDGE:String = "dragContentEdge";
 
-		[Deprecated(replacement="feathers.controls.DragGesture.CONTENT")]
+		[Deprecated(replacement="feathers.controls.DragGesture.CONTENT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.CONTENT</code>.
@@ -438,7 +438,7 @@ package feathers.controls
 		 */
 		public static const OPEN_GESTURE_DRAG_CONTENT:String = "dragContent";
 
-		[Deprecated(replacement="feathers.controls.DragGesture.NONE")]
+		[Deprecated(replacement="feathers.controls.DragGesture.NONE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.NONE</code>.

@@ -348,7 +348,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY:String = "maximumTrackFactory";
 
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL")]
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
@@ -360,7 +360,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL")]
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
@@ -372,7 +372,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE")]
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
@@ -384,7 +384,7 @@ package feathers.controls
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT")]
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
@@ -396,7 +396,7 @@ package feathers.controls
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
-		[Deprecated(replacement="feathers.controls.TrackScaleMode.EXACT_FIT")]
+		[Deprecated(replacement="feathers.controls.TrackScaleMode.EXACT_FIT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackScaleMode.EXACT_FIT</code>.
@@ -408,7 +408,7 @@ package feathers.controls
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
-		[Deprecated(replacement="feathers.controls.TrackScaleMode.DIRECTIONAL")]
+		[Deprecated(replacement="feathers.controls.TrackScaleMode.DIRECTIONAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackScaleMode.DIRECTIONAL</code>.
@@ -420,7 +420,7 @@ package feathers.controls
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
-		[Deprecated(replacement="feathers.controls.TrackInteractionMode.TO_VALUE")]
+		[Deprecated(replacement="feathers.controls.TrackInteractionMode.TO_VALUE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.TO_VALUE</code>.
@@ -432,7 +432,7 @@ package feathers.controls
 		 */
 		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
 
-		[Deprecated(replacement="feathers.controls.TrackInteractionMode.BY_PAGE")]
+		[Deprecated(replacement="feathers.controls.TrackInteractionMode.BY_PAGE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.BY_PAGE</code>.
