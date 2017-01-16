@@ -1950,6 +1950,16 @@ package feathers.controls.text
 					{
 						this._fontStylesElementFormat.kerning = Kerning.OFF;
 					}
+					if("letterSpacing" in textFormat)
+					{
+						//letterSpacing was added after Starling 2.1
+						var letterSpacing:Number = textFormat["letterSpacing"] / 2;
+						//adobe documentation recommends splitting it between
+						//left and right
+						//http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html#trackingRight
+						this._fontStylesElementFormat.trackingRight = letterSpacing;
+						this._fontStylesElementFormat.trackingLeft = letterSpacing;
+					}
 					this._currentLeading = textFormat.leading;
 					this._currentVerticalAlign = textFormat.verticalAlign;
 					this._currentHorizontalAlign = textFormat.horizontalAlign;

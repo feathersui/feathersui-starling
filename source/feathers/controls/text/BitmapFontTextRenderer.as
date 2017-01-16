@@ -1434,6 +1434,11 @@ package feathers.controls.text
 						textFormat.font, textFormat.size, textFormat.color,
 						textFormat.horizontalAlign, textFormat.leading);
 					this._fontStylesTextFormat.isKerningEnabled = textFormat.kerning;
+					if("letterSpacing" in textFormat)
+					{
+						//letterSpacing was added after Starling 2.1
+						this._fontStylesTextFormat.letterSpacing = textFormat["letterSpacing"];
+					}
 					this._currentVerticalAlign = textFormat.verticalAlign;
 				}
 				else if(this._fontStylesTextFormat === null)
