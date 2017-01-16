@@ -623,7 +623,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
 
-		[Deprecated(replacement="feathers.layout.ScrollInteractionMode.TOUCH")]
+		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
@@ -635,7 +635,7 @@ package feathers.controls
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
-		[Deprecated(replacement="feathers.layout.ScrollInteractionMode.MOUSE")]
+		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.MOUSE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
@@ -647,7 +647,7 @@ package feathers.controls
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
-		[Deprecated(replacement="feathers.layout.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS")]
+		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.

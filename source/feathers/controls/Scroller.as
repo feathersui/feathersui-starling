@@ -992,7 +992,7 @@ package feathers.controls
 		 */
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
 
-		[Deprecated(replacement="feathers.layout.DecelerationRate.NORMAL")]
+		[Deprecated(replacement="feathers.controls.DecelerationRate.NORMAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.NORMAL</code>.
@@ -1004,7 +1004,7 @@ package feathers.controls
 		 */
 		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
 
-		[Deprecated(replacement="feathers.layout.DecelerationRate.FAST")]
+		[Deprecated(replacement="feathers.controls.DecelerationRate.FAST")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.FAST</code>.
